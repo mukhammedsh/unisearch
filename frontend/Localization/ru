@@ -1166,7 +1166,7 @@ profile.exam_updated_value: Обновлён {exam}: {value}
 languages.exam_total_overall: Общий балл
 languages.exam_total_total: Общий балл
 languages.exam_total_placeholder: Балл за {label}
-languages.exam_breakdown_hint: Введите балл по каждой секции. Общий балл будет рассчитан автоматически.
+languages.exam_breakdown_optional_hint: Баллы по секциям необязательны: введите общий балл или заполните все секции, и он рассчитается автоматически. Секции позволяют проверить требования точнее.
 languages.exam_breakdown_required: Введите балл по каждой секции.
 languages.error.range: {exam} должен быть в диапазоне от {min} до {max}
 languages.error.step: Для {exam} нужно использовать шаг {step}
@@ -1632,8 +1632,8 @@ profile.applicant_context.country_other_placeholder: Укажите страну
 profile.applicant_context.credential: Квалификация или учебная программа
 profile.applicant_context.credential_ib: Международный бакалавриат (IB)
 profile.applicant_context.credential_a_level: A-levels
-profile.applicant_context.credential_us_diploma: Аттестат о среднем образовании США
-profile.applicant_context.credential_national: Национальная квалификация о среднем образовании
+profile.applicant_context.credential_us_diploma: Диплом о среднем образовании школы США (не казахстанский аттестат)
+profile.applicant_context.credential_national: Национальная квалификация о среднем образовании (например, аттестат РК)
 profile.applicant_context.credential_vocational: Профессиональная квалификация
 profile.applicant_context.credential_other_placeholder: Уточните название квалификации или учебной программы
 profile.applicant_context.current_residence: Страна проживания
@@ -2575,6 +2575,13 @@ university.admissions.catalog.review.carried_forward_review: Сохранена 
 university.admissions.catalog.review.conflicting: Официальные источники противоречат друг другу
 university.admissions.catalog.review.superseded: Сведения заменены более поздним источником
 university.admissions.catalog.review.limited: Источник изучен; применимость или отдельные условия ещё требуют проверки
+university.admissions.catalog.review.needs_resolution: Проверка источника требует уточнения
+university.admissions.catalog.route_entry.external: Подача открыта для новых абитуриентов
+university.admissions.catalog.route_entry.external_restricted: Подача только для ограниченной группы абитуриентов
+university.admissions.catalog.route_entry.internal: Только для текущих студентов
+university.admissions.catalog.route_entry.no_admission: Присуждается в ходе другой программы; отдельной подачи нет
+university.admissions.catalog.route_entry.closed: Набор новых абитуриентов закрыт
+university.admissions.catalog.route_entry.unresolved: Путь подачи требует уточнения
 university.admissions.catalog.not_published: Не опубликовано
 university.admissions.catalog.needs_review: Требует проверки
 university.admissions.catalog.historical: Исторические сведения
@@ -2620,6 +2627,7 @@ university.admissions.catalog.domain.other: Другие сведения ист
 university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
 university.admissions.catalog.reason.missing_evidence: Не хватает необходимых сведений заявителя.
 university.admissions.catalog.reason.unassessed_minimums: Некоторые опубликованные минимальные требования или условия их применения пока нельзя оценить.
+university.admissions.catalog.reason.entry_cycle_required: Укажите год поступления, например «осень 2027», чтобы проверить ваши баллы по этим минимумам.
 university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
 university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
 university.admissions.catalog.reason.source_fact_changed: Сведения источника изменились; правила оценки требуют проверки.
@@ -2665,6 +2673,11 @@ university.admissions.catalog.field.language: Язык обучения
 university.admissions.catalog.field.location: Место обучения
 university.admissions.catalog.field.department: Факультет или кафедра
 university.admissions.catalog.field.start_date: Начало обучения
+university.admissions.catalog.field.externalAdmissions: Прием извне
+university.admissions.catalog.field.internalAdmissions: Внутренний прием
+university.admissions.catalog.field.programCurrentPhdOnly: Только для текущих студентов PhD
+university.admissions.catalog.field.coterm: Совмещённая степень
+university.admissions.catalog.field.unitsProgramMin: Минимум единиц программы
 university.admissions.catalog.field.presence: Нужен ли экзамен
 university.admissions.catalog.field.cutoff: Числовой порог
 university.admissions.catalog.field.recommended: Рекомендованный балл
@@ -2772,6 +2785,11 @@ university.admissions.reading.month.11: ноября
 university.admissions.reading.month.12: декабря
 university.admissions.reading.early_action: Early Action · ранняя подача
 university.admissions.reading.regular_action: Regular Action · обычная подача
+university.admissions.reading.restrictive_early_action: Restrictive Early Action · ранняя необязывающая подача
+university.admissions.reading.regular_decision: Regular Decision · обычная подача
+university.admissions.reading.transfer_application: Подача на перевод
+university.admissions.reading.priority_deadline: Приоритетный срок
+university.admissions.reading.application_deadline: Срок подачи заявления
 university.admissions.reading.official_application: Официальная подача и инструкции
 university.admissions.reading.official_source: Официальный источник
 university.admissions.reading.unknown: Здесь не указано
@@ -2835,6 +2853,100 @@ university.admissions.catalog.enum.program_specific: Для конкретной
 university.admissions.catalog.enum.route_wide: Для маршрута поступления
 university.admissions.catalog.enum.academic_year: Учебный год
 university.admissions.catalog.enum.one_time: Разовый платёж
+university.admissions.catalog.enum.aid_application: Заявка на финансовую помощь
+university.admissions.catalog.enum.application_completion: Завершение заявки
+university.admissions.catalog.enum.application_fee: Сбор за подачу заявки
+university.admissions.catalog.enum.competitive_scholarship: Конкурсная стипендия
+university.admissions.catalog.enum.conditional_fee: Условный сбор
+university.admissions.catalog.enum.current_mit_course_18_or_18_c_undergraduate: Действующий студент бакалавриата MIT, курс 18 или 18-C
+university.admissions.catalog.enum.current_mit_course_6_9_major: Действующий студент MIT, специальность курса 6-9
+university.admissions.catalog.enum.current_mit_eecs_undergraduate: Действующий студент бакалавриата EECS (MIT)
+university.admissions.catalog.enum.doctoral_applicant: Абитуриент докторантуры
+university.admissions.catalog.enum.graduate_applicant: Абитуриент магистратуры
+university.admissions.catalog.enum.not_established: Не установлено
+university.admissions.catalog.enum.partner_or_affiliate_school_student_or_graduate: Студент или выпускник партнерской или аффилированной школы
+university.admissions.catalog.enum.round_1: Раунд 1
+university.admissions.catalog.enum.round_2: Раунд 2
+university.admissions.catalog.enum.round_3: Раунд 3
+university.admissions.catalog.enum.round_4: Раунд 4
+university.admissions.catalog.enum.standardized_test: Стандартизированный тест
+university.admissions.catalog.enum.transfer_applicant: Переводящийся студент
+university.admissions.catalog.enum.transfer_need_based_aid: Помощь по нуждаемости для переводящихся студентов
+university.admissions.catalog.enum.us_citizen_or_permanent_resident_transfer: Перевод гражданина США или постоянного жителя
+university.admissions.catalog.enum.admitted_nonprofessional_graduate: Принятый выпускник непрофессиональной программы
+university.admissions.catalog.enum.admitted_phd_student: Принятый аспирант PhD
+university.admissions.catalog.enum.admitted_student: Принятый студент
+university.admissions.catalog.enum.admitted_student_where_value_identifies_post_offer_rule: Принятый студент (правило после оффера)
+university.admissions.catalog.enum.advanced_degree_applicant: Абитуриент с учёной степенью
+university.admissions.catalog.enum.advanced_graduate_student: Аспирант продвинутого уровня
+university.admissions.catalog.enum.applicant_to_other_stanford_graduate_degree: Абитуриент на другую магистерскую программу Стэнфорда
+university.admissions.catalog.enum.applicants_not_meeting_central_english_exemptions: Абитуриенты, не отвечающие центральным исключениям по английскому языку
+university.admissions.catalog.enum.coterminal_masters_only: Только совмещённая магистратура
+university.admissions.catalog.enum.current_stanford_doctoral_student: Действующий докторант Стэнфорда
+university.admissions.catalog.enum.current_stanford_engineering_graduate_student: Действующий аспирант инженерной школы Стэнфорда
+university.admissions.catalog.enum.current_stanford_graduate: Действующий аспирант Стэнфорда
+university.admissions.catalog.enum.current_stanford_graduate_student: Действующий аспирант Стэнфорда
+university.admissions.catalog.enum.current_stanford_md_student: Действующий студент медицинской школы Стэнфорда (MD)
+university.admissions.catalog.enum.current_stanford_md_student_approved_split_curriculum: Действующий студент MD (утверждённый разделённый учебный план)
+university.admissions.catalog.enum.current_stanford_phd_student: Действующий аспирант PhD Стэнфорда
+university.admissions.catalog.enum.current_stanford_student: Действующий студент Стэнфорда
+university.admissions.catalog.enum.current_stanford_undergraduate: Действующий студент бакалавриата Стэнфорда
+university.admissions.catalog.enum.current_stanford_undergraduate_coterm: Действующий студент бакалавриата Стэнфорда (совмещённая программа)
+university.admissions.catalog.enum.eligible_veteran: Имеющий право ветеран
+university.admissions.catalog.enum.enrolled_economics_phd_student: Зачисленный аспирант PhD по экономике
+university.admissions.catalog.enum.enrolled_graduate_student: Зачисленный аспирант
+university.admissions.catalog.enum.enrolled_physics_phd_student: Зачисленный аспирант PhD по физике
+university.admissions.catalog.enum.enrolled_program_student: Зачисленный студент программы
+university.admissions.catalog.enum.enrolled_stanford_undergraduate: Зачисленный студент бакалавриата Стэнфорда
+university.admissions.catalog.enum.enrolled_student: Зачисленный студент
+university.admissions.catalog.enum.enrolled_students: Зачисленные студенты
+university.admissions.catalog.enum.external_applicant: Внешний абитуриент
+university.admissions.catalog.enum.external_degree_applicant: Абитуриент с внешним дипломом
+university.admissions.catalog.enum.external_graduate_applicant: Внешний абитуриент магистратуры
+university.admissions.catalog.enum.external_masters_holder: Обладатель внешней степени магистра
+university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: Внешний или действующий абитуриент магистратуры Стэнфорда
+university.admissions.catalog.enum.financial_support: Финансовая поддержка
+university.admissions.catalog.enum.international_applicant: Международный абитуриент
+university.admissions.catalog.enum.international_law_degree_holder: Обладатель иностранной юридической степени
+university.admissions.catalog.enum.joint_degree_applicant: Абитуриент совместной программы
+university.admissions.catalog.enum.joint_or_dual_degree_applicant: Абитуриент совместной или двойной программы
+university.admissions.catalog.enum.knight_hennessy_applicant: Абитуриент Knight-Hennessy
+university.admissions.catalog.enum.matriculated_graduate_housing_applicant_or_resident: Зачисленный магистрант: заявитель или житель общежития
+university.admissions.catalog.enum.named_programme_route_applicant: Абитуриент по указанному маршруту программы
+university.admissions.catalog.enum.need_based_aid_applicant: Абитуриент, претендующий на помощь по нуждаемости
+university.admissions.catalog.enum.new_admitted_student: Новый принятый студент
+university.admissions.catalog.enum.permanent_resident: Постоянный житель
+university.admissions.catalog.enum.professional_apprenticeship_inventory: Инвентаризация профессиональной стажировки
+university.admissions.catalog.enum.prospective_program_student: Будущий студент программы
+university.admissions.catalog.enum.prospective_stanford_professional_student: Будущий студент профессиональной программы Стэнфорда
+university.admissions.catalog.enum.prospective_students: Будущие студенты
+university.admissions.catalog.enum.prospective_undergraduate: Будущий студент бакалавриата
+university.admissions.catalog.enum.regular_and_financial_support: Обычный приём и финансовая поддержка
+university.admissions.catalog.enum.scholar_without_legal_training: Исследователь без юридического образования
+university.admissions.catalog.enum.stanford_alumni_within_five_years: Выпускники Стэнфорда в течение пяти лет
+university.admissions.catalog.enum.stanford_anthropology_phd_student: Аспирант PhD по антропологии Стэнфорда
+university.admissions.catalog.enum.stanford_undergraduate_applicant: Абитуриент бакалавриата Стэнфорда
+university.admissions.catalog.enum.study_structure_and_admission_reference: Структура обучения и справка о приёме
+university.admissions.catalog.enum.us_citizen: Гражданин США
+university.admissions.catalog.enum.working_professional: Работающий специалист
+university.admissions.catalog.enum.tuition_and_mandatory_fee: Обучение и обязательные сборы
+university.admissions.catalog.enum.one_time_application_charge: Разовый сбор за подачу заявки
+university.admissions.catalog.enum.approved_nonresident_doctoral_tuition: Утвержденная плата за докторантуру для нерезидентов
+university.admissions.catalog.enum.coterm_application_fee: Сбор за подачу заявки на совмещенную программу
+university.admissions.catalog.enum.prior_cycle_date_on_2027_page: Дата предыдущего цикла на странице 2027 года
+university.admissions.catalog.enum.published_award_conflict: Противоречие в опубликованных степенях
+university.admissions.catalog.enum.independent_award_pathway: Самостоятельный путь к степени
+university.admissions.catalog.enum.exit_award_or_progression: Промежуточная степень или переход на следующий уровень
+university.admissions.catalog.enum.masters_duration_pathway: Путь магистратуры по продолжительности
+university.admissions.catalog.enum.pre_course_or_induction: Подготовительный курс или вводный модуль
+university.admissions.catalog.enum.illustrative_research_projects: Примерные исследовательские проекты
+university.admissions.catalog.enum.conditional_course_class: Условно, по классу курса
+university.admissions.catalog.enum.conditional_selected_course: Условно, для выбранного курса
+university.admissions.catalog.enum.excluded_by_published_course_rules: Исключено по опубликованным правилам курса
+university.admissions.catalog.enum.admissions_for_scholarship_consideration: Прием на рассмотрение стипендии
+university.admissions.catalog.enum.to_be_announced: Будет объявлено
+university.admissions.catalog.enum.per_option_key_facts: ключевые факты по варианту программы
+university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесты, баллы, отбор, собеседование и портфолио
 university.admissions.catalog.reset_notice: Прежний выбор поступления относился к предыдущему каталогу и сброшен. Выберите программу и путь подачи заново. Остальные данные профиля сохранены.
 university.admissions.catalog.save_choice: Сохранить выбор поступления
 university.admissions.catalog.choice_saved: Контекст поступления сохранён для этого вуза.
@@ -3074,7 +3186,21 @@ universities.compare.summary.potential_aid: Возможное финансир�
 universities.compare.summary.full_records: Полные записи источников
 universities.compare.summary.additional_facts: Дополнительные факты об университетах
 universities.compare.summary.choose_programs: Выбрать программы
+universities.compare.summary.prompt_choose_program: {university}: выберите программу или общий маршрут подачи, чтобы здесь появились сроки, стоимость и требования.
+universities.compare.summary.prompt_choose_route: {university}, программа «{program}»: выберите способ подачи заявления, чтобы здесь появились сроки, стоимость и финансирование.
+universities.compare.summary.prompt_incompatible: {university}: выбранные программа, маршрут и уровень не совпадают. Измените выбор, чтобы сравнить.
 universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
+universities.compare.summary.cycle_missing: Набор не выбран. Сведения для конкретного набора показаны как опубликованы, а минимальные требования, зависящие от набора, не проверяются.
+universities.compare.summary.cycle_profile: В вашем профиле указан набор: {cycle}. Примените его через «Изменить выбор».
+universities.compare.summary.open_admission: Открыть требования
+universities.compare.pending_changes: Изменения применятся, когда вы нажмёте «Применить фильтры» или «Продолжить».
+universities.compare.budget.title: Стоимость и ваш бюджет
+universities.compare.budget.summary: Каждая опубликованная годовая цена сравнивается с вашим годовым бюджетом отдельно. Помощь не вычитается, а цена только за обучение не включает расходы на проживание.
+universities.compare.budget.summary_incomplete: Для хотя бы одной выбранной программы нет сопоставимой годовой цены или не указан ваш годовой бюджет, поэтому сравнение с бюджетом не делается.
+universities.compare.budget.cost: Опубликованная цена
+universities.compare.budget.fit: В сравнении с вашим бюджетом
+universities.compare.budget.notes: Пояснения к цене
+universities.compare.budget.not_comparable: Опубликованную цену нельзя привести к сопоставимой годовой сумме.
 university.admissions.reading.total_fee: за весь курс
 university.deadlines.kind.funding_consideration: Срок подачи заявления для рассмотрения на стипендию
 university.admissions.reading.first_year: первый год
@@ -3168,6 +3294,8 @@ universities.level.residency: Резидентура
 profile.option.study_level_non_degree: Без присуждения степени
 universities.level.non_degree: Без присуждения степени
 profile.exam_breakdown_optional_hint: Добавьте разделы, указанные в вашем результате. Отсутствующие разделы останутся без оценки.
+profile.exam_total_only_hint: Если вы не знаете баллы по разделам, введите только общий балл. Баллы по разделам позволяют проверить требования точнее; если заполнить все разделы, общий балл рассчитается автоматически.
+profile.exam_total_or_sections_required: Введите общий балл или балл по каждому разделу.
 profile.exam_section_required: Добавьте хотя бы один балл раздела из вашего результата.
 profile.exam_not_recorded: Не добавлено
 university.admissions.catalog.kind.academic_requirement: Академическая квалификация
@@ -3250,12 +3378,56 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: Для де
 university.admissions.entry.route_help.nu-residency-unconditional: Обычные условия поступления в резидентуру, включая клинические экзамены и предыдущее медицинское образование.
 university.admissions.entry.route_help.nu-residency-conditional-umc: Отдельный условный путь для рекомендованных UMC. Проверьте требования к рекомендации и зачислению: это не общее освобождение от экзаменов.
 university.admissions.reading.structured_study: Опубликованные сведения об учёбе доступны ниже. Краткого текстового обзора нет.
+university.admissions.key_facts.title: Главное по этому пути
+university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
+university.admissions.key_facts.requirements: Минимальные требования
+university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
+university.admissions.key_facts.requirements_manual: Ещё условий, которые нужно сверить с официальными правилами: {count}
+university.admissions.key_facts.use_profile_cycle: Использовать «{cycle}» из профиля
+university.admissions.key_facts.set_cycle: Указать год поступления
+university.admissions.key_facts.deadline: Ближайший срок
+university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
+university.admissions.key_facts.deadline_today: {title}: {date}, сегодня
+university.admissions.key_facts.deadline_passed: Опубликованные сроки уже прошли. Последний: {title}, {date}
+university.admissions.key_facts.deadline_none: Для этого пути сроки не опубликованы
+university.admissions.key_facts.deadline_yearless: Сроки опубликованы без указания года: {dates}
+university.admissions.key_facts.deadline_period: Период подачи заявок: {period}
+university.admissions.key_facts.deadline_described: Точная дата с годом не указана; опубликованные сроки — на вкладке «Сроки»
+university.admissions.key_facts.open_deadlines: Все сроки
+university.admissions.key_facts.cost: Стоимость в год
+university.admissions.key_facts.cost_total: Опубликованный бюджет: {amount}
+university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
+university.admissions.key_facts.cost_period: Период источника: {period}
+university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas); его можно указать в дополнительных параметрах выше
+university.admissions.key_facts.cost_not_annual: Цена опубликована не за год; подробности на вкладке «Стоимость»
+university.admissions.key_facts.cost_unknown: Для этого выбора цена не опубликована
+university.admissions.key_facts.budget_over: Выше вашего бюджета {budget}
+university.admissions.key_facts.budget_within: В пределах вашего бюджета {budget}
+university.admissions.key_facts.budget_tuition_within: Обучение укладывается в бюджет {budget}, но проживание оплачивается отдельно
+university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
+university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
+university.admissions.key_facts.open_finance: Стоимость и финансирование
+university.admissions.key_facts.funding: Финансирование
+university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
+university.admissions.key_facts.funding_records: Записей о финансировании для этого пути: {count}. Грант не гарантирован
+university.admissions.key_facts.funding_none: Для этого пути финансирование не каталогизировано; проверьте официальную страницу о финансировании
 university.admissions.catalog.domain.reference: Связанные сопоставления источников
 university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
 profile.intro: Все поля необязательны. Начните со специальности, уровня обучения и бюджета; баллы добавьте, когда захотите сверить опубликованные требования. Сохраните данные на этом устройстве и вернитесь в каталог.
 profile.clear_report_draft: Очистить черновик
 profile.report_draft_pending: Добавьте или обновите отчёт либо очистите его черновик, затем сохраните профиль.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Языковой опыт для индивидуальной проверки освобождения от экзамена
+university.admissions.catalog.field.search_opens: Открывается поиск программ
+university.admissions.catalog.field.preparation_opens: Открывается подготовка заявки
+university.admissions.catalog.field.submission_opens: Открывается подача заявки
+university.admissions.catalog.field.medicine_deadline: Срок подачи заявки на медицину
+university.admissions.catalog.field.other_course_equal_consideration: Срок равного рассмотрения для остальных программ
+university.admissions.catalog.field.a_level_results: Результаты A-level
+university.admissions.catalog.field.date: Дата
+university.admissions.catalog.field.time: Время
+university.admissions.catalog.field.timezone: Часовой пояс
+university.admissions.catalog.field.scope: Относится к
+university.admissions.catalog.record_link: Показать полную запись источника
 profile.family_income_reference: Доход семьи (необязательная справка)
 profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})
 university.admissions.entry.browsing_not_saved: Этот выбор не сохранён для UniFit.
@@ -3307,3 +3479,40 @@ universities.match.budget_reference_detail: Для сравнения испол
 universities.match.budget_uncertain_detail: Некоторые варианты дороже вашего бюджета. Уточните стоимость выбранной программы.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Для подходящих студентов выпускного курса: подайте заявку сейчас и начните MBA после двух–пяти лет работы. Это поступление с отложенным началом, а не ранний раунд обычной подачи на MBA.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — поступление с отложенным началом
+university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — ранний раунд без обязательства поступить, но с ограничениями на ранние заявки в другие вузы; прочитайте правила вуза до выбора.
+university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.text: Early Action — ранний раунд подачи: срок и ответ раньше, а обязательства поступить обычно нет, поэтому после зачисления вы не обязаны принимать место.
+university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.text: Regular Action — основной, более поздний раунд подачи: срок и ответ позже, чем в раннем раунде.
+university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.text: Regular Decision — основной раунд подачи: срок и ответ позже, чем в ранних раундах.
+university.admissions.glossary.ucas.title: UCAS
+university.admissions.glossary.ucas.text: UCAS — единая онлайн-служба подачи заявок в бакалавриат вузов Великобритании: заявку подают через неё, а не в каждый вуз отдельно.
+university.admissions.glossary.tmua.title: TMUA
+university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — вступительный тест по математике, который требуют некоторые британские вузы; он сдаётся отдельно от школьных экзаменов.
+university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.text: Foundation — подготовительный год перед бакалавриатом, а NUFYP — Foundation Year Program Назарбаев Университета; узнайте в правилах вуза, ведёт ли его завершение к месту на программе.
+university.admissions.glossary.css_profile.title: CSS Profile
+university.admissions.glossary.css_profile.text: CSS Profile — онлайн-анкета College Board, по которой некоторые американские вузы оценивают финансовую нуждаемость семьи; её подают дополнительно к заявке на поступление.
+university.admissions.glossary.fee_status.title: Home / Overseas: статус оплаты
+university.admissions.glossary.fee_status.text: Статус оплаты определяет, какая цена обучения применяется: тариф Home обычно действует для жителей Великобритании и некоторых других категорий, иностранные абитуриенты чаще платят по тарифу Overseas, а категорию определяет сам вуз.
+university.admissions.glossary.what_is: Что такое {term}?
+university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
+university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
+university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили. Записей о финансировании для этого пути: {count}.
+university.admissions.key_facts.deadline_earlier: Раньше: {text}
+university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date}, через {days} дн. (ежегодная дата; год уточните на официальной странице)
+university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date}, сегодня (ежегодная дата; год уточните на официальной странице)
+university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
+university.admissions.key_facts.requirements_kind_academic: Академическое требование
+university.admissions.key_facts.requirements_kind_language: Требование по английскому
+university.admissions.key_facts.requirements_kind_exam: Обязательный экзамен
+university.admissions.key_facts.requirements_need_one: {requirement}: добавьте {items}
+university.admissions.key_facts.requirements_need_any: {requirement}: добавьте что-то одно из: {items}
+university.admissions.key_facts.requirements_add_result: результат {exam}
+university.admissions.key_facts.requirements_add_date: дату сдачи {exam}
+university.admissions.key_facts.requirements_add_sections: баллы {exam} по разделам
+university.admissions.key_facts.requirements_add_date_sections: дату сдачи {exam} и баллы по разделам
+university.admissions.key_facts.requirements_add_gpa: средний балл (GPA)
+university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}

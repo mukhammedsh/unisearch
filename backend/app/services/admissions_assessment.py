@@ -18,7 +18,8 @@ ASSESSMENTS_PATH = DATA_DIR / "admissions" / "assessments.json"
 
 
 def _fact_hash(fact):
-    raw = {key: value for key, value in fact.items() if key != "applicability"}
+    # Applicability and the normalized status are derived; the hash covers reviewed source content only.
+    raw = {key: value for key, value in fact.items() if key not in ("applicability", "normalized_status")}
     return hashlib.sha256(json.dumps(raw, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
@@ -96,8 +97,7 @@ def _submitted_exams(profile):
         exam_id = row.get("id") or row.get("exam")
         try:
             result = exams_service.coerce_exam_submission(exam_id, score_raw=row.get("score"),
-                                                         raw_value=row.get("raw_value"), details=row.get("details"), taken_on=row.get("taken_on"),
-                                                         allow_total_only_sat=True)
+                                                         raw_value=row.get("raw_value"), details=row.get("details"), taken_on=row.get("taken_on"))
         except (ValueError, TypeError):
             continue
         if exams_service._config_entry(result["exam"]).get("type") == "bool" and not result.get("score"):
@@ -132,15 +132,16 @@ def _exam_minimum(alternative, row):
     """Keep all total/section checks inside one validated test attempt."""
     checks = []
 
-    def add(exam, minimum, provided):
+    def add(exam, minimum, provided, component=False):
         checks.append({"exam": exam, "minimum": minimum, "provided": provided,
-                       "status": "missing" if provided is None else "met" if provided >= minimum else "unmet"})
+                       "status": "missing" if provided is None else "met" if provided >= minimum else "unmet",
+                       **({"reason": "component_not_reported"} if component and provided is None else {})})
 
     if "minimum" in alternative:
         add(alternative["exam_id"], alternative["minimum"], row.get("score"))
     components = {item["exam"]: item.get("score") for item in (row.get("details") or {}).get("components", [])}
     for exam, minimum in alternative.get("component_minimums", {}).items():
-        add(exam, minimum, components.get(exam))
+        add(exam, minimum, components.get(exam), component=True)
     for count_rule in ([alternative["components_at_least"]] if alternative.get("components_at_least") else []) + alternative.get("additional_component_counts", []):
         values = [value for exam, value in components.items()
                   if value is not None and (not count_rule.get("exam_ids") or exam in count_rule["exam_ids"])]
@@ -263,12 +264,51 @@ def _check_evidence(check, profile, submissions):
     raise AdmissionsCatalogError("Unsupported reviewed assessment check")
 
 
+def _missing_inputs(check, profile, submissions):
+    """Name what the applicant can add so a missing check becomes assessable.
+
+    Each entry is one alternative of the published requirement: an alternative that already has a submitted
+    result lists the parts still absent (`taken_on`, `components`); without any submitted alternative every
+    alternative lists `result`. Nothing is inferred; the check status itself is unchanged.
+    """
+    if check["kind"] not in {"academic_requirement", "language_requirement", "exam_alternatives"}:
+        return []
+    started, unstarted = [], []
+    for alternative in check["alternatives"]:
+        if alternative.get("profile_field") == "gpa":
+            if profile.get("gpa") is None:
+                unstarted.append({"field": "gpa", "needs": ["result"]})
+            continue
+        if alternative.get("credential_id"):
+            continue
+        exam_id = exams_service.resolve_exam_key(alternative["exam_id"]) if check["kind"] == "academic_requirement" else alternative["exam_id"]
+        rows = [row for row in submissions if row.get("exam") == exam_id]
+        if not rows:
+            unstarted.append({"exam": exam_id, "needs": ["result"]})
+            continue
+        needs = set()
+        for row in rows:
+            if _dated_status(row.get("taken_on"), alternative.get("windows")) == "missing" or (
+                    alternative.get("date_boundary") and not row.get("taken_on")):
+                needs.add("taken_on")
+            if check["kind"] == "exam_alternatives":
+                submitted = {item.get("exam") for item in (row.get("details") or {}).get("components", [])}
+                if alternative.get("modules") and not set(alternative["modules"]).issubset(submitted):
+                    needs.add("components")
+            elif any(item["status"] == "missing" for item in _exam_minimum(alternative, row)[1]["minimum_checks"]):
+                needs.add("components")
+        if needs:
+            started.append({"exam": exam_id, "needs": sorted(needs)})
+    return started or unstarted
+
+
 def _annotated_checks(record, fact, resolved, profile, submissions):
     base = {"factId": fact["id"], "sourceIds": fact["source_ids"], "sourceRule": _source_rule(fact),
             "evidenceOrigin": "self_reported"}
     if _fact_hash(fact) != record["fact_sha256"]:
         return [{**base, "kind": "stale_annotation", "status": "unassessed", "reason": "source_fact_changed", "blocksNumericScore": True}]
-    if (fact.get("publication_status") != "published" and record.get("source_publication_status") != fact.get("publication_status")) or fact.get("review_status") not in {"verified", "carried_forward_review", "reviewed"}:
+    status = fact["normalized_status"]
+    if (status["publication"] != "published" and record.get("source_publication_status") != fact.get("publication_status")) or status["review"] not in {"verified", "carried_forward"}:
         exam_ids = {alternative.get("exam_id") for check in record["checks"] for alternative in check.get("alternatives", [])}
         credentials = {alternative.get("credential_id") for check in record["checks"] for alternative in check.get("alternatives", [])}
         observed = {"exams": [row for row in submissions if row.get("exam") in exam_ids],
@@ -286,6 +326,8 @@ def _annotated_checks(record, fact, resolved, profile, submissions):
                           ("levels", "study_level"), ("applicant_routes", "applicant_route")):
         if declared.get(key) and context.get(selector) not in declared[key]:
             matches = False
+    # A cycle-scoped minimum can be assessed once the applicant names an entry cycle; it is not a failed check.
+    cycle_required = bool(matches and declared.get("cycles") and not context.get("intended_entry_cycle"))
     if declared.get("cycles") and not any(_cycle_axis(cycle, context.get("intended_entry_cycle")) == "matched" for cycle in declared["cycles"]):
         matches = False
     checks = []
@@ -301,7 +343,10 @@ def _annotated_checks(record, fact, resolved, profile, submissions):
         if check["kind"] in {"scoped_gpa", "enrollment_units"} and not gate_met and status != "missing":
             status = "unassessed"
         numeric = check["kind"] in {"academic_requirement", "manual_minimum", "scoped_gpa", "enrollment_units", "language_requirement"}
+        missing_inputs = _missing_inputs(check, profile, submissions) if matches and status == "missing" else []
         checks.append({**base, "annotationId": record["id"], "checkId": check["id"], "kind": check["kind"],
+                       **({"reason": "entry_cycle_required"} if cycle_required else {}),
+                       **({"missingInputs": missing_inputs} if missing_inputs else {}),
                        "status": status, "provided": provided, "minimum": check.get("minimum"),
                        "measurable": measurable, "numericMinimum": numeric,
                        "blocksNumericScore": covered_missing or (numeric and (not matches or status in {"missing", "unassessed"})), "rule": check})
@@ -331,9 +376,7 @@ def _context_is_applicable(resolved: dict[str, Any]) -> bool:
 
 
 def _fact_is_current(fact: dict[str, Any]) -> bool:
-    if fact.get("review_status") == "superseded":
-        return False
-    return True
+    return fact["normalized_status"]["review"] != "superseded"
 
 
 def _fact_applicability_is_matched(fact: dict[str, Any]) -> bool:
@@ -361,7 +404,7 @@ def _source_rule(fact: dict[str, Any]) -> dict[str, Any]:
         for key in (
             "id", "topic", "topics", "value", "conditions",
             "conditions_and_exceptions", "exceptions", "scope", "period",
-            "publication_status", "review_status", "checked_at", "content_reviewed_at", "source_ids", "provenance",
+            "publication_status", "review_status", "normalized_status", "checked_at", "content_reviewed_at", "source_ids", "provenance",
         )
         if key in fact
     }
@@ -406,7 +449,7 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
         ) or any(isinstance(value.get(key), dict) and value[key].get("minimum") is not None for key in ("technical_gpa", "overall_gpa")))
         alternatives = value.get("alternatives")
         is_required_presence = (
-            fact.get("publication_status") == "published"
+            fact["normalized_status"]["publication"] == "published"
             and value.get("presence") == "required"
             and isinstance(alternatives, list)
             and bool(alternatives)
@@ -422,7 +465,7 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
                 "sourceRule": _source_rule(fact),
             })
             continue
-        if fact.get("publication_status") != "published":
+        if fact["normalized_status"]["publication"] != "published":
             checks.append({
                 "factId": fact_id,
                 "sourceIds": source_ids,
@@ -470,6 +513,8 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
         reason = "applicability_unknown"
     elif missing_evidence:
         reason = "missing_evidence"
+    elif any(check.get("reason") == "entry_cycle_required" for check in checks):
+        reason = "entry_cycle_required"
     elif any(check.get("status") == "unassessed" for check in checks):
         reason = "unassessed_minimums"
     else:

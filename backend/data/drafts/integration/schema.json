@@ -22,6 +22,20 @@
       "items": {"enum": ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]}
     },
     "text": {"type": ["string", "null"]},
+    "entry": {
+      "enum": ["external", "external_restricted", "internal", "no_admission", "closed", "unresolved"],
+      "description": "Closed applicant entry value mapped from the institution's own classification through vocabulary.json."
+    },
+    "normalized_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publication", "review"],
+      "properties": {
+        "publication": {"enum": ["published", "published_with_limits", "partially_published", "not_yet_published", "not_found", "conflicting", "historical", "unknown"]},
+        "review": {"enum": ["verified", "verified_with_limits", "partially_verified", "carried_forward", "conflicting", "needs_resolution", "superseded", "not_recorded"]}
+      },
+      "description": "Closed status mapped from the verbatim research labels through vocabulary.json; consumers read this instead of parsing labels."
+    },
     "attributes": {"type": "object", "description": "Retained source-specific fields; these can contain significant conditions and must not be discarded by later consumers."},
     "input": {
       "type": "object",
@@ -83,7 +97,7 @@
     "option": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids", "evidence_profiles", "attributes"],
+      "required": ["id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids", "evidence_profiles", "attributes", "entry"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "title": {"type": "string", "minLength": 1},
@@ -94,14 +108,15 @@
         "source_ids": {"$ref": "#/$defs/ids"},
         "fact_ids": {"$ref": "#/$defs/ids"},
         "evidence_profiles": {"type": "array", "items": {"$ref": "#/$defs/option_evidence"}},
-        "attributes": {"$ref": "#/$defs/attributes"}
+        "attributes": {"$ref": "#/$defs/attributes"},
+        "entry": {"$ref": "#/$defs/entry"}
       },
       "description": "Award, browsing level and application classification are independent. Native application/classification records, variants and published key facts remain in attributes/evidence_profiles."
     },
     "route": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "classification", "target", "destination", "shared_form_family", "option_ids", "fact_ids", "source_ids", "shared_policy_context_ids", "provenance", "attributes", "index_attributes"],
+      "required": ["id", "title", "classification", "target", "destination", "shared_form_family", "option_ids", "fact_ids", "source_ids", "shared_policy_context_ids", "provenance", "attributes", "index_attributes", "entry"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "title": {"$ref": "#/$defs/text"},
@@ -115,14 +130,15 @@
         "shared_policy_context_ids": {"$ref": "#/$defs/ids"},
         "provenance": {"$ref": "#/$defs/provenance"},
         "attributes": {"$ref": "#/$defs/attributes"},
-        "index_attributes": {"$ref": "#/$defs/attributes"}
+        "index_attributes": {"$ref": "#/$defs/attributes"},
+        "entry": {"$ref": "#/$defs/entry"}
       },
       "description": "One sourced procedure/context view, not necessarily an independent application. Shared form/policy links do not transfer conditions automatically."
     },
     "fact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "topic", "topics", "scope", "value", "conditions", "conditions_and_exceptions", "exceptions", "source_ids", "publication_status", "review_status", "checked_at", "content_reviewed_at", "period", "related_fact_ids", "provenance", "attributes", "index_attributes"],
+      "required": ["id", "topic", "topics", "scope", "value", "conditions", "conditions_and_exceptions", "exceptions", "source_ids", "publication_status", "review_status", "checked_at", "content_reviewed_at", "period", "related_fact_ids", "provenance", "attributes", "index_attributes", "normalized_status"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "topic": {"type": "string"},
@@ -141,14 +157,15 @@
         "related_fact_ids": {"$ref": "#/$defs/ids"},
         "provenance": {"$ref": "#/$defs/provenance"},
         "attributes": {"$ref": "#/$defs/attributes"},
-        "index_attributes": {"$ref": "#/$defs/attributes"}
+        "index_attributes": {"$ref": "#/$defs/attributes"},
+        "normalized_status": {"$ref": "#/$defs/normalized_status"}
       },
       "description": "Original publication and review vocabularies are retained independently. Superseded facts remain history, not current policy."
     },
     "unknown": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "reason", "official_next_step", "scope", "source_ids", "publication_status", "review_status", "checked_at", "content_reviewed_at", "provenance", "attributes", "index_attributes"],
+      "required": ["id", "reason", "official_next_step", "scope", "source_ids", "publication_status", "review_status", "checked_at", "content_reviewed_at", "provenance", "attributes", "index_attributes", "normalized_status"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "reason": {"type": "string", "minLength": 1},
@@ -161,7 +178,8 @@
         "content_reviewed_at": {"$ref": "#/$defs/text"},
         "provenance": {"$ref": "#/$defs/provenance"},
         "attributes": {"$ref": "#/$defs/attributes"},
-        "index_attributes": {"$ref": "#/$defs/attributes"}
+        "index_attributes": {"$ref": "#/$defs/attributes"},
+        "normalized_status": {"$ref": "#/$defs/normalized_status"}
       }
     },
     "institution": {

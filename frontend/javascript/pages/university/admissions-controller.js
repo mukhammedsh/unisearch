@@ -1,10 +1,12 @@
 import { API_BASE, escapeHtml, escapeHtmlAttr, initCustomSelect, loadProfile, loadProfileForApi, saveSelectedAdmissionChoice, stabilizeNumericRanges } from "../../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { translateProgramName } from "../../university-translations.js";
-import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOverviewCoverage, renderAdmissionsAssessment, renderAdmissionsContext, renderStudyOptionOverview, renderStudyOptionSources } from "./admissions-render.js";
+import { ASSESSMENT_RECORD_DOMAINS, admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOverviewCoverage, renderAdmissionsAssessment, renderAdmissionsContext, renderStudyOptionOverview, renderStudyOptionSources } from "./admissions-render.js";
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
+import { renderAdmissionsKeyFacts } from "./admissions-key-facts.js";
+import { renderTermHelp, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 
@@ -41,10 +43,9 @@ export function programProfileSuggestions(profile) {
 }
 
 export function programRestriction(option) {
-  if (["internal", "restricted"].includes(option.applicant_access)) return option.applicant_access;
-  if (option.new_applicant_availability?.startsWith("not_open") || option.inventory_status === "officially_listed_but_recruitment_closed") return "restricted";
-  if (["internal", "internal_by_special_approval", "internal_predoctoral_progression", "intermediate_doctoral_award", "terminal_award_on_doctoral_withdrawal"].includes(option.application?.classification)) return "internal";
-  if (["restricted_joint_program_master", "restricted_special_admission"].includes(option.application?.classification)) return "restricted";
+  // `entry` is the closed value prepared from each institution's own application classification.
+  if (["internal", "no_admission"].includes(option.entry)) return "internal";
+  if (["external_restricted", "closed"].includes(option.entry)) return "restricted";
   return "";
 }
 
@@ -54,7 +55,20 @@ export function normalizeAdmissionCycle(value) {
   if (russian) return `${russian[1].toLowerCase() === "осенний" ? "Fall" : "Spring"} ${russian[2]}`;
   const kazakh = text.match(/^(20\d{2}) жылғы (күзгі|көктемгі) қабылдау$/i);
   if (kazakh) return `${kazakh[2].toLowerCase() === "күзгі" ? "Fall" : "Spring"} ${kazakh[1]}`;
+  // Plain applicant wording such as "осень 2027" or "2027 күз" names the same intake.
+  const season = "(осень|осенью|осенний набор|весна|весной|весенний набор|күз|күзгі|күзі|көктем|көктемгі|көктемі)";
+  const plain = text.match(new RegExp(String.raw`^${season} (20\d{2})(?: года| г\.?| жыл| жылы)?$`, "i"))
+    || text.match(new RegExp(String.raw`^(20\d{2})(?: года| г\.?| жылғы| жыл| жылы)? ${season}(?: қабылдау| набор)?$`, "i"));
+  if (plain) {
+    const [term, year] = /^\d/.test(plain[1]) ? [plain[2], plain[1]] : [plain[1], plain[2]];
+    return `${/^(?:осен|күз)/i.test(term) ? "Fall" : "Spring"} ${year}`;
+  }
   return text;
+}
+
+// The same published cycle forms the context field accepts without a warning.
+export function isRecognizedAdmissionCycle(value) {
+  return /^(?:20\d{2}(?:[/-](?:\d{2}|20\d{2}))?(?: entry)?|(?:Fall|Autumn|Spring) 20\d{2}(?: entry)?|20\d{2} (?:Fall|Autumn|Spring))$/i.test(normalizeAdmissionCycle(value));
 }
 
 export function getApplicationLink(resolved) {
@@ -99,8 +113,8 @@ export function admissionContextUrl(url, context) {
   return next;
 }
 
-function selectHtml(id, caption, values, selected, disabled = false) {
-  return `<label class="admissions-context__field" for="${id}"><span>${escapeHtml(caption)}</span>
+function selectHtml(id, caption, values, selected, disabled = false, help = "") {
+  return `<label class="admissions-context__field" for="${id}"><span>${escapeHtml(caption)}${help}</span>
     <select id="${id}" data-flags="off" aria-label="${escapeHtmlAttr(caption)}" ${disabled ? "disabled" : ""}>
       ${values.map(([value, text]) => `<option value="${escapeHtmlAttr(value)}" ${value === selected ? "selected" : ""}>${escapeHtml(text)}</option>`).join("")}
     </select></label>`;
@@ -157,6 +171,16 @@ export function mountAdmissionsCatalog(institutionId) {
   const assessmentHost = document.createElement("div");
   const requirementsContent = document.createElement("div");
   requirements.replaceChildren(assessmentHost, root, requirementsContent);
+  // Assessment checks point at their full source record instead of repeating it; open the record's disclosures and show it.
+  requirements.onclick = event => {
+    const link = event.target.closest("[data-admissions-record-link]");
+    if (!link) return;
+    const record = [...requirementsContent.querySelectorAll("[data-admissions-fact]")].find(node => node.dataset.admissionsFact === link.dataset.admissionsRecordLink);
+    if (!record) return;
+    for (let node = record; node && node !== requirementsContent; node = node.parentElement) if (node.tagName === "DETAILS") node.open = true;
+    record.scrollIntoView({ block: "center" });
+    (record.querySelector(":scope > summary") || record).focus?.({ preventScroll: true });
+  };
   const universityInfo = document.createElement("div");
   universityInfo.id = "admissionsUniversityInfo";
   document.getElementById("detailExtra").append(universityInfo);
@@ -281,19 +305,20 @@ export function mountAdmissionsCatalog(institutionId) {
     const profileHints = [profile.applicant_route ? label(`applicant.${profile.applicant_route}`) : "", admissionsCycleLabel(profile.intended_entry_cycle), profile.fee_status_context && profile.fee_status_context !== "unknown" ? label(`fee.${profile.fee_status_context}`) : ""].filter(Boolean);
     const routeHelp = (item, selected = false) => t(`university.admissions.entry.route_help.${item.id.replaceAll(":", ".")}`)
       || t(`university.admissions.entry.route_class_help.${item.classification}`)
+      || (item.entry && item.entry !== "external" ? t(`university.admissions.catalog.route_entry.${item.entry}`) : "")
       || (selected ? "" : t("university.admissions.entry.route_help_generic"));
     const specialRoutes = option?.id === "stanford-option-cs-ms" || option?.id === "stanford-option-cs-phd"
       ? routes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
-    const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`;
+    const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`;
     root.dataset.state = status;
     const destination = status === "ready" && !contextDirty ? getApplicationLink(resolved) : "";
     root.innerHTML = `<div class="admissions-context__heading"><div><h2>${escapeHtml(label("simple_title"))}</h2>${route || noRoute ? "" : `<p>${escapeHtml(label("route_intro"))}</p>`}</div></div>
       ${legacyPending ? `<p class="admissions-context__note">${escapeHtml(label("legacy_pending"))}</p>` : ""}
       ${resetPending ? `<p class="admissions-context__note" data-admission-reset-notice>${escapeHtml(label("reset_notice"))}</p>` : ""}
-      ${route && routeHelp(route, true) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route, true))}</p>` : ""}
+      ${route && routeHelp(route, true) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route, true))}</p>` : ""}${route ? renderTermsFor(routeWording(route)) : ""}
       <div id="admissionsSelectionEditor" class="admissions-selection-editor" ${route ? "hidden" : ""}><div class="admissions-selection-editor__body">
       <div class="admissions-context__actions"><button type="button" id="admissionsChooseProgram">${escapeHtml(label(option ? "change_program" : "browse_programs"))}</button></div>
-      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${!option && profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p></div>`).join("")}</div>` : ""}
+      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${!option && profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`).join("")}</div>` : ""}
       ${option && !route && routes.length > 1 ? `<div class="admissions-entry" data-route-options><p>${escapeHtml(t("university.admissions.entry.route_situations"))}</p>${profile.applicant_route ? `<p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.route_profile_hint", { applicant: label(`applicant.${profile.applicant_route}`) }))}</p>` : ""}${routes.filter(item => !specialRoutes.includes(item)).map(routeOption).join("")}${specialRoutes.length ? `<details class="admissions-special-routes"><summary>${escapeHtml(tFormat("university.admissions.reading.special_routes", { count: specialRoutes.length }))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-entry">${specialRoutes.map(routeOption).join("")}</div></details>` : ""}</div>` : ""}
       ${option && !route && routes.length === 1 ? `<p class="admissions-context__note">${escapeHtml(routeHelp(routes[0]))}</p>` : ""}
       <form id="admissionsContextForm" class="admissions-context__form" ${((option && !noRoute) || readable) && (route || routes.length <= 1) ? "" : "hidden"}>
@@ -306,7 +331,7 @@ export function mountAdmissionsCatalog(institutionId) {
         ${selectHtml("admissionsApplicant", label("applicant_label"), [["", label("unspecified")], ...["first_year", "transfer", "graduate"].map((value) => [value, label(`applicant.${value}`)])], context.applicant_route)}
         <label class="admissions-context__field" for="admissionsCycle"><span>${escapeHtml(label("cycle_label"))}</span><input id="admissionsCycle" type="text" maxlength="40" list="admissionsCycleOptions" aria-describedby="admissionsCycleHelp admissionsCycleNotice" value="${escapeHtmlAttr(context.intended_entry_cycle)}" placeholder="${escapeHtmlAttr(label("cycle_example"))}"></label>
         <datalist id="admissionsCycleOptions">${cycles.map(value => `<option value="${escapeHtmlAttr(value)}"></option>`).join("")}</datalist>
-        ${selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context)}
+        ${selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context, false, renderTermHelp("fee_status"))}
         </div><p class="admissions-context__note">${escapeHtml(label("advanced_note"))}</p><p class="admissions-context__note" id="admissionsCycleHelp">${escapeHtml(t("university.admissions.reading.cycle_help"))}</p><p class="admissions-context__note" id="admissionsCycleNotice" role="status" hidden>${escapeHtml(t("university.admissions.reading.cycle_invalid"))}</p></details>
         <div class="admissions-context__actions"><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" ${status === "loading" || (!option && !readable) ? "disabled" : ""}>${escapeHtml(label("apply_context"))}</button></div>
       </form></div></div>
@@ -389,7 +414,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const cycleInput = root.querySelector("#admissionsCycle");
     const updateCycleNotice = () => {
       const value = normalizeAdmissionCycle(cycleInput.value);
-      root.querySelector("#admissionsCycleNotice").hidden = !value || /^(?:20\d{2}(?:[/-](?:\d{2}|20\d{2}))?(?: entry)?|(?:Fall|Autumn|Spring) 20\d{2}(?: entry)?|20\d{2} (?:Fall|Autumn|Spring))$/i.test(value);
+      root.querySelector("#admissionsCycleNotice").hidden = !value || isRecognizedAdmissionCycle(value);
     };
     cycleInput.addEventListener("input", updateCycleNotice);
     updateCycleNotice();
@@ -417,7 +442,7 @@ export function mountAdmissionsCatalog(institutionId) {
     if (status === "loading") assessmentHost.innerHTML = loading();
     else if (status === "error") {
       assessmentHost.innerHTML = "";
-    } else if (readable) assessmentHost.innerHTML = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+    } else if (readable) assessmentHost.innerHTML = renderAdmissionsAssessment(resolved, { presentation: "simple", recordDomains: ASSESSMENT_RECORD_DOMAINS });
     else {
       const canChooseRoute = option ? Boolean(resolved?.available_routes?.length) : Boolean(sharedRoutes.length);
       const message = option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(canChooseRoute ? "assessment_no_route" : "choose_program_hint");
@@ -458,7 +483,26 @@ export function mountAdmissionsCatalog(institutionId) {
         };
       }
       else if (["detailRequirements", "detailDeadlines", "detailFinance"].includes(id)) {
-        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains, { includeAssessment: false })}`;
+        const apiProfile = loadProfileForApi();
+        const profileCycle = isRecognizedAdmissionCycle(apiProfile.intended_entry_cycle) ? normalizeAdmissionCycle(apiProfile.intended_entry_cycle) : "";
+        const keyFacts = id === "detailRequirements" ? renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileCycle, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) }) : "";
+        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${keyFacts}${renderApplicantSection(resolved, domains, { includeAssessment: false })}`;
+        target.querySelectorAll("[data-open-tab]").forEach(button => { button.onclick = () => openTab(button.dataset.openTab); });
+        target.querySelector("[data-key-facts-cycle]")?.addEventListener("click", event => {
+          if (profileCycle && event.currentTarget.dataset.keyFactsCycle === "apply") {
+            context.intended_entry_cycle = profileCycle;
+            contextDirty = false;
+            saveStatus = "";
+            setUrl();
+            void refreshContext();
+            return;
+          }
+          // Without a usable profile cycle, open the selection editor at the entry-cycle field.
+          root.querySelector("#admissionsSelectionEditor").hidden = false;
+          root.querySelector("#admissionsAdvanced").open = true;
+          root.scrollIntoView({ block: "start" });
+          root.querySelector("#admissionsCycle").focus();
+        });
         if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState);
       }
       else target.innerHTML = renderAdmissionsContext(resolved, {

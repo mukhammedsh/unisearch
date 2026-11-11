@@ -50,6 +50,7 @@ import {
   hasReviewedAdmissions,
   fetchCompareStudyOptions,
   fetchCompareAdmissionContext,
+  soleCompatibleRoute,
 } from "./universities/compare-helpers.js";
 import {
   buildCompareDecisionSupportHtml,
@@ -63,8 +64,15 @@ import {
   renderUniChanceSummary,
 } from "../university-detail-helpers.js";
 import { getFinanceForChoice, renderAdmissionSection } from "./university/render-sections.js";
-import { ADMISSION_LEVELS, admissionContextUrl, readAdmissionContext } from "./university/admissions-controller.js";
-import { admissionsProgramLabel, admissionsRouteName, renderAdmissionsContext } from "./university/admissions-render.js";
+import {
+  ADMISSION_LEVELS,
+  admissionContextUrl,
+  isRecognizedAdmissionCycle,
+  normalizeAdmissionCycle,
+  programProfileSuggestions,
+  readAdmissionContext,
+} from "./university/admissions-controller.js";
+import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, renderAdmissionsContext } from "./university/admissions-render.js";
 import { renderReviewedComparison } from "./universities/compare-summary.js";
 import { initUniversityTranslations } from "../university-translations.js";
 
@@ -97,6 +105,21 @@ function comparisonContextText(state) {
     context.study_level ? admissionsLabel(`level.${context.study_level}`) : "",
     context.intended_entry_cycle || "",
   ].filter(Boolean))].join(" · ");
+}
+
+// The profile entry cycle in the canonical form the context accepts, or "" when it is not recognized.
+function profileEntryCycle() {
+  const cycle = loadProfileForApi()?.intended_entry_cycle;
+  return isRecognizedAdmissionCycle(cycle) ? normalizeAdmissionCycle(cycle) : "";
+}
+
+// Applicant category, entry cycle and self-reported fee status the profile can offer; they are applied only on request.
+function profileContextHints(profile) {
+  return {
+    applicant_route: profile?.applicant_route || "",
+    intended_entry_cycle: profileEntryCycle() || profile?.intended_entry_cycle || "",
+    fee_status_context: profile?.fee_status_context || "unknown",
+  };
 }
 
 function compareRouteLabel(route) {
@@ -135,11 +158,20 @@ function renderReviewedChooser(target, university) {
   const availableRoutes = context.study_option_id ? state.resolved?.available_routes || [] : state.sharedRoutes || [];
   const routeCaption = context.study_option_id ? admissionsLabel("route_label") : t("universities.compare.institution_route");
   const hasSelection = Boolean(context.study_option_id || context.application_route_id);
+  const profileHints = profileContextHints(loadProfileForApi());
+  const profileHintLabels = [
+    profileHints.applicant_route ? admissionsLabel(`applicant.${profileHints.applicant_route}`) : "",
+    admissionsCycleLabel(profileHints.intended_entry_cycle),
+    profileHints.fee_status_context !== "unknown" ? admissionsLabel(`fee.${profileHints.fee_status_context}`) : "",
+  ].filter(Boolean);
+  const offerProfileHints = profileHintLabels.length > 0 && Object.entries(profileHints).some(([key, value]) => (context[key] || "") !== value);
   target.innerHTML = `<div class="admissions-context">
     <div class="compare-context-selection">
       <div class="compare-context-current">
         <span class="compare-context-current__label">${escapeHtml(t("universities.compare.context_summary_label"))}</span>
         <p class="compare-context-current__value">${escapeHtml(comparisonContextText(state) || t("universities.compare.selection_empty"))}</p>
+        ${offerProfileHints ? `<p class="admissions-context__note" data-compare-profile-hints>${escapeHtml(tFormat("university.admissions.entry.profile_hints", { details: profileHintLabels.join(" · ") }))}</p>
+        <div class="admissions-context__actions"><button type="button" data-compare-use-profile ${pending ? "disabled" : ""}>${escapeHtml(t("university.admissions.entry.use_profile"))}</button></div>` : ""}
       </div>
       <details class="compare-context-settings" data-compare-context-details${context.study_option_id && !context.application_route_id ? " open" : ""}>
         <summary>${escapeHtml(t(hasSelection ? "universities.compare.change_context" : "universities.compare.choose_context"))}</summary>
@@ -160,7 +192,8 @@ function renderReviewedChooser(target, university) {
               ${select("filter_level", admissionsLabel("level_label"), [["", admissionsLabel("all_levels")], ...ADMISSION_LEVELS.map(level => [level, admissionsLabel(`level.${level}`)])], state.filterLevel)}
               <button type="submit">${escapeHtml(admissionsLabel("search"))}</button>
               ${context.study_option_id ? `<button type="button" data-compare-clear-option>${escapeHtml(t("universities.compare.clear_program"))}</button>` : ""}
-            </form><div class="admissions-programs__list" data-compare-programs></div>
+            </form>
+            ${state.searchSuggested ? `<p class="admissions-context__note" data-compare-search-suggestion>${escapeHtml(t("university.programs.entry.profile_suggestions"))}</p>` : ""}<div class="admissions-programs__list" data-compare-programs></div>
             <div class="admissions-programs__pagination"><button type="button" data-compare-previous>${escapeHtml(admissionsLabel("previous"))}</button><span data-compare-count aria-live="polite"></span><button type="button" data-compare-next>${escapeHtml(admissionsLabel("next"))}</button></div>
           </div>
         </div>
@@ -170,19 +203,26 @@ function renderReviewedChooser(target, university) {
     ${loadProfile()?.admissionChoiceResetNotices?.includes(id) ? `<p class="admissions-context__note compare-context-reset" role="status" data-admission-reset-notice="${escapeHtmlAttr(id)}">${escapeHtml(admissionsLabel("reset_notice"))}</p>` : ""}
   </div>`;
   state.selectDisposers = Array.from(target.querySelectorAll("select")).map(element => initCustomSelect(element.id));
-  const applyContext = async () => {
-    const refresh = refreshReviewedContext(id, state);
+  const stale = () => reviewedContexts.get(id) !== state || document.body.dataset.page !== "compare";
+  const applyContext = async ({ applySoleRoute = false } = {}) => {
+    let refresh = refreshReviewedContext(id, state);
     renderReviewedChooser(target, university);
     await refresh;
-    if (reviewedContexts.get(id) !== state || document.body.dataset.page !== "compare") return;
+    if (stale()) return false;
+    const soleRoute = applySoleRoute ? soleCompatibleRoute(state.resolved, context) : null;
+    if (soleRoute) {
+      context.application_route_id = soleRoute.id;
+      refresh = refreshReviewedContext(id, state);
+      renderReviewedChooser(target, university);
+      await refresh;
+      if (stale()) return false;
+    }
     const pane = document.getElementById("compareResultsPane");
     if (currentStage === "results") await renderCompareResults(pane);
     else renderReviewedChooser(pane?.querySelector(`#compare-options-${id}`), university);
+    return Boolean(soleRoute);
   };
-  target.querySelector("[data-compare-context-form]").onsubmit = async event => {
-    event.preventDefault();
-    event.target.querySelectorAll("[data-context-field]").forEach(element => { context[element.dataset.contextField] = element.value.trim(); });
-    await applyContext();
+  const saveReviewedChoice = () => {
     if (state.status !== "ready" || reviewedContexts.get(id) !== state) return;
     const option = state.resolved?.selected_option;
     const route = state.resolved?.selected_route;
@@ -200,7 +240,38 @@ function renderReviewedChooser(target, university) {
     const status = target.querySelector("[data-compare-context-save-status]");
     if (status) status.textContent = t(saved ? "profile.state.saved_local" : "profile.state.unsaved");
   };
-  target.querySelector("[data-compare-context-retry]")?.addEventListener("click", applyContext);
+  const contextForm = target.querySelector("[data-compare-context-form]");
+  // Values typed or picked in the form that are not in the context yet. A disabled field is not an edit.
+  const pendingFields = () => Array.from(contextForm.querySelectorAll("[data-context-field]"))
+    .filter(element => !element.disabled && (context[element.dataset.contextField] || "") !== element.value.trim());
+  const commitPending = async () => {
+    const edits = pendingFields();
+    if (!edits.length) return;
+    edits.forEach(element => { context[element.dataset.contextField] = element.value.trim(); });
+    await applyContext();
+    saveReviewedChoice();
+  };
+  // "Continue" applies edits the applicant did not submit, so a chosen route or cycle is never lost.
+  state.commitPending = commitPending;
+  const markPending = () => {
+    const status = target.querySelector("[data-compare-context-save-status]");
+    if (status && pendingFields().length) status.textContent = t("universities.compare.pending_changes");
+  };
+  // Custom selects dispatch a non-bubbling change event, so listen during capture.
+  contextForm.addEventListener("change", markPending, true);
+  contextForm.addEventListener("input", markPending, true);
+  contextForm.onsubmit = async event => {
+    event.preventDefault();
+    event.target.querySelectorAll("[data-context-field]").forEach(element => { context[element.dataset.contextField] = element.value.trim(); });
+    await applyContext();
+    saveReviewedChoice();
+  };
+  target.querySelector("[data-compare-use-profile]")?.addEventListener("click", async () => {
+    Object.assign(context, profileContextHints(loadProfileForApi()));
+    await applyContext();
+    saveReviewedChoice();
+  });
+  target.querySelector("[data-compare-context-retry]")?.addEventListener("click", () => void applyContext());
   target.querySelector("[data-compare-clear-option]")?.addEventListener("click", () => {
     context.study_option_id = "";
     context.application_route_id = "";
@@ -211,6 +282,8 @@ function renderReviewedChooser(target, university) {
     state.search = event.target.querySelector("input").value.trim();
     state.filterLevel = event.target.querySelector("select").value;
     state.page = 1;
+    state.searchSuggested = false;
+    target.querySelector("[data-compare-search-suggestion]")?.remove();
     void refreshPrograms();
   };
   target.querySelector("[data-compare-previous]").onclick = () => { state.page--; void refreshPrograms(); };
@@ -253,7 +326,7 @@ function renderReviewedChooser(target, university) {
         savingReviewedSelection = true;
         saveSelectedAdmissionChoice(id, null);
         savingReviewedSelection = false;
-        void applyContext();
+        void applyContext({ applySoleRoute: true }).then(applied => { if (applied) saveReviewedChoice(); });
       }; });
       target.querySelector("[data-compare-count]").textContent = tFormat("university.admissions.catalog.results", { from: data.total ? (state.page - 1) * 24 + 1 : 0, to: Math.min(state.page * 24, data.total), total: data.total });
       previous.disabled = state.page === 1;
@@ -287,6 +360,7 @@ function disposeReviewedControls() {
     state.catalogRequest?.abort();
     state.selectDisposers?.forEach(dispose => dispose());
     state.selectDisposers = [];
+    state.commitPending = null;
   });
 }
 
@@ -542,6 +616,8 @@ async function renderCompareResults(container, { pushState = false } = {}) {
   const decisionSupportHtml = buildCompareDecisionSupportHtml(activeUniversities, {
     choices: compareAdmissionChoices,
     chances: compareChancesByUniId,
+    reviewed: reviewedContexts,
+    budgetUsd: loadProfileForApi()?.budget,
   });
   const compact = activeUniversities.every(hasReviewedAdmissions);
 
@@ -559,7 +635,7 @@ async function renderCompareResults(container, { pushState = false } = {}) {
       </div>
     </div>
     <div class="compare-uni-grid compare-uni-grid--pair">${compareCardsHtml(activeUniversities)}</div>
-    ${compact ? renderReviewedComparison(activeUniversities, reviewedContexts) : ""}
+    ${compact ? renderReviewedComparison(activeUniversities, reviewedContexts, { profileCycle: profileEntryCycle() }) : ""}
     ${activeUniversities.filter(hasReviewedAdmissions).map(reviewedResultsHtml).join("")}
     ${decisionSupportHtml}
     ${compact ? `<details class="admissions-reading__references compare-additional-facts"><summary>${escapeHtml(t("universities.compare.summary.additional_facts"))}</summary>` : ""}
@@ -628,7 +704,8 @@ function bindCompareEvents(container) {
       return;
     }
 
-    if (action === "back-to-tracks") {
+    // A column prompt opens the same configuration step as the toolbar button.
+    if (action === "back-to-tracks" || action === "choose-context") {
       event.preventDefault();
       await renderCompareConfigure(container, { pushState: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -637,6 +714,13 @@ function bindCompareEvents(container) {
 
     if (action === "build-compare-results") {
       event.preventDefault();
+      actionBtn.disabled = true;
+      try {
+        // Apply program, route and context edits that were picked but not submitted before leaving the chooser.
+        await Promise.all(Array.from(reviewedContexts.values(), state => state.commitPending?.()));
+      } finally {
+        actionBtn.disabled = false;
+      }
       await renderCompareResults(container, { pushState: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -757,7 +841,9 @@ export async function initComparePage() {
       if (hasReviewedAdmissions(u)) {
         compareAdmissionChoices.delete(id);
         compareChancesByUniId.delete(id);
-        reviewedContexts.set(id, { context: readAdmissionContext(new URL(window.location.pathname, window.location.origin), loadProfileForApi(), id), search: "", filterLevel: "", page: 1, status: "loading", resolved: null, sharedRoutes: [] });
+        // The profile subject and level only start the program search; they are not applied to the selection.
+        const suggestions = programProfileSuggestions(loadProfileForApi());
+        reviewedContexts.set(id, { context: readAdmissionContext(new URL(window.location.pathname, window.location.origin), loadProfileForApi(), id), search: suggestions.major, filterLevel: suggestions.level, searchSuggested: Boolean(suggestions.major || suggestions.level), page: 1, status: "loading", resolved: null, sharedRoutes: [] });
         return;
       }
       const entries = compareAdmissionOptionEntries(u);

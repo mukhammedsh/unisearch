@@ -14,6 +14,8 @@ DRAFTS = REPO / "backend/data/drafts"
 DOSSIER_BATCH = ("mit", "imperial-college-london-uk", "stanford-university-usa-ca")
 BATCH = (*DOSSIER_BATCH, "nazarbayev-university-kaz-astana")
 VERSION = "admissions-storage-1.0"
+VOCABULARY_PATH = DRAFTS / "integration/vocabulary.json"
+ENTRY_VALUES = ("external", "external_restricted", "internal", "no_admission", "closed", "unresolved")
 LEVELS = {
     "Bachelor": "undergraduate", "Master": "masters", "Doctorate": "doctoral",
     "Professional": "professional", "bachelor": "undergraduate", "master": "masters",
@@ -109,14 +111,88 @@ def _nu_adapter():
     return module
 
 
-def prepare_institution(folder):
+def load_vocabulary(path=VOCABULARY_PATH):
+    """Index the closed vocabulary; every research label maps to exactly one canonical value."""
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise PreparationError(f"Invalid admissions vocabulary: {path}") from error
+    tables = {}
+    for section in ("publication", "review", "entry"):
+        table = {}
+        for canonical, labels in data.get(section, {}).items():
+            for label in labels:
+                require(label not in table, f"Vocabulary label appears twice in {section}: {label}")
+                table[label] = canonical
+        tables[section] = table
+    require(tuple(data.get("entry_precedence", ())) == ENTRY_VALUES and set(data["entry"]) == set(ENTRY_VALUES),
+            "Vocabulary entry values must match the closed entry set")
+    require(set(data.get("route_entry_by_id", {}).values()) <= set(ENTRY_VALUES), "Unknown route entry override")
+    return {**tables, "route_entry_by_id": data.get("route_entry_by_id", {}),
+            "option_closed_availability": data.get("option_closed_availability", {})}
+
+
+def _canonical(vocabulary, section, label, context):
+    require(label in vocabulary[section], f"Unmapped {section} label in {context}: {label!r}")
+    return vocabulary[section][label]
+
+
+def _first_entry(values):
+    return next((value for value in ENTRY_VALUES if value in values), None)
+
+
+def _option_classifications(option):
+    metadata = option["attributes"]
+    application = metadata.get("application")
+    labels = [application.get("classification")] if isinstance(application, dict) else []
+    labels += [metadata.get("catalog_classification"), metadata.get("application_classification")]
+    labels += [row.get("classification") for row in metadata.get("application_classifications") or [] if isinstance(row, dict)]
+    return [label for label in labels if label is not None]
+
+
+def normalize_institution(institution, vocabulary):
+    """Attach closed status and entry values while keeping every research label verbatim."""
+    for key in ("facts", "unknowns"):
+        for row in institution[key]:
+            publication, review = row["publication_status"], row["review_status"]
+            row["normalized_status"] = {
+                # A researched unknown without a recorded publication state is still an unknown value.
+                "publication": "unknown" if publication is None and key == "unknowns"
+                else _canonical(vocabulary, "publication", publication, row["id"]),
+                "review": "not_recorded" if review is None and key == "unknowns"
+                else _canonical(vocabulary, "review", review, row["id"]),
+            }
+    overrides = vocabulary["route_entry_by_id"]
+    for route in institution["application_routes"]:
+        if route["classification"] is None:
+            require(route["id"] in overrides, f"Route without classification needs an entry override: {route['id']}")
+            route["entry"] = overrides[route["id"]]
+        else:
+            require(route["id"] not in overrides, f"Entry override for a classified route: {route['id']}")
+            route["entry"] = _canonical(vocabulary, "entry", route["classification"], route["id"])
+    entries = {route["id"]: route["entry"] for route in institution["application_routes"]}
+    closed = vocabulary["option_closed_availability"]
+    for option in institution["study_options"]:
+        metadata = option["attributes"]
+        labels = _option_classifications(option)
+        if any(metadata.get(field) in values for field, values in closed.items()):
+            option["entry"] = "closed"
+        elif labels:
+            option["entry"] = _first_entry({_canonical(vocabulary, "entry", label, option["id"]) for label in labels})
+        else:
+            option["entry"] = _first_entry({entries[route_id] for route_id in option["route_ids"]}) or "unresolved"
+
+
+def prepare_institution(folder, vocabulary=None):
     folder = Path(folder).resolve()
+    vocabulary = vocabulary or load_vocabulary()
     if folder.name == "nazarbayev-university-kaz-astana":
         try:
             result = _nu_adapter().prepare_nu_institution(folder)
         except ValueError as error:
             raise PreparationError(str(error)) from error
         validate_institution(result)
+        normalize_institution(result, vocabulary)
         return result
     manifest = {}
 
@@ -351,6 +427,7 @@ def prepare_institution(folder):
             "exclusions": ["insurance", "travel", "one_time_fees"],
         }
     validate_institution(result)
+    normalize_institution(result, vocabulary)
     return result
 
 
@@ -389,8 +466,16 @@ def validate_institution(institution):
 
 
 def prepare_batch(drafts=DRAFTS):
-    return {"schema_version": VERSION, "runtime_active": False,
-            "institutions": [prepare_institution(Path(drafts) / name) for name in BATCH]}
+    vocabulary = load_vocabulary()
+    institutions = []
+    used_overrides = set()
+    for name in BATCH:
+        institutions.append(prepare_institution(Path(drafts) / name, vocabulary))
+        used_overrides |= {route["id"] for route in institutions[-1]["application_routes"]
+                           if route["id"] in vocabulary["route_entry_by_id"]}
+    stale = set(vocabulary["route_entry_by_id"]) - used_overrides
+    require(not stale, f"Entry overrides name unknown routes: {sorted(stale)}")
+    return {"schema_version": VERSION, "runtime_active": False, "institutions": institutions}
 
 
 def write_output(prepared, directory, repo=REPO):

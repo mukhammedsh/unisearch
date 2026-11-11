@@ -76,25 +76,25 @@ class AdmissionsFinalContractTests(unittest.TestCase):
         self.assertNotIn("details", check["provided"])
         self.assertEqual(check["evidenceOrigin"], "self_reported")
         self.assertIsNone(result["chancePercent"])
-        with self.assertRaises(ValueError):
-            coerce_exam_submission("SAT", score_raw=1500)
+        self.assertEqual(coerce_exam_submission("SAT", score_raw=1500)["score"], 1500)
 
-    def test_total_only_sat_validates_scale_date_and_keeps_other_breakdowns_required(self):
+    def test_total_only_sat_validates_scale_date_and_keeps_partial_breakdowns_invalid(self):
         for score in (400, 1500, 1600):
             with self.subTest(score=score):
-                self.assertEqual(coerce_exam_submission("SAT", score_raw=score, allow_total_only_sat=True)["score"], score)
+                self.assertEqual(coerce_exam_submission("SAT", score_raw=score)["score"], score)
         for score in (399, 1601, 1505, 1500.5, float("nan"), float("inf")):
             with self.subTest(score=score), self.assertRaises(ValueError):
-                coerce_exam_submission("SAT", score_raw=score, allow_total_only_sat=True)
-        for details in ({"components": []}, {"components": [{"exam": "SAT_MATH", "score": 750}]},
+                coerce_exam_submission("SAT", score_raw=score)
+        self.assertEqual(coerce_exam_submission("SAT", score_raw=1500, details={"components": []})["score"], 1500)
+        for details in ({"components": [{"exam": "SAT_MATH", "score": 750}]},
                         {"components": [{"exam": "SAT_MATH", "score": 199}, {"exam": "SAT_EBRW", "score": 750}]}):
             with self.subTest(details=details), self.assertRaises(ValueError):
-                coerce_exam_submission("SAT", score_raw=1500, details=details, allow_total_only_sat=True)
+                coerce_exam_submission("SAT", score_raw=1500, details=details)
         with self.assertRaises(ValueError):
-            coerce_exam_submission("SAT", score_raw=1500, taken_on="2026-2-01", allow_total_only_sat=True)
+            coerce_exam_submission("SAT", score_raw=1500, taken_on="2026-2-01")
         for exam, score in (("GRE", 320), ("UCAT", 2500), ("ESAT", 6), ("MCAT", 500)):
             with self.subTest(exam=exam), self.assertRaises(ValueError):
-                coerce_exam_submission(exam, score_raw=score, allow_total_only_sat=True)
+                coerce_exam_submission(exam, score_raw=score)
         submissions = [{"exam": "SAT", "score": 1500}]
         rule = {"kind": "exam_alternatives", "alternatives": [{"exam_id": "SAT", "modules": ["SAT_MATH"]}]}
         self.assertEqual(_check_evidence(rule, {}, submissions)[0], "missing")

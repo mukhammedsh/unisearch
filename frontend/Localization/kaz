@@ -1167,7 +1167,7 @@ profile.exam_updated_value: {exam} жаңартылды: {value}
 languages.exam_total_overall: Жалпы балл
 languages.exam_total_total: Жалпы балл
 languages.exam_total_placeholder: {label} үшін балл
-languages.exam_breakdown_hint: Әр секция бойынша балл енгізіңіз. Жалпы балл автоматты түрде есептеледі.
+languages.exam_breakdown_optional_hint: Секциялар бойынша балл міндетті емес: жалпы балл енгізіңіз немесе барлық секцияны толтырыңыз, ол автоматты түрде есептеледі. Секциялар талаптарды нақтырақ тексеруге мүмкіндік береді.
 languages.exam_breakdown_required: Әр секция бойынша балл өлшеңіз.
 languages.error.range: {exam} {min} -ден {max} -ге дейінгі диапазонда болуы тиіс
 languages.error.step: {exam} үшін {step} қадамын пайдалану керек
@@ -1634,8 +1634,8 @@ profile.applicant_context.country_other_placeholder: Елді көрсетіңі
 profile.applicant_context.credential: Біліктілік немесе оқу бағдарламасы
 profile.applicant_context.credential_ib: Халықаралық бакалавриат (IB)
 profile.applicant_context.credential_a_level: A-levels
-profile.applicant_context.credential_us_diploma: АҚШ-тағы орта білім туралы аттестат
-profile.applicant_context.credential_national: Орта білім туралы ұлттық біліктілік
+profile.applicant_context.credential_us_diploma: АҚШ мектебінің орта білім туралы дипломы (қазақстандық аттестат емес)
+profile.applicant_context.credential_national: Орта білім туралы ұлттық біліктілік (мысалы, ҚР аттестаты)
 profile.applicant_context.credential_vocational: Кәсіби біліктілік
 profile.applicant_context.credential_other_placeholder: Біліктіліктің немесе оқу бағдарламасының атауын нақтылаңыз
 profile.applicant_context.current_residence: Тұратын елі
@@ -2577,6 +2577,13 @@ university.admissions.catalog.review.carried_forward_review: Алдыңғы де
 university.admissions.catalog.review.conflicting: Ресми дереккөздерде қайшылық бар
 university.admissions.catalog.review.superseded: Кейінгі дереккөзбен алмастырылған
 university.admissions.catalog.review.limited: Дереккөз қаралды; кейбір аясы не шарттары әлі тексерілуі керек
+university.admissions.catalog.review.needs_resolution: Дереккөзді тексеру нақтылауды қажет етеді
+university.admissions.catalog.route_entry.external: Өтінім жаңа үміткерлер үшін ашық
+university.admissions.catalog.route_entry.external_restricted: Өтінім тек шектеулі үміткерлер тобына арналған
+university.admissions.catalog.route_entry.internal: Тек қазіргі студенттерге арналған
+university.admissions.catalog.route_entry.no_admission: Басқа бағдарлама барысында беріледі; бөлек өтінім жоқ
+university.admissions.catalog.route_entry.closed: Жаңа үміткерлерді қабылдау жабық
+university.admissions.catalog.route_entry.unresolved: Өтінім беру жолы нақтылауды қажет етеді
 university.admissions.catalog.not_published: Жарияланбаған
 university.admissions.catalog.needs_review: Қарау қажет
 university.admissions.catalog.historical: Тарихи дереккөз жазбасы
@@ -2622,6 +2629,7 @@ university.admissions.catalog.domain.other: Дереккөздегі өзге а
 university.admissions.catalog.reason.applicability_unknown: Таңдалған контекст немесе талаптардың өтініш берушіге қолданылуы анықталмаған.
 university.admissions.catalog.reason.missing_evidence: Қажетті растау енгізілмеген.
 university.admissions.catalog.reason.unassessed_minimums: Кейбір жарияланған минимумдар немесе олардың шарттары әзірге бағаланбайды.
+university.admissions.catalog.reason.entry_cycle_required: Баллдарыңызды осы минимумдармен салыстыру үшін түсу жылын көрсетіңіз, мысалы «2027 жылғы күз».
 university.admissions.catalog.reason.no_published_requirements: Бұл контекст үшін бағалауға болатын сандық минимум каталогқа енгізілмеген.
 university.admissions.catalog.reason.requirements_not_met: Бағаланған жарияланған минимумдардың кемінде бірі орындалмаған.
 university.admissions.catalog.reason.source_fact_changed: Дереккөз жазбасы өзгерген; бағалауды қайта қарау қажет.
@@ -2667,6 +2675,11 @@ university.admissions.catalog.field.language: Оқыту тілі
 university.admissions.catalog.field.location: Оқу орны
 university.admissions.catalog.field.department: Факультет немесе кафедра
 university.admissions.catalog.field.start_date: Оқудың басталуы
+university.admissions.catalog.field.externalAdmissions: Сырттан қабылдау
+university.admissions.catalog.field.internalAdmissions: Ішкі қабылдау
+university.admissions.catalog.field.programCurrentPhdOnly: Тек ағымдағы PhD студенттеріне
+university.admissions.catalog.field.coterm: Біріктірілген дәреже
+university.admissions.catalog.field.unitsProgramMin: Бағдарламаның минималды бірліктері
 university.admissions.catalog.field.presence: Емтихан талабы
 university.admissions.catalog.field.cutoff: Сандық шек
 university.admissions.catalog.field.recommended: Ұсынылатын балл
@@ -2774,6 +2787,11 @@ university.admissions.reading.month.11: қараша
 university.admissions.reading.month.12: желтоқсан
 university.admissions.reading.early_action: Early Action · ерте өтініш
 university.admissions.reading.regular_action: Regular Action · негізгі өтініш
+university.admissions.reading.restrictive_early_action: Restrictive Early Action · ерте міндеттемесіз өтініш
+university.admissions.reading.regular_decision: Regular Decision · негізгі өтініш
+university.admissions.reading.transfer_application: Ауысуға өтініш
+university.admissions.reading.priority_deadline: Басым мерзім
+university.admissions.reading.application_deadline: Өтініш беру мерзімі
 university.admissions.reading.official_application: Ресми өтініш беру және нұсқаулық
 university.admissions.reading.official_source: Ресми дереккөз
 university.admissions.reading.unknown: Мұнда көрсетілмеген
@@ -2837,6 +2855,100 @@ university.admissions.catalog.enum.program_specific: Нақты бағдарла
 university.admissions.catalog.enum.route_wide: Өтініш беру бағытына ортақ
 university.admissions.catalog.enum.academic_year: Оқу жылы
 university.admissions.catalog.enum.one_time: Бір реттік төлем
+university.admissions.catalog.enum.aid_application: Қаржылық көмекке өтінім
+university.admissions.catalog.enum.application_completion: Өтінімді аяқтау
+university.admissions.catalog.enum.application_fee: Өтінім алымы
+university.admissions.catalog.enum.competitive_scholarship: Конкурстық стипендия
+university.admissions.catalog.enum.conditional_fee: Шартты алым
+university.admissions.catalog.enum.current_mit_course_18_or_18_c_undergraduate: MIT ағымдағы 18 немесе 18-C курсының бакалавриат студенті
+university.admissions.catalog.enum.current_mit_course_6_9_major: MIT ағымдағы 6-9 курсының мамандығы
+university.admissions.catalog.enum.current_mit_eecs_undergraduate: MIT ағымдағы EECS бакалавриат студенті
+university.admissions.catalog.enum.doctoral_applicant: Докторантураға үміткер
+university.admissions.catalog.enum.graduate_applicant: Магистратураға үміткер
+university.admissions.catalog.enum.not_established: Анықталмаған
+university.admissions.catalog.enum.partner_or_affiliate_school_student_or_graduate: Серіктес немесе қосымша мектептің студенті немесе түлегі
+university.admissions.catalog.enum.round_1: 1-раунд
+university.admissions.catalog.enum.round_2: 2-раунд
+university.admissions.catalog.enum.round_3: 3-раунд
+university.admissions.catalog.enum.round_4: 4-раунд
+university.admissions.catalog.enum.standardized_test: Стандартталған тест
+university.admissions.catalog.enum.transfer_applicant: Ауысатын үміткер
+university.admissions.catalog.enum.transfer_need_based_aid: Ауысатын студенттерге қажеттілік бойынша көмек
+university.admissions.catalog.enum.us_citizen_or_permanent_resident_transfer: АҚШ азаматы немесе тұрақты тұрғын ауысуы
+university.admissions.catalog.enum.admitted_nonprofessional_graduate: Қабылданған кәсіби емес бітіруші
+university.admissions.catalog.enum.admitted_phd_student: Қабылданған PhD докторанты
+university.admissions.catalog.enum.admitted_student: Қабылданған студент
+university.admissions.catalog.enum.admitted_student_where_value_identifies_post_offer_rule: Қабылданған студент (оффердтен кейінгі ереже)
+university.admissions.catalog.enum.advanced_degree_applicant: Ғылыми дәрежесі бар үміткер
+university.admissions.catalog.enum.advanced_graduate_student: Жоғары деңгейдегі магистрант
+university.admissions.catalog.enum.applicant_to_other_stanford_graduate_degree: Стэнфордтың басқа магистратурасына үміткер
+university.admissions.catalog.enum.applicants_not_meeting_central_english_exemptions: Ағылшын тілі бойынша орталық босатуға сәйкес келмейтін үміткерлер
+university.admissions.catalog.enum.coterminal_masters_only: Тек біріктірілген магистратура
+university.admissions.catalog.enum.current_stanford_doctoral_student: Стэнфорд ағымдағы докторанты
+university.admissions.catalog.enum.current_stanford_engineering_graduate_student: Стэнфорд ағымдағы инженерлік магистранты
+university.admissions.catalog.enum.current_stanford_graduate: Стэнфорд ағымдағы магистранты
+university.admissions.catalog.enum.current_stanford_graduate_student: Стэнфорд ағымдағы магистранты
+university.admissions.catalog.enum.current_stanford_md_student: Стэнфорд ағымдағы MD студенті
+university.admissions.catalog.enum.current_stanford_md_student_approved_split_curriculum: Стэнфорд ағымдағы MD студенті (бекітілген бөлінген оқу жоспары)
+university.admissions.catalog.enum.current_stanford_phd_student: Стэнфорд ағымдағы PhD студенті
+university.admissions.catalog.enum.current_stanford_student: Стэнфорд ағымдағы студенті
+university.admissions.catalog.enum.current_stanford_undergraduate: Стэнфорд ағымдағы бакалавриат студенті
+university.admissions.catalog.enum.current_stanford_undergraduate_coterm: Стэнфорд ағымдағы бакалавриат студенті (біріктірілген бағдарлама)
+university.admissions.catalog.enum.eligible_veteran: Құқығы бар ардагер
+university.admissions.catalog.enum.enrolled_economics_phd_student: Экономика бойынша PhD студенті
+university.admissions.catalog.enum.enrolled_graduate_student: Тіркелген магистрант
+university.admissions.catalog.enum.enrolled_physics_phd_student: Физика бойынша PhD студенті
+university.admissions.catalog.enum.enrolled_program_student: Бағдарламаға тіркелген студент
+university.admissions.catalog.enum.enrolled_stanford_undergraduate: Стэнфорд бакалавриатына тіркелген студент
+university.admissions.catalog.enum.enrolled_student: Тіркелген студент
+university.admissions.catalog.enum.enrolled_students: Тіркелген студенттер
+university.admissions.catalog.enum.external_applicant: Сырттан келген үміткер
+university.admissions.catalog.enum.external_degree_applicant: Сыртқы дәреже үміткері
+university.admissions.catalog.enum.external_graduate_applicant: Сыртқы магистратура үміткері
+university.admissions.catalog.enum.external_masters_holder: Сыртқы магистр дәрежесінің иегері
+university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: Сыртқы немесе Стэнфорд ағымдағы магистратура үміткері
+university.admissions.catalog.enum.financial_support: Қаржылық қолдау
+university.admissions.catalog.enum.international_applicant: Халықаралық үміткер
+university.admissions.catalog.enum.international_law_degree_holder: Халықаралық құқық дәрежесінің иегері
+university.admissions.catalog.enum.joint_degree_applicant: Бірлескен дәреже үміткері
+university.admissions.catalog.enum.joint_or_dual_degree_applicant: Бірлескен немесе қос дәреже үміткері
+university.admissions.catalog.enum.knight_hennessy_applicant: Knight-Hennessy үміткері
+university.admissions.catalog.enum.matriculated_graduate_housing_applicant_or_resident: Тіркелген магистрант: жатақхана үміткері немесе тұрғыны
+university.admissions.catalog.enum.named_programme_route_applicant: Аталған бағдарлама бағыты бойынша үміткер
+university.admissions.catalog.enum.need_based_aid_applicant: Қажеттілік бойынша көмекке үміткер
+university.admissions.catalog.enum.new_admitted_student: Жаңа қабылданған студент
+university.admissions.catalog.enum.permanent_resident: Тұрақты тұрғын
+university.admissions.catalog.enum.professional_apprenticeship_inventory: Кәсіби тағылымдама тізімі
+university.admissions.catalog.enum.prospective_program_student: Бағдарламаға үміткер студент
+university.admissions.catalog.enum.prospective_stanford_professional_student: Стэнфорд кәсіби бағдарламасына үміткер студент
+university.admissions.catalog.enum.prospective_students: Үміткер студенттер
+university.admissions.catalog.enum.prospective_undergraduate: Бакалавриатқа үміткер
+university.admissions.catalog.enum.regular_and_financial_support: Қалыпты қабылдау және қаржылық қолдау
+university.admissions.catalog.enum.scholar_without_legal_training: Заңгерлік білімі жоқ ғалым
+university.admissions.catalog.enum.stanford_alumni_within_five_years: Бес жыл ішіндегі Стэнфорд түлектері
+university.admissions.catalog.enum.stanford_anthropology_phd_student: Стэнфорд антропология бойынша PhD студенті
+university.admissions.catalog.enum.stanford_undergraduate_applicant: Стэнфорд бакалавриатына үміткер
+university.admissions.catalog.enum.study_structure_and_admission_reference: Оқу құрылымы және қабылдау анықтамасы
+university.admissions.catalog.enum.us_citizen: АҚШ азаматы
+university.admissions.catalog.enum.working_professional: Жұмыс істейтін маман
+university.admissions.catalog.enum.tuition_and_mandatory_fee: Оқу ақысы және міндетті төлемдер
+university.admissions.catalog.enum.one_time_application_charge: Өтінімге бір реттік алым
+university.admissions.catalog.enum.approved_nonresident_doctoral_tuition: Бекітілген резидент емес докторантура ақысы
+university.admissions.catalog.enum.coterm_application_fee: Біріктірілген бағдарламаға өтінім алымы
+university.admissions.catalog.enum.prior_cycle_date_on_2027_page: 2027 беттегі алдыңғы цикл күні
+university.admissions.catalog.enum.published_award_conflict: Жарияланған дәреже қайшылығы
+university.admissions.catalog.enum.independent_award_pathway: Дербес дәреже алу жолы
+university.admissions.catalog.enum.exit_award_or_progression: Аяқтау дәрежесі немесе өту
+university.admissions.catalog.enum.masters_duration_pathway: Магистратураның ұзақтығы бойынша жол
+university.admissions.catalog.enum.pre_course_or_induction: Курсқа дейінгі дайындық немесе кіріспе
+university.admissions.catalog.enum.illustrative_research_projects: Зерттеу жобаларының мысалдары
+university.admissions.catalog.enum.conditional_course_class: Курс сыныбы бойынша шартты
+university.admissions.catalog.enum.conditional_selected_course: Таңдалған курс бойынша шартты
+university.admissions.catalog.enum.excluded_by_published_course_rules: Жарияланған курс ережелері бойынша шығарылған
+university.admissions.catalog.enum.admissions_for_scholarship_consideration: Стипендияны қарастыру үшін қабылдау
+university.admissions.catalog.enum.to_be_announced: Жарияланады
+university.admissions.catalog.enum.per_option_key_facts: бағдарлама нұсқасына арналған негізгі деректер
+university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесттер, балдар, іріктеу, сұхбат және портфолио
 university.admissions.catalog.reset_notice: Бұрынғы қабылдау таңдауыңыз ескі каталогты пайдаланғандықтан тазартылды. Оқу нұсқасы мен өтініш беру бағытын қайта таңдаңыз. Профильдегі басқа мәліметтер сақталған.
 university.admissions.catalog.save_choice: Өтініш таңдауын сақтау
 university.admissions.catalog.choice_saved: Осы университетке арналған өтініш контексті сақталды.
@@ -3076,7 +3188,21 @@ universities.compare.summary.potential_aid: Ықтимал қаржыланды�
 universities.compare.summary.full_records: Дереккөздердің толық жазбалары
 universities.compare.summary.additional_facts: Университеттер туралы қосымша деректер
 universities.compare.summary.choose_programs: Бағдарламаларды таңдау
+universities.compare.summary.prompt_choose_program: {university} үшін мерзімдер, құн және талаптар осында көрінуі үшін оқу бағдарламасын немесе университетке ортақ өтініш беру жолын таңдаңыз.
+universities.compare.summary.prompt_choose_route: {university} ішіндегі «{program}» бағдарламасына өтініш беру тәсілін таңдаңыз, сонда мерзімдер, құн және қаржыландыру осында көрінеді.
+universities.compare.summary.prompt_incompatible: {university} үшін таңдалған бағдарлама, өтініш беру жолы және деңгей сәйкес келмейді. Салыстыру үшін таңдауды өзгертіңіз.
 universities.compare.summary.configure_title: Бағдарламалар мен қабылдау бағыттарын таңдау
+universities.compare.summary.cycle_missing: Қабылдау кезеңі таңдалмаған. Нақты кезеңге қатысты мәліметтер жарияланғандай көрсетіледі, ал кезеңге байланысты ең төменгі талаптар тексерілмейді.
+universities.compare.summary.cycle_profile: Профиліңізде {cycle} көрсетілген. Оны «Таңдауды өзгерту» арқылы қолдана аласыз.
+universities.compare.summary.open_admission: Талаптарды ашу
+universities.compare.pending_changes: Өзгерістер «Сүзгілерді қолдану» немесе «Жалғастыру» батырмасын басқанда қолданылады.
+universities.compare.budget.title: Құн және сіздің бюджетіңіз
+universities.compare.budget.summary: Жарияланған жылдық баға сіздің жылдық бюджетіңізбен жеке салыстырылады. Көмек шегерілмейді, ал тек оқу ақысын көрсететін баға тұру шығындарын қамтымайды.
+universities.compare.budget.summary_incomplete: Кемінде бір таңдалған бағдарлама үшін салыстыруға болатын жылдық баға немесе жылдық бюджетіңіз жоқ, сондықтан бюджетпен салыстыру жасалмайды.
+universities.compare.budget.cost: Жарияланған баға
+universities.compare.budget.fit: Бюджетіңізбен салыстыру
+universities.compare.budget.notes: Бағаға түсініктеме
+universities.compare.budget.not_comparable: Жарияланған бағаны салыстыруға болатын жылдық сомаға келтіру мүмкін емес.
 university.admissions.reading.total_fee: толық оқу ақысы
 university.deadlines.kind.funding_consideration: Стипендия қарастыруға арналған өтініш беру мерзімі
 university.admissions.reading.first_year: бірінші жыл
@@ -3170,6 +3296,8 @@ universities.level.residency: Резидентура
 profile.option.study_level_non_degree: Дәреже берілмейтін бағдарламалар
 universities.level.non_degree: Дәреже берілмейтін бағдарламалар
 profile.exam_breakdown_optional_hint: Нәтижеңізде көрсетілген бөлімдерді қосыңыз. Жоқ бөлімдер бағаланбайды.
+profile.exam_total_only_hint: Бөлімдер бойынша баллды білмесеңіз, тек жалпы баллды енгізіңіз. Бөлімдер бойынша балл талаптарды нақтырақ тексеруге мүмкіндік береді; барлық бөлімді толтырсаңыз, жалпы балл автоматты түрде есептеледі.
+profile.exam_total_or_sections_required: Жалпы баллды немесе әр бөлім бойынша баллды енгізіңіз.
 profile.exam_section_required: Нәтижеңіздегі кемінде бір бөлімнің ұпайын қосыңыз.
 profile.exam_not_recorded: Қосылмаған
 university.admissions.catalog.kind.academic_requirement: Академиялық біліктілік
@@ -3252,12 +3380,56 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: Бакал�
 university.admissions.entry.route_help.nu-residency-unconditional: Резидентураға түсудің қалыпты талаптары, соның ішінде клиникалық емтихандар мен алдыңғы медициналық білім туралы мәліметтер.
 university.admissions.entry.route_help.nu-residency-conditional-umc: UMC ұсынған үміткерлерге арналған жеке шартты жол. Ұсыным мен оқуға тіркелу шарттарын тексеріңіз: бұл емтихандардан жалпы босату емес.
 university.admissions.reading.structured_study: Оқу туралы жарияланған мәліметтер төменде берілген. Қысқаша мәтіндік шолу жоқ.
+university.admissions.key_facts.title: Осы жол бойынша негізгісі
+university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
+university.admissions.key_facts.requirements: Ең төменгі талаптар
+university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
+university.admissions.key_facts.requirements_manual: Ресми ережелермен салыстыруды қажет ететін тағы шарттар: {count}
+university.admissions.key_facts.use_profile_cycle: Профильдегі «{cycle}» мәнін қолдану
+university.admissions.key_facts.set_cycle: Түсу жылын көрсету
+university.admissions.key_facts.deadline: Ең жақын мерзім
+university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
+university.admissions.key_facts.deadline_today: {title}: {date}, бүгін
+university.admissions.key_facts.deadline_passed: Жарияланған мерзімдер өтіп кетті. Соңғысы: {title}, {date}
+university.admissions.key_facts.deadline_none: Бұл жол үшін мерзімдер жарияланбаған
+university.admissions.key_facts.deadline_yearless: Мерзімдер жылсыз жарияланған: {dates}
+university.admissions.key_facts.deadline_period: Өтінім беру кезеңі: {period}
+university.admissions.key_facts.deadline_described: Жылы көрсетілген нақты күн жоқ; жарияланған мерзімдер «Мерзімдер» қойындысында
+university.admissions.key_facts.open_deadlines: Барлық мерзімдер
+university.admissions.key_facts.cost: Жылдық құны
+university.admissions.key_facts.cost_total: Жарияланған бюджет: {amount}
+university.admissions.key_facts.cost_tuition: Оқу ақысы: {amount}. Тұру шығыны кірмейді
+university.admissions.key_facts.cost_period: Дереккөз кезеңі: {period}
+university.admissions.key_facts.cost_fee_status: Төлем мәртебесіне (Home немесе Overseas) байланысты; оны жоғарыдағы қосымша параметрлерде көрсетуге болады
+university.admissions.key_facts.cost_not_annual: Баға бір жылға жарияланбаған; толығырақ «Құны» қойындысында
+university.admissions.key_facts.cost_unknown: Бұл таңдау үшін баға жарияланбаған
+university.admissions.key_facts.budget_over: Сіздің {budget} бюджетіңізден жоғары
+university.admissions.key_facts.budget_within: Сіздің {budget} бюджетіңізге сыяды
+university.admissions.key_facts.budget_tuition_within: Оқу ақысы {budget} бюджетіңізге сыяды, бірақ тұру шығыны бөлек
+university.admissions.key_facts.budget_partial: Ауқымның бір бөлігі {budget} бюджетіңізден жоғары
+university.admissions.key_facts.budget_missing: Салыстыру үшін профильде жылдық бюджетті көрсетіңіз
+university.admissions.key_facts.open_finance: Құны мен қаржыландыру
+university.admissions.key_facts.funding: Қаржыландыру
+university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
+university.admissions.key_facts.funding_records: Бұл жол бойынша қаржыландыру жазбалары: {count}. Грант кепілдендірілмейді
+university.admissions.key_facts.funding_none: Бұл жол үшін қаржыландыру тізімге енгізілмеген; ресми қаржыландыру бетін тексеріңіз
 university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
 university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
 profile.intro: Барлық өріс міндетті емес. Алдымен мамандықты, оқу деңгейін және бюджетті көрсетіңіз; жарияланған талаптарды салыстыру үшін балдарды кейін қоса аласыз. Деректерді осы құрылғыда сақтап, каталогқа оралыңыз.
 profile.clear_report_draft: Жобаны тазарту
 profile.report_draft_pending: Есепті қосыңыз не жаңартыңыз немесе оның жобасын тазалап, содан кейін профильді сақтаңыз.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Емтиханнан босатуды жеке тексеруге арналған тілдік тәжірибе
+university.admissions.catalog.field.search_opens: Бағдарламаларды іздеу ашылады
+university.admissions.catalog.field.preparation_opens: Өтінімді дайындау ашылады
+university.admissions.catalog.field.submission_opens: Өтінім жіберу ашылады
+university.admissions.catalog.field.medicine_deadline: Медицина бойынша өтінім беру мерзімі
+university.admissions.catalog.field.other_course_equal_consideration: Басқа бағдарламалар үшін тең қарастыру мерзімі
+university.admissions.catalog.field.a_level_results: A-level нәтижелері
+university.admissions.catalog.field.date: Күні
+university.admissions.catalog.field.time: Уақыты
+university.admissions.catalog.field.timezone: Уақыт белдеуі
+university.admissions.catalog.field.scope: Қатысты
+university.admissions.catalog.record_link: Дереккөздің толық жазбасын көрсету
 profile.family_income_reference: Отбасы табысы (міндетті емес анықтама)
 profile.change_budget_currency: Бюджет валютасын баптауларда өзгерту (қазір {currency})
 university.admissions.entry.browsing_not_saved: Бұл таңдау UniFit үшін сақталмаған.
@@ -3309,3 +3481,40 @@ universities.match.budget_reference_detail: Салыстыру үшін жари
 universities.match.budget_uncertain_detail: Кейбір нұсқалардың бағасы бюджетіңізден жоғары. Таңдаған бағдарламаның құнын нақтылаңыз.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Талаптарға сай бітіруші курс студенттеріне: қазір өтініш беріп, екі–бес жыл жұмыс істегеннен кейін MBA оқуын бастауға болады. Бұл MBA-ға әдеттегі қабылдаудың ерте кезеңі емес, оқуды кейін бастау жолы.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — оқуды кейін бастау жолы
+university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — оқуға түсуге міндеттемейтін, бірақ басқа университеттерге ерте өтініш беруге шектеу қоятын ерте раунд; таңдамас бұрын университет ережесін оқыңыз.
+university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.text: Early Action — мерзімі мен жауабы ертерек келетін ерте өтініш раунды; әдетте оқуға түсуге міндеттемейді, сондықтан қабылданса да орынды алуға міндетті емессіз.
+university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.text: Regular Action — негізгі, кешірек өтетін раунд: мерзімі мен жауабы ерте раундтан кеш болады.
+university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.text: Regular Decision — негізгі өтініш раунды: мерзімі мен жауабы ерте раундтардан кеш болады.
+university.admissions.glossary.ucas.title: UCAS
+university.admissions.glossary.ucas.text: UCAS — Ұлыбритания университеттерінің бакалавриатына өтініш беретін бірыңғай онлайн қызмет: өтінішті әр университетке жеке емес, осы арқылы жібересіз.
+university.admissions.glossary.tmua.title: TMUA
+university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — кейбір британ университеттері талап ететін математикадан түсу тесті; ол мектеп емтихандарынан бөлек тапсырылады.
+university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.text: Foundation — бакалавриат алдындағы дайындық жылы, ал NUFYP — Назарбаев Университетінің Foundation Year Program бағдарламасы; жылды аяқтау бағдарламада орын беретінін университет ережесінен тексеріңіз.
+university.admissions.glossary.css_profile.title: CSS Profile
+university.admissions.glossary.css_profile.text: CSS Profile — кейбір АҚШ университеттері отбасының қаржылық қажеттілігін бағалайтын College Board онлайн сауалнамасы; ол оқуға түсу өтінішіне қосымша тапсырылады.
+university.admissions.glossary.fee_status.title: Home / Overseas: төлем мәртебесі
+university.admissions.glossary.fee_status.text: Төлем мәртебесі қандай оқу ақысы қолданылатынын анықтайды: Home тарифі әдетте Ұлыбритания тұрғындарына және кейбір басқа санаттарға қолданылады, шетелдік үміткерлер көбіне Overseas бойынша төлейді, ал санатты университеттің өзі анықтайды.
+university.admissions.glossary.what_is: {term} дегеніміз не?
+university.admissions.key_facts.cost_fee_status_source: Төлем мәртебесі туралы ресми бет
+university.admissions.key_facts.funding_policy: Университеттің жарияланған саясаты: {policy}
+university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес. Осы жол бойынша қаржыландыру жазбалары: {count}.
+university.admissions.key_facts.deadline_earlier: Бұрынырақ: {text}
+university.admissions.key_facts.deadline_recurring_next: Келесі: {name} — {date}, {days} күннен кейін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
+university.admissions.key_facts.deadline_recurring_today: Келесі: {name} — {date}, бүгін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
+university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — мерзімі өтті.
+university.admissions.key_facts.requirements_kind_academic: Академиялық талап
+university.admissions.key_facts.requirements_kind_language: Ағылшын тілі талабы
+university.admissions.key_facts.requirements_kind_exam: Міндетті емтихан
+university.admissions.key_facts.requirements_need_one: {requirement}: {items} қосыңыз
+university.admissions.key_facts.requirements_need_any: {requirement}: мыналардың біреуін қосыңыз: {items}
+university.admissions.key_facts.requirements_add_result: {exam} нәтижесін
+university.admissions.key_facts.requirements_add_date: {exam} тапсырылған күнін
+university.admissions.key_facts.requirements_add_sections: {exam} бөлімдер бойынша балдарын
+university.admissions.key_facts.requirements_add_date_sections: {exam} тапсырылған күнін және бөлімдер бойынша балдарын
+university.admissions.key_facts.requirements_add_gpa: орташа балды (GPA)
+university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}

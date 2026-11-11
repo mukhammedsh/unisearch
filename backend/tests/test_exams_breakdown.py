@@ -156,6 +156,33 @@ class SubjectBreakdownCoercionTests(unittest.TestCase):
         citizenship_comp = next(c for c in res["details"]["components"] if c["exam"] == "HKDSE_CITIZENSHIP_AND_SOCIAL_DEVELOPMENT")
         self.assertEqual(citizenship_comp["display_value"], "Pass")
 
+    def test_total_only_is_accepted_for_sat_and_unt_but_keeps_range_and_step_checks(self):
+        self.assertEqual(coerce_exam_submission("SAT", score_raw=1380), {"exam": "SAT", "score": 1380})
+        self.assertEqual(coerce_exam_submission("UNT", score_raw=115, details={}), {"exam": "UNT", "score": 115})
+        self.assertEqual(coerce_exam_submission("UNT", raw_value="115", details={"components": []})["score"], 115)
+        for exam, score in (("SAT", 1385), ("SAT", 1610), ("UNT", 141), ("UNT", 114.5)):
+            with self.subTest(exam=exam, score=score), self.assertRaises(ValueError):
+                coerce_exam_submission(exam, score_raw=score)
+
+    def test_total_only_does_not_relax_a_started_breakdown(self):
+        with self.assertRaisesRegex(ValueError, "SAT requires component EBRW"):
+            coerce_exam_submission("SAT", score_raw=1380, details={"components": [{"exam": "SAT_MATH", "score": 700}]})
+        with self.assertRaisesRegex(ValueError, "UNT requires at least 2 selected subjects"):
+            coerce_exam_submission("UNT", score_raw=115, details={"components": [
+                {"exam": "UNT_HISTORY_OF_KAZAKHSTAN", "score": 15},
+                {"exam": "UNT_READING_LITERACY", "score": 10},
+                {"exam": "UNT_MATHEMATICAL_LITERACY", "score": 10},
+            ]})
+        full = coerce_exam_submission("SAT", score_raw=1000, details={"components": [
+            {"exam": "SAT_MATH", "score": 700}, {"exam": "SAT_EBRW", "score": 680},
+        ]})
+        self.assertEqual(full["score"], 1380)
+
+    def test_total_only_stays_unavailable_for_exams_that_publish_sections_only(self):
+        for exam, score in (("GRE", 320), ("ESAT", 6)):
+            with self.subTest(exam=exam), self.assertRaises(ValueError):
+                coerce_exam_submission(exam, score_raw=score)
+
 
 if __name__ == "__main__":
     unittest.main()

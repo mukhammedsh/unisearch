@@ -27,6 +27,12 @@ export const breakdownSchemeFor = (examId) => {
     return scheme && typeof scheme === "object" && !Array.isArray(scheme) ? scheme : {};
 };
 
+export const breakdownAllowsTotalOnly = (examId) => breakdownSchemeFor(examId).allow_total_only === true;
+
+const hasBreakdownInput = (container) => Array.from(
+    container.querySelectorAll("[data-breakdown-value], [data-breakdown-subject-select]")
+).some((control) => String(control.value || "").trim());
+
 export const normalizeBreakdownDefinitions = (items, { defaultRequired = false } = {}) => {
     if (!Array.isArray(items)) return [];
     return items
@@ -212,6 +218,9 @@ export function readSubjectBreakdownDraft(examId, container, options = {}) {
         components: [],
         extraScores: [],
     };
+
+    // An untouched breakdown is a total-only report, not a set of missing required sections.
+    if (breakdownAllowsTotalOnly(selected) && !hasBreakdownInput(container)) return state;
 
     const fixedRows = Array.from(container.querySelectorAll("[data-breakdown-fixed-row]"));
     for (const row of fixedRows) {
@@ -443,7 +452,10 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                     </div>
                 `).join("")}
                 <div class="profile-exam-special-hint">${escapeHtml(
-                    selectableMax ? tFormat(
+                    breakdownAllowsTotalOnly(examId) ? t(
+                        "profile.exam_total_only_hint",
+                        "If you do not know the section scores, enter only the overall score. Section scores allow a more precise check; if you fill every section, the total is calculated automatically."
+                    ) : selectableMax ? tFormat(
                         "profile.exam_breakdown_hint",
                         { min: selectableMin, max: selectableMax || 0 },
                         `Enter scores by subject. Required subjects stay fixed, and you can choose ${selectableMin}-${selectableMax} extra subjects where needed.`

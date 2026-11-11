@@ -418,7 +418,7 @@ async function expectReferenceTabs(page, item) {
     await expect(page.locator(`${pane} .admissions-catalog__meta`).first()).not.toBeEmpty();
     if (domain === "deadlines" && item.name === "MIT first-year") {
       await expect(page.locator(pane)).toContainText("Fall 2027 entry");
-      await expect(page.locator(pane)).toContainText("Recurring first-year dates; page does not specify entry year");
+      await expect(page.locator(pane)).toContainText("Recurring first-year dates; page does not state entry year");
     }
     if (domain === "deadlines" && item.name === "Imperial Computing MEng") await expect(page.locator(pane)).toContainText(/2027[\u2011-]01[\u2011-]13/);
     if (domain === "deadlines" && item.name === "Stanford CS external MS") await expect(page.locator(pane)).toContainText(/2026[\u2011-]12[\u2011-]08/);
@@ -499,9 +499,12 @@ for (const item of [journeys[0], journeys[1], journeys[2]]) {
       .map(selector => getComputedStyle(element.querySelector(selector)).fontSize));
     expect(new Set(sizes).size).toBe(1);
     const sources = card.locator(".admissions-programs__references");
-    await sources.locator(":scope > summary").click();
+    // A late re-render (for example when the translation pack arrives) can collapse the group again, so open it until it stays open.
+    await expect(async () => {
+      if (!(await sources.evaluate(node => node.open))) await sources.locator(":scope > summary").click();
+      await expect(sources.locator(".admissions-catalog__meta").first()).toBeVisible({ timeout: 2000 });
+    }).toPass();
     await expect(sources.locator("a[href^='https://']")).not.toHaveCount(0);
-    await expect(sources.locator(".admissions-catalog__meta").first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.viewport.width);
     await saveScreenshot(page, `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-selected-program.png`);
   });

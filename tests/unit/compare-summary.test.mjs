@@ -10,7 +10,8 @@ await initI18n();
 window.location.href = "http://127.0.0.1/compare.html";
 
 const universities = [{ id: "imperial", name: "Imperial College London" }, { id: "mit", name: "Massachusetts Institute of Technology" }];
-const fact = (id, value) => ({ id, value, publication_status: "published", review_status: "reviewed", source_ids: ["official"],
+const fact = (id, value) => ({ id, value, publication_status: "published", review_status: "reviewed",
+  normalized_status: { publication: "published", review: "verified" }, source_ids: ["official"],
   scope: { option_ids: ["computing"], route_ids: [] } });
 function state(currency, amount, period) {
   const facts = [fact("program", { duration: "4 years", mode: "Full-time", course_page_tuition_fees: {
@@ -81,6 +82,27 @@ test("shared undergraduate comparison reads route facts and prices without a sel
   assert.doesNotMatch(renderReviewedComparison([universities[1]], new Map([["mit", shared]])), /66,720 USD|92,760 USD/);
 });
 
+test("comparison shows Stanford's recurring first-year windows as published, without an invented year", () => {
+  setLanguage("eng", { emit: false });
+  const stanford = state("USD", 66720, "2026-27");
+  stanford.context = { study_option_id: "", application_route_id: "stanford-first-year", study_level: "undergraduate" };
+  stanford.resolved.selected_option = null;
+  stanford.resolved.selected_route = { id: "stanford-first-year", title: "Stanford first-year admission" };
+  stanford.resolved.reading_scope = "institution_route";
+  stanford.resolved.context_applicability = { option: "not_required", route: "matched", level: "matched" };
+  stanford.resolved.facts = [
+    { ...fact("prose", "REA Common Application deadline is November 1; RD deadline is January 5. The reviewed page lists recurring month/day deadlines without an explicit entry year."),
+      scope: { option_ids: [], route_ids: ["stanford-first-year"] }, topic: "application_deadlines" },
+    { ...fact("windows", { windows: [{ name: "Restrictive Early Action", application_due: "November 1" }, { name: "Regular Decision", application_due: "January 5" }] }),
+      scope: { option_ids: [], route_ids: ["stanford-first-year"] }, topic: "application_windows",
+      period: { kind: "yearless_policy", label: "Recurring first-year dates; page does not specify entry year" } },
+  ];
+  stanford.resolved.fact_groups = { deadlines: ["prose", "windows"] };
+  const html = renderReviewedComparison([{ id: "stanford", name: "Stanford University" }], new Map([["stanford", stanford]]));
+  assert.match(html, /Restrictive Early Action: November 1<br>Regular Decision: January 5<small>/);
+  assert.doesNotMatch(html, /November 1, 20\d{2}|January 5, 20\d{2}/);
+});
+
 test("comparison route labels use the localized simple classification when a route has no translation", () => {
   setLanguage("rus", { emit: false });
   const selected = state("GBP", 47800, "2027 entry");
@@ -103,7 +125,7 @@ test("comparison identifies a published scholarship exclusion without promising 
 test("comparison preserves normalized whole-program tuition, campus and source period", () => {
   setLanguage("eng", { emit: false });
   const selected = state("USD", 24000, "2025-26");
-  selected.resolved.facts = [{ ...fact("program-price", "The source quotes the complete program fee."), publication_status: "published_reference_amounts_year_unspecified", attributes: { catalog_costs: { quotes: [
+  selected.resolved.facts = [{ ...fact("program-price", "The source quotes the complete program fee."), publication_status: "published_reference_amounts_year_unspecified", normalized_status: { publication: "published_with_limits", review: "verified" }, attributes: { catalog_costs: { quotes: [
     { basis: "tuition", amount: 24000, currency: "USD", period_label: "2025-26", source_year: "2025-26", billing_period: "whole_program", campus: "Astana" },
   ] } } }];
   selected.resolved.fact_groups = { costs: ["program-price"] };
@@ -111,4 +133,149 @@ test("comparison preserves normalized whole-program tuition, campus and source p
   for (const text of ["24,000", "USD", "for the whole program", "Astana", "2025"]) assert.ok(html.includes(text), text);
   assert.doesNotMatch(html, /24,000[^<]*per year/);
   assert.equal((html.match(/24,000/g) || []).length, 1);
+});
+
+const { comparisonSelectionGap } = await import("../../frontend/javascript/pages/universities/compare-summary.js");
+const { soleCompatibleRoute } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
+
+function emptyState(extra = {}) {
+  return { status: "ready", context: { study_option_id: "", application_route_id: "", study_level: "", intended_entry_cycle: "" },
+    resolved: { selected_option: null, selected_route: null, available_routes: [], context_applicability: {}, facts: [], fact_groups: {}, ...extra } };
+}
+
+test("an unselected university shows one localized prompt instead of rows of unknown values", () => {
+  for (const [language, expected] of [["eng", /Choose a study option or a university-wide application route for Imperial College London/], ["rus", /Imperial College London: выберите программу или общий маршрут подачи/], ["kaz", /Imperial College London үшін .* таңдаңыз/]]) {
+    setLanguage(language, { emit: false });
+    const html = renderReviewedComparison([universities[0], universities[1]], new Map([["imperial", emptyState()], ["mit", state("USD", 66720, "2026-27")]]));
+    assert.match(html, expected, language);
+    assert.equal((html.match(/data-selection-prompt="choose_program"/g) || []).length, 1, language);
+    assert.equal((html.match(/rowspan="9"/g) || []).length, 1, language);
+    assert.equal((html.match(/Not established|Для выбранного варианта не подтверждено|расталмаған/g) || []).length, 1, `${language}: only the fixture budget row of the selected university stays unknown`);
+    assert.match(html, /data-action="choose-context"/);
+  }
+});
+
+test("a chosen program without a route keeps its own rows and asks only for the application route", () => {
+  setLanguage("eng", { emit: false });
+  const withProgram = emptyState({ selected_option: { id: "computing", title: "Computing", awards: ["MEng"], levels: ["undergraduate"] },
+    available_routes: [{ id: "ucas", title: "UCAS" }, { id: "direct", title: "Direct" }] });
+  const html = renderReviewedComparison([universities[0]], new Map([["imperial", withProgram]]));
+  assert.match(html, /data-selection-prompt="choose_route"/);
+  assert.match(html, /Choose how you will apply to Imperial College London for Computing/);
+  assert.match(html, /<strong>Computing<\/strong>/);
+  assert.match(html, /rowspan="7"/);
+  assert.equal((html.match(/Not established/g) || []).length, 1, "only the duration row stays unknown");
+  withProgram.resolved.available_routes = [];
+  assert.doesNotMatch(renderReviewedComparison([universities[0]], new Map([["imperial", withProgram]])), /data-selection-prompt/);
+});
+
+test("selection gaps cover incompatible, loading, failed and institution-route states", () => {
+  assert.equal(comparisonSelectionGap(undefined), "");
+  assert.equal(comparisonSelectionGap({ status: "loading", resolved: null }), "");
+  assert.equal(comparisonSelectionGap({ status: "error" }), "");
+  assert.equal(comparisonSelectionGap(emptyState({ context_applicability: { route: "mismatched" } })), "incompatible");
+  assert.equal(comparisonSelectionGap(emptyState({ reading_scope: "institution_route", selected_route: { id: "shared" } })), "");
+  assert.equal(comparisonSelectionGap(state("GBP", 1, "2027 entry")), "");
+  setLanguage("eng", { emit: false });
+  assert.match(renderReviewedComparison([universities[0]], new Map([["imperial", emptyState({ context_applicability: { route: "mismatched" } })]])), /do not match/);
+});
+
+test("only the single route linked to a deliberately chosen program can be applied automatically", () => {
+  const option = { id: "computing", levels: ["undergraduate"] };
+  const route = { id: "ucas", levels: ["undergraduate"] };
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route], context_applicability: {} }, { study_level: "undergraduate" }), route);
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route, { id: "direct" }] }, {}), null, "several routes remain a choice");
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [] }, {}), null);
+  assert.equal(soleCompatibleRoute({ selected_option: null, available_routes: [route] }, {}), null, "no program, no route");
+  assert.equal(soleCompatibleRoute({ selected_option: option, selected_route: route, available_routes: [route] }, {}), null, "an existing route is kept");
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route], context_applicability: { level: "mismatched" } }, {}), null);
+  assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [{ id: "grad", levels: ["masters"] }] }, { study_level: "undergraduate" }), null);
+});
+
+const { buildCompareDecisionSignals } = await import("../../frontend/javascript/pages/universities/compare-specs.js");
+
+test("a published application period is shown when the university lists no exact date", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("KZT", 0, "2027 entry");
+  selected.resolved.facts = [{ ...fact("period", { application_period: "October 2026 – August 2027" }), publication_status: "published_with_limits",
+    normalized_status: { publication: "published_with_limits", review: "verified" } }];
+  selected.resolved.fact_groups = { deadlines: ["period"] };
+  const html = renderReviewedComparison([universities[0]], new Map([["imperial", selected]]));
+  assert.match(html, /Application period: October 2026 – August 2027/);
+  assert.doesNotMatch(html, /does not state a year/);
+});
+
+test("the entry cycle row explains a missing cycle and only offers the profile cycle", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("USD", 66720, "2026-27");
+  selected.context.intended_entry_cycle = "";
+  const withoutProfile = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+  assert.match(withoutProfile, /No entry cycle selected/);
+  assert.doesNotMatch(withoutProfile, /Your profile lists/);
+  const withProfile = renderReviewedComparison([universities[1]], new Map([["mit", selected]]), { profileCycle: "Fall 2027" });
+  assert.match(withProfile, /Your profile lists Fall 2027/);
+  assert.match(withProfile, /data-action="choose-context"/);
+  assert.equal(selected.context.intended_entry_cycle, "", "the profile cycle is not applied silently");
+});
+
+test("the requirements row shows the minimum-check summary instead of a bare heading", () => {
+  setLanguage("eng", { emit: false });
+  const selected = state("USD", 66720, "2026-27");
+  selected.resolved.assessment = { chancePercent: 50, activeChoice: { details: { checks: [
+    { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" },
+  ] } } };
+  const html = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+  assert.match(html, /1 of 2 measurable minimums met \(50%\)/);
+  assert.match(html, /Conditions to check against the official rules: 1/);
+  assert.match(html, />Open requirements</);
+});
+
+test("a need-based aid program is shown with its localized label", () => {
+  const selected = state("USD", 66720, "2026-27");
+  selected.resolved.facts.push({ ...fact("aid", { funding_program: "Need-based Aid", availability: "conditional" }), topic: "funding" });
+  selected.resolved.fact_groups.funding = ["aid"];
+  for (const [language, expected] of [["eng", "Need-based financial aid"], ["rus", "Помощь по финансовой потребности"], ["kaz", "Қаржылық қажеттілікке негізделген көмек"]]) {
+    setLanguage(language, { emit: false });
+    const html = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+    assert.ok(html.includes(expected), language);
+    assert.ok(!html.includes("Need-based Aid"), language);
+  }
+});
+
+function budgetSignal(costs, budgetUsd, status = "ready") {
+  const selected = state("USD", 1, "2026-27");
+  selected.status = status;
+  selected.resolved.selected_costs = costs;
+  return buildCompareDecisionSignals([{ id: "mit-usa-cambridge", name: "MIT" }, { id: "imperial-college-london-uk", name: "Imperial" }], {
+    reviewed: new Map([["mit-usa-cambridge", selected], ["imperial-college-london-uk", selected]]), budgetUsd,
+  }).find(row => row.key === "budget");
+}
+const factValues = theme => theme.universities[0].facts.map(item => item.value).join(" ");
+
+test("the signals section compares the published annual price with the profile budget", () => {
+  setLanguage("eng", { emit: false });
+  const annual = { currency: "USD", period: "2026-27", annual_comparable: true };
+  const over = budgetSignal({ annual_total: { ...annual, min: 92760, max: 92760, usd: { min: 92760, max: 92760 } } }, 10000);
+  assert.equal(over.status, "tradeoff");
+  assert.match(factValues(over), /Above your budget of \$10,000/);
+  const tuition = budgetSignal({ tuition: { ...annual, min: 5000, max: 5000, usd: { min: 5000, max: 5000 } } }, 10000);
+  assert.match(factValues(tuition), /Living costs are not included/);
+  assert.match(factValues(tuition), /living costs are extra/);
+  const zero = budgetSignal({ annual_total: { ...annual, min: 0, max: 0, usd: { min: 0, max: 0 } } }, 10000);
+  assert.match(factValues(zero), /\$0.*Within your budget/s);
+});
+
+test("the budget signal keeps unknown prices and a missing budget unknown", () => {
+  setLanguage("eng", { emit: false });
+  const unknown = budgetSignal({}, 10000);
+  assert.equal(unknown.status, "missing");
+  assert.match(factValues(unknown), /No price is published for this selection/);
+  const annual = { annual_total: { currency: "USD", min: 100, max: 100, annual_comparable: true, usd: { min: 100, max: 100 } } };
+  const noBudget = budgetSignal(annual, undefined);
+  assert.equal(noBudget.status, "missing");
+  assert.match(factValues(noBudget), /Add a yearly budget to your profile/);
+  const loading = budgetSignal(annual, 10000, "loading");
+  assert.equal(loading.status, "missing");
+  assert.match(factValues(loading), /Not established/);
+  assert.equal(buildCompareDecisionSignals([{ id: "other-legacy" }, { id: "mit-usa-cambridge" }], {}).some(row => row.key === "budget"), false, "legacy pairs keep their own finance signal");
 });

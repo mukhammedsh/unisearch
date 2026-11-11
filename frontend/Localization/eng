@@ -1167,7 +1167,7 @@ profile.exam_updated_value: Updated {exam}: {value}
 languages.exam_total_overall: Overall
 languages.exam_total_total: Total
 languages.exam_total_placeholder: {label} score
-languages.exam_breakdown_hint: Enter a score for each section. The overall score is calculated automatically.
+languages.exam_breakdown_optional_hint: Section scores are optional: enter the overall score, or fill every section and it is calculated automatically. Sections allow a more precise check.
 languages.exam_breakdown_required: Enter a score for every section.
 languages.error.range: {exam} must be between {min} and {max}
 languages.error.step: {exam} must use step {step}
@@ -1634,8 +1634,8 @@ profile.applicant_context.country_other_placeholder: Enter country
 profile.applicant_context.credential: Credential or curriculum
 profile.applicant_context.credential_ib: International Baccalaureate (IB)
 profile.applicant_context.credential_a_level: A levels
-profile.applicant_context.credential_us_diploma: US high school diploma
-profile.applicant_context.credential_national: National secondary qualification
+profile.applicant_context.credential_us_diploma: High school diploma from a school in the USA (not the Kazakhstani certificate)
+profile.applicant_context.credential_national: National secondary qualification (for example, a Kazakhstani certificate)
 profile.applicant_context.credential_vocational: Vocational or professional qualification
 profile.applicant_context.credential_other_placeholder: Describe your credential or curriculum
 profile.applicant_context.current_residence: Current country of residence
@@ -2577,6 +2577,13 @@ university.admissions.catalog.review.carried_forward_review: Previous source rev
 university.admissions.catalog.review.conflicting: Conflicting official sources
 university.admissions.catalog.review.superseded: Superseded source review
 university.admissions.catalog.review.limited: Source reviewed; some scope or conditions still need verification
+university.admissions.catalog.review.needs_resolution: Source review needs resolution
+university.admissions.catalog.route_entry.external: Application open to new applicants
+university.admissions.catalog.route_entry.external_restricted: Application for a restricted applicant group
+university.admissions.catalog.route_entry.internal: Current students only
+university.admissions.catalog.route_entry.no_admission: Awarded during another degree; no separate application
+university.admissions.catalog.route_entry.closed: Not open to new applicants
+university.admissions.catalog.route_entry.unresolved: Application path needs clarification
 university.admissions.catalog.not_published: Not published
 university.admissions.catalog.needs_review: Needs review
 university.admissions.catalog.historical: Historical source record
@@ -2622,6 +2629,7 @@ university.admissions.catalog.domain.other: Other source information
 university.admissions.catalog.reason.applicability_unknown: The selected context or applicant applicability has not been established.
 university.admissions.catalog.reason.missing_evidence: Required applicant evidence is missing.
 university.admissions.catalog.reason.unassessed_minimums: Some published minima or their conditions cannot yet be assessed.
+university.admissions.catalog.reason.entry_cycle_required: Choose your entry year, for example "Fall 2027", to check your scores against these minimums.
 university.admissions.catalog.reason.no_published_requirements: No evaluable published numeric minimum is catalogued for this context.
 university.admissions.catalog.reason.requirements_not_met: At least one evaluated published minimum was not met.
 university.admissions.catalog.reason.source_fact_changed: The source record changed and its assessment needs review.
@@ -2667,6 +2675,11 @@ university.admissions.catalog.field.language: Teaching language
 university.admissions.catalog.field.location: Location
 university.admissions.catalog.field.department: Department
 university.admissions.catalog.field.start_date: Start date
+university.admissions.catalog.field.externalAdmissions: External admissions
+university.admissions.catalog.field.internalAdmissions: Internal admissions
+university.admissions.catalog.field.programCurrentPhdOnly: Current PhD students only
+university.admissions.catalog.field.coterm: Coterminal degree
+university.admissions.catalog.field.unitsProgramMin: Minimum program units
 university.admissions.catalog.field.presence: Test policy
 university.admissions.catalog.field.cutoff: Numeric cutoff
 university.admissions.catalog.field.recommended: Recommended score
@@ -2774,6 +2787,11 @@ university.admissions.reading.month.11: November
 university.admissions.reading.month.12: December
 university.admissions.reading.early_action: Early Action · early application
 university.admissions.reading.regular_action: Regular Action · regular application
+university.admissions.reading.restrictive_early_action: Restrictive Early Action · early, non-binding application
+university.admissions.reading.regular_decision: Regular Decision · regular application
+university.admissions.reading.transfer_application: Transfer application
+university.admissions.reading.priority_deadline: Priority deadline
+university.admissions.reading.application_deadline: Application deadline
 university.admissions.reading.official_application: Official application instructions
 university.admissions.reading.official_source: Official source
 university.admissions.reading.unknown: Not stated here
@@ -2837,6 +2855,100 @@ university.admissions.catalog.enum.program_specific: Program-specific
 university.admissions.catalog.enum.route_wide: Application-route scope
 university.admissions.catalog.enum.academic_year: Academic year
 university.admissions.catalog.enum.one_time: One-time payment
+university.admissions.catalog.enum.aid_application: Aid application
+university.admissions.catalog.enum.application_completion: Application completion
+university.admissions.catalog.enum.application_fee: Application fee
+university.admissions.catalog.enum.competitive_scholarship: Competitive scholarship
+university.admissions.catalog.enum.conditional_fee: Conditional fee
+university.admissions.catalog.enum.current_mit_course_18_or_18_c_undergraduate: Current MIT course 18 or 18-C undergraduate
+university.admissions.catalog.enum.current_mit_course_6_9_major: Current MIT course 6-9 major
+university.admissions.catalog.enum.current_mit_eecs_undergraduate: Current MIT EECS undergraduate
+university.admissions.catalog.enum.doctoral_applicant: Doctoral applicant
+university.admissions.catalog.enum.graduate_applicant: Graduate applicant
+university.admissions.catalog.enum.not_established: Not established
+university.admissions.catalog.enum.partner_or_affiliate_school_student_or_graduate: Partner or affiliate school student or graduate
+university.admissions.catalog.enum.round_1: Round 1
+university.admissions.catalog.enum.round_2: Round 2
+university.admissions.catalog.enum.round_3: Round 3
+university.admissions.catalog.enum.round_4: Round 4
+university.admissions.catalog.enum.standardized_test: Standardized test
+university.admissions.catalog.enum.transfer_applicant: Transfer applicant
+university.admissions.catalog.enum.transfer_need_based_aid: Transfer need-based aid
+university.admissions.catalog.enum.us_citizen_or_permanent_resident_transfer: U.S. citizen or permanent resident transfer
+university.admissions.catalog.enum.admitted_nonprofessional_graduate: Admitted nonprofessional graduate
+university.admissions.catalog.enum.admitted_phd_student: Admitted PhD student
+university.admissions.catalog.enum.admitted_student: Admitted student
+university.admissions.catalog.enum.admitted_student_where_value_identifies_post_offer_rule: Admitted student (post-offer rule)
+university.admissions.catalog.enum.advanced_degree_applicant: Applicant with an advanced degree
+university.admissions.catalog.enum.advanced_graduate_student: Advanced graduate student
+university.admissions.catalog.enum.applicant_to_other_stanford_graduate_degree: Applicant to another Stanford graduate degree
+university.admissions.catalog.enum.applicants_not_meeting_central_english_exemptions: Applicants not meeting central English exemptions
+university.admissions.catalog.enum.coterminal_masters_only: Coterminal master's only
+university.admissions.catalog.enum.current_stanford_doctoral_student: Current Stanford doctoral student
+university.admissions.catalog.enum.current_stanford_engineering_graduate_student: Current Stanford engineering graduate student
+university.admissions.catalog.enum.current_stanford_graduate: Current Stanford graduate student
+university.admissions.catalog.enum.current_stanford_graduate_student: Current Stanford graduate student
+university.admissions.catalog.enum.current_stanford_md_student: Current Stanford MD student
+university.admissions.catalog.enum.current_stanford_md_student_approved_split_curriculum: Current Stanford MD student (approved split curriculum)
+university.admissions.catalog.enum.current_stanford_phd_student: Current Stanford PhD student
+university.admissions.catalog.enum.current_stanford_student: Current Stanford student
+university.admissions.catalog.enum.current_stanford_undergraduate: Current Stanford undergraduate
+university.admissions.catalog.enum.current_stanford_undergraduate_coterm: Current Stanford undergraduate (coterminal)
+university.admissions.catalog.enum.eligible_veteran: Eligible veteran
+university.admissions.catalog.enum.enrolled_economics_phd_student: Enrolled Economics PhD student
+university.admissions.catalog.enum.enrolled_graduate_student: Enrolled graduate student
+university.admissions.catalog.enum.enrolled_physics_phd_student: Enrolled Physics PhD student
+university.admissions.catalog.enum.enrolled_program_student: Enrolled program student
+university.admissions.catalog.enum.enrolled_stanford_undergraduate: Enrolled Stanford undergraduate
+university.admissions.catalog.enum.enrolled_student: Enrolled student
+university.admissions.catalog.enum.enrolled_students: Enrolled students
+university.admissions.catalog.enum.external_applicant: External applicant
+university.admissions.catalog.enum.external_degree_applicant: External degree applicant
+university.admissions.catalog.enum.external_graduate_applicant: External graduate applicant
+university.admissions.catalog.enum.external_masters_holder: Holder of an external master's degree
+university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: External or current Stanford graduate applicant
+university.admissions.catalog.enum.financial_support: Financial support
+university.admissions.catalog.enum.international_applicant: International applicant
+university.admissions.catalog.enum.international_law_degree_holder: International law degree holder
+university.admissions.catalog.enum.joint_degree_applicant: Joint degree applicant
+university.admissions.catalog.enum.joint_or_dual_degree_applicant: Joint or dual degree applicant
+university.admissions.catalog.enum.knight_hennessy_applicant: Knight-Hennessy applicant
+university.admissions.catalog.enum.matriculated_graduate_housing_applicant_or_resident: Matriculated graduate housing applicant or resident
+university.admissions.catalog.enum.named_programme_route_applicant: Named programme route applicant
+university.admissions.catalog.enum.need_based_aid_applicant: Need-based aid applicant
+university.admissions.catalog.enum.new_admitted_student: New admitted student
+university.admissions.catalog.enum.permanent_resident: Permanent resident
+university.admissions.catalog.enum.professional_apprenticeship_inventory: Professional apprenticeship inventory
+university.admissions.catalog.enum.prospective_program_student: Prospective program student
+university.admissions.catalog.enum.prospective_stanford_professional_student: Prospective Stanford professional student
+university.admissions.catalog.enum.prospective_students: Prospective students
+university.admissions.catalog.enum.prospective_undergraduate: Prospective undergraduate
+university.admissions.catalog.enum.regular_and_financial_support: Regular and financial support
+university.admissions.catalog.enum.scholar_without_legal_training: Scholar without legal training
+university.admissions.catalog.enum.stanford_alumni_within_five_years: Stanford alumni within five years
+university.admissions.catalog.enum.stanford_anthropology_phd_student: Stanford Anthropology PhD student
+university.admissions.catalog.enum.stanford_undergraduate_applicant: Stanford undergraduate applicant
+university.admissions.catalog.enum.study_structure_and_admission_reference: Study structure and admission reference
+university.admissions.catalog.enum.us_citizen: U.S. citizen
+university.admissions.catalog.enum.working_professional: Working professional
+university.admissions.catalog.enum.tuition_and_mandatory_fee: Tuition and mandatory fees
+university.admissions.catalog.enum.one_time_application_charge: One-time application charge
+university.admissions.catalog.enum.approved_nonresident_doctoral_tuition: Approved non-resident doctoral tuition
+university.admissions.catalog.enum.coterm_application_fee: Coterminal application fee
+university.admissions.catalog.enum.prior_cycle_date_on_2027_page: Prior-cycle date on the 2027 page
+university.admissions.catalog.enum.published_award_conflict: Published award conflict
+university.admissions.catalog.enum.independent_award_pathway: Independent award pathway
+university.admissions.catalog.enum.exit_award_or_progression: Exit award or progression
+university.admissions.catalog.enum.masters_duration_pathway: Master's duration pathway
+university.admissions.catalog.enum.pre_course_or_induction: Pre-course or induction
+university.admissions.catalog.enum.illustrative_research_projects: Illustrative research projects
+university.admissions.catalog.enum.conditional_course_class: Conditional by course class
+university.admissions.catalog.enum.conditional_selected_course: Conditional on the selected course
+university.admissions.catalog.enum.excluded_by_published_course_rules: Excluded by published course rules
+university.admissions.catalog.enum.admissions_for_scholarship_consideration: Admissions for scholarship consideration
+university.admissions.catalog.enum.to_be_announced: To be announced
+university.admissions.catalog.enum.per_option_key_facts: option-specific key facts
+university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: tests, scores, selection, interview and portfolio
 university.admissions.catalog.reset_notice: Your previous admission choice used the earlier catalog and has been cleared. Choose a study option and route again. Your other profile information is preserved.
 university.admissions.catalog.save_choice: Save application choice
 university.admissions.catalog.choice_saved: Application context saved for this university.
@@ -3076,7 +3188,21 @@ universities.compare.summary.potential_aid: Potential funding is subject to elig
 universities.compare.summary.full_records: Complete source records
 universities.compare.summary.additional_facts: Additional university facts
 universities.compare.summary.choose_programs: Choose programs
+universities.compare.summary.prompt_choose_program: Choose a study option or a university-wide application route for {university} to see its dates, costs and requirements here.
+universities.compare.summary.prompt_choose_route: Choose how you will apply to {university} for {program} to see its dates, costs and funding here.
+universities.compare.summary.prompt_incompatible: The selected program, route and level for {university} do not match. Change the selection to compare it.
 universities.compare.summary.configure_title: Choose programs and application routes
+universities.compare.summary.cycle_missing: No entry cycle selected. Cycle-specific facts are shown as published and minimums that depend on the cycle are not checked.
+universities.compare.summary.cycle_profile: Your profile lists {cycle}. You can apply it under Change selection.
+universities.compare.summary.open_admission: Open requirements
+universities.compare.pending_changes: Your changes are applied when you press Apply filters or Continue.
+universities.compare.budget.title: Cost and your budget
+universities.compare.budget.summary: Each published annual price is compared with your yearly budget on its own. Aid is not deducted, and a tuition-only price does not include living costs.
+universities.compare.budget.summary_incomplete: A comparable annual price or your yearly budget is missing for at least one selected program, so no budget comparison is made.
+universities.compare.budget.cost: Published price
+universities.compare.budget.fit: Compared with your budget
+universities.compare.budget.notes: Price notes
+universities.compare.budget.not_comparable: The published price cannot be turned into a comparable yearly amount.
 university.admissions.reading.total_fee: total fee
 university.deadlines.kind.funding_consideration: Application deadline for scholarship consideration
 university.admissions.reading.first_year: first year
@@ -3170,6 +3296,8 @@ universities.level.residency: Residency
 profile.option.study_level_non_degree: Non-degree programs
 universities.level.non_degree: Non-degree programs
 profile.exam_breakdown_optional_hint: Add the sections shown on your report. Missing sections remain unassessed.
+profile.exam_total_only_hint: If you do not know the section scores, enter only the overall score. Section scores allow a more precise check; if you fill every section, the total is calculated automatically.
+profile.exam_total_or_sections_required: Enter the overall score or the score for each section.
 profile.exam_section_required: Add at least one reported section score.
 profile.exam_not_recorded: Not recorded
 university.admissions.catalog.kind.academic_requirement: Academic qualification
@@ -3252,12 +3380,56 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: For current
 university.admissions.entry.route_help.nu-residency-unconditional: Read the standard residency entry conditions, including the required clinical test evidence and prior medical qualification.
 university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
 university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
+university.admissions.key_facts.title: Key facts for this path
+university.admissions.key_facts.note: A summary of published facts, not an admission decision.
+university.admissions.key_facts.requirements: Minimum requirements
+university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
+university.admissions.key_facts.requirements_manual: Conditions to check against the official rules: {count}
+university.admissions.key_facts.use_profile_cycle: Use {cycle} from your profile
+university.admissions.key_facts.set_cycle: Set entry year
+university.admissions.key_facts.deadline: Next date
+university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
+university.admissions.key_facts.deadline_today: {title}: {date}, today
+university.admissions.key_facts.deadline_passed: Published dates have passed. The last one: {title}, {date}
+university.admissions.key_facts.deadline_none: No deadlines are published for this path
+university.admissions.key_facts.deadline_yearless: Dates are published without a year: {dates}
+university.admissions.key_facts.deadline_period: Application period: {period}
+university.admissions.key_facts.deadline_described: No exact date with a year is listed; see the published dates on the Dates tab
+university.admissions.key_facts.open_deadlines: All dates
+university.admissions.key_facts.cost: Cost per year
+university.admissions.key_facts.cost_total: Published budget: {amount}
+university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
+university.admissions.key_facts.cost_period: Source period: {period}
+university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas); you can set it in the details above
+university.admissions.key_facts.cost_not_annual: The published price is not per year; see the cost tab
+university.admissions.key_facts.cost_unknown: No price is published for this selection
+university.admissions.key_facts.budget_over: Above your budget of {budget}
+university.admissions.key_facts.budget_within: Within your budget of {budget}
+university.admissions.key_facts.budget_tuition_within: Tuition fits your budget of {budget}, but living costs are extra
+university.admissions.key_facts.budget_partial: Part of the range is above your budget of {budget}
+university.admissions.key_facts.budget_missing: Add a yearly budget to your profile to compare
+university.admissions.key_facts.open_finance: Costs and funding
+university.admissions.key_facts.funding: Funding
+university.admissions.key_facts.funding_route: Applied for separately: {route}
+university.admissions.key_facts.funding_records: Funding records for this path: {count}. An award is not guaranteed
+university.admissions.key_facts.funding_none: No funding is catalogued for this path; check the official funding page
 university.admissions.catalog.domain.reference: Related source comparisons
 university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
 profile.intro: All fields are optional. Start with your subject, study level and budget; add scores when you want to check published requirements. Save on this device, then return to the catalog.
 profile.clear_report_draft: Clear draft
 profile.report_draft_pending: Add or update the report, or clear its draft, then save the profile.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Language background for individual exemption review
+university.admissions.catalog.field.search_opens: Course search opens
+university.admissions.catalog.field.preparation_opens: Application preparation opens
+university.admissions.catalog.field.submission_opens: Application submission opens
+university.admissions.catalog.field.medicine_deadline: Medicine application deadline
+university.admissions.catalog.field.other_course_equal_consideration: Equal consideration deadline for other courses
+university.admissions.catalog.field.a_level_results: A-level results
+university.admissions.catalog.field.date: Date
+university.admissions.catalog.field.time: Time
+university.admissions.catalog.field.timezone: Time zone
+university.admissions.catalog.field.scope: Applies to
+university.admissions.catalog.record_link: Show full source record
 profile.family_income_reference: Family income (optional reference)
 profile.change_budget_currency: Change budget currency in Settings (currently {currency})
 university.admissions.entry.browsing_not_saved: This choice is not saved for UniFit.
@@ -3309,3 +3481,40 @@ universities.match.budget_reference_detail: This comparison uses a published ref
 universities.match.budget_uncertain_detail: Some price options exceed your budget. Check the cost of your chosen program.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: For eligible students in their final year: apply now and begin the MBA after two to five years of full-time work. This is a deferred-entry application, not an earlier round of ordinary MBA admission.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — deferred entry
+university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action is an early, non-binding round that limits applying early to other universities; read the university's rules before choosing it.
+university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.text: Early Action is an application round with an earlier deadline and an earlier decision; it is generally non-binding, so you are not obliged to enrol if admitted.
+university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.text: Regular Action is the main, later application round, with a later deadline and decision than the early round.
+university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.text: Regular Decision is the main application round, with a later deadline and decision than the early rounds.
+university.admissions.glossary.ucas.title: UCAS
+university.admissions.glossary.ucas.text: UCAS is the UK's central online service for undergraduate applications, so you apply through it instead of applying to each university separately.
+university.admissions.glossary.tmua.title: TMUA
+university.admissions.glossary.tmua.text: TMUA is the Test of Mathematics for University Admission, a maths test that some UK universities require; it is taken separately from your school exams.
+university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.text: A foundation year is a preparatory year before a bachelor's degree, and NUFYP is Nazarbayev University's Foundation Year Program; check the university's rules on whether completing it leads to a degree place.
+university.admissions.glossary.css_profile.title: CSS Profile
+university.admissions.glossary.css_profile.text: The CSS Profile is an online College Board form that some US universities use to assess a family's financial need; it is submitted in addition to the admission application.
+university.admissions.glossary.fee_status.title: Home / Overseas fees
+university.admissions.glossary.fee_status.text: Fee status decides which tuition price applies: Home fees generally apply to UK residents and some other categories, international applicants usually pay Overseas fees, and the university decides the classification.
+university.admissions.glossary.what_is: What is {term}?
+university.admissions.key_facts.cost_fee_status_source: Official fee-status page
+university.admissions.key_facts.funding_policy: Published policy: {policy}
+university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you. Funding records for this path: {count}.
+university.admissions.key_facts.deadline_earlier: Earlier: {text}
+university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date}, in {days} days (annual date; confirm the year on the official page)
+university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date}, today (annual date; confirm the year on the official page)
+university.admissions.key_facts.deadline_recurring_passed: {name}: {date} has passed.
+university.admissions.key_facts.requirements_kind_academic: Academic requirement
+university.admissions.key_facts.requirements_kind_language: English requirement
+university.admissions.key_facts.requirements_kind_exam: Required test
+university.admissions.key_facts.requirements_need_one: {requirement}: add {items}
+university.admissions.key_facts.requirements_need_any: {requirement}: add any one of: {items}
+university.admissions.key_facts.requirements_add_result: {exam} result
+university.admissions.key_facts.requirements_add_date: {exam} test date
+university.admissions.key_facts.requirements_add_sections: {exam} section scores
+university.admissions.key_facts.requirements_add_date_sections: {exam} test date and section scores
+university.admissions.key_facts.requirements_add_gpa: GPA
+university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}

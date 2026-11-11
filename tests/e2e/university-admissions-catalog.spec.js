@@ -118,7 +118,7 @@ const cases = [
     theme: "dark",
     tab: "admission",
     facts: [
-      { id: "coterm-central-evidence:stanford-coterm-central-eligibility", text: /Current Stanford undergraduate|120 units/i },
+      { id: "coterm-central-evidence:stanford-coterm-central-eligibility", text: /Current Stanford undergraduate|120 units|студент бакалавриата Stanford/i },
       { id: "coterm-central-evidence:stanford-coterm-central-application-fee", tab: "finance", text: /125|coterm application fee/i },
     ],
     excludedFacts: ["engineering-doerr-evidence:graduate-application-limit"],

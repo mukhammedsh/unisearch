@@ -103,7 +103,9 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   expect(JSON.stringify(testsFact.value)).toContain("not_accepted");
   expect(JSON.stringify(waiverFact.value)).toContain("English was primary/secondary instruction from ages 6–18");
   expect(conflictFact.publication_status).toBe("conflicting");
-  expect(JSON.stringify(conflictFact.value)).toContain("do not silently choose one source");
+  // The official next step stays; the maintainer note after it is removed from applicant responses.
+  expect(JSON.stringify(conflictFact.value)).toContain("Confirm accepted exam/scale");
+  expect(JSON.stringify(conflictFact.value)).not.toContain("do not silently choose one source");
 
   const tests = await openFact(page, "admission", testsFact.id);
   await expect(tests).toContainText("under 2 years old by deadline");

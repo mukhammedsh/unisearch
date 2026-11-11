@@ -16,6 +16,7 @@ STANFORD = "stanford-university-usa-ca"
 class CatalogCostTests(unittest.TestCase):
     def test_program_price_is_visible_without_becoming_an_annual_budget(self):
         fact = {"id": "finance-fee", "publication_status": "published", "review_status": "verified",
+                "normalized_status": {"publication": "published", "review": "verified"},
                 "source_ids": ["official"], "scope": {"option_ids": ["finance"], "route_ids": [], "levels": ["masters"]},
                 "value": {}, "attributes": {"catalog_costs": {"quotes": [{"basis": "tuition", "amount": 14000,
                     "currency": "USD", "billing_period": "whole_program", "period_label": "Whole program"}]}}}
@@ -47,6 +48,21 @@ class CatalogCostTests(unittest.TestCase):
         self.assertEqual(97545, stanford["annual_total"]["min"])
         self.assertEqual(67731, stanford["tuition"]["min"])
         self.assertIn("one_time_fees", stanford["annual_total"]["exclusions"])
+
+    def test_selected_costs_convert_only_annual_quotes_for_budget_comparison(self):
+        nu = admissions_catalog.selected_costs("nazarbayev-university-kaz-astana", {
+            "study_option_id": "nu-a-study-bachelor-of-science-in-computer-science", "study_level": "undergraduate",
+            "application_route_id": "nu-a-route-regular-foundation-undergraduate"})
+        self.assertIsNone(nu["annual_total"])
+        self.assertEqual({"min": 15000, "max": 15000}, nu["tuition"]["usd"])
+        self.assertIn("living", nu["tuition"]["exclusions"])
+        with patch("app.services.currency.convert", side_effect=lambda amount, source, target: amount * 2):
+            imperial = admissions_catalog.selected_costs(IMPERIAL, {"study_level": "undergraduate"})
+        self.assertEqual({"min": 20100, "max": round(imperial["tuition"]["max"] * 2)}, imperial["tuition"]["usd"])
+        whole_program = {"min": 14000, "max": 14000, "currency": "USD", "annual_comparable": False}
+        self.assertIsNone(admissions_catalog._usd_range(whole_program))
+        with patch("app.services.currency.convert", side_effect=ValueError("unsupported")):
+            self.assertIsNone(admissions_catalog._usd_range({**whole_program, "currency": "XYZ", "annual_comparable": True}))
 
     def test_imperial_does_not_sum_different_years_or_use_placement_year_fees(self):
         costs = admissions_catalog.catalog_costs(IMPERIAL)

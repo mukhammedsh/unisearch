@@ -33,7 +33,8 @@ test("languages panel validates and saves realistic exam-based language proof", 
     );
   });
   await setNativeSelect(page, "langExam", "IELTS");
-  await expect(page.locator(selectors.langExamScore)).toBeHidden();
+  // The overall score is offered for applicants who do not know their section scores.
+  await expect(page.locator(selectors.langExamScore)).toBeVisible();
   const sectionScores = {
     IELTS_LISTENING: "8.0",
     IELTS_READING: "7.5",

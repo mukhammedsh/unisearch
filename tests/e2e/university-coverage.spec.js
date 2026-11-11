@@ -54,7 +54,9 @@ async function openReviewedUniversity(page, university) {
   await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
   const programCards = page.locator("#admissionsProgramList .program-card:has([data-study-option])");
   expect(await programCards.count()).toBeGreaterThan(0);
-  await expect(page.locator("#detailPrograms .program-card:visible")).toHaveCount(await programCards.count());
+  // Options restricted to current students or a special group sit in a collapsed group until the applicant opens it.
+  const restrictedCards = page.locator("#admissionsProgramList details.admissions-programs__restricted .program-card:has([data-study-option])");
+  await expect(page.locator("#detailPrograms .program-card:visible")).toHaveCount(await programCards.count() - await restrictedCards.count());
   await expect(page.locator("#admissionsStudyLevel")).toHaveValue("");
   return detail;
 }

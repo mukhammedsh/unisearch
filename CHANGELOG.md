@@ -2,6 +2,45 @@
 
 All notable project changes should be recorded here.
 
+## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
+
+### Added
+- Added a key-facts summary to the Admission tab with the requirements-match result, the nearest action deadline, the published annual price against the profile budget, and the funding route status.
+- Added `selected_costs` to the admissions-context API response, with USD ranges for annual quotes so clients can compare them with a budget.
+- Added the `entry_cycle_required` check and assessment reason for cycle-scoped minimums when no entry cycle is selected; the Admission tab offers the recognised profile cycle or opens the entry-cycle field.
+- Recognised plain seasonal entry cycles in Russian and Kazakh, such as "осень 2027" and "2027 күз".
+- Added plain-language explanations for UCAS, TMUA, Foundation/NUFYP, early and regular application rounds, CSS Profile and Home/Overseas fees on reviewed university pages, usable by hover, keyboard and touch.
+- Explained Home and Overseas fee status next to fee-dependent prices, with a link to the university's official fee-status page; the applicant's status is never inferred.
+- Showed a university's published financial-need policy for the selected route in the key facts, labelled as policy rather than an award.
+- Allowed SAT, UNT and IELTS to be saved with only the overall score; unreported section minimums stay unassessed.
+- Replaced empty comparison rows with a prompt to choose a program or route, and applied the only compatible route after a deliberate program choice in the comparison.
+- The key-facts requirements row names the missing evidence, such as a SAT test date or IELTS section scores, and which overall scores already meet the published minimum.
+- Annual deadlines published without a year, such as MIT's first-year rounds, show whether this year's date has passed and the next occurrence with a countdown, labelled as an annual date to confirm.
+- The key facts lead with the main application deadline, keep earlier test registration dates as a second line, and skip test dates for exams the applicant has not listed when another accepted exam is in the profile.
+- The comparison uses profile subject, level, entry cycle and budget as suggestions, compares each selected annual price with the budget, and shows published application periods and requirement summaries.
+- Russian and Kazakh translations of the admissions text for Imperial College London (all undergraduate and postgraduate course text, including overviews, interviews, deadlines, careers, funding, research-degree rules and module descriptions) and Stanford University (all applicant-facing long text, including program pages from the Stanford Bulletin); official quotations, qualification and test-requirement tables, ATAS course descriptions, course and module titles stay in English.
+- Stanford's first-year (Restrictive Early Action, Regular Decision) and transfer deadlines, and the standing deadlines of the CHPR and Neurosciences MS routes for current students, now show the next annual date with a countdown, from structured companion records that keep the original prose.
+
+### Changed
+- Admissions status now uses a closed vocabulary, and internal-only or restricted-group routes are labelled explicitly.
+- Admissions preparation rejects research labels that are missing from the vocabulary table.
+- Gap explanations and next steps for MIT, Imperial, Stanford and Nazarbayev University read as plain guidance to the applicant instead of research notes, in English and in the existing Russian and Kazakh translations, through an ordered rewrite table; numbers, dates and conditions are unchanged.
+
+### Fixed
+- Removed maintainer research notes from applicant-facing admissions text and its Russian and Kazakh translations; the source records are unchanged.
+- Stopped showing half-translated admissions sentences in Russian and Kazakh; text without a full translation is shown whole in its source language.
+- Saving the profile is no longer blocked by a prefilled score after selecting an exam that is already saved.
+- Distinguished the US high school diploma from the national school certificate in the qualification list.
+- A program or route chosen in the comparison is no longer lost when the applicant continues without pressing the separate apply button.
+- Shortened the Admission tab by linking requirement checks to their source record instead of repeating it, showing each record's source once, merging duplicate conditions, and hiding internal selector and evidence fields.
+- Localized Imperial's UCAS date labels and fixed missing spaces in entry-cycle labels.
+- Cached study-option lists now refresh when the applicant-facing wording rules change.
+- Restated about 150 more research-voice sentences as plain guidance, including scope notes in the source details, with matching Russian and Kazakh edits for translated MIT and NU text.
+- Internal status codes such as `round_1` or `tuition_and_mandatory_fee` show as readable labels in all three languages, and Stanford Bulletin metadata shows as labelled values instead of raw Python text.
+- Stanford's historical records no longer list research notes that later reviewed records replaced.
+- Applicant-facing text editing is memoised, so the larger rule set no longer slows admissions responses.
+- The NU next step for NUET no longer loses the NUFYP regular-entry minimum of 120/50/50 together with the removed maintainer instruction.
+
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
 
 ### Changed

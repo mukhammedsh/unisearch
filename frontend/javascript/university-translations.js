@@ -26,11 +26,31 @@ function getGroup(group, lang = getCurrentLanguage()) {
   return row && typeof row === "object" ? row : null;
 }
 
-function replaceInsensitive(text, search, replacement) {
-  const escaped = String(search || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  if (!escaped) return String(text || "");
-  const pattern = new RegExp(`(^|[^A-Za-z])(${escaped})(?=$|[^A-Za-z])`, "gi");
-  return String(text || "").replace(pattern, (_, prefix) => `${prefix}${String(replacement || "")}`);
+// Replacement rules translate a complete standalone label only. Applying them to words inside a longer
+// English sentence produced mixed text ("Регистрационный сбор is USD 100"), so any other text is left to
+// an exact translation or shown whole in its source language.
+const LABEL_RULE_INDEX = new WeakMap();
+
+function labelKey(text) {
+  return String(text || "").trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+function translateStandaloneLabel(text, rules) {
+  if (!Array.isArray(rules) || !rules.length) return "";
+  let index = LABEL_RULE_INDEX.get(rules);
+  if (!index) {
+    index = new Map();
+    rules.forEach((rule) => {
+      if (Array.isArray(rule) && rule.length >= 2 && String(rule[1]).trim()) index.set(labelKey(rule[0]), String(rule[1]));
+    });
+    LABEL_RULE_INDEX.set(rules, index);
+  }
+  const raw = String(text || "").trim();
+  const tail = raw.match(/[.:;,]+$/)?.[0] || "";
+  const translated = index.get(labelKey(raw.slice(0, raw.length - tail.length)));
+  if (!translated) return "";
+  const capitalized = /^\p{Lu}/u.test(raw) ? translated.replace(/^\p{Ll}/u, (letter) => letter.toUpperCase()) : translated;
+  return `${capitalized}${tail}`;
 }
 
 async function loadLocalKazakhTranslations() {
@@ -189,13 +209,7 @@ export function translateAdmissionText(value, fallback = "") {
     if (exact[normQuotes]) return String(exact[normQuotes]);
   }
 
-  const rules = pack && Array.isArray(pack.admission_replace) ? pack.admission_replace : [];
-  let out = raw;
-  rules.forEach((rule) => {
-    if (!Array.isArray(rule) || rule.length < 2) return;
-    out = replaceInsensitive(out, String(rule[0]), String(rule[1]));
-  });
-  return out;
+  return translateStandaloneLabel(raw, pack?.admission_replace) || raw;
 }
 
 export function translateAdmissionSummary(value, { section = "" } = {}) {
@@ -228,15 +242,8 @@ export function translateTrackLabel(value, fallback = "") {
     if (map[raw]) return String(map[raw]);
   }
 
-  let out = translateAdmissionText(raw, raw);
-  const fallbackRules = pack && Array.isArray(pack.track_label_fallback_replace)
-    ? pack.track_label_fallback_replace
-    : [];
-  fallbackRules.forEach((rule) => {
-    if (!Array.isArray(rule) || rule.length < 2) return;
-    out = replaceInsensitive(out, String(rule[0]), String(rule[1]));
-  });
-  return out;
+  const out = translateAdmissionText(raw, raw);
+  return out !== raw ? out : translateStandaloneLabel(raw, pack?.track_label_fallback_replace) || raw;
 }
 
 export function translateProgramName(value, fallback = "") {

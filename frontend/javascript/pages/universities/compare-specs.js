@@ -62,6 +62,8 @@ import {
   formatCompareCostRange,
   hasReviewedAdmissions,
 } from "./compare-helpers.js";
+import { comparisonSelectionGap } from "./compare-summary.js";
+import { costFact } from "../university/admissions-key-facts.js";
 
 export const compareSlotLabel = (index) => tFormat(
   "universities.compare.pair_slot",
@@ -1023,9 +1025,46 @@ const compareOutcomesTheme = (universities) => {
     };
 };
 
+// Compares each selected program's published annual price with the profile budget; aid is never deducted.
+const compareBudgetTheme = (universities, context) => {
+    const budgetUsd = Number(context?.budgetUsd);
+    const rows = universities.map((university) => {
+        const state = context?.reviewed?.get(String(university?.id || ""));
+        const unavailable = state?.status !== "ready" || comparisonSelectionGap(state);
+        const cost = unavailable ? null : costFact(state.resolved, budgetUsd);
+        const fit = !cost ? t("universities.compare.summary.unknown")
+            : cost.flag ? cost.flag.text
+            : t({
+                no_budget: "university.admissions.key_facts.budget_missing",
+                unknown: "university.admissions.key_facts.cost_unknown",
+                not_annual: "university.admissions.key_facts.cost_not_annual",
+            }[cost.status] || "universities.compare.budget.not_comparable");
+        const comparable = Boolean(cost?.flag);
+        return { university, cost, fit, comparable };
+    });
+    const complete = rows.every((row) => row.comparable);
+    return {
+        key: "budget",
+        icon: "banknotes",
+        title: t("universities.compare.budget.title"),
+        status: complete ? "tradeoff" : "missing",
+        summary: t(complete ? "universities.compare.budget.summary" : "universities.compare.budget.summary_incomplete"),
+        universities: rows.map((row) => ({
+            id: String(row.university?.id || ""),
+            name: compareUniversityName(row.university),
+            facts: [
+                compareDecisionFact(t("universities.compare.budget.cost"), row.cost ? row.cost.text : t("universities.compare.summary.unknown")),
+                compareDecisionFact(t("universities.compare.budget.fit"), row.fit),
+                ...(row.cost?.notes?.length ? [compareDecisionFact(t("universities.compare.budget.notes"), row.cost.notes.join(" "))] : []),
+            ],
+        })),
+    };
+};
+
 export const buildCompareDecisionSignals = (universities, context = {}) => [
     compareAdmissionTheme(universities, context),
     compareFinanceTheme(universities, context),
+    ...(universities.every(hasReviewedAdmissions) ? [compareBudgetTheme(universities, context)] : []),
     compareAcademicsTheme(universities),
     compareOutcomesTheme(universities),
 ];

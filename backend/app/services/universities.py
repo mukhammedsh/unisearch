@@ -1,6 +1,7 @@
 import copy
 import hashlib
 import json
+import logging
 import math
 import re
 import urllib.parse
@@ -21,7 +22,7 @@ from app.services.finance_modes import (
     normalize_study_mode as _normalize_study_mode,
 )
 from app.services import search as search_service
-from app.services import admissions_catalog
+from app.services import admissions_catalog, admissions_editorial
 from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program, _MBA_RE
 
 
@@ -1833,6 +1834,11 @@ def get_university_etag(
     return f'"{digest}"'
 
 
+_LOGGER = logging.getLogger("unisearch.translations")
+# language -> (source pack, editorial clauses, cleaned pack); identity checks follow the loaders' own caches.
+_CLEAN_TRANSLATION_CACHE: Dict[str, Tuple[Any, Any, Dict[str, Any]]] = {}
+
+
 def get_university_translation_bundle(
     search_lang: Optional[str] = None,
 ) -> Dict[str, Any]:
@@ -1840,6 +1846,16 @@ def get_university_translation_bundle(
     raw = _load_university_translations_raw()
     langs = raw.get("languages") if isinstance(raw.get("languages"), dict) else {}
     pack = langs.get(lang) if isinstance(langs.get(lang), dict) else {}
+    try:
+        clauses = admissions_editorial.load_clauses()
+        cached = _CLEAN_TRANSLATION_CACHE.get(lang)
+        if not cached or cached[0] is not pack or cached[1] is not clauses:
+            cached = (pack, clauses, admissions_editorial.clean_translation_pack(pack, lang))
+            _CLEAN_TRANSLATION_CACHE[lang] = cached
+        pack = cached[2]
+    except admissions_catalog.AdmissionsCatalogError:
+        # The admissions endpoints fail explicitly in this state; general translations stay available.
+        _LOGGER.warning("Admissions editorial notes are unavailable; translations are served unfiltered")
     return {
         "lang": lang,
         "schema_version": raw.get("schema_version", 1),

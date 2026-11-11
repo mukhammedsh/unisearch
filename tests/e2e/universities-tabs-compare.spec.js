@@ -51,10 +51,18 @@ async function chooseReviewedContext(page, id, search, option, route, cycle, stu
   await chooser.locator(`[data-study-option="${option}"]`).click();
   const select = chooser.locator('select[data-context-field="application_route_id"]');
   await expect(select).toBeEnabled();
-  await expect(select).toHaveValue("");
-  const wrapper = select.locator("xpath=..");
-  await wrapper.locator(".custom-select-trigger").click();
-  await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  // A program with one compatible route applies it after the deliberate program choice; otherwise the route stays empty.
+  const applied = await select.inputValue();
+  expect(["", route]).toContain(applied);
+  if (applied !== route) {
+    const wrapper = select.locator("xpath=..");
+    await wrapper.locator(".custom-select-trigger").click();
+    await wrapper.locator(`.custom-option[data-value="${route}"]`).click();
+  } else {
+    // Applying the sole route refreshes the chooser, which renders its details collapsed again.
+    if (!(await disclosure.evaluate(element => element.open))) await disclosure.locator(":scope > summary").click();
+    await openDisclosureParents(chooser.locator("[data-compare-context-form]"));
+  }
   await setNativeSelect(page, `compare-applicant_route-${id}`, applicantRoute);
   await chooser.locator(`#compare-cycle-${id}`).fill(cycle);
   await chooser.locator("[data-compare-context-form] button[type=submit]").click();
@@ -219,8 +227,9 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
 
   // Verify results view rendered on compare page
   await expect(page.locator(".compare-decision-support")).toBeVisible();
-  await expect(page.locator(".compare-decision-theme")).toHaveCount(1);
-  await expect(page.locator(".compare-decision-side")).toHaveCount(2);
+  // Reviewed pairs add the profile-budget signal beside the academics signal.
+  await expect(page.locator(".compare-decision-theme")).toHaveCount(2);
+  await expect(page.locator(".compare-decision-side")).toHaveCount(4);
   await expect(page.locator(".compare-uni-card")).toHaveCount(2);
   await expect(page.locator("[data-reviewed-comparison] .compare-table thead th")).toHaveCount(3);
   await expect(page.locator(".compare-additional-facts")).not.toHaveAttribute("open", "");
@@ -615,8 +624,9 @@ test("compare rework: diff toggle, neutral rows, and reviewed context controls",
   await expect(page.locator(".compare-tests .compare-table-wrap")).not.toHaveClass(/is-diff-only/);
 
   // 8. Verify neutral decision-support themes and paired evidence
-  await expect(page.locator(".compare-decision-theme")).toHaveCount(1);
-  await expect(page.locator(".compare-decision-side")).toHaveCount(2);
+  // Reviewed pairs add the profile-budget signal beside the academics signal.
+  await expect(page.locator(".compare-decision-theme")).toHaveCount(2);
+  await expect(page.locator(".compare-decision-side")).toHaveCount(4);
   await expect(page.locator(".compare-decision-status").first()).toBeVisible();
   await expect(page.locator(".compare-overview, .compare-conclusion, .compare-key-differences")).toHaveCount(0);
 });
