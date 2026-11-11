@@ -23,7 +23,8 @@ const OFFICIAL_TEXT_KEYS = new Set(["source_content", "published_text", "origina
 const VALUE_FIELDS = ["value", "conditions", "conditions_and_exceptions", "exceptions", "reason", "official_next_step"];
 
 function visibleText(html) {
-  return html.replace(/<[^>]+>/g, "\n").replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+  // &amp; is decoded last so an escaped entity such as "&amp;quot;" is not decoded twice.
+  return html.replace(/<[^>]+>/g, "\n").replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 }
 
 function withoutOfficialText(value) {
@@ -94,4 +95,17 @@ test("Python dict notes are shown as readable flags instead of literal dict text
   assert.doesNotMatch(text, /\{'|externalAdmissions|unitsProgramMin/);
   assert.match(text, /2026.27 Bulletin degree metadata/);
   assert.match(text, /45/);
+});
+
+test("text shaped like a Python dict is parsed in linear time and malformed dicts stay plain text", () => {
+  // The shape CodeQL flagged for exponential backtracking: many repeated entries and no closing brace.
+  const hostile = `{{'A':True${" 'A':0".repeat(50000)}`;
+  const started = performance.now();
+  const html = renderAdmissionsValue(hostile, {});
+  assert.ok(performance.now() - started < 1000, "parsing must not backtrack");
+  assert.ok(html.includes("A&#039;:True"), "an unparseable value stays as text");
+  // An entry that is not a plain literal keeps the whole value as text.
+  assert.ok(renderAdmissionsValue("Note: {'a': 1, 'b': [2]}", {}).includes("b&#039;: [2]"));
+  // A trailing comma and no leading note are accepted.
+  assert.match(visibleText(renderAdmissionsValue("{'coterm': False,}", {})), /coterm|Coterm|\bNo\b/i);
 });

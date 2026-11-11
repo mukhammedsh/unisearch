@@ -411,15 +411,21 @@ export function admissionDeadlineTitle(event) {
 }
 
 // Prepared bulletin notes can embed a Python dict literal, e.g. "...: {'externalAdmissions': True}.".
-const PYTHON_DICT_NOTE = /^(.*?)\s*\{((?:\s*'[A-Za-z]\w*'\s*:\s*(?:True|False|None|-?\d+(?:\.\d+)?)\s*,?)+)\s*\}\.?$/;
-const PYTHON_DICT_ENTRY = /'([A-Za-z]\w*)'\s*:\s*(True|False|None|-?\d+(?:\.\d+)?)/g;
+// The literal is split on commas and each entry is matched on its own, so no pattern can backtrack across entries.
+const PYTHON_DICT_ENTRY = /^'([A-Za-z]\w*)'\s*:\s*(True|False|None|-?\d+(?:\.\d+)?)$/;
 
 function pythonDictFlags(text) {
-  const match = PYTHON_DICT_NOTE.exec(text.trim());
-  if (!match) return null;
-  const entries = [...match[2].matchAll(PYTHON_DICT_ENTRY)].map(([, key, raw]) => [key,
-    raw === "True" ? true : raw === "False" ? false : raw === "None" ? null : Number(raw)]);
-  return entries.length ? { note: match[1].replace(/:$/, "").trim(), flags: Object.fromEntries(entries) } : null;
+  const trimmed = text.trim();
+  const end = trimmed.endsWith("}.") ? trimmed.length - 2 : trimmed.endsWith("}") ? trimmed.length - 1 : -1;
+  const start = trimmed.lastIndexOf("{", end);
+  if (end < 0 || start < 0) return null;
+  const parts = trimmed.slice(start + 1, end).split(",").map(part => part.trim());
+  if (parts.at(-1) === "") parts.pop();
+  const entries = parts.map(part => PYTHON_DICT_ENTRY.exec(part));
+  if (!entries.length || entries.some(entry => !entry)) return null;
+  const flags = Object.fromEntries(entries.map(([, key, raw]) => [key,
+    raw === "True" ? true : raw === "False" ? false : raw === "None" ? null : Number(raw)]));
+  return { note: trimmed.slice(0, start).trim().replace(/:$/, "").trim(), flags };
 }
 
 export function renderAdmissionsValue(value, referenceLabels = {}) {
