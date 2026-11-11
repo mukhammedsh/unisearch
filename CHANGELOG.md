@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## Unreleased
+## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 
 ### Added
 - Added a key-facts summary to the Admission tab with the requirements-match result, the nearest action deadline, the published annual price against the profile budget, and the funding route status.
