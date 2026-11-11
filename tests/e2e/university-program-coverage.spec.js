@@ -113,7 +113,8 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   expect(publishedTuition.value.graduate_engineering_quarterly_tuition).toEqual({ "8-10_units": 15100, "11-18_units": 23239 });
   const currentCostUnknown = cs.unknowns.find((fact) => fact.id === "engineering-doerr-evidence:engineering-2027-cost-unpublished");
   expect(currentCostUnknown.reason).toContain("2027-28 Engineering prices are not published");
-  expect(cs.history.unknown_ids).toContain("engineering-doerr-evidence:tuition-and-funding-details");
+  // The old tuition-and-funding gap is superseded by the recorded 2026-27 schedules above, so it is no longer listed as history.
+  expect(cs.history.unknown_ids).not.toContain("engineering-doerr-evidence:tuition-and-funding-details");
 
   await openTab(page, "finance");
   const csCost = page.locator('#tab-finance [data-admissions-fact="engineering-doerr-evidence:engineering-2026-27-historical-tuition"]');
@@ -128,12 +129,10 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   await expect(unknowns).toBeVisible();
   await unknowns.locator(":scope > summary").click();
   await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011]28 Engineering prices are not published/ })).toHaveCount(1);
+  // The old tuition-and-funding gap is superseded: its 2027-28 caveat now lives in the current unknowns, not in history.
+  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /individual electronic admission\/aid offer/ })).toHaveCount(1);
   await openTab(page, "general");
-  const history = page.locator("#admissionsUniversityInfo .admissions-catalog > details").filter({ hasText: /Historical records/ });
-  await expect(history).toBeVisible();
-  await history.locator(":scope > summary").click();
-  await expect(history.locator(".admissions-catalog__unknown")).not.toHaveCount(0);
-  await expect(history).toContainText(/2027[-\u2011]28 tuition and individual future offer amounts remain unavailable/);
+  await expect(page.locator("#admissionsUniversityInfo")).not.toContainText(/2027[-\u2011]28 tuition and individual future offer amounts remain unavailable/);
 });
 
 test("MIT application dates and Imperial award deadlines stay in their own source scopes", async ({ page }) => {

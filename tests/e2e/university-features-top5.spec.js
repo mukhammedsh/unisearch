@@ -267,7 +267,7 @@ test("MIT first-year deadline facts keep recurring dates separate from the 2027 
   await expect(recurring).toContainText("Early Action");
   await expect(recurring).toContainText("November 1");
   await expect(recurring).toContainText("January 4");
-  await expect(recurring).toContainText("page does not specify entry year");
+  await expect(recurring).toContainText("page does not state entry year");
 
   const cycleDeadline = page.locator('#detailDeadlines [data-admissions-fact="mit-first-year-application-deadline"]');
   await openDisclosureParents(cycleDeadline);

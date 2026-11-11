@@ -163,12 +163,14 @@ for (const viewport of viewports) {
       await setNativeSelect(page, `compare-application_route_id-${choice.id}`, choice.route);
       await setNativeSelect(page, `compare-study_level-${choice.id}`, "undergraduate");
       await setNativeSelect(page, `compare-applicant_route-${choice.id}`, "first_year");
-      await chooser.locator('[data-compare-context-form] button[type="submit"]').click();
-      await expect.poll(() => page.evaluate((id) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[id]?.applicationRouteId, choice.id)).toBe(choice.route);
     }
+    // Continuing applies and saves the unsaved route and level choices of both universities.
     const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
     await expect(continueCompareButton).toBeEnabled();
     await continueCompareButton.click();
+    for (const choice of [{ id: "mit-usa-cambridge", route: "mit-first-year" }, { id: "imperial-college-london-uk", route: "procedure-computing-meng" }]) {
+      await expect.poll(() => page.evaluate((id) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[id]?.applicationRouteId, choice.id)).toBe(choice.route);
+    }
     await expect(page.locator(".compare-decision-support")).toBeVisible();
     await expect(page.locator(".compare-uni-card")).toHaveCount(2);
     await expect(page.locator(".compare-tests .compare-table thead th")).toHaveCount(3);
