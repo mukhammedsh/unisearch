@@ -83,7 +83,7 @@ Publication and review are independent: an official statement that a date is not
 
 Only use official university sources and university-hosted admissions PDFs, in line with `AGENTS.md`. If an official source contradicts another official source, record the ambiguity and seek a route-specific resolution; do not silently choose the more convenient value.
 
-Retain significant exceptions, exemptions, alternatives, conditional requirements, and restrictions together with the condition, affected fact, applicable scope, and source. Extend or reorganize the draft schema when a real fact does not fit. Technical implementation difficulty is never a reason to omit it. Separate publication of a rule from automatic assessment of an applicant: a rule can be fully documented while its assessment remains unresolved. In the integrated product, show the exact condition, whether it applies to the selected program/applicant/cycle, and what profile evidence is missing; no hidden rejection checks are permitted.
+Research depth is bounded by [the light dossier standard](admissions-light-dossier.md) (decision of 2026-11-12): within its closed topics and budget, retain exceptions, alternatives, conditional requirements and restrictions together with the condition, affected fact, applicable scope, and source, and extend the schema when a real in-scope fact does not fit; technical difficulty is not a reason to omit an in-scope fact. Rare exceptions beyond the budget, curriculum detail and degree-completion rules are represented by a link to the official page. The four accepted datasets were collected under the earlier unbounded rule and remain valid. Separate publication of a rule from automatic assessment of an applicant: a rule can be fully documented while its assessment remains unresolved. In the integrated product, show the exact condition, whether it applies to the selected program/applicant/cycle, and what profile evidence is missing; no hidden rejection checks are permitted.
 
 ## Why institution-wide assumptions fail
 
@@ -177,14 +177,12 @@ The profile already collects and persists the following context, and `frontend/j
 
 | Existing input | Required use in the journey |
 | --- | --- |
-| Citizenship(s) | Review explicitly nationality-dependent route or aid rules; retain unknown applicability when other legal criteria are missing. |
-| Country of education and credential/curriculum | Select matching qualification guidance and subject/grade rules; exam scores alone do not establish recognition of the qualification. |
-| Applicant route (`first_year`, `transfer`, `graduate`) | Narrow the actual application paths, their requirements, and relevant dates. |
 | Intended entry cycle | Select facts for that cycle; identify yearless, conflicting, or unavailable information explicitly. |
-| Current country of residence | Use only where an official rule depends on residence. It does not establish immigration or permanent-resident status. |
 | Self-reported fee status | Show the appropriate fee context where applicable, with its self-reported status; do not treat this global hint as a confirmed classification by every university. |
 | Study level, subject, exams, languages, and GPA | Identify relevant options and compare evidence against scoped requirements. |
 | Budget and preferences | Explain affordability and preference fit using the selected option's known costs; potential aid is separate from awarded aid. |
+
+The profile does not collect citizenship, current country of residence, family income, country of education, credential or a general applicant route. The applicant category belongs to the application route selected on a university page, and published qualification guidance is shown as reference to every reader. No runtime rule could be assessed from them: fee status and aid eligibility depend on legal criteria the profile cannot hold, so these inputs never changed a result. Nationality- or residence-dependent rules and published aid income thresholds stay visible as sourced facts with their official next step. Add a profile input only together with a published rule that it actually evaluates.
 
 Use populated profile values without asking the same questions again. Let a visitor choose or override the context for an individual university without rewriting their general profile. Ask only for a missing detail that changes applicability; otherwise show the unresolved state and official next action. If a route depends on a legal status the profile does not hold, do not infer it from nationality or current residence.
 
