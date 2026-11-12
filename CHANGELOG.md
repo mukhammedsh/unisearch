@@ -2,6 +2,38 @@
 
 All notable project changes should be recorded here.
 
+## 10.3.0 (2026-11-13) - Simplified profile and admission pages
+
+Minor release: returning users see a simpler profile and admission page, and a program with a single application route is read directly. Saved profiles keep working because removed profile keys are stripped on load, so the change is not major.
+
+### Added
+- Added `applicant_route` (`first_year`, `transfer`, `graduate` or null) to application route summaries in the admissions API responses, derived for every route during catalog preparation.
+
+### Changed
+- Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
+- The applicant category follows the selected application route. The admissions page and the comparison no longer ask for it, and older links that still carry the removed applicant parameter ignore it.
+- A program with exactly one application route reads that route directly, without saving it.
+- The Admission tab shows the requirements-match summary once, in the key facts; Study details no longer repeat it.
+- Source references use numbered markers with one titled source list per tab, and the full source records sit behind one disclosure.
+- Card prices show their qualifiers (tuition label and second currency) on a line below the price.
+- Admissions responses return only the fields the pages read. Fact and unknown records omit provenance, index attributes, related-fact IDs and review timestamps, and the assessment omits values it repeats. Stored records and assessment hashes are unchanged.
+- Reviewed institutions keep their funding facts in the admissions catalog, so the grant and paid list filters exclude only institutions whose records establish that the funding type is absent.
+- Published qualification guidance is shown to every reader as reference.
+- Precomputed the major-taxonomy normalisation, so the first admissions request is faster.
+- Regenerated `backend/data/admissions/catalog.json` with the route-level applicant category and the closed overrides in the draft vocabulary.
+- Newly added institutions follow the light dossier standard (`docs/admissions-light-dossier.md`), which bounds research depth. The four accepted deep datasets are unchanged.
+
+### Removed
+- Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
+- Institution-evidence options for Imperial College London and Stanford and the "major" evidence metric. The MIT Course 6-9 and MITx credential checks remain.
+- The `citizenshipStatus` field from minimum-requirements responses, the citizenship service and its tests (`backend/app/services/citizenship.py`, `backend/tests/test_citizenship_service.py`), and the country list module (`frontend/javascript/utils/countries.js`).
+
+### Fixed
+- A context whose applicant category contradicts the selected route is no longer treated as applicable to the requirements check.
+- Reviewed institutions report unknown, not absent, grant, paid and aid availability, so the list filters no longer hide them.
+- Same-titled official pages at different URLs, such as Stanford's first-year and transfer "Application and Essays", are told apart in the source list by a URL-path hint.
+- Removed a restated research sentence about a named Kazakhstan diploma from Stanford's school-education requirement text in English, Russian and Kazakh. The unresolved-qualification entry stays.
+
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 
 ### Added
