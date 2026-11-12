@@ -1321,14 +1321,16 @@ def _build_university_meta(
     )
 
     choices = expand_admission_choices(u.get("admission_categories"))
-    has_grant = any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
-    has_paid = any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
+    # Reviewed institutions keep funding facts in the admissions catalog, not in legacy
+    # admission choices, so these flags are unknown (None) rather than False for them.
+    has_grant = None if reviewed else any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
+    has_paid = None if reviewed else any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
     acceptance_rate = _get_university_acceptance_rate(u)
     cost_usd_any = _effective_university_cost_usd(u, "any")
     cost_usd_online = _effective_university_cost_usd(u, "online")
     cost_usd_oncampus = _effective_university_cost_usd(u, "on-campus")
     rank_num = _to_float(u.get("rank")) or 999999.0
-    has_aid = _has_any_aid(u)
+    has_aid = None if reviewed else _has_any_aid(u)
 
     return {
         "name": name_raw,
@@ -2048,10 +2050,11 @@ def _filter_university_pairs(
 
     if funding_type:
         ft = _safe_lower(funding_type)
+        # Only a known "no" excludes; unknown (None) funding availability stays visible.
         if ft == "grant":
-            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant")]
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant", False) is not False]
         elif ft == "paid":
-            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid")]
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid", False) is not False]
 
     if user_budget is not None:
         pairs = [(u, m) for u, m in pairs

@@ -27,8 +27,7 @@ class NuAdmissionsTests(unittest.TestCase):
     def resolve(self, option, route, level, profile=None, cycle=None):
         with patch.object(admissions_catalog, "_institution", return_value=({"revision": "nu-test"}, self.nu, self.index)):
             resolved = admissions_catalog.resolve_context(NU_ID, profile, {"study_option_id": option, "application_route_id": route,
-                "study_level": level, "applicant_route": "graduate" if level in {"masters", "doctoral", "professional", "residency"} else "first_year",
-                "intended_entry_cycle": cycle})
+                "study_level": level, "intended_entry_cycle": cycle})
         return resolved
 
     def assess(self, resolved, profile):
@@ -167,6 +166,10 @@ class NuAdmissionsTests(unittest.TestCase):
         result = self.assess(context, {})
         self.assertIsNone(result["overallChance"])
         self.assertEqual("funding_selection_separate", result["reason"])
+        # A funding route is not a second admission chance: one choice, on the regular and the support route alike.
+        self.assertEqual(1, len(result["choices"]))
+        regular = self.resolve("nu-a-study-bachelor-of-science-in-computer-science", "nu-a-route-regular-foundation-undergraduate", "undergraduate", cycle="2027/28")
+        self.assertEqual(1, len(self.assess(regular, {})["choices"]))
 
     def test_prices_remain_scoped_and_finance_is_not_annual(self):
         with patch.object(admissions_catalog, "get_institution", return_value=self.nu):

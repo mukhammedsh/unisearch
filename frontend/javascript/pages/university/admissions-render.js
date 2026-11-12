@@ -33,211 +33,13 @@ export function admissionsProgramLabel(option, { includeAward = false } = {}) {
   return { title: translateProgramName(name) + (award ? ` (${suffix[1]})` : qualification ? ` (${qualification})` : ""), officialTitle, courseCode };
 }
 
-export const ADMISSIONS_RENDER_LABELS = {
-  source_text_note: "Official wording remains in its original language. Each record has its own scope, period and conditions; expand a row to see its source details.",
-  source_note_simple: "Official source text is shown in its original language.",
-  conditional: "Conditional — applicability still needs verification",
-  scope_varies: "Scope varies",
-  matched: "Matches selected context",
-  unknown: "Unknown",
-  published: "Published",
-  partly_published: "Partly published",
-  limited_publication: "Published with a limited or unresolved scope",
-  conflicting: "Conflicting official sources",
-  review: "Evidence review",
-  "review.verified": "Verified",
-  "review.reviewed": "Reviewed",
-  "review.carried_forward_review": "Previous source review retained",
-  "review.conflicting": "Conflicting official sources",
-  "review.superseded": "Superseded source review",
-  "review.limited": "Source reviewed; some scope or conditions still need verification",
-  "review.needs_resolution": "Source review needs resolution",
-  "route_entry.external": "Application open to new applicants",
-  "route_entry.external_restricted": "Application for a restricted applicant group",
-  "route_entry.internal": "Current students only",
-  "route_entry.no_admission": "Awarded during another degree; no separate application",
-  "route_entry.closed": "Not open to new applicants",
-  "route_entry.unresolved": "Application path needs clarification",
-  not_published: "Not published",
-  needs_review: "Needs review",
-  historical: "Historical source record",
-  checked: "Official page checked",
-  period: "Published period",
-  scope: "Source scope",
-  conditions: "Conditions and exceptions",
-  exceptions: "Exceptions",
-  source: "Official source",
-  no_facts: "No source records are catalogued for this selection in this section. Check the official program and application pages.",
-  no_context: "Select a study option and its application route to view scoped source records.",
-  unknowns: "Unresolved source information",
-  next_step: "Official next step",
-  history: "Historical records",
-  history_note: "These records are retained as historical context and are not current requirements or prices for the selected cycle.",
-  assessment: "Minimum requirements match",
-  assessment_meaning: "The percentage is the share of evaluable published academic and language minimum checks met. It is not an admission probability, a check of all admission criteria, or a funding prediction.",
-  assessment_unavailable: "No requirements-match percentage is available for this context.",
-  assessment_count: "{met} of {total} evaluated numeric minimum checks met",
-  assessment_limits: "Other conditions and admission eligibility are not assessed; this is not an admission probability.",
-  assessment_next_missing: "Add the missing evidence in your profile, then review the checks below.",
-  assessment_next_unassessed: "Some published rules cannot be checked automatically. Review the official requirements below.",
-  assessment_next_no_numeric: "Our data has no numeric minimum for this path that can be compared automatically. Review the official requirements below.",
-  assessment_next_applicability: "Check your program, application path and entry year. Review the official conditions below.",
-  assessment_profile: "Edit profile",
-  self_reported: "Applicant evidence is self-reported; it is not institution-confirmed.",
-  provided: "Reported evidence",
-  minimum: "Published minimum",
-  rule: "Rule being checked",
-  source_rule: "Original published rule",
-  met: "Met",
-  unmet: "Not met",
-  missing: "Evidence missing",
-  unassessed: "Not assessed",
-  yes: "Yes",
-  no: "No",
-  detail: "Source detail",
-  source_scope_details: "Source and conditions",
-  "program_detail.study": "Study details",
-  "program_detail.fees": "Published course fees",
-  "program_detail.degree_policies": "Degree requirements and policies",
-  "program_detail.curriculum": "Curriculum and pathways",
-  full_source_record: "Full source record",
-  full_source_text: "Full published wording",
-  published_qualification_table: "Published qualification tables",
-  qualification_count: "{count} qualifications",
-  record_count: "{count} records",
-  check_details: "Optional profile check of published minimums",
-  publication: "Publication status",
-  "route_class.ucas_course_choice": "UCAS course choice",
-  "route_class.postgraduate_course_choice": "Postgraduate course application",
-  "topic.eligibility": "Eligibility",
-  "topic.academic": "Academic qualifications",
-  "topic.tests": "Tests",
-  "topic.language": "Language requirements",
-  "topic.documents": "Application documents",
-  "topic.portfolio": "Interviews and portfolios",
-  "topic.application": "Application process",
-  "topic.deadlines": "Dates and application windows",
-  "topic.costs": "Costs and fees",
-  "topic.funding": "Funding",
-  "topic.study": "Study content and structure",
-  "topic.completion": "Degree completion",
-  "topic.offers": "Offers and enrollment",
-  "topic.support": "Student support",
-  "domain.institution": "Institution information",
-  "domain.study": "Study content and structure",
-  "domain.degree_completion": "Degree completion and declaration",
-  "domain.requirements": "Admission requirements",
-  "domain.application": "Application process and documents",
-  "domain.offer_enrollment": "Offers and enrollment",
-  "domain.deadlines": "Application and funding dates",
-  "domain.costs": "Published costs",
-  "domain.funding": "Funding and award conditions",
-  "domain.career": "Careers and outcomes",
-  "domain.student_support": "Student support",
-  "domain.other": "Other source information",
-  "domain.reference": "Related source comparisons",
-  "reason.applicability_unknown": "The selected context or applicant applicability has not been established.",
-  "reason.missing_evidence": "Required applicant evidence is missing.",
-  "reason.unassessed_minimums": "Some published minima or their conditions cannot yet be assessed.",
-  "reason.entry_cycle_required": "Choose your entry year, for example \"Fall 2027\", to check your scores against these minimums.",
-  "reason.no_published_requirements": "No evaluable published numeric minimum is catalogued for this context.",
-  "reason.requirements_not_met": "At least one evaluated published minimum was not met.",
-  "reason.source_fact_changed": "The source record changed and its assessment needs review.",
-  "reason.source_state_not_verified": "The source rule is not verified for assessment.",
-  "reason.funding_selection_separate": "Funding selection is separate from admission. No admission requirements percentage is calculated for this funding context.",
-  "kind.exam_alternatives": "Required test alternatives",
-  "kind.academic_requirement": "Academic qualification",
-  "kind.manual_minimum": "Minimum requiring individual evidence review",
-  "kind.required_exam_presence": "Required test evidence",
-  "kind.scoped_gpa": "Scoped academic average",
-  "kind.enrollment": "Enrollment condition",
-  "kind.enrollment_units": "Major-course completion",
-  "kind.credential": "Credential condition",
-  "kind.language_requirement": "Language requirement",
-  "kind.covered_minima": "Related minimum checks",
-  "kind.remaining_conditions": "Remaining source conditions",
-  "kind.published_rule": "Published admission rule",
-  "kind.conditional_rule": "Conditional admission rule",
-  "kind.unresolved_rule": "Unresolved admission rule",
-  "kind.stale_annotation": "Source rule needs review",
-  "kind.source_state": "Source status needs review",
-  "field.currency": "Currency",
-  "field.period": "Price period",
-  "field.amount": "Amount",
-  "field.value": "Value",
-  "field.minimum": "Minimum",
-  "field.scale": "Original scale",
-  "field.unit": "Unit",
-  "field.units": "Total degree units",
-  "field.major_units": "Major units",
-  "field.completed_major_subjects": "Completed major subjects",
-  "field.metric": "Academic metric",
-  "field.status": "Status",
-  "field.taken_on": "Test date",
-  "field.as_of_term": "As of term",
-  "field.levels": "Study levels",
-  "field.applicant_categories": "Applicant categories",
-  "field.cycle": "Source cycle",
-  "field.fee_status": "Fee-status conditions",
-  "field.additional_dimensions": "Additional applicability conditions",
-  "field.study": "Study option",
-  "field.application": "Application route",
-  "field.duration": "Duration",
-  "field.mode": "Study mode",
-  "field.language": "Teaching language",
-  "field.location": "Location",
-  "field.department": "Department",
-  "field.start_date": "Start date",
-  "field.A3i6E": "Program description",
-  "field.WOZxr": "External-credit policy",
-  "field.ItCSB": "Program requirements",
-  "field.advisingExpectations": "Advising expectations",
-  "field.cotermQuartersBack": "Coterminal course-transfer timing",
-  "field.cotermTransferPolicy": "Coterminal course-transfer policy",
-  "field.programGradingPolicies": "Program grading policies",
-  "field.programGPARequirement": "Program completion GPA requirement",
-  "field.programAdditionalPolicies": "Additional program policies",
-  "field.exam_id": "Exam",
-  "field.credential_id": "Credential",
-  "field.score_percent": "Credential result (%)",
-  "field.subjects_minimum": "Minimum major subjects",
-  "field.required_modules": "Required test modules",
-  "field.allowed_windows": "Published test windows",
-  "field.alternatives": "Published alternatives",
-  "field.condition": "Condition",
-  "field.component_minimums": "Required section minimums",
-  "field.components_at_least": "Required subject results",
-  "field.profile_field": "Profile evidence",
-  "field.gpa_scale": "Original GPA scale",
-  "field.count": "Required count",
-  "field.reported": "Reported count",
-  "field.meeting_minimum": "Results meeting the minimum",
-  "field.score": "Reported score",
-  "field.details": "Report details",
-  "field.components": "Reported sections and subjects",
-  "field.raw_value": "Reported grade or result",
-  "field.display_value": "Recorded result",
-  "field.requires_review": "Requires individual review",
-  "field.windows": "Published periods",
-  "field.date_boundary": "Published test-date limits",
-  "field.max_age_years": "Maximum test age in years",
-  "field.search_opens": "Course search opens",
-  "field.preparation_opens": "Application preparation opens",
-  "field.submission_opens": "Application submission opens",
-  "field.medicine_deadline": "Medicine application deadline",
-  "field.other_course_equal_consideration": "Equal consideration deadline for other courses",
-  "field.a_level_results": "A-level results",
-  "field.date": "Date",
-  "field.time": "Time",
-  "field.timezone": "Time zone",
-  "field.scope": "Applies to",
-  record_link: "Show full source record",
-  counted_minimum: "At least {count} results, each {minimum} or higher",
-  counted_provided: "{reported} reported; {met} meet the minimum",
-};
-
 function label(key) {
-  return t(`${PREFIX}${key}`, ADMISSIONS_RENDER_LABELS[key] || ADMISSIONS_RENDER_LABELS.detail);
+  return t(`${PREFIX}${key}`) || t(`${PREFIX}detail`);
+}
+
+// True when the language packs define this admissions label; codes without one are handled by the caller.
+function hasLabel(key) {
+  return Boolean(t(`${PREFIX}${key}`));
 }
 
 export function admissionsRouteName(route, { presentation } = {}) {
@@ -245,7 +47,7 @@ export function admissionsRouteName(route, { presentation } = {}) {
   if (localized) return localized;
   if (presentation === "simple" && !route?.title && !route?.target && route?.classification) {
     const key = `route_class.${route.classification}`;
-    return t(`${PREFIX}${key}`) || label(ADMISSIONS_RENDER_LABELS[key] ? key : route.entry ? `route_entry.${route.entry}` : "route_label");
+    return t(`${PREFIX}${key}`) || label(route.entry ? `route_entry.${route.entry}` : "route_label");
   }
   const name = route?.title || route?.target || route?.classification || route?.destination || label("route_label");
   return name;
@@ -305,26 +107,6 @@ const CODE_IN_TEXT = /(?<![\w@./-])[a-z][a-z0-9]*(?:_[a-z0-9]+)+(?![\w@/-])/g;
 const humanizeCode = code => { const words = code.replaceAll("_", " "); return words.charAt(0).toUpperCase() + words.slice(1); };
 const codeLabel = code => t(`${PREFIX}enum.${code}`, humanizeCode(code));
 const localizeCodeTokens = text => String(text).replace(CODE_IN_TEXT, code => codeLabel(code));
-Object.assign(ADMISSIONS_RENDER_LABELS, {
-  "field.possible_exemption_evidence_kinds": "Language background for individual exemption review",
-  "study_level.preparation": "Preparation", "study_level.undergraduate": "Undergraduate", "study_level.masters": "Master's", "study_level.doctoral": "Doctoral", "study_level.professional": "Professional", "study_level.residency": "Residency", "study_level.non_degree": "Non-degree",
-  "applicant.first_year": "First-year applicant", "applicant.transfer": "Transfer applicant", "applicant.graduate": "Graduate applicant",
-  "fee.home": "Self-reported home/domestic status", "fee.overseas": "Self-reported international/overseas status",
-  "enum.required": "Required", "enum.not_required": "Not required", "enum.recommended": "Recommended",
-  "enum.enrolled": "Enrolled", "enum.completed": "Completed", "enum.in_progress": "In progress", "enum.not_started": "Not started",
-  "enum.overall": "Overall", "enum.technical": "Technical", "enum.major": "Major",
-  "enum.required_coursework": "Required coursework", "enum.study_period_or_pathway": "Study period or pathway",
-  "enum.project_or_dissertation": "Project or dissertation", "enum.student_choice_coursework": "Student-choice coursework",
-  "enum.published_catalog_expected_length": "Expected length published in the catalog",
-  "enum.catalog_metadata_not_fixed_individual_duration": "Catalog duration; individual study length is not fixed",
-  "enum.required_if_applicable": "Required when applicable", "enum.not_accepted": "Not accepted",
-  "enum.prior_cycle_only": "Published for a previous cycle only", "enum.published_current_page_cycle": "Published cycle on the reviewed page",
-  "enum.same_all_statuses": "Same published amount for all fee statuses", "enum.postgraduate_taught": "Postgraduate taught study",
-  "enum.independent_award_entry": "Separate award entry", "enum.course_application": "Course-specific application",
-  "enum.post_admission_major": "Major chosen after institutional admission", "enum.institution_wide": "Institutional admission",
-  "enum.program_specific": "Program-specific", "enum.route_wide": "Application-route scope",
-  "enum.academic_year": "Academic year", "enum.one_time": "One-time payment",
-});
 
 function safeUrl(value) {
   try {
@@ -356,7 +138,6 @@ function fieldLabel(key, referenceLabels = {}) {
   if (getExamConfig(key)) return escapeHtml(getExamDisplayName(key, { locale: getCurrentLanguage() }));
   const localized = t(`${PREFIX}field.${key}`);
   if (localized) return escapeHtml(localized);
-  if (ADMISSIONS_RENDER_LABELS[`field.${key}`]) return escapeHtml(label(`field.${key}`));
   const text = key.replace(/([a-z])([A-Z])/g, "$1 $2").replaceAll("_", " ");
   const field = text.charAt(0).toUpperCase() + text.slice(1);
   return escapeHtml(translateAdmissionSummary(field) || field);
@@ -377,7 +158,7 @@ function scalar(value, referenceLabels = {}) {
   if (Object.hasOwn(languageKinds, text)) return escapeHtml(t(`profile.evidence.language_kind.${text}`, languageKinds[text]));
   if (/^(?:source-[a-f0-9]+|[a-f0-9]{32,}|[a-f0-9-]{36})$/i.test(text)) return "";
   if (ENUM_LABELS[text]) return escapeHtml(label(ENUM_LABELS[text]));
-  if (ADMISSIONS_RENDER_LABELS[`kind.${text}`]) return escapeHtml(label(`kind.${text}`));
+  if (hasLabel(`kind.${text}`)) return escapeHtml(label(`kind.${text}`));
   if (getExamConfig(text) || /^(?:TOEFL|GMAT|IELTS|DUOLINGO|CAMBRIDGE)_/.test(text)) return escapeHtml(getExamDisplayName(text));
   if (/^https?:\/\//i.test(text)) return sourceLink(text);
   if (CODE_VALUE.test(text)) return escapeHtml(codeLabel(text));
@@ -842,6 +623,8 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
     : emptyMessage ? `<p class="admissions-catalog__meta">${escapeHtml(label("no_facts"))}</p>` : "";
 }
 
+export const renderAdmissionsUnknowns = resolved => renderUnknowns(resolved, resolved.unknowns || [], true);
+
 function renderUnknowns(resolved, unknowns = resolved.unknowns || [], simple = false) {
   if (!unknowns.length) return "";
   const rows = `<div class="admissions-catalog__list">${unknowns.map(row => `<div class="admissions-catalog__unknown"><p>${escapeHtml(localizeCodeTokens(translateAdmissionSummary(row.reason) || row.reason || label("unknown")))}</p>${row.official_next_step ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(localizeCodeTokens(translateAdmissionSummary(row.official_next_step) || row.official_next_step))}</p>` : ""}${scope(row, resolved)}${sourcesBlock(sources(row, resolved, { compact: true }))}</div>`).join("")}</div>`;
@@ -852,7 +635,7 @@ function countedMinimumLabel(exam, minimum) {
   const scheme = getExamConfig(exam)?.breakdown_scheme;
   const component = minimum.exam_ids?.[0] || scheme?.selectable_components?.[0] || scheme?.fixed_components?.[0];
   const subject = typeof component === "object" ? component.exam : component || exam;
-  return tFormat(`${PREFIX}counted_minimum`, { count: minimum.count, minimum: formatExamValue(subject, minimum.minimum, { locale: getCurrentLanguage(), context: "requirement" }) }, ADMISSIONS_RENDER_LABELS.counted_minimum);
+  return tFormat(`${PREFIX}counted_minimum`, { count: minimum.count, minimum: formatExamValue(subject, minimum.minimum, { locale: getCurrentLanguage(), context: "requirement" }) });
 }
 
 function renderAssessmentRule(rule, referenceLabels) {
@@ -875,7 +658,7 @@ function renderMinimumChecks(provided) {
   const rows = checks.map(check => {
     const counted = check.minimum && typeof check.minimum === "object";
     const minimum = counted ? countedMinimumLabel(check.exam, check.minimum) : format(check.exam, check.minimum);
-    const reported = counted ? tFormat(`${PREFIX}counted_provided`, { reported: check.provided?.reported ?? label("unknown"), met: check.provided?.meeting_minimum ?? label("unknown") }, ADMISSIONS_RENDER_LABELS.counted_provided) : format(check.exam, check.provided);
+    const reported = counted ? tFormat(`${PREFIX}counted_provided`, { reported: check.provided?.reported ?? label("unknown"), met: check.provided?.meeting_minimum ?? label("unknown") }) : format(check.exam, check.provided);
     const status = ["met", "unmet", "missing", "unassessed"].includes(check.status) ? check.status : "unassessed";
     return `<li data-minimum-exam="${escapeHtmlAttr(check.exam)}" data-minimum-status="${status}"><strong>${escapeHtml(getExamDisplayName(check.exam, { locale: getCurrentLanguage() }))}</strong><span> · ${escapeHtml(label("minimum"))}: ${escapeHtml(minimum)}</span><span> · ${escapeHtml(label("provided"))}: ${escapeHtml(reported)}</span><span> · ${escapeHtml(label(status))}</span></li>`;
   }).join("");
@@ -949,9 +732,10 @@ function renderReportedEvidence(value, resolved) {
   return renderAdmissionsValue(Object.fromEntries(Object.entries(value).filter(([key]) => !["code", "kind"].includes(key))), resolved.reference_labels);
 }
 
-export function renderAdmissionsAssessment(resolved, { presentation, recordDomains = [] } = {}) {
+// `keyFacts` builds the detail for the key-facts row, which already states the result, so the reason sentence is replaced by the next step.
+function assessmentParts(resolved, { recordDomains = [], keyFacts = false } = {}) {
   const assessment = resolved.assessment;
-  if (!assessment) return "";
+  if (!assessment) return null;
   const percent = assessment.chancePercent;
   const available = typeof percent === "number" && Number.isFinite(percent);
   const checks = assessment.activeChoice?.details?.checks || [];
@@ -968,7 +752,7 @@ export function renderAdmissionsAssessment(resolved, { presentation, recordDomai
   const recordedIds = new Set(recordDomains.flatMap(domain => resolved.fact_groups?.[domain] || []));
   const factIds = new Set((resolved.facts || []).filter(row => row.applicability?.status !== "mismatched").map(row => row.id));
   const hasRecord = id => Boolean(id) && recordedIds.has(id) && factIds.has(id);
-  const reason = assessment.reason && ADMISSIONS_RENDER_LABELS[`reason.${assessment.reason}`]
+  const reason = assessment.reason && hasLabel(`reason.${assessment.reason}`)
     ? label(`reason.${assessment.reason}`) : label("assessment_unavailable");
   const hasNumericChecks = checks.some(check => check.measurable || check.numericMinimum);
   const sourceOnly = checks.length > 0 && !hasNumericChecks;
@@ -1000,7 +784,7 @@ export function renderAdmissionsAssessment(resolved, { presentation, recordDomai
     }
   }
   const summary = `<h2>${escapeHtml(label("assessment"))}</h2>
-    ${available ? `<p><strong>${escapeHtml(percent)}%</strong></p>${evaluated.length ? `<p>${escapeHtml(tFormat(`${PREFIX}assessment_count`, { met: evaluated.filter(check => check.status === "met").length, total: evaluated.length }, ADMISSIONS_RENDER_LABELS.assessment_count))}</p>` : ""}${evaluated.some(check => check.status === "unmet") ? `<p>${escapeHtml(label("reason.requirements_not_met"))}</p>` : ""}<p class="admissions-catalog__meta">${escapeHtml(label("assessment_limits"))}</p>` : `<p>${escapeHtml(nextStep ? label(`assessment_next_${nextStep}`) : reason)}${evaluated.some(check => check.status === "unmet") ? ` ${escapeHtml(label("reason.requirements_not_met"))}` : ""}${nextStep === "missing" ? ` <a href="/profile.html" data-route="profile">${escapeHtml(label("assessment_profile"))}</a>` : ""}</p>`}`;
+    ${available ? `<p><strong>${escapeHtml(percent)}%</strong></p>${evaluated.length ? `<p>${escapeHtml(tFormat(`${PREFIX}assessment_count`, { met: evaluated.filter(check => check.status === "met").length, total: evaluated.length }))}</p>` : ""}${evaluated.some(check => check.status === "unmet") ? `<p>${escapeHtml(label("reason.requirements_not_met"))}</p>` : ""}<p class="admissions-catalog__meta">${escapeHtml(label("assessment_limits"))}</p>` : `<p>${escapeHtml(nextStep ? label(`assessment_next_${nextStep}`) : reason)}${evaluated.some(check => check.status === "unmet") ? ` ${escapeHtml(label("reason.requirements_not_met"))}` : ""}${nextStep === "missing" ? ` <a href="/profile.html" data-route="profile">${escapeHtml(label("assessment_profile"))}</a>` : ""}</p>`}`;
   const renderCheck = ({ check, title, context }, grouped = false) => {
       const status = ["met", "unmet", "missing", "unassessed"].includes(check.status) ? check.status : "unassessed";
       const provided = check.provided ?? check.providedExamId;
@@ -1029,18 +813,32 @@ export function renderAdmissionsAssessment(resolved, { presentation, recordDomai
         ${provided !== null && provided !== undefined ? `<div><strong>${escapeHtml(label("provided"))}</strong>${renderReportedEvidence(reportedAttempt, resolved)}</div>` : ""}
         ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
         ${!recorded && check.sourceRule ? scope(check.sourceRule, resolved) : ""}
-        ${check.reason && ADMISSIONS_RENDER_LABELS[`reason.${check.reason}`] ? `<p>${escapeHtml(label(`reason.${check.reason}`))}</p>` : ""}
+        ${check.reason && hasLabel(`reason.${check.reason}`) ? `<p>${escapeHtml(label(`reason.${check.reason}`))}</p>` : ""}
         ${recorded ? `<p><button type="button" class="admissions-catalog__record-link" data-admissions-record-link="${escapeHtmlAttr(check.factId)}">${escapeHtml(label("record_link"))}</button></p>` : ""}
         ${sourcesBlock(sources({ ...check, checked_at: check.checked_at ?? check.sourceRule?.checked_at }, resolved, { compact: true }))}
       </div>`;
       return grouped ? body : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span><span class="admissions-catalog__status">${escapeHtml(label(status))}</span></summary>${body}</details>`;
   };
-  const detail = `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_meaning"))}</p><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${assessment.reason && ADMISSIONS_RENDER_LABELS[`reason.${assessment.reason}`] ? `<p>${escapeHtml(reason)}</p>` : ""}${sourceOnly && checks.some(check => check.status === "unassessed") ? `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_next_unassessed"))}</p>` : ""}${["missing", "unassessed"].filter(status => checks.some(check => check.status === status)).map(status => `<p class="admissions-catalog__meta">${escapeHtml(t(`${PREFIX}check_next_${status}`))}</p>`).join("")}<div class="admissions-catalog__list">${displayChecks.map(group => group.length === 1 ? renderCheck(group[0]) : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(group[0].title)} (${escapeHtml(tFormat(`${PREFIX}check_group_count`, { count: group.length }))})</span><span class="admissions-catalog__status">${escapeHtml(label("unassessed"))}</span></summary><div class="admissions-catalog__body">${group.map(item => renderCheck(item, true)).join("")}</div></details>`).join("")}</div>
+  const detail = `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_meaning"))}</p><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${keyFacts ? (!available && nextStep ? `<p>${escapeHtml(label(`assessment_next_${nextStep}`))}</p>` : "") : assessment.reason && hasLabel(`reason.${assessment.reason}`) ? `<p>${escapeHtml(reason)}</p>` : ""}${sourceOnly && checks.some(check => check.status === "unassessed") ? `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_next_unassessed"))}</p>` : ""}${["missing", "unassessed"].filter(status => checks.some(check => check.status === status)).map(status => `<p class="admissions-catalog__meta">${escapeHtml(t(`${PREFIX}check_next_${status}`))}</p>`).join("")}<div class="admissions-catalog__list">${displayChecks.map(group => group.length === 1 ? renderCheck(group[0]) : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(group[0].title)} (${escapeHtml(tFormat(`${PREFIX}check_group_count`, { count: group.length }))})</span><span class="admissions-catalog__status">${escapeHtml(label("unassessed"))}</span></summary><div class="admissions-catalog__body">${group.map(item => renderCheck(item, true)).join("")}</div></details>`).join("")}</div>
     ${reportedRows.length ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("provided"))}</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${renderEvidenceList(reportedRows, resolved)}</div></details>` : ""}`;
-  return `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match>${summary}${presentation === "simple" ? `<details class="admissions-catalog__assessment-detail"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${detail}</div></details>` : detail}</section>`;
+  return { summary, detail };
 }
 
-export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAssessment = true, includeUnknowns = true, includeHistory = true, includeSourceNote = true, presentation, programOnly = false, overviewCoverage = null } = {}) {
+const assessmentDisclosure = detail => `<details class="admissions-catalog__assessment-detail"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${detail}</div></details>`;
+
+export function renderAdmissionsAssessment(resolved, { presentation, recordDomains = [] } = {}) {
+  const parts = assessmentParts(resolved, { recordDomains });
+  if (!parts) return "";
+  return `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match>${parts.summary}${presentation === "simple" ? assessmentDisclosure(parts.detail) : parts.detail}</section>`;
+}
+
+// The checks behind the key-facts requirements summary, as one collapsed disclosure without a second summary sentence.
+export function renderAssessmentChecks(resolved, { recordDomains = [] } = {}) {
+  const parts = assessmentParts(resolved, { recordDomains, keyFacts: true });
+  return parts ? assessmentDisclosure(parts.detail) : "";
+}
+
+export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAssessment = true, includeUnknowns = true, includeHistory = true, includeSourceNote = true, includeReferenceScopeNote = true, presentation, programOnly = false, overviewCoverage = null } = {}) {
   const institutionRouteReading = resolved?.reading_scope === "institution_route" && resolved?.selected_route;
   if ((!resolved?.selected_option && !institutionRouteReading) || (!resolved?.selected_route && !programOnly && !institutionRouteReading)) return `<p class="admissions-catalog__meta">${escapeHtml(label("no_context"))}</p>`;
   if (programOnly) {
@@ -1069,7 +867,7 @@ export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAs
   const historyCount = historyFacts.length + historyUnknowns.length;
   return `<div class="admissions-catalog">${includeSourceNote && presentation !== "simple" ? `<p class="admissions-catalog__meta">${escapeHtml(label("source_text_note"))}</p>` : ""}
     ${includeAssessment && !programOnly ? renderAdmissionsAssessment(resolved, { presentation, recordDomains: domains }) : ""}
-    ${domains.length ? renderAdmissionsFacts(resolved, domains, { presentation, includeReferenceScopeNote: !programOnly, emptyMessage: !programOnly, programOnly }) : ""}
+    ${domains.length ? renderAdmissionsFacts(resolved, domains, { presentation, includeReferenceScopeNote: includeReferenceScopeNote && !programOnly, emptyMessage: !programOnly, programOnly }) : ""}
     ${includeUnknowns ? renderUnknowns(resolved, resolved.unknowns || [], presentation === "simple") : ""}
     ${includeHistory && historyCount ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("history"))} (${historyCount})</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("history_note"))}</p>${historyFacts.map(row => renderFact(row, resolved, "other", true, presentation === "simple")).join("")}${renderUnknowns(resolved, historyUnknowns, presentation === "simple")}</div></details>` : ""}
   </div>`;

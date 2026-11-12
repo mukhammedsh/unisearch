@@ -89,7 +89,7 @@ class AdmissionsCutoverTests(unittest.TestCase):
             self.assertEqual({MIT, STANFORD}, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
         for filters in ({"funding_type": "grant"}, {"funding_type": "paid"}):
             rows = universities.list_universities(paginate=False, **filters)["items"]
-            self.assertFalse(admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
+            self.assertTrue(admissions_catalog.INSTITUTION_IDS.issubset(row["id"] for row in rows))
 
     def test_saved_per_institution_context_overrides_global_without_mutation(self):
         original = {"study_level": "Master", "applicant_route": "graduate", "intended_entry_cycle": "2028", "fee_status_context": "other",
@@ -114,7 +114,8 @@ class AdmissionsCutoverTests(unittest.TestCase):
                 "studyLevel": "", "applicantRoute": "", "intendedEntryCycle": ""}}))
         resolved = admissions_catalog.resolve_context(MIT, profile)
         self.assertIsNone(resolved["context"]["study_level"])
-        self.assertEqual(resolved["context"]["applicant_route"], "")
+        # The MIT first-year route implies its category, so the blank saved value no longer leaves it empty.
+        self.assertEqual(resolved["context"]["applicant_route"], "first_year")
         self.assertEqual(resolved["context"]["intended_entry_cycle"], "")
         self.assertIsNone(ai_scoring.estimate_uni_chance(universities.get_university_by_id(MIT), profile)["overallChance"])
 

@@ -9,7 +9,7 @@ const MIT_FIRST_YEAR_URL = "/university.html?id=mit-usa-cambridge&admission_opti
 async function openAssessment(page) {
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements [data-requirements-match]");
 }
 
 async function openEvidence(fact) {
@@ -26,7 +26,6 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await seedProfile(page, {
     ...personas.enResearch.profile,
     studyLevel: "Master",
-    applicantRoute: "graduate",
     major: "Business",
     gpa: 4,
     exams: [{ exam: "SAT", score: 1550 }],
@@ -42,7 +41,7 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
-  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
@@ -112,6 +111,10 @@ test("rank tooltip stays usable for the legacy catalog and MIT admissions source
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const fact = page.locator('#detailRequirements [data-admissions-fact="ug-sat-act-presence"]');
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  // Full records sit behind the tab's single, initially closed records disclosure.
+  const records = page.locator("#detailRequirements [data-all-records]");
+  await expect(records).not.toHaveAttribute("open");
+  await records.locator(":scope > summary").click();
   await expect(group).not.toHaveAttribute("open");
   await group.locator(":scope > summary").click();
   await expect(group).toHaveAttribute("open", "");

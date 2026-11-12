@@ -1325,15 +1325,6 @@ function normalizeQualificationLevel(value) {
   return "";
 }
 
-function normalizeQualificationText(value) {
-  return String(value || "")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
 function isOfficialSource(url) {
   try {
     const parsed = new URL(String(url || ""));
@@ -1341,15 +1332,6 @@ function isOfficialSource(url) {
   } catch {
     return false;
   }
-}
-
-function qualificationCycleIsCurrent(cycle, verifiedAt) {
-  const yearMatch = String(cycle || "").match(/\b(20\d{2})\b/);
-  if (!yearMatch) return true;
-  const entryYear = Number(yearMatch[1]);
-  const verifiedYear = Number(String(verifiedAt || "").slice(0, 4));
-  if (!Number.isInteger(entryYear) || !Number.isInteger(verifiedYear)) return false;
-  return entryYear >= verifiedYear && entryYear <= verifiedYear + 1;
 }
 
 const QUALIFICATION_SCOPE_KEYS = new Map([
@@ -1371,173 +1353,102 @@ const QUALIFICATION_CYCLE_SCOPE_KEYS = new Map([
   ["Use the selected programme's named entry cycle and current course page.", "university.qualification_guidance.cycle_scope.program_page"],
 ]);
 
-export function resolveQualificationGuidance({ profile = {}, university = {}, program = null } = {}) {
+function qualificationReasonKey(item) {
+  const id = String(item?.id || "");
+  if (id.includes("oxford-kazakhstan-attestat")) return "university.qualification_guidance.reason.oxford_attestat";
+  if (id.includes("international-baccalaureate") || id.includes("imperial-ib")) return "university.qualification_guidance.reason.accepted_ib";
+  if (id.includes("us-high-school-context")) return "university.qualification_guidance.reason.contextual_review";
+  return item?.requires_program_page ? "university.qualification_guidance.reason.graduate_review" : "university.qualification_guidance.reason.unknown";
+}
+
+// Published reference: every catalogued rule and fallback is returned as written. Nothing is matched to the reader,
+// because each rule names its own qualification, study level, and cycle.
+export function resolveQualificationGuidance({ university = {}, program = null } = {}) {
   const catalog = university?.qualification_guidance && typeof university.qualification_guidance === "object"
     ? university.qualification_guidance
     : {};
-  const profileLevel = normalizeQualificationLevel(profile.studyLevel || profile.study_level);
-  const programLevels = getProgramLevelKeys(program);
-  const level = profileLevel || (programLevels.includes("bachelor") ? "Bachelor" : (programLevels.length ? "graduate" : ""));
-  const route = String(profile.applicantRoute || profile.applicant_route || "").trim();
-  const country = String(profile.countryOfEducation || profile.country_of_education || "").trim().toUpperCase();
-  const credential = String(profile.educationCredential || profile.education_credential || "").trim();
-  const credentialText = normalizeQualificationText(profile.educationCredentialOther || profile.education_credential_other);
-  const cycle = String(profile.intendedEntryCycle || profile.intended_entry_cycle || "").trim();
-  const rules = Array.isArray(catalog.rules) ? catalog.rules : [];
-
-  const exactRule = rules.find((rule) => {
-    if (normalizeQualificationLevel(rule.study_level) !== level) return false;
-    if (!Array.isArray(rule.applicant_routes) || !rule.applicant_routes.includes(route)) return false;
-    if (String(rule.education_country || "").toUpperCase() !== "*" && String(rule.education_country || "").toUpperCase() !== country) return false;
-    const credentialOptions = Array.isArray(rule.education_credentials_any)
-      ? rule.education_credentials_any
-      : [rule.education_credential];
-    if (!credentialOptions.includes(credential)) return false;
-    const textMatches = Array.isArray(rule.credential_text_matches_any) ? rule.credential_text_matches_any : [];
-    if (textMatches.length && !textMatches.some((part) => credentialText === normalizeQualificationText(part))) return false;
-    if (Array.isArray(rule.program_ids) && rule.program_ids.length && !rule.program_ids.includes(String(program?.id || ""))) return false;
-    if (program && level === "Bachelor" && !getProgramLevelKeys(program).includes("bachelor")) return false;
-    return true;
-  });
-
-  let status = exactRule?.status || "needs_review";
-  const ruleReasonKey = (item) => {
-    const id = String(item?.id || "");
-    if (id.includes("oxford-kazakhstan-attestat")) return "university.qualification_guidance.reason.oxford_attestat";
-    if (id.includes("international-baccalaureate") || id.includes("imperial-ib")) return "university.qualification_guidance.reason.accepted_ib";
-    if (id.includes("us-high-school-context")) return "university.qualification_guidance.reason.contextual_review";
-    return item?.requires_program_page ? "university.qualification_guidance.reason.graduate_review" : "university.qualification_guidance.reason.unknown";
-  };
-  let reasonKey = exactRule?.reason_key || ruleReasonKey(exactRule);
-  let reason = exactRule?.reason || "No verified decision for this exact qualification combination is catalogued.";
-  let scope = exactRule?.scope || "";
-  let scopeKey = exactRule?.scope_key || QUALIFICATION_SCOPE_KEYS.get(exactRule?.scope || "") || "";
-  let cycleScope = exactRule?.cycle_scope || "";
-  let cycleScopeKey = exactRule?.cycle_scope_key || QUALIFICATION_CYCLE_SCOPE_KEYS.get(cycleScope) || "";
-  let sourceUrl = exactRule?.source_url || "";
-  let verifiedAt = exactRule?.verified_at || catalog.verified_at || "";
-  let matchedRuleId = exactRule?.id || "";
-  let requiresProgramPage = false;
-
-  if (!exactRule) {
-    const fallbacks = Array.isArray(catalog.fallbacks) ? catalog.fallbacks : [];
-    const fallback = fallbacks.find((item) => normalizeQualificationLevel(item.study_level) === level
-      && Array.isArray(item.applicant_routes)
-      && item.applicant_routes.includes(route));
-    if (fallback) {
-      status = fallback.status || "needs_review";
-      reasonKey = fallback.reason_key || ruleReasonKey(fallback);
-      reason = fallback.reason || reason;
-      scope = fallback.scope || "";
-      scopeKey = fallback.scope_key || QUALIFICATION_SCOPE_KEYS.get(scope) || "";
-      cycleScope = fallback.cycle_scope || "";
-      cycleScopeKey = fallback.cycle_scope_key || QUALIFICATION_CYCLE_SCOPE_KEYS.get(cycleScope) || "";
-      sourceUrl = fallback.source_url || "";
-      verifiedAt = fallback.verified_at || catalog.verified_at || "";
-      matchedRuleId = fallback.id || "";
-      requiresProgramPage = fallback.requires_program_page === true;
-    }
-  }
-
-  const cycleMatches = qualificationCycleIsCurrent(cycle, verifiedAt);
-  if (!cycleMatches) {
-    status = "needs_review";
-    reasonKey = "university.qualification_guidance.reason.cycle_review";
-    reason = "The intended entry cycle is outside the cycle supported by this verification.";
-    scopeKey = "";
-  }
-  if (requiresProgramPage) {
-    sourceUrl = isOfficialSource(program?.url || program?.source_url) ? (program.url || program.source_url) : "";
-    if (!sourceUrl) {
-      reasonKey = "university.qualification_guidance.reason.select_program";
-      reason = "Choose the exact graduate programme to open its official course requirements.";
-    }
-  }
-  if (sourceUrl && !isOfficialSource(sourceUrl)) sourceUrl = "";
-
-  const needsExactCredential = !exactRule
-    && country === "KZ"
-    && credential === "national_secondary"
-    && level === "Bachelor"
-    && route === "first_year"
-    && String(university?.id || "") === "university-of-oxford-uk-oxford";
-
+  const programUrl = isOfficialSource(program?.url || program?.source_url) ? String(program.url || program.source_url) : "";
+  const entries = [...(Array.isArray(catalog.rules) ? catalog.rules : []), ...(Array.isArray(catalog.fallbacks) ? catalog.fallbacks : [])]
+    .map((item) => {
+      const requiresProgramPage = item.requires_program_page === true;
+      const needsProgram = requiresProgramPage && !programUrl;
+      const scope = item.scope || "";
+      const cycleScope = item.cycle_scope || "";
+      const itemUrl = isOfficialSource(item.source_url) ? item.source_url : "";
+      return {
+        id: item.id || "",
+        status: item.status || "needs_review",
+        reasonKey: needsProgram ? "university.qualification_guidance.reason.select_program" : item.reason_key || qualificationReasonKey(item),
+        reason: needsProgram
+          ? "Choose the exact graduate programme to open its official course requirements."
+          : item.reason || "No verified decision for this exact qualification combination is catalogued.",
+        scope,
+        scopeKey: item.scope_key || QUALIFICATION_SCOPE_KEYS.get(scope) || "",
+        cycleScope,
+        cycleScopeKey: item.cycle_scope_key || QUALIFICATION_CYCLE_SCOPE_KEYS.get(cycleScope) || "",
+        sourceUrl: requiresProgramPage ? programUrl || itemUrl : itemUrl,
+        verifiedAt: item.verified_at || catalog.verified_at || "",
+        studyLevel: normalizeQualificationLevel(item.study_level),
+        requiresProgramPage,
+      };
+    });
   return {
-    status,
-    reasonKey,
-    reason,
-    scope,
-    scopeKey,
-    cycleScope,
-    cycleScopeKey,
-    sourceUrl,
-    verifiedAt,
-    matchedRuleId,
-    needsExactCredential,
-    cycle,
+    entries,
     programName: String(program?.name || "").trim(),
-    programUrl: isOfficialSource(program?.url || program?.source_url) ? String(program.url || program.source_url) : "",
-    studyLevel: level,
+    programUrl,
   };
 }
 
-export function renderQualificationGuidance({ container, profile = {}, university = {}, program = null } = {}) {
-  if (!container) return null;
-  const result = resolveQualificationGuidance({ profile, university, program });
+function renderQualificationEntry(entry, { programUrl }) {
   const statusKeys = {
     accepted: "university.qualification_guidance.status.accepted",
     not_accepted: "university.qualification_guidance.status.not_accepted",
     needs_review: "university.qualification_guidance.status.needs_review",
   };
-  const statusClass = result.status === "accepted" ? "accepted" : (result.status === "not_accepted" ? "not-accepted" : "review");
-  const statusLabel = t(statusKeys[result.status] || statusKeys.needs_review, result.status === "accepted" ? "Accepted qualification" : (result.status === "not_accepted" ? "Explicitly not accepted" : "Needs official review"));
-  const reason = t(result.reasonKey, result.reason);
-  const selectedProgram = result.programName
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.program_label", "Programme"))}:</strong> ${escapeHtml(trProgramName(result.programName) || result.programName)}</p>`
+  const statusClass = entry.status === "accepted" ? "accepted" : (entry.status === "not_accepted" ? "not-accepted" : "review");
+  const statusLabel = t(statusKeys[entry.status] || statusKeys.needs_review, entry.status === "accepted" ? "Accepted qualification" : (entry.status === "not_accepted" ? "Explicitly not accepted" : "Needs official review"));
+  const meta = (key, fallback, value, escape = escapeHtml) => `<p class="qualification-guidance__meta"><strong>${escapeHtml(t(key, fallback))}:</strong> ${escape(value)}</p>`;
+  const programSource = entry.requiresProgramPage && programUrl
+    ? `<a class="qualification-guidance__source" href="${escapeHtmlAttr(programUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.qualification_guidance.program_source", "Official program page"))}</a>`
     : "";
-  const programSource = result.programUrl
-    ? `<a class="qualification-guidance__source" href="${escapeHtmlAttr(result.programUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.qualification_guidance.program_source", "Official program page"))}</a>`
+  const levelText = entry.studyLevel
+    ? meta("university.qualification_guidance.level_label", "Study level", trStudyLevel(entry.studyLevel === "Bachelor" ? "Bachelor" : "Graduate"))
     : "";
-  const levelText = result.studyLevel
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.level_label", "Study level"))}:</strong> ${escapeHtml(result.studyLevel === "Bachelor" ? trStudyLevel("Bachelor") : trStudyLevel(String(profile.studyLevel || "Graduate")))}</p>`
+  const scopeText = entry.scopeKey ? t(entry.scopeKey, entry.scope) : entry.scope;
+  const scope = scopeText ? `<p class="qualification-guidance__meta">${escapeHtml(scopeText)}</p>` : "";
+  const cycleScopeText = entry.cycleScopeKey ? t(entry.cycleScopeKey, entry.cycleScope) : entry.cycleScope;
+  const cycleScope = cycleScopeText ? meta("university.qualification_guidance.cycle_scope_label", "Cycle coverage", cycleScopeText) : "";
+  const checked = entry.verifiedAt ? meta("university.qualification_guidance.checked_label", "Official page checked", entry.verifiedAt, escapeHtmlAttr) : "";
+  const source = entry.sourceUrl
+    ? `<a class="qualification-guidance__source" href="${escapeHtmlAttr(entry.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.qualification_guidance.official_source", "Open official qualification guidance"))}</a>`
     : "";
-  const selectedCycle = result.cycle
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.cycle_label", "Intended entry cycle"))}:</strong> ${escapeHtml(localizedProgramCoverageCycle(result.cycle))}</p>`
-    : `<p class="qualification-guidance__meta">${escapeHtml(t("university.qualification_guidance.cycle_unspecified", "Entry cycle not specified in your profile."))}</p>`;
-  const scopeText = result.scopeKey ? t(result.scopeKey, result.scope) : result.scope;
-  const scope = scopeText
-    ? `<p class="qualification-guidance__meta">${escapeHtml(scopeText)}</p>`
-    : "";
-  const cycleScopeText = result.cycleScopeKey ? t(result.cycleScopeKey, result.cycleScope) : result.cycleScope;
-  const cycleScope = cycleScopeText
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.cycle_scope_label", "Cycle coverage"))}:</strong> ${escapeHtml(cycleScopeText)}</p>`
-    : "";
-  const checked = result.verifiedAt
-    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.checked_label", "Official page checked"))}:</strong> ${escapeHtmlAttr(result.verifiedAt)}</p>`
-    : "";
-  const source = result.sourceUrl
-    ? `<a class="qualification-guidance__source" href="${escapeHtmlAttr(result.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.qualification_guidance.official_source", "Open official qualification guidance"))}</a>`
-    : "";
-  const exactCredentialAction = result.needsExactCredential
-    ? `<p class="qualification-guidance__action"><a href="/profile.html" data-route="profile">${escapeHtml(t("university.qualification_guidance.exact_credential_action", "Add the exact certificate title in your profile (choose Other) to check the published Kazakhstan entry."))}</a></p>`
-    : "";
-  const dataNotice = `<p class="qualification-guidance__meta">${escapeHtml(t("university.qualification_guidance.no_eligibility_notice", "This is qualification guidance, not an admission or eligibility decision. Grades, subjects, programme rules, and the applicable cycle still need review."))}</p>`;
-
-  container.innerHTML = `
-    <div class="qualification-guidance__result">
+  return `
+    <div class="qualification-guidance__result" data-qualification-entry>
       <span class="qualification-guidance__status qualification-guidance__status--${statusClass}">${escapeHtml(statusLabel)}</span>
-      <p class="qualification-guidance__text">${escapeHtml(reason)}</p>
-      ${selectedProgram}
+      <p class="qualification-guidance__text">${escapeHtml(t(entry.reasonKey, entry.reason))}</p>
       ${levelText}
-      ${selectedCycle}
       ${scope}
       ${cycleScope}
       ${checked}
-      ${exactCredentialAction}
       ${source}
       ${programSource}
-      ${dataNotice}
-    </div>
-  `;
+    </div>`;
+}
+
+export function renderQualificationGuidance({ container, university = {}, program = null } = {}) {
+  if (!container) return null;
+  const result = resolveQualificationGuidance({ university, program });
+  // Without catalogued guidance the section keeps the single "no verified decision" notice.
+  const entries = result.entries.length
+    ? result.entries
+    : [{ status: "needs_review", reasonKey: "university.qualification_guidance.reason.unknown", reason: "No verified decision for this exact qualification combination is catalogued." }];
+  const referenceNote = result.entries.length
+    ? `<p class="qualification-guidance__meta">${escapeHtml(t("university.qualification_guidance.reference_note", "These are the university's published decisions. Each applies only to the qualification, study level, and cycle it names."))}</p>`
+    : "";
+  const selectedProgram = result.programName
+    ? `<p class="qualification-guidance__meta"><strong>${escapeHtml(t("university.qualification_guidance.program_label", "Programme"))}:</strong> ${escapeHtml(trProgramName(result.programName) || result.programName)}</p>`
+    : "";
+  const dataNotice = `<p class="qualification-guidance__meta">${escapeHtml(t("university.qualification_guidance.no_eligibility_notice", "This is qualification guidance, not an admission or eligibility decision. Grades, subjects, programme rules, and the applicable cycle still need review."))}</p>`;
+  container.innerHTML = `${referenceNote}${selectedProgram}${entries.map((entry) => renderQualificationEntry(entry, result)).join("")}${dataNotice}`;
   return result;
 }

@@ -1,36 +1,23 @@
 import { escapeHtml, escapeHtmlAttr, showToast } from "../../utils.js";
 import { t } from "../../i18n.js";
 
+// Only evidence that a reviewed assessment check reads is collected: the MIT Course 6-9 and MITx credential checks.
 const INSTITUTIONS = [
   ["mit-usa-cambridge", "profile.evidence.institution.mit"],
-  ["imperial-college-london-uk", "profile.evidence.institution.imperial"],
-  ["stanford-university-usa-ca", "profile.evidence.institution.stanford"],
 ];
 const PROGRAMS = {
   "mit-usa-cambridge": [
     ["mit-bs-6-9", "profile.evidence.program.mit_course_6_9"],
-    ["mit-supply-chain-management-masc-mit-grad-supply-chain-management-residential", "profile.evidence.program.mit_scm_residential_masc"],
-    ["mit-supply-chain-management-meng-mit-grad-supply-chain-management-residential", "profile.evidence.program.mit_scm_residential_meng"],
-    ["mit-scm-blended-masc", "profile.evidence.program.mit_scm_blended_masc"],
-    ["mit-scm-blended-meng", "profile.evidence.program.mit_scm_blended_meng"],
-  ],
-  "stanford-university-usa-ca": [
-    ["stanford-option-cs-bs", "profile.evidence.program.stanford_cs_bs"],
-    ["stanford-option-anthr-ma", "profile.evidence.program.stanford_anthr_ma_coterm"],
   ],
 };
 const CREDENTIALS = {
   "mit-usa-cambridge": [
     ["mitx-dedp-micromasters", "profile.evidence.credential.mit_dedp"],
-    ["mitx-scm-micromasters", "profile.evidence.credential.mit_scm"],
     ["sc0x-course-credential", "profile.evidence.credential.mit_sc0x"],
   ],
-  "stanford-university-usa-ca": [],
 };
 const SUPPORTED_EVIDENCE = {
   "mit-usa-cambridge": ["enrollment", "gpa", "credential"],
-  "imperial-college-london-uk": [],
-  "stanford-university-usa-ca": ["enrollment", "gpa"],
 };
 const LANGUAGE_KINDS = ["primary_language", "education", "employment"];
 const QUALIFICATION_LEVELS = ["secondary", "bachelor", "master", "doctorate", "professional", "other"];
@@ -174,7 +161,6 @@ export function renderAdmissionEvidence(container, profile, onChange) {
                 ${optionRows([["enrollment", t("profile.evidence.institution_kind.enrollment", "Enrollment or completed courses")], ["gpa", t("profile.evidence.institution_kind.gpa", "Program GPA")], ["credential", t("profile.evidence.institution_kind.credential", "Program credential")]])}
               </select>
             </div>
-            <p id="institutionEvidenceUnavailable" class="profile-hint" data-i18n="profile.evidence.institution_unavailable" hidden>No institution-specific course, GPA, or credential fields are available for this selection.</p>
             <div class="profile-field" data-institution-evidence-field="program_id">
               <label for="institutionEvidenceProgram" data-i18n="profile.evidence.program">Program ID</label>
               <select id="institutionEvidenceProgram" class="profile-input profile-input--select"></select>
@@ -204,7 +190,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
             <div class="profile-field" data-institution-evidence-kind="gpa">
               <label for="institutionEvidenceMetric" data-i18n="profile.evidence.metric">GPA measure</label>
               <select id="institutionEvidenceMetric" class="profile-input profile-input--select">
-                ${optionRows([["overall", t("profile.evidence.metric.overall", "Overall")], ["technical", t("profile.evidence.metric.technical", "Technical")], ["major", t("profile.evidence.metric.major", "Major")]])}
+                ${optionRows([["overall", t("profile.evidence.metric.overall", "Overall")], ["technical", t("profile.evidence.metric.technical", "Technical")]])}
               </select>
             </div>
             <div class="profile-field" data-institution-evidence-kind="gpa">
@@ -268,9 +254,6 @@ export function renderAdmissionEvidence(container, profile, onChange) {
     credentialSelect.innerHTML = `<option value="">${escapeHtml(t("profile.applicant_context.optional", "Not specified"))}</option>${optionRows(credentialSuggestions)}`;
   };
   const updateInstitutionFields = () => {
-    const kinds = SUPPORTED_EVIDENCE[institution.value] || [];
-    const unavailable = container.querySelector("#institutionEvidenceUnavailable");
-    if (unavailable) unavailable.hidden = !institution.value || kinds.length > 0;
     container.querySelectorAll("[data-institution-evidence-kind]").forEach((node) => { node.hidden = node.dataset.institutionEvidenceKind !== institutionKind.value; });
     container.querySelectorAll("[data-institution-evidence-field='program_id']").forEach((node) => { node.hidden = !institutionKind.value || institutionKind.value === "credential"; });
     container.querySelectorAll("[data-major-evidence-for]").forEach((node) => {
@@ -414,7 +397,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
       const value = Number(valueRaw);
       const scale = Number(scaleRaw);
       const term = String(container.querySelector("#institutionEvidenceTerm").value || "").trim();
-      if (!["overall", "technical", "major"].includes(row.metric) || !valueRaw || !scaleRaw || !Number.isFinite(value) || !Number.isFinite(scale) || value < 0 || value > 5 || scale < 1 || scale > 5 || value > scale) {
+      if (!["overall", "technical"].includes(row.metric) || !valueRaw || !scaleRaw || !Number.isFinite(value) || !Number.isFinite(scale) || value < 0 || value > 5 || scale < 1 || scale > 5 || value > scale) {
         reportError(t("profile.evidence.error.gpa", "Enter a GPA within its stated scale."), container.querySelector("#institutionEvidenceValue"));
         return;
       }

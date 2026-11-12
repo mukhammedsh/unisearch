@@ -11,7 +11,7 @@ import {
 } from "../../utils.js";
 import { heroIcon } from "../../icons.js";
 import { getCurrentLanguage, t } from "../../i18n.js";
-import { FALLBACK_RATES, convert, formatMoney, formatPrice } from "../../currency.js";
+import { formatMoney, formatPrice } from "../../currency.js";
 import {
   admissionChoiceKey,
   applyPercentWidths,
@@ -171,7 +171,6 @@ function updateAdmissionUrl(values) {
 export function getAdmissionContextProfile(university, baseProfile = loadProfileForApi()) {
   const profile = { ...baseProfile };
   profile.study_level = baseProfile?.study_level || baseProfile?.studyLevel || profile.study_level;
-  profile.applicant_route = baseProfile?.applicant_route || baseProfile?.applicantRoute || profile.applicant_route;
   profile.intended_entry_cycle = baseProfile?.intended_entry_cycle || baseProfile?.intendedEntryCycle || profile.intended_entry_cycle;
   const id = String(university?.id || "");
   const params = new URLSearchParams(window.location.search);
@@ -253,7 +252,7 @@ export function getAdmissionContextProfile(university, baseProfile = loadProfile
     university,
   );
   const routes = [...new Set(scopedCategories.map((category) => String(category.applicant_route || "").trim()).filter(Boolean))];
-  const requestedRoute = params.get("admission_route") || profile.applicant_route || profile.applicantRoute;
+  const requestedRoute = params.get("admission_route");
   let safeRoute = ["first_year", "transfer", "graduate"].includes(requestedRoute) ? requestedRoute : "";
   if (["doctorate", "master", "mba"].includes(currentLevel)) safeRoute = "graduate";
   else if (safeRoute && routes.length && !routes.includes(safeRoute)) safeRoute = "";
@@ -1239,34 +1238,20 @@ function renderStudyLevelFilter(availableLevels, activeLevelKey, totalCategories
   `;
 }
 
-export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLevel }) {
+export function resolveFeeStatusAndAid({ university, profile, studyLevel }) {
   const fin = university?.finance || {};
   const country = String(university?.location?.country || "").trim().toLowerCase();
   const isUkUni = country.includes("kingdom") || country.includes("united kingdom") || country.includes("великобритан") || country === "gb" || country === "uk";
   const isUsUni = country.includes("united states") || country.includes("usa") || country.includes("сша") || country === "us";
 
-  const reportedFeeStatus = uniChance?.citizenshipStatus || university?.citizenshipStatus || university?.citizenship_status || profile?.citizenshipStatus || profile?.citizenship_status;
   let feeStatusBadge = "";
   let feeStatusTone = "neutral";
   let feeStatusSummary = "";
 
   if (isUkUni || isUsUni) {
-    const statusKey = String(reportedFeeStatus?.status || "unknown").toLowerCase();
-    const categoryKey = String(reportedFeeStatus?.fee_category || "unknown").toLowerCase();
-    const resolvedCategory = statusKey === "verified" ? categoryKey : "unknown";
-    if (resolvedCategory === "home") {
-      feeStatusBadge = t("university.finance.home_status", "Home fee status");
-      feeStatusSummary = t("university.finance.fee_status_home_desc", "The available record indicates home fee status. Confirm current eligibility with the university.");
-    } else if (resolvedCategory === "domestic") {
-      feeStatusBadge = t("university.finance.domestic_status", "Domestic fee status");
-      feeStatusSummary = t("university.finance.fee_status_domestic_desc", "The available record indicates domestic fee status. Confirm current eligibility with the university.");
-    } else if (resolvedCategory === "overseas" || resolvedCategory === "international") {
-      feeStatusBadge = t("university.finance.overseas_status", "Overseas fee status");
-      feeStatusSummary = t("university.finance.fee_status_overseas_desc", "The available record indicates overseas fee status. Confirm current eligibility with the university.");
-    } else {
-      feeStatusBadge = t("university.finance.status_unconfirmed", "Fee status requires an eligibility check");
-      feeStatusSummary = t("university.finance.status_unconfirmed_desc", "Citizenship alone does not establish home, domestic, or overseas fee status. Residency history and the university's rules may also matter.");
-    }
+    // Fee status is never inferred from the profile; the applicant is pointed to the university's own eligibility rules.
+    feeStatusBadge = t("university.finance.status_unconfirmed", "Fee status requires an eligibility check");
+    feeStatusSummary = t("university.finance.status_unconfirmed_desc", "Citizenship alone does not establish home, domestic, or overseas fee status. Residency history and the university's rules may also matter.");
   }
 
   const targetStudyLevel = normalizeLevelKey(studyLevel || profile?.studyLevel || profile?.study_level);
@@ -1336,36 +1321,10 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
   ) : null;
 
   const thresholds = [];
-  const incomeRaw = profile?.familyIncomeAmount;
-  const hasIncomeAmount = incomeRaw !== null
-    && incomeRaw !== undefined
-    && !(typeof incomeRaw === "string" && incomeRaw.trim() === "");
-  const incomeAmount = !hasIncomeAmount
-    ? null
-    : Number(incomeRaw);
-  const incomeCurrency = String(profile?.familyIncomeCurrency || "USD").trim().toUpperCase();
-  const hasComparableIncome = hasIncomeAmount
-    && targetStudyLevel === "bachelor"
-    && Number.isFinite(incomeAmount)
-    && incomeAmount >= 0
-    && Number.isFinite(FALLBACK_RATES[incomeCurrency])
-    && FALLBACK_RATES[incomeCurrency] > 0;
-  const incomeUsd = hasComparableIncome ? convert(incomeAmount, incomeCurrency, "USD") : null;
-  const incomeComparisonFor = (thresholdUsd) => {
-    const threshold = Number(thresholdUsd);
-    if (!hasIncomeAmount || targetStudyLevel !== "bachelor") return "";
-    if (!hasComparableIncome || !Number.isFinite(incomeUsd) || incomeUsd < 0 || !Number.isFinite(threshold) || threshold <= 0) {
-      return t("university.finance.income_comparison_unknown", "Income comparison unavailable");
-    }
-    return incomeUsd < threshold
-      ? t("university.finance.income_comparison_below", "Entered income is below this published threshold")
-      : t("university.finance.income_comparison_at_or_above", "Entered income is at or above this published threshold");
-  };
   if (zeroParentContributionUsd) {
     thresholds.push({
       label: t("university.finance.zero_parent_contribution_threshold", "Zero Parent Contribution Threshold"),
       value: `< $${Number(zeroParentContributionUsd).toLocaleString("en-US")} ${t("universities.card.per_year", "/ year")}`,
-      comparison: incomeComparisonFor(zeroParentContributionUsd),
       note: t("university.finance.zero_parent_contrib", "The policy sets the expected parent contribution to zero; this does not establish total net price."),
     });
   }
@@ -1373,7 +1332,6 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
     thresholds.push({
       label: t("university.finance.full_ride_threshold", "Full-Ride Income Threshold"),
       value: `< $${Number(fullRideUsd).toLocaleString("en-US")} ${t("universities.card.per_year", "/ year")}`,
-      comparison: incomeComparisonFor(fullRideUsd),
       note: t("university.finance.full_ride_threshold_note", "Eligibility for a full funding package depends on the university's full policy and applicant circumstances."),
     });
   }
@@ -1381,7 +1339,6 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
     thresholds.push({
       label: t("university.finance.free_tuition_threshold", "Free Tuition Threshold"),
       value: `< $${Number(freeTuitionUsd).toLocaleString("en-US")} ${t("universities.card.per_year", "/ year")}`,
-      comparison: incomeComparisonFor(freeTuitionUsd),
       note: t("university.finance.free_tuition_note", "100% tuition coverage for qualifying families"),
     });
   }
@@ -1436,9 +1393,6 @@ export function resolveFeeStatusAndAid({ university, profile, uniChance, studyLe
     thresholds,
     thresholdsNote: thresholds.length
       ? [
-          thresholds.some((threshold) => threshold.comparison)
-            ? t("university.finance.income_comparison_caveat", "This comparison is context only. It does not determine aid eligibility, award amount, or net price.")
-            : "",
           university?.id === "stanford-university-usa-ca" && aid.income_thresholds_note
             ? t("university.finance.income_thresholds_note.stanford", "Stanford's income guidelines assume typical assets and US cost-of-living assumptions and may not apply to families living outside the United States.")
             : "",
@@ -1496,7 +1450,6 @@ function renderFinancePolicyOverview(policy) {
               <div class="finance-threshold-item">
                 <span class="finance-threshold-label">${escapeHtml(th.label)}</span>
                 <strong class="finance-threshold-value">${escapeHtml(th.value)}</strong>
-                ${th.comparison ? `<p class="finance-threshold-note">${escapeHtml(th.comparison)}</p>` : ""}
                 ${th.note ? `<p class="finance-threshold-note">${escapeHtml(th.note)}</p>` : ""}
               </div>
             `).join("")}
@@ -2327,7 +2280,6 @@ export function renderFinanceSection({
     const policyData = resolveFeeStatusAndAid({
       university,
       profile,
-      uniChance,
       studyLevel: financeStudyLevel,
     });
 

@@ -96,7 +96,6 @@ for (const item of cases) {
 
     await openAdmissionSelectionEditor(page);
     await page.locator("#admissionsAdvanced > summary").click();
-    await setNativeSelect(page, "admissionsApplicant", "first_year");
     await page.locator("#admissionsCycle").fill("Not decided yet");
     await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
     await page.locator("#admissionsCycle").fill("2027 entry");

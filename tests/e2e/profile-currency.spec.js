@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors, setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
+const { selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test.describe("Profile Budget Multi-Currency", () => {
@@ -43,9 +43,6 @@ test.describe("Profile Budget Multi-Currency", () => {
     await budgetInput.fill("20000");
     await budgetInput.dispatchEvent("input");
     await expect(grantHint).toBeHidden();
-    await openDisclosureParents(page.locator("#familyIncomeInput"));
-    await page.fill("#familyIncomeInput", "85000");
-    await setNativeSelect(page, "familyIncomeCurrencySelect", "EUR");
 
     // Save profile
     await page.click(selectors.saveProfileBtn);
@@ -63,8 +60,6 @@ test.describe("Profile Budget Multi-Currency", () => {
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
     await expect(budgetUnit).toContainText("KZT / year");
-    await expect(page.locator("#familyIncomeInput")).toHaveValue("85000");
-    await expect(page.locator("#familyIncomeCurrencySelect")).toHaveValue("EUR");
 
     // Stored 20,000 USD converted to KZT (~9,000,000 - 10,000,000 KZT)
     const convertedBudgetVal = await budgetInput.inputValue();

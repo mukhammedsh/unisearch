@@ -52,7 +52,7 @@ test("card keeps an unavailable budget separate from a published tuition range",
   assert.equal(universityCardPriceInfo(university).amount, null);
   const html = renderUniversityCardCosts(university);
   assert.match(html, /data-cost-basis="tuition"/);
-  assert.match(html, /class="uni-price-period">Tuition<\/span>/);
+  assert.match(html, /class="uni-cost-meta__label">Tuition<\/span>/);
   assert.match(html, /class="uni-price-val">[^<]+ – [^<]+<\/span>/);
   assert.match(html, /No comparable full budget/);
   assert.doesNotMatch(html, /data-cost-basis="annual_total"/);

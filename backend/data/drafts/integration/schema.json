@@ -26,6 +26,10 @@
       "enum": ["external", "external_restricted", "internal", "no_admission", "closed", "unresolved"],
       "description": "Closed applicant entry value mapped from the institution's own classification through vocabulary.json."
     },
+    "applicant_route": {
+      "enum": ["first_year", "transfer", "graduate", null],
+      "description": "Applicant category the route implies, from the reviewed route data, a closed classification label, graduate-only option levels or a vocabulary.json override; null when the route is internal, closed, unresolved, mixed-level or serves several categories."
+    },
     "normalized_status": {
       "type": "object",
       "additionalProperties": false,
@@ -116,7 +120,7 @@
     "route": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "classification", "target", "destination", "shared_form_family", "option_ids", "fact_ids", "source_ids", "shared_policy_context_ids", "provenance", "attributes", "index_attributes", "entry"],
+      "required": ["id", "title", "classification", "target", "destination", "shared_form_family", "option_ids", "fact_ids", "source_ids", "shared_policy_context_ids", "provenance", "attributes", "index_attributes", "entry", "applicant_route"],
       "properties": {
         "id": {"type": "string", "minLength": 1},
         "title": {"$ref": "#/$defs/text"},
@@ -131,7 +135,8 @@
         "provenance": {"$ref": "#/$defs/provenance"},
         "attributes": {"$ref": "#/$defs/attributes"},
         "index_attributes": {"$ref": "#/$defs/attributes"},
-        "entry": {"$ref": "#/$defs/entry"}
+        "entry": {"$ref": "#/$defs/entry"},
+        "applicant_route": {"$ref": "#/$defs/applicant_route"}
       },
       "description": "One sourced procedure/context view, not necessarily an independent application. Shared form/policy links do not transfer conditions automatically."
     },

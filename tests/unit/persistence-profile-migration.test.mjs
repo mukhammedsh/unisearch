@@ -61,7 +61,16 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(isLegacyProfile({ _v: 2, family_income_bracket: 'under_85k' }), false);
       assert.strictEqual(isLegacyProfile({ _v: 2, family_income: 'under_85k' }), false);
       assert.strictEqual(isLegacyProfile({ _v: 2, citizenships: 'KZ, US' }), true);
+      // Removed applicant inputs are stripped by a one-time migration
+      assert.strictEqual(isLegacyProfile({ _v: 2, citizenship: 'KZ', citizenships: ['KZ'] }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, familyIncomeAmount: 85000, familyIncomeCurrency: 'EUR' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, currentResidenceCountry: 'US' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, country_of_education: 'KZ' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, countryOfEducation: 'KZ', countryOfEducationOther: '' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, educationCredential: 'ib' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, education_credential_other: 'NIS' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, applicantRoute: 'transfer' }), true);
+      assert.strictEqual(isLegacyProfile({ _v: 2, applicant_route: 'transfer' }), true);
       assert.strictEqual(isLegacyProfile({ _v: 2, selected_admission_choices: {} }), true);
 
       // Contains legacy keys in exams
@@ -447,14 +456,17 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(loaded.family_income_bracket, 'under_85k');
       assert.strictEqual(loaded.familyIncome, undefined);
       assert.strictEqual(loadProfileForApi().family_income_bracket, undefined);
-      assert.deepStrictEqual(loaded.citizenships, ['KZ', 'US']);
-      assert.strictEqual(loaded.citizenship, 'KZ');
-      assert.strictEqual(loaded.countryOfEducation, 'KZ');
-      assert.strictEqual(loaded.educationCredentialOther, 'NIS Grade 12');
-      assert.strictEqual(loaded.applicantRoute, 'first_year');
+      assert.ok(!('citizenships' in loaded), 'removed citizenship input must be stripped');
+      assert.ok(!('citizenship' in loaded), 'removed citizenship input must be stripped');
+      for (const key of ['countryOfEducation', 'educationCredential', 'educationCredentialOther', 'applicantRoute',
+        'country_of_education', 'education_credential', 'education_credential_other', 'applicant_route']) {
+        assert.ok(!(key in loaded), `removed applicant input ${key} must be stripped`);
+      }
       assert.strictEqual(loaded.intendedEntryCycle, '2027 Fall');
-      assert.strictEqual(loaded.currentResidenceCountry, 'OTHER');
-      assert.strictEqual(loaded.currentResidenceOther, 'XK');
+      assert.ok(!('currentResidenceCountry' in loaded), 'removed residence input must be stripped');
+      assert.ok(!('currentResidenceOther' in loaded), 'removed residence input must be stripped');
+      assert.ok(!('current_residence_country' in loaded), 'removed residence alias must be stripped');
+      assert.ok(!('current_residence_other' in loaded), 'removed residence alias must be stripped');
       assert.strictEqual(loaded.feeStatusContext, 'unknown');
 
       // Verify canonical selectedAdmissionChoices
@@ -1021,6 +1033,17 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       saveProfile(normalized);
       assert.deepStrictEqual(loadProfileForApi().institutional_evidence, normalized.institutionalEvidence);
     });
+    test('drops institution evidence that no reviewed check reads', () => {
+      const normalized = normalizeProfileData({ institutionalEvidence: [
+        { university_id: 'stanford-university-usa-ca', kind: 'gpa', metric: 'major', value: 3.7, scale: 4 },
+        { university_id: 'imperial-college-london-uk', kind: 'enrollment', status: 'enrolled' },
+        { university_id: 'mit-usa-cambridge', kind: 'gpa', metric: 'major', value: 3.7, scale: 4 },
+        { university_id: 'mit-usa-cambridge', kind: 'gpa', metric: 'overall', value: 4.5, scale: 5, program_id: 'mit-bs-6-9' },
+      ] });
+      assert.deepStrictEqual(normalized.institutionalEvidence, [
+        { university_id: 'mit-usa-cambridge', kind: 'gpa', program_id: 'mit-bs-6-9', metric: 'overall', value: 4.5, scale: 5 },
+      ]);
+    });
     test('retains dated test attempts while preserving undated legacy best-score deduplication', () => {
       const profile = normalizeProfileData({
         exams: [
@@ -1121,6 +1144,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
         _v: 2,
         studyLevel: 'masters',
         applicantRoute: 'graduate',
+        countryOfEducation: 'KZ',
         intendedEntryCycle: '2027',
         feeStatusContext: 'self_reported_international_overseas',
         selectedAdmissionChoices: {
@@ -1144,7 +1168,8 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(choice.intendedEntryCycle, '');
       assert.strictEqual(choice.feeStatusContext, 'unknown');
       assert.strictEqual(loaded.studyLevel, 'masters');
-      assert.strictEqual(loaded.applicantRoute, 'graduate');
+      assert.ok(!('applicantRoute' in loaded), 'the removed general applicant route must be stripped');
+      assert.ok(!('countryOfEducation' in loaded), 'the removed country of education must be stripped');
       assert.deepStrictEqual(loaded.admissionChoiceResetNotices, []);
       assert.strictEqual(isLegacyProfile(JSON.parse(mockStore.unisearch_profile)), false);
       const payload = loadProfileForApi();
@@ -1175,7 +1200,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       assert.strictEqual(choice.intendedEntryCycle, '');
       assert.strictEqual(choice.feeStatusContext, 'other');
       assert.strictEqual(profile.studyLevel, 'masters');
-      assert.strictEqual(profile.applicantRoute, 'graduate');
+      assert.ok(!('applicantRoute' in profile));
       const payloadChoice = loadProfileForApi().selectedAdmissionChoices['stanford-university-usa-ca'];
       assert.deepStrictEqual(payloadChoice, choice);
     });
@@ -1211,8 +1236,9 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
 
       let profile = loadProfile();
       assert.strictEqual(profile.studyLevel, 'masters');
-      assert.strictEqual(profile.applicantRoute, 'graduate');
+      assert.ok(!('applicantRoute' in profile));
       assert.strictEqual(profile.selectedAdmissionChoices['mit-usa-cambridge'].studyLevel, 'undergraduate');
+      assert.strictEqual(profile.selectedAdmissionChoices['mit-usa-cambridge'].applicantRoute, 'first_year');
       assert.deepStrictEqual(profile.admissionChoiceResetNotices, []);
 
       global.window.localStorage.setItem = () => { throw new Error('QuotaExceededError'); };
@@ -1222,7 +1248,7 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
       profile = loadProfile();
       assert.strictEqual(profile.selectedAdmissionChoices['mit-usa-cambridge'].studyOptionId, 'mit-option-2');
       assert.strictEqual(profile.studyLevel, 'masters');
-      assert.strictEqual(profile.applicantRoute, 'graduate');
+      assert.ok(!('applicantRoute' in profile));
     });
   });
 });

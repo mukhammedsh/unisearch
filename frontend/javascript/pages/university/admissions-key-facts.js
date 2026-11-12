@@ -1,6 +1,6 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
-import { admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName, admissionWindowName } from "./admissions-render.js";
+import { ASSESSMENT_RECORD_DOMAINS, admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName, admissionWindowName, renderAssessmentChecks } from "./admissions-render.js";
 import { formatPublishedDate } from "./admissions-presentation.js";
 import { getReviewedDeadlineEvents, MONTHS } from "./deadline-calendar.js";
 import { isEvidenceReviewed, isPublishedReference, isReviewedPublished } from "./admissions-status.js";
@@ -228,28 +228,49 @@ export function fundingFact(resolved) {
   return { terms, text: count ? tFormat("university.admissions.key_facts.funding_records", { count }) : label("funding_none") };
 }
 
-function row(key, fact, action = "") {
+function row(key, fact, action = "", shownTerms = null, extra = "") {
   const flag = fact.flag ? `<p class="admissions-key-facts__flag" data-tone="${fact.flag.tone}">${escapeHtml(fact.flag.text)}</p>` : "";
   const notes = flag + (fact.notes || (fact.note ? [fact.note] : [])).map(note => `<p class="admissions-reading__note">${escapeHtml(note)}</p>`).join("");
   const links = (fact.links || []).map(link => `<a class="admissions-key-facts__source" href="${escapeHtmlAttr(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>`).join("");
-  return `<div class="admissions-key-facts__row" data-key-fact="${key}"${fact.status ? ` data-key-fact-status="${escapeHtmlAttr(fact.status)}"` : ""}>
+  const marker = key === "requirements" ? " data-requirements-match" : "";
+  return `<div class="admissions-key-facts__row" data-key-fact="${key}"${marker}${fact.status ? ` data-key-fact-status="${escapeHtmlAttr(fact.status)}"` : ""}>
     <dt>${escapeHtml(label(key))}</dt>
-    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${notes}${links}${renderTermList(fact.terms || [])}${action}</dd></div>`;
+    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${notes}${links}${renderTermList(fact.terms || [], shownTerms)}${action}${extra}</dd></div>`;
+}
+
+// The page's single requirements-match summary: the key-fact result plus caveats that belong beside a number.
+// The detailed checks follow as one disclosure; they do not repeat the summary sentence.
+function requirementsRow(resolved, cycleAction, shownTerms) {
+  const fact = requirementsFact(resolved);
+  const assessment = resolved?.assessment || {};
+  const checks = assessment.activeChoice?.details?.checks || [];
+  const evaluated = checks.filter(check => check.measurable && ["met", "unmet"].includes(check.status));
+  const available = Number.isFinite(assessment.chancePercent) && evaluated.length;
+  const notes = [
+    ...(available && evaluated.some(check => check.status === "unmet") ? [t("university.admissions.catalog.reason.requirements_not_met")] : []),
+    ...(fact.notes || []),
+    ...(available ? [t("university.admissions.catalog.assessment_limits")] : []),
+  ];
+  const profileLink = assessment.reason === "missing_evidence"
+    ? `<a class="admissions-key-facts__link" href="/profile.html" data-route="profile">${escapeHtml(t("university.admissions.catalog.assessment_profile"))}</a>` : "";
+  const detail = renderAssessmentChecks(resolved, { recordDomains: ASSESSMENT_RECORD_DOMAINS });
+  return row("requirements", { ...fact, notes }, `${fact.cycleRequired ? cycleAction : ""}${profileLink}`, shownTerms, detail);
 }
 
 export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileCycle = "", profileExamIds = [], now = new Date() } = {}) {
   if (!resolved?.selected_route) return "";
-  const requirements = requirementsFact(resolved);
   const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="${profileCycle ? "apply" : "edit"}">${escapeHtml(profileCycle
     ? tFormat("university.admissions.key_facts.use_profile_cycle", { cycle: admissionsCycleLabel(profileCycle) }) : label("set_cycle"))}</button>`;
   const open = (tab, key) => `<button type="button" class="admissions-key-facts__link" data-open-tab="${tab}">${escapeHtml(label(key))}</button>`;
+  // A glossary term is explained once per key-facts block, in the first row that names it.
+  const shownTerms = new Set();
   return `<section class="admissions-key-facts" data-admissions-key-facts aria-labelledby="admissionsKeyFactsTitle">
     <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>
     <dl class="admissions-key-facts__list">
-      ${row("requirements", requirements, requirements.cycleRequired ? cycleAction : "")}
-      ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"))}
-      ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"))}
-      ${row("funding", fundingFact(resolved))}
+      ${requirementsRow(resolved, cycleAction, shownTerms)}
+      ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
+      ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
+      ${row("funding", fundingFact(resolved), "", shownTerms)}
     </dl>
     <p class="admissions-reading__note">${escapeHtml(label("note"))}</p>
   </section>`;

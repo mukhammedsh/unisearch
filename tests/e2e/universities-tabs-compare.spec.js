@@ -63,7 +63,6 @@ async function chooseReviewedContext(page, id, search, option, route, cycle, stu
     if (!(await disclosure.evaluate(element => element.open))) await disclosure.locator(":scope > summary").click();
     await openDisclosureParents(chooser.locator("[data-compare-context-form]"));
   }
-  await setNativeSelect(page, `compare-applicant_route-${id}`, applicantRoute);
   await chooser.locator(`#compare-cycle-${id}`).fill(cycle);
   await chooser.locator("[data-compare-context-form] button[type=submit]").click();
   await expect.poll(() => page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[uid], id)).toMatchObject({

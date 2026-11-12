@@ -228,11 +228,14 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
     const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
     const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
+    // Qualifiers of the price (what it covers, the second currency) form one quiet line below it,
+    // so every card shows its price on the same first line.
+    const metaHtml = showsTuitionReference || secondary
+        ? `<span class="uni-cost-meta">${showsTuitionReference ? `<span class="uni-cost-meta__label">${escapeHtml(title)}</span>` : ""}${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}</span>`
+        : "";
     return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary || showsTuitionReference ? " uni-price--stacked" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
-            ${showsTuitionReference ? `<span class="uni-price-period">${escapeHtml(title)}</span>` : ""}
-            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span> <span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
-            ${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}
+        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>&nbsp;<span class="uni-price-tail"><span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span></span>
         </button>
         <span id="${escapeHtmlAttr(tooltipId)}" class="ui-tooltip-bubble uni-cost-tooltip__content" role="tooltip">
             <strong class="ui-tooltip-title">${escapeHtml(t("universities.cost.tooltip_title"))} · ${escapeHtml(title)}${reference ? ` · ${escapeHtml(t("universities.cost.reference_short"))}` : ""}</strong>
@@ -243,7 +246,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
             ${livingYear ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(tFormat("universities.cost.tooltip_living_year", { year: livingYear }))}</span>` : ""}
             ${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}
         </span>
-    </span>`;
+    </span>${metaHtml}`;
 }
 
 let __universitiesProfileUpdatedHandler = null;

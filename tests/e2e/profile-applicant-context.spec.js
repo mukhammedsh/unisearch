@@ -3,43 +3,73 @@ const { markTourAsSeen } = require("./helpers/personas");
 const { selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
-test.describe("World applicant profile context", () => {
-  test("saves country of education, credential, route, cycle, and residence independently of citizenship", async ({ page }) => {
+const REMOVED_CONTROLS = ["countryOfEducationSelect", "countryOfEducationOtherInput", "educationCredentialSelect", "educationCredentialOtherInput", "applicantRouteSelect"];
+const REMOVED_KEYS = [
+  "countryOfEducation", "countryOfEducationOther", "educationCredential", "educationCredentialOther", "applicantRoute",
+  "country_of_education", "country_of_education_other", "education_credential", "education_credential_other", "applicant_route",
+];
+
+test.describe("Applicant profile application details", () => {
+  test("saves the intended entry cycle and fee status without the removed education and route inputs", async ({ page }) => {
     await mockAllExpensiveEndpoints(page);
     await markTourAsSeen(page);
     await page.goto("/profile.html");
     await expect(page.locator(selectors.profileModal)).toBeVisible();
-    await page.waitForFunction(() => document.querySelectorAll("#countryOfEducationSelect option[data-country-code]").length > 100);
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
-    await setNativeSelect(page, "citizenshipCountrySelect", "OTHER");
-    await expect(page.locator("#citizenshipOtherInput")).toHaveAccessibleName("Enter country name...");
-    await setNativeSelect(page, "citizenshipCountrySelect", "");
-    await setNativeSelect(page, "countryOfEducationSelect", "OTHER");
-    await expect(page.locator("#countryOfEducationOtherInput")).toHaveAccessibleName("Enter country");
-    await setNativeSelect(page, "countryOfEducationSelect", "KZ");
-    await setNativeSelect(page, "educationCredentialSelect", "other");
-    await expect(page.locator("#educationCredentialOtherInput")).toHaveAccessibleName("Describe your credential or curriculum");
-    await page.fill("#educationCredentialOtherInput", "NIS Grade 12 certificate");
-    await setNativeSelect(page, "applicantRouteSelect", "first_year");
+    for (const id of REMOVED_CONTROLS) await expect(page.locator(`#${id}`)).toHaveCount(0);
+    const card = page.locator("article.profile-card-block--full");
+    await expect(card.locator(".profile-card-title")).toHaveText("Application details");
+    await expect(card.locator(":scope > .profile-applicant-context-grid > .profile-field")).toHaveCount(2);
+    await expect(card.locator(".profile-card-desc").first()).toContainText("fee status");
+
     await page.fill("#intendedEntryCycleInput", "2027 Fall");
-    await setNativeSelect(page, "currentResidenceCountrySelect", "OTHER");
-    await expect(page.locator("#currentResidenceOtherInput")).toHaveAccessibleName("Enter country");
-    await setNativeSelect(page, "currentResidenceCountrySelect", "US");
     await setNativeSelect(page, "feeStatusContextSelect", "self_reported_international_overseas");
-
     await page.click(selectors.saveProfileBtn);
     await expect.poll(async () => page.evaluate(() => {
       const profile = JSON.parse(localStorage.getItem("unisearch_profile") || "{}");
-      return [
-        profile.countryOfEducation,
-        profile.educationCredential,
-        profile.educationCredentialOther,
-        profile.applicantRoute,
-        profile.intendedEntryCycle,
-        profile.currentResidenceCountry,
-        profile.feeStatusContext,
-        profile.citizenship,
-      ];
-    })).toEqual(["KZ", "other", "NIS Grade 12 certificate", "first_year", "2027 Fall", "US", "self_reported_international_overseas", ""]);
+      return [profile.intendedEntryCycle, profile.feeStatusContext];
+    })).toEqual(["2027 Fall", "self_reported_international_overseas"]);
   });
+
+  test("a saved profile that still has the removed inputs loads, drops them, and never sends them to the API", async ({ page }) => {
+    await mockAllExpensiveEndpoints(page);
+    await markTourAsSeen(page);
+    await page.addInitScript((removed) => {
+      if (sessionStorage.getItem("removed-inputs-seeded")) return;
+      sessionStorage.setItem("removed-inputs-seeded", "1");
+      const profile = { _v: 2, intendedEntryCycle: "2028 Fall", feeStatusContext: "self_reported_home_domestic" };
+      for (const key of removed) profile[key] = key.endsWith("Route") || key.endsWith("_route") ? "transfer" : "KZ";
+      profile.selectedAdmissionChoices = { "mit-usa-cambridge": { studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year", applicantRoute: "first_year" } };
+      localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+    }, REMOVED_KEYS);
+    await page.goto("/profile.html");
+    await expect(page.locator(selectors.profileModal)).toBeVisible();
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+    await expect(page.locator("#intendedEntryCycleInput")).toHaveValue("2028 Fall");
+    await expect(page.locator("#feeStatusContextSelect")).toHaveValue("self_reported_home_domestic");
+
+    const { stored, payload } = await page.evaluate(async () => {
+      const { loadProfileForApi } = await import("/javascript/utils/persistence.js");
+      return { stored: JSON.parse(localStorage.getItem("unisearch_profile") || "{}"), payload: loadProfileForApi() };
+    });
+    for (const key of REMOVED_KEYS) {
+      expect(stored, `${key} must be removed from the stored profile`).not.toHaveProperty(key);
+      expect(payload, `${key} must not be sent to the API`).not.toHaveProperty(key);
+    }
+    expect(stored.selectedAdmissionChoices["mit-usa-cambridge"].applicantRoute).toBe("first_year");
+    expect(payload.selectedAdmissionChoices["mit-usa-cambridge"].applicantRoute).toBe("first_year");
+  });
+
+  for (const [language, title] of [["rus", "Параметры поступления"], ["kaz", "Түсу параметрлері"]]) {
+    test(`the application details card is titled in ${language}`, async ({ page }) => {
+      await markTourAsSeen(page);
+      await page.addInitScript((value) => localStorage.setItem("unisearch_ui_language_v1", value), language);
+      await page.goto("/profile.html");
+      await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+      await expect(page.locator(selectors.profileModal)).toBeVisible();
+      await expect(page.locator("html")).toHaveAttribute("lang", language === "kaz" ? "kk" : "ru");
+      await expect(page.locator("article.profile-card-block--full .profile-card-title")).toHaveText(title);
+    });
+  }
 });

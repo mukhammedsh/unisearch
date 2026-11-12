@@ -355,7 +355,7 @@
   height: 44px;
   overflow: hidden;
   border-radius: var(--radius-base);
-  background: var(--surface-soft);
+  background: var(--surface-badge);
 }
 
 .map-point-popup__logo img {

@@ -8,7 +8,6 @@ const cases = [
     option: "mit-course-6-3-bachelor",
     route: "mit-first-year",
     level: "undergraduate",
-    applicant: "first_year",
     cycle: "Fall 2027 entry",
     fee: "unknown",
     viewport: { width: 1280, height: 900 },
@@ -27,7 +26,6 @@ const cases = [
     option: "mit-eecs-phd-course-6",
     route: "mit_eecs_doctoral_admissions",
     level: "doctoral",
-    applicant: "graduate",
     cycle: "",
     fee: "unknown",
     viewport: { width: 390, height: 844 },
@@ -48,7 +46,6 @@ const cases = [
     option: "imperial-option-computing-meng",
     route: "procedure-computing-meng",
     level: "undergraduate",
-    applicant: "first_year",
     cycle: "2027 entry",
     fee: "unknown",
     viewport: { width: 1280, height: 900 },
@@ -70,7 +67,6 @@ const cases = [
     option: "imperial-option-computing",
     route: "procedure-computing",
     level: "masters",
-    applicant: "graduate",
     cycle: "2027 entry",
     fee: "unknown",
     viewport: { width: 390, height: 844 },
@@ -91,7 +87,6 @@ const cases = [
     option: "stanford-option-cs-ms",
     route: "directory-evidence:stanford-graduate-cs-ms",
     level: "masters",
-    applicant: "graduate",
     cycle: "2027-28 entry",
     fee: "unknown",
     viewport: { width: 1280, height: 900 },
@@ -110,7 +105,6 @@ const cases = [
     option: "stanford-option-cs-ms",
     route: "engineering-doerr-evidence:cs-coterm",
     level: "masters",
-    applicant: "",
     cycle: "2026-27 to 2027-28 entries",
     fee: "unknown",
     viewport: { width: 390, height: 844 },
@@ -134,7 +128,6 @@ function contextUrl(item) {
     admission_level: item.level,
     admission_fee: item.fee,
   });
-  if (item.applicant) params.set("admission_route", item.applicant);
   if (item.cycle) params.set("admission_cycle", item.cycle);
   return `/university.html?${params.toString()}`;
 }
@@ -152,7 +145,6 @@ async function openContext(page, item) {
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
-  await expect(page.locator("#admissionsApplicant")).toHaveValue(item.applicant);
   await expect(page.locator("#admissionsCycle")).toHaveValue(item.cycle);
   await expect(page.locator("#admissionsFee")).toHaveValue(item.fee);
   await expect(page.locator("html")).toHaveAttribute("data-theme", item.theme);
@@ -279,7 +271,7 @@ test("program search resolves its sole route from applicant context without chan
     localStorage.setItem("unisearch_ui_language_v1", "eng");
     localStorage.setItem("unisearch_theme", "light");
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
-    localStorage.setItem("unisearch_profile", JSON.stringify({ gpa: 3.8, applicant_route: "first_year" }));
+    localStorage.setItem("unisearch_profile", JSON.stringify({ gpa: 3.8 }));
   });
   await page.goto("/university.html?id=imperial-college-london-uk");
   await expect(page.locator("#detailCard")).toBeVisible();
@@ -304,13 +296,10 @@ test("program search resolves its sole route from applicant context without chan
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsRoute")).toBeEnabled();
-
-  await setNativeSelect(page, "admissionsRoute", "procedure-computing-meng");
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // The course has one application route, which is read directly without a picker.
+  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
+  await expect(page).toHaveURL(/admission_application_route=procedure-computing-meng/);
   await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "first_year");
   await page.locator("#admissionsCycle").fill("2027 entry");
   await setNativeSelect(page, "admissionsFee", "unknown");
   await page.locator("#admissionsContextApply").click();
@@ -362,8 +351,7 @@ test("admissions context retry recovers from one request failure using the live 
   await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const examFact = page.locator('#tab-admission [data-admissions-fact="ug-sat-act-presence"]').first();
-  const examGroup = examFact.locator("xpath=ancestor::details[@data-admissions-group][1]");
-  if (await examGroup.count() && !(await examGroup.evaluate((node) => node.open))) await examGroup.locator(":scope > summary").click();
+  await openDisclosureParents(examFact);
   await expect(examFact).toBeVisible();
   expect(failedFirstContext).toBe(true);
 });
@@ -506,16 +494,16 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   await routeOption.click();
   await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
 
-  const applicant = page.locator("#admissionsApplicant");
-  const applicantTrigger = page.locator("#admissionsContext .custom-select-wrapper:has(#admissionsApplicant) .custom-select-trigger");
-  await applicantTrigger.focus();
-  await applicantTrigger.press("ArrowDown");
-  await applicantTrigger.press("Home");
-  await applicantTrigger.press("ArrowDown");
-  await applicantTrigger.press("Enter");
-  await expect(applicant).toHaveValue("first_year");
-  await applicantTrigger.press("g");
-  await expect(applicant).toHaveValue("graduate");
+  const fee = page.locator("#admissionsFee");
+  const feeTrigger = page.locator("#admissionsContext .custom-select-wrapper:has(#admissionsFee) .custom-select-trigger");
+  await feeTrigger.focus();
+  await feeTrigger.press("ArrowDown");
+  await feeTrigger.press("Home");
+  await feeTrigger.press("ArrowDown");
+  await feeTrigger.press("Enter");
+  await expect(fee).toHaveValue("self_reported_home_domestic");
+  await feeTrigger.press("o");
+  await expect(fee).toHaveValue("self_reported_international_overseas");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   expect(pageErrors).toEqual([]);
 });

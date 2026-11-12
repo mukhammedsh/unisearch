@@ -129,7 +129,6 @@ class ActiveFundingDataTests(unittest.TestCase):
             study_option_id="stanford-option-cs-bs",
             application_route_id="undergraduate-shared-evidence:stanford-first-year",
             study_level="undergraduate",
-            applicant_route="international",
             intended_entry_cycle="Autumn 2027",
         )
         admission = self.fact(resolved, "undergraduate-shared-evidence:stanford-ug-international-financial-aid-admission")

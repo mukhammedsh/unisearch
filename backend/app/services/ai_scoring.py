@@ -19,7 +19,6 @@ from app.services.university_tracks import (
     _normalize_major_text,
     _iter_programs,
 )
-from app.services.citizenship import resolve_citizenship_status
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 
 _UI_BADGE_THRESHOLDS = {
@@ -2176,28 +2175,10 @@ def _has_profile_evidence(ctx: Dict[str, Any]) -> bool:
     )
 
 
-def _resolve_profile_citizenship_status(university: Dict[str, Any], profile: Dict[str, Any]) -> Dict[str, Any]:
-    citizenships = profile.get("citizenships") or []
-    if isinstance(citizenships, str):
-        citizenships = [c.strip() for c in citizenships.split(",") if c.strip()]
-    elif isinstance(citizenships, list):
-        citizenships = [str(c).strip() for c in citizenships if str(c).strip()]
-    if not citizenships and profile.get("citizenship"):
-        citizenships = [str(profile.get("citizenship")).strip()]
-    location = university.get("location")
-    uni_country = str(
-        (location.get("country") if isinstance(location, dict) else None)
-        or university.get("country")
-        or ""
-    )
-    return resolve_citizenship_status(uni_country, citizenships)
-
-
 def _build_no_choices_chance_response(
     profile: Dict[str, Any],
     funding_type: str,
     has_evidence: bool,
-    citizenship_status: Dict[str, Any],
 ) -> Dict[str, Any]:
     return {
         "overallChance": None,
@@ -2223,7 +2204,6 @@ def _build_no_choices_chance_response(
         "label": "Нет вариантов для выбранных фильтров"
         if _chance_locale(profile) == "rus"
         else "No choices for the selected filters",
-        "citizenshipStatus": citizenship_status,
     }
 
 
@@ -2333,10 +2313,9 @@ def estimate_uni_chance(
     entries = _filter_admission_entries(choices, university, profile)
 
     has_evidence = _has_profile_evidence(ctx)
-    citizenship_status = _resolve_profile_citizenship_status(university, profile)
 
     if not entries:
-        return _build_no_choices_chance_response(profile, funding_type, has_evidence, citizenship_status)
+        return _build_no_choices_chance_response(profile, funding_type, has_evidence)
 
     per_choice = _evaluate_per_choice_chance(university, profile, entries, choices, ctx, lang_cfg)
 
@@ -2380,7 +2359,6 @@ def estimate_uni_chance(
         "chanceAvailable": bool(best.get("chanceAvailable")),
         "reason": str(best.get("reason") or ""),
         "label": str(best.get("label") or ""),
-        "citizenshipStatus": citizenship_status,
     }
 
 

@@ -58,7 +58,7 @@ def list_study_options(
         )
         revision = result["revision"]
         etag = '"' + hashlib.sha256(json.dumps(
-            [revision, admissions_editorial.revision(), university_id, search.strip(), study_level, major, page, limit, language],
+            [revision, admissions_catalog.RESPONSE_SHAPE, admissions_editorial.revision(), university_id, search.strip(), study_level, major, page, limit, language],
             ensure_ascii=True, separators=(",", ":"),
         ).encode("utf-8")).hexdigest() + '"'
         cache_control = "public, max-age=300, stale-while-revalidate=60"
@@ -68,7 +68,7 @@ def list_study_options(
             response.headers["Vary"] = "Accept-Language"
         if _etag_matches(request.headers.get("if-none-match", "") if request else "", etag):
             return Response(status_code=304, headers={"Cache-Control": cache_control, "ETag": etag, "Vary": "Accept-Language"})
-        return admissions_editorial.strip_applicant_payload(result)
+        return admissions_editorial.strip_applicant_payload(admissions_catalog.public_study_options(result))
     except HTTPException:
         raise
     except admissions_catalog.AdmissionsCatalogError as error:
@@ -96,8 +96,9 @@ def resolve_admissions_context(
         )
         resolved["assessment"] = admissions_assessment.assess_resolved_context(resolved, profile)
         resolved["selected_costs"] = admissions_catalog.selected_costs(university_id, resolved["context"])
-        # Assessment hashes the reviewed facts, so maintainer notes are removed only from the response copy.
-        return admissions_editorial.strip_applicant_payload(resolved)
+        # The assessment hashes the complete reviewed facts first. The response copy then drops fields no page reads
+        # and loses maintainer notes; neither step touches the stored records.
+        return admissions_editorial.strip_applicant_payload(admissions_catalog.public_context(resolved))
     except admissions_catalog.InstitutionNotFoundError as error:
         raise HTTPException(status_code=404, detail="Admissions catalog not found") from error
     except admissions_catalog.AdmissionsCatalogError as error:

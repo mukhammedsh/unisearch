@@ -4,6 +4,7 @@ University tracks, majors, score profile derivations, and admission choices.
 from __future__ import annotations
 
 import copy
+from functools import lru_cache
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -136,29 +137,47 @@ _MAJOR_PHRASES: Dict[str, List[str]] = {
 }
 
 
+_NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
+_WHITESPACE_RE = re.compile(r"\s+")
+
+
+@lru_cache(maxsize=16384)
+def _normalize_lowered_major_text(lowered: str) -> str:
+    text = _NON_ALNUM_RE.sub(" ", lowered.replace("&", " and "))
+    return _WHITESPACE_RE.sub(" ", text).strip()
+
+
 def _normalize_major_text(value: Any) -> str:
-    text = _safe_lower(value).replace("&", " and ")
-    text = re.sub(r"[^a-z0-9]+", " ", text)
-    return re.sub(r"\s+", " ", text).strip()
+    return _normalize_lowered_major_text(_safe_lower(value))
+
+
+@lru_cache(maxsize=4096)
+def _phrase_pattern(phrase: str) -> "re.Pattern[str]":
+    return re.compile(r"\b" + re.escape(phrase).replace(r"\ ", r"\s+") + r"\b")
 
 
 def _contains_phrase(text: str, phrase: str) -> bool:
     if not text or not phrase:
         return False
-    pattern = r"\b" + re.escape(phrase).replace(r"\ ", r"\s+") + r"\b"
-    return re.search(pattern, text) is not None
+    return _phrase_pattern(phrase).search(text) is not None
+
+
+# Normalised taxonomy phrases, computed once: loading the catalogue tags every program title against all of them.
+_MAJOR_PHRASE_TABLE: Tuple[Tuple[str, Tuple[str, ...]], ...] = tuple(
+    (canonical, tuple(_normalize_major_text(p) for p in _MAJOR_PHRASES.get(canonical, [canonical])))
+    for canonical in _CANONICAL_MAJORS
+)
+
+
+@lru_cache(maxsize=16384)
+def _normalized_major_tags(text: str) -> Tuple[str, ...]:
+    return tuple(canonical for canonical, phrases in _MAJOR_PHRASE_TABLE
+                 if any(_contains_phrase(text, phrase) for phrase in phrases))
 
 
 def _major_tags_from_text(value: Any) -> List[str]:
     text = _normalize_major_text(value)
-    if not text:
-        return []
-    out: List[str] = []
-    for canonical in _CANONICAL_MAJORS:
-        phrases = _MAJOR_PHRASES.get(canonical, [canonical])
-        if any(_contains_phrase(text, _normalize_major_text(p)) for p in phrases):
-            out.append(canonical)
-    return out
+    return list(_normalized_major_tags(text)) if text else []
 
 
 def _canonical_major(value: Any) -> str:

@@ -65,15 +65,17 @@ async function chooseOption(page, optionId, search, level) {
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
   await expect(page.locator("#admissionsViewRequirements")).toHaveCount(0);
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // A program with exactly one application route is read through it directly; otherwise no route is preselected.
+  const routes = await page.locator("#admissionsRoute option").evaluateAll(options => options.map(option => option.value).filter(Boolean));
+  await expect(page.locator("#admissionsRoute")).toHaveValue(routes.length === 1 ? routes[0] : "");
 }
 
-async function applyContext(page, route, applicant, cycle) {
+async function applyContext(page, route, cycle) {
   await selectRoute(page, route);
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await setNativeSelect(page, "admissionsApplicant", applicant);
   await page.locator("#admissionsCycle").fill(cycle);
   await setNativeSelect(page, "admissionsFee", "unknown");
   const response = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
@@ -104,13 +106,12 @@ async function openFact(page, tab, id) {
 async function openAssessment(page) {
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements [data-requirements-match]");
 }
 
 test("Kazakhstan secondary-school guest and applicant can distinguish university-wide MIT and Stanford first-year and transfer routes", async ({ page }, testInfo) => {
   const kazakhstanApplicant = {
     languageEvidence: [{ kind: "education", language: "en", country: "Kazakhstan", qualification_level: "secondary", status: "completed", entirely_in_language: false }],
-    citizenships: ["KZ"],
   };
   await preparePage(page);
 
@@ -135,7 +136,7 @@ test("Kazakhstan secondary-school guest and applicant can distinguish university
       if (Object.keys(profile).length) localStorage.setItem("unisearch_profile", JSON.stringify(profile));
       else localStorage.removeItem("unisearch_profile");
     }, savedProfile);
-    const result = await applyContext(page, journey.route, journey.applicant, journey.cycle);
+    const result = await applyContext(page, journey.route, journey.cycle);
     expect(result.selected_option.id).toBe(journey.option);
     expect(result.selected_route.id).toBe(journey.route);
     expect(result.selected_route.target).toMatch(/university|MIT undergraduate (?:transfer )?admission/i);
@@ -227,7 +228,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await chooseOption(page, "mit-course-6-9p-meng", "Course 6-9P", "masters");
   await openAdmission(page);
   await expect(page.locator('#admissionsRoute option[value="mit_bcs_meng_admissions"]')).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
-  const result = await applyContext(page, "mit_bcs_meng_admissions", "graduate", "");
+  const result = await applyContext(page, "mit_bcs_meng_admissions", "");
   expect(result.assessment.chancePercent).toBe(100);
   const checks = Object.fromEntries(result.assessment.activeChoice.details.checks.filter((check) => check.checkId).map((check) => [check.checkId, check]));
   expect(["current-course-6-9", "technical-gpa", "overall-gpa", "major-subject-units"].map((id) => checks[id].status)).toEqual(["met", "met", "met", "met"]);
@@ -236,7 +237,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   expect(checks["overall-gpa"].sourceRule.id).toBe("bcs-meng-entry-conditions");
   const bcsContextUrl = page.url();
   const assessment = await openAssessment(page);
-  await expect(assessment.locator(":scope > p > strong")).toHaveText("100%");
+  await expect(assessment.locator(".admissions-key-facts__value")).toContainText("(100%)");
   const scopedAverages = assessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" });
   await expect(scopedAverages).toHaveCount(2);
   await expect(scopedAverages.nth(0).locator(":scope > summary")).toContainText(/Met/i);
@@ -276,7 +277,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const updatedAssessment = await openAssessment(page);
   await expect(updatedAssessment).toContainText("Required applicant evidence is missing");
-  await expect(updatedAssessment.locator(":scope > p > strong")).toHaveCount(0);
+  await expect(updatedAssessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
   await missingOverall.locator(":scope > summary").click();
@@ -296,7 +297,6 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await setNativeSelect(page, "admissionsApplicant", "graduate");
   await page.locator("#admissionsCycle").fill("Spring 2028");
   await setNativeSelect(page, "admissionsFee", "unknown");
   const response = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");

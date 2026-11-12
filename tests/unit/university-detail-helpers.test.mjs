@@ -506,16 +506,8 @@ test("legacy deadlines follow the selected program", () => {
   window.location.search = "";
 });
 
-test("archived legacy finance fixture compares profile income without implying eligibility", () => {
+test("archived legacy finance fixture shows published income thresholds without comparing profile data", () => {
   setLanguage("eng", { persist: false, emit: false });
-  const previousProfile = loadProfile();
-  const previousWindowStorage = window.localStorage;
-  const profileStorage = new Map();
-  window.localStorage = {
-    getItem: (key) => profileStorage.get(key) ?? null,
-    setItem: (key, value) => profileStorage.set(key, String(value)),
-    removeItem: (key) => profileStorage.delete(key),
-  };
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const university = {
     id: "sample-legacy-finance",
@@ -529,50 +521,38 @@ test("archived legacy finance fixture compares profile income without implying e
     },
     admission_categories: [{ id: "sample-undergraduate", label: "Undergraduate", study_level: "Bachelor", funding_options: [{ id: "paid", funding_type: "paid" }] }],
   };
-  const render = () => renderFinanceSection({ annualCostForTrack: () => null, container, university });
 
-  try {
-    saveProfile({
-      studyLevel: "Bachelor",
-      familyIncomeAmount: 120000,
-      familyIncomeCurrency: "EUR",
-    });
-    render();
-    assert.equal((container.innerHTML.match(/Entered income is at or above this published threshold/g) || []).length, 1, container.innerHTML);
-    assert.equal((container.innerHTML.match(/Entered income is below this published threshold/g) || []).length, 1);
-    assert.match(container.innerHTML, /This comparison is context only\. It does not determine aid eligibility, award amount, or net price\./);
+  // A stale saved profile that still carries the removed income input must not change the thresholds.
+  const policy = resolveFeeStatusAndAid({
+    university,
+    profile: { studyLevel: "Bachelor", familyIncomeAmount: 120000, familyIncomeCurrency: "EUR" },
+  });
+  assert.deepEqual(
+    policy.thresholds.map((threshold) => [threshold.label, threshold.value]),
+    [
+      ["Zero Parent Contribution Threshold", "< $100,000 / year"],
+      ["Free Tuition Threshold", "< $200,000 / year"],
+    ],
+  );
+  assert.ok(policy.thresholds.every((threshold) => !("comparison" in threshold)));
 
-    saveProfile({ studyLevel: "Bachelor", familyIncomeAmount: "", familyIncomeCurrency: "USD" });
-    container.innerHTML = "";
-    render();
-    assert.doesNotMatch(container.innerHTML, /Income comparison unavailable|Entered income is/);
-    assert.doesNotMatch(container.innerHTML, /This comparison is context only/);
-    const nullIncomePolicy = resolveFeeStatusAndAid({
-      university,
-      profile: { studyLevel: "Bachelor", familyIncomeAmount: null, familyIncomeCurrency: "USD" },
-    });
-    assert.ok(nullIncomePolicy.thresholds.every((threshold) => !threshold.comparison));
+  renderFinanceSection({ annualCostForTrack: () => null, container, university });
+  assert.match(container.innerHTML, /Zero Parent Contribution Threshold/);
+  assert.match(container.innerHTML, /Free Tuition Threshold/);
+  assert.doesNotMatch(container.innerHTML, /Entered income is|Income comparison unavailable|This comparison is context only/);
+});
 
-    const invalidIncomePolicy = resolveFeeStatusAndAid({
-      university,
-      profile: { studyLevel: "Bachelor", familyIncomeAmount: "not-a-number", familyIncomeCurrency: "USD" },
+test("UK and US universities always show the fee status as unconfirmed", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  for (const country of ["United Kingdom", "United States"]) {
+    const policy = resolveFeeStatusAndAid({
+      university: { location: { country }, finance: {} },
+      profile: { studyLevel: "Bachelor", citizenshipStatus: { status: "verified", fee_category: "home" } },
     });
-    assert.ok(invalidIncomePolicy.thresholds.every((threshold) => threshold.comparison === "Income comparison unavailable"));
-    const unsupportedCurrencyPolicy = resolveFeeStatusAndAid({
-      university,
-      profile: { studyLevel: "Bachelor", familyIncomeAmount: 50000, familyIncomeCurrency: "ZZZ" },
-    });
-    assert.ok(unsupportedCurrencyPolicy.thresholds.every((threshold) => threshold.comparison === "Income comparison unavailable"));
-
-    saveProfile({ studyLevel: "Master", familyIncomeAmount: 50000, familyIncomeCurrency: "USD" });
-    container.innerHTML = "";
-    render();
-    assert.doesNotMatch(container.innerHTML, /finance-threshold-comparison|Income comparison unavailable|Entered income is/);
-  } finally {
-    saveProfile(previousProfile);
-    window.localStorage = previousWindowStorage;
-    setLanguage("eng", { persist: false, emit: false });
+    assert.equal(policy.feeStatusBadge, "Fee status requires an eligibility check");
+    assert.match(policy.feeStatusSummary, /Citizenship alone does not establish home, domestic, or overseas fee status/);
   }
+  assert.equal(resolveFeeStatusAndAid({ university: { location: { country: "Kazakhstan" }, finance: {} }, profile: {} }).feeStatusBadge, "");
 });
 
 test("accepted Stanford aid source remains scoped to its shared route and does not promise an award", async () => {

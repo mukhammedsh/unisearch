@@ -378,6 +378,32 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             with self.assertRaisesRegex(preparation.PreparationError, "appears twice"):
                 preparation.load_vocabulary(path)
 
+    def test_applicant_route_is_derived_from_reviewed_route_data_and_never_invented(self):
+        vocabulary = preparation.load_vocabulary()
+        imperial = {row["id"]: row for row in self.by_id["imperial-college-london-uk"]["application_routes"]}
+        self.assertEqual(imperial["procedure-computing-meng"]["applicant_route"], "first_year")
+        self.assertEqual(imperial["procedure-advanced-aeronautical-engineering"]["applicant_route"], "graduate")
+        self.assertIsNone(imperial["procedure-medicine-graduate-entry"]["applicant_route"])
+        self.assertIsNone(imperial["procedure-medicine-phd"]["applicant_route"])
+        stanford = {row["id"]: row for row in self.by_id["stanford-university-usa-ca"]["application_routes"]}
+        self.assertEqual(stanford["undergraduate-shared-evidence:stanford-transfer"]["applicant_route"], "transfer")
+        self.assertEqual(stanford["undergraduate-shared-evidence:stanford-knight-hennessy"]["applicant_route"], "graduate")
+        # A school-leaver label on a route whose options are not all undergraduate fails instead of guessing.
+        institution = copy.deepcopy(self.by_id["imperial-college-london-uk"])
+        route = next(row for row in institution["application_routes"] if row["id"] == "procedure-advanced-aeronautical-engineering")
+        route["classification"] = "ucas_course_choice"
+        with self.assertRaisesRegex(preparation.PreparationError, "non-undergraduate route"):
+            preparation.normalize_institution(institution, vocabulary)
+        # A declared category that the closed vocabulary does not know fails.
+        institution = copy.deepcopy(self.by_id["mit-usa-cambridge"])
+        institution["application_routes"][0]["attributes"]["applicant_route"] = "returning"
+        with self.assertRaisesRegex(preparation.PreparationError, "Unknown applicant category"):
+            preparation.normalize_institution(institution, vocabulary)
+        # An override that names no route is stale.
+        stale = {**vocabulary, "applicant_route_by_id": {**vocabulary["applicant_route_by_id"], "no-such-route": "graduate"}}
+        with patch.object(preparation, "load_vocabulary", return_value=stale), self.assertRaisesRegex(preparation.PreparationError, "Applicant category overrides name unknown routes"):
+            preparation.prepare_batch()
+
     def test_cli_defaults_to_check_only_and_failure_is_explicit(self):
         with patch.object(preparation, "prepare_batch", return_value=self.batch), patch.object(preparation, "write_output") as writer, patch("builtins.print"):
             self.assertEqual(preparation.main([]), 0)

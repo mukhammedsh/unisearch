@@ -34,7 +34,8 @@ test("shared MIT route is compact, editable by keyboard, saved and exports its o
   await expect(page.locator("#admissionsSelectionEditor")).toBeHidden();
   await expect(page.locator("[data-shared-admission]")).toBeHidden();
   await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open");
-  await expect(page.locator("#detailRequirements [data-admissions-fact]").first()).toBeVisible();
+  await expect(page.locator("#detailRequirements [data-admissions-key-facts]")).toBeVisible();
+  await expect(page.locator("#detailRequirements [data-all-records] [data-admissions-fact]").first()).toBeAttached();
   await page.locator("#admissionsReferenceSummary").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("mit-compact-mobile-dark-ru.png") });
   const edit = page.locator("#admissionsReferenceSummary button");
@@ -99,9 +100,7 @@ test(`Imperial course titles distinguish BEng and MEng and retain duration and f
   await expect(page.locator("#admissionsStudyOverview")).toContainText(appearance.language === "kaz" ? "біріктірілген бакалавриат бағдарламасы" : "интегрированная программа бакалавриата");
   await expect(page.locator("#admissionsStudyOverview")).toContainText("4");
   await tab(page, "admission");
-  await page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger").click();
-  await page.locator('.custom-select-wrapper:has(#admissionsRoute) .custom-option[data-value="procedure-computing-meng"]').click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // The course has one application route, which is read directly.
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   await expect(page.locator("#admissionsSelectionEditor")).toBeHidden();
   await tab(page, "finance");

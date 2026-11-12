@@ -40,6 +40,24 @@ class AdmissionsAssessmentTests(unittest.TestCase):
         self.assertEqual("met", check["status"])
         self.assertIn("source-600fe783c80073e0", check["sourceIds"])
 
+    def test_source_rule_keeps_rule_content_without_research_provenance(self):
+        resolved = self.resolve(
+            "mit-usa-cambridge", study_option_id="mit-course-6-3-bachelor", application_route_id="mit-first-year",
+            study_level="undergraduate", applicant_route="first_year", intended_entry_cycle="Fall 2027 entry")
+        self.assertIn("provenance", resolved["facts"][0])
+        before = copy.deepcopy(resolved)
+        checks = self.checks(self.assessment(resolved))
+        self.assertEqual(before, resolved)
+        self.assertTrue(checks)
+        for check in checks:
+            rule = check["sourceRule"]
+            self.assertFalse({"provenance", "index_attributes", "content_reviewed_at"} & set(rule))
+            fact = next(row for row in resolved["facts"] if row["id"] == check["factId"])
+            self.assertEqual(fact["value"], rule["value"])
+            self.assertEqual(fact["scope"], rule["scope"])
+        # Hashes still cover the complete fact, so every shipped mapping matches its fact.
+        self.assertNotIn("stale_annotation", {check["kind"] for check in checks})
+
     def test_real_imperial_computing_meng_preserves_unassessable_academic_rule(self):
         resolved = self.resolve(
             "imperial-college-london-uk",

@@ -229,6 +229,14 @@
     "nu-a-route-non-degree-study": "external",
     "nu-a-route-mining-microcredential": "external"
   },
+  "applicant_route": {
+    "first_year": ["ucas_course_choice"]
+  },
+  "applicant_route_by_id": {
+    "undergraduate-shared-evidence:stanford-nonprofessional-graduate": "graduate",
+    "undergraduate-shared-evidence:stanford-knight-hennessy": "graduate",
+    "procedure-medicine-graduate-entry": null
+  },
   "option_closed_availability": {
     "new_applicant_availability": ["not_open_under_published_matriculation_restriction", "not_open_for_2027_28_entry"],
     "inventory_status": ["officially_listed_but_recruitment_closed"]

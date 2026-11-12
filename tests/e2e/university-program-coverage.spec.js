@@ -126,6 +126,9 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   await expect(csCost).toContainText(/historical context only, not published 2027[-\u2011]28 tuition/);
   await openTab(page, "admission");
   const unknowns = page.locator("#detailRequirements details.admissions-catalog__unknowns");
+  // Unresolved information is grouped with the full records behind the tab's single records disclosure.
+  await expect(page.locator("#detailRequirements [data-all-records] > details.admissions-catalog__unknowns")).toHaveCount(1);
+  await page.locator("#detailRequirements [data-all-records] > summary").click();
   await expect(unknowns).toBeVisible();
   await unknowns.locator(":scope > summary").click();
   await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011]28 Engineering prices are not published/ })).toHaveCount(1);
@@ -205,28 +208,22 @@ test("Harvard saved program names resolve unique concentrations but leave split 
   }
 });
 
-test("Oxford qualification guidance flags Kazakhstan Attestat in English and Russian on mobile", async ({ page }) => {
+test("Oxford qualification guidance lists every published rule without a saved profile, in English and Russian on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_profile", JSON.stringify({
-      studyLevel: "Bachelor",
-      applicantRoute: "first_year",
-      countryOfEducation: "KZ",
-      educationCredential: "other",
-      educationCredentialOther: "Attestat/Svidetel' stvo o Srednem Obrazovanii (Certificate of Secondary Education)",
-      intendedEntryCycle: "2027 Fall",
-    }));
-  });
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
 
-  const guidance = page.locator("#detailQualificationGuidance .qualification-guidance__result");
-  await expect(guidance.locator(".qualification-guidance__status")).toContainText("Explicitly not accepted");
-  await expect(guidance).toContainText("Kazakhstan's Attestat");
-  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
+  const entries = page.locator("#detailQualificationGuidance [data-qualification-entry]");
+  await expect(entries).toHaveCount(4);
+  const attestat = entries.filter({ hasText: "Kazakhstan's Attestat" });
+  await expect(attestat).toHaveCount(1);
+  await expect(attestat.locator(".qualification-guidance__status")).toContainText("Explicitly not accepted");
+  await expect(attestat.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
+  await expect(entries.filter({ hasText: "International Baccalaureate" }).locator(".qualification-guidance__status")).toContainText("Accepted qualification");
+  await expect(page.locator("#detailQualificationGuidance")).not.toContainText(/profile|Intended entry cycle/i);
 
   await page.evaluate(() => {
     const language = document.getElementById("languageSelect");
@@ -237,7 +234,9 @@ test("Oxford qualification guidance flags Kazakhstan Attestat in English and Rus
     const language = document.getElementById("languageSelect");
     return language?.value === "rus" && language.dataset.loading !== "1" && !language.disabled;
   });
-  await expect(guidance.locator(".qualification-guidance__status")).toContainText("Официально указана как не принимаемая");
-  await expect(guidance).toContainText("аттестат Казахстана");
-  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
+  await expect(entries).toHaveCount(4);
+  const russianAttestat = entries.filter({ hasText: "аттестат Казахстана" });
+  await expect(russianAttestat).toHaveCount(1);
+  await expect(russianAttestat.locator(".qualification-guidance__status")).toContainText("Официально указана как не принимаемая");
+  await expect(russianAttestat.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
 });

@@ -16,6 +16,8 @@ BATCH = (*DOSSIER_BATCH, "nazarbayev-university-kaz-astana")
 VERSION = "admissions-storage-1.0"
 VOCABULARY_PATH = DRAFTS / "integration/vocabulary.json"
 ENTRY_VALUES = ("external", "external_restricted", "internal", "no_admission", "closed", "unresolved")
+APPLICANT_ROUTES = ("first_year", "transfer", "graduate")
+GRADUATE_LEVELS = frozenset({"masters", "doctoral", "professional"})
 LEVELS = {
     "Bachelor": "undergraduate", "Master": "masters", "Doctorate": "doctoral",
     "Professional": "professional", "bachelor": "undergraduate", "master": "masters",
@@ -128,7 +130,16 @@ def load_vocabulary(path=VOCABULARY_PATH):
     require(tuple(data.get("entry_precedence", ())) == ENTRY_VALUES and set(data["entry"]) == set(ENTRY_VALUES),
             "Vocabulary entry values must match the closed entry set")
     require(set(data.get("route_entry_by_id", {}).values()) <= set(ENTRY_VALUES), "Unknown route entry override")
+    applicant = {}
+    for canonical, labels in data.get("applicant_route", {}).items():
+        require(canonical in APPLICANT_ROUTES, f"Unknown applicant category in vocabulary: {canonical}")
+        for label in labels:
+            require(label not in applicant, f"Vocabulary label appears twice in applicant_route: {label}")
+            applicant[label] = canonical
+    by_id = data.get("applicant_route_by_id", {})
+    require(set(by_id.values()) <= {*APPLICANT_ROUTES, None}, "Unknown applicant category override")
     return {**tables, "route_entry_by_id": data.get("route_entry_by_id", {}),
+            "applicant_route": applicant, "applicant_route_by_id": by_id,
             "option_closed_availability": data.get("option_closed_availability", {})}
 
 
@@ -170,6 +181,10 @@ def normalize_institution(institution, vocabulary):
         else:
             require(route["id"] not in overrides, f"Entry override for a classified route: {route['id']}")
             route["entry"] = _canonical(vocabulary, "entry", route["classification"], route["id"])
+    option_levels = {option["id"]: set(option["levels"]) for option in institution["study_options"]}
+    for route in institution["application_routes"]:
+        levels = {level for option_id in route["option_ids"] for level in option_levels[option_id]}
+        route["applicant_route"] = _applicant_route(route, levels, vocabulary)
     entries = {route["id"]: route["entry"] for route in institution["application_routes"]}
     closed = vocabulary["option_closed_availability"]
     for option in institution["study_options"]:
@@ -181,6 +196,31 @@ def normalize_institution(institution, vocabulary):
             option["entry"] = _first_entry({_canonical(vocabulary, "entry", label, option["id"]) for label in labels})
         else:
             option["entry"] = _first_entry({entries[route_id] for route_id in option["route_ids"]}) or "unresolved"
+
+
+def _applicant_route(route, levels, vocabulary):
+    """The applicant category a route implies, or None when it is not applicable or not established.
+
+    Order: a closed per-route entry, the category the reviewed route data declares, a closed classification label for
+    undergraduate school-leaver entry, then graduate-only levels of an open route. Internal, no-admission, closed,
+    unresolved, preparation, non-degree and mixed-level routes imply no single category.
+    """
+    metadata = {**route["attributes"], **route["index_attributes"]}
+    declared = metadata.get("applicant_route")
+    require(declared in (None, *APPLICANT_ROUTES), f"Unknown applicant category on route {route['id']}: {declared!r}")
+    by_id = vocabulary["applicant_route_by_id"]
+    if route["id"] in by_id:
+        require(declared in (None, by_id[route["id"]]), f"Applicant category override contradicts route data: {route['id']}")
+        return by_id[route["id"]]
+    if declared:
+        return declared
+    label = vocabulary["applicant_route"].get(route["classification"])
+    if label:
+        require(levels == {"undergraduate"}, f"Undergraduate applicant category on a non-undergraduate route: {route['id']}")
+        return label
+    if route["entry"] in ("external", "external_restricted") and levels and levels <= GRADUATE_LEVELS:
+        return "graduate"
+    return None
 
 
 def prepare_institution(folder, vocabulary=None):
@@ -475,6 +515,9 @@ def prepare_batch(drafts=DRAFTS):
                            if route["id"] in vocabulary["route_entry_by_id"]}
     stale = set(vocabulary["route_entry_by_id"]) - used_overrides
     require(not stale, f"Entry overrides name unknown routes: {sorted(stale)}")
+    route_ids = {route["id"] for institution in institutions for route in institution["application_routes"]}
+    stale = set(vocabulary["applicant_route_by_id"]) - route_ids
+    require(not stale, f"Applicant category overrides name unknown routes: {sorted(stale)}")
     return {"schema_version": VERSION, "runtime_active": False, "institutions": institutions}
 
 

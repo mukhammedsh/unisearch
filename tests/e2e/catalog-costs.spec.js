@@ -81,7 +81,7 @@ test("Imperial shows published tuition when the full budget is unavailable and n
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const price = card.locator('[data-cost-basis="tuition"]');
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £52[\s,]?300/);
-  await expect(price.getByText("Tuition", { exact: true })).toBeVisible();
+  await expect(card.locator(".uni-footer .uni-cost-meta__label")).toHaveText("Tuition");
   await price.click();
   const tooltip = card.locator(".uni-cost-tooltip__content");
   await expect(tooltip).toBeVisible();
@@ -99,7 +99,7 @@ test("Imperial shows published tuition when the full budget is unavailable and n
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £48[\s,]?300/);
-  await expect(price.getByText("Обучение", { exact: true })).toBeVisible();
+  await expect(card.locator(".uni-footer .uni-cost-meta__label")).toHaveText("Обучение");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await card.screenshot({ path: testInfo.outputPath("imperial-subject-tuition-mobile.png") });
 });
@@ -155,7 +155,7 @@ test.describe("compact dual-currency price", () => {
     const tooltip = priceGroup.locator('[role="tooltip"]');
     await expect(price).toHaveAttribute('data-cost-basis', 'tuition');
     await expect(price.locator('.uni-price-val')).toContainText('₸');
-    await expect(price.locator('.uni-cost-secondary')).toHaveText('($66,720)');
+    await expect(card.locator('.uni-footer .uni-cost-secondary')).toHaveText('($66,720)');
     await expect(tooltip).toBeHidden();
     expect(await price.evaluate(element => element.getBoundingClientRect().height)).toBeLessThanOrEqual(100);
     await page.screenshot({ path: testInfo.outputPath('compact-two-currencies-mobile.png') });

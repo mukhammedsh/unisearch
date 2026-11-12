@@ -1469,7 +1469,7 @@ textarea.profile-input,
 }
 
 /* --------------------------------------------------------------------------
-   Citizenship Workspace and Multi-Citizenship Chips
+   Applicant Context Card
    -------------------------------------------------------------------------- */
 .profile-card-block--full {
   grid-column: 1 / -1;
@@ -1488,114 +1488,10 @@ textarea.profile-input,
   min-width: 0;
 }
 
-.profile-context-other-input[hidden] {
-  display: none;
-}
-
 @media (max-width: 600px) {
   .profile-applicant-context-grid {
     grid-template-columns: 1fr;
   }
-}
-
-.profile-card-head-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.profile-citizenship-workspace {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.profile-citizenship-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  min-height: 36px;
-  align-items: center;
-}
-
-.profile-citizenship-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  background: var(--surface-soft);
-  color: var(--text);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  border: none;
-  box-shadow: var(--shadow-micro);
-  transition: opacity var(--motion-fast) var(--motion-ease-standard);
-}
-
-.profile-citizenship-chip--primary {
-  background: var(--accent-panel);
-  color: var(--accent);
-}
-
-.profile-citizenship-chip__badge {
-  font-size: var(--text-xs);
-  padding: var(--space-0-5) var(--space-2);
-  border-radius: var(--radius-xs);
-  background: var(--accent);
-  color: var(--text-inverse);
-  font-weight: 600;
-  letter-spacing: normal;
-}
-
-.profile-citizenship-chip__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: var(--space-0-5);
-  border-radius: var(--radius-circle);
-  line-height: 0;
-}
-
-.profile-citizenship-chip__btn:hover {
-  color: var(--color-danger);
-}
-
-.profile-citizenship-add-row {
-  display: flex;
-  gap: var(--space-2);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.profile-citizenship-other-input {
-  max-width: 220px;
-}
-
-#citizenshipCountrySelect + .custom-select-trigger + .custom-options .custom-select-search {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  width: 100%;
-  padding: var(--space-3);
-  background: var(--surface-solid);
-  color: var(--text);
-  border: none;
-  border-radius: var(--radius-sm);
-  font: inherit;
-}
-
-#citizenshipCountrySelect + .custom-select-trigger + .custom-options .custom-select-search:focus {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: -2px;
-}
-
-#citizenshipCountrySelect + .custom-select-trigger + .custom-options .custom-option[hidden] {
-  display: none;
 }
 
 .profile-button-subtle {
@@ -1627,20 +1523,6 @@ textarea.profile-input,
   color: var(--text-muted);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
-}
-
-.profile-reference > summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  min-height: 44px;
-  cursor: pointer;
-  list-style: none;
-}
-
-.profile-reference > .profile-field {
-  padding-top: var(--space-4);
 }
 
 .profile-unit--currency {

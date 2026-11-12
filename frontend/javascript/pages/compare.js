@@ -113,10 +113,9 @@ function profileEntryCycle() {
   return isRecognizedAdmissionCycle(cycle) ? normalizeAdmissionCycle(cycle) : "";
 }
 
-// Applicant category, entry cycle and self-reported fee status the profile can offer; they are applied only on request.
+// Entry cycle and self-reported fee status the profile can offer; they are applied only on request.
 function profileContextHints(profile) {
   return {
-    applicant_route: profile?.applicant_route || "",
     intended_entry_cycle: profileEntryCycle() || profile?.intended_entry_cycle || "",
     fee_status_context: profile?.fee_status_context || "unknown",
   };
@@ -160,7 +159,6 @@ function renderReviewedChooser(target, university) {
   const hasSelection = Boolean(context.study_option_id || context.application_route_id);
   const profileHints = profileContextHints(loadProfileForApi());
   const profileHintLabels = [
-    profileHints.applicant_route ? admissionsLabel(`applicant.${profileHints.applicant_route}`) : "",
     admissionsCycleLabel(profileHints.intended_entry_cycle),
     profileHints.fee_status_context !== "unknown" ? admissionsLabel(`fee.${profileHints.fee_status_context}`) : "",
   ].filter(Boolean);
@@ -180,7 +178,6 @@ function renderReviewedChooser(target, university) {
           <form class="admissions-context__fields" data-compare-context-form>
             ${select("application_route_id", routeCaption, [["", admissionsLabel("choose_route")], ...availableRoutes.map(route => [route.id, compareRouteLabel(route)])], context.application_route_id, pending || !availableRoutes.length)}
             ${select("study_level", admissionsLabel("level_label"), [["", admissionsLabel("unspecified")], ...ADMISSION_LEVELS.map(level => [level, admissionsLabel(`level.${level}`)])], context.study_level, pending)}
-            ${select("applicant_route", admissionsLabel("applicant_label"), [["", admissionsLabel("unspecified")], ...["first_year", "transfer", "graduate"].map(value => [value, admissionsLabel(`applicant.${value}`)])], context.applicant_route, pending)}
             <label class="admissions-context__field" for="compare-cycle-${escapeHtmlAttr(id)}"><span>${escapeHtml(admissionsLabel("cycle_label"))}</span><input id="compare-cycle-${escapeHtmlAttr(id)}" data-context-field="intended_entry_cycle" maxlength="40" value="${escapeHtmlAttr(context.intended_entry_cycle)}" ${pending ? "disabled" : ""}></label>
             ${select("fee_status_context", admissionsLabel("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map(value => [value, admissionsLabel(`fee.${value}`)]), context.fee_status_context, pending)}
             <div class="admissions-context__actions"><button type="submit" ${pending ? "disabled" : ""}>${escapeHtml(admissionsLabel("apply_context"))}</button></div>
@@ -232,7 +229,7 @@ function renderReviewedChooser(target, university) {
     savingReviewedSelection = true;
     const saved = saveSelectedAdmissionChoice(id, route ? {
       studyOptionId: option?.id || "", applicationRouteId: route.id, studyLevel: context.study_level,
-      applicantRoute: context.applicant_route, intendedEntryCycle: context.intended_entry_cycle,
+      intendedEntryCycle: context.intended_entry_cycle,
       feeStatusContext: context.fee_status_context,
     } : null);
     savingReviewedSelection = false;

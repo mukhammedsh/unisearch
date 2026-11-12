@@ -83,6 +83,77 @@
   overflow-wrap: anywhere;
 }
 
+.admissions-reading__refs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* Numbered source markers: compact, keyboard-reachable links to the official page listed under the same number. */
+.admissions-reading__source a.admissions-reading__ref {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+.admissions-reading__source a.admissions-reading__ref:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.admissions-reading__ref:focus-visible,
+.admissions-reading__source-list a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admissions-reading__sources {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.admissions-reading__source-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-6);
+  list-style: decimal;
+}
+
+.admissions-reading__source-list li::marker {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* List items keep `display: list-item` so the visible number matches each marker. */
+.admissions-reading__source-list li {
+  min-width: 0;
+  padding-left: var(--space-1);
+}
+
+.admissions-reading__source-list li > .admissions-reading__note {
+  display: block;
+  padding-top: var(--space-0-5);
+}
+
+.admissions-reading__source-list a {
+  color: var(--text);
+  text-underline-offset: var(--space-1);
+  overflow-wrap: anywhere;
+}
+
 .admissions-reading__table-wrap {
   min-width: 0;
   overflow-x: auto;
@@ -220,6 +291,12 @@
   font: inherit;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+}
+
+a.admissions-key-facts__link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .admissions-key-facts__link:hover {
@@ -396,16 +473,7 @@
   min-width: 0;
 }
 
-.admissions-context__advanced-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-}
 
-.admissions-context__advanced-actions [hidden] {
-  display: none;
-}
 
 #admissionsContextApply {
   background: var(--accent);
@@ -530,8 +598,7 @@ details[open] > summary > .admissions-disclosure-icon {
   min-width: 0;
 }
 
-.admissions-entry p,
-.admissions-route-name {
+.admissions-entry p {
   margin: 0;
 }
 
@@ -1558,9 +1625,6 @@ details[open] > summary > .admissions-disclosure-icon {
   font-size: var(--text-sm);
 }
 
-.admissions-selection__relationship {
-  font-size: var(--text-sm);
-}
 
 .admissions-selection__actions {
   display: flex;

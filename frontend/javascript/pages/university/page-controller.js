@@ -447,7 +447,6 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     });
     renderQualificationGuidance({
       container: document.getElementById("detailQualificationGuidance"),
-      profile,
       university,
       program: selectedProgram,
     });

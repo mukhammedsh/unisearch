@@ -142,7 +142,7 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   expect(migrated.languages[0]).toMatchObject({ code: "en", exam: "IELTS", taken_on: "2026-03-01" });
   expect(migrated.languageEvidence[0]).toMatchObject({ language: "en", country: "Canada" });
   expect(migrated.studyLevel).toBe("masters");
-  expect(migrated.applicantRoute).toBe("graduate");
+  expect(migrated.applicantRoute).toBeUndefined();
   expect(migrated.intendedEntryCycle).toBe("2029 entry");
   expect(await page.evaluate(() => localStorage.getItem("unisearch_detail_cache_v3"))).toBeNull();
   await expect(page.locator("#detailCard")).not.toContainText("STALE V3 DETAIL CACHE");
@@ -153,7 +153,6 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await selectCustomOption(page, "#admissionsRoute", "mit-first-year");
   await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "first_year");
   await page.locator("#admissionsCycle").fill("Fall 2027 entry");
   await setNativeSelect(page, "admissionsFee", "unknown");
   await page.locator("#admissionsContextApply").click();
@@ -166,7 +165,6 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
     studyOptionId: "mit-course-6-3-bachelor",
     applicationRouteId: "mit-first-year",
     studyLevel: "undergraduate",
-    applicantRoute: "first_year",
     intendedEntryCycle: "Fall 2027 entry",
     feeStatusContext: "unknown",
   });
@@ -175,7 +173,6 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expectUniversityReady(page);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
-  await expect(page.locator("#admissionsApplicant")).toHaveValue("first_year");
   await expect(page.locator("#admissionsCycle")).toHaveValue("Fall 2027 entry");
   await expect(page.locator("#admissionsFee")).toHaveValue("unknown");
   migrated = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
@@ -183,13 +180,12 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
     studyOptionId: "mit-course-6-3-bachelor",
     applicationRouteId: "mit-first-year",
     studyLevel: "undergraduate",
-    applicantRoute: "first_year",
     intendedEntryCycle: "Fall 2027 entry",
     feeStatusContext: "unknown",
   });
   expect(migrated.admissionChoiceResetNotices).not.toContain(MIT);
   expect(migrated.studyLevel).toBe("masters");
-  expect(migrated.applicantRoute).toBe("graduate");
+  expect(migrated.applicantRoute).toBeUndefined();
   expect(migrated.intendedEntryCycle).toBe("2029 entry");
   expect(migrated.feeStatusContext).toBe("self_reported_home_domestic");
   expect(migrated.budget).toBe(savedProfile.budget);
@@ -261,7 +257,6 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   await routeWrapper.locator('.custom-option[data-value="directory-evidence:stanford-graduate-cs-ms"]').click();
   await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
   await setNativeSelect(page, `compare-study_level-${STANFORD}`, "masters");
-  await setNativeSelect(page, `compare-applicant_route-${STANFORD}`, "graduate");
   await chooser.locator(`#compare-cycle-${STANFORD}`).fill("2027-28 entry");
   await setNativeSelect(page, `compare-fee_status_context-${STANFORD}`, "unknown");
   await chooser.locator("[data-compare-context-form]").locator("button[type=submit]").click();
@@ -269,13 +264,12 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
     studyOptionId: "stanford-option-cs-ms",
     applicationRouteId: "directory-evidence:stanford-graduate-cs-ms",
     studyLevel: "masters",
-    applicantRoute: "graduate",
     intendedEntryCycle: "2027-28 entry",
     feeStatusContext: "unknown",
   });
   profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(profile.studyLevel).toBe("masters");
-  expect(profile.applicantRoute).toBe("graduate");
+  expect(profile.applicantRoute).toBeUndefined();
   expect(profile.intendedEntryCycle).toBe("2029 entry");
   expect(profile.feeStatusContext).toBe("self_reported_home_domestic");
   expect(profile.selectedAdmissionChoices[ASTANA].choiceKey).toBe("astana_standard");
@@ -317,7 +311,6 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
 
   await selectCustomOption(page, "#admissionsRoute", "directory-evidence:stanford-graduate-cs-ms");
   await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "graduate");
   await page.locator("#admissionsCycle").fill("2027-28 entry");
   await setNativeSelect(page, "admissionsFee", "unknown");
   await page.locator("#admissionsContextApply").click();
@@ -342,7 +335,6 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await selectCustomOption(page, "#admissionsRoute", "engineering-doerr-evidence:cs-coterm");
   await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "");
   await page.locator("#admissionsCycle").fill("2026-27 to 2027-28 entries");
   await page.locator("#admissionsContextApply").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");

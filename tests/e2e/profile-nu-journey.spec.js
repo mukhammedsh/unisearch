@@ -50,7 +50,7 @@ test("an empty profile keeps advanced evidence fields hidden until their type is
   await expect(page.locator("#institutionEvidenceCredentialScoreField")).toBeHidden();
 });
 
-test("profile money entry accepts group spaces and keeps optional reference data outside matching", async ({ page }) => {
+test("profile budget entry accepts group spaces and saves on Enter", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
@@ -60,16 +60,8 @@ test("profile money entry accepts group spaces and keeps optional reference data
   await page.locator("#budgetInput").press("Enter");
   await expect(page.locator("#budgetInput")).toHaveValue("1000000");
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await expect(page.locator("#familyIncomeInput")).toBeHidden();
-  await page.locator("#familyIncomeDetails > summary").click();
-  await expect(page.locator("#familyIncomeDetails")).toContainText("not used in UniFit");
-  await page.locator("#familyIncomeInput").fill("85 000,50");
-  await page.locator("#familyIncomeInput").press("Enter");
-  await expect(page.locator("#familyIncomeInput")).toHaveValue("85000.5");
-  await expect(page.locator("#saveProfileBtn")).toBeDisabled();
   await page.reload();
   await expect(page.locator("#budgetInput")).toHaveValue("1000000");
-  await expect(page.locator("#familyIncomeInput")).toHaveValue("85000.5");
 });
 
 test("currency settings do not silently save unrelated profile drafts", async ({ page }) => {

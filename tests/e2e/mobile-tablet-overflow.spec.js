@@ -162,7 +162,6 @@ for (const viewport of viewports) {
       await expect(chooser.locator(`select[data-context-field="application_route_id"] option[value="${choice.route}"]`)).toHaveCount(1);
       await setNativeSelect(page, `compare-application_route_id-${choice.id}`, choice.route);
       await setNativeSelect(page, `compare-study_level-${choice.id}`, "undergraduate");
-      await setNativeSelect(page, `compare-applicant_route-${choice.id}`, "first_year");
     }
     // Continuing applies and saves the unsaved route and level choices of both universities.
     const continueCompareButton = page.locator("[data-action='build-compare-results']").first();

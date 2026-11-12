@@ -9,6 +9,7 @@ from app.services.ai_scoring import (
     estimate_university_roi as _estimate_university_roi,
     sort_universities_ai as _sort_universities_ai,
     _choice_matches_study_level,
+    _normalize_study_level_str,
 )
 from app.schemas.payloads import ProfilePayload, to_profile_dict
 
@@ -2953,6 +2954,9 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual(res["roi_tone"], "neutral")
         self.assertEqual(res["annual_cost_usd"], 85000.0)
         self.assertEqual(res["salary_data_points"], 0)
+
+    def test_mba_keeps_distinct_admission_level(self):
+        self.assertEqual("mba", _normalize_study_level_str("MBA"))
 
 
 if __name__ == "__main__":

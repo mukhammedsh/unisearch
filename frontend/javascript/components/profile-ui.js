@@ -7,7 +7,6 @@ import {
   canonicalizeExamId,
   clearProfile,
   escapeHtml,
-  escapeHtmlAttr,
   formatExamValue,
   getExamConfig,
   getExamDisplayName,
@@ -15,7 +14,6 @@ import {
   initCustomSelect,
   loadProfile,
   isFutureProfile,
-  MAX_PROFILE_CITIZENSHIPS,
   markMotionEnter,
   motionPress,
   prefersReducedMotion,
@@ -26,12 +24,11 @@ import {
   trapFocus,
 } from "../utils.js";
 import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { CURRENCY_FORMAT_MAP, convert, formatMoney } from "../currency.js";
+import { convert, formatMoney } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { heroIcon, hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { COUNTRY_CODES, getCountryName, getCountryOptions } from "../utils/countries.js";
 import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
 import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
 import {
@@ -87,8 +84,6 @@ export const queryProfileElements = (modal) => {
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
         budgetHint: budgetInput?.closest(".profile-field")?.querySelector(".profile-hint"),
-        familyIncomeInput: document.getElementById("familyIncomeInput"),
-        familyIncomeCurrencySelect: document.getElementById("familyIncomeCurrencySelect"),
         gpaInput: document.getElementById("gpaInput"),
         gpaUnit: document.getElementById("gpaUnit"),
         gpaHint: document.getElementById("gpaHint"),
@@ -111,18 +106,7 @@ export const queryProfileElements = (modal) => {
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
-        citizenshipChipsList: document.getElementById("citizenshipChipsList"),
-        citizenshipCountrySelect: document.getElementById("citizenshipCountrySelect"),
-        citizenshipOtherInput: document.getElementById("citizenshipOtherInput"),
-        addCitizenshipBtn: document.getElementById("addCitizenshipBtn"),
-        countryOfEducationSelect: document.getElementById("countryOfEducationSelect"),
-        countryOfEducationOtherInput: document.getElementById("countryOfEducationOtherInput"),
-        educationCredentialSelect: document.getElementById("educationCredentialSelect"),
-        educationCredentialOtherInput: document.getElementById("educationCredentialOtherInput"),
-        applicantRouteSelect: document.getElementById("applicantRouteSelect"),
         intendedEntryCycleInput: document.getElementById("intendedEntryCycleInput"),
-        currentResidenceCountrySelect: document.getElementById("currentResidenceCountrySelect"),
-        currentResidenceOtherInput: document.getElementById("currentResidenceOtherInput"),
         feeStatusContextSelect: document.getElementById("feeStatusContextSelect"),
         profileProgressText: document.getElementById("profileProgressText"),
         profileProgressFill: document.getElementById("profileProgressFill"),
@@ -184,52 +168,6 @@ export const populateExamSelect = (els, state) => {
     initCommonSelects(["examNameSelect"]);
     syncExamScoreInputState(els, state);
     refreshExamActionButton(els, state);
-};
-
-export const populateFamilyIncomeCurrencyOptions = (select) => {
-    if (!select || select.options.length) return;
-    const fragment = document.createDocumentFragment();
-    Object.keys(CURRENCY_FORMAT_MAP).sort((left, right) => left.localeCompare(right)).forEach((code) => {
-        const option = document.createElement("option");
-        option.value = code;
-        option.dataset.i18n = `currency.opt.${code.toLowerCase()}`;
-        option.textContent = t(`currency.opt.${code.toLowerCase()}`, code);
-        fragment.appendChild(option);
-    });
-    select.appendChild(fragment);
-};
-
-export const getCountryLabel = (code) => {
-    const normalized = String(code || "").trim();
-    const upper = normalized.toUpperCase();
-    return COUNTRY_CODES.includes(upper) ? `${getCountryName(upper, getCurrentLanguage())} (${upper})` : normalized;
-};
-
-export const populateCountryOptionsInSelect = (select, searchPlaceholder) => {
-    if (!select) return;
-    select.querySelectorAll("option[data-country-code]").forEach((option) => option.remove());
-    const otherOption = select.querySelector('option[value="OTHER"]');
-    const fragment = document.createDocumentFragment();
-    getCountryOptions(getCurrentLanguage()).forEach(({ code, name }) => {
-        const option = document.createElement("option");
-        option.value = code;
-        option.textContent = `${name} (${code})`;
-        option.dataset.countryCode = code;
-        fragment.appendChild(option);
-    });
-    select.insertBefore(fragment, otherOption);
-    if (searchPlaceholder) select.dataset.searchPlaceholder = searchPlaceholder;
-};
-
-export const populateCitizenshipCountries = (select) =>
-    populateCountryOptionsInSelect(select, t("profile.citizenship.search_placeholder", "Search countries"));
-
-export const populateContextCountrySelect = (select) =>
-    populateCountryOptionsInSelect(select, t("profile.applicant_context.country_search", "Search countries"));
-
-export const syncOtherContextInput = (select, input, otherValue = "OTHER") => {
-    if (!select || !input) return;
-    input.hidden = select.value !== otherValue;
 };
 
 export const parseBudgetDraftValue = (els, state) => {
@@ -597,22 +535,13 @@ export const refreshExamActionButton = (els, state) => {
 export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
 
 export const syncApplicantContext = (els, profile) => {
-    profile.countryOfEducation = String(els.countryOfEducationSelect?.value || "").trim();
-    profile.countryOfEducationOther = profile.countryOfEducation === "OTHER" ? String(els.countryOfEducationOtherInput?.value || "").trim() : "";
-    profile.educationCredential = String(els.educationCredentialSelect?.value || "").trim();
-    profile.educationCredentialOther = profile.educationCredential === "other" ? String(els.educationCredentialOtherInput?.value || "").trim() : "";
-    profile.applicantRoute = String(els.applicantRouteSelect?.value || "").trim();
     profile.intendedEntryCycle = String(els.intendedEntryCycleInput?.value || "").trim();
-    profile.currentResidenceCountry = String(els.currentResidenceCountrySelect?.value || "").trim();
-    profile.currentResidenceOther = profile.currentResidenceCountry === "OTHER" ? String(els.currentResidenceOtherInput?.value || "").trim() : "";
     profile.feeStatusContext = String(els.feeStatusContextSelect?.value || "unknown").trim() || "unknown";
 };
 
 export const syncInputsToDraft = (els, state) => {
     if (els.budgetInput) state.profile.budget = normalizeAmountRaw(els.budgetInput.value);
     state.profile.budgetCurrency = getBudgetCurrency();
-    if (els.familyIncomeInput) state.profile.familyIncomeAmount = normalizeAmountRaw(els.familyIncomeInput.value).replace(/,/g, ".");
-    if (els.familyIncomeCurrencySelect) state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
     if (els.gpaInput) state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     if (els.studyModeSelect) state.profile.studyMode = String(els.studyModeSelect.value || "Any").trim() || "Any";
@@ -621,8 +550,6 @@ export const syncInputsToDraft = (els, state) => {
     if (els.profileInterestsInput) state.profile.interests = getInterestsDraft(els);
     if (els.studyLevelSelect) state.profile.studyLevel = String(els.studyLevelSelect.value || "Any").trim() || "Any";
     syncApplicantContext(els, state.profile);
-    state.profile.citizenships = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
-    state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
     // University choices are edited separately and may have changed in another tab.
     state.profile.selectedAdmissionChoices = ensureProfileShape(loadProfile()).selectedAdmissionChoices;
     state.profile = ensureProfileShape(state.profile);
@@ -657,20 +584,6 @@ export const validateBudgetInput = (els) => {
         );
     }
     setFieldInvalid(els.budgetInput, false);
-    return { ok: true, value: val };
-};
-
-export const validateFamilyIncomeInput = (els) => {
-    const rawVal = normalizeAmountRaw(els.familyIncomeInput?.value).replace(/,/g, ".");
-    if (!rawVal) {
-        setFieldInvalid(els.familyIncomeInput, false);
-        return { ok: true, value: "" };
-    }
-    const val = Number(rawVal);
-    if (!Number.isFinite(val) || val < 0 || val > 1_000_000_000_000) {
-        return reportFieldValidationError(els.familyIncomeInput, t("profile.family_income_invalid", "Enter an amount from 0 to 1,000,000,000,000."));
-    }
-    setFieldInvalid(els.familyIncomeInput, false);
     return { ok: true, value: val };
 };
 
@@ -724,68 +637,6 @@ export const validateGpaInput = (els, state) => {
     return { ok: true, value: Number(Math.round(val * 100) / 100) };
 };
 
-export const resetCitizenshipInputs = (els) => {
-    if (els.citizenshipCountrySelect) els.citizenshipCountrySelect.value = "";
-    if (els.citizenshipOtherInput) {
-        els.citizenshipOtherInput.value = "";
-        els.citizenshipOtherInput.style.display = "none";
-    }
-};
-
-export const renderCitizenshipChips = (els, state) => {
-    if (!els.citizenshipChipsList) return;
-    const list = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
-    if (!list.length) {
-        els.citizenshipChipsList.innerHTML = `<span class="profile-hint">${escapeHtml(t("profile.citizenship.empty_hint", "No citizenships added yet. Add them for fee and aid policy review."))}</span>`;
-        return;
-    }
-    els.citizenshipChipsList.innerHTML = list.map((countryCode, idx) => {
-        const isPrimary = idx === 0;
-        const label = getCountryLabel(countryCode);
-        const primaryBadge = isPrimary
-            ? `<span class="profile-citizenship-chip__badge">${escapeHtml(t("profile.citizenship.primary_badge", "Primary"))}</span>`
-            : `<button type="button" class="profile-citizenship-chip__btn" data-make-primary-idx="${idx}" title="${escapeHtmlAttr(t("profile.citizenship.set_primary_title", "Make primary citizenship"))}">
-                <span data-heroicon="arrow-up" data-icon-size="14"></span>
-              </button>`;
-        const removeBtn = `<button type="button" class="profile-citizenship-chip__btn" data-remove-citizenship-idx="${idx}" title="${escapeHtmlAttr(t("profile.citizenship.remove_title", "Remove citizenship"))}" aria-label="${escapeHtmlAttr(t("profile.citizenship.remove_title", "Remove citizenship"))}">
-            <span data-heroicon="x-mark" data-icon-size="14"></span>
-          </button>`;
-        return `
-          <div class="profile-citizenship-chip${isPrimary ? " profile-citizenship-chip--primary" : ""}" data-citizenship-chip="${idx}">
-            <span>${escapeHtml(label)}</span>
-            ${primaryBadge}
-            ${removeBtn}
-          </div>
-        `;
-    }).join("");
-    hydrateHeroIcons(els.citizenshipChipsList);
-
-    els.citizenshipChipsList.querySelectorAll("[data-remove-citizenship-idx]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const idx = Number(btn.getAttribute("data-remove-citizenship-idx"));
-            if (Number.isInteger(idx) && idx >= 0 && idx < state.profile.citizenships.length) {
-                state.profile.citizenships.splice(idx, 1);
-                state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
-                renderCitizenshipChips(els, state);
-                refreshSaveState(els, state);
-            }
-        });
-    });
-
-    els.citizenshipChipsList.querySelectorAll("[data-make-primary-idx]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const idx = Number(btn.getAttribute("data-make-primary-idx"));
-            if (Number.isInteger(idx) && idx > 0 && idx < state.profile.citizenships.length) {
-                const item = state.profile.citizenships.splice(idx, 1)[0];
-                state.profile.citizenships.unshift(item);
-                state.profile.citizenship = state.profile.citizenships[0];
-                renderCitizenshipChips(els, state);
-                refreshSaveState(els, state);
-            }
-        });
-    });
-};
-
 export const renderProfileData = (els, state) => {
     if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
     if (els.examList) {
@@ -806,7 +657,6 @@ export const renderProfileData = (els, state) => {
 
 export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
     setFieldInvalid(els.budgetInput, false);
-    setFieldInvalid(els.familyIncomeInput, false);
     setFieldInvalid(els.gpaInput, false);
     setFieldInvalid(els.examScoreInput, false);
 
@@ -822,13 +672,6 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     }
 
     if (els.budgetInput) els.budgetInput.value = state.profile.budget === "" ? "" : String(state.profile.budget);
-    populateFamilyIncomeCurrencyOptions(els.familyIncomeCurrencySelect);
-    if (els.familyIncomeInput) els.familyIncomeInput.value = state.profile.familyIncomeAmount === "" ? "" : String(state.profile.familyIncomeAmount);
-    if (els.familyIncomeCurrencySelect) {
-        els.familyIncomeCurrencySelect.value = state.profile.familyIncomeAmount === ""
-            ? getBudgetCurrency()
-            : state.profile.familyIncomeCurrency || getBudgetCurrency();
-    }
     updateGpaScaleUI(els, state, Number(state.profile.gpaScale) === 5 ? 5 : 4);
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
     if (els.studyModeSelect) els.studyModeSelect.value = state.profile.studyMode || "Any";
@@ -836,23 +679,8 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     if (els.profileMajorSelect) els.profileMajorSelect.value = state.profile.major || "";
     if (els.profileInterestsInput) els.profileInterestsInput.value = state.profile.interests || "";
     if (els.studyLevelSelect) els.studyLevelSelect.value = state.profile.studyLevel || "Any";
-    populateContextCountrySelect(els.countryOfEducationSelect);
-    populateContextCountrySelect(els.currentResidenceCountrySelect);
-    if (els.countryOfEducationSelect) els.countryOfEducationSelect.value = state.profile.countryOfEducation || "";
-    if (els.countryOfEducationOtherInput) els.countryOfEducationOtherInput.value = state.profile.countryOfEducation === "OTHER" ? state.profile.countryOfEducationOther || "" : "";
-    if (els.educationCredentialSelect) els.educationCredentialSelect.value = state.profile.educationCredential || "";
-    if (els.educationCredentialOtherInput) els.educationCredentialOtherInput.value = state.profile.educationCredential === "other" ? state.profile.educationCredentialOther || "" : "";
-    if (els.applicantRouteSelect) els.applicantRouteSelect.value = state.profile.applicantRoute || "";
     if (els.intendedEntryCycleInput) els.intendedEntryCycleInput.value = state.profile.intendedEntryCycle || "";
-    if (els.currentResidenceCountrySelect) els.currentResidenceCountrySelect.value = state.profile.currentResidenceCountry || "";
-    if (els.currentResidenceOtherInput) els.currentResidenceOtherInput.value = state.profile.currentResidenceCountry === "OTHER" ? state.profile.currentResidenceOther || "" : "";
     if (els.feeStatusContextSelect) els.feeStatusContextSelect.value = state.profile.feeStatusContext || "unknown";
-    syncOtherContextInput(els.countryOfEducationSelect, els.countryOfEducationOtherInput);
-    syncOtherContextInput(els.educationCredentialSelect, els.educationCredentialOtherInput, "other");
-    syncOtherContextInput(els.currentResidenceCountrySelect, els.currentResidenceOtherInput);
-    populateCitizenshipCountries(els.citizenshipCountrySelect);
-    resetCitizenshipInputs(els);
-    renderCitizenshipChips(els, state);
     renderAdmissionEvidence(els.admissionEvidenceFields, state.profile, (next) => {
         state.profile = ensureProfileShape({
             ...state.profile,
@@ -881,15 +709,9 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     initCommonSelects([
         "studyModeSelect",
         "profileFundingTypeSelect",
-        "familyIncomeCurrencySelect",
         "profileMajorSelect",
         "examNameSelect",
         "studyLevelSelect",
-        "citizenshipCountrySelect",
-        "countryOfEducationSelect",
-        "educationCredentialSelect",
-        "applicantRouteSelect",
-        "currentResidenceCountrySelect",
         "feeStatusContextSelect",
     ]);
     renderProfileData(els, state);
@@ -914,15 +736,11 @@ export const saveAllProfileChanges = (els, state) => {
 
     const budgetCheck = validateBudgetInput(els);
     if (!budgetCheck.ok) return false;
-    const familyIncomeCheck = validateFamilyIncomeInput(els);
-    if (!familyIncomeCheck.ok) return false;
     const gpaCheck = validateGpaInput(els, state);
     if (!gpaCheck.ok) return false;
 
     state.profile.budget = budgetCheck.value;
     state.profile.budgetCurrency = getBudgetCurrency();
-    state.profile.familyIncomeAmount = familyIncomeCheck.value;
-    state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect?.value || getBudgetCurrency()).toUpperCase();
     state.profile.gpa = gpaCheck.value;
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     state.profile.interests = getInterestsDraft(els);
@@ -930,12 +748,9 @@ export const saveAllProfileChanges = (els, state) => {
     state.profile.fundingType = normalizeFundingType(els.profileFundingTypeSelect?.value || state.profile.fundingType || "any");
     state.profile.major = String(els.profileMajorSelect?.value || state.profile.major || "").trim();
     state.profile.studyLevel = String(els.studyLevelSelect?.value || state.profile.studyLevel || "Any").trim() || "Any";
-    state.profile.citizenships = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
-    state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
     state.profile = ensureProfileShape(state.profile);
 
     if (els.budgetInput) els.budgetInput.value = state.profile.budget === "" ? "" : String(state.profile.budget);
-    if (els.familyIncomeInput) els.familyIncomeInput.value = state.profile.familyIncomeAmount === "" ? "" : String(state.profile.familyIncomeAmount);
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
 
     state.profileStoragePersistent = saveProfile(state.profile);
@@ -1491,57 +1306,13 @@ export const bindProfileEvents = (els, state) => {
     }
 
     const contextControls = [
-        els.countryOfEducationSelect,
-        els.countryOfEducationOtherInput,
-        els.educationCredentialSelect,
-        els.educationCredentialOtherInput,
-        els.applicantRouteSelect,
         els.intendedEntryCycleInput,
-        els.currentResidenceCountrySelect,
-        els.currentResidenceOtherInput,
         els.feeStatusContextSelect,
     ].filter(Boolean);
     for (const control of contextControls) {
         const eventName = control.tagName === "INPUT" ? "input" : "change";
         control.addEventListener(eventName, () => {
             syncApplicantContext(els, state.profile);
-            syncOtherContextInput(els.countryOfEducationSelect, els.countryOfEducationOtherInput);
-            syncOtherContextInput(els.educationCredentialSelect, els.educationCredentialOtherInput, "other");
-            syncOtherContextInput(els.currentResidenceCountrySelect, els.currentResidenceOtherInput);
-            refreshSaveState(els, state);
-        });
-    }
-
-    if (els.citizenshipCountrySelect) {
-        els.citizenshipCountrySelect.addEventListener("change", () => {
-            if (els.citizenshipOtherInput) {
-                els.citizenshipOtherInput.style.display = els.citizenshipCountrySelect.value === "OTHER" ? "inline-block" : "none";
-                if (els.citizenshipCountrySelect.value === "OTHER") els.citizenshipOtherInput.focus();
-            }
-        });
-    }
-
-    if (els.addCitizenshipBtn) {
-        els.addCitizenshipBtn.addEventListener("click", () => {
-            let country = String(els.citizenshipCountrySelect?.value || "").trim();
-            if (country === "OTHER") {
-                country = String(els.citizenshipOtherInput?.value || "").trim();
-            }
-            if (!country) return;
-            if (!Array.isArray(state.profile.citizenships)) state.profile.citizenships = [];
-            const upper = country.toUpperCase();
-            if (state.profile.citizenships.some((c) => String(c).toUpperCase() === upper)) return;
-            if (state.profile.citizenships.length >= MAX_PROFILE_CITIZENSHIPS) {
-                showToast(
-                    tFormat("profile.citizenship.max_count", { count: MAX_PROFILE_CITIZENSHIPS }, `You can add up to ${MAX_PROFILE_CITIZENSHIPS} citizenships`),
-                    "error",
-                );
-                return;
-            }
-            state.profile.citizenships.push(country);
-            if (!state.profile.citizenship) state.profile.citizenship = country;
-            renderCitizenshipChips(els, state);
-            resetCitizenshipInputs(els);
             refreshSaveState(els, state);
         });
     }
@@ -1578,22 +1349,6 @@ export const bindProfileEvents = (els, state) => {
             refreshSaveState(els, state);
         });
         els.budgetInput.addEventListener("keydown", handleEnterSave);
-    }
-
-    if (els.familyIncomeInput) {
-        els.familyIncomeInput.addEventListener("input", () => {
-            setFieldInvalid(els.familyIncomeInput, false);
-            state.profile.familyIncomeAmount = normalizeAmountRaw(els.familyIncomeInput.value).replace(/,/g, ".");
-            refreshSaveState(els, state);
-        });
-        els.familyIncomeInput.addEventListener("keydown", handleEnterSave);
-    }
-
-    if (els.familyIncomeCurrencySelect) {
-        els.familyIncomeCurrencySelect.addEventListener("change", () => {
-            state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
-            refreshSaveState(els, state);
-        });
     }
 
     els.lowBudgetGrantDismissBtn?.addEventListener("click", () => {
@@ -1729,10 +1484,6 @@ export const bindProfileEvents = (els, state) => {
 
     const handleCurrencyChanged = () => {
         const activeCurrency = getBudgetCurrency();
-        if (els.familyIncomeInput && !String(els.familyIncomeInput.value || "").trim() && els.familyIncomeCurrencySelect) {
-            els.familyIncomeCurrencySelect.value = activeCurrency;
-            state.profile.familyIncomeCurrency = activeCurrency;
-        }
         const prevCurrency = state.profile.budgetCurrency || "USD";
         if (prevCurrency !== activeCurrency) {
             const rawBudget = normalizeAmountRaw(els.budgetInput ? els.budgetInput.value : state.profile.budget);
@@ -1751,7 +1502,6 @@ export const bindProfileEvents = (els, state) => {
                     savedProfile.budget = Math.round(convert(Number(savedProfile.budget), savedProfile.budgetCurrency || prevCurrency, activeCurrency));
                 }
                 savedProfile.budgetCurrency = activeCurrency;
-                if (savedProfile.familyIncomeAmount === "") savedProfile.familyIncomeCurrency = activeCurrency;
                 state.profileStoragePersistent = saveProfile(savedProfile);
                 state.savedSignature = stableProfileSignature(savedProfile);
             }

@@ -142,7 +142,10 @@ test("MBA study options use canonical levels for reviewed universities and retai
     await result.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue(item.level);
-    await expect(page.locator("#admissionsRoute")).toHaveValue("");
+    await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    // A single published application route is read directly; several routes leave the choice to the applicant.
+    const routes = await page.locator("#admissionsRoute option").evaluateAll(options => options.map(option => option.value).filter(Boolean));
+    await expect(page.locator("#admissionsRoute")).toHaveValue(routes.length === 1 ? routes[0] : "");
   }
 
   await openUniversity(page, "university-of-oxford-uk-oxford");

@@ -266,8 +266,6 @@ profile.gpa_range: GPA должен быть от {min} до {max}
 profile.gpa_saved: GPA сохранен
 profile.gpa_step: Шаг GPA должен быть {step}
 profile.hint.budget_range: Диапазон: 0‑{max}
-profile.hint.family_income_optional: Необязательная справочная запись только на этом устройстве. Не участвует в UniFit или автоматической сверке требований и не прогнозирует помощь. Разряды можно разделять пробелами, дробную часть — запятой или точкой.
-profile.family_income_invalid: Укажите сумму от 0 до 1 000 000 000 000.
 profile.hint.low_budget_grant: Бюджет меньше {amount}. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
@@ -278,8 +276,6 @@ profile.hint.interests: Короткие темы о том, что вам ин�
 profile.interests_saved: Интересы сохранены
 profile.saved_all: Профиль сохранен
 profile.label.budget: Общий бюджет / год
-profile.label.family_income: Годовой доход семьи
-profile.label.family_income_currency: Валюта дохода
 profile.label.exams: Экзамены
 profile.label.funding_type: Предпочтительный тип финансирования
 profile.label.gpa: Средний балл (GPA)
@@ -304,7 +300,6 @@ profile.option.study_mode_any: Любой (все форматы)
 profile.option.study_mode_oncampus: Очный (кампус)
 profile.option.study_mode_online: Онлайн / дистанционно
 profile.placeholder.budget: например, {example}
-profile.placeholder.family_income: Необязательная сумма
 profile.placeholder.gpa: например, 3.80
 profile.placeholder.interests: Например: информатика, искусственный интеллект, робототехника, разработка игр, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
@@ -1430,21 +1425,6 @@ profile.option.study_level_master: Магистратура
 profile.option.study_level_doctorate: Докторантура / PhD
 profile.option.study_level_professional: Профессиональная программа
 profile.option.study_level_mba: MBA
-profile.label.citizenship: Гражданства
-profile.field.citizenship.desc: Необязательно. Гражданство может влиять на опубликованные правила подачи и финансирования, но не подтверждает место проживания, тариф или получение гранта.
-profile.citizenship_info_title: Влияние гражданства и резидентства
-profile.citizenship_info_tooltip: Гражданство может влиять на правила оплаты и помощи, но само по себе не определяет право на них. Университет также может учитывать историю проживания, иммиграционный статус и программу. Добавьте все имеющиеся гражданства для дальнейшей проверки.
-profile.citizenship.select_country: Выберите страну...
-profile.citizenship.add_btn: Добавить
-profile.citizenship.other_option: Другая страна
-profile.citizenship.other_placeholder: Введите название страны...
-profile.citizenship.empty_hint: Гражданства не добавлены. Можно оставить поле пустым и прочитать опубликованные правила самостоятельно.
-profile.citizenship.search_placeholder: Поиск страны
-profile.citizenship.primary_badge: Основное
-profile.citizenship.set_primary_title: Сделать основным гражданством
-profile.citizenship.remove_title: Удалить гражданство
-profile.citizenship.max_count: Можно добавить не больше {count} гражданств
-profile.citizenship.choose_placeholder: Выберите страну
 country.name.kz: Казахстан
 country.name.us: США
 country.name.gb: Великобритания
@@ -1464,13 +1444,11 @@ country.name.uz: Узбекистан
 country.name.kg: Кыргызстан
 country.name.in: Индия
 university.admissions.deadlines_title: Дедлайны подачи и таймлайн
-university.admissions.deadlines_subtitle: Официальные циклы поступления, даты оглашения результатов и регистрационные сборы.
 university.admissions.cycle_label: Цикл
 university.admissions.route_label: Маршрут поступления
 university.admissions.context.unknown: Неизвестно
 university.admissions.context.unmatched: не соответствует указанным маршрутам
 university.admissions.context.unmatched_cycle: не совпадает с указанными циклами поступления
-university.admissions.selected_program: Выбранная программа
 university.deadlines.applicant_restriction: Ограничение для заявителей
 university.deadlines.applicability: Применяется к
 university.deadlines.us_citizen_permanent_resident_only: Только для граждан США и постоянных резидентов США
@@ -1494,9 +1472,6 @@ university.finance.aid_policy_label: Политика финансовой по�
 university.finance.thresholds_title: Правила помощи для бакалавриата в зависимости от дохода
 university.finance.phd_funding_title: Гарантированное финансирование докторантуры (PhD)
 university.finance.scholarships_title: Престижные стипендии и гранты
-university.finance.home_status: Статус резидента Великобритании (UK Home)
-university.finance.domestic_status: Статус резидента США
-university.finance.overseas_status: Международный / Overseas статус
 university.finance.need_blind_universal: Универсальный Need-Blind (для всех)
 university.finance.need_blind_domestic: Need-Blind (для резидентов)
 university.finance.need_aware_international: Need-Aware (для иностранных)
@@ -1511,9 +1486,6 @@ university.finance.range_applicants.overseas: Иностранные абиту�
 university.finance.range_applicants.international: Иностранные абитуриенты
 university.finance.full_ride_threshold: Порог 100% полного гранта
 university.finance.free_tuition_threshold: Порог бесплатного обучения
-university.finance.home_status_desc: Для граждан Великобритании стоимость зафиксирована на уровне домашнего тарифа (~£9,250–£9,535/год).
-university.finance.overseas_status_desc: Иностранные студенты оплачивают обучение по опубликованным тарифам факультетов (£35,470–£53,700/год).
-university.finance.domestic_status_desc: Доступ к федеральной финансовой помощи (FAFSA), оценка по домашнему тарифу и институциональные гранты.
 university.finance.overseas_us_desc: Оценка условий финансирования по правилам для иностранных заявителей.
 university.finance.need_blind_universal_desc: Согласно опубликованной политике, при поступлении на программы бакалавриата финансовая нуждаемость не учитывается для местных и иностранных абитуриентов.
 university.finance.need_blind_domestic_desc: Согласно опубликованной политике, при поступлении на программы бакалавриата финансовая нуждаемость не учитывается для местных абитуриентов.
@@ -1531,10 +1503,6 @@ university.finance.uk_aid_home_desc: Доступ к государственн�
 university.finance.uk_aid_intl_desc: Доступны престижные университетские стипендии (Reach Oxford, President's Undergraduate Scholarships).
 university.finance.zero_parent_contrib: Правило устанавливает нулевой ожидаемый вклад родителей; это не определяет полную итоговую стоимость.
 university.finance.zero_parent_contribution_threshold: Порог нулевого вклада родителей
-university.finance.income_comparison_below: Введённый доход ниже опубликованного порога
-university.finance.income_comparison_at_or_above: Введённый доход равен порогу или превышает его
-university.finance.income_comparison_unknown: Сравнение дохода недоступно
-university.finance.income_comparison_caveat: Это сравнение даёт только общий контекст. Оно не определяет право на помощь, размер выплаты или итоговую стоимость.
 university.finance.income_thresholds_note.stanford: Оценки Stanford предполагают типичные активы и уровень стоимости жизни в США; они могут не подходить для семей, живущих за пределами США.
 university.finance.full_ride_threshold_note: Право на полный пакет финансирования зависит от правил университета и обстоятельств абитуриента.
 university.finance.free_tuition_note: 100% покрытие стоимости обучения для семей, проходящих по доходу
@@ -1584,9 +1552,6 @@ university.deadlines.timeline_title: График приёмной кампан�
 university.deadlines.title: Сроки подачи заявок и календарь
 university.finance.aid_eligible_badge: Финансовая помощь
 university.finance.free_tuition_badge: Бесплатное обучение
-university.finance.fee_status_home_desc: Имеющаяся запись указывает на домашний тариф. Подтвердите право на него в университете.
-university.finance.fee_status_domestic_desc: Имеющаяся запись указывает на внутренний тариф. Подтвердите право на него в университете.
-university.finance.fee_status_overseas_desc: Имеющаяся запись указывает на зарубежный тариф. Подтвердите право на него в университете.
 university.finance.doctoral_funding_title: Финансирование докторантуры
 university.finance.status_unconfirmed: Статус оплаты требует проверки
 university.finance.status_unconfirmed_desc: Одного гражданства недостаточно, чтобы определить домашний, внутренний или зарубежный тариф. Также могут учитываться история проживания и правила университета.
@@ -1624,19 +1589,8 @@ university.coverage.deadlines_approximate: Приблизительные сро
 university.coverage.costs_program: Стоимость для отдельных программ
 university.coverage.costs_undergraduate: Общие данные о стоимости бакалавриата
 university.coverage.aid: Финансовая помощь и финансирование
-profile.applicant_context.country_search: Поиск страны
-profile.applicant_context.title: Образование и параметры поступления
-profile.applicant_context.optional_hint: Необязательно. Эти сведения помогают проверить требования университета, но не подтверждают признание квалификации или статус оплаты обучения.
-profile.applicant_context.country_education: Страна, в которой вы учились
-profile.applicant_context.country_other_placeholder: Укажите страну
-profile.applicant_context.credential: Квалификация или учебная программа
-profile.applicant_context.credential_ib: Международный бакалавриат (IB)
-profile.applicant_context.credential_a_level: A-levels
-profile.applicant_context.credential_us_diploma: Диплом о среднем образовании школы США (не казахстанский аттестат)
-profile.applicant_context.credential_national: Национальная квалификация о среднем образовании (например, аттестат РК)
-profile.applicant_context.credential_vocational: Профессиональная квалификация
-profile.applicant_context.credential_other_placeholder: Уточните название квалификации или учебной программы
-profile.applicant_context.current_residence: Страна проживания
+profile.applicant_context.title: Параметры поступления
+profile.applicant_context.optional_hint: Необязательно. Цикл поступления и статус оплаты определяют, какие стоимость и сборы показываются для проверенных университетов. Статус вы указываете сами; официальный статус определяет университет.
 profile.applicant_context.entry_cycle: Планируемый цикл поступления
 profile.applicant_context.entry_cycle_placeholder: например, осень 2027 года
 profile.applicant_context.fee_context: Статус оплаты обучения в университете (если известен)
@@ -1645,11 +1599,6 @@ profile.applicant_context.fee_international: Иностранный тариф (
 profile.applicant_context.fee_other: Другой или неизвестен
 profile.applicant_context.fee_unknown: Не знаю / не подтверждён
 profile.applicant_context.optional: Не указано
-profile.applicant_context.other: Другое
-profile.applicant_context.route: Маршрут поступления
-profile.applicant_context.route_first_year: Поступление на первый курс
-profile.applicant_context.route_transfer: Перевод из другого университета
-profile.applicant_context.route_graduate: Поступление в магистратуру или докторантуру
 universities.compare.finance.grant_unconfirmed: Выбранный грант — лишь возможное финансирование. Его сумма не считается подтверждённой стоимостью или скидкой, пока университет официально не присудит его.
 universities.compare.funding.not_awarded: Возможный грант; не подтверждён
 university.finance.award_application: Как подать заявку
@@ -1679,10 +1628,8 @@ university.finance.awards_not_deducted: Возможный грант не вы�
 university.finance.awards_not_guaranteed: Это возможности финансирования, а не предложения о гранте. Расчётная стоимость не уменьшается, пока помощь официально не присуждена.
 university.qualification_guidance.checked_label: Официальная страница проверена
 university.qualification_guidance.title: Требования к квалификации
-university.qualification_guidance.cycle_label: Планируемый год поступления
+university.qualification_guidance.reference_note: Это опубликованные решения университета. Каждое относится только к той квалификации, уровню обучения и циклу поступления, которые в нём названы.
 university.qualification_guidance.cycle_scope_label: Применимость к циклу поступления
-university.qualification_guidance.cycle_unspecified: В профиле не указан цикл поступления.
-university.qualification_guidance.exact_credential_action: Укажите в профиле точное название аттестата, чтобы проверить опубликованные требования для Казахстана.
 university.qualification_guidance.level_label: Уровень обучения
 university.qualification_guidance.no_eligibility_notice: Это справка о квалификации, а не решение о зачислении или соответствии требованиям. Нужно отдельно проверить оценки, предметы, правила программы и актуальный цикл поступления.
 university.qualification_guidance.official_source: Открыть официальные требования к квалификации
@@ -1690,7 +1637,6 @@ university.qualification_guidance.program_label: Программа
 university.qualification_guidance.program_source: Официальная страница программы
 university.qualification_guidance.reason.accepted_ib: Университет указывает диплом Международного бакалавриата (IB) среди принимаемых квалификаций. Для каждой программы действуют отдельные требования к оценкам и предметам.
 university.qualification_guidance.reason.contextual_review: Университет оценивает учебные документы с учётом школы и страны. В опубликованных правилах нет решения о признании этой квалификации на уровне страны.
-university.qualification_guidance.reason.cycle_review: Указанный цикл поступления выходит за пределы периода, подтверждённого этой проверкой.
 university.qualification_guidance.reason.graduate_review: Требования для магистратуры и докторантуры зависят от программы и предыдущего образования. Проверьте официальные требования выбранной программы.
 university.qualification_guidance.reason.oxford_attestat: Оксфорд указывает аттестат Казахстана / Svidetel' stvo o Srednem Obrazovanii как не принимаемый для стандартного предложения о зачислении на бакалавриат. Для поступления потребуется дальнейшее обучение и другая принимаемая квалификация.
 university.qualification_guidance.reason.select_program: Выберите конкретную программу магистратуры или докторантуры, чтобы открыть её официальные требования.
@@ -2377,7 +2323,6 @@ profile.evidence.test_date: Дата экзамена (необязательн�
 profile.evidence.language_title: Языковой опыт
 profile.evidence.institution_title: Сведения для конкретного вуза
 profile.evidence.institution: Университет
-profile.evidence.institution_unavailable: Для этого вуза пока нет полей для сведений о курсах, среднем балле или сертификатах.
 profile.evidence.kind: Тип сведений
 profile.evidence.language: Код языка
 profile.evidence.country: Страна
@@ -2399,7 +2344,6 @@ profile.evidence.expected_completion: Планируемое завершени�
 profile.evidence.metric: Вид среднего балла
 profile.evidence.metric.overall: Общий средний балл
 profile.evidence.metric.technical: Технический средний балл
-profile.evidence.metric.major: Средний балл по специальности
 profile.evidence.value: Средний балл
 profile.evidence.scale: Шкала среднего балла
 profile.evidence.as_of_term: По состоянию на семестр
@@ -2431,17 +2375,8 @@ profile.evidence.institution_kind.enrollment: Обучение или пройд
 profile.evidence.institution_kind.gpa: Средний балл по программе
 profile.evidence.institution_kind.credential: Сертификат программы
 profile.evidence.institution.mit: Массачусетский технологический институт
-profile.evidence.institution.imperial: Имперский колледж Лондона
-profile.evidence.institution.stanford: Стэнфордский университет
 profile.evidence.program.mit_course_6_9: Бакалаврская программа MIT Course 6-9
-profile.evidence.program.mit_scm_residential_masc: Очная программа Supply Chain Management (MASC)
-profile.evidence.program.mit_scm_residential_meng: Очная программа Supply Chain Management (MEng)
-profile.evidence.program.mit_scm_blended_masc: Смешанная программа Supply Chain Management (MASC)
-profile.evidence.program.mit_scm_blended_meng: Смешанная программа Supply Chain Management (MEng)
-profile.evidence.program.stanford_cs_bs: Бакалавриат по информатике
-profile.evidence.program.stanford_anthr_ma_coterm: Совмещённая магистратура по антропологии
 profile.evidence.credential.mit_dedp: Сертификат MITx DEDP MicroMasters
-profile.evidence.credential.mit_scm: Сертификат MITx Supply Chain Management MicroMasters
 profile.evidence.credential.mit_sc0x: Сертификат курса SC0x
 profile.evidence.credential_other: Сертификат программы
 profile.evidence.units_short: учебных единиц
@@ -2455,16 +2390,11 @@ profile.evidence.error.gpa: Укажите средний балл в преде
 profile.evidence.error.credential: Выберите сертификат из списка.
 profile.evidence.error.credential_score: Укажите опубликованный процентный балл сертификата.
 profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
-university.admissions.catalog.context_title: Контекст вашего поступления
 university.admissions.catalog.simple_title: Как поступить
 university.admissions.catalog.browse_note: Ищите по направлению или программе. Откройте результат, чтобы узнать об учёбе и поступлении.
-university.admissions.catalog.show_requirements: Читать опубликованные сведения
-university.admissions.catalog.advanced_options: Фильтры публикаций (необязательно)
 university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
 university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
-university.admissions.catalog.open_application: Открыть страницу подачи
 university.admissions.catalog.select_program: Выбрать программу
-university.admissions.catalog.view_requirements: Посмотреть условия поступления
 university.admissions.catalog.requirements_tab_hint: Условия поступления — во вкладке «Поступление».
 university.admissions.catalog.study_info: О программе
 university.admissions.catalog.program_detail.study: Обучение
@@ -2491,14 +2421,11 @@ university.admissions.catalog.topic.study: Содержание и структ�
 university.admissions.catalog.topic.completion: Завершение программы
 university.admissions.catalog.topic.offers: Предложения и зачисление
 university.admissions.catalog.topic.support: Поддержка студентов
-university.admissions.catalog.context_note: Один выбор применяется к требованиям, датам, стоимости и финансированию. Ручные изменения действуют на этой странице; для проверок используются данные профиля.
 university.admissions.catalog.choose_program: Выбрать программу
 university.admissions.catalog.no_program_selected: Программа ещё не выбрана
 university.admissions.catalog.route_label: Опубликованный путь подачи
 university.admissions.catalog.choose_route: Выбрать путь поступления
-university.admissions.catalog.choose_route_action: Выбрать путь подачи
 university.admissions.catalog.route_required: Выберите один из опубликованных путей выше, чтобы прочитать требования и порядок подачи.
-university.admissions.catalog.applicant_label: Категория абитуриента
 university.admissions.catalog.unspecified: Не указана
 university.admissions.catalog.applicant.first_year: Поступление на первый курс
 university.admissions.catalog.applicant.transfer: Перевод из другого вуза
@@ -2528,9 +2455,7 @@ university.admissions.catalog.no_options: По этим фильтрам про�
 university.admissions.catalog.previous: Назад
 university.admissions.catalog.next: Далее
 university.admissions.catalog.results: {from}–{to} из {total} программ
-university.admissions.catalog.finance_note: Сопоставимая годовая сумма не установлена. Сохраняются исходные валюта и период каждой статьи. Возможное финансирование не считается предоставленной помощью и не вычитается; разверните запись, чтобы открыть источник.
 university.admissions.catalog.study_options_title: Программы обучения
-university.admissions.catalog.study_options_note: Ищите официальные варианты получения степеней. Уровень обучения и присуждаемая квалификация указаны отдельно.
 university.admissions.catalog.admission_title: Требования и опубликованные пути поступления
 university.admissions.catalog.finance_intro: Опубликованные цены и финансирование для выбранной программы и пути с исходными периодами, валютами и условиями.
 university.admissions.catalog.deadlines_title: Даты и сроки
@@ -2540,12 +2465,8 @@ university.admissions.catalog.reference_scope: Сейчас открыт раз�
 university.admissions.catalog.route_not_selected: Путь подачи не выбран
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
-university.admissions.catalog.change_route: Сменить путь
 university.admissions.catalog.reference_filters: Уточнить контекст (необязательно)
-university.admissions.catalog.reference_filter_note: Эти фильтры сужают сведения по опубликованной области применения. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
 university.admissions.catalog.selected_route: Выбранный путь
-university.admissions.catalog.application_shape: Как поступают на программу
-university.admissions.catalog.catalog_code: Код курса
 university.admissions.catalog.official_course_page: Официальная страница курса
 university.admissions.catalog.application_class.post_admission_major: Сначала поступают в университет; основное направление выбирают после зачисления.
 university.admissions.catalog.application_class.direct_program: Заявление подаётся на выбранную программу.
@@ -2799,7 +2720,6 @@ university.admissions.reading.cycle_help: Введите год, наприме�
 university.admissions.reading.cycle_invalid: Запись не распознана как год или сезон набора. Укажите год или выберите подсказку; совпадение по году не предполагается.
 university.admissions.reading.january_tests: Принимаются январские даты экзамена
 university.admissions.reading.mit_course_code: Код программы MIT: {code}
-university.admissions.reading.mit_course_help: Course {code} — код этой программы в каталоге MIT. Словом Course здесь называют направление обучения.
 university.admissions.catalog.field.A3i6E: Описание программы
 university.admissions.catalog.field.WOZxr: Правила зачёта обучения в другом вузе
 university.admissions.catalog.field.ItCSB: Требования программы
@@ -2968,12 +2888,9 @@ universities.cost.budget_tuition_only: Только обучение; прожи
 universities.compare.clear_program: Сбросить программу
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
 university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
-university.admissions.reading.source_short: Источник
-university.admissions.reading.original_and_date: Оригинал и дата
 university.admissions.reading.source_and_date: Источник и дата
-university.admissions.reading.source_details: Сведения об источнике
 university.admissions.reading.official_sources_count: Официальные источники ({count})
-university.admissions.reading.original_and_sources_count: Оригинал и источники ({count})
+university.admissions.reading.source_marker: Источник {number}: {title}
 university.admissions.reading.reference_scope_note: Подробные записи приведены на языке источника. В каждой записи доступны условия, период и область действия.
 university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
 university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан
@@ -3029,7 +2946,6 @@ university.admissions.reading.month_standalone.10: октябрь
 university.admissions.reading.month_standalone.11: ноябрь
 university.admissions.reading.month_standalone.12: декабрь
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
-university.admissions.reading.integrated_meng: MEng — интегрированная программа с поступлением через UCAS на уровне бакалавриата; она объединяет бакалаврское обучение и дисциплины магистерского уровня.
 university.admissions.entry.institution_wide: На бакалавриат поступают в университет в целом. Читайте правила первого курса или перевода без выбора будущей специальности; изучить направления можно в разделе «Программы».
 university.admissions.entry.profile_hints: Подсказки из профиля: {details}. Примените их здесь или продолжайте читать общие сведения.
 university.admissions.entry.use_profile: Применить подсказки профиля
@@ -3428,12 +3344,10 @@ university.admissions.catalog.field.time: Время
 university.admissions.catalog.field.timezone: Часовой пояс
 university.admissions.catalog.field.scope: Относится к
 university.admissions.catalog.record_link: Показать полную запись источника
-profile.family_income_reference: Доход семьи (необязательная справка)
 profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})
 university.admissions.entry.browsing_not_saved: Этот выбор не сохранён для UniFit.
 university.admissions.entry.saved_context: Этот выбор сохранён для UniFit.
 university.admissions.entry.saved_other: Сохранено для UniFit: {details}.
-university.admissions.entry.route_profile_hint: В профиле указан тип абитуриента: {applicant}. Самостоятельно выберите подходящий путь поступления.
 university.admissions.entry.route_class_help.ucas_course_choice: Подайте заявление на выбранную программу бакалавриата через UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Подайте заявление на выбранную программу последипломного обучения.
 university.admissions.entry.route_class_help.department_or_program: Подавайте через соответствующий департамент или программу; условия конкретного пути указаны ниже.
