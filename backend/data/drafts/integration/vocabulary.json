@@ -232,6 +232,9 @@
   "applicant_route": {
     "first_year": ["ucas_course_choice"]
   },
+  "applicant_category_alias": {
+    "first_year": ["first-year", "first-year REA", "first-year/frosh"]
+  },
   "applicant_route_by_id": {
     "undergraduate-shared-evidence:stanford-nonprofessional-graduate": "graduate",
     "undergraduate-shared-evidence:stanford-knight-hennessy": "graduate",

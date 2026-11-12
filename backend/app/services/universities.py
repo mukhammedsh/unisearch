@@ -2040,12 +2040,18 @@ def _filter_university_pairs(
             )
         ]
 
+    # Reviewed institutions keep these facts in the admissions catalog, so an empty legacy value means
+    # unknown, not "no": only a known mismatch excludes them, like the funding filter below.
+    def reviewed_unknown(u, value):
+        return value is None and u.get("id") in admissions_catalog.INSTITUTION_IDS
+
     if format:
         fm = _safe_lower(format)
         pairs = [
             (u, meta_row)
             for (u, meta_row) in pairs
             if any(x == fm for x in meta_row.get("formats", []))
+            or reviewed_unknown(u, meta_row.get("formats") or None)
         ]
 
     if funding_type:
@@ -2091,27 +2097,20 @@ def _filter_university_pairs(
             filtered.append((u, m))
         pairs = filtered
 
+    def acceptance_rate_of(u, m):
+        return m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u)
+
     if min_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_gte(
-                m.get("acceptance_rate")
-                if "acceptance_rate" in m
-                else _get_university_acceptance_rate(u),
-                min_acceptance,
-            )
+            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_gte(acceptance_rate_of(u, m), min_acceptance)
         ]
     if max_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_lte(
-                m.get("acceptance_rate")
-                if "acceptance_rate" in m
-                else _get_university_acceptance_rate(u),
-                max_acceptance,
-            )
+            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_lte(acceptance_rate_of(u, m), max_acceptance)
         ]
 
     if size:

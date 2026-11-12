@@ -33,6 +33,9 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Reviewed institutions report unknown, not absent, grant, paid and aid availability, so the list filters no longer hide them.
 - Same-titled official pages at different URLs, such as Stanford's first-year and transfer "Application and Essays", are told apart in the source list by a URL-path hint.
 - Removed a restated research sentence about a named Kazakhstan diploma from Stanford's school-education requirement text in English, Russian and Kazakh. The unresolved-qualification entry stays.
+- Stanford facts that spelled their applicant category `first-year`, `first-year/frosh` or `first-year REA` now use the closed `first_year` value, so they match the first-year route and are no longer shown as conditional on the transfer route. Catalog preparation maps these spellings through the new `applicant_category_alias` table in `vocabulary.json` and keeps the research wording in provenance.
+- The `format` and acceptance-rate list filters keep reviewed institutions whose value is unknown; only a known mismatch excludes them.
+- An expired exchange-rate cache entry is served immediately and refreshed in a background thread, so a request no longer waits for the rate provider (up to its timeout when the provider is slow or down) once rates have loaded.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

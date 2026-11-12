@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 import sys
+import threading
+import time
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -53,6 +55,36 @@ class CurrencyServiceTests(unittest.TestCase):
             self.assertEqual(cached_data["source"], "cache")
             self.assertEqual(cached_data["rates"]["KZT"], 480.0)
             self.assertEqual(mock_urlopen.call_count, 1)
+
+    def test_expired_rates_are_served_at_once_and_refreshed_once_in_the_background(self):
+        started, release = threading.Event(), threading.Event()
+        calls = []
+
+        def slow_fetch(base="USD"):
+            calls.append(base)
+            started.set()
+            release.wait(5)
+            return {"rates": {"USD": 1.0, "KZT": 500.0}, "date": "2026-11-13"}
+
+        expired = time.time() - currency_service.CURRENCY_RATES_CACHE_TTL_SEC - 10
+        currency_service._MEMORY_CACHE["USD"] = {"rates": {"USD": 1.0, "KZT": 470.0}, "date": "old", "ts": expired}
+        try:
+            with patch("app.services.currency.fetch_rates", side_effect=slow_fetch), \
+                    patch("app.services.currency.cache_get_json", return_value=None), \
+                    patch("app.services.currency.cache_set_json"):
+                first = currency_service.get_rates()
+                # The expired entry answers immediately; the request does not wait for the provider.
+                self.assertEqual(470.0, first["rates"]["KZT"])
+                self.assertTrue(started.wait(2))
+                self.assertEqual(470.0, currency_service.get_rates()["rates"]["KZT"])
+                release.set()
+                deadline = time.time() + 5
+                while time.time() < deadline and currency_service.get_rates()["rates"]["KZT"] != 500.0:
+                    time.sleep(0.02)
+                self.assertEqual(500.0, currency_service.get_rates()["rates"]["KZT"])
+                self.assertEqual(1, len(calls))
+        finally:
+            release.set()
 
     def test_api_failure_falls_back_to_static(self):
         with patch("app.services.currency.fetch_rates", side_effect=RuntimeError("API down")):

@@ -2826,6 +2826,7 @@ university.admissions.catalog.enum.external_graduate_applicant: Внешний �
 university.admissions.catalog.enum.external_masters_holder: Обладатель внешней степени магистра
 university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: Внешний или действующий абитуриент магистратуры Стэнфорда
 university.admissions.catalog.enum.financial_support: Финансовая поддержка
+university.admissions.catalog.enum.first_year: Абитуриент на первый курс
 university.admissions.catalog.enum.international_applicant: Международный абитуриент
 university.admissions.catalog.enum.international_law_degree_holder: Обладатель иностранной юридической степени
 university.admissions.catalog.enum.joint_degree_applicant: Абитуриент совместной программы

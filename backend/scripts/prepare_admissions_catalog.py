@@ -67,8 +67,10 @@ def as_list(value):
     return [value] if isinstance(value, str) else value
 
 
-def scope(row, original=None):
+def scope(row, original=None, category_alias=None):
+    """Prepared scope; research spellings of an applicant category map to the closed value, the original stays in provenance."""
     original = row if original is None else original
+    category_alias = category_alias or {}
     level_values = row.get("levels", row.get("study_levels", row.get("study_level", row.get("level"))))
     levels = as_list(level_values)
     require(all(level in LEVELS or level in LEVEL_CONTEXTS or level == "undergraduate_and_postgraduate_taught"
@@ -86,7 +88,8 @@ def scope(row, original=None):
         "option_ids": as_list(row.get("option_ids", row.get("study_option_ids", row.get("study_option_id")))),
         "route_ids": as_list(row.get("route_ids", row.get("procedure_ids"))),
         "levels": normalized_levels,
-        "applicant_categories": as_list(row.get("applicant_categories", row.get("applicant_category"))),
+        "applicant_categories": [category_alias.get(category, category) for category in
+                                 as_list(row.get("applicant_categories", row.get("applicant_category")))],
         "cycle": row.get("cycle", row.get("admission_cycle")),
         "fee_status": as_list(row.get("fee_status")),
         "additional_dimensions": {
@@ -138,8 +141,14 @@ def load_vocabulary(path=VOCABULARY_PATH):
             applicant[label] = canonical
     by_id = data.get("applicant_route_by_id", {})
     require(set(by_id.values()) <= {*APPLICANT_ROUTES, None}, "Unknown applicant category override")
+    category_alias = {}
+    for canonical, labels in data.get("applicant_category_alias", {}).items():
+        require(canonical in APPLICANT_ROUTES, f"Unknown applicant category in vocabulary: {canonical}")
+        for label in labels:
+            require(label not in category_alias, f"Vocabulary label appears twice in applicant_category_alias: {label}")
+            category_alias[label] = canonical
     return {**tables, "route_entry_by_id": data.get("route_entry_by_id", {}),
-            "applicant_route": applicant, "applicant_route_by_id": by_id,
+            "applicant_route": applicant, "applicant_route_by_id": by_id, "applicant_category_alias": category_alias,
             "option_closed_availability": data.get("option_closed_availability", {})}
 
 
@@ -330,7 +339,7 @@ def prepare_institution(folder, vocabulary=None):
                     "period", "related_fact_ids", "topics"}
         facts.append({
             "id": index["id"], "topic": raw.get("topic", raw.get("group")), "topics": raw.get("topics", []),
-            "scope": scope(index["scope"], raw["scope"]), "value": raw["value"],
+            "scope": scope(index["scope"], raw["scope"], vocabulary["applicant_category_alias"]), "value": raw["value"],
             "conditions": raw.get("conditions"), "conditions_and_exceptions": raw.get("conditions_and_exceptions"),
             "exceptions": raw.get("exceptions"), "source_ids": index["source_ids"],
             "publication_status": raw.get("publication_status"), "review_status": raw.get("review_status"),
@@ -410,7 +419,7 @@ def prepare_institution(folder, vocabulary=None):
                     "review_status", "checked_at", "content_reviewed_at"}
         unknowns.append({"id": index["id"], "reason": raw.get("reason", raw.get("finding")),
                          "official_next_step": raw.get("official_next_step", raw.get("next_official_step", raw.get("next_step"))),
-                         "scope": scope(indexed_scope, raw_scope), "source_ids": index.get("source_ids", []),
+                         "scope": scope(indexed_scope, raw_scope, vocabulary["applicant_category_alias"]), "source_ids": index.get("source_ids", []),
                          "publication_status": raw.get("publication_status"), "review_status": raw.get("review_status"),
                          "checked_at": raw.get("checked_at"), "content_reviewed_at": raw.get("content_reviewed_at"),
                          "provenance": provenance(index, raw, filename), "attributes": attributes(raw, consumed),

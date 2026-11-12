@@ -402997,7 +402997,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year",
+              "first_year",
               "transfer"
             ],
             "cycle": null,
@@ -403063,7 +403063,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year",
+              "first_year",
               "transfer"
             ],
             "cycle": null,
@@ -403130,7 +403130,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry cycle as shown on current 2026 admissions pages",
             "fee_status": [],
@@ -403192,7 +403192,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry cycle as shown on current 2026 admissions pages",
             "fee_status": [],
@@ -403256,7 +403256,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": null,
             "fee_status": [],
@@ -403318,7 +403318,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry cycle; ACT transition policy published from 2025-26 onward",
             "fee_status": [],
@@ -403382,7 +403382,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry cycle",
             "fee_status": [],
@@ -403444,7 +403444,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry cycle",
             "fee_status": [],
@@ -403510,7 +403510,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry cycle",
             "fee_status": [],
@@ -403570,7 +403570,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": null,
             "fee_status": [],
@@ -403636,7 +403636,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": null,
             "fee_status": [],
@@ -403725,7 +403725,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": null,
             "fee_status": [],
@@ -403789,7 +403789,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year"
+              "first_year"
             ],
             "cycle": "2027-entry",
             "fee_status": [],
@@ -403993,7 +403993,7 @@
             ],
             "applicant_categories": [
               "transfer",
-              "first-year"
+              "first_year"
             ],
             "cycle": null,
             "fee_status": [],
@@ -404593,7 +404593,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year",
+              "first_year",
               "transfer"
             ],
             "cycle": "2026-2027 academic year",
@@ -405028,7 +405028,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year/frosh",
+              "first_year",
               "transfer"
             ],
             "cycle": null,
@@ -405098,7 +405098,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year/frosh",
+              "first_year",
               "transfer"
             ],
             "cycle": null,
@@ -406895,7 +406895,7 @@
               "undergraduate"
             ],
             "applicant_categories": [
-              "first-year REA"
+              "first_year"
             ],
             "cycle": "2027-entry",
             "fee_status": [],

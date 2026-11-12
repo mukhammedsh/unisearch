@@ -438,6 +438,25 @@ class UniversitySearchTests(unittest.TestCase):
         every_id = {row["id"] for row in uni_service.list_universities(paginate=False)["items"]}
         self.assertTrue(legacy_without_funding.issubset(every_id))
 
+    def test_format_and_acceptance_filters_keep_reviewed_institutions_with_unknown_values(self):
+        reviewed = set(admissions_catalog.INSTITUTION_IDS)
+        items, meta = uni_service.get_universities_with_meta()
+        meta_by_id = {u["id"]: m for u, m in zip(items, meta)}
+        unknown_format = {uid for uid in reviewed if not meta_by_id[uid]["formats"]}
+        unknown_rate = {uid for uid in reviewed if meta_by_id[uid]["acceptance_rate"] is None}
+        self.assertTrue(unknown_format and unknown_rate)
+
+        def ids(**filters):
+            return {row["id"] for row in uni_service.list_universities(paginate=False, **filters)["items"]}
+
+        online = ids(format="online")
+        self.assertTrue(unknown_format.issubset(online))
+        # A reviewed institution that states its format is still excluded when the format differs.
+        self.assertTrue(reviewed - unknown_format - online)
+        for bounds in ({"min_acceptance": 0}, {"max_acceptance": 100}):
+            with self.subTest(bounds=bounds):
+                self.assertTrue(unknown_rate.issubset(ids(**bounds)))
+
 
 if __name__ == "__main__":
     unittest.main()

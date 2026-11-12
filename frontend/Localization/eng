@@ -2828,6 +2828,7 @@ university.admissions.catalog.enum.external_graduate_applicant: External graduat
 university.admissions.catalog.enum.external_masters_holder: Holder of an external master's degree
 university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: External or current Stanford graduate applicant
 university.admissions.catalog.enum.financial_support: Financial support
+university.admissions.catalog.enum.first_year: First-year applicant
 university.admissions.catalog.enum.international_applicant: International applicant
 university.admissions.catalog.enum.international_law_degree_holder: International law degree holder
 university.admissions.catalog.enum.joint_degree_applicant: Joint degree applicant

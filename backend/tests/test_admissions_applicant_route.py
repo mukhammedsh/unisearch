@@ -77,6 +77,25 @@ class ApplicantRouteImpliedByRouteTests(unittest.TestCase):
         self.assertEqual(11, len(transfer_ids(transfer)))
         self.assertIn("applicant", {key for key, value in first_year["context_applicability"].items() if value == "matched"})
 
+    def test_stanford_first_year_spellings_use_the_closed_category_values(self):
+        institution = admissions_catalog.get_institution(STANFORD)
+        spelled = {category for row in (*institution["facts"], *institution["unknowns"])
+                   for category in row["scope"]["applicant_categories"]
+                   if category.casefold().startswith(("first-year", "transfer;"))}
+        self.assertEqual(set(), spelled)
+
+        def resolve(route_id):
+            return admissions_catalog.resolve_context(STANFORD, context={
+                "study_option_id": "stanford-option-cs-bs", "application_route_id": route_id,
+                "study_level": "undergraduate", "intended_entry_cycle": "Fall 2027"})
+
+        def first_year_only_ids(resolved):
+            rows = [row for key in ("facts", "unknowns") for row in (*resolved[key], *resolved["history"][key])]
+            return {row["id"] for row in rows if row["scope"]["applicant_categories"] == ["first_year"]}
+
+        self.assertTrue(first_year_only_ids(resolve(STANFORD_FIRST_YEAR)))
+        self.assertEqual(set(), first_year_only_ids(resolve(STANFORD_TRANSFER)))
+
     def test_route_implied_category_governs_defaults_and_reports_a_contradicting_request(self):
         selection = {"studyOptionId": "stanford-option-cs-bs", "applicationRouteId": STANFORD_FIRST_YEAR,
                      "studyLevel": "undergraduate", "applicantRoute": "transfer", "intendedEntryCycle": "Fall 2027"}

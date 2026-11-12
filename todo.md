@@ -38,9 +38,9 @@ The user asked to simplify the profile, the admission page and the reviewed mode
 - [x] Cold start: major-taxonomy normalisation is precomputed once; the first detail request is about half as long.
 - [x] Research depth is bounded by [the light dossier standard](docs/admissions-light-dossier.md); `AGENTS.md` and the product model replace the unbounded "never discard a sourced fact" rule.
 - [ ] Later, on the user's schedule: implement the light-dossier runtime prerequisites and convert the other 46 institutions in rechecked batches (see the standard). Not started.
-- [ ] Stanford facts that spell the applicant category `first-year` never match the closed `first_year` value and stay conditional; normalise them in preparation.
-- [ ] The `format`, acceptance-rate and size list filters drop reviewed institutions whose value is unknown; the interface does not send them today.
-- [ ] The first detail request still waits about 0.3 s for a synchronous exchange-rate fetch.
+- [x] Stanford facts that spell the applicant category `first-year`, `first-year/frosh` or `first-year REA` map to the closed `first_year` value in preparation through `applicant_category_alias` in `vocabulary.json`; the research spelling stays in provenance.
+- [x] The `format` and acceptance-rate list filters keep reviewed institutions whose value is unknown; only a known mismatch excludes them. The size filter needed no change: every reviewed institution states a size.
+- [x] An expired exchange-rate cache entry is served at once and refreshed in a background thread, so no request waits for the provider after rates have loaded. A process that has never loaded rates still fetches them on its first request unless startup warm-up has done so (about 0.06–0.14 s measured).
 
 ### Four-institution audit repairs (2026-11-04)
 

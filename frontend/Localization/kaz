@@ -2828,6 +2828,7 @@ university.admissions.catalog.enum.external_graduate_applicant: Сыртқы м�
 university.admissions.catalog.enum.external_masters_holder: Сыртқы магистр дәрежесінің иегері
 university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: Сыртқы немесе Стэнфорд ағымдағы магистратура үміткері
 university.admissions.catalog.enum.financial_support: Қаржылық қолдау
+university.admissions.catalog.enum.first_year: Бірінші курсқа үміткер
 university.admissions.catalog.enum.international_applicant: Халықаралық үміткер
 university.admissions.catalog.enum.international_law_degree_holder: Халықаралық құқық дәрежесінің иегері
 university.admissions.catalog.enum.joint_degree_applicant: Бірлескен дәреже үміткері
