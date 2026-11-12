@@ -1,6 +1,6 @@
 # Third Party Notices
 
-This project uses or references the following third-party icon and brand assets.
+This project uses or references the following third-party icon, font, and brand assets.
 
 ## 1. Heroicons
 
@@ -65,9 +65,26 @@ This project uses or references the following third-party icon and brand assets.
   - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or immediate removal, please contact us at **unisearch@inbox.ru** or open a GitHub Issue.
   - Requests are acknowledged and addressed within 48 hours.
 
+## 5. Inter
+
+- Name: Inter
+- Author / Publisher: The Inter Project Authors (Rasmus Andersson)
+- Project: https://rsms.me/inter/
+- Source repository: https://github.com/rsms/inter
+- Distributed through: the `@fontsource-variable/inter` npm package, version 5.3.0
+- License: SIL Open Font License 1.1 (OFL-1.1)
+- License text: `frontend/fonts/inter/OFL.txt`
+- How this project uses it:
+  - Self-hosted variable font files stored under `frontend/fonts/inter/` (latin, latin-ext, cyrillic, cyrillic-ext subsets)
+  - Declared with `@font-face` in `frontend/css/shared/01-foundation.css` and used through `--font-sans` and `--font-display`
+- Integration note:
+  - The font files are served unmodified, so the OFL license text and copyright notice must stay next to them
+  - The OFL permits use and redistribution, including commercial use, but the font may not be sold on its own
+
 ## Summary
 
 - Main UI icon pack: Heroicons (MIT)
+- UI typeface: Inter (SIL OFL 1.1)
 - Country flags: flag-icons (MIT)
 - Brand/social mark: GitHub logomark under GitHub brand usage rules
 - University assets (logos and campus photos): Property of respective institutions and copyright holders; excluded from the MIT License; used under Nominative Fair Use with an active 48-hour Notice & Takedown procedure.
