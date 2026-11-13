@@ -3512,3 +3512,11 @@ university.ux2.people.selectivity_international: Шетелдіктер: қаб�
 university.ux2.people.selectivity_preparation: Сол өтініш бойынша тағы {rate}% {name} дайындық жылына қабылданды
 university.ux2.people.selectivity_offers_note: Бір адам бірнеше бағдарламаға өтініш бере алады, сондықтан бұл қабылданған адамдардың үлесі емес.
 university.ux2.people.intake: {year} жылғы қабылдау
+university.ux2.campus.area_label: Кампус аумағы
+university.ux2.campus.area_ha: {ha} га
+university.ux2.campus.area_km: {ha} га ({km} км²)
+university.ux2.campus.pitches_one: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_many: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_few: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_other: шамамен {count} футбол алаңы
+university.ux2.campus.source: Ресми дереккөз

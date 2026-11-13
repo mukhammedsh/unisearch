@@ -7775,3 +7775,23 @@ body[data-page="university"],
 .legacy-data-notice__title {
   font-weight: 600;
 }
+
+/* Campus area: the official figure, an everyday comparison and its source, stacked at the row's end. */
+.d-campus-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-0-5);
+  text-align: right;
+}
+
+.d-campus-area__note {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+}
+
+a.d-campus-area__note {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

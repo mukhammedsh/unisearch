@@ -3512,3 +3512,11 @@ university.ux2.people.selectivity_international: International applicants: {admi
 university.ux2.people.selectivity_preparation: Another {rate}% were admitted to the {name} foundation year from the same application
 university.ux2.people.selectivity_offers_note: One person can apply to several programmes, so this is not the share of people admitted.
 university.ux2.people.intake: {year} intake
+university.ux2.campus.area_label: Campus area
+university.ux2.campus.area_ha: {ha} ha
+university.ux2.campus.area_km: {ha} ha ({km} km²)
+university.ux2.campus.pitches_one: about {count} football pitch
+university.ux2.campus.pitches_many: about {count} football pitches
+university.ux2.campus.pitches_few: about {count} football pitches
+university.ux2.campus.pitches_other: about {count} football pitches
+university.ux2.campus.source: Official source

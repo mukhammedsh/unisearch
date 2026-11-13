@@ -1,5 +1,5 @@
 import { escapeHtml, escapeHtmlAttr, markMotionEnter, motionPress } from "../../utils.js";
-import { getCurrentLanguage, t } from "../../i18n.js";
+import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
 import { humanizeMachineLabel, translateAdmissionText, translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";
@@ -8,7 +8,6 @@ import {
   admissionsDataTypeKey,
   admissionsDataTypeLabel,
   admissionsFactChips,
-  formatCampusSizeValue,
   formatUiNumber,
   localizeDuration,
   renderAdmissionsChipRow,
@@ -29,6 +28,30 @@ import {
   safeUrl,
   toFiniteNumber,
 } from "../_shared.js";
+
+// A FIFA pitch (105 x 68 m) gives an everyday sense of a campus area; very large estates are not compared.
+const FOOTBALL_PITCH_M2 = 7140;
+const MAX_PITCH_COMPARISON = 1000;
+
+// The campus area from its official source as hectares (and km² from 1 km²) with an everyday comparison.
+// The earlier small/medium/large bucket mixed land area and student numbers, so the page no longer shows it.
+export function campusAreaFact(studentLife) {
+  const area = toFiniteNumber(studentLife?.campus_area_m2);
+  if (area === null || area <= 0) return null;
+  const hectares = area / 10000;
+  const ha = formatUiNumber(hectares >= 10 ? Math.round(hectares) : Math.round(hectares * 10) / 10, { maximumFractionDigits: 1 });
+  const km = area >= 1000000 ? formatUiNumber(Math.round(area / 100000) / 10, { maximumFractionDigits: 1 }) : "";
+  const pitches = Math.round(area / FOOTBALL_PITCH_M2);
+  const lang = { eng: "en", rus: "ru", kaz: "kk" }[getCurrentLanguage()] || "en";
+  const form = new Intl.PluralRules(lang).select(pitches);
+  return {
+    text: tFormat(`university.ux2.campus.${km ? "area_km" : "area_ha"}`, { ha, km }),
+    comparison: pitches >= 1 && pitches <= MAX_PITCH_COMPARISON
+      ? tFormat(`university.ux2.campus.pitches_${form}`, { count: formatUiNumber(pitches) }) || tFormat("university.ux2.campus.pitches_other", { count: formatUiNumber(pitches) })
+      : "",
+    sourceUrl: safeUrl(studentLife?.size_source_url),
+  };
+}
 
 // Groups free-text program formats into the university-level formats an applicant compares: campus, hybrid, online.
 // "Full-time", "evening" or other schedule wording names no format and is left to the program pages.
@@ -123,21 +146,9 @@ export function renderOverviewSection({
     rankHtml = `<span>${escapeHtml(rankingStatusLabel(rankStatus))}</span>`;
   }
 
-  const campusSizeRaw = typeof university.student_life?.size === "string" ? String(university.student_life.size).trim() : "";
-  const campusSize = campusSizeRaw
-    ? escapeHtml(formatCampusSizeValue(campusSizeRaw))
-    : escapeHtml(t("common.no_data", "No data"));
-  const campusSizeLabel = escapeHtml(translateWord("campus_size", "Campus Size"));
-  const campusSizeInfoTitle = escapeHtml(translateWord("campus_size_info_title", "How campus size works"));
-  const campusSizeInfoSmall = escapeHtml(translateWord("campus_size_info_small", "Small: up to 500,000 m2 (up to 50 ha)"));
-  const campusSizeInfoMedium = escapeHtml(translateWord("campus_size_info_medium", "Medium: 500,000-2,000,000 m2 (50-200 ha)"));
-  const campusSizeInfoLarge = escapeHtml(translateWord("campus_size_info_large", "Large: above 2,000,000 m2 (200+ ha)"));
-  const campusSizeInfoNote = escapeHtml(translateWord("campus_size_info_note", "Approximate ranges used for quick comparison."));
-
+  const campusArea = campusAreaFact(university.student_life);
   const studentCountValue = toFiniteNumber(university?.student_count);
-  const studentCount = studentCountValue !== null
-    ? new Intl.NumberFormat("en-US").format(studentCountValue)
-    : t("common.no_data", "No data");
+  const studentCount = studentCountValue !== null ? formatUiNumber(studentCountValue) : t("common.no_data", "No data");
   const rawFormats = Array.isArray(university.academics?.formats) ? university.academics.formats : [];
   const formatBuckets = universityStudyFormats(rawFormats);
   // Program-level wording (for example one evening professional program) does not describe the whole university:
@@ -152,34 +163,23 @@ export function renderOverviewSection({
     ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
     : formatValues.join(", ");
 
-  container.innerHTML = `
-    <div class="d-kv">
+  // A row without data is left out rather than shown as "No data"; the last remaining row drops its divider.
+  const rows = [
+    `<div class="d-kv">
       <span class="d-kv-label">
         ${escapeHtml(translateWord("global_rank", "Global Rank"))}:
         ${rankTooltip}
       </span>
       ${rankHtml}
-    </div>
-    ${includeAdmissionRate ? acceptanceRow : ""}
-    <div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>
-    <div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats || escapeHtml(t("common.no_data", "No data"))}</div></div>
-    <div class="d-kv d-kv--last">
-      <span class="d-kv-label">
-        ${campusSizeLabel}
-        <span class="d-info-wrap">
-          <button type="button" class="d-info" aria-label="${campusSizeInfoTitle}" title="${campusSizeInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
-          <span class="d-tooltip" role="tooltip">
-            <strong>${campusSizeInfoTitle}</strong>
-            <span>${campusSizeInfoSmall}</span>
-            <span>${campusSizeInfoMedium}</span>
-            <span>${campusSizeInfoLarge}</span>
-            <span>${campusSizeInfoNote}</span>
-          </span>
-        </span>
-      </span>
-      <span>${campusSize}</span>
-    </div>
-  `;
+    </div>`,
+    includeAdmissionRate ? acceptanceRow : "",
+    `<div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span>${escapeHtml(studentCount)}</span></div>`,
+    formats ? `<div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats}</div></div>` : "",
+    campusArea ? `<div class="d-kv" data-campus-area><span>${escapeHtml(t("university.ux2.campus.area_label"))}</span><div class="d-campus-area"><span>${escapeHtml(campusArea.text)}</span>${campusArea.comparison ? `<span class="d-campus-area__note">${escapeHtml(campusArea.comparison)}</span>` : ""}${campusArea.sourceUrl ? `<a class="d-campus-area__note" href="${escapeHtmlAttr(campusArea.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.ux2.campus.source"))}</a>` : ""}</div></div>` : "",
+  ].filter(Boolean);
+  const last = rows.length - 1;
+  rows[last] = rows[last].replace('class="d-kv', 'class="d-kv d-kv--last');
+  container.innerHTML = rows.join("");
   bindInfoTooltips({ wrapSelector: ".d-info-wrap", buttonSelector: ".d-info" });
 }
 

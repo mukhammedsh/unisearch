@@ -8,6 +8,11 @@ Minor release: returning users see a simpler profile and admission page, and a p
 
 ### Added
 - Added `applicant_route` (`first_year`, `transfer`, `graduate` or null) to application route summaries in the admissions API responses, derived for every route during catalog preparation.
+- The university Overview tab opens with key admission facts: when to apply with a countdown, the published annual cost before aid with the university's aid policy, a short checklist of required tests and documents marked against the applicant's profile, and who studies there. Universities with one shared first-year application answer these without a chosen program, and the card links open the Dates, Costs and Admission tabs on that application without saving it.
+- Official admission statistics for the latest intake in a new `admission_statistics` field of the four reviewed universities, shown with source and intake year: MIT and Stanford first-year admits, Imperial College London offers per undergraduate application, and Nazarbayev University admits from its combined foundation and undergraduate application. The field does not feed ranking, filters or the requirements match.
+- Universities that admit by program show one overview card with study-level shortcuts into the program list.
+- Universities still on earlier-format data carry a quiet note on their page and catalog card that the data may be inaccurate or out of date and will be updated. Without collected application dates, their overview links to the official website.
+- A per-institution conversion checklist in `docs/admissions-light-dossier.md` for moving the remaining universities to reviewed data.
 
 ### Changed
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
@@ -22,6 +27,11 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Precomputed the major-taxonomy normalisation, so the first admissions request is faster.
 - Regenerated `backend/data/admissions/catalog.json` with the route-level applicant category and the closed overrides in the draft vocabulary.
 - Newly added institutions follow the light dossier standard (`docs/admissions-light-dossier.md`), which bounds research depth. The four accepted deep datasets are unchanged.
+- Admission tabs replace English research notes about source periods with the entry cycle, academic year or a "year not stated" note; the original wording stays in the full source records.
+- The overview lists campus, hybrid or online study instead of each program's own schedule wording.
+- Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
+- Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.
+- The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
 
 ### Removed
 - Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
@@ -36,6 +46,10 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Stanford facts that spelled their applicant category `first-year`, `first-year/frosh` or `first-year REA` now use the closed `first_year` value, so they match the first-year route and are no longer shown as conditional on the transfer route. Catalog preparation maps these spellings through the new `applicant_category_alias` table in `vocabulary.json` and keeps the research wording in provenance.
 - The `format` and acceptance-rate list filters keep reviewed institutions whose value is unknown; only a known mismatch excludes them.
 - An expired exchange-rate cache entry is served immediately and refreshed in a background thread, so a request no longer waits for the rate provider (up to its timeout when the provider is slow or down) once rates have loaded.
+- MIT's overview no longer describes the university as an evening school because of one professional program's schedule.
+- The selection strip no longer reports that an application path needs clarification while a program's paths are still loading.
+- The empty Dates tab of earlier-format universities is localized instead of showing an English placeholder.
+- Removed Nazarbayev University's campus area, whose linked official page does not state it.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

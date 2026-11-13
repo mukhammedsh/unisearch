@@ -30103,9 +30103,8 @@
     "student_count": 7089,
     "student_life": {
       "size": "medium",
-      "campus_area_m2": 1200000,
       "size_source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
-      "size_note": "Official Nazarbayev University materials describe a landscaped campus of around 120 hectares."
+      "size_note": "Campus area removed on 2026-11-13: the linked official page and the NU about and campus pages checked that day do not state it. The size bucket is kept from the earlier record."
     },
     "admissions_catalog_id": "nazarbayev-university-kaz-astana"
   },

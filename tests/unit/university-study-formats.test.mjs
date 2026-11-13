@@ -24,3 +24,21 @@ test("MIT's reviewed program formats do not describe the university as an evenin
   assert.ok(formats.includes("on_campus"));
   assert.ok(formats.every(bucket => ["on_campus", "hybrid", "online"].includes(bucket)));
 });
+
+test("the campus area is stated in hectares with an everyday comparison and its source", async () => {
+  global.fetch = async (url) => String(url).split("?")[0].endsWith("Localization/eng")
+    ? { ok: true, async text() { return readFile(new URL("../../frontend/Localization/eng", import.meta.url), "utf8"); } }
+    : { ok: false, async text() { return ""; } };
+  const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+  const { campusAreaFact } = await import("../../frontend/javascript/pages/university/render-content.js");
+  await initI18n();
+  setLanguage("eng", { persist: false, emit: false });
+  assert.equal(campusAreaFact({ size: "medium" }), null);
+  const mit = campusAreaFact({ campus_area_m2: 679968, size_source_url: "https://facts.mit.edu/mit-campus/" });
+  assert.equal(mit.sourceUrl, "https://facts.mit.edu/mit-campus/");
+  assert.match(mit.comparison, /95/);
+  // Very large estates are given in km² without a pitch count.
+  const stanford = campusAreaFact({ campus_area_m2: 33104376 });
+  assert.match(stanford.text, /33/);
+  assert.equal(stanford.comparison, "");
+});

@@ -3510,3 +3510,11 @@ university.ux2.people.selectivity_international: Иностранцы: зачи�
 university.ux2.people.selectivity_preparation: Ещё {rate}% по той же заявке приняли на подготовительный год {name}
 university.ux2.people.selectivity_offers_note: Один человек может подать заявки на несколько программ, поэтому это не доля поступивших людей.
 university.ux2.people.intake: набор {year} г.
+university.ux2.campus.area_label: Площадь кампуса
+university.ux2.campus.area_ha: {ha} га
+university.ux2.campus.area_km: {ha} га ({km} км²)
+university.ux2.campus.pitches_one: примерно {count} футбольное поле
+university.ux2.campus.pitches_few: примерно {count} футбольных поля
+university.ux2.campus.pitches_many: примерно {count} футбольных полей
+university.ux2.campus.pitches_other: примерно {count} футбольного поля
+university.ux2.campus.source: Официальный источник
