@@ -31,7 +31,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The overview lists campus, hybrid or online study instead of each program's own schedule wording.
 - Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
 - Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.
-- University page layout pass: every tab's content on reviewed pages lines up with the page title and tabs (one side-padding layer instead of two), tab sections share one heading scale, long reading tabs separate their topics with a faint rule, key-fact answers use regular weight, and "Key figures" (formerly a second "Overview") follows the key admission facts. An empty deadline calendar is one quiet note instead of a titled section, and on phones the site, map and save actions share one row and a countdown no longer wraps between its number and unit.
+- University page layout pass: every tab's content on reviewed pages lines up with the page title and tabs (one side-padding layer instead of two), tab sections share one heading scale, long reading tabs separate their topics with a faint rule, key-fact answers use regular weight, and "Key figures" (formerly a second "Overview") follows the key admission facts. An empty deadline calendar is one quiet note instead of a titled section, and on phones the site, map and save actions share one row and a countdown no longer wraps between its number and unit. Every "choose first" state uses one layout: the explanation, then its actions in a row beneath it. Source numbers read as "Source 1" instead of an unlabelled "1", each route note sits next to its own button, and a programme card separates its description from the heading and the Admission-tab pointer, with its select action aligned to the text.
 - The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
 - The `size` list filter and `student_life.size` use student-count bands (under 10,000, 10,000–30,000, over 30,000) instead of the earlier mixed land-area and enrollment buckets; a university without a published student count stays visible under every size filter.
 
@@ -55,6 +55,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The comparison's campus-area row shows hectares instead of a raw square-metre number.
 - The Dates tab of reviewed universities was indented 24 px less than the other tabs.
 - A link to a specific tab now opens that tab on earlier-format university pages too.
+- Without a selection, the Dates, Costs and Admission tabs of a university with one shared undergraduate application (MIT, Stanford) offer its application paths directly instead of asking for a program; the reader stays on the tab they opened.
 - Applicable majors on earlier-format admission routes no longer repeat the same programme twice.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations

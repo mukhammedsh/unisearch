@@ -74,7 +74,8 @@ const sourceTitle = entry => [...entry.titles].join(" · ") || new URL(entry.url
 
 function markers(row, resolved) {
   const cited = resolved.readingSources?.cite(row.source_ids) || [];
-  return cited.length ? `<span class="admissions-reading__refs">${cited.map(entry => `<a class="admissions-reading__ref" href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtmlAttr(tFormat("university.admissions.reading.source_marker", { number: entry.number, title: sourceTitle(entry) }))}" title="${escapeHtmlAttr(sourceTitle(entry))}" data-source-ref="${entry.number}">${entry.number}</a>`).join("")}</span>` : "";
+  // The numbers are named as sources, so a reader can tell they point to the official pages listed under the tab.
+  return cited.length ? `<span class="admissions-reading__refs"><span class="admissions-reading__refs-label">${escapeHtml(t(`university.ux2.sources.${cited.length > 1 ? "many" : "one"}`))}</span>${cited.map(entry => `<a class="admissions-reading__ref" href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtmlAttr(tFormat("university.admissions.reading.source_marker", { number: entry.number, title: sourceTitle(entry) }))}" title="${escapeHtmlAttr(sourceTitle(entry))}" data-source-ref="${entry.number}">${entry.number}</a>`).join("")}</span>` : "";
 }
 
 // Official pages can share one title (for example a first-year and a transfer "Application" page). Those entries get the

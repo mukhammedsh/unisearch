@@ -561,7 +561,10 @@ test("dates and costs guide guests to the missing program or application path", 
   await openGuestUniversity(page, item);
   await page.locator('[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
-  await page.locator("#detailDeadlines .admissions-state button").click();
+  // MIT's shared undergraduate application is offered directly; program browsing stays one of the choices.
+  const deadlinesPrompt = page.locator("#detailDeadlines .admissions-state");
+  await expect(deadlinesPrompt.locator("[data-prompt-shared-route]")).toHaveCount(2);
+  await deadlinesPrompt.locator("[data-prompt-programs]").click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   const option = page.locator(`[data-study-option="${item.option}"]`);
   await expect(option).toBeVisible();
@@ -575,6 +578,20 @@ test("dates and costs guide guests to the missing program or application path", 
   await expect(page.locator("#admissionsRoute")).toBeEnabled();
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe(item.option);
+});
+
+test("a guest reads MIT's first-year dates from the Dates tab without choosing a program", async ({ page }) => {
+  const item = journeys[0];
+  await openGuestUniversity(page, item);
+  await page.locator('[data-tab="tab-deadlines"]').click();
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+  await page.locator('#detailDeadlines [data-prompt-shared-route="mit-first-year"]').click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+  await expect(page.locator("#detailDeadlines .admissions-reading__table").first()).toBeVisible();
+  const url = new URL(page.url());
+  expect(url.searchParams.get("admission_application_route")).toBe("mit-first-year");
+  expect(url.searchParams.get("admission_option")).toBe("");
 });
 
 for (const theme of ["light", "dark"]) {

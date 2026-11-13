@@ -315,7 +315,7 @@ export function renderStudyOptionOverview(resolved, { includeSources = true } = 
   const translatedDescription = summary || translateAdmissionSummary(description);
   const hasStudyRecords = (resolved.fact_groups?.study || []).some(id => resolved.facts?.some(row =>
     row.id === id && row.scope?.option_ids?.includes(option.id) && row.applicability?.status !== "mismatched"));
-  const descriptionHtml = description ? `<p class="program-card__description"><span${translatedDescription ? "" : ' lang="en"'}>${escapeHtml(translatedDescription || description)}</span> <span class="admissions-programs__admission-note">${escapeHtml(t("university.admissions.catalog.requirements_tab_hint"))}</span></p>`
+  const descriptionHtml = description ? `<p class="program-card__description"><span${translatedDescription ? "" : ' lang="en"'}>${escapeHtml(translatedDescription || description)}</span></p><p class="admissions-programs__admission-note">${escapeHtml(t("university.admissions.catalog.requirements_tab_hint"))}</p>`
     : `<p class="admissions-context__note" data-program-overview-missing>${escapeHtml(t(`university.admissions.reading.${hasStudyRecords ? "structured_study" : "overview_missing"}`))}</p>`;
   const fields = studyOptionEssentials(resolved).map(([key, value]) => `<div class="program-card-row"><dt class="program-card-label">${escapeHtml(label(`field.${key}`))}</dt><dd class="program-card-value">${escapeHtml(value)}</dd></div>`);
   const awards = [...new Set(option.awards || [])];
