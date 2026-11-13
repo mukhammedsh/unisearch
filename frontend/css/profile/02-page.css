@@ -1185,7 +1185,8 @@ textarea.profile-input,
 .profile-action-bar {
   position: sticky;
   bottom: 0;
-  z-index: 2;
+  /* Above a section lifted to --z-nav while its dropdown is open (see :has(.custom-select-wrapper.open)). */
+  z-index: calc(var(--z-nav) + 1);
   display: flex;
   align-items: center;
   justify-content: space-between;

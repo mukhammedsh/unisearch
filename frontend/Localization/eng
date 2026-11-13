@@ -381,7 +381,6 @@ universities.badge.overflow_label: Additional status indicators
 universities.badge.top_match: Good Match
 universities.badge.your_vibe: Your Vibe
 universities.why.conditional_exam_needed: Some required exam evidence is missing, so this result is conditional.
-universities.unifit_banner.text: UniFit uses the available profile data. Minimum requirements are checked for the selected application path; missing information is not a failed requirement.
 universities.unifit_banner.dismiss: Dismiss notice
 universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
@@ -2318,17 +2317,14 @@ admission.requirements_fit.missing_evidence_note: Add the evidence listed below 
 profile.evidence.title: Add details for specific universities
 profile.evidence.description: Add these only if a university page asks for them. They are self-reported and do not verify official records.
 profile.evidence.test_date: Test date (optional)
-profile.evidence.language_title: Language background
 profile.evidence.institution_title: Studies at a listed university
 profile.evidence.institution: University
 profile.evidence.kind: Evidence type
-profile.evidence.language: Language (short code, for example en)
 profile.evidence.country: Country
 profile.evidence.qualification: Qualification level
 profile.evidence.started: Started
 profile.evidence.completed: Completed or ended
 profile.evidence.status: Status
-profile.evidence.entirely: Entirely in this language
 profile.evidence.unknown: Not specified
 profile.evidence.entirely.yes: Yes, entirely
 profile.evidence.entirely.no: No
@@ -2378,7 +2374,7 @@ profile.evidence.credential.mit_dedp: MITx DEDP MicroMasters
 profile.evidence.credential.mit_sc0x: SC0x course credential
 profile.evidence.credential_other: Program credential
 profile.evidence.units_short: units
-profile.evidence.error.language: Enter a language code (for example en) and choose how you know the language.
+profile.evidence.error.language: Choose how you know English.
 profile.evidence.error.dates: Check the dates for this evidence.
 profile.evidence.error.qualification: Choose the education level for this evidence.
 profile.evidence.error.max_language: You can save up to 10 language evidence records.
@@ -3329,7 +3325,7 @@ university.admissions.key_facts.funding_none: No funding is catalogued for this 
 university.admissions.catalog.domain.reference: Related source comparisons
 university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
 profile.clear_report_draft: Clear draft
-profile.report_draft_pending: Add or update the report, or clear its draft, then save the profile.
+profile.report_draft_pending: Press Add to keep this result, or clear the draft.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Language background for individual exemption review
 university.admissions.catalog.field.search_opens: Course search opens
 university.admissions.catalog.field.preparation_opens: Application preparation opens
@@ -3444,7 +3440,7 @@ profile.ux2.hint.major: Universities without a matching program rank lower in Un
 profile.ux2.hint.interests: Short topics can help order universities in UniFit when its language model is available. They do not choose a program or prove eligibility.
 profile.ux2.hint.study_mode: Decides whether UniFit compares your budget with the on-campus or the online price. It does not hide universities.
 profile.ux2.hint.budget: Universities whose known yearly cost is above this rank lower in UniFit. None are hidden. Grants are not subtracted, and an unknown price is not penalised.
-profile.ux2.hint.funding: Hides universities known to have no grants (or no paid places) when you sort the catalog by name, price or rank. UniFit ordering does not use it.
+profile.ux2.hint.funding: Hides universities known to have no grants (or no paid places) from the catalog and from UniFit. Universities with unknown funding stay visible.
 profile.ux2.hint.entry_cycle: Chooses which year's published prices reviewed universities use for you. A price from another year is labelled as a dated reference.
 profile.ux2.hint.fee_status: Chooses the home or overseas price at reviewed universities that publish both. If you leave it unset, those prices are not compared with your budget. The university decides your real status.
 profile.ux2.hint.gpa: Compared with the GPA minimums that universities publish. Pick the scale your GPA is on.
@@ -3455,7 +3451,7 @@ profile.ux2.hint.exams_language: Language tests such as IELTS and TOEFL go in th
 profile.ux2.nav.filled: has answers
 profile.ux2.nav.empty: no answers yet
 profile.ux2.action.save_show: Save and show matches
-profile.ux2.evidence.language_kind: How you know this language
+profile.ux2.evidence.language_kind: How you know English
 profile.ux2.evidence.institution_kind: What do you want to add?
 profile.ux2.summary.title: How UniFit will use your profile
 profile.ux2.summary.sentence: UniFit will use {used} of {total} groups of your answers.
@@ -3481,7 +3477,7 @@ profile.ux2.summary.budget.unused: Prices are not compared with a budget. Enter 
 profile.ux2.summary.format.title: Funding and study format
 profile.ux2.summary.format.mode: The study format decides whether your budget is compared with the on-campus or the online price.
 profile.ux2.summary.format.mode_no_budget: The study format only matters once you enter a budget.
-profile.ux2.summary.format.funding: Funding type hides universities known to lack that option when you sort the catalog by name, price or rank. UniFit ordering does not use it.
+profile.ux2.summary.format.funding: Funding type hides universities known to lack that option from the catalog and from UniFit. Universities with unknown funding stay visible.
 profile.ux2.summary.format.unused: Any format and any funding: nothing is narrowed.
 profile.ux2.summary.requirements.title: GPA, exams and languages
 profile.ux2.summary.requirements.gpa: GPA
@@ -3494,3 +3490,24 @@ profile.ux2.summary.context.fee_international: Overseas fee
 profile.ux2.summary.context.fee_other: Other fee status
 profile.ux2.summary.context.used: Reviewed universities use them to choose which published price applies to you.
 profile.ux2.summary.context.unused: Not set. Where a reviewed university's price depends on the start year or fee status, UniFit shows it as a general reference and may skip the budget comparison.
+universities.ux2.banner.ranked: Ranked for your profile: {values}
+universities.ux2.banner.generic: The ranking is generic because your profile has no study level, subject or budget.
+universities.ux2.banner.scores_only: Ranked using your exam and language scores. Add a study level, subject or budget to tailor it further.
+universities.ux2.banner.budget: up to {amount}/yr
+universities.ux2.banner.edit: Edit profile
+universities.ux2.banner.set_up: Set up profile
+universities.ux2.banner.disclaimer: A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.
+universities.ux2.why.aria: Why this university is here
+universities.ux2.why.within_budget: Within your budget
+universities.ux2.why.exam_needed: Exam result needed to check requirements
+universities.ux2.why.language_test: language test
+universities.ux2.why.exam_needed_named: Needs your {exams} result to check
+universities.ux2.why.over_budget_by: {amount} above your budget
+universities.ux2.why.over_budget_by_aid: {amount} above your budget • aid available
+universities.ux2.why.offers_subject: Offers your subject
+universities.ux2.why.minimums_met: Meets the listed minimums
+universities.ux2.why.minimums_partial: {met} of {total} minimums met
+universities.ux2.why.price_unknown: No price to compare with your budget
+profile.ux2.evidence.language_title: English language background
+profile.ux2.evidence.language_fixed: This records your background in English only, which is what English-language requirements ask about.
+profile.ux2.evidence.entirely: Entirely in English?

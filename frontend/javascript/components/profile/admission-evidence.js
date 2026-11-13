@@ -21,6 +21,8 @@ const SUPPORTED_EVIDENCE = {
   "mit-usa-cambridge": ["enrollment", "gpa", "credential"],
 };
 const LANGUAGE_KINDS = ["primary_language", "education", "employment"];
+// Reviewed language checks (admissions_assessment.py) read only English-language background.
+const EVIDENCE_LANGUAGE = "en";
 const QUALIFICATION_LEVELS = ["secondary", "bachelor", "master", "doctorate", "professional", "other"];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -96,17 +98,14 @@ export function renderAdmissionEvidence(container, profile, onChange) {
       <p class="profile-card-desc" data-i18n="profile.evidence.description">Add these only if a university page asks for them. They are self-reported and do not verify official records.</p>
       <div class="profile-applicant-context-grid">
         <section class="profile-admission-evidence-group" aria-labelledby="languageEvidenceTitle">
-          <h3 id="languageEvidenceTitle" class="profile-subsection-title" data-i18n="profile.evidence.language_title">Language background</h3>
+          <h3 id="languageEvidenceTitle" class="profile-subsection-title" data-i18n="profile.ux2.evidence.language_title">English language background</h3>
+          <p class="profile-hint" data-i18n="profile.ux2.evidence.language_fixed">This records your background in English only, which is what English-language requirements ask about.</p>
           <div class="profile-applicant-context-grid">
             <div class="profile-field">
-              <label for="languageEvidenceKind" data-i18n="profile.ux2.evidence.language_kind">How you know this language</label>
+              <label for="languageEvidenceKind" data-i18n="profile.ux2.evidence.language_kind">How you know English</label>
               <select id="languageEvidenceKind" class="profile-input profile-input--select">
                 ${optionRows(LANGUAGE_KINDS.map((kind) => [kind, t(`profile.evidence.language_kind.${kind}`, kind)]))}
               </select>
-            </div>
-            <div class="profile-field">
-              <label for="languageEvidenceLanguage" data-i18n="profile.evidence.language">Language (short code, for example en)</label>
-              <input id="languageEvidenceLanguage" class="profile-input" maxlength="16" placeholder="en" />
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label for="languageEvidenceCountry" data-i18n="profile.evidence.country">Country</label>
@@ -134,7 +133,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
               </select>
             </div>
             <div class="profile-field" data-language-evidence-detail>
-              <label for="languageEvidenceEntirely" data-i18n="profile.evidence.entirely">Entirely in this language?</label>
+              <label for="languageEvidenceEntirely" data-i18n="profile.ux2.evidence.entirely">Entirely in English?</label>
               <select id="languageEvidenceEntirely" class="profile-input profile-input--select">
                 <option value="" data-i18n="profile.evidence.unknown">Not specified</option>
                 <option value="yes" data-i18n="profile.evidence.entirely.yes">Yes, entirely</option>
@@ -307,14 +306,12 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   }
 
   container.querySelector("#addLanguageEvidence").addEventListener("click", () => {
-    const codeInput = container.querySelector("#languageEvidenceLanguage");
-    const language = String(codeInput.value || "").trim().toLowerCase();
     const kind = langKind.value;
-    if (!LANGUAGE_KINDS.includes(kind) || !/^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$/i.test(language)) {
-      reportError(t("profile.evidence.error.language", "Enter a valid language code and evidence type."), codeInput);
+    if (!LANGUAGE_KINDS.includes(kind)) {
+      reportError(t("profile.evidence.error.language", "Choose how you know English."), langKind);
       return;
     }
-    const row = { kind, language };
+    const row = { kind, language: EVIDENCE_LANGUAGE };
     const country = String(container.querySelector("#languageEvidenceCountry").value || "").trim();
     const qualification = container.querySelector("#languageEvidenceQualification").value;
     const startedOn = container.querySelector("#languageEvidenceStarted").value;
@@ -340,11 +337,10 @@ export function renderAdmissionEvidence(container, profile, onChange) {
     }
     profile.languageEvidence = Array.isArray(profile.languageEvidence) ? profile.languageEvidence : [];
     if (profile.languageEvidence.length >= 10) {
-      reportError(t("profile.evidence.error.max_language", "You can save up to 10 language evidence records."), codeInput);
+      reportError(t("profile.evidence.error.max_language", "You can save up to 10 language evidence records."), langKind);
       return;
     }
     profile.languageEvidence.push(row);
-    container.querySelector("#languageEvidenceLanguage").value = "";
     container.querySelector("#languageEvidenceCountry").value = "";
     container.querySelector("#languageEvidenceQualification").value = "";
     container.querySelector("#languageEvidenceStarted").value = "";

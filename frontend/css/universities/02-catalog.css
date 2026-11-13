@@ -505,21 +505,6 @@
   color: var(--accent);
 }
 
-.uni-why {
-  margin-top: var(--space-0-5);
-  padding-left: var(--space-2);
-  border-left: none;
-  font-size: var(--text-xs);
-  line-height: 1.4;
-  color: var(--text-muted);
-  min-height: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  overflow-wrap: anywhere;
-}
-
 .uni-pill {
   display: inline-flex;
   align-items: center;

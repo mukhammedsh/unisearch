@@ -145,12 +145,12 @@ test("an unadded academic report survives translation, blocks false saving, and 
   await page.locator("[data-breakdown-fixed-row='NUET_MATH'] input").fill("60");
   await page.locator("#saveProfileBtn").click();
   await expect(page.locator("#addExamBtn")).toBeFocused();
-  await expect(page.locator("#profileSaveState")).toContainText("Add or update");
+  await expect(page.locator("#profileSaveState")).toContainText("Press Add");
   await expect(page.locator("#examList .profile-exam-item")).toHaveCount(0);
 
   await setNativeSelect(page, "languageSelect", "rus");
   await expect(page.locator("html")).toHaveAttribute("lang", "ru");
-  await expect(page.locator("#profileSaveState")).toContainText("Добавьте или обновите");
+  await expect(page.locator("#profileSaveState")).toContainText("Нажмите «Добавить»");
   await expect(page.locator("#examScoreInput")).toHaveValue("120");
   await expect(page.locator("#examTakenOnInput")).toHaveValue("2026-03-15");
   await expect(page.locator("[data-breakdown-fixed-row='NUET_MATH'] input")).toHaveValue("60");

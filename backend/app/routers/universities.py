@@ -446,7 +446,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             major=None,
             study_level=effective_profile.get("study_level"),
             profile=effective_profile,
-            funding_type=None,
+            funding_type=funding_type,
             format=fmt,
             min_tuition=min_tuition,
             max_tuition=max_tuition,

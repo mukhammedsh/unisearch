@@ -27,7 +27,7 @@ import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { heroIcon, hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
+import { hasUniversitiesTourResumeStep, requestUniversitiesTourSkipOnce } from "../pages/shared/cache.js";
 import { isProfilePath, navigateToAppRoute, routeGuide, routeUniversities } from "../routes.js";
 import {
   breakdownAllowsTotalOnly,
@@ -37,6 +37,7 @@ import {
 } from "./profile/exam-breakdowns.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import { buildProfileSummary, buildSectionFillStates, buildSummarySentence } from "./profile/profile-summary.js";
+import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
   cloneProfile,
   enforceGpaMaxLength,
@@ -1470,7 +1471,10 @@ export const bindProfileEvents = (els, state) => {
         }
         els.showMatchesBtn.disabled = true;
         els.showMatchesBtn.setAttribute("aria-busy", "true");
-        navigateToAppRoute(routeUniversities({ sort: "uni_ai" }));
+        // Carry the study level so the catalog level filter shows it; the tour must not cover the results.
+        const studyLevel = catalogStudyLevelFromProfile(state.profile);
+        requestUniversitiesTourSkipOnce();
+        navigateToAppRoute(routeUniversities(studyLevel ? { sort: "uni_ai", study_level: studyLevel } : { sort: "uni_ai" }));
     });
 
     els.resetProfileBtn?.addEventListener("click", () => {

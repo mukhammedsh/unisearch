@@ -1,5 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
+const { seedProfile } = require("./helpers/personas");
 
 const tourKey = "unisearch_universities_tour_seen_v1";
 
@@ -36,18 +37,14 @@ test("language evidence rejects invalid entries and supports deleting a saved re
   await openProfileTab(page, "basics");
 
   const evidenceSummary = page.locator("#admissionEvidenceFields summary");
-  if (!(await page.locator("#languageEvidenceLanguage").isVisible())) await evidenceSummary.click();
+  if (!(await page.locator("#languageEvidenceKind").isVisible())) await evidenceSummary.click();
   const languageList = page.locator("#languageEvidenceList .profile-exam-item");
 
-  await setNativeSelect(page, "languageEvidenceKind", "primary_language");
-  await page.fill("#languageEvidenceLanguage", "English");
-  await page.click("#addLanguageEvidence");
-  await expect(page.locator(".toast.error")).toBeVisible();
-  await expect(languageList).toHaveCount(0);
-  await expect(page.locator(".toast.error")).toHaveCount(0, { timeout: 10000 });
+  // The language is fixed to English: no free-text language input, only a read-only statement.
+  await expect(page.locator("#languageEvidenceLanguage")).toHaveCount(0);
+  await expect(page.locator("#languageEvidenceTitle")).toHaveText("English language background");
 
   await setNativeSelect(page, "languageEvidenceKind", "education");
-  await page.fill("#languageEvidenceLanguage", "en");
   await page.click("#addLanguageEvidence");
   await expect(page.locator(".toast.error")).toBeVisible();
   await expect(languageList).toHaveCount(0);
@@ -66,6 +63,21 @@ test("language evidence rejects invalid entries and supports deleting a saved re
   await page.click("#addLanguageEvidence");
   await expect(languageList).toHaveCount(1);
   await expect(page.locator("#languageEvidenceList")).toContainText("EN");
+  await page.locator("#languageEvidenceList [data-remove-language-evidence='0']").click();
+  await expect(languageList).toHaveCount(0);
+});
+
+test("a saved non-English language record still renders and can be deleted", async ({ page }) => {
+  await seedProfile(page, { languageEvidence: [{ kind: "primary_language", language: "fr" }] });
+  await page.goto("/profile.html?lang=eng");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "basics");
+  const evidenceSummary = page.locator("#admissionEvidenceFields summary");
+  if (!(await page.locator("#languageEvidenceKind").isVisible())) await evidenceSummary.click();
+  const languageList = page.locator("#languageEvidenceList .profile-exam-item");
+  await expect(languageList).toHaveCount(1);
+  await expect(page.locator("#languageEvidenceList")).toContainText("FR");
   await page.locator("#languageEvidenceList [data-remove-language-evidence='0']").click();
   await expect(languageList).toHaveCount(0);
 });
@@ -188,7 +200,6 @@ test(`dated exam attempts and evidence save independently on ${scenario.name} an
   const evidenceSummary = page.locator("#admissionEvidenceFields summary");
   if (!(await page.locator("#languageEvidenceKind").isVisible())) await evidenceSummary.click();
   await setNativeSelect(page, "languageEvidenceKind", "education");
-  await page.fill("#languageEvidenceLanguage", "en");
   await page.fill("#languageEvidenceCountry", "Canada");
   await setNativeSelect(page, "languageEvidenceQualification", "bachelor");
   await page.fill("#languageEvidenceStarted", "2021-09-01");

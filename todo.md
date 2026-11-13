@@ -18,10 +18,7 @@ This section holds the dated state of the admissions work. `AGENTS.md` keeps onl
 
 Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
 
-- Profile → catalog hand-off (2026-11-13): after "Save and show matches" the catalog does not show why a university ranks where it does. Cards have no fit/budget explanation, the level dropdown still reads "All levels" and the icon badges have no legend. Needs a catalog-card change.
-- Funding type is ignored by UniFit (`routers/universities.py` passes `funding_type=None`; `ai_scoring.py` forces "any"), yet the profile's low-budget hint suggests "Grant only". Decide: use it in UniFit, or drop the field and the hint.
-- Language-background evidence only affects English-language exemptions (`admissions_assessment.py`), but the profile accepts any language code. Decide whether to restrict it.
-- The first-visit catalog tour opens right after "Save and show matches" for a visitor who has not seen it, covering the results.
+- None open.
 
 ## Delivery and boundaries
 

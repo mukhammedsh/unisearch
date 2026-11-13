@@ -95,7 +95,8 @@ export const buildProfileSummary = (profile, ctx = {}) => {
       budget.state === "zero" ? "profile.ux2.summary.budget.zero" : "profile.ux2.summary.budget.unused"));
   }
 
-  // Funding type is not a UniFit input (it filters other catalog sorts); study mode picks the compared price.
+  // Funding type hides universities known to lack that option in every catalog sort, UniFit included;
+  // study mode picks the compared price and only matters with a budget.
   const modeSet = !isAny(p.studyMode);
   const fundingSet = !isAny(p.fundingType);
   const formatDetails = [];
@@ -115,8 +116,8 @@ export const buildProfileSummary = (profile, ctx = {}) => {
   if (!formatDetails.length) {
     rows.push(row("format", "not_used", "profile.ux2.summary.format.title", "profile.ux2.summary.format.unused"));
   } else {
-    const fullyUsed = modeSet && budget.state === "set" && !fundingSet;
-    rows.push(row("format", fullyUsed ? "used" : "partial", "profile.ux2.summary.format.title", formatDetails, formatValues.join(", ")));
+    const modeIgnored = modeSet && budget.state !== "set";
+    rows.push(row("format", modeIgnored ? "partial" : "used", "profile.ux2.summary.format.title", formatDetails, formatValues.join(", ")));
   }
 
   // GPA, exams and languages feed the minimum requirements match.

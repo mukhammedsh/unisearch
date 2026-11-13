@@ -219,3 +219,12 @@ test("a real zero requirements match remains visible without internal ranking sc
   assert.match(indicators[0].detail, /0 of 1/);
   assert.doesNotMatch(JSON.stringify(indicators), /99|ranking|preference comparison/i);
 });
+
+test("reviewed indicators say which fact each icon states, for the visible why-line", () => {
+  setLanguage("eng", { emit: false });
+  const indicators = reviewedCardIndicators({ finalScore: 0.4, preferenceMismatch: 0.1, subjectMatch: { status: "matched" },
+    requirementsFitPercent: 100, requirementChecks: [{ measurable: true, status: "met" }],
+    budgetAssessment: { status: "within_budget", evidence: "applicable", basis: "annual_total" }, costQuote: { minUSD: 1, maxUSD: 2 } }, 5000);
+  const byKind = Object.fromEntries(indicators.map(item => [item.kind, item.sentiment]));
+  assert.deepEqual(byKind, { subject: "positive", vibe: "positive", requirements: "positive", budget: "positive" });
+});

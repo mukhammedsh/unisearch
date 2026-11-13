@@ -58,7 +58,7 @@ test("a budget of zero or an unparseable budget is not used, matching the rankin
   assert.equal(rows.budget.detail, "profile.ux2.summary.budget.zero");
 });
 
-test("study format needs a budget to be fully used and funding type is only partly used", () => {
+test("study format needs a budget to be fully used and funding type is always used", () => {
   let rows = byId(buildProfileSummary({ studyMode: "Online", budget: "9000" }, ctx));
   assert.equal(rows.format.state, "used");
   assert.match(rows.format.detail, /summary\.format\.mode$/);
@@ -68,9 +68,12 @@ test("study format needs a budget to be fully used and funding type is only part
   assert.match(rows.format.detail, /mode_no_budget/);
 
   rows = byId(buildProfileSummary({ fundingType: "grant" }, ctx));
-  assert.equal(rows.format.state, "partial");
+  assert.equal(rows.format.state, "used");
   assert.match(rows.format.detail, /summary\.format\.funding/);
   assert.equal(rows.format.value, "profile.option.funding_grant");
+
+  rows = byId(buildProfileSummary({ fundingType: "paid", studyMode: "Online" }, ctx));
+  assert.equal(rows.format.state, "partial");
 });
 
 test("requirements row lists the evidence that exists", () => {
@@ -107,7 +110,7 @@ test("start year and fee status mark the context row as used", () => {
 });
 
 test("the live sentence counts used and partly used groups", () => {
-  const rows = buildProfileSummary({ studyLevel: "Bachelor", fundingType: "paid" }, ctx);
+  const rows = buildProfileSummary({ studyLevel: "Bachelor", fundingType: "paid", studyMode: "Online" }, ctx);
   assert.equal(buildSummarySentence(rows, ctx), 'profile.ux2.summary.sentence:{"used":"2","total":"6"}');
 });
 
