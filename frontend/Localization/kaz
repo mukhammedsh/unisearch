@@ -3499,3 +3499,16 @@ university.ux2.deadlines.not_collected: UniSearch бұл университет�
 university.ux2.deadline.legacy_none: Мерзімдер әлі жиналмаған
 university.ux2.deadline.legacy_none_detail: UniSearch-те бұл университеттің өтініш мерзімдері әлі жоқ. Оларды ресми сайттан тексеріңіз.
 university.ux2.link.official_site: Ресми сайт
+university.ux2.legacy.title: Бұл университеттің деректері әлі қайта тексерілмеген
+university.ux2.legacy.text: Олар бұрын жиналған және дәл емес немесе ескірген болуы мүмкін. Маңызды мәліметті ресми сайттан тексеріңіз. Біз университеттерді қайта тексерілген деректерге кезекпен көшіріп жатырмыз, бұл университет те жаңартылады.
+university.ux2.legacy.badge: Деректер әлі қайта тексерілмеген
+university.ux2.legacy.badge_detail: Бұрын жиналған, дәл емес немесе ескірген болуы мүмкін. Маңызды мәліметті ресми сайттан тексеріңіз; университет жақында жаңартылады.
+university.ux2.people.selectivity_first_year: Бірінші курсқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.selectivity_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.selectivity_offers: Бакалавриатқа берілген өтініштердің шамамен {rate}%-ы орын ұсынысын алады
+university.ux2.people.selectivity_counts_admitted: Қабылданғаны: {admitted} · өтініш бергені: {applicants}
+university.ux2.people.selectivity_counts_offers: Орын ұсыныстары: {admitted} · өтініштер: {applicants}
+university.ux2.people.selectivity_international: Шетелдіктер: қабылданғаны {admitted} · өтініш бергені {applicants} (шамамен {rate}%)
+university.ux2.people.selectivity_preparation: Сол өтініш бойынша тағы {rate}% {name} дайындық жылына қабылданды
+university.ux2.people.selectivity_offers_note: Бір адам бірнеше бағдарламаға өтініш бере алады, сондықтан бұл қабылданған адамдардың үлесі емес.
+university.ux2.people.intake: {year} жылғы қабылдау

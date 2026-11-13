@@ -13,6 +13,23 @@
       "lon": -71.091944
     },
     "website": "https://www.mit.edu/",
+    "admission_statistics": {
+      "scope": "first_year_undergraduate",
+      "measure": "admitted",
+      "cycle": "Class of 2029",
+      "entry_year": 2025,
+      "applicants": 29281,
+      "admitted": 1334,
+      "rate_percent": 4.6,
+      "rate_stated_by_source": true,
+      "international": {
+        "applicants": 6926,
+        "admitted": 136
+      },
+      "source": "MIT Admissions Statistics, Class of 2029",
+      "source_url": "https://mitadmissions.org/apply/process/stats/",
+      "checked_at": "2026-11-13"
+    },
     "enrollment_breakdown": {
       "census_year": "2024-2025",
       "total_headcount": 11886,
@@ -304,6 +321,21 @@
       "lon": -0.176882
     },
     "website": "https://www.imperial.ac.uk/",
+    "admission_statistics": {
+      "scope": "undergraduate_applications",
+      "measure": "offers",
+      "cycle": "2025 UCAS cycle",
+      "entry_year": 2025,
+      "applicants": 33923,
+      "admitted": 8143,
+      "rate_percent": 24.0,
+      "rate_stated_by_source": false,
+      "places_confirmed": 3627,
+      "note": "Counts applications to undergraduate programmes and offers made; one person can apply to several programmes.",
+      "source": "Imperial College London, Undergraduate Admissions Statistics 2021-2025",
+      "source_url": "https://www.imperial.ac.uk/admin-services/strategic-planning/statistics/transparency-information/",
+      "checked_at": "2026-11-13"
+    },
     "outcomes": {},
     "verified_sources": [
       {
@@ -569,6 +601,20 @@
       "lon": -122.17
     },
     "website": "https://www.stanford.edu/",
+    "admission_statistics": {
+      "scope": "first_year_undergraduate",
+      "measure": "admitted",
+      "cycle": "Fall 2025 first-year class",
+      "entry_year": 2025,
+      "applicants": 60646,
+      "admitted": 2302,
+      "rate_percent": 3.8,
+      "rate_stated_by_source": false,
+      "enrolled": 1839,
+      "source": "Stanford University Common Data Set 2025-2026, section C1",
+      "source_url": "https://irds.stanford.edu/data-findings/cds",
+      "checked_at": "2026-11-13"
+    },
     "enrollment": {
       "undergraduate": 7841,
       "graduate": 9688,
@@ -29851,6 +29897,25 @@
       "lon": 71.3994
     },
     "website": "https://nu.edu.kz/",
+    "admission_statistics": {
+      "scope": "undergraduate_and_foundation_pool",
+      "measure": "admitted",
+      "cycle": "2025 entry",
+      "entry_year": 2025,
+      "applicants": 6911,
+      "admitted": 1480,
+      "rate_percent": 21,
+      "rate_stated_by_source": true,
+      "preparation": {
+        "name": "NUFYP",
+        "admitted": 671,
+        "rate_percent": 10
+      },
+      "note": "Since 2024 one application covers the Foundation Year (NUFYP) and undergraduate programmes; the two-year Bachelor in Nursing is counted separately.",
+      "source": "Admissions statistics on NUFYP and undergraduate programs 2021-2025",
+      "source_url": "https://nu.edu.kz/wp-content/uploads/2026/01/eng_ug_upd.pdf",
+      "checked_at": "2026-11-13"
+    },
     "outcomes": {},
     "verified_sources": [
       {

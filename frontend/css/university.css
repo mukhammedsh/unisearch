@@ -7663,6 +7663,13 @@ body[data-page="university"],
   overflow-wrap: anywhere;
 }
 
+.overview-summary__fact-detail {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+}
+
 .overview-summary__source {
   color: var(--text-muted);
   font-size: var(--text-xs);
@@ -7674,6 +7681,12 @@ body[data-page="university"],
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
+}
+
+.overview-summary__levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .overview-summary__link {
@@ -7725,4 +7738,40 @@ body[data-page="university"],
   .overview-summary__grid {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* Earlier-format universities: one quiet note before any figure that the data is not yet rechecked. */
+.legacy-data-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  /* A themed surface keeps the text readable in both themes; the amber icon carries the caution. */
+  background: var(--surface-soft);
+}
+
+.legacy-data-notice__icon {
+  flex: none;
+  color: var(--uni-status-warning-text);
+}
+
+.legacy-data-notice__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.legacy-data-notice__title,
+.legacy-data-notice__text {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.legacy-data-notice__title {
+  font-weight: 600;
 }

@@ -18,14 +18,20 @@ This section holds the dated state of the admissions work. `AGENTS.md` keeps onl
 
 Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
 
-- **Selectivity for the four reviewed institutions (2026-11-13).** MIT, Stanford, Imperial and Nazarbayev University lost their overview acceptance rate when they moved to the reviewed catalog, which holds no `admitted_profile` fact. Restoring it needs Stage 1 collection from official pages.
-- **MIT early-career salary on the overview (2026-11-13).** The "Who studies here" card shows the 2019 graduating-student survey figure with its source, while the comparison view hides salary for reviewed institutions. Keep it or drop it for parity.
-- **Typical scores shown as minimums on earlier-format pages (2026-11-13).** Yale's Admission tab presents an admitted-student GPA of 3.84 under "Minimum for applying". This is the known conversion problem in the light dossier standard and belongs to each institution's recheck.
-- **Program-specific universities on the overview (2026-11-13).** Imperial and Nazarbayev University admit by program, so the overview can only say that dates, costs and requirements depend on the program; their program lists start with postgraduate entries and offer no undergraduate shortcut.
+- None open.
 
 ## Delivery and boundaries
 
 - [x] Keep scoped tuition visible on reviewed cards with no comparable study and living budget. Verified Imperial before and after choosing Computer Science on desktop and mobile. The price filters and sorting use the selected basis.
+
+### University page: answers first (2026-11-13)
+
+- [x] The Overview tab opens with key admission facts: when to apply, cost before aid, what you'll need and who studies there; its links open filled tabs on the shared first-year route.
+- [x] Official admission statistics for the four reviewed institutions (MIT Class of 2029, Stanford CDS 2025-26, Imperial 2025 UCAS offers per application, NU 2025 combined NUFYP/undergraduate pool) in `admission_statistics`, checked against the official pages and documents on 2026-11-13.
+- [x] Reviewed institutions show no earnings figure, as in comparison; MIT's 2019 survey salary is no longer on the overview.
+- [x] Program-admitting institutions (Imperial, NU) offer study-level shortcuts into Programs.
+- [x] Earlier-format universities carry a quiet "data not yet rechecked" note on the page and on catalog cards; undated ones link to their official website for dates.
+- [ ] On each later conversion, follow the [per-institution conversion checklist](docs/admissions-light-dossier.md#per-institution-conversion-checklist), including moving typical scores stored as minimums (for example Yale's admitted-student GPA) into `admitted_profile`.
 
 ### Simplification pass before wider rollout (2026-11-12)
 

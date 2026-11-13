@@ -93,6 +93,33 @@ export function checklistItems(resolved) {
   return [...tests, ...structured.language.slice(0, 1), ...documents].slice(0, MAX_CHECKLIST_ITEMS);
 }
 
+const percentText = value => formatUiNumber(Math.round(value * 10) / 10, { maximumFractionDigits: 1 });
+
+// The university's own published admission statistics: who was counted, how many and in which intake.
+// Offers per application (UCAS) and admits from a combined foundation pool are named as such, never as one "rate".
+export function selectivityItem(statistics, source) {
+  const rate = toFiniteNumber(statistics?.rate_percent);
+  const applicants = toFiniteNumber(statistics?.applicants);
+  const admitted = toFiniteNumber(statistics?.admitted);
+  if (rate === null || applicants === null || admitted === null || applicants <= 0) return null;
+  const measure = statistics.measure === "offers" ? "offers" : statistics.scope === "first_year_undergraduate" ? "first_year" : "undergraduate";
+  const details = [tFormat(`university.ux2.people.selectivity_counts_${measure === "offers" ? "offers" : "admitted"}`,
+    { admitted: formatUiNumber(admitted), applicants: formatUiNumber(applicants) })];
+  const international = statistics.international;
+  if (toFiniteNumber(international?.applicants) > 0 && toFiniteNumber(international?.admitted) !== null) {
+    details.push(tFormat("university.ux2.people.selectivity_international", { admitted: formatUiNumber(international.admitted),
+      applicants: formatUiNumber(international.applicants), rate: percentText(international.admitted / international.applicants * 100) }));
+  }
+  const preparation = statistics.preparation;
+  if (isString(preparation?.name) && toFiniteNumber(preparation?.rate_percent) !== null) {
+    details.push(tFormat("university.ux2.people.selectivity_preparation", { name: preparation.name, rate: percentText(preparation.rate_percent) }));
+  }
+  if (measure === "offers") details.push(label("people.selectivity_offers_note"));
+  const year = toFiniteNumber(statistics.entry_year);
+  return { kind: "selectivity", text: tFormat(`university.ux2.people.selectivity_${measure}`, { rate: percentText(rate) }), details,
+    source: source(statistics.source, statistics.source_url, year ? tFormat("university.ux2.people.intake", { year }) : "") };
+}
+
 // Who studies here: only published figures that exist, each with its official source.
 export function peopleItems(university, { acceptanceRate = null, acceptanceMeta = null } = {}) {
   const items = [];
@@ -102,7 +129,9 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
     // A source with no published name is shown as a plain "Official source" link, without a "Source:" caption.
     return text ? { label: text, url: href } : href ? { label: t("university.admissions.official_source"), url: href, unnamed: true } : null;
   };
-  const rate = toFiniteNumber(acceptanceRate);
+  const selectivity = selectivityItem(university?.admission_statistics, source);
+  if (selectivity) items.push(selectivity);
+  const rate = selectivity ? null : toFiniteNumber(acceptanceRate);
   if (rate !== null) {
     const kind = String(university?.academics?.admissions?.university_wide?.kind || "").toLowerCase();
     items.push({ kind: "acceptance", text: tFormat(`university.ux2.people.acceptance${kind.startsWith("undergraduate") ? "_undergraduate" : ""}`,
@@ -126,7 +155,9 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
     items.push({ kind: "housing", text: tFormat(`university.ux2.people.housing_${form}`, { years: formatUiNumber(years) }),
       source: source("", university.housing.source_url) });
   }
-  for (const [factKey, outcomeKey, kind] of SALARY_FACTS) {
+  // Reviewed universities show no earnings figure, as in comparison: their reviewed data holds no rechecked outcomes.
+  const reviewed = university?.admissions_catalog?.availability === "reviewed";
+  for (const [factKey, outcomeKey, kind] of reviewed ? [] : SALARY_FACTS) {
     const value = toFiniteNumber(university?.outcomes?.[outcomeKey]);
     const fact = university?.fact_provenance?.facts?.[factKey];
     if (value === null || !safeUrl(fact?.source_url)) continue;
@@ -138,7 +169,17 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
 
 const link = (tab, key) => ({ tab, label: label(`link.${key}`) });
 // Where each program sets its own dates, costs and requirements, one card says so instead of three identical answers.
-const programChoiceCard = () => ({ id: "program", icon: "academic-cap", state: "choose", headline: label("choose.headline"), lines: [label("intro_program")], link: link("tab-programs", "choose") });
+// Shortcuts open the program list already narrowed to a study level the university offers.
+const LEVEL_SHORTCUTS = ["preparation", "undergraduate", "masters", "doctoral"];
+export function programLevelShortcuts(university) {
+  const offered = new Set(university?.admissions_catalog?.study_levels || []);
+  return LEVEL_SHORTCUTS.filter(level => offered.has(level));
+}
+const programChoiceCard = university => {
+  const levels = programLevelShortcuts(university);
+  return { id: "program", icon: "academic-cap", state: "choose", headline: label("choose.headline"), lines: [label("intro_program")],
+    levels, link: levels.length ? null : link("tab-programs", "choose") };
+};
 
 // Plain headline and supporting lines for the next application date.
 export function deadlineCard(fact) {
@@ -182,7 +223,7 @@ export function reviewedCards({ resolved, university, budgetUsd, profileExamIds 
   const people = peopleItems(university);
   const peopleCard = people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [];
   if (!resolved) {
-    return [programChoiceCard(), ...peopleCard];
+    return [programChoiceCard(university), ...peopleCard];
   }
   return [
     deadlineCard(deadlineFact(resolved, now, { profileExamIds })),
@@ -260,7 +301,8 @@ function renderItem(card, entry) {
     return `<li class="overview-summary__item" data-mark="${entry.mark}"><span class="overview-summary__mark" aria-hidden="true">${icon}</span>
       <span class="sr-only">${escapeHtml(label(`needs.mark_${entry.mark}`))}: </span><span class="overview-summary__item-text"${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span></li>`;
   }
-  return `<li class="overview-summary__fact"><span>${escapeHtml(entry.text)}</span>${renderSource(entry.source)}</li>`;
+  const details = (entry.details || []).map(text => `<span class="overview-summary__fact-detail">${escapeHtml(text)}</span>`).join("");
+  return `<li class="overview-summary__fact"><span>${escapeHtml(entry.text)}</span>${details}${renderSource(entry.source)}</li>`;
 }
 
 function renderCard(card) {
@@ -269,11 +311,12 @@ function renderCard(card) {
   const lines = (card.lines || []).map(text => `<p class="overview-summary__detail">${escapeHtml(text)}</p>`).join("");
   const aside = (card.aside || []).map(entry => `<p class="overview-summary__detail"${entry.tone ? ` data-tone="${escapeHtmlAttr(entry.tone)}"` : ""}>${escapeHtml(entry.text)}</p>`).join("");
   const items = card.items?.length ? `<ul class="overview-summary__list">${card.items.map(entry => renderItem(card, entry)).join("")}</ul>` : "";
+  const levels = card.levels?.length ? `<div class="overview-summary__levels">${card.levels.map(level => `<button type="button" class="overview-summary__link" data-open-level="${escapeHtmlAttr(level)}">${escapeHtml(t(`university.admissions.catalog.level.${level}`))}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>`).join("")}</div>` : "";
   const action = card.link ? `<button type="button" class="overview-summary__link" data-open-tab="${escapeHtmlAttr(card.link.tab)}">${escapeHtml(card.link.label)}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>`
     : card.external ? `<a class="overview-summary__link" href="${escapeHtmlAttr(card.external.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(card.external.label)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>` : "";
   return `<section class="overview-summary__card" data-summary-card="${card.id}"${card.state ? ` data-state="${card.state}"` : ""}>
     <h3 class="overview-summary__label">${heroIcon(card.icon, "ui-icon ui-icon--18")}<span>${escapeHtml(label(`card.${card.id}`))}</span></h3>
-    ${answer}${lines}${items}${aside}${action}</section>`;
+    ${answer}${lines}${items}${aside}${levels}${action}</section>`;
 }
 
 export function renderSummary(cards, intro = "") {
@@ -318,6 +361,16 @@ function openTab(tabId, routeId = "") {
   else document.querySelector(`[data-tab="${tabId}"]`)?.click();
 }
 
+// The Programs tab's own level filter narrows the list, as if the reader had chosen the level there.
+function openProgramsAtLevel(level) {
+  const select = document.getElementById("admissionsStudyLevel");
+  if (select && [...select.options].some(option => option.value === level)) {
+    select.value = level;
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  openTab("tab-programs");
+}
+
 // Mounts the summary into `container` and keeps it current. `legacy` carries the values the legacy page already computed.
 // Returns { dispose }; every request is cancelled and every listener removed on dispose.
 export function mountOverviewSummary({ container, university, universityId, reviewed, legacy = {} }) {
@@ -332,7 +385,9 @@ export function mountOverviewSummary({ container, university, universityId, revi
   const show = html => { if (!disposed) container.innerHTML = html; };
   const onClick = event => {
     const tab = event.target.closest?.("[data-open-tab]")?.dataset.openTab;
-    if (tab) openTab(tab, route?.id || "");
+    const level = event.target.closest?.("[data-open-level]")?.dataset.openLevel;
+    if (level) openProgramsAtLevel(level);
+    else if (tab) openTab(tab, route?.id || "");
     else if (event.target.closest?.("[data-summary-retry]")) void loadReviewed();
   };
   container.addEventListener("click", onClick);

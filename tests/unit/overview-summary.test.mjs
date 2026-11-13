@@ -217,3 +217,38 @@ test("a legacy university without collected dates points to its official site, n
   assert.equal(deadline.external.url, "https://www.example.edu/");
   assert.equal(deadline.headline, "Dates not collected yet");
 });
+
+test("reviewed universities show no earnings figure and offer study-level shortcuts when programs decide", async () => {
+  const { programLevelShortcuts } = await import("../../frontend/javascript/pages/university/overview-summary.js");
+  const reviewed = { admissions_catalog: { availability: "reviewed", study_levels: ["doctoral", "masters", "undergraduate", "professional"] },
+    outcomes: { early_career_salary_usd: 98741 },
+    fact_provenance: { facts: { early_career_salary: { source: "Survey", source_url: "https://example.edu/survey.pdf" } } } };
+  assert.deepEqual(peopleItems(reviewed), []);
+  assert.deepEqual(programLevelShortcuts(reviewed), ["undergraduate", "masters", "doctoral"]);
+  const [card] = reviewedCards({ resolved: null, university: reviewed, now: NOW });
+  assert.deepEqual(card.levels, ["undergraduate", "masters", "doctoral"]);
+  assert.equal(card.link, null);
+  assert.match(renderSummary([card]), /data-open-level="undergraduate"/);
+});
+
+test("official admission statistics name who was counted, the intake and the source", async () => {
+  const { selectivityItem } = await import("../../frontend/javascript/pages/university/overview-summary.js");
+  const source = (name, url, extra) => ({ label: [name, extra].filter(Boolean).join(" · "), url });
+  const mit = selectivityItem({ scope: "first_year_undergraduate", measure: "admitted", entry_year: 2025, applicants: 29281, admitted: 1334, rate_percent: 4.6,
+    international: { applicants: 6926, admitted: 136 }, source: "MIT Admissions Statistics", source_url: "https://mitadmissions.org/apply/process/stats/" }, source);
+  assert.equal(mit.text, "About 4.6% of first-year applicants are admitted");
+  assert.deepEqual(mit.details, ["1,334 admitted out of 29,281 applicants", "International applicants: 136 of 6,926 admitted (about 2%)"]);
+  assert.equal(mit.source.label, "MIT Admissions Statistics · 2025 intake");
+  const imperial = selectivityItem({ scope: "undergraduate_applications", measure: "offers", entry_year: 2025, applicants: 33923, admitted: 8143, rate_percent: 24 }, source);
+  assert.equal(imperial.text, "About 24% of undergraduate applications receive an offer");
+  assert.match(imperial.details.at(-1), /not the share of people admitted/);
+  const nu = selectivityItem({ scope: "undergraduate_and_foundation_pool", measure: "admitted", applicants: 6911, admitted: 1480, rate_percent: 21,
+    preparation: { name: "NUFYP", admitted: 671, rate_percent: 10 } }, source);
+  assert.equal(nu.text, "About 21% of undergraduate applicants are admitted");
+  assert.match(nu.details[1], /10% were admitted to the NUFYP foundation year/);
+  assert.equal(selectivityItem({ rate_percent: 5 }, source), null);
+  // Official statistics replace the earlier-format rate rather than adding a second one.
+  const items = peopleItems({ admission_statistics: { scope: "first_year_undergraduate", applicants: 10, admitted: 1, rate_percent: 10, source_url: "https://example.edu/" } }, { acceptanceRate: 12 });
+  assert.deepEqual(items.map(item => item.kind), ["selectivity"]);
+});
+

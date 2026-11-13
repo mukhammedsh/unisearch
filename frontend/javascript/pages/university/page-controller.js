@@ -19,6 +19,7 @@ import { renderCoverageSection, renderExtraSection, renderOverviewSection, rende
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
 import { mountOverviewSummary } from "./overview-summary.js";
+import { heroIcon } from "../../icons.js";
 import {
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
@@ -356,7 +357,10 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     reviewNotice.className = "d-head";
     cardEl?.querySelector(".d-tabs")?.before(reviewNotice);
   }
-  reviewNotice.innerHTML = `<p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>`;
+  // Earlier-format data was collected before the current review standard; the reader is told so before any figure.
+  reviewNotice.innerHTML = `<div class="legacy-data-notice" role="note">${heroIcon("exclamation-circle", "ui-icon ui-icon--18 legacy-data-notice__icon")}
+    <div class="legacy-data-notice__body"><p class="legacy-data-notice__title">${escapeHtml(t("university.ux2.legacy.title"))}</p>
+    <p class="legacy-data-notice__text">${escapeHtml(t("university.ux2.legacy.text"))}</p></div></div>`;
 
   const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
     ? university.academics.admissions

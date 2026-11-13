@@ -3497,3 +3497,16 @@ university.ux2.deadlines.not_collected: UniSearch пока не собрал с�
 university.ux2.deadline.legacy_none: Сроки пока не собраны
 university.ux2.deadline.legacy_none_detail: У UniSearch ещё нет сроков подачи этого университета. Проверьте их на официальном сайте.
 university.ux2.link.official_site: Официальный сайт
+university.ux2.legacy.title: Данные этого университета ещё не перепроверены
+university.ux2.legacy.text: Они собраны раньше и могут быть неточными или устаревшими. Важное сверяйте на официальном сайте. Мы по очереди переводим университеты на перепроверенные данные, этот тоже обновится.
+university.ux2.legacy.badge: Данные ещё не перепроверены
+university.ux2.legacy.badge_detail: Собраны раньше и могут быть неточными или устаревшими. Важное сверяйте на официальном сайте; университет скоро обновится.
+university.ux2.people.selectivity_first_year: Зачисляют около {rate}% подавших заявку на первый курс
+university.ux2.people.selectivity_undergraduate: Зачисляют около {rate}% подавших заявку на бакалавриат
+university.ux2.people.selectivity_offers: Предложение места получают около {rate}% заявок на бакалавриат
+university.ux2.people.selectivity_counts_admitted: Зачислено: {admitted} · подали заявку: {applicants}
+university.ux2.people.selectivity_counts_offers: Предложений места: {admitted} · заявок: {applicants}
+university.ux2.people.selectivity_international: Иностранцы: зачислено {admitted} · подали заявку {applicants} (около {rate}%)
+university.ux2.people.selectivity_preparation: Ещё {rate}% по той же заявке приняли на подготовительный год {name}
+university.ux2.people.selectivity_offers_note: Один человек может подать заявки на несколько программ, поэтому это не доля поступивших людей.
+university.ux2.people.intake: набор {year} г.

@@ -3499,3 +3499,16 @@ university.ux2.deadlines.not_collected: UniSearch hasn't collected application d
 university.ux2.deadline.legacy_none: Dates not collected yet
 university.ux2.deadline.legacy_none_detail: UniSearch doesn't have this university's application dates yet. Check them on its official site.
 university.ux2.link.official_site: Official website
+university.ux2.legacy.title: This university's data hasn't been rechecked yet
+university.ux2.legacy.text: It was collected earlier and may be inaccurate or out of date. Check anything important on the official website. We are moving universities to rechecked data one by one, and this one will be updated.
+university.ux2.legacy.badge: Data not yet rechecked
+university.ux2.legacy.badge_detail: Collected earlier and may be inaccurate or out of date. Check important details on the official website; this university will be updated.
+university.ux2.people.selectivity_first_year: About {rate}% of first-year applicants are admitted
+university.ux2.people.selectivity_undergraduate: About {rate}% of undergraduate applicants are admitted
+university.ux2.people.selectivity_offers: About {rate}% of undergraduate applications receive an offer
+university.ux2.people.selectivity_counts_admitted: {admitted} admitted out of {applicants} applicants
+university.ux2.people.selectivity_counts_offers: {admitted} offers for {applicants} applications
+university.ux2.people.selectivity_international: International applicants: {admitted} of {applicants} admitted (about {rate}%)
+university.ux2.people.selectivity_preparation: Another {rate}% were admitted to the {name} foundation year from the same application
+university.ux2.people.selectivity_offers_note: One person can apply to several programmes, so this is not the share of people admitted.
+university.ux2.people.intake: {year} intake
