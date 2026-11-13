@@ -47,6 +47,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - On phones the profile reset action no longer sits above the questions, and the profile action bar stays above an open dropdown.
 - The UniFit banner link meets text contrast in the dark theme.
 - Catalog card prices sit on the same line across each grid row, whether or not a card shows a price qualifier.
+- The catalog study-level filter matches the 36px toolbar controls and sits next to the result count, so the toolbar is one compact row on desktop.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

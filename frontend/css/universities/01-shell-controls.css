@@ -40,10 +40,12 @@ body[data-page="universities"] {
   border-radius: var(--radius-full);
 }
 
+/* Count and level filter sit together on the left; view and compare actions on the right. */
 .u-section-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: var(--space-4);
   width: 100%;
   margin-left: 0;
   padding-bottom: 0;
@@ -56,6 +58,7 @@ body[data-page="universities"] {
   justify-content: flex-end;
   gap: var(--space-2);
   min-width: 0;
+  margin-left: auto;
 }
 
 .u-compare-mode-btn {
@@ -139,9 +142,16 @@ body[data-page="universities"] {
   font-size: 16px;
 }
 
+/* Same 36px height as the view toggles and compare button, so the bar stays one compact row. */
 .catalog-level-filter {
-  width: min(100%, 22rem);
+  width: min(100%, 14rem);
   min-width: 0;
+}
+
+.catalog-level-filter .custom-select-trigger {
+  min-height: 36px;
+  height: 36px;
+  padding-block: 0;
 }
 
 @media (max-width: 1024px) {
