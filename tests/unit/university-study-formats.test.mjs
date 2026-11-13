@@ -30,7 +30,7 @@ test("the campus area is stated in hectares with an everyday comparison and its 
     ? { ok: true, async text() { return readFile(new URL("../../frontend/Localization/eng", import.meta.url), "utf8"); } }
     : { ok: false, async text() { return ""; } };
   const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-  const { campusAreaFact } = await import("../../frontend/javascript/pages/university/render-content.js");
+  const { campusAreaFact } = await import("../../frontend/javascript/pages/_shared.js");
   await initI18n();
   setLanguage("eng", { persist: false, emit: false });
   assert.equal(campusAreaFact({ size: "medium" }), null);

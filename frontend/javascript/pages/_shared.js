@@ -533,6 +533,30 @@ export function localizeDuration(rawValue) {
   return raw;
 }
 
+// A FIFA pitch (105 x 68 m) gives an everyday sense of a campus area; very large estates are not compared.
+const FOOTBALL_PITCH_M2 = 7140;
+const MAX_PITCH_COMPARISON = 1000;
+
+// The campus area from its official source as hectares (and km² from 1 km²) with an everyday comparison.
+// The earlier small/medium/large bucket mixed land area and student numbers, so the page no longer shows it.
+export function campusAreaFact(studentLife) {
+  const area = toFiniteNumber(studentLife?.campus_area_m2);
+  if (area === null || area <= 0) return null;
+  const hectares = area / 10000;
+  const ha = formatUiNumber(hectares >= 10 ? Math.round(hectares) : Math.round(hectares * 10) / 10, { maximumFractionDigits: 1 });
+  const km = area >= 1000000 ? formatUiNumber(Math.round(area / 100000) / 10, { maximumFractionDigits: 1 }) : "";
+  const pitches = Math.round(area / FOOTBALL_PITCH_M2);
+  const lang = { eng: "en", rus: "ru", kaz: "kk" }[getCurrentLanguage()] || "en";
+  const form = new Intl.PluralRules(lang).select(pitches);
+  return {
+    text: tFormat(`university.ux2.campus.${km ? "area_km" : "area_ha"}`, { ha, km }),
+    comparison: pitches >= 1 && pitches <= MAX_PITCH_COMPARISON
+      ? tFormat(`university.ux2.campus.pitches_${form}`, { count: formatUiNumber(pitches) }) || tFormat("university.ux2.campus.pitches_other", { count: formatUiNumber(pitches) })
+      : "",
+    sourceUrl: safeUrl(studentLife?.size_source_url),
+  };
+}
+
 export function formatUiNumber(value, options = {}) {
   const n = Number(value);
   if (!Number.isFinite(n)) return String(value ?? "").trim();

@@ -32,6 +32,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
 - Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.
 - The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
+- The `size` list filter and `student_life.size` use student-count bands (under 10,000, 10,000–30,000, over 30,000) instead of the earlier mixed land-area and enrollment buckets; a university without a published student count stays visible under every size filter.
 
 ### Removed
 - Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
@@ -50,6 +51,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The selection strip no longer reports that an application path needs clarification while a program's paths are still loading.
 - The empty Dates tab of earlier-format universities is localized instead of showing an English placeholder.
 - Removed Nazarbayev University's campus area, whose linked official page does not state it.
+- The comparison's campus-area row shows hectares instead of a raw square-metre number.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 
