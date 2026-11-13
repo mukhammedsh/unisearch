@@ -18,7 +18,10 @@ This section holds the dated state of the admissions work. `AGENTS.md` keeps onl
 
 Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
 
-- None open.
+- **Selectivity for the four reviewed institutions (2026-11-13).** MIT, Stanford, Imperial and Nazarbayev University lost their overview acceptance rate when they moved to the reviewed catalog, which holds no `admitted_profile` fact. Restoring it needs Stage 1 collection from official pages.
+- **MIT early-career salary on the overview (2026-11-13).** The "Who studies here" card shows the 2019 graduating-student survey figure with its source, while the comparison view hides salary for reviewed institutions. Keep it or drop it for parity.
+- **Typical scores shown as minimums on earlier-format pages (2026-11-13).** Yale's Admission tab presents an admitted-student GPA of 3.84 under "Minimum for applying". This is the known conversion problem in the light dossier standard and belongs to each institution's recheck.
+- **Program-specific universities on the overview (2026-11-13).** Imperial and Nazarbayev University admit by program, so the overview can only say that dates, costs and requirements depend on the program; their program lists start with postgraduate entries and offer no undergraduate shortcut.
 
 ## Delivery and boundaries
 

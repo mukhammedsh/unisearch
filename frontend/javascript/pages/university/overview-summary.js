@@ -14,7 +14,7 @@ import { admissionsRequest, isRecognizedAdmissionCycle, normalizeAdmissionCycle 
 import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
 import { costFact, deadlineFact, fundingPolicyStatement } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
-import { getUndergraduateCategories } from "./render-sections.js";
+import { extractUniversityDeadlines, getUndergraduateCategories } from "./render-sections.js";
 
 const label = (key, fallback = "") => t(`university.ux2.${key}`, fallback);
 const MAX_CHECKLIST_ITEMS = 5;
@@ -231,7 +231,14 @@ export function legacyNeedsItems(university) {
 export function legacyCards({ university, minPrice, acceptanceRate, acceptanceMeta }) {
   const needs = legacyNeedsItems(university);
   const people = peopleItems(university, { acceptanceRate, acceptanceMeta });
-  const legacyDeadline = { id: "deadline", icon: "calendar", answerKind: "text", headline: label("deadline.legacy"), lines: [], link: link("tab-deadlines", "deadlines") };
+  // Without collected dates the card points to the university's own site instead of an empty Dates tab.
+  const collected = extractUniversityDeadlines(university, Array.isArray(university?.admission_categories) ? university.admission_categories : [])
+    .some(item => item.deadline || item.guidance);
+  const website = safeUrl(university?.website);
+  const legacyDeadline = collected
+    ? { id: "deadline", icon: "calendar", answerKind: "text", headline: label("deadline.legacy"), lines: [], link: link("tab-deadlines", "deadlines") }
+    : { id: "deadline", icon: "calendar", answerKind: "text", headline: label("deadline.legacy_none"), lines: [label("deadline.legacy_none_detail")],
+      external: website ? { url: website, label: label("link.official_site") } : null };
   const needsCard = needs === null
     ? { id: "needs", icon: "clipboard-document-list", answerKind: "text", headline: label("needs.varies"), lines: [], link: link("tab-admission", "needs") }
     : checklistCard(needs, { hasEvidence: true });
@@ -262,7 +269,8 @@ function renderCard(card) {
   const lines = (card.lines || []).map(text => `<p class="overview-summary__detail">${escapeHtml(text)}</p>`).join("");
   const aside = (card.aside || []).map(entry => `<p class="overview-summary__detail"${entry.tone ? ` data-tone="${escapeHtmlAttr(entry.tone)}"` : ""}>${escapeHtml(entry.text)}</p>`).join("");
   const items = card.items?.length ? `<ul class="overview-summary__list">${card.items.map(entry => renderItem(card, entry)).join("")}</ul>` : "";
-  const action = card.link ? `<button type="button" class="overview-summary__link" data-open-tab="${escapeHtmlAttr(card.link.tab)}">${escapeHtml(card.link.label)}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>` : "";
+  const action = card.link ? `<button type="button" class="overview-summary__link" data-open-tab="${escapeHtmlAttr(card.link.tab)}">${escapeHtml(card.link.label)}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>`
+    : card.external ? `<a class="overview-summary__link" href="${escapeHtmlAttr(card.external.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(card.external.label)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>` : "";
   return `<section class="overview-summary__card" data-summary-card="${card.id}"${card.state ? ` data-state="${card.state}"` : ""}>
     <h3 class="overview-summary__label">${heroIcon(card.icon, "ui-icon ui-icon--18")}<span>${escapeHtml(label(`card.${card.id}`))}</span></h3>
     ${answer}${lines}${items}${aside}${action}</section>`;
@@ -280,13 +288,34 @@ const renderLoading = () => `<div class="overview-summary__body"><div class="ove
 const renderError = () => `<div class="overview-summary__body"><div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div></div>
   <div class="overview-summary__state" role="alert"><p>${escapeHtml(label("error"))}</p><button type="button" class="overview-summary__link" data-summary-retry>${escapeHtml(label("retry"))}</button></div></div>`;
 
-function openTab(tabId) {
-  const next = new URL(window.location.href);
-  if (next.hash !== `#${tabId}`) {
-    next.hash = `#${tabId}`;
-    window.history.pushState({}, "", next);
+// Opens a tab. With a shared first-year route and no program or route chosen on the page, the tab opens on that
+// route, exactly as choosing it in the Admission tab would, so the dates and costs the card promised are there.
+// The choice is not saved; an existing selection on the page is never replaced.
+export function summaryTabUrl(href, tabId, routeId = "") {
+  const next = new URL(href);
+  const params = next.searchParams;
+  const chosen = params.get("admission_option") || params.get("admission_application_route");
+  if (routeId && tabId !== "tab-programs" && !chosen) {
+    params.set("admission_option", "");
+    params.set("admission_application_route", routeId);
+    params.set("admission_level", "undergraduate");
   }
-  document.querySelector(`[data-tab="${tabId}"]`)?.click();
+  next.hash = `#${tabId}`;
+  return next;
+}
+
+function openTab(tabId, routeId = "") {
+  const current = new URL(window.location.href);
+  const next = summaryTabUrl(current.href, tabId, routeId);
+  if (next.href === current.href) {
+    document.querySelector(`[data-tab="${tabId}"]`)?.click();
+    return;
+  }
+  const contextChanged = next.search !== current.search;
+  window.history.pushState({}, "", next);
+  // The admissions controller reads a changed context (and the tab) from the URL on popstate.
+  if (contextChanged) window.dispatchEvent(new PopStateEvent("popstate"));
+  else document.querySelector(`[data-tab="${tabId}"]`)?.click();
 }
 
 // Mounts the summary into `container` and keeps it current. `legacy` carries the values the legacy page already computed.
@@ -303,7 +332,7 @@ export function mountOverviewSummary({ container, university, universityId, revi
   const show = html => { if (!disposed) container.innerHTML = html; };
   const onClick = event => {
     const tab = event.target.closest?.("[data-open-tab]")?.dataset.openTab;
-    if (tab) openTab(tab);
+    if (tab) openTab(tab, route?.id || "");
     else if (event.target.closest?.("[data-summary-retry]")) void loadReviewed();
   };
   container.addEventListener("click", onClick);

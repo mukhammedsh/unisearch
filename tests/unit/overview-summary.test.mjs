@@ -87,7 +87,7 @@ test("the date card leads with the next date and its countdown, and says that th
   const card = deadlineCard(deadlineFact(resolved, NOW));
   assert.equal(card.headline, "By January 4, 2027 · in 52 days");
   assert.equal(card.lines[0], "Regular Action · regular application");
-  assert.match(card.lines[1], /^Early Action · early application \(November 1\) has already closed\. The year is assumed/);
+  assert.match(card.lines[1], /^Early Action · early application \(November 1\) has already closed\. The university repeats this date every year/);
   // A date with a year and a nearer deadline within 30 days is flagged.
   const soon = deadlineCard(deadlineFact(resolvedWith([recurring()], [], { fact_groups: { deadlines: ["rounds"] } }), new Date(2026, 11, 20, 12, 0)));
   assert.equal(soon.tone, "warning");
@@ -163,7 +163,7 @@ test("a university without a reviewed catalog shows its published cost, selectiv
   assert.match(cost.aside[0].text, /need-based aid; an award is decided individually/);
   assert.equal(needs.items.length, 5);
   assert.match(needs.items[0].text, /^English test, any one of: IELTS Academic 7, PTE Academic 70$/);
-  assert.equal(people.items[0].text, "3.9% of undergraduate applicants were admitted");
+  assert.equal(people.items[0].text, "About 3.9% of undergraduate applicants are admitted");
   assert.equal(people.items[0].source.url, "https://example.gov/scorecard");
 });
 
@@ -196,4 +196,24 @@ test("the rendered block escapes published text, states the one footnote once an
   assert.equal(html.split("A summary of official facts, not an admission decision.").length, 2);
   assert.deepEqual([...html.matchAll(/data-open-tab="([^"]+)"/g)].map(match => match[1]), ["tab-deadlines", "tab-finance", "tab-admission"]);
   assert.equal([...html.matchAll(/data-summary-card="/g)].length, 3);
+});
+
+test("summary links open the shared first-year route unless the page already has a selection", async () => {
+  const { summaryTabUrl } = await import("../../frontend/javascript/pages/university/overview-summary.js");
+  const base = "http://localhost/university.html?id=mit";
+  const opened = summaryTabUrl(base, "tab-deadlines", "mit-first-year");
+  assert.equal(opened.searchParams.get("admission_application_route"), "mit-first-year");
+  assert.equal(opened.searchParams.get("admission_level"), "undergraduate");
+  assert.equal(opened.hash, "#tab-deadlines");
+  const chosen = summaryTabUrl(`${base}&admission_option=mit-course-6-3-bachelor&admission_application_route=`, "tab-finance", "mit-first-year");
+  assert.equal(chosen.searchParams.get("admission_application_route"), "");
+  assert.equal(summaryTabUrl(base, "tab-programs", "mit-first-year").searchParams.has("admission_application_route"), false);
+  assert.equal(summaryTabUrl(base, "tab-finance").search, "?id=mit");
+});
+
+test("a legacy university without collected dates points to its official site, not an empty Dates tab", () => {
+  const [deadline] = legacyCards({ university: { id: "x", website: "https://www.example.edu/", admission_categories: [] }, minPrice: null });
+  assert.equal(deadline.link, undefined);
+  assert.equal(deadline.external.url, "https://www.example.edu/");
+  assert.equal(deadline.headline, "Dates not collected yet");
 });

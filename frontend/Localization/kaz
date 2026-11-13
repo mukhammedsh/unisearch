@@ -3456,8 +3456,8 @@ university.ux2.choose.headline: Бағдарламаға байланысты
 university.ux2.deadline.headline: {date} дейін · {days} күннен кейін
 university.ux2.deadline.headline_today: Соңғы мерзім бүгін · {date}
 university.ux2.deadline.closed: «{name}» ({date}) қабылдауы жабылған.
-university.ux2.deadline.annual: Жылы жыл сайын қайталанатын күн бойынша алынған; ресми беттен тексеріңіз.
-university.ux2.deadline.legacy: Нақты мерзімдер мұнда көрсетілмеген. «Күндер мен мерзімдер» қойындысын қараңыз.
+university.ux2.deadline.annual: Университет бұл күнді жыл сайын жылын көрсетпей қайталайды. Ресми беттен тексеріңіз.
+university.ux2.deadline.legacy: Өтініш мерзімдері «Күндер мен мерзімдер» қойындысында.
 university.ux2.cost.headline: Жылына {amount}
 university.ux2.cost.headline_from: Жылына {amount} бастап
 university.ux2.cost.headline_tuition: Жылына {amount}, тек оқу ақысы
@@ -3487,11 +3487,15 @@ university.ux2.people.international: {percent}% шетелдік студент 
 university.ux2.people.housing_one: Тұрғын үй {years} жылға кепілдендірілген
 university.ux2.people.housing_few: Тұрғын үй {years} жылға кепілдендірілген
 university.ux2.people.housing_many: Тұрғын үй {years} жылға кепілдендірілген
-university.ux2.people.acceptance_undergraduate: Бакалавриатқа өтініш бергендердің {rate}%-ы қабылданған
-university.ux2.people.acceptance: Өтініш бергендердің {rate}%-ы қабылданған
+university.ux2.people.acceptance_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.acceptance: Өтініш бергендердің шамамен {rate}%-ы қабылданады
 university.ux2.people.salary: Мансап басындағы жалақы: жылына шамамен {amount}
 university.ux2.people.earnings: Түскеннен 10 жылдан кейінгі медианалық табыс: жылына шамамен {amount}
 university.ux2.needs.presence_required: міндетті
 university.ux2.needs.presence_recommended: ұсынылады
 university.ux2.needs.presence_strongly_recommended: кейбір үміткерлерге қатаң ұсынылады
 university.ux2.format.hybrid: Аралас (кампус және онлайн)
+university.ux2.deadlines.not_collected: UniSearch бұл университеттің өтініш мерзімдерін әлі жинамаған. Өзекті күндерді қабылдау комиссиясының ресми сайтынан қараңыз.
+university.ux2.deadline.legacy_none: Мерзімдер әлі жиналмаған
+university.ux2.deadline.legacy_none_detail: UniSearch-те бұл университеттің өтініш мерзімдері әлі жоқ. Оларды ресми сайттан тексеріңіз.
+university.ux2.link.official_site: Ресми сайт

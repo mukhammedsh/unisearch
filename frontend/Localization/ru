@@ -3454,8 +3454,8 @@ university.ux2.choose.headline: Зависит от программы
 university.ux2.deadline.headline: До {date} · через {days} дн.
 university.ux2.deadline.headline_today: Крайний срок сегодня · {date}
 university.ux2.deadline.closed: Приём «{name}» ({date}) уже закрыт.
-university.ux2.deadline.annual: Год определён по ежегодно повторяющейся дате; проверьте его на официальной странице.
-university.ux2.deadline.legacy: Точные сроки здесь не показаны. Смотрите вкладку «Даты и сроки».
+university.ux2.deadline.annual: Университет повторяет эту дату каждый год, не называя год. Сверьте её на официальной странице.
+university.ux2.deadline.legacy: Сроки подачи — во вкладке «Даты и сроки».
 university.ux2.cost.headline: {amount} в год
 university.ux2.cost.headline_from: От {amount} в год
 university.ux2.cost.headline_tuition: {amount} в год, только обучение
@@ -3485,11 +3485,15 @@ university.ux2.people.international: {percent}% иностранных студ�
 university.ux2.people.housing_one: Жильё гарантировано на {years} год
 university.ux2.people.housing_few: Жильё гарантировано на {years} года
 university.ux2.people.housing_many: Жильё гарантировано на {years} лет
-university.ux2.people.acceptance_undergraduate: Принято {rate}% абитуриентов бакалавриата
-university.ux2.people.acceptance: Принято {rate}% абитуриентов
+university.ux2.people.acceptance_undergraduate: Зачисляют около {rate}% подавших заявку на бакалавриат
+university.ux2.people.acceptance: Зачисляют около {rate}% подавших заявку
 university.ux2.people.salary: Зарплата в начале карьеры: около {amount} в год
 university.ux2.people.earnings: Медианный заработок через 10 лет после поступления: около {amount} в год
 university.ux2.needs.presence_required: обязательно
 university.ux2.needs.presence_recommended: рекомендуется
 university.ux2.needs.presence_strongly_recommended: настоятельно рекомендуется некоторым абитуриентам
 university.ux2.format.hybrid: Гибридно (кампус и онлайн)
+university.ux2.deadlines.not_collected: UniSearch пока не собрал сроки подачи для этого университета. Актуальные даты смотрите на официальном сайте приёмной комиссии.
+university.ux2.deadline.legacy_none: Сроки пока не собраны
+university.ux2.deadline.legacy_none_detail: У UniSearch ещё нет сроков подачи этого университета. Проверьте их на официальном сайте.
+university.ux2.link.official_site: Официальный сайт

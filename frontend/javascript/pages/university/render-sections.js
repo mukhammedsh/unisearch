@@ -834,7 +834,7 @@ function safeHttpUrl(value) {
   }
 }
 
-function extractUniversityDeadlines(university, categories) {
+export function extractUniversityDeadlines(university, categories) {
   const items = [];
   const seenKeys = new Set();
 
@@ -1029,7 +1029,7 @@ export function renderDeadlinesTabSection({ container, university, onContextChan
     return;
   }
   if (!allDeadlines.some((item) => item.deadline || item.guidance)) {
-    container.innerHTML = `<div data-deadline-calendar-host></div><div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.deadlines", "No deadlines published."))}</div>`;
+    container.innerHTML = `<div data-deadline-calendar-host></div><div class="admission-empty-state">${escapeHtml(t("university.ux2.deadlines.not_collected"))}</div>`;
     mountDeadlineCalendar(container.querySelector("[data-deadline-calendar-host]"), []);
     return;
   }
