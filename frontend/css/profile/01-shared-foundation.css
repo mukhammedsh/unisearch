@@ -12,14 +12,6 @@
 .profile-confirm-modal.is-closing .profile-confirm-card {
   animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
-.profile-body{
-  padding: var(--space-4) var(--space-6) var(--space-6);
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  display: grid;
-  gap: var(--space-5);
-}
-
 .profile-field{
   display: grid;
   gap: var(--space-2);
@@ -453,48 +445,6 @@
   }
 }
 
-.profile-section-tabs {
-  margin: 0 var(--space-6) var(--space-3);
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--space-5);
-  padding: 0;
-  border: 0;
-  border-bottom: none;
-  border-radius: 0;
-  background: transparent;
-}
-
-.profile-section-tab {
-  position: relative;
-  min-width: 0;
-  min-height: 42px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--text-muted);
-  font: inherit;
-  font-size: 12px;
-  line-height: 1.1;
-  font-weight: 500;
-  padding: var(--space-3) 0 var(--space-3);
-  cursor: pointer;
-  transition:
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .profile-section-tab:hover {
-    color: var(--interaction-hover-text);
-  }
-}
-
-.profile-section-tab.is-active {
-  background: transparent;
-  color: var(--interaction-active-text);
-  box-shadow: none;
-}
-
 .profile-save-state{
   font-size: 12px;
   font-weight: 500;
@@ -660,7 +610,7 @@
   font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
-  margin: 0 0 var(--space-2);
+  margin: 0;
 }
 
 .lang-add-grid{
@@ -709,8 +659,6 @@
 
 /* Extracted from 05-base-responsive.css. */
 @media (max-width: 768px) {
-  .profile-body { padding: var(--space-3) var(--space-4) var(--space-4); }
-
   .profile-exam-form{ grid-template-columns: 1fr; }
   .profile-exam-special-grid--grades{ grid-template-columns: 1fr; }
   .profile-exam-breakdown-row{ grid-template-columns: 1fr; }
@@ -768,8 +716,7 @@
     animation: none !important;
   }
 
-  .profile-section-tab,
-.profile-add,
+  .profile-add,
 .profile-delete,
 .profile-exam-item,
 .lang-item {
@@ -778,49 +725,7 @@
 }
 
 /* Extracted from 08-device-responsive.css. */
-@media (max-width: 380px) {
-
-  .profile-section-tabs {
-    margin-left: var(--space-3);
-    margin-right: var(--space-3);
-  }
-
-  .profile-section-tabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .profile-body {
-    padding: var(--space-3) var(--space-3) var(--space-4);
-  }
-}
-
 @media (max-width: 640px) {
-
-  .profile-section-tabs {
-    margin: 0 var(--mobile-safe-gutter) var(--space-2);
-    display: flex;
-    gap: var(--space-2);
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .profile-section-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .profile-section-tab {
-    flex: 0 0 auto;
-    min-width: max-content;
-    min-height: 42px;
-    padding: 0 var(--space-3);
-    scroll-snap-align: start;
-  }
-
-  .profile-body {
-    padding: var(--space-3) var(--mobile-safe-gutter) calc(var(--space-4) + env(safe-area-inset-bottom));
-  }
 
   .profile-input,
 .profile-add,
@@ -838,27 +743,6 @@
 }
 
 /* Extracted from 09-component-polish.css. */
-.profile-body {
-  padding: var(--space-4) var(--space-5) var(--space-5);
-  gap: var(--space-4);
-}
-
-.profile-section-tabs {
-  margin-left: var(--space-5);
-  margin-right: var(--space-5);
-}
-
-.profile-section-tabs {
-  gap: var(--space-3);
-  margin-bottom: var(--space-2);
-}
-
-.profile-section-tab {
-  min-height: 38px;
-  padding-top: var(--space-2);
-  padding-bottom: var(--space-2);
-}
-
 .profile-field {
   gap: var(--space-2);
 }
@@ -891,20 +775,6 @@
 }
 
 @media (max-width: 640px) {
-  .profile-body {
-    padding-left: var(--space-3);
-    padding-right: var(--space-3);
-  }
-
-  .profile-section-tabs {
-    margin-left: var(--space-3);
-    margin-right: var(--space-3);
-  }
-
-  .profile-section-tabs {
-    gap: var(--space-2);
-  }
-
   .profile-exam-form,
 .profile-exam-form--with-special,
 .profile-exam-form--with-special.profile-exam-form--grades,
@@ -919,9 +789,5 @@
 .profile-input {
   background: var(--surface-soft);
   border: none;
-}
-
-.profile-progress-fill {
-  background: var(--accent);
 }
 

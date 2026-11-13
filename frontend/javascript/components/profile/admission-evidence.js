@@ -1,5 +1,6 @@
 import { escapeHtml, escapeHtmlAttr, showToast } from "../../utils.js";
 import { t } from "../../i18n.js";
+import { heroIcon } from "../../icons.js";
 
 // Only evidence that a reviewed assessment check reads is collected: the MIT Course 6-9 and MITx credential checks.
 const INSTITUTIONS = [
@@ -91,20 +92,20 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   container._admissionEvidenceState = { profile, onChange };
   container.innerHTML = `
     <details class="profile-admission-evidence">
-      <summary data-i18n="profile.evidence.title">Evidence for selected admissions routes</summary>
-      <p class="profile-card-desc" data-i18n="profile.evidence.description">Optional, self-reported details help assess published conditions. They do not verify official records.</p>
+      <summary><span data-i18n="profile.evidence.title">Add details for specific universities</span>${heroIcon("chevron-down", "ui-icon ui-icon--16")}</summary>
+      <p class="profile-card-desc" data-i18n="profile.evidence.description">Add these only if a university page asks for them. They are self-reported and do not verify official records.</p>
       <div class="profile-applicant-context-grid">
         <section class="profile-admission-evidence-group" aria-labelledby="languageEvidenceTitle">
-          <h4 id="languageEvidenceTitle" data-i18n="profile.evidence.language_title">Language background</h4>
+          <h3 id="languageEvidenceTitle" class="profile-subsection-title" data-i18n="profile.evidence.language_title">Language background</h3>
           <div class="profile-applicant-context-grid">
             <div class="profile-field">
-              <label for="languageEvidenceKind" data-i18n="profile.evidence.kind">Evidence type</label>
+              <label for="languageEvidenceKind" data-i18n="profile.ux2.evidence.language_kind">How you know this language</label>
               <select id="languageEvidenceKind" class="profile-input profile-input--select">
                 ${optionRows(LANGUAGE_KINDS.map((kind) => [kind, t(`profile.evidence.language_kind.${kind}`, kind)]))}
               </select>
             </div>
             <div class="profile-field">
-              <label for="languageEvidenceLanguage" data-i18n="profile.evidence.language">Language code</label>
+              <label for="languageEvidenceLanguage" data-i18n="profile.evidence.language">Language (short code, for example en)</label>
               <input id="languageEvidenceLanguage" class="profile-input" maxlength="16" placeholder="en" />
             </div>
             <div class="profile-field" data-language-evidence-detail>
@@ -145,7 +146,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
           <div id="languageEvidenceList"></div>
         </section>
         <section class="profile-admission-evidence-group" aria-labelledby="institutionalEvidenceTitle">
-          <h4 id="institutionalEvidenceTitle" data-i18n="profile.evidence.institution_title">Institution-specific study evidence</h4>
+          <h3 id="institutionalEvidenceTitle" class="profile-subsection-title" data-i18n="profile.evidence.institution_title">Studies at a listed university</h3>
           <div class="profile-applicant-context-grid">
             <div class="profile-field">
               <label for="institutionEvidenceUniversity" data-i18n="profile.evidence.institution">University</label>
@@ -155,14 +156,14 @@ export function renderAdmissionEvidence(container, profile, onChange) {
               </select>
             </div>
             <div class="profile-field">
-              <label for="institutionEvidenceKind" data-i18n="profile.evidence.kind">Evidence type</label>
+              <label for="institutionEvidenceKind" data-i18n="profile.ux2.evidence.institution_kind">What do you want to add?</label>
               <select id="institutionEvidenceKind" class="profile-input profile-input--select">
                 <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
                 ${optionRows([["enrollment", t("profile.evidence.institution_kind.enrollment", "Enrollment or completed courses")], ["gpa", t("profile.evidence.institution_kind.gpa", "Program GPA")], ["credential", t("profile.evidence.institution_kind.credential", "Program credential")]])}
               </select>
             </div>
             <div class="profile-field" data-institution-evidence-field="program_id">
-              <label for="institutionEvidenceProgram" data-i18n="profile.evidence.program">Program ID</label>
+              <label for="institutionEvidenceProgram" data-i18n="profile.evidence.program">Program or study option</label>
               <select id="institutionEvidenceProgram" class="profile-input profile-input--select"></select>
             </div>
             <div class="profile-field" data-institution-evidence-kind="enrollment">
@@ -206,7 +207,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
               <input id="institutionEvidenceTerm" class="profile-input" maxlength="40" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="credential">
-              <label for="institutionEvidenceCredential" data-i18n="profile.evidence.credential_id">Credential ID</label>
+              <label for="institutionEvidenceCredential" data-i18n="profile.evidence.credential_id">Credential</label>
               <select id="institutionEvidenceCredential" class="profile-input profile-input--select"></select>
             </div>
             <div id="institutionEvidenceCredentialScoreField" class="profile-field" data-institution-evidence-kind="credential" hidden>

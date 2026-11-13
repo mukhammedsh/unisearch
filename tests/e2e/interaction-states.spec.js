@@ -166,7 +166,7 @@ test("profile controls follow the shared interaction contract in light and dark 
     const softSurface = await resolvedBackgroundToken(page, "--surface-soft");
     const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
 
-    const progressContrast = await page.locator(".profile-progress-label").evaluate((element) => {
+    const progressContrast = await page.locator(".profile-section-desc").first().evaluate((element) => {
       const channels = (color) => color.match(/[\d.]+/g).slice(0, 3).map(Number);
       const luminance = (color) => channels(color).map((value) => {
         const channel = value / 255;
@@ -186,7 +186,10 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectBackground(fieldComposite, hoverSurface);
     await expectCompositeFocus(field, fieldComposite, focusColor);
 
+    // Save is the secondary action and is only enabled once the draft changed.
+    await field.fill(theme === "light" ? "15000" : "16000");
     const secondaryAction = page.locator(".profile-action-btn--secondary");
+    await expect(secondaryAction).toBeEnabled();
     await expectBackground(secondaryAction, softSurface);
     await secondaryAction.hover();
     await expectBackground(secondaryAction, hoverSurface);
@@ -211,7 +214,7 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectColor(unitToggle, hoverColor);
     await expectCompositeFocus(unitToggle, gpaComposite, focusColor);
 
-    await expect(page.locator('[data-profile-tab="scores"]')).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator('[data-profile-section="scores"]')).toBeVisible();
     const infoButton = page.locator('[data-profile-section="scores"] .profile-info').first();
     await expect(infoButton).toBeVisible();
     await expectColor(infoButton, mutedColor);

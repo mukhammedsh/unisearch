@@ -60,14 +60,16 @@ test("profile category motion keeps tab state and reduced-motion final states st
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
+  // All sections stay visible; the outline only marks the one that was jumped to.
   await page.click("[data-profile-tab='scores']");
-  await expect(page.locator("[data-profile-tab='scores']")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator("[data-profile-section='scores']").first()).not.toHaveClass(/is-section-hidden/);
-  await expect(page.locator("[data-profile-section='basics']").first()).toHaveClass(/is-section-hidden/);
+  await expect(page.locator("[data-profile-tab='scores']")).toHaveAttribute("aria-current", "location");
+  await expect(page.locator("[data-profile-section='scores']").first()).toBeVisible();
+  await expect(page.locator("[data-profile-section='basics']").first()).toBeVisible();
 
   await page.click("[data-profile-tab='preferences']");
-  await expect(page.locator("[data-profile-tab='preferences']")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator("[data-profile-section='preferences']").first()).not.toHaveClass(/is-section-hidden/);
+  await expect(page.locator("[data-profile-tab='preferences']")).toHaveAttribute("aria-current", "location");
+  await expect(page.locator("[data-profile-tab='scores']")).not.toHaveAttribute("aria-current", "location");
+  await expect(page.locator("[data-profile-section='preferences']").first()).toBeVisible();
   await expect(page.locator(".is-motion-active")).toHaveCount(0);
 });
 

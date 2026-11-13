@@ -3,7 +3,6 @@ import {
   EXAM_CONFIG,
   MAJOR_OPTIONS,
   animateElementOut,
-  calculateProfileCompletion,
   canonicalizeExamId,
   clearProfile,
   escapeHtml,
@@ -19,7 +18,6 @@ import {
   prefersReducedMotion,
   replayMotion,
   saveProfile,
-  setupSlidingIndicator,
   showToast,
   trapFocus,
 } from "../utils.js";
@@ -30,7 +28,7 @@ import { bindInfoTooltips } from "../tooltip.js";
 import { heroIcon, hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
 import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
-import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
+import { isProfilePath, navigateToAppRoute, routeGuide, routeUniversities } from "../routes.js";
 import {
   breakdownAllowsTotalOnly,
   breakdownSchemeFor,
@@ -38,6 +36,7 @@ import {
   renderSpecialExamInput as renderSpecialExamInputFromModule,
 } from "./profile/exam-breakdowns.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
+import { buildProfileSummary, buildSectionFillStates, buildSummarySentence } from "./profile/profile-summary.js";
 import {
   cloneProfile,
   enforceGpaMaxLength,
@@ -83,7 +82,6 @@ export const queryProfileElements = (modal) => {
         backdrop: modal.querySelector(".profile-backdrop"),
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
-        budgetHint: budgetInput?.closest(".profile-field")?.querySelector(".profile-hint"),
         gpaInput: document.getElementById("gpaInput"),
         gpaUnit: document.getElementById("gpaUnit"),
         gpaHint: document.getElementById("gpaHint"),
@@ -103,13 +101,15 @@ export const queryProfileElements = (modal) => {
         profileMajorSelect: document.getElementById("profileMajorSelect"),
         profileInterestsInput: document.getElementById("profileInterestsInput"),
         saveProfileBtn: document.getElementById("saveProfileBtn"),
+        showMatchesBtn: document.getElementById("profileShowMatchesBtn"),
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
         intendedEntryCycleInput: document.getElementById("intendedEntryCycleInput"),
         feeStatusContextSelect: document.getElementById("feeStatusContextSelect"),
-        profileProgressText: document.getElementById("profileProgressText"),
-        profileProgressFill: document.getElementById("profileProgressFill"),
+        profileSummaryList: document.getElementById("profileSummaryList"),
+        profileSummarySentence: document.getElementById("profileSummarySentence"),
+        profileGuideLink: document.getElementById("profileUnifitGuideLink"),
         profileSectionTabs: Array.from(modal.querySelectorAll(".profile-section-tab")),
         profileSectionNodes: Array.from(modal.querySelectorAll("[data-profile-section]")),
     };
@@ -232,16 +232,11 @@ export const renderLowBudgetGrantHint = (els, state) => {
 export const updateBudgetUI = (els, state) => {
     const currency = getBudgetCurrency();
     const maxBudget = getMaxBudgetForCurrency(currency);
-    const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
     if (els.profileBudgetUnit) {
         els.profileBudgetUnit.removeAttribute("data-i18n");
         const caption = applyTokenSubstitutions(t("profile.unit.currency_year", "{currency} / year"));
         els.profileBudgetUnit.innerHTML = `${escapeHtml(caption)}${heroIcon("chevron-down", "ui-icon ui-icon--16")}`;
         els.profileBudgetUnit.setAttribute("aria-label", tFormat("profile.change_budget_currency", { currency }));
-    }
-    if (els.budgetHint) {
-        els.budgetHint.removeAttribute("data-i18n");
-        els.budgetHint.textContent = tFormat("profile.hint.budget_range", { max: formattedMax }, `Range: 0–${formattedMax}`);
     }
     if (els.budgetInput) {
         els.budgetInput.removeAttribute("data-i18n-placeholder");
@@ -252,25 +247,53 @@ export const updateBudgetUI = (els, state) => {
     renderLowBudgetGrantHint(els, state);
 };
 
-export const updateProfileProgress = (els, state) => {
-    const { completed, total, percentage } = calculateProfileCompletion(state.profile);
-    if (els.profileProgressText) {
-        els.profileProgressText.removeAttribute("data-i18n");
-        els.profileProgressText.textContent = completed
-            ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
-            : t("profile.progress.empty", "Complete your profile for better matches.");
-    }
-    if (els.profileProgressFill) {
-        els.profileProgressFill.style.width = `${percentage}%`;
-    }
-    const meter = els.modal.querySelector(".profile-progress-meter");
-    if (meter) {
-        meter.setAttribute("role", "progressbar");
-        meter.setAttribute("aria-valuenow", String(percentage));
-        meter.setAttribute("aria-valuemin", "0");
-        meter.setAttribute("aria-valuemax", "100");
-        meter.setAttribute("title", `${percentage}% (${completed}/${total})`);
-    }
+const SUMMARY_STATE_ICONS = { used: "check-circle", partial: "adjustments-horizontal", not_used: "x-mark" };
+
+export const renderProfileSummary = (els, state) => {
+    if (!els.profileSummaryList) return;
+    const ctx = {
+        t,
+        tFormat,
+        formatMoney,
+        majorLabel: (major) => translateProgramName(major, major),
+        examLabel: (row) => {
+            const examId = row.exam ?? row.id;
+            const locale = getCurrentLanguage();
+            const value = formatExamValue(examId, row, { context: "profile", locale });
+            return [getExamDisplayName(examId, { locale }), value].filter(Boolean).join(" ");
+        },
+    };
+    const rows = buildProfileSummary(state.profile, ctx);
+    const sentence = buildSummarySentence(rows, ctx);
+    const fillStates = buildSectionFillStates(state.profile);
+    const signature = JSON.stringify([getCurrentLanguage(), rows, sentence, fillStates]);
+    if (state.summarySignature === signature) return;
+    state.summarySignature = signature;
+
+    els.profileSummaryList.innerHTML = rows.map((row) => `
+        <li class="profile-summary__row" data-state="${row.state}" data-summary-row="${escapeHtml(row.id)}">
+            <span class="profile-summary__icon" aria-hidden="true">${heroIcon(SUMMARY_STATE_ICONS[row.state] || "x-mark", "ui-icon ui-icon--16")}</span>
+            <div class="profile-summary__body">
+                <p class="profile-summary__row-head">
+                    <span class="profile-summary__row-title">${escapeHtml(row.title)}</span>
+                    <span class="sr-only">${escapeHtml(t(`profile.ux2.summary.state.${row.state}`))}</span>
+                </p>
+                ${row.value ? `<p class="profile-summary__row-value">${escapeHtml(row.value)}</p>` : ""}
+                ${row.state === "used" ? "" : `<p class="profile-summary__row-detail">${escapeHtml(row.detail)}</p>`}
+            </div>
+        </li>`).join("");
+    if (els.profileSummarySentence) els.profileSummarySentence.textContent = sentence;
+
+    els.profileSectionTabs.forEach((tab) => {
+        const filled = !!fillStates[String(tab.dataset.profileTab || "")];
+        tab.dataset.filled = filled ? "true" : "false";
+        const status = tab.querySelector(".profile-outline__status");
+        if (status) {
+            status.textContent = filled
+                ? t("profile.ux2.nav.filled", "has answers")
+                : t("profile.ux2.nav.empty", "no answers yet");
+        }
+    });
 };
 
 export const refreshSaveState = (els, state) => {
@@ -289,39 +312,31 @@ export const refreshSaveState = (els, state) => {
     }
     if (els.saveProfileBtn) els.saveProfileBtn.disabled = !dirty;
     renderLowBudgetGrantHint(els, state);
-    updateProfileProgress(els, state);
+    renderProfileSummary(els, state);
     return dirty;
 };
 
-export const setProfileSection = (els, state, section = "basics") => {
+const sectionIdOf = (node) => String(node?.getAttribute("data-profile-section") || "");
+
+export const setActiveProfileSection = (els, section) => {
     const active = String(section || "basics");
     els.profileSectionTabs.forEach((tab) => {
         const isActive = String(tab.dataset.profileTab || "") === active;
         tab.classList.toggle("is-active", isActive);
-        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        if (isActive) tab.setAttribute("aria-current", "location");
+        else tab.removeAttribute("aria-current");
     });
-    els.profileSectionNodes.forEach((node) => {
-        const isActive = String(node.getAttribute("data-profile-section") || "") === active;
-        node.classList.toggle("is-section-hidden", !isActive);
-        if (isActive) replayMotion(node, "is-motion-active", { timeoutMs: 420 });
-    });
-    requestAnimationFrame(() => {
-        state.updateProfileTabsIndicator?.();
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            const activeTab = els.modal.querySelector(".profile-section-tab.is-active");
-            if (activeTab && typeof activeTab.scrollIntoView === "function") {
-                try {
-                    activeTab.scrollIntoView({
-                        block: "nearest",
-                        inline: "nearest",
-                        behavior: prefersReducedMotion() ? "auto" : "smooth",
-                    });
-                } catch (error) {
-                    activeTab.scrollIntoView({ block: "nearest", inline: "nearest" });
-                }
-            }
-        }
-    });
+};
+
+// All sections stay visible; the outline only scrolls to one of them and marks it as current.
+export const goToProfileSection = (els, state, section, { focusHeading = true } = {}) => {
+    const node = els.profileSectionNodes.find((candidate) => sectionIdOf(candidate) === section);
+    if (!node) return;
+    setActiveProfileSection(els, section);
+    // Ignore the scroll observer while the smooth scroll runs, so the clicked item stays current.
+    state.sectionNavLockUntil = Date.now() + 900;
+    node.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
 };
 
 export const findExistingExamEntry = (examId, els, state) => {
@@ -606,12 +621,24 @@ export const updateGpaScaleUI = (els, state, scale) => {
         els.gpaUnit.setAttribute("aria-label", toggleLabel);
         els.gpaUnit.title = toggleLabel;
     }
-    if (els.gpaHint) {
-        els.gpaHint.removeAttribute("data-i18n");
-        els.gpaHint.textContent = s === 5
-            ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)")
-            : t("profile.scale.gpa_4", "4.0 (US / International)");
-    }
+    renderGpaHint(els, state);
+};
+
+// Warns while typing when a 5-point grade is entered on the 4.0 scale, instead of only failing on save.
+export const renderGpaHint = (els, state) => {
+    if (!els.gpaHint) return;
+    const scale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
+    const value = Number(normalizeGpaRaw(els.gpaInput?.value || ""));
+    const overScale = scale === 4 && Number.isFinite(value) && value > 4 && value <= 5;
+    els.gpaHint.removeAttribute("data-i18n");
+    els.gpaHint.setAttribute("aria-live", "polite");
+    els.gpaHint.classList.toggle("is-warning", overScale);
+    els.gpaHint.textContent = overScale
+        ? tFormat("profile.ux2.gpa.over_scale", { value: String(value) }, `${value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.`)
+        : tFormat("profile.ux2.gpa.scale_hint", {
+            scale: scale === 5 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)") : t("profile.scale.gpa_4", "4.0 (US / International)"),
+            unit: scale === 5 ? "/ 5.0" : "/ 4.0",
+        }, "");
 };
 
 export const validateGpaInput = (els, state) => {
@@ -727,7 +754,7 @@ export const resetFields = (els, state) => {
 
 export const saveAllProfileChanges = (els, state) => {
     if (state.examEditorDirty || state.languageEditorDirty) {
-        setProfileSection(els, state, state.examEditorDirty ? "scores" : "languages");
+        goToProfileSection(els, state, state.examEditorDirty ? "scores" : "languages", { focusHeading: false });
         (state.examEditorDirty ? els.addExamBtn : document.getElementById("langAddBtn"))?.focus();
         showToast(t("profile.report_draft_pending"), "error");
         return false;
@@ -966,7 +993,7 @@ export const openProfile = (els, state) => {
         "profileMajorSelect",
     ]);
     refreshExamActionButton(els, state);
-    updateProfileProgress(els, state);
+    renderProfileSummary(els, state);
     hydrateHeroIcons(els.modal);
 
     window.dispatchEvent(new Event("profileModalOpened"));
@@ -980,9 +1007,6 @@ export const openProfile = (els, state) => {
         if (typeof state.cleanupFocusTrap === "function") state.cleanupFocusTrap();
         state.cleanupFocusTrap = trapFocus(els.modal);
     }
-    requestAnimationFrame(() => {
-        state.updateProfileTabsIndicator?.();
-    });
 };
 
 export const showExamScoreError = (inputEl, message) => {
@@ -1241,9 +1265,40 @@ export const bindProfileEvents = (els, state) => {
         void handleAddExam(els, state);
     });
     els.profileSectionTabs.forEach((tab) => {
-        tab.addEventListener("click", () => setProfileSection(els, state, tab.dataset.profileTab || "basics"));
+        tab.addEventListener("click", () => goToProfileSection(els, state, tab.dataset.profileTab || "basics"));
     });
-    setProfileSection(els, state, "basics");
+    els.modal.querySelectorAll("[data-profile-jump]").forEach((link) => {
+        link.addEventListener("click", () => goToProfileSection(els, state, link.dataset.profileJump));
+    });
+    setActiveProfileSection(els, "basics");
+
+    // Mark the section currently in view; a band near the top of the viewport decides which one it is.
+    const visibleSections = new Set();
+    const lastSectionId = sectionIdOf(els.profileSectionNodes[els.profileSectionNodes.length - 1]);
+    const navLocked = () => Date.now() < (state.sectionNavLockUntil || 0);
+    let sectionObserver = null;
+    if (typeof IntersectionObserver === "function") {
+        sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const id = sectionIdOf(entry.target);
+                if (entry.isIntersecting) visibleSections.add(id);
+                else visibleSections.delete(id);
+            });
+            if (navLocked()) return;
+            const current = els.profileSectionNodes.find((node) => visibleSections.has(sectionIdOf(node)));
+            if (current) setActiveProfileSection(els, sectionIdOf(current));
+        }, { rootMargin: "-20% 0px -65% 0px" });
+        els.profileSectionNodes.forEach((node) => sectionObserver.observe(node));
+    }
+    // The last section can end below the observed band; at the end of the page it is the current one.
+    const markLastSectionAtPageEnd = () => {
+        if (navLocked() || !lastSectionId) return;
+        const root = document.documentElement;
+        if (window.scrollY > 0 && window.innerHeight + window.scrollY >= root.scrollHeight - 2) {
+            setActiveProfileSection(els, lastSectionId);
+        }
+    };
+    listenGlobal(window, "scroll", markLastSectionAtPageEnd);
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect(els, state);
@@ -1371,6 +1426,7 @@ export const bindProfileEvents = (els, state) => {
             enforceGpaMaxLength(els.gpaInput);
             setFieldInvalid(els.gpaInput, false);
             state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
+            renderGpaHint(els, state);
             refreshSaveState(els, state);
         });
         els.gpaInput.addEventListener("keydown", handleEnterSave);
@@ -1401,6 +1457,21 @@ export const bindProfileEvents = (els, state) => {
             if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeImmediately(els, state);
         });
     }
+
+    els.showMatchesBtn?.addEventListener("click", () => {
+        if (els.showMatchesBtn.disabled) return;
+        motionPress(els.showMatchesBtn);
+        syncInputsToDraft(els, state);
+        // A failed save (validation error, unfinished report draft) keeps the page open.
+        if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) return;
+        if (hasUniversitiesTourResumeStep()) {
+            closeImmediately(els, state);
+            return;
+        }
+        els.showMatchesBtn.disabled = true;
+        els.showMatchesBtn.setAttribute("aria-busy", "true");
+        navigateToAppRoute(routeUniversities({ sort: "uni_ai" }));
+    });
 
     els.resetProfileBtn?.addEventListener("click", () => {
         motionPress(els.resetProfileBtn);
@@ -1550,6 +1621,7 @@ export const bindProfileEvents = (els, state) => {
     listenGlobal(window, "beforeunload", handleBeforeUnload);
     return () => {
         state.disposed = true;
+        sectionObserver?.disconnect();
         settleNavigationClose(false);
         globalListenerDisposers.splice(0).forEach((dispose) => dispose());
         if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
@@ -1587,7 +1659,7 @@ export function initProfileUI() {
     bindInfoTooltips({ root: modal, wrapSelector: ".profile-info-wrap", buttonSelector: ".profile-info" });
 
     const els = queryProfileElements(modal);
-    const updateProfileTabsIndicator = setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
+    if (els.profileGuideLink) els.profileGuideLink.href = `${routeGuide()}#guide-unifit`;
 
     const state = {
         isDedicatedPage,
@@ -1600,7 +1672,6 @@ export function initProfileUI() {
         cleanupFocusTrap: null,
         cleanupUnsavedFocusTrap: null,
         cleanupResetFocusTrap: null,
-        updateProfileTabsIndicator,
         examValidationPending: false,
         examDraftRevision: 0,
         editorResetRevision: 0,

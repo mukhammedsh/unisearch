@@ -262,7 +262,6 @@ profile.gpa_must_number: GPA санмен енгізілуі керек
 profile.gpa_range: GPA {min} мен {max} аралығында болуы керек
 profile.gpa_saved: GPA сақталды
 profile.gpa_step: GPA {step} қадамымен енгізілуі керек
-profile.hint.budget_range: Аралығы: 0–{max}
 profile.hint.low_budget_grant: Бюджет {amount}-тан төмен. Тек грант нұсқасын таңдауға болады.
 profile.hint.low_budget_grant_action: Тек грантты таңдау
 profile.hint.dismiss: Еске салуды жабу
@@ -272,10 +271,10 @@ profile.gpa_info_tooltip: Баға шкаласын таңдаңыз: 4.0 нем
 profile.hint.interests: Қызығатын тақырыптар UniFit арқылы университеттерді реттеуге көмектесуі мүмкін. Олар бағдарламаны таңдамайды және оқуға түсу құқығын растамайды.
 profile.interests_saved: Қызығушылықтар сақталды
 profile.saved_all: Профиль сақталды
-profile.label.budget: Жылдық жалпы бюджет
-profile.label.exams: Емтихандар
-profile.label.funding_type: Қажетті қаржыландыру түрі
-profile.label.gpa: Орташа үлгерім балы (GPA)
+profile.label.budget: Жылдық бюджет
+profile.label.exams: Емтихан нәтижелері
+profile.label.funding_type: Қандай қаржыландыру іздейсіз
+profile.label.gpa: GPA (орташа балл)
 profile.scale.gpa_4: 4.0 (АҚШ / халықаралық)
 profile.scale.gpa_5: 5.0 (Қазақстан / ТМД)
 profile.scale.gpa_4_short: 4.0
@@ -283,9 +282,9 @@ profile.scale.gpa_5_short: 5.0
 profile.scale.toggle: GPA шкаласын {scale} мәніне ауыстыру
 profile.unit.gpa_4: / 4,0
 profile.unit.gpa_5: / 5,0
-profile.label.interests: Университеттен не іздейсіз?
-profile.label.major: Таңдағыңыз келетін мамандық
-profile.label.study_mode: Қалаған оқу форматы
+profile.label.interests: Сізді қызықтыратын тақырыптар
+profile.label.major: Мамандық
+profile.label.study_mode: Оқу форматы
 profile.language: Тіл
 profile.languages: Тілдер
 profile.option.funding_any: Барлығы (грант және ақылы оқу)
@@ -320,12 +319,10 @@ profile.reset.cancel: Бас тарту
 profile.reset.confirm: Деректерді тазарту
 profile.reset.done: Профиль деректері тазартылды
 profile.score: Балл
-profile.type: Түрі
+profile.type: Мұны немен растайсыз
 profile.unit.gpa: / 4,0
 profile.unit.usd_year: АҚШ доллары / жыл
 profile.unit.currency_year: {currency} / жыл
-profile.progress.empty: Каталогты қарап, өзіңізге пайдалы мәліметтерді ғана қоса аласыз.
-profile.progress.count: Міндетті емес {total} бөлімнің {completed} бөлімінде баптаулар бар
 profile.sections.aria: Профиль бөлімдері
 profile.title: Профиль
 profile.section.basics: Жалпы мәліметтер
@@ -336,7 +333,6 @@ profile.kicker: Талапкер профилі
 profile.page_subtitle: UniFit рейтингі мен талаптарға сәйкестік балын есептеу үшін оқу деректерін, бюджетті және емтихан нәтижелерін енгізіңіз.
 profile.action.back: Артқа
 profile.action.back_desc: Алдыңғы бетке қайту
-profile.progress.title: Профильдің міндетті емес баптаулары
 profile.empty_exams: Емтихан әлі қосылмады. Нәтижені енгізу үшін жоғарыдан емтихан таңдаңыз.
 profile.empty_languages: Тіл қосылмады. Ана тіліңізді немесе емтихан сертификатын енгізіңіз.
 profile.field.budget.desc: {currency} валютасымен есептегендегі оқу ақысы мен тұрмыс шығынына арналған жылдық бюджетіңіз.
@@ -1420,7 +1416,7 @@ university.program_coverage.value.tuition_per_summer_unit_1_7_usd: Бірлік 
 university.program_coverage.cycle.stanford_quarterly_tuition: {year} үшін жарияланған оқу құны оқу бірліктерінің санына байланысты тоқсан сайын есептеледі. Жылдық сома оқу жүктемесі мен оқу кварталдарының санына байланысты; {next_year} тарифтері әзірге белгісіз.
 university.program_coverage.cycle.stanford_md_tuition: Оқу жылы {year} ; MD бағдарламасы бойынша үйренудің әдеттегі құны күзгі, қысқы, көктемгі және жазғы кварталдар үшін есептеледі; {next_year} тарифі расталмаған.
 university.program_coverage.cycle.fall_entry: Күзгі қабылдау {year}
-profile.label.study_level: Оқытудың нысаналы деңгейі
+profile.label.study_level: Оқу деңгейі
 profile.option.study_level_any: Кез келген оқу деңгейі
 profile.option.study_level_bachelor: Бакалавриат
 profile.option.study_level_master: Магистратура
@@ -1593,9 +1589,9 @@ university.coverage.costs_undergraduate: Бакалавриаттың құны �
 university.coverage.aid: Қаржылық көмек және қаржыландыру
 profile.applicant_context.title: Түсу параметрлері
 profile.applicant_context.optional_hint: Міндетті емес. Түсу циклі мен оқу ақысының мәртебесі қарастырылған университеттер үшін көрсетілетін оқу ақысы мен алымдарды анықтайды. Мәртебені өзіңіз көрсетесіз; ресми мәртебені университет белгілейді.
-profile.applicant_context.entry_cycle: Түсудің жоспарланған циклі
+profile.applicant_context.entry_cycle: Оқуды қашан бастауды жоспарлайсыз?
 profile.applicant_context.entry_cycle_placeholder: мысалы, 2027 жылғы күз
-profile.applicant_context.fee_context: Университетте оқуға ақы төлеу мәртебесі (егер белгілі болса)
+profile.applicant_context.fee_context: Төлем мәртебесі (білсеңіз)
 profile.applicant_context.fee_home: Жергілікті / үй тарифі (өз бетінше көрсетілген)
 profile.applicant_context.fee_international: Шетелдік тариф (өз бетінше көрсетілген)
 profile.applicant_context.fee_other: Басқасы немесе белгісіз
@@ -2319,14 +2315,14 @@ admission.mit.after_initial_admission: Бірлескен дәрежені MIT �
 admission.mit.program_condition: Бұл бағдарлама үшін шарттар:
 admission.requirements_fit.check.profile_unassessed: Профиль қажетті мәліметтерді немесе босатылу құқығын растауға мүмкіндік бермейді.
 admission.requirements_fit.missing_evidence_note: Бағытты тексеру үшін төменде көрсетілген растауларды қосыңыз. Пайыз бағалауға болатын қолданылатын сандық минимумдар болған кезде ғана қолжетімді.
-profile.evidence.title: Таңдалған түсу бағыттарына арналған растаулар
-profile.evidence.description: Сізге қатысты жарияланған шартқа арналған қосымша мәліметтер. Университет өрістері тек осында көрсетілген оқу орындары мен қабылдау жолдарына қолданылады; бұл бөлімді өткізіп жіберуге болады. Өзіңіз көрсеткен мәліметтер ресми құжаттарды не емтиханнан босатуды растамайды.
+profile.evidence.title: Жекелеген университеттер үшін мәлімет қосу
+profile.evidence.description: Бұларды университет беті сұраған жағдайда ғана қосыңыз. Олар өз сөзіңізбен берілген және ресми жазбаларды растамайды.
 profile.evidence.test_date: Тест тапсырған күн (міндетті емес)
 profile.evidence.language_title: Тілдік орта
-profile.evidence.institution_title: Оқу орнына тән оқу туралы растаулар
+profile.evidence.institution_title: Көрсетілген оқу орнындағы оқу
 profile.evidence.institution: Университет
 profile.evidence.kind: Растау түрі
-profile.evidence.language: Тіл коды
+profile.evidence.language: Тіл (қысқа код, мысалы en)
 profile.evidence.country: Ел
 profile.evidence.qualification: Білім деңгейі
 profile.evidence.started: Басталған күні
@@ -2382,7 +2378,7 @@ profile.evidence.credential.mit_dedp: MITx DEDP MicroMasters
 profile.evidence.credential.mit_sc0x: SC0x course credential
 profile.evidence.credential_other: Бағдарлама біліктілігі
 profile.evidence.units_short: бірлік
-profile.evidence.error.language: Тіл кодын және растау түрін дұрыс енгізіңіз.
+profile.evidence.error.language: Тіл кодын (мысалы, en) енгізіп, тілді қалай білетініңізді таңдаңыз.
 profile.evidence.error.dates: Осы растаудың күндерін тексеріңіз.
 profile.evidence.error.qualification: Осы растау үшін білім деңгейін таңдаңыз.
 profile.evidence.error.max_language: Ең көбі 10 тілдік растауды сақтауға болады.
@@ -3205,7 +3201,7 @@ university.admissions.catalog.level.residency: Резидентура
 university.admissions.catalog.study_level.residency: Резидентура
 university.admissions.catalog.level.non_degree: Дәреже берілмейтін бағдарламалар
 university.admissions.catalog.study_level.non_degree: Дәреже берілмейтін бағдарламалар
-profile.option.study_level_preparation: Дайындық / Foundation
+profile.option.study_level_preparation: Дайындық бағдарламасы
 universities.level.preparation: Дайындық
 universities.level.professional: Кәсіби бағдарламалар
 profile.option.study_level_residency: Резидентура
@@ -3332,7 +3328,6 @@ university.admissions.key_facts.funding_records: Бұл жол бойынша қ
 university.admissions.key_facts.funding_none: Бұл жол үшін қаржыландыру тізімге енгізілмеген; ресми қаржыландыру бетін тексеріңіз
 university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
 university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
-profile.intro: Барлық өріс міндетті емес. Алдымен мамандықты, оқу деңгейін және бюджетті көрсетіңіз; жарияланған талаптарды салыстыру үшін балдарды кейін қоса аласыз. Деректерді осы құрылғыда сақтап, каталогқа оралыңыз.
 profile.clear_report_draft: Жобаны тазарту
 profile.report_draft_pending: Есепті қосыңыз не жаңартыңыз немесе оның жобасын тазалап, содан кейін профильді сақтаңыз.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Емтиханнан босатуды жеке тексеруге арналған тілдік тәжірибе
@@ -3433,3 +3428,69 @@ university.admissions.key_facts.requirements_add_sections: {exam} бөлімде
 university.admissions.key_facts.requirements_add_date_sections: {exam} тапсырылған күнін және бөлімдер бойынша балдарын
 university.admissions.key_facts.requirements_add_gpa: орташа балды (GPA)
 university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}
+profile.ux2.intro: Тек білетініңізге ғана жауап беріңіз. UniFit жауаптарыңызды университеттерді сізге арнап реттеу үшін пайдаланады. Мұнда ештеңе міндетті емес, профиль осы құрылғыда сақталады.
+profile.ux2.section.study.title: Нені оқығыңыз келеді
+profile.ux2.section.study.desc: Оқу деңгейі тізімді тарылтады. Мамандық пен тақырыптар реттілікті өзгертеді.
+profile.ux2.section.budget.title: Бюджет және қаржыландыру
+profile.ux2.section.budget.desc: Бюджет университеттердің реттілігін өзгертеді. Қалған жауаптар қандай бағалар мен университеттер көрінетінін анықтайды.
+profile.ux2.section.scores.title: Бағалар мен емтихандар
+profile.ux2.section.scores.desc: Әр университет жариялаған ең төменгі талаптармен салыстырылады. Бұл оқуға түсу мүмкіндігі емес.
+profile.ux2.section.languages.title: Тілдер
+profile.ux2.section.languages.desc: Университеттер жариялаған тіл талаптарымен салыстырылады. Ана тілі немесе CEFR деңгейі университет талап ететін тестті алмастырмайды.
+profile.ux2.section.specific.title: Жекелеген университеттер үшін
+profile.ux2.section.specific.desc: Міндетті емес. Бұл мәліметтерді тек бірнеше тексерілген университет және тек жекелеген бағдарламалар үшін қарайды. Сенімсіз болсаңыз, өткізіп жіберіңіз.
+profile.ux2.hint.study_level: UniFit осы деңгейде оқыту бар университеттерді ғана көрсетеді және баға мен талаптарды дәл осы деңгей бойынша салыстырады.
+profile.ux2.hint.major: Сәйкес бағдарламасы жоқ университеттер UniFit тізімінде төменірек тұрады. Ешқайсысы жасырылмайды.
+profile.ux2.hint.interests: Қысқа тақырыптар UniFit тілдік моделі қолжетімді болғанда университеттерді реттеуге көмектесуі мүмкін. Олар бағдарламаны таңдамайды және оқуға түсу құқығын растамайды.
+profile.ux2.hint.study_mode: UniFit бюджетіңізді күндізгі оқудың немесе онлайн оқудың бағасымен салыстыратынын анықтайды. Университеттер жасырылмайды.
+profile.ux2.hint.budget: Жылдық құны белгілі және осы сомадан жоғары университеттер UniFit тізімінде төменірек тұрады. Ешқайсысы жасырылмайды. Гранттар шегерілмейді, ал белгісіз баға орынды төмендетпейді.
+profile.ux2.hint.funding: Каталогты атау, баға немесе рейтинг бойынша сұрыптағанда гранты (немесе ақылы орны) жоқ екені анық университеттерді жасырады. UniFit реттілігі оны пайдаланбайды.
+profile.ux2.hint.entry_cycle: Тексерілген университеттер сіз үшін қай жылдың жарияланған бағасын қолданатынын анықтайды. Басқа жылдың бағасы мерзімі көрсетілген анықтама ретінде белгіленеді.
+profile.ux2.hint.fee_status: Екеуін де жариялайтын тексерілген университеттерде жергілікті немесе шетелдік бағаны таңдайды. Көрсетпесеңіз, бұл бағалар бюджетпен салыстырылмайды. Нақты мәртебені университет белгілейді.
+profile.ux2.hint.gpa: Университеттер жариялаған ең төменгі GPA-мен салыстырылады. GPA-ңыз қай шкала бойынша қойылғанын таңдаңыз.
+profile.ux2.hint.exams: Университеттер жариялаған емтихан минимумдарымен салыстырылады. Университет сұрайтын емтихан нәтижелері ең төменгі талаптарға сәйкестікті есептеуге мүмкіндік береді.
+profile.ux2.gpa.scale_hint: Шкала: {scale}. Басқа шкала ма? Өрістің жанындағы «{unit}» түймесін басыңыз.
+profile.ux2.gpa.over_scale: {value} мәні 4.0-ден жоғары. Мектебіңізде бес балдық шкала болса, 5.0-ге ауыстыру үшін өрістің жанындағы «/ 4.0» түймесін басыңыз.
+profile.ux2.hint.exams_language: IELTS, TOEFL сияқты тіл тесттері «Тілдер» бөлімінде қосылады.
+profile.ux2.nav.filled: жауаптар бар
+profile.ux2.nav.empty: жауап әлі жоқ
+profile.ux2.action.save_show: Сақтап, сәйкес университеттерді көрсету
+profile.ux2.evidence.language_kind: Бұл тілді қалай білесіз
+profile.ux2.evidence.institution_kind: Нені қосқыңыз келеді?
+profile.ux2.summary.title: UniFit профильіңізді қалай пайдаланады
+profile.ux2.summary.sentence: UniFit жауаптарыңыздың {total} тобының {used} тобын пайдаланады.
+profile.ux2.summary.sentence_none: Сіз әлі ештеңеге жауап бермедіңіз, сондықтан UniFit ескеретін ештеңе жоқ.
+profile.ux2.summary.disclaimer: UniFit университеттерді сізге арнап реттейді. Ол оқуға түсуді немесе қаржыландыруды болжамайды.
+profile.ux2.summary.guide_link: UniFit қалай жұмыс істейді
+profile.ux2.summary.state.used: Ескеріледі
+profile.ux2.summary.state.partial: Ішінара ескеріледі
+profile.ux2.summary.state.not_used: Ескерілмейді
+profile.ux2.summary.level.title: Оқу деңгейі
+profile.ux2.summary.level.used: UniFit осы деңгейі бар университеттерді ғана көрсетеді және баға мен талаптарды сол деңгей бойынша салыстырады.
+profile.ux2.summary.level.unused: Кез келген деңгейдегі университеттер көрсетіледі. Деңгей болмаса, баға деңгейге байланысты болатын жерде UniFit бюджетті салыстырмауы мүмкін.
+profile.ux2.summary.subject.title: Мамандық және қызығушылықтар
+profile.ux2.summary.subject.major: Сәйкес бағдарламасы жоқ университеттер төменірек тұрады, бірақ жасырылмайды.
+profile.ux2.summary.subject.interests: Тақырыптарыңыз UniFit тілдік моделі қолжетімді болса, университеттерді реттеуге көмектесуі мүмкін.
+profile.ux2.summary.subject.interests_value: Тақырыптар қосылды
+profile.ux2.summary.subject.unused: Мамандық таңдалмаған. Сәйкес университеттер жоғарылау үшін мамандықты таңдаңыз немесе тақырыптар қосыңыз.
+profile.ux2.summary.budget.title: Жылдық бюджет
+profile.ux2.summary.budget.value: жылына {amount}
+profile.ux2.summary.budget.used: Жылдық құны белгілі және осы сомадан жоғары университеттер төменірек тұрады, бірақ жасырылмайды. Гранттар шегерілмейді.
+profile.ux2.summary.budget.zero: 0 бюджет ескерілмейді. Бағаларды салыстыру үшін соманы енгізіңіз.
+profile.ux2.summary.budget.unused: Бағалар бюджетпен салыстырылмайды. Салыстыру үшін соманы енгізіңіз.
+profile.ux2.summary.format.title: Қаржыландыру және оқу форматы
+profile.ux2.summary.format.mode: Формат бюджетіңіз күндізгі немесе онлайн оқу бағасымен салыстырылатынын анықтайды.
+profile.ux2.summary.format.mode_no_budget: Формат бюджет көрсетілгенде ғана ескеріледі.
+profile.ux2.summary.format.funding: Қаржыландыру түрі каталогты атау, баға немесе рейтинг бойынша сұрыптағанда мұндай нұсқасы жоқ екені анық университеттерді жасырады. UniFit реттілігі оны пайдаланбайды.
+profile.ux2.summary.format.unused: Кез келген формат пен қаржыландыру: ештеңе тарылтылмайды.
+profile.ux2.summary.requirements.title: GPA, емтихандар және тілдер
+profile.ux2.summary.requirements.gpa: GPA
+profile.ux2.summary.requirements.languages: тілдер
+profile.ux2.summary.requirements.used: Әр университеттің жарияланған минимумдарымен салыстырылады: талаптарға сай келсеңіз, университет жоғарырақ тұрады. Сәйкестік жауаптарыңыз жарияланған барлық минимумды қамтығанда ғана есептеледі.
+profile.ux2.summary.requirements.unused: Ең төменгі талаптарға сәйкестік есептелмейді. Жарияланған минимумдармен салыстыру үшін GPA, емтихандар немесе тілдер қосыңыз.
+profile.ux2.summary.context.title: Оқуды бастау жылы және төлем мәртебесі
+profile.ux2.summary.context.fee_home: Жергілікті тариф
+profile.ux2.summary.context.fee_international: Шетелдік тариф
+profile.ux2.summary.context.fee_other: Басқа төлем мәртебесі
+profile.ux2.summary.context.used: Тексерілген университеттер жарияланған қай баға сізге қолданылатынын таңдау үшін оларды пайдаланады.
+profile.ux2.summary.context.unused: Көрсетілмеген. Тексерілген университеттің бағасы бастау жылына немесе төлем мәртебесіне байланысты болса, UniFit оны жалпы анықтама ретінде көрсетеді және бюджетпен салыстырмауы мүмкін.

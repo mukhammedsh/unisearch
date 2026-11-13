@@ -54,7 +54,7 @@ test("profile budget entry accepts group spaces and saves on Enter", async ({ pa
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
-  await expect(page.locator(".profile-page-intro")).toContainText("All fields are optional");
+  await expect(page.locator(".profile-page-intro")).toContainText("Nothing here is required");
   await page.locator("#budgetInput").fill("1 000 000");
   await expect(page.locator("#budgetInput")).toHaveValue("1 000 000");
   await page.locator("#budgetInput").press("Enter");
@@ -71,10 +71,8 @@ test("currency settings do not silently save unrelated profile drafts", async ({
   await page.locator("#budgetInput").fill("20000");
   await page.locator("#budgetInput").press("Enter");
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await page.getByRole("tab", { name: "Preferences", exact: true }).click();
   await page.locator("#profileInterestsInput").fill("robotics and campus research");
   await expect(page.locator("#saveProfileBtn")).toBeEnabled();
-  await page.getByRole("tab", { name: "General", exact: true }).click();
   await page.locator("#budgetInput").fill("30000");
   await page.locator("#profileBudgetUnit").click();
   await setNativeSelect(page, "settingPreferredCurrency", "KZT");

@@ -6,7 +6,7 @@
   <base href="./" />
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.profile">Applicant Profile | UniSearch</title>
-  <meta name="description" content="Configure your applicant profile, academic test scores, and university preferences to get personalized admission estimates." />
+  <meta name="description" content="Configure your applicant profile, academic test scores, and university preferences to get a personalized university ranking." />
 
   <!-- Open Graph / Facebook / Telegram -->
   <meta property="og:type" content="website" />
@@ -41,179 +41,147 @@
 
   <main class="profile-page" id="profilePage">
     <section class="profile-shell" id="profileModal" role="region" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
-      
-      <div class="profile-page-header">
+
+      <header class="profile-page-header">
         <h1 class="profile-page-title" data-i18n="profile.title">Profile</h1>
-        <section class="profile-progress-card" aria-label="Profile progress" data-i18n-aria-label="profile.progress.title">
-          <div class="profile-progress-info">
-            <div class="profile-progress-badge">
-              <span data-heroicon="chart-bar" data-icon-size="16"></span>
-              <span class="profile-progress-label" data-i18n="profile.progress.title">Profile Completion</span>
-            </div>
-            <span class="profile-progress-text sr-only" id="profileProgressText" data-i18n="profile.progress.empty">
-              Complete your profile for better matches.
-            </span>
-          </div>
-          <div class="profile-progress-meter" aria-hidden="true">
-            <div class="profile-progress-track">
-              <div class="profile-progress-fill" id="profileProgressFill" style="width: 0%;"></div>
-            </div>
-          </div>
-        </section>
-      </div>
+        <p class="profile-page-intro" data-i18n="profile.ux2.intro">Answer only what you know. UniFit uses your answers to rank universities for you. Nothing here is required, and the profile is saved on this device.</p>
+      </header>
 
-      <p class="profile-page-intro" data-i18n="profile.intro">All fields are optional. Start with your subject, study level and budget; add scores when you want to check published requirements. Save on this device, then return to the catalog.</p>
-
-      <!-- 2-Column Workspace Layout -->
       <div class="profile-workspace-layout">
-        <!-- Left Sidebar: Navigation + Reset -->
-        <aside class="profile-sidebar">
-          <div class="profile-sidebar-top">
-            <!-- Section Navigation Tabs -->
-            <nav class="profile-section-tabs-bar" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
-              <div class="profile-section-tabs" role="tablist" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
-                <button class="profile-section-tab is-active" type="button" data-profile-tab="basics" role="tab" aria-selected="true" data-i18n="profile.section.basics">
-                  General
-                </button>
-                <button class="profile-section-tab" type="button" data-profile-tab="scores" role="tab" aria-selected="false" data-i18n="profile.section.scores">
-                  Academic Data
-                </button>
-                <button class="profile-section-tab" type="button" data-profile-tab="languages" role="tab" aria-selected="false" data-i18n="profile.section.languages">
-                  Languages
-                </button>
-                <button class="profile-section-tab" type="button" data-profile-tab="preferences" role="tab" aria-selected="false" data-i18n="profile.section.preferences">
-                  Preferences
-                </button>
-              </div>
-            </nav>
-          </div>
+        <!-- Outline: jump links to the sections below (desktop and tablet only) -->
+        <nav class="profile-outline" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
+          <ol class="profile-outline__list">
+            <li><button class="profile-section-tab is-active" type="button" data-profile-tab="basics" aria-current="location"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.study.title">What you want to study</span><span class="sr-only profile-outline__status"></span></button></li>
+            <li><button class="profile-section-tab" type="button" data-profile-tab="preferences"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.budget.title">Budget and funding</span><span class="sr-only profile-outline__status"></span></button></li>
+            <li><button class="profile-section-tab" type="button" data-profile-tab="scores"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.scores.title">Grades and exams</span><span class="sr-only profile-outline__status"></span></button></li>
+            <li><button class="profile-section-tab" type="button" data-profile-tab="languages"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.languages.title">Languages</span><span class="sr-only profile-outline__status"></span></button></li>
+            <li><button class="profile-section-tab" type="button" data-profile-tab="specific"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.specific.title">For specific universities</span><span class="sr-only profile-outline__status"></span></button></li>
+          </ol>
+        </nav>
 
-          <!-- Bottom Reset Action in Sidebar -->
-          <div class="profile-sidebar-bottom">
-            <button id="resetProfileBtn" class="profile-delete profile-delete--danger-soft" type="button" data-i18n="profile.reset.cta">
-              Reset data
-            </button>
-          </div>
-        </aside>
-
-        <!-- Right Main Content Area -->
         <div class="profile-main-content">
-          <!-- Profile Body Sections -->
           <div class="profile-body">
 
-        <!-- ==================== SECTION: BASICS ==================== -->
-        <div class="profile-section-panel" data-profile-section="basics">
-          <div class="profile-grid">
-            
-            <!-- Budget Card -->
-            <article class="profile-card-block">
-              <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.label.budget">Total Budget / year</h3>
-              </div>
+            <!-- ==================== SECTION 1: WHAT YOU WANT TO STUDY ==================== -->
+            <section class="profile-section-panel" id="profileSectionStudy" data-profile-section="basics" aria-labelledby="profileSectionStudyTitle">
+              <header class="profile-section-head">
+                <h2 class="profile-section-title" id="profileSectionStudyTitle" tabindex="-1" data-i18n="profile.ux2.section.study.title">What you want to study</h2>
+                <p class="profile-section-desc" data-i18n="profile.ux2.section.study.desc">Study level narrows the list. Subject and topics change the order.</p>
+              </header>
 
-              <div class="profile-field">
-                <div class="profile-budget profile-budget--with-unit ui-input-composite">
-                  <label class="sr-only" for="budgetInput" data-i18n="profile.label.budget">Total Budget / year</label>
-                  <input
-                    id="budgetInput"
-                    aria-label="Total Budget / year"
-                    data-i18n-aria-label="profile.label.budget"
-                    class="profile-input"
-                    type="text"
-                    inputmode="numeric"
-                    placeholder="e.g. 20000"
-                    data-i18n-placeholder="profile.placeholder.budget"
-                  />
-                  <button class="profile-unit profile-unit--toggle profile-unit--currency" id="profileBudgetUnit" type="button" data-i18n="profile.unit.currency_year">{currency} / year</button>
-                </div>
-                <div class="profile-hint" data-i18n="profile.hint.budget_range">Range: 0–1,000,000</div>
-              </div>
-            </article>
-
-            <!-- Study Format Card -->
-            <article class="profile-card-block">
-              <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.label.study_mode">Preferred Study Mode</h3>
-              </div>
-
-              <div class="profile-field">
-                <label class="sr-only" for="studyModeSelect" data-i18n="profile.label.study_mode">Preferred Study Mode</label>
-                <select id="studyModeSelect" class="profile-input profile-input--select" aria-label="Preferred Study Mode" data-i18n-aria-label="profile.label.study_mode">
-                  <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
-                  <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
-                  <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
-                </select>
-              </div>
-            </article>
-
-            <!-- Funding Type Card -->
-            <article class="profile-card-block">
-              <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.label.funding_type">Preferred Funding Type</h3>
-              </div>
-
-              <div class="profile-field">
-                <label class="sr-only" for="profileFundingTypeSelect" data-i18n="profile.label.funding_type">Preferred Funding Type</label>
-                <select id="profileFundingTypeSelect" class="profile-input profile-input--select" aria-label="Preferred Funding Type" data-i18n-aria-label="profile.label.funding_type">
-                  <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
-                  <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
-                  <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
-                </select>
-              </div>
-
-              <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
-                <div class="profile-budget-grant-hint__content">
-                  <span data-heroicon="information-circle" data-icon-size="16"></span>
-                  <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
-                    Budget is under $1000. Maybe you need Grant only.
-                  </span>
-                </div>
-                <div class="profile-budget-grant-hint__actions">
-                  <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
-                    Set Grant only
-                  </button>
-                  <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
-                    <span data-heroicon="x-mark" data-icon-size="16"></span>
-                  </button>
-                </div>
-              </div>
-            </article>
-
-            <!-- Target Study Level Card -->
-            <article class="profile-card-block">
-              <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.label.study_level">Target Study Level</h3>
-              </div>
-
-              <div class="profile-field">
-                <label class="sr-only" for="studyLevelSelect" data-i18n="profile.label.study_level">Target Study Level</label>
-                <select id="studyLevelSelect" class="profile-input profile-input--select" aria-label="Target Study Level" data-i18n-aria-label="profile.label.study_level">
-                  <option value="Any" data-i18n="profile.option.study_level_any">Any / All Levels</option>
-                  <option value="preparation" data-i18n="profile.option.study_level_preparation">Preparation / Foundation</option>
-                  <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor / Undergraduate</option>
-                  <option value="Master" data-i18n="profile.option.study_level_master">Master / Postgraduate</option>
-                  <option value="Doctorate" data-i18n="profile.option.study_level_doctorate">Doctorate / PhD</option>
-                  <option value="MBA" data-i18n="profile.option.study_level_mba">Graduate Business / MBA</option>
-                  <option value="professional" data-i18n="profile.option.study_level_professional">Professional programs</option>
-                  <option value="residency" data-i18n="profile.option.study_level_residency">Residency</option>
-                  <option value="non_degree" data-i18n="profile.option.study_level_non_degree">Non-degree programs</option>
-                </select>
-              </div>
-            </article>
-
-            <article class="profile-card-block profile-card-block--full">
-              <div class="profile-card-head">
-                <h3 class="profile-card-title" data-i18n="profile.applicant_context.title">Education and application context</h3>
-                <p class="profile-card-desc" data-i18n="profile.applicant_context.optional_hint">Optional. These details help you review each university's requirements; they do not confirm qualification recognition or fee status.</p>
-              </div>
-              <div class="profile-applicant-context-grid">
+              <div class="profile-section-fields">
                 <div class="profile-field">
-                  <label for="intendedEntryCycleInput" data-i18n="profile.applicant_context.entry_cycle">Intended entry cycle</label>
-                  <input id="intendedEntryCycleInput" class="profile-input" type="text" maxlength="40" placeholder="e.g. 2027 Fall" data-i18n-placeholder="profile.applicant_context.entry_cycle_placeholder" />
+                  <label class="profile-field-label" for="studyLevelSelect" data-i18n="profile.label.study_level">Study level</label>
+                  <p class="profile-hint" id="studyLevelHint" data-i18n="profile.ux2.hint.study_level">UniFit lists only universities that offer this level, and compares prices and requirements for it.</p>
+                  <select id="studyLevelSelect" class="profile-input profile-input--select" aria-describedby="studyLevelHint">
+                    <option value="Any" data-i18n="profile.option.study_level_any">Any study level</option>
+                    <option value="preparation" data-i18n="profile.option.study_level_preparation">Preparation / Foundation</option>
+                    <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor's</option>
+                    <option value="Master" data-i18n="profile.option.study_level_master">Master's</option>
+                    <option value="Doctorate" data-i18n="profile.option.study_level_doctorate">Doctorate / PhD</option>
+                    <option value="MBA" data-i18n="profile.option.study_level_mba">MBA</option>
+                    <option value="professional" data-i18n="profile.option.study_level_professional">Professional</option>
+                    <option value="residency" data-i18n="profile.option.study_level_residency">Residency</option>
+                    <option value="non_degree" data-i18n="profile.option.study_level_non_degree">Non-degree programs</option>
+                  </select>
                 </div>
+
                 <div class="profile-field">
-                  <label for="feeStatusContextSelect" data-i18n="profile.applicant_context.fee_context">Fee status at the university (if known)</label>
-                  <select id="feeStatusContextSelect" class="profile-input profile-input--select">
+                  <label class="profile-field-label" for="profileMajorSelect" data-i18n="profile.label.major">Subject</label>
+                  <p class="profile-hint" id="profileMajorHint" data-i18n="profile.ux2.hint.major">Universities without a matching program rank lower in UniFit. None are hidden.</p>
+                  <select id="profileMajorSelect" class="profile-input profile-input--select" aria-describedby="profileMajorHint">
+                    <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
+                  </select>
+                </div>
+
+                <div class="profile-field">
+                  <label class="profile-field-label" for="profileInterestsInput" data-i18n="profile.label.interests">Topics you are interested in</label>
+                  <p class="profile-hint" id="profileInterestsHint" data-i18n="profile.ux2.hint.interests">Short topics can help order universities in UniFit when its language model is available. They do not choose a program or prove eligibility.</p>
+                  <textarea
+                    id="profileInterestsInput"
+                    class="profile-input profile-input--textarea"
+                    rows="3"
+                    maxlength="1200"
+                    aria-describedby="profileInterestsHint"
+                    placeholder="Example: computer science, artificial intelligence, robotics, game development, internships"
+                    data-i18n-placeholder="profile.placeholder.interests"
+                  ></textarea>
+                </div>
+
+                <div class="profile-field">
+                  <label class="profile-field-label" for="studyModeSelect" data-i18n="profile.label.study_mode">Study format</label>
+                  <p class="profile-hint" id="studyModeHint" data-i18n="profile.ux2.hint.study_mode">Decides whether UniFit compares your budget with the on-campus or the online price. It does not hide universities.</p>
+                  <select id="studyModeSelect" class="profile-input profile-input--select" aria-describedby="studyModeHint">
+                    <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
+                    <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
+                    <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==================== SECTION 2: BUDGET AND FUNDING ==================== -->
+            <section class="profile-section-panel" id="profileSectionBudget" data-profile-section="preferences" aria-labelledby="profileSectionBudgetTitle">
+              <header class="profile-section-head">
+                <h2 class="profile-section-title" id="profileSectionBudgetTitle" tabindex="-1" data-i18n="profile.ux2.section.budget.title">Budget and funding</h2>
+                <p class="profile-section-desc" data-i18n="profile.ux2.section.budget.desc">Budget changes the order of universities. The other answers choose which prices and universities you see.</p>
+              </header>
+
+              <div class="profile-section-fields">
+                <div class="profile-field">
+                  <label class="profile-field-label" for="budgetInput" data-i18n="profile.label.budget">Yearly budget</label>
+                  <p class="profile-hint" id="budgetHint" data-i18n="profile.ux2.hint.budget">Universities whose known yearly cost is above this rank lower in UniFit. None are hidden. Grants are not subtracted, and an unknown price is not penalised.</p>
+                  <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                    <input
+                      id="budgetInput"
+                      class="profile-input"
+                      type="text"
+                      inputmode="numeric"
+                      aria-describedby="budgetHint"
+                      placeholder="e.g. 20000"
+                      data-i18n-placeholder="profile.placeholder.budget"
+                    />
+                    <button class="profile-unit profile-unit--toggle profile-unit--currency" id="profileBudgetUnit" type="button" data-i18n="profile.unit.currency_year">{currency} / year</button>
+                  </div>
+                </div>
+
+                <div class="profile-field">
+                  <label class="profile-field-label" for="profileFundingTypeSelect" data-i18n="profile.label.funding_type">Funding you look for</label>
+                  <p class="profile-hint" id="profileFundingHint" data-i18n="profile.ux2.hint.funding">Hides universities known to have no grants (or no paid places) when you sort the catalog by name, price or rank. UniFit ordering does not use it.</p>
+                  <select id="profileFundingTypeSelect" class="profile-input profile-input--select" aria-describedby="profileFundingHint">
+                    <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
+                    <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
+                    <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
+                  </select>
+
+                  <div id="profileLowBudgetGrantHint" class="profile-budget-grant-hint" hidden>
+                    <div class="profile-budget-grant-hint__content">
+                      <span data-heroicon="information-circle" data-icon-size="16"></span>
+                      <span class="profile-budget-grant-hint__text" data-i18n="profile.hint.low_budget_grant">
+                        Budget is under $1000. Maybe you need Grant only.
+                      </span>
+                    </div>
+                    <div class="profile-budget-grant-hint__actions">
+                      <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
+                        Set Grant only
+                      </button>
+                      <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
+                        <span data-heroicon="x-mark" data-icon-size="16"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="profile-field">
+                  <label class="profile-field-label" for="intendedEntryCycleInput" data-i18n="profile.applicant_context.entry_cycle">When do you plan to start?</label>
+                  <p class="profile-hint" id="entryCycleHint" data-i18n="profile.ux2.hint.entry_cycle">Chooses which year's published prices reviewed universities use for you. A price from another year is labelled as a dated reference.</p>
+                  <input id="intendedEntryCycleInput" class="profile-input" type="text" maxlength="40" aria-describedby="entryCycleHint" placeholder="e.g. 2027 Fall" data-i18n-placeholder="profile.applicant_context.entry_cycle_placeholder" />
+                </div>
+
+                <div class="profile-field">
+                  <label class="profile-field-label" for="feeStatusContextSelect" data-i18n="profile.applicant_context.fee_context">Fee status, if you know it</label>
+                  <p class="profile-hint" id="feeStatusHint" data-i18n="profile.ux2.hint.fee_status">Chooses the home or overseas price at reviewed universities that publish both. If you leave it unset, those prices are not compared with your budget. The university decides your real status.</p>
+                  <select id="feeStatusContextSelect" class="profile-input profile-input--select" aria-describedby="feeStatusHint">
                     <option value="unknown" data-i18n="profile.applicant_context.fee_unknown">Not sure / not confirmed</option>
                     <option value="self_reported_home_domestic" data-i18n="profile.applicant_context.fee_home">Home / domestic (self-reported)</option>
                     <option value="self_reported_international_overseas" data-i18n="profile.applicant_context.fee_international">International / overseas (self-reported)</option>
@@ -221,274 +189,247 @@
                   </select>
                 </div>
               </div>
-              <div id="admissionEvidenceFields"></div>
-            </article>
+            </section>
 
+            <!-- ==================== SECTION 3: GRADES AND EXAMS ==================== -->
+            <section class="profile-section-panel" id="profileSectionScores" data-profile-section="scores" aria-labelledby="profileSectionScoresTitle">
+              <header class="profile-section-head">
+                <h2 class="profile-section-title" id="profileSectionScoresTitle" tabindex="-1" data-i18n="profile.ux2.section.scores.title">Grades and exams</h2>
+                <p class="profile-section-desc" data-i18n="profile.ux2.section.scores.desc">Compared with the minimums each university publishes. This is not an admission chance.</p>
+              </header>
+
+              <div class="profile-section-fields">
+                <div class="profile-field profile-field--gpa">
+                  <label class="profile-field-label" for="gpaInput" data-i18n="profile.label.gpa">GPA</label>
+                  <p class="profile-hint" id="gpaEffectHint" data-i18n="profile.ux2.hint.gpa">Compared with the GPA minimums that universities publish. Pick the scale your GPA is on.</p>
+                  <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                    <input
+                      id="gpaInput"
+                      class="profile-input"
+                      type="number"
+                      min="0"
+                      max="4"
+                      step="0.01"
+                      aria-describedby="gpaEffectHint gpaHint"
+                      placeholder="e.g. 3.80"
+                      data-i18n-placeholder="profile.placeholder.gpa"
+                    />
+                    <button
+                      type="button"
+                      id="gpaUnit"
+                      class="profile-unit profile-unit--toggle"
+                      data-i18n="profile.unit.gpa"
+                    >/ 4.0</button>
+                  </div>
+                  <div class="profile-hint-row">
+                    <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
+                      Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
+                    </div>
+                    <span class="profile-info-wrap">
+                      <button
+                        type="button"
+                        class="profile-info"
+                        aria-label="How GPA works here"
+                        data-i18n-aria-label="profile.gpa_info_title"
+                      >
+                        <span data-heroicon="information-circle" data-icon-size="16"></span>
+                      </button>
+                      <span class="profile-tooltip" role="tooltip">
+                        <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
+                        <span data-i18n="profile.gpa_info_tooltip">
+                          Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="profile-field" role="group" aria-labelledby="profileExamsLabel">
+                  <p class="profile-field-label" id="profileExamsLabel" data-i18n="profile.label.exams">Exam results</p>
+                  <p class="profile-hint" id="profileExamsHint" data-i18n="profile.ux2.hint.exams">Compared with the exam minimums that universities publish. Results for the exams a university asks for can produce a minimum requirements match.</p>
+                  <button type="button" class="profile-inline-link" data-profile-jump="languages" data-i18n="profile.ux2.hint.exams_language">Language tests such as IELTS and TOEFL go in the Languages section.</button>
+
+                  <div class="profile-exam-form">
+                    <div class="profile-exam-form-controls">
+                      <div class="profile-exam-select-wrap">
+                        <label class="sr-only" for="examNameSelect" data-i18n="profile.exam">Exam</label>
+                        <select id="examNameSelect" class="profile-input profile-input--select" aria-label="Exam" data-i18n-aria-label="profile.exam">
+                          <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
+                          <option value="IELTS">IELTS</option>
+                          <option value="TOEFL">TOEFL</option>
+                          <option value="SAT">SAT</option>
+                          <option value="ACT">ACT</option>
+                        </select>
+                      </div>
+
+                      <div class="profile-exam-score-wrap">
+                        <label class="sr-only" for="examScoreInput" data-i18n="profile.placeholder.score">Score</label>
+                        <input
+                          id="examScoreInput"
+                          aria-label="Score"
+                          data-i18n-aria-label="profile.placeholder.score"
+                          class="profile-input"
+                          type="number"
+                          step="0.1"
+                          placeholder="Score"
+                          data-i18n-placeholder="profile.placeholder.score"
+                        />
+                      </div>
+
+                      <div class="profile-field">
+                        <label for="examTakenOnInput" data-i18n="profile.evidence.test_date">Test date (optional)</label>
+                        <input id="examTakenOnInput" class="profile-input" type="date" />
+                      </div>
+
+                      <div class="profile-exam-form-actions">
+                        <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+                        <button id="clearExamDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
+                      </div>
+                    </div>
+
+                    <div id="examSpecialInputContainer" class="profile-exam-special" hidden></div>
+                    <div id="examError" class="profile-error"></div>
+                  </div>
+
+                  <div class="profile-exam-list-wrap">
+                    <div id="examList" class="profile-exam-list"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==================== SECTION 4: LANGUAGES ==================== -->
+            <section class="profile-section-panel" id="profileSectionLanguages" data-profile-section="languages" aria-labelledby="profileSectionLanguagesTitle">
+              <header class="profile-section-head">
+                <h2 class="profile-section-title" id="profileSectionLanguagesTitle" tabindex="-1" data-i18n="profile.ux2.section.languages.title">Languages</h2>
+                <p class="profile-section-desc" data-i18n="profile.ux2.section.languages.desc">Compared with the language requirements that universities publish. A native language or CEFR level does not replace a test a university requires.</p>
+              </header>
+
+              <div class="profile-card-block" id="languagesBlock">
+                <div class="lang-add-grid lang-add-grid--compact">
+                  <div class="lang-control-item">
+                    <label class="mini-label" for="langCode" data-i18n="profile.language">Language</label>
+                    <select id="langCode" class="profile-input" data-flags="off" aria-label="Language" data-i18n-aria-label="profile.language"></select>
+                  </div>
+
+                  <div class="lang-control-item">
+                    <label class="mini-label" for="langKind" data-i18n="profile.type">How you show it</label>
+                    <select id="langKind" class="profile-input" aria-label="How you show it" data-i18n-aria-label="profile.type"></select>
+                  </div>
+
+                  <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
+                    <label class="mini-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
+                    <select id="langCefr" class="profile-input" aria-label="CEFR" data-i18n-aria-label="profile.cefr">
+                      <option value="1">A1</option>
+                      <option value="2">A2</option>
+                      <option value="3">B1</option>
+                      <option value="4">B2</option>
+                      <option value="5">C1</option>
+                      <option value="6">C2</option>
+                    </select>
+                  </div>
+
+                  <div id="examContainer" class="profile-lang-conditional lang-control-item">
+                    <label class="mini-label" for="langExam" data-i18n="profile.exam">Exam</label>
+                    <select id="langExam" class="profile-input" data-flags="off" aria-label="Exam" data-i18n-aria-label="profile.exam"></select>
+                  </div>
+
+                  <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
+                    <label class="mini-label" for="langExamScore" data-i18n="profile.score">Score</label>
+                    <input
+                      id="langExamScore"
+                      aria-label="Score"
+                      data-i18n-aria-label="profile.score"
+                      type="text"
+                      inputmode="decimal"
+                      class="profile-input"
+                      placeholder="Score (e.g. 7.5)"
+                      data-i18n-placeholder="profile.placeholder.lang_score"
+                    />
+                  </div>
+
+                  <div id="langExamTakenOnContainer" class="profile-lang-conditional lang-control-item" hidden>
+                    <label class="mini-label" for="langExamTakenOn" data-i18n="profile.evidence.test_date">Test date (optional)</label>
+                    <input id="langExamTakenOn" class="profile-input" type="date" />
+                  </div>
+
+                  <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
+
+                  <div class="lang-control-btn-wrap">
+                    <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
+                    <button id="clearLanguageDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
+                  </div>
+                </div>
+
+                <div class="profile-lang-list-wrap">
+                  <div id="langList" class="lang-list"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==================== SECTION 5: FOR SPECIFIC UNIVERSITIES ==================== -->
+            <section class="profile-section-panel" id="profileSectionSpecific" data-profile-section="specific" aria-labelledby="profileSectionSpecificTitle">
+              <header class="profile-section-head">
+                <h2 class="profile-section-title" id="profileSectionSpecificTitle" tabindex="-1" data-i18n="profile.ux2.section.specific.title">For specific universities</h2>
+                <p class="profile-section-desc" data-i18n="profile.ux2.section.specific.desc">Optional. Only a few reviewed universities check these details, and only for particular programs. Skip it if you are not sure.</p>
+              </header>
+
+              <div id="admissionEvidenceFields"></div>
+            </section>
+
+            <div class="profile-reset-row">
+              <p class="profile-hint" data-i18n="profile.reset.note">Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.</p>
+              <button id="resetProfileBtn" class="profile-delete profile-delete--danger-soft" type="button" data-i18n="profile.reset.cta">
+                Reset data
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- ==================== SECTION: SCORES ==================== -->
-        <div class="profile-section-panel is-section-hidden" data-profile-section="scores">
-          
-          <!-- GPA Card -->
-          <article class="profile-card-block">
-            <div class="profile-card-head">
-              <h3 class="profile-card-title" data-i18n="profile.label.gpa">Grade Point Average (GPA)</h3>
-              <p class="profile-card-desc" data-i18n="profile.field.gpa.desc">
-                Select your grading scale and enter your certificate GPA.
-              </p>
-            </div>
-
-            <div class="profile-field profile-field--compact profile-field--gpa">
-              <div class="profile-budget profile-budget--with-unit ui-input-composite">
-                <label class="sr-only" for="gpaInput" data-i18n="profile.label.gpa">Grade Point Average (GPA)</label>
-                <input
-                  id="gpaInput"
-                  aria-label="GPA"
-                  data-i18n-aria-label="profile.label.gpa"
-                  class="profile-input"
-                  type="number"
-                  min="0"
-                  max="4"
-                  step="0.01"
-                  placeholder="e.g. 3.80"
-                  data-i18n-placeholder="profile.placeholder.gpa"
-                />
-                <button
-                  type="button"
-                  id="gpaUnit"
-                  class="profile-unit profile-unit--toggle"
-                  data-i18n="profile.unit.gpa"
-                >/ 4.0</button>
-              </div>
-              <div class="profile-hint-row">
-                <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
-                  Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
-                </div>
-                <span class="profile-info-wrap">
-                  <button
-                    type="button"
-                    class="profile-info"
-                    aria-label="How GPA works here"
-                    data-i18n-aria-label="profile.gpa_info_title"
-                  >
-                    <span data-heroicon="information-circle" data-icon-size="16"></span>
-                  </button>
-                  <span class="profile-tooltip" role="tooltip">
-                    <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
-                    <span data-i18n="profile.gpa_info_tooltip">
-                      Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Standardized Exams Card -->
-          <article class="profile-card-block">
-            <div class="profile-card-head">
-              <h3 class="profile-card-title" data-i18n="profile.label.exams">Exams</h3>
-              <p class="profile-card-desc" data-i18n="profile.field.exams.desc">
-                Add academic test results to check fit with published requirements.
-              </p>
-            </div>
-
-            <div class="profile-exam-form">
-              <div class="profile-exam-form-controls">
-                <div class="profile-exam-select-wrap">
-                  <label class="sr-only" for="examNameSelect" data-i18n="profile.exam">Exam</label>
-                  <select id="examNameSelect" class="profile-input profile-input--select" aria-label="Exam" data-i18n-aria-label="profile.exam">
-                    <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
-                    <option value="IELTS">IELTS</option>
-                    <option value="TOEFL">TOEFL</option>
-                    <option value="SAT">SAT</option>
-                    <option value="ACT">ACT</option>
-                  </select>
-                </div>
-
-                <div class="profile-exam-score-wrap">
-                  <label class="sr-only" for="examScoreInput" data-i18n="profile.placeholder.score">Score</label>
-                  <input
-                    id="examScoreInput"
-                    aria-label="Score"
-                    data-i18n-aria-label="profile.placeholder.score"
-                    class="profile-input"
-                    type="number"
-                    step="0.1"
-                    placeholder="Score"
-                    data-i18n-placeholder="profile.placeholder.score"
-                  />
-                </div>
-
-                <div class="profile-field">
-                  <label for="examTakenOnInput" data-i18n="profile.evidence.test_date">Test date (optional)</label>
-                  <input id="examTakenOnInput" class="profile-input" type="date" />
-                </div>
-
-                <div class="profile-exam-form-actions">
-                  <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
-                  <button id="clearExamDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
-                </div>
-              </div>
-
-              <div id="examSpecialInputContainer" class="profile-exam-special" hidden></div>
-              <div id="examError" class="profile-error"></div>
-            </div>
-
-            <div class="profile-exam-list-wrap">
-              <div id="examList" class="profile-exam-list"></div>
-            </div>
-          </article>
-
-        </div>
-
-        <!-- ==================== SECTION: LANGUAGES ==================== -->
-        <div class="profile-section-panel is-section-hidden" data-profile-section="languages">
-          
-          <section class="profile-card-block" id="languagesBlock">
-            <div class="profile-card-head">
-              <h3 class="profile-card-title" data-i18n="profile.languages">Languages</h3>
-              <p class="profile-card-desc" data-i18n="profile.field.languages.desc">
-                Add your native language or international certificates (IELTS, TOEFL, CEFR) for requirement evaluation.
-              </p>
-            </div>
-
-            <div class="lang-add-grid lang-add-grid--compact">
-              <div class="lang-control-item">
-                <label class="mini-label" for="langCode" data-i18n="profile.language">Language</label>
-                <select id="langCode" class="profile-input" data-flags="off" aria-label="Language" data-i18n-aria-label="profile.language"></select>
-              </div>
-
-              <div class="lang-control-item">
-                <label class="mini-label" for="langKind" data-i18n="profile.type">Type</label>
-                <select id="langKind" class="profile-input" aria-label="Type" data-i18n-aria-label="profile.type"></select>
-              </div>
-
-              <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
-                <label class="mini-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
-                <select id="langCefr" class="profile-input" aria-label="CEFR" data-i18n-aria-label="profile.cefr">
-                  <option value="1">A1</option>
-                  <option value="2">A2</option>
-                  <option value="3">B1</option>
-                  <option value="4">B2</option>
-                  <option value="5">C1</option>
-                  <option value="6">C2</option>
-                </select>
-              </div>
-
-              <div id="examContainer" class="profile-lang-conditional lang-control-item">
-                <label class="mini-label" for="langExam" data-i18n="profile.exam">Exam</label>
-                <select id="langExam" class="profile-input" data-flags="off" aria-label="Exam" data-i18n-aria-label="profile.exam"></select>
-              </div>
-
-              <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
-                <label class="mini-label" for="langExamScore" data-i18n="profile.score">Score</label>
-                <input
-                  id="langExamScore"
-                  aria-label="Score"
-                  data-i18n-aria-label="profile.score"
-                  type="text"
-                  inputmode="decimal"
-                  class="profile-input"
-                  placeholder="Score (e.g. 7.5)"
-                  data-i18n-placeholder="profile.placeholder.lang_score"
-                />
-              </div>
-
-              <div id="langExamTakenOnContainer" class="profile-lang-conditional lang-control-item" hidden>
-                <label class="mini-label" for="langExamTakenOn" data-i18n="profile.evidence.test_date">Test date (optional)</label>
-                <input id="langExamTakenOn" class="profile-input" type="date" />
-              </div>
-
-              <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
-
-              <div class="lang-control-btn-wrap">
-                <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
-                <button id="clearLanguageDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
-              </div>
-            </div>
-
-            <div class="profile-lang-list-wrap">
-              <div id="langList" class="lang-list"></div>
-            </div>
-          </section>
-
-        </div>
-
-        <!-- ==================== SECTION: PREFERENCES ==================== -->
-        <div class="profile-section-panel is-section-hidden" data-profile-section="preferences">
-          
-          <article class="profile-card-block">
-            <div class="profile-card-head">
-              <h3 class="profile-card-title" data-i18n="profile.label.major">Intended Major</h3>
-            </div>
-
-            <div class="profile-field profile-field--compact">
-              <label class="sr-only" for="profileMajorSelect" data-i18n="profile.label.major">Intended Major</label>
-              <select id="profileMajorSelect" class="profile-input profile-input--select" aria-label="Intended Major" data-i18n-aria-label="profile.label.major">
-                <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
-              </select>
-            </div>
-          </article>
-
-          <article class="profile-card-block">
-            <div class="profile-card-head">
-              <h3 class="profile-card-title" data-i18n="profile.label.interests">What You Want in a University</h3>
-              <p class="profile-card-desc" data-i18n="profile.field.interests.desc">
-                Works like smart tags: list topics and disciplines separated by commas (technologies, majors, career goals).
-              </p>
-            </div>
-
-            <div class="profile-field">
-              <label class="sr-only" for="profileInterestsInput" data-i18n="profile.label.interests">What You Want in a University</label>
-              <textarea
-                id="profileInterestsInput"
-                aria-label="What You Want in a University"
-                data-i18n-aria-label="profile.label.interests"
-                class="profile-input profile-input--textarea"
-                rows="4"
-                maxlength="1200"
-                placeholder="Example: computer science, artificial intelligence, robotics, game development, internships"
-                data-i18n-placeholder="profile.placeholder.interests"
-              ></textarea>
-
-              <div class="profile-hint" data-i18n="profile.hint.interests">
-                Write key topics separated by commas. Avoid long sentences and negations (&quot;no X&quot;). The AI automatically connects synonyms to university programs.
-              </div>
-            </div>
-          </article>
-
-        </div>
-
+        <!-- Summary: how the current answers are used, before saving -->
+        <aside class="profile-summary" aria-labelledby="profileSummaryTitle">
+          <h2 class="profile-summary__title" id="profileSummaryTitle" data-i18n="profile.ux2.summary.title">How UniFit will use your profile</h2>
+          <p class="profile-summary__sentence" id="profileSummarySentence" role="status" aria-live="polite" aria-atomic="true"></p>
+          <ul class="profile-summary__list" id="profileSummaryList"></ul>
+          <p class="profile-summary__note" data-i18n="profile.ux2.summary.disclaimer">UniFit orders universities for you. It does not predict admission or funding.</p>
+          <a class="profile-summary__link" id="profileUnifitGuideLink" href="guide.html#guide-unifit" target="_blank" rel="noopener">
+            <span data-i18n="profile.ux2.summary.guide_link">How UniFit works</span>
+            <span data-heroicon="arrow-top-right-on-square" data-icon-size="16"></span>
+          </a>
+        </aside>
       </div>
 
-          <!-- Main Area Footer Actions -->
-          <footer class="profile-main-footer">
-            <div class="profile-status-wrap">
-              <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>
-            </div>
-            <div class="profile-action-buttons">
-              <button
-                class="profile-action-btn profile-action-btn--secondary"
-                id="profileCloseBtn"
-                type="button"
-                title="Return to previous page"
-                data-i18n-title="profile.action.back_desc"
-              >
-                <span data-i18n="profile.action.back">Back</span>
-              </button>
-              <button
-                class="profile-action-btn profile-action-btn--primary"
-                id="saveProfileBtn"
-                type="button"
-              >
-                <span data-i18n="profile.action.save_all">Save</span>
-              </button>
-            </div>
-          </footer>
+      <!-- Sticky action bar -->
+      <footer class="profile-action-bar">
+        <div class="profile-status-wrap">
+          <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>
         </div>
-      </div>
+        <div class="profile-action-buttons">
+          <button
+            class="profile-action-btn profile-action-btn--subtle"
+            id="profileCloseBtn"
+            type="button"
+            title="Return to previous page"
+            data-i18n-title="profile.action.back_desc"
+          >
+            <span data-i18n="profile.action.back">Back</span>
+          </button>
+          <button
+            class="profile-action-btn profile-action-btn--secondary"
+            id="saveProfileBtn"
+            type="button"
+          >
+            <span data-i18n="profile.action.save_all">Save</span>
+          </button>
+          <button
+            class="profile-action-btn profile-action-btn--primary"
+            id="profileShowMatchesBtn"
+            type="button"
+          >
+            <span data-i18n="profile.ux2.action.save_show">Save and show matches</span>
+          </button>
+        </div>
+      </footer>
 
     </section>
 

@@ -18,10 +18,10 @@ test.describe("Applicant profile application details", () => {
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
     for (const id of REMOVED_CONTROLS) await expect(page.locator(`#${id}`)).toHaveCount(0);
-    const card = page.locator("article.profile-card-block--full");
-    await expect(card.locator(".profile-card-title")).toHaveText("Application details");
-    await expect(card.locator(":scope > .profile-applicant-context-grid > .profile-field")).toHaveCount(2);
-    await expect(card.locator(".profile-card-desc").first()).toContainText("fee status");
+    const section = page.locator('[data-profile-section="preferences"]');
+    await expect(section.locator('label[for="intendedEntryCycleInput"]')).toHaveText("When do you plan to start?");
+    await expect(section.locator('label[for="feeStatusContextSelect"]')).toHaveText("Fee status, if you know it");
+    await expect(section.locator("#feeStatusHint")).toContainText("home or overseas price");
 
     await page.fill("#intendedEntryCycleInput", "2027 Fall");
     await setNativeSelect(page, "feeStatusContextSelect", "self_reported_international_overseas");
@@ -61,15 +61,15 @@ test.describe("Applicant profile application details", () => {
     expect(payload.selectedAdmissionChoices["mit-usa-cambridge"].applicantRoute).toBe("first_year");
   });
 
-  for (const [language, title] of [["rus", "Параметры поступления"], ["kaz", "Түсу параметрлері"]]) {
-    test(`the application details card is titled in ${language}`, async ({ page }) => {
+  for (const [language, title] of [["rus", "Когда вы планируете начать?"], ["kaz", "Оқуды қашан бастауды жоспарлайсыз?"]]) {
+    test(`the intended start question is labelled in ${language}`, async ({ page }) => {
       await markTourAsSeen(page);
       await page.addInitScript((value) => localStorage.setItem("unisearch_ui_language_v1", value), language);
       await page.goto("/profile.html");
       await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
       await expect(page.locator(selectors.profileModal)).toBeVisible();
       await expect(page.locator("html")).toHaveAttribute("lang", language === "kaz" ? "kk" : "ru");
-      await expect(page.locator("article.profile-card-block--full .profile-card-title")).toHaveText(title);
+      await expect(page.locator('label[for="intendedEntryCycleInput"]')).toHaveText(title);
     });
   }
 });
