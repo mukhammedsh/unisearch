@@ -1,12 +1,26 @@
 // Plain-language explanation of a UniFit ranking in the catalog: which profile answers the list was ranked for
-// (banner) and the few reasons shown on each card ("why here"). Pure functions; no scoring happens here.
-// Reasons are derived from the match data the icon badges already use (backend/app/services/ai_scoring.py).
+// and which card icons are on screen (banner legend). Pure functions; no scoring happens here.
 
 import { parseSummaryBudget, studyLevelLabel } from "../../components/profile/profile-summary.js";
 
-export const MAX_WHY_REASONS = 3;
+// Legend entry per card status icon, in display order: the key is the `data-legend` value written on each icon
+// badge (addStatusIndicator in universities.js) and the value is the localization key of its short label.
+export const LEGEND_LABEL_KEYS = {
+  subject_missing: "universities.ux2.legend.subject_missing",
+  subject_matched: "universities.ux2.legend.subject_matched",
+  requirements_below: "universities.ux2.legend.requirements_below",
+  exam_needed: "universities.ux2.legend.exam_needed",
+  requirements_met: "universities.ux2.legend.requirements_met",
+  no_data: "universities.ux2.legend.no_data",
+  over_budget_aid: "universities.ux2.legend.over_budget_aid",
+  over_budget: "universities.ux2.legend.over_budget",
+  budget_check: "universities.ux2.legend.budget_check",
+  within_budget: "universities.ux2.legend.within_budget",
+  aid: "universities.ux2.legend.aid",
+  vibe: "universities.ux2.legend.vibe",
+};
+const LEGEND_ORDER = Object.keys(LEGEND_LABEL_KEYS);
 
-const SENTIMENT_ORDER = { negative: 0, unknown: 1, positive: 2 };
 const text = (value) => String(value ?? "").trim();
 const isAny = (value) => !text(value) || text(value).toLowerCase() === "any";
 
@@ -40,71 +54,27 @@ export const describeRankingProfile = (profile, ctx) => {
   return parts;
 };
 
-// Negative reasons first, then unknown, then positive; at most `limit` distinct kinds.
-export const orderWhyReasons = (reasons, limit = MAX_WHY_REASONS) => {
+// Distinct legend entries for the icon badges found on the rendered cards ({ key, icon, tone } each).
+// The same meaning with the same icon and tone is listed once; unknown keys are ignored.
+export const legendEntries = (badges) => {
   const seen = new Set();
-  return (Array.isArray(reasons) ? reasons : [])
-    .filter((reason) => reason && reason.label && !seen.has(reason.kind) && seen.add(reason.kind))
-    .map((reason, index) => ({ reason, index }))
-    .sort((a, b) => (SENTIMENT_ORDER[a.reason.sentiment] - SENTIMENT_ORDER[b.reason.sentiment]) || (a.index - b.index))
-    .slice(0, limit)
-    .map(({ reason }) => reason);
+  return (Array.isArray(badges) ? badges : [])
+    .filter((badge) => badge && LEGEND_LABEL_KEYS[badge.key] && badge.icon && badge.tone)
+    .filter((badge) => {
+      const id = `${badge.key}|${badge.icon}|${badge.tone}`;
+      return !seen.has(id) && seen.add(id);
+    })
+    .map((badge) => ({ key: badge.key, icon: badge.icon, tone: badge.tone, labelKey: LEGEND_LABEL_KEYS[badge.key] }))
+    .sort((a, b) => LEGEND_ORDER.indexOf(a.key) - LEGEND_ORDER.indexOf(b.key));
 };
 
-// Reasons for a reviewed card, taken from the icon indicators (reviewedCardIndicators) that carry kind/sentiment.
-export const reviewedWhyReasons = (indicators, match, budget, t, tFormat) => {
-  const reasons = [];
-  (Array.isArray(indicators) ? indicators : []).forEach((indicator) => {
-    if (!indicator.kind || indicator.kind === "vibe") return;
-    if (indicator.kind === "requirements") {
-      const { met, total } = indicator.counts || {};
-      reasons.push({
-        kind: "requirements",
-        sentiment: met < total ? "negative" : "positive",
-        label: met < total ? tFormat("universities.ux2.why.minimums_partial", { met, total }) : t("universities.ux2.why.minimums_met"),
-      });
-      return;
-    }
-    reasons.push({
-      kind: indicator.kind,
-      sentiment: indicator.sentiment,
-      label: indicator.kind === "subject" && indicator.sentiment === "positive" ? t("universities.ux2.why.offers_subject") : indicator.label,
-    });
-  });
-  const hasBudget = Number(budget) > 0;
-  if (hasBudget && match?.finalScore != null && !reasons.some((reason) => reason.kind === "budget")) {
-    reasons.push({ kind: "budget", sentiment: "unknown", label: t("universities.ux2.why.price_unknown") });
-  }
-  return reasons;
-};
-
-// Reasons for a legacy (not yet reviewed) card from the same flags the card badges use.
-export const legacyWhyReasons = (flags, t, tFormat = (key) => t(key)) => {
-  const reasons = [];
-  if (flags.missingProgram) reasons.push({ kind: "subject", sentiment: "negative", label: t("universities.badge.no_matching_program") });
-  else if (flags.offersSubject) reasons.push({ kind: "subject", sentiment: "positive", label: t("universities.ux2.why.offers_subject") });
-  if (flags.belowRequirements) reasons.push({ kind: "requirements", sentiment: "negative", label: t("universities.badge.below_requirements") });
-  // Missing exam evidence is not a failed requirement (see the banner), so it is an unknown, not a negative.
-  else if (flags.conditionalExam) {
-    // Name the missing exams when the checks say which ones (e.g. "UNT result needed").
-    const names = Array.isArray(flags.missingExamNames) ? flags.missingExamNames.filter(Boolean) : [];
-    reasons.push({
-      kind: "requirements",
-      sentiment: "unknown",
-      label: names.length
-        ? tFormat("universities.ux2.why.exam_needed_named", { exams: names.join(", ") })
-        : t("universities.ux2.why.exam_needed"),
-    });
-  }
-  else if (flags.meetsRequirements) reasons.push({ kind: "requirements", sentiment: "positive", label: t("universities.badge.requirements_met") });
-  if (flags.overBudget) {
-    // Say by how much, so a small overshoot ranked near the top makes sense.
-    const label = flags.overBudgetBy
-      ? tFormat(flags.overBudgetAid ? "universities.ux2.why.over_budget_by_aid" : "universities.ux2.why.over_budget_by", { amount: flags.overBudgetBy })
-      : t(flags.overBudgetAid ? "universities.badge.over_budget_aid" : "universities.badge.over_budget");
-    reasons.push({ kind: "budget", sentiment: "negative", label });
-  }
-  else if (flags.withinBudget) reasons.push({ kind: "budget", sentiment: "positive", label: t("universities.ux2.why.within_budget") });
-  else if (flags.priceUnknown) reasons.push({ kind: "budget", sentiment: "unknown", label: t("universities.ux2.why.price_unknown") });
-  return reasons;
-};
+// Names of the exam results a card still needs, for the "exam needed" tooltip. Language rules arrive as
+// alternatives (mode "any": native, CEFR, IELTS, TOEFL...), so they are named once as a language test.
+export const missingExamNames = (checks, { examLabel, languageTest, joiner }) => [...new Set(
+  (Array.isArray(checks) ? checks : [])
+    .filter((check) => check && check.provided == null && check.status !== "met")
+    .map((check) => (check.mode === "any"
+      ? languageTest
+      : text(check.examId || check.exam).split(" or ").map(examLabel).join(` ${joiner} `)))
+    .filter(Boolean),
+)];

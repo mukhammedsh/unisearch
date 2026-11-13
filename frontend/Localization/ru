@@ -3495,17 +3495,23 @@ universities.ux2.banner.budget: до {amount}/год
 universities.ux2.banner.edit: Изменить профиль
 universities.ux2.banner.set_up: Заполнить профиль
 universities.ux2.banner.disclaimer: Это рейтинг соответствия, а не прогноз поступления. Нехватка данных не считается невыполненным требованием.
-universities.ux2.why.aria: Почему этот университет здесь
-universities.ux2.why.within_budget: В рамках вашего бюджета
-universities.ux2.why.exam_needed: Нужен результат экзамена для проверки
-universities.ux2.why.language_test: языкового теста
-universities.ux2.why.exam_needed_named: Нужен результат {exams} для проверки
-universities.ux2.why.over_budget_by: На {amount} выше бюджета
-universities.ux2.why.over_budget_by_aid: На {amount} выше бюджета • есть финансовая помощь
-universities.ux2.why.offers_subject: Есть ваше направление
-universities.ux2.why.minimums_met: Минимумы выполнены
-universities.ux2.why.minimums_partial: Выполнено минимумов: {met} из {total}
-universities.ux2.why.price_unknown: Нет цены для сравнения с бюджетом
+universities.ux2.tip.exam_needed_named: Для проверки нужен результат: {exams}.
+universities.ux2.tip.language_test: языковой тест
+universities.ux2.tip.over_budget_by: На {amount} выше вашего бюджета.
+universities.ux2.legend.aria: Значки на карточках университетов
+universities.ux2.legend.lead: Значки на карточках:
+universities.ux2.legend.subject_missing: Программы нет
+universities.ux2.legend.subject_matched: Направление есть
+universities.ux2.legend.requirements_below: Ниже требований
+universities.ux2.legend.exam_needed: Нужен экзамен
+universities.ux2.legend.requirements_met: Требования выполнены
+universities.ux2.legend.no_data: Нет данных о требованиях
+universities.ux2.legend.over_budget_aid: Выше бюджета, есть помощь
+universities.ux2.legend.over_budget: Выше бюджета
+universities.ux2.legend.budget_check: Проверьте стоимость
+universities.ux2.legend.within_budget: В рамках бюджета
+universities.ux2.legend.aid: Есть финпомощь
+universities.ux2.legend.vibe: По предпочтениям
 profile.ux2.evidence.language_title: Опыт использования английского языка
 profile.ux2.evidence.language_fixed: Здесь записывается только ваш опыт английского языка: именно о нём спрашивают требования к знанию английского.
 profile.ux2.evidence.entirely: Полностью на английском?

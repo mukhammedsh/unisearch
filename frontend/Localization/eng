@@ -3497,17 +3497,23 @@ universities.ux2.banner.budget: up to {amount}/yr
 universities.ux2.banner.edit: Edit profile
 universities.ux2.banner.set_up: Set up profile
 universities.ux2.banner.disclaimer: A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.
-universities.ux2.why.aria: Why this university is here
-universities.ux2.why.within_budget: Within your budget
-universities.ux2.why.exam_needed: Exam result needed to check requirements
-universities.ux2.why.language_test: language test
-universities.ux2.why.exam_needed_named: Needs your {exams} result to check
-universities.ux2.why.over_budget_by: {amount} above your budget
-universities.ux2.why.over_budget_by_aid: {amount} above your budget • aid available
-universities.ux2.why.offers_subject: Offers your subject
-universities.ux2.why.minimums_met: Meets the listed minimums
-universities.ux2.why.minimums_partial: {met} of {total} minimums met
-universities.ux2.why.price_unknown: No price to compare with your budget
+universities.ux2.tip.exam_needed_named: Needs your {exams} result to check.
+universities.ux2.tip.language_test: language test
+universities.ux2.tip.over_budget_by: {amount} above your budget.
+universities.ux2.legend.aria: Icons on university cards
+universities.ux2.legend.lead: Card icons:
+universities.ux2.legend.subject_missing: Program not offered
+universities.ux2.legend.subject_matched: Subject offered
+universities.ux2.legend.requirements_below: Below requirements
+universities.ux2.legend.exam_needed: Exam needed
+universities.ux2.legend.requirements_met: Requirements met
+universities.ux2.legend.no_data: No requirement data
+universities.ux2.legend.over_budget_aid: Over budget, aid available
+universities.ux2.legend.over_budget: Over budget
+universities.ux2.legend.budget_check: Check the cost
+universities.ux2.legend.within_budget: Within budget
+universities.ux2.legend.aid: Aid available
+universities.ux2.legend.vibe: Matches preferences
 profile.ux2.evidence.language_title: English language background
 profile.ux2.evidence.language_fixed: This records your background in English only, which is what English-language requirements ask about.
 profile.ux2.evidence.entirely: Entirely in English?

@@ -220,11 +220,21 @@ test("a real zero requirements match remains visible without internal ranking sc
   assert.doesNotMatch(JSON.stringify(indicators), /99|ranking|preference comparison/i);
 });
 
-test("reviewed indicators say which fact each icon states, for the visible why-line", () => {
+test("reviewed indicators name the legend meaning of each icon", () => {
   setLanguage("eng", { emit: false });
   const indicators = reviewedCardIndicators({ finalScore: 0.4, preferenceMismatch: 0.1, subjectMatch: { status: "matched" },
     requirementsFitPercent: 100, requirementChecks: [{ measurable: true, status: "met" }],
     budgetAssessment: { status: "within_budget", evidence: "applicable", basis: "annual_total" }, costQuote: { minUSD: 1, maxUSD: 2 } }, 5000);
-  const byKind = Object.fromEntries(indicators.map(item => [item.kind, item.sentiment]));
-  assert.deepEqual(byKind, { subject: "positive", vibe: "positive", requirements: "positive", budget: "positive" });
+  assert.deepEqual(indicators.map(item => item.legend).sort(), ["requirements_met", "subject_matched", "vibe", "within_budget"]);
+  const below = reviewedCardIndicators({ finalScore: 0.4, requirementsFitPercent: 50,
+    requirementChecks: [{ measurable: true, status: "met" }, { measurable: true, status: "unmet" }] }, null);
+  assert.deepEqual(below.map(item => item.legend), ["requirements_below"]);
+});
+
+test("an over-budget reviewed card says by how much the lowest published price exceeds the budget", () => {
+  setLanguage("eng", { emit: false });
+  const over = reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "over_budget", evidence: "applicable", basis: "annual_total" },
+    costQuote: { minUSD: 40000, maxUSD: 50000 } }, 30000);
+  assert.equal(over[0].legend, "over_budget");
+  assert.match(over[0].detail, /^\$10,000 above your budget\./);
 });

@@ -3497,17 +3497,23 @@ universities.ux2.banner.budget: жылына {amount} дейін
 universities.ux2.banner.edit: Профильді өзгерту
 universities.ux2.banner.set_up: Профильді толтыру
 universities.ux2.banner.disclaimer: Бұл сәйкестік рейтингі, түсу болжамы емес. Деректің жоқтығы орындалмаған талап болып есептелмейді.
-universities.ux2.why.aria: Бұл университет неге осы жерде
-universities.ux2.why.within_budget: Бюджетіңіз шегінде
-universities.ux2.why.exam_needed: Талаптарды тексеру үшін емтихан нәтижесі керек
-universities.ux2.why.language_test: тіл тестінің
-universities.ux2.why.exam_needed_named: Тексеру үшін {exams} нәтижесі керек
-universities.ux2.why.over_budget_by: Бюджеттен {amount} асады
-universities.ux2.why.over_budget_by_aid: Бюджеттен {amount} асады • қаржылай көмек бар
-universities.ux2.why.offers_subject: Таңдаған бағытыңыз бар
-universities.ux2.why.minimums_met: Көрсетілген минимумдар орындалды
-universities.ux2.why.minimums_partial: Минимумдардың {met}/{total} орындалды
-universities.ux2.why.price_unknown: Бюджетпен салыстыратын баға жоқ
+universities.ux2.tip.exam_needed_named: Тексеру үшін {exams} нәтижесі керек.
+universities.ux2.tip.language_test: тіл тесті
+universities.ux2.tip.over_budget_by: Бюджетіңізден {amount} асады.
+universities.ux2.legend.aria: Университет карточкаларындағы белгішелер
+universities.ux2.legend.lead: Карточка белгішелері:
+universities.ux2.legend.subject_missing: Бағдарлама жоқ
+universities.ux2.legend.subject_matched: Бағыт бар
+universities.ux2.legend.requirements_below: Талаптан төмен
+universities.ux2.legend.exam_needed: Емтихан керек
+universities.ux2.legend.requirements_met: Талаптар орындалды
+universities.ux2.legend.no_data: Талап деректері жоқ
+universities.ux2.legend.over_budget_aid: Бюджеттен асады, көмек бар
+universities.ux2.legend.over_budget: Бюджеттен асады
+universities.ux2.legend.budget_check: Құнын тексеріңіз
+universities.ux2.legend.within_budget: Бюджет шегінде
+universities.ux2.legend.aid: Қаржылай көмек бар
+universities.ux2.legend.vibe: Қалауыңызға сәйкес
 profile.ux2.evidence.language_title: Ағылшын тілін қолдану тәжірибесі
 profile.ux2.evidence.language_fixed: Мұнда тек ағылшын тіліндегі тәжірибеңіз жазылады: ағылшын тілі талаптары дәл соны сұрайды.
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?

@@ -10,7 +10,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Added `applicant_route` (`first_year`, `transfer`, `graduate` or null) to application route summaries in the admissions API responses, derived for every route during catalog preparation.
 - A live "How UniFit will use your profile" summary on the profile page lists each group of answers as used or not used, echoes the entered values (for example "GPA 4.6 / 5, IELTS 6.5") and says what to add.
 - A "Save and show matches" profile action saves the profile and opens the catalog sorted by UniFit with the profile's study level pre-selected. The first-visit catalog tour does not open over those results.
-- In UniFit sort, the catalog names the profile answers the ranking uses, with an "Edit profile" link, and each card shows a short "why here" line built from the same facts as its status icons: within or above the budget (with the difference), subject offered or missing, minimums met, or which exam result is still needed to check. Missing evidence is shown as something to add, not as a failed requirement.
+- In UniFit sort, the catalog banner names the profile answers the ranking uses, links to the profile, and shows a legend for the card status icons on the current page. The icons stay compact and cards keep equal size. Icon tooltips now name the exam result still needed and say how far a price is above the budget.
 
 ### Changed
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
@@ -46,6 +46,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A 5-point GPA typed on the 4.0 scale is flagged while typing instead of only failing on save, and the exams field points IELTS and TOEFL to the Languages section.
 - On phones the profile reset action no longer sits above the questions, and the profile action bar stays above an open dropdown.
 - The UniFit banner link meets text contrast in the dark theme.
+- Catalog card prices sit on the same line across each grid row, whether or not a card shows a price qualifier.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

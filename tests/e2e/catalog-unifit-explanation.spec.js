@@ -45,7 +45,7 @@ test("an empty profile says the ranking is generic and links to the profile", as
   await expect(page.locator("#unifitBannerEdit")).toHaveText("Set up profile");
 });
 
-test("cards show up to three visible reasons in UniFit mode and none in other sorts", async ({ page }) => {
+test("cards stay compact and the banner legend explains only the icons on screen", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await seed(page, { profile: { studyLevel: "Bachelor", major: "Computer Science", budget: "6000", budgetCurrency: "USD" } });
   await page.goto("/index.html?sort=uni_ai&study_level=bachelor");
@@ -53,25 +53,73 @@ test("cards show up to three visible reasons in UniFit mode and none in other so
 
   const cards = page.locator("#universitiesList .uni-card:not(.is-skeleton)");
   await expect(cards.first()).toBeVisible();
-  const reasons = page.locator("#universitiesList .uni-card .uni-reasons");
-  await expect(reasons.first()).toBeVisible();
-  const counts = await page.locator("#universitiesList .uni-card").evaluateAll((nodes) => nodes.map((node) => node.querySelectorAll(".uni-reason").length));
-  expect(Math.max(...counts)).toBeLessThanOrEqual(3);
-  expect(Math.max(...counts)).toBeGreaterThan(0);
-  const text = await page.locator("#universitiesList").innerText();
-  expect(text).toMatch(/Within your budget|Over Budget|Above your budget|No price to compare|Offers your subject|Program Not Offered|Your subject was not found/);
+  // No reason text on the cards: the icons carry the meaning, the legend teaches them.
+  await expect(page.locator("#universitiesList .uni-reasons")).toHaveCount(0);
 
-  // Negative reasons come before positive ones inside each card.
-  const orders = await page.locator("#universitiesList .uni-reasons").evaluateAll((lists) => lists.map((list) =>
-    Array.from(list.querySelectorAll(".uni-reason")).map((item) => item.className.match(/uni-reason--(\w+)/)[1])));
-  const rank = { negative: 0, unknown: 1, positive: 2 };
-  for (const order of orders) {
-    expect(order.map((value) => rank[value])).toEqual([...order.map((value) => rank[value])].sort((a, b) => a - b));
+  const legend = page.locator("#unifitLegend");
+  await expect(legend).toBeVisible();
+  const badges = await page.locator("#universitiesList .uni-card .uni-status-trigger[data-legend]").evaluateAll((nodes) =>
+    Array.from(new Set(nodes.map((node) => `${node.dataset.legend}|${node.dataset.legendIcon}|${node.dataset.legendTone}`))));
+  expect(badges.length).toBeGreaterThan(0);
+  const items = legend.locator(".u-unifit-legend__item");
+  await expect(items).toHaveCount(badges.length);
+  // Each legend entry reuses the badge icon tone, hides its decorative icon, and has a real text label.
+  const entries = await items.evaluateAll((nodes) => nodes.map((node) => ({
+    tone: node.querySelector(".uni-status-trigger").className.match(/uni-status-trigger--(\w+)/)[1],
+    hasSvg: Boolean(node.querySelector("svg")),
+    iconHidden: node.querySelector(".uni-status-trigger").getAttribute("aria-hidden"),
+    label: node.querySelector(".u-unifit-legend__label").textContent.trim(),
+  })));
+  for (const entry of entries) {
+    expect(entry.hasSvg).toBe(true);
+    expect(entry.iconHidden).toBe("true");
+    expect(entry.label.length).toBeGreaterThan(2);
   }
+  expect(entries.map((entry) => entry.tone).sort()).toEqual(badges.map((badge) => badge.split("|")[2]).sort());
+  const labels = entries.map((entry) => entry.label);
+  expect(labels).toContain("Over budget");
+  expect(labels).not.toContain("Aid available");
+
+  // The legend belongs to the banner: dismissing the banner hides it.
+  await page.locator("#dismissUnifitWarningBanner").click();
+  await expect(legend).toBeHidden();
 
   await page.goto("/index.html?sort=name_asc");
   await expect(cards.first()).toBeVisible();
+  await expect(page.locator("#unifitWarningBanner")).toBeHidden();
   await expect(page.locator("#universitiesList .uni-reasons")).toHaveCount(0);
+});
+
+test("icon tooltips name the missing exam and the amount over budget", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await seed(page, { profile: { studyLevel: "Bachelor", major: "Computer Science", budget: "6000", budgetCurrency: "USD" } });
+  await page.goto("/index.html?sort=uni_ai&study_level=bachelor");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  const tipText = (legend) => page.locator(`#universitiesList .uni-status-tooltip:has([data-legend="${legend}"]) .uni-status-tooltip__text`);
+  const exam = await tipText("exam_needed").allTextContents();
+  expect(exam.length).toBeGreaterThan(0);
+  for (const text of exam) expect(text).toMatch(/^Needs your .+ result to check\./);
+  // Language rules are alternatives, so they read as one language test, never as a single option such as "Native en".
+  for (const text of exam) expect(text.split(". ")[0]).not.toMatch(/Native|CEFR/);
+  const over = await tipText("over_budget").allTextContents();
+  expect(over.length).toBeGreaterThan(0);
+  for (const text of over) expect(text).toMatch(/^\$[\d,]+ above your budget\./);
+});
+
+test("on a phone the legend wraps inside the banner without sideways scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await seed(page, { profile: { studyLevel: "Bachelor", major: "Computer Science", budget: "6000", budgetCurrency: "USD" } });
+  await page.goto("/index.html?sort=uni_ai&study_level=bachelor");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("#unifitLegend")).toBeVisible();
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
+  const box = await page.locator("#unifitLegend").boundingBox();
+  const banner = await page.locator("#unifitWarningBanner").boundingBox();
+  expect(box.x + box.width).toBeLessThanOrEqual(banner.x + banner.width);
 });
 
 test("Save and show matches lands on the catalog with the level selected and no tour over the results", async ({ page }) => {
