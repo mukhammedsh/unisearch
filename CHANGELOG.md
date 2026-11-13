@@ -20,7 +20,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A program with exactly one application route reads that route directly, without saving it.
 - The Admission tab shows the requirements-match summary once, in the key facts; Study details no longer repeat it.
 - Source references use numbered markers with one titled source list per tab, and the full source records sit behind one disclosure.
-- Card prices show their qualifiers (tuition label and second currency) on a line below the price.
+- Card prices show their qualifiers (tuition label and second currency) on a line above the price, so every card keeps its price on the bottom row next to the details link.
 - Admissions responses return only the fields the pages read. Fact and unknown records omit provenance, index attributes, related-fact IDs and review timestamps, and the assessment omits values it repeats. Stored records and assessment hashes are unchanged.
 - Reviewed institutions keep their funding facts in the admissions catalog, so the grant and paid list filters exclude only institutions whose records establish that the funding type is absent.
 - Published qualification guidance is shown to every reader as reference.

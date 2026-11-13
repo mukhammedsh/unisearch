@@ -545,13 +545,15 @@
   gap: var(--space-1) var(--space-3);
 }
 
-/* Row 1 is always the price. Its qualifiers (scope label, second currency) take row 2
-   together with the details link, so the price never competes with the link for width. */
-.uni-footer:has(.uni-cost-meta) > .uni-cost-tooltip {
+/* The footer is anchored to the card bottom, so the price and the details link always share
+   the last row. Price qualifiers (scope label, second currency) sit above them in their own
+   row, which keeps the price at the same height on cards with and without qualifiers. */
+.uni-footer:has(.uni-cost-meta) > .uni-cost-meta {
   grid-column: 1 / -1;
+  grid-row: 1;
 }
 
-.uni-footer:has(.uni-cost-meta) > .uni-cost-meta,
+.uni-footer:has(.uni-cost-meta) > .uni-cost-tooltip,
 .uni-footer:has(.uni-cost-meta) > .uni-details {
   grid-row: 2;
 }
