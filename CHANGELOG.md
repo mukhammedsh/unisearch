@@ -8,6 +8,9 @@ Minor release: returning users see a simpler profile and admission page, and a p
 
 ### Added
 - Added `applicant_route` (`first_year`, `transfer`, `graduate` or null) to application route summaries in the admissions API responses, derived for every route during catalog preparation.
+- A live "How UniFit will use your profile" summary on the profile page lists each group of answers as used or not used, echoes the entered values (for example "GPA 4.6 / 5, IELTS 6.5") and says what to add.
+- A "Save and show matches" profile action saves the profile and opens the catalog sorted by UniFit with the profile's study level pre-selected. The first-visit catalog tour does not open over those results.
+- In UniFit sort, the catalog names the profile answers the ranking uses, with an "Edit profile" link, and each card shows a short "why here" line built from the same facts as its status icons: within or above the budget (with the difference), subject offered or missing, minimums met, or which exam result is still needed to check. Missing evidence is shown as something to add, not as a failed requirement.
 
 ### Changed
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
@@ -22,6 +25,10 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Precomputed the major-taxonomy normalisation, so the first admissions request is faster.
 - Regenerated `backend/data/admissions/catalog.json` with the route-level applicant category and the closed overrides in the draft vocabulary.
 - Newly added institutions follow the light dossier standard (`docs/admissions-light-dossier.md`), which bounds research depth. The four accepted deep datasets are unchanged.
+- The profile is one guided page instead of four tabs. Sections follow their effect on results (study, budget and funding, grades and exams, languages, university-specific details), each field states what it changes, an outline marks answered sections, and actions stay in a sticky bar. The saved profile format is unchanged.
+- UniFit applies the profile's funding type like the other sorts: only universities known to lack the chosen option are hidden.
+- The university-specific language background records English, the only language the reviewed checks read. Existing entries in other languages stay visible and can be removed.
+- Profile copy is plainer: the preparation level is fully translated, the evidence form drops field-code wording, and the unfinished-report notice is shorter.
 
 ### Removed
 - Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
@@ -36,6 +43,9 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Stanford facts that spelled their applicant category `first-year`, `first-year/frosh` or `first-year REA` now use the closed `first_year` value, so they match the first-year route and are no longer shown as conditional on the transfer route. Catalog preparation maps these spellings through the new `applicant_category_alias` table in `vocabulary.json` and keeps the research wording in provenance.
 - The `format` and acceptance-rate list filters keep reviewed institutions whose value is unknown; only a known mismatch excludes them.
 - An expired exchange-rate cache entry is served immediately and refreshed in a background thread, so a request no longer waits for the rate provider (up to its timeout when the provider is slow or down) once rates have loaded.
+- A 5-point GPA typed on the 4.0 scale is flagged while typing instead of only failing on save, and the exams field points IELTS and TOEFL to the Languages section.
+- On phones the profile reset action no longer sits above the questions, and the profile action bar stays above an open dropdown.
+- The UniFit banner link meets text contrast in the dark theme.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 
