@@ -2146,3 +2146,8 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-entry {
   gap: var(--space-4);
 }
+
+/* Answer cards keep their own height: a short answer no longer stretches into an empty block beside a long one. */
+.overview-summary__grid {
+  align-items: start;
+}

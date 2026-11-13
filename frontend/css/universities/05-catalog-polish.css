@@ -268,20 +268,13 @@
   color: var(--uni-status-success-text);
 }
 
-/* Earlier-format universities: a quiet one-line note that the data is not yet rechecked. */
+/* Earlier-format universities: a quiet one-line text note that the data is not yet rechecked.
+   No icon: repeated on most cards, a status glyph read as an unchecked box. */
 .uni-data-note {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
   margin: 0;
   color: var(--text-muted);
   font-size: var(--text-xs);
   line-height: var(--leading-normal);
-}
-
-.uni-data-note__icon {
-  flex: none;
-  color: var(--uni-status-warning-text);
 }
 
 .uni-status-trigger--finance {

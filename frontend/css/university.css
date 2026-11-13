@@ -7624,12 +7624,17 @@ body[data-page="university"],
   color: var(--text-muted);
 }
 
+/* An item still to prepare is a plain list bullet; an empty ring read as a clickable checkbox or radio button. */
+.overview-summary__item[data-mark="todo"] .overview-summary__mark {
+  width: var(--space-4);
+}
+
 .overview-summary__item[data-mark="todo"] .overview-summary__mark::before {
   content: "";
-  width: var(--space-3);
-  height: var(--space-3);
+  width: var(--space-1-5);
+  height: var(--space-1-5);
   border-radius: var(--radius-circle);
-  box-shadow: inset 0 0 0 var(--space-0-5) currentColor;
+  background: currentColor;
 }
 
 .overview-summary__item[data-mark="met"] .overview-summary__mark {

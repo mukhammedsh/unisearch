@@ -57,6 +57,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A link to a specific tab now opens that tab on earlier-format university pages too.
 - Without a selection, the Dates, Costs and Admission tabs of a university with one shared undergraduate application (MIT, Stanford) offer its application paths directly instead of asking for a program; the reader stays on the tab they opened.
 - Applicable majors on earlier-format admission routes no longer repeat the same programme twice.
+- Key admission fact cards keep their own height instead of stretching into empty blocks beside a longer card, checklist items still to prepare use plain bullets instead of rings that looked like checkboxes, and the catalog's "data not yet rechecked" note is plain text without a status icon.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

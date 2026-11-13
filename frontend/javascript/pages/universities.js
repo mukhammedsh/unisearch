@@ -4118,7 +4118,7 @@ ${rankInnerHtml}
             ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
             <div class="uni-body">
             ${headHtml}
-            ${reviewedAdmissions ? "" : `<p class="uni-data-note" title="${escapeHtmlAttr(t("university.ux2.legacy.badge_detail"))}">${renderInlineIcon("exclamation-circle", 14, "uni-data-note__icon")}<span>${escapeHtml(t("university.ux2.legacy.badge"))}</span></p>`}
+            ${reviewedAdmissions ? "" : `<p class="uni-data-note" title="${escapeHtmlAttr(t("university.ux2.legacy.badge_detail"))}">${escapeHtml(t("university.ux2.legacy.badge"))}</p>`}
             ${metricsHtml}
             <div class="uni-footer">
                 ${priceHtml}
