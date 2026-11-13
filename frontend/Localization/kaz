@@ -3453,7 +3453,7 @@ university.ux2.link.cost: Құны және қаржыландыру
 university.ux2.link.needs: Барлық талаптар
 university.ux2.link.choose: Бағдарлама таңдау
 university.ux2.choose.headline: Бағдарламаға байланысты
-university.ux2.deadline.headline: {date} дейін · {days} күннен кейін
+university.ux2.deadline.headline: {date} дейін · {days} күннен кейін
 university.ux2.deadline.headline_today: Соңғы мерзім бүгін · {date}
 university.ux2.deadline.closed: «{name}» ({date}) қабылдауы жабылған.
 university.ux2.deadline.annual: Университет бұл күнді жыл сайын жылын көрсетпей қайталайды. Ресми беттен тексеріңіз.
@@ -3520,3 +3520,4 @@ university.ux2.campus.pitches_many: шамамен {count} футбол алаң
 university.ux2.campus.pitches_few: шамамен {count} футбол алаңы
 university.ux2.campus.pitches_other: шамамен {count} футбол алаңы
 university.ux2.campus.source: Ресми дереккөз
+university.ux2.overview.numbers_title: Сандармен

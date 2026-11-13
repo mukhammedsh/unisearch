@@ -85,7 +85,8 @@ const recurring = () => fact("rounds", "application_windows", { windows: [
 test("the date card leads with the next date and its countdown, and says that the early round has closed", () => {
   const resolved = resolvedWith([recurring()], [], { fact_groups: { deadlines: ["rounds"] } });
   const card = deadlineCard(deadlineFact(resolved, NOW));
-  assert.equal(card.headline, "By January 4, 2027 · in 52 days");
+  // The count and its unit are joined by a no-break space so they never wrap apart.
+  assert.equal(card.headline, "By January 4, 2027 · in 52 days");
   assert.equal(card.lines[0], "Regular Action · regular application");
   assert.match(card.lines[1], /^Early Action · early application \(November 1\) has already closed\. The university repeats this date every year/);
   // A date with a year and a nearer deadline within 30 days is flagged.

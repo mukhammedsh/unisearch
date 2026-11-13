@@ -3451,7 +3451,7 @@ university.ux2.link.cost: Стоимость и финансирование
 university.ux2.link.needs: Все требования
 university.ux2.link.choose: Выбрать программу
 university.ux2.choose.headline: Зависит от программы
-university.ux2.deadline.headline: До {date} · через {days} дн.
+university.ux2.deadline.headline: До {date} · через {days} дн.
 university.ux2.deadline.headline_today: Крайний срок сегодня · {date}
 university.ux2.deadline.closed: Приём «{name}» ({date}) уже закрыт.
 university.ux2.deadline.annual: Университет повторяет эту дату каждый год, не называя год. Сверьте её на официальной странице.
@@ -3518,3 +3518,4 @@ university.ux2.campus.pitches_few: примерно {count} футбольных
 university.ux2.campus.pitches_many: примерно {count} футбольных полей
 university.ux2.campus.pitches_other: примерно {count} футбольного поля
 university.ux2.campus.source: Официальный источник
+university.ux2.overview.numbers_title: В цифрах

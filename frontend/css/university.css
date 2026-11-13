@@ -7516,7 +7516,7 @@ body[data-page="university"],
 .overview-summary__title {
   color: var(--text);
   font-size: var(--text-lg);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
   line-height: var(--leading-tight);
 }
 

@@ -31,6 +31,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The overview lists campus, hybrid or online study instead of each program's own schedule wording.
 - Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
 - Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.
+- University page layout pass: every tab's content on reviewed pages lines up with the page title and tabs (one side-padding layer instead of two), tab sections share one heading scale, long reading tabs separate their topics with a faint rule, key-fact answers use regular weight, and "Key figures" (formerly a second "Overview") follows the key admission facts. An empty deadline calendar is one quiet note instead of a titled section, and on phones the site, map and save actions share one row and a countdown no longer wraps between its number and unit.
 - The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
 - The `size` list filter and `student_life.size` use student-count bands (under 10,000, 10,000–30,000, over 30,000) instead of the earlier mixed land-area and enrollment buckets; a university without a published student count stays visible under every size filter.
 
@@ -52,6 +53,9 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The empty Dates tab of earlier-format universities is localized instead of showing an English placeholder.
 - Removed Nazarbayev University's campus area, whose linked official page does not state it.
 - The comparison's campus-area row shows hectares instead of a raw square-metre number.
+- The Dates tab of reviewed universities was indented 24 px less than the other tabs.
+- A link to a specific tab now opens that tab on earlier-format university pages too.
+- Applicable majors on earlier-format admission routes no longer repeat the same programme twice.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

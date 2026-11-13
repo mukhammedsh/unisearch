@@ -1650,12 +1650,13 @@ function translatedProfileLabel(profile) {
 }
 
 function renderApplicablePrograms(category, profile) {
+  // Program names and majors often name the same programme; compare them after translation so each shows once.
   const majors = uniqueNonEmpty([
     ...(Array.isArray(profile?.program_names) ? profile.program_names : []),
     ...(Array.isArray(category?.program_names) ? category.program_names : []),
     ...(Array.isArray(profile?.applicable_majors) ? profile.applicable_majors : []),
     ...(Array.isArray(category?.applicable_majors) ? category.applicable_majors : []),
-  ]).map((major) => trProgramName(major)).filter(Boolean);
+  ].map((major) => trProgramName(major))).filter(Boolean);
   if (!majors.length) return "";
   return `
     <div class="admission-applicable-programs">

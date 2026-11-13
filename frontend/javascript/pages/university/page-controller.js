@@ -537,6 +537,9 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     cardEl.classList.add("is-mounted");
   }
   setupTabs();
+  // A link to a tab (for example from the overview or another page) opens that tab, as on reviewed pages.
+  const requestedTab = window.location.hash.match(/^#tab-(general|programs|admission|deadlines|finance)$/)?.[1];
+  if (requestedTab && requestedTab !== "general") document.querySelector(`[data-tab="tab-${requestedTab}"]`)?.click();
 
   bindDetailRefreshLifecycle();
 }
