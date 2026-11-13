@@ -205,10 +205,10 @@ import {
   normalizeStudyModeForCost,
   trTrackDescription,
   COMPARE_ADMISSION_CHOICES_KEY,
-  formatCampusSizeValue,
   trProgramName,
   trFactSource,
   trFactStatus,
+  campusAreaFact,
 } from "../_shared.js";
 import { 
   translateDataValue, 
@@ -788,9 +788,10 @@ export function compareScoreText(value) {
   return n !== null ? formatUiNumber(n, { maximumFractionDigits: 2 }) : t("common.na", "N/A");
 }
 
+// The official area in hectares, as on the university page; the raw square-metre figure is not shown.
 export function compareCampusAreaText(value) {
-  const n = toFiniteNumber(value);
-  return n !== null ? formatCampusSizeValue(n) : t("common.na", "N/A");
+  const fact = campusAreaFact({ campus_area_m2: value });
+  return fact ? fact.text : t("common.na", "N/A");
 }
 
 export function compareBachelorProgramCount(u) {

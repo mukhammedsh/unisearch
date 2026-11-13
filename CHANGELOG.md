@@ -11,6 +11,11 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A live "How UniFit will use your profile" summary on the profile page lists each group of answers as used or not used, echoes the entered values (for example "GPA 4.6 / 5, IELTS 6.5") and says what to add.
 - A "Save and show matches" profile action saves the profile and opens the catalog sorted by UniFit with the profile's study level pre-selected. The first-visit catalog tour does not open over those results.
 - In UniFit sort, the catalog banner names the profile answers the ranking uses, links to the profile, and shows a legend for the card status icons on the current page. The icons stay compact and cards keep equal size. Icon tooltips now name the exam result still needed and say how far a price is above the budget.
+- The university Overview tab opens with key admission facts: when to apply with a countdown, the published annual cost before aid with the university's aid policy, a short checklist of required tests and documents marked against the applicant's profile, and who studies there. Universities with one shared first-year application answer these without a chosen program, and the card links open the Dates, Costs and Admission tabs on that application without saving it.
+- Official admission statistics for the latest intake in a new `admission_statistics` field of the four reviewed universities, shown with source and intake year: MIT and Stanford first-year admits, Imperial College London offers per undergraduate application, and Nazarbayev University admits from its combined foundation and undergraduate application. The field does not feed ranking, filters or the requirements match.
+- Universities that admit by program show one overview card with study-level shortcuts into the program list.
+- Universities still on earlier-format data carry a quiet note on their page and catalog card that the data may be inaccurate or out of date and will be updated. Without collected application dates, their overview links to the official website.
+- A per-institution conversion checklist in `docs/admissions-light-dossier.md` for moving the remaining universities to reviewed data.
 
 ### Changed
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
@@ -18,7 +23,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A program with exactly one application route reads that route directly, without saving it.
 - The Admission tab shows the requirements-match summary once, in the key facts; Study details no longer repeat it.
 - Source references use numbered markers with one titled source list per tab, and the full source records sit behind one disclosure.
-- Card prices show their qualifiers (tuition label and second currency) on a line below the price.
+- Card prices show their qualifiers (tuition label and second currency) on a line above the price, so every card keeps its price on the bottom row next to the details link.
 - Admissions responses return only the fields the pages read. Fact and unknown records omit provenance, index attributes, related-fact IDs and review timestamps, and the assessment omits values it repeats. Stored records and assessment hashes are unchanged.
 - Reviewed institutions keep their funding facts in the admissions catalog, so the grant and paid list filters exclude only institutions whose records establish that the funding type is absent.
 - Published qualification guidance is shown to every reader as reference.
@@ -29,6 +34,13 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - UniFit applies the profile's funding type like the other sorts: only universities known to lack the chosen option are hidden.
 - The university-specific language background records English, the only language the reviewed checks read. Existing entries in other languages stay visible and can be removed.
 - Profile copy is plainer: the preparation level is fully translated, the evidence form drops field-code wording, and the unfinished-report notice is shorter.
+- Admission tabs replace English research notes about source periods with the entry cycle, academic year or a "year not stated" note; the original wording stays in the full source records.
+- The overview lists campus, hybrid or online study instead of each program's own schedule wording.
+- Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
+- Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.
+- University page layout pass: every tab's content on reviewed pages lines up with the page title and tabs (one side-padding layer instead of two), tab sections share one heading scale, long reading tabs separate their topics with a faint rule, key-fact answers use regular weight, and "Key figures" (formerly a second "Overview") follows the key admission facts. An empty deadline calendar is one quiet note instead of a titled section, and on phones the site, map and save actions share one row and a countdown no longer wraps between its number and unit. Every "choose first" state uses one layout: the explanation, then its actions in a row beneath it. Source numbers read as "Source 1" instead of an unlabelled "1", each route note sits next to its own button, and a programme card separates its description from the heading and the Admission-tab pointer, with its select action aligned to the text.
+- The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
+- The `size` list filter and `student_life.size` use student-count bands (under 10,000, 10,000–30,000, over 30,000) instead of the earlier mixed land-area and enrollment buckets; a university without a published student count stays visible under every size filter.
 
 ### Removed
 - Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
@@ -47,8 +59,18 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A 5-point GPA typed on the 4.0 scale is flagged while typing instead of only failing on save, and the exams field points IELTS and TOEFL to the Languages section.
 - On phones the profile reset action no longer sits above the questions, and the profile action bar stays above an open dropdown.
 - The UniFit banner link meets text contrast in the dark theme.
-- Catalog card prices sit on the same line across each grid row, whether or not a card shows a price qualifier.
 - The catalog study-level filter matches the 36px toolbar controls and sits next to the result count, so the toolbar is one compact row on desktop.
+- MIT's overview no longer describes the university as an evening school because of one professional program's schedule.
+- The selection strip no longer reports that an application path needs clarification while a program's paths are still loading.
+- The empty Dates tab of earlier-format universities is localized instead of showing an English placeholder.
+- Removed Nazarbayev University's campus area, whose linked official page does not state it.
+- New interface text no longer renders empty in a browser tab that cached the previous translations. The locale-pack revision is now a fingerprint of the localization files, and `tests/unit/i18n-pack-revision.test.mjs` fails with the expected value whenever a localization file changes without it.
+- The comparison's campus-area row shows hectares instead of a raw square-metre number.
+- The Dates tab of reviewed universities was indented 24 px less than the other tabs.
+- A link to a specific tab now opens that tab on earlier-format university pages too.
+- Without a selection, the Dates, Costs and Admission tabs of a university with one shared undergraduate application (MIT, Stanford) offer its application paths directly instead of asking for a program; the reader stays on the tab they opened.
+- Applicable majors on earlier-format admission routes no longer repeat the same programme twice.
+- Key admission fact cards keep their own height instead of stretching into empty blocks beside a longer card, checklist items still to prepare use plain bullets instead of rings that looked like checkboxes, and the catalog's "data not yet rechecked" note is plain text without a status icon.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

@@ -24,6 +24,15 @@ Defects, inconsistencies and ideas that need the user's decision because they ch
 
 - [x] Keep scoped tuition visible on reviewed cards with no comparable study and living budget. Verified Imperial before and after choosing Computer Science on desktop and mobile. The price filters and sorting use the selected basis.
 
+### University page: answers first (2026-11-13)
+
+- [x] The Overview tab opens with key admission facts: when to apply, cost before aid, what you'll need and who studies there; its links open filled tabs on the shared first-year route.
+- [x] Official admission statistics for the four reviewed institutions (MIT Class of 2029, Stanford CDS 2025-26, Imperial 2025 UCAS offers per application, NU 2025 combined NUFYP/undergraduate pool) in `admission_statistics`, checked against the official pages and documents on 2026-11-13.
+- [x] Reviewed institutions show no earnings figure, as in comparison; MIT's 2019 survey salary is no longer on the overview.
+- [x] Program-admitting institutions (Imperial, NU) offer study-level shortcuts into Programs.
+- [x] Earlier-format universities carry a quiet "data not yet rechecked" note on the page and on catalog cards; undated ones link to their official website for dates.
+- [ ] On each later conversion, follow the [per-institution conversion checklist](docs/admissions-light-dossier.md#per-institution-conversion-checklist), including moving typical scores stored as minimums (for example Yale's admitted-student GPA) into `admitted_profile`.
+
 ### Simplification pass before wider rollout (2026-11-12)
 
 The user asked to simplify the profile, the admission page and the reviewed model before applying it to the other 46 institutions.

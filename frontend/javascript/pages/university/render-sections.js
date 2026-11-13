@@ -658,6 +658,11 @@ function categoryMatchesStudyLevel(category, selectedLevelKey) {
   return false;
 }
 
+// Admission categories that describe undergraduate (bachelor) study.
+export function getUndergraduateCategories(categories) {
+  return (Array.isArray(categories) ? categories : []).filter((category) => categoryMatchesStudyLevel(category, "bachelor"));
+}
+
 export function getFinanceChoicesForStudyLevel(categories, studyLevel) {
   const selectedLevelKey = normalizeLevelKey(studyLevel);
   const sourceCategories = Array.isArray(categories) ? categories : [];
@@ -829,7 +834,7 @@ function safeHttpUrl(value) {
   }
 }
 
-function extractUniversityDeadlines(university, categories) {
+export function extractUniversityDeadlines(university, categories) {
   const items = [];
   const seenKeys = new Set();
 
@@ -1024,7 +1029,7 @@ export function renderDeadlinesTabSection({ container, university, onContextChan
     return;
   }
   if (!allDeadlines.some((item) => item.deadline || item.guidance)) {
-    container.innerHTML = `<div data-deadline-calendar-host></div><div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.deadlines", "No deadlines published."))}</div>`;
+    container.innerHTML = `<div data-deadline-calendar-host></div><div class="admission-empty-state">${escapeHtml(t("university.ux2.deadlines.not_collected"))}</div>`;
     mountDeadlineCalendar(container.querySelector("[data-deadline-calendar-host]"), []);
     return;
   }
@@ -1645,12 +1650,13 @@ function translatedProfileLabel(profile) {
 }
 
 function renderApplicablePrograms(category, profile) {
+  // Program names and majors often name the same programme; compare them after translation so each shows once.
   const majors = uniqueNonEmpty([
     ...(Array.isArray(profile?.program_names) ? profile.program_names : []),
     ...(Array.isArray(category?.program_names) ? category.program_names : []),
     ...(Array.isArray(profile?.applicable_majors) ? profile.applicable_majors : []),
     ...(Array.isArray(category?.applicable_majors) ? category.applicable_majors : []),
-  ]).map((major) => trProgramName(major)).filter(Boolean);
+  ].map((major) => trProgramName(major))).filter(Boolean);
   if (!majors.length) return "";
   return `
     <div class="admission-applicable-programs">

@@ -12,7 +12,8 @@ const label = key => t(`university.deadlines.${key}`);
 export function renderDeadlineCalendar(deadlines, state = {}) {
   const dated = deadlines.map((item, index) => ({ item, index, date: item.approximate || item.is_approximate ? null : parseExactDeadlineDate(item.deadline) }))
     .filter(entry => entry.date).sort((left, right) => left.date.localeCompare(right.date));
-  if (!dated.length) return `<section class="deadline-calendar"><h4>${escapeHtml(label("calendar_title"))}</h4><p>${escapeHtml(label("calendar_no_exact"))}</p></section>`;
+  // Without an exportable date the calendar is one quiet note, not a titled empty section.
+  if (!dated.length) return `<section class="deadline-calendar deadline-calendar--empty" aria-label="${escapeHtmlAttr(label("calendar_title"))}"><p class="admissions-reading__note">${escapeHtml(label("calendar_no_exact"))}</p></section>`;
   const language = getCurrentLanguage();
   const locale = { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[language];
   const today = new Date().toISOString().slice(0, 10);

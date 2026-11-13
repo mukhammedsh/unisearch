@@ -3500,3 +3500,94 @@ universities.ux2.legend.vibe: Matches preferences
 profile.ux2.evidence.language_title: English language background
 profile.ux2.evidence.language_fixed: Records your background in English only, which is what English requirements ask about.
 profile.ux2.evidence.entirely: Entirely in English?
+university.ux2.title: Key admission facts
+university.ux2.intro_route: Shown for: {route}. One application covers all undergraduate programs.
+university.ux2.intro_program: Each program sets its own. Choose a program to see them.
+university.ux2.intro_legacy: Published undergraduate information from this university.
+university.ux2.note: A summary of official facts, not an admission decision. Sources and full details are in the tabs.
+university.ux2.loading: Loading key facts
+university.ux2.error: Could not load the key facts.
+university.ux2.retry: Try again
+university.ux2.source: Source:
+university.ux2.or: or
+university.ux2.card.deadline: When to apply
+university.ux2.card.cost: What it costs
+university.ux2.card.needs: What you'll need
+university.ux2.card.people: Who studies here
+university.ux2.card.program: Dates, costs and requirements
+university.ux2.link.deadlines: All dates
+university.ux2.link.cost: Costs and funding
+university.ux2.link.needs: Full requirements
+university.ux2.link.choose: Choose a program
+university.ux2.choose.headline: Depends on the program
+university.ux2.deadline.headline: By {date} · in {days} days
+university.ux2.deadline.headline_today: Deadline today · {date}
+university.ux2.deadline.closed: {name} ({date}) has already closed.
+university.ux2.deadline.annual: The university repeats this date every year without naming the year. Confirm it on the official page.
+university.ux2.deadline.legacy: Application dates are in the Dates tab.
+university.ux2.cost.headline: {amount} a year
+university.ux2.cost.headline_from: From {amount} a year
+university.ux2.cost.headline_tuition: {amount} a year, tuition only
+university.ux2.cost.before_aid: Before financial aid.
+university.ux2.cost.living_extra: Housing and living costs are not included.
+university.ux2.cost.legacy_total: Published total of tuition, fees and living costs, before financial aid.
+university.ux2.cost.legacy_tuition_only: Tuition and fees only; housing and food are extra. Before financial aid.
+university.ux2.cost.legacy_unknown: No annual cost is published in the catalog yet.
+university.ux2.cost.aid_need: The university publishes need-based aid; an award is decided individually.
+university.ux2.cost.aid_merit: The university publishes merit scholarships; an award is decided individually.
+university.ux2.cost.aid_both: The university publishes need-based aid and merit scholarships; an award is decided individually.
+university.ux2.cost.aid_full_need: Published policy: the university meets full demonstrated financial need. An award is decided individually.
+university.ux2.cost.aid_full_need_international: Published policy: the university meets full demonstrated financial need, including for international students. An award is decided individually.
+university.ux2.needs.headline: Check these before you apply
+university.ux2.needs.test: Test: {exams}
+university.ux2.needs.test_other: Test: {exams} ({presence})
+university.ux2.needs.english: English test: {presence}
+university.ux2.needs.english_any: English test, any one of: {exams}
+university.ux2.needs.english_all: English test: {exams}
+university.ux2.needs.mark_met: Already met
+university.ux2.needs.mark_todo: Still to prepare or add
+university.ux2.needs.mark_below: Below the published minimum
+university.ux2.needs.empty: Tests and documents are listed on the Admission tab.
+university.ux2.needs.varies: Requirements differ between undergraduate programs.
+university.ux2.needs.profile_hint: Add your test results to your profile to see what you already have.
+university.ux2.people.international: {percent}% international · {count} of {total} undergraduates
+university.ux2.people.housing_one: Housing guaranteed for {years} year
+university.ux2.people.housing_few: Housing guaranteed for {years} years
+university.ux2.people.housing_many: Housing guaranteed for {years} years
+university.ux2.people.acceptance_undergraduate: About {rate}% of undergraduate applicants are admitted
+university.ux2.people.acceptance: About {rate}% of applicants are admitted
+university.ux2.people.salary: Early-career salary: about {amount} a year
+university.ux2.people.earnings: Median earnings 10 years after enrolling: about {amount} a year
+university.ux2.needs.presence_required: required
+university.ux2.needs.presence_recommended: recommended
+university.ux2.needs.presence_strongly_recommended: strongly recommended for some applicants
+university.ux2.format.hybrid: Hybrid (campus and online)
+university.ux2.deadlines.not_collected: UniSearch hasn't collected application dates for this university yet. Check the current dates on its official admissions site.
+university.ux2.deadline.legacy_none: Dates not collected yet
+university.ux2.deadline.legacy_none_detail: UniSearch doesn't have this university's application dates yet. Check them on its official site.
+university.ux2.link.official_site: Official website
+university.ux2.legacy.title: This university's data hasn't been rechecked yet
+university.ux2.legacy.text: It was collected earlier and may be inaccurate or out of date. Check anything important on the official website. We are moving universities to rechecked data one by one, and this one will be updated.
+university.ux2.legacy.badge: Data not yet rechecked
+university.ux2.legacy.badge_detail: Collected earlier and may be inaccurate or out of date. Check important details on the official website; this university will be updated.
+university.ux2.people.selectivity_first_year: About {rate}% of first-year applicants are admitted
+university.ux2.people.selectivity_undergraduate: About {rate}% of undergraduate applicants are admitted
+university.ux2.people.selectivity_offers: About {rate}% of undergraduate applications receive an offer
+university.ux2.people.selectivity_counts_admitted: {admitted} admitted out of {applicants} applicants
+university.ux2.people.selectivity_counts_offers: {admitted} offers for {applicants} applications
+university.ux2.people.selectivity_international: International applicants: {admitted} of {applicants} admitted (about {rate}%)
+university.ux2.people.selectivity_preparation: Another {rate}% were admitted to the {name} foundation year from the same application
+university.ux2.people.selectivity_offers_note: One person can apply to several programmes, so this is not the share of people admitted.
+university.ux2.people.intake: {year} intake
+university.ux2.campus.area_label: Campus area
+university.ux2.campus.area_ha: {ha} ha
+university.ux2.campus.area_km: {ha} ha ({km} km²)
+university.ux2.campus.pitches_one: about {count} football pitch
+university.ux2.campus.pitches_many: about {count} football pitches
+university.ux2.campus.pitches_few: about {count} football pitches
+university.ux2.campus.pitches_other: about {count} football pitches
+university.ux2.campus.source: Official source
+university.ux2.overview.numbers_title: Key figures
+university.ux2.prompt.shared_routes: Undergraduates submit one application for all programmes. Choose how you are applying:
+university.ux2.sources.one: Source
+university.ux2.sources.many: Sources

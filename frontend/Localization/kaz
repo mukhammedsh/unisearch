@@ -2445,8 +2445,8 @@ university.admissions.catalog.finance_intro: Таңдалған бағдарла
 university.admissions.catalog.deadlines_title: Күндер мен мерзімдер
 university.admissions.catalog.deadlines_intro: Таңдалған бағдарлама мен жолға арналған өтінім, қаржыландыру, жауап және депозит мерзімдерін қараңыз. Әр жазбада бастапқы кезеңі мен ресми дереккөзі сақталған.
 university.admissions.catalog.route_intro: Жарияланған жолды таңдаңыз — талаптар мен өтініш тәртібі бірден ашылады. Профиль қажет емес.
-university.admissions.catalog.reference_scope: Қазір қаралып жатқан ақпарат
-university.admissions.catalog.route_not_selected: Өтініш беру жолы таңдалмаған
+university.admissions.catalog.reference_scope: Сіз қарап отырсыз
+university.admissions.catalog.route_not_selected: Қалай түсетініңізді таңдаңыз
 university.admissions.catalog.browse_programs: Бағдарламаларды шолу
 university.admissions.catalog.change_program: Бағдарламаны өзгерту
 university.admissions.catalog.reference_filters: Контексті нақтылау (міндетті емес)
@@ -3500,3 +3500,94 @@ universities.ux2.legend.vibe: Қалауыңызға сәйкес
 profile.ux2.evidence.language_title: Ағылшын тілін қолдану тәжірибесі
 profile.ux2.evidence.language_fixed: Тек ағылшын тіліндегі тәжірибе жазылады: ағылшын тілі талаптары дәл соны сұрайды.
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
+university.ux2.title: Қабылдаудың негізгі деректері
+university.ux2.intro_route: Көрсетілген жол: {route}. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.
+university.ux2.intro_program: Әр бағдарламаның өзіндік мерзімі, құны мен талаптары бар. Көру үшін бағдарламаны таңдаңыз.
+university.ux2.intro_legacy: Университеттің бакалавриат туралы жариялаған деректері.
+university.ux2.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім емес. Дереккөздер мен толық ақпарат — қойындыларда.
+university.ux2.loading: Негізгі деректер жүктелуде
+university.ux2.error: Негізгі деректерді жүктеу мүмкін болмады.
+university.ux2.retry: Қайталау
+university.ux2.source: Дереккөз:
+university.ux2.or: немесе
+university.ux2.card.deadline: Қашан өтініш беру керек
+university.ux2.card.cost: Құны қанша
+university.ux2.card.needs: Не қажет болады
+university.ux2.card.people: Мұнда кімдер оқиды
+university.ux2.card.program: Мерзімдер, құн және талаптар
+university.ux2.link.deadlines: Барлық мерзімдер
+university.ux2.link.cost: Құны және қаржыландыру
+university.ux2.link.needs: Барлық талаптар
+university.ux2.link.choose: Бағдарлама таңдау
+university.ux2.choose.headline: Бағдарламаға байланысты
+university.ux2.deadline.headline: {date} дейін · {days} күннен кейін
+university.ux2.deadline.headline_today: Соңғы мерзім бүгін · {date}
+university.ux2.deadline.closed: «{name}» ({date}) қабылдауы жабылған.
+university.ux2.deadline.annual: Университет бұл күнді жыл сайын жылын көрсетпей қайталайды. Ресми беттен тексеріңіз.
+university.ux2.deadline.legacy: Өтініш мерзімдері «Күндер мен мерзімдер» қойындысында.
+university.ux2.cost.headline: Жылына {amount}
+university.ux2.cost.headline_from: Жылына {amount} бастап
+university.ux2.cost.headline_tuition: Жылына {amount}, тек оқу ақысы
+university.ux2.cost.before_aid: Қаржылық көмекті есепке алмағанда.
+university.ux2.cost.living_extra: Тұру мен күнделікті шығындар кірмейді.
+university.ux2.cost.legacy_total: Оқу ақысы, алымдар мен тұру шығындарының жарияланған сомасы, қаржылық көмекті есепке алмағанда.
+university.ux2.cost.legacy_tuition_only: Тек оқу ақысы мен алымдар; тұру мен тамақ бөлек төленеді. Қаржылық көмекті есепке алмағанда.
+university.ux2.cost.legacy_unknown: Жылдық оқу құны каталогта әзірге көрсетілмеген.
+university.ux2.cost.aid_need: Университет мұқтаждыққа негізделген көмекті жариялайды; көмек жеке қаралады.
+university.ux2.cost.aid_merit: Университет жетістікке берілетін шәкіртақыларды жариялайды; шешім жеке қабылданады.
+university.ux2.cost.aid_both: Университет мұқтаждыққа негізделген көмекті және жетістікке берілетін шәкіртақыларды жариялайды; шешім жеке қабылданады.
+university.ux2.cost.aid_full_need: Жарияланған саясат: университет расталған қаржылық мұқтаждықты толық өтейді. Көмек жеке қаралады.
+university.ux2.cost.aid_full_need_international: Жарияланған саясат: университет шетелдік студенттерді қоса, расталған қаржылық мұқтаждықты толық өтейді. Көмек жеке қаралады.
+university.ux2.needs.headline: Өтініш бермес бұрын мыналарды тексеріңіз
+university.ux2.needs.test: Емтихан: {exams}
+university.ux2.needs.test_other: Емтихан: {exams} ({presence})
+university.ux2.needs.english: Ағылшын тілі тесті: {presence}
+university.ux2.needs.english_any: Ағылшын тілі тесті, біреуі жеткілікті: {exams}
+university.ux2.needs.english_all: Ағылшын тілі тесті: {exams}
+university.ux2.needs.mark_met: Орындалған
+university.ux2.needs.mark_todo: Дайындау немесе қосу керек
+university.ux2.needs.mark_below: Жарияланған минимумнан төмен
+university.ux2.needs.empty: Емтихандар мен құжаттар «Қабылдау» қойындысында көрсетілген.
+university.ux2.needs.varies: Талаптар бакалавриат бағдарламаларына қарай әртүрлі.
+university.ux2.needs.profile_hint: Бар нәрсені көру үшін емтихан нәтижелерін профильге қосыңыз.
+university.ux2.people.international: {percent}% шетелдік студент · бакалавриатта {total} студенттің {count}-ы
+university.ux2.people.housing_one: Тұрғын үй {years} жылға кепілдендірілген
+university.ux2.people.housing_few: Тұрғын үй {years} жылға кепілдендірілген
+university.ux2.people.housing_many: Тұрғын үй {years} жылға кепілдендірілген
+university.ux2.people.acceptance_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.acceptance: Өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.salary: Мансап басындағы жалақы: жылына шамамен {amount}
+university.ux2.people.earnings: Түскеннен 10 жылдан кейінгі медианалық табыс: жылына шамамен {amount}
+university.ux2.needs.presence_required: міндетті
+university.ux2.needs.presence_recommended: ұсынылады
+university.ux2.needs.presence_strongly_recommended: кейбір үміткерлерге қатаң ұсынылады
+university.ux2.format.hybrid: Аралас (кампус және онлайн)
+university.ux2.deadlines.not_collected: UniSearch бұл университеттің өтініш мерзімдерін әлі жинамаған. Өзекті күндерді қабылдау комиссиясының ресми сайтынан қараңыз.
+university.ux2.deadline.legacy_none: Мерзімдер әлі жиналмаған
+university.ux2.deadline.legacy_none_detail: UniSearch-те бұл университеттің өтініш мерзімдері әлі жоқ. Оларды ресми сайттан тексеріңіз.
+university.ux2.link.official_site: Ресми сайт
+university.ux2.legacy.title: Бұл университеттің деректері әлі қайта тексерілмеген
+university.ux2.legacy.text: Олар бұрын жиналған және дәл емес немесе ескірген болуы мүмкін. Маңызды мәліметті ресми сайттан тексеріңіз. Біз университеттерді қайта тексерілген деректерге кезекпен көшіріп жатырмыз, бұл университет те жаңартылады.
+university.ux2.legacy.badge: Деректер әлі қайта тексерілмеген
+university.ux2.legacy.badge_detail: Бұрын жиналған, дәл емес немесе ескірген болуы мүмкін. Маңызды мәліметті ресми сайттан тексеріңіз; университет жақында жаңартылады.
+university.ux2.people.selectivity_first_year: Бірінші курсқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.selectivity_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.selectivity_offers: Бакалавриатқа берілген өтініштердің шамамен {rate}%-ы орын ұсынысын алады
+university.ux2.people.selectivity_counts_admitted: Қабылданғаны: {admitted} · өтініш бергені: {applicants}
+university.ux2.people.selectivity_counts_offers: Орын ұсыныстары: {admitted} · өтініштер: {applicants}
+university.ux2.people.selectivity_international: Шетелдіктер: қабылданғаны {admitted} · өтініш бергені {applicants} (шамамен {rate}%)
+university.ux2.people.selectivity_preparation: Сол өтініш бойынша тағы {rate}% {name} дайындық жылына қабылданды
+university.ux2.people.selectivity_offers_note: Бір адам бірнеше бағдарламаға өтініш бере алады, сондықтан бұл қабылданған адамдардың үлесі емес.
+university.ux2.people.intake: {year} жылғы қабылдау
+university.ux2.campus.area_label: Кампус аумағы
+university.ux2.campus.area_ha: {ha} га
+university.ux2.campus.area_km: {ha} га ({km} км²)
+university.ux2.campus.pitches_one: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_many: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_few: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_other: шамамен {count} футбол алаңы
+university.ux2.campus.source: Ресми дереккөз
+university.ux2.overview.numbers_title: Сандармен
+university.ux2.prompt.shared_routes: Бакалавриатқа барлық бағдарламаға бір өтініш беріледі. Қалай түсетініңізді таңдаңыз:
+university.ux2.sources.one: Дереккөз
+university.ux2.sources.many: Дереккөздер

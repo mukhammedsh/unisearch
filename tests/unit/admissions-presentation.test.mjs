@@ -147,10 +147,11 @@ test("periods are plain text, stated once for a section when shared and kept bes
   const originalFetch = global.fetch;
   global.fetch = async () => ({ ok: true, json: async () => ({ lang: "eng", data: { admission_summaries: { "Rule A": { requirements: "Rule A" }, "Rule B": { requirements: "Rule B" } } } }) });
   try { await loadUniversityTranslationsForLanguage("eng", true); } finally { global.fetch = originalFetch; }
-  const same = [fact("a", "Rule A", { period: { label: "Published guidance for applicants" } }), fact("b", "Rule B", { period: { label: "Published guidance for applicants" } })];
+  const same = [fact("a", "Rule A", { period: { label: "Current published policy; year not stated" } }), fact("b", "Rule B", { period: { label: "Current published policy; year not stated" } })];
   const shared = renderApplicantSection(context(same, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references"')[0];
   assert.doesNotMatch(shared, /<details/);
-  assert.equal((shared.match(/Published guidance for applicants/g) || []).length, 1);
+  assert.equal((shared.match(/Published policy; entry year not specified/g) || []).length, 1);
+  assert.doesNotMatch(shared, /Current published policy/);
   assert.match(shared, /data-section-period/);
   const differ = [fact("a", "Rule A", { period: { label: "2026 entry" } }), fact("b", "Rule B", { period: { label: "2027 entry" } })];
   const separate = renderApplicantSection(context(differ, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references"')[0];
@@ -482,4 +483,20 @@ test("UCAS date record fields are localized and a glued entry cycle keeps its sp
   setLanguage("eng", { emit: false });
   assert.equal(admissionsCycleLabel("2027/28entry"), "2027/28 entry");
   assert.equal(admissionsCycleLabel("2027 entry"), "2027 entry");
+});
+
+test("period labels read as an entry cycle, an academic year or a plain year-not-stated note", async () => {
+  setLanguage("eng", { emit: false });
+  const { plainPeriodLabel } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
+  assert.equal(plainPeriodLabel("Catalog 2026-2027"), "2026-2027");
+  assert.equal(plainPeriodLabel("2026-2027 housing rates; current residence policy"), "2026-2027");
+  assert.match(plainPeriodLabel("Fall 2027 entry"), /2027/);
+  assert.match(plainPeriodLabel("Effective Spring 2027"), /2027/);
+  assert.equal(plainPeriodLabel("Current published instructions; yearless deadlines are recurring, not assigned an invented entry year"), "Recurring dates; entry year not specified");
+  assert.equal(plainPeriodLabel("Earlier published policy; cycle not specified"), "Published policy; entry year not specified");
+  assert.equal(plainPeriodLabel("Opens October 1; deadline December 1 at 11:59 PM ET; year not stated"), "Published policy; entry year not specified");
+  // Research process notes are not shown to applicants; the full source records keep them.
+  assert.equal(plainPeriodLabel("Department deadlines differ; dual deadline unknown."), "");
+  assert.equal(plainPeriodLabel("Official program guidance reviewed 2026-10-20"), "");
+  assert.equal(plainPeriodLabel(""), "");
 });

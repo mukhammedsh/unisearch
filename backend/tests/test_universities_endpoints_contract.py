@@ -312,6 +312,25 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(95134, cost_range.get("min_usd"))
         self.assertEqual(100134, cost_range.get("max_usd"))
 
+    def test_size_filter_uses_student_count_bands(self):
+        from app.services.universities import student_size_band
+
+        self.assertEqual("small", student_size_band({"student_count": 9999}))
+        self.assertEqual("medium", student_size_band({"student_count": 10000}))
+        self.assertEqual("medium", student_size_band({"student_count": 30000}))
+        self.assertEqual("large", student_size_band({"student_count": 30001}))
+        self.assertEqual("", student_size_band({"student_count": None}))
+        listed = self.client.get("/universities", params={"limit": 100}).json().get("items") or []
+        counts = {item["id"]: self.client.get(f"/universities/{item['id']}").json().get("student_count") for item in listed}
+        for band in ("small", "medium", "large"):
+            response = self.client.get("/universities", params={"size": band, "limit": 100})
+            self.assertEqual(response.status_code, 200)
+            ids = [item.get("id") for item in response.json().get("items") or []]
+            # A university without a published student count is unknown, not excluded.
+            expected = sorted(uid for uid, count in counts.items() if student_size_band({"student_count": count}) in ("", band))
+            self.assertTrue(expected, band)
+            self.assertEqual(expected, sorted(ids), band)
+
     def test_university_detail_localizes_campus_size_group_by_lang(self):
         response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
         self.assertEqual(response.status_code, 200)

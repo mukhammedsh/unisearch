@@ -54,6 +54,19 @@ The feasibility run produced a median dossier of 9 programs, 1 route, 13 facts a
 - 35 institutions hold a local-currency amount in a field named for US dollars;
 - generated "paid" funding options and templated grant descriptions are not facts and are dropped.
 
+### Per-institution conversion checklist
+
+Each conversion replaces the institution's earlier-format record in one change and is complete only when the university page works without its "data not yet rechecked" note. That note, on the page and on catalog cards, follows `admissions_catalog.availability` and disappears automatically once the institution is reviewed; do not remove it separately.
+
+1. **Shared or per-program admission.** Record whether first-year undergraduates apply to the institution as a whole. Model a whole-institution application as a route linked to all of its undergraduate options, so the overview can answer dates, cost and requirements without a chosen program. Where applicants apply per course, keep per-course routes; the overview then offers study-level shortcuts instead.
+2. **Typical scores.** Move every typical or admitted score stored as a minimum into `admitted_profile`. Yale's earlier record, for example, shows an admitted-student GPA of 3.84 under "Minimum for applying".
+3. **Admission statistics.** Collect the institution's own published applicant and admitted (or offer) counts for the latest named intake into `admission_statistics`, with source and check date. Use only university-hosted pages or documents, including a Common Data Set the university links. Record offers per application as `offers`, not as admits, and keep a combined foundation/undergraduate pool explicit. Leave the field out when nothing is published.
+4. **Dates.** Collect application windows with their year, or mark them recurring when the source gives none, so the overview can show the next date and a countdown. An earlier-format record without dates currently sends readers to the official website.
+5. **Costs and aid.** Give every quote its currency, period, level and fee status. Record the published aid policy as a short statement, never as an award.
+6. **Institution figures.** Keep or recheck `enrollment_breakdown` and `housing` with their sources. Drop outcome earnings unless they are rechecked against an official, dated source.
+7. **Study formats.** Use campus, hybrid or online wording for formats; describe a single program's schedule on that program, not on the institution.
+8. **Verify.** Open the overview, the four tabs and a catalog card in English, Russian and Kazakh, and check that every overview link opens a filled tab.
+
 ## Runtime prerequisites
 
 These are required before the first light dossier is activated and are not yet implemented:

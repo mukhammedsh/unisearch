@@ -2443,8 +2443,8 @@ university.admissions.catalog.finance_intro: Опубликованные цен
 university.admissions.catalog.deadlines_title: Даты и сроки
 university.admissions.catalog.deadlines_intro: Здесь собраны даты подачи, финансирования, ответа и внесения депозита для выбранной программы и пути. У каждой записи сохранены исходный период и официальный источник.
 university.admissions.catalog.route_intro: Выберите путь поступления — требования и порядок подачи откроются сразу. Профиль не нужен.
-university.admissions.catalog.reference_scope: Сейчас открыт раздел
-university.admissions.catalog.route_not_selected: Путь подачи не выбран
+university.admissions.catalog.reference_scope: Вы смотрите
+university.admissions.catalog.route_not_selected: Выберите, как поступать
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
 university.admissions.catalog.reference_filters: Уточнить контекст (необязательно)
@@ -3498,3 +3498,94 @@ universities.ux2.legend.vibe: По предпочтениям
 profile.ux2.evidence.language_title: Опыт использования английского языка
 profile.ux2.evidence.language_fixed: Записывается только опыт английского: именно о нём спрашивают требования к английскому.
 profile.ux2.evidence.entirely: Полностью на английском?
+university.ux2.title: Главное для поступления
+university.ux2.intro_route: Показано для пути: {route}. Одна заявка подходит для всех программ бакалавриата.
+university.ux2.intro_program: У каждой программы они свои. Выберите программу, чтобы их увидеть.
+university.ux2.intro_legacy: Опубликованные данные вуза о бакалавриате.
+university.ux2.note: Это краткая сводка официальных данных, а не решение о поступлении. Источники и подробности — на вкладках.
+university.ux2.loading: Загружаем главное
+university.ux2.error: Не удалось загрузить главное.
+university.ux2.retry: Повторить
+university.ux2.source: Источник:
+university.ux2.or: или
+university.ux2.card.deadline: Когда подавать
+university.ux2.card.cost: Сколько это стоит
+university.ux2.card.needs: Что понадобится
+university.ux2.card.people: Кто здесь учится
+university.ux2.card.program: Сроки, стоимость и требования
+university.ux2.link.deadlines: Все сроки
+university.ux2.link.cost: Стоимость и финансирование
+university.ux2.link.needs: Все требования
+university.ux2.link.choose: Выбрать программу
+university.ux2.choose.headline: Зависит от программы
+university.ux2.deadline.headline: До {date} · через {days} дн.
+university.ux2.deadline.headline_today: Крайний срок сегодня · {date}
+university.ux2.deadline.closed: Приём «{name}» ({date}) уже закрыт.
+university.ux2.deadline.annual: Университет повторяет эту дату каждый год, не называя год. Сверьте её на официальной странице.
+university.ux2.deadline.legacy: Сроки подачи — во вкладке «Даты и сроки».
+university.ux2.cost.headline: {amount} в год
+university.ux2.cost.headline_from: От {amount} в год
+university.ux2.cost.headline_tuition: {amount} в год, только обучение
+university.ux2.cost.before_aid: До учёта финансовой помощи.
+university.ux2.cost.living_extra: Проживание и расходы на жизнь не включены.
+university.ux2.cost.legacy_total: Опубликованная сумма за обучение, сборы и проживание, до учёта финансовой помощи.
+university.ux2.cost.legacy_tuition_only: Только обучение и сборы; жильё и питание оплачиваются отдельно. До учёта финансовой помощи.
+university.ux2.cost.legacy_unknown: Стоимость обучения за год пока не указана в каталоге.
+university.ux2.cost.aid_need: Вуз публикует программу помощи по нуждаемости; решение о помощи принимается индивидуально.
+university.ux2.cost.aid_merit: Вуз публикует стипендии за достижения; решение принимается индивидуально.
+university.ux2.cost.aid_both: Вуз публикует помощь по нуждаемости и стипендии за достижения; решение принимается индивидуально.
+university.ux2.cost.aid_full_need: Опубликованная политика: вуз покрывает всю подтверждённую финансовую нужду. Решение о помощи принимается индивидуально.
+university.ux2.cost.aid_full_need_international: Опубликованная политика: вуз покрывает всю подтверждённую финансовую нужду, в том числе иностранных студентов. Решение о помощи принимается индивидуально.
+university.ux2.needs.headline: Что проверить перед подачей
+university.ux2.needs.test: Экзамен: {exams}
+university.ux2.needs.test_other: Экзамен: {exams} ({presence})
+university.ux2.needs.english: Тест по английскому: {presence}
+university.ux2.needs.english_any: Тест по английскому, любой один: {exams}
+university.ux2.needs.english_all: Тест по английскому: {exams}
+university.ux2.needs.mark_met: Уже выполнено
+university.ux2.needs.mark_todo: Ещё нужно подготовить или добавить
+university.ux2.needs.mark_below: Ниже опубликованного минимума
+university.ux2.needs.empty: Экзамены и документы перечислены на вкладке «Поступление».
+university.ux2.needs.varies: Требования различаются у программ бакалавриата.
+university.ux2.needs.profile_hint: Добавьте результаты экзаменов в профиль, чтобы увидеть, что у вас уже есть.
+university.ux2.people.international: {percent}% иностранных студентов · {count} из {total} на бакалавриате
+university.ux2.people.housing_one: Жильё гарантировано на {years} год
+university.ux2.people.housing_few: Жильё гарантировано на {years} года
+university.ux2.people.housing_many: Жильё гарантировано на {years} лет
+university.ux2.people.acceptance_undergraduate: Зачисляют около {rate}% подавших заявку на бакалавриат
+university.ux2.people.acceptance: Зачисляют около {rate}% подавших заявку
+university.ux2.people.salary: Зарплата в начале карьеры: около {amount} в год
+university.ux2.people.earnings: Медианный заработок через 10 лет после поступления: около {amount} в год
+university.ux2.needs.presence_required: обязательно
+university.ux2.needs.presence_recommended: рекомендуется
+university.ux2.needs.presence_strongly_recommended: настоятельно рекомендуется некоторым абитуриентам
+university.ux2.format.hybrid: Гибридно (кампус и онлайн)
+university.ux2.deadlines.not_collected: UniSearch пока не собрал сроки подачи для этого университета. Актуальные даты смотрите на официальном сайте приёмной комиссии.
+university.ux2.deadline.legacy_none: Сроки пока не собраны
+university.ux2.deadline.legacy_none_detail: У UniSearch ещё нет сроков подачи этого университета. Проверьте их на официальном сайте.
+university.ux2.link.official_site: Официальный сайт
+university.ux2.legacy.title: Данные этого университета ещё не перепроверены
+university.ux2.legacy.text: Они собраны раньше и могут быть неточными или устаревшими. Важное сверяйте на официальном сайте. Мы по очереди переводим университеты на перепроверенные данные, этот тоже обновится.
+university.ux2.legacy.badge: Данные ещё не перепроверены
+university.ux2.legacy.badge_detail: Собраны раньше и могут быть неточными или устаревшими. Важное сверяйте на официальном сайте; университет скоро обновится.
+university.ux2.people.selectivity_first_year: Зачисляют около {rate}% подавших заявку на первый курс
+university.ux2.people.selectivity_undergraduate: Зачисляют около {rate}% подавших заявку на бакалавриат
+university.ux2.people.selectivity_offers: Предложение места получают около {rate}% заявок на бакалавриат
+university.ux2.people.selectivity_counts_admitted: Зачислено: {admitted} · подали заявку: {applicants}
+university.ux2.people.selectivity_counts_offers: Предложений места: {admitted} · заявок: {applicants}
+university.ux2.people.selectivity_international: Иностранцы: зачислено {admitted} · подали заявку {applicants} (около {rate}%)
+university.ux2.people.selectivity_preparation: Ещё {rate}% по той же заявке приняли на подготовительный год {name}
+university.ux2.people.selectivity_offers_note: Один человек может подать заявки на несколько программ, поэтому это не доля поступивших людей.
+university.ux2.people.intake: набор {year} г.
+university.ux2.campus.area_label: Площадь кампуса
+university.ux2.campus.area_ha: {ha} га
+university.ux2.campus.area_km: {ha} га ({km} км²)
+university.ux2.campus.pitches_one: примерно {count} футбольное поле
+university.ux2.campus.pitches_few: примерно {count} футбольных поля
+university.ux2.campus.pitches_many: примерно {count} футбольных полей
+university.ux2.campus.pitches_other: примерно {count} футбольного поля
+university.ux2.campus.source: Официальный источник
+university.ux2.overview.numbers_title: В цифрах
+university.ux2.prompt.shared_routes: На бакалавриат подают одну заявку для всех программ. Выберите, как вы поступаете:
+university.ux2.sources.one: Источник
+university.ux2.sources.many: Источники

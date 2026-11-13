@@ -415,7 +415,7 @@ def _localize_university_payload(
     student_life = u.get("student_life")
     if isinstance(student_life, dict):
         student_life["size"] = _translate_group_value(
-            "campus_size", student_life.get("size"), lang
+            "campus_size", student_size_band(u) or student_life.get("size"), lang
         )
 
     academics = u.get("academics")
@@ -814,6 +814,22 @@ def _search_query_candidates(
             candidates.append(candidate)
 
     return _uniq_non_empty(candidates)
+
+
+# Size bands by total student count. The stored campus-size bucket mixed land area for some universities
+# with student numbers for others; the published student count is known for every catalog university.
+SMALL_STUDENT_LIMIT = 10000
+LARGE_STUDENT_LIMIT = 30000
+
+
+def student_size_band(u: Dict[str, Any]) -> str:
+    """Return small (under 10,000), medium (10,000-30,000) or large (over 30,000), or "" without a count."""
+    count = _num_or_none(u.get("student_count")) if isinstance(u, dict) else None
+    if count is None or count <= 0:
+        return ""
+    if count < SMALL_STUDENT_LIMIT:
+        return "small"
+    return "medium" if count <= LARGE_STUDENT_LIMIT else "large"
 
 
 def _get_nested(u: Dict[str, Any], path: List[str], default: Any = None) -> Any:
@@ -1354,7 +1370,7 @@ def _build_university_meta(
         "tags": [_safe_lower(x) for x in raw_tags if x],
         "tags_rus": [_safe_lower(x) for x in tags_rus if x],
         "tags_kaz": tags_kaz,
-        "size": _safe_lower(_get_nested(u, ["student_life", "size"])),
+        "size": student_size_band(u),
         "majors": [_safe_lower(x) for x in majors if x],
         "program_names": [_safe_lower(x) for x in program_names if x],
         "major_exact": [_safe_lower(x) for x in major_exact if x],
@@ -2115,7 +2131,8 @@ def _filter_university_pairs(
 
     if size:
         ss = _safe_lower(size)
-        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
+        # Size is a student-count band; a university without a published count stays visible, as in other filters.
+        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") in ("", ss)]
 
     return pairs
 
