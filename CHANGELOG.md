@@ -52,6 +52,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The selection strip no longer reports that an application path needs clarification while a program's paths are still loading.
 - The empty Dates tab of earlier-format universities is localized instead of showing an English placeholder.
 - Removed Nazarbayev University's campus area, whose linked official page does not state it.
+- New interface text no longer renders empty in a browser tab that cached the previous translations. The locale-pack revision is now a fingerprint of the localization files, and `tests/unit/i18n-pack-revision.test.mjs` fails with the expected value whenever a localization file changes without it.
 - The comparison's campus-area row shows hectares instead of a raw square-metre number.
 - The Dates tab of reviewed universities was indented 24 px less than the other tabs.
 - A link to a specific tab now opens that tab on earlier-format university pages too.
