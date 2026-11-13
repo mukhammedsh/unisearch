@@ -18,6 +18,7 @@ import { initUniversityTranslations } from "../../university-translations.js";
 import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
+import { mountOverviewSummary } from "./overview-summary.js";
 import {
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
@@ -46,6 +47,7 @@ let detailCurrencyChangedHandler = null;
 let detailOnlineReconnectHandler = null;
 let detailPopStateHandler = null;
 let detailAdmissionsCleanup = null;
+let detailOverviewSummaryCleanup = null;
 let detailPageVersion = 0;
 
 function clearDetailLanguageSkeletons() {
@@ -105,6 +107,8 @@ function thumbnailBackgroundImage(universityId) {
 function cleanupDetailListeners() {
   detailAdmissionsCleanup?.();
   detailAdmissionsCleanup = null;
+  detailOverviewSummaryCleanup?.();
+  detailOverviewSummaryCleanup = null;
   if (detailProfileUpdatedHandler) {
     window.removeEventListener("profileUpdated", detailProfileUpdatedHandler);
     detailProfileUpdatedHandler = null;
@@ -304,6 +308,12 @@ async function fetchUniversityProfileMetric(id, endpoint, profile) {
   return data || null;
 }
 
+function mountOverviewSummaryBlock(options) {
+  const container = document.getElementById("detailOverviewSummary");
+  if (container) container.hidden = false;
+  return mountOverviewSummary({ container, ...options });
+}
+
 async function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
   if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
   const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
@@ -323,6 +333,7 @@ async function renderReviewedUniversityPage({ id, preserveVisibleContent, univer
   });
   const mounted = mountAdmissionsCatalog(universityId);
   detailAdmissionsCleanup = mounted.dispose;
+  detailOverviewSummaryCleanup = mountOverviewSummaryBlock({ university, universityId, reviewed: true }).dispose;
   if (cardEl) {
     cardEl.style.display = "block";
     cardEl.classList.add("is-mounted");
@@ -421,6 +432,15 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       : {});
 
   renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, rankStatus, university });
+  detailOverviewSummaryCleanup = mountOverviewSummaryBlock({
+    university, universityId, reviewed: false,
+    legacy: {
+      acceptanceMeta, acceptanceRate,
+      // Read the profile again on every refresh, so the figure follows the same level and study mode as the page header.
+      getMinPrice: () => computeMinPrice(university, loadProfile()?.studyLevel || loadProfile()?.study_level,
+        normalizeStudyModeForCost(loadProfile()?.studyMode || "Any"), annualCostForTrack),
+    },
+  }).dispose;
   renderCoverageSection({
     container: document.getElementById("detailCoverage"),
     coverageByLevel: university?.coverage_by_level,

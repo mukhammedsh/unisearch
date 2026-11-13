@@ -403,14 +403,23 @@ test("reviewed overview shows institution facts without a university-wide admiss
   assert.doesNotMatch(container.innerHTML, /Acceptance Rate|Undergraduate acceptance rate|4\.56%|NaN/);
 });
 
-test("an institution with many delivery formats keeps them in one readable disclosure", () => {
+test("an institution with many delivery formats names the formats rather than each program's schedule", () => {
   setLanguage("eng", { persist: false, emit: false });
   const container = { innerHTML: "" };
   renderOverviewSection({ container, includeAdmissionRate: false, university: { academics: {
     formats: ["Full-time", "Full-time", "Hybrid", "Low-residency campus intensives", "Part-time online"],
   } } });
+  assert.match(container.innerHTML, /Hybrid \(campus and online\), Online/);
+  assert.doesNotMatch(container.innerHTML, /Full-time|Low-residency/);
+});
+
+test("unrecognised format wording is still shown, in one disclosure when long", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "" };
+  renderOverviewSection({ container, includeAdmissionRate: false, university: { academics: {
+    formats: ["Full-time", "Full-time", "Part-time", "Evening", "Weekend"],
+  } } });
   assert.match(container.innerHTML, /<summary>Varies by program/);
-  assert.match(container.innerHTML, /<li>Low-residency campus intensives<\/li>/);
   assert.equal((container.innerHTML.match(/<li>Full-time<\/li>/g) || []).length, 1);
 });
 

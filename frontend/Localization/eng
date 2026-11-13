@@ -3433,3 +3433,65 @@ university.admissions.key_facts.requirements_add_sections: {exam} section scores
 university.admissions.key_facts.requirements_add_date_sections: {exam} test date and section scores
 university.admissions.key_facts.requirements_add_gpa: GPA
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
+university.ux2.title: Key admission facts
+university.ux2.intro_route: Shown for: {route}. One application covers all undergraduate programs.
+university.ux2.intro_program: Each program sets its own. Choose a program to see them.
+university.ux2.intro_legacy: Published undergraduate information from this university.
+university.ux2.note: A summary of official facts, not an admission decision. Sources and full details are in the tabs.
+university.ux2.loading: Loading key facts
+university.ux2.error: Could not load the key facts.
+university.ux2.retry: Try again
+university.ux2.source: Source:
+university.ux2.or: or
+university.ux2.card.deadline: When to apply
+university.ux2.card.cost: What it costs
+university.ux2.card.needs: What you'll need
+university.ux2.card.people: Who studies here
+university.ux2.card.program: Dates, costs and requirements
+university.ux2.link.deadlines: All dates
+university.ux2.link.cost: Costs and funding
+university.ux2.link.needs: Full requirements
+university.ux2.link.choose: Choose a program
+university.ux2.choose.headline: Depends on the program
+university.ux2.deadline.headline: By {date} · in {days} days
+university.ux2.deadline.headline_today: Deadline today · {date}
+university.ux2.deadline.closed: {name} ({date}) has already closed.
+university.ux2.deadline.annual: The year is assumed from a repeating annual date; confirm it on the official page.
+university.ux2.deadline.legacy: Exact dates are not summarized here. See the Dates tab.
+university.ux2.cost.headline: {amount} a year
+university.ux2.cost.headline_from: From {amount} a year
+university.ux2.cost.headline_tuition: {amount} a year, tuition only
+university.ux2.cost.before_aid: Before financial aid.
+university.ux2.cost.living_extra: Housing and living costs are not included.
+university.ux2.cost.legacy_total: Published total of tuition, fees and living costs, before financial aid.
+university.ux2.cost.legacy_tuition_only: Tuition and fees only; housing and food are extra. Before financial aid.
+university.ux2.cost.legacy_unknown: No annual cost is published in the catalog yet.
+university.ux2.cost.aid_need: The university publishes need-based aid; an award is decided individually.
+university.ux2.cost.aid_merit: The university publishes merit scholarships; an award is decided individually.
+university.ux2.cost.aid_both: The university publishes need-based aid and merit scholarships; an award is decided individually.
+university.ux2.cost.aid_full_need: Published policy: the university meets full demonstrated financial need. An award is decided individually.
+university.ux2.cost.aid_full_need_international: Published policy: the university meets full demonstrated financial need, including for international students. An award is decided individually.
+university.ux2.needs.headline: Check these before you apply
+university.ux2.needs.test: Test: {exams}
+university.ux2.needs.test_other: Test: {exams} ({presence})
+university.ux2.needs.english: English test: {presence}
+university.ux2.needs.english_any: English test, any one of: {exams}
+university.ux2.needs.english_all: English test: {exams}
+university.ux2.needs.mark_met: Already met
+university.ux2.needs.mark_todo: Still to prepare or add
+university.ux2.needs.mark_below: Below the published minimum
+university.ux2.needs.empty: Tests and documents are listed on the Admission tab.
+university.ux2.needs.varies: Requirements differ between undergraduate programs.
+university.ux2.needs.profile_hint: Add your test results to your profile to see what you already have.
+university.ux2.people.international: {percent}% international · {count} of {total} undergraduates
+university.ux2.people.housing_one: Housing guaranteed for {years} year
+university.ux2.people.housing_few: Housing guaranteed for {years} years
+university.ux2.people.housing_many: Housing guaranteed for {years} years
+university.ux2.people.acceptance_undergraduate: {rate}% of undergraduate applicants were admitted
+university.ux2.people.acceptance: {rate}% of applicants were admitted
+university.ux2.people.salary: Early-career salary: about {amount} a year
+university.ux2.people.earnings: Median earnings 10 years after enrolling: about {amount} a year
+university.ux2.needs.presence_required: required
+university.ux2.needs.presence_recommended: recommended
+university.ux2.needs.presence_strongly_recommended: strongly recommended for some applicants
+university.ux2.format.hybrid: Hybrid (campus and online)

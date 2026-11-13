@@ -30,6 +30,24 @@ import {
   toFiniteNumber,
 } from "../_shared.js";
 
+// Groups free-text program formats into the university-level formats an applicant compares: campus, hybrid, online.
+// "Full-time", "evening" or other schedule wording names no format and is left to the program pages.
+export function universityStudyFormats(values) {
+  const found = new Set();
+  for (const value of Array.isArray(values) ? values : []) {
+    const text = String(value || "").toLowerCase();
+    // A mixed format is one hybrid format, not separate campus and online options.
+    if (/\b(hybrid|blended|low-residency)\b/.test(text)) {
+      found.add("hybrid");
+      continue;
+    }
+    // The detail API returns these values already translated, so the Russian and Kazakh forms are matched as well.
+    if (/\b(online|distance|remote)\b|онлайн|дистанц|қашықтан/.test(text)) found.add("online");
+    if (/\b(on-campus|on campus|campus|in-person|in person|residential)\b|on_campus|кампус/.test(text)) found.add("on_campus");
+  }
+  return ["on_campus", "hybrid", "online"].filter((bucket) => found.has(bucket));
+}
+
 export function renderOverviewSection({
   acceptanceMeta,
   acceptanceRate,
@@ -120,12 +138,16 @@ export function renderOverviewSection({
   const studentCount = studentCountValue !== null
     ? new Intl.NumberFormat("en-US").format(studentCountValue)
     : t("common.no_data", "No data");
-  const formatValues = Array.isArray(university.academics?.formats)
-    ? [...new Set(university.academics.formats
+  const rawFormats = Array.isArray(university.academics?.formats) ? university.academics.formats : [];
+  const formatBuckets = universityStudyFormats(rawFormats);
+  // Program-level wording (for example one evening professional program) does not describe the whole university:
+  // the overview names only the recognised formats and keeps the original values when none is recognised.
+  const formatValues = formatBuckets.length
+    ? formatBuckets.map((bucket) => escapeHtml(bucket === "hybrid" ? t("university.ux2.format.hybrid") : trStudyMode(bucket === "online" ? "Online" : "On-campus")))
+    : [...new Set(rawFormats
       .filter((value) => String(value || "").trim().toLowerCase() !== "not_stated")
       .map((value) => escapeHtml(trStudyMode(String(value))))
-      .filter(Boolean))]
-    : [];
+      .filter(Boolean))];
   const formats = formatValues.length > 3
     ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
     : formatValues.join(", ");

@@ -124,15 +124,34 @@ const PERIOD_LABELS = {
   "Recurring first-year dates; page does not specify entry year": "yearless_period",
 };
 
-// The published period as plain muted text: recognised forms are translated, other source wording is shown as published.
+// Research wording that says the source gives no entry year; the applicant only needs to know the year is not stated.
+const YEARLESS_WORDING = /\b(?:year not stated|cycle not (?:specified|separately established)|no (?:application )?year|yearless|does not (?:state|specify) (?:entry |cycle )?year|undated)\b/i;
+const RECURRING_WORDING = /\brecurring\b/i;
+
+// The applicant-facing reading of a period label: an entry cycle, an academic year or a "year not stated" note.
+// Other research wording (process notes, date lists already shown in the value) stays in the full source records.
+export function plainPeriodLabel(value, kind = "") {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  if (PERIOD_LABELS[text]) return label(PERIOD_LABELS[text]);
+  if (/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2})|\/\d{2})?) ?entry$/.test(text)) return admissionsCycleLabel(text);
+  if (/^[\d–—‑\s-]+$/.test(text)) return text;
+  const cycle = text.match(/^(?:Effective |First entry )?((?:Fall|Spring|Summer|Winter) 20\d{2})(?: entry)?\b/);
+  if (cycle) return admissionsCycleLabel(`${cycle[1]} entry`);
+  const year = text.match(/^(?:Catalog )?(20\d{2}-(?:\d{2}|20\d{2}))\b/);
+  if (year) return year[1];
+  if (YEARLESS_WORDING.test(text) || RECURRING_WORDING.test(text) || kind === "yearless_policy") {
+    return label(RECURRING_WORDING.test(text) ? "yearless_period" : "current_policy");
+  }
+  return "";
+}
+
+// The published period as plain muted text in the applicant's language; the original wording remains in the full source records.
 function periodNote(row, { omitYearless = false } = {}) {
   const value = period(row || {}) || row?.scope?.cycle || "";
-  if (!value || (omitYearless && PERIOD_LABELS[value] === "yearless_period")) return "";
-  const entry = /^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2})|\/\d{2})?) ?entry$/.test(value);
-  if (PERIOD_LABELS[value] || entry || /^[\d–—‑\s-]+$/.test(value)) {
-    return `<span data-source-period>${escapeHtml(PERIOD_LABELS[value] ? label(PERIOD_LABELS[value]) : entry ? admissionsCycleLabel(value) : value)}</span>`;
-  }
-  return `<span data-source-period>${escapeHtml(t("university.admissions.catalog.period"))}: <span lang="en">${escapeHtml(value)}</span></span>`;
+  const plain = plainPeriodLabel(value, row?.period?.kind);
+  if (!plain || (omitYearless && plain === label("yearless_period"))) return "";
+  return `<span data-source-period>${escapeHtml(plain)}</span>`;
 }
 
 function sourceNote(row, resolved, { omitYearless = false, omitPeriod = false } = {}) {

@@ -249,14 +249,15 @@ export function mountAdmissionsCatalog(institutionId) {
   const loading = () => `<div class="admissions-state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(label("loading"))}</span></div>`;
   const failure = (retry) => `<div class="admissions-state" role="alert"><p>${escapeHtml(label("load_error"))}</p><button type="button" data-admissions-retry="${retry}">${escapeHtml(label("retry"))}</button></div>`;
 
-  function renderSelectionSummary(option, route) {
+  function renderSelectionSummary(option, route, status = "ready") {
     if (!selectionSummary) return;
     selectionSummary.hidden = !option && !hasReadableAdmissionContext(resolved);
     if (selectionSummary.hidden) return;
     const programTitle = option ? admissionsProgramLabel(option, { includeAward: true }).title : routeName(route);
     const scope = [
       ...(option?.catalog_classification === "ucas_course_choice" ? [] : (option?.awards || []).filter(award => award !== programTitle)),
-      option ? route ? routeName(route) : resolved.available_routes?.length ? label("route_not_selected") : t("university.admissions.reading.no_route_short") : "",
+      // While the program's paths load, no path state is stated yet: an empty list is not yet "needs clarification".
+      option ? route ? routeName(route) : status !== "ready" ? "" : resolved.available_routes?.length ? label("route_not_selected") : t("university.admissions.reading.no_route_short") : "",
       route?.applicant_route ? label(`applicant.${route.applicant_route}`) : "",
       admissionsCycleLabel(context.intended_entry_cycle),
       context.fee_status_context && context.fee_status_context !== "unknown" ? label(`fee.${context.fee_status_context}`) : "",
@@ -340,7 +341,7 @@ export function mountAdmissionsCatalog(institutionId) {
       <div class="admissions-context__status" aria-live="polite">${status === "error" ? failure("context") : status !== "ready" ? "" : incompatible ? empty(label("incompatible_context")) : readable ? "" : !option ? empty(label("choose_program_hint")) : noRoute ? `<p data-no-application-route>${escapeHtml(t("university.admissions.reading.no_application_route"))}</p>${programSource ? `<a href="${escapeHtmlAttr(safeUrl(programSource.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label("official_course_page"))}</a>` : ""}` : ""}</div>`;
     const contextRetry = root.querySelector(".admissions-context__status [data-admissions-retry='context']");
     if (contextRetry) contextRetry.onclick = () => refreshContext();
-    renderSelectionSummary(option, route);
+    renderSelectionSummary(option, route, status);
     if (status === "loading") root.querySelectorAll("select, input").forEach((element) => { element.disabled = true; });
     contextSelectDisposers = ["admissionsRoute", "admissionsFee"].filter(id => root.querySelector(`#${id}`)?.tagName === "SELECT").map(initCustomSelect);
     root.querySelectorAll("[data-shared-route]").forEach(button => {

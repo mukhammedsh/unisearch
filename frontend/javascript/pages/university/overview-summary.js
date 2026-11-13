@@ -1,0 +1,367 @@
+// "Key admission facts" at the top of the university Overview tab: four plain answers (when to apply, what it costs,
+// what you'll need, who studies here), each with one line of meaning and a link to the tab holding the details.
+// Reviewed universities read the institution-wide first-year route through the existing admissions-context endpoint;
+// the other universities use the detail payload that is already loaded. Nothing here is saved or changes the page context.
+import { API_BASE, loadProfileForApi } from "../../utils.js";
+import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
+import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { heroIcon } from "../../icons.js";
+import { formatPrice } from "../../currency.js";
+import { translateAdmissionText } from "../../university-translations.js";
+import { getExamDisplayName } from "../../utils/config.js";
+import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
+import { admissionsRequest, isRecognizedAdmissionCycle, normalizeAdmissionCycle } from "./admissions-controller.js";
+import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
+import { costFact, deadlineFact, fundingPolicyStatement } from "./admissions-key-facts.js";
+import { isReviewedPublished } from "./admissions-status.js";
+import { getUndergraduateCategories } from "./render-sections.js";
+
+const label = (key, fallback = "") => t(`university.ux2.${key}`, fallback);
+const MAX_CHECKLIST_ITEMS = 5;
+const MAX_LEGACY_EXTRAS = 4;
+const TEST_TOPICS = new Set(["academic_tests", "standardized_tests"]);
+const DOCUMENT_TOPICS = new Set(["documents", "application_documents", "application_process"]);
+// Documents the prepared records name verbatim; any other published item keeps its own wording.
+const DOCUMENT_LABEL_KEYS = {
+  "MIT application including essays/activities/academics": "document_application",
+  "Secondary School Report with transcript": "document_school",
+  "Two teacher recommendations": "document_references",
+};
+const TEST_ONLY_DOCUMENT = /^(?:SAT|ACT)(?: or (?:SAT|ACT))*$/i;
+const SALARY_FACTS = [
+  ["early_career_salary", "early_career_salary_usd", "salary"],
+  ["median_earnings_10yr", "median_earnings_10yr_usd", "earnings"],
+];
+
+const isString = value => typeof value === "string" && value.trim() !== "";
+const examName = id => getExamDisplayName(id, { locale: getCurrentLanguage() });
+const listOr = names => names.join(` ${label("or")} `);
+// Published outcome figures are in dollars and shown as published, formatted for the interface language.
+const usd = amount => new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
+  { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(amount);
+
+// The first undergraduate first-year application shared by every major, or null when the university has none
+// (a route without programs, such as a mid-year intake, cannot describe all majors).
+export function firstYearSharedRoute(sharedRoutes) {
+  return (Array.isArray(sharedRoutes) ? sharedRoutes : []).find(route => route?.applicant_route === "first_year"
+    && Array.isArray(route.levels) && route.levels.includes("undergraduate")
+    && Array.isArray(route.option_ids) && route.option_ids.length > 0) || null;
+}
+
+const markFor = check => ({ met: "met", unmet: "below" })[check?.status] || "todo";
+
+// Published facts that apply to the read route, limited to reviewed and published records.
+function routeFacts(resolved, groups) {
+  const ids = new Set(groups.flatMap(group => resolved?.fact_groups?.[group] || []));
+  return (resolved?.facts || []).filter(row => ids.has(row.id) && row.applicability?.status !== "mismatched" && isReviewedPublished(row));
+}
+
+const presenceLabel = presence => t(`university.ux2.needs.presence_${presence}`) || t(`university.admissions.catalog.enum.${presence}`) || String(presence).replaceAll("_", " ");
+
+// A short checklist of the tests, language test and documents the route publishes. Marks come from the applicant's
+// own profile evidence: met, to add, or below a published minimum. Nothing here is a probability.
+export function checklistItems(resolved) {
+  const checks = new Map((resolved?.assessment?.activeChoice?.details?.checks || []).map(check => [check.factId, check]));
+  const rows = routeFacts(resolved, ["requirements", "application"]);
+  const item = (kind, row, text, extra = {}) => ({ kind, factId: row.id, mark: markFor(checks.get(row.id)), text, ...extra });
+  const structured = { tests: [], language: [], documents: [] };
+  const plain = { tests: [], documents: [] };
+  for (const row of rows) {
+    const value = row.value;
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      if (Array.isArray(value.alternatives) && value.alternatives.length && value.alternatives.every(isString)) {
+        const exams = listOr(value.alternatives.map(examName));
+        structured.tests.push(item("tests", row, value.presence === "required" || !value.presence
+          ? tFormat("university.ux2.needs.test", { exams })
+          : tFormat("university.ux2.needs.test_other", { exams, presence: presenceLabel(value.presence) })));
+      } else if (Array.isArray(value.minima_and_recommendations) && value.presence) {
+        structured.language.push(item("language", row, tFormat("university.ux2.needs.english", { presence: presenceLabel(value.presence) })));
+      } else if (Array.isArray(value.required) && value.required.every(isString) && DOCUMENT_TOPICS.has(row.topic)) {
+        for (const document of value.required.filter(entry => !TEST_ONLY_DOCUMENT.test(entry))) {
+          const key = DOCUMENT_LABEL_KEYS[document];
+          structured.documents.push(item("documents", row, key ? t(`university.admissions.reading.${key}`) : translateAdmissionText(document, document)));
+        }
+      }
+    } else if (isString(value)) {
+      // A university that publishes these as one sentence keeps its own (translated) wording.
+      if (TEST_TOPICS.has(row.topic)) plain.tests.push(item("tests", row, translateAdmissionText(value, value), { prose: true }));
+      else if (row.topic === "application_documents") plain.documents.push(item("documents", row, translateAdmissionText(value, value), { prose: true }));
+    }
+  }
+  const tests = structured.tests.slice(0, 1).concat(structured.tests.length ? [] : plain.tests.slice(0, 1));
+  const documents = structured.documents.length ? structured.documents : plain.documents.slice(0, 1);
+  return [...tests, ...structured.language.slice(0, 1), ...documents].slice(0, MAX_CHECKLIST_ITEMS);
+}
+
+// Who studies here: only published figures that exist, each with its official source.
+export function peopleItems(university, { acceptanceRate = null, acceptanceMeta = null } = {}) {
+  const items = [];
+  const source = (name, url, extra = "") => {
+    const href = safeUrl(url);
+    const text = [isString(name) ? trFactSource(name) : "", extra].filter(Boolean).join(" · ");
+    // A source with no published name is shown as a plain "Official source" link, without a "Source:" caption.
+    return text ? { label: text, url: href } : href ? { label: t("university.admissions.official_source"), url: href, unnamed: true } : null;
+  };
+  const rate = toFiniteNumber(acceptanceRate);
+  if (rate !== null) {
+    const kind = String(university?.academics?.admissions?.university_wide?.kind || "").toLowerCase();
+    items.push({ kind: "acceptance", text: tFormat(`university.ux2.people.acceptance${kind.startsWith("undergraduate") ? "_undergraduate" : ""}`,
+      { rate: formatUiNumber(Math.round(rate * 10) / 10, { maximumFractionDigits: 1 }) }),
+    source: source(acceptanceMeta?.source, acceptanceMeta?.source_url) });
+  }
+  const enrollment = university?.enrollment_breakdown;
+  const [percent, count, total] = ["undergraduate_international_percent", "undergraduate_international_count", "undergraduate_count"]
+    .map(key => toFiniteNumber(enrollment?.[key]));
+  if (percent !== null && count !== null && total !== null && total > 0) {
+    items.push({ kind: "international", text: tFormat("university.ux2.people.international",
+      { percent: formatUiNumber(Math.round(percent)), count: formatUiNumber(count), total: formatUiNumber(total) }),
+    source: source(enrollment.source, enrollment.source_url, enrollment.census_year) });
+  }
+  const years = toFiniteNumber(university?.housing?.undergraduate_guarantee_years);
+  if (years !== null && years > 0) {
+    // Russian needs three plural forms; the other languages use one or two.
+    const mod10 = years % 10;
+    const form = getCurrentLanguage() === "rus" ? (years % 100 >= 11 && years % 100 <= 14 ? "many" : mod10 === 1 ? "one" : mod10 >= 2 && mod10 <= 4 ? "few" : "many")
+      : years === 1 ? "one" : "many";
+    items.push({ kind: "housing", text: tFormat(`university.ux2.people.housing_${form}`, { years: formatUiNumber(years) }),
+      source: source("", university.housing.source_url) });
+  }
+  for (const [factKey, outcomeKey, kind] of SALARY_FACTS) {
+    const value = toFiniteNumber(university?.outcomes?.[outcomeKey]);
+    const fact = university?.fact_provenance?.facts?.[factKey];
+    if (value === null || !safeUrl(fact?.source_url)) continue;
+    items.push({ kind, text: tFormat(`university.ux2.people.${kind}`, { amount: usd(value) }), source: source(fact.source, fact.source_url) });
+    break;
+  }
+  return items;
+}
+
+const link = (tab, key) => ({ tab, label: label(`link.${key}`) });
+// Where each program sets its own dates, costs and requirements, one card says so instead of three identical answers.
+const programChoiceCard = () => ({ id: "program", icon: "academic-cap", state: "choose", headline: label("choose.headline"), lines: [label("intro_program")], link: link("tab-programs", "choose") });
+
+// Plain headline and supporting lines for the next application date.
+export function deadlineCard(fact) {
+  const base = { id: "deadline", icon: "calendar", link: link("tab-deadlines", "deadlines") };
+  if (["upcoming", "recurring"].includes(fact.status) && fact.next) {
+    const closed = (fact.passedWindows || []).map(entry => tFormat("university.ux2.deadline.closed", entry));
+    const caution = fact.status === "recurring" ? [label("deadline.annual")] : [];
+    return { ...base, tone: fact.tone, headline: fact.days ? tFormat("university.ux2.deadline.headline", { date: fact.next.date, days: fact.days })
+      : tFormat("university.ux2.deadline.headline_today", { date: fact.next.date }),
+    lines: [fact.next.title, [...closed, ...caution].join(" "), fact.status === "upcoming" ? fact.notes?.[0] : ""].filter(Boolean) };
+  }
+  return { ...base, tone: fact.tone, answerKind: "text", headline: fact.text, lines: [] };
+}
+
+// The published price, stated before aid, with the university's aid policy and the budget comparison beneath it.
+export function costCard(fact, policy = "") {
+  const base = { id: "cost", icon: "banknotes", link: link("tab-finance", "cost") };
+  if (!fact.amount) return { ...base, answerKind: "text", headline: fact.text, lines: [] };
+  const lines = fact.status === "not_annual" ? [] : [
+    [label("cost.before_aid"), fact.period ? tFormat("university.admissions.key_facts.cost_period", {
+      period: /\bentry\b/i.test(fact.period) ? admissionsCycleLabel(fact.period) || fact.period : fact.period }) : ""].filter(Boolean).join(" "),
+    fact.basis === "tuition" ? label("cost.living_extra") : "",
+  ].filter(Boolean);
+  const aside = [];
+  if (fact.flag) aside.push({ text: fact.flag.text, tone: fact.flag.tone });
+  else if (fact.status === "no_budget") aside.push({ text: t("university.admissions.key_facts.budget_missing") });
+  if (policy) aside.push({ text: tFormat("university.admissions.key_facts.funding_policy", { policy }) });
+  if (fact.status === "not_annual") return { ...base, answerKind: "text", headline: fact.text, lines: fact.notes || [], aside };
+  return { ...base, headline: tFormat(`university.ux2.cost.headline${fact.basis === "tuition" ? "_tuition" : ""}`, { amount: fact.amount }), lines, aside };
+}
+
+function checklistCard(items, { hasEvidence }) {
+  const base = { id: "needs", icon: "clipboard-document-list", link: link("tab-admission", "needs") };
+  if (!items.length) return { ...base, answerKind: "text", headline: label("needs.empty"), lines: [] };
+  const evidenceHint = !hasEvidence && items.every(entry => entry.mark === "todo") ? [label("needs.profile_hint")] : [];
+  return { ...base, headline: label("needs.headline"), items, lines: evidenceHint };
+}
+
+// Every card for a reviewed university; without a shared first-year route the first three cards depend on the program.
+export function reviewedCards({ resolved, university, budgetUsd, profileExamIds = [], now = new Date() }) {
+  const people = peopleItems(university);
+  const peopleCard = people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [];
+  if (!resolved) {
+    return [programChoiceCard(), ...peopleCard];
+  }
+  return [
+    deadlineCard(deadlineFact(resolved, now, { profileExamIds })),
+    costCard(costFact(resolved, budgetUsd), fundingPolicyStatement(resolved)),
+    checklistCard(checklistItems(resolved), { hasEvidence: profileExamIds.length > 0 }),
+    ...peopleCard,
+  ];
+}
+
+// Legacy price: the amount the page header already shows, named by what the record says it covers.
+export function legacyCostCard(university, minPrice) {
+  const base = { id: "cost", icon: "banknotes", link: link("tab-finance", "cost") };
+  const finance = university?.finance || {};
+  const amount = toFiniteNumber(minPrice);
+  if (amount === null || amount < 0) return { ...base, answerKind: "text", headline: label("cost.legacy_unknown"), lines: [] };
+  const tuitionOnly = finance.costs_breakdown_status === "official_tuition_and_fees_only";
+  const published = toFiniteNumber(finance.total_cost_year_usd);
+  const shown = formatPrice(amount, finance.currency || "USD");
+  const aid = finance.financial_aid || {};
+  // The aid line states the published policy; an award is always decided individually.
+  const aidKey = aid.meets_full_demonstrated_need === true ? `full_need${aid.international_eligible === true ? "_international" : ""}`
+    : aid.need_based && aid.merit_based ? "both" : aid.need_based ? "need" : aid.merit_based ? "merit" : "";
+  const aside = aidKey ? [{ text: label(`cost.aid_${aidKey}`) }] : [];
+  return { ...base, headline: tFormat(`university.ux2.cost.${amount === published ? "headline" : "headline_from"}`, { amount: shown }),
+    lines: [label(tuitionOnly ? "cost.legacy_tuition_only" : "cost.legacy_total")], aside };
+}
+
+// Legacy requirements: the single undergraduate category's language test and first listed extra requirements.
+export function legacyNeedsItems(university) {
+  const categories = getUndergraduateCategories(university?.admission_categories);
+  if (categories.length !== 1) return categories.length ? null : [];
+  const category = categories[0];
+  const items = [];
+  const entries = (Array.isArray(category.language_requirements) ? category.language_requirements : [])
+    .flatMap(entry => Object.entries(entry?.requirements || {}).map(([exam, value]) => `${examName(exam).replace(/\s*\([^)]*\)/g, "")} ${value}`));
+  if (entries.length) {
+    items.push({ kind: "language", mark: "todo", text: tFormat(`university.ux2.needs.english_${category.language_requirements_mode === "any" && entries.length > 1 ? "any" : "all"}`, { exams: entries.join(", ") }) });
+  }
+  const extras = [...new Set(Array.isArray(category.extra_requirements) ? category.extra_requirements.filter(isString) : [])];
+  for (const extra of extras.slice(0, Math.min(MAX_LEGACY_EXTRAS, MAX_CHECKLIST_ITEMS - items.length))) {
+    items.push({ kind: "documents", mark: "todo", prose: true, text: trTrackDescription(university.id, category.id, extra) });
+  }
+  return items;
+}
+
+export function legacyCards({ university, minPrice, acceptanceRate, acceptanceMeta }) {
+  const needs = legacyNeedsItems(university);
+  const people = peopleItems(university, { acceptanceRate, acceptanceMeta });
+  const legacyDeadline = { id: "deadline", icon: "calendar", answerKind: "text", headline: label("deadline.legacy"), lines: [], link: link("tab-deadlines", "deadlines") };
+  const needsCard = needs === null
+    ? { id: "needs", icon: "clipboard-document-list", answerKind: "text", headline: label("needs.varies"), lines: [], link: link("tab-admission", "needs") }
+    : checklistCard(needs, { hasEvidence: true });
+  return [legacyDeadline, legacyCostCard(university, minPrice), needsCard, ...(people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [])];
+}
+
+const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
+
+function renderSource(source) {
+  if (!source) return "";
+  const text = escapeHtml(source.label);
+  return `<span class="overview-summary__source">${source.unnamed ? "" : `${t("university.ux2.source")} `}${source.url
+    ? `<a href="${escapeHtmlAttr(source.url)}" target="_blank" rel="noopener noreferrer">${text}</a>` : text}</span>`;
+}
+
+function renderItem(card, entry) {
+  if (card.id === "needs") {
+    const icon = MARK_ICONS[entry.mark] ? heroIcon(MARK_ICONS[entry.mark], "ui-icon ui-icon--16") : "";
+    return `<li class="overview-summary__item" data-mark="${entry.mark}"><span class="overview-summary__mark" aria-hidden="true">${icon}</span>
+      <span class="sr-only">${escapeHtml(label(`needs.mark_${entry.mark}`))}: </span><span class="overview-summary__item-text"${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span></li>`;
+  }
+  return `<li class="overview-summary__fact"><span>${escapeHtml(entry.text)}</span>${renderSource(entry.source)}</li>`;
+}
+
+function renderCard(card) {
+  const tone = card.tone ? ` data-tone="${escapeHtmlAttr(card.tone)}"` : "";
+  const answer = card.headline ? `<p class="overview-summary__answer"${tone}${card.answerKind ? ` data-kind="${card.answerKind}"` : ""}>${escapeHtml(card.headline)}</p>` : "";
+  const lines = (card.lines || []).map(text => `<p class="overview-summary__detail">${escapeHtml(text)}</p>`).join("");
+  const aside = (card.aside || []).map(entry => `<p class="overview-summary__detail"${entry.tone ? ` data-tone="${escapeHtmlAttr(entry.tone)}"` : ""}>${escapeHtml(entry.text)}</p>`).join("");
+  const items = card.items?.length ? `<ul class="overview-summary__list">${card.items.map(entry => renderItem(card, entry)).join("")}</ul>` : "";
+  const action = card.link ? `<button type="button" class="overview-summary__link" data-open-tab="${escapeHtmlAttr(card.link.tab)}">${escapeHtml(card.link.label)}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>` : "";
+  return `<section class="overview-summary__card" data-summary-card="${card.id}"${card.state ? ` data-state="${card.state}"` : ""}>
+    <h3 class="overview-summary__label">${heroIcon(card.icon, "ui-icon ui-icon--18")}<span>${escapeHtml(label(`card.${card.id}`))}</span></h3>
+    ${answer}${lines}${items}${aside}${action}</section>`;
+}
+
+export function renderSummary(cards, intro = "") {
+  return `<div class="overview-summary__body">
+    <div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div>${intro ? `<p class="overview-summary__intro">${escapeHtml(intro)}</p>` : ""}</div>
+    <div class="overview-summary__grid">${cards.map(renderCard).join("")}</div>
+    <p class="overview-summary__note">${escapeHtml(label("note"))}</p></div>`;
+}
+
+const renderLoading = () => `<div class="overview-summary__body"><div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div></div>
+  <div class="overview-summary__state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(label("loading"))}</span></div></div>`;
+const renderError = () => `<div class="overview-summary__body"><div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div></div>
+  <div class="overview-summary__state" role="alert"><p>${escapeHtml(label("error"))}</p><button type="button" class="overview-summary__link" data-summary-retry>${escapeHtml(label("retry"))}</button></div></div>`;
+
+function openTab(tabId) {
+  const next = new URL(window.location.href);
+  if (next.hash !== `#${tabId}`) {
+    next.hash = `#${tabId}`;
+    window.history.pushState({}, "", next);
+  }
+  document.querySelector(`[data-tab="${tabId}"]`)?.click();
+}
+
+// Mounts the summary into `container` and keeps it current. `legacy` carries the values the legacy page already computed.
+// Returns { dispose }; every request is cancelled and every listener removed on dispose.
+export function mountOverviewSummary({ container, university, universityId, reviewed, legacy = {} }) {
+  if (!container) return { dispose() {} };
+  let version = 0;
+  let controller = null;
+  let disposed = false;
+  let routeLoaded = false;
+  let route = null;
+  const hasContent = () => Boolean(container.querySelector(".overview-summary__grid"));
+
+  const show = html => { if (!disposed) container.innerHTML = html; };
+  const onClick = event => {
+    const tab = event.target.closest?.("[data-open-tab]")?.dataset.openTab;
+    if (tab) openTab(tab);
+    else if (event.target.closest?.("[data-summary-retry]")) void loadReviewed();
+  };
+  container.addEventListener("click", onClick);
+
+  const fetchJson = async (path, options = {}) => {
+    const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(universityId)}/${path}`, options);
+    if (!response.ok) throw new Error(`Overview summary HTTP ${response.status}`);
+    return response.json();
+  };
+
+  function renderLegacy() {
+    const minPrice = typeof legacy.getMinPrice === "function" ? legacy.getMinPrice() : legacy.minPrice;
+    show(renderSummary(legacyCards({ university, minPrice, acceptanceRate: legacy.acceptanceRate, acceptanceMeta: legacy.acceptanceMeta }), label("intro_legacy")));
+  }
+
+  async function loadReviewed() {
+    const current = ++version;
+    controller?.abort();
+    const request = controller = new AbortController();
+    // A refresh keeps the answers already on screen; only the first load shows the loading state.
+    if (!hasContent()) show(renderLoading());
+    try {
+      if (!routeLoaded) {
+        const options = await fetchJson(`study-options?${new URLSearchParams({ limit: "1", lang: getCurrentLanguage() })}`, { signal: request.signal });
+        if (current !== version) return;
+        route = firstYearSharedRoute(options.shared_routes);
+        routeLoaded = true;
+      }
+      const apiProfile = loadProfileForApi();
+      let resolved = null;
+      if (route) {
+        const cycle = isRecognizedAdmissionCycle(apiProfile.intended_entry_cycle) ? normalizeAdmissionCycle(apiProfile.intended_entry_cycle) : "";
+        const context = { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: cycle, fee_status_context: "unknown" };
+        resolved = await fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" }, signal: request.signal,
+          body: JSON.stringify(admissionsRequest(apiProfile, context, universityId)) });
+        if (current !== version) return;
+        if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
+      }
+      const cards = reviewedCards({ resolved, university, budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
+      show(renderSummary(cards, resolved ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple" }) }) : ""));
+    } catch (error) {
+      if (request.signal.aborted || current !== version) return;
+      console.error(error);
+      show(renderError());
+    }
+  }
+
+  const onProfileUpdated = () => { if (reviewed) void loadReviewed(); else renderLegacy(); };
+  window.addEventListener("profileUpdated", onProfileUpdated);
+  if (reviewed) void loadReviewed(); else renderLegacy();
+
+  return {
+    dispose() {
+      disposed = true;
+      version += 1;
+      controller?.abort();
+      container.removeEventListener("click", onClick);
+      window.removeEventListener("profileUpdated", onProfileUpdated);
+    },
+  };
+}

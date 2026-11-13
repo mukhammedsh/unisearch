@@ -658,6 +658,11 @@ function categoryMatchesStudyLevel(category, selectedLevelKey) {
   return false;
 }
 
+// Admission categories that describe undergraduate (bachelor) study.
+export function getUndergraduateCategories(categories) {
+  return (Array.isArray(categories) ? categories : []).filter((category) => categoryMatchesStudyLevel(category, "bachelor"));
+}
+
 export function getFinanceChoicesForStudyLevel(categories, studyLevel) {
   const selectedLevelKey = normalizeLevelKey(studyLevel);
   const sourceCategories = Array.isArray(categories) ? categories : [];

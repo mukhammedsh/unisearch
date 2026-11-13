@@ -126,6 +126,8 @@ export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] }
     const { days, text } = countdown(upcoming);
     const earlier = ahead.find(entry => entry.day < upcoming.day && TEST_KINDS.has(entry.event.kind));
     return { status: "upcoming", days, tone: days <= 30 ? "warning" : "", terms: termsFor(upcoming.event.name, earlier?.event.name), text,
+      // The next date as structured parts, so a summary can lead with the date and show the round name separately.
+      next: { title: describe(upcoming).title, date: describe(upcoming).date },
       notes: earlier ? [tFormat("university.admissions.key_facts.deadline_earlier", { text: countdown(earlier).text })] : [] };
   }
   if (dated.length) return { status: "passed", tone: "danger", terms: termsFor(dated.at(-1).event.name), text: tFormat("university.admissions.key_facts.deadline_passed", describe(dated.at(-1))) };
@@ -145,12 +147,14 @@ export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] }
     const days = Math.round((next.day - today) / DAY_MS);
     const named = entry => ({ name: windowName(entry.window.name), date: formatPublishedDate(entry.window.application_due) });
     // Windows that passed more recently than the next one's last occurrence are named, so the applicant sees why it is the nearest.
-    const passed = annual.filter(entry => entry !== next && next.lapsed && entry.lapsed && entry.last > next.last)
-      .map(entry => tFormat("university.admissions.key_facts.deadline_recurring_passed", named(entry)));
+    const passedEntries = annual.filter(entry => entry !== next && next.lapsed && entry.lapsed && entry.last > next.last);
+    const passed = passedEntries.map(entry => tFormat("university.admissions.key_facts.deadline_recurring_passed", named(entry)));
     const upcoming = tFormat(`university.admissions.key_facts.deadline_recurring_${days ? "next" : "today"}`,
       { name: windowName(next.window.name), date: formatPublishedDate(new Date(next.day).toISOString().slice(0, 10)), days });
     return { status: "recurring", days, tone: days <= 30 ? "warning" : "", terms: termsFor(annual.map(entry => entry.window.name)),
-      text: [...passed, upcoming].join(" ") };
+      text: [...passed, upcoming].join(" "),
+      next: { title: windowName(next.window.name), date: formatPublishedDate(new Date(next.day).toISOString().slice(0, 10)) },
+      passedWindows: passedEntries.map(named) };
   }
   const windows = yearlessWindows(rows);
   const yearless = windows.map(window => `${windowName(window.name)}: ${formatPublishedDate(window.application_due)}`);
@@ -176,6 +180,8 @@ export function costFact(resolved, budgetUsd) {
   const amount = moneyRange(quote.min, quote.max, quote.currency);
   const converted = quote.currency !== "USD" && quote.usd ? ` (≈ ${moneyRange(quote.usd.min, quote.usd.max, "USD")})` : "";
   const text = tFormat(`university.admissions.key_facts.${basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount: `${amount}${converted}` });
+  // The amount and its basis are also returned separately, so a summary can lead with the figure.
+  const parts = { amount: `${amount}${converted}`, basis, period: quote.period || "" };
   const notes = [quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
@@ -184,16 +190,16 @@ export function costFact(resolved, budgetUsd) {
   if (feeStatusDepends) notes.push(label("cost_fee_status"), t("university.admissions.glossary.fee_status.text"));
   const feeStatusPage = feeStatusDepends ? feeStatusSource(resolved) : "";
   const links = feeStatusPage ? [{ url: feeStatusPage, label: label("cost_fee_status_source") }] : [];
-  if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean) };
-  if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean) };
-  if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean) };
+  if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean), ...parts };
+  if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean), ...parts };
+  if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean), ...parts };
   const budget = money(budgetUsd, "USD");
   const status = quote.usd.min > budgetUsd ? "over" : quote.usd.max > budgetUsd ? "partial"
     : basis === "tuition" ? "tuition_within" : "within";
   // The published amount stays neutral; only the comparison with the applicant's budget carries a status colour.
   const flag = { text: tFormat(`university.admissions.key_facts.budget_${status}`, { budget }),
     tone: { over: "danger", partial: "warning", tuition_within: "warning", within: "success" }[status] };
-  return { status, tone: "", flag, text, links, notes: notes.filter(Boolean) };
+  return { status, tone: "", flag, text, links, notes: notes.filter(Boolean), ...parts };
 }
 
 // Reviewed funding records that apply to the selected route, never to another path of the university.
@@ -212,6 +218,9 @@ function fundingPolicy(rows) {
   }
   return "";
 }
+
+// The university's published need policy for the selected route as one statement, or "" when none is published.
+export const fundingPolicyStatement = resolved => fundingPolicy(fundingRows(resolved));
 
 export function fundingFact(resolved) {
   const rows = fundingRows(resolved);
