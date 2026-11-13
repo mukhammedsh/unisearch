@@ -34,6 +34,13 @@ export const studyLevelLabel = (value, t) => {
   return key ? t(key, text(value)) : text(value);
 };
 
+// "IELTS (academic module)" -> "IELTS": the summary lists what is counted, not the full exam title.
+export const shortExamLabel = (label) => {
+  const full = text(label);
+  const short = full.replace(/\s*\([^)]*\)/g, "").trim();
+  return short || full;
+};
+
 export const hasExamEvidence = (profile) => asList(profile?.exams).some((row) => row && (row.exam || row.id));
 export const hasLanguageEvidence = (profile) => asList(profile?.languages).some((row) => row && (row.code || row.lang));
 
@@ -42,10 +49,7 @@ export const buildSectionFillStates = (profile) => {
   const p = profile && typeof profile === "object" ? profile : {};
   return {
     basics: !isAny(p.studyLevel) || !!text(p.major) || !!text(p.interests) || !isAny(p.studyMode),
-    preferences: parseSummaryBudget(p).state !== "empty"
-      || !isAny(p.fundingType)
-      || !!text(p.intendedEntryCycle)
-      || (!!text(p.feeStatusContext) && text(p.feeStatusContext) !== "unknown"),
+    preferences: parseSummaryBudget(p).state !== "empty" || !isAny(p.fundingType),
     scores: !!text(p.gpa) || hasExamEvidence(p),
     languages: hasLanguageEvidence(p),
     specific: asList(p.languageEvidence).length > 0 || asList(p.institutionalEvidence).length > 0,
@@ -130,30 +134,12 @@ export const buildProfileSummary = (profile, ctx = {}) => {
   asList(p.exams).filter((entry) => entry && (entry.exam || entry.id)).forEach((entry) => evidence.push(examLabel(entry)));
   const languageRows = asList(p.languages).filter((entry) => entry && (entry.code || entry.lang));
   languageRows.filter((entry) => entry.exam).forEach((entry) => evidence.push(examLabel(entry)));
-  // Native/CEFR entries carry no test name; mention them once.
-  if (languageRows.some((entry) => !entry.exam)) evidence.push(t("profile.ux2.summary.requirements.languages"));
+  // Native and CEFR entries carry no test name. Reviewed language checks read both (ai_scoring.py: accept_native, min_cefr), so name them.
+  if (languageRows.some((entry) => !entry.exam && text(entry.kind).toLowerCase() === "native")) evidence.push(t("profile.ux2.summary.requirements.native"));
+  if (languageRows.some((entry) => !entry.exam && text(entry.kind).toLowerCase() === "cefr")) evidence.push(t("profile.ux2.summary.requirements.cefr"));
   rows.push(evidence.length
     ? row("requirements", "used", "profile.ux2.summary.requirements.title", "profile.ux2.summary.requirements.used", evidence.join(", "))
     : row("requirements", "not_used", "profile.ux2.summary.requirements.title", "profile.ux2.summary.requirements.unused"));
-
-  // Intake year and fee status choose which published price applies at reviewed universities.
-  const cycle = text(p.intendedEntryCycle);
-  const feeStatus = text(p.feeStatusContext);
-  const feeSet = !!feeStatus && feeStatus !== "unknown";
-  if (cycle || feeSet) {
-    const values = [];
-    if (cycle) values.push(cycle);
-    if (feeSet) {
-      values.push(t(feeStatus === "self_reported_home_domestic"
-        ? "profile.ux2.summary.context.fee_home"
-        : feeStatus === "self_reported_international_overseas"
-          ? "profile.ux2.summary.context.fee_international"
-          : "profile.ux2.summary.context.fee_other"));
-    }
-    rows.push(row("context", "used", "profile.ux2.summary.context.title", "profile.ux2.summary.context.used", values.join(", ")));
-  } else {
-    rows.push(row("context", "not_used", "profile.ux2.summary.context.title", "profile.ux2.summary.context.unused"));
-  }
 
   return rows;
 };

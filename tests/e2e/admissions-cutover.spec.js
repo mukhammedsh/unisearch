@@ -143,7 +143,7 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   expect(migrated.languageEvidence[0]).toMatchObject({ language: "en", country: "Canada" });
   expect(migrated.studyLevel).toBe("masters");
   expect(migrated.applicantRoute).toBeUndefined();
-  expect(migrated.intendedEntryCycle).toBe("2029 entry");
+  expect(migrated.intendedEntryCycle).toBeUndefined();
   expect(await page.evaluate(() => localStorage.getItem("unisearch_detail_cache_v3"))).toBeNull();
   await expect(page.locator("#detailCard")).not.toContainText("STALE V3 DETAIL CACHE");
 
@@ -186,8 +186,8 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   expect(migrated.admissionChoiceResetNotices).not.toContain(MIT);
   expect(migrated.studyLevel).toBe("masters");
   expect(migrated.applicantRoute).toBeUndefined();
-  expect(migrated.intendedEntryCycle).toBe("2029 entry");
-  expect(migrated.feeStatusContext).toBe("self_reported_home_domestic");
+  expect(migrated.intendedEntryCycle).toBeUndefined();
+  expect(migrated.feeStatusContext).toBeUndefined();
   expect(migrated.budget).toBe(savedProfile.budget);
   expect(migrated.exams[0]).toMatchObject({ id: "ACT", score: 34, taken_on: "2026-09-10" });
   expect(migrated.selectedAdmissionChoices[ASTANA].choiceKey).toBe("astana_standard");
@@ -270,8 +270,8 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(profile.studyLevel).toBe("masters");
   expect(profile.applicantRoute).toBeUndefined();
-  expect(profile.intendedEntryCycle).toBe("2029 entry");
-  expect(profile.feeStatusContext).toBe("self_reported_home_domestic");
+  expect(profile.intendedEntryCycle).toBeUndefined();
+  expect(profile.feeStatusContext).toBeUndefined();
   expect(profile.selectedAdmissionChoices[ASTANA].choiceKey).toBe("astana_standard");
   await page.screenshot({ path: testInfo.outputPath("admissions-cutover-compare-mobile.png"), fullPage: false });
 
@@ -350,5 +350,5 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]')).toHaveCount(0);
   currentProfile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(currentProfile.selectedAdmissionChoices[STANFORD]).toBeUndefined();
-  expect(currentProfile.intendedEntryCycle).toBe("2029 entry");
+  expect(currentProfile.intendedEntryCycle).toBeUndefined();
 });

@@ -13,8 +13,8 @@ test.describe("Profile summary follows the draft", () => {
     await page.goto("/profile.html");
 
     await expect(page.locator(selectors.profileModal)).toBeVisible();
-    await expect(page.locator("#profileSummaryList li")).toHaveCount(6);
-    for (const id of ["level", "subject", "budget", "format", "requirements", "context"]) {
+    await expect(page.locator("#profileSummaryList li")).toHaveCount(5);
+    for (const id of ["level", "subject", "budget", "format", "requirements"]) {
       await expect(rowState(page, id)).toHaveAttribute("data-state", "not_used");
     }
 
@@ -68,6 +68,6 @@ test.describe("Profile summary follows the draft", () => {
     // Interests alone keep the subject row used.
     await page.fill(selectors.interestsInput, "machine learning, research, robotics");
     await expect(rowState(page, "subject")).toHaveAttribute("data-state", "used");
-    await expect(page.locator("#profileSummarySentence")).toContainText("of 6");
+    await expect(page.locator("#profileSummarySentence")).toContainText("of 5");
   });
 });

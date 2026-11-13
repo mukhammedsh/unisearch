@@ -272,7 +272,7 @@ test("Imperial language changes, invalid cycles and saving preserve a synthetic 
   expect(profile.gpa).toBe(3.8);
   expect(profile.budget).toBe(30000);
   expect(profile.applicantRoute).toBeUndefined();
-  expect(profile.intendedEntryCycle).toBe("2028 entry");
+  expect(profile.intendedEntryCycle).toBeUndefined();
   expect(profile.selectedAdmissionChoices[university].applicantRoute).toBeUndefined();
 });
 

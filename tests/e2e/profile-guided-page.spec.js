@@ -11,7 +11,7 @@ async function openProfile(page) {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
-  await expect(page.locator("#profileSummaryList li")).toHaveCount(6);
+  await expect(page.locator("#profileSummaryList li")).toHaveCount(5);
 }
 
 test("every profile section is visible at once and the outline jumps to one", async ({ page }) => {

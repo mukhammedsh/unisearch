@@ -25,13 +25,14 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Precomputed the major-taxonomy normalisation, so the first admissions request is faster.
 - Regenerated `backend/data/admissions/catalog.json` with the route-level applicant category and the closed overrides in the draft vocabulary.
 - Newly added institutions follow the light dossier standard (`docs/admissions-light-dossier.md`), which bounds research depth. The four accepted deep datasets are unchanged.
-- The profile is one guided page instead of four tabs. Sections follow their effect on results (study, budget and funding, grades and exams, languages, university-specific details), each field states what it changes, an outline marks answered sections, and actions stay in a sticky bar. The saved profile format is unchanged.
+- The profile is one guided page instead of four tabs. Sections follow their effect on results (study, budget and funding, grades and exams, languages, university-specific details), each field states what it changes in one short sentence, an outline marks answered sections, and actions stay in a sticky bar. Exam and language lists keep Edit and Delete together at the row end, the add forms share one aligned layout, and the university-specific form uses the same styled selects as the rest of the page.
 - UniFit applies the profile's funding type like the other sorts: only universities known to lack the chosen option are hidden.
 - The university-specific language background records English, the only language the reviewed checks read. Existing entries in other languages stay visible and can be removed.
 - Profile copy is plainer: the preparation level is fully translated, the evidence form drops field-code wording, and the unfinished-report notice is shorter.
 
 ### Removed
 - Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
+- The general profile's intended entry cycle and fee status. They duplicated the per-university cycle and fee status on reviewed admissions pages, which remain and are saved per institution. Saved general values are stripped on load and are no longer sent with catalog requests.
 - Institution-evidence options for Imperial College London and Stanford and the "major" evidence metric. The MIT Course 6-9 and MITx credential checks remain.
 - The `citizenshipStatus` field from minimum-requirements responses, the citizenship service and its tests (`backend/app/services/citizenship.py`, `backend/tests/test_citizenship_service.py`), and the country list module (`frontend/javascript/utils/countries.js`).
 

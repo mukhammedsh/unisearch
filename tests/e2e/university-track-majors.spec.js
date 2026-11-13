@@ -385,7 +385,7 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
     expect(saved.studyLevel).toBe("Bachelor");
     expect(saved.applicantRoute).toBeUndefined();
-    expect(saved.intendedEntryCycle).toBe("Fall 2027");
+    expect(saved.intendedEntryCycle).toBeUndefined();
     releaseDelayed();
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit_physics_phd_admissions");
     await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);

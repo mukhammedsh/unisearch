@@ -127,7 +127,7 @@ test("Save and show matches lands on the catalog with the level selected and no 
   await seed(page, { tourSeen: false });
   await page.goto("/profile.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
-  await expect(page.locator("#profileSummaryList li")).toHaveCount(6);
+  await expect(page.locator("#profileSummaryList li")).toHaveCount(5);
 
   await setNativeSelect(page, "studyLevelSelect", "Master");
   await page.fill(selectors.budgetInput, "30000");

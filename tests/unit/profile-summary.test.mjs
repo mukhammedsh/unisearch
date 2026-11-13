@@ -7,6 +7,7 @@ const {
   buildSectionFillStates,
   buildSummarySentence,
   parseSummaryBudget,
+  shortExamLabel,
 } = await import("../../frontend/javascript/components/profile/profile-summary.js");
 
 // Keys stand in for localized text so the assertions stay independent of copy edits.
@@ -21,7 +22,7 @@ const byId = (rows) => Object.fromEntries(rows.map((row) => [row.id, row]));
 
 test("an empty profile leaves every summary row unused", () => {
   const rows = buildProfileSummary({}, ctx);
-  assert.deepEqual(rows.map((row) => row.id), ["level", "subject", "budget", "format", "requirements", "context"]);
+  assert.deepEqual(rows.map((row) => row.id), ["level", "subject", "budget", "format", "requirements"]);
   assert.ok(rows.every((row) => row.state === "not_used"));
   assert.equal(buildSummarySentence(rows, ctx), "profile.ux2.summary.sentence_none");
 });
@@ -86,8 +87,23 @@ test("requirements row lists the evidence that exists", () => {
   assert.equal(rows.requirements.value, [
     "profile.ux2.summary.requirements.gpa 3.8 / 4",
     "SAT 1400",
-    "profile.ux2.summary.requirements.languages",
+    "profile.ux2.summary.requirements.native",
   ].join(", "));
+});
+
+test("native and CEFR entries are named because reviewed language checks read both", () => {
+  const rows = byId(buildProfileSummary({
+    languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "cefr", level: 4 }],
+  }, ctx));
+  assert.equal(rows.requirements.value, "profile.ux2.summary.requirements.native, profile.ux2.summary.requirements.cefr");
+});
+
+test("exam titles lose their parenthesised variant in the summary", () => {
+  assert.equal(shortExamLabel("IELTS (academic module)"), "IELTS");
+  assert.equal(shortExamLabel("IELTS (академический модуль)"), "IELTS");
+  assert.equal(shortExamLabel("SAT"), "SAT");
+  assert.equal(shortExamLabel("(odd)"), "(odd)");
+  assert.equal(shortExamLabel(""), "");
 });
 
 test("requirements row echoes the GPA scale and language test results", () => {
@@ -99,19 +115,18 @@ test("requirements row echoes the GPA scale and language test results", () => {
   assert.equal(rows.requirements.value, "profile.ux2.summary.requirements.gpa 4.6 / 5, IELTS 6.5");
 });
 
-test("start year and fee status mark the context row as used", () => {
-  const rows = byId(buildProfileSummary({
+test("start year and fee status are per-university choices and no longer shape the general summary", () => {
+  const rows = buildProfileSummary({
     intendedEntryCycle: "2027 Fall",
     feeStatusContext: "self_reported_international_overseas",
-  }, ctx));
-  assert.equal(rows.context.state, "used");
-  assert.equal(rows.context.value, "2027 Fall, profile.ux2.summary.context.fee_international");
-  assert.equal(byId(buildProfileSummary({ feeStatusContext: "unknown" }, ctx)).context.state, "not_used");
+  }, ctx);
+  assert.ok(rows.every((row) => row.state === "not_used"));
+  assert.equal(buildSectionFillStates({ feeStatusContext: "other" }).preferences, false);
 });
 
 test("the live sentence counts used and partly used groups", () => {
   const rows = buildProfileSummary({ studyLevel: "Bachelor", fundingType: "paid", studyMode: "Online" }, ctx);
-  assert.equal(buildSummarySentence(rows, ctx), 'profile.ux2.summary.sentence:{"used":"2","total":"6"}');
+  assert.equal(buildSummarySentence(rows, ctx), 'profile.ux2.summary.sentence:{"used":"2","total":"5"}');
 });
 
 test("outline markers follow the section that holds each answer", () => {
@@ -125,5 +140,4 @@ test("outline markers follow the section that holds each answer", () => {
     languages: [{ code: "ru", kind: "native" }],
     languageEvidence: [{ kind: "primary_language", language: "en" }],
   }), { basics: true, preferences: true, scores: true, languages: true, specific: true });
-  assert.equal(buildSectionFillStates({ intendedEntryCycle: "2027" }).preferences, true);
 });

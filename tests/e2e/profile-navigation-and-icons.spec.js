@@ -14,7 +14,7 @@ test.describe("Profile page icons and navigation", () => {
     // Verify every summary row carries one state icon
     const summaryIcons = page.locator(".profile-summary__row .profile-summary__icon svg");
     await expect(summaryIcons.first()).toBeVisible();
-    expect(await summaryIcons.count()).toBe(6);
+    expect(await summaryIcons.count()).toBe(5);
 
     // Switch to scores tab to verify compact GPA block (tooltip sits by the hint, not the title)
     await page.click('[data-profile-tab="scores"]');

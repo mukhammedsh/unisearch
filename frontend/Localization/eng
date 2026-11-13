@@ -1586,15 +1586,6 @@ university.coverage.deadlines_approximate: Approximate or yearless deadlines
 university.coverage.costs_program: Program-specific costs
 university.coverage.costs_undergraduate: University-wide undergraduate cost data
 university.coverage.aid: Aid and funding
-profile.applicant_context.title: Application details
-profile.applicant_context.optional_hint: Optional. The entry cycle and fee status choose the tuition and fees shown for reviewed universities. Fee status is self-reported; the university decides your official status.
-profile.applicant_context.entry_cycle: When do you plan to start?
-profile.applicant_context.entry_cycle_placeholder: e.g. 2027 Fall
-profile.applicant_context.fee_context: Fee status, if you know it
-profile.applicant_context.fee_home: Home / domestic (self-reported)
-profile.applicant_context.fee_international: International / overseas (self-reported)
-profile.applicant_context.fee_other: Other or not sure
-profile.applicant_context.fee_unknown: Not sure / not confirmed
 profile.applicant_context.optional: Not specified
 universities.compare.finance.grant_unconfirmed: A selected grant is only a potential award. Its amount is not a confirmed cost or discount until formally awarded.
 universities.compare.funding.not_awarded: Potential award; not confirmed
@@ -2315,7 +2306,7 @@ admission.mit.program_condition: Program-specific eligibility:
 admission.requirements_fit.check.profile_unassessed: This profile cannot establish the required evidence or exemption.
 admission.requirements_fit.missing_evidence_note: Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed.
 profile.evidence.title: Add details for specific universities
-profile.evidence.description: Add these only if a university page asks for them. They are self-reported and do not verify official records.
+profile.evidence.description: Add only if a university page asks. Self-reported; official records are not verified.
 profile.evidence.test_date: Test date (optional)
 profile.evidence.institution_title: Studies at a listed university
 profile.evidence.institution: University
@@ -2347,7 +2338,6 @@ profile.evidence.error.percentage: Enter a score between 0 and 100 percent.
 profile.evidence.completed_on: Completed on
 profile.evidence.add_language: Add language evidence
 profile.evidence.add_institution: Add institution evidence
-profile.evidence.self_reported: Self-reported evidence; it does not confirm official records.
 profile.evidence.self_reported_short: Self-reported
 profile.evidence.status.unknown: Not specified
 profile.evidence.status.in_progress: In progress
@@ -3424,27 +3414,25 @@ university.admissions.key_facts.requirements_add_sections: {exam} section scores
 university.admissions.key_facts.requirements_add_date_sections: {exam} test date and section scores
 university.admissions.key_facts.requirements_add_gpa: GPA
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
-profile.ux2.intro: Answer only what you know. UniFit uses your answers to rank universities for you. Nothing here is required, and the profile is saved on this device.
+profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study
 profile.ux2.section.study.desc: Study level narrows the list. Subject and topics change the order.
 profile.ux2.section.budget.title: Budget and funding
-profile.ux2.section.budget.desc: Budget changes the order of universities. The other answers choose which prices and universities you see.
+profile.ux2.section.budget.desc: Budget changes the order of universities; funding type hides those known to lack it.
 profile.ux2.section.scores.title: Grades and exams
 profile.ux2.section.scores.desc: Compared with the minimums each university publishes. This is not an admission chance.
 profile.ux2.section.languages.title: Languages
-profile.ux2.section.languages.desc: Compared with the language requirements that universities publish. A native language or CEFR level does not replace a test a university requires.
+profile.ux2.section.languages.desc: Compared with published language requirements; a native language or CEFR level does not replace a required test.
 profile.ux2.section.specific.title: For specific universities
-profile.ux2.section.specific.desc: Optional. Only a few reviewed universities check these details, and only for particular programs. Skip it if you are not sure.
-profile.ux2.hint.study_level: UniFit lists only universities that offer this level, and compares prices and requirements for it.
-profile.ux2.hint.major: Universities without a matching program rank lower in UniFit. None are hidden.
-profile.ux2.hint.interests: Short topics can help order universities in UniFit when its language model is available. They do not choose a program or prove eligibility.
-profile.ux2.hint.study_mode: Decides whether UniFit compares your budget with the on-campus or the online price. It does not hide universities.
-profile.ux2.hint.budget: Universities whose known yearly cost is above this rank lower in UniFit. None are hidden. Grants are not subtracted, and an unknown price is not penalised.
-profile.ux2.hint.funding: Hides universities known to have no grants (or no paid places) from the catalog and from UniFit. Universities with unknown funding stay visible.
-profile.ux2.hint.entry_cycle: Chooses which year's published prices reviewed universities use for you. A price from another year is labelled as a dated reference.
-profile.ux2.hint.fee_status: Chooses the home or overseas price at reviewed universities that publish both. If you leave it unset, those prices are not compared with your budget. The university decides your real status.
-profile.ux2.hint.gpa: Compared with the GPA minimums that universities publish. Pick the scale your GPA is on.
-profile.ux2.hint.exams: Compared with the exam minimums that universities publish. Results for the exams a university asks for can produce a minimum requirements match.
+profile.ux2.section.specific.desc: Optional. A few reviewed universities check these details for particular programs.
+profile.ux2.hint.study_level: Lists only universities that offer this level and compares its prices and requirements.
+profile.ux2.hint.major: Universities without a matching program rank lower.
+profile.ux2.hint.interests: Short topics can reorder universities when the language model is available; they do not prove eligibility.
+profile.ux2.hint.study_mode: Decides whether your budget is compared with the on-campus or the online price.
+profile.ux2.hint.budget: Known yearly costs above this rank lower; unknown prices are not penalised and grants are not subtracted.
+profile.ux2.hint.funding: Hides universities known to lack this option; those with unknown funding stay visible.
+profile.ux2.hint.gpa: Compared with the GPA minimums that universities publish.
+profile.ux2.hint.exams: Compared with published exam minimums; exams a university asks for can produce a minimum requirements match.
 profile.ux2.gpa.scale_hint: Scale: {scale}. Different scale? Press "{unit}" next to the field.
 profile.ux2.gpa.over_scale: {value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.
 profile.ux2.hint.exams_language: Language tests such as IELTS and TOEFL go in the Languages section.
@@ -3462,34 +3450,29 @@ profile.ux2.summary.state.used: Used
 profile.ux2.summary.state.partial: Partly used
 profile.ux2.summary.state.not_used: Not used
 profile.ux2.summary.level.title: Study level
-profile.ux2.summary.level.used: UniFit lists only universities that offer this level and compares prices and requirements for it.
+profile.ux2.summary.level.used: Lists only universities that offer this level and compares its prices and requirements.
 profile.ux2.summary.level.unused: Universities at every level are listed. Without a level, UniFit may skip the budget comparison where prices differ by level.
 profile.ux2.summary.subject.title: Subject and interests
-profile.ux2.summary.subject.major: Universities without a matching program rank lower; none are hidden.
-profile.ux2.summary.subject.interests: Your topics can help order universities when UniFit's language model is available.
+profile.ux2.summary.subject.major: Universities without a matching program rank lower.
+profile.ux2.summary.subject.interests: Topics can reorder universities when the language model is available.
 profile.ux2.summary.subject.interests_value: Topics added
 profile.ux2.summary.subject.unused: No subject yet. Choose a subject or add topics to move matching universities up.
 profile.ux2.summary.budget.title: Yearly budget
 profile.ux2.summary.budget.value: {amount} per year
-profile.ux2.summary.budget.used: Universities with a known yearly cost above this rank lower; none are hidden. Grants are not subtracted.
+profile.ux2.summary.budget.used: Known yearly costs above this rank lower. Grants are not subtracted.
 profile.ux2.summary.budget.zero: A budget of 0 is ignored. Enter an amount to compare prices.
 profile.ux2.summary.budget.unused: Prices are not compared with a budget. Enter an amount to compare them.
 profile.ux2.summary.format.title: Funding and study format
 profile.ux2.summary.format.mode: The study format decides whether your budget is compared with the on-campus or the online price.
 profile.ux2.summary.format.mode_no_budget: The study format only matters once you enter a budget.
-profile.ux2.summary.format.funding: Funding type hides universities known to lack that option from the catalog and from UniFit. Universities with unknown funding stay visible.
+profile.ux2.summary.format.funding: Funding type hides universities known to lack that option; unknown funding stays visible.
 profile.ux2.summary.format.unused: Any format and any funding: nothing is narrowed.
 profile.ux2.summary.requirements.title: GPA, exams and languages
 profile.ux2.summary.requirements.gpa: GPA
-profile.ux2.summary.requirements.languages: languages
-profile.ux2.summary.requirements.used: Compared with each university's published minimums; a university whose minimums you meet ranks higher. A match is calculated only when your answers cover every minimum it publishes.
+profile.ux2.summary.requirements.native: native language
+profile.ux2.summary.requirements.cefr: CEFR level
+profile.ux2.summary.requirements.used: Compared with each university's published minimums. A match needs your answers to cover every minimum it publishes.
 profile.ux2.summary.requirements.unused: No minimum requirements match is calculated. Add GPA, exams or languages to compare with published minimums.
-profile.ux2.summary.context.title: Start year and fee status
-profile.ux2.summary.context.fee_home: Home fee
-profile.ux2.summary.context.fee_international: Overseas fee
-profile.ux2.summary.context.fee_other: Other fee status
-profile.ux2.summary.context.used: Reviewed universities use them to choose which published price applies to you.
-profile.ux2.summary.context.unused: Not set. Where a reviewed university's price depends on the start year or fee status, UniFit shows it as a general reference and may skip the budget comparison.
 universities.ux2.banner.ranked: Ranked for your profile: {values}
 universities.ux2.banner.generic: The ranking is generic because your profile has no study level, subject or budget.
 universities.ux2.banner.scores_only: Ranked using your exam and language scores. Add a study level, subject or budget to tailor it further.
@@ -3515,5 +3498,5 @@ universities.ux2.legend.within_budget: Within budget
 universities.ux2.legend.aid: Aid available
 universities.ux2.legend.vibe: Matches preferences
 profile.ux2.evidence.language_title: English language background
-profile.ux2.evidence.language_fixed: This records your background in English only, which is what English-language requirements ask about.
+profile.ux2.evidence.language_fixed: Records your background in English only, which is what English requirements ask about.
 profile.ux2.evidence.entirely: Entirely in English?

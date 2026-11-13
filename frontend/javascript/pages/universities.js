@@ -3359,14 +3359,6 @@ export function initUniversitiesPage() {
         const isAiSort = (state.sort === "uni_ai");
         if (forApi) p.set("sort", isAiSort ? "name_asc" : state.sort);
 
-        if (forApi) {
-            const profile = loadProfile();
-            const feeStatus = String(profile?.feeStatusContext || profile?.fee_status_context || "").trim();
-            const entryCycle = String(profile?.intendedEntryCycle || profile?.intended_entry_cycle || "").trim();
-            if (feeStatus && feeStatus !== "unknown") p.set("fee_status_context", feeStatus);
-            if (entryCycle) p.set("intended_entry_cycle", entryCycle);
-        }
-        
         if (forApi && state.only_saved) {
             p.set("limit", "2000"); p.set("page", "1");
         } else if (forApi && state.viewMode === "map") {

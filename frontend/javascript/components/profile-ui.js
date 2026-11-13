@@ -36,7 +36,7 @@ import {
   renderSpecialExamInput as renderSpecialExamInputFromModule,
 } from "./profile/exam-breakdowns.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
-import { buildProfileSummary, buildSectionFillStates, buildSummarySentence } from "./profile/profile-summary.js";
+import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile/profile-summary.js";
 import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
   cloneProfile,
@@ -106,8 +106,6 @@ export const queryProfileElements = (modal) => {
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
-        intendedEntryCycleInput: document.getElementById("intendedEntryCycleInput"),
-        feeStatusContextSelect: document.getElementById("feeStatusContextSelect"),
         profileSummaryList: document.getElementById("profileSummaryList"),
         profileSummarySentence: document.getElementById("profileSummarySentence"),
         profileGuideLink: document.getElementById("profileUnifitGuideLink"),
@@ -261,7 +259,7 @@ export const renderProfileSummary = (els, state) => {
             const examId = row.exam ?? row.id;
             const locale = getCurrentLanguage();
             const value = formatExamValue(examId, row, { context: "profile", locale });
-            return [getExamDisplayName(examId, { locale }), value].filter(Boolean).join(" ");
+            return [shortExamLabel(getExamDisplayName(examId, { locale })), value].filter(Boolean).join(" ");
         },
     };
     const rows = buildProfileSummary(state.profile, ctx);
@@ -378,6 +376,8 @@ export const syncExamScoreInputState = (els, state) => {
     const usesSpecialInput = mode === "band_select" || mode === "grade_combo" || mode === "subject_breakdown";
 
     els.examScoreInput.hidden = !usesNumberInput;
+    const scoreField = els.examScoreInput.closest(".profile-exam-score-wrap");
+    if (scoreField) scoreField.hidden = !usesNumberInput;
     els.examScoreInput.disabled = !usesNumberInput;
     els.examScoreInput.setAttribute("aria-hidden", usesNumberInput ? "false" : "true");
 
@@ -550,11 +550,6 @@ export const refreshExamActionButton = (els, state) => {
 
 export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
 
-export const syncApplicantContext = (els, profile) => {
-    profile.intendedEntryCycle = String(els.intendedEntryCycleInput?.value || "").trim();
-    profile.feeStatusContext = String(els.feeStatusContextSelect?.value || "unknown").trim() || "unknown";
-};
-
 export const syncInputsToDraft = (els, state) => {
     if (els.budgetInput) state.profile.budget = normalizeAmountRaw(els.budgetInput.value);
     state.profile.budgetCurrency = getBudgetCurrency();
@@ -565,7 +560,6 @@ export const syncInputsToDraft = (els, state) => {
     if (els.profileMajorSelect) state.profile.major = String(els.profileMajorSelect.value || "").trim();
     if (els.profileInterestsInput) state.profile.interests = getInterestsDraft(els);
     if (els.studyLevelSelect) state.profile.studyLevel = String(els.studyLevelSelect.value || "Any").trim() || "Any";
-    syncApplicantContext(els, state.profile);
     // University choices are edited separately and may have changed in another tab.
     state.profile.selectedAdmissionChoices = ensureProfileShape(loadProfile()).selectedAdmissionChoices;
     state.profile = ensureProfileShape(state.profile);
@@ -674,8 +668,10 @@ export const renderProfileData = (els, state) => {
                     <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam, { locale: getCurrentLanguage() }))}</span>
                     <span class="profile-exam-score">${escapeHtml([formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }), ex.taken_on].filter(Boolean).join(" · "))}</span>
                 </div>
-                <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
-                <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
+                <div class="profile-list-actions">
+                    <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
+                    <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
+                </div>
             </div>
         `).join("");
         markMotionEnter(els.examList, ".profile-exam-item", { limit: 8, staggerMs: 18 });
@@ -707,8 +703,6 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     if (els.profileMajorSelect) els.profileMajorSelect.value = state.profile.major || "";
     if (els.profileInterestsInput) els.profileInterestsInput.value = state.profile.interests || "";
     if (els.studyLevelSelect) els.studyLevelSelect.value = state.profile.studyLevel || "Any";
-    if (els.intendedEntryCycleInput) els.intendedEntryCycleInput.value = state.profile.intendedEntryCycle || "";
-    if (els.feeStatusContextSelect) els.feeStatusContextSelect.value = state.profile.feeStatusContext || "unknown";
     renderAdmissionEvidence(els.admissionEvidenceFields, state.profile, (next) => {
         state.profile = ensureProfileShape({
             ...state.profile,
@@ -740,7 +734,6 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
         "profileMajorSelect",
         "examNameSelect",
         "studyLevelSelect",
-        "feeStatusContextSelect",
     ]);
     renderProfileData(els, state);
     updateBudgetUI(els, state);
@@ -1357,18 +1350,6 @@ export const bindProfileEvents = (els, state) => {
     if (els.studyLevelSelect) {
         els.studyLevelSelect.addEventListener("change", () => {
             state.profile.studyLevel = String(els.studyLevelSelect.value || "Any").trim() || "Any";
-            refreshSaveState(els, state);
-        });
-    }
-
-    const contextControls = [
-        els.intendedEntryCycleInput,
-        els.feeStatusContextSelect,
-    ].filter(Boolean);
-    for (const control of contextControls) {
-        const eventName = control.tagName === "INPUT" ? "input" : "change";
-        control.addEventListener(eventName, () => {
-            syncApplicantContext(els, state.profile);
             refreshSaveState(els, state);
         });
     }

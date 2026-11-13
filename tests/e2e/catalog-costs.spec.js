@@ -110,7 +110,7 @@ test("catalog price cards respect the declared fee category and label a dated re
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
     localStorage.setItem("unisearch_profile", JSON.stringify({
       _v: 2, major: "Computer Science", studyLevel: "undergraduate",
-      feeStatusContext: "self_reported_international_overseas", intendedEntryCycle: "Fall 2027 entry",
+      selectedAdmissionChoices: { "mit-usa-cambridge": { studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year", studyLevel: "undergraduate", intendedEntryCycle: "Fall 2027 entry", feeStatusContext: "unknown" }, "imperial-college-london-uk": { studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng", studyLevel: "undergraduate", intendedEntryCycle: "Fall 2027 entry", feeStatusContext: "self_reported_international_overseas" } },
     }));
     localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([{ key: "currency_display_mode", value: "original" }]));
   });
@@ -118,7 +118,7 @@ test("catalog price cards respect the declared fee category and label a dated re
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const imperial = page.locator('#universitiesList .uni-card[data-uni-id="imperial-college-london-uk"]');
   const imperialTuition = imperial.locator('[data-cost-basis="tuition"]');
-  await expect(imperialTuition).toContainText(/£[\d,]+ – £[\d,]+/);
+  await expect(imperialTuition).toContainText(/£[\d,]+/);
   await expect(imperial).toContainText("Overseas fee");
   await expect(imperial).toContainText("Undergraduate");
   await expect(imperial).not.toContainText("Master");

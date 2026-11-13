@@ -552,8 +552,10 @@ export function initLanguagesPanel() {
               <strong>${langName}</strong>
               <small>${kindName}${meta}</small>
             </div>
-            <button class="profile-button-subtle" data-edit-idx="${idx}" type="button">${escapeHtml(t("profile.edit", "Edit"))}</button>
-            <button class="profile-delete" data-idx="${idx}" type="button">${escapeHtml(t("profile.delete", "Delete"))}</button>
+            <div class="profile-list-actions">
+              <button class="profile-button-subtle" data-edit-idx="${idx}" type="button">${escapeHtml(t("profile.edit", "Edit"))}</button>
+              <button class="profile-delete" data-idx="${idx}" type="button">${escapeHtml(t("profile.delete", "Delete"))}</button>
+            </div>
           </div>
         `;
       }).join("");

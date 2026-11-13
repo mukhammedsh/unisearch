@@ -46,7 +46,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(p.studyMode, 'Any');
       assert.strictEqual(p.fundingType, 'any');
       assert.ok(!('countryOfEducation' in p) && !('educationCredential' in p) && !('applicantRoute' in p));
-      assert.strictEqual(p.feeStatusContext, 'unknown');
+      assert.ok(!('feeStatusContext' in p) && !('intendedEntryCycle' in p), 'entry cycle and fee status are per-university choices');
       assert.strictEqual(p.studyLevel, 'Any');
       assert.deepStrictEqual(p.selectedAdmissionChoices, {});
     });
@@ -321,33 +321,36 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(apiPayload.study_level, 'Master');
     });
 
-    test('preserves optional applicant context and maps it to the API contract', () => {
-      const context = {
+    test('strips general-profile entry cycle and fee status on load and never sends them', () => {
+      mockStore.unisearch_profile = JSON.stringify({
+        _v: 2,
+        budget: 5000,
         intendedEntryCycle: '2027 Fall',
         feeStatusContext: 'self_reported_international_overseas',
-      };
-      saveProfile(context);
-
-      assert.deepStrictEqual(
-        Object.fromEntries(Object.keys(context).map((key) => [key, loadProfile()[key]])),
-        context,
-      );
-      assert.deepStrictEqual(
-        Object.fromEntries(Object.keys(context).map((key) => [
-          key.replace(/[A-Z]/g, (ch) => `_${ch.toLowerCase()}`),
-          loadProfileForApi()[key.replace(/[A-Z]/g, (ch) => `_${ch.toLowerCase()}`)],
-        ])),
-        {
-          intended_entry_cycle: '2027 Fall',
-          fee_status_context: 'self_reported_international_overseas',
-        },
-      );
+        intended_entry_cycle: '2027 Fall',
+        fee_status_context: 'other',
+      });
+      const loaded = loadProfile();
+      for (const key of ['intendedEntryCycle', 'feeStatusContext', 'intended_entry_cycle', 'fee_status_context']) {
+        assert.ok(!(key in loaded), `${key} must be stripped from the loaded profile`);
+      }
+      assert.strictEqual(loaded.budget, 5000);
+      const payload = loadProfileForApi();
+      assert.ok(!('intended_entry_cycle' in payload) && !('fee_status_context' in payload));
+      saveProfile(loaded);
+      const stored = JSON.parse(mockStore.unisearch_profile);
+      assert.ok(!('intendedEntryCycle' in stored) && !('feeStatusContext' in stored));
     });
 
-    test('keeps fee context unconfirmed by default', () => {
-      saveProfile({ intendedEntryCycle: '2027 Fall' });
-      assert.strictEqual(loadProfile().feeStatusContext, 'unknown');
-      assert.strictEqual(loadProfileForApi().fee_status_context, 'unknown');
+    test('keeps the per-university entry cycle and fee status of a saved choice', () => {
+      saveProfile({
+        selectedAdmissionChoices: {
+          'mit-usa-cambridge': { studyOptionId: 'o', applicationRouteId: 'r', intendedEntryCycle: '2027 Fall', feeStatusContext: 'other' },
+        },
+      });
+      const choice = loadProfile().selectedAdmissionChoices['mit-usa-cambridge'];
+      assert.strictEqual(choice.intendedEntryCycle, '2027 Fall');
+      assert.strictEqual(choice.feeStatusContext, 'other');
     });
 
     test('bridges each supported study level to the API', () => {

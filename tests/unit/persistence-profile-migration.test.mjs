@@ -462,12 +462,12 @@ describe('persistence-profile-migration.test.mjs - Profile Normalization & Safe 
         'country_of_education', 'education_credential', 'education_credential_other', 'applicant_route']) {
         assert.ok(!(key in loaded), `removed applicant input ${key} must be stripped`);
       }
-      assert.strictEqual(loaded.intendedEntryCycle, '2027 Fall');
+      assert.ok(!('intendedEntryCycle' in loaded) && !('intended_entry_cycle' in loaded), 'removed entry cycle input must be stripped');
       assert.ok(!('currentResidenceCountry' in loaded), 'removed residence input must be stripped');
       assert.ok(!('currentResidenceOther' in loaded), 'removed residence input must be stripped');
       assert.ok(!('current_residence_country' in loaded), 'removed residence alias must be stripped');
       assert.ok(!('current_residence_other' in loaded), 'removed residence alias must be stripped');
-      assert.strictEqual(loaded.feeStatusContext, 'unknown');
+      assert.ok(!('feeStatusContext' in loaded) && !('fee_status_context' in loaded), 'removed fee status input must be stripped');
 
       // Verify canonical selectedAdmissionChoices
       assert.strictEqual(loaded.selected_admission_choices, undefined);

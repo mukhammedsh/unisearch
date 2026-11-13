@@ -44,6 +44,11 @@ const REMOVED_PROFILE_KEYS = [
   "education_credential_other",
   "applicantRoute",
   "applicant_route",
+  // Entry cycle and fee status are chosen per university (selectedAdmissionChoices), not in the general profile.
+  "intendedEntryCycle",
+  "intended_entry_cycle",
+  "feeStatusContext",
+  "fee_status_context",
 ];
 
 const PROFILE_DEFAULTS = {
@@ -60,8 +65,6 @@ const PROFILE_DEFAULTS = {
   interests: "",
   studyMode: "Any",
   fundingType: "any",
-  intendedEntryCycle: "",
-  feeStatusContext: "unknown",
   studyLevel: "Any",
   selectedAdmissionChoices: {},
 };
@@ -257,8 +260,6 @@ export function isLegacyProfile(raw) {
     || "user_gpa_scale" in raw
     || "study_level" in raw
     || "selected_admission_choices" in raw
-    || "intended_entry_cycle" in raw
-    || "fee_status_context" in raw
     || REMOVED_PROFILE_KEYS.some((key) => key in raw)
   ) {
     return true;
@@ -345,8 +346,6 @@ export function normalizeProfileData(profile) {
     "exams", "languages", "major", "interests",
     "studyMode", "fundingType", "funding_type",
     "studyLevel", "study_level",
-    "intendedEntryCycle", "intended_entry_cycle",
-    "feeStatusContext", "fee_status_context",
     "languageEvidence", "language_evidence", "institutionalEvidence", "institutional_evidence",
     "selectedAdmissionChoices", "selected_admission_choices",
     "admissionChoiceResetNotices",
@@ -378,12 +377,6 @@ export function normalizeProfileData(profile) {
     ? raw.studyLevel.trim()
     : (typeof raw.study_level === "string" ? raw.study_level.trim() : PROFILE_DEFAULTS.studyLevel);
 
-  const readOptionalString = (camelKey, snakeKey, maxLength = 120) => {
-    const value = typeof raw[camelKey] === "string" ? raw[camelKey] : raw[snakeKey];
-    return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
-  };
-  const intendedEntryCycle = readOptionalString("intendedEntryCycle", "intended_entry_cycle", 40);
-  const feeStatusContext = readOptionalString("feeStatusContext", "fee_status_context", 40) || "unknown";
   const languageEvidence = normalizeLanguageEvidence(raw.languageEvidence ?? raw.language_evidence);
   const institutionalEvidence = normalizeInstitutionalEvidence(raw.institutionalEvidence ?? raw.institutional_evidence);
 
@@ -571,8 +564,6 @@ export function normalizeProfileData(profile) {
     interests,
     studyMode,
     fundingType,
-    intendedEntryCycle,
-    feeStatusContext,
     studyLevel: studyLevel || PROFILE_DEFAULTS.studyLevel,
     selectedAdmissionChoices,
     admissionChoiceResetNotices: [...resetNotices],
@@ -730,14 +721,6 @@ export function loadProfileForApi() {
     }
   }
 
-  for (const [profileKey, payloadKey] of [
-    ["intendedEntryCycle", "intended_entry_cycle"],
-    ["feeStatusContext", "fee_status_context"],
-  ]) {
-    const value = String(profile?.[profileKey] || "").trim();
-    if (value) payload[payloadKey] = value;
-  }
-  payload.fee_status_context = String(profile?.feeStatusContext || "unknown").trim() || "unknown";
   if (String(profile?.studyLevel || "").trim() && String(profile.studyLevel).trim() !== "Any") {
     payload.study_level = String(profile.studyLevel).trim();
   }

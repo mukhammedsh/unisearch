@@ -154,8 +154,6 @@ export const stableProfileSignature = (raw) => {
         studyMode: String(p.studyMode || "Any").trim() || "Any",
         fundingType: normalizeFundingType(p.fundingType),
         studyLevel: String(p.studyLevel || "Any").trim() || "Any",
-        intendedEntryCycle: String(p.intendedEntryCycle || "").trim(),
-        feeStatusContext: String(p.feeStatusContext || "unknown").trim() || "unknown",
         exams,
         languages,
         languageEvidence: Array.isArray(p.languageEvidence) ? p.languageEvidence : [],

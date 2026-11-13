@@ -1584,15 +1584,6 @@ university.coverage.deadlines_approximate: Приблизительные сро
 university.coverage.costs_program: Стоимость для отдельных программ
 university.coverage.costs_undergraduate: Общие данные о стоимости бакалавриата
 university.coverage.aid: Финансовая помощь и финансирование
-profile.applicant_context.title: Параметры поступления
-profile.applicant_context.optional_hint: Необязательно. Цикл поступления и статус оплаты определяют, какие стоимость и сборы показываются для проверенных университетов. Статус вы указываете сами; официальный статус определяет университет.
-profile.applicant_context.entry_cycle: Когда вы планируете начать?
-profile.applicant_context.entry_cycle_placeholder: например, осень 2027 года
-profile.applicant_context.fee_context: Статус оплаты, если известен
-profile.applicant_context.fee_home: Местный / домашний тариф (указан самостоятельно)
-profile.applicant_context.fee_international: Иностранный тариф (указан самостоятельно)
-profile.applicant_context.fee_other: Другой или неизвестен
-profile.applicant_context.fee_unknown: Не знаю / не подтверждён
 profile.applicant_context.optional: Не указано
 universities.compare.finance.grant_unconfirmed: Выбранный грант — лишь возможное финансирование. Его сумма не считается подтверждённой стоимостью или скидкой, пока университет официально не присудит его.
 universities.compare.funding.not_awarded: Возможный грант; не подтверждён
@@ -2313,8 +2304,8 @@ admission.mit.program_condition: Условия для этой программ
 admission.requirements_fit.check.profile_unassessed: Профиль не позволяет подтвердить нужные сведения или право на освобождение.
 admission.requirements_fit.missing_evidence_note: Добавьте указанные ниже подтверждения для проверки маршрута. Процент доступен только при наличии применимых числовых минимумов, которые можно оценить.
 profile.evidence.title: Добавить сведения для отдельных университетов
-profile.evidence.description: Добавляйте их, только если об этом просит страница университета. Сведения указаны с ваших слов и не подтверждают официальные записи.
-profile.evidence.test_date: Дата экзамена (необязательно)
+profile.evidence.description: Добавляйте, только если просит страница университета. Со слов пользователя; записи не проверяются.
+profile.evidence.test_date: Дата (необязательно)
 profile.evidence.institution_title: Сведения для конкретного вуза
 profile.evidence.institution: Университет
 profile.evidence.kind: Тип сведений
@@ -2345,7 +2336,6 @@ profile.evidence.error.percentage: Введите балл от 0 до 100 пр�
 profile.evidence.completed_on: Дата завершения
 profile.evidence.add_language: Добавить языковые сведения
 profile.evidence.add_institution: Добавить сведения о вузе
-profile.evidence.self_reported: Заявлено пользователем; официальные документы не проверялись.
 profile.evidence.self_reported_short: Со слов пользователя
 profile.evidence.status.unknown: Не указано
 profile.evidence.status.in_progress: В процессе
@@ -3422,27 +3412,25 @@ university.admissions.key_facts.requirements_add_sections: баллы {exam} п�
 university.admissions.key_facts.requirements_add_date_sections: дату сдачи {exam} и баллы по разделам
 university.admissions.key_facts.requirements_add_gpa: средний балл (GPA)
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
-profile.ux2.intro: Отвечайте только на то, что знаете. UniFit использует ответы, чтобы упорядочить университеты для вас. Ничего обязательного здесь нет, а профиль сохраняется на этом устройстве.
+profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать
 profile.ux2.section.study.desc: Уровень обучения сужает список. Специальность и темы меняют порядок.
 profile.ux2.section.budget.title: Бюджет и финансирование
-profile.ux2.section.budget.desc: Бюджет меняет порядок университетов. Остальные ответы определяют, какие цены и университеты вы увидите.
+profile.ux2.section.budget.desc: Бюджет меняет порядок университетов; тип финансирования скрывает те, где его точно нет.
 profile.ux2.section.scores.title: Оценки и экзамены
 profile.ux2.section.scores.desc: Сравниваются с минимумами, которые публикует каждый университет. Это не шанс поступления.
 profile.ux2.section.languages.title: Языки
-profile.ux2.section.languages.desc: Сравниваются с языковыми требованиями, которые публикуют университеты. Родной язык или уровень CEFR не заменяют тест, который требует университет.
+profile.ux2.section.languages.desc: Сравниваются с опубликованными языковыми требованиями; родной язык или уровень CEFR не заменяют требуемый тест.
 profile.ux2.section.specific.title: Для отдельных университетов
-profile.ux2.section.specific.desc: Необязательно. Эти сведения проверяют лишь немногие проверенные университеты и только для отдельных программ. Если не уверены, пропустите.
-profile.ux2.hint.study_level: UniFit показывает только университеты с этим уровнем обучения и сравнивает цены и требования именно для него.
-profile.ux2.hint.major: Университеты без подходящей программы стоят в UniFit ниже. Ни один не скрывается.
-profile.ux2.hint.interests: Короткие темы могут помочь упорядочить университеты в UniFit, если доступна его языковая модель. Они не выбирают программу и не подтверждают право на поступление.
-profile.ux2.hint.study_mode: Определяет, с какой ценой UniFit сравнивает ваш бюджет: очной или онлайн. Университеты не скрываются.
-profile.ux2.hint.budget: Университеты с известной годовой стоимостью выше этой суммы стоят в UniFit ниже. Ни один не скрывается. Гранты не вычитаются, а неизвестная цена не снижает позицию.
-profile.ux2.hint.funding: Скрывает университеты, где точно нет грантов (или платных мест), в каталоге и в UniFit. Университеты с неизвестным финансированием остаются в списке.
-profile.ux2.hint.entry_cycle: Определяет, цены какого года используют для вас проверенные университеты. Цена другого года помечается как справочная с указанием даты.
-profile.ux2.hint.fee_status: Выбирает местную или иностранную цену в проверенных университетах, которые публикуют обе. Если не указать, эти цены не сравниваются с бюджетом. Реальный статус определяет университет.
-profile.ux2.hint.gpa: Сравнивается с минимальным GPA, который публикуют университеты. Выберите шкалу, по которой выставлен ваш GPA.
-profile.ux2.hint.exams: Сравниваются с минимумами по экзаменам, которые публикуют университеты. Результаты нужных университету экзаменов позволяют рассчитать соответствие минимальным требованиям.
+profile.ux2.section.specific.desc: Необязательно. Эти сведения проверяют несколько проверенных университетов для отдельных программ.
+profile.ux2.hint.study_level: Показывает только университеты с этим уровнем и сравнивает для него цены и требования.
+profile.ux2.hint.major: Университеты без подходящей программы стоят ниже.
+profile.ux2.hint.interests: Короткие темы могут изменить порядок, если доступна языковая модель; они не подтверждают право на поступление.
+profile.ux2.hint.study_mode: Определяет, с какой ценой сравнивается бюджет: очной или онлайн.
+profile.ux2.hint.budget: Известная годовая стоимость выше суммы понижает позицию; неизвестная цена не штрафуется, гранты не вычитаются.
+profile.ux2.hint.funding: Скрывает университеты, где такого варианта точно нет; с неизвестным финансированием остаются.
+profile.ux2.hint.gpa: Сравнивается с минимальным GPA, который публикуют университеты.
+profile.ux2.hint.exams: Сравниваются с опубликованными минимумами; нужные университету экзамены дают соответствие минимальным требованиям.
 profile.ux2.gpa.scale_hint: Шкала: {scale}. Другая шкала? Нажмите «{unit}» рядом с полем.
 profile.ux2.gpa.over_scale: {value} больше 4.0. Если у вас пятибалльная шкала, нажмите «/ 4.0» рядом с полем, чтобы переключить на 5.0.
 profile.ux2.hint.exams_language: Языковые тесты, например IELTS и TOEFL, добавляются в разделе «Языки».
@@ -3460,34 +3448,29 @@ profile.ux2.summary.state.used: Учитывается
 profile.ux2.summary.state.partial: Учитывается частично
 profile.ux2.summary.state.not_used: Не учитывается
 profile.ux2.summary.level.title: Уровень обучения
-profile.ux2.summary.level.used: UniFit показывает только университеты с этим уровнем и сравнивает цены и требования для него.
+profile.ux2.summary.level.used: Показываются только университеты с этим уровнем; для него сравниваются цены и требования.
 profile.ux2.summary.level.unused: Показываются университеты любого уровня. Без уровня UniFit может не сравнивать бюджет там, где цены зависят от уровня.
 profile.ux2.summary.subject.title: Специальность и интересы
-profile.ux2.summary.subject.major: Университеты без подходящей программы стоят ниже, но не скрываются.
-profile.ux2.summary.subject.interests: Ваши темы могут помочь упорядочить университеты, если доступна языковая модель UniFit.
+profile.ux2.summary.subject.major: Университеты без подходящей программы стоят ниже.
+profile.ux2.summary.subject.interests: Темы могут изменить порядок, если доступна языковая модель.
 profile.ux2.summary.subject.interests_value: Темы добавлены
 profile.ux2.summary.subject.unused: Специальность не выбрана. Выберите её или добавьте темы, чтобы подходящие университеты поднялись выше.
 profile.ux2.summary.budget.title: Годовой бюджет
 profile.ux2.summary.budget.value: {amount} в год
-profile.ux2.summary.budget.used: Университеты с известной годовой стоимостью выше этой суммы стоят ниже, но не скрываются. Гранты не вычитаются.
+profile.ux2.summary.budget.used: Известная годовая стоимость выше этой суммы понижает позицию. Гранты не вычитаются.
 profile.ux2.summary.budget.zero: Бюджет 0 игнорируется. Укажите сумму, чтобы сравнить цены.
 profile.ux2.summary.budget.unused: Цены не сравниваются с бюджетом. Укажите сумму, чтобы сравнить их.
 profile.ux2.summary.format.title: Финансирование и формат обучения
 profile.ux2.summary.format.mode: Формат определяет, с какой ценой сравнивается бюджет: очной или онлайн.
 profile.ux2.summary.format.mode_no_budget: Формат учитывается, только когда указан бюджет.
-profile.ux2.summary.format.funding: Тип финансирования скрывает университеты, где такого варианта точно нет, в каталоге и в UniFit. Университеты с неизвестным финансированием остаются в списке.
+profile.ux2.summary.format.funding: Тип финансирования скрывает университеты, где такого варианта точно нет; неизвестное остаётся.
 profile.ux2.summary.format.unused: Любой формат и любое финансирование: ничего не сужается.
 profile.ux2.summary.requirements.title: GPA, экзамены и языки
 profile.ux2.summary.requirements.gpa: GPA
-profile.ux2.summary.requirements.languages: языки
-profile.ux2.summary.requirements.used: Сравниваются с опубликованными минимумами каждого университета: чем больше минимумов выполнено, тем выше университет. Соответствие считается, только если ваши ответы покрывают все опубликованные минимумы.
+profile.ux2.summary.requirements.native: родной язык
+profile.ux2.summary.requirements.cefr: уровень CEFR
+profile.ux2.summary.requirements.used: Сравниваются с опубликованными минимумами каждого университета. Соответствие считается, если ответы покрывают все его минимумы.
 profile.ux2.summary.requirements.unused: Соответствие минимальным требованиям не считается. Добавьте GPA, экзамены или языки, чтобы сравнить с опубликованными минимумами.
-profile.ux2.summary.context.title: Год начала и статус оплаты
-profile.ux2.summary.context.fee_home: Местный тариф
-profile.ux2.summary.context.fee_international: Иностранный тариф
-profile.ux2.summary.context.fee_other: Другой статус оплаты
-profile.ux2.summary.context.used: Проверенные университеты используют их, чтобы выбрать, какая опубликованная цена к вам применима.
-profile.ux2.summary.context.unused: Не указано. Если цена проверенного университета зависит от года начала или статуса оплаты, UniFit показывает её как справочную и может не сравнивать с бюджетом.
 universities.ux2.banner.ranked: Подобрано под ваш профиль: {values}
 universities.ux2.banner.generic: Рейтинг общий: в профиле не указаны уровень обучения, направление и бюджет.
 universities.ux2.banner.scores_only: Рейтинг учитывает ваши экзамены и языки. Укажите уровень обучения, направление или бюджет, чтобы уточнить его.
@@ -3513,5 +3496,5 @@ universities.ux2.legend.within_budget: В рамках бюджета
 universities.ux2.legend.aid: Есть финпомощь
 universities.ux2.legend.vibe: По предпочтениям
 profile.ux2.evidence.language_title: Опыт использования английского языка
-profile.ux2.evidence.language_fixed: Здесь записывается только ваш опыт английского языка: именно о нём спрашивают требования к знанию английского.
+profile.ux2.evidence.language_fixed: Записывается только опыт английского: именно о нём спрашивают требования к английскому.
 profile.ux2.evidence.entirely: Полностью на английском?
