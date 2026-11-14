@@ -449,8 +449,10 @@
   border-bottom: 0;
 }
 
-.d-kv--last {
+/* The last row hands its trailing space to the box padding so the gap before the next section is not doubled. */
+.d-kv.d-kv--last {
   border-bottom: 0;
+  padding-bottom: 0;
 }
 
 .d-kv > span:first-child {
