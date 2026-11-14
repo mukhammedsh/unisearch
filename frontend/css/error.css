@@ -59,7 +59,7 @@ body[data-page="error-404"] main.error-page {
   margin: 0;
   font-family: inherit;
   font-size: inherit;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text);
   letter-spacing: inherit;
 }
@@ -68,7 +68,7 @@ body[data-page="error-404"] main.error-page {
   margin: var(--space-3) 0 0;
   font-family: var(--font-sans);
   font-size: clamp(16px, 2vw, 18px);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
   color: var(--text-muted);
   letter-spacing: normal;
@@ -94,7 +94,7 @@ body[data-page="error-404"] main.error-page {
   border-radius: var(--radius-md);
   border: none;
   font-size: var(--text-base);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   letter-spacing: normal;
   text-decoration: none;
   cursor: pointer;

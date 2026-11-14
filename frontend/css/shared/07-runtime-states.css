@@ -57,7 +57,7 @@ body.route-loading main {
 }
 
 .skeleton-block {
-  border-radius: 12px;
+  border-radius: var(--radius-base);
 }
 
 .skeleton-block::after,
@@ -116,8 +116,8 @@ body.route-loading main {
 }
 
 .error-title {
-  font-size: 32px;
-  font-weight: 500;
+  font-size: var(--text-3xl);
+  font-weight: var(--font-weight-medium);
   margin: 0 0 var(--space-3);
   color: var(--text);
   letter-spacing: 0;
@@ -137,8 +137,8 @@ body.route-loading main {
   border: none;
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-base);
-  font-weight: 500;
-  font-size: 16px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--text-md);
   cursor: pointer;
   box-shadow: none;
   transition:
@@ -189,7 +189,7 @@ body.route-loading main {
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text);
   opacity: 0;
   pointer-events: none;

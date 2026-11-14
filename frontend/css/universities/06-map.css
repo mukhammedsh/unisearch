@@ -125,7 +125,7 @@
   margin: var(--space-3);
   padding: var(--space-4);
   border: none;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: var(--text-muted);
   line-height: 1.6;
 }
@@ -278,7 +278,7 @@
   flex: 0 0 44px;
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--radius-base);
 }
 
 .u-map-results-list .uni-logo--inline img {
@@ -404,7 +404,7 @@
 }
 
 .uni-card--map .uni-title {
-  font-size: 14px;
+  font-size: var(--text-base);
 }
 
 .uni-card--map a.uni-details {
@@ -505,7 +505,7 @@
   }
 
   .uni-card--map .uni-title {
-    font-size: 13px;
+    font-size: var(--text-sm);
   }
 
   .u-map-container {

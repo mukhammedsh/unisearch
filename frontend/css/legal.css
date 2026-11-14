@@ -34,7 +34,7 @@ body[data-page="terms"] {
   font-family: var(--font-display);
   font-size: clamp(28px, 3.5vw, 40px);
   line-height: var(--leading-tight);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   letter-spacing: -0.02em;
   color: var(--text);
 }
@@ -80,7 +80,7 @@ body[data-page="terms"] {
 }
 
 .legal-doc strong {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text);
 }
 
@@ -100,7 +100,7 @@ body[data-page="terms"] {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 @media (hover: hover) and (pointer: fine) {

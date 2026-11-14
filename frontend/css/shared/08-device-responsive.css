@@ -109,8 +109,8 @@ canvas {
 
   .navbar-right .lang-control .custom-select-trigger {
     padding: 0 var(--space-5) 0 var(--space-2);
-    border-radius: 12px;
-    font-size: 12px;
+    border-radius: var(--radius-base);
+    font-size: var(--text-xs);
   }
 
   .navbar-right .lang-control .custom-options {

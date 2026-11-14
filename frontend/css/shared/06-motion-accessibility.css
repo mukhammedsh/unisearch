@@ -352,7 +352,7 @@ body[data-page="guide"] {
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   color: var(--text);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   opacity: 0;
   transform: translateY(calc(-100% - 16px));
   transition:
@@ -437,7 +437,7 @@ h6,
   box-shadow: var(--shadow-xs);
   background: var(--surface-soft);
   color: var(--text);
-  border-radius: 12px;
+  border-radius: var(--radius-base);
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard),
@@ -486,8 +486,8 @@ h6,
 
 .footer-content p {
   color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
 }
 
 .social-links a {
