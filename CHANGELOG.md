@@ -57,7 +57,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The `citizenshipStatus` field from minimum-requirements responses, the citizenship service and its tests (`backend/app/services/citizenship.py`, `backend/tests/test_citizenship_service.py`), and the country list module (`frontend/javascript/utils/countries.js`).
 
 ### Fixed
-- The gap between the key figures and the next section on the university Overview tab no longer counts the last row's trailing padding twice.
+- The gap between the key figures and the next section on the university Overview tab is 32px on desktop, as on phones, instead of stacking the last row's padding and two box paddings (56px).
 - A context whose applicant category contradicts the selected route is no longer treated as applicable to the requirements check.
 - Reviewed institutions report unknown, not absent, grant, paid and aid availability, so the list filters no longer hide them.
 - Same-titled official pages at different URLs, such as Stanford's first-year and transfer "Application and Essays", are told apart in the source list by a URL-path hint.

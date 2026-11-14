@@ -4237,9 +4237,10 @@ body[data-page="university"],
   padding-bottom: var(--space-2);
 }
 
+/* The previous box already pads its bottom by --space-6, so the next one adds only a little: 32px between sections, same as on phones. */
 #tab-general .d-box + .d-box {
   border-top: none;
-  padding-top: var(--space-5);
+  padding-top: var(--space-2);
   margin-top: 0;
 }
 
