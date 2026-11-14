@@ -16,6 +16,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Universities that admit by program show one overview card with study-level shortcuts into the program list.
 - Universities still on earlier-format data carry a quiet note on their page and catalog card that the data may be inaccurate or out of date and will be updated. Without collected application dates, their overview links to the official website.
 - A per-institution conversion checklist in `docs/admissions-light-dossier.md` for moving the remaining universities to reviewed data.
+- Reviewed university cards show an "Exam result needed" icon when the chosen route requires a test the profile lacks, naming what to add (for example "SAT or ACT"), and a "Check the cost" icon when the price depends on a fee status (such as Home or Overseas) that is not set yet.
 
 ### Changed
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
@@ -42,6 +43,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
 - The `size` list filter and `student_life.size` use student-count bands (under 10,000, 10,000–30,000, over 30,000) instead of the earlier mixed land-area and enrollment buckets; a university without a published student count stays visible under every size filter.
 - The university page, its key facts and the comparison no longer offer to apply a profile entry cycle or fee status: the general profile no longer holds them, and both are chosen in each university's own selection.
+- Catalog card icon tooltips are one or two plain sentences instead of a dump of every requirement check: what to add to the profile, which minimum falls short and by how much, the price against the budget in the reader's currency, how many programs match the subject, and which preference sliders are close. The preference icon is a heart, so it no longer looks like the requirement checkmarks.
 
 ### Removed
 - Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
@@ -72,6 +74,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Without a selection, the Dates, Costs and Admission tabs of a university with one shared undergraduate application (MIT, Stanford) offer its application paths directly instead of asking for a program; the reader stays on the tab they opened.
 - Applicable majors on earlier-format admission routes no longer repeat the same programme twice.
 - Key admission fact cards keep their own height instead of stretching into empty blocks beside a longer card, checklist items still to prepare use plain bullets instead of rings that looked like checkboxes, and the catalog's "data not yet rechecked" note is plain text without a status icon. The cards stack in two independent columns on wide screens and keep their reading order in one column on phones, and a programme card leaves one step of space above its select action.
+- The tooltip of the leftmost status icon on a catalog card no longer runs off the screen on two-column widths; tooltips align to the icon row inside the card.
 
 ## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
 

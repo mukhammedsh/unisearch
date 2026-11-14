@@ -198,6 +198,12 @@
   transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
+/* In the card's top row every tooltip aligns to the row's right edge, which sits inside the card, so the tooltip of
+   the leftmost icon cannot run past the viewport on two-column widths. The map list stacks icons and keeps its own. */
+.uni-card-statuses > .uni-status-tooltip {
+  position: static;
+}
+
 .uni-status-tooltip:not(.is-closed):hover,
 .uni-status-tooltip:not(.is-closed):focus-within,
 .uni-status-tooltip.is-open,

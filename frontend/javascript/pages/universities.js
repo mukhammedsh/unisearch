@@ -59,8 +59,6 @@ import {
 import {
   translateUniversityName,
   translateWord,
-  translateTrackLabel,
-  translateAdmissionText,
   translateFactSource,
   translateProgramName,
 } from "../university-translations.js";
@@ -104,29 +102,57 @@ import {
 import { billingPeriodLabel } from "./university/admissions-presentation.js";
 import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
+  budgetTooltip,
+  closePreferenceLabels,
   describeRankingProfile,
   legendEntries,
   missingExamNames,
+  reviewedMissingInputs,
+  unmetMinimums,
 } from "./universities/unifit-explanation.js";
+
+// Card tooltip helpers: a USD amount in the reader's currency, and the preference sliders a university is close to.
+const tooltipMoney = (usd) => {
+    const code = getPreferredCurrency();
+    const amount = convert(Number(usd), "USD", code);
+    return Number.isFinite(amount) ? formatMoney(amount, code) : formatMoney(Number(usd), "USD");
+};
+const tooltipHelpers = { money: tooltipMoney, tr: t, trf: tFormat };
+const cardExamLabel = (id) => getExamDisplayName(id, { locale: getCurrentLanguage() });
+const preferenceTooltip = (match, fallbackKey) => {
+    const labels = closePreferenceLabels(match).map((label) => t(`universities.tradeoff.${label}`).toLocaleLowerCase());
+    return labels.length ? tFormat("universities.tip.preferences_close", { dimensions: labels.join(", ") }) : t(fallbackKey);
+};
 
 export function reviewedCardIndicators(match, budget) {
     if (!match || match.finalScore == null || !Number.isFinite(Number(match.finalScore))) return [];
     const indicators = [];
     // `legend` names the meaning of the icon for the UniFit banner legend (see LEGEND_LABEL_KEYS).
     const add = (icon, tone, label, detail, priority = 2, value = "", legend = "") => indicators.push({ icon, tone, label, detail, priority, value, legend });
+    const programSelected = Boolean(match.admissionsContext?.study_option_id);
     if (match.subjectMatch?.status === "missing") {
-        const selected = Boolean(match.admissionsContext?.study_option_id);
-        add("academic-cap", "warning", t(selected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
-            t(selected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0, "",
+        add("academic-cap", "warning", t(programSelected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
+            t(programSelected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0, "",
             "subject_missing");
     } else if (match.subjectMatch?.status === "matched") {
-        add("academic-cap", "match", t("universities.match.subject_matched"), t("universities.match.subject_matched_detail"), 2, "",
-            "subject_matched");
+        // Name how many programs match and what choosing one unlocks, instead of restating the label.
+        const count = Array.isArray(match.subjectMatch.option_ids) ? match.subjectMatch.option_ids.length : 0;
+        const detail = programSelected ? t("universities.tip.subject_selected")
+            : count ? tFormat("universities.tip.subject_options", { count }) : t("universities.match.subject_matched_detail");
+        add("academic-cap", "match", t("universities.match.subject_matched"), detail, 2, "", "subject_matched");
     }
     const mismatch = match.preferenceMismatch == null ? NaN : Number(match.preferenceMismatch);
     if (Number.isFinite(mismatch) && mismatch <= 0.22) {
-        add("check-badge", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
-            t("universities.match.preference_detail"), 3, "", "vibe");
+        add("heart", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
+            preferenceTooltip(match, "universities.match.preference_detail"), 3, "", "vibe");
+    }
+    // A published check of the selected route that the profile cannot answer yet: say what to add.
+    const missingInputs = reviewedMissingInputs(match.requirementChecks, {
+        examLabel: cardExamLabel, joiner: t("admission.requirements_fit.check.or", "or"),
+    }).slice(0, 3);
+    if (missingInputs.length) {
+        add("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed"),
+            tFormat("universities.tip.add_to_profile", { exams: missingInputs.join(", ") }), 1, "", "exam_needed");
     }
     const checks = Array.isArray(match.requirementChecks) ? match.requirementChecks.filter(check => check.measurable) : [];
     if (typeof match.requirementsFitPercent === "number" && Number.isFinite(match.requirementsFitPercent) && checks.length) {
@@ -138,16 +164,15 @@ export function reviewedCardIndicators(match, budget) {
             met < checks.length ? "requirements_below" : "requirements_met");
     }
     const assessment = match.budgetAssessment || {};
-    if (Number(budget) > 0 && match.costQuote && ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status)) {
-        const state = { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
-        const detail = state === "uncertain" ? "budget_uncertain_detail"
-            : assessment.basis === "tuition" ? "budget_tuition_detail"
-                : assessment.evidence === "applicable" ? "budget_annual_detail" : "budget_reference_detail";
-        // Over budget: say by how much (the lowest published price against the budget).
-        const gap = state === "over" ? Number(match.costQuote.minUSD) - Number(budget) : NaN;
-        const gapText = gap > 0 ? tFormat("universities.ux2.tip.over_budget_by", { amount: formatMoney(gap, "USD") }) : "";
-        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`),
-            [gapText, t(`universities.match.${detail}`)].filter(Boolean).join(" "), state === "over" ? 1 : 2, "",
+    // Prices that differ by fee status (Home / Overseas) cannot be compared until the reader sets one.
+    const feeStatusUnknown = assessment.status === "unknown_cost" && assessment.evidence === "fee_status_unknown";
+    if (Number(budget) > 0 && match.costQuote && (feeStatusUnknown || ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status))) {
+        const state = feeStatusUnknown ? "uncertain" : { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
+        const detail = budgetTooltip({
+            status: feeStatusUnknown ? "fee_status" : { within: "within", over: "over", uncertain: "range" }[state],
+            costMin: match.costQuote.minUSD, costMax: match.costQuote.maxUSD, budget, tuitionOnly: assessment.basis === "tuition",
+        }, tooltipHelpers);
+        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`), detail, state === "over" ? 1 : 2, "",
             { over: "over_budget", within: "within_budget", uncertain: "budget_check" }[state]);
     }
     return indicators.sort((a, b) => a.priority - b.priority);
@@ -3976,51 +4001,24 @@ export function initUniversitiesPage() {
         const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
         const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
         const hasMissingProgram = !reviewedAdmissions && Boolean(badgeHints.missingProgram || match.missingProgram);
+        // Earlier-format tooltips: one or two plain sentences (what to add, what falls short, price against budget).
+        // The per-check breakdown stays on the university page.
         const requirementChecks = !reviewedAdmissions && Array.isArray(match.requirementChecks) ? match.requirementChecks : [];
-        const requirementsDetail = requirementChecks.map((check) => {
-            const exam = String(check.examId || check.exam || "");
-            const label = exam.split(" or ").map((id) => getExamDisplayName(id, { locale: getCurrentLanguage() })).join(` ${t("admission.requirements_fit.check.or", "or")} `);
-            const minimum = check.minimum == null
-                ? t("admission.requirements_fit.check.required_evidence", "Required exam evidence")
-                : `${t("admission.requirements_fit.check.minimum", "Minimum")}: ${formatExamValue(exam, check.minimum, { context: "requirement" })}`;
-            const provided = check.provided == null
-                ? (check.status === "unassessed" ? t("admission.requirements_fit.check.profile_unassessed", "This profile cannot establish the required evidence or exemption.") : t("admission.requirements_fit.check.not_provided", "Not provided"))
-                : (typeof check.provided === "string" ? getExamDisplayName(check.provided) : formatExamValue(exam, check.provided, { context: "profile" }));
-            const statusKey = check.minimum == null && check.status === "met" ? "evidence_recorded" : check.status;
-            return `${label} — ${minimum}${check.condition ? `; ${translateAdmissionText(check.condition, check.condition)}` : ""}; ${t("admission.requirements_fit.check.profile", "Your profile")}: ${provided}; ${t(`admission.requirements_fit.check.${statusKey}`, "Cannot assess")}`;
-        }).join(". ");
-        const scopeLabel = reviewedAdmissions ? "" : translateTrackLabel(match.selectedChoiceLabel || "", match.selectedChoiceLabel || "");
-        const alternativesNote = requirementChecks.some((check) => check.mode === "any")
-            ? t("admission.requirements_fit.check.language_any_note", "For language rules that allow alternatives, meeting one listed option satisfies that rule.") : "";
-        const academicDetail = [scopeLabel, alternativesNote, requirementsDetail].filter(Boolean).join(". ");
-        const budgetDetail = hasUserBudget && compareCostUSD != null
-            ? tFormat("universities.why.budget_comparison", {
-                cost: formatMoney(Number(compareCostUSD), "USD"), budget: formatMoney(Number(myBudget), "USD"),
-            }, "Annual cost: {cost}; your annual budget: {budget}. Potential funding has not been deducted.")
-            : "";
-
-        // Tooltip details: how far over budget, and which exam results are still missing.
-        const overBudgetBy = hasUserBudget && compareCostUSD != null && Number.isFinite(Number(compareCostUSD)) ? Number(compareCostUSD) - Number(myBudget) : 0;
-        const overBudgetByText = overBudgetBy > 0 && state.cost_basis === "annual_total"
-            ? tFormat("universities.ux2.tip.over_budget_by", { amount: formatMoney(overBudgetBy, "USD") }) : "";
+        const orJoiner = t("admission.requirements_fit.check.or", "or");
         const missingExams = missingExamNames(requirementChecks, {
-            examLabel: (id) => getExamDisplayName(id, { locale: getCurrentLanguage() }),
-            languageTest: t("universities.ux2.tip.language_test"),
-            joiner: t("admission.requirements_fit.check.or", "or"),
+            examLabel: cardExamLabel, languageTest: t("universities.ux2.tip.language_test"), joiner: orJoiner,
         }).slice(0, 3);
-        const examNeededDetail = missingExams.length ? tFormat("universities.ux2.tip.exam_needed_named", { exams: missingExams.join(", ") }) : "";
-
-        const preferenceDetail = [
-            ["practice_vs_science", "focus"], ["social_vs_hardcore", "atmosphere"],
-            ["city_vs_campus", "location"], ["budget_vs_prestige", "finance"],
-        ].map(([key, label]) => {
-            const requested = match.userPreferences?.[key];
-            const observed = match.factors?.[key];
-            if (typeof requested !== "number" || typeof observed !== "number") return "";
-            return tFormat("universities.why.preference_comparison", {
-                label: t(`universities.tradeoff.${label}`), requested: Math.round(requested * 100), observed: Math.round(observed * 100),
-            }, "{label}: your setting {requested}/100; university indicator {observed}/100.");
-        }).filter(Boolean).join(" ");
+        const examNeededDetail = missingExams.length
+            ? tFormat("universities.tip.add_to_profile", { exams: missingExams.join(", ") })
+            : t("universities.why.conditional_exam_needed");
+        const unmet = unmetMinimums(requirementChecks, {
+            examLabel: cardExamLabel, joiner: orJoiner,
+            formatValue: (exam, value, context) => formatExamValue(exam, value, { context }),
+        }).slice(0, 2);
+        const belowDetail = unmet.length
+            ? tFormat("universities.tip.below_minimum", { items: unmet.map((item) => tFormat("universities.tip.minimum_gap", item)).join("; ") })
+            : t("admission.chance.requirements_not_met");
+        const overBudgetDetail = budgetTooltip({ status: "over", costMin: compareCostUSD, budget: myBudget }, tooltipHelpers);
 
         if (reviewedAdmissions) {
             reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value, legend }) => addStatusIndicator(icon, tone, label, detail, value, legend));
@@ -4038,29 +4036,29 @@ export function initUniversitiesPage() {
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
-            addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Conditional / Exam Needed"), [examNeededDetail, academicDetail].filter(Boolean).join(" ") || t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional."), "", "exam_needed");
+            addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Exam result needed"), examNeededDetail, "", "exam_needed");
         }
 
         // Priority 2: preference-match group. Only one vibe tag may be shown.
         if (hasVeryHighVibeMatch) {
-            addStatusIndicator("check-badge", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceDetail || t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders."), "", "vibe");
+            addStatusIndicator("heart", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceTooltip(match, "universities.why.your_vibe"), "", "vibe");
         } else if (hasHighVibeMatch) {
-            addStatusIndicator("check-badge", "match", t("universities.badge.top_match", "Good Match"), preferenceDetail || t("universities.why.top_match", "This university is a good preference match for your current slider setup."), "", "vibe");
+            addStatusIndicator("heart", "match", t("universities.badge.top_match", "Good Match"), preferenceTooltip(match, "universities.why.top_match"), "", "vibe");
         }
 
         // Status tags: requirements + budget + aid.
         if (belowRequirements) {
-            addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), academicDetail, "", "requirements_below");
+            addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), belowDetail, "", "requirements_below");
         } else if (meetsMinRequirements) {
-            addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), academicDetail, "", "requirements_met");
+            addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), t("universities.tip.requirements_met"), "", "requirements_met");
         } else if (!reviewedAdmissions && match.requirementsReason && !hasConditionalExamWarning) {
-            addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), [academicDetail, chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning })].filter(Boolean).join(". "), "", "no_data");
+            addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning }), "", "no_data");
         }
 
         if (showOverBudgetAid) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"), [overBudgetByText, budgetDetail].filter(Boolean).join(" "), "", "over_budget_aid");
+            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"), overBudgetDetail, "", "over_budget_aid");
         } else if (showOverBudgetStrict) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"), [overBudgetByText, budgetDetail].filter(Boolean).join(" "), "", "over_budget");
+            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"), overBudgetDetail, "", "over_budget");
         } else if (showAidAvailable) {
             addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"), "", "", "aid");
         }

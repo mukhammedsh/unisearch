@@ -225,6 +225,10 @@
   max-width: none;
 }
 
+.u-map-results-list .uni-card-statuses > .uni-status-tooltip {
+  position: relative;
+}
+
 .u-map-results-list .uni-status-trigger {
   width: 28px;
   height: 28px;

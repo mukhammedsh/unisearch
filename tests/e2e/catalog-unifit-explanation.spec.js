@@ -100,12 +100,12 @@ test("icon tooltips name the missing exam and the amount over budget", async ({ 
   const tipText = (legend) => page.locator(`#universitiesList .uni-status-tooltip:has([data-legend="${legend}"]) .uni-status-tooltip__text`);
   const exam = await tipText("exam_needed").allTextContents();
   expect(exam.length).toBeGreaterThan(0);
-  for (const text of exam) expect(text).toMatch(/^Needs your .+ result to check\./);
+  for (const text of exam) expect(text).toMatch(/^To check the requirements, add to your profile: .+\./);
   // Language rules are alternatives, so they read as one language test, never as a single option such as "Native en".
   for (const text of exam) expect(text.split(". ")[0]).not.toMatch(/Native|CEFR/);
   const over = await tipText("over_budget").allTextContents();
   expect(over.length).toBeGreaterThan(0);
-  for (const text of over) expect(text).toMatch(/^\$[\d,]+ above your budget\./);
+  for (const text of over) expect(text).toMatch(/^\$[\d,]+ a year, \$[\d,]+ more than your budget\. Financial aid is not deducted\./);
 });
 
 test("on a phone the legend wraps inside the banner without sideways scrolling", async ({ page }) => {

@@ -175,9 +175,9 @@ test("reviewed UniFit indicators describe only the saved route and measurable ch
   assert.match(indicators[0].detail, /1 of 2/);
   assert.equal(indicators[0].tone, "warning");
   assert.match(indicators[0].detail, /Other admission conditions/i);
-  assert.match(indicators[1].detail, /published price/i);
-  assert.match(indicators[1].detail, /tuition-only/i);
-  assert.match(indicators[1].detail, /Living and other costs are extra/);
+  assert.match(indicators[1].detail, /^\$40,000 – \$50,000 a year, \$10,000 more than your budget\./);
+  assert.match(indicators[1].detail, /Financial aid is not deducted/);
+  assert.match(indicators[1].detail, /Tuition only: living costs are extra/);
   assert.doesNotMatch(indicators[1].detail, /affects UniFit/i);
   assert.doesNotMatch(indicators.map(item => item.label + item.detail).join(" "), /requirements met|probability|award/i);
 });
@@ -236,5 +236,32 @@ test("an over-budget reviewed card says by how much the lowest published price e
   const over = reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "over_budget", evidence: "applicable", basis: "annual_total" },
     costQuote: { minUSD: 40000, maxUSD: 50000 } }, 30000);
   assert.equal(over[0].legend, "over_budget");
-  assert.match(over[0].detail, /^\$10,000 above your budget\./);
+  assert.match(over[0].detail, /^\$40,000 – \$50,000 a year, \$10,000 more than your budget\./);
+});
+
+test("reviewed cards name what to add, how many programs match and which preferences are close", () => {
+  setLanguage("eng", { emit: false });
+  const indicators = reviewedCardIndicators({ finalScore: 0.4, preferenceMismatch: 0.1,
+    userPreferences: { practice_vs_science: 0.5, city_vs_campus: 0.9 }, factors: { practice_vs_science: 0.55, city_vs_campus: 0.3 },
+    subjectMatch: { status: "matched", option_ids: ["a", "b", "c"] },
+    requirementsFitPercent: null, requirementChecks: [
+      { status: "missing", missingInputs: [{ exam: "SAT", needs: ["result"] }, { exam: "ACT", needs: ["result"] }] },
+      { status: "unassessed" },
+    ] }, 30000);
+  assert.deepEqual(indicators.map(item => item.legend), ["exam_needed", "subject_matched", "vibe"]);
+  assert.match(indicators[0].detail, /^To check the requirements, add to your profile: .*SAT.* or .*ACT.*\.$/);
+  assert.match(indicators[1].detail, /^Matching programs: 3\./);
+  assert.equal(indicators[2].icon, "heart");
+  assert.equal(indicators[2].detail, "Close to your settings: focus.");
+});
+
+test("a price that depends on fee status asks for the fee status instead of hiding the budget", () => {
+  setLanguage("eng", { emit: false });
+  const [check] = reviewedCardIndicators({ finalScore: 0.4,
+    budgetAssessment: { status: "unknown_cost", evidence: "fee_status_unknown", basis: "tuition" },
+    costQuote: { minUSD: 13000, maxUSD: 63000 } }, 30000);
+  assert.equal(check.legend, "budget_check");
+  assert.match(check.detail, /^\$13,000 to \$63,000 a year, depending on your fee status\. Set it on the university page\./);
+  // Without a price or a fee-status reason there is still nothing to compare.
+  assert.deepEqual(reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "unknown_cost" } }, 30000), []);
 });

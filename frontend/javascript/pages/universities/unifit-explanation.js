@@ -68,6 +68,70 @@ export const legendEntries = (badges) => {
     .sort((a, b) => LEGEND_ORDER.indexOf(a.key) - LEGEND_ORDER.indexOf(b.key));
 };
 
+// Preference sliders in banner/tooltip order: [UniFit factor key, `universities.tradeoff.*` label key].
+export const PREFERENCE_DIMENSIONS = [
+  ["practice_vs_science", "focus"], ["social_vs_hardcore", "atmosphere"],
+  ["city_vs_campus", "location"], ["budget_vs_prestige", "finance"],
+];
+
+// Label keys of the sliders whose university indicator sits close to the user's setting (both 0..1), so the
+// preference tooltip can name what matches instead of printing raw indicator numbers.
+export const closePreferenceLabels = (match, tolerance = 0.15) => PREFERENCE_DIMENSIONS
+  .filter(([key]) => {
+    const requested = match?.userPreferences?.[key];
+    const observed = match?.factors?.[key];
+    return typeof requested === "number" && typeof observed === "number" && Math.abs(requested - observed) <= tolerance;
+  })
+  .map(([, label]) => label);
+
+// What a reviewed card still needs from the profile: one entry per missing published check, its alternatives
+// joined ("SAT or ACT"). Built from the backend `missingInputs`; checks without them are skipped.
+export const reviewedMissingInputs = (checks, { examLabel, joiner }) => [...new Set(
+  (Array.isArray(checks) ? checks : [])
+    .filter((check) => check && check.status === "missing" && Array.isArray(check.missingInputs))
+    .map((check) => [...new Set(check.missingInputs
+      .map((input) => (input?.field === "gpa" ? "GPA" : input?.exam ? examLabel(input.exam) : ""))
+      .filter(Boolean))].join(` ${joiner} `))
+    .filter(Boolean),
+)];
+
+// Earlier-format checks the profile fails: exam, published minimum and the applicant's value, for a short
+// "below the minimum" tooltip line. Formatting is injected so the function stays pure.
+export const unmetMinimums = (checks, { examLabel, formatValue, joiner }) => (Array.isArray(checks) ? checks : [])
+  .filter((check) => check && check.status === "unmet" && check.minimum != null && check.provided != null)
+  .map((check) => {
+    const exam = text(check.examId || check.exam);
+    return {
+      exam: exam.split(" or ").map(examLabel).join(` ${joiner} `),
+      minimum: formatValue(exam, check.minimum, "requirement"),
+      provided: typeof check.provided === "string" ? examLabel(check.provided) : formatValue(exam, check.provided, "profile"),
+    };
+  });
+
+// Plain budget sentence for a card tooltip. `costMin`/`costMax`/`budget` are USD; `money` formats a USD amount
+// for display and `tr`/`trf` are the i18n helpers. Returns "" when there is nothing to compare.
+export const budgetTooltip = ({ status, costMin, costMax = costMin, budget, tuitionOnly = false }, { money, tr, trf }) => {
+  const min = Number(costMin);
+  const max = Number.isFinite(Number(costMax)) ? Number(costMax) : min;
+  const limit = Number(budget);
+  if (costMin == null || !Number.isFinite(min) || !(limit > 0)) return "";
+  const cost = max > min ? `${money(min)} – ${money(max)}` : money(min);
+  const notes = [];
+  if (status === "over") {
+    notes.push(trf("universities.tip.budget_over", { cost, gap: money(min - limit) }), tr("universities.tip.before_aid"));
+  } else if (status === "within") {
+    notes.push(trf("universities.tip.budget_within", { cost, budget: money(limit) }));
+  } else if (status === "range") {
+    notes.push(trf("universities.tip.budget_range", { min: money(min), max: money(max) }));
+  } else if (status === "fee_status") {
+    notes.push(trf("universities.tip.budget_fee_status", { min: money(min), max: money(max) }));
+  } else {
+    return "";
+  }
+  if (tuitionOnly) notes.push(tr("universities.tip.tuition_only"));
+  return notes.join(" ");
+};
+
 // Names of the exam results a card still needs, for the "exam needed" tooltip. Language rules arrive as
 // alternatives (mode "any": native, CEFR, IELTS, TOEFL...), so they are named once as a language test.
 export const missingExamNames = (checks, { examLabel, languageTest, joiner }) => [...new Set(

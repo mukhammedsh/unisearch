@@ -90,7 +90,7 @@ guide.tags.standard.over_budget: «Over Budget» (Бюджеттен асып т
 guide.tags.standard.over_budget_aid: «Over Budget • Aid Available» белгісі жарияланған құнның бюджетіңізден асатынын, сонымен қатар қаржыландыру мүмкіндігінің бар екенін білдіреді. Алайда қаржылық көмектің түрі мен мөлшері нақтыланбаған.
 guide.tags.ai_note: AI белгілері тек {fit} сұрыптау режимінде ғана көрсетіледі, себебі олардың артындағы сандық көрсеткіштерді тек осы режим есептейді.
 guide.tags.ai_title: AI белгілері
-guide.tags.ai.conditional: «Шартты / Емтихан қажет» (Conditional / Exam Needed) белгісі профиліңізде міндетті емтихан нәтижесі әлі жоқ таңдауды көрсетеді: мүмкіндік бар, бірақ тиісті құжат жетіспейді.
+guide.tags.ai.conditional: Емтихан нәтижесі керек: профильде міндетті емтихан нәтижесі жоқ. Ең төменгі талапты тексеру үшін оны қосыңыз.
 guide.tags.ai.your_vibe: «Your Vibe» (Үйлесімділік деңгейі өте жоғары) белгісі қалаулардың өте жоғары деңгейде сәйкес келетінін білдіреді — төрт параметр бойынша сәйкессіздік 0,14 немесе одан аз.
 guide.tags.ai.top_match: «Good Match» (Жақсы сәйкестік) — алдыңғысынан сәл өзгешелеу нұсқа: сәйкессіздік 0,22 немесе одан аз; бұл жақсы нәтиже, бірақ «Your Vibe» деңгейіне жетпейді.
 guide.tags.ai.requirements_met: «Requirements Met» (Талаптар орындалды) — жарияланған академиялық және тілдік ең төменгі талаптардың барлығы сіздің деректеріңізге сай келеді деген сөз; дегенмен, қабылдаудың басқа шарттары да қолданылуы мүмкін.
@@ -373,14 +373,14 @@ universities.all_cities: Барлық қала
 universities.any_state: Кез келген штат
 universities.badge.acceptance: Қабылдау үлесі: {value}%
 universities.badge.acceptance_na: Қабылдау үлесі: дерек жоқ
-universities.badge.conditional_exam_needed: Шартты / емтихан нәтижесі керек
+universities.badge.conditional_exam_needed: Емтихан нәтижесі керек
 universities.badge.no_matching_program: Бұл мамандық жоқ
 universities.why.no_matching_program: Бұл университетте профиліңізде таңдалған мамандық бойынша бағдарлама жоқ.
 universities.badge.overflow_more: Тағы {count} белгі
 universities.badge.overflow_label: Қосымша күй белгілері
 universities.badge.top_match: Жақсы сәйкестік
 universities.badge.your_vibe: Сізге сай
-universities.why.conditional_exam_needed: Міндетті емтихан нәтижесінің бір бөлігі жоқ, сондықтан бұл нәтиже шартты.
+universities.why.conditional_exam_needed: Талаптарды тексеру үшін емтихан нәтижелерін профильге қосыңыз.
 universities.unifit_banner.dismiss: Хабарландыруды жабу
 universities.why.top_match: Бұл университет қазіргі таңдауларыңызға сай келеді.
 universities.why.your_vibe: Бұл университет бағыт, орта және орналасу бойынша таңдауыңызға өте сай.
@@ -1140,8 +1140,6 @@ profile.exam_subject_choose_first: Алдымен затты таңдаңыз
 profile.exam_breakdown_hint: Пәндер бойынша ұпайларды енгізіңіз. Міндетті заттар тіркелген күйінде қалады, ал қажет жерінде тағы да {min}-{max} заттарды таңдауға болады.
 profile.exam_breakdown_fixed_hint: Әрбір міндетті бөлім бойынша баллдарды көрсетіңіз.
 admission.requirements_fit.check.or: немесе
-universities.why.budget_comparison: Жылдық құны: {cost}; сіздің жылдық бюджетіңіз: {budget}. Мүмкін қаржыландыру шегерілмеген.
-universities.why.preference_comparison: {label}: сіздің баптауыңыз {requested}/100; университет көрсеткіші {observed}/100.
 profile.exam_total_placeholder: Жалпы балл
 profile.exam_subject_required_count: {exam} үшін кем дегенде {count} пәнді таңдаңыз
 profile.exam_error_range: {exam} {min} -ден {max} -ге дейінгі диапазонда болуы тиіс
@@ -3367,10 +3365,6 @@ universities.match.checks_detail: Тексерілген {total} минимум�
 universities.match.budget_over: Бюджетіңізден жоғары
 universities.match.budget_within: Бюджетіңізге сай
 universities.match.budget_uncertain: Құнын нақтылаңыз
-universities.match.budget_tuition_detail: Жарияланған оқу ақысы ғана салыстырылады. Тұру және басқа шығындар бөлек төленеді.
-universities.match.budget_annual_detail: Жарияланған жылдық шығын бюджетіңізбен салыстырылады.
-universities.match.budget_reference_detail: Салыстыру үшін жарияланған баға пайдаланылды. Қазіргі құнын «Қаржы» бөлімінен қараңыз.
-universities.match.budget_uncertain_detail: Кейбір нұсқалардың бағасы бюджетіңізден жоғары. Таңдаған бағдарламаның құнын нақтылаңыз.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Талаптарға сай бітіруші курс студенттеріне: қазір өтініш беріп, екі–бес жыл жұмыс істегеннен кейін MBA оқуын бастауға болады. Бұл MBA-ға әдеттегі қабылдаудың ерте кезеңі емес, оқуды кейін бастау жолы.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — оқуды кейін бастау жолы
 university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
@@ -3476,9 +3470,20 @@ universities.ux2.banner.budget: жылына {amount} дейін
 universities.ux2.banner.edit: Профильді өзгерту
 universities.ux2.banner.set_up: Профильді толтыру
 universities.ux2.banner.disclaimer: Бұл сәйкестік рейтингі, түсу болжамы емес. Деректің жоқтығы орындалмаған талап болып есептелмейді.
-universities.ux2.tip.exam_needed_named: Тексеру үшін {exams} нәтижесі керек.
 universities.ux2.tip.language_test: тіл тесті
-universities.ux2.tip.over_budget_by: Бюджетіңізден {amount} асады.
+universities.tip.subject_options: Сай бағдарламалар: {count}. Талаптарын тексеру үшін университет бетінде біреуін таңдаңыз.
+universities.tip.subject_selected: Таңдаған бағдарламаңыз бағытыңызға сай.
+universities.tip.preferences_close: Баптауларыңызға жақын: {dimensions}.
+universities.tip.add_to_profile: Талаптарды тексеру үшін профильге қосыңыз: {exams}.
+universities.tip.budget_within: Жылына {cost}, бюджетіңіз — {budget}.
+universities.tip.budget_over: Жылына {cost}, бұл бюджетіңізден {gap} артық.
+universities.tip.budget_range: Жылына {min} – {max}, кейбір нұсқалар бюджетіңізден қымбат. Нақты салыстыру үшін бағдарлама таңдаңыз.
+universities.tip.budget_fee_status: Төлем мәртебесіне қарай жылына {min} – {max}. Оны университет бетінде көрсетіңіз.
+universities.tip.tuition_only: Тек оқу ақысы: тұру шығыны бөлек төленеді.
+universities.tip.before_aid: Қаржылық көмек есепке алынбаған.
+universities.tip.requirements_met: Нәтижелеріңіз жарияланған ең төменгі талаптарға сай. Басқа қабылдау шарттарын университет бетінен тексеріңіз.
+universities.tip.below_minimum: Ең төменгі талаптан төмен: {items}.
+universities.tip.minimum_gap: {exam}: {minimum} керек, сізде {provided}
 universities.ux2.legend.aria: Университет карточкаларындағы белгішелер
 universities.ux2.legend.lead: Карточка белгішелері:
 universities.ux2.legend.subject_missing: Бағдарлама жоқ

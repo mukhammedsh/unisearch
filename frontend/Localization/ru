@@ -93,7 +93,7 @@ guide.tags.standard.over_budget: Выше бюджета предупрежда�
 guide.tags.standard.over_budget_aid: Выше бюджета • Есть помощь означает, что опубликованная стоимость выше вашего бюджета и доступен вариант финансирования. Получение и размер поддержки не подтверждены.
 guide.tags.ai_note: ИИ-теги появляются только при сортировке {fit}, потому что лишь этот режим вычисляет числа за ними.
 guide.tags.ai_title: ИИ-теги
-guide.tags.ai.conditional: Условно / Нужен экзамен помечает вариант, где по обязательному экзамену в профиле пока нет подтверждения: дверь открыта, но документа не хватает.
+guide.tags.ai.conditional: Нужен результат экзамена: в профиле нет результата обязательного экзамена. Добавьте его, чтобы проверить минимум.
 guide.tags.ai.your_vibe: Ваш формат отмечает почти идеальное совпадение предпочтений — несовпадение 0,14 и меньше по четырём шкалам.
 guide.tags.ai.top_match: Хорошее совпадение — его более мягкий собрат: несовпадение 0,22 и меньше, крепкая посадка, недотянувшая до Вашего формата.
 guide.tags.ai.requirements_met: Требования выполнены означает, что по данным профиля пройдены все проверяемые опубликованные академические и языковые минимумы. Могут быть и другие условия поступления.
@@ -376,14 +376,14 @@ universities.all_cities: Все города
 universities.any_state: Любой штат
 universities.badge.acceptance: Процент зачисления: {value}%
 universities.badge.acceptance_na: Процент зачисления: неизвестно
-universities.badge.conditional_exam_needed: Условно / Нужен экзамен
+universities.badge.conditional_exam_needed: Нужен результат экзамена
 universities.badge.no_matching_program: Нет выбранной программы
 universities.why.no_matching_program: В этом университете нет программы обучения, выбранной в вашем профиле.
 universities.badge.overflow_more: +{count} дополнительных ярлыков
 universities.badge.overflow_label: Дополнительные ярлыки статуса
 universities.badge.top_match: Хорошее совпадение
 universities.badge.your_vibe: Ваш формат
-universities.why.conditional_exam_needed: Не хватает части экзаменационных данных, поэтому результат помечен как условный.
+universities.why.conditional_exam_needed: Добавьте результаты экзаменов в профиль, чтобы проверить требования.
 universities.unifit_banner.dismiss: Скрыть уведомление
 universities.why.top_match: Этот университет хорошо совпадает с вашими текущими настройками и предпочтениями.
 universities.why.your_vibe: Этот университет особенно хорошо совпадает с вашими предпочтениями по атмосфере, фокусу и расположению.
@@ -1139,8 +1139,6 @@ profile.exam_subject_choose_first: Сначала выберите предме�
 profile.exam_breakdown_hint: Введите баллы по предметам. Обязательные предметы остаются фиксированными, а где нужно, можно выбрать ещё {min}-{max} предметов.
 profile.exam_breakdown_fixed_hint: Укажите баллы по каждому обязательному разделу.
 admission.requirements_fit.check.or: или
-universities.why.budget_comparison: Годовая стоимость: {cost}; ваш годовой бюджет: {budget}. Возможное финансирование не вычтено.
-universities.why.preference_comparison: {label}: ваша настройка {requested}/100; показатель университета {observed}/100.
 profile.exam_total_placeholder: Общий балл
 profile.exam_subject_required_count: Выберите как минимум {count} предмета для {exam}
 profile.exam_error_range: {exam} должен быть в диапазоне от {min} до {max}
@@ -3365,10 +3363,6 @@ universities.match.checks_detail: Выполнено {met} из {total} пров
 universities.match.budget_over: Выше вашего бюджета
 universities.match.budget_within: В пределах бюджета
 universities.match.budget_uncertain: Уточните стоимость
-universities.match.budget_tuition_detail: Сравнивается только обучение по опубликованной цене. Проживание и другие расходы оплачиваются отдельно.
-universities.match.budget_annual_detail: Опубликованный годовой бюджет сравнивается с вашим бюджетом.
-universities.match.budget_reference_detail: Для сравнения использован опубликованный ориентир. Актуальную стоимость смотрите в разделе «Финансы».
-universities.match.budget_uncertain_detail: Некоторые варианты дороже вашего бюджета. Уточните стоимость выбранной программы.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Для подходящих студентов выпускного курса: подайте заявку сейчас и начните MBA после двух–пяти лет работы. Это поступление с отложенным началом, а не ранний раунд обычной подачи на MBA.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — поступление с отложенным началом
 university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
@@ -3474,9 +3468,20 @@ universities.ux2.banner.budget: до {amount}/год
 universities.ux2.banner.edit: Изменить профиль
 universities.ux2.banner.set_up: Заполнить профиль
 universities.ux2.banner.disclaimer: Это рейтинг соответствия, а не прогноз поступления. Нехватка данных не считается невыполненным требованием.
-universities.ux2.tip.exam_needed_named: Для проверки нужен результат: {exams}.
 universities.ux2.tip.language_test: языковой тест
-universities.ux2.tip.over_budget_by: На {amount} выше вашего бюджета.
+universities.tip.subject_options: Подходящих программ: {count}. Выберите одну на странице университета, чтобы проверить её требования.
+universities.tip.subject_selected: Выбранная программа соответствует вашему направлению.
+universities.tip.preferences_close: Близко к вашим настройкам: {dimensions}.
+universities.tip.add_to_profile: Чтобы проверить требования, добавьте в профиль: {exams}.
+universities.tip.budget_within: {cost} в год, ваш бюджет — {budget}.
+universities.tip.budget_over: {cost} в год, это на {gap} больше вашего бюджета.
+universities.tip.budget_range: От {min} до {max} в год, часть вариантов дороже вашего бюджета. Выберите программу, чтобы сравнить точно.
+universities.tip.budget_fee_status: От {min} до {max} в год в зависимости от статуса оплаты. Укажите его на странице университета.
+universities.tip.tuition_only: Только обучение: проживание оплачивается отдельно.
+universities.tip.before_aid: Финансовая помощь не учтена.
+universities.tip.requirements_met: Ваши результаты проходят опубликованные минимумы. Остальные условия поступления проверьте на странице университета.
+universities.tip.below_minimum: Ниже минимума: {items}.
+universities.tip.minimum_gap: {exam} — нужно {minimum}, у вас {provided}
 universities.ux2.legend.aria: Значки на карточках университетов
 universities.ux2.legend.lead: Значки на карточках:
 universities.ux2.legend.subject_missing: Программы нет
@@ -3490,7 +3495,7 @@ universities.ux2.legend.over_budget: Выше бюджета
 universities.ux2.legend.budget_check: Проверьте стоимость
 universities.ux2.legend.within_budget: В рамках бюджета
 universities.ux2.legend.aid: Есть финпомощь
-universities.ux2.legend.vibe: По предпочтениям
+universities.ux2.legend.vibe: Совпадает с предпочтениями
 profile.ux2.evidence.language_title: Опыт использования английского языка
 profile.ux2.evidence.language_fixed: Записывается только опыт английского: именно о нём спрашивают требования к английскому.
 profile.ux2.evidence.entirely: Полностью на английском?
