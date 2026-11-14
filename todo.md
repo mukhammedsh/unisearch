@@ -18,6 +18,8 @@ This section holds the dated state of the admissions work. `AGENTS.md` keeps onl
 
 Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
 
+- [ ] Imperial and NU publish their test and document requirements as course prose, so the "What you'll need" row of the comparison and of the overview shows only a link to the Admission tab for them, while MIT and Stanford show a checklist. Structuring those records (for example TMUA for Imperial Computing) is data work for the light-dossier conversion; decide whether to schedule it.
+
 
 ## Delivery and boundaries
 
