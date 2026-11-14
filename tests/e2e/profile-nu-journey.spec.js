@@ -122,18 +122,15 @@ test("a saved NU Foundation choice can be compared with another university on a 
   await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
   const stanford = "stanford-university-usa-ca";
   const loaded = page.waitForResponse(response => response.url().includes(`/universities/${stanford}/admissions-context`));
-  await page.goto(`/compare.html?stage=configure&ids=${NU},${stanford}`);
+  await page.goto(`/compare.html?ids=${NU},${stanford}`);
   expect((await loaded).status()).toBe(200);
-  const chooser = page.locator(`#compare-options-${stanford}`);
-  await chooser.getByText("Choose a program or route", { exact: true }).click();
-  await expect(chooser.getByRole("alert")).toHaveCount(0);
-  await chooser.getByRole("combobox", { name: "University-wide application route", exact: true }).click();
-  await chooser.getByRole("option", { name: "First-year admission after school · Undergraduate", exact: true }).click();
-  await chooser.getByRole("button", { name: "Apply filters", exact: true }).click();
-  await expect(chooser.locator(".compare-context-current__value")).toContainText("First-year admission");
-  await page.locator('[data-action="build-compare-results"]').click();
-  await expect(page.locator("[data-reviewed-comparison]")).toContainText("12,000");
-  await expect(page.locator("[data-reviewed-comparison]")).toContainText("Stanford");
+  const comparison = page.locator("[data-reviewed-comparison]");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"]`)).toHaveAttribute("data-scope", "program");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${stanford}"]`)).toHaveAttribute("data-scope", "institution");
+  await expect(page.locator('[data-compare-row="cost"] dd').first()).toContainText("12,000");
+  await expect(comparison).toContainText("Stanford");
+  await expect(comparison.getByRole("alert")).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
 test("an unadded academic report survives translation, blocks false saving, and submits with Enter", async ({ page }) => {

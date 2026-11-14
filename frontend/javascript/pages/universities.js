@@ -1015,7 +1015,26 @@ export function initUniversitiesPage() {
     };
     const writeCompareAdmissionChoices = () => persistCompareAdmissionChoices(compareAdmissionChoices, comparePairIds());
     compareAdmissionChoices = readCompareAdmissionChoices();
-    const isComparePairReady = () => comparePairIds().length >= 2;
+    // A pair is compared only within one data group: universities with rechecked (reviewed) admissions data, or
+    // universities in the earlier format. The group of an id comes from its catalog row or cached detail; an unknown
+    // group never blocks a choice here, and the comparison page itself explains a mixed pair.
+    const compareGroupById = new Map();
+    let compareTrayNotice = "";
+    const compareGroupOf = (id) => {
+        const cleanId = String(id || "").trim();
+        const known = compareGroupById.get(cleanId);
+        if (known) return known;
+        const row = getRenderedUniversityById(cleanId)
+            || [getCurrentLanguage(), "eng", "ru"].map((lang) => getDetailCacheEntry(cleanId, lang)?.data).find(Boolean);
+        const availability = row?.admissions_catalog?.availability;
+        if (!availability) return "";
+        const group = availability === "reviewed" ? "reviewed" : "legacy";
+        compareGroupById.set(cleanId, group);
+        return group;
+    };
+    const comparePairGroups = () => new Set(comparePairIds().map(compareGroupOf).filter(Boolean));
+    const isComparePairMixed = () => comparePairGroups().size > 1;
+    const isComparePairReady = () => comparePairIds().length >= 2 && !isComparePairMixed();
 
     const syncCompareSelectionFromStorage = () => {
         const rawIds = readIdListStorage(COMPARE_UNIVERSITIES_KEY);
@@ -1042,6 +1061,7 @@ export function initUniversitiesPage() {
         el.compareTray.hidden = false;
         el.compareTray.classList.toggle("is-ready", isComparePairReady());
         const canCompare = isComparePairReady();
+        const notice = isComparePairMixed() ? t("universities.compare.tray_mixed") : compareTrayNotice;
         const chipsHtml = ids.map((id) => {
             const name = getUniversityDisplayNameById(id);
             const logoSrc = uniLogoSrc(id);
@@ -1056,7 +1076,9 @@ export function initUniversitiesPage() {
                 </div>
             `;
         }).join("");
+        el.compareTray.classList.toggle("has-note", Boolean(notice));
         el.compareTray.innerHTML = `
+            ${notice ? `<p class="compare-tray__note" role="status">${escapeHtml(notice)}</p>` : ""}
             <span class="compare-tray__badge">${ids.length}/${MAX_COMPARE_UNIVERSITIES}</span>
             <div class="compare-tray__chips" role="list" aria-label="${escapeHtmlAttr(t("universities.compare.selection", "Selected universities"))}">
                 ${chipsHtml}
@@ -1082,13 +1104,18 @@ export function initUniversitiesPage() {
 
     const syncCardActionState = () => {
         const showCompareSelection = isCompareSelectionMode();
+        const pairGroups = showCompareSelection ? comparePairGroups() : new Set();
+        const pairGroup = pairGroups.size === 1 ? [...pairGroups][0] : "";
         document.querySelectorAll(".uni-card[data-uni-id]").forEach((card) => {
             const rowId = String(card.getAttribute("data-uni-id") || "").trim();
             const saved = savedUniversityIds.has(rowId);
             const compared = showCompareSelection && compareUniversityIds.has(rowId);
+            const rowGroup = pairGroup && !compared ? compareGroupOf(rowId) : "";
+            const otherGroup = Boolean(rowGroup && rowGroup !== pairGroup);
             const saveBtn = card.querySelector("[data-card-action='save']");
             const compareBtn = card.querySelector("[data-card-action='compare']");
             card.classList.toggle("uni-card--compare-selected", compared);
+            card.classList.toggle("uni-card--compare-unavailable", otherGroup);
             card.setAttribute("aria-selected", compared ? "true" : "false");
             if (saveBtn) {
                 saveBtn.classList.toggle("is-active", saved);
@@ -1099,16 +1126,20 @@ export function initUniversitiesPage() {
                 const label = showCompareSelection
                     ? (compared
                         ? t("universities.card.compare_selected_short", "Selected")
-                        : t("universities.card.compare_short", "Compare"))
+                        : otherGroup ? t("universities.card.compare_other_group") : t("universities.card.compare_short", "Compare"))
                     : t("universities.card.view_details", "View details");
-                details.innerHTML = `${escapeHtml(label)}<span aria-hidden="true">→</span>`;
+                details.innerHTML = otherGroup ? escapeHtml(label) : `${escapeHtml(label)}<span aria-hidden="true">→</span>`;
+                if (otherGroup) details.setAttribute("title", t("universities.card.compare_other_group_title"));
+                else details.removeAttribute("title");
             }
             if (compareBtn) {
                 const label = compared
                     ? t("universities.card.compare_selected", "Selected for comparison")
-                    : t("universities.card.compare", "Add to compare");
+                    : otherGroup ? t("universities.card.compare_other_group_title") : t("universities.card.compare", "Add to compare");
                 compareBtn.classList.toggle("is-active", compared);
                 compareBtn.setAttribute("aria-pressed", compared ? "true" : "false");
+                if (otherGroup) compareBtn.setAttribute("aria-disabled", "true");
+                else compareBtn.removeAttribute("aria-disabled");
                 compareBtn.setAttribute("title", label);
                 compareBtn.setAttribute("aria-label", label);
                 compareBtn.innerHTML = renderInlineIcon(compared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon");
@@ -1121,6 +1152,15 @@ export function initUniversitiesPage() {
         if (!cleanId) return false;
         const currentPair = comparePairIds();
         const wasCompared = currentPair.includes(cleanId);
+        const pairGroups = comparePairGroups();
+        const group = compareGroupOf(cleanId);
+        if (!wasCompared && group && pairGroups.size === 1 && !pairGroups.has(group)) {
+            // The other data group cannot join this pair; the tray says why instead of silently replacing a choice.
+            compareTrayNotice = tFormat(`universities.compare.tray_blocked_${group}`, { university: getUniversityDisplayNameById(cleanId) });
+            renderCompareTray();
+            return true;
+        }
+        compareTrayNotice = "";
         if (wasCompared) {
             setComparePairIds(currentPair.filter((id) => id !== cleanId));
         } else {
@@ -1178,8 +1218,10 @@ export function initUniversitiesPage() {
 
     const openCompareResultsPage = async () => {
         const ids = comparePairIds();
-        if (ids.length !== COMPARE_PAIR_SIZE) return;
-        navigateToAppRoute(routeCompareConfigure(ids));
+        if (ids.length !== COMPARE_PAIR_SIZE || isComparePairMixed()) return;
+        // Rechecked universities open their one-stage comparison; earlier-format pairs choose admission options first.
+        const reviewedPair = ids.every((id) => compareGroupOf(id) === "reviewed");
+        navigateToAppRoute(reviewedPair ? routeCompare(ids) : routeCompareConfigure(ids));
     };
 
     const universityLinkAttrs = () => (
@@ -2247,6 +2289,7 @@ export function initUniversitiesPage() {
         if (actionButton) motionPress(actionButton);
         if (action === "clear-compare") {
             const wasCompareResults = isCompareResultsMode();
+            compareTrayNotice = "";
             compareUniversityIds.clear();
             compareAdmissionChoices.clear();
             state.compareResultIds = [];

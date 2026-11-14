@@ -227,44 +227,33 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   await seedApp(page, { language: "rus", theme: "dark", profile: savedProfile, compareChoices: oldCompareChoices });
   await page.goto(`/compare.html?ids=${STANFORD},${ASTANA}&stage=configure`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
-  await expect(page.locator(".compare-config-panel")).toBeVisible();
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
-
-  const stanfordColumn = page.locator(`.compare-config-column[data-uni-id="${STANFORD}"]`);
-  const astanaColumn = page.locator(`.compare-config-column[data-uni-id="${ASTANA}"]`);
-  await expect(stanfordColumn.locator(`[data-admission-reset-notice="${STANFORD}"]`)).toBeVisible();
-  await expect(astanaColumn.locator("[data-admission-reset-notice]")).toHaveCount(0);
+  // A rechecked and an earlier-format university are not compared side by side.
+  await expect(page.locator("[data-compare-mixed]")).toBeVisible();
   let profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(Object.keys(profile.selectedAdmissionChoices).sort()).toEqual([ASTANA, OXFORD]);
   const retainedCompareChoices = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) || "{}"), COMPARE_CHOICES_KEY);
   expect(Object.keys(retainedCompareChoices)).toEqual([ASTANA]);
   expect(retainedCompareChoices[ASTANA].choiceKey).toBe("aitu_paid::aitu_paid::aitu_paid");
 
-  const chooser = page.locator(`#compare-options-${STANFORD}`);
-  await openDisclosureParents(chooser.locator("[data-compare-context-form]"));
-  await expect(chooser.locator("[data-compare-context-form]")).toBeVisible();
-  await chooser.locator("[data-compare-search-form] input[type=search]").fill("Computer Science");
-  await setNativeSelect(page, `compare-filter_level-${STANFORD}`, "masters");
-  await chooser.locator("[data-compare-search-form]").locator("button[type=submit]").click();
-  const csOption = chooser.locator('[data-compare-programs] [data-study-option="stanford-option-cs-ms"]');
-  await expect(csOption).toBeVisible();
+  // NU had no pointer in the earlier comparison storage, so only Stanford carries the reset notice.
+  await page.goto(`/compare.html?ids=${STANFORD},${NU}`);
+  const stanfordHead = page.locator(`.compare-reviewed__head[data-uni-id="${STANFORD}"]`);
+  await expect(stanfordHead.locator(`[data-admission-reset-notice="${STANFORD}"]`)).toBeVisible();
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"] [data-admission-reset-notice]`)).toHaveCount(0);
+
+  await page.locator(`[data-compare-pick="${STANFORD}"]`).click();
+  const dialog = page.locator("dialog.compare-picker[open]");
+  await dialog.locator('[data-picker-level="masters"]').click();
+  await dialog.locator("#comparePickerSearch").fill("Computer Science");
+  const csOption = dialog.locator('[data-picker-option="stanford-option-cs-ms"]');
+  await expect(csOption).toContainText("Компьютерные науки (MS)");
   await csOption.click();
-  await expect(chooser.locator(".compare-context-current__value")).toContainText("Компьютерные науки (MS)");
-  const route = chooser.locator('select[data-context-field="application_route_id"]');
-  await expect(route).toHaveValue("");
-  const routeWrapper = route.locator("xpath=..");
-  await routeWrapper.locator(".custom-select-trigger").click();
-  await routeWrapper.locator('.custom-option[data-value="directory-evidence:stanford-graduate-cs-ms"]').click();
-  await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
-  await setNativeSelect(page, `compare-study_level-${STANFORD}`, "masters");
-  await chooser.locator(`#compare-cycle-${STANFORD}`).fill("2027-28 entry");
-  await setNativeSelect(page, `compare-fee_status_context-${STANFORD}`, "unknown");
-  await chooser.locator("[data-compare-context-form]").locator("button[type=submit]").click();
+  await dialog.locator('[data-picker-route="directory-evidence:stanford-graduate-cs-ms"]').click();
+  await expect(page.locator("dialog.compare-picker")).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.["stanford-university-usa-ca"])).toMatchObject({
     studyOptionId: "stanford-option-cs-ms",
     applicationRouteId: "directory-evidence:stanford-graduate-cs-ms",
     studyLevel: "masters",
-    intendedEntryCycle: "2027-28 entry",
     feeStatusContext: "unknown",
   });
   profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
@@ -273,13 +262,10 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   expect(profile.intendedEntryCycle).toBeUndefined();
   expect(profile.feeStatusContext).toBeUndefined();
   expect(profile.selectedAdmissionChoices[ASTANA].choiceKey).toBe("astana_standard");
+  await expect(stanfordHead).toContainText("Компьютерные науки (MS)");
+  await expect(stanfordHead.locator("[data-admission-reset-notice]")).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("admissions-cutover-compare-mobile.png"), fullPage: false });
-
-  await page.locator('[data-action="build-compare-results"]').click();
-  const reviewed = page.locator(`.compare-analysis-block[data-reviewed-context="${STANFORD}"]`);
-  await expect(reviewed).toBeVisible();
-  await expect(reviewed).toContainText("Компьютерные науки (MS)");
-  await expect(reviewed).not.toContainText(/stanford_standard|stanford-bs-computer-science/);
+  await expect(page.locator("[data-reviewed-comparison]")).not.toContainText(/stanford_standard|stanford-bs-computer-science/);
 });
 
 test("runtime availability covers 50 universities and Stanford routes stay explicit and scoped", async ({ page }) => {

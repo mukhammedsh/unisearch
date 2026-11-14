@@ -2855,20 +2855,12 @@ university.admissions.catalog.save_choice: Өтініш таңдауын сақ�
 university.admissions.catalog.choice_saved: Осы университетке арналған өтініш контексті сақталды.
 university.admissions.catalog.choice_session_only: Бұл таңдау тек осы сеансқа қолжетімді. Оны осы құрылғыда сақтау мүмкін болмады.
 university.admissions.catalog.apply_before_save: Таңдауды сақтамас бұрын өзгертілген контексті қолданыңыз.
-universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
-universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін университетке ортақ жолды не оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
-universities.compare.context_summary_label: Ағымдағы таңдау
-universities.compare.selection_empty: Бағдарлама немесе өтініш беру жолы таңдалмаған
-universities.compare.choose_context: Бағдарлама немесе өтініш беру жолын таңдау
-universities.compare.change_context: Таңдауды өзгерту
-universities.compare.institution_route: Университетке ортақ өтініш беру жолы
 universities.cost.budget_within_reference: Бюджетіңіз осы бағдарды жабады.
 universities.cost.budget_over_reference: Бұл бағдар бюджеттен жоғары.
 universities.cost.budget_within_applicable: Жарияланған сома бюджетке сай.
 universities.cost.budget_over_applicable: Жарияланған сома бюджеттен жоғары.
 universities.cost.budget_uncertain_range: Кейбір бағалар сай келеді; бағдарламаны нақтылаңыз.
 universities.cost.budget_tuition_only: Тек оқу ақысы; тұру мен басқа шығындар бөлек.
-universities.compare.clear_program: Оқу нұсқасын алып тастау
 universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.
 university.admissions.reading.summary_translation_missing: Қысқаша аударма әзірге дайын емес. Түпнұсқаны төменнен ашуға болады.
 university.admissions.reading.source_and_date: Дереккөз және күні
@@ -3061,42 +3053,71 @@ university.deadlines.kind.booking: Тестке тіркелу мерзімі
 university.deadlines.round: {number}-раунд
 university.deadlines.calendar_time_unknown: Уақыты көрсетілмеген; күнтізбеге толық күндік оқиға қосылады.
 university.deadlines.export_time_unresolved: Жарияланған уақытты не уақыт белдеуін сенімді түрлендіру мүмкін емес; ресми дереккөзді тексеріңіз.
-universities.compare.summary.title: Таңдалған бағдарламаларды салыстыру
-universities.compare.summary.scope_note: Деректер таңдалған бағдарламаға, қабылдау бағытына және жарияланған кезеңге қатысты. Бастапқы валюта мен төлем санаттары сақталған; мерзімі көрсетілген бағдар жаңа ұсыныстың бағасы емес.
-universities.compare.summary.program: Бағдарлама
-universities.compare.summary.study: Ұзақтығы мен оқу формасы
-universities.compare.summary.route: Қабылдау бағыты
-universities.compare.summary.cycle: Таңдалған қабылдау кезеңі
-universities.compare.summary.tuition: Жарияланған оқу ақысы
-universities.compare.summary.budget: Оқу және тұру шығындарының бағдары
-universities.compare.summary.deadline: Жарияланған өтініш мерзімдері
-universities.compare.summary.funding: Қаржыландыру
-universities.compare.summary.admission: Талаптар мен шарттар
-universities.compare.summary.deadlines: Мерзімдер мен күнтізбені ашу
-universities.compare.summary.finance: Шығындар мен қаржыландыруды ашу
-universities.compare.summary.source: Ресми дереккөз
-universities.compare.summary.reference: Мерзімі көрсетілген бағдар
-universities.compare.summary.before_aid: Қаржылай көмекке дейін; қамтылмаған шығындарды дереккөзден тексеріңіз
-universities.compare.summary.unknown: Таңдалған нұсқа үшін расталмаған
-universities.compare.summary.year_not_stated: Дереккөзде жыл көрсетілмеген; күнтізбе күні болжанып қойылмайды.
-universities.compare.summary.potential_aid: Ықтимал қаржыландыру талаптар мен іріктеуге байланысты.
-universities.compare.summary.full_records: Дереккөздердің толық жазбалары
-universities.compare.summary.additional_facts: Университеттер туралы қосымша деректер
-universities.compare.summary.choose_programs: Бағдарламаларды таңдау
-universities.compare.summary.prompt_choose_program: {university} үшін мерзімдер, құн және талаптар осында көрінуі үшін оқу бағдарламасын немесе университетке ортақ өтініш беру жолын таңдаңыз.
-universities.compare.summary.prompt_choose_route: {university} ішіндегі «{program}» бағдарламасына өтініш беру тәсілін таңдаңыз, сонда мерзімдер, құн және қаржыландыру осында көрінеді.
-universities.compare.summary.prompt_incompatible: {university} үшін таңдалған бағдарлама, өтініш беру жолы және деңгей сәйкес келмейді. Салыстыру үшін таңдауды өзгертіңіз.
-universities.compare.summary.configure_title: Бағдарламалар мен қабылдау бағыттарын таңдау
-universities.compare.summary.cycle_missing: Қабылдау кезеңі таңдалмаған. Нақты кезеңге қатысты мәліметтер жарияланғандай көрсетіледі, ал кезеңге байланысты ең төменгі талаптар тексерілмейді.
-universities.compare.summary.open_admission: Талаптарды ашу
-universities.compare.pending_changes: Өзгерістер «Сүзгілерді қолдану» немесе «Жалғастыру» батырмасын басқанда қолданылады.
-universities.compare.budget.title: Құн және сіздің бюджетіңіз
-universities.compare.budget.summary: Жарияланған жылдық баға сіздің жылдық бюджетіңізбен жеке салыстырылады. Көмек шегерілмейді, ал тек оқу ақысын көрсететін баға тұру шығындарын қамтымайды.
-universities.compare.budget.summary_incomplete: Кемінде бір таңдалған бағдарлама үшін салыстыруға болатын жылдық баға немесе жылдық бюджетіңіз жоқ, сондықтан бюджетпен салыстыру жасалмайды.
-universities.compare.budget.cost: Жарияланған баға
-universities.compare.budget.fit: Бюджетіңізбен салыстыру
-universities.compare.budget.notes: Бағаға түсініктеме
-universities.compare.budget.not_comparable: Жарияланған бағаны салыстыруға болатын жылдық сомаға келтіру мүмкін емес.
+universities.compare.reviewed.intro: Екі университеттің ресми деректері жол-жолымен. Дереккөздер мен толық ақпарат — университет беттерінде.
+universities.compare.reviewed.heads_note: Ортақ бірінші курсты салыстырыңыз немесе әр бағанда бағдарлама таңдаңыз.
+universities.compare.reviewed.scope.label: Салыстырамыз
+universities.compare.reviewed.scope.institution: Бірінші курс, ортақ өтініш
+universities.compare.reviewed.scope.institution_meta: Бакалавриаттың барлық бағдарламасына бір өтініш
+universities.compare.reviewed.scope.choose: Бағдарлама таңдалмаған
+universities.compare.reviewed.scope.choose_meta: Мұнда әр бағдарламаның өз мерзімі, құны және талаптары бар
+universities.compare.reviewed.scope.route_meta: өтініш беру жолын таңдаңыз
+universities.compare.reviewed.scope.mismatch: Таңдау бағдарламаға сай емес
+universities.compare.reviewed.scope.mismatch_meta: Бағдарламаны қайта таңдаңыз
+universities.compare.reviewed.action.choose: Бағдарлама таңдау
+universities.compare.reviewed.action.change: Бағдарламаны өзгерту
+universities.compare.reviewed.action.choose_route: Өтініш жолын таңдау
+universities.compare.reviewed.section.program: Бағдарлама
+universities.compare.reviewed.section.admission: Түсу
+universities.compare.reviewed.section.cost: Құны және көмек
+universities.compare.reviewed.section.university: Университет туралы
+universities.compare.reviewed.row.study: Ұзақтығы мен форматы
+universities.compare.reviewed.row.route: Өтініш беру жолы
+universities.compare.reviewed.row.deadline: Қашан өтініш беру керек
+universities.compare.reviewed.row.needs: Не қажет болады
+universities.compare.reviewed.row.requirements: Ең төменгі талаптар
+universities.compare.reviewed.row.cost: Көмекке дейінгі құны
+universities.compare.reviewed.row.funding: Қаржылай көмек
+universities.compare.reviewed.row.rank: Рейтинг
+universities.compare.reviewed.row.selectivity: Конкурс
+universities.compare.reviewed.row.students: Студенттер
+universities.compare.reviewed.row.international: Шетелдік студенттер
+universities.compare.reviewed.row.housing: Тұрғын үй
+universities.compare.reviewed.value.loading: Жүктелуде
+universities.compare.reviewed.value.error: Деректерді жүктеу мүмкін болмады
+universities.compare.reviewed.value.depends: Бағдарламаға байланысты
+universities.compare.reviewed.value.choose_route: Көру үшін өтініш беру жолын таңдаңыз
+universities.compare.reviewed.value.no_route: Университет бұл бағдарламаға ашық өтініш жарияламайды
+universities.compare.reviewed.value.mismatch: Таңдау бағдарламаға сай емес
+universities.compare.reviewed.value.no_program: Бағдарлама таңдалмаған
+universities.compare.reviewed.value.not_published: Жарияланбаған
+universities.compare.reviewed.students: Студенттер саны: {total}
+universities.compare.reviewed.students_detail: Бакалавриат: {undergraduate} · магистратура мен докторантура: {graduate}
+universities.compare.reviewed.open_profile: Профильді ашу
+universities.compare.reviewed.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім де, қай университет жақсы екенін бағалау да емес.
+universities.compare.reviewed.retry: Қайталау
+universities.compare.reviewed.fee.label: Баға кімге
+universities.compare.reviewed.fee.both: Екеуіне
+universities.compare.reviewed.fee.home: Home
+universities.compare.reviewed.fee.overseas: Overseas
+universities.compare.reviewed.fee.note: Баға университет өз ережелерімен белгілейтін төлем мәртебесіне (Home немесе Overseas) байланысты.
+universities.compare.reviewed.budget_hint: Профильге жылдық бюджетті қосыңыз — әр баға оған сай келе ме, көрсетеміз.
+universities.compare.reviewed.picker.title: Бағдарлама таңдау
+universities.compare.reviewed.picker.search: Бағдарлама іздеу
+universities.compare.reviewed.picker.more: Тағы көрсету
+universities.compare.reviewed.picker.count: Табылған бағдарламалар: {total}
+universities.compare.reviewed.picker.routes_intro: «{program}» бағдарламасына бірнеше жолмен өтініш беруге болады. Өзіңіздікін таңдаңыз.
+universities.compare.reviewed.picker.back: Басқа бағдарлама
+universities.compare.reviewed.picker.close: Жабу
+universities.compare.mixed.title: Бұл университеттерді әзірге салыстыру мүмкін емес
+universities.compare.mixed.text: «{reviewed}» университетінің деректері қайта тексерілген, ал «{legacy}» университетінікі әлі тексерілмеген. Әртүрлі дәлдіктегі деректер қатар тұрмауы үшін жұпты тек бір топ ішінде салыстырамыз. Барлық университетті кезекпен қайта тексеріп жатырмыз.
+universities.compare.mixed.reviewed: Деректер қайта тексерілген
+universities.compare.mixed.legacy: Деректер әлі қайта тексерілмеген
+universities.compare.mixed.choose_pair: Басқа жұп таңдау
+universities.card.compare_other_group: Бұл жұпқа емес
+universities.card.compare_other_group_title: Жұпты бір топ ішінде салыстырамыз: деректері қайта тексерілген университеттер немесе деректері әлі тексерілмеген университеттер.
+universities.compare.tray_blocked_legacy: «{university}» деректері әлі қайта тексерілмеген, ал жұпта деректері қайта тексерілген университет бар. Тек бір топтағы университеттерді салыстырамыз.
+universities.compare.tray_blocked_reviewed: «{university}» деректері қайта тексерілген, ал жұпта деректері әлі тексерілмеген университет бар. Тек бір топтағы университеттерді салыстырамыз.
+universities.compare.tray_mixed: Бұл университеттер әртүрлі деректер тобынан. Жалғастыру үшін біреуін алып тастаңыз.
 university.admissions.reading.total_fee: толық оқу ақысы
 university.deadlines.kind.funding_consideration: Стипендия қарастыруға арналған өтініш беру мерзімі
 university.admissions.reading.first_year: бірінші жыл

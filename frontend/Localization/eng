@@ -2855,20 +2855,12 @@ university.admissions.catalog.save_choice: Save application choice
 university.admissions.catalog.choice_saved: Application context saved for this university.
 university.admissions.catalog.choice_session_only: This choice is available for this session only. It could not be saved on this device.
 university.admissions.catalog.apply_before_save: Apply the changed context before saving this choice.
-universities.compare.reviewed_catalog: Reviewed study and admissions catalog
-universities.compare.optional_context: Compare universities now, or choose a university-wide route or study option and application route to view applicable admissions facts.
-universities.compare.context_summary_label: Current selection
-universities.compare.selection_empty: No program or route selected
-universities.compare.choose_context: Choose a program or route
-universities.compare.change_context: Change selection
-universities.compare.institution_route: University-wide application route
 universities.cost.budget_within_reference: Budget covers this reference.
 universities.cost.budget_over_reference: This reference is above budget.
 universities.cost.budget_within_applicable: Published amount within budget.
 universities.cost.budget_over_applicable: Published amount above budget.
 universities.cost.budget_uncertain_range: Some prices fit; check the program.
 universities.cost.budget_tuition_only: Tuition only; living and other costs extra.
-universities.compare.clear_program: Clear study option
 universities.compare.legacy_unreviewed: The detailed program and admissions-route review is still pending for this university. Confirm applicable conditions with the official sources.
 university.admissions.reading.summary_translation_missing: A summary translation is not available yet. Read the original below.
 university.admissions.reading.source_and_date: Source and date
@@ -3061,42 +3053,71 @@ university.deadlines.kind.booking: Test booking deadline
 university.deadlines.round: Round {number}
 university.deadlines.calendar_time_unknown: Time not stated; exported as an all-day event.
 university.deadlines.export_time_unresolved: The published time or timezone cannot be converted reliably; check the official source.
-universities.compare.summary.title: Compare your selected programs
-universities.compare.summary.scope_note: Program facts belong to the selected program, application route and published period. Original currencies and fee categories are retained; a dated reference is not a current offer.
-universities.compare.summary.program: Study option
-universities.compare.summary.study: Duration and format
-universities.compare.summary.route: Application route
-universities.compare.summary.cycle: Selected entry cycle
-universities.compare.summary.tuition: Published tuition
-universities.compare.summary.budget: Study and living reference
-universities.compare.summary.deadline: Published application dates
-universities.compare.summary.funding: Funding
-universities.compare.summary.admission: Requirements and conditions
-universities.compare.summary.deadlines: Open dates and calendar
-universities.compare.summary.finance: Open costs and funding
-universities.compare.summary.source: Official source
-universities.compare.summary.reference: Dated reference
-universities.compare.summary.before_aid: Before aid; check the source exclusions
-universities.compare.summary.unknown: Not established for this selection
-universities.compare.summary.year_not_stated: The source does not state a year; no calendar date is inferred.
-universities.compare.summary.potential_aid: Potential funding is subject to eligibility and selection.
-universities.compare.summary.full_records: Complete source records
-universities.compare.summary.additional_facts: Additional university facts
-universities.compare.summary.choose_programs: Choose programs
-universities.compare.summary.prompt_choose_program: Choose a study option or a university-wide application route for {university} to see its dates, costs and requirements here.
-universities.compare.summary.prompt_choose_route: Choose how you will apply to {university} for {program} to see its dates, costs and funding here.
-universities.compare.summary.prompt_incompatible: The selected program, route and level for {university} do not match. Change the selection to compare it.
-universities.compare.summary.configure_title: Choose programs and application routes
-universities.compare.summary.cycle_missing: No entry cycle selected. Cycle-specific facts are shown as published and minimums that depend on the cycle are not checked.
-universities.compare.summary.open_admission: Open requirements
-universities.compare.pending_changes: Your changes are applied when you press Apply filters or Continue.
-universities.compare.budget.title: Cost and your budget
-universities.compare.budget.summary: Each published annual price is compared with your yearly budget on its own. Aid is not deducted, and a tuition-only price does not include living costs.
-universities.compare.budget.summary_incomplete: A comparable annual price or your yearly budget is missing for at least one selected program, so no budget comparison is made.
-universities.compare.budget.cost: Published price
-universities.compare.budget.fit: Compared with your budget
-universities.compare.budget.notes: Price notes
-universities.compare.budget.not_comparable: The published price cannot be turned into a comparable yearly amount.
+universities.compare.reviewed.intro: Official facts from both universities, row by row. Sources and full details are on each university's page.
+universities.compare.reviewed.heads_note: Compare the shared first year, or choose a program in each column.
+universities.compare.reviewed.scope.label: Comparing
+universities.compare.reviewed.scope.institution: First year, one shared application
+universities.compare.reviewed.scope.institution_meta: One application covers every undergraduate program
+universities.compare.reviewed.scope.choose: No program chosen
+universities.compare.reviewed.scope.choose_meta: Each program here has its own dates, costs and requirements
+universities.compare.reviewed.scope.route_meta: choose how you apply
+universities.compare.reviewed.scope.mismatch: This choice does not fit the program
+universities.compare.reviewed.scope.mismatch_meta: Choose the program again
+universities.compare.reviewed.action.choose: Choose a program
+universities.compare.reviewed.action.change: Change program
+universities.compare.reviewed.action.choose_route: Choose how you apply
+universities.compare.reviewed.section.program: Program
+universities.compare.reviewed.section.admission: Applying
+universities.compare.reviewed.section.cost: Cost and aid
+universities.compare.reviewed.section.university: About the university
+universities.compare.reviewed.row.study: Length and format
+universities.compare.reviewed.row.route: How you apply
+universities.compare.reviewed.row.deadline: When to apply
+universities.compare.reviewed.row.needs: What you'll need
+universities.compare.reviewed.row.requirements: Published minimums
+universities.compare.reviewed.row.cost: Cost before aid
+universities.compare.reviewed.row.funding: Financial aid
+universities.compare.reviewed.row.rank: Published rank
+universities.compare.reviewed.row.selectivity: Admission rate
+universities.compare.reviewed.row.students: Students
+universities.compare.reviewed.row.international: International students
+universities.compare.reviewed.row.housing: Housing
+universities.compare.reviewed.value.loading: Loading
+universities.compare.reviewed.value.error: Couldn't load this university's data
+universities.compare.reviewed.value.depends: Depends on the program
+universities.compare.reviewed.value.choose_route: Choose how you apply to see this
+universities.compare.reviewed.value.no_route: The university publishes no open application for this program
+universities.compare.reviewed.value.mismatch: The choice doesn't fit the program
+universities.compare.reviewed.value.no_program: No program chosen
+universities.compare.reviewed.value.not_published: Not published
+universities.compare.reviewed.students: {total} students
+universities.compare.reviewed.students_detail: Undergraduate: {undergraduate} · graduate: {graduate}
+universities.compare.reviewed.open_profile: Open profile
+universities.compare.reviewed.note: A summary of official facts, not an admission decision or a ranking of the two universities.
+universities.compare.reviewed.retry: Try again
+universities.compare.reviewed.fee.label: Price for
+universities.compare.reviewed.fee.both: Both
+universities.compare.reviewed.fee.home: Home
+universities.compare.reviewed.fee.overseas: Overseas
+universities.compare.reviewed.fee.note: The price depends on the fee status (Home or Overseas), which the university assigns by its own rules.
+universities.compare.reviewed.budget_hint: Add a yearly budget to your profile to see whether each price fits it.
+universities.compare.reviewed.picker.title: Choose a program
+universities.compare.reviewed.picker.search: Search programs
+universities.compare.reviewed.picker.more: Show more
+universities.compare.reviewed.picker.count: Programs found: {total}
+universities.compare.reviewed.picker.routes_intro: “{program}” has several ways to apply. Choose yours.
+universities.compare.reviewed.picker.back: Another program
+universities.compare.reviewed.picker.close: Close
+universities.compare.mixed.title: These two universities can't be compared yet
+universities.compare.mixed.text: {reviewed} has rechecked data, while {legacy} doesn't yet. A pair is compared only within one group, so facts of different accuracy never stand side by side. We are rechecking every university in turn.
+universities.compare.mixed.reviewed: Data rechecked
+universities.compare.mixed.legacy: Data not yet rechecked
+universities.compare.mixed.choose_pair: Choose another pair
+universities.card.compare_other_group: Not for this pair
+universities.card.compare_other_group_title: A pair is compared within one group: universities with rechecked data, or universities whose data isn't rechecked yet.
+universities.compare.tray_blocked_legacy: {university}: this data isn't rechecked yet, while the pair has a university with rechecked data. Only universities of one group are compared.
+universities.compare.tray_blocked_reviewed: {university} has rechecked data, while the pair has a university whose data isn't rechecked yet. Only universities of one group are compared.
+universities.compare.tray_mixed: These universities are in different data groups. Remove one to continue.
 university.admissions.reading.total_fee: total fee
 university.deadlines.kind.funding_consideration: Application deadline for scholarship consideration
 university.admissions.reading.first_year: first year
