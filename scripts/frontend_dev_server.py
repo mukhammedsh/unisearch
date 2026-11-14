@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import mimetypes
 import os
 import posixpath
@@ -30,6 +31,17 @@ PRETTY_ROUTE_MAP = {
 }
 
 DETAIL_ROUTE_RE = re.compile(r"^/universities/[^/]+/?$")
+
+
+def env_override_script(api_port: int | None) -> bytes:
+    """Runtime override appended to env.js so a test frontend talks to its own API port."""
+    if not api_port:
+        return b""
+    override = {"API_BASE_URL": "", "API_PORT": str(api_port)}
+    return (
+        "\n// Added by frontend_dev_server --api-port.\n"
+        f"window.__UNISEARCH_ENV__ = Object.assign(window.__UNISEARCH_ENV__ || {{}}, {json.dumps(override)});\n"
+    ).encode("utf-8")
 
 
 def normalize_request_path(raw_path: str) -> str:
@@ -97,7 +109,8 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
         filesystem_path = self._lookup_indexed_file(target)
 
         if filesystem_path:
-            self._send_file(filesystem_path, include_body=include_body)
+            extra = env_override_script(getattr(self.server, "api_port", None)) if filesystem_path.name == "env.js" else b""
+            self._send_file(filesystem_path, include_body=include_body, extra=extra)
             return
 
         index_path = self._lookup_indexed_file(f"{target.rstrip('/')}/index.html")
@@ -123,11 +136,11 @@ class FrontendDevHandler(SimpleHTTPRequestHandler):
             return refreshed_index.get(clean_relative)
         return None
 
-    def _send_file(self, file_path: Path, *, include_body: bool, status: int = 200) -> None:
+    def _send_file(self, file_path: Path, *, include_body: bool, status: int = 200, extra: bytes = b"") -> None:
         content_type = self.guess_type(str(file_path))
         try:
             with file_path.open("rb") as handle:
-                data = handle.read()
+                data = handle.read() + extra
         except OSError:
             self._send_custom_404(include_body=include_body)
             return
@@ -178,6 +191,7 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=5501)
     parser.add_argument("--directory", required=True)
+    parser.add_argument("--api-port", type=int, default=None, help="Point the served env.js at this backend port.")
     args = parser.parse_args()
 
     mimetypes.add_type("application/javascript", ".js")
@@ -193,6 +207,7 @@ def main() -> None:
 
     with FrontendThreadingHTTPServer((args.host, args.port), handler_class) as httpd:
         httpd.file_index = file_index
+        httpd.api_port = args.api_port
         print("[frontend-dev-server] serving indexed frontend files")
         httpd.serve_forever()
 

@@ -2,12 +2,6 @@ const { test, expect } = require("./helpers/coverage-test.cjs");
 
 async function openPrograms(page, universityId, { language = "eng", theme = "light", width = 1280 } = {}) {
   await page.setViewportSize({ width, height: 900 });
-  const backendPort = Number(process.env.UNISEARCH_E2E_BACKEND_PORT);
-  if (Number.isInteger(backendPort) && backendPort > 0 && backendPort < 65536) {
-    await page.route("http://127.0.0.1:8000/**", (route) => route.continue({
-      url: route.request().url().replace(":8000/", `:${backendPort}/`),
-    }));
-  }
   await page.addInitScript(({ language, theme }) => {
     if (!sessionStorage.getItem("legacy-program-cards-init")) {
       localStorage.setItem("unisearch_ui_language_v1", language);

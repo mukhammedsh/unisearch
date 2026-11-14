@@ -179,7 +179,7 @@ For tests, install the development dependencies and the required Playwright brow
 
 The fast command runs frontend unit and backend tests. The smoke command adds the home-page browser check; the pull-request E2E command runs the Chromium browser suite. Install the full browser matrix with npx playwright install, then run npm run test:e2e:nightly. See [.github/workflows/](.github/workflows/) for CI jobs.
 
-The pull-request E2E command uses API port 8000 and frontend port 5510. If an API is already running, it must allow CORS from http://127.0.0.1:5510.
+Browser tests start their own API on port 8010 with rate limiting and ML features off, and serve the frontend on port 5510 pointed at that API. A development server on ports 8000 and 5501 can keep running and is never reused. Set `UNISEARCH_E2E_BACKEND_PORT` to use another API port.
 
 ## University data contributions
 
