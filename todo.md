@@ -18,6 +18,8 @@ This section holds the dated state of the admissions work. `AGENTS.md` keeps onl
 
 Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
 
+- **UniFit preference sliders (2026-11-14).** The four slider factors and their weights have no external source. A centred slider ("Balanced") is scored as a wish for an average university, so a neutral profile penalises MIT-like institutions. Three of four factors are mostly prestige or research volume normalised min-max within the 50-university catalog, and the location factor scales city population linearly, so every non-megacity reads as "outside the city". Proposed: a centred slider means no preference and its distance from the centre is its weight; location uses the OECD functional-urban-area size classes on a log scale; research focus uses size-independent research intensity against fixed anchors instead of catalog min-max. Open question: the "study style" axis has no measurable source; replace it with official selectivity (acceptance rate), drop it, or keep it labelled as an estimate.
+
 
 ## Delivery and boundaries
 
