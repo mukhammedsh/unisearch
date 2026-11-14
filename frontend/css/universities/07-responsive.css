@@ -192,53 +192,20 @@
 }
 
 @media (max-width: 480px) {
-  .u-results-bar,
-  .u-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-2);
-    width: 100%;
-  }
 
   .u-found {
     text-align: left;
     font-size: var(--text-sm);
   }
 
-  .view-toggles {
-    width: auto;
-    display: inline-flex;
-    justify-self: end;
-    grid-template-columns: none;
-    flex-shrink: 0;
-    height: 32px;
-  }
-
-  .view-btn {
-    width: 34px;
-    min-width: 34px;
-    height: 100%;
-    min-height: 0;
-    padding: 0;
-  }
-
 }
 
 @media (max-width: 380px) {
-  .u-layout {
-    padding-left: var(--space-2);
-    padding-right: var(--space-2);
-  }
 
   .u-filter-card,
   .u-map-results,
   .u-map-container {
     border-radius: var(--radius-xl);
-  }
-
-  .u-filter-card {
-    padding: var(--space-3);
   }
 
   .u-controls,
@@ -250,11 +217,6 @@
   .u-skeleton-card {
     width: 100%;
     max-width: 100%;
-  }
-
-  .uni-media {
-    height: 128px;
-    flex-basis: 128px;
   }
 
   .uni-badge {
@@ -696,14 +658,14 @@
   }
 
   .u-section-meta {
-    display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: var(--space-2);
     width: 100%;
   }
 
   .view-toggles {
+    justify-self: end;
+    flex-shrink: 0;
     width: auto;
     display: inline-flex;
     grid-template-columns: none;

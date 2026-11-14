@@ -4,6 +4,7 @@
   gap: var(--space-5);
   align-items: stretch;
   overflow-anchor: none;
+  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 .u-grid > .error-screen {
@@ -171,10 +172,6 @@
   width: var(--space-16);
   height: var(--text-sm);
   flex: 0 0 auto;
-}
-
-.u-grid {
-  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
 }
 
 .u-grid.is-fetching {

@@ -156,9 +156,6 @@
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
   opacity: 1;
   background-color: var(--accent);
-}
-
-.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
   transform: rotate(180deg);
 }
 

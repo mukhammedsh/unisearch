@@ -154,6 +154,7 @@
   transition:
   transform var(--motion-snappy) var(--motion-ease-standard),
   box-shadow var(--motion-fast) var(--motion-ease-standard);
+  overflow: visible;
 }
 
 .uni-card--has-fit {
@@ -172,6 +173,8 @@
   flex: 0 0 160px;
   border-bottom: none;
   background-color: var(--surface-soft);
+  overflow: hidden;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
 .uni-media::after {
@@ -313,15 +316,6 @@
   line-height: 1.35;
 }
 
-.uni-card {
-  overflow: visible;
-}
-
-.uni-media {
-  overflow: hidden;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-}
-
 .uni-card:focus-within {
   z-index: 2;
 }
@@ -433,17 +427,20 @@
   position: static;
   top: auto;
   right: auto;
-  min-width: 0;
   padding: 0;
   border: none;
   border-radius: 0;
   background: transparent;
   backdrop-filter: none;
   box-shadow: none;
-  display: inline-flex;
-  align-items: baseline;
   gap: var(--space-1);
   line-height: var(--leading-tight);
+  min-width: 0;
+  width: auto;
+  white-space: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .uni-price small {
@@ -454,12 +451,14 @@
   font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   color: var(--text);
+  overflow-wrap: break-word;
 }
 
 .uni-price-period {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .uni-price--unknown .uni-price-val {
@@ -553,15 +552,6 @@
   grid-row: 2;
 }
 
-.uni-price {
-  min-width: 0;
-  width: auto;
-  white-space: normal;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 /* Only the trigger itself reacts to the pointer, so the tooltip opens next to the text. */
 .uni-cost-tooltip {
   justify-self: start;
@@ -620,14 +610,6 @@
   overflow-wrap: break-word;
 }
 
-.uni-price-val {
-  overflow-wrap: break-word;
-}
-
-.uni-price-period {
-  white-space: nowrap;
-}
-
 .uni-details {
   min-width: max-content;
   margin-left: auto;
@@ -636,6 +618,10 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .uni-card.uni-card--compare-selected {
@@ -645,13 +631,6 @@
 
 .uni-card.uni-card--compare-selected::after {
   display: none;
-}
-
-.uni-details {
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .uni-details span {
@@ -800,6 +779,7 @@
 
   .compare-tray {
     bottom: 92px;
+    flex-wrap: wrap;
   }
 
   .u-mobile-filter-btn.is-active {
@@ -873,10 +853,6 @@
     justify-content: center;
     text-align: center;
     white-space: nowrap;
-  }
-
-  .compare-tray {
-    flex-wrap: wrap;
   }
 
   .compare-config-panel {
@@ -986,6 +962,7 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    /* stylelint-disable-next-line declaration-block-no-duplicate-properties -- 100vh is the fallback for browsers without dvh. */
     max-height: var(--sidebar-max-height, calc(100vh - 105px));
     max-height: var(--sidebar-max-height, calc(100dvh - 105px));
     overflow-y: auto;
@@ -1017,22 +994,6 @@
   .u-recent {
     position: relative;
     z-index: 1;
-  }
-
-  .u-field:has(.custom-select-wrapper.open),
-  .u-field--sort:has(.custom-select-wrapper.open),
-  .u-field:has(.u-info-wrap:hover),
-  .u-field:has(.u-info-wrap:focus-within),
-  .u-field:has(.u-info-wrap.is-open),
-  .u-field:has(.u-info-wrap.is-closed),
-  .u-field:has(.u-info-wrap.is-closing),
-  .tradeoff-field:has(.u-info-wrap:hover),
-  .tradeoff-field:has(.u-info-wrap:focus-within),
-  .tradeoff-field:has(.u-info-wrap.is-open),
-  .tradeoff-field:has(.u-info-wrap.is-closed),
-  .tradeoff-field:has(.u-info-wrap.is-closing) {
-    position: relative;
-    z-index: var(--z-dropdown);
   }
 }
 

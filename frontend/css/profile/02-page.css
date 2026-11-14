@@ -60,8 +60,8 @@ body[data-page="profile"] {
 }
 
 .profile-page-intro {
-  margin: 0;
   max-width: 68ch;
+  margin: 0;
   color: var(--text-muted);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
@@ -96,10 +96,25 @@ body[data-page="profile"] {
 .profile-main-content {
   grid-area: main;
   min-width: 0;
+  /* --------------------------------------------------------------------------
+   Sections: title > field label > hint, one padding layer per section
+   -------------------------------------------------------------------------- */
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-summary {
   grid-area: summary;
+  /* --------------------------------------------------------------------------
+   Summary: how the current answers are used
+   -------------------------------------------------------------------------- */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  box-sizing: border-box;
 }
 
 @media (min-width: 769px) {
@@ -199,14 +214,6 @@ body[data-page="profile"] {
 .profile-outline__label {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-
-/* --------------------------------------------------------------------------
-   Sections: title > field label > hint, one padding layer per section
-   -------------------------------------------------------------------------- */
-.profile-main-content {
-  display: flex;
-  flex-direction: column;
 }
 
 .profile-body {
@@ -360,19 +367,6 @@ body[data-page="profile"] {
 .profile-delete.profile-delete--danger-soft:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-}
-
-/* --------------------------------------------------------------------------
-   Summary: how the current answers are used
-   -------------------------------------------------------------------------- */
-.profile-summary {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
-  box-sizing: border-box;
 }
 
 .profile-summary__title {
@@ -1004,6 +998,9 @@ textarea.profile-input,
 
 .profile-exam-form-actions {
   flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
 .profile-exam-form-actions .profile-add,
@@ -1096,12 +1093,6 @@ textarea.profile-input,
   flex: 0 0 auto;
   gap: var(--space-2);
   flex-wrap: wrap;
-}
-
-.profile-exam-form-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
 }
 
 .lang-add-grid .profile-exam-special {
@@ -1721,8 +1712,6 @@ textarea.profile-input,
 
 .custom-select-wrapper.open .custom-options {
   z-index: var(--z-dropdown);
-  /* Visual style (background/border/shadow/radius) is inherited from the
-     single canonical .custom-options panel in style.css. */
 }
 
 .profile-card-block:has(.custom-select-wrapper.open),
@@ -1784,13 +1773,6 @@ textarea.profile-input,
 }
 #profileModal [hidden] {
   display: none;
-}
-
-.profile-page-intro {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
 }
 
 .profile-unit--currency {

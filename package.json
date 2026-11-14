@@ -16,6 +16,7 @@
     "check:version": "node scripts/check-version-sync.mjs",
     "check:tokens": "node scripts/check-tokens.mjs",
     "check:design-lint": "node scripts/check-design-lint.mjs --strict",
+    "check:stylelint": "stylelint \"frontend/css/**/*.css\"",
     "check:hardcoded-text": "node scripts/check-hardcoded-text.mjs",
     "check:inline-styles": "node scripts/check-inline-styles.mjs --strict",
     "fix:encoding": "node scripts/check-encoding.mjs --fix",
@@ -27,13 +28,15 @@
     "test:smoke": "npm run test:unit && npx playwright test tests/e2e/smoke-home.spec.js --config=playwright.local.config.js",
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
     "test:e2e:nightly": "npx playwright test --project=chromium --project=firefox --project=webkit",
-    "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:hardcoded-text && npm run check:inline-styles && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
+    "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:stylelint && npm run check:hardcoded-text && npm run check:inline-styles && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@heroicons/react": "^2.2.0",
     "@playwright/test": "^1.64.1",
-    "c8": "12.0.0"
+    "c8": "12.0.0",
+    "stylelint": "17.16.0",
+    "stylelint-declaration-strict-value": "1.12.1"
   },
   "overrides": {
     "glob": "^14.0.3",

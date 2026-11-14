@@ -159,7 +159,7 @@ Run checks from the repository root. Activate `backend/.venv` for Python command
 | Documentation or infrastructure | `npm run check:version`, `npm run check:encoding`, `npm run check:tokens`, `npm run check:i18n`, and `npm run audit:data`; validate links and commands in changed docs |
 | Backend, API, or scoring | Focused backend test (`npm run test:backend -- <test_file>`), followed by `npm run test:backend` before completion; inspect frontend consumer for contract changes |
 | Frontend JavaScript | Focused unit test (`npm run test:unit -- <filter>`), followed by `npm run test:unit` and relevant single Playwright spec; `npm run check:i18n` only when strings change |
-| UI or CSS | `npm run check:tokens`, `npm run check:design-lint`, and affected single Playwright scenario or browser flow on desktop/mobile, light/dark |
+| UI or CSS | `npm run check:tokens`, `npm run check:design-lint`, `npm run check:stylelint`, and affected single Playwright scenario or browser flow on desktop/mobile, light/dark |
 | Data or media | `npm run audit:data` or `npm run audit:images`; HTTP checks according to section 5 |
 
 Start with focused checks. Run `npm run test:fast` during multi-component development. Run the full `npm run test:all` only once before final release preparation for broad behavior changes. `test:e2e:pr` runs its own API on port `8010` (override with `UNISEARCH_E2E_BACKEND_PORT`) and frontend on port `5510`, reusing only servers on those test ports; a development API on `8000` is never used by E2E, because its rate limits fail parallel workers with 429 responses.

@@ -14,8 +14,8 @@ const updateBaseline = args.has("--update-baseline");
 const verbose = args.has("--verbose") || args.has("-v");
 const targetFile = process.argv.find((a) => a.startsWith("--file="))?.split("=")[1];
 
-// Allowed font sizes in px: 0, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64
-const ALLOWED_FONT_SIZES = new Set([0, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64]);
+// Allowed font sizes in px: the --text-* type scale (11, 13, 14, 16, 18, 20, 24, 28) and 0.
+const ALLOWED_FONT_SIZES = new Set([0, 11, 13, 14, 16, 18, 20, 24, 28]);
 // Allowed border-radii in px: 0, 1, 2, 4, 8, 10, 12, 16, 20
 const ALLOWED_RADII = new Set([0, 1, 2, 4, 8, 10, 12, 16, 20]);
 // Allowed raw z-indices (local pseudo/stacking context only): -1, 0, 1, 2

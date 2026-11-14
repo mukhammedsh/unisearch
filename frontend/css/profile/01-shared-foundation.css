@@ -14,6 +14,7 @@
 }
 .profile-field{
   display: grid;
+  /* Extracted from 09-component-polish.css. */
   gap: var(--space-2);
 }
 
@@ -95,9 +96,6 @@
 .profile-info:focus-visible{
   color: var(--accent);
   background: var(--accent-panel);
-}
-
-.profile-info:focus-visible{
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
@@ -147,18 +145,6 @@
 .profile-info-wrap.is-open .profile-tooltip{
   opacity: 1;
   transform: translateY(0);
-}
-
-.profile-input{
-  width: 100%;
-  box-sizing: border-box;
-  padding: var(--space-3) var(--space-3);
-  border-radius: var(--radius-base);
-  border: none;
-  outline: none;
-  background: var(--surface);
-  color: var(--text);
-  font-size: var(--text-base);
 }
 
 .profile-input:focus{
@@ -315,11 +301,6 @@
 
 .profile-exam-special{
   min-width: 0;
-}
-
-.profile-exam-special-grid{
-  display: grid;
-  gap: var(--space-2);
 }
 
 .profile-exam-special-grid--grades{
@@ -558,8 +539,6 @@
 
 .profile-exam-item{
   border: none;
-  border-radius: var(--radius-base);
-  padding: var(--space-3) var(--space-3);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -567,6 +546,8 @@
   background: var(--surface);
   box-shadow: var(--shadow-xs);
   transform-origin: center;
+  border-radius: var(--radius-base);
+  padding: var(--space-3);
 }
 
 .profile-exam-meta{
@@ -611,6 +592,7 @@
   font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   margin: 0;
+  letter-spacing: 0;
 }
 
 .lang-add-grid{
@@ -742,19 +724,17 @@
   }
 }
 
-/* Extracted from 09-component-polish.css. */
-.profile-field {
-  gap: var(--space-2);
-}
-
 .profile-input {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: var(--radius-base);
+  border: none;
+  outline: none;
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--text-base);
   min-height: 42px;
   padding: var(--space-3) var(--space-3);
-}
-
-.profile-exam-item {
-  border-radius: var(--radius-base);
-  padding: var(--space-3);
 }
 
 .profile-exam-form,
@@ -767,11 +747,8 @@
 }
 
 .profile-exam-special-grid {
+  display: grid;
   gap: var(--space-2);
-}
-
-.mini-label {
-  letter-spacing: 0;
 }
 
 @media (max-width: 640px) {

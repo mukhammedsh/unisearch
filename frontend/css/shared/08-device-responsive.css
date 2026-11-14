@@ -44,15 +44,16 @@ canvas {
 
   .navbar-left {
     order: 1;
-    flex: 1 1 auto;
     width: auto;
     min-width: 0;
     justify-content: flex-start;
+    flex: 0 1 auto;
   }
 
   .navbar-logo-link {
     min-width: 0;
     justify-content: flex-start;
+    max-width: min(32vw, 132px);
   }
 
   .logo {
@@ -126,36 +127,6 @@ canvas {
 }
 
 @media (max-width: 380px) {
-  .navbar {
-    padding-left: var(--space-2);
-    padding-right: var(--space-2);
-    gap: var(--space-2);
-  }
-
-  .logo {
-    height: 30px;
-    max-width: 112px;
-  }
-
-  .navbar-right {
-    gap: var(--space-1);
-  }
-
-  .navbar-search-toggle,
-.settings-trigger-btn,
-.profile-trigger-btn {
-    flex-basis: 36px;
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    min-height: 36px;
-  }
-
-  .navbar-right .lang-control .custom-select-wrapper,
-.navbar-right .lang-control .custom-select-trigger {
-    width: 64px;
-    min-width: 64px;
-  }
 
   .navbar-right .lang-control .custom-select-trigger {
     padding: 0 var(--space-2);
@@ -167,31 +138,11 @@ canvas {
     --nav-height: 104px;
   }
 
-  .navbar {
-    height: var(--nav-height);
-    min-height: var(--nav-height);
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    row-gap: var(--space-2);
-    column-gap: 0;
-    padding-top: var(--space-2);
-    padding-bottom: var(--space-2);
-  }
-
-  .logo {
-    height: 30px;
-    max-width: 132px;
-  }
-
 }
 
 /* Keep the compact language arrow anchored while the flag/label changes. */
 .navbar-right .lang-control .custom-select-trigger--language {
   position: relative;
-}
-
-.navbar-right .lang-control .custom-select-trigger--language {
   justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--space-3);
@@ -214,22 +165,9 @@ canvas {
 }
 
 @media (max-width: 380px) {
-  .navbar-right .lang-control .custom-select-trigger--language {
-    padding: 0 var(--space-2);
-  }
 
   .navbar-right .lang-control .custom-select-trigger--language::after {
     position: static;
-  }
-}
-
-@media (max-width: 1024px) {
-  .navbar-left {
-    flex: 0 1 auto;
-  }
-
-  .navbar-logo-link {
-    max-width: min(32vw, 132px);
   }
 }
 
@@ -364,6 +302,13 @@ canvas {
 
 @media (max-width: 340px) {
   .navbar {
+    height: var(--nav-height);
+    min-height: var(--nav-height);
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
     gap: 0;
   }
 

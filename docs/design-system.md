@@ -138,6 +138,15 @@ Use `--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, 
 
 Use shared `var(--space-*)` or semantic aliases in margin, padding, gap, and scroll-spacing declarations. `npm run check:design-lint` rejects raw nonzero pixel values, including values inside `calc()` and `clamp()`; a necessary optical or platform workaround needs a same-line `/* spacing-exception: reason */` comment. Browser E2E checks scan active catalog, profile, admissions, and finance layouts for margins stacked on a flex/grid gap axis; add the check when introducing another layout state.
 
+### Cascade and token checks
+
+`npm run check:stylelint` runs [Stylelint](https://stylelint.io/) with `stylelint.config.mjs`; editors with the Stylelint extension show the same findings while typing. It reports:
+
+- `no-duplicate-selectors`: a selector defined twice in the same at-rule context. Merge the rules; a breakpoint variant belongs in its own `@media` block.
+- `unisearch/no-overridden-declarations` (`scripts/stylelint/no-overridden-declarations.mjs`): a declaration that a later rule for the same selector always overrides, in the same context, a wider `max-width` query or the top level. Delete it, or move the later value into the first rule.
+- `declaration-block-no-duplicate-properties` and `declaration-block-no-shorthand-property-overrides`: a property repeated in one block, or a shorthand that resets a longhand above it. An intentional fallback (for example `100vh` before `100dvh`) carries a `stylelint-disable-next-line ... -- reason` comment.
+- `scale-unlimited/declaration-strict-value`: colors, `font-size`, `font-weight` and radii must use a token, a function or a keyword; raw values live only in `shared/01-foundation.css`.
+
 ### 3. Responsive Spacing
 - On desktop, page container padding uses `var(--layout-page-gutter)`; it resolves to 24px.
 - At `<= 768px`, the page gutter and card padding resolve to 16px. At `<= 480px`, the page gutter resolves to 12px. Keep responsive overrides in semantic aliases rather than page-specific pixel values.

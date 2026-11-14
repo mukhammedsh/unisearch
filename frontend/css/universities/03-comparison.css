@@ -185,6 +185,8 @@
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   box-shadow: var(--shadow-card);
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .compare-uni-card__head {
@@ -385,11 +387,6 @@
 .compare-uni-card__link:hover {
   color: var(--interaction-hover-text);
 }
-}
-
-.compare-uni-card {
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -717,6 +714,11 @@
   border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
+  box-sizing: border-box;
+  padding: var(--space-6);
+  display: grid;
+  gap: var(--space-8);
+  justify-items: start;
 }
 
 .compare-analysis-block {
@@ -904,14 +906,6 @@
 
 .compare-tests .compare-table-wrap {
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-}
-
-.compare-results-empty {
-  box-sizing: border-box;
-  padding: var(--space-6);
-  display: grid;
-  gap: var(--space-8);
-  justify-items: start;
 }
 
 .compare-results-empty__copy {

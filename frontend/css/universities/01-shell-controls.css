@@ -76,9 +76,6 @@ body[data-page="universities"] {
     color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard),
     transform var(--motion-fast) var(--motion-ease-standard);
-}
-
-.u-compare-mode-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -232,6 +229,8 @@ body[data-page="universities"] {
 
 .u-section-tab:focus-visible {
   color: var(--interaction-active-text);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .u-section-tab.is-active {
@@ -253,11 +252,6 @@ body[data-page="universities"] {
   .u-section-tab:hover {
     color: var(--interaction-hover-text);
   }
-}
-
-.u-section-tab:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .u-layout[hidden],

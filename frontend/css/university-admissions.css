@@ -99,6 +99,14 @@
   border-radius: var(--radius-sm);
   font-weight: var(--font-weight-medium);
   font-variant-numeric: tabular-nums;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .admissions-reading__ref:focus-visible,
@@ -814,6 +822,7 @@ details[open] > summary > .admissions-disclosure-icon {
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-tight);
   overflow-wrap: anywhere;
+  font-size: var(--text-lg);
 }
 
 .admissions-context__heading {
@@ -1210,7 +1219,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-catalog__heading {
   font-family: var(--font-sans);
-  font-size: var(--text-md);
+  font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
 }
@@ -2047,12 +2056,6 @@ details[open] > summary > .admissions-disclosure-icon {
   padding-inline: 0;
 }
 
-/* One heading scale inside tabs: sections at --text-lg, subsections at --text-md, both semibold. */
-.admissions-context__heading h2,
-.admissions-catalog__heading {
-  font-size: var(--text-lg);
-}
-
 .admissions-reading h4,
 .admissions-reading__table caption {
   font-size: var(--text-md);
@@ -2127,17 +2130,6 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-reading__refs-label {
   color: var(--text-muted);
-}
-
-.admissions-reading__source a.admissions-reading__ref {
-  min-width: 0;
-  min-height: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--text);
-  font-size: var(--text-sm);
-  text-decoration: underline;
-  text-underline-offset: var(--space-1);
 }
 
 .admissions-reading__source a.admissions-reading__ref:hover {

@@ -280,13 +280,6 @@
   transform: translateY(10px);
 }
 
-.custom-select-wrapper.open.open-up .custom-options {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-  transform: translateY(0);
-}
-
 /* Directional attachment: remove rounding on the side facing the trigger,
    close the gap so the panel grows directly from the trigger edge. */
 .custom-select-wrapper.open:not(.open-up) .custom-options {
@@ -297,6 +290,10 @@
 }
 
 .custom-select-wrapper.open.open-up .custom-options {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateY(0);
   margin-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
