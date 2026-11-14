@@ -38,6 +38,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The university-specific language background records English, the only language the reviewed checks read. Existing entries in other languages stay visible and can be removed.
 - Profile copy is plainer: the preparation level is fully translated, the evidence form drops field-code wording, and the unfinished-report notice is shorter.
 - Admission tabs replace English research notes about source periods with the entry cycle, academic year or a "year not stated" note; the original wording stays in the full source records.
+- University page styles are consolidated: about 850 declarations that a later rule for the same selector always overrode, 40 rules for classes no page renders, and 83 split duplicate rules were removed or merged, cutting `university.css` from 7,809 to 5,805 lines. Computed styles on every tab, breakpoint, theme and admission-route state of five universities and the comparison page are unchanged.
 - The overview lists campus, hybrid or online study instead of each program's own schedule wording.
 - Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
 - Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.

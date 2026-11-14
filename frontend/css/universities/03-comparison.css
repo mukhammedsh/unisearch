@@ -566,8 +566,7 @@
 
 .compare-config-chance .chance-sub,
 .compare-config-chance .chance-foot,
-.compare-config-chance .chance-inline-note,
-.compare-config-chance .chance-percent-note {
+.compare-config-chance .chance-inline-note {
   color: var(--text-muted);
   font-size: 11px;
   line-height: 1.35;
@@ -596,18 +595,6 @@
   border: none;
   background: var(--color-warning-bg);
   gap: var(--space-1);
-}
-
-.compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent.chance-low-confidence,
-.compare-config-chance .chance-percent-wrap.chance-percent-wrap--low-confidence .chance-percent-note {
-  background: transparent;
-  border: none;
-  padding: 0;
-  box-shadow: none;
-  min-width: 0;
-  min-height: 0;
-  color: var(--color-warning);
-  font-weight: 500;
 }
 
 .compare-config-chance .chance-percent {
@@ -659,11 +646,6 @@
 .compare-config-chance .chance-low {
   background: var(--bg-chance-low);
   color: var(--color-chance-low);
-}
-
-.compare-config-chance .chance-percent.chance-low-confidence {
-  background: var(--bg-chance-medium);
-  color: var(--color-chance-medium);
 }
 
 .compare-config-chance .chance-fill.chance-high {

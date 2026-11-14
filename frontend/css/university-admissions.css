@@ -86,6 +86,8 @@
 .admissions-reading__refs {
   display: inline-flex;
   flex-wrap: wrap;
+  /* Source references read as "Source 1, 2": a muted label and underlined numbers that open the official page. */
+  align-items: baseline;
   gap: var(--space-1);
 }
 
@@ -94,21 +96,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 0 var(--space-1);
   border-radius: var(--radius-sm);
-  background: var(--surface-soft);
-  color: var(--text);
-  font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   font-variant-numeric: tabular-nums;
-  text-decoration: none;
-}
-
-.admissions-reading__source a.admissions-reading__ref:hover {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
 }
 
 .admissions-reading__ref:focus-visible,
@@ -256,10 +246,11 @@
 }
 
 .admissions-key-facts__value {
-  font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
+  /* Key-fact answers are often full sentences; regular weight keeps the list calm, the label column carries structure. */
+  font-weight: var(--font-weight-regular);
 }
 
 .admissions-key-facts__flag {
@@ -820,7 +811,6 @@ details[open] > summary > .admissions-disclosure-icon {
   margin: 0;
   color: var(--text);
   font-family: var(--font-display);
-  font-size: var(--text-xl);
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-tight);
   overflow-wrap: anywhere;
@@ -2076,11 +2066,6 @@ details[open] > summary > .admissions-disclosure-icon {
   border-top: 1px solid var(--line-faint);
 }
 
-/* Key-fact answers are often full sentences; regular weight keeps the list calm, the label column carries structure. */
-.admissions-key-facts__value {
-  font-weight: var(--font-weight-regular);
-}
-
 /* Key figures are compact data rows at the interface body size, like the answer cards above them. */
 #tab-general #detailRecommendations .d-kv {
   font-size: var(--text-base);
@@ -2138,12 +2123,6 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-entry > p {
   font-size: var(--text-base);
   line-height: var(--leading-normal);
-}
-
-/* Source references read as "Source 1, 2": a muted label and underlined numbers that open the official page. */
-.admissions-reading__refs {
-  align-items: baseline;
-  gap: var(--space-1);
 }
 
 .admissions-reading__refs-label {
