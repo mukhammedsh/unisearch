@@ -104,7 +104,7 @@ test("basic budget profile without a major can discover, filter and shortlist un
   await expect(page.locator("#compareTray .compare-tray__chip")).toHaveCount(2);
   await page.locator('[data-action="open-compare"]').click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
+  await expect(page.locator("[data-reviewed-comparison] .compare-reviewed__head")).toHaveCount(2);
   await expect(page).toHaveURL(new RegExp(`${MIT}.*${STANFORD}|${STANFORD}.*${MIT}`));
 });
 

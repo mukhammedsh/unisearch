@@ -2855,20 +2855,12 @@ university.admissions.catalog.save_choice: Сохранить выбор пос�
 university.admissions.catalog.choice_saved: Контекст поступления сохранён для этого вуза.
 university.admissions.catalog.choice_session_only: Выбор доступен только в этой сессии. Сохранить его на устройстве не удалось.
 university.admissions.catalog.apply_before_save: Примените изменённый контекст перед сохранением выбора.
-universities.compare.reviewed_catalog: Проверенный каталог программ и поступления
-universities.compare.optional_context: Сравните вузы сейчас или выберите общий маршрут либо программу и путь подачи, чтобы увидеть применимые сведения о поступлении.
-universities.compare.context_summary_label: Текущий выбор
-universities.compare.selection_empty: Программа или маршрут не выбраны
-universities.compare.choose_context: Выбрать программу или маршрут
-universities.compare.change_context: Изменить выбор
-universities.compare.institution_route: Общий маршрут подачи документов вуза
 universities.cost.budget_within_reference: Бюджет покрывает этот ориентир.
 universities.cost.budget_over_reference: Этот ориентир выше бюджета.
 universities.cost.budget_within_applicable: Опубликованная сумма укладывается в бюджет.
 universities.cost.budget_over_applicable: Опубликованная сумма выше бюджета.
 universities.cost.budget_uncertain_range: Некоторые цены подходят; уточните программу.
 universities.cost.budget_tuition_only: Только обучение; проживание и прочие расходы отдельно.
-universities.compare.clear_program: Сбросить программу
 universities.compare.legacy_unreviewed: Подробная проверка программ и путей поступления этого вуза ещё не завершена. Уточняйте применимые условия по официальным источникам.
 university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
 university.admissions.reading.source_and_date: Источник и дата
@@ -3061,42 +3053,71 @@ university.deadlines.kind.booking: Срок регистрации на тест
 university.deadlines.round: Раунд {number}
 university.deadlines.calendar_time_unknown: Время не указано; в календарь добавляется событие на весь день.
 university.deadlines.export_time_unresolved: Опубликованное время или часовой пояс нельзя надёжно преобразовать; проверьте официальный источник.
-universities.compare.summary.title: Сравнение выбранных программ
-universities.compare.summary.scope_note: Факты относятся к выбранным программе, маршруту поступления и опубликованному периоду. Валюты и категории оплаты сохранены; датированный ориентир не является ценой нового предложения.
-universities.compare.summary.program: Программа
-universities.compare.summary.study: Продолжительность и формат
-universities.compare.summary.route: Маршрут поступления
-universities.compare.summary.cycle: Выбранный набор
-universities.compare.summary.tuition: Опубликованная стоимость обучения
-universities.compare.summary.budget: Ориентир расходов на учёбу и проживание
-universities.compare.summary.deadline: Опубликованные сроки подачи
-universities.compare.summary.funding: Финансирование
-universities.compare.summary.admission: Требования и условия
-universities.compare.summary.deadlines: Открыть сроки и календарь
-universities.compare.summary.finance: Открыть расходы и финансирование
-universities.compare.summary.source: Официальный источник
-universities.compare.summary.reference: Датированный ориентир
-universities.compare.summary.before_aid: До финансовой помощи; исключения указаны в источнике
-universities.compare.summary.unknown: Для выбранного варианта не подтверждено
-universities.compare.summary.year_not_stated: В источнике не указан год; дата для календаря не подставляется.
-universities.compare.summary.potential_aid: Возможное финансирование зависит от условий и отбора.
-universities.compare.summary.full_records: Полные записи источников
-universities.compare.summary.additional_facts: Дополнительные факты об университетах
-universities.compare.summary.choose_programs: Выбрать программы
-universities.compare.summary.prompt_choose_program: {university}: выберите программу или общий маршрут подачи, чтобы здесь появились сроки, стоимость и требования.
-universities.compare.summary.prompt_choose_route: {university}, программа «{program}»: выберите способ подачи заявления, чтобы здесь появились сроки, стоимость и финансирование.
-universities.compare.summary.prompt_incompatible: {university}: выбранные программа, маршрут и уровень не совпадают. Измените выбор, чтобы сравнить.
-universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
-universities.compare.summary.cycle_missing: Набор не выбран. Сведения для конкретного набора показаны как опубликованы, а минимальные требования, зависящие от набора, не проверяются.
-universities.compare.summary.open_admission: Открыть требования
-universities.compare.pending_changes: Изменения применятся, когда вы нажмёте «Применить фильтры» или «Продолжить».
-universities.compare.budget.title: Стоимость и ваш бюджет
-universities.compare.budget.summary: Каждая опубликованная годовая цена сравнивается с вашим годовым бюджетом отдельно. Помощь не вычитается, а цена только за обучение не включает расходы на проживание.
-universities.compare.budget.summary_incomplete: Для хотя бы одной выбранной программы нет сопоставимой годовой цены или не указан ваш годовой бюджет, поэтому сравнение с бюджетом не делается.
-universities.compare.budget.cost: Опубликованная цена
-universities.compare.budget.fit: В сравнении с вашим бюджетом
-universities.compare.budget.notes: Пояснения к цене
-universities.compare.budget.not_comparable: Опубликованную цену нельзя привести к сопоставимой годовой сумме.
+universities.compare.reviewed.intro: Официальные данные двух университетов, строка к строке. Источники и подробности — на страницах университетов.
+universities.compare.reviewed.heads_note: Сравните общий первый курс или выберите программу в каждой колонке.
+universities.compare.reviewed.scope.label: Сравниваем
+universities.compare.reviewed.scope.institution: Первый курс, общая заявка
+universities.compare.reviewed.scope.institution_meta: Одна заявка на все программы бакалавриата
+universities.compare.reviewed.scope.choose: Программа не выбрана
+universities.compare.reviewed.scope.choose_meta: Здесь у каждой программы свои сроки, стоимость и требования
+universities.compare.reviewed.scope.route_meta: выберите способ подачи
+universities.compare.reviewed.scope.mismatch: Выбор не подходит к программе
+universities.compare.reviewed.scope.mismatch_meta: Выберите программу заново
+universities.compare.reviewed.action.choose: Выбрать программу
+universities.compare.reviewed.action.change: Изменить программу
+universities.compare.reviewed.action.choose_route: Выбрать способ подачи
+universities.compare.reviewed.section.program: Программа
+universities.compare.reviewed.section.admission: Поступление
+universities.compare.reviewed.section.cost: Стоимость и помощь
+universities.compare.reviewed.section.university: Об университете
+universities.compare.reviewed.row.study: Длительность и формат
+universities.compare.reviewed.row.route: Способ подачи
+universities.compare.reviewed.row.deadline: Когда подавать
+universities.compare.reviewed.row.needs: Что понадобится
+universities.compare.reviewed.row.requirements: Минимальные требования
+universities.compare.reviewed.row.cost: Стоимость до помощи
+universities.compare.reviewed.row.funding: Финансовая помощь
+universities.compare.reviewed.row.rank: Рейтинг
+universities.compare.reviewed.row.selectivity: Конкурс
+universities.compare.reviewed.row.students: Студенты
+universities.compare.reviewed.row.international: Иностранные студенты
+universities.compare.reviewed.row.housing: Жильё
+universities.compare.reviewed.value.loading: Загружаем
+universities.compare.reviewed.value.error: Не удалось загрузить данные
+universities.compare.reviewed.value.depends: Зависит от программы
+universities.compare.reviewed.value.choose_route: Выберите способ подачи, чтобы увидеть
+universities.compare.reviewed.value.no_route: Университет не публикует открытой подачи на эту программу
+universities.compare.reviewed.value.mismatch: Выбор не подходит к программе
+universities.compare.reviewed.value.no_program: Программа не выбрана
+universities.compare.reviewed.value.not_published: Не опубликовано
+universities.compare.reviewed.students: Студентов: {total}
+universities.compare.reviewed.students_detail: Бакалавриат: {undergraduate} · магистратура и докторантура: {graduate}
+universities.compare.reviewed.open_profile: Открыть профиль
+universities.compare.reviewed.note: Это сводка официальных данных, а не решение о поступлении и не оценка, какой университет лучше.
+universities.compare.reviewed.retry: Повторить
+universities.compare.reviewed.fee.label: Цена для
+universities.compare.reviewed.fee.both: Обоих
+universities.compare.reviewed.fee.home: Home
+universities.compare.reviewed.fee.overseas: Overseas
+universities.compare.reviewed.fee.note: Цена зависит от статуса оплаты (Home или Overseas), который университет определяет по своим правилам.
+universities.compare.reviewed.budget_hint: Укажите годовой бюджет в профиле — покажем, укладывается ли в него каждая цена.
+universities.compare.reviewed.picker.title: Выбор программы
+universities.compare.reviewed.picker.search: Поиск программы
+universities.compare.reviewed.picker.more: Показать ещё
+universities.compare.reviewed.picker.count: Найдено программ: {total}
+universities.compare.reviewed.picker.routes_intro: На программу «{program}» можно подать несколькими способами. Выберите свой.
+universities.compare.reviewed.picker.back: Другая программа
+universities.compare.reviewed.picker.close: Закрыть
+universities.compare.mixed.title: Эти университеты пока нельзя сравнить
+universities.compare.mixed.text: Данные университета «{reviewed}» уже перепроверены, а университета «{legacy}» — ещё нет. Пару сравниваем только внутри одной группы, чтобы не ставить рядом факты разной точности. Мы по очереди перепроверяем все университеты.
+universities.compare.mixed.reviewed: Данные перепроверены
+universities.compare.mixed.legacy: Данные ещё не перепроверены
+universities.compare.mixed.choose_pair: Выбрать другую пару
+universities.card.compare_other_group: Не для этой пары
+universities.card.compare_other_group_title: Пару сравниваем внутри одной группы: университеты с перепроверенными данными или университеты, чьи данные ещё не перепроверены.
+universities.compare.tray_blocked_legacy: Данные «{university}» ещё не перепроверены, а в паре университет с перепроверенными данными. Сравниваем только университеты одной группы.
+universities.compare.tray_blocked_reviewed: Данные «{university}» уже перепроверены, а в паре университет, чьи данные ещё не перепроверены. Сравниваем только университеты одной группы.
+universities.compare.tray_mixed: Эти университеты из разных групп данных. Уберите один, чтобы продолжить.
 university.admissions.reading.total_fee: за весь курс
 university.deadlines.kind.funding_consideration: Срок подачи заявления для рассмотрения на стипендию
 university.admissions.reading.first_year: первый год
