@@ -141,12 +141,13 @@ FACTORS_METHOD = (
 )
 
 
-def annual_cost_usd_for_factors(university: Dict[str, Any]) -> Optional[float]:
-    """Lowest published annual cost in USD: the earlier finance field, else the reviewed catalog's annual total or
-    tuition for first-year study."""
-    tuition = _tuition_usd(university.get("finance") if isinstance(university.get("finance"), dict) else {})
-    if tuition is not None:
-        return tuition
+def annual_cost_usd_for_factors(university: Dict[str, Any], finance_usd: Optional[float] = None) -> Optional[float]:
+    """Lowest published annual cost in USD: the earlier finance field (already converted by the caller, or converted
+    here), else the reviewed catalog's annual total or tuition for first-year study."""
+    if finance_usd is None:
+        finance_usd = _tuition_usd(university.get("finance") if isinstance(university.get("finance"), dict) else {})
+    if finance_usd is not None:
+        return finance_usd
     from app.services import admissions_catalog  # noqa: E402  (reviewed institutions only)
 
     if university.get("id") not in admissions_catalog.INSTITUTION_IDS:
@@ -613,7 +614,7 @@ def main() -> None:
         university["factors"] = {
             "practice_vs_science": preference_factors.research_intensity(university),
             "social_vs_hardcore": preference_factors.selectivity(university),
-            "budget_vs_prestige": preference_factors.cost_vs_prestige(university, annual_cost_usd_for_factors(university)),
+            "budget_vs_prestige": preference_factors.cost_vs_prestige(university, annual_cost_usd_for_factors(university, row.get("tuition"))),
             "city_vs_campus": preference_factors.location(university),
         }
 
