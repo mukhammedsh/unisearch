@@ -211,3 +211,26 @@ for (const scenario of cases) {
     expect(financePanelRadius).toBe(0);
   });
 }
+
+test("every reviewed tab ends with one bottom inset and no empty spacer rows", async ({ page }) => {
+  for (const { width, height } of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    await openDetailPage(page, { theme: "light", width, height, universityId: "mit-usa-cambridge" });
+    const state = page.locator("#detailState");
+    if (await state.evaluate((element) => !element.textContent.trim())) await expect(state).toBeHidden();
+
+    for (const tab of ["tab-general", "tab-programs", "tab-admission", "tab-deadlines", "tab-finance"]) {
+      await page.locator(`[data-tab="${tab}"]`).click();
+      await expect(page.locator(`#${tab}`)).toHaveClass(/active/);
+      await page.waitForLoadState("networkidle");
+      const inset = await page.locator("#detailCard .d-tab-content").evaluate((content) => {
+        const leaves = [...content.querySelectorAll("*")]
+          .filter((element) => !element.closest("svg, button, a, select") || element.matches("button, a, select"))
+          .filter((element) => (element.children.length === 0 || element.matches("button, a, select")) && element.getClientRects().length > 0 && element.getBoundingClientRect().height > 0);
+        const lastBottom = Math.max(...leaves.map((element) => element.getBoundingClientRect().bottom));
+        return { bottom: Math.round(content.getBoundingClientRect().bottom - lastBottom), padding: Number.parseFloat(getComputedStyle(content).paddingBottom) };
+      });
+      // The tab container owns the bottom inset; nested sections must not add their own padding or margins under it.
+      expect(inset.bottom, `${tab} at ${width}px`).toBeLessThanOrEqual(inset.padding + 1);
+    }
+  }
+});

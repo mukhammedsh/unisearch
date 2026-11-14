@@ -6,7 +6,8 @@
 .guide-page {
   --guide-sidebar-offset: 84px;
   max-width: 1520px;
-  margin: var(--space-3) auto var(--space-20);
+  /* Same top inset as the other reading pages (privacy, about, profile). */
+  margin: var(--layout-page-gutter) auto var(--space-20);
   padding: 0 var(--layout-page-gutter);
 }
 

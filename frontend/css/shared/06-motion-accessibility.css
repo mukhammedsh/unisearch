@@ -478,8 +478,9 @@ h6,
   border-top: none;
 }
 
+/* The footer spans the same frame as the navbar, so the brand and the copyright share one left edge. */
 .footer-content {
-  max-width: 1240px;
+  max-width: none;
   padding: 0 var(--space-6);
 }
 

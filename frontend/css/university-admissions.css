@@ -441,9 +441,10 @@ a.admissions-key-facts__link {
   border-radius: 0;
 }
 
+/* Top-level admissions sections are separated like Overview sections, clearly wider than heading-to-body spacing. */
 .university--reviewed #detailRequirements {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--layout-section-gap);
 }
 
 .university--reviewed #detailRequirements > :first-child .admissions-catalog__assessment {
@@ -530,6 +531,10 @@ a.admissions-key-facts__link {
   display: grid;
   gap: var(--space-3);
   min-width: 0;
+}
+
+/* The disclosure body needs space under its summary; the editor body has no surface, so its parent gap is enough. */
+.admissions-special-routes > .admissions-entry {
   padding-block: var(--space-3);
 }
 
@@ -1570,6 +1575,36 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .university--reviewed .d-tab-pane.active > .d-box {
   padding: var(--space-5) 0;
+}
+
+/* The tab container owns the bottom inset: the last section and its last child add nothing below it. */
+.university--reviewed :is(#tab-general, #tab-programs, #tab-admission, #tab-deadlines, #tab-finance) > .d-box:last-child {
+  padding-bottom: 0;
+}
+
+.university--reviewed .d-box > :last-child,
+.university--reviewed .d-box-text > :last-child {
+  margin-bottom: 0;
+}
+
+/* The About section owns the space between its description and tag list, so a trailing child adds nothing below. */
+.university--reviewed #detailExtra {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.university--reviewed #detailExtra > * {
+  margin: 0;
+}
+
+/* An empty host still takes a grid/flex gap slot and leaves a phantom gap; hide it until it has content. */
+.university--reviewed .d-box-text > div:empty:not([aria-live]) {
+  display: none;
+}
+
+/* Live regions must stay rendered to announce updates, so take an empty one out of the gap flow instead. */
+.admissions-context__status:empty {
+  position: absolute;
 }
 
 .university--reviewed #tab-finance .finance-section-header .d-box-note {

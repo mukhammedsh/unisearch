@@ -199,3 +199,24 @@ for (const viewport of viewports) {
     await expectNoHorizontalOverflow(page, `profile modal ${viewport.name}`);
   });
 }
+
+test("phone catalog has no phantom gap above the first card and the navbar shares the page gutter", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await seedProfile(page, {});
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
+
+  // With no recent history the recent slot is empty and must not keep its margin.
+  await expect(page.locator("#mobileRecentSlot")).toBeHidden();
+  const frame = await page.evaluate(() => {
+    const bar = document.querySelector(".u-section-bar").getBoundingClientRect();
+    // Measure the grid, not a card: cards run a short entrance transform.
+    const firstCard = document.querySelector("#universitiesList").getBoundingClientRect();
+    const layoutGap = Number.parseFloat(getComputedStyle(document.querySelector(".u-section-bar")).marginBottom);
+    const logo = document.querySelector(".navbar-logo-link, .logo").getBoundingClientRect();
+    const content = document.querySelector(".u-section-bar > *").getBoundingClientRect();
+    return { barToCard: Math.round(firstCard.top - bar.bottom), layoutGap, logoLeft: Math.round(logo.left), contentLeft: Math.round(content.left) };
+  });
+  expect(frame.barToCard).toBeLessThanOrEqual(frame.layoutGap + 1);
+  expect(frame.logoLeft).toBe(frame.contentLeft);
+});

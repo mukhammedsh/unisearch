@@ -27,6 +27,11 @@
   padding: var(--space-3) var(--space-0-5) var(--space-4);
 }
 
+/* With no message the state row would still push the page down by its padding. */
+.d-state:empty {
+  display: none;
+}
+
 .d-state-error {
   margin: var(--space-2) 0 0;
   color: var(--color-danger);
@@ -3357,7 +3362,6 @@
     width: 100%;
     justify-content: stretch;
     margin-left: 0;
-    margin-top: var(--space-3);
   }
 
   .d-site-link {

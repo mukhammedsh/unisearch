@@ -447,6 +447,11 @@
     margin-bottom: var(--space-4);
   }
 
+  /* With no recent history the slot is empty; hide it so its margin does not open a phantom gap above the cards. */
+  .u-mobile-recent-slot:not(:has(.u-recent:not([hidden]))) {
+    display: none;
+  }
+
   .u-mobile-recent-slot .u-recent {
     padding: 0;
     gap: var(--space-2);

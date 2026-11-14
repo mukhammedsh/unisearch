@@ -1207,7 +1207,14 @@ textarea.profile-input,
   outline-offset: 2px;
 }
 
-.profile-exam-list:empty {
+.profile-exam-list:empty,
+.lang-list:empty {
+  display: none;
+}
+
+/* Their wrappers would still take a gap slot in the field stack; drop them while the list is empty. */
+.profile-exam-list-wrap:has(> .profile-exam-list:empty),
+.profile-lang-list-wrap:has(> .lang-list:empty) {
   display: none;
 }
 

@@ -58,6 +58,9 @@ Minor release: returning users see a simpler profile and admission page, and a p
 
 ### Fixed
 - The gap between the key figures and the next section on the university Overview tab is 32px on desktop, as on phones, instead of stacking the last row's padding and two box paddings (56px).
+- University page tabs end with one bottom inset (24px on desktop, 12px on phones) instead of stacking the last section's padding, trailing margins and empty helper rows (up to 100px on the Admission tab). The empty status row above the cover no longer adds 28px, and top-level Admission sections are separated like Overview sections.
+- On phones, the catalog no longer leaves a 16px gap above the first card when there is no recent history, the navbar logo lines up with the 12px page gutter, and the university header actions no longer stack a margin on their row gap.
+- The site footer spans the same frame as the navbar on desktop, the Guide page starts at the same top inset as the other reading pages, and empty exam and language lists in the profile no longer take a row gap.
 - A context whose applicant category contradicts the selected route is no longer treated as applicable to the requirements check.
 - Reviewed institutions report unknown, not absent, grant, paid and aid availability, so the list filters no longer hide them.
 - Same-titled official pages at different URLs, such as Stanford's first-year and transfer "Application and Essays", are told apart in the source list by a URL-path hint.
