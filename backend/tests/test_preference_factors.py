@@ -23,6 +23,23 @@ class PreferenceFactorScalesTests(unittest.TestCase):
         self.assertAlmostEqual(at(273_861), 0.5, places=3)  # geometric middle of the anchors
         self.assertIsNone(pf.location({}))
 
+    def test_location_prefers_the_official_urban_area_over_the_city(self):
+        # Stanford's own census place has about 14,000 people, but the campus sits in the San Francisco (Greater) FUA.
+        campus = {"factors_meta": {"raw_metrics": {"city": {"population": 13_809},
+                                                   "urban_area": {"population": 6_643_970, "source_url": "https://sdmx.oecd.org"}}}}
+        self.assertEqual(pf.location(campus), 0.0)
+        official_city = {"factors_meta": {"raw_metrics": {"city": {"population": 345_604, "population_official_fallback": 1_612_500}}}}
+        self.assertEqual(pf.location(official_city), 0.0)
+
+    def test_cost_vs_prestige_averages_known_parts_on_fixed_scales(self):
+        ranked = {"rank": 1, "rank_meta": {"status": "official"}}
+        self.assertEqual(pf.cost_vs_prestige(ranked, 100_000), 1.0)
+        self.assertEqual(pf.cost_vs_prestige(ranked), 1.0)  # rank only
+        self.assertEqual(pf.cost_vs_prestige({}, 1_000), 0.0)  # cost only
+        self.assertAlmostEqual(pf.cost_vs_prestige({"rank": 1000, "rank_meta": {"status": "official"}}, 10_000), 0.25)
+        # An unofficial rank is ignored, and nothing known stays unknown.
+        self.assertIsNone(pf.cost_vs_prestige({"rank": 5, "rank_meta": {"status": "estimated"}}))
+
     def test_selectivity_is_applicants_per_place_and_prefers_reviewed_statistics(self):
         reviewed = {"admission_statistics": {"rate_percent": 4.6}, "academics": {"acceptance_rate_percent": 50}}
         self.assertAlmostEqual(pf.selectivity(reviewed), 0.8347, places=3)  # 21.7 applicants per place, not the 50% field
@@ -98,6 +115,29 @@ class PreferenceWeightingTests(unittest.TestCase):
         outside = sort_universities_ai(items, profile={}, city_vs_campus=100, funding_type="any")
         self.assertEqual([row["id"] for row in outside], ["u-campus-town", "u-big-city", "u-unknown-city"])
         self.assertEqual(outside[0]["matchData"]["uiBadgeHints"]["vibe"], "your_vibe")
+
+
+
+class RefreshScriptSourcesTests(unittest.TestCase):
+    def test_every_urban_area_and_stored_factor_input_is_sourced(self):
+        import json
+        import sys
+        from pathlib import Path
+
+        backend = Path(__file__).resolve().parents[1]
+        sys.path.insert(0, str(backend / "scripts"))
+        import refresh_university_factors as refresh
+
+        for uid, area in refresh.OFFICIAL_URBAN_AREA_POPULATION.items():
+            self.assertTrue(area["source"] and area["source_url"].startswith("https://"), uid)
+            self.assertGreater(area["population"], 0, uid)
+        universities = json.loads((backend / "data" / "universities.json").read_text(encoding="utf-8"))
+        ids = {row["id"] for row in universities}
+        self.assertTrue(set(refresh.OFFICIAL_URBAN_AREA_POPULATION) <= ids)
+        for row in universities:
+            # Stored factors match what the shared scales give for the stored raw metrics.
+            self.assertEqual(row["factors"]["city_vs_campus"], pf.location(row), row["id"])
+            self.assertEqual(row["factors"]["practice_vs_science"], pf.research_intensity(row), row["id"])
 
 
 if __name__ == "__main__":

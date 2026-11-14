@@ -1346,21 +1346,6 @@ def _factor01(value: Any, fallback: float = 0.5) -> float:
     return _clamp01(float(parsed))
 
 
-def _fallback_budget_vs_prestige(university: Dict[str, Any]) -> float:
-    finance = university.get("finance")
-    finance = finance if isinstance(finance, dict) else {}
-    cost_raw = _to_num(finance.get("total_cost_year_usd"))
-    currency = str(finance.get("currency") or "USD").strip().upper()
-    cost_usd = _cost_to_usd(cost_raw, currency) if cost_raw is not None else None
-    cost_norm = 0.45 if cost_usd is None else _clamp01(float(cost_usd) / 100000.0)
-    rank = _to_num(university.get("rank"))
-    rank_prestige = 0.5
-    if rank is not None and rank > 0:
-        # Smooth logarithmic prestige scaling across top 1000 universities
-        rank_prestige = _clamp01(1.0 - (math.log1p(max(0.0, float(rank) - 1.0)) / math.log1p(1000.0)))
-    return _clamp01(0.50 * cost_norm + 0.50 * rank_prestige)
-
-
 _FACTORS_CACHE: Dict[str, Dict[str, float]] = {}
 _CHOICES_CACHE: Dict[str, List[Dict[str, Any]]] = {}
 
@@ -1390,7 +1375,7 @@ def _extract_university_factors(university: Dict[str, Any], study_level: Any = "
         "practice_vs_science": stored_or("practice_vs_science", lambda: preference_factors.research_intensity(university)),
         "social_vs_hardcore": None if target_level in preference_factors.GRADUATE_LEVELS
         else stored_or("social_vs_hardcore", lambda: preference_factors.selectivity(university, target_level)),
-        "budget_vs_prestige": _factor01(raw.get("budget_vs_prestige"), _fallback_budget_vs_prestige(university)),
+        "budget_vs_prestige": stored_or("budget_vs_prestige", lambda: preference_factors.cost_vs_prestige(university)),
         "city_vs_campus": stored_or("city_vs_campus", lambda: preference_factors.location(university)),
     }
     if uid:
