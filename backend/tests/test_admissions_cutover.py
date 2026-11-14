@@ -77,7 +77,9 @@ class AdmissionsCutoverTests(unittest.TestCase):
                     self.assertIsNone(match["aidAny"])
                     self.assertEqual(match["assessmentRevision"], result["assessmentRevision"])
                     self.assertFalse(match["selectedByUser"])
-                    self.assertAlmostEqual(match["finalScore"], match["preferenceMismatch"])
+                    # Centred sliders express no preference, and nothing else is known here.
+                    self.assertIsNone(match["preferenceMismatch"])
+                    self.assertEqual(match["finalScore"], 0.0)
                     self.assertIsNone(ai_scoring.estimate_university_roi(row, profile)["roi_value"])
 
     def test_canonical_discovery_level_aliases_and_unknown_cost_filters(self):

@@ -155,7 +155,7 @@ sequenceDiagram
     participant ML as ML Embeddings (e5)
     participant Engine as UniFit
 
-    User->>Client: Sets preferences for study focus, atmosphere, location and finance
+    User->>Client: Sets preferences for study focus, selectivity, location and finance
     Client->>API: POST /universities/ai-sort (Profile, Weights)
     API->>Cache: Check Query Cache Key (Hash of Profile + Weights)
     alt Cache Hit

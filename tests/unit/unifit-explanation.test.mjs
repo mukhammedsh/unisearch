@@ -82,8 +82,10 @@ test("the preference tooltip names only the sliders the university is close to",
     userPreferences: { practice_vs_science: 0.5, social_vs_hardcore: 0.5, city_vs_campus: 0.9, budget_vs_prestige: 0.2 },
     factors: { practice_vs_science: 0.6, social_vs_hardcore: 0.95, city_vs_campus: 0.9, budget_vs_prestige: 0.36 },
   };
-  assert.deepEqual(closePreferenceLabels(match), ["focus", "location"]);
-  assert.deepEqual(closePreferenceLabels({ userPreferences: { practice_vs_science: 0.5 }, factors: {} }), []);
+  // Focus is close too, but a centred slider means "doesn't matter", so only location is named.
+  assert.deepEqual(closePreferenceLabels(match), ["location"]);
+  assert.deepEqual(closePreferenceLabels({ ...match, userPreferences: { ...match.userPreferences, practice_vs_science: 0.55 } }), ["focus", "location"]);
+  assert.deepEqual(closePreferenceLabels({ userPreferences: { practice_vs_science: 0.8 }, factors: { practice_vs_science: null } }), []);
   assert.deepEqual(closePreferenceLabels(null), []);
 });
 

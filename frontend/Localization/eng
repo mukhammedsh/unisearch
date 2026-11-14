@@ -383,7 +383,7 @@ universities.badge.your_vibe: Your Vibe
 universities.why.conditional_exam_needed: Add your exam results to the profile to check the requirements.
 universities.unifit_banner.dismiss: Dismiss notice
 universities.why.top_match: This university is a good preference match for your current slider setup.
-universities.why.your_vibe: This university strongly matches your Focus, Atmosphere, and Location sliders.
+universities.why.your_vibe: This university closely matches the preferences you set.
 universities.badge.aid_available: Aid Available
 no_grants_available: No grants available
 universities.badge.aid_likely: Funding context shown separately (no budget adjustment)
@@ -712,26 +712,26 @@ universities.shortlist.remove: Remove from favorites
 universities.tradeoff.focus: Focus
 universities.tradeoff.focus.left: Career & Practice
 universities.tradeoff.focus.right: Science & Research
-universities.tradeoff.atmosphere: Study Style
-universities.tradeoff.atmosphere.left: More Social
-universities.tradeoff.atmosphere.right: More Intense
+universities.tradeoff.atmosphere: Selectivity
+universities.tradeoff.atmosphere.left: Less competitive
+universities.tradeoff.atmosphere.right: More competitive
 universities.tradeoff.finance: Cost vs Prestige
 universities.tradeoff.finance.left: Budget & Grants
 universities.tradeoff.finance.right: Prestige & Higher Cost
 universities.tradeoff.location: Location
 universities.tradeoff.location.left: City
 universities.tradeoff.location.right: Outside City
-universities.tradeoff.balanced: Balanced (50/50)
+universities.tradeoff.balanced: Doesn't matter
 universities.help.open: Show explanation
 universities.help.country: Filters universities by country. Works together with city and region selectors.
 universities.help.state_region: Narrows results inside the selected country. Useful for large countries with many cities.
 universities.help.city: Shows universities in a specific city after a country is selected. A state or region can narrow the city list.
 universities.help.cost_per_year: Sets min/max annual cost filter. The list includes only universities inside this range.
 universities.help.sort_strategy: {fit} sorts using your profile. Other modes sort only by name or cost.
-universities.help.tradeoff.focus: Choose whether you want more practice-oriented study or more theory and research.
-universities.help.tradeoff.atmosphere: Approximate preference between a more social student environment and a more academically intense one.
-universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals.
-universities.help.tradeoff.location: Left side favors universities in cities. Right side favors universities outside the city.
+universities.help.tradeoff.focus: Left: fewer research publications per student. Right: research-intensive universities. In the middle this is not used.
+universities.help.tradeoff.atmosphere: Left: a larger share of applicants is admitted. Right: more applicants per place, from the official first-year admission rate. In the middle this is not used.
+universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals. In the middle this is not used.
+universities.help.tradeoff.location: Left: large cities of 1.5 million people or more. Right: towns under 50,000. In the middle this is not used.
 universities.sort_ai: {fit}: AI Smart Sort
 universities.sort_relevance: Relevance
 universities.sort_cost_asc: Cost low to high

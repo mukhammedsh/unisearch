@@ -383,7 +383,7 @@ universities.badge.your_vibe: Сізге сай
 universities.why.conditional_exam_needed: Талаптарды тексеру үшін емтихан нәтижелерін профильге қосыңыз.
 universities.unifit_banner.dismiss: Хабарландыруды жабу
 universities.why.top_match: Бұл университет қазіргі таңдауларыңызға сай келеді.
-universities.why.your_vibe: Бұл университет бағыт, орта және орналасу бойынша таңдауыңызға өте сай.
+universities.why.your_vibe: Бұл университет сіз таңдаған қалауларға жақсы сай келеді.
 universities.badge.aid_available: Қаржылай көмек бар
 no_grants_available: Грант жоқ
 universities.badge.aid_likely: Қаржыландыру бөлек көрсетіледі (бюджет өзгермейді)
@@ -712,26 +712,26 @@ universities.shortlist.remove: Таңдаулылардан алып таста�
 universities.tradeoff.focus: Бағыт
 universities.tradeoff.focus.left: Мансап және тәжірибе
 universities.tradeoff.focus.right: Ғылым және зерттеу
-universities.tradeoff.atmosphere: Оқу стилі
-universities.tradeoff.atmosphere.left: Әлеуметтік бағыт басым
-universities.tradeoff.atmosphere.right: Қарқынды оқу
+universities.tradeoff.atmosphere: Конкурс
+universities.tradeoff.atmosphere.left: Конкурс төмен
+universities.tradeoff.atmosphere.right: Конкурс жоғары
 universities.tradeoff.finance: Құны мен беделі
 universities.tradeoff.finance.left: Бюджет және гранттар
 universities.tradeoff.finance.right: Бедел және жоғары құн
 universities.tradeoff.location: Орналасқан жері
 universities.tradeoff.location.left: Қала
 universities.tradeoff.location.right: Қала сыртында
-universities.tradeoff.balanced: Теңгерімді (50/50)
+universities.tradeoff.balanced: Маңызды емес
 universities.help.open: Түсіндірмені көрсету
 universities.help.country: Университеттерді ел бойынша сүзгіден өткізеді. Қала және аймақ таңдау құралдарымен бірге жұмыс істейді.
 universities.help.state_region: Таңдалған ел шегінде нәтижелерді нақтылайды. Көптеген қалалары бар ірі елдер үшін пайдалы.
 universities.help.city: Елді таңдағаннан кейін белгілі бір қаладағы университеттерді көрсетеді. Штат немесе аймақ қалалар тізімін нақтылайды.
 universities.help.cost_per_year: Жылдық шығынның ең төменгі және ең жоғары шегін қойыңыз. Тізімде осы аралыққа кіретін университеттер ғана қалады.
 universities.help.sort_strategy: {fit} профильге сай сұрыптайды. Басқа режимдер тек атауы немесе құны бойынша сұрыптайды.
-universities.help.tradeoff.focus: Тәжірибеге бағытталған оқуды немесе теория мен зерттеуге баса назар аударатын оқуды қалайтыныңызды таңдаңыз.
-universities.help.tradeoff.atmosphere: Әлеуметтік белсенді студенттік орта мен академиялық тұрғыдан қарқынды орта арасындағы таңдау.
-universities.help.tradeoff.finance: Сол жақ бөлік құны төмен және грант алуға қолайлы нұсқаларды құптайды. Оң жақ бөлік жоғары мәртебе үшін қымбатырақ нұсқаларды қарастыруға мүмкіндік береді.
-universities.help.tradeoff.location: Сол жақ бөлік қаладағы университеттерді құптайды. Оң жақ бөлік қала сыртындағы университеттерді құптайды.
+universities.help.tradeoff.focus: Сол жақта — бір студентке шаққанда ғылыми жарияланымдар аз, оң жақта — зерттеу университеттері. Ортада ескерілмейді.
+universities.help.tradeoff.atmosphere: Сол жақта өтініш бергендердің үлкен бөлігі қабылданады, оң жақта бір орынға өтініш көп — бірінші курсқа қабылдаудың ресми пайызы бойынша. Ортада ескерілмейді.
+universities.help.tradeoff.finance: Сол жақ бөлік құны төмен және грант алуға қолайлы нұсқаларды құптайды. Оң жақ бөлік беделі үшін қымбатырақ нұсқаларды қарастырады. Ортада ескерілмейді.
+universities.help.tradeoff.location: Сол жақта — тұрғыны 1,5 миллионнан асатын ірі қалалар, оң жақта — 50 мыңға дейінгі қалалар. Ортада ескерілмейді.
 universities.sort_ai: {fit}: AI арқылы ақылды сұрыптау
 universities.sort_relevance: Сәйкестік
 universities.sort_cost_asc: Құны: төменнен жоғарыға

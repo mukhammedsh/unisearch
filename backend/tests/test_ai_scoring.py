@@ -2344,7 +2344,7 @@ class AiScoringTests(unittest.TestCase):
                 "factors": {
                     "practice_vs_science": 0.5,
                     "social_vs_hardcore": 0.5,
-                    "budget_vs_prestige": 0.5,
+                    "budget_vs_prestige": 0.05,
                     "city_vs_campus": 0.5,
                 },
                 "admission_categories": _categories_from_requirement_profiles([

@@ -37,6 +37,7 @@ if not (UNIVERSITIES_PATH == ROOT or ROOT in UNIVERSITIES_PATH.parents):
 sys.path.insert(0, str(ROOT / "backend"))
 
 from app.services.currency import convert as convert_currency  # noqa: E402
+from app.services import preference_factors  # noqa: E402
 
 OPENALEX_BASE = "https://api.openalex.org/institutions"
 OPEN_METEO_BASE = "https://geocoding-api.open-meteo.com/v1/search"
@@ -88,6 +89,16 @@ OFFICIAL_CITY_POPULATION_FALLBACKS = {
         "source_url": "https://stat.gov.kz/upload/medialibrary/75f/z2gxd3z3s8gsf7em4x4q5ahd87mgoc5m/%D0%9D%D0%B0%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%201%20%D1%82%D0%BE%D0%BC.pdf",
     },
 }
+
+
+FACTORS_VERSION = "internet_v2"
+FACTORS_METHOD = (
+    "Fixed scales from app/services/preference_factors.py: research focus is OpenAlex works per enrolled student "
+    "(log scale, 0.1 to 30); selectivity (social_vs_hardcore) is applicants per place from the published "
+    "first-year admission rate (log scale, 1 to 40); location is city population on the OECD functional-urban-area "
+    "size classes (log scale, 50,000 = outside a city to 1.5 million = large metropolitan). Null means the source "
+    "data is missing. Cost vs prestige still mixes catalog-relative tuition and research volume."
+)
 
 
 def _request_delay_sec() -> float:
@@ -504,62 +515,32 @@ def main() -> None:
         )
 
     research_default = _median((row.get("research") for row in staged), default=0.5)
-    population_default = _median((row.get("population") for row in staged), default=500_000.0)
     tuition_default = _median((row.get("tuition") for row in staged), default=0.0)
-    hardcore_default = 0.5
 
     research_values = [row.get("research", research_default) for row in staged]
-    population_values = [row.get("population", population_default) for row in staged]
     tuition_values = [row.get("tuition", tuition_default) for row in staged]
-    official_rank_values = [row.get("official_rank") for row in staged]
 
     research_norm = _minmax(
         [v if v is not None else research_default for v in research_values],
-        default=0.5,
-    )
-    population_norm = _minmax(
-        [v if v is not None else population_default for v in population_values],
         default=0.5,
     )
     tuition_norm = _minmax(
         [v if v is not None else tuition_default for v in tuition_values],
         default=0.5,
     )
-    rank_norm = _minmax(official_rank_values, default=hardcore_default)
-    hardcore_values = []
-    for idx, row in enumerate(staged):
-        rank_signal = 1.0 - rank_norm[idx] if row.get("official_rank") is not None else hardcore_default
-        hardcore_values.append(_clamp01((0.55 * rank_signal) + (0.45 * research_norm[idx])))
-
     for idx, row in enumerate(staged):
         university = row["university"]
-        focus = _clamp01(research_norm[idx])
-        atmosphere = _clamp01(hardcore_values[idx])
         finance = _clamp01((0.60 * tuition_norm[idx]) + (0.40 * research_norm[idx]))
-        location = _clamp01(1.0 - population_norm[idx])
 
         openalex = row.get("openalex")
         openalex = openalex if isinstance(openalex, dict) else {}
         geocode = row.get("geocode")
         geocode = geocode if isinstance(geocode, dict) else {}
 
-        location_factor = round(location, 4)
-        university["factors"] = {
-            "practice_vs_science": round(focus, 4),
-            "social_vs_hardcore": round(atmosphere, 4),
-            "budget_vs_prestige": round(finance, 4),
-            "city_vs_campus": location_factor,
-        }
         university["factors_meta"] = {
-            "version": "internet_v1",
+            "version": FACTORS_VERSION,
             "computed_at": now_iso,
-            "method": (
-                "Deterministic mapping from OpenAlex (research metrics), "
-                "Open-Meteo geocoding/Wikidata and documented official fallbacks (city population), "
-                "official QS rank metadata where available, "
-                "and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. "
-                "Location axis is computed as city-life(0.0) <-> outside-major-city(1.0)."
-            ),
+            "method": FACTORS_METHOD,
             "source_urls": {
                 "openalex_query": row.get("openalex_url", ""),
                 "open_meteo_query": row.get("geocode_url", ""),
@@ -597,13 +578,19 @@ def main() -> None:
                 "total_cost_year_usd": row.get("tuition"),
                 "derived_signals": {
                     "research_signal_raw": row.get("research"),
-                    "hardcore_signal_0_1": round(hardcore_values[idx], 6),
                     "research_norm_0_1": round(research_norm[idx], 6),
-                    "official_rank_norm_0_1": round(rank_norm[idx], 6) if row.get("official_rank") is not None else None,
                     "tuition_norm_0_1": round(tuition_norm[idx], 6),
-                    "city_population_norm_0_1": round(population_norm[idx], 6),
                 },
             },
+        }
+
+        # Research focus, selectivity and location use the fixed scales shared with the API (preference_factors);
+        # null means the source data is missing.
+        university["factors"] = {
+            "practice_vs_science": preference_factors.research_intensity(university),
+            "social_vs_hardcore": preference_factors.selectivity(university),
+            "budget_vs_prestige": round(finance, 4),
+            "city_vs_campus": preference_factors.location(university),
         }
 
     write_json_atomic(UNIVERSITIES_PATH, universities)

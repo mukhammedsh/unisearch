@@ -386,7 +386,7 @@ universities.badge.your_vibe: Ваш формат
 universities.why.conditional_exam_needed: Добавьте результаты экзаменов в профиль, чтобы проверить требования.
 universities.unifit_banner.dismiss: Скрыть уведомление
 universities.why.top_match: Этот университет хорошо совпадает с вашими текущими настройками и предпочтениями.
-universities.why.your_vibe: Этот университет особенно хорошо совпадает с вашими предпочтениями по атмосфере, фокусу и расположению.
+universities.why.your_vibe: Этот университет хорошо совпадает с выбранными вами предпочтениями.
 universities.badge.aid_available: Доступна финансовая помощь
 no_grants_available: Нет доступных грантов
 universities.badge.aid_likely: Финансирование указано отдельно (без изменения бюджета)
@@ -715,26 +715,26 @@ universities.shortlist.remove: Убрать из избранного
 universities.tradeoff.focus: Фокус
 universities.tradeoff.focus.left: Карьера и практика
 universities.tradeoff.focus.right: Наука и исследования
-universities.tradeoff.atmosphere: Стиль учебы
-universities.tradeoff.atmosphere.left: Более социально
-universities.tradeoff.atmosphere.right: Более интенсивно
+universities.tradeoff.atmosphere: Конкурс
+universities.tradeoff.atmosphere.left: Ниже конкурс
+universities.tradeoff.atmosphere.right: Выше конкурс
 universities.tradeoff.finance: Цена и престиж
 universities.tradeoff.finance.left: Бюджет и гранты
 universities.tradeoff.finance.right: Престиж и более высокая цена
 universities.tradeoff.location: Расположение
 universities.tradeoff.location.left: Город
 universities.tradeoff.location.right: За городом
-universities.tradeoff.balanced: Сбалансировано (50/50)
+universities.tradeoff.balanced: Не важно
 universities.help.open: Показать объяснение
 universities.help.country: Фильтрует университеты по стране. Работает вместе с выбором региона и города.
 universities.help.state_region: Сужает результаты внутри выбранной страны. Полезно для больших стран с множеством городов.
 universities.help.city: Показывает университеты в конкретном городе после выбора страны. Штат или регион сужает список городов.
 universities.help.cost_per_year: Задает минимальную и максимальную стоимость за год. В выдаче остаются только университеты в этом диапазоне.
 universities.help.sort_strategy: {fit} подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
-universities.help.tradeoff.focus: Показывает, что вам ближе: больше практики или больше теории и исследований.
-universities.help.tradeoff.atmosphere: Примерно показывает ваш выбор между более социальной студенческой средой и более академически интенсивной.
-universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные варианты.
-universities.help.tradeoff.location: Слева приоритет у университетов в городе, справа — у университетов за городом.
+universities.help.tradeoff.focus: Слева — меньше научных публикаций на студента, справа — исследовательские университеты. По центру не учитывается.
+universities.help.tradeoff.atmosphere: Слева поступает большая доля подавших, справа больше заявлений на место — по официальному проценту зачисления на первый курс. По центру не учитывается.
+universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные. По центру не учитывается.
+universities.help.tradeoff.location: Слева — крупные города от 1,5 млн жителей, справа — города до 50 тысяч. По центру не учитывается.
 universities.sort_ai: {fit}: умная ИИ-сортировка
 universities.sort_relevance: По релевантности
 universities.sort_cost_asc: Цена по возрастанию

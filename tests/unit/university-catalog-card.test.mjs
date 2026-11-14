@@ -242,7 +242,7 @@ test("an over-budget reviewed card says by how much the lowest published price e
 test("reviewed cards name what to add, how many programs match and which preferences are close", () => {
   setLanguage("eng", { emit: false });
   const indicators = reviewedCardIndicators({ finalScore: 0.4, preferenceMismatch: 0.1,
-    userPreferences: { practice_vs_science: 0.5, city_vs_campus: 0.9 }, factors: { practice_vs_science: 0.55, city_vs_campus: 0.3 },
+    userPreferences: { practice_vs_science: 0.7, city_vs_campus: 0.9 }, factors: { practice_vs_science: 0.75, city_vs_campus: 0.3 },
     subjectMatch: { status: "matched", option_ids: ["a", "b", "c"] },
     requirementsFitPercent: null, requirementChecks: [
       { status: "missing", missingInputs: [{ exam: "SAT", needs: ["result"] }, { exam: "ACT", needs: ["result"] }] },

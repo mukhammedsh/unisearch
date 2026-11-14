@@ -75,12 +75,14 @@ export const PREFERENCE_DIMENSIONS = [
 ];
 
 // Label keys of the sliders whose university indicator sits close to the user's setting (both 0..1), so the
-// preference tooltip can name what matches instead of printing raw indicator numbers.
+// preference tooltip can name what matches instead of printing raw indicator numbers. A centred slider means
+// "doesn't matter" in UniFit, so it is never named; an unknown (null) indicator is skipped.
 export const closePreferenceLabels = (match, tolerance = 0.15) => PREFERENCE_DIMENSIONS
   .filter(([key]) => {
     const requested = match?.userPreferences?.[key];
     const observed = match?.factors?.[key];
-    return typeof requested === "number" && typeof observed === "number" && Math.abs(requested - observed) <= tolerance;
+    return typeof requested === "number" && typeof observed === "number"
+      && Math.abs(requested - 0.5) > 0.005 && Math.abs(requested - observed) <= tolerance;
   })
   .map(([, label]) => label);
 

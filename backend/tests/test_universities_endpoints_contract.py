@@ -350,6 +350,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             "budget_vs_prestige",
             "city_vs_campus",
         }
+        known = {key: 0 for key in expected_keys}
         for item in items:
             university_id = str((item or {}).get("id") or "")
             self.assertTrue(university_id)
@@ -359,10 +360,16 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             self.assertTrue(expected_keys.issubset(factors.keys()), f"{university_id} missing UniFit factor keys")
             for key in expected_keys:
                 value = factors.get(key)
-                self.assertIsNotNone(value, f"{university_id}:{key} is null")
+                # Null means the source data is missing; the slider then leaves this university out.
+                if value is None:
+                    continue
+                known[key] += 1
                 numeric = float(value)
                 self.assertGreaterEqual(numeric, 0.0, f"{university_id}:{key} below 0")
                 self.assertLessEqual(numeric, 1.0, f"{university_id}:{key} above 1")
+        # Every slider still has data for most of the catalog.
+        for key, count in known.items():
+            self.assertGreater(count, len(items) // 2, key)
 
     def test_all_universities_expose_cost_breakdown_status(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
