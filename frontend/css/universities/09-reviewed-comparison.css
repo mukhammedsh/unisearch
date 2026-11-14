@@ -493,7 +493,6 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  margin-top: var(--space-1);
   border-radius: var(--radius-xs);
   color: var(--text);
   font-size: var(--text-sm);

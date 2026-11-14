@@ -724,8 +724,9 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   for (const index of [1, 2]) {
     const borderTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
     expect(borderTop).toBe("0px");
+    // The previous box already pads its bottom by 24px, so the next one adds 8px: 32px between sections.
     const paddingTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).paddingTop);
-    expect(paddingTop).toBe("20px");
+    expect(paddingTop).toBe("8px");
   }
 
 });

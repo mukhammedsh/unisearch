@@ -499,6 +499,11 @@
   margin-top: var(--space-1-5);
 }
 
+/* Inside a gap-owning list the gap already separates the groups. */
+:is(.track-exam-group-list, .track-exam-entry-group-list) > .track-exam-entry-group + .track-exam-entry-group{
+  margin-top: 0;
+}
+
 .track-exam-entry-group-title{
   color: var(--text);
 }
