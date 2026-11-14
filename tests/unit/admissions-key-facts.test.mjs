@@ -253,13 +253,13 @@ test("the block appears only for a selected route and links to the dates and cos
   setLanguage("eng", { emit: false });
 });
 
-test("a cycle-scoped requirement offers the profile entry cycle or the entry-year field", () => {
+test("a cycle-scoped requirement opens the entry-year field of this university's selection", () => {
   const blocked = context({ assessment: { chancePercent: null, reason: "entry_cycle_required", activeChoice: { details: { checks: [] } } } });
   assert.match(requirementsFact(blocked).text, /Choose your entry year/);
-  const withProfile = renderAdmissionsKeyFacts(blocked, { profileCycle: "Fall 2027", now: NOW });
-  assert.match(withProfile, /data-key-facts-cycle="apply"/);
-  const withoutProfile = renderAdmissionsKeyFacts(blocked, { now: NOW });
-  assert.match(withoutProfile, /data-key-facts-cycle="edit"[^>]*>Set entry year</);
+  // The general profile holds no entry cycle, so the action never offers to copy one.
+  const html = renderAdmissionsKeyFacts(blocked, { now: NOW });
+  assert.match(html, /data-key-facts-cycle="edit"[^>]*>Set entry year</);
+  assert.doesNotMatch(html, /data-key-facts-cycle="apply"/);
   assert.doesNotMatch(renderAdmissionsKeyFacts(context(), { now: NOW }), /data-key-facts-cycle/);
 });
 

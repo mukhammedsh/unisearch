@@ -2932,8 +2932,6 @@ university.admissions.reading.month_standalone.11: November
 university.admissions.reading.month_standalone.12: December
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · departmental application
 university.admissions.entry.institution_wide: Undergraduate admission is to the university as a whole. Read the published first-year or transfer path without choosing a major; Programs remains available to explore study interests.
-university.admissions.entry.profile_hints: Profile hints: {details}. Apply them here or keep browsing the public reference.
-university.admissions.entry.use_profile: Use profile hints
 university.admissions.entry.route_situations: Choose the published path for your situation, or leave it unresolved. Shared university policies appear within the selected path, rather than as another application.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: External applicants apply to the CS MS program. Shared graduate and department policies are included with this application.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: For current Stanford undergraduates seeking the CS coterminal MS; department eligibility and term deadlines apply.
@@ -3092,7 +3090,6 @@ universities.compare.summary.prompt_choose_route: Choose how you will apply to {
 universities.compare.summary.prompt_incompatible: The selected program, route and level for {university} do not match. Change the selection to compare it.
 universities.compare.summary.configure_title: Choose programs and application routes
 universities.compare.summary.cycle_missing: No entry cycle selected. Cycle-specific facts are shown as published and minimums that depend on the cycle are not checked.
-universities.compare.summary.cycle_profile: Your profile lists {cycle}. You can apply it under Change selection.
 universities.compare.summary.open_admission: Open requirements
 universities.compare.pending_changes: Your changes are applied when you press Apply filters or Continue.
 universities.compare.budget.title: Cost and your budget
@@ -3284,7 +3281,6 @@ university.admissions.key_facts.note: A summary of published facts, not an admis
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
 university.admissions.key_facts.requirements_manual: Conditions to check against the official rules: {count}
-university.admissions.key_facts.use_profile_cycle: Use {cycle} from your profile
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days

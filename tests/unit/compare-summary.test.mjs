@@ -205,17 +205,14 @@ test("a published application period is shown when the university lists no exact
   assert.doesNotMatch(html, /does not state a year/);
 });
 
-test("the entry cycle row explains a missing cycle and only offers the profile cycle", () => {
+test("the entry cycle row explains a missing cycle and leads to the university's own selection", () => {
   setLanguage("eng", { emit: false });
   const selected = state("USD", 66720, "2026-27");
   selected.context.intended_entry_cycle = "";
-  const withoutProfile = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
-  assert.match(withoutProfile, /No entry cycle selected/);
-  assert.doesNotMatch(withoutProfile, /Your profile lists/);
-  const withProfile = renderReviewedComparison([universities[1]], new Map([["mit", selected]]), { profileCycle: "Fall 2027" });
-  assert.match(withProfile, /Your profile lists Fall 2027/);
-  assert.match(withProfile, /data-action="choose-context"/);
-  assert.equal(selected.context.intended_entry_cycle, "", "the profile cycle is not applied silently");
+  const html = renderReviewedComparison([universities[1]], new Map([["mit", selected]]));
+  assert.match(html, /No entry cycle selected/);
+  assert.match(html, /data-action="choose-context"/);
+  assert.equal(selected.context.intended_entry_cycle, "");
 });
 
 test("the requirements row shows the minimum-check summary instead of a bare heading", () => {

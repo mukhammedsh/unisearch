@@ -10,7 +10,7 @@ import { formatPrice } from "../../currency.js";
 import { translateAdmissionText } from "../../university-translations.js";
 import { getExamDisplayName } from "../../utils/config.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
-import { admissionsRequest, isRecognizedAdmissionCycle, normalizeAdmissionCycle } from "./admissions-controller.js";
+import { admissionsRequest } from "./admissions-controller.js";
 import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
 import { costFact, deadlineFact, fundingPolicyStatement } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
@@ -319,10 +319,19 @@ function renderCard(card) {
     ${answer}${lines}${items}${aside}${levels}${action}</section>`;
 }
 
+// Answer cards stack in two independent columns (odd and even positions), so a short card never leaves an empty
+// gap beside a long one. A full-width program card or a single card uses one plain column.
+function renderCardGrid(cards) {
+  if (cards.length < 2 || cards.some(card => card.id === "program")) return `<div class="overview-summary__grid">${cards.map(renderCard).join("")}</div>`;
+  const columns = [cards.filter((_, index) => index % 2 === 0), cards.filter((_, index) => index % 2 === 1)];
+  return `<div class="overview-summary__grid overview-summary__grid--columns">${columns.map(column =>
+    `<div class="overview-summary__column">${column.map(renderCard).join("")}</div>`).join("")}</div>`;
+}
+
 export function renderSummary(cards, intro = "") {
   return `<div class="overview-summary__body">
     <div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div>${intro ? `<p class="overview-summary__intro">${escapeHtml(intro)}</p>` : ""}</div>
-    <div class="overview-summary__grid">${cards.map(renderCard).join("")}</div>
+    ${renderCardGrid(cards)}
     <p class="overview-summary__note">${escapeHtml(label("note"))}</p></div>`;
 }
 
@@ -419,8 +428,7 @@ export function mountOverviewSummary({ container, university, universityId, revi
       const apiProfile = loadProfileForApi();
       let resolved = null;
       if (route) {
-        const cycle = isRecognizedAdmissionCycle(apiProfile.intended_entry_cycle) ? normalizeAdmissionCycle(apiProfile.intended_entry_cycle) : "";
-        const context = { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: cycle, fee_status_context: "unknown" };
+        const context = { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" };
         resolved = await fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" }, signal: request.signal,
           body: JSON.stringify(admissionsRequest(apiProfile, context, universityId)) });
         if (current !== version) return;

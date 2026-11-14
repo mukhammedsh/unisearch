@@ -2930,8 +2930,6 @@ university.admissions.reading.month_standalone.11: ноябрь
 university.admissions.reading.month_standalone.12: декабрь
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
 university.admissions.entry.institution_wide: На бакалавриат поступают в университет в целом. Читайте правила первого курса или перевода без выбора будущей специальности; изучить направления можно в разделе «Программы».
-university.admissions.entry.profile_hints: Подсказки из профиля: {details}. Примените их здесь или продолжайте читать общие сведения.
-university.admissions.entry.use_profile: Применить подсказки профиля
 university.admissions.entry.route_situations: Выберите опубликованный путь для своей ситуации или оставьте выбор открытым. Общие правила университета показаны внутри пути, а не как отдельная заявка.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Внешние абитуриенты подают заявку на CS MS. Общие правила graduate-поступления и кафедры включены в этот путь.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: Для нынешних бакалавров Stanford, поступающих на coterminal CS MS; действуют требования кафедры и сроки по учебным периодам.
@@ -3090,7 +3088,6 @@ universities.compare.summary.prompt_choose_route: {university}, программ
 universities.compare.summary.prompt_incompatible: {university}: выбранные программа, маршрут и уровень не совпадают. Измените выбор, чтобы сравнить.
 universities.compare.summary.configure_title: Выбор программ и маршрутов поступления
 universities.compare.summary.cycle_missing: Набор не выбран. Сведения для конкретного набора показаны как опубликованы, а минимальные требования, зависящие от набора, не проверяются.
-universities.compare.summary.cycle_profile: В вашем профиле указан набор: {cycle}. Примените его через «Изменить выбор».
 universities.compare.summary.open_admission: Открыть требования
 universities.compare.pending_changes: Изменения применятся, когда вы нажмёте «Применить фильтры» или «Продолжить».
 universities.compare.budget.title: Стоимость и ваш бюджет
@@ -3282,7 +3279,6 @@ university.admissions.key_facts.note: Это сводка опубликован
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
 university.admissions.key_facts.requirements_manual: Ещё условий, которые нужно сверить с официальными правилами: {count}
-university.admissions.key_facts.use_profile_cycle: Использовать «{cycle}» из профиля
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.

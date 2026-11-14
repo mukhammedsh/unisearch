@@ -18,8 +18,6 @@ This section holds the dated state of the admissions work. `AGENTS.md` keeps onl
 
 Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
 
-- `tests/e2e/university-track-majors.spec.js:704` ("abai university general tab layout invariants") expects 2 `.d-box` blocks on the General tab and finds 3 after the university-overview changes on `main` (2026-11-14). The `claude/profile-ux` merge does not touch the university page or that test; update the expectation or the layout in the session that owns the university page.
-- University page / comparison cleanup after the general profile dropped its entry cycle and fee status (2026-11-13, branch `claude/profile-ux`): the "use profile hints" action in `frontend/javascript/pages/compare.js` (`profileContextHints`, `profileEntryCycle`) and the profile fallbacks in `pages/university/admissions-controller.js` and `render-sections.js` can no longer receive a value. They degrade gracefully; remove them with their `university.admissions.entry.*` keys and the "profile cycle" mentions in `docs/admissions-runtime-contract.md` in the session that owns the university page.
 
 ## Delivery and boundaries
 
@@ -32,6 +30,7 @@ Defects, inconsistencies and ideas that need the user's decision because they ch
 - [x] Reviewed institutions show no earnings figure, as in comparison; MIT's 2019 survey salary is no longer on the overview.
 - [x] Program-admitting institutions (Imperial, NU) offer study-level shortcuts into Programs.
 - [x] Earlier-format universities carry a quiet "data not yet rechecked" note on the page and on catalog cards; undated ones link to their official website for dates.
+- [x] Removed the "use profile hints" actions and the profile-cycle offers from the university page, its key facts and the comparison after the general profile stopped holding an entry cycle and fee status (2026-11-14); the General-tab layout test now expects the key admission facts block.
 - [ ] On each later conversion, follow the [per-institution conversion checklist](docs/admissions-light-dossier.md#per-institution-conversion-checklist), including moving typical scores stored as minimums (for example Yale's admitted-student GPA) into `admitted_profile`.
 
 ### Simplification pass before wider rollout (2026-11-12)

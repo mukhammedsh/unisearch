@@ -357,7 +357,9 @@ test("Imperial's selected card is compact without changing its outer button offs
     const card = element.getBoundingClientRect();
     return { internal: button.top - original.bottom, bottom: card.bottom - button.bottom };
   });
-  expect(distances.internal).toBeLessThanOrEqual(2);
+  // The selection state sits one step (12 px) below the card heading instead of touching the programme code.
+  expect(distances.internal).toBeGreaterThanOrEqual(10);
+  expect(distances.internal).toBeLessThanOrEqual(14);
   expect(distances.bottom).toBe(12);
   await saveScreenshot(page, "imperial-advanced-aeronautical-engineering-selected-program.png");
 });

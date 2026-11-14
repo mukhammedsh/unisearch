@@ -714,16 +714,18 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   const generalTab = page.locator("#tab-general");
   await expect(generalTab).toBeVisible();
 
+  // Key admission facts, key figures, then the description: three borderless boxes with one shared rhythm.
   const boxes = generalTab.locator(".d-box");
-  await expect(boxes).toHaveCount(2);
+  await expect(boxes).toHaveCount(3);
+  await expect(boxes.nth(0)).toHaveAttribute("data-overview-summary", "");
+  await expect(boxes.nth(1).locator("#detailRecommendations")).toHaveCount(1);
+  await expect(boxes.nth(2).locator("#detailExtra")).toHaveCount(1);
 
-  const secondBoxBorderTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
-  expect(secondBoxBorderTop).toBe("0px");
-
-  const firstBoxPaddingBottom = await boxes.nth(0).evaluate((el) => window.getComputedStyle(el).paddingBottom);
-  expect(firstBoxPaddingBottom).toBe("8px");
-
-  const secondBoxPaddingTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).paddingTop);
-  expect(secondBoxPaddingTop).toBe("20px");
+  for (const index of [1, 2]) {
+    const borderTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
+    expect(borderTop).toBe("0px");
+    const paddingTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).paddingTop);
+    expect(paddingTop).toBe("20px");
+  }
 
 });

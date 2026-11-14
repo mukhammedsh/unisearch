@@ -57,15 +57,14 @@ function selectionPrompt(university, state, gap) {
     <button type="button" class="compare-results-action" data-action="choose-context">${escapeHtml(t("universities.compare.choose_context"))}</button>`;
 }
 
-// The cycle row says why nothing is cycle-specific when no entry cycle is selected; a profile cycle is only offered, never applied.
-function cycleCell(state, profileCycle) {
+// The cycle row says why nothing is cycle-specific when no entry cycle is selected for this university.
+function cycleCell(state) {
   const cycle = state?.context?.intended_entry_cycle;
   if (cycle) return escapeHtml(admissionsCycleLabel(cycle));
-  const hint = profileCycle ? `<small>${escapeHtml(tFormat("universities.compare.summary.cycle_profile", { cycle: admissionsCycleLabel(profileCycle) }))}</small>` : "";
-  return `${escapeHtml(label("cycle_missing"))}${hint}<button type="button" class="compare-results-action" data-action="choose-context">${escapeHtml(t("universities.compare.change_context"))}</button>`;
+  return `${escapeHtml(label("cycle_missing"))}<button type="button" class="compare-results-action" data-action="choose-context">${escapeHtml(t("universities.compare.change_context"))}</button>`;
 }
 
-function cells(university, state, { profileCycle = "" } = {}) {
+function cells(university, state) {
   const resolved = state?.resolved;
   const option = resolved?.selected_option;
   const unavailable = state?.status !== "ready" || (!option && resolved?.reading_scope !== "institution_route") || Object.values(resolved?.context_applicability || {}).includes("mismatched");
@@ -107,7 +106,7 @@ function cells(university, state, { profileCycle = "" } = {}) {
   return {
     program, study: study.length ? escapeHtml(study.join(" · ")) : unknown(),
     route: unavailable || !resolved.selected_route ? unknown() : escapeHtml(admissionsRouteName({ ...resolved.selected_route, title: "", target: "" }, { presentation: "simple" })),
-    cycle: cycleCell(state, profileCycle),
+    cycle: cycleCell(state),
     tuition: tuition.length ? tuition.join("") : unknown(), budget: budget.length ? budget.join("") : unknown(),
     deadline: `${date || unknown()}${detailLink(university, state, "deadlines")}`,
     funding: `${funders.length ? funders.join("") : `<small>${escapeHtml(label("potential_aid"))}</small>`}${detailLink(university, state, "finance")}`,
@@ -115,15 +114,15 @@ function cells(university, state, { profileCycle = "" } = {}) {
   };
 }
 
-export function renderReviewedComparison(universities, contexts, options = {}) {
+export function renderReviewedComparison(universities, contexts) {
   const rows = ["program", "study", "route", "cycle", "tuition", "budget", "deadline", "funding", "admission"];
   const gaps = universities.map(university => comparisonSelectionGap(contexts.get(university.id)));
   // With a program chosen, its own rows stay; the prompt replaces only the route-dependent rows.
   const values = universities.map((university, index) => {
     const state = contexts.get(university.id);
-    if (!gaps[index]) return cells(university, state, options);
+    if (!gaps[index]) return cells(university, state);
     const keepRows = gaps[index] === "choose_route" ? rows.indexOf("route") : 0;
-    return { ...(keepRows ? cells(university, state, options) : {}), prompt: selectionPrompt(university, state, gaps[index]), keepRows };
+    return { ...(keepRows ? cells(university, state) : {}), prompt: selectionPrompt(university, state, gaps[index]), keepRows };
   });
   return `<section class="compare-analysis-block compare-summary" data-reviewed-comparison><div class="compare-block-head"><h2>${escapeHtml(label("title"))}</h2></div>
     <p>${escapeHtml(label("scope_note"))}</p><p class="compare-table-scroll-hint">${escapeHtml(t("universities.compare.table_scroll_hint"))}</p>

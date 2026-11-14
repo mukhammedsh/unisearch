@@ -266,10 +266,10 @@ function requirementsRow(resolved, cycleAction, shownTerms) {
   return row("requirements", { ...fact, notes }, `${fact.cycleRequired ? cycleAction : ""}${profileLink}`, shownTerms, detail);
 }
 
-export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileCycle = "", profileExamIds = [], now = new Date() } = {}) {
+export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date() } = {}) {
   if (!resolved?.selected_route) return "";
-  const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="${profileCycle ? "apply" : "edit"}">${escapeHtml(profileCycle
-    ? tFormat("university.admissions.key_facts.use_profile_cycle", { cycle: admissionsCycleLabel(profileCycle) }) : label("set_cycle"))}</button>`;
+  // The entry cycle belongs to this university's selection, so the action opens the entry-year field.
+  const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="edit">${escapeHtml(label("set_cycle"))}</button>`;
   const open = (tab, key) => `<button type="button" class="admissions-key-facts__link" data-open-tab="${tab}">${escapeHtml(label(key))}</button>`;
   // A glossary term is explained once per key-facts block, in the first row that names it.
   const shownTerms = new Set();

@@ -171,7 +171,6 @@ function updateAdmissionUrl(values) {
 export function getAdmissionContextProfile(university, baseProfile = loadProfileForApi()) {
   const profile = { ...baseProfile };
   profile.study_level = baseProfile?.study_level || baseProfile?.studyLevel || profile.study_level;
-  profile.intended_entry_cycle = baseProfile?.intended_entry_cycle || baseProfile?.intendedEntryCycle || profile.intended_entry_cycle;
   const id = String(university?.id || "");
   const params = new URLSearchParams(window.location.search);
   const programs = Array.isArray(university?.academics?.programs) ? university.academics.programs : [];

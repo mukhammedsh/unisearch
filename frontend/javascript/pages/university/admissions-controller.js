@@ -320,7 +320,6 @@ export function mountAdmissionsCatalog(institutionId) {
       admissionsCycleLabel(savedChoice.intendedEntryCycle),
       savedChoice.feeStatusContext && savedChoice.feeStatusContext !== "unknown" ? label(`fee.${savedChoice.feeStatusContext}`) : "",
     ].filter(Boolean).join(" · ") : "";
-    const profileHints = [admissionsCycleLabel(profile.intended_entry_cycle), profile.fee_status_context && profile.fee_status_context !== "unknown" ? label(`fee.${profile.fee_status_context}`) : ""].filter(Boolean);
     const routeHelp = (item, selected = false) => t(`university.admissions.entry.route_help.${item.id.replaceAll(":", ".")}`)
       || t(`university.admissions.entry.route_class_help.${item.classification}`)
       || (item.entry && item.entry !== "external" ? t(`university.admissions.catalog.route_entry.${item.entry}`) : "")
@@ -346,7 +345,6 @@ export function mountAdmissionsCatalog(institutionId) {
         ${selectHtml("admissionsRoute", label("route_label"), [["", label("choose_route")], ...routes.map((row) => [row.id, routeName(row)])], context.application_route_id, (!option && !readable) || status === "loading")}
         </div>
         <details id="admissionsAdvanced" class="admissions-context__advanced" data-admissions-advanced ${advancedOpen ? "open" : ""}><summary>${escapeHtml(label("reference_filters"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary>
-        ${profileHints.length ? `<div class="admissions-entry" data-profile-context-hints><p class="admissions-context__note">${escapeHtml(tFormat("university.admissions.entry.profile_hints", { details: profileHints.join(" · ") }))}</p><div class="admissions-context__actions"><button type="button" data-use-profile-context ${status === "loading" ? "disabled" : ""}>${escapeHtml(t("university.admissions.entry.use_profile"))}</button></div></div>` : ""}
         <div class="admissions-context__fields">
         <label class="admissions-context__field" for="admissionsCycle"><span>${escapeHtml(label("cycle_label"))}</span><input id="admissionsCycle" type="text" maxlength="40" list="admissionsCycleOptions" aria-describedby="admissionsCycleHelp admissionsCycleNotice" value="${escapeHtmlAttr(context.intended_entry_cycle)}" placeholder="${escapeHtmlAttr(label("cycle_example"))}"></label>
         <datalist id="admissionsCycleOptions">${cycles.map(value => `<option value="${escapeHtmlAttr(value)}"></option>`).join("")}</datalist>
@@ -372,14 +370,6 @@ export function mountAdmissionsCatalog(institutionId) {
         setUrl();
         void refreshContext({ revealSelection: true });
       };
-    });
-    root.querySelector("[data-use-profile-context]")?.addEventListener("click", () => {
-      context.intended_entry_cycle = profile.intended_entry_cycle || "";
-      context.fee_status_context = profile.fee_status_context || "unknown";
-      contextDirty = false;
-      saveStatus = "";
-      setUrl();
-      void refreshContext();
     });
     root.querySelectorAll("[data-read-route]").forEach(button => {
       button.onclick = () => {
@@ -454,19 +444,10 @@ export function mountAdmissionsCatalog(institutionId) {
   function renderContextContent(status) {
     const option = resolved?.selected_option;
     const apiProfile = loadProfileForApi();
-    const profileCycle = isRecognizedAdmissionCycle(apiProfile.intended_entry_cycle) ? normalizeAdmissionCycle(apiProfile.intended_entry_cycle) : "";
     const bindKeyFacts = host => {
       host.querySelectorAll("[data-open-tab]").forEach(button => { button.onclick = () => openTab(button.dataset.openTab); });
-      host.querySelector("[data-key-facts-cycle]")?.addEventListener("click", event => {
-        if (profileCycle && event.currentTarget.dataset.keyFactsCycle === "apply") {
-          context.intended_entry_cycle = profileCycle;
-          contextDirty = false;
-          saveStatus = "";
-          setUrl();
-          void refreshContext();
-          return;
-        }
-        // Without a usable profile cycle, open the selection editor at the entry-cycle field.
+      host.querySelector("[data-key-facts-cycle]")?.addEventListener("click", () => {
+        // The entry cycle is chosen for this university: open the selection editor at the entry-cycle field.
         root.querySelector("#admissionsSelectionEditor").hidden = false;
         root.querySelector("#admissionsAdvanced").open = true;
         root.scrollIntoView({ block: "start" });
@@ -479,7 +460,7 @@ export function mountAdmissionsCatalog(institutionId) {
       assessmentHost.innerHTML = "";
     } else if (readable) {
       // Key facts open the tab and carry its single requirements-match summary with the checks beneath it.
-      assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileCycle, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
+      assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
       bindKeyFacts(assessmentHost);
     }
     else {

@@ -91,11 +91,11 @@ test("finance choices follow the selected degree level", () => {
 });
 
 test("manual program context overrides a stale camel-case profile choice without changing saved profile or requested cycle", () => {
-  window.location.search = "?admission_program=graduate-physics&admission_level=bachelor&admission_route=first_year";
+  // The general profile holds no entry cycle; the requested cycle comes from this university's context in the URL.
+  window.location.search = "?admission_program=graduate-physics&admission_level=bachelor&admission_route=first_year&admission_cycle=Fall%202027";
   const savedProfile = {
     studyLevel: "Bachelor",
     applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027",
     selectedAdmissionChoices: { test_university: { programId: "undergraduate-cs", choiceKey: "old-choice" } },
   };
   const university = {
@@ -122,7 +122,7 @@ test("manual program context overrides a stale camel-case profile choice without
   assert.deepEqual(requestProfile.selectedAdmissionChoices.test_university, { programId: "graduate-physics" });
   assert.equal(savedProfile.studyLevel, "Bachelor");
   assert.equal(savedProfile.applicantRoute, "first_year");
-  assert.equal(savedProfile.intendedEntryCycle, "Fall 2027");
+  assert.equal(savedProfile.intendedEntryCycle, undefined);
   assert.equal(savedProfile.selectedAdmissionChoices.test_university.programId, "undergraduate-cs");
   window.location.search = "";
 });
