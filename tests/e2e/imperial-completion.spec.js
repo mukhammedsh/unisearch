@@ -81,7 +81,7 @@ for (const presentation of [{ language: "eng", width: 1280, theme: "light" }, { 
     await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
     const summary = page.locator("[data-reviewed-comparison]");
     await expect(summary.locator(".compare-reviewed__head")).toHaveCount(2);
-    await expect(summary.locator('[data-compare-row="cost"] dd').first()).toContainText(/£|GBP/);
+    await expect(summary.locator('[data-compare-row="cost"] dd').first()).toContainText(/≈ \$[\d,]+/); // pounds follow the default USD setting
     await expect(summary.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/\$|USD/);
     await expect(summary.locator('a[href*="imperial-college-london-uk"][href$="#tab-finance"]')).toHaveCount(1);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

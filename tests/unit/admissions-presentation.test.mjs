@@ -186,7 +186,7 @@ test("normalized tuition keeps campus-specific whole-program and credit prices i
   for (const [language, totalLabel] of [["eng", "for the whole program"], ["rus", "за всю программу"], ["kaz", "толық бағдарлама үшін"]]) {
     setLanguage(language, { emit: false });
     const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
-    for (const text of [totalLabel, "USD", "HKD", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
+    for (const text of [totalLabel, "$24,000", "≈ $", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
     assert.ok(primary.includes({ eng: "Years of study: 1, 2", rus: "Годы обучения: 1, 2", kaz: "Оқу жылдары: 1, 2" }[language]), language);
     assert.match(primary, /<th scope="row" role="rowheader"[^>]*>Astana/);
     assert.doesNotMatch(primary, /Imperial|Home and Overseas|24,000.*per year/);
@@ -200,7 +200,7 @@ test("an undated whole-program quote never gains an invented entry or source yea
     { basis: "tuition", amount: 14000, currency: "USD", period_label: "Whole program", source_year: null, billing_period: "whole_program" },
   ] } } });
   const primary = renderApplicantSection(context([row], { costs: [row.id] }), ["costs"]).split('<details class="admissions-reading__references"')[0];
-  assert.match(primary, /14,000 for the whole program USD/);
+  assert.match(primary, /\$14,000 for the whole program/);
   assert.match(primary, /data-label="Source period and wording">Not stated here/);
   assert.doesNotMatch(primary, /Whole program|2026|2027|per year/);
 });
@@ -436,7 +436,7 @@ test("reference budgets keep zero, period and currency and funding is summarized
     fact("sat-aid", { funding_type: "grant", funding_program: "Need-based Aid", description: "SAT source record" }, { topic: "funding" }),
     fact("act-aid", { funding_type: "grant", funding_program: "Need-based Aid", description: "ACT source record" }, { topic: "funding" })];
   const html = renderApplicantSection(context(rows, { costs: ["budget"], funding: ["sat-aid", "act-aid"] }), ["costs", "funding"]);
-  assert.match(html, /0 USD/);
+  assert.match(html, /<dd>\$0<\/dd>/);
   assert.match(html, /2026[‑-]27/);
   assert.match(html, /not a confirmed price for another entry cycle/);
   assert.equal((html.match(/<h3>Need-based financial aid<\/h3>/g) || []).length, 1);
@@ -452,7 +452,7 @@ test("structured catalog cost references retain original prose and expose their 
     attributes: { catalog_costs: { currency: "USD", academic_year: "2026-2027", tuition: 67731, total_before_aid: 97545, exclusions: ["insurance", "one_time_fees"] } } });
   const resolved = context([row], { costs: [row.id] });
   const html = renderApplicantSection(resolved, ["costs"]);
-  assert.match(html, /97,545 USD/);
+  assert.match(html, /\$97,545/);
   assert.match(html, /2026[‑-]2027/);
   assert.match(html, /Insurance is additional/);
   assert.match(html, /Official source prose and conditional fees remain available/);

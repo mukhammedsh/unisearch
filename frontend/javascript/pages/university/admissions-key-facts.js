@@ -1,4 +1,5 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
+import { formatPrice, formatPriceRange } from "../../currency.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { ASSESSMENT_RECORD_DOMAINS, admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName, admissionWindowName, renderAssessmentChecks } from "./admissions-render.js";
 import { formatPublishedDate } from "./admissions-presentation.js";
@@ -19,13 +20,8 @@ const TEST_KINDS = new Set(["test", "test_submission", "booking"]);
 // Funding facts may state the university's need policy in one short field; only these named fields are shown as a policy.
 const FUNDING_POLICY_FIELDS = ["international_need"];
 
-function money(amount, currency) {
-  return new Intl.NumberFormat(locale(), { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
-}
-
-function moneyRange(min, max, currency) {
-  return min === max ? money(min, currency) : `${money(min, currency)}–${money(max, currency)}`;
-}
+// Short answers follow the reader's currency setting with rounded, compact converted amounts.
+const summary = () => ({ presentation: "summary", locale: locale() });
 
 export function requirementsFact(resolved) {
   const assessment = resolved?.assessment || {};
@@ -177,11 +173,10 @@ export function costFact(resolved, budgetUsd) {
   const basis = costs.annual_total ? "annual_total" : costs.tuition ? "tuition" : "";
   if (!basis) return { status: "unknown", tone: "", text: label("cost_unknown"), notes: [] };
   const quote = costs[basis];
-  const amount = moneyRange(quote.min, quote.max, quote.currency);
-  const converted = quote.currency !== "USD" && quote.usd ? ` (≈ ${moneyRange(quote.usd.min, quote.usd.max, "USD")})` : "";
-  const text = tFormat(`university.admissions.key_facts.${basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount: `${amount}${converted}` });
+  const amount = formatPriceRange(quote.min, quote.max, quote.currency, summary());
+  const text = tFormat(`university.admissions.key_facts.${basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount });
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
-  const parts = { amount: `${amount}${converted}`, basis, period: quote.period || "" };
+  const parts = { amount, basis, period: quote.period || "" };
   const notes = [quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
@@ -193,7 +188,8 @@ export function costFact(resolved, budgetUsd) {
   if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean), ...parts };
   if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean), ...parts };
   if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean), ...parts };
-  const budget = money(budgetUsd, "USD");
+  // The applicant's own budget is never rounded.
+  const budget = formatPrice(budgetUsd, "USD");
   const status = quote.usd.min > budgetUsd ? "over" : quote.usd.max > budgetUsd ? "partial"
     : basis === "tuition" ? "tuition_within" : "within";
   // The published amount stays neutral; only the comparison with the applicant's budget carries a status colour.

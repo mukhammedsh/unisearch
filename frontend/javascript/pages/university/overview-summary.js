@@ -36,9 +36,8 @@ const SALARY_FACTS = [
 const isString = value => typeof value === "string" && value.trim() !== "";
 const examName = id => getExamDisplayName(id, { locale: getCurrentLanguage() });
 const listOr = names => names.join(` ${label("or")} `);
-// Published outcome figures are in dollars and shown as published, formatted for the interface language.
-const usd = amount => new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
-  { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(amount);
+// Published outcome figures are in dollars and follow the reader's currency setting.
+const usd = amount => formatPrice(amount, "USD");
 
 // The first undergraduate first-year application shared by every major, or null when the university has none
 // (a route without programs, such as a mid-year intake, cannot describe all majors).

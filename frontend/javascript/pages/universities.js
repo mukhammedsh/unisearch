@@ -14,7 +14,6 @@ import {
   loadProfile,
   loadProfileForApi,
   formatExamValue,
-  formatCurrency,
   getExamDisplayName,
   getFlagImg,
   initCustomSelect,
@@ -201,17 +200,9 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     const known = price.amount !== null && Number.isFinite(price.amount);
     const range = known && price.max > price.min;
     const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference");
-    const money = value => {
-        const parts = splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, { presentation: "summary" }));
-        const converted = convert(value, price.currency, getPreferredCurrency());
-        if (parts.primary.startsWith("≈ ") && Math.abs(converted) >= 1_000_000) {
-            parts.primary = `≈ ${formatCurrency(converted, getPreferredCurrency(), {
-                locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
-                notation: "compact", maximumSignificantDigits: 2, currencyDisplay: "narrowSymbol",
-            })}`;
-        }
-        return parts;
-    };
+    const money = value => splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, {
+        presentation: "summary", locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
+    }));
     const minimum = known ? money(range ? price.min : price.amount) : { primary: t("universities.cost.price_unavailable"), secondary: "" };
     const maximum = range ? money(price.max) : minimum;
     const primary = range ? `${minimum.primary} – ${maximum.primary.replace(/^≈ /, "")}` : minimum.primary;

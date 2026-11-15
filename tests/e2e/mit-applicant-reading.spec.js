@@ -127,7 +127,7 @@ for (const item of cases) {
     await dates.evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-dates.png`) });
     await tab(page, "finance");
-    await expect(page.locator(".admissions-reading__total")).toContainText(/92[\s,\u00a0]?760 USD/);
+    await expect(page.locator(".admissions-reading__total")).toContainText("$92,760");
     await expect(page.locator("#detailFinance > .admissions-reading > .admissions-reading__section").first()).toContainText(/2026[‑-]2027/);
     const aid = page.locator("[data-aid-summary]");
     await expect(aid).toHaveCount(1);

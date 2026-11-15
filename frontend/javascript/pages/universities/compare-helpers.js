@@ -182,7 +182,7 @@ export async function resolveAiSortResult(options = {}) {
 }
 
 import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
-import { formatPrice } from "../../currency.js";
+import { formatPrice, formatPriceRange } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 
@@ -596,7 +596,7 @@ export function formatCompareCostRange(context) {
   const currency = String(context?.currency || "USD");
   if (min === null) return t("common.na", "N/A");
   if (max === null || Math.abs(max - min) <= 0.000001) return formatCompareCost(min, "placeholder.field.cost", "Cost", currency);
-  return `${formatCompareCost(min, "placeholder.field.cost", "Cost", currency)}–${formatCompareCost(max, "placeholder.field.cost", "Cost", currency)}`;
+  return formatPriceRange(min, max, currency.trim().toUpperCase());
 }
 
 export function compareCostContextText(context) {
@@ -863,9 +863,7 @@ export function compareCostBreakdownText(u, mode, compareAdmissionChoices) {
   if (hasExplicitRange && values.length > 1) {
     const minimum = Math.min(...values);
     const maximum = Math.max(...values);
-    return minimum === maximum
-      ? formatCompareCost(minimum, "placeholder.field.cost", "Cost", currency)
-      : `${formatCompareCost(minimum, "placeholder.field.cost", "Cost", currency)}–${formatCompareCost(maximum, "placeholder.field.cost", "Cost", currency)}`;
+    return formatPriceRange(minimum, maximum, currency);
   }
   const total = values.reduce((sum, value) => sum + value, 0);
   return formatCompareCost(total, "placeholder.field.cost", "Cost", currency);

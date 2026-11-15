@@ -44,7 +44,8 @@ const cell = (html, row, index) => html.split(`data-compare-row="${row}"`)[1]?.s
 test("two columns keep their own currency, period and university-page links", () => {
   setLanguage("eng", { emit: false });
   const html = renderReviewedComparisonPage([programColumn(), sharedColumn()], { budgetUsd: undefined });
-  assert.match(cell(html, "cost", 0), /£47,800/);
+  // A pound price follows the reader's currency, which is USD by default.
+  assert.match(cell(html, "cost", 0), /≈ \$[\d,]+/);
   assert.match(cell(html, "cost", 0), /2027/);
   assert.match(cell(html, "cost", 1), /\$92,760/);
   assert.match(cell(html, "cost", 1), /2026/);

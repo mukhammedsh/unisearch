@@ -552,37 +552,51 @@ function roundToSignificantFigures(amount, significantDigits = 2) {
   return Math.round(num / unit) * unit;
 }
 
+function canConvert(from, to) {
+  if (from === to) return true;
+  const rates = memoryRates || FALLBACK_RATES;
+  return [from, to].every(code => (rates[code] || FALLBACK_RATES[code]) > 0);
+}
+
+// A converted amount is an estimate: a summary rounds it to two significant figures and writes millions and more in
+// compact local notation ("≈ 30 млн ₸"), while the original published price always stays exact.
+function formatConverted(amount, code, options = {}) {
+  if (options.presentation !== "summary") return formatMoney(amount, code);
+  if (Math.abs(amount) >= 1_000_000) {
+    return formatCurrency(amount, code, {
+      locale: options.locale || "en-US", notation: "compact", maximumSignificantDigits: 2, currencyDisplay: "narrowSymbol",
+    });
+  }
+  return formatMoney(roundToSignificantFigures(amount), code);
+}
+
+function priceParts(values, originalCurrency, options) {
+  const origCode = String(originalCurrency || "USD").trim().toUpperCase();
+  const prefCode = getPreferredCurrency();
+  const mode = getCurrencyDisplayMode();
+  const original = values.map(value => formatMoney(value, origCode)).join(" – ");
+  // Without a rate for either currency the published price is shown as it is rather than mislabeled.
+  if (origCode === prefCode || mode === "original" || !canConvert(origCode, prefCode)) return original;
+  const converted = `≈ ${values.map(value => formatConverted(convert(value, origCode, prefCode), prefCode, options)).join(" – ")}`;
+  return mode === "both" ? `${converted} (${original})` : converted;
+}
+
+// `options.presentation: "summary"` rounds converted amounts for cards and headlines; `options.locale` names the
+// interface locale for compact notation.
 export function formatPrice(amount, originalCurrency = "USD", options = {}) {
   if (amount === null || amount === undefined || amount === "") return "—";
   const num = Number(amount);
   if (!Number.isFinite(num)) return "—";
+  return priceParts([num], originalCurrency, options);
+}
 
-  const origCode = String(originalCurrency || "USD").trim().toUpperCase();
-  const prefCode = getPreferredCurrency();
-  const mode = getCurrencyDisplayMode();
-  const presentation = options?.presentation === "summary" ? "summary" : "exact";
-
-  if (origCode === prefCode) {
-    return formatMoney(num, origCode);
-  }
-
-  const convertedAmount = convert(num, origCode, prefCode);
-  const displayAmount = presentation === "summary"
-    ? roundToSignificantFigures(convertedAmount)
-    : convertedAmount;
-  const prefFormatted = formatMoney(displayAmount, prefCode);
-  const origFormatted = formatMoney(num, origCode);
-
-  if (mode === "original") {
-    return origFormatted;
-  }
-
-  if (mode === "both") {
-    return `≈ ${prefFormatted} (${origFormatted})`;
-  }
-
-  // mode === "preferred"
-  return `≈ ${prefFormatted}`;
+// A published price range in the reader's currency; equal ends read as one amount.
+export function formatPriceRange(min, max, originalCurrency = "USD", options = {}) {
+  const low = Number(min);
+  const high = Number(max);
+  if (min === null || min === undefined || min === "" || !Number.isFinite(low)) return "—";
+  if (max === null || max === undefined || max === "" || !Number.isFinite(high) || high === low) return formatPrice(low, originalCurrency, options);
+  return priceParts([low, high], originalCurrency, options);
 }
 
 if (typeof window !== "undefined" && typeof window.addEventListener === "function") {

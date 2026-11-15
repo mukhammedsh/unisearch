@@ -136,7 +136,7 @@ test("Kazakh joint BBA costs keep the two campuses distinct", async () => {
   const mba = nu.facts.find(fact => fact.id === "nu-b-mba-tuition");
   const quotes = publishedTuitionQuotes(mba, "nu-b-study-master-of-business-administration");
   assert.deepEqual(quotes.map(quote => quote.feeStatus), ["Жеке төлеуші", "Компания төлеуші"]);
-  assert.deepEqual(quotes.map(quote => quote.amounts[0]), ["13 000 толық бағдарлама үшін", "16 000 толық бағдарлама үшін"]);
+  assert.deepEqual(quotes.map(quote => quote.amounts[0]), ["$13,000 толық бағдарлама үшін", "$16,000 толық бағдарлама үшін"]);
 });
 
 test("NU long fact text has source-bound Kazakh translations", async () => {

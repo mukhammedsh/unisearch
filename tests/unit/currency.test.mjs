@@ -5,6 +5,7 @@ import {
   convert,
   formatMoney,
   formatPrice,
+  formatPriceRange,
   getCurrencyDisplayMode,
   getFilterLimits,
   getPreferredCurrency,
@@ -236,6 +237,35 @@ describe('currency.js', () => {
 
     // Non-finite
     assert.strictEqual(formatPrice(NaN, 'USD'), '—');
+  });
+
+  test('formatPriceRange writes one approximation sign and keeps the published range in "both" mode', () => {
+    setPreferredCurrency('USD');
+    setCurrencyDisplayMode('preferred');
+    assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '$10,000 – $20,000');
+    assert.strictEqual(formatPriceRange(15000, 15000, 'USD'), '$15,000');
+    assert.strictEqual(formatPriceRange(4500000, 9000000, 'KZT'), '≈ $10,000 – $20,000');
+
+    setPreferredCurrency('KZT');
+    setCurrencyDisplayMode('both');
+    assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '≈ 4,500,000 ₸ – 9,000,000 ₸ ($10,000 – $20,000)');
+    // Summaries write millions compactly in the interface language; the published dollars stay exact.
+    assert.strictEqual(
+      formatPriceRange(10000, 20000, 'USD', { presentation: 'summary', locale: 'en-US' }),
+      '≈ ₸4.5M – ₸9M ($10,000 – $20,000)',
+    );
+    assert.match(formatPrice(66720, 'USD', { presentation: 'summary', locale: 'ru-RU' }), /^≈ 30\s+млн\s+₸ \(\$66,720\)$/);
+
+    setCurrencyDisplayMode('original');
+    assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '$10,000 – $20,000');
+    assert.strictEqual(formatPriceRange(null, 20000, 'USD'), '—');
+  });
+
+  test('a price in a currency without a rate is shown as published instead of mislabeled', () => {
+    setPreferredCurrency('KZT');
+    setCurrencyDisplayMode('preferred');
+    assert.strictEqual(formatPrice(1200, 'XYZ'), formatMoney(1200, 'XYZ'));
+    assert.doesNotMatch(formatPrice(1200, 'XYZ'), /₸/);
   });
 
   test('loadRates handles API fetch, caching, and fallback', async () => {

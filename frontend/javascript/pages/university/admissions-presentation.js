@@ -1,4 +1,5 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
+import { formatPrice, formatPriceRange } from "../../currency.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { admissionsCycleLabel, admissionDeadlineTitle, admissionWindowName, renderAdmissionsContext, renderAdmissionsUnknowns, renderAdmissionsValue } from "./admissions-render.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
@@ -8,7 +9,6 @@ import { glossaryTerms, renderTermList } from "./admissions-glossary.js";
 import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution } from "./admissions-status.js";
 
 const label = key => t(`university.admissions.reading.${key}`);
-const locale = () => ({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" })[getCurrentLanguage()];
 const period = row => typeof row.period === "object" ? row.period?.label || "" : row.period || "";
 
 export function formatPublishedDate(value) {
@@ -303,7 +303,7 @@ function finance(rows, resolved) {
     .filter(row => reviewed(row) && typeof row.value?.currency === "string" && Number.isFinite(row.value?.total_before_aid));
   const budgetHtml = budgets.map(row => {
     const value = row.value;
-    const money = amount => `${new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(amount)} ${escapeHtml(value.currency)}`;
+    const money = amount => escapeHtml(formatPrice(amount, value.currency));
     const items = ["tuition", "student_life_fee", "housing_estimate", "food_estimate", "materials_estimate", "personal_estimate"]
       .filter(key => Number.isFinite(value[key]));
     const insurance = value.health_insurance === "Additional required coverage, not in this total" ? label("insurance_not_included") : value.health_insurance;
@@ -340,10 +340,11 @@ export function publishedTuitionQuotes(row, optionId) {
   if (Array.isArray(value?.quotes)) return value.quotes.filter(quote => quote.basis === "tuition" && Number.isFinite(quote.amount) && quote.amount >= 0 && quote.currency
     && (!quote.option_ids?.length || quote.option_ids.includes(optionId))).map(quote => ({
     feeStatus: translateAdmissionSummary(quote.fee_status) || quote.fee_status || "",
-    campus: translateAdmissionSummary(quote.campus) || quote.campus || "", currency: quote.currency,
+    campus: translateAdmissionSummary(quote.campus) || quote.campus || "", currency: "",
     studyYears: quote.study_years?.length ? tFormat("universities.cost.study_years", { years: quote.study_years.join(", ") }) : "",
     reference: quote.reference_only ? t("universities.cost.reference_short") : "",
-    amounts: [`${new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(quote.amount)} ${billingPeriodLabel(quote.billing_period)}`.trim()],
+    // The amount already names its currency in the reader's display setting.
+    amounts: [`${formatPrice(quote.amount, quote.currency)} ${billingPeriodLabel(quote.billing_period)}`.trim()],
     period: String(quote.source_year || (/20\d{2}/.test(quote.period_label || "") ? quote.period_label : "")) || label("unknown"),
   }));
   if (!row.value?.course_page_tuition_fees) return [];
@@ -377,10 +378,10 @@ function courseCosts(rows, resolved) {
 function livingReferences(rows, resolved) {
   return rows.filter(reviewed).filter(row => row.value?.average_9months && Number.isFinite(row.value.private_sector_total_12months)).map(row => {
     const value = row.value;
-    const money = amount => `${new Intl.NumberFormat(locale()).format(amount)} ${escapeHtml(value.currency)}`;
+    const money = amount => escapeHtml(formatPrice(amount, value.currency));
     const range = value.average_9months;
     if (!Number.isFinite(range.min) || !Number.isFinite(range.max)) return "";
-    return `<section class="admissions-reading__section" data-living-reference><h3>${escapeHtml(label("living_reference"))} · ${escapeHtml(translateAdmissionSummary(value.cycle) || value.cycle)}</h3><dl class="admissions-reading__costs"><div><dt>${escapeHtml(label("living_nine_months"))}</dt><dd>${money(range.min)}–${money(range.max)}</dd></div><div><dt>${escapeHtml(label("living_twelve_months"))}</dt><dd>${money(value.private_sector_total_12months)}</dd></div></dl><p>${escapeHtml(translateAdmissionSummary(value.exclusions) || value.exclusions)}</p><p class="admissions-reading__note">${escapeHtml(label("different_cost_periods"))}</p>${sourceNote(row, resolved)}</section>`;
+    return `<section class="admissions-reading__section" data-living-reference><h3>${escapeHtml(label("living_reference"))} · ${escapeHtml(translateAdmissionSummary(value.cycle) || value.cycle)}</h3><dl class="admissions-reading__costs"><div><dt>${escapeHtml(label("living_nine_months"))}</dt><dd>${escapeHtml(formatPriceRange(range.min, range.max, value.currency))}</dd></div><div><dt>${escapeHtml(label("living_twelve_months"))}</dt><dd>${money(value.private_sector_total_12months)}</dd></div></dl><p>${escapeHtml(translateAdmissionSummary(value.exclusions) || value.exclusions)}</p><p class="admissions-reading__note">${escapeHtml(label("different_cost_periods"))}</p>${sourceNote(row, resolved)}</section>`;
   }).join("");
 }
 
