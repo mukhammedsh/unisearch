@@ -37,7 +37,8 @@ export const studyLevelLabel = (value, t) => {
 // "IELTS (academic module)" -> "IELTS": the summary lists what is counted, not the full exam title.
 export const shortExamLabel = (label) => {
   const full = text(label);
-  const short = full.replace(/\s*\([^)]*\)/g, "").trim();
+  // Removing the bracket first and collapsing spaces after avoids a backtracking pattern.
+  const short = full.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
   return short || full;
 };
 

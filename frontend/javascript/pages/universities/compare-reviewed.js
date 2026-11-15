@@ -22,7 +22,6 @@ import { billingPeriodLabel } from "../university/admissions-presentation.js";
 import { translateAdmissionText } from "../../university-translations.js";
 import { checklistItems, costCard, deadlineCard, firstYearSharedRoute, peopleItems } from "../university/overview-summary.js";
 
-const PAGE_SIZE = 24;
 const label = (key) => t(`universities.compare.reviewed.${key}`);
 const catalogLabel = (key) => t(`university.admissions.catalog.${key}`);
 const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };

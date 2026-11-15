@@ -257,7 +257,7 @@ export function legacyNeedsItems(university) {
   const category = categories[0];
   const items = [];
   const entries = (Array.isArray(category.language_requirements) ? category.language_requirements : [])
-    .flatMap(entry => Object.entries(entry?.requirements || {}).map(([exam, value]) => `${examName(exam).replace(/\s*\([^)]*\)/g, "")} ${value}`));
+    .flatMap(entry => Object.entries(entry?.requirements || {}).map(([exam, value]) => `${examName(exam).replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim()} ${value}`));
   if (entries.length) {
     items.push({ kind: "language", mark: "todo", text: tFormat(`university.ux2.needs.english_${category.language_requirements_mode === "any" && entries.length > 1 ? "any" : "all"}`, { exams: entries.join(", ") }) });
   }
