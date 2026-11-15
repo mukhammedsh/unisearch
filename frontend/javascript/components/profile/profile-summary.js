@@ -2,6 +2,8 @@
 // Every sentence mirrors behaviour of backend/app/services/ai_scoring.py and the catalog code;
 // keep the two in sync when either side changes.
 
+import { withoutBracketedText } from "../../utils/text.js";
+
 export const PROFILE_SECTION_IDS = ["basics", "preferences", "scores", "languages", "specific"];
 
 const LEVEL_LABEL_KEYS = {
@@ -37,8 +39,7 @@ export const studyLevelLabel = (value, t) => {
 // "IELTS (academic module)" -> "IELTS": the summary lists what is counted, not the full exam title.
 export const shortExamLabel = (label) => {
   const full = text(label);
-  // Removing the bracket first and collapsing spaces after avoids a backtracking pattern.
-  const short = full.replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
+  const short = withoutBracketedText(full);
   return short || full;
 };
 
