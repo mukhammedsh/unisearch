@@ -164,8 +164,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
                     cache[path] = {row["id"]: row for row in read(path)["facts"]}
                 raw = cache[path][origin["original_id"]]
                 self.assertEqual(fact["value"], raw["value"], fact["id"])
-                self.assertEqual(origin["original_scope"], raw["scope"], fact["id"])
-                self.assertEqual(origin["original_source_ids"], raw["source_ids"], fact["id"])
+                self.assertEqual(origin, {"evidence_file": origin["evidence_file"], "original_id": origin["original_id"]}, fact["id"])
                 for key in ("conditions", "conditions_and_exceptions", "exceptions", "publication_status", "review_status", "checked_at", "period"):
                     self.assertEqual(fact[key], raw.get(key), (fact["id"], key))
                 for key, value in raw.items():

@@ -5,7 +5,7 @@
       "id": "ug-sat-act-presence-assessment",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "ug-sat-act-presence",
-      "fact_sha256": "d11a55592a4225943e157d7ae937c4d52bf264225f5f3cf4d20b912ce91cf68d",
+      "fact_sha256": "d4e116ca1e2f0722477d0335a67e288a21bae1c9e5f30a7c7b51ccbbd142629a",
       "scope": {
         "option_ids": [],
         "route_ids": [
@@ -47,7 +47,7 @@
       "id": "bcs-meng-entry-conditions-assessment",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "bcs-meng-entry-conditions",
-      "fact_sha256": "9eb92e76ba11e06ff24fc760ff64b7f1f26842b91298df6a76653d80bbb77ab7",
+      "fact_sha256": "0edccbc7f7379cedaf8bb4551e3de2b69e19055dea387d1a599f93c01eeb2b9f",
       "scope": {
         "option_ids": [
           "mit-course-6-9p-meng"
@@ -114,7 +114,7 @@
       "id": "dedp-no-prior-degree-and-track-condition-assessment",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "dedp-no-prior-degree-and-track-condition",
-      "fact_sha256": "af822b929646e43c426f3b4a7a40df541eefd461f81f1267e27ccd78206c2af8",
+      "fact_sha256": "8794a1eaef301023f83ed1fc22d228752fff6f515b77f0a3b5819809ae95b5db",
       "scope": {
         "option_ids": [],
         "route_ids": [
@@ -147,7 +147,7 @@
       "id": "dedp-elp-validity-waiver-and-scale-assessment",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "dedp-elp-validity-waiver-and-scale",
-      "fact_sha256": "c33457eabed4d081ee3d8aea0c3fe2e3efb033675021a9f5f5f637e217109e10",
+      "fact_sha256": "f0a156249093d63df2b3edaf5a35be1715704b2c5c509f157145e1e1ff2f9e47",
       "scope": {
         "option_ids": [],
         "route_ids": [
@@ -208,7 +208,7 @@
       "id": "imperial-computing-meng-admission-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "imperial-computing-meng-admission",
-      "fact_sha256": "af4b11b702695365ea14774c7e29b9c326bb200624e1d48915a7cd8241e9e497",
+      "fact_sha256": "ff7fd33c90389ff2a515489e7c887bb17b09043b89ed4ca931cf13ba42a91f89",
       "scope": {
         "option_ids": [
           "imperial-option-computing-meng"
@@ -249,7 +249,7 @@
       "id": "imperial-electrical-electronic-engineering-beng-admission-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "imperial-electrical-electronic-engineering-beng-admission",
-      "fact_sha256": "ac8b06f8a7dc8ed42c254eec46013940ad95ed2b13ebc3edb92b30c5825cbb30",
+      "fact_sha256": "9b81edc51a9f2795fd89b41c7154f8bee5b4e2744a52523931b7e76e63dd31fe",
       "scope": {
         "option_ids": [
           "imperial-option-electrical-electronic-engineering-beng"
@@ -295,7 +295,7 @@
       "id": "imperial-electrical-electronic-engineering-meng-admission-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "imperial-electrical-electronic-engineering-meng-admission",
-      "fact_sha256": "582f245581b5000fbabb4475f5fb9b3a24a6d303c315f56fe75a036786a726bb",
+      "fact_sha256": "2d612136be99d11e4155b33b46e6e040003e9ec2c746401265fe463011ee730f",
       "scope": {
         "option_ids": [
           "imperial-option-electrical-electronic-engineering-meng",
@@ -342,7 +342,7 @@
       "id": "imperial-electronic-information-beng-admission-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "imperial-electronic-information-beng-admission",
-      "fact_sha256": "59aa554a39e03a86cd5c1f7a3e912f1581b4738741dc37c1d4324f9833092dba",
+      "fact_sha256": "1ba866ea060ca1c18704268328f132c7ad51ffa9958e0f6561d2d5370b217a1a",
       "scope": {
         "option_ids": [
           "imperial-option-electronic-information-beng"
@@ -388,7 +388,7 @@
       "id": "imperial-electronic-information-meng-admission-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "imperial-electronic-information-meng-admission",
-      "fact_sha256": "2a5d3780e5fcb34dec84e089389983421f20480beee6b1107f7df3f372935534",
+      "fact_sha256": "4942981a7d37462d5cdc08a36f40db78506b877a66fae53eb97edfe39a0a1cc5",
       "scope": {
         "option_ids": [
           "imperial-option-electronic-information-meng",
@@ -435,7 +435,7 @@
       "id": "fact_pcms_gamsat_ucat_2027-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "fact_pcms_gamsat_ucat_2027",
-      "fact_sha256": "8b60f20cd88e9c9af8b9846d5165a0a4e005e042091ba863cf0893d07818389a",
+      "fact_sha256": "091380fd90d2b0536b6d5a6c9e51c862b8fc97edc871a4b979882c716e394e36",
       "scope": {
         "option_ids": [
           "imperial-option-medicine-graduate-entry"
@@ -477,7 +477,7 @@
       "id": "professional-evidence:law_jd_dates_tests_docs-assessment",
       "institution_id": "stanford-university-usa-ca",
       "fact_id": "professional-evidence:law_jd_dates_tests_docs",
-      "fact_sha256": "1dda07a3daf3e2a8192f767c69dc5630e65cfc0219af1cfb18b6654cbda04477",
+      "fact_sha256": "c6c9ad02f79008e0a5c44714a32133fbc630b34f6be8811c19a2239406d5e5f4",
       "scope": {
         "option_ids": [
           "stanford-option-law-jd"
@@ -533,7 +533,7 @@
       "id": "professional-evidence:med_md_cycle_process-assessment",
       "institution_id": "stanford-university-usa-ca",
       "fact_id": "professional-evidence:med_md_cycle_process",
-      "fact_sha256": "ef0e3907386fd8aa9573ddcad6e716317bd15790c196ce66afbb5cf743bf0fc8",
+      "fact_sha256": "3c445134c248c15c5cca06082ca8d68e64e7b8d246d9e72b42c6bb9d39c58f55",
       "scope": {
         "option_ids": [
           "stanford-option-med-md"
@@ -574,7 +574,7 @@
       "id": "bcs-profile-duplicate-minima",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "mit_bcs_meng_admissions-profile-0",
-      "fact_sha256": "71545d814b0f6583331347adef6e499bfe6977b2ef326e83072c4365cf730fd9",
+      "fact_sha256": "b2a91172a02bb537f70e80211e4189673a69d06df5965e75e3e330566c059420",
       "scope": {
         "option_ids": [
           "mit-course-6-9p-meng"
@@ -611,7 +611,7 @@
       "id": "fact_medicine_ucas_ucat_2027-assessment",
       "institution_id": "imperial-college-london-uk",
       "fact_id": "fact_medicine_ucas_ucat_2027",
-      "fact_sha256": "2c5e7be3e7839c2abdfe61d62f2195618b957a4d97002519d44150bbb9b9b253",
+      "fact_sha256": "8e8bc6eaec321363c9784fa2290c12ec68fa3aeb31b0c260443b65b295d021bd",
       "mapping_reviewed_at": "2026-10-12",
       "scope": {
         "option_ids": [
@@ -656,7 +656,7 @@
       "id": "scm-current-department-preparation-and-language-assessment",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "scm-current-department-preparation-and-language",
-      "fact_sha256": "0f911b07e99aef6ca8c2f7b41d3db24f1fc52c80aae3c236d3656d40850bac5e",
+      "fact_sha256": "0feaf7310b4f4adea7eb93933177ad3aabb16619d6417da969b585d45259bdf5",
       "mapping_reviewed_at": "2026-10-12",
       "scope": {
         "option_ids": [],
@@ -703,7 +703,7 @@
       "id": "nu-a-fact-ug-english-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-ug-english",
-      "fact_sha256": "f306be8fca73b237881f67f5f242a69216eb219fbb20d359dc410431b79c50fa",
+      "fact_sha256": "bbc974a3b1ad90d0acfab28d711afe57fd2c42af4887084cef82f35d777717fb",
       "source_publication_status": "published_for_2027_28_regular_admission",
       "scope": {
         "option_ids": [
@@ -787,7 +787,7 @@
       "id": "nu-a-fact-fyp-english-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-fyp-english",
-      "fact_sha256": "53b19207e1e914372c9e7b92207c8614e97417eb12282921e95547f5400a520c",
+      "fact_sha256": "cbfcdcc6bc3ec675f0f601c18fdfadb482806895377126401fe32c25896f256c",
       "source_publication_status": "published_for_2027_28_regular_admission",
       "scope": {
         "option_ids": [
@@ -853,7 +853,7 @@
       "id": "nu-a-fact-ug-academic-alternatives-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-ug-academic-alternatives",
-      "fact_sha256": "0162c07031e4a854517100951124a3a56f241e74f669e8308c35aa8dfa8495c1",
+      "fact_sha256": "8b7aa756f4d88aecf901a75c689ce796e6b98c0ef0a0355cd6025edca46def27",
       "source_publication_status": "published_for_2027_28_regular_admission",
       "scope": {
         "option_ids": [
@@ -965,7 +965,7 @@
       "id": "nu-a-fact-fyp-academic-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-fyp-academic",
-      "fact_sha256": "95c3335601ff528fbc8af05ba098d1137eff2990babf1f49ccd916b69ca9e530",
+      "fact_sha256": "a02efd74aad8e5e3ff00581a6c7ac2693219b47fe09fc474b5327a624c06c25d",
       "source_publication_status": "published_policy_appendix",
       "scope": {
         "option_ids": [
@@ -1031,7 +1031,7 @@
       "id": "nu-a-fact-midyear-nuet-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-midyear-nuet",
-      "fact_sha256": "fa1e9dd596712b1e8b99569f172c7a1460f8a2a21264a9b3b8fba2d91d346c48",
+      "fact_sha256": "adc1fb00e26e34c41b3d7e086ba23fb79fee385b815e2d0d7b04a8e4427280d3",
       "source_publication_status": "published_for_2026_27_midyear",
       "scope": {
         "option_ids": [],
@@ -1085,7 +1085,7 @@
       "id": "nu-a-fact-nuet-support-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-nuet-support",
-      "fact_sha256": "ddd33038fa4a35255003e7228e19566088fdbec878c74667db39e807cd5fd811",
+      "fact_sha256": "557ae158dffcbec1f88b5ced93f2ee19ab48e66bf762c0574c3c6826240070e2",
       "source_publication_status": "published_minimum",
       "scope": {
         "option_ids": [
@@ -1150,7 +1150,7 @@
       "id": "nu-a-fact-financial-support-eligibility-2027-28-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-financial-support-eligibility-2027-28",
-      "fact_sha256": "91b5e1ddaed18a55d848cde6c2b28471356b77ba3fba5ea808a9e0408ba0b7d1",
+      "fact_sha256": "77f28f46b7d379829c908b0687cd0c1237d5adeecd9e4c64735564b0687875ae",
       "source_publication_status": "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA",
       "scope": {
         "option_ids": [
@@ -1297,7 +1297,7 @@
       "id": "nu-a-fact-nursing-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-nursing-entry",
-      "fact_sha256": "dc8a8995e8d6b8fe2273c86d2c4aeb4f23e890371234995dea8598f97da2a31d",
+      "fact_sha256": "e0bf928c0b589bce4422c85b001b7ceb38c54f9c7776aa14481f19226810a9b5",
       "source_publication_status": "published_on_program_page",
       "scope": {
         "option_ids": [
@@ -1344,7 +1344,7 @@
       "id": "nu-a-fact-nds-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-nds-entry",
-      "fact_sha256": "16ee444a6bd1f7b3baf0746130b5e6c834a653d4a83f967a2d759bd764daedf3",
+      "fact_sha256": "ab375c1e6ee3eec5a9a3cff869f195747a5e9b2b58ae141c86d9b63826c490dc",
       "source_publication_status": "published_on_current_regular_admission_page",
       "scope": {
         "option_ids": [
@@ -1446,7 +1446,7 @@
       "id": "nu-a-fact-nufyp-progression-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-nufyp-progression",
-      "fact_sha256": "a6521e6edd6d74fbb8938ecc86cd6902b84d6f2c60ab202e3b26d54463b3e0dc",
+      "fact_sha256": "b7e3f540f2b3c5d5f973e77bb11e6b7edf5dd6cc139cf620d822667680a5ed39",
       "source_publication_status": "published_policy_appendix",
       "scope": {
         "option_ids": [
@@ -1494,7 +1494,7 @@
       "id": "nu-a-fact-transfer-route-details-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-transfer-route-details",
-      "fact_sha256": "b4c929152661aec8abc433f39f6de39dec0c9892ddf0ae1eb078098edd140281",
+      "fact_sha256": "f401a4f7cdf8e0eecc5a8b6a16bafbe61fd058db426fdfd6a77ac3c8a196f33b",
       "source_publication_status": "published_policy_and_2026_announcement",
       "scope": {
         "option_ids": [
@@ -1542,7 +1542,7 @@
       "id": "nu-a-fact-joint-bba-admissions-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-joint-bba-admissions",
-      "fact_sha256": "0fd0cc36fb6d3a5451de4f8d96aa0ff35b0ddb0abd62390d83620db78932296b",
+      "fact_sha256": "1ba8d6899d4e5dd983887095964c1d927d328201afe0e6d03e570b6bc0503368",
       "source_publication_status": "2026_27_entry_score_table_and_2027_28_date_conflict",
       "scope": {
         "option_ids": [
@@ -1574,7 +1574,7 @@
       "id": "nu-a-fact-ump-program-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-ump-program-entry",
-      "fact_sha256": "92885b7f0d2bfdf0239ad7333fe50a9c9c1c056b159de2c30cf427ea979273e3",
+      "fact_sha256": "313922afdd150b7f8401b08b2542208fb3ba5760b62e9dd175c346a4847a3200",
       "source_publication_status": "program_page_2025_26_requirements_and_separate_NUET_category",
       "scope": {
         "option_ids": [
@@ -1605,7 +1605,7 @@
       "id": "nu-b-mba-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mba-requirements",
-      "fact_sha256": "c75542f2aea1a567b72bfd77bbf492a354c7d93942d1ece35b1ff38a8350ce3c",
+      "fact_sha256": "99db46359314dd307ca3e45c3aeb5207058d7cf0adcba1f1965aea91c02235e1",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -1686,7 +1686,7 @@
       "id": "nu-b-finance-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-finance-requirements",
-      "fact_sha256": "5552c899a4bb9b93b6e6814392e183f8318b69f7497c817a07694c5e67753f0f",
+      "fact_sha256": "b7d335e3baf38a7ca8dad25457709b15f215e0ee801ba3f1c63e68ccdce3a956",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -1762,7 +1762,7 @@
       "id": "nu-b-mae-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mae-requirements",
-      "fact_sha256": "0df451a35f058ed7e5c17d5f506bd2151a2903a88d18f7dac92f9c87d749fe1e",
+      "fact_sha256": "33674d4c554fe88d7d13c37ddc9a1bc6fb1b713e8323223bfd2ce6bd66b267ed",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -1823,7 +1823,7 @@
       "id": "nu-b-mpa-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mpa-entry",
-      "fact_sha256": "3e1b161f8642bd622a4dfb8f61e073eb02ef9276ab28c19ed13b13d133e9d648",
+      "fact_sha256": "a4c244ec1854928b313c5edfdec3de39ad61e706c78e5660ce63497e35488d73",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -1878,7 +1878,7 @@
       "id": "nu-b-mpp-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mpp-entry",
-      "fact_sha256": "fda8a1fb65691392460b25d88b195d26641eca38221f405a123500c6452f0a79",
+      "fact_sha256": "251c507dd6453a75efab1d471f448375dd8eb5c04dbf48dd21885b38533b6480",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -1933,7 +1933,7 @@
       "id": "nu-b-dpm-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-dpm-entry",
-      "fact_sha256": "f2cf24053d23c9f2de061540633fc7b69c470db5ece91b459e143ee47bd3b07d",
+      "fact_sha256": "53cdf80d2eccab849e0fa4d975c3b63157423697378a81c4a13e2a9082711818",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -1995,7 +1995,7 @@
       "id": "nu-b-phd-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-phd-entry",
-      "fact_sha256": "7a13c800fd3bcf83e54d45dca791970133219201e4a9861b85539780c47d026d",
+      "fact_sha256": "30c9989cec2bab3f52e8b5d28f924cc8d928239d603ebb1a3ad85ee8c74e5107",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2056,7 +2056,7 @@
       "id": "nu-b-dba-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-dba-entry",
-      "fact_sha256": "b934b1972c320ab97cc6bb51429605b970d4a2b0b2e32b6495139fe25dda2567",
+      "fact_sha256": "ca44b03dd1b7736e475019060f0795219814770f5b1b593ee0a189b14ee54ca9",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2105,7 +2105,7 @@
       "id": "nu-b-business-phd-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-business-phd-entry",
-      "fact_sha256": "9f5e981c688e757ed08220e9e3c619455c631f3a567a232a0880a8b525cd06ba",
+      "fact_sha256": "219226c7d9c10e04b1627396cc9422b3d1f0e21de3cfea935262738bc571402a",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2178,7 +2178,7 @@
       "id": "nu-b-maprogram-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-maprogram-entry",
-      "fact_sha256": "53ef8b1a7479509f7b3bec7b03eb8349f15df60dc2ead273080ba049782a151b",
+      "fact_sha256": "dd6b973c8889cc9ee219f7b63896ac34d2fc5ee046b21cb02d95eb4aee85b8a4",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2239,7 +2239,7 @@
       "id": "nu-b-mscprograms-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mscprograms-entry",
-      "fact_sha256": "d9da017fd85674f4dda7c5b7eb5e212ee6405a3ff3ef0a96dfba4d4ef94b9fef",
+      "fact_sha256": "fea721c318183a411aaeaddcfa136a612abc26f9be2ec9bcc84737c49bd34dfd",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2300,7 +2300,7 @@
       "id": "nu-b-phdprogram-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-phdprogram-entry",
-      "fact_sha256": "672243b5bd6f5eeac4c04a9e9f4ec115c06c7bf41655819770c7830bfe45b31b",
+      "fact_sha256": "6765401d0801b8852037b5149f922373662f1b4f820cad99654b562c509ef52c",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2355,7 +2355,7 @@
       "id": "nu-b-msc-ai-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-msc-ai-entry",
-      "fact_sha256": "0fdcadf1f8acd9f3d83e6626a7784b7accfebc37fce68e1f318d54a4d813a4da",
+      "fact_sha256": "b07a5c04c277e8de94f670fd31faaf62f6cce2ca0993e5b6d1aad064ff76a6ec",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2416,7 +2416,7 @@
       "id": "nu-b-msc-ds-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-msc-ds-entry",
-      "fact_sha256": "ea80f31b85539928f15a34129eb90da55eeaf608fec2c70593126f30e35e7b25",
+      "fact_sha256": "08e6f5d50267a41fe5c8964417fd8bf26d2c69a0134e802847a4d24486176d76",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2477,7 +2477,7 @@
       "id": "nu-b-msc-cs-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-msc-cs-entry",
-      "fact_sha256": "1f1bee78887c7f68b45a4901838814cfa24b4420868ab3c911e4ea929c99edbb",
+      "fact_sha256": "c3fbc88afd2e2d1a245e69ecd4e359bd294f4a3bc68c46adc42d7f0f64601af9",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2538,7 +2538,7 @@
       "id": "nu-b-msc-math-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-msc-math-entry",
-      "fact_sha256": "47068fb7b212af5e67e42ae37f853641e4bfb25ebe403d9e9fa7641b527515f7",
+      "fact_sha256": "03d5f1bccdcf53982309b829cfa0ce7864f4d0a7c80b44c921ef74eaab69d10f",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2599,7 +2599,7 @@
       "id": "nu-b-mscchem-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mscchem-entry",
-      "fact_sha256": "dd0a331d852823139af36ea59b82e213e4bac90367c1744a322a3840529625f7",
+      "fact_sha256": "4eaa40ff9a1da696eb3f9a6a6cc222d18169658fbbc741cab492c5f3860e4306",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2660,7 +2660,7 @@
       "id": "nu-b-mscphysics-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mscphysics-entry",
-      "fact_sha256": "0f6d67753c3276fc4fc8b09a5d631244f16fc6164c82380e21a18687e3201c10",
+      "fact_sha256": "4101c26047a404b2d42ab24a012f41d0252f225dfc30eb2791f8111296fefb5b",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2721,7 +2721,7 @@
       "id": "nu-b-mapsirgr-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mapsirgr-entry",
-      "fact_sha256": "2233ef18c834a0447dadecb3b9415d2af8efd09d01af3dc777cc0f1b4d2d5820",
+      "fact_sha256": "e0ae1bf0ef3e0a81b4b8a8976e92ae4fa58b696d968ddecee879a87a7cef28bc",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2782,7 +2782,7 @@
       "id": "nu-b-maeurasian-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-maeurasian-entry",
-      "fact_sha256": "bb1cabaa98e75d8618259e1dbe5492d4d475db7101a5b77cc03c74f6bbb8508c",
+      "fact_sha256": "286db28c7b5e7d0215257ee4310e8efa4311d84982b01e33f57cda6b14372e5d",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2843,7 +2843,7 @@
       "id": "nu-b-eurasian-phd-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-eurasian-phd-entry",
-      "fact_sha256": "a0e21474af2406d90fe2378174123305a8e42b6a0e467a31eb016c9a7389c1ce",
+      "fact_sha256": "54f01dbb26a86a18db5ad83234fa188d4a845c407547749e42e114a6f3997519",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2899,7 +2899,7 @@
       "id": "nu-b-msbm-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-msbm-entry",
-      "fact_sha256": "963b9c52b594c0d29140edecf15e23596f2dc8b84107e7655054c75bb4c2b006",
+      "fact_sha256": "b4fe00e949e6b7788b9370669e51e1c6d211abb60db896342b8a9fd27da445e6",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -2960,7 +2960,7 @@
       "id": "nu-b-mph-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mph-entry",
-      "fact_sha256": "bce188328f357023b18bab4d3ebe6a5077b4982614bd26f274ab2a5703a41e0f",
+      "fact_sha256": "6fb61e9f4b0259af2d4ddfb8e173b2324596f0fa852d6303570a52df9123e266",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3021,7 +3021,7 @@
       "id": "nu-b-msn-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-msn-entry",
-      "fact_sha256": "9d5683e3e996b0668b06c4d1fe82795156cf0f2b825ed3e53fb0ea5545df7d60",
+      "fact_sha256": "1cb682571dba2bd7002183778359ae5264f36ec2c66591b914edaf8bd2230860",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3059,7 +3059,7 @@
       "id": "nu-b-md-entry-reviewed-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-md-entry-reviewed",
-      "fact_sha256": "11e193179861e4598de04c15b31dedc4f346a6ab29259cdba8606fdf4fe3b52a",
+      "fact_sha256": "5f58a16ead49f70e930067186f1d2d1847e5073b4d27bd098295ef03ac87ec7a",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3132,7 +3132,7 @@
       "id": "nu-b-mls-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-mls-entry",
-      "fact_sha256": "64d279eac92bedbd19b0bafb49e061335df4004158c58696c3e03e07d3784183",
+      "fact_sha256": "63473e2aec3b2ef24812f7fe0ae2d38f89b020e65f5361f8792781a1921379eb",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3193,7 +3193,7 @@
       "id": "nu-b-phd-in-global-health-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-phd-in-global-health-entry",
-      "fact_sha256": "287b00b3c80630155309266188efad6ca2068f167fd942c9ab296f45177f299d",
+      "fact_sha256": "5e2b87fefb4b8b954e4aea1b866cf643dd95e518631006132ea45b895df1774a",
       "source_publication_status": "published_with_source_scope_conflict",
       "scope": {
         "option_ids": [
@@ -3253,7 +3253,7 @@
       "id": "nu-b-phd-in-biomedical-sciences-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-phd-in-biomedical-sciences-entry",
-      "fact_sha256": "ef0c1639e9bfdea72b674c355c17463b2ca9a89524bedc78966970e195c8d3e8",
+      "fact_sha256": "8b9007344734d981328aa9178caa97c84b79f0a2cb7a2eb3e9f25b85dbbfd33f",
       "source_publication_status": "published_with_source_scope_conflict",
       "scope": {
         "option_ids": [
@@ -3313,7 +3313,7 @@
       "id": "nu-b-phd-in-life-sciences-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-phd-in-life-sciences-entry",
-      "fact_sha256": "5da21d5bff2187c4886883678c5eb2d2bcf424b4f311618208aee806f17844c6",
+      "fact_sha256": "94bbc78918c37d1527ece717c1d9b32ad2742da1f7523071f0fe5dffdc2ef676",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3374,7 +3374,7 @@
       "id": "nu-b-joint-soas-entry-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-b-joint-soas-entry",
-      "fact_sha256": "7f36980bb0cb268e17e82eb37bfdf880201f7f66e22f6d58889751e974380fe0",
+      "fact_sha256": "fecc907e82caae4511f296d328a12a067af5e8fa9efbf6bf9a496d91c40d2795",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3442,7 +3442,7 @@
       "id": "nu-c-phd-scai-regular_and_financial_support-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-c-phd-scai-regular_and_financial_support-requirements",
-      "fact_sha256": "56d5cc1e15d47d97beff05f7608cef889914530bbda0f0626849480e9a62205d",
+      "fact_sha256": "76634d676421b7691fa1e10ad5a4a20ad3dc5855aa417b6965a7dc468b7d2c84",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3504,7 +3504,7 @@
       "id": "nu-c-phd-ssh-regular_and_financial_support-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-c-phd-ssh-regular_and_financial_support-requirements",
-      "fact_sha256": "1dc589454ce7d8f2074516b849ac55c17a5b98ed1ed1d09171cba8715272affe",
+      "fact_sha256": "03decc6ae6c371a25a7f7285beb67555c19ac0abdce764f3631f1bab58262a62",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3565,7 +3565,7 @@
       "id": "nu-c-phd-soe-regular-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-c-phd-soe-regular-requirements",
-      "fact_sha256": "5a7328fbed80d690936450bd5eab38ab7b803ff48e20e0b9960666cb44f566ad",
+      "fact_sha256": "5df64d2f69eded2d916793033472835f3a74f64c608901f1a317d06395d18d15",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3632,7 +3632,7 @@
       "id": "nu-c-phd-soe-financial_support-requirements-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-c-phd-soe-financial_support-requirements",
-      "fact_sha256": "0601170612b8c338ddae84d1f2150b466b5fc2e2f3c0df9623946c1756c6f844",
+      "fact_sha256": "9817b706631f3b1cbb2f1ec2b25c9b0ae5c96029b0f463c464a920760ff95526",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [
@@ -3699,7 +3699,7 @@
       "id": "nu-c-residency-unconditional-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-c-residency-unconditional",
-      "fact_sha256": "6d8bc5a50a6c75bc60dee4038626567c4af322ab3347cb91a581d69a351bdb01",
+      "fact_sha256": "b68751312216e69262f72aaf6ba2de6f0dbe56fcf3eb2da4d23e064c7eeb5895",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [],
@@ -3741,7 +3741,7 @@
       "id": "nu-c-residency-conditional-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-c-residency-conditional",
-      "fact_sha256": "227f68fa5ea818952d76d671ad97cff716c8dd68b8f12d5885a9572d4fa6bb6a",
+      "fact_sha256": "95d36f308bdf0541dd5825db8c83c64440b73ca86d14f7eb2df7e81192a7c828",
       "source_publication_status": "published",
       "scope": {
         "option_ids": [],

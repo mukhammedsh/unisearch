@@ -73,7 +73,8 @@ class NuAdmissionsTests(unittest.TestCase):
                 self.assertNotEqual(original["conditions"], fact["conditions"], original["id"])
             else:
                 self.assertEqual(original["conditions"], fact["conditions"], original["id"])
-            self.assertEqual(original["provenance"]["original_scope"], fact["provenance"]["original_scope"])
+            self.assertEqual({key: value for key, value in original["provenance"].items() if not key.startswith("original_s")},
+                             fact["provenance"], original["id"])
         self.assertEqual(96, len(self.nu["study_options"]))
         self.assertEqual({"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"},
                          {level for row in self.nu["study_options"] for level in row["levels"]})
@@ -243,7 +244,9 @@ class NuAdmissionsTests(unittest.TestCase):
         for unknown in self.nu["unknowns"]:
             if unknown["index_attributes"]["owner_packet"] in {"a", "b"}:
                 self.assertTrue(unknown["scope"]["option_ids"] or unknown["scope"]["route_ids"], unknown["id"])
-                self.assertTrue(unknown["provenance"]["original_scope"], unknown["id"])
+                research = next(row for row in self.raw["unknowns"] if row["id"] == unknown["id"])
+                self.assertTrue(research["provenance"]["original_scope"], unknown["id"])
+                self.assertEqual("original_scope" in unknown["provenance"], False, unknown["id"])
 
     def test_mba_filter_recognizes_native_awards_without_a_research_doctorate(self):
         rows = universities.list_universities(study_level="MBA", paginate=False)["items"]

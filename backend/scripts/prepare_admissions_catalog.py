@@ -103,12 +103,8 @@ def scope(row, original=None, category_alias=None):
 
 
 def provenance(index, raw, filename):
-    return {
-        "evidence_file": filename,
-        "original_id": raw["id"],
-        "original_scope": raw.get("scope"),
-        "original_source_ids": raw.get("source_ids"),
-    }
+    # The original scope and source IDs stay in the evidence file, where this reference finds them.
+    return {"evidence_file": filename, "original_id": raw["id"]}
 
 
 def _nu_adapter():
