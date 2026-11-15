@@ -188,7 +188,8 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   const coverEl = document.getElementById("detailCover");
   if (coverEl) {
     coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
-    renderCoverCredit(coverEl, universityId);
+    // The photo credit loads after the cover; a failure leaves the cover without a caption instead of breaking the page.
+    renderCoverCredit(coverEl, universityId).catch((error) => console.warn("cover_credit_render_failed", error));
   }
 
   const logoEl = document.getElementById("detailLogo");
