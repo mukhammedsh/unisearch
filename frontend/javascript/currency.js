@@ -360,17 +360,15 @@ restoreFromSessionStorage();
 const sameRates = (left, right) => Object.keys({ ...left, ...right }).every(code => left[code] === right[code]);
 
 // Starts loading live rates for any page and resolves when they arrive or after `waitMs`, whichever comes first.
-// Rates that arrive later and differ announce `currencyChanged`, so prices already on screen are redrawn.
+// Rates that arrive later and differ announce `currencyRatesUpdated`. It is not `currencyChanged`: pages that rebuild on
+// a currency change would reset what the reader is doing, so only views that can redraw prices in place listen to it.
 export function startRatesLoading(waitMs = 1000) {
   const before = memoryRates;
   let waited = false;
   const loading = loadRates().then(() => {
     if (!waited || sameRates(before, memoryRates)) return;
     try {
-      window.dispatchEvent(new CustomEvent("currencyChanged", {
-        detail: { reason: "rates", currency: getPreferredCurrency(), preferredCurrency: getPreferredCurrency(),
-          mode: getCurrencyDisplayMode(), displayMode: getCurrencyDisplayMode() },
-      }));
+      window.dispatchEvent(new CustomEvent("currencyRatesUpdated", { detail: { currency: getPreferredCurrency() } }));
     } catch (e) {
       // ignore event error
     }
