@@ -415,6 +415,7 @@ universities.cost.reference_short: бағдар
 universities.cost.price_unavailable: Бағасы белгісіз
 universities.cost.tuition_scope_note: Тұру және басқа шығындар бөлек төленеді.
 universities.cost.entry: {year} жылғы қабылдау
+universities.cost.max_open: {amount} және одан жоғары
 universities.cost.unavailable: Бағдарламаны нақтылаңыз
 universities.cost.full_budget_unavailable: Салыстыруға келетін толық бюджет жоқ
 universities.cost.reference: Қаржылай көмекке дейінгі анықтамалық баға.

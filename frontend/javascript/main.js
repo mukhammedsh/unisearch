@@ -6,6 +6,7 @@ import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
 import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
+import { startRatesLoading } from "./currency.js";
 import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -764,8 +765,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     initGlobalApiLoadingIndicator();
     initNetworkStatusMonitor();
     registerServiceWorker();
+    // Every page converts prices, so live rates load with the interface text rather than only in the catalog.
+    const ratesPromise = startRatesLoading();
 
-    await i18nInitPromise;
+    await Promise.all([i18nInitPromise, ratesPromise]);
     await loadGlobalLayout();
     installClientRouter();
     syncBodyPageFromRoute();

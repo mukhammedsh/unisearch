@@ -354,6 +354,30 @@ function persistToSessionStorage(data) {
   }
 }
 
+// Live rates cached earlier in this session apply from the first render of every page.
+restoreFromSessionStorage();
+
+const sameRates = (left, right) => Object.keys({ ...left, ...right }).every(code => left[code] === right[code]);
+
+// Starts loading live rates for any page and resolves when they arrive or after `waitMs`, whichever comes first.
+// Rates that arrive later and differ announce `currencyChanged`, so prices already on screen are redrawn.
+export function startRatesLoading(waitMs = 1000) {
+  const before = memoryRates;
+  let waited = false;
+  const loading = loadRates().then(() => {
+    if (!waited || sameRates(before, memoryRates)) return;
+    try {
+      window.dispatchEvent(new CustomEvent("currencyChanged", {
+        detail: { reason: "rates", currency: getPreferredCurrency(), preferredCurrency: getPreferredCurrency(),
+          mode: getCurrencyDisplayMode(), displayMode: getCurrencyDisplayMode() },
+      }));
+    } catch (e) {
+      // ignore event error
+    }
+  });
+  return Promise.race([loading, new Promise(resolve => setTimeout(resolve, waitMs))]).then(() => { waited = true; });
+}
+
 export async function loadRates() {
   if (restoreFromSessionStorage() && memoryRatesSource !== "fallback") {
     return {

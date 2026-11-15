@@ -415,6 +415,7 @@ universities.cost.reference_short: reference
 universities.cost.price_unavailable: Price unavailable
 universities.cost.tuition_scope_note: Living and other costs are additional.
 universities.cost.entry: {year} entry
+universities.cost.max_open: {amount} and above
 universities.cost.unavailable: Check the program
 universities.cost.full_budget_unavailable: No comparable full budget
 universities.cost.reference: Published reference, before aid.

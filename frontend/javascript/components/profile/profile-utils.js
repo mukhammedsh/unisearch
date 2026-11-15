@@ -42,6 +42,21 @@ export const normalizeGpaRaw = (value) => String(value ?? "").trim().replace(/,/
 
 export const normalizeAmountRaw = (value) => String(value ?? "").replace(/\s+/g, "");
 
+// The budget is stored as the applicant entered it; another display currency only shows its rounded conversion,
+// so switching currencies back and forth never changes the stored amount.
+export const budgetInCurrency = (profile, currency) => {
+    const raw = String(profile?.budget ?? "").trim();
+    if (!raw || !Number.isFinite(Number(raw))) return raw;
+    const from = String(profile?.budgetCurrency || "USD").trim().toUpperCase();
+    return from === currency ? Number(raw) : Math.round(convert(Number(raw), from, currency));
+};
+
+// A field value equal to the shown conversion keeps the stored entry; any other value becomes the new entry.
+export const applyBudgetEntry = (profile, value, currency) => {
+    if (String(value ?? "").trim() === String(budgetInCurrency(profile, currency)).trim()) return profile;
+    return { ...profile, budget: value, budgetCurrency: currency };
+};
+
 export const enforceGpaMaxLength = (gpaInput) => {
     if (!gpaInput) return;
     const raw = String(gpaInput.value ?? "");

@@ -22,7 +22,7 @@ import {
   trapFocus,
 } from "../utils.js";
 import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { convert, formatMoney } from "../currency.js";
+import { formatMoney } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { heroIcon, hydrateHeroIcons } from "../icons.js";
@@ -39,6 +39,8 @@ import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile/profile-summary.js";
 import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
+  applyBudgetEntry,
+  budgetInCurrency,
   cloneProfile,
   enforceGpaMaxLength,
   ensureProfileShape,
@@ -551,8 +553,9 @@ export const refreshExamActionButton = (els, state) => {
 export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
 
 export const syncInputsToDraft = (els, state) => {
-    if (els.budgetInput) state.profile.budget = normalizeAmountRaw(els.budgetInput.value);
-    state.profile.budgetCurrency = getBudgetCurrency();
+    if (els.budgetInput) {
+        state.profile = applyBudgetEntry(state.profile, normalizeAmountRaw(els.budgetInput.value), state.budgetInputCurrency || getBudgetCurrency());
+    }
     if (els.gpaInput) state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     if (els.studyModeSelect) state.profile.studyMode = String(els.studyModeSelect.value || "Any").trim() || "Any";
@@ -684,18 +687,8 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     setFieldInvalid(els.gpaInput, false);
     setFieldInvalid(els.examScoreInput, false);
 
-    const activeCurrency = getBudgetCurrency();
-    if (state.profile.budget !== "" && Number.isFinite(Number(state.profile.budget)) && state.profile.budgetCurrency && state.profile.budgetCurrency !== activeCurrency) {
-        const converted = Math.round(convert(Number(state.profile.budget), state.profile.budgetCurrency, activeCurrency));
-        state.profile.budget = converted;
-        state.profile.budgetCurrency = activeCurrency;
-        state.profileStoragePersistent = saveProfile(state.profile);
-        state.savedSignature = stableProfileSignature(state.profile);
-    } else if (!state.profile.budgetCurrency) {
-        state.profile.budgetCurrency = activeCurrency;
-    }
-
-    if (els.budgetInput) els.budgetInput.value = state.profile.budget === "" ? "" : String(state.profile.budget);
+    state.budgetInputCurrency = getBudgetCurrency();
+    if (els.budgetInput) els.budgetInput.value = String(budgetInCurrency(state.profile, state.budgetInputCurrency));
     updateGpaScaleUI(els, state, Number(state.profile.gpaScale) === 5 ? 5 : 4);
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
     if (els.studyModeSelect) els.studyModeSelect.value = state.profile.studyMode || "Any";
@@ -760,8 +753,7 @@ export const saveAllProfileChanges = (els, state) => {
     const gpaCheck = validateGpaInput(els, state);
     if (!gpaCheck.ok) return false;
 
-    state.profile.budget = budgetCheck.value;
-    state.profile.budgetCurrency = getBudgetCurrency();
+    state.profile = applyBudgetEntry(state.profile, budgetCheck.value, state.budgetInputCurrency || getBudgetCurrency());
     state.profile.gpa = gpaCheck.value;
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     state.profile.interests = getInterestsDraft(els);
@@ -771,7 +763,7 @@ export const saveAllProfileChanges = (els, state) => {
     state.profile.studyLevel = String(els.studyLevelSelect?.value || state.profile.studyLevel || "Any").trim() || "Any";
     state.profile = ensureProfileShape(state.profile);
 
-    if (els.budgetInput) els.budgetInput.value = state.profile.budget === "" ? "" : String(state.profile.budget);
+    if (els.budgetInput) els.budgetInput.value = String(budgetInCurrency(state.profile, state.budgetInputCurrency || getBudgetCurrency()));
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
 
     state.profileStoragePersistent = saveProfile(state.profile);
@@ -1538,29 +1530,15 @@ export const bindProfileEvents = (els, state) => {
     };
     listenGlobal(window, "languageChanged", handleLanguageChanged);
 
+    // The field follows the display currency, while the stored budget keeps the amount and currency it was entered in.
     const handleCurrencyChanged = () => {
         const activeCurrency = getBudgetCurrency();
-        const prevCurrency = state.profile.budgetCurrency || "USD";
-        if (prevCurrency !== activeCurrency) {
-            const rawBudget = normalizeAmountRaw(els.budgetInput ? els.budgetInput.value : state.profile.budget);
-            if (rawBudget && !rawBudget.includes(".") && !rawBudget.includes(",")) {
-                const val = Number(rawBudget);
-                if (Number.isFinite(val) && val >= 0) {
-                    const converted = Math.round(convert(val, prevCurrency, activeCurrency));
-                    state.profile.budget = converted;
-                    if (els.budgetInput) els.budgetInput.value = String(converted);
-                }
-            }
-            state.profile.budgetCurrency = activeCurrency;
-            if (state.savedSignature) {
-                const savedProfile = ensureProfileShape(loadProfile());
-                if (savedProfile.budget !== "" && Number.isFinite(Number(savedProfile.budget))) {
-                    savedProfile.budget = Math.round(convert(Number(savedProfile.budget), savedProfile.budgetCurrency || prevCurrency, activeCurrency));
-                }
-                savedProfile.budgetCurrency = activeCurrency;
-                state.profileStoragePersistent = saveProfile(savedProfile);
-                state.savedSignature = stableProfileSignature(savedProfile);
-            }
+        if (els.budgetInput) {
+            const typed = normalizeAmountRaw(els.budgetInput.value);
+            // A typed edit belongs to the currency the field showed when it was typed.
+            if (/^\d*$/.test(typed)) state.profile = applyBudgetEntry(state.profile, typed, state.budgetInputCurrency || activeCurrency);
+            state.budgetInputCurrency = activeCurrency;
+            els.budgetInput.value = String(budgetInCurrency(state.profile, activeCurrency));
         }
         updateBudgetUI(els, state);
         refreshSaveState(els, state);

@@ -1701,10 +1701,12 @@ export function initUniversitiesPage() {
         const maxVal = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition) || currentLimits.max;
         const formattedMin = formatMoney(minVal, pref);
         const formattedMax = formatMoney(maxVal, pref);
+        // At the right edge the filter has no upper limit, so pricier universities still match.
+        const openEnded = maxVal >= currentLimits.max;
         if (el.minCostLabel) el.minCostLabel.textContent = formattedMin;
-        if (el.maxCostLabel) el.maxCostLabel.textContent = formattedMax;
+        if (el.maxCostLabel) el.maxCostLabel.textContent = openEnded ? `${formattedMax}+` : formattedMax;
         if (el.minSlider) el.minSlider.setAttribute("aria-valuetext", formattedMin);
-        if (el.maxSlider) el.maxSlider.setAttribute("aria-valuetext", formattedMax);
+        if (el.maxSlider) el.maxSlider.setAttribute("aria-valuetext", openEnded ? tFormat("universities.cost.max_open", { amount: formattedMax }) : formattedMax);
     }
 
     function fillTrack() {

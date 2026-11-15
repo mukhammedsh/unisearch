@@ -12,6 +12,7 @@ import {
   loadRates,
   setCurrencyDisplayMode,
   setPreferredCurrency,
+  startRatesLoading,
   niceStep,
   niceMax,
 } from '../../frontend/javascript/currency.js';
@@ -291,5 +292,28 @@ describe('currency.js', () => {
     // Verify sessionStorage was populated
     const cached = JSON.parse(mockSessionStorage['unisearch_currency_rates_cache_v1']);
     assert.strictEqual(cached.rates.KZT, 460.0);
+  });
+
+  test('startRatesLoading stops waiting for slow rates and announces them when they change prices', async () => {
+    global.fetch = () => new Promise((resolve) => setTimeout(() => resolve({
+      ok: true,
+      json: async () => ({ rates: { USD: 1.0, KZT: 512.0 }, date: '2026-11-15', source: 'api' }),
+    }), 40));
+    const started = Date.now();
+    await startRatesLoading(5);
+    assert.ok(Date.now() - started < 40, 'the first render does not wait for slow rates');
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 0);
+    await new Promise((resolve) => setTimeout(resolve, 80));
+    const announced = dispatchedEvents.filter((e) => e.type === 'currencyChanged');
+    assert.strictEqual(announced.length, 1);
+    assert.strictEqual(announced[0].detail.reason, 'rates');
+    assert.strictEqual(convert(1, 'USD', 'KZT'), 512.0);
+
+    // Rates that arrive in time are used by the first render without a redraw.
+    mockSessionStorage = {};
+    global.fetch = async () => ({ ok: true, json: async () => ({ rates: { USD: 1.0, KZT: 515.0 }, date: '2026-11-15', source: 'api' }) });
+    await startRatesLoading(1000);
+    assert.strictEqual(convert(1, 'USD', 'KZT'), 515.0);
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 1);
   });
 });

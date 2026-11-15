@@ -418,6 +418,7 @@ universities.cost.reference_short: ориентир
 universities.cost.price_unavailable: Цена неизвестна
 universities.cost.tuition_scope_note: Проживание и другие расходы оплачиваются отдельно.
 universities.cost.entry: Набор {year}
+universities.cost.max_open: {amount} и выше
 universities.cost.unavailable: Уточните программу
 universities.cost.full_budget_unavailable: Нет сопоставимого полного бюджета
 universities.cost.reference: Справочная цена, до финансовой помощи.
