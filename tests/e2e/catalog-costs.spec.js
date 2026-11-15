@@ -81,7 +81,7 @@ test("Imperial shows published tuition when the full budget is unavailable and n
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const price = card.locator('[data-cost-basis="tuition"]');
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £52[\s,]?300/);
-  await expect(price.getByText("Tuition", { exact: true })).toBeVisible();
+  await expect(card.locator(".uni-footer .uni-cost-meta__label")).toHaveText("Tuition");
   await price.click();
   const tooltip = card.locator(".uni-cost-tooltip__content");
   await expect(tooltip).toBeVisible();
@@ -99,7 +99,7 @@ test("Imperial shows published tuition when the full budget is unavailable and n
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £48[\s,]?300/);
-  await expect(price.getByText("Обучение", { exact: true })).toBeVisible();
+  await expect(card.locator(".uni-footer .uni-cost-meta__label")).toHaveText("Обучение");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await card.screenshot({ path: testInfo.outputPath("imperial-subject-tuition-mobile.png") });
 });
@@ -110,7 +110,7 @@ test("catalog price cards respect the declared fee category and label a dated re
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
     localStorage.setItem("unisearch_profile", JSON.stringify({
       _v: 2, major: "Computer Science", studyLevel: "undergraduate",
-      feeStatusContext: "self_reported_international_overseas", intendedEntryCycle: "Fall 2027 entry",
+      selectedAdmissionChoices: { "mit-usa-cambridge": { studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year", studyLevel: "undergraduate", intendedEntryCycle: "Fall 2027 entry", feeStatusContext: "unknown" }, "imperial-college-london-uk": { studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng", studyLevel: "undergraduate", intendedEntryCycle: "Fall 2027 entry", feeStatusContext: "self_reported_international_overseas" } },
     }));
     localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([{ key: "currency_display_mode", value: "original" }]));
   });
@@ -118,7 +118,7 @@ test("catalog price cards respect the declared fee category and label a dated re
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const imperial = page.locator('#universitiesList .uni-card[data-uni-id="imperial-college-london-uk"]');
   const imperialTuition = imperial.locator('[data-cost-basis="tuition"]');
-  await expect(imperialTuition).toContainText(/£[\d,]+ – £[\d,]+/);
+  await expect(imperialTuition).toContainText(/£[\d,]+/);
   await expect(imperial).toContainText("Overseas fee");
   await expect(imperial).toContainText("Undergraduate");
   await expect(imperial).not.toContainText("Master");
@@ -155,7 +155,7 @@ test.describe("compact dual-currency price", () => {
     const tooltip = priceGroup.locator('[role="tooltip"]');
     await expect(price).toHaveAttribute('data-cost-basis', 'tuition');
     await expect(price.locator('.uni-price-val')).toContainText('₸');
-    await expect(price.locator('.uni-cost-secondary')).toHaveText('($66,720)');
+    await expect(card.locator('.uni-footer .uni-cost-secondary')).toHaveText('($66,720)');
     await expect(tooltip).toBeHidden();
     expect(await price.evaluate(element => element.getBoundingClientRect().height)).toBeLessThanOrEqual(100);
     await page.screenshot({ path: testInfo.outputPath('compact-two-currencies-mobile.png') });

@@ -368,7 +368,7 @@ def _context_is_applicable(resolved: dict[str, Any]) -> bool:
     if not isinstance(context, dict):
         return False
     applicability = resolved.get("context_applicability")
-    return isinstance(applicability, dict) and all(
+    return isinstance(applicability, dict) and applicability.get("applicant") != "mismatched" and all(
         applicability.get(axis) == "matched" or (
             axis == "option" and applicability.get(axis) == "not_required" and resolved.get("reading_scope") == "institution_route"
         ) for axis in ("option", "route", "level")
@@ -404,7 +404,7 @@ def _source_rule(fact: dict[str, Any]) -> dict[str, Any]:
         for key in (
             "id", "topic", "topics", "value", "conditions",
             "conditions_and_exceptions", "exceptions", "scope", "period",
-            "publication_status", "review_status", "normalized_status", "checked_at", "content_reviewed_at", "source_ids", "provenance",
+            "publication_status", "review_status", "normalized_status", "checked_at", "source_ids",
         )
         if key in fact
     }

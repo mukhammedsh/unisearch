@@ -77,19 +77,23 @@ class AdmissionsCutoverTests(unittest.TestCase):
                     self.assertIsNone(match["aidAny"])
                     self.assertEqual(match["assessmentRevision"], result["assessmentRevision"])
                     self.assertFalse(match["selectedByUser"])
-                    self.assertAlmostEqual(match["finalScore"], match["preferenceMismatch"])
+                    # Centred sliders express no preference, and nothing else is known here.
+                    self.assertIsNone(match["preferenceMismatch"])
+                    self.assertEqual(match["finalScore"], 0.0)
                     self.assertIsNone(ai_scoring.estimate_university_roi(row, profile)["roi_value"])
 
     def test_canonical_discovery_level_aliases_and_unknown_cost_filters(self):
         for level in ("Bachelor", "undergraduate"):
             result = universities.list_universities(study_level=level, paginate=False)
             self.assertTrue(admissions_catalog.INSTITUTION_IDS.issubset({row["id"] for row in result["items"]}))
-        for filters in ({"max_tuition": 1000000}, {"user_budget": 1000000}):
-            rows = universities.list_universities(paginate=False, **filters)["items"]
-            self.assertEqual({MIT, STANFORD}, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
+        # A price range admits tuition-only universities as partial matches; a budget still needs a full yearly cost.
+        rows = universities.list_universities(paginate=False, max_tuition=1000000)["items"]
+        self.assertEqual(admissions_catalog.INSTITUTION_IDS, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
+        rows = universities.list_universities(paginate=False, user_budget=1000000)["items"]
+        self.assertEqual({MIT, STANFORD}, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
         for filters in ({"funding_type": "grant"}, {"funding_type": "paid"}):
             rows = universities.list_universities(paginate=False, **filters)["items"]
-            self.assertFalse(admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
+            self.assertTrue(admissions_catalog.INSTITUTION_IDS.issubset(row["id"] for row in rows))
 
     def test_saved_per_institution_context_overrides_global_without_mutation(self):
         original = {"study_level": "Master", "applicant_route": "graduate", "intended_entry_cycle": "2028", "fee_status_context": "other",
@@ -114,7 +118,8 @@ class AdmissionsCutoverTests(unittest.TestCase):
                 "studyLevel": "", "applicantRoute": "", "intendedEntryCycle": ""}}))
         resolved = admissions_catalog.resolve_context(MIT, profile)
         self.assertIsNone(resolved["context"]["study_level"])
-        self.assertEqual(resolved["context"]["applicant_route"], "")
+        # The MIT first-year route implies its category, so the blank saved value no longer leaves it empty.
+        self.assertEqual(resolved["context"]["applicant_route"], "first_year")
         self.assertEqual(resolved["context"]["intended_entry_cycle"], "")
         self.assertIsNone(ai_scoring.estimate_uni_chance(universities.get_university_by_id(MIT), profile)["overallChance"])
 

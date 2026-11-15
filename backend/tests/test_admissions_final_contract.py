@@ -53,7 +53,8 @@ class AdmissionsFinalContractTests(unittest.TestCase):
         for key, value in [(key, None) for key in nullable] + [(key, "") for key in empty_text]:
             with self.subTest(key=key, value=value):
                 result = self.resolve({key: value})
-                self.assertIsNone(result["context"][key])
+                # The saved Stanford first-year route implies its applicant category; clearing the request does not clear it.
+                self.assertEqual(result["context"][key], "first_year" if key == "applicant_route" else None)
                 self.assertIsNone(result["assessment"]["overallChance"])
                 if key in {"study_option_id", "application_route_id"}:
                     self.assertIsNone(result["selected_option" if key == "study_option_id" else "selected_route"])

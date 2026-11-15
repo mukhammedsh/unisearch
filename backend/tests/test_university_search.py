@@ -2,6 +2,7 @@ import copy
 import unittest
 from unittest.mock import patch
 
+from app.services import admissions_catalog
 from app.services import search as search_service
 from app.services import universities as uni_service
 
@@ -419,6 +420,42 @@ class UniversitySearchTests(unittest.TestCase):
         result = uni_service.list_universities(q="Oxford", sort="relevance", paginate=False)
         items = result.get("items", [])
         self.assertEqual(["university-of-oxford-uk-oxford"], [x.get("id") for x in items])
+
+    def test_funding_type_filter_keeps_reviewed_institutions_with_unknown_legacy_funding(self):
+        reviewed = set(admissions_catalog.INSTITUTION_IDS)
+        legacy_without_funding = {"technical-university-of-munich-de-munich", "epfl-ch-lausanne"}
+        items, meta = uni_service.get_universities_with_meta()
+        meta_by_id = {u["id"]: m for u, m in zip(items, meta)}
+        for uid in reviewed:
+            # Funding lives in the admissions catalog, so legacy choices say nothing: unknown, not "no".
+            self.assertIsNone(meta_by_id[uid]["has_grant"])
+            self.assertIsNone(meta_by_id[uid]["has_paid"])
+        for funding_type in ("grant", "paid"):
+            with self.subTest(funding_type=funding_type):
+                ids = {row["id"] for row in uni_service.list_universities(funding_type=funding_type, paginate=False)["items"]}
+                self.assertTrue(reviewed.issubset(ids))
+                self.assertTrue(legacy_without_funding.isdisjoint(ids))
+        every_id = {row["id"] for row in uni_service.list_universities(paginate=False)["items"]}
+        self.assertTrue(legacy_without_funding.issubset(every_id))
+
+    def test_format_and_acceptance_filters_keep_reviewed_institutions_with_unknown_values(self):
+        reviewed = set(admissions_catalog.INSTITUTION_IDS)
+        items, meta = uni_service.get_universities_with_meta()
+        meta_by_id = {u["id"]: m for u, m in zip(items, meta)}
+        unknown_format = {uid for uid in reviewed if not meta_by_id[uid]["formats"]}
+        unknown_rate = {uid for uid in reviewed if meta_by_id[uid]["acceptance_rate"] is None}
+        self.assertTrue(unknown_format and unknown_rate)
+
+        def ids(**filters):
+            return {row["id"] for row in uni_service.list_universities(paginate=False, **filters)["items"]}
+
+        online = ids(format="online")
+        self.assertTrue(unknown_format.issubset(online))
+        # A reviewed institution that states its format is still excluded when the format differs.
+        self.assertTrue(reviewed - unknown_format - online)
+        for bounds in ({"min_acceptance": 0}, {"max_acceptance": 100}):
+            with self.subTest(bounds=bounds):
+                self.assertTrue(unknown_rate.issubset(ids(**bounds)))
 
 
 if __name__ == "__main__":

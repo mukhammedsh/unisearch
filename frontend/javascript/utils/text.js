@@ -46,3 +46,16 @@ export function normalizeTranslationKey(value) {
   }
   return key;
 }
+
+// Drops bracketed parts such as "(IELTS)" from a label and collapses the spaces left behind. A single linear pass
+// keeps the cost proportional to the label even with unbalanced brackets, unlike a bracket regular expression.
+export function withoutBracketedText(value) {
+  let out = "";
+  let depth = 0;
+  for (const char of String(value ?? "")) {
+    if (char === "(") depth += 1;
+    else if (char === ")" && depth > 0) depth -= 1;
+    else if (depth === 0) out += char;
+  }
+  return out.replace(/\s+/g, " ").trim();
+}

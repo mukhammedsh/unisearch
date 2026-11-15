@@ -3,6 +3,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { EXAM_CONFIG } from "../../frontend/javascript/utils/config.js";
+
+// Admissions labels come only from the language packs, so the English pack is loaded as in the app.
+global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
+const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+await initI18n();
+setLanguage("eng", { emit: false });
 import { admissionsProgramLabel, admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue, renderStudyOptionOverview } from "../../frontend/javascript/pages/university/admissions-render.js";
 
 const examDefinitions = JSON.parse(await readFile(new URL("../../backend/data/exams.json", import.meta.url), "utf8"));
@@ -628,10 +634,10 @@ test("simple sections show a multi-domain source fact once with all topic headin
   assert.match(html, /<span>Tests · Funding<\/span>/);
   assert.equal((html.match(/data-admissions-fact="private-fact-id"/g) || []).length, 1);
   assert.match(html, /Tests apply; funding needs a separate award/);
-  assert.doesNotMatch(html, /data-admissions-domain="funding"|Official wording remains in its original language|No source records/);
+  assert.doesNotMatch(html, /data-admissions-domain="funding"|Official wording stays in its original language|No source records/);
   const detailed = renderAdmissionsContext(resolved);
   assert.equal((detailed.match(/data-admissions-fact="private-fact-id"/g) || []).length, 2);
-  assert.match(detailed, /Official wording remains in its original language/);
+  assert.match(detailed, /Official wording stays in its original language/);
 });
 
 test("simple exam headings distinguish explicit source names without interpreting IDs or generic rule markers", () => {

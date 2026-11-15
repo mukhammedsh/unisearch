@@ -415,7 +415,7 @@ def _localize_university_payload(
     student_life = u.get("student_life")
     if isinstance(student_life, dict):
         student_life["size"] = _translate_group_value(
-            "campus_size", student_life.get("size"), lang
+            "campus_size", student_size_band(u) or student_life.get("size"), lang
         )
 
     academics = u.get("academics")
@@ -814,6 +814,22 @@ def _search_query_candidates(
             candidates.append(candidate)
 
     return _uniq_non_empty(candidates)
+
+
+# Size bands by total student count. The stored campus-size bucket mixed land area for some universities
+# with student numbers for others; the published student count is known for every catalog university.
+SMALL_STUDENT_LIMIT = 10000
+LARGE_STUDENT_LIMIT = 30000
+
+
+def student_size_band(u: Dict[str, Any]) -> str:
+    """Return small (under 10,000), medium (10,000-30,000) or large (over 30,000), or "" without a count."""
+    count = _num_or_none(u.get("student_count")) if isinstance(u, dict) else None
+    if count is None or count <= 0:
+        return ""
+    if count < SMALL_STUDENT_LIMIT:
+        return "small"
+    return "medium" if count <= LARGE_STUDENT_LIMIT else "large"
 
 
 def _get_nested(u: Dict[str, Any], path: List[str], default: Any = None) -> Any:
@@ -1321,14 +1337,16 @@ def _build_university_meta(
     )
 
     choices = expand_admission_choices(u.get("admission_categories"))
-    has_grant = any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
-    has_paid = any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
+    # Reviewed institutions keep funding facts in the admissions catalog, not in legacy
+    # admission choices, so these flags are unknown (None) rather than False for them.
+    has_grant = None if reviewed else any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
+    has_paid = None if reviewed else any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
     acceptance_rate = _get_university_acceptance_rate(u)
     cost_usd_any = _effective_university_cost_usd(u, "any")
     cost_usd_online = _effective_university_cost_usd(u, "online")
     cost_usd_oncampus = _effective_university_cost_usd(u, "on-campus")
     rank_num = _to_float(u.get("rank")) or 999999.0
-    has_aid = _has_any_aid(u)
+    has_aid = None if reviewed else _has_any_aid(u)
 
     return {
         "name": name_raw,
@@ -1352,7 +1370,7 @@ def _build_university_meta(
         "tags": [_safe_lower(x) for x in raw_tags if x],
         "tags_rus": [_safe_lower(x) for x in tags_rus if x],
         "tags_kaz": tags_kaz,
-        "size": _safe_lower(_get_nested(u, ["student_life", "size"])),
+        "size": student_size_band(u),
         "majors": [_safe_lower(x) for x in majors if x],
         "program_names": [_safe_lower(x) for x in program_names if x],
         "major_exact": [_safe_lower(x) for x in major_exact if x],
@@ -2038,20 +2056,27 @@ def _filter_university_pairs(
             )
         ]
 
+    # Reviewed institutions keep these facts in the admissions catalog, so an empty legacy value means
+    # unknown, not "no": only a known mismatch excludes them, like the funding filter below.
+    def reviewed_unknown(u, value):
+        return value is None and u.get("id") in admissions_catalog.INSTITUTION_IDS
+
     if format:
         fm = _safe_lower(format)
         pairs = [
             (u, meta_row)
             for (u, meta_row) in pairs
             if any(x == fm for x in meta_row.get("formats", []))
+            or reviewed_unknown(u, meta_row.get("formats") or None)
         ]
 
     if funding_type:
         ft = _safe_lower(funding_type)
+        # Only a known "no" excludes; unknown (None) funding availability stays visible.
         if ft == "grant":
-            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant")]
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant", False) is not False]
         elif ft == "paid":
-            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid")]
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid", False) is not False]
 
     if user_budget is not None:
         pairs = [(u, m) for u, m in pairs
@@ -2060,10 +2085,15 @@ def _filter_university_pairs(
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
-            cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
+            basis = cost_basis
+            cost = _catalog_cost_range_usd(u, basis, mode_pref)
+            # A reviewed card without a published total shows its tuition, so the filter reads the same price.
+            if cost is None and basis == "annual_total" and u.get("id") in admissions_catalog.INSTITUTION_IDS:
+                basis = "tuition"
+                cost = _catalog_cost_range_usd(u, basis, mode_pref)
             if cost is None:
                 continue
-            quote = _catalog_costs(u, mode_pref).get(cost_basis) or {}
+            quote = _catalog_costs(u, mode_pref).get(basis) or {}
             if quote.get("intervals") or quote.get("amounts"):
                 from app.services.currency import convert
                 try:
@@ -2083,37 +2113,32 @@ def _filter_university_pairs(
                 if (min_tuition is not None and cost[1] < min_tuition) or (max_tuition is not None and cost[0] > max_tuition):
                     continue
                 quote["filter_match"] = "full" if (min_tuition is None or cost[0] >= min_tuition) and (max_tuition is None or cost[1] <= max_tuition) else "partial"
-            if quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
+            # Tuition alone cannot confirm that a full yearly budget fits the range.
+            if basis != cost_basis or quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
                 quote["filter_match"] = "partial"
             filtered.append((u, m))
         pairs = filtered
+
+    def acceptance_rate_of(u, m):
+        return m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u)
 
     if min_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_gte(
-                m.get("acceptance_rate")
-                if "acceptance_rate" in m
-                else _get_university_acceptance_rate(u),
-                min_acceptance,
-            )
+            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_gte(acceptance_rate_of(u, m), min_acceptance)
         ]
     if max_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_lte(
-                m.get("acceptance_rate")
-                if "acceptance_rate" in m
-                else _get_university_acceptance_rate(u),
-                max_acceptance,
-            )
+            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_lte(acceptance_rate_of(u, m), max_acceptance)
         ]
 
     if size:
         ss = _safe_lower(size)
-        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
+        # Size is a student-count band; a university without a published count stays visible, as in other filters.
+        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") in ("", ss)]
 
     return pairs
 

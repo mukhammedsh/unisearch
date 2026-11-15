@@ -48,7 +48,7 @@
 .settings-header h2 {
   margin: 0;
   font-size: var(--text-lg);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text);
   line-height: var(--leading-tight);
   letter-spacing: -0.01em;
@@ -58,7 +58,7 @@
   margin: var(--space-1) 0 0;
   color: var(--text-muted);
   font-size: var(--text-sm);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
 }
 
@@ -132,7 +132,7 @@
   margin: 0;
   color: var(--text);
   font-size: var(--text-base);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
 }
 
@@ -140,7 +140,7 @@
   margin: var(--space-1) 0 0;
   color: var(--text-muted);
   font-size: var(--text-sm);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
 }
 
@@ -223,7 +223,7 @@
   padding: var(--space-5) 0 var(--space-2);
   color: var(--text-muted);
   font-size: var(--text-xs);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-transform: none;
   letter-spacing: normal;
   line-height: var(--leading-tight);
@@ -238,7 +238,7 @@
   padding: 0 var(--space-8) 0 var(--space-3);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   color: var(--text);
   background-color: var(--surface-soft);
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -254,13 +254,13 @@
 }
 
 .settings-select optgroup {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   background-color: var(--surface-solid);
 }
 
 .settings-select option {
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   background-color: var(--surface-solid);
   color: var(--text);
 }
@@ -281,7 +281,7 @@
   height: 36px;
   padding: 0 var(--space-3);
   font-size: var(--text-sm);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   color: var(--text);
   background: var(--surface-soft);
   border: none;
@@ -308,7 +308,7 @@
 
 .settings-attribution {
   font-size: var(--text-xs);
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   color: var(--text-muted);
   padding: var(--space-4) 0 0;
   display: flex;

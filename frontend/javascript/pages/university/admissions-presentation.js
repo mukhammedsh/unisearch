@@ -1,15 +1,14 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
+import { formatPrice, formatPriceRange } from "../../currency.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
-import { admissionsCycleLabel, admissionDeadlineTitle, admissionWindowName, renderAdmissionsAssessment, renderAdmissionsContext, renderAdmissionsValue } from "./admissions-render.js";
+import { admissionsCycleLabel, admissionDeadlineTitle, admissionWindowName, renderAdmissionsContext, renderAdmissionsUnknowns, renderAdmissionsValue } from "./admissions-render.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
-import { heroIcon } from "../../icons.js";
-import { renderTermList, renderTermsFor } from "./admissions-glossary.js";
+import { glossaryTerms, renderTermList } from "./admissions-glossary.js";
 import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution } from "./admissions-status.js";
 
 const label = key => t(`university.admissions.reading.${key}`);
-const locale = () => ({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" })[getCurrentLanguage()];
 const period = row => typeof row.period === "object" ? row.period?.label || "" : row.period || "";
 
 export function formatPublishedDate(value) {
@@ -43,55 +42,150 @@ function linked(row, resolved) {
     || row.scope?.route_ids?.some(id => routes.includes(id));
 }
 
-function links(row, resolved) {
-  const seen = new Set();
-  return (resolved.sources || []).filter(source => row.source_ids?.includes(source.id)).map(source => {
-    try {
-      const url = new URL(source.url);
-      if (!["https:", "http:"].includes(url.protocol) || url.username || url.password) return "";
-      if (seen.has(url.href)) return "";
-      seen.add(url.href);
-      return `<a href="${escapeHtmlAttr(url.href)}" title="${escapeHtmlAttr(translateFactSource(source.title || "", source.title || ""))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label("official_source"))}</a>`;
-    } catch { return ""; }
-  }).filter(Boolean).join("");
+function safeSourceUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return ["https:", "http:"].includes(url.protocol) && !url.username && !url.password ? url.href : "";
+  } catch { return ""; }
 }
 
-function sourceNote(row, resolved, { omitYearless = false } = {}) {
-  const value = period(row) || row.scope?.cycle || "";
-  const labels = {
-    "Current published policy; cycle not specified": "current_policy",
-    "Recurring first-year dates; page does not specify entry year": "yearless_period",
+// Numbers the official sources of one reading area in citation order. Sources sharing a URL share a number,
+// so every excerpt marker and the area's source list agree.
+function createSourceRegistry(resolved) {
+  const entries = new Map();
+  const cite = ids => {
+    const cited = [];
+    for (const id of ids || []) {
+      const source = (resolved.sources || []).find(item => item.id === id);
+      const url = safeSourceUrl(source?.url);
+      if (!url) continue;
+      let entry = entries.get(url);
+      if (!entry) entries.set(url, entry = { number: entries.size + 1, url, titles: new Set(), dates: new Set() });
+      if (source.title) entry.titles.add(translateFactSource(source.title, source.title));
+      if (source.checked_at) entry.dates.add(source.checked_at);
+      if (!cited.includes(entry)) cited.push(entry);
+    }
+    return cited.sort((left, right) => left.number - right.number);
   };
-  const entry = value.match(/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2})|\/\d{2})?) ?entry$/);
-  const translated = labels[value] ? label(labels[value]) : entry ? admissionsCycleLabel(value) : value;
-  const simple = labels[value] || entry || /^[\d–—‑\s-]+$/.test(value);
-  return `<div class="admissions-reading__source">${simple && value && !(omitYearless && labels[value] === "yearless_period") ? `<span>${escapeHtml(translated)}</span>` : ""}${links(row, resolved)}${value && !simple ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_period"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p>${escapeHtml(value)}</p></details>` : ""}</div>`;
+  return { cite, entries: () => [...entries.values()] };
+}
+
+const sourceTitle = entry => [...entry.titles].join(" · ") || new URL(entry.url).hostname;
+
+function markers(row, resolved) {
+  const cited = resolved.readingSources?.cite(row.source_ids) || [];
+  // The numbers are named as sources, so a reader can tell they point to the official pages listed under the tab.
+  return cited.length ? `<span class="admissions-reading__refs"><span class="admissions-reading__refs-label">${escapeHtml(t(`university.ux2.sources.${cited.length > 1 ? "many" : "one"}`))}</span>${cited.map(entry => `<a class="admissions-reading__ref" href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtmlAttr(tFormat("university.admissions.reading.source_marker", { number: entry.number, title: sourceTitle(entry) }))}" title="${escapeHtmlAttr(sourceTitle(entry))}" data-source-ref="${entry.number}">${entry.number}</a>`).join("")}</span>` : "";
+}
+
+// Official pages can share one title (for example a first-year and a transfer "Application" page). Those entries get the
+// URL path segments that differ within their group, so the reader can tell the pages apart; unique titles stay as they are.
+export function sourceDistinguishingHints(entries) {
+  const groups = new Map();
+  for (const entry of entries) {
+    const title = sourceTitle(entry);
+    groups.set(title, [...(groups.get(title) || []), entry]);
+  }
+  const hints = new Map();
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    const parsed = group.map(entry => {
+      const url = new URL(entry.url);
+      const segments = url.pathname.split("/").filter(Boolean).map(part => {
+        try { return decodeURIComponent(part).replace(/\.html?$/i, ""); } catch { return part.replace(/\.html?$/i, ""); }
+      });
+      return { entry, host: url.hostname.replace(/^www\./, ""), segments, query: url.search };
+    });
+    const common = parsed[0].segments.filter(segment => parsed.every(item => item.segments.includes(segment)));
+    for (const item of parsed) {
+      const distinct = item.segments.filter(segment => !common.includes(segment));
+      const path = (distinct.length ? distinct : item.segments.slice(-1)).join(" / ");
+      const sameHost = parsed.every(other => other.host === item.host);
+      const hint = [sameHost ? "" : item.host, path, item.query].filter(Boolean).join(" ");
+      hints.set(item.entry, hint);
+    }
+  }
+  return hints;
+}
+
+function renderSourceList(registry) {
+  const entries = registry.entries();
+  if (!entries.length) return "";
+  const hints = sourceDistinguishingHints(entries);
+  const checked = escapeHtml(t("university.admissions.checked"));
+  const dateNote = dates => `<span class="admissions-reading__note" data-source-checked>${checked}: ${[...dates].map(escapeHtml).join(", ")}</span>`;
+  // One shared check date is stated once for the list instead of on every line.
+  const allDates = new Set(entries.flatMap(entry => [...entry.dates]));
+  const shared = entries.length > 1 && allDates.size === 1 && entries.every(entry => entry.dates.size === 1);
+  return `<section class="admissions-reading__sources" data-reading-sources><h3>${escapeHtml(tFormat("university.admissions.reading.official_sources_count", { count: entries.length }))}</h3>${shared ? dateNote(allDates) : ""}<ol class="admissions-reading__source-list">${entries.map(entry => `<li value="${entry.number}" data-source-number="${entry.number}"><a href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceTitle(entry))}</a>${hints.get(entry) ? `<span class="admissions-reading__note" data-source-hint>${escapeHtml(hints.get(entry))}</span>` : ""}${entry.dates.size && !shared ? dateNote(entry.dates) : ""}</li>`).join("")}</ol></section>`;
+}
+
+const PERIOD_LABELS = {
+  "Current published policy; cycle not specified": "current_policy",
+  "Recurring first-year dates; page does not specify entry year": "yearless_period",
+};
+
+// Research wording that says the source gives no entry year; the applicant only needs to know the year is not stated.
+const YEARLESS_WORDING = /\b(?:year not stated|cycle not (?:specified|separately established)|no (?:application )?year|yearless|does not (?:state|specify) (?:entry |cycle )?year|undated)\b/i;
+const RECURRING_WORDING = /\brecurring\b/i;
+
+// The applicant-facing reading of a period label: an entry cycle, an academic year or a "year not stated" note.
+// Other research wording (process notes, date lists already shown in the value) stays in the full source records.
+export function plainPeriodLabel(value, kind = "") {
+  const text = String(value || "").trim();
+  if (!text) return "";
+  if (PERIOD_LABELS[text]) return label(PERIOD_LABELS[text]);
+  if (/^(Fall|Spring|Summer|Winter)? ?(20\d{2}(?:-(?:\d{2}|20\d{2})|\/\d{2})?) ?entry$/.test(text)) return admissionsCycleLabel(text);
+  if (/^[\d–—‑\s-]+$/.test(text)) return text;
+  const cycle = text.match(/^(?:Effective |First entry )?((?:Fall|Spring|Summer|Winter) 20\d{2})(?: entry)?\b/);
+  if (cycle) return admissionsCycleLabel(`${cycle[1]} entry`);
+  const year = text.match(/^(?:Catalog )?(20\d{2}-(?:\d{2}|20\d{2}))\b/);
+  if (year) return year[1];
+  if (YEARLESS_WORDING.test(text) || RECURRING_WORDING.test(text) || kind === "yearless_policy") {
+    return label(RECURRING_WORDING.test(text) ? "yearless_period" : "current_policy");
+  }
+  return "";
+}
+
+// The published period as plain muted text in the applicant's language; the original wording remains in the full source records.
+function periodNote(row, { omitYearless = false } = {}) {
+  const value = period(row || {}) || row?.scope?.cycle || "";
+  const plain = plainPeriodLabel(value, row?.period?.kind);
+  if (!plain || (omitYearless && plain === label("yearless_period"))) return "";
+  return `<span data-source-period>${escapeHtml(plain)}</span>`;
+}
+
+function sourceNote(row, resolved, { omitYearless = false, omitPeriod = false } = {}) {
+  const content = `${omitPeriod ? "" : periodNote(row, { omitYearless })}${markers(row, resolved)}`;
+  return content ? `<div class="admissions-reading__source">${content}</div>` : "";
 }
 
 function sourceSummaries(rows, resolved, section, options = {}) {
-  const seen = new Set();
+  const seen = resolved.readingSeen || new Set();
   // The CS MS policy includes the central English minima and exemptions; retain the shared record in full references.
   const csEnglish = section === "requirements" && rows.some(row => row.id === "engineering-doerr-evidence:cs-ms-tests-and-english-policy"
     && reviewed(row) && row.scope?.option_ids?.includes(resolved.selected_option?.id));
-  const blocks = rows.filter(row => !(csEnglish && row.id === "engineering-doerr-evidence:english-proficiency" && reviewed(row)))
+  const sourceUrls = row => (row.source_ids || []).map(id => safeSourceUrl((resolved.sources || []).find(item => item.id === id)?.url) || `id:${id}`).sort();
+  const excerpts = rows.filter(row => !(csEnglish && row.id === "engineering-doerr-evidence:english-proficiency" && reviewed(row)))
     .filter(row => evidenceReviewed(row) || needsResolution(row)).filter(row => !row.scope?.levels?.length || !resolved.selected_option?.levels?.length
     || row.scope.levels.some(level => resolved.selected_option.levels.includes(level))).sort((left, right) => Number(linked(right, resolved)) - Number(linked(left, resolved))).map(row => {
     const value = row.value || {};
     const values = typeof value === "string" ? [value] : [JSON.stringify(value), value.full_course_specific_academic_requirement_and_exceptions, value.A_level_rules_by_option_panel, value.IB_rules_by_option_panel, ...Object.values(value)].flat();
-    const texts = [...new Set(values.filter(value => typeof value === "string"))].map(value => [value, translateAdmissionSummary(value, { section })]).filter(([, text]) => text).filter(([value, text]) => {
-      const sourceUrls = (row.source_ids || []).map(id => {
-        const source = (resolved.sources || []).find(item => item.id === id);
-        try { return new URL(source.url).href; } catch { return `id:${id}`; }
-      }).sort();
-      const key = JSON.stringify([value, text, row.scope, row.conditions, row.conditions_and_exceptions, row.exceptions, sourceUrls, row.period, row.publication_status, row.review_status]);
+    const status = evidenceReviewed(row) ? "reviewed" : reviewNeedsResolution(row) ? "conflict" : "unverified";
+    // An excerpt that would read exactly like one already shown on this tab (same text, sources, period and status) is printed once.
+    const texts = [...new Set([...new Set(values.filter(item => typeof item === "string"))].map(item => translateAdmissionSummary(item, { section })).filter(Boolean))].filter(text => {
+      const key = JSON.stringify([text, sourceUrls(row), period(row) || row.scope?.cycle || "", status]);
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-    const conflict = reviewNeedsResolution(row);
-    return texts.length ? `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${!evidenceReviewed(row) ? `<p class="admissions-context__note" ${conflict ? "data-summary-conflict" : "data-summary-unverified"}>${escapeHtml(label(conflict ? "source_conflict" : "source_unverified"))}</p>` : ""}${texts.map(([, text]) => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, options)}</div>` : "";
+    return texts.length ? { row, texts, status, period: periodNote(row, options) } : null;
   }).filter(Boolean);
-  return blocks.length ? `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${blocks.join("")}</section>` : "";
+  if (!excerpts.length) return "";
+  // A period shared by every excerpt of the section is stated once under its heading; differing periods stay beside their excerpts.
+  const sharedPeriod = excerpts.length > 1 && excerpts[0].period && excerpts.every(item => item.period === excerpts[0].period) ? excerpts[0].period : "";
+  const blocks = excerpts.map(({ row, texts, status }) => `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${status !== "reviewed" ? `<p class="admissions-context__note" ${status === "conflict" ? "data-summary-conflict" : "data-summary-unverified"}>${escapeHtml(label(status === "conflict" ? "source_conflict" : "source_unverified"))}</p>` : ""}${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, { ...options, omitPeriod: Boolean(sharedPeriod) })}</div>`);
+  return `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${sharedPeriod ? `<div class="admissions-reading__source" data-section-period>${sharedPeriod}</div>` : ""}${blocks.join("")}</section>`;
 }
 
 function aidSummary(rows, resolved) {
@@ -106,7 +200,7 @@ function aidSummary(rows, resolved) {
     .map(([stage, name]) => [escapeHtml(name), escapeHtml(formatPublishedDate(process.value.priority_due[stage]))]);
   const text = value => escapeHtml(translateAdmissionSummary(value) || label("summary_translation_missing"));
   const documents = process.value.required.filter(item => item !== "FAFSA for federal-aid eligible domestic applicants").map(item =>
-    item === "CSS Profile" ? `${escapeHtml(label("aid_css"))}${international ? ` ${escapeHtml(tFormat("university.admissions.reading.aid_css_code", { code: international.value.css_code }))}` : ""}${renderTermList(["css_profile"])}` : text(item));
+    item === "CSS Profile" ? `${escapeHtml(label("aid_css"))}${international ? ` ${escapeHtml(tFormat("university.admissions.reading.aid_css_code", { code: international.value.css_code }))}` : ""}${renderTermList(["css_profile"], resolved.readingTerms)}` : text(item));
   const timeline = dates.length ? `${table(label("aid_priority_dates"), [label("window"), label("aid_by")], dates)}<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : "";
   return `<section class="admissions-reading__section" data-aid-summary><h3>${escapeHtml(label("aid_title"))}</h3><p>${escapeHtml(label("aid_explained"))}</p>
     <h4>${escapeHtml(label("aid_documents"))}</h4><ol class="admissions-catalog__items">${documents.map(document => `<li>${document}</li>`).join("")}</ol>
@@ -163,7 +257,7 @@ function deadlines(rows, resolved) {
         escapeHtml(admissionDeadlineTitle(event)), escapeHtml(formatPublishedDate(event.deadline)),
         escapeHtml([event.time, event.timezone].filter(Boolean).join(" · ") || label("unknown")),
       ]);
-      return entries.length ? `<section class="admissions-reading__section" data-published-deadline-array>${table(t("university.admissions.catalog.domain.deadlines"), [label("window"), label("date"), label("local_time")], entries)}${renderTermsFor(events.map(event => event.name))}${sourceNote(row, resolved)}</section>` : "";
+      return entries.length ? `<section class="admissions-reading__section" data-published-deadline-array>${table(t("university.admissions.catalog.domain.deadlines"), [label("window"), label("date"), label("local_time")], entries)}${renderTermList(glossaryTerms(events.map(event => event.name)), resolved.readingTerms)}${sourceNote(row, resolved)}</section>` : "";
     }
     if (row.value?.windows?.some(window => window.entry && window.date)) {
       const entries = row.value.windows.filter(window => window.entry && window.date).map(window => [
@@ -187,7 +281,7 @@ function deadlines(rows, resolved) {
       if (!deadline?.date) return "";
       const entries = [[escapeHtml(label(medicine ? "ucas_medicine" : "ucas_equal_consideration")), escapeHtml(formatPublishedDate(deadline.date)), escapeHtml([deadline.time, deadline.timezone].filter(Boolean).join(" · "))]];
       if (row.value.submission_opens) entries.unshift([escapeHtml(label("submission_opens")), escapeHtml(formatPublishedDate(row.value.submission_opens)), ""]);
-      return `<section class="admissions-reading__section" data-ucas-dates>${table(label("application_dates"), [label("window"), label("date"), label("local_time")], entries)}${renderTermList(["ucas"])}${sourceNote(row, resolved)}</section>`;
+      return `<section class="admissions-reading__section" data-ucas-dates>${table(label("application_dates"), [label("window"), label("date"), label("local_time")], entries)}${renderTermList(["ucas"], resolved.readingTerms)}${sourceNote(row, resolved)}</section>`;
     }
     const windows = row.value?.windows;
     if (!Array.isArray(windows)) return "";
@@ -199,7 +293,7 @@ function deadlines(rows, resolved) {
       : tests.map(window => [escapeHtml(windowName(window.round)), escapeHtml(window.tests.map(test => test === "English proficiency" ? label("language") : test).join(", ")), escapeHtml(formatPublishedDate(window.latest))]);
     const recurring = !row.scope?.cycle && !/20\d{2}/.test(JSON.stringify(windows)) && !recurringShown;
     if (recurring) recurringShown = true;
-    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermsFor(rounds.map(window => window.name), tests.map(window => window.round))}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved, { omitYearless: recurringShown })}</section>`;
+    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermList(glossaryTerms(rounds.map(window => window.name), tests.map(window => window.round)), resolved.readingTerms)}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved, { omitYearless: recurringShown })}</section>`;
   }).join("");
 }
 
@@ -209,7 +303,7 @@ function finance(rows, resolved) {
     .filter(row => reviewed(row) && typeof row.value?.currency === "string" && Number.isFinite(row.value?.total_before_aid));
   const budgetHtml = budgets.map(row => {
     const value = row.value;
-    const money = amount => `${new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(amount)} ${escapeHtml(value.currency)}`;
+    const money = amount => escapeHtml(formatPrice(amount, value.currency));
     const items = ["tuition", "student_life_fee", "housing_estimate", "food_estimate", "materials_estimate", "personal_estimate"]
       .filter(key => Number.isFinite(value[key]));
     const insurance = value.health_insurance === "Additional required coverage, not in this total" ? label("insurance_not_included") : value.health_insurance;
@@ -246,10 +340,11 @@ export function publishedTuitionQuotes(row, optionId) {
   if (Array.isArray(value?.quotes)) return value.quotes.filter(quote => quote.basis === "tuition" && Number.isFinite(quote.amount) && quote.amount >= 0 && quote.currency
     && (!quote.option_ids?.length || quote.option_ids.includes(optionId))).map(quote => ({
     feeStatus: translateAdmissionSummary(quote.fee_status) || quote.fee_status || "",
-    campus: translateAdmissionSummary(quote.campus) || quote.campus || "", currency: quote.currency,
+    campus: translateAdmissionSummary(quote.campus) || quote.campus || "", currency: "",
     studyYears: quote.study_years?.length ? tFormat("universities.cost.study_years", { years: quote.study_years.join(", ") }) : "",
     reference: quote.reference_only ? t("universities.cost.reference_short") : "",
-    amounts: [`${new Intl.NumberFormat(locale(), { maximumFractionDigits: 2 }).format(quote.amount)} ${billingPeriodLabel(quote.billing_period)}`.trim()],
+    // The amount already names its currency in the reader's display setting.
+    amounts: [`${formatPrice(quote.amount, quote.currency)} ${billingPeriodLabel(quote.billing_period)}`.trim()],
     period: String(quote.source_year || (/20\d{2}/.test(quote.period_label || "") ? quote.period_label : "")) || label("unknown"),
   }));
   if (!row.value?.course_page_tuition_fees) return [];
@@ -283,10 +378,10 @@ function courseCosts(rows, resolved) {
 function livingReferences(rows, resolved) {
   return rows.filter(reviewed).filter(row => row.value?.average_9months && Number.isFinite(row.value.private_sector_total_12months)).map(row => {
     const value = row.value;
-    const money = amount => `${new Intl.NumberFormat(locale()).format(amount)} ${escapeHtml(value.currency)}`;
+    const money = amount => escapeHtml(formatPrice(amount, value.currency));
     const range = value.average_9months;
     if (!Number.isFinite(range.min) || !Number.isFinite(range.max)) return "";
-    return `<section class="admissions-reading__section" data-living-reference><h3>${escapeHtml(label("living_reference"))} · ${escapeHtml(translateAdmissionSummary(value.cycle) || value.cycle)}</h3><dl class="admissions-reading__costs"><div><dt>${escapeHtml(label("living_nine_months"))}</dt><dd>${money(range.min)}–${money(range.max)}</dd></div><div><dt>${escapeHtml(label("living_twelve_months"))}</dt><dd>${money(value.private_sector_total_12months)}</dd></div></dl><p>${escapeHtml(translateAdmissionSummary(value.exclusions) || value.exclusions)}</p><p class="admissions-reading__note">${escapeHtml(label("different_cost_periods"))}</p>${sourceNote(row, resolved)}</section>`;
+    return `<section class="admissions-reading__section" data-living-reference><h3>${escapeHtml(label("living_reference"))} · ${escapeHtml(translateAdmissionSummary(value.cycle) || value.cycle)}</h3><dl class="admissions-reading__costs"><div><dt>${escapeHtml(label("living_nine_months"))}</dt><dd>${escapeHtml(formatPriceRange(range.min, range.max, value.currency))}</dd></div><div><dt>${escapeHtml(label("living_twelve_months"))}</dt><dd>${money(value.private_sector_total_12months)}</dd></div></dl><p>${escapeHtml(translateAdmissionSummary(value.exclusions) || value.exclusions)}</p><p class="admissions-reading__note">${escapeHtml(label("different_cost_periods"))}</p>${sourceNote(row, resolved)}</section>`;
   }).join("");
 }
 
@@ -298,7 +393,9 @@ function scholarshipRounds(rows, resolved) {
   }).join("");
 }
 
-export function renderApplicantSection(resolved, domains, { includeAssessment = true } = {}) {
+export function renderApplicantSection(source, domains) {
+  // Each tab's reading area numbers its own sources, explains each term once and prints each identical excerpt once.
+  const resolved = { ...source, readingSources: createSourceRegistry(source), readingTerms: new Set(), readingSeen: new Set() };
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
   const referenceIds = new Set(domains.includes("requirements") ? resolved.fact_groups?.reference || [] : []);
   for (const id of referenceIds) ids.add(id);
@@ -316,12 +413,18 @@ export function renderApplicantSection(resolved, domains, { includeAssessment = 
   const highlights = mode === "finance" ? `<p class="admissions-reading__note" data-finance-scope>${escapeHtml(label("cost_scope"))}</p>${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
     : mode === "dates" ? `${tba ? `<section class="admissions-reading__section" data-dates-tba><p>${escapeHtml(label("dates_tba"))}</p><p>${escapeHtml(label("dates_tba_next"))}</p>${sourceNote(tbaSource, resolved)}</section>` : ""}${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines", { omitYearless: hasYearlessDates })}`
       : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
-  const references = facts => renderAdmissionsContext({ ...resolved, facts }, {
+  const references = facts => renderAdmissionsContext({ ...source, facts }, {
     domains: [...domains, ...(referenceIds.size ? ["reference"] : [])], includeAssessment: false, includeUnknowns: false, includeHistory: false,
-    includeSourceNote: false, presentation: "simple",
+    includeSourceNote: false, includeReferenceScopeNote: false, presentation: "simple",
   });
-  const mainRecords = highlights && mode !== "requirements" && focused.length
-    ? `<details class="admissions-reading__references"><summary>${escapeHtml(label("full_records"))}</summary>${references(focused)}</details>`
-    : focused.length || !general.length && !tba ? references(focused) : "";
-  return `<div class="admissions-reading">${mode === "requirements" && includeAssessment ? renderAdmissionsAssessment(resolved, { presentation: "simple", recordDomains: [...domains, ...(referenceIds.size ? ["reference"] : [])] }) : ""}${highlights}${mode === "finance" && !focused.some(row => row.value?.funding_program) ? `<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>` : ""}${mainRecords}${general.length ? `<details class="admissions-reading__references" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}${mode === "requirements" ? renderAdmissionsContext({ ...resolved, facts: [], fact_groups: {} }, { domains: [], includeAssessment: false, includeSourceNote: false, includeHistory: false, presentation: "simple" }) : ""}</div>`;
+  const unknowns = mode === "requirements" ? source.unknowns || [] : [];
+  const count = focused.length + general.length + unknowns.length;
+  const hasReading = highlights.includes("admissions-reading__section");
+  // Every full record, the additional references and the unresolved information sit behind one disclosure, with one language note.
+  const records = count ? `<details class="admissions-reading__references" data-all-records ${hasReading ? "" : "open"}><summary>${escapeHtml(label("full_records"))} (${count})</summary>
+    <p class="admissions-reading__note">${escapeHtml(label("reference_scope_note"))}</p>${focused.length ? references(focused) : ""}
+    ${general.length ? `<details class="admissions-reading__references" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}
+    ${unknowns.length ? renderAdmissionsUnknowns(source) : ""}</details>`
+    : tba ? "" : references([]);
+  return `<div class="admissions-reading">${highlights}${mode === "finance" && !focused.some(row => row.value?.funding_program) ? `<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>` : ""}${renderSourceList(resolved.readingSources)}${records}</div>`;
 }

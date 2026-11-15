@@ -20,7 +20,7 @@ async function openPublishedChecks(page) {
   const resolved = await evaluated.json();
   expect(resolved.context.study_option_id).toBe(PROGRAM);
   expect(resolved.context.application_route_id).toBe(ROUTE);
-  const analysis = page.locator("#detailRequirements .admissions-catalog__assessment");
+  const analysis = page.locator("#detailRequirements [data-requirements-match]");
   await openDisclosureParents(analysis);
   await expect(analysis).toBeVisible();
   await expect(analysis).toContainText("not an admission probability");
@@ -36,8 +36,8 @@ test.describe("UniChance Calculator Validation", () => {
     expect(assessment.chancePercent).toBeNull();
     expect(assessment.reason).toBe("missing_evidence");
     await expect(analysis).toContainText(/No requirements-match percentage is available|Add the missing evidence/i);
-    await expect(analysis.locator(":scope > p").first()).not.toContainText(/\b0%/);
-    await expect(analysis.locator(":scope > p > strong")).toHaveCount(0);
+    await expect(analysis.locator(".admissions-key-facts__value")).not.toContainText(/\b0%/);
+    await expect(analysis.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   });
 
   test("user with strong profile sees positive requirements fit", async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe("UniChance Calculator Validation", () => {
     expect(assessment.chanceAvailable).toBe(true);
     expect(assessment.chancePercent).toBe(100);
     expect(assessment.scoreMeaning).toBe("published_requirements_met_percent");
-    await expect(analysis.locator(":scope > p > strong")).toHaveText("100%");
+    await expect(analysis.locator(".admissions-key-facts__value")).toContainText("(100%)");
     await expect(analysis).not.toContainText("No requirements-match percentage is available");
     for (const kind of ["academic_requirement", "language_requirement"]) {
       const check = assessment.activeChoice.details.checks.find(item => item.kind === kind);
@@ -61,6 +61,6 @@ test.describe("UniChance Calculator Validation", () => {
     await openDisclosureParents(sat);
     await expect(sat).toBeVisible();
     await expect(sat).toContainText("1240");
-    expect(await analysis.locator(":scope > p > strong").evaluate(node => node.getBoundingClientRect().width)).toBeGreaterThan(0);
+    expect(await analysis.locator(".admissions-key-facts__value").evaluate(node => node.getBoundingClientRect().width)).toBeGreaterThan(0);
   });
 });

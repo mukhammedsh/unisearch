@@ -4,6 +4,8 @@ import { test } from "node:test";
 
 const {
   GPA_MAX_CHARS,
+  applyBudgetEntry,
+  budgetInCurrency,
   cloneProfile,
   enforceGpaMaxLength,
   ensureProfileShape,
@@ -154,4 +156,18 @@ test("formatExamValidationToast formats structured error messages for exam valid
 
   const objectDetailToast = formatExamValidationToast("SAT", { message: "Object error" }, cfgMock);
   assert.ok(objectDetailToast.includes("Object error"));
+});
+
+test("a budget keeps the amount and currency it was entered in when the display currency changes", () => {
+  const entered = { budget: "10000000", budgetCurrency: "KZT" };
+  const inDollars = budgetInCurrency(entered, "USD");
+  assert.equal(inDollars, Math.round(10000000 / 450));
+  // Saving the shown conversion unchanged keeps the original entry, so switching back shows the exact amount.
+  const kept = applyBudgetEntry(entered, String(inDollars), "USD");
+  assert.equal(kept, entered);
+  assert.equal(budgetInCurrency(kept, "KZT"), 10000000);
+  // A new amount typed in the shown currency becomes the new entry.
+  assert.deepEqual(applyBudgetEntry(entered, "25000", "USD"), { budget: "25000", budgetCurrency: "USD" });
+  assert.deepEqual(applyBudgetEntry(entered, "", "USD"), { budget: "", budgetCurrency: "USD" });
+  assert.equal(budgetInCurrency({ budget: "", budgetCurrency: "KZT" }, "USD"), "");
 });

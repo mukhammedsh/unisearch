@@ -90,7 +90,7 @@ guide.tags.standard.over_budget: «Over Budget» (Бюджеттен асып т
 guide.tags.standard.over_budget_aid: «Over Budget • Aid Available» белгісі жарияланған құнның бюджетіңізден асатынын, сонымен қатар қаржыландыру мүмкіндігінің бар екенін білдіреді. Алайда қаржылық көмектің түрі мен мөлшері нақтыланбаған.
 guide.tags.ai_note: AI белгілері тек {fit} сұрыптау режимінде ғана көрсетіледі, себебі олардың артындағы сандық көрсеткіштерді тек осы режим есептейді.
 guide.tags.ai_title: AI белгілері
-guide.tags.ai.conditional: «Шартты / Емтихан қажет» (Conditional / Exam Needed) белгісі профиліңізде міндетті емтихан нәтижесі әлі жоқ таңдауды көрсетеді: мүмкіндік бар, бірақ тиісті құжат жетіспейді.
+guide.tags.ai.conditional: Емтихан нәтижесі керек: профильде міндетті емтихан нәтижесі жоқ. Ең төменгі талапты тексеру үшін оны қосыңыз.
 guide.tags.ai.your_vibe: «Your Vibe» (Үйлесімділік деңгейі өте жоғары) белгісі қалаулардың өте жоғары деңгейде сәйкес келетінін білдіреді — төрт параметр бойынша сәйкессіздік 0,14 немесе одан аз.
 guide.tags.ai.top_match: «Good Match» (Жақсы сәйкестік) — алдыңғысынан сәл өзгешелеу нұсқа: сәйкессіздік 0,22 немесе одан аз; бұл жақсы нәтиже, бірақ «Your Vibe» деңгейіне жетпейді.
 guide.tags.ai.requirements_met: «Requirements Met» (Талаптар орындалды) — жарияланған академиялық және тілдік ең төменгі талаптардың барлығы сіздің деректеріңізге сай келеді деген сөз; дегенмен, қабылдаудың басқа шарттары да қолданылуы мүмкін.
@@ -262,9 +262,6 @@ profile.gpa_must_number: GPA санмен енгізілуі керек
 profile.gpa_range: GPA {min} мен {max} аралығында болуы керек
 profile.gpa_saved: GPA сақталды
 profile.gpa_step: GPA {step} қадамымен енгізілуі керек
-profile.hint.budget_range: Аралығы: 0–{max}
-profile.hint.family_income_optional: Осы құрылғыда ғана сақталатын міндетті емес анықтамалық жазба. UniFit пен талаптарды автоматты салыстыруда қолданылмайды және көмекті болжамайды. Мыңдықтарды бос орынмен, бөлшек бөлікті үтірмен не нүктемен бөліңіз.
-profile.family_income_invalid: 0 мен 1 000 000 000 000 аралығындағы соманы енгізіңіз.
 profile.hint.low_budget_grant: Бюджет {amount}-тан төмен. Тек грант нұсқасын таңдауға болады.
 profile.hint.low_budget_grant_action: Тек грантты таңдау
 profile.hint.dismiss: Еске салуды жабу
@@ -274,12 +271,10 @@ profile.gpa_info_tooltip: Баға шкаласын таңдаңыз: 4.0 нем
 profile.hint.interests: Қызығатын тақырыптар UniFit арқылы университеттерді реттеуге көмектесуі мүмкін. Олар бағдарламаны таңдамайды және оқуға түсу құқығын растамайды.
 profile.interests_saved: Қызығушылықтар сақталды
 profile.saved_all: Профиль сақталды
-profile.label.budget: Жылдық жалпы бюджет
-profile.label.family_income: Отбасының жылдық табысы
-profile.label.family_income_currency: Табыс валютасы
-profile.label.exams: Емтихандар
-profile.label.funding_type: Қажетті қаржыландыру түрі
-profile.label.gpa: Орташа үлгерім балы (GPA)
+profile.label.budget: Жылдық бюджет
+profile.label.exams: Емтихан нәтижелері
+profile.label.funding_type: Қандай қаржыландыру іздейсіз
+profile.label.gpa: GPA (орташа балл)
 profile.scale.gpa_4: 4.0 (АҚШ / халықаралық)
 profile.scale.gpa_5: 5.0 (Қазақстан / ТМД)
 profile.scale.gpa_4_short: 4.0
@@ -287,9 +282,9 @@ profile.scale.gpa_5_short: 5.0
 profile.scale.toggle: GPA шкаласын {scale} мәніне ауыстыру
 profile.unit.gpa_4: / 4,0
 profile.unit.gpa_5: / 5,0
-profile.label.interests: Университеттен не іздейсіз?
-profile.label.major: Таңдағыңыз келетін мамандық
-profile.label.study_mode: Қалаған оқу форматы
+profile.label.interests: Сізді қызықтыратын тақырыптар
+profile.label.major: Мамандық
+profile.label.study_mode: Оқу форматы
 profile.language: Тіл
 profile.languages: Тілдер
 profile.option.funding_any: Барлығы (грант және ақылы оқу)
@@ -301,7 +296,6 @@ profile.option.study_mode_any: Барлық формат
 profile.option.study_mode_oncampus: Кампуста оқу
 profile.option.study_mode_online: Онлайн / қашықтан оқу
 profile.placeholder.budget: Мысалы, {example}
-profile.placeholder.family_income: Қаласаңыз, соманы енгізіңіз
 profile.placeholder.gpa: Мысалы, 3.80
 profile.placeholder.interests: Мысалы: информатика, жасанды интеллект, робот техникасы, ойын әзірлеу, тағылымдама
 profile.placeholder.lang_score: Балл (мысалы, 7.5)
@@ -325,12 +319,10 @@ profile.reset.cancel: Бас тарту
 profile.reset.confirm: Деректерді тазарту
 profile.reset.done: Профиль деректері тазартылды
 profile.score: Балл
-profile.type: Түрі
+profile.type: Мұны немен растайсыз
 profile.unit.gpa: / 4,0
 profile.unit.usd_year: АҚШ доллары / жыл
 profile.unit.currency_year: {currency} / жыл
-profile.progress.empty: Каталогты қарап, өзіңізге пайдалы мәліметтерді ғана қоса аласыз.
-profile.progress.count: Міндетті емес {total} бөлімнің {completed} бөлімінде баптаулар бар
 profile.sections.aria: Профиль бөлімдері
 profile.title: Профиль
 profile.section.basics: Жалпы мәліметтер
@@ -341,7 +333,6 @@ profile.kicker: Талапкер профилі
 profile.page_subtitle: UniFit рейтингі мен талаптарға сәйкестік балын есептеу үшін оқу деректерін, бюджетті және емтихан нәтижелерін енгізіңіз.
 profile.action.back: Артқа
 profile.action.back_desc: Алдыңғы бетке қайту
-profile.progress.title: Профильдің міндетті емес баптаулары
 profile.empty_exams: Емтихан әлі қосылмады. Нәтижені енгізу үшін жоғарыдан емтихан таңдаңыз.
 profile.empty_languages: Тіл қосылмады. Ана тіліңізді немесе емтихан сертификатын енгізіңіз.
 profile.field.budget.desc: {currency} валютасымен есептегендегі оқу ақысы мен тұрмыс шығынына арналған жылдық бюджетіңіз.
@@ -382,18 +373,17 @@ universities.all_cities: Барлық қала
 universities.any_state: Кез келген штат
 universities.badge.acceptance: Қабылдау үлесі: {value}%
 universities.badge.acceptance_na: Қабылдау үлесі: дерек жоқ
-universities.badge.conditional_exam_needed: Шартты / емтихан нәтижесі керек
+universities.badge.conditional_exam_needed: Емтихан нәтижесі керек
 universities.badge.no_matching_program: Бұл мамандық жоқ
 universities.why.no_matching_program: Бұл университетте профиліңізде таңдалған мамандық бойынша бағдарлама жоқ.
 universities.badge.overflow_more: Тағы {count} белгі
 universities.badge.overflow_label: Қосымша күй белгілері
 universities.badge.top_match: Жақсы сәйкестік
 universities.badge.your_vibe: Сізге сай
-universities.why.conditional_exam_needed: Міндетті емтихан нәтижесінің бір бөлігі жоқ, сондықтан бұл нәтиже шартты.
-universities.unifit_banner.text: UniFit бейіннің қолда бар деректерін пайдаланады. Ең төменгі талаптар таңдалған түсу жолы бойынша тексеріледі; деректің болмауы талап орындалмады дегенді білдірмейді.
+universities.why.conditional_exam_needed: Талаптарды тексеру үшін емтихан нәтижелерін профильге қосыңыз.
 universities.unifit_banner.dismiss: Хабарландыруды жабу
 universities.why.top_match: Бұл университет қазіргі таңдауларыңызға сай келеді.
-universities.why.your_vibe: Бұл университет бағыт, орта және орналасу бойынша таңдауыңызға өте сай.
+universities.why.your_vibe: Бұл университет сіз таңдаған қалауларға жақсы сай келеді.
 universities.badge.aid_available: Қаржылай көмек бар
 no_grants_available: Грант жоқ
 universities.badge.aid_likely: Қаржыландыру бөлек көрсетіледі (бюджет өзгермейді)
@@ -425,6 +415,7 @@ universities.cost.reference_short: бағдар
 universities.cost.price_unavailable: Бағасы белгісіз
 universities.cost.tuition_scope_note: Тұру және басқа шығындар бөлек төленеді.
 universities.cost.entry: {year} жылғы қабылдау
+universities.cost.max_open: {amount} және одан жоғары
 universities.cost.unavailable: Бағдарламаны нақтылаңыз
 universities.cost.full_budget_unavailable: Салыстыруға келетін толық бюджет жоқ
 universities.cost.reference: Қаржылай көмекке дейінгі анықтамалық баға.
@@ -722,26 +713,26 @@ universities.shortlist.remove: Таңдаулылардан алып таста�
 universities.tradeoff.focus: Бағыт
 universities.tradeoff.focus.left: Мансап және тәжірибе
 universities.tradeoff.focus.right: Ғылым және зерттеу
-universities.tradeoff.atmosphere: Оқу стилі
-universities.tradeoff.atmosphere.left: Әлеуметтік бағыт басым
-universities.tradeoff.atmosphere.right: Қарқынды оқу
+universities.tradeoff.atmosphere: Конкурс
+universities.tradeoff.atmosphere.left: Конкурс төмен
+universities.tradeoff.atmosphere.right: Конкурс жоғары
 universities.tradeoff.finance: Құны мен беделі
 universities.tradeoff.finance.left: Бюджет және гранттар
 universities.tradeoff.finance.right: Бедел және жоғары құн
 universities.tradeoff.location: Орналасқан жері
 universities.tradeoff.location.left: Қала
 universities.tradeoff.location.right: Қала сыртында
-universities.tradeoff.balanced: Теңгерімді (50/50)
+universities.tradeoff.balanced: Маңызды емес
 universities.help.open: Түсіндірмені көрсету
 universities.help.country: Университеттерді ел бойынша сүзгіден өткізеді. Қала және аймақ таңдау құралдарымен бірге жұмыс істейді.
 universities.help.state_region: Таңдалған ел шегінде нәтижелерді нақтылайды. Көптеген қалалары бар ірі елдер үшін пайдалы.
 universities.help.city: Елді таңдағаннан кейін белгілі бір қаладағы университеттерді көрсетеді. Штат немесе аймақ қалалар тізімін нақтылайды.
 universities.help.cost_per_year: Жылдық шығынның ең төменгі және ең жоғары шегін қойыңыз. Тізімде осы аралыққа кіретін университеттер ғана қалады.
 universities.help.sort_strategy: {fit} профильге сай сұрыптайды. Басқа режимдер тек атауы немесе құны бойынша сұрыптайды.
-universities.help.tradeoff.focus: Тәжірибеге бағытталған оқуды немесе теория мен зерттеуге баса назар аударатын оқуды қалайтыныңызды таңдаңыз.
-universities.help.tradeoff.atmosphere: Әлеуметтік белсенді студенттік орта мен академиялық тұрғыдан қарқынды орта арасындағы таңдау.
-universities.help.tradeoff.finance: Сол жақ бөлік құны төмен және грант алуға қолайлы нұсқаларды құптайды. Оң жақ бөлік жоғары мәртебе үшін қымбатырақ нұсқаларды қарастыруға мүмкіндік береді.
-universities.help.tradeoff.location: Сол жақ бөлік қаладағы университеттерді құптайды. Оң жақ бөлік қала сыртындағы университеттерді құптайды.
+universities.help.tradeoff.focus: Сол жақта — бір студентке шаққанда ғылыми жарияланымдар аз, оң жақта — зерттеу университеттері. Ортада ескерілмейді.
+universities.help.tradeoff.atmosphere: Сол жақта өтініш бергендердің үлкен бөлігі қабылданады, оң жақта бір орынға өтініш көп — бірінші курсқа қабылдаудың ресми пайызы бойынша. Ортада ескерілмейді.
+universities.help.tradeoff.finance: Сол жақ бөлік құны төмен және грант алуға қолайлы нұсқаларды құптайды. Оң жақ бөлік беделі үшін қымбатырақ нұсқаларды қарастырады. Ортада ескерілмейді.
+universities.help.tradeoff.location: Сол жақта — тұрғыны 1,5 миллионнан асатын ірі қалалар, оң жақта — 50 мыңға дейінгі қалалар. Ортада ескерілмейді.
 universities.sort_ai: {fit}: AI арқылы ақылды сұрыптау
 universities.sort_relevance: Сәйкестік
 universities.sort_cost_asc: Құны: төменнен жоғарыға
@@ -1150,8 +1141,6 @@ profile.exam_subject_choose_first: Алдымен затты таңдаңыз
 profile.exam_breakdown_hint: Пәндер бойынша ұпайларды енгізіңіз. Міндетті заттар тіркелген күйінде қалады, ал қажет жерінде тағы да {min}-{max} заттарды таңдауға болады.
 profile.exam_breakdown_fixed_hint: Әрбір міндетті бөлім бойынша баллдарды көрсетіңіз.
 admission.requirements_fit.check.or: немесе
-universities.why.budget_comparison: Жылдық құны: {cost}; сіздің жылдық бюджетіңіз: {budget}. Мүмкін қаржыландыру шегерілмеген.
-universities.why.preference_comparison: {label}: сіздің баптауыңыз {requested}/100; университет көрсеткіші {observed}/100.
 profile.exam_total_placeholder: Жалпы балл
 profile.exam_subject_required_count: {exam} үшін кем дегенде {count} пәнді таңдаңыз
 profile.exam_error_range: {exam} {min} -ден {max} -ге дейінгі диапазонда болуы тиіс
@@ -1425,28 +1414,13 @@ university.program_coverage.value.tuition_per_summer_unit_1_7_usd: Бірлік 
 university.program_coverage.cycle.stanford_quarterly_tuition: {year} үшін жарияланған оқу құны оқу бірліктерінің санына байланысты тоқсан сайын есептеледі. Жылдық сома оқу жүктемесі мен оқу кварталдарының санына байланысты; {next_year} тарифтері әзірге белгісіз.
 university.program_coverage.cycle.stanford_md_tuition: Оқу жылы {year} ; MD бағдарламасы бойынша үйренудің әдеттегі құны күзгі, қысқы, көктемгі және жазғы кварталдар үшін есептеледі; {next_year} тарифі расталмаған.
 university.program_coverage.cycle.fall_entry: Күзгі қабылдау {year}
-profile.label.study_level: Оқытудың нысаналы деңгейі
+profile.label.study_level: Оқу деңгейі
 profile.option.study_level_any: Кез келген оқу деңгейі
 profile.option.study_level_bachelor: Бакалавриат
 profile.option.study_level_master: Магистратура
 profile.option.study_level_doctorate: Докторантура / PhD
 profile.option.study_level_professional: Кәсіби бағдарлама
 profile.option.study_level_mba: MBA
-profile.label.citizenship: Азаматтықтар
-profile.field.citizenship.desc: Міндетті емес. Азаматтық жарияланған өтініш пен қаржыландыру ережелеріне әсер етуі мүмкін, бірақ тұрғылықты жерді, төлем тарифін немесе грант алуды растамайды.
-profile.citizenship_info_title: Азаматтық пен резиденттіктің әсері
-profile.citizenship_info_tooltip: Азаматтық төлем және көмек ережелеріне әсер ете алады, бірақ оларға деген құқықты анықтамайды. Университет сонымен қатар тұру тарихын, иммиграциялық мәртебесін және бағдарламасын ескере алады. Әрі қарай тексеру үшін барлық азаматтарды қосыңыз.
-profile.citizenship.select_country: Елді таңдаңыз...
-profile.citizenship.add_btn: Қосу
-profile.citizenship.other_option: Басқа ел
-profile.citizenship.other_placeholder: Елдің атауын келтіріңіз...
-profile.citizenship.empty_hint: Азаматтық қосылмады. Бос қалдырып, жарияланған ережелерді өзіңіз оқи аласыз.
-profile.citizenship.search_placeholder: Елді іздеу
-profile.citizenship.primary_badge: Негізгі
-profile.citizenship.set_primary_title: Негізгі азаматтық жасау
-profile.citizenship.remove_title: Азаматтықты алып тастау
-profile.citizenship.max_count: Бұдан артық емес {count} азаматтықты қосуға болады
-profile.citizenship.choose_placeholder: Елді таңдаңыз
 country.name.kz: қазақстан
 country.name.us: АҚШ
 country.name.gb: Ұлыбритания
@@ -1466,13 +1440,11 @@ country.name.uz: Өзбекстан
 country.name.kg: Қырғызстан
 country.name.in: Үндістан
 university.admissions.deadlines_title: Өтінім мерзімдері мен қабылдау кезеңдері
-university.admissions.deadlines_subtitle: Ресми қабылдау кезеңдері, шешім жарияланатын күндер және өтінім ақысы.
 university.admissions.cycle_label: Қабылдау кезеңі
 university.admissions.route_label: Түсу жолы
 university.admissions.context.unknown: Белгісіз
 university.admissions.context.unmatched: көрсетілген маршруттарға сәйкес келмейді
 university.admissions.context.unmatched_cycle: көрсетілген қабылдау кезеңіне сәйкес келмейді
-university.admissions.selected_program: Таңдалған бағдарлама
 university.deadlines.applicant_restriction: Үміткерге қойылатын шектеу
 university.deadlines.applicability: Кімге арналған
 university.deadlines.us_citizen_permanent_resident_only: Тек АҚШ азаматтары және АҚШ тұрақты резиденттері үшін
@@ -1496,9 +1468,6 @@ university.finance.aid_policy_label: Қаржылық көмек саясаты
 university.finance.thresholds_title: Табысқа байланысты бакалавриат үшін көмек ережесі
 university.finance.phd_funding_title: Докторантураны кепілді қаржыландыру (PhD)
 university.finance.scholarships_title: Беделді стипендиялар мен гранттар
-university.finance.home_status: Ұлыбритания резидентінің мәртебесі (UK Home)
-university.finance.domestic_status: АҚШ резидентінің мәртебесі
-university.finance.overseas_status: Халықаралық / Overseas мәртебесі
 university.finance.need_blind_universal: Әмбебап Need-Blind (барлықтар үшін)
 university.finance.need_blind_domestic: Need-Blind (резиденттер үшін)
 university.finance.need_aware_international: Need-Aware (шетелдіктерге арналған)
@@ -1513,9 +1482,6 @@ university.finance.range_applicants.overseas: Overseas fee мәртебесі б
 university.finance.range_applicants.international: Шетелдік талапкерлер
 university.finance.full_ride_threshold: Толық гранттың 100% шегі
 university.finance.free_tuition_threshold: Оқу ақысы толық жабылатын табыс шегі
-university.finance.home_status_desc: Ұлыбритания азаматтары үшін баға үй тарифі деңгейінде ( by9,250– by9,535/жыл) тіркелген.
-university.finance.overseas_status_desc: Шетелдік студенттер факультеттердің жарияланған тарифтері бойынша оқу ақысын төлейді ( by35,470– by53,700/жыл).
-university.finance.domestic_status_desc: Федералдық қаржылық көмекке (FAFSA), үй тарифі бойынша бағалауға және институционалдық гранттарға қол жеткізу.
 university.finance.overseas_us_desc: Шетелдік өтініш берушілер үшін қағидалар бойынша қаржыландыру шарттарын бағалау.
 university.finance.need_blind_universal_desc: Жарияланған саясатқа сәйкес, бакалавриат бағдарламасына түсу кезінде қаржылық мұқтаждық жергілікті және шетелдік талапкерлер үшін ескерілмейді.
 university.finance.need_blind_domestic_desc: Жарияланған саясатқа сәйкес, бакалавриат бағдарламасына түскен кезде қаржылық мұқтаждық жергілікті талапкерлер үшін есепке алынбайды.
@@ -1533,10 +1499,6 @@ university.finance.uk_aid_home_desc: Ұлыбританияның мемлеке
 university.finance.uk_aid_intl_desc: Беделді университеттік стипендиялар қол жетімді (Reach Oxford, President's Undergraduate Scholarships).
 university.finance.zero_parent_contrib: Ереже ата-аналардың күтілетін нөлдік үлесін белгілейді; бұл толық қорытынды құнды айқындамайды.
 university.finance.zero_parent_contribution_threshold: Ата-анадан төлем талап етілмейтін табыс шегі
-university.finance.income_comparison_below: Енгізілген кіріс жарияланған шектен төмен
-university.finance.income_comparison_at_or_above: Енгізілген кіріс табалдырықтан тең немесе одан асады
-university.finance.income_comparison_unknown: Табысты салыстыру мүмкін емес
-university.finance.income_comparison_caveat: Бұл салыстыру жалпы контекстті ғана береді. Ол көмек көрсету құқығын, төлем мөлшерін немесе жиынтық құнын анықтамайды.
 university.finance.income_thresholds_note.stanford: Stanford ұпайлары әдеттегі активтер мен АҚШ-тағы өмір сүру деңгейін ұсынады; олар АҚШ-тан тыс жерде тұратын отбасылар үшін сәйкес келмеуі мүмкін.
 university.finance.full_ride_threshold_note: Толық қаржыландыру құқығы университет ережелері мен талапкердің жағдайларына байланысты.
 university.finance.free_tuition_note: табысы бойынша өтетін отбасылар үшін оқыту құнын 100% жабу
@@ -1586,9 +1548,6 @@ university.deadlines.timeline_title: Қабылдау науқанының ке�
 university.deadlines.title: Өтінім мерзімдері мен күнтізбе
 university.finance.aid_eligible_badge: Қаржылық көмек
 university.finance.free_tuition_badge: Тегін оқу
-university.finance.fee_status_home_desc: Жазба үй тарифін көрсетеді. Университетте оған құқықты растаңыз.
-university.finance.fee_status_domestic_desc: Жазба ішкі тарифті көрсетеді. Университетте оған құқықты растаңыз.
-university.finance.fee_status_overseas_desc: Жазба шетелдік тарифті көрсетеді. Университетте оған құқықты растаңыз.
 university.finance.doctoral_funding_title: Докторантураны қаржыландыру
 university.finance.status_unconfirmed: Төлем мәртебесі тексеруді талап етеді.
 university.finance.status_unconfirmed_desc: Үй, ішкі немесе шетелдік тарифтерді анықтау үшін бір азаматтық жеткіліксіз. Университеттің тұру тарихы мен ережелері де ескерілуі мүмкін.
@@ -1626,32 +1585,7 @@ university.coverage.deadlines_approximate: Шамамен алғандағы м�
 university.coverage.costs_program: Жекелеген бағдарламалардың құны
 university.coverage.costs_undergraduate: Бакалавриаттың құны туралы жалпы деректер
 university.coverage.aid: Қаржылық көмек және қаржыландыру
-profile.applicant_context.country_search: Елді іздеу
-profile.applicant_context.title: Білімі және түсу параметрлері
-profile.applicant_context.optional_hint: Міндетті емес. Бұл мәліметтер университеттің талаптарын тексеруге көмектеседі, бірақ біліктілікті немесе оқу ақысының мәртебесін мойындауды растамайды.
-profile.applicant_context.country_education: Сіз оқыған ел
-profile.applicant_context.country_other_placeholder: Елді көрсетіңіз
-profile.applicant_context.credential: Біліктілік немесе оқу бағдарламасы
-profile.applicant_context.credential_ib: Халықаралық бакалавриат (IB)
-profile.applicant_context.credential_a_level: A-levels
-profile.applicant_context.credential_us_diploma: АҚШ мектебінің орта білім туралы дипломы (қазақстандық аттестат емес)
-profile.applicant_context.credential_national: Орта білім туралы ұлттық біліктілік (мысалы, ҚР аттестаты)
-profile.applicant_context.credential_vocational: Кәсіби біліктілік
-profile.applicant_context.credential_other_placeholder: Біліктіліктің немесе оқу бағдарламасының атауын нақтылаңыз
-profile.applicant_context.current_residence: Тұратын елі
-profile.applicant_context.entry_cycle: Түсудің жоспарланған циклі
-profile.applicant_context.entry_cycle_placeholder: мысалы, 2027 жылғы күз
-profile.applicant_context.fee_context: Университетте оқуға ақы төлеу мәртебесі (егер белгілі болса)
-profile.applicant_context.fee_home: Жергілікті / үй тарифі (өз бетінше көрсетілген)
-profile.applicant_context.fee_international: Шетелдік тариф (өз бетінше көрсетілген)
-profile.applicant_context.fee_other: Басқасы немесе белгісіз
-profile.applicant_context.fee_unknown: Білмеймін/расталмадым
 profile.applicant_context.optional: Көрсетілмеген
-profile.applicant_context.other: Басқа
-profile.applicant_context.route: Келіп түсу бағыты
-profile.applicant_context.route_first_year: Бірінші курсқа түсу
-profile.applicant_context.route_transfer: Басқа университеттен аудару
-profile.applicant_context.route_graduate: Магистратураға немесе докторантураға түсу
 universities.compare.finance.grant_unconfirmed: Таңдалған грант — тек ықтимал қаржыландыру. Университет ресми түрде тағайындалғанға дейін оның сомасы құнмен немесе жеңілдікпен расталған болып саналмайды.
 universities.compare.funding.not_awarded: Мүмкін грант; расталмаған
 university.finance.award_application: Өтінішті қалай беруге болады
@@ -1681,10 +1615,8 @@ university.finance.awards_not_deducted: Ықтимал грант ресми т�
 university.finance.awards_not_guaranteed: Бұл грант ұсынысы емес, қаржыландыру мүмкіндіктері. Көмек ресми түрде берілмейінше, есептік құн азаймайды.
 university.qualification_guidance.checked_label: Ресми беті тексерілді
 university.qualification_guidance.title: Біліктілікке қойылатын талаптар
-university.qualification_guidance.cycle_label: Түсетін жоспарлы жыл
+university.qualification_guidance.reference_note: Бұл университеттің жарияланған шешімдері. Әрқайсысы тек онда аталған біліктілікке, оқу деңгейіне және түсу цикліне қатысты.
 university.qualification_guidance.cycle_scope_label: Түсім цикліне қолданылуы
-university.qualification_guidance.cycle_unspecified: Бейінде түсу циклі көрсетілмеген.
-university.qualification_guidance.exact_credential_action: Қазақстан үшін жарияланған талаптарды тексеру үшін бейінінде аттестаттың нақты атауын көрсетіңіз.
 university.qualification_guidance.level_label: Оқыту деңгейі
 university.qualification_guidance.no_eligibility_notice: Бұл талаптарды қабылдау немесе сәйкестік туралы шешім емес, біліктілік туралы анықтама. Бағаларды, пәндерді, бағдарлама ережелерін және түсудің өзекті циклін жеке тексеру керек.
 university.qualification_guidance.official_source: Біліктілікке ресми талаптар ашу
@@ -1692,7 +1624,6 @@ university.qualification_guidance.program_label: Бағдарлама
 university.qualification_guidance.program_source: Бағдарламаның ресми беті
 university.qualification_guidance.reason.accepted_ib: Университет қабылданатын біліктіліктер арасында Халықаралық бакалавриат (IB) дипломын көрсетеді. Әрбір бағдарлама үшін бағалаулар мен пәндерге қойылатын жеке талаптар қолданылады.
 university.qualification_guidance.reason.contextual_review: Университет оқу құжаттарын мектеп пен елді ескере отырып бағалайды. Жарияланған ережелерде бұл біліктілікті ел деңгейінде тану туралы шешім жоқ.
-university.qualification_guidance.reason.cycle_review: Көрсетілген қабылдау кезеңі осы тексеруде қамтылған мерзімнен тыс.
 university.qualification_guidance.reason.graduate_review: Магистратура мен докторантураға арналған талаптар бағдарламаға және алдыңғы білімге байланысты. Таңдалған бағдарламаның ресми талаптарын тексеріңіз.
 university.qualification_guidance.reason.oxford_attestat: Оксфорд Қазақстан аттестатын / Svidetel' stvo o Srednem Obrazovanii бакалавриатқа қабылдау туралы стандартты ұсыныс үшін қабылданбайтын ретінде көрсетеді. Түсу үшін одан әрі оқу және басқа қабылданатын біліктілік талап етіледі.
 university.qualification_guidance.reason.select_program: Оның ресми талаптарын ашу үшін белгілі бір магистратура немесе докторантура бағдарламасын таңдаңыз.
@@ -2373,21 +2304,17 @@ admission.mit.after_initial_admission: Бірлескен дәрежені MIT �
 admission.mit.program_condition: Бұл бағдарлама үшін шарттар:
 admission.requirements_fit.check.profile_unassessed: Профиль қажетті мәліметтерді немесе босатылу құқығын растауға мүмкіндік бермейді.
 admission.requirements_fit.missing_evidence_note: Бағытты тексеру үшін төменде көрсетілген растауларды қосыңыз. Пайыз бағалауға болатын қолданылатын сандық минимумдар болған кезде ғана қолжетімді.
-profile.evidence.title: Таңдалған түсу бағыттарына арналған растаулар
-profile.evidence.description: Сізге қатысты жарияланған шартқа арналған қосымша мәліметтер. Университет өрістері тек осында көрсетілген оқу орындары мен қабылдау жолдарына қолданылады; бұл бөлімді өткізіп жіберуге болады. Өзіңіз көрсеткен мәліметтер ресми құжаттарды не емтиханнан босатуды растамайды.
-profile.evidence.test_date: Тест тапсырған күн (міндетті емес)
-profile.evidence.language_title: Тілдік орта
-profile.evidence.institution_title: Оқу орнына тән оқу туралы растаулар
+profile.evidence.title: Жекелеген университеттер үшін мәлімет қосу
+profile.evidence.description: Университет беті сұраса ғана қосыңыз. Өз сөзіңізбен берілген; жазбалар тексерілмейді.
+profile.evidence.test_date: Күні (міндетті емес)
+profile.evidence.institution_title: Көрсетілген оқу орнындағы оқу
 profile.evidence.institution: Университет
-profile.evidence.institution_unavailable: Бұл таңдау үшін оқу орнына тән курс, GPA немесе біліктілік өрістері қолжетімді емес.
 profile.evidence.kind: Растау түрі
-profile.evidence.language: Тіл коды
 profile.evidence.country: Ел
 profile.evidence.qualification: Білім деңгейі
 profile.evidence.started: Басталған күні
 profile.evidence.completed: Аяқталған күні
 profile.evidence.status: Күйі
-profile.evidence.entirely: Толығымен осы тілде
 profile.evidence.unknown: Көрсетілмеген
 profile.evidence.entirely.yes: Иә, толығымен
 profile.evidence.entirely.no: Жоқ
@@ -2401,7 +2328,6 @@ profile.evidence.expected_completion: Күтілетін аяқтау күні
 profile.evidence.metric: GPA көрсеткіші
 profile.evidence.metric.overall: Жалпы GPA
 profile.evidence.metric.technical: Техникалық пәндер бойынша GPA
-profile.evidence.metric.major: Негізгі мамандық бойынша GPA
 profile.evidence.value: GPA мәні
 profile.evidence.scale: GPA шкаласы
 profile.evidence.as_of_term: Көрсетілген кезең
@@ -2411,7 +2337,6 @@ profile.evidence.error.percentage: 0 мен 100 пайыз аралығында�
 profile.evidence.completed_on: Аяқталған күні
 profile.evidence.add_language: Тіл туралы растау қосу
 profile.evidence.add_institution: Оқу орны туралы растау қосу
-profile.evidence.self_reported: Өзіңіз енгізген растау; ол ресми құжаттарды растамайды.
 profile.evidence.self_reported_short: Өзі енгізген
 profile.evidence.status.unknown: Көрсетілмеген
 profile.evidence.status.in_progress: Орындалып жатыр
@@ -2433,21 +2358,12 @@ profile.evidence.institution_kind.enrollment: Тіркелу немесе оқу
 profile.evidence.institution_kind.gpa: Бағдарлама бойынша GPA
 profile.evidence.institution_kind.credential: Бағдарлама біліктілігі
 profile.evidence.institution.mit: Massachusetts Institute of Technology
-profile.evidence.institution.imperial: Imperial College London
-profile.evidence.institution.stanford: Stanford University
 profile.evidence.program.mit_course_6_9: MIT Course 6-9 undergraduate major
-profile.evidence.program.mit_scm_residential_masc: Supply Chain Management Residential MASC
-profile.evidence.program.mit_scm_residential_meng: Supply Chain Management Residential MEng
-profile.evidence.program.mit_scm_blended_masc: Supply Chain Management Blended MASC
-profile.evidence.program.mit_scm_blended_meng: Supply Chain Management Blended MEng
-profile.evidence.program.stanford_cs_bs: Computer Science bachelor's degree
-profile.evidence.program.stanford_anthr_ma_coterm: Anthropology coterminal MA
 profile.evidence.credential.mit_dedp: MITx DEDP MicroMasters
-profile.evidence.credential.mit_scm: MITx Supply Chain Management MicroMasters
 profile.evidence.credential.mit_sc0x: SC0x course credential
 profile.evidence.credential_other: Бағдарлама біліктілігі
 profile.evidence.units_short: бірлік
-profile.evidence.error.language: Тіл кодын және растау түрін дұрыс енгізіңіз.
+profile.evidence.error.language: Ағылшын тілін қалай білетініңізді таңдаңыз.
 profile.evidence.error.dates: Осы растаудың күндерін тексеріңіз.
 profile.evidence.error.qualification: Осы растау үшін білім деңгейін таңдаңыз.
 profile.evidence.error.max_language: Ең көбі 10 тілдік растауды сақтауға болады.
@@ -2457,16 +2373,11 @@ profile.evidence.error.gpa: Көрсетілген шкала шегіндегі
 profile.evidence.error.credential: Тізімнен біліктілікті таңдаңыз.
 profile.evidence.error.credential_score: Жарияланған біліктілік нәтижесін пайызбен енгізіңіз.
 profile.evidence.error.max_institution: Ең көбі 20 оқу орны туралы растау сақтауға болады.
-university.admissions.catalog.context_title: Өтініш беру контексті
 university.admissions.catalog.simple_title: Қалай өтініш беруге болады
 university.admissions.catalog.browse_note: Бағыт немесе бағдарлама бойынша іздеңіз. Оқу және қабылдау туралы білу үшін нәтижені ашыңыз.
-university.admissions.catalog.show_requirements: Жарияланған мәліметтерді оқу
-university.admissions.catalog.advanced_options: Жарияланған мәліметтерді сүзу (міндетті емес)
 university.admissions.catalog.advanced_note: Бұл сүзгілер дереккөз жазбаларын жарияланған өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы санаты бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
 university.admissions.catalog.choose_program_hint: Жарияланған қабылдау жолдарын көру үшін «Бағдарламалар» бөлімінен бағдарламаны таңдаңыз.
-university.admissions.catalog.open_application: Өтініш беру бетін ашу
 university.admissions.catalog.select_program: Бағдарламаны таңдау
-university.admissions.catalog.view_requirements: Қабылдау талаптарын көру
 university.admissions.catalog.requirements_tab_hint: Қабылдау талаптары — «Қабылдау» қойындысында.
 university.admissions.catalog.study_info: Бағдарлама туралы
 university.admissions.catalog.program_detail.study: Оқу
@@ -2493,14 +2404,11 @@ university.admissions.catalog.topic.study: Оқу мазмұны мен құры
 university.admissions.catalog.topic.completion: Дәрежені аяқтау талаптары
 university.admissions.catalog.topic.offers: Ұсыныстар мен оқуға қабылдану
 university.admissions.catalog.topic.support: Студенттерге қолдау
-university.admissions.catalog.context_note: Таңдалған контекст талаптарға, мерзімдерге, оқу құнына және қаржыландыруға қолданылады. Қолмен енгізген өзгерістер осы бетте қалады; тексерулерде профильдегі растаулар пайдаланылады.
 university.admissions.catalog.choose_program: Оқу нұсқасын таңдаңыз
 university.admissions.catalog.no_program_selected: Оқу нұсқасы таңдалмаған
 university.admissions.catalog.route_label: Жарияланған өтініш беру жолы
 university.admissions.catalog.choose_route: Өтініш беру жолын таңдау
-university.admissions.catalog.choose_route_action: Өтініш беру жолын таңдау
 university.admissions.catalog.route_required: Қабылдау талаптары мен өтініш тәртібін оқу үшін жоғарыдағы жарияланған жолдардың бірін таңдаңыз.
-university.admissions.catalog.applicant_label: Өтініш беруші санаты
 university.admissions.catalog.unspecified: Көрсетілмеген
 university.admissions.catalog.applicant.first_year: Бірінші курсқа түсуші
 university.admissions.catalog.applicant.transfer: Ауысу арқылы түсуші
@@ -2530,24 +2438,18 @@ university.admissions.catalog.no_options: Бұл сүзгілерге сай о�
 university.admissions.catalog.previous: Алдыңғы
 university.admissions.catalog.next: Келесі
 university.admissions.catalog.results: {from}–{to} / {total} оқу нұсқасы
-university.admissions.catalog.finance_note: Салыстырмалы жылдық жалпы сома анықталмаған. Әр шығынның бастапқы валютасы мен төлем кезеңі сақталады. Ықтимал қаржыландыру тағайындалған көмек емес және құннан шегерілмейді; дереккөзді ашу үшін жазбаны кеңейтіңіз.
 university.admissions.catalog.study_options_title: Оқу нұсқалары
-university.admissions.catalog.study_options_note: Дәреже бағдарламаларын ресми каталогтан іздеңіз. Оқу деңгейі мен берілетін біліктілік бөлек көрсетіледі.
 university.admissions.catalog.admission_title: Талаптар және жарияланған өтініш жолдары
 university.admissions.catalog.finance_intro: Таңдалған бағдарлама мен жолға арналған жарияланған бағалар мен қаржыландыру; бастапқы кезеңдері, валюталары және шарттары сақталады.
 university.admissions.catalog.deadlines_title: Күндер мен мерзімдер
 university.admissions.catalog.deadlines_intro: Таңдалған бағдарлама мен жолға арналған өтінім, қаржыландыру, жауап және депозит мерзімдерін қараңыз. Әр жазбада бастапқы кезеңі мен ресми дереккөзі сақталған.
 university.admissions.catalog.route_intro: Жарияланған жолды таңдаңыз — талаптар мен өтініш тәртібі бірден ашылады. Профиль қажет емес.
-university.admissions.catalog.reference_scope: Қазір қаралып жатқан ақпарат
-university.admissions.catalog.route_not_selected: Өтініш беру жолы таңдалмаған
+university.admissions.catalog.reference_scope: Сіз қарап отырсыз
+university.admissions.catalog.route_not_selected: Қалай түсетініңізді таңдаңыз
 university.admissions.catalog.browse_programs: Бағдарламаларды шолу
 university.admissions.catalog.change_program: Бағдарламаны өзгерту
-university.admissions.catalog.change_route: Жолды өзгерту
 university.admissions.catalog.reference_filters: Контексті нақтылау (міндетті емес)
-university.admissions.catalog.reference_filter_note: Бұл сүзгілер дереккөз жазбаларын жарияланған аясы бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
 university.admissions.catalog.selected_route: Таңдалған жол
-university.admissions.catalog.application_shape: Бағдарламаға қабылдау тәсілі
-university.admissions.catalog.catalog_code: Курс коды
 university.admissions.catalog.official_course_page: Курстың ресми беті
 university.admissions.catalog.application_class.post_admission_major: Алдымен университетке қабылданады; негізгі бағыт оқуға түскеннен кейін таңдалады.
 university.admissions.catalog.application_class.direct_program: Өтініш таңдалған бағдарламаға беріледі.
@@ -2801,7 +2703,6 @@ university.admissions.reading.cycle_help: 2027 сияқты жылды енгі�
 university.admissions.reading.cycle_invalid: Бұл жазба қабылдау жылы не маусымы ретінде танылмады. Жылды енгізіңіз немесе ұсынысты таңдаңыз; жыл сәйкестігі болжанбайды.
 university.admissions.reading.january_tests: Қаңтардағы емтихан күндері қабылданады
 university.admissions.reading.mit_course_code: MIT бағдарламасының коды: {code}
-university.admissions.reading.mit_course_help: Course {code} — MIT каталогындағы осы бағдарламаның коды. Мұнда Course сөзі оқу бағытын білдіреді.
 university.admissions.catalog.field.A3i6E: Бағдарлама сипаттамасы
 university.admissions.catalog.field.WOZxr: Сыртқы кредиттерді есептеу тәртібі
 university.admissions.catalog.field.ItCSB: Бағдарлама талаптары
@@ -2908,6 +2809,7 @@ university.admissions.catalog.enum.external_graduate_applicant: Сыртқы м�
 university.admissions.catalog.enum.external_masters_holder: Сыртқы магистр дәрежесінің иегері
 university.admissions.catalog.enum.external_or_current_stanford_graduate_applicant: Сыртқы немесе Стэнфорд ағымдағы магистратура үміткері
 university.admissions.catalog.enum.financial_support: Қаржылық қолдау
+university.admissions.catalog.enum.first_year: Бірінші курсқа үміткер
 university.admissions.catalog.enum.international_applicant: Халықаралық үміткер
 university.admissions.catalog.enum.international_law_degree_holder: Халықаралық құқық дәрежесінің иегері
 university.admissions.catalog.enum.joint_degree_applicant: Бірлескен дәреже үміткері
@@ -2954,28 +2856,17 @@ university.admissions.catalog.save_choice: Өтініш таңдауын сақ�
 university.admissions.catalog.choice_saved: Осы университетке арналған өтініш контексті сақталды.
 university.admissions.catalog.choice_session_only: Бұл таңдау тек осы сеансқа қолжетімді. Оны осы құрылғыда сақтау мүмкін болмады.
 university.admissions.catalog.apply_before_save: Таңдауды сақтамас бұрын өзгертілген контексті қолданыңыз.
-universities.compare.reviewed_catalog: Тексерілген оқу және қабылдау каталогы
-universities.compare.optional_context: Университеттерді қазір салыстырыңыз немесе қолданылатын қабылдау мәліметтерін көру үшін университетке ортақ жолды не оқу нұсқасы мен өтініш беру бағытын таңдаңыз.
-universities.compare.context_summary_label: Ағымдағы таңдау
-universities.compare.selection_empty: Бағдарлама немесе өтініш беру жолы таңдалмаған
-universities.compare.choose_context: Бағдарлама немесе өтініш беру жолын таңдау
-universities.compare.change_context: Таңдауды өзгерту
-universities.compare.institution_route: Университетке ортақ өтініш беру жолы
 universities.cost.budget_within_reference: Бюджетіңіз осы бағдарды жабады.
 universities.cost.budget_over_reference: Бұл бағдар бюджеттен жоғары.
 universities.cost.budget_within_applicable: Жарияланған сома бюджетке сай.
 universities.cost.budget_over_applicable: Жарияланған сома бюджеттен жоғары.
 universities.cost.budget_uncertain_range: Кейбір бағалар сай келеді; бағдарламаны нақтылаңыз.
 universities.cost.budget_tuition_only: Тек оқу ақысы; тұру мен басқа шығындар бөлек.
-universities.compare.clear_program: Оқу нұсқасын алып тастау
 universities.compare.legacy_unreviewed: Бағдарламалар мен өтініш беру бағыттары әлі толық тексерілмеген. Қолданылатын шарттарды ресми дереккөздерден нақтылаңыз.
 university.admissions.reading.summary_translation_missing: Қысқаша аударма әзірге дайын емес. Түпнұсқаны төменнен ашуға болады.
-university.admissions.reading.source_short: Дереккөз
-university.admissions.reading.original_and_date: Түпнұсқа және күні
 university.admissions.reading.source_and_date: Дереккөз және күні
-university.admissions.reading.source_details: Дереккөз мәліметтері
 university.admissions.reading.official_sources_count: Ресми дереккөздер ({count})
-university.admissions.reading.original_and_sources_count: Түпнұсқа мәтін және дереккөздер ({count})
+university.admissions.reading.source_marker: Дереккөз {number}: {title}
 university.admissions.reading.reference_scope_note: Толық жазбалар дереккөз тілінде берілген. Әр жазбада шарттар, кезең және қолданылу аясы бар.
 university.admissions.reading.current_policy: Жарияланған ережелер; қабылдау жылы көрсетілмеген
 university.admissions.reading.yearless_period: Жыл сайынғы мерзімдер; қабылдау жылы көрсетілмеген
@@ -3031,10 +2922,7 @@ university.admissions.reading.month_standalone.10: қазан
 university.admissions.reading.month_standalone.11: қараша
 university.admissions.reading.month_standalone.12: желтоқсан
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · кафедраға өтініш
-university.admissions.reading.integrated_meng: MEng — UCAS арқылы бакалавриат деңгейінде қабылдайтын интеграцияланған бағдарлама; ол бакалавриат пен магистр деңгейіндегі тереңдетілген оқуды біріктіреді.
 university.admissions.entry.institution_wide: Бакалавриатқа қабылдау университетке тұтастай жүргізіледі. Болашақ мамандықты таңдамай, бірінші курсқа немесе ауысу арқылы түсу жолын оқыңыз; оқу бағыттарын «Бағдарламалар» бөлімінен қарауға болады.
-university.admissions.entry.profile_hints: Профильдегі ұсыныстар: {details}. Оларды осында қолданыңыз немесе жалпы мәліметтерді оқуды жалғастырыңыз.
-university.admissions.entry.use_profile: Профиль ұсыныстарын қолдану
 university.admissions.entry.route_situations: Жағдайыңызға сай жарияланған жолды таңдаңыз немесе таңдауды ашық қалдырыңыз. Университеттің ортақ ережелері бөлек өтініш ретінде емес, таңдалған жолдың ішінде көрсетіледі.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Сыртқы талапкерлер CS MS бағдарламасына өтініш береді. Graduate қабылдаудың және кафедраның ортақ ережелері осы жолға енгізілген.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: CS coterminal MS бағдарламасына түсетін қазіргі Stanford бакалаврларына арналған; кафедра талаптары мен оқу кезеңдерінің мерзімдері қолданылады.
@@ -3166,43 +3054,71 @@ university.deadlines.kind.booking: Тестке тіркелу мерзімі
 university.deadlines.round: {number}-раунд
 university.deadlines.calendar_time_unknown: Уақыты көрсетілмеген; күнтізбеге толық күндік оқиға қосылады.
 university.deadlines.export_time_unresolved: Жарияланған уақытты не уақыт белдеуін сенімді түрлендіру мүмкін емес; ресми дереккөзді тексеріңіз.
-universities.compare.summary.title: Таңдалған бағдарламаларды салыстыру
-universities.compare.summary.scope_note: Деректер таңдалған бағдарламаға, қабылдау бағытына және жарияланған кезеңге қатысты. Бастапқы валюта мен төлем санаттары сақталған; мерзімі көрсетілген бағдар жаңа ұсыныстың бағасы емес.
-universities.compare.summary.program: Бағдарлама
-universities.compare.summary.study: Ұзақтығы мен оқу формасы
-universities.compare.summary.route: Қабылдау бағыты
-universities.compare.summary.cycle: Таңдалған қабылдау кезеңі
-universities.compare.summary.tuition: Жарияланған оқу ақысы
-universities.compare.summary.budget: Оқу және тұру шығындарының бағдары
-universities.compare.summary.deadline: Жарияланған өтініш мерзімдері
-universities.compare.summary.funding: Қаржыландыру
-universities.compare.summary.admission: Талаптар мен шарттар
-universities.compare.summary.deadlines: Мерзімдер мен күнтізбені ашу
-universities.compare.summary.finance: Шығындар мен қаржыландыруды ашу
-universities.compare.summary.source: Ресми дереккөз
-universities.compare.summary.reference: Мерзімі көрсетілген бағдар
-universities.compare.summary.before_aid: Қаржылай көмекке дейін; қамтылмаған шығындарды дереккөзден тексеріңіз
-universities.compare.summary.unknown: Таңдалған нұсқа үшін расталмаған
-universities.compare.summary.year_not_stated: Дереккөзде жыл көрсетілмеген; күнтізбе күні болжанып қойылмайды.
-universities.compare.summary.potential_aid: Ықтимал қаржыландыру талаптар мен іріктеуге байланысты.
-universities.compare.summary.full_records: Дереккөздердің толық жазбалары
-universities.compare.summary.additional_facts: Университеттер туралы қосымша деректер
-universities.compare.summary.choose_programs: Бағдарламаларды таңдау
-universities.compare.summary.prompt_choose_program: {university} үшін мерзімдер, құн және талаптар осында көрінуі үшін оқу бағдарламасын немесе университетке ортақ өтініш беру жолын таңдаңыз.
-universities.compare.summary.prompt_choose_route: {university} ішіндегі «{program}» бағдарламасына өтініш беру тәсілін таңдаңыз, сонда мерзімдер, құн және қаржыландыру осында көрінеді.
-universities.compare.summary.prompt_incompatible: {university} үшін таңдалған бағдарлама, өтініш беру жолы және деңгей сәйкес келмейді. Салыстыру үшін таңдауды өзгертіңіз.
-universities.compare.summary.configure_title: Бағдарламалар мен қабылдау бағыттарын таңдау
-universities.compare.summary.cycle_missing: Қабылдау кезеңі таңдалмаған. Нақты кезеңге қатысты мәліметтер жарияланғандай көрсетіледі, ал кезеңге байланысты ең төменгі талаптар тексерілмейді.
-universities.compare.summary.cycle_profile: Профиліңізде {cycle} көрсетілген. Оны «Таңдауды өзгерту» арқылы қолдана аласыз.
-universities.compare.summary.open_admission: Талаптарды ашу
-universities.compare.pending_changes: Өзгерістер «Сүзгілерді қолдану» немесе «Жалғастыру» батырмасын басқанда қолданылады.
-universities.compare.budget.title: Құн және сіздің бюджетіңіз
-universities.compare.budget.summary: Жарияланған жылдық баға сіздің жылдық бюджетіңізбен жеке салыстырылады. Көмек шегерілмейді, ал тек оқу ақысын көрсететін баға тұру шығындарын қамтымайды.
-universities.compare.budget.summary_incomplete: Кемінде бір таңдалған бағдарлама үшін салыстыруға болатын жылдық баға немесе жылдық бюджетіңіз жоқ, сондықтан бюджетпен салыстыру жасалмайды.
-universities.compare.budget.cost: Жарияланған баға
-universities.compare.budget.fit: Бюджетіңізбен салыстыру
-universities.compare.budget.notes: Бағаға түсініктеме
-universities.compare.budget.not_comparable: Жарияланған бағаны салыстыруға болатын жылдық сомаға келтіру мүмкін емес.
+universities.compare.reviewed.intro: Екі университеттің ресми деректері жол-жолымен. Дереккөздер мен толық ақпарат — университет беттерінде.
+universities.compare.reviewed.heads_note: Ортақ бірінші курсты салыстырыңыз немесе әр бағанда бағдарлама таңдаңыз.
+universities.compare.reviewed.scope.label: Салыстырамыз
+universities.compare.reviewed.scope.institution: Бірінші курс, ортақ өтініш
+universities.compare.reviewed.scope.institution_meta: Бакалавриаттың барлық бағдарламасына бір өтініш
+universities.compare.reviewed.scope.choose: Бағдарлама таңдалмаған
+universities.compare.reviewed.scope.choose_meta: Мұнда әр бағдарламаның өз мерзімі, құны және талаптары бар
+universities.compare.reviewed.scope.route_meta: өтініш беру жолын таңдаңыз
+universities.compare.reviewed.scope.mismatch: Таңдау бағдарламаға сай емес
+universities.compare.reviewed.scope.mismatch_meta: Бағдарламаны қайта таңдаңыз
+universities.compare.reviewed.action.choose: Бағдарлама таңдау
+universities.compare.reviewed.action.change: Бағдарламаны өзгерту
+universities.compare.reviewed.action.choose_route: Өтініш жолын таңдау
+universities.compare.reviewed.section.program: Бағдарлама
+universities.compare.reviewed.section.admission: Түсу
+universities.compare.reviewed.section.cost: Құны және көмек
+universities.compare.reviewed.section.university: Университет туралы
+universities.compare.reviewed.row.study: Ұзақтығы мен форматы
+universities.compare.reviewed.row.route: Өтініш беру жолы
+universities.compare.reviewed.row.deadline: Қашан өтініш беру керек
+universities.compare.reviewed.row.needs: Не қажет болады
+universities.compare.reviewed.row.requirements: Ең төменгі талаптар
+universities.compare.reviewed.row.cost: Көмекке дейінгі құны
+universities.compare.reviewed.row.funding: Қаржылай көмек
+universities.compare.reviewed.row.rank: Рейтинг
+universities.compare.reviewed.row.selectivity: Конкурс
+universities.compare.reviewed.row.students: Студенттер
+universities.compare.reviewed.row.international: Шетелдік студенттер
+universities.compare.reviewed.row.housing: Тұрғын үй
+universities.compare.reviewed.value.loading: Жүктелуде
+universities.compare.reviewed.value.error: Деректерді жүктеу мүмкін болмады
+universities.compare.reviewed.value.depends: Бағдарламаға байланысты
+universities.compare.reviewed.value.choose_route: Көру үшін өтініш беру жолын таңдаңыз
+universities.compare.reviewed.value.no_route: Университет бұл бағдарламаға ашық өтініш жарияламайды
+universities.compare.reviewed.value.mismatch: Таңдау бағдарламаға сай емес
+universities.compare.reviewed.value.no_program: Бағдарлама таңдалмаған
+universities.compare.reviewed.value.not_published: Жарияланбаған
+universities.compare.reviewed.students: Студенттер саны: {total}
+universities.compare.reviewed.students_detail: Бакалавриат: {undergraduate} · магистратура мен докторантура: {graduate}
+universities.compare.reviewed.open_profile: Профильді ашу
+universities.compare.reviewed.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім де, қай университет жақсы екенін бағалау да емес.
+universities.compare.reviewed.retry: Қайталау
+universities.compare.reviewed.fee.label: Баға кімге
+universities.compare.reviewed.fee.both: Екеуіне
+universities.compare.reviewed.fee.home: Home
+universities.compare.reviewed.fee.overseas: Overseas
+universities.compare.reviewed.fee.note: Баға университет өз ережелерімен белгілейтін төлем мәртебесіне (Home немесе Overseas) байланысты.
+universities.compare.reviewed.budget_hint: Профильге жылдық бюджетті қосыңыз — әр баға оған сай келе ме, көрсетеміз.
+universities.compare.reviewed.picker.title: Бағдарлама таңдау
+universities.compare.reviewed.picker.search: Бағдарлама іздеу
+universities.compare.reviewed.picker.more: Тағы көрсету
+universities.compare.reviewed.picker.count: Табылған бағдарламалар: {total}
+universities.compare.reviewed.picker.routes_intro: «{program}» бағдарламасына бірнеше жолмен өтініш беруге болады. Өзіңіздікін таңдаңыз.
+universities.compare.reviewed.picker.back: Басқа бағдарлама
+universities.compare.reviewed.picker.close: Жабу
+universities.compare.mixed.title: Бұл университеттерді әзірге салыстыру мүмкін емес
+universities.compare.mixed.text: «{reviewed}» университетінің деректері қайта тексерілген, ал «{legacy}» университетінікі әлі тексерілмеген. Әртүрлі дәлдіктегі деректер қатар тұрмауы үшін жұпты тек бір топ ішінде салыстырамыз. Барлық университетті кезекпен қайта тексеріп жатырмыз.
+universities.compare.mixed.reviewed: Деректер қайта тексерілген
+universities.compare.mixed.legacy: Деректер әлі қайта тексерілмеген
+universities.compare.mixed.choose_pair: Басқа жұп таңдау
+universities.card.compare_other_group: Бұл жұпқа емес
+universities.card.compare_other_group_title: Жұпты бір топ ішінде салыстырамыз: деректері қайта тексерілген университеттер немесе деректері әлі тексерілмеген университеттер.
+universities.compare.tray_blocked_legacy: «{university}» деректері әлі қайта тексерілмеген, ал жұпта деректері қайта тексерілген университет бар. Тек бір топтағы университеттерді салыстырамыз.
+universities.compare.tray_blocked_reviewed: «{university}» деректері қайта тексерілген, ал жұпта деректері әлі тексерілмеген университет бар. Тек бір топтағы университеттерді салыстырамыз.
+universities.compare.tray_mixed: Бұл университеттер әртүрлі деректер тобынан. Жалғастыру үшін біреуін алып тастаңыз.
 university.admissions.reading.total_fee: толық оқу ақысы
 university.deadlines.kind.funding_consideration: Стипендия қарастыруға арналған өтініш беру мерзімі
 university.admissions.reading.first_year: бірінші жыл
@@ -3288,7 +3204,7 @@ university.admissions.catalog.level.residency: Резидентура
 university.admissions.catalog.study_level.residency: Резидентура
 university.admissions.catalog.level.non_degree: Дәреже берілмейтін бағдарламалар
 university.admissions.catalog.study_level.non_degree: Дәреже берілмейтін бағдарламалар
-profile.option.study_level_preparation: Дайындық / Foundation
+profile.option.study_level_preparation: Дайындық бағдарламасы
 universities.level.preparation: Дайындық
 universities.level.professional: Кәсіби бағдарламалар
 profile.option.study_level_residency: Резидентура
@@ -3385,7 +3301,6 @@ university.admissions.key_facts.note: Бұл — жарияланған дере
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
 university.admissions.key_facts.requirements_manual: Ресми ережелермен салыстыруды қажет ететін тағы шарттар: {count}
-university.admissions.key_facts.use_profile_cycle: Профильдегі «{cycle}» мәнін қолдану
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -3415,9 +3330,8 @@ university.admissions.key_facts.funding_records: Бұл жол бойынша қ
 university.admissions.key_facts.funding_none: Бұл жол үшін қаржыландыру тізімге енгізілмеген; ресми қаржыландыру бетін тексеріңіз
 university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
 university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
-profile.intro: Барлық өріс міндетті емес. Алдымен мамандықты, оқу деңгейін және бюджетті көрсетіңіз; жарияланған талаптарды салыстыру үшін балдарды кейін қоса аласыз. Деректерді осы құрылғыда сақтап, каталогқа оралыңыз.
 profile.clear_report_draft: Жобаны тазарту
-profile.report_draft_pending: Есепті қосыңыз не жаңартыңыз немесе оның жобасын тазалап, содан кейін профильді сақтаңыз.
+profile.report_draft_pending: Нәтижені сақтау үшін «Қосу» түймесін басыңыз немесе жобаны тазалаңыз.
 university.admissions.catalog.field.possible_exemption_evidence_kinds: Емтиханнан босатуды жеке тексеруге арналған тілдік тәжірибе
 university.admissions.catalog.field.search_opens: Бағдарламаларды іздеу ашылады
 university.admissions.catalog.field.preparation_opens: Өтінімді дайындау ашылады
@@ -3430,12 +3344,10 @@ university.admissions.catalog.field.time: Уақыты
 university.admissions.catalog.field.timezone: Уақыт белдеуі
 university.admissions.catalog.field.scope: Қатысты
 university.admissions.catalog.record_link: Дереккөздің толық жазбасын көрсету
-profile.family_income_reference: Отбасы табысы (міндетті емес анықтама)
 profile.change_budget_currency: Бюджет валютасын баптауларда өзгерту (қазір {currency})
 university.admissions.entry.browsing_not_saved: Бұл таңдау UniFit үшін сақталмаған.
 university.admissions.entry.saved_context: Бұл таңдау UniFit үшін сақталған.
 university.admissions.entry.saved_other: UniFit үшін сақталған: {details}.
-university.admissions.entry.route_profile_hint: Бейінде үміткер санаты «{applicant}» деп көрсетілген. Өзіңізге сәйкес түсу жолын таңдаңыз.
 university.admissions.entry.route_class_help.ucas_course_choice: Таңдалған бакалавриат курсына UCAS арқылы өтініш беріңіз.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Таңдалған жоғары оқу орнынан кейінгі бағдарламаға өтініш беріңіз.
 university.admissions.entry.route_class_help.department_or_program: Тиісті департамент немесе бағдарлама арқылы өтініш беріңіз; нақты түсу жолының шарттарын төменнен қараңыз.
@@ -3475,10 +3387,6 @@ universities.match.checks_detail: Тексерілген {total} минимум�
 universities.match.budget_over: Бюджетіңізден жоғары
 universities.match.budget_within: Бюджетіңізге сай
 universities.match.budget_uncertain: Құнын нақтылаңыз
-universities.match.budget_tuition_detail: Жарияланған оқу ақысы ғана салыстырылады. Тұру және басқа шығындар бөлек төленеді.
-universities.match.budget_annual_detail: Жарияланған жылдық шығын бюджетіңізбен салыстырылады.
-universities.match.budget_reference_detail: Салыстыру үшін жарияланған баға пайдаланылды. Қазіргі құнын «Қаржы» бөлімінен қараңыз.
-universities.match.budget_uncertain_detail: Кейбір нұсқалардың бағасы бюджетіңізден жоғары. Таңдаған бағдарламаның құнын нақтылаңыз.
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Талаптарға сай бітіруші курс студенттеріне: қазір өтініш беріп, екі–бес жыл жұмыс істегеннен кейін MBA оқуын бастауға болады. Бұл MBA-ға әдеттегі қабылдаудың ерте кезеңі емес, оқуды кейін бастау жолы.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — оқуды кейін бастау жолы
 university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
@@ -3518,3 +3426,191 @@ university.admissions.key_facts.requirements_add_sections: {exam} бөлімде
 university.admissions.key_facts.requirements_add_date_sections: {exam} тапсырылған күнін және бөлімдер бойынша балдарын
 university.admissions.key_facts.requirements_add_gpa: орташа балды (GPA)
 university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}
+profile.ux2.intro: Тек білетініңізге ғана жауап беріңіз. Ештеңе міндетті емес, жауаптар осы құрылғыда сақталады.
+profile.ux2.section.study.title: Нені оқығыңыз келеді
+profile.ux2.section.study.desc: Оқу деңгейі тізімді тарылтады. Мамандық пен тақырыптар реттілікті өзгертеді.
+profile.ux2.section.budget.title: Бюджет және қаржыландыру
+profile.ux2.section.budget.desc: Бюджет университеттер реттілігін өзгертеді; қаржыландыру түрі ол жоқ екені анық университеттерді жасырады.
+profile.ux2.section.scores.title: Бағалар мен емтихандар
+profile.ux2.section.scores.desc: Әр университет жариялаған ең төменгі талаптармен салыстырылады. Бұл оқуға түсу мүмкіндігі емес.
+profile.ux2.section.languages.title: Тілдер
+profile.ux2.section.languages.desc: Жарияланған тіл талаптарымен салыстырылады; ана тілі немесе CEFR деңгейі талап етілетін тестті алмастырмайды.
+profile.ux2.section.specific.title: Жекелеген университеттер үшін
+profile.ux2.section.specific.desc: Міндетті емес. Бұл мәліметтерді бірнеше тексерілген университет жекелеген бағдарламалар үшін қарайды.
+profile.ux2.hint.study_level: Тек осы деңгейі бар университеттерді көрсетеді және соған баға мен талаптарды салыстырады.
+profile.ux2.hint.major: Сәйкес бағдарламасы жоқ университеттер төменірек тұрады.
+profile.ux2.hint.interests: Қысқа тақырыптар тілдік модель қолжетімді болса, реттілікті өзгертуі мүмкін; олар түсу құқығын растамайды.
+profile.ux2.hint.study_mode: Бюджет күндізгі немесе онлайн бағамен салыстырылатынын анықтайды.
+profile.ux2.hint.budget: Жылдық құны осы сомадан жоғары университеттер төмен тұрады; белгісіз баға төмендетпейді, гранттар шегерілмейді.
+profile.ux2.hint.funding: Мұндай нұсқасы жоқ екені анық университеттерді жасырады; қаржыландыруы белгісіздері қалады.
+profile.ux2.hint.gpa: Университеттер жариялаған ең төменгі GPA-мен салыстырылады.
+profile.ux2.hint.exams: Жарияланған емтихан минимумдарымен салыстырылады; сұралған емтихандар талаптарға сәйкестікті есептеуге мүмкіндік береді.
+profile.ux2.gpa.scale_hint: Шкала: {scale}. Басқа шкала ма? Өрістің жанындағы «{unit}» түймесін басыңыз.
+profile.ux2.gpa.over_scale: {value} мәні 4.0-ден жоғары. Мектебіңізде бес балдық шкала болса, 5.0-ге ауыстыру үшін өрістің жанындағы «/ 4.0» түймесін басыңыз.
+profile.ux2.hint.exams_language: IELTS, TOEFL сияқты тіл тесттері «Тілдер» бөлімінде қосылады.
+profile.ux2.nav.filled: жауаптар бар
+profile.ux2.nav.empty: жауап әлі жоқ
+profile.ux2.action.save_show: Сақтап, сәйкес университеттерді көрсету
+profile.ux2.evidence.language_kind: Ағылшын тілін қалай білесіз
+profile.ux2.evidence.institution_kind: Нені қосқыңыз келеді?
+profile.ux2.summary.title: UniFit профильіңізді қалай пайдаланады
+profile.ux2.summary.sentence: UniFit жауаптарыңыздың {total} тобының {used} тобын пайдаланады.
+profile.ux2.summary.sentence_none: Сіз әлі ештеңеге жауап бермедіңіз, сондықтан UniFit ескеретін ештеңе жоқ.
+profile.ux2.summary.disclaimer: UniFit университеттерді сізге арнап реттейді. Ол оқуға түсуді немесе қаржыландыруды болжамайды.
+profile.ux2.summary.guide_link: UniFit қалай жұмыс істейді
+profile.ux2.summary.state.used: Ескеріледі
+profile.ux2.summary.state.partial: Ішінара ескеріледі
+profile.ux2.summary.state.not_used: Ескерілмейді
+profile.ux2.summary.level.title: Оқу деңгейі
+profile.ux2.summary.level.used: Тек осы деңгейі бар университеттер көрсетіледі; соған баға мен талаптар салыстырылады.
+profile.ux2.summary.level.unused: Кез келген деңгейдегі университеттер көрсетіледі. Деңгей болмаса, баға деңгейге байланысты болатын жерде UniFit бюджетті салыстырмауы мүмкін.
+profile.ux2.summary.subject.title: Мамандық және қызығушылықтар
+profile.ux2.summary.subject.major: Сәйкес бағдарламасы жоқ университеттер төменірек тұрады.
+profile.ux2.summary.subject.interests: Тақырыптар тілдік модель қолжетімді болса, реттілікті өзгертуі мүмкін.
+profile.ux2.summary.subject.interests_value: Тақырыптар қосылды
+profile.ux2.summary.subject.unused: Мамандық таңдалмаған. Сәйкес университеттер жоғарылау үшін мамандықты таңдаңыз немесе тақырыптар қосыңыз.
+profile.ux2.summary.budget.title: Жылдық бюджет
+profile.ux2.summary.budget.value: жылына {amount}
+profile.ux2.summary.budget.used: Жылдық құны осы сомадан жоғары белгілі университеттер төмен тұрады. Гранттар шегерілмейді.
+profile.ux2.summary.budget.zero: 0 бюджет ескерілмейді. Бағаларды салыстыру үшін соманы енгізіңіз.
+profile.ux2.summary.budget.unused: Бағалар бюджетпен салыстырылмайды. Салыстыру үшін соманы енгізіңіз.
+profile.ux2.summary.format.title: Қаржыландыру және оқу форматы
+profile.ux2.summary.format.mode: Формат бюджетіңіз күндізгі немесе онлайн оқу бағасымен салыстырылатынын анықтайды.
+profile.ux2.summary.format.mode_no_budget: Формат бюджет көрсетілгенде ғана ескеріледі.
+profile.ux2.summary.format.funding: Қаржыландыру түрі мұндай нұсқасы жоқ екені анық университеттерді жасырады; белгісізі қалады.
+profile.ux2.summary.format.unused: Кез келген формат пен қаржыландыру: ештеңе тарылтылмайды.
+profile.ux2.summary.requirements.title: GPA, емтихандар және тілдер
+profile.ux2.summary.requirements.gpa: GPA
+profile.ux2.summary.requirements.native: ана тілі
+profile.ux2.summary.requirements.cefr: CEFR деңгейі
+profile.ux2.summary.requirements.used: Әр университеттің жарияланған минимумдарымен салыстырылады. Сәйкестік жауаптар барлық минимумды қамтығанда есептеледі.
+profile.ux2.summary.requirements.unused: Ең төменгі талаптарға сәйкестік есептелмейді. Жарияланған минимумдармен салыстыру үшін GPA, емтихандар немесе тілдер қосыңыз.
+universities.ux2.banner.ranked: Профиліңізге сай іріктелді: {values}
+universities.ux2.banner.generic: Рейтинг жалпы: профильде оқу деңгейі, бағыт және бюджет көрсетілмеген.
+universities.ux2.banner.scores_only: Рейтинг емтихан мен тіл нәтижелеріңізді ескереді. Нақтылау үшін оқу деңгейін, бағытты немесе бюджетті көрсетіңіз.
+universities.ux2.banner.budget: жылына {amount} дейін
+universities.ux2.banner.edit: Профильді өзгерту
+universities.ux2.banner.set_up: Профильді толтыру
+universities.ux2.banner.disclaimer: Бұл сәйкестік рейтингі, түсу болжамы емес. Деректің жоқтығы орындалмаған талап болып есептелмейді.
+universities.ux2.tip.language_test: тіл тесті
+universities.tip.subject_options: Сай бағдарламалар: {count}. Талаптарын тексеру үшін университет бетінде біреуін таңдаңыз.
+universities.tip.subject_selected: Таңдаған бағдарламаңыз бағытыңызға сай.
+universities.tip.preferences_close: Баптауларыңызға жақын: {dimensions}.
+universities.tip.add_to_profile: Талаптарды тексеру үшін профильге қосыңыз: {exams}.
+universities.tip.budget_within: Жылына {cost}, бюджетіңіз — {budget}.
+universities.tip.budget_over: Жылына {cost}, бұл бюджетіңізден {gap} артық.
+universities.tip.budget_range: Жылына {min} – {max}, кейбір нұсқалар бюджетіңізден қымбат. Нақты салыстыру үшін бағдарлама таңдаңыз.
+universities.tip.budget_fee_status: Төлем мәртебесіне қарай жылына {min} – {max}. Оны университет бетінде көрсетіңіз.
+universities.tip.tuition_only: Тек оқу ақысы: тұру шығыны бөлек төленеді.
+universities.tip.before_aid: Қаржылық көмек есепке алынбаған.
+universities.tip.requirements_met: Нәтижелеріңіз жарияланған ең төменгі талаптарға сай. Басқа қабылдау шарттарын университет бетінен тексеріңіз.
+universities.tip.below_minimum: Ең төменгі талаптан төмен: {items}.
+universities.tip.minimum_gap: {exam}: {minimum} керек, сізде {provided}
+universities.ux2.legend.aria: Университет карточкаларындағы белгішелер
+universities.ux2.legend.lead: Карточка белгішелері:
+universities.ux2.legend.subject_missing: Бағдарлама жоқ
+universities.ux2.legend.subject_matched: Бағыт бар
+universities.ux2.legend.requirements_below: Талаптан төмен
+universities.ux2.legend.exam_needed: Емтихан керек
+universities.ux2.legend.requirements_met: Талаптар орындалды
+universities.ux2.legend.no_data: Талап деректері жоқ
+universities.ux2.legend.over_budget_aid: Бюджеттен асады, көмек бар
+universities.ux2.legend.over_budget: Бюджеттен асады
+universities.ux2.legend.budget_check: Құнын тексеріңіз
+universities.ux2.legend.within_budget: Бюджет шегінде
+universities.ux2.legend.aid: Қаржылай көмек бар
+universities.ux2.legend.vibe: Қалауыңызға сәйкес
+profile.ux2.evidence.language_title: Ағылшын тілін қолдану тәжірибесі
+profile.ux2.evidence.language_fixed: Тек ағылшын тіліндегі тәжірибе жазылады: ағылшын тілі талаптары дәл соны сұрайды.
+profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
+university.ux2.title: Қабылдаудың негізгі деректері
+university.ux2.intro_route: Көрсетілген жол: {route}. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.
+university.ux2.intro_program: Әр бағдарламаның өзіндік мерзімі, құны мен талаптары бар. Көру үшін бағдарламаны таңдаңыз.
+university.ux2.intro_legacy: Университеттің бакалавриат туралы жариялаған деректері.
+university.ux2.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім емес. Дереккөздер мен толық ақпарат — қойындыларда.
+university.ux2.loading: Негізгі деректер жүктелуде
+university.ux2.error: Негізгі деректерді жүктеу мүмкін болмады.
+university.ux2.retry: Қайталау
+university.ux2.source: Дереккөз:
+university.ux2.or: немесе
+university.ux2.card.deadline: Қашан өтініш беру керек
+university.ux2.card.cost: Құны қанша
+university.ux2.card.needs: Не қажет болады
+university.ux2.card.people: Мұнда кімдер оқиды
+university.ux2.card.program: Мерзімдер, құн және талаптар
+university.ux2.link.deadlines: Барлық мерзімдер
+university.ux2.link.cost: Құны және қаржыландыру
+university.ux2.link.needs: Барлық талаптар
+university.ux2.link.choose: Бағдарлама таңдау
+university.ux2.choose.headline: Бағдарламаға байланысты
+university.ux2.deadline.headline: {date} дейін · {days} күннен кейін
+university.ux2.deadline.headline_today: Соңғы мерзім бүгін · {date}
+university.ux2.deadline.closed: «{name}» ({date}) қабылдауы жабылған.
+university.ux2.deadline.annual: Университет бұл күнді жыл сайын жылын көрсетпей қайталайды. Ресми беттен тексеріңіз.
+university.ux2.deadline.legacy: Өтініш мерзімдері «Күндер мен мерзімдер» қойындысында.
+university.ux2.cost.headline: Жылына {amount}
+university.ux2.cost.headline_from: Жылына {amount} бастап
+university.ux2.cost.headline_tuition: Жылына {amount}, тек оқу ақысы
+university.ux2.cost.before_aid: Қаржылық көмекті есепке алмағанда.
+university.ux2.cost.living_extra: Тұру мен күнделікті шығындар кірмейді.
+university.ux2.cost.legacy_total: Оқу ақысы, алымдар мен тұру шығындарының жарияланған сомасы, қаржылық көмекті есепке алмағанда.
+university.ux2.cost.legacy_tuition_only: Тек оқу ақысы мен алымдар; тұру мен тамақ бөлек төленеді. Қаржылық көмекті есепке алмағанда.
+university.ux2.cost.legacy_unknown: Жылдық оқу құны каталогта әзірге көрсетілмеген.
+university.ux2.cost.aid_need: Университет мұқтаждыққа негізделген көмекті жариялайды; көмек жеке қаралады.
+university.ux2.cost.aid_merit: Университет жетістікке берілетін шәкіртақыларды жариялайды; шешім жеке қабылданады.
+university.ux2.cost.aid_both: Университет мұқтаждыққа негізделген көмекті және жетістікке берілетін шәкіртақыларды жариялайды; шешім жеке қабылданады.
+university.ux2.cost.aid_full_need: Жарияланған саясат: университет расталған қаржылық мұқтаждықты толық өтейді. Көмек жеке қаралады.
+university.ux2.cost.aid_full_need_international: Жарияланған саясат: университет шетелдік студенттерді қоса, расталған қаржылық мұқтаждықты толық өтейді. Көмек жеке қаралады.
+university.ux2.needs.headline: Өтініш бермес бұрын мыналарды тексеріңіз
+university.ux2.needs.test: Емтихан: {exams}
+university.ux2.needs.test_other: Емтихан: {exams} ({presence})
+university.ux2.needs.english: Ағылшын тілі тесті: {presence}
+university.ux2.needs.english_any: Ағылшын тілі тесті, біреуі жеткілікті: {exams}
+university.ux2.needs.english_all: Ағылшын тілі тесті: {exams}
+university.ux2.needs.mark_met: Орындалған
+university.ux2.needs.mark_todo: Дайындау немесе қосу керек
+university.ux2.needs.mark_below: Жарияланған минимумнан төмен
+university.ux2.needs.empty: Емтихандар мен құжаттар «Қабылдау» қойындысында көрсетілген.
+university.ux2.needs.varies: Талаптар бакалавриат бағдарламаларына қарай әртүрлі.
+university.ux2.needs.profile_hint: Бар нәрсені көру үшін емтихан нәтижелерін профильге қосыңыз.
+university.ux2.people.international: {percent}% шетелдік студент · бакалавриатта {total} студенттің {count}-ы
+university.ux2.people.housing_one: Тұрғын үй {years} жылға кепілдендірілген
+university.ux2.people.housing_few: Тұрғын үй {years} жылға кепілдендірілген
+university.ux2.people.housing_many: Тұрғын үй {years} жылға кепілдендірілген
+university.ux2.people.acceptance_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.acceptance: Өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.salary: Мансап басындағы жалақы: жылына шамамен {amount}
+university.ux2.people.earnings: Түскеннен 10 жылдан кейінгі медианалық табыс: жылына шамамен {amount}
+university.ux2.needs.presence_required: міндетті
+university.ux2.needs.presence_recommended: ұсынылады
+university.ux2.needs.presence_strongly_recommended: кейбір үміткерлерге қатаң ұсынылады
+university.ux2.format.hybrid: Аралас (кампус және онлайн)
+university.ux2.deadlines.not_collected: UniSearch бұл университеттің өтініш мерзімдерін әлі жинамаған. Өзекті күндерді қабылдау комиссиясының ресми сайтынан қараңыз.
+university.ux2.deadline.legacy_none: Мерзімдер әлі жиналмаған
+university.ux2.deadline.legacy_none_detail: UniSearch-те бұл университеттің өтініш мерзімдері әлі жоқ. Оларды ресми сайттан тексеріңіз.
+university.ux2.link.official_site: Ресми сайт
+university.ux2.legacy.title: Бұл университеттің деректері әлі қайта тексерілмеген
+university.ux2.legacy.text: Олар бұрын жиналған және дәл емес немесе ескірген болуы мүмкін. Маңызды мәліметті ресми сайттан тексеріңіз. Біз университеттерді қайта тексерілген деректерге кезекпен көшіріп жатырмыз, бұл университет те жаңартылады.
+university.ux2.legacy.badge: Деректер әлі қайта тексерілмеген
+university.ux2.legacy.badge_detail: Бұрын жиналған, дәл емес немесе ескірген болуы мүмкін. Маңызды мәліметті ресми сайттан тексеріңіз; университет жақында жаңартылады.
+university.ux2.people.selectivity_first_year: Бірінші курсқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.selectivity_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
+university.ux2.people.selectivity_offers: Бакалавриатқа берілген өтініштердің шамамен {rate}%-ы орын ұсынысын алады
+university.ux2.people.selectivity_counts_admitted: Қабылданғаны: {admitted} · өтініш бергені: {applicants}
+university.ux2.people.selectivity_counts_offers: Орын ұсыныстары: {admitted} · өтініштер: {applicants}
+university.ux2.people.selectivity_international: Шетелдіктер: қабылданғаны {admitted} · өтініш бергені {applicants} (шамамен {rate}%)
+university.ux2.people.selectivity_preparation: Сол өтініш бойынша тағы {rate}% {name} дайындық жылына қабылданды
+university.ux2.people.selectivity_offers_note: Бір адам бірнеше бағдарламаға өтініш бере алады, сондықтан бұл қабылданған адамдардың үлесі емес.
+university.ux2.people.intake: {year} жылғы қабылдау
+university.ux2.campus.area_label: Кампус аумағы
+university.ux2.campus.area_ha: {ha} га
+university.ux2.campus.area_km: {ha} га ({km} км²)
+university.ux2.campus.pitches_one: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_many: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_few: шамамен {count} футбол алаңы
+university.ux2.campus.pitches_other: шамамен {count} футбол алаңы
+university.ux2.campus.source: Ресми дереккөз
+university.ux2.overview.numbers_title: Сандармен
+university.ux2.prompt.shared_routes: Бакалавриатқа барлық бағдарламаға бір өтініш беріледі. Қалай түсетініңізді таңдаңыз:
+university.ux2.sources.one: Дереккөз
+university.ux2.sources.many: Дереккөздер

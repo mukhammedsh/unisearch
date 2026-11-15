@@ -324,6 +324,23 @@ def fetch_rates(base: str = "USD") -> Dict[str, Any]:
         raise RuntimeError(f"Currency API invalid JSON: {e}") from e
 
 
+_REFRESH_LOCK = threading.Lock()
+
+
+def _refresh_in_background(base_code: str) -> None:
+    """Refresh rates in a daemon thread; at most one refresh runs at a time per process."""
+    if not _REFRESH_LOCK.acquire(blocking=False):
+        return
+
+    def refresh() -> None:
+        try:
+            get_rates(base_code, force_refresh=True)
+        finally:
+            _REFRESH_LOCK.release()
+
+    threading.Thread(target=refresh, name="currency-refresh", daemon=True).start()
+
+
 def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
     """
     Returns currency exchange rates using two-tier cache (memory + Redis),
@@ -370,6 +387,19 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
                     "date": date_str,
                     "source": "cache",
                 }
+
+    # An expired in-memory entry still answers: the provider is asked off the request path,
+    # so no user request waits for the network once rates have been loaded.
+    if not force_refresh and CURRENCY_RATES_ENABLED and not _in_backoff():
+        with _CACHE_LOCK:
+            stale = _MEMORY_CACHE.get(base_code)
+        if stale and stale.get("rates"):
+            _refresh_in_background(base_code)
+            return {
+                "rates": dict(stale["rates"]),
+                "date": stale.get("date", ""),
+                "source": "cache",
+            }
 
     # API fetch if enabled and not backing off
     if CURRENCY_RATES_ENABLED and not _in_backoff():

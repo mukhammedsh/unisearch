@@ -42,8 +42,11 @@ export function renderTermHelp(term) {
 }
 
 // Tooltips are positioned absolutely, so they sit beside content rather than inside clipping table wrappers.
-export function renderTermList(terms) {
-  const items = terms.map(renderTermHelp).filter(Boolean);
+// `shown` (optional) collects the terms already explained in the same block, so each term appears once per block.
+export function renderTermList(terms, shown = null) {
+  const fresh = shown ? terms.filter(term => !shown.has(term)) : terms;
+  if (shown) fresh.forEach(term => shown.add(term));
+  const items = fresh.map(renderTermHelp).filter(Boolean);
   return items.length ? `<p class="admissions-term-list">${items.join("")}</p>` : "";
 }
 

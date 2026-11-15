@@ -1,10 +1,58 @@
 # UniSearch Admissions TODO
 
-Active plan agreed on 2026-09-30; first-ten scope recorded on 2026-10-08; immediate presentation scope revised by the user on 2026-10-12 to Stage 2/3 for MIT, Imperial College London, and Stanford University. Oxford, Harvard, and Cambridge research is paused, with unfinished drafts preserved. Follow [the admissions product model](docs/admissions-product-model.md) and [the task runbook](orchestrator.md). The rest of the first ten and remaining forty stay in later delivery cycles. Earlier research and implementation remain useful inputs; do not restart them without a concrete gap or failure.
+Active plan agreed on 2026-09-30. Follow [the admissions product model](docs/admissions-product-model.md) and [the task runbook](orchestrator.md). Earlier research and implementation remain useful inputs; do not restart them without a concrete gap or failure.
+
+## Current scope and decisions
+
+This section holds the dated state of the admissions work. `AGENTS.md` keeps only the durable rules and points here.
+
+- **Target:** the first ten universities in the project's local catalog ordering, then the remaining forty with the same quality standard. Gaps in published rank numbers do not change batch membership. First-ten scope recorded on 2026-10-08.
+- **Current presentation batch (authorized 2026-10-12):** the three Stage 1 accepted institutions — MIT, Imperial College London and Stanford University — proceed through Stage 2 and Stage 3 without waiting for the other seven.
+- **Nazarbayev University (authorized 2026-10-24):** the separate rework follows its [owner work plan](backend/data/drafts/nazarbayev-university-kaz-astana/work-plan.md); its evidence is accepted for runtime integration alongside the original three. Together these are the four accepted deep datasets, which stay as they are.
+- **Paused:** Oxford, Harvard and Cambridge research. Their unfinished drafts are preserved outside runtime and resume only on explicit user instruction. The rest of the first ten follows later.
+- **Other institutions:** the other 46 keep their earlier presentation, with review-pending status, until the user schedules their conversion to light dossiers.
+- **Research depth (decision of 2026-11-12):** bounded by [the light dossier standard](docs/admissions-light-dossier.md).
+- **Integration checks:** verify the MIT, Imperial Computing and Stanford CS contrast journeys, reusing the existing profile and one selected program/route/applicant/cycle context. No permanent legacy reader is required.
+
+## Found by the agent, waiting for the user's decision
+
+Defects, inconsistencies and ideas that need the user's decision because they change product behavior, a public contract, persisted data or the agreed stage scope, or are large or risky. The agent adds an item when it asks and removes it when resolved, and lists the open items at the end of a session.
+
+- **UniFit slider data gaps (2026-11-14).** Eight Kazakhstan universities still have no verifiable student count, so their research-focus indicator is unknown: Astana Medical University, International Information Technology University, Satbayev University, Kazakh-British Technical University, Al-Farabi Kazakh National University (its admissions page blocks automated reading), L.N. Gumilyov Eurasian National University, Narxoz University and KIMEP University. Their official pages give conflicting or undated figures (for example ENU states both 20,000 and 27,000). The earlier-format acceptance rates of twelve Kazakhstan universities are round numbers (25-50%) whose source is a generic note without a link; they feed the selectivity slider until those institutions are converted.
+- [ ] Imperial and NU publish their test and document requirements as course prose, so the "What you'll need" row of the comparison and of the overview shows only a link to the Admission tab for them, while MIT and Stanford show a checklist. Structuring those records (for example TMUA for Imperial Computing) is data work for the light-dossier conversion; decide whether to schedule it.
+
 
 ## Delivery and boundaries
 
 - [x] Keep scoped tuition visible on reviewed cards with no comparable study and living budget. Verified Imperial before and after choosing Computer Science on desktop and mobile. The price filters and sorting use the selected basis.
+
+### University page: answers first (2026-11-13)
+
+- [x] The Overview tab opens with key admission facts: when to apply, cost before aid, what you'll need and who studies there; its links open filled tabs on the shared first-year route.
+- [x] Official admission statistics for the four reviewed institutions (MIT Class of 2029, Stanford CDS 2025-26, Imperial 2025 UCAS offers per application, NU 2025 combined NUFYP/undergraduate pool) in `admission_statistics`, checked against the official pages and documents on 2026-11-13.
+- [x] Reviewed institutions show no earnings figure, as in comparison; MIT's 2019 survey salary is no longer on the overview.
+- [x] Program-admitting institutions (Imperial, NU) offer study-level shortcuts into Programs.
+- [x] Earlier-format universities carry a quiet "data not yet rechecked" note on the page and on catalog cards; undated ones link to their official website for dates.
+- [x] Removed the "use profile hints" actions and the profile-cycle offers from the university page, its key facts and the comparison after the general profile stopped holding an entry cycle and fee status (2026-11-14); the General-tab layout test now expects the key admission facts block.
+- [ ] On each later conversion, follow the [per-institution conversion checklist](docs/admissions-light-dossier.md#per-institution-conversion-checklist), including moving typical scores stored as minimums (for example Yale's admitted-student GPA) into `admitted_profile`.
+
+### Simplification pass before wider rollout (2026-11-12)
+
+The user asked to simplify the profile, the admission page and the reviewed model before applying it to the other 46 institutions.
+
+- [x] Remove profile inputs that never changed a result: citizenship, current country of residence and family income. Saved profiles and older clients that still carry them keep working.
+- [x] Admission, Dates and Costs tabs: numbered source markers with one titled source list per tab, plain period text, one disclosure for the full source records, the requirements-match summary shown once in the key facts, automatic selection of a program's only route.
+- [x] Return only the fields the pages read from `admissions-context` and `study-options` (61–74% smaller context responses); stored records and assessment hashes are unchanged.
+- [x] Keep reviewed institutions visible under the `funding_type` list filter, where their funding availability is unknown to the legacy flags.
+- [x] Profile: removed the general applicant route, country of education, credential and the institution-evidence forms no reviewed check reads. Entry cycle and self-reported fee status stay because they select reviewed card prices. Published qualification guidance is shown to every reader as reference.
+- [x] Applicant category is derived from the selected application route during preparation (`applicant_route` on every route; closed overrides in `vocabulary.json`); the page and comparison no longer ask for it.
+- [x] Same-titled official pages at different URLs are told apart in the source list by a URL-path hint (Stanford first-year and transfer "Application and Essays" are two real pages).
+- [x] Cold start: major-taxonomy normalisation is precomputed once; the first detail request is about half as long.
+- [x] Research depth is bounded by [the light dossier standard](docs/admissions-light-dossier.md); `AGENTS.md` and the product model replace the unbounded "never discard a sourced fact" rule.
+- [ ] Later, on the user's schedule: implement the light-dossier runtime prerequisites and convert the other 46 institutions in rechecked batches (see the standard). Not started.
+- [x] Stanford facts that spell the applicant category `first-year`, `first-year/frosh` or `first-year REA` map to the closed `first_year` value in preparation through `applicant_category_alias` in `vocabulary.json`; the research spelling stays in provenance.
+- [x] The `format` and acceptance-rate list filters keep reviewed institutions whose value is unknown; only a known mismatch excludes them. The size filter needed no change: every reviewed institution states a size.
+- [x] An expired exchange-rate cache entry is served at once and refreshed in a background thread, so no request waits for the provider after rates have loaded. A process that has never loaded rates still fetches them on its first request unless startup warm-up has done so (about 0.06–0.14 s measured).
 
 ### Four-institution audit repairs (2026-11-04)
 
@@ -284,7 +332,7 @@ Verification checkpoint: the full frontend unit suite passed 510 tests. All 24 s
 - [x] Reduce the mobile context form's reading burden: preserve a visible selected-context summary while making optional edits understandable. Group generic source facts under concise topics, keep source conditions and scope available, and avoid repeating source notes in adjacent sections.
 - [x] Let visitors choose a city after choosing a country, with state/region remaining an optional narrowing filter; refine sort/theme labels, university tag hover, and overview fact weights from presentation feedback.
 - [x] Remove the stray arrow overlay from map result logos while retaining card-to-marker focus and the explicit university details link.
-- [ ] Compare the two selected universities using a concise shared set of useful facts. Label program/cycle scope where requirements or costs differ, and disclose unknown values. A complete personal eligibility check is not required to compare universities.
+- [x] Compare the two selected universities using a concise shared set of useful facts. Label program/cycle scope where requirements or costs differ, and disclose unknown values. A complete personal eligibility check is not required to compare universities. Done 2026-11-14: rechecked pairs use a one-stage comparison that reuses the overview answers per column with a program picker; mixed pairs are blocked in the catalog and explained on old links; earlier-format pairs keep the old comparison until it is removed.
 - [ ] Restore calendar navigation and ICS export for reviewed contexts using only applicable, explicitly dated source facts with their published timezone and applicant restrictions. The reviewed pages currently expose dates and official links as source records; the retained legacy calendar is not a reader for the accepted batch. Yearless windows must remain yearless.
 - [ ] Check that a Russian-speaking novice can choose among source-language program/route names and understand the next action. Original English source prose remains available; generic translated labels alone do not establish comprehension.
 - [x] Apply the existing design system, accessible controls, localized text, and loading/empty/error states. Refine confusing navigation and grouping; do not introduce a full redesign as a prerequisite.

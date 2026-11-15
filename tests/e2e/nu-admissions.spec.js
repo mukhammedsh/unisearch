@@ -173,19 +173,18 @@ test("comparison language changes keep its stage and the two independent saved c
   await seed(page, { selectedAdmissionChoices: choices }, { mobile: true });
   await page.goto(`/compare.html?ids=${NU},mit-usa-cambridge`);
   const comparison = page.locator("[data-reviewed-comparison]");
-  await expect(comparison).toContainText("for the whole program");
+  const nuCost = comparison.locator('[data-compare-row="cost"] dd').first();
+  await expect(nuCost).toContainText("for the whole program");
   await expect(page.locator("#siteInitialLoader")).toBeHidden();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices);
   await setNativeSelect(page, "languageSelect", "rus");
-  await expect(comparison).toContainText("за всю программу");
-  await expect(comparison).toContainText("Опубликованная стоимость обучения");
+  await expect(nuCost).toContainText("за всю программу");
+  await expect(comparison).toContainText("Стоимость и помощь");
   await setNativeSelect(page, "languageSelect", "kaz");
-  await expect(comparison).toContainText("толық бағдарлама үшін");
-  await expect(page.locator("[data-action='build-compare-results']")).toHaveCount(0);
-  await page.locator("[data-action='back-to-tracks']").click();
-  await expect(page.locator("[data-action='build-compare-results']")).toBeVisible();
+  await expect(nuCost).toContainText("толық бағдарлама үшін");
+  await expect(page.locator("[data-action='build-compare-results'], [data-action='back-to-tracks']")).toHaveCount(0);
   await setNativeSelect(page, "languageSelect", "eng");
-  await expect(page.locator(`#compare-options-${NU} .compare-context-current__value`)).toHaveText("Master of Science in Finance · Master's · 2027/28");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"] .compare-reviewed__scope-title`)).toHaveText("Master of Science in Finance");
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices)).toEqual(saved);
 });
 
@@ -317,7 +316,7 @@ test("NU Finance keeps ALEKS presence separate from the whole-program fee and mi
   await expect(tuition).toContainText(/35[\s,.]*000/);
   await expect(tuition).toContainText(/14[\s,.]*000/);
   await expect(tuition).toContainText("толық бағдарлама үшін");
-  await expect(tuition).toContainText("USD");
+  await expect(tuition).toContainText("$35,000"); // the amount names its currency in the reader's display setting
   await expect(tuition).not.toContainText("2027");
   await expect(tuition).not.toContainText("Imperial");
   await tuition.scrollIntoViewIfNeeded();
@@ -474,14 +473,15 @@ test("NU Finance and MIT comparison retain independent saved program, route and 
   await page.goto(`/compare.html?stage=configure&ids=${NU},${mit}`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
   await expect(page.locator("#siteInitialLoader")).toBeHidden();
-  await expect(page.locator(`#compare-options-${NU} .compare-context-current__value`)).toContainText("Finance");
-  await expect(page.locator(`#compare-options-${mit} .compare-context-current__value`)).toContainText("Computer Science");
-  await page.locator('[data-action="build-compare-results"]').click();
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"] .compare-reviewed__scope-title`)).toContainText("Finance");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${mit}"] .compare-reviewed__scope-title`)).toContainText("Computer Science");
   const comparison = page.locator("[data-reviewed-comparison]");
   await expect(comparison).toBeVisible();
-  await expect(comparison).toContainText("for the whole program");
-  await expect(comparison).toContainText("14,000");
-  await expect(comparison).toContainText("66,720");
+  const cost = comparison.locator('[data-compare-row="cost"] dd');
+  await expect(cost.first()).toContainText("for the whole program");
+  await expect(cost.first()).toContainText("14,000");
+  await expect(cost.nth(1)).toContainText(/66,720|92,760/);
+  await expect(cost.first().locator("[data-compare-fee]")).toHaveCount(0);
   const current = await page.evaluate(id => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices[id], NU);
   expect(current).toEqual(expect.objectContaining(finance));
   const financeLink = comparison.locator(`a[href*='id=${NU}'][href$='#tab-finance']`).first();
@@ -495,7 +495,7 @@ test("NU Finance and MIT comparison retain independent saved program, route and 
   await page.goBack();
   await expect(page.locator("[data-reviewed-comparison]")).toBeVisible();
   await page.reload();
-  await expect(page.locator("[data-reviewed-comparison]")).toContainText("for the whole program");
+  await expect(page.locator('[data-reviewed-comparison] [data-compare-row="cost"] dd').first()).toContainText("for the whole program");
   await expect(page.locator("#siteInitialLoader")).toBeHidden();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
   await page.locator("[data-reviewed-comparison]").scrollIntoViewIfNeeded();

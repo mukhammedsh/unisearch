@@ -5,7 +5,8 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage, t } = await import("../../frontend/javascript/i18n.js");
-const { formatPublishedDate, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
+const { formatPublishedDate, renderApplicantSection, sourceDistinguishingHints } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
+const { renderAdmissionsKeyFacts } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview, renderAdmissionsAssessment, renderAdmissionsValue } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
@@ -44,38 +45,132 @@ function context(rows, groups) {
     unknowns: [], assessment: {}, history: {} };
 }
 
-test("requirements show one visible minimum-match summary before source records", () => {
+test("key facts carry the single requirements-match summary and its checks, and the reading area does not repeat it", () => {
   setLanguage("eng", { emit: false });
   const resolved = context([], {});
   resolved.assessment = { chancePercent: 100, activeChoice: { details: { checks: [{ kind: "scoped_gpa", measurable: true, status: "met" }] } } };
-  const html = renderApplicantSection(resolved, ["requirements", "application"]);
-  assert.equal((html.match(/data-requirements-match/g) || []).length, 1);
-  assert.match(html, /100%/);
-  assert.match(html, /not an admission probability/);
-  assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
-  const recordsOnly = renderApplicantSection(resolved, ["requirements", "application"], { includeAssessment: false });
-  assert.doesNotMatch(recordsOnly, /data-requirements-match|100%/);
+  const keyFacts = renderAdmissionsKeyFacts(resolved, { now: new Date("2026-11-12T00:00:00Z") });
+  assert.equal((keyFacts.match(/data-requirements-match/g) || []).length, 1);
+  assert.match(keyFacts, /1 of 1 measurable minimums met \(100%\)/);
+  assert.ok(keyFacts.includes(t("university.admissions.catalog.assessment_limits")));
+  assert.match(keyFacts, /<details class="admissions-catalog__assessment-detail">/);
+  assert.ok(keyFacts.indexOf('data-key-fact="requirements"') < keyFacts.indexOf('data-key-fact="deadline"'));
+  // The detail keeps the definition caveat but not a second percentage sentence.
+  const detail = keyFacts.split('<details class="admissions-catalog__assessment-detail">')[1];
+  assert.match(detail, /not an admission probability/);
+  assert.doesNotMatch(detail, /<strong>100%|evaluated numeric minimum checks met/);
+  assert.doesNotMatch(renderApplicantSection(resolved, ["requirements", "application"]), /data-requirements-match|100%/);
 });
 
-test("missing evidence and unassessed rules give distinct localized next steps", () => {
+test("missing evidence and unassessed rules give distinct localized next steps without repeating the result", () => {
   for (const language of ["eng", "rus", "kaz"]) {
     setLanguage(language, { emit: false });
     const resolved = context([], {});
     resolved.assessment = { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [
       { kind: "academic_requirement", status: "missing", numericMinimum: true }, { kind: "published_rule", status: "unassessed" },
     ] } } };
-    const html = renderApplicantSection(resolved, ["requirements"]);
+    const html = renderAdmissionsKeyFacts(resolved);
     const [summary, detail] = html.split('<details class="admissions-catalog__assessment-detail">');
     const missing = t("university.admissions.catalog.check_next_missing");
     const manual = t("university.admissions.catalog.check_next_unassessed");
+    const reason = t("university.admissions.catalog.reason.missing_evidence");
     assert.ok(missing && manual && missing !== manual);
-    assert.ok(summary.includes(t("university.admissions.catalog.assessment_next_missing")));
+    assert.ok(summary.includes(reason));
+    assert.match(summary, /href="\/profile.html"/);
+    assert.ok(!detail.includes(reason), language);
+    assert.ok(detail.includes(t("university.admissions.catalog.assessment_next_missing")));
     assert.ok(detail.includes(missing));
     assert.ok(detail.includes(manual));
     resolved.assessment.reason = "unassessed_minimums";
-    assert.ok(renderApplicantSection(resolved, ["requirements"]).includes(t("university.admissions.catalog.assessment_next_unassessed")));
+    assert.ok(renderAdmissionsKeyFacts(resolved).includes(t("university.admissions.catalog.assessment_next_unassessed")));
   }
 });
+
+test("excerpts cite numbered sources that match one de-duplicated list with real titles", () => {
+  setLanguage("rus", { emit: false });
+  const rows = [fact("tests", { presence: "required", alternatives: ["SAT", "ACT"] }, { source_ids: ["a", "b"] }),
+    fact("docs", { presence: "required", alternatives: ["IELTS"] }, { source_ids: ["b", "c", "unsafe"] })];
+  const resolved = { ...context(rows, { requirements: rows.map(row => row.id) }), sources: [
+    { id: "a", title: "Testing policy", url: "https://example.edu/tests", checked_at: "2026-10-01" },
+    { id: "b", title: "Application", url: "https://example.edu/apply" },
+    { id: "c", title: "Application copy", url: "https://example.edu/apply" },
+    { id: "unsafe", title: "Unsafe", url: "https://user:pass@example.edu/private" },
+  ] };
+  const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  assert.ok(!html.includes(`>${t("university.admissions.reading.official_source")}<`));
+  const refs = [...html.matchAll(/<a class="admissions-reading__ref" href="([^"]+)"[^>]*aria-label="([^"]+)"[^>]*data-source-ref="(\d)">(\d)<\/a>/g)];
+  assert.deepEqual(refs.map(match => [match[1], match[3]]), [["https://example.edu/tests", "1"], ["https://example.edu/apply", "2"], ["https://example.edu/apply", "2"]]);
+  assert.ok(refs.every(match => match[3] === match[4]));
+  assert.equal(refs[0][2], "Источник 1: Testing policy");
+  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
+  assert.equal((html.match(/data-reading-sources/g) || []).length, 1);
+  const list = html.split("data-reading-sources")[1];
+  assert.match(list, /<li value="1" data-source-number="1"><a href="https:\/\/example.edu\/tests"[^>]*>Testing policy<\/a><span class="admissions-reading__note" data-source-checked>Проверено: 2026[-‑]10-01/);
+  assert.match(list, /<li value="2" data-source-number="2"><a href="https:\/\/example.edu\/apply"[^>]*>Application · Application copy<\/a>/);
+  assert.doesNotMatch(html, /user:pass|private/);
+  // A check date shared by every listed source is stated once for the list, not on each line.
+  const sameDate = { ...resolved, sources: resolved.sources.map(source => ({ ...source, checked_at: "2026-10-01" })) };
+  const sharedList = renderApplicantSection(sameDate, ["requirements"]).split('<details class="admissions-reading__references"')[0].split("data-reading-sources")[1];
+  assert.equal((sharedList.match(/data-source-checked/g) || []).length, 1);
+  assert.match(sharedList, /<\/h3><span class="admissions-reading__note" data-source-checked>Проверено: 2026[-‑]10-01<\/span><ol/);
+  setLanguage("eng", { emit: false });
+});
+
+test("official pages that share a title get a short URL hint in the numbered list, unique titles stay unchanged", () => {
+  setLanguage("eng", { emit: false });
+  const page = "Application and Essays | Stanford Undergraduate Admission";
+  const rows = [fact("first", { presence: "required", alternatives: ["SAT"] }, { source_ids: ["first", "transfer", "other", "same-host"] })];
+  const resolved = { ...context(rows, { requirements: ["first"] }), sources: [
+    { id: "first", title: page, url: "https://admission.stanford.edu/apply/first-year/apply.html" },
+    { id: "transfer", title: page, url: "https://admission.stanford.edu/apply/transfer/apply.html" },
+    { id: "other", title: "Financial aid", url: "https://example.edu/aid" },
+    { id: "same-host", title: "Financial aid", url: "https://aid.example.edu/aid?year=2027" },
+  ] };
+  const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  const list = html.split("data-reading-sources")[1];
+  const item = number => list.match(new RegExp(`<li value="${number}" data-source-number="${number}">.*?</li>`))[0];
+  assert.match(item(1), /Stanford Undergraduate Admission<\/a><span class="admissions-reading__note" data-source-hint>first-year<\/span>/);
+  assert.match(item(2), /<span class="admissions-reading__note" data-source-hint>transfer<\/span>/);
+  assert.match(item(3), /<span class="admissions-reading__note" data-source-hint>example\.edu aid<\/span>/);
+  assert.match(item(4), /<span class="admissions-reading__note" data-source-hint>aid\.example\.edu aid \?year=2027<\/span>/);
+
+  const entry = (title, url) => ({ number: 1, url, titles: new Set([title]), dates: new Set() });
+  const unique = [entry("Admission", "https://example.edu/a"), entry("Deadlines", "https://example.edu/b")];
+  assert.equal(sourceDistinguishingHints(unique).size, 0);
+  const differsByQuery = [entry("Courses", "https://example.edu/course?id=1"), entry("Courses", "https://example.edu/course?id=2")];
+  assert.deepEqual([...sourceDistinguishingHints(differsByQuery).values()], ["course ?id=1", "course ?id=2"]);
+});
+
+test("periods are plain text, stated once for a section when shared and kept beside excerpts that differ", async () => {
+  setLanguage("eng", { emit: false });
+  const { loadUniversityTranslationsForLanguage } = await import("../../frontend/javascript/university-translations.js");
+  const originalFetch = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => ({ lang: "eng", data: { admission_summaries: { "Rule A": { requirements: "Rule A" }, "Rule B": { requirements: "Rule B" } } } }) });
+  try { await loadUniversityTranslationsForLanguage("eng", true); } finally { global.fetch = originalFetch; }
+  const same = [fact("a", "Rule A", { period: { label: "Current published policy; year not stated" } }), fact("b", "Rule B", { period: { label: "Current published policy; year not stated" } })];
+  const shared = renderApplicantSection(context(same, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  assert.doesNotMatch(shared, /<details/);
+  assert.equal((shared.match(/Published policy; entry year not specified/g) || []).length, 1);
+  assert.doesNotMatch(shared, /Current published policy/);
+  assert.match(shared, /data-section-period/);
+  const differ = [fact("a", "Rule A", { period: { label: "2026 entry" } }), fact("b", "Rule B", { period: { label: "2027 entry" } })];
+  const separate = renderApplicantSection(context(differ, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  assert.doesNotMatch(separate, /data-section-period/);
+  assert.match(separate, /2026 entry[\s\S]*2027 entry/);
+});
+
+test("all source records, additional references and unresolved information sit behind one disclosure with one language note", () => {
+  setLanguage("eng", { emit: false });
+  const rows = [fact("tests", { presence: "required", alternatives: ["SAT", "ACT"] }), fact("internal", "Graduate residence policy", { scope: { option_ids: [], route_ids: [] }, topic: "funding" })];
+  const resolved = { ...context(rows, { requirements: ["tests", "internal"] }), unknowns: [{ id: "gap", reason: "Interview policy is not published.", scope: {}, source_ids: ["official"] }] };
+  const html = renderApplicantSection(resolved, ["requirements"]);
+  const disclosures = html.split('<details class="admissions-reading__references" data-all-records');
+  assert.equal(disclosures.length, 2);
+  assert.match(disclosures[1], /^ ><summary>Full source records and conditions \(3\)<\/summary>/);
+  for (const part of ['data-admissions-fact="tests"', "data-general-references", "Interview policy is not published.", "admissions-catalog__unknowns"]) assert.ok(disclosures[1].includes(part), part);
+  assert.equal(html.split(t("university.admissions.reading.reference_scope_note")).length - 1, 1);
+});
+
 function fact(id, value, extra = {}) {
   return { id, value, topic: "academic_tests", scope: { option_ids: [], route_ids: ["first-year"], applicant_categories: [] },
     source_ids: ["official"], publication_status: "published", review_status: "verified",
@@ -91,7 +186,7 @@ test("normalized tuition keeps campus-specific whole-program and credit prices i
   for (const [language, totalLabel] of [["eng", "for the whole program"], ["rus", "за всю программу"], ["kaz", "толық бағдарлама үшін"]]) {
     setLanguage(language, { emit: false });
     const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
-    for (const text of [totalLabel, "USD", "HKD", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
+    for (const text of [totalLabel, "$24,000", "≈ $", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
     assert.ok(primary.includes({ eng: "Years of study: 1, 2", rus: "Годы обучения: 1, 2", kaz: "Оқу жылдары: 1, 2" }[language]), language);
     assert.match(primary, /<th scope="row" role="rowheader"[^>]*>Astana/);
     assert.doesNotMatch(primary, /Imperial|Home and Overseas|24,000.*per year/);
@@ -105,7 +200,7 @@ test("an undated whole-program quote never gains an invented entry or source yea
     { basis: "tuition", amount: 14000, currency: "USD", period_label: "Whole program", source_year: null, billing_period: "whole_program" },
   ] } } });
   const primary = renderApplicantSection(context([row], { costs: [row.id] }), ["costs"]).split('<details class="admissions-reading__references"')[0];
-  assert.match(primary, /14,000 for the whole program USD/);
+  assert.match(primary, /\$14,000 for the whole program/);
   assert.match(primary, /data-label="Source period and wording">Not stated here/);
   assert.doesNotMatch(primary, /Whole program|2026|2027|per year/);
 });
@@ -243,9 +338,11 @@ test("identical source versions share a summary without losing scope, conditions
   ] };
   const html = renderApplicantSection(resolved, ["requirements"]);
   const summary = html.split('<details class="admissions-reading__references"')[0];
-  assert.equal((summary.match(/data-summary-fact=/g) || []).length, 3);
-  assert.match(summary, /data-summary-fact="condition"/);
+  // Identical visible excerpts (same text, source URL, period and status) print once; a different period stays separate.
+  assert.equal((summary.match(/data-summary-fact=/g) || []).length, 2);
+  assert.match(summary, /data-summary-fact="one"/);
   assert.match(summary, /data-summary-fact="period"/);
+  assert.match(html, /data-admissions-fact="condition"/);
   assert.match(html, /data-admissions-fact="one"/);
   assert.match(html, /data-admissions-fact="two"/);
   assert.match(html, /2026[-‑]01-01/);
@@ -339,7 +436,7 @@ test("reference budgets keep zero, period and currency and funding is summarized
     fact("sat-aid", { funding_type: "grant", funding_program: "Need-based Aid", description: "SAT source record" }, { topic: "funding" }),
     fact("act-aid", { funding_type: "grant", funding_program: "Need-based Aid", description: "ACT source record" }, { topic: "funding" })];
   const html = renderApplicantSection(context(rows, { costs: ["budget"], funding: ["sat-aid", "act-aid"] }), ["costs", "funding"]);
-  assert.match(html, /0 USD/);
+  assert.match(html, /<dd>\$0<\/dd>/);
   assert.match(html, /2026[‑-]27/);
   assert.match(html, /not a confirmed price for another entry cycle/);
   assert.equal((html.match(/<h3>Need-based financial aid<\/h3>/g) || []).length, 1);
@@ -355,7 +452,7 @@ test("structured catalog cost references retain original prose and expose their 
     attributes: { catalog_costs: { currency: "USD", academic_year: "2026-2027", tuition: 67731, total_before_aid: 97545, exclusions: ["insurance", "one_time_fees"] } } });
   const resolved = context([row], { costs: [row.id] });
   const html = renderApplicantSection(resolved, ["costs"]);
-  assert.match(html, /97,545 USD/);
+  assert.match(html, /\$97,545/);
   assert.match(html, /2026[‑-]2027/);
   assert.match(html, /Insurance is additional/);
   assert.match(html, /Official source prose and conditional fees remain available/);
@@ -386,4 +483,20 @@ test("UCAS date record fields are localized and a glued entry cycle keeps its sp
   setLanguage("eng", { emit: false });
   assert.equal(admissionsCycleLabel("2027/28entry"), "2027/28 entry");
   assert.equal(admissionsCycleLabel("2027 entry"), "2027 entry");
+});
+
+test("period labels read as an entry cycle, an academic year or a plain year-not-stated note", async () => {
+  setLanguage("eng", { emit: false });
+  const { plainPeriodLabel } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
+  assert.equal(plainPeriodLabel("Catalog 2026-2027"), "2026-2027");
+  assert.equal(plainPeriodLabel("2026-2027 housing rates; current residence policy"), "2026-2027");
+  assert.match(plainPeriodLabel("Fall 2027 entry"), /2027/);
+  assert.match(plainPeriodLabel("Effective Spring 2027"), /2027/);
+  assert.equal(plainPeriodLabel("Current published instructions; yearless deadlines are recurring, not assigned an invented entry year"), "Recurring dates; entry year not specified");
+  assert.equal(plainPeriodLabel("Earlier published policy; cycle not specified"), "Published policy; entry year not specified");
+  assert.equal(plainPeriodLabel("Opens October 1; deadline December 1 at 11:59 PM ET; year not stated"), "Published policy; entry year not specified");
+  // Research process notes are not shown to applicants; the full source records keep them.
+  assert.equal(plainPeriodLabel("Department deadlines differ; dual deadline unknown."), "");
+  assert.equal(plainPeriodLabel("Official program guidance reviewed 2026-10-20"), "");
+  assert.equal(plainPeriodLabel(""), "");
 });

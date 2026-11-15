@@ -7,6 +7,10 @@ const localBackendPython = process.platform === 'win32'
   : path.join(__dirname, 'backend', '.venv', 'bin', 'python');
 const backendPython = process.env.PLAYWRIGHT_BACKEND_PYTHON
   || (fs.existsSync(localBackendPython) ? `"${localBackendPython}"` : 'python');
+// E2E runs its own API on a dedicated port. Reusing the development API on 8000 would inherit its
+// rate limits and ML settings, and parallel workers then fail on 429 responses.
+const backendPort = Number(process.env.UNISEARCH_E2E_BACKEND_PORT) || 8010;
+process.env.UNISEARCH_E2E_BACKEND_PORT = String(backendPort);
 
 module.exports = defineConfig({
   testDir: './tests/e2e',
@@ -23,9 +27,9 @@ module.exports = defineConfig({
   projects: [{ name: 'chromium' }],
   webServer: [
     {
-      command: `${backendPython} -m uvicorn app.main:app --host 127.0.0.1 --port 8000`,
+      command: `${backendPython} -m uvicorn app.main:app --host 127.0.0.1 --port ${backendPort}`,
       cwd: 'backend',
-      url: 'http://127.0.0.1:8000/health',
+      url: `http://127.0.0.1:${backendPort}/health`,
       timeout: 120000,
       reuseExistingServer: true,
       env: {
@@ -39,7 +43,7 @@ module.exports = defineConfig({
       },
     },
     {
-      command: `${backendPython} scripts/frontend_dev_server.py --host 127.0.0.1 --port 5510 --directory frontend`,
+      command: `${backendPython} scripts/frontend_dev_server.py --host 127.0.0.1 --port 5510 --directory frontend --api-port ${backendPort}`,
       cwd: '.',
       url: 'http://127.0.0.1:5510/index.html',
       timeout: 60000,

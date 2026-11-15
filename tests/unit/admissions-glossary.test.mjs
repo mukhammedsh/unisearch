@@ -60,3 +60,14 @@ test("an unknown term or an empty list renders nothing", () => {
   assert.equal(renderTermList([]), "");
   assert.match(renderTermList(["ucas", "tmua"]), /^<p class="admissions-term-list">.*data-term="tmua"/s);
 });
+
+test("a term explained earlier in the same block is not repeated", () => {
+  setLanguage("eng", { emit: false });
+  const shown = new Set();
+  assert.match(renderTermList(["restrictive_early_action", "ucas"], shown), /data-term="restrictive_early_action"[\s\S]*data-term="ucas"/);
+  const second = renderTermList(["restrictive_early_action", "css_profile"], shown);
+  assert.doesNotMatch(second, /data-term="restrictive_early_action"/);
+  assert.match(second, /data-term="css_profile"/);
+  assert.equal(renderTermList(["ucas"], shown), "");
+  assert.match(renderTermList(["ucas"]), /data-term="ucas"/);
+});

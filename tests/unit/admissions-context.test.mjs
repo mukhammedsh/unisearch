@@ -5,8 +5,10 @@ import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalize
 
 test("browsing is saved only when every application context field matches", () => {
   const saved = { studyOptionId: "course", applicationRouteId: "route", studyLevel: "undergraduate", applicantRoute: "first_year", intendedEntryCycle: "2027", feeStatusContext: "unknown" };
-  const context = { study_option_id: "course", application_route_id: "route", study_level: "undergraduate", applicant_route: "first_year", intended_entry_cycle: "2027", fee_status_context: "unknown" };
+  const context = { study_option_id: "course", application_route_id: "route", study_level: "undergraduate", intended_entry_cycle: "2027", fee_status_context: "unknown" };
   assert.equal(admissionContextIsSaved(context, saved), true);
+  // An applicant category kept in an older saved choice is implied by the route now and never makes a choice unsaved.
+  assert.equal(admissionContextIsSaved(context, { ...saved, applicantRoute: "transfer" }), true);
   assert.equal(admissionContextIsSaved({ ...context, intended_entry_cycle: "2028" }, saved), false);
   assert.equal(admissionContextIsSaved(context, undefined), false);
 });
@@ -78,11 +80,11 @@ const profile = {
 };
 
 test("canonical manual URL context overrides saved defaults, including intentional empty fields", () => {
-  const context = readAdmissionContext(new URL("https://example.test/university.html?admission_option=new-option&admission_application_route=&admission_level=undergraduate&admission_cycle=&admission_route="), profile, uid);
+  const context = readAdmissionContext(new URL("https://example.test/university.html?admission_option=new-option&admission_application_route=&admission_level=undergraduate&admission_cycle=&admission_route=transfer"), profile, uid);
   assert.equal(context.study_option_id, "new-option");
   assert.equal(context.application_route_id, "");
   assert.equal(context.study_level, "undergraduate");
-  assert.equal(context.applicant_route, "");
+  assert.ok(!("applicant_route" in context), "an old admission_route link must not become a request category");
   assert.equal(context.intended_entry_cycle, "");
   const before = structuredClone(profile);
   const request = admissionsRequest(profile, context, uid);
@@ -92,7 +94,8 @@ test("canonical manual URL context overrides saved defaults, including intention
   assert.deepEqual(request.profile.exams, profile.exams);
   assert.equal(request.profile.study_level, undefined);
   assert.equal(request.profile.intended_entry_cycle, undefined);
-  assert.equal(request.context.applicant_route, null);
+  assert.ok(!("applicant_route" in request.context), "the page never sends an applicant category");
+  assert.ok(!("applicant_route" in request.profile));
 });
 
 test("context URL round trip preserves unrelated route state and does not consume legacy program IDs", () => {
@@ -100,9 +103,11 @@ test("context URL round trip preserves unrelated route state and does not consum
   const saved = readAdmissionContext(url, profile, uid);
   assert.equal(saved.study_option_id, "saved-option");
   assert.equal(saved.study_level, "");
-  assert.equal(saved.applicant_route, "");
+  assert.ok(!("applicant_route" in saved));
   assert.equal(saved.intended_entry_cycle, "");
   assert.equal(saved.fee_status_context, "unknown");
+  const oldLink = new URL("https://example.test/university.html?id=mit-usa-cambridge&admission_route=transfer");
+  assert.equal(admissionContextUrl(oldLink, { application_route_id: "route:coterm" }).searchParams.has("admission_route"), false);
   const next = admissionContextUrl(url, { ...saved, application_route_id: "route:coterm", intended_entry_cycle: "Fall 2027 entry" });
   assert.equal(next.searchParams.get("lang"), "rus");
   assert.equal(next.hash, "#source");
@@ -120,7 +125,7 @@ test("only deliberately saved or URL-selected scope filters the public reference
   const url = new URL("https://example.test/university.html");
   const context = readAdmissionContext(url, saved, uid);
   assert.equal(context.study_level, "undergraduate");
-  assert.equal(context.applicant_route, "");
+  assert.ok(!("applicant_route" in context));
   assert.equal(context.intended_entry_cycle, "");
   assert.equal(context.fee_status_context, "unknown");
   assert.equal(saved.study_level, "Master");

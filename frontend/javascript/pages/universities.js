@@ -14,7 +14,6 @@ import {
   loadProfile,
   loadProfileForApi,
   formatExamValue,
-  formatCurrency,
   getExamDisplayName,
   getFlagImg,
   initCustomSelect,
@@ -47,7 +46,7 @@ import {
   getFilterLimits,
   formatMoney,
 } from "../currency.js";
-import { isUniversitiesListPath, navigateToAppRoute, routeCompare, routeCompareConfigure, routeUniversityDetail } from "../routes.js";
+import { isUniversitiesListPath, navigateToAppRoute, routeCompare, routeCompareConfigure, routeProfile, routeUniversityDetail } from "../routes.js";
 import {
   readCompareAdmissionChoices,
   writeCompareAdmissionChoices as persistCompareAdmissionChoices,
@@ -59,9 +58,8 @@ import {
 import {
   translateUniversityName,
   translateWord,
-  translateTrackLabel,
-  translateAdmissionText,
   translateFactSource,
+  translateProgramName,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 
@@ -101,22 +99,59 @@ import {
 } from './_shared.js';
 
 import { billingPeriodLabel } from "./university/admissions-presentation.js";
+import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
+import {
+  budgetTooltip,
+  closePreferenceLabels,
+  describeRankingProfile,
+  legendEntries,
+  missingExamNames,
+  reviewedMissingInputs,
+  unmetMinimums,
+} from "./universities/unifit-explanation.js";
+
+// Card tooltip helpers: a USD amount in the reader's currency, and the preference sliders a university is close to.
+const tooltipMoney = (usd) => {
+    const code = getPreferredCurrency();
+    const amount = convert(Number(usd), "USD", code);
+    return Number.isFinite(amount) ? formatMoney(amount, code) : formatMoney(Number(usd), "USD");
+};
+const tooltipHelpers = { money: tooltipMoney, tr: t, trf: tFormat };
+const cardExamLabel = (id) => getExamDisplayName(id, { locale: getCurrentLanguage() });
+const preferenceTooltip = (match, fallbackKey) => {
+    const labels = closePreferenceLabels(match).map((label) => t(`universities.tradeoff.${label}`).toLocaleLowerCase());
+    return labels.length ? tFormat("universities.tip.preferences_close", { dimensions: labels.join(", ") }) : t(fallbackKey);
+};
 
 export function reviewedCardIndicators(match, budget) {
     if (!match || match.finalScore == null || !Number.isFinite(Number(match.finalScore))) return [];
     const indicators = [];
-    const add = (icon, tone, label, detail, priority = 2, value = "") => indicators.push({ icon, tone, label, detail, priority, value });
+    // `legend` names the meaning of the icon for the UniFit banner legend (see LEGEND_LABEL_KEYS).
+    const add = (icon, tone, label, detail, priority = 2, value = "", legend = "") => indicators.push({ icon, tone, label, detail, priority, value, legend });
+    const programSelected = Boolean(match.admissionsContext?.study_option_id);
     if (match.subjectMatch?.status === "missing") {
-        const selected = Boolean(match.admissionsContext?.study_option_id);
-        add("academic-cap", "warning", t(selected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
-            t(selected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0);
+        add("academic-cap", "warning", t(programSelected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
+            t(programSelected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0, "",
+            "subject_missing");
     } else if (match.subjectMatch?.status === "matched") {
-        add("academic-cap", "match", t("universities.match.subject_matched"), t("universities.match.subject_matched_detail"));
+        // Name how many programs match and what choosing one unlocks, instead of restating the label.
+        const count = Array.isArray(match.subjectMatch.option_ids) ? match.subjectMatch.option_ids.length : 0;
+        const detail = programSelected ? t("universities.tip.subject_selected")
+            : count ? tFormat("universities.tip.subject_options", { count }) : t("universities.match.subject_matched_detail");
+        add("academic-cap", "match", t("universities.match.subject_matched"), detail, 2, "", "subject_matched");
     }
     const mismatch = match.preferenceMismatch == null ? NaN : Number(match.preferenceMismatch);
     if (Number.isFinite(mismatch) && mismatch <= 0.22) {
-        add("check-badge", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
-            t("universities.match.preference_detail"), 3);
+        add("heart", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
+            preferenceTooltip(match, "universities.match.preference_detail"), 3, "", "vibe");
+    }
+    // A published check of the selected route that the profile cannot answer yet: say what to add.
+    const missingInputs = reviewedMissingInputs(match.requirementChecks, {
+        examLabel: cardExamLabel, joiner: t("admission.requirements_fit.check.or", "or"),
+    }).slice(0, 3);
+    if (missingInputs.length) {
+        add("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed"),
+            tFormat("universities.tip.add_to_profile", { exams: missingInputs.join(", ") }), 1, "", "exam_needed");
     }
     const checks = Array.isArray(match.requirementChecks) ? match.requirementChecks.filter(check => check.measurable) : [];
     if (typeof match.requirementsFitPercent === "number" && Number.isFinite(match.requirementsFitPercent) && checks.length) {
@@ -124,16 +159,20 @@ export function reviewedCardIndicators(match, budget) {
         const percent = new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US", { maximumFractionDigits: 1 }).format(match.requirementsFitPercent);
         add("clipboard-document-list", met < checks.length ? "warning" : "finance",
             tFormat("universities.match.score", { percent }),
-            tFormat("universities.match.checks_detail", { met, total: checks.length }), met < checks.length ? 0 : 2, `${percent}%`);
+            tFormat("universities.match.checks_detail", { met, total: checks.length }), met < checks.length ? 0 : 2, `${percent}%`,
+            met < checks.length ? "requirements_below" : "requirements_met");
     }
     const assessment = match.budgetAssessment || {};
-    if (Number(budget) > 0 && match.costQuote && ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status)) {
-        const state = { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
-        const detail = state === "uncertain" ? "budget_uncertain_detail"
-            : assessment.basis === "tuition" ? "budget_tuition_detail"
-                : assessment.evidence === "applicable" ? "budget_annual_detail" : "budget_reference_detail";
-        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`),
-            t(`universities.match.${detail}`), state === "over" ? 1 : 2);
+    // Prices that differ by fee status (Home / Overseas) cannot be compared until the reader sets one.
+    const feeStatusUnknown = assessment.status === "unknown_cost" && assessment.evidence === "fee_status_unknown";
+    if (Number(budget) > 0 && match.costQuote && (feeStatusUnknown || ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status))) {
+        const state = feeStatusUnknown ? "uncertain" : { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
+        const detail = budgetTooltip({
+            status: feeStatusUnknown ? "fee_status" : { within: "within", over: "over", uncertain: "range" }[state],
+            costMin: match.costQuote.minUSD, costMax: match.costQuote.maxUSD, budget, tuitionOnly: assessment.basis === "tuition",
+        }, tooltipHelpers);
+        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`), detail, state === "over" ? 1 : 2, "",
+            { over: "over_budget", within: "within_budget", uncertain: "budget_check" }[state]);
     }
     return indicators.sort((a, b) => a.priority - b.priority);
 }
@@ -161,17 +200,9 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     const known = price.amount !== null && Number.isFinite(price.amount);
     const range = known && price.max > price.min;
     const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference");
-    const money = value => {
-        const parts = splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, { presentation: "summary" }));
-        const converted = convert(value, price.currency, getPreferredCurrency());
-        if (parts.primary.startsWith("≈ ") && Math.abs(converted) >= 1_000_000) {
-            parts.primary = `≈ ${formatCurrency(converted, getPreferredCurrency(), {
-                locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
-                notation: "compact", maximumSignificantDigits: 2, currencyDisplay: "narrowSymbol",
-            })}`;
-        }
-        return parts;
-    };
+    const money = value => splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, {
+        presentation: "summary", locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
+    }));
     const minimum = known ? money(range ? price.min : price.amount) : { primary: t("universities.cost.price_unavailable"), secondary: "" };
     const maximum = range ? money(price.max) : minimum;
     const primary = range ? `${minimum.primary} – ${maximum.primary.replace(/^≈ /, "")}` : minimum.primary;
@@ -228,11 +259,14 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
     const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
     const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
+    // Qualifiers of the price (what it covers, the second currency) form one quiet line below it,
+    // so every card shows its price on the same first line.
+    const metaHtml = showsTuitionReference || secondary
+        ? `<span class="uni-cost-meta">${showsTuitionReference ? `<span class="uni-cost-meta__label">${escapeHtml(title)}</span>` : ""}${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}</span>`
+        : "";
     return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price${secondary || showsTuitionReference ? " uni-price--stacked" : ""}" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
-            ${showsTuitionReference ? `<span class="uni-price-period">${escapeHtml(title)}</span>` : ""}
-            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span> <span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span>
-            ${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}
+        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
+            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>&nbsp;<span class="uni-price-tail"><span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span></span>
         </button>
         <span id="${escapeHtmlAttr(tooltipId)}" class="ui-tooltip-bubble uni-cost-tooltip__content" role="tooltip">
             <strong class="ui-tooltip-title">${escapeHtml(t("universities.cost.tooltip_title"))} · ${escapeHtml(title)}${reference ? ` · ${escapeHtml(t("universities.cost.reference_short"))}` : ""}</strong>
@@ -243,7 +277,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
             ${livingYear ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(tFormat("universities.cost.tooltip_living_year", { year: livingYear }))}</span>` : ""}
             ${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}
         </span>
-    </span>`;
+    </span>${metaHtml}`;
 }
 
 let __universitiesProfileUpdatedHandler = null;
@@ -386,6 +420,9 @@ function collectUniversitiesElements() {
         recentlyViewedBar: $("recentlyViewedBar"),
         mobileRecentSlot: $("mobileRecentSlot"),
         unifitWarningBanner: $("unifitWarningBanner"),
+        unifitBannerTitle: $("unifitBannerTitle"),
+        unifitBannerEdit: $("unifitBannerEdit"),
+        unifitLegend: $("unifitLegend"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
     };
@@ -570,17 +607,42 @@ export function initUniversitiesPage() {
             el.unifitWarningBanner.hidden = true;
             return;
         }
+        // The banner states which profile answers the ranking uses, so the list never looks unexplained.
         const profile = loadProfile();
-        const hasEvidence = hasProfileEvidence(profile);
-        const candidateItems = Array.isArray(items) && items.length > 0 ? items : (lastRenderedItems || []);
-        const hasConditionalInItems = candidateItems.some((u) => {
-            const match = u?.matchData || {};
-            const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
-            const conditionalCount = Number(match.conditionalRequirements || 0);
-            return (badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0);
+        const parts = describeRankingProfile(profile, {
+            t, tFormat, formatMoney, majorLabel: (major) => translateProgramName(major, major),
+            examName: (id) => getExamDisplayName(id, { locale: getCurrentLanguage() }),
         });
-        const shouldShow = !hasEvidence || hasConditionalInItems;
-        el.unifitWarningBanner.hidden = !shouldShow;
+        const hasEvidence = hasProfileEvidence(profile);
+        if (el.unifitBannerTitle) {
+            el.unifitBannerTitle.textContent = parts.length
+                ? tFormat("universities.ux2.banner.ranked", { values: parts.join(" · ") })
+                : t(hasEvidence ? "universities.ux2.banner.scores_only" : "universities.ux2.banner.generic");
+        }
+        if (el.unifitBannerEdit) {
+            el.unifitBannerEdit.textContent = t(parts.length || hasEvidence ? "universities.ux2.banner.edit" : "universities.ux2.banner.set_up");
+            el.unifitBannerEdit.setAttribute("href", routeProfile());
+        }
+        el.unifitWarningBanner.hidden = false;
+        refreshUnifitLegend();
+    };
+
+    // Legend of the icon badges that are on the rendered cards, drawn with the same icons and tones as the badges,
+    // so a first-time visitor learns the mapping once. Called after the banner updates and after each card render.
+    const refreshUnifitLegend = () => {
+        const box = el.unifitLegend;
+        if (!box) return;
+        const scope = state.viewMode === "map" ? el.mapResults : el.list;
+        const badges = state.sort === "uni_ai" && scope
+            ? Array.from(scope.querySelectorAll(".uni-card:not(.is-skeleton) .uni-status-trigger[data-legend]"))
+                .map((node) => ({ key: node.dataset.legend, icon: node.dataset.legendIcon, tone: node.dataset.legendTone }))
+            : [];
+        const entries = legendEntries(badges);
+        box.hidden = !entries.length;
+        box.innerHTML = entries.length
+            ? `<span class="u-unifit-legend__lead">${escapeHtml(t("universities.ux2.legend.lead"))}</span>${entries.map(({ icon, tone, labelKey }) =>
+                `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 16, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`).join("")}`
+            : "";
     };
 
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
@@ -736,6 +798,11 @@ export function initUniversitiesPage() {
     let mapPointsFetchController = null;
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
+    if (consumeUniversitiesTourSkipOnce()) {
+        // Arrived through "Save and show matches": the visitor already did the tour's main step.
+        firstVisitTourPending = false;
+        markUniversitiesTourSeen();
+    }
     let hasInitialListPaint = false;
     let hasRestoredInitialScroll = false;
     let lastRenderedItems = [];
@@ -939,7 +1006,26 @@ export function initUniversitiesPage() {
     };
     const writeCompareAdmissionChoices = () => persistCompareAdmissionChoices(compareAdmissionChoices, comparePairIds());
     compareAdmissionChoices = readCompareAdmissionChoices();
-    const isComparePairReady = () => comparePairIds().length >= 2;
+    // A pair is compared only within one data group: universities with rechecked (reviewed) admissions data, or
+    // universities in the earlier format. The group of an id comes from its catalog row or cached detail; an unknown
+    // group never blocks a choice here, and the comparison page itself explains a mixed pair.
+    const compareGroupById = new Map();
+    let compareTrayNotice = "";
+    const compareGroupOf = (id) => {
+        const cleanId = String(id || "").trim();
+        const known = compareGroupById.get(cleanId);
+        if (known) return known;
+        const row = getRenderedUniversityById(cleanId)
+            || [getCurrentLanguage(), "eng", "ru"].map((lang) => getDetailCacheEntry(cleanId, lang)?.data).find(Boolean);
+        const availability = row?.admissions_catalog?.availability;
+        if (!availability) return "";
+        const group = availability === "reviewed" ? "reviewed" : "legacy";
+        compareGroupById.set(cleanId, group);
+        return group;
+    };
+    const comparePairGroups = () => new Set(comparePairIds().map(compareGroupOf).filter(Boolean));
+    const isComparePairMixed = () => comparePairGroups().size > 1;
+    const isComparePairReady = () => comparePairIds().length >= 2 && !isComparePairMixed();
 
     const syncCompareSelectionFromStorage = () => {
         const rawIds = readIdListStorage(COMPARE_UNIVERSITIES_KEY);
@@ -966,6 +1052,7 @@ export function initUniversitiesPage() {
         el.compareTray.hidden = false;
         el.compareTray.classList.toggle("is-ready", isComparePairReady());
         const canCompare = isComparePairReady();
+        const notice = isComparePairMixed() ? t("universities.compare.tray_mixed") : compareTrayNotice;
         const chipsHtml = ids.map((id) => {
             const name = getUniversityDisplayNameById(id);
             const logoSrc = uniLogoSrc(id);
@@ -980,7 +1067,9 @@ export function initUniversitiesPage() {
                 </div>
             `;
         }).join("");
+        el.compareTray.classList.toggle("has-note", Boolean(notice));
         el.compareTray.innerHTML = `
+            ${notice ? `<p class="compare-tray__note" role="status">${escapeHtml(notice)}</p>` : ""}
             <span class="compare-tray__badge">${ids.length}/${MAX_COMPARE_UNIVERSITIES}</span>
             <div class="compare-tray__chips" role="list" aria-label="${escapeHtmlAttr(t("universities.compare.selection", "Selected universities"))}">
                 ${chipsHtml}
@@ -1006,13 +1095,18 @@ export function initUniversitiesPage() {
 
     const syncCardActionState = () => {
         const showCompareSelection = isCompareSelectionMode();
+        const pairGroups = showCompareSelection ? comparePairGroups() : new Set();
+        const pairGroup = pairGroups.size === 1 ? [...pairGroups][0] : "";
         document.querySelectorAll(".uni-card[data-uni-id]").forEach((card) => {
             const rowId = String(card.getAttribute("data-uni-id") || "").trim();
             const saved = savedUniversityIds.has(rowId);
             const compared = showCompareSelection && compareUniversityIds.has(rowId);
+            const rowGroup = pairGroup && !compared ? compareGroupOf(rowId) : "";
+            const otherGroup = Boolean(rowGroup && rowGroup !== pairGroup);
             const saveBtn = card.querySelector("[data-card-action='save']");
             const compareBtn = card.querySelector("[data-card-action='compare']");
             card.classList.toggle("uni-card--compare-selected", compared);
+            card.classList.toggle("uni-card--compare-unavailable", otherGroup);
             card.setAttribute("aria-selected", compared ? "true" : "false");
             if (saveBtn) {
                 saveBtn.classList.toggle("is-active", saved);
@@ -1023,16 +1117,20 @@ export function initUniversitiesPage() {
                 const label = showCompareSelection
                     ? (compared
                         ? t("universities.card.compare_selected_short", "Selected")
-                        : t("universities.card.compare_short", "Compare"))
+                        : otherGroup ? t("universities.card.compare_other_group") : t("universities.card.compare_short", "Compare"))
                     : t("universities.card.view_details", "View details");
-                details.innerHTML = `${escapeHtml(label)}<span aria-hidden="true">→</span>`;
+                details.innerHTML = otherGroup ? escapeHtml(label) : `${escapeHtml(label)}<span aria-hidden="true">→</span>`;
+                if (otherGroup) details.setAttribute("title", t("universities.card.compare_other_group_title"));
+                else details.removeAttribute("title");
             }
             if (compareBtn) {
                 const label = compared
                     ? t("universities.card.compare_selected", "Selected for comparison")
-                    : t("universities.card.compare", "Add to compare");
+                    : otherGroup ? t("universities.card.compare_other_group_title") : t("universities.card.compare", "Add to compare");
                 compareBtn.classList.toggle("is-active", compared);
                 compareBtn.setAttribute("aria-pressed", compared ? "true" : "false");
+                if (otherGroup) compareBtn.setAttribute("aria-disabled", "true");
+                else compareBtn.removeAttribute("aria-disabled");
                 compareBtn.setAttribute("title", label);
                 compareBtn.setAttribute("aria-label", label);
                 compareBtn.innerHTML = renderInlineIcon(compared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon");
@@ -1045,6 +1143,15 @@ export function initUniversitiesPage() {
         if (!cleanId) return false;
         const currentPair = comparePairIds();
         const wasCompared = currentPair.includes(cleanId);
+        const pairGroups = comparePairGroups();
+        const group = compareGroupOf(cleanId);
+        if (!wasCompared && group && pairGroups.size === 1 && !pairGroups.has(group)) {
+            // The other data group cannot join this pair; the tray says why instead of silently replacing a choice.
+            compareTrayNotice = tFormat(`universities.compare.tray_blocked_${group}`, { university: getUniversityDisplayNameById(cleanId) });
+            renderCompareTray();
+            return true;
+        }
+        compareTrayNotice = "";
         if (wasCompared) {
             setComparePairIds(currentPair.filter((id) => id !== cleanId));
         } else {
@@ -1102,8 +1209,10 @@ export function initUniversitiesPage() {
 
     const openCompareResultsPage = async () => {
         const ids = comparePairIds();
-        if (ids.length !== COMPARE_PAIR_SIZE) return;
-        navigateToAppRoute(routeCompareConfigure(ids));
+        if (ids.length !== COMPARE_PAIR_SIZE || isComparePairMixed()) return;
+        // Rechecked universities open their one-stage comparison; earlier-format pairs choose admission options first.
+        const reviewedPair = ids.every((id) => compareGroupOf(id) === "reviewed");
+        navigateToAppRoute(reviewedPair ? routeCompare(ids) : routeCompareConfigure(ids));
     };
 
     const universityLinkAttrs = () => (
@@ -1592,10 +1701,12 @@ export function initUniversitiesPage() {
         const maxVal = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition) || currentLimits.max;
         const formattedMin = formatMoney(minVal, pref);
         const formattedMax = formatMoney(maxVal, pref);
+        // At the right edge the filter has no upper limit, so pricier universities still match.
+        const openEnded = maxVal >= currentLimits.max;
         if (el.minCostLabel) el.minCostLabel.textContent = formattedMin;
-        if (el.maxCostLabel) el.maxCostLabel.textContent = formattedMax;
+        if (el.maxCostLabel) el.maxCostLabel.textContent = openEnded ? `${formattedMax}+` : formattedMax;
         if (el.minSlider) el.minSlider.setAttribute("aria-valuetext", formattedMin);
-        if (el.maxSlider) el.maxSlider.setAttribute("aria-valuetext", formattedMax);
+        if (el.maxSlider) el.maxSlider.setAttribute("aria-valuetext", openEnded ? tFormat("universities.cost.max_open", { amount: formattedMax }) : formattedMax);
     }
 
     function fillTrack() {
@@ -2171,6 +2282,7 @@ export function initUniversitiesPage() {
         if (actionButton) motionPress(actionButton);
         if (action === "clear-compare") {
             const wasCompareResults = isCompareResultsMode();
+            compareTrayNotice = "";
             compareUniversityIds.clear();
             compareAdmissionChoices.clear();
             state.compareResultIds = [];
@@ -2870,6 +2982,7 @@ export function initUniversitiesPage() {
             bindMapResultCards(Array.from(list.querySelectorAll(".uni-card[data-uni-id]")).filter((card) => appendedIds.has(String(card.getAttribute("data-uni-id") || ""))));
         }
 
+        refreshUnifitLegend();
         const loadMoreButton = el.mapResults.querySelector('[data-action="load-more-map-results"]');
         loadMoreButton?.addEventListener("click", () => {
             loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
@@ -3307,14 +3420,6 @@ export function initUniversitiesPage() {
         const isAiSort = (state.sort === "uni_ai");
         if (forApi) p.set("sort", isAiSort ? "name_asc" : state.sort);
 
-        if (forApi) {
-            const profile = loadProfile();
-            const feeStatus = String(profile?.feeStatusContext || profile?.fee_status_context || "").trim();
-            const entryCycle = String(profile?.intendedEntryCycle || profile?.intended_entry_cycle || "").trim();
-            if (feeStatus && feeStatus !== "unknown") p.set("fee_status_context", feeStatus);
-            if (entryCycle) p.set("intended_entry_cycle", entryCycle);
-        }
-        
         if (forApi && state.only_saved) {
             p.set("limit", "2000"); p.set("page", "1");
         } else if (forApi && state.viewMode === "map") {
@@ -3704,6 +3809,7 @@ export function initUniversitiesPage() {
             const profile = loadProfileForApi();
             const userBudget = Number.parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
+            refreshUnifitLegend();
             warmMapMode(items);
             if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
             renderPagination(total);
@@ -3893,7 +3999,8 @@ export function initUniversitiesPage() {
         const uniCurrency = priceInfo.currency;
 
         const statusIndicators = [];
-        const addStatusIndicator = (iconName, tone, label, detail = "", value = "") => {
+        // `legend` is the meaning key the UniFit banner legend lists for this icon (LEGEND_LABEL_KEYS).
+        const addStatusIndicator = (iconName, tone, label, detail = "", value = "", legend = "") => {
             const cleanLabel = String(label || "").trim();
             const cleanDetail = String(detail || "").trim();
             const ariaText = cleanDetail ? `${cleanLabel}: ${cleanDetail}` : cleanLabel;
@@ -3902,7 +4009,7 @@ export function initUniversitiesPage() {
                 : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
             statusIndicators.push(`
                 <span class="uni-status-tooltip">
-                    <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button" aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
+                    <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}" data-legend-icon="${escapeHtmlAttr(iconName)}" data-legend-tone="${escapeHtmlAttr(tone)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
                         <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
                     </button>
                     <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
@@ -3930,43 +4037,27 @@ export function initUniversitiesPage() {
         const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
         const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
         const hasMissingProgram = !reviewedAdmissions && Boolean(badgeHints.missingProgram || match.missingProgram);
+        // Earlier-format tooltips: one or two plain sentences (what to add, what falls short, price against budget).
+        // The per-check breakdown stays on the university page.
         const requirementChecks = !reviewedAdmissions && Array.isArray(match.requirementChecks) ? match.requirementChecks : [];
-        const requirementsDetail = requirementChecks.map((check) => {
-            const exam = String(check.examId || check.exam || "");
-            const label = exam.split(" or ").map((id) => getExamDisplayName(id, { locale: getCurrentLanguage() })).join(` ${t("admission.requirements_fit.check.or", "or")} `);
-            const minimum = check.minimum == null
-                ? t("admission.requirements_fit.check.required_evidence", "Required exam evidence")
-                : `${t("admission.requirements_fit.check.minimum", "Minimum")}: ${formatExamValue(exam, check.minimum, { context: "requirement" })}`;
-            const provided = check.provided == null
-                ? (check.status === "unassessed" ? t("admission.requirements_fit.check.profile_unassessed", "This profile cannot establish the required evidence or exemption.") : t("admission.requirements_fit.check.not_provided", "Not provided"))
-                : (typeof check.provided === "string" ? getExamDisplayName(check.provided) : formatExamValue(exam, check.provided, { context: "profile" }));
-            const statusKey = check.minimum == null && check.status === "met" ? "evidence_recorded" : check.status;
-            return `${label} — ${minimum}${check.condition ? `; ${translateAdmissionText(check.condition, check.condition)}` : ""}; ${t("admission.requirements_fit.check.profile", "Your profile")}: ${provided}; ${t(`admission.requirements_fit.check.${statusKey}`, "Cannot assess")}`;
-        }).join(". ");
-        const scopeLabel = reviewedAdmissions ? "" : translateTrackLabel(match.selectedChoiceLabel || "", match.selectedChoiceLabel || "");
-        const alternativesNote = requirementChecks.some((check) => check.mode === "any")
-            ? t("admission.requirements_fit.check.language_any_note", "For language rules that allow alternatives, meeting one listed option satisfies that rule.") : "";
-        const academicDetail = [scopeLabel, alternativesNote, requirementsDetail].filter(Boolean).join(". ");
-        const budgetDetail = hasUserBudget && compareCostUSD != null
-            ? tFormat("universities.why.budget_comparison", {
-                cost: formatMoney(Number(compareCostUSD), "USD"), budget: formatMoney(Number(myBudget), "USD"),
-            }, "Annual cost: {cost}; your annual budget: {budget}. Potential funding has not been deducted.")
-            : "";
-
-        const preferenceDetail = [
-            ["practice_vs_science", "focus"], ["social_vs_hardcore", "atmosphere"],
-            ["city_vs_campus", "location"], ["budget_vs_prestige", "finance"],
-        ].map(([key, label]) => {
-            const requested = match.userPreferences?.[key];
-            const observed = match.factors?.[key];
-            if (typeof requested !== "number" || typeof observed !== "number") return "";
-            return tFormat("universities.why.preference_comparison", {
-                label: t(`universities.tradeoff.${label}`), requested: Math.round(requested * 100), observed: Math.round(observed * 100),
-            }, "{label}: your setting {requested}/100; university indicator {observed}/100.");
-        }).filter(Boolean).join(" ");
+        const orJoiner = t("admission.requirements_fit.check.or", "or");
+        const missingExams = missingExamNames(requirementChecks, {
+            examLabel: cardExamLabel, languageTest: t("universities.ux2.tip.language_test"), joiner: orJoiner,
+        }).slice(0, 3);
+        const examNeededDetail = missingExams.length
+            ? tFormat("universities.tip.add_to_profile", { exams: missingExams.join(", ") })
+            : t("universities.why.conditional_exam_needed");
+        const unmet = unmetMinimums(requirementChecks, {
+            examLabel: cardExamLabel, joiner: orJoiner,
+            formatValue: (exam, value, context) => formatExamValue(exam, value, { context }),
+        }).slice(0, 2);
+        const belowDetail = unmet.length
+            ? tFormat("universities.tip.below_minimum", { items: unmet.map((item) => tFormat("universities.tip.minimum_gap", item)).join("; ") })
+            : t("admission.chance.requirements_not_met");
+        const overBudgetDetail = budgetTooltip({ status: "over", costMin: compareCostUSD, budget: myBudget }, tooltipHelpers);
 
         if (reviewedAdmissions) {
-            reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value }) => addStatusIndicator(icon, tone, label, detail, value));
+            reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value, legend }) => addStatusIndicator(icon, tone, label, detail, value, legend));
         } else {
         // Priority 0: warning on missing profile major program
         if (hasMissingProgram) {
@@ -3974,37 +4065,38 @@ export function initUniversitiesPage() {
                 "academic-cap",
                 "warning",
                 t("universities.badge.no_matching_program", "Program Not Offered"),
-                t("universities.why.no_matching_program", "This university does not offer the study program selected in your profile.")
+                t("universities.why.no_matching_program", "This university does not offer the study program selected in your profile."),
+                "", "subject_missing"
             );
         }
 
         // Priority 1: warning on missing exam evidence (conditional, not fail)
         if (hasConditionalExamWarning) {
-            addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Conditional / Exam Needed"), academicDetail || t("universities.why.conditional_exam_needed", "Some required exam evidence is missing, so this result is conditional."));
+            addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Exam result needed"), examNeededDetail, "", "exam_needed");
         }
 
         // Priority 2: preference-match group. Only one vibe tag may be shown.
         if (hasVeryHighVibeMatch) {
-            addStatusIndicator("check-badge", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceDetail || t("universities.why.your_vibe", "This university strongly matches your Focus, Atmosphere, and Location sliders."));
+            addStatusIndicator("heart", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceTooltip(match, "universities.why.your_vibe"), "", "vibe");
         } else if (hasHighVibeMatch) {
-            addStatusIndicator("check-badge", "match", t("universities.badge.top_match", "Good Match"), preferenceDetail || t("universities.why.top_match", "This university is a good preference match for your current slider setup."));
+            addStatusIndicator("heart", "match", t("universities.badge.top_match", "Good Match"), preferenceTooltip(match, "universities.why.top_match"), "", "vibe");
         }
 
         // Status tags: requirements + budget + aid.
         if (belowRequirements) {
-            addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), academicDetail);
+            addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), belowDetail, "", "requirements_below");
         } else if (meetsMinRequirements) {
-            addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), academicDetail);
+            addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), t("universities.tip.requirements_met"), "", "requirements_met");
         } else if (!reviewedAdmissions && match.requirementsReason && !hasConditionalExamWarning) {
-            addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), [academicDetail, chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning })].filter(Boolean).join(". "));
+            addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning }), "", "no_data");
         }
 
         if (showOverBudgetAid) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"), budgetDetail);
+            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"), overBudgetDetail, "", "over_budget_aid");
         } else if (showOverBudgetStrict) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"), budgetDetail);
+            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"), overBudgetDetail, "", "over_budget");
         } else if (showAidAvailable) {
-            addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"));
+            addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"), "", "", "aid");
         }
 
         }
@@ -4115,6 +4207,7 @@ ${rankInnerHtml}
             ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
             <div class="uni-body">
             ${headHtml}
+            ${reviewedAdmissions ? "" : `<p class="uni-data-note" title="${escapeHtmlAttr(t("university.ux2.legacy.badge_detail"))}">${escapeHtml(t("university.ux2.legacy.badge"))}</p>`}
             ${metricsHtml}
             <div class="uni-footer">
                 ${priceHtml}

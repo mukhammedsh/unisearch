@@ -5,12 +5,14 @@ import {
   convert,
   formatMoney,
   formatPrice,
+  formatPriceRange,
   getCurrencyDisplayMode,
   getFilterLimits,
   getPreferredCurrency,
   loadRates,
   setCurrencyDisplayMode,
   setPreferredCurrency,
+  startRatesLoading,
   niceStep,
   niceMax,
 } from '../../frontend/javascript/currency.js';
@@ -238,6 +240,35 @@ describe('currency.js', () => {
     assert.strictEqual(formatPrice(NaN, 'USD'), '—');
   });
 
+  test('formatPriceRange writes one approximation sign and keeps the published range in "both" mode', () => {
+    setPreferredCurrency('USD');
+    setCurrencyDisplayMode('preferred');
+    assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '$10,000 – $20,000');
+    assert.strictEqual(formatPriceRange(15000, 15000, 'USD'), '$15,000');
+    assert.strictEqual(formatPriceRange(4500000, 9000000, 'KZT'), '≈ $10,000 – $20,000');
+
+    setPreferredCurrency('KZT');
+    setCurrencyDisplayMode('both');
+    assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '≈ 4,500,000 ₸ – 9,000,000 ₸ ($10,000 – $20,000)');
+    // Summaries write millions compactly in the interface language; the published dollars stay exact.
+    assert.strictEqual(
+      formatPriceRange(10000, 20000, 'USD', { presentation: 'summary', locale: 'en-US' }),
+      '≈ ₸4.5M – ₸9M ($10,000 – $20,000)',
+    );
+    assert.match(formatPrice(66720, 'USD', { presentation: 'summary', locale: 'ru-RU' }), /^≈ 30\s+млн\s+₸ \(\$66,720\)$/);
+
+    setCurrencyDisplayMode('original');
+    assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '$10,000 – $20,000');
+    assert.strictEqual(formatPriceRange(null, 20000, 'USD'), '—');
+  });
+
+  test('a price in a currency without a rate is shown as published instead of mislabeled', () => {
+    setPreferredCurrency('KZT');
+    setCurrencyDisplayMode('preferred');
+    assert.strictEqual(formatPrice(1200, 'XYZ'), formatMoney(1200, 'XYZ'));
+    assert.doesNotMatch(formatPrice(1200, 'XYZ'), /₸/);
+  });
+
   test('loadRates handles API fetch, caching, and fallback', async () => {
     global.fetch = async () => ({
       ok: true,
@@ -261,5 +292,28 @@ describe('currency.js', () => {
     // Verify sessionStorage was populated
     const cached = JSON.parse(mockSessionStorage['unisearch_currency_rates_cache_v1']);
     assert.strictEqual(cached.rates.KZT, 460.0);
+  });
+
+  test('startRatesLoading stops waiting for slow rates and announces them when they change prices', async () => {
+    global.fetch = () => new Promise((resolve) => setTimeout(() => resolve({
+      ok: true,
+      json: async () => ({ rates: { USD: 1.0, KZT: 512.0 }, date: '2026-11-15', source: 'api' }),
+    }), 40));
+    const started = Date.now();
+    await startRatesLoading(5);
+    assert.ok(Date.now() - started < 40, 'the first render does not wait for slow rates');
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 0);
+    await new Promise((resolve) => setTimeout(resolve, 80));
+    const announced = dispatchedEvents.filter((e) => e.type === 'currencyChanged');
+    assert.strictEqual(announced.length, 1);
+    assert.strictEqual(announced[0].detail.reason, 'rates');
+    assert.strictEqual(convert(1, 'USD', 'KZT'), 512.0);
+
+    // Rates that arrive in time are used by the first render without a redraw.
+    mockSessionStorage = {};
+    global.fetch = async () => ({ ok: true, json: async () => ({ rates: { USD: 1.0, KZT: 515.0 }, date: '2026-11-15', source: 'api' }) });
+    await startRatesLoading(1000);
+    assert.strictEqual(convert(1, 'USD', 'KZT'), 515.0);
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 1);
   });
 });

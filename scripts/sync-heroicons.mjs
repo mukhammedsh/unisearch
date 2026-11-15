@@ -22,7 +22,8 @@ const SOURCE_ICON_PATTERNS = [
 
 const EXISTING_ICON_PATTERN = /^\s{2}"([^"]+)":/gm;
 
-const MANUAL_ICON_NAMES = ["sun", "server-stack", "signal-slash", "exclamation-circle"];
+// Icons passed by name through helpers the source patterns do not see (e.g. catalog card status badges).
+const MANUAL_ICON_NAMES = ["sun", "server-stack", "signal-slash", "exclamation-circle", "heart"];
 const ICON_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 function kebabToPascalCase(value) {

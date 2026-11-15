@@ -88,6 +88,17 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertEqual(result["fact_groups"]["requirements"], ["minimum"])
         self.assertEqual(result["sources"], self.mit()["sources"])
 
+    def test_subject_matching_computes_each_option_title_tags_once(self):
+        service._title_major_tags.cache_clear()
+        with patch.object(service, "_major_tags_from_text", wraps=service._major_tags_from_text) as tags:
+            first = service.matching_study_options(MIT, "Computer Science", "undergraduate")
+            calls = tags.call_count
+            second = service.matching_study_options(MIT, "Computer Science", "undergraduate")
+        self.assertTrue(first)
+        self.assertEqual(first, second)
+        self.assertGreater(calls, 0)
+        self.assertEqual(calls, tags.call_count)
+
     def test_explicit_context_overrides_profile_without_mutation(self):
         profile = {"study_level": "master", "applicant_route": "graduate", "intended_entry_cycle": "2028",
                    "selectedAdmissionChoices": {MIT: {"studyOptionId": "physics", "applicationRouteId": "transfer"}}}

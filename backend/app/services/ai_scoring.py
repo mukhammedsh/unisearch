@@ -12,14 +12,13 @@ from app.services.finance_modes import (
 )
 from app.services import languages as languages_service
 from app.services import universities as universities_service
-from app.services import admissions_catalog, admissions_assessment
+from app.services import admissions_catalog, admissions_assessment, preference_factors
 from app.services.university_tracks import (
     _canonical_major,
     _has_explicit_empty_program_mapping,
     _normalize_major_text,
     _iter_programs,
 )
-from app.services.citizenship import resolve_citizenship_status
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 
 _UI_BADGE_THRESHOLDS = {
@@ -1347,110 +1346,16 @@ def _factor01(value: Any, fallback: float = 0.5) -> float:
     return _clamp01(float(parsed))
 
 
-def _acceptance_percent(university: Dict[str, Any]) -> Optional[float]:
-    academics = university.get("academics")
-    if not isinstance(academics, dict):
-        academics = {}
-    direct = _to_num(academics.get("acceptance_rate_percent"))
-    if direct is not None:
-        return _clamp(float(direct), 0.0, 100.0)
-    programs = academics.get("programs")
-    if not isinstance(programs, list):
-        return None
-    vals = []
-    for row in programs:
-        if not isinstance(row, dict):
-            continue
-        v = _to_num(row.get("acceptance_rate_percent"))
-        if v is not None:
-            vals.append(_clamp(float(v), 0.0, 100.0))
-    if not vals:
-        return None
-    return float(sum(vals) / len(vals))
-
-
-def _fallback_practice_vs_science(university: Dict[str, Any]) -> float:
-    tags = university.get("tags") or []
-    tags_str = " ".join(str(t) for t in tags) if isinstance(tags, list) else str(tags or "")
-    major_focus = university.get("major_focus") or []
-    major_focus_str = " ".join(str(m) for m in major_focus) if isinstance(major_focus, list) else str(major_focus or "")
-    text = " ".join(
-        [
-            str(university.get("name") or ""),
-            str(university.get("description") or ""),
-            str((((university.get("academics") or {}).get("focus_areas")) or "")),
-            tags_str,
-            major_focus_str,
-        ]
-    ).lower()
-    research_tokens = (
-        "research", "science", "laboratory", "fundamental", "theory", "phd",
-        "исследован", "научн", "фундаментальн", "лаборатор", "теория", "академическ",
-    )
-    practice_tokens = (
-        "practice", "industry", "internship", "applied", "career", "startup", "business",
-        "практик", "индустр", "стажировк", "прикладн", "карьер", "стартап", "бизнес",
-    )
-    score = 0.5 + (0.06 * sum(1 for token in research_tokens if token in text)) - (0.06 * sum(1 for token in practice_tokens if token in text))
-    rank = _to_num(university.get("rank"))
-    if rank is not None and rank <= 10:
-        score += 0.05
-    return _clamp01(score)
-
-
-def _fallback_social_vs_hardcore(university: Dict[str, Any], study_level: Any = "any") -> float:
-    target_level = _normalize_study_level_str(study_level)
-    acceptance = None if target_level in {"master", "mba", "doctorate"} else _acceptance_percent(university)
-    strictness = 0.55 if acceptance is None else _clamp01(1.0 - (acceptance / 100.0))
-    rank = _to_num(university.get("rank"))
-    rank_boost = 0.0
-    if rank is not None and rank > 0:
-        rank_boost = _clamp01(1.0 - ((rank - 1.0) / 200.0)) * 0.18
-    return _clamp01(0.30 + 0.60 * strictness + rank_boost)
-
-
-def _fallback_budget_vs_prestige(university: Dict[str, Any]) -> float:
-    finance = university.get("finance")
-    finance = finance if isinstance(finance, dict) else {}
-    cost_raw = _to_num(finance.get("total_cost_year_usd"))
-    currency = str(finance.get("currency") or "USD").strip().upper()
-    cost_usd = _cost_to_usd(cost_raw, currency) if cost_raw is not None else None
-    cost_norm = 0.45 if cost_usd is None else _clamp01(float(cost_usd) / 100000.0)
-    rank = _to_num(university.get("rank"))
-    rank_prestige = 0.5
-    if rank is not None and rank > 0:
-        # Smooth logarithmic prestige scaling across top 1000 universities
-        rank_prestige = _clamp01(1.0 - (math.log1p(max(0.0, float(rank) - 1.0)) / math.log1p(1000.0)))
-    return _clamp01(0.50 * cost_norm + 0.50 * rank_prestige)
-
-
-def _fallback_city_vs_outside_city(university: Dict[str, Any]) -> float:
-    factors_meta = university.get("factors_meta")
-    factors_meta = factors_meta if isinstance(factors_meta, dict) else {}
-    raw_metrics = factors_meta.get("raw_metrics")
-    raw_metrics = raw_metrics if isinstance(raw_metrics, dict) else {}
-    city_meta = raw_metrics.get("city")
-    city_meta = city_meta if isinstance(city_meta, dict) else {}
-
-    population = _to_num(city_meta.get("population"))
-    if population is None:
-        population = _to_num(city_meta.get("population_wikidata_fallback"))
-    if population is None:
-        return 0.5
-
-    # Convert city population to location preference axis:
-    # 0.0 -> major city life, 1.0 -> outside major cities.
-    # Uses only traceable numeric city-population metrics from factors_meta.
-    max_reference_population = 20_000_000.0
-    city_intensity = _clamp01(math.log1p(max(0.0, float(population))) / math.log1p(max_reference_population))
-    return _clamp01(1.0 - city_intensity)
-
-
 _FACTORS_CACHE: Dict[str, Dict[str, float]] = {}
 _CHOICES_CACHE: Dict[str, List[Dict[str, Any]]] = {}
 
 
-def _extract_university_factors(university: Dict[str, Any], study_level: Any = "any") -> Dict[str, float]:
+def _extract_university_factors(university: Dict[str, Any], study_level: Any = "any") -> Dict[str, Optional[float]]:
+    """University indicators for the preference sliders (see `preference_factors`); None means unknown.
+
+    An explicit value in `factors` wins, including an explicit null. Selectivity describes first-year entry, so it
+    is unknown for graduate study levels whatever is stored.
+    """
     uid = str(university.get("id") or "").strip()
     target_level = _normalize_study_level_str(study_level)
     revision = admissions_catalog.get_revision() if uid in admissions_catalog.INSTITUTION_IDS else "legacy"
@@ -1460,26 +1365,53 @@ def _extract_university_factors(university: Dict[str, Any], study_level: Any = "
 
     raw = university.get("factors")
     raw = raw if isinstance(raw, dict) else {}
+
+    def stored_or(key: str, compute) -> Optional[float]:
+        if key in raw:
+            return None if raw[key] is None else _factor01(raw[key])
+        return compute()
+
     res = {
-        "practice_vs_science": _factor01(raw.get("practice_vs_science"), _fallback_practice_vs_science(university)),
-        "social_vs_hardcore": _factor01(raw.get("social_vs_hardcore"), _fallback_social_vs_hardcore(university, target_level)),
-        "budget_vs_prestige": _factor01(raw.get("budget_vs_prestige"), _fallback_budget_vs_prestige(university)),
-        "city_vs_campus": _factor01(raw.get("city_vs_campus"), _fallback_city_vs_outside_city(university)),
+        "practice_vs_science": stored_or("practice_vs_science", lambda: preference_factors.research_intensity(university)),
+        "social_vs_hardcore": None if target_level in preference_factors.GRADUATE_LEVELS
+        else stored_or("social_vs_hardcore", lambda: preference_factors.selectivity(university, target_level)),
+        "budget_vs_prestige": stored_or("budget_vs_prestige", lambda: preference_factors.cost_vs_prestige(university)),
+        "city_vs_campus": stored_or("city_vs_campus", lambda: preference_factors.location(university)),
     }
     if uid:
         _FACTORS_CACHE[cache_key] = res
     return res
 
 
-def _distance_breakdown(user_pref: Dict[str, float], uni_factors: Dict[str, float]) -> Tuple[float, Dict[str, float]]:
-    deltas = {
-        "practice_vs_science": abs(float(user_pref["practice_vs_science"]) - float(uni_factors["practice_vs_science"])),
-        "social_vs_hardcore": abs(float(user_pref["social_vs_hardcore"]) - float(uni_factors["social_vs_hardcore"])),
-        "budget_vs_prestige": abs(float(user_pref["budget_vs_prestige"]) - float(uni_factors["budget_vs_prestige"])),
-        "city_vs_campus": abs(float(user_pref["city_vs_campus"]) - float(uni_factors["city_vs_campus"])),
-    }
-    total_distance = float(sum(deltas.values()))
-    return total_distance, deltas
+def _preference_weights(user_pref: Dict[str, float]) -> Dict[str, float]:
+    """A centred slider expresses no preference; its distance from the centre is how much the axis matters."""
+    return {key: _clamp01(abs(float(value) - 0.5) * 2.0) for key, value in user_pref.items()}
+
+
+def _preference_mismatch(
+    user_pref: Dict[str, float], uni_factors: Dict[str, Optional[float]]
+) -> Tuple[Optional[float], Dict[str, Optional[float]]]:
+    """Weighted mean distance over the sliders the user moved.
+
+    A moved slider without university data counts as the expected distance to a university placed uniformly on the
+    scale, so missing data neither wins a perfect match nor reads as a failure. Returns (mismatch, per-axis
+    distances, None where unknown); the mismatch is None when no moved slider has university data at all.
+    """
+    weights = _preference_weights(user_pref)
+    deltas: Dict[str, Optional[float]] = {}
+    weighted, total, known = 0.0, 0.0, False
+    for key, requested in user_pref.items():
+        observed = uni_factors.get(key)
+        deltas[key] = None if observed is None else abs(float(requested) - float(observed))
+        if weights[key] <= 0:
+            continue
+        if deltas[key] is None:
+            weighted += weights[key] * (requested * requested + (1.0 - requested) ** 2) / 2.0
+        else:
+            weighted += weights[key] * deltas[key]
+            known = True
+        total += weights[key]
+    return (_clamp01(weighted / total) if known else None), deltas
 
 
 def _build_ui_badge_hints(
@@ -1539,7 +1471,7 @@ def _build_ui_badge_hints(
             "aid_available",
         ],
         "metrics": {
-            "preferenceMismatch": round(mismatch01, 4),
+            "preferenceMismatch": None if preference_mismatch is None else round(mismatch01, 4),
             "conditionalRequirements": conditional_count,
             "budgetStatus": budget_status,
             "meetsMinRequirements": meets_min_requirements,
@@ -1584,6 +1516,7 @@ def sort_universities_ai(
         ),
         "city_vs_campus": _preference01(city_vs_campus, 50.0),
     }
+    preference_strength = max(_preference_weights(user_pref).values())
     profile_any = dict(profile)
     profile_any["fundingType"] = "any"
     profile_any["funding_type"] = "any"
@@ -1643,16 +1576,7 @@ def sort_universities_ai(
         selected_choice_key = "" if canonical_context else _selected_choice_key_for_university(profile, row)
 
         uni_factors = _extract_university_factors(row, target_level)
-        total_distance, distance_deltas = _distance_breakdown(user_pref, uni_factors)
-        preference_mismatch = _clamp01(
-            (
-                float(distance_deltas.get("practice_vs_science", 0.0))
-                + float(distance_deltas.get("social_vs_hardcore", 0.0))
-                + float(distance_deltas.get("city_vs_campus", 0.0))
-                + float(distance_deltas.get("budget_vs_prestige", 0.0))
-            )
-            / 4.0
-        )
+        preference_mismatch, distance_deltas = _preference_mismatch(user_pref, uni_factors)
 
         if canonical_context:
             selected_choice_key = str(chance_general.get("activeChoiceKey") or "")
@@ -1689,7 +1613,7 @@ def sort_universities_ai(
         program_missing_penalty = 0.25 if missing_program else 0.0
 
         row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
-        hard_score = _clamp01(1.0 - preference_mismatch)
+        preference_fit = None if preference_mismatch is None else _clamp01(1.0 - preference_mismatch)
 
         # Resolve the active admission choice
         recommended_choice_key = str(chance_general.get("recommendedChoiceKey") or chance_general.get("bestChoiceKey") or "")
@@ -1825,7 +1749,10 @@ def sort_universities_ai(
             _clamp01(1.0 - selected_actual_chance / 100.0)
             if selected_actual_chance is not None else None
         )
-        components = [(0.35 if use_ml else 0.60, preference_mismatch)]
+        # The preference component counts as much as the strongest slider was moved: centred sliders leave it out.
+        components = []
+        if preference_mismatch is not None:
+            components.append(((0.35 if use_ml else 0.60) * preference_strength, preference_mismatch))
         if requirements_gap is not None:
             components.append((0.30 if use_ml else 0.40, requirements_gap))
         if use_ml:
@@ -1837,7 +1764,9 @@ def sort_universities_ai(
             if use_ml and interest_text and row_ml_score < 0.05 else 0.0
         )
         final_score = _clamp01(
-            sum(weight * value for weight, value in components) / sum(weight for weight, _ in components)
+            # No component at all (centred sliders and no budget, minimums or interests): every university ties
+            # and the sort below falls back to its later keys, such as rank.
+            (sum(weight * value for weight, value in components) / sum(weight for weight, _ in components) if components else 0.0)
             + major_penalty + program_missing_penalty
         )
 
@@ -1894,9 +1823,8 @@ def sort_universities_ai(
             "costYearNative": None if cost_unavailable else cost_native,
             "grantPotential": None,
             "grantEligible": None,
-            "hardScore": hard_score,
-            "distanceScore": _clamp01(1.0 - preference_mismatch),
-            "totalDistance": total_distance,
+            "hardScore": preference_fit,
+            "distanceScore": preference_fit,
             "distanceDeltas": distance_deltas,
             "preferenceMismatch": preference_mismatch,
             "admissionRisk": None,
@@ -1954,11 +1882,14 @@ def sort_universities_ai(
             item["catalog_costs"] = projected_costs
         item["matchData"] = match_data
         item["__ai_score"] = final_score
-        item["__distance"] = preference_mismatch
+        item["__distance"] = 1.0 if preference_mismatch is None else preference_mismatch
+        # With moved sliders, a university without data for any of them follows those whose fit is known.
+        item["__preference_unknown"] = preference_strength > 0 and preference_mismatch is None
         enriched.append(item)
 
     enriched.sort(
         key=lambda u: (
+            bool(u.get("__preference_unknown")),
             float(u.get("__ai_score", 1.0)),
             str((u.get("matchData") or {}).get("budgetStatus") or "") in {"unknown_cost", "uncertain_range"},
             float(u.get("__distance", 1.0)),
@@ -1974,6 +1905,7 @@ def sort_universities_ai(
         cleaned = dict(row)
         cleaned.pop("__ai_score", None)
         cleaned.pop("__distance", None)
+        cleaned.pop("__preference_unknown", None)
         out.append(cleaned)
     return out
 
@@ -2176,28 +2108,10 @@ def _has_profile_evidence(ctx: Dict[str, Any]) -> bool:
     )
 
 
-def _resolve_profile_citizenship_status(university: Dict[str, Any], profile: Dict[str, Any]) -> Dict[str, Any]:
-    citizenships = profile.get("citizenships") or []
-    if isinstance(citizenships, str):
-        citizenships = [c.strip() for c in citizenships.split(",") if c.strip()]
-    elif isinstance(citizenships, list):
-        citizenships = [str(c).strip() for c in citizenships if str(c).strip()]
-    if not citizenships and profile.get("citizenship"):
-        citizenships = [str(profile.get("citizenship")).strip()]
-    location = university.get("location")
-    uni_country = str(
-        (location.get("country") if isinstance(location, dict) else None)
-        or university.get("country")
-        or ""
-    )
-    return resolve_citizenship_status(uni_country, citizenships)
-
-
 def _build_no_choices_chance_response(
     profile: Dict[str, Any],
     funding_type: str,
     has_evidence: bool,
-    citizenship_status: Dict[str, Any],
 ) -> Dict[str, Any]:
     return {
         "overallChance": None,
@@ -2223,7 +2137,6 @@ def _build_no_choices_chance_response(
         "label": "Нет вариантов для выбранных фильтров"
         if _chance_locale(profile) == "rus"
         else "No choices for the selected filters",
-        "citizenshipStatus": citizenship_status,
     }
 
 
@@ -2333,10 +2246,9 @@ def estimate_uni_chance(
     entries = _filter_admission_entries(choices, university, profile)
 
     has_evidence = _has_profile_evidence(ctx)
-    citizenship_status = _resolve_profile_citizenship_status(university, profile)
 
     if not entries:
-        return _build_no_choices_chance_response(profile, funding_type, has_evidence, citizenship_status)
+        return _build_no_choices_chance_response(profile, funding_type, has_evidence)
 
     per_choice = _evaluate_per_choice_chance(university, profile, entries, choices, ctx, lang_cfg)
 
@@ -2380,7 +2292,6 @@ def estimate_uni_chance(
         "chanceAvailable": bool(best.get("chanceAvailable")),
         "reason": str(best.get("reason") or ""),
         "label": str(best.get("label") or ""),
-        "citizenshipStatus": citizenship_status,
     }
 
 

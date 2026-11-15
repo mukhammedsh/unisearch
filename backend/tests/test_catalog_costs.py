@@ -95,8 +95,14 @@ class CatalogCostTests(unittest.TestCase):
             gap = universities.list_universities(q="Imperial", study_level="undergraduate", min_tuition=20000, max_tuition=30000, cost_basis="tuition")["items"]
         self.assertIn(IMPERIAL, [row["id"] for row in rows])
         self.assertNotIn(IMPERIAL, [row["id"] for row in gap])
-        unknown = universities.list_universities(q="Imperial", max_tuition=1000000)["items"]
-        self.assertNotIn(IMPERIAL, [row["id"] for row in unknown])
+        # Without a published full budget the card shows tuition, so the total filter reads it as a partial match.
+        tuition_only = universities.list_universities(q="Imperial", max_tuition=1000000)["items"]
+        card = next(row for row in tuition_only if row["id"] == IMPERIAL)
+        self.assertIsNone(card["catalog_costs"]["annual_total"])
+        self.assertEqual("partial", card["catalog_costs"]["tuition"]["filter_match"])
+        with patch("app.services.currency.convert", side_effect=lambda amount, _source, _target: amount * 1.25):
+            below = universities.list_universities(q="Imperial", max_tuition=5000)["items"]
+        self.assertNotIn(IMPERIAL, [row["id"] for row in below])
 
     def test_profiled_ranges_filter_individual_prices_and_living_intervals(self):
         costs = admissions_catalog.catalog_costs(IMPERIAL, "undergraduate", profile={})

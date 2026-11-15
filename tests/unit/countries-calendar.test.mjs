@@ -1,15 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { COUNTRY_CODES, getCountryName, getCountryOptions } from "../../frontend/javascript/utils/countries.js";
 import { createDeadlineIcs, escapeIcsText, getCalendarCells, parseExactDeadlineDate } from "../../frontend/javascript/pages/university/deadline-calendar.js";
-
-test("citizenship options cover the country code list with localized names", () => {
-  assert.equal(COUNTRY_CODES.length, 250);
-  assert.equal(new Set(COUNTRY_CODES).size, COUNTRY_CODES.length);
-  assert.equal(getCountryOptions("eng").length, COUNTRY_CODES.length);
-  assert.equal(getCountryName("DE", "rus"), "Германия");
-  assert.ok(getCountryOptions("eng").some((country) => country.code === "BR" && country.name === "Brazil"));
-});
 
 test("calendar uses only exact dates with a published year", () => {
   assert.equal(parseExactDeadlineDate("2027-01-13"), "2027-01-13");

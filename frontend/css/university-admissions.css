@@ -83,6 +83,75 @@
   overflow-wrap: anywhere;
 }
 
+.admissions-reading__refs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  /* Source references read as "Source 1, 2": a muted label and underlined numbers that open the official page. */
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+/* Numbered source markers: compact, keyboard-reachable links to the official page listed under the same number. */
+.admissions-reading__source a.admissions-reading__ref {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-medium);
+  font-variant-numeric: tabular-nums;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.admissions-reading__ref:focus-visible,
+.admissions-reading__source-list a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.admissions-reading__sources {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.admissions-reading__source-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-6);
+  list-style: decimal;
+}
+
+.admissions-reading__source-list li::marker {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* List items keep `display: list-item` so the visible number matches each marker. */
+.admissions-reading__source-list li {
+  min-width: 0;
+  padding-left: var(--space-1);
+}
+
+.admissions-reading__source-list li > .admissions-reading__note {
+  display: block;
+  padding-top: var(--space-0-5);
+}
+
+.admissions-reading__source-list a {
+  color: var(--text);
+  text-underline-offset: var(--space-1);
+  overflow-wrap: anywhere;
+}
+
 .admissions-reading__table-wrap {
   min-width: 0;
   overflow-x: auto;
@@ -185,10 +254,11 @@
 }
 
 .admissions-key-facts__value {
-  font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
   font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
+  /* Key-fact answers are often full sentences; regular weight keeps the list calm, the label column carries structure. */
+  font-weight: var(--font-weight-regular);
 }
 
 .admissions-key-facts__flag {
@@ -220,6 +290,12 @@
   font: inherit;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+}
+
+a.admissions-key-facts__link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .admissions-key-facts__link:hover {
@@ -364,9 +440,10 @@
   border-radius: 0;
 }
 
+/* Top-level admissions sections are separated like Overview sections, clearly wider than heading-to-body spacing. */
 .university--reviewed #detailRequirements {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--layout-section-gap);
 }
 
 .university--reviewed #detailRequirements > :first-child .admissions-catalog__assessment {
@@ -396,16 +473,7 @@
   min-width: 0;
 }
 
-.admissions-context__advanced-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-}
 
-.admissions-context__advanced-actions [hidden] {
-  display: none;
-}
 
 #admissionsContextApply {
   background: var(--accent);
@@ -462,6 +530,10 @@
   display: grid;
   gap: var(--space-3);
   min-width: 0;
+}
+
+/* The disclosure body needs space under its summary; the editor body has no surface, so its parent gap is enough. */
+.admissions-special-routes > .admissions-entry {
   padding-block: var(--space-3);
 }
 
@@ -530,8 +602,7 @@ details[open] > summary > .admissions-disclosure-icon {
   min-width: 0;
 }
 
-.admissions-entry p,
-.admissions-route-name {
+.admissions-entry p {
   margin: 0;
 }
 
@@ -748,10 +819,10 @@ details[open] > summary > .admissions-disclosure-icon {
   margin: 0;
   color: var(--text);
   font-family: var(--font-display);
-  font-size: var(--text-xl);
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-tight);
   overflow-wrap: anywhere;
+  font-size: var(--text-lg);
 }
 
 .admissions-context__heading {
@@ -998,7 +1069,8 @@ details[open] > summary > .admissions-disclosure-icon {
 
 #tab-programs .program-card__body-inner {
   gap: var(--space-2);
-  padding-top: var(--space-1);
+  /* The study description starts a step below the card heading rather than touching the programme code. */
+  padding-top: var(--space-4);
   border-top: 0;
 }
 
@@ -1147,7 +1219,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-catalog__heading {
   font-family: var(--font-sans);
-  font-size: var(--text-md);
+  font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
 }
@@ -1504,6 +1576,36 @@ details[open] > summary > .admissions-disclosure-icon {
   padding: var(--space-5) 0;
 }
 
+/* The tab container owns the bottom inset: the last section and its last child add nothing below it. */
+.university--reviewed :is(#tab-general, #tab-programs, #tab-admission, #tab-deadlines, #tab-finance) > .d-box:last-child {
+  padding-bottom: 0;
+}
+
+.university--reviewed .d-box > :last-child,
+.university--reviewed .d-box-text > :last-child {
+  margin-bottom: 0;
+}
+
+/* The About section owns the space between its description and tag list, so a trailing child adds nothing below. */
+.university--reviewed #detailExtra {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.university--reviewed #detailExtra > * {
+  margin: 0;
+}
+
+/* An empty host still takes a grid/flex gap slot and leaves a phantom gap; hide it until it has content. */
+.university--reviewed .d-box-text > div:empty:not([aria-live]) {
+  display: none;
+}
+
+/* Live regions must stay rendered to announce updates, so take an empty one out of the gap flow instead. */
+.admissions-context__status:empty {
+  position: absolute;
+}
+
 .university--reviewed #tab-finance .finance-section-header .d-box-note {
   display: none;
 }
@@ -1558,9 +1660,6 @@ details[open] > summary > .admissions-disclosure-icon {
   font-size: var(--text-sm);
 }
 
-.admissions-selection__relationship {
-  font-size: var(--text-sm);
-}
 
 .admissions-selection__actions {
   display: flex;
@@ -1656,8 +1755,10 @@ details[open] > summary > .admissions-disclosure-icon {
 
 #tab-programs .program-card__select-actions {
   display: flex;
-  justify-content: flex-end;
-  padding: 0 var(--space-6) var(--space-3);
+  /* The action starts where the card's text starts, so it reads as the card's next step;
+     its top gap is the same whether the card is collapsed or expanded. */
+  justify-content: flex-start;
+  padding: var(--space-3) var(--space-6);
 }
 
 #tab-programs .program-card__select-actions :is(.program-card__admission-action, .program-card__selection-state) {
@@ -1945,4 +2046,133 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-key-facts__source:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* University page layout pass (2026-11-13): one side-padding layer, one heading scale and clear section breaks. */
+
+/* On reviewed pages the tab container owns the side padding, so every tab's content lines up with the page title.
+   Earlier-format pages keep the box padding because their tab container has none. */
+.university--reviewed :is(#tab-general, #tab-programs, #tab-admission, #tab-deadlines, #tab-finance) > .d-box {
+  padding-inline: 0;
+}
+
+.admissions-reading h4,
+.admissions-reading__table caption {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+/* Reading sections are separated by a faint rule, so a long tab scans as distinct topics. */
+.admissions-reading > :is(.admissions-reading__section, .admissions-reading__sources) + :is(.admissions-reading__section, .admissions-reading__sources) {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line-faint);
+}
+
+/* Key figures are compact data rows at the interface body size, like the answer cards above them. */
+#tab-general #detailRecommendations .d-kv {
+  font-size: var(--text-base);
+}
+
+/* On phones the site, map and save actions share one row instead of stacking into two. */
+@media (max-width: 768px) {
+  .d-head-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .d-head-links > .d-site-link {
+    width: auto;
+    min-width: 0;
+    padding-inline: var(--space-2);
+  }
+}
+
+@media (max-width: 480px) {
+  .d-head-links > .d-site-link {
+    gap: var(--space-1);
+    padding-inline: var(--space-1);
+  }
+}
+
+/* Smallest phones: the labels alone fit a third of the row, so the decorative icons step aside. */
+@media (max-width: 360px) {
+  .d-head-links > .d-site-link .uni-action-icon {
+    display: none;
+  }
+}
+
+/* A choice the reader must make: explanation first, its actions in one row beneath it, the same on every tab. */
+.admissions-state--prompt {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.admissions-state--prompt > p {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-base);
+}
+
+.admissions-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* The explanation above route choices reads at body size, like the route notes beside it. */
+.admissions-entry > p {
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.admissions-reading__refs-label {
+  color: var(--text-muted);
+}
+
+.admissions-reading__source a.admissions-reading__ref:hover {
+  background: transparent;
+  color: var(--interaction-hover-text);
+}
+
+/* The pointer to the Admission tab is its own quiet line after the study description, not part of the paragraph. */
+.program-card p.admissions-programs__admission-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Each route's note sits close to its own button; separate routes keep a larger gap, so notes never look shared. */
+.admissions-route-option {
+  gap: var(--space-1-5);
+}
+
+.admissions-entry {
+  gap: var(--space-4);
+}
+
+/* Answer cards keep their own height and stack tightly in two columns, so no card leaves an empty gap beside another. */
+.overview-summary__grid {
+  align-items: start;
+}
+
+.overview-summary__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* One column on narrow screens: the column wrappers step aside and the cards keep the reading order of the answers. */
+@media (max-width: 768px) {
+  .overview-summary__column {
+    display: contents;
+  }
+
+  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="deadline"] { order: 1; }
+  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="cost"] { order: 2; }
+  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="needs"] { order: 3; }
+  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="people"] { order: 4; }
 }

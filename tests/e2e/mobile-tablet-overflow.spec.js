@@ -144,33 +144,26 @@ for (const viewport of viewports) {
       await expect(page.locator("#uSidebar")).not.toHaveClass(/is-open/);
     }
 
-    await page.goto("/compare.html?stage=configure&ids=mit-usa-cambridge,imperial-college-london-uk");
-    await expect(page.locator("#compareResultsPane")).toBeVisible();
-    const compareColumns = page.locator(".compare-config-column");
-    await expect(compareColumns).toHaveCount(2);
+    await page.goto("/compare.html?ids=mit-usa-cambridge,imperial-college-london-uk");
+    await expect(page.locator("[data-reviewed-comparison] .compare-reviewed__head")).toHaveCount(2);
+    await expectNoHorizontalOverflow(page, `reviewed comparison ${viewport.name}`);
     for (const choice of [
       { id: "mit-usa-cambridge", option: "mit-course-6-3-bachelor", route: "mit-first-year", query: "Computer Science and Engineering" },
-      { id: "imperial-college-london-uk", option: "imperial-option-computing-meng", route: "procedure-computing-meng", query: "Computing" },
+      { id: "imperial-college-london-uk", option: "imperial-option-computing-meng", route: "", query: "Computing" },
     ]) {
-      const chooser = page.locator(`#compare-options-${choice.id}`);
-      await openDisclosureParents(chooser.locator("[data-compare-search-form]"));
-      await expect(chooser.locator("[data-compare-search-form]")).toBeVisible();
-      await chooser.locator('input[type="search"]').fill(choice.query);
-      await setNativeSelect(page, `compare-filter_level-${choice.id}`, "undergraduate");
-      await chooser.locator('[data-compare-search-form] button[type="submit"]').click();
-      await chooser.locator(`[data-study-option="${choice.option}"]`).click();
-      await expect(chooser.locator(`select[data-context-field="application_route_id"] option[value="${choice.route}"]`)).toHaveCount(1);
-      await setNativeSelect(page, `compare-application_route_id-${choice.id}`, choice.route);
-      await setNativeSelect(page, `compare-study_level-${choice.id}`, "undergraduate");
-      await setNativeSelect(page, `compare-applicant_route-${choice.id}`, "first_year");
+      await page.locator(`[data-compare-pick="${choice.id}"]`).click();
+      const dialog = page.locator("dialog.compare-picker[open]");
+      await expect(dialog).toBeVisible();
+      await expectNoHorizontalOverflow(page, `comparison picker ${viewport.name}`);
+      await dialog.locator("#comparePickerSearch").fill(choice.query);
+      await dialog.locator(`[data-picker-option="${choice.option}"]`).click();
+      if (choice.route) await dialog.locator(`[data-picker-route="${choice.route}"]`).click();
+      await expect(page.locator("dialog.compare-picker")).toHaveCount(0);
+      await expect.poll(() => page.evaluate((id) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[id]?.studyOptionId, choice.id)).toBe(choice.option);
     }
-    // Continuing applies and saves the unsaved route and level choices of both universities.
-    const continueCompareButton = page.locator("[data-action='build-compare-results']").first();
-    await expect(continueCompareButton).toBeEnabled();
-    await continueCompareButton.click();
-    for (const choice of [{ id: "mit-usa-cambridge", route: "mit-first-year" }, { id: "imperial-college-london-uk", route: "procedure-computing-meng" }]) {
-      await expect.poll(() => page.evaluate((id) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[id]?.applicationRouteId, choice.id)).toBe(choice.route);
-    }
+    await expect(page.locator('[data-compare-section="program"]')).toBeVisible();
+    await expectNoHorizontalOverflow(page, `reviewed comparison with programs ${viewport.name}`);
+    await page.goto("/compare.html?ids=university-of-oxford-uk-oxford,harvard-usa-cambridge");
     await expect(page.locator(".compare-decision-support")).toBeVisible();
     await expect(page.locator(".compare-uni-card")).toHaveCount(2);
     await expect(page.locator(".compare-tests .compare-table thead th")).toHaveCount(3);
@@ -206,3 +199,24 @@ for (const viewport of viewports) {
     await expectNoHorizontalOverflow(page, `profile modal ${viewport.name}`);
   });
 }
+
+test("phone catalog has no phantom gap above the first card and the navbar shares the page gutter", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await seedProfile(page, {});
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
+
+  // With no recent history the recent slot is empty and must not keep its margin.
+  await expect(page.locator("#mobileRecentSlot")).toBeHidden();
+  const frame = await page.evaluate(() => {
+    const bar = document.querySelector(".u-section-bar").getBoundingClientRect();
+    // Measure the grid, not a card: cards run a short entrance transform.
+    const firstCard = document.querySelector("#universitiesList").getBoundingClientRect();
+    const layoutGap = Number.parseFloat(getComputedStyle(document.querySelector(".u-section-bar")).marginBottom);
+    const logo = document.querySelector(".navbar-logo-link, .logo").getBoundingClientRect();
+    const content = document.querySelector(".u-section-bar > *").getBoundingClientRect();
+    return { barToCard: Math.round(firstCard.top - bar.bottom), layoutGap, logoLeft: Math.round(logo.left), contentLeft: Math.round(content.left) };
+  });
+  expect(frame.barToCard).toBeLessThanOrEqual(frame.layoutGap + 1);
+  expect(frame.logoLeft).toBe(frame.contentLeft);
+});

@@ -20,39 +20,6 @@ async function openEvidence(fact) {
   if (await evidence.count() && !(await evidence.evaluate((node) => node.open))) await evidence.locator(":scope > summary").click();
 }
 
-test("citizenship picker searches the full list and saves a selected country", async ({ page }) => {
-  await page.goto("/profile.html");
-  const trigger = page.locator("#citizenshipCountrySelect + .custom-select-trigger");
-  await expect(trigger).toBeVisible();
-  await expect(page.locator("#citizenshipCountrySelect option[data-country-code]")).toHaveCount(250);
-  await trigger.click();
-  await page.locator(".custom-select-wrapper:has(#citizenshipCountrySelect) .custom-select-search").fill("BR");
-  await page.locator('.custom-select-wrapper:has(#citizenshipCountrySelect) .custom-option[data-value="BR"]').click();
-  await page.locator("#addCitizenshipBtn").click();
-  await expect(page.locator("[data-citizenship-chip]")).toContainText("BR");
-  await page.locator("#saveProfileBtn").click();
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").citizenships)).toEqual(["BR"]);
-});
-
-test("citizenship picker enforces the API limit of ten entries", async ({ page }) => {
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_profile", JSON.stringify({
-      _v: 2,
-      citizenships: ["US", "CA", "GB", "KZ", "RU", "CN", "IN", "JP", "FR", "DE"],
-    }));
-  });
-  await page.goto("/profile.html");
-  const picker = page.locator(".custom-select-wrapper:has(#citizenshipCountrySelect)");
-  await picker.locator(".custom-select-trigger").click();
-  await picker.locator(".custom-select-search").fill("BR");
-  await picker.locator('.custom-option[data-value="BR"]').click();
-  await page.locator("#addCitizenshipBtn").click();
-
-  await expect(page.locator("[data-citizenship-chip]")).toHaveCount(10);
-  await expect(page.locator(".toast.error")).toContainText("10");
-  await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").citizenships)).toHaveLength(10);
-});
-
 test("legacy saved study level can be changed and saved in the canonical profile", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_profile", JSON.stringify({
@@ -276,10 +243,9 @@ test("MIT first-year deadline facts keep recurring dates separate from the 2027 
   await expect(cycleDeadline).toContainText("Fall 2027 entry");
 });
 
-test("UK citizenship alone does not assign a home fee status", async ({ page }) => {
+test("UK university shows the fee status as unconfirmed", async ({ page }) => {
   await seedProfile(page, {
     ...personas.enResearch.profile,
-    citizenships: ["GB"],
   });
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
   await expect(page.locator("#detailCard")).toBeVisible();
@@ -308,6 +274,10 @@ test("MIT requirement groups collapse and expand in the selected first-year cont
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const fact = page.locator('#detailRequirements [data-admissions-domain="requirements"] [data-admissions-fact="first-year-documents"]');
   const collapsible = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  // Full records sit behind the tab's single, initially closed records disclosure.
+  const records = page.locator("#detailRequirements [data-all-records]");
+  await expect(records).not.toHaveAttribute("open");
+  await records.locator(":scope > summary").click();
   await expect(collapsible).toBeVisible();
   await expect(collapsible).not.toHaveAttribute("open");
   await expect(fact).not.toBeVisible();

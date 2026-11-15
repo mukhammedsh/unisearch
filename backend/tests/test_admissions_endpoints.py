@@ -1,3 +1,4 @@
+import copy
 import unittest
 from unittest.mock import patch
 
@@ -185,7 +186,13 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         )
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(resolved, response.json())
+        # `excluded` is a service-level audit list; no page reads it, so the response omits it.
+        self.assertNotIn("excluded", response.json())
+        expected = {key: value for key, value in resolved.items() if key != "excluded"}
+        expected["assessment"] = {key: value for key, value in resolved["assessment"].items()
+                                  if key not in admissions_catalog.ASSESSMENT_DUPLICATE_KEYS}
+        self.assertEqual(expected, response.json())
+        self.assertEqual(resolved["assessment"]["choices"][0], response.json()["assessment"]["activeChoice"])
         self.assertEqual("private, no-store", response.headers["Cache-Control"])
         self.assertNotIn("ETag", response.headers)
         args = resolve_context.call_args.kwargs
@@ -235,6 +242,64 @@ class AdmissionsEndpointsTests(unittest.TestCase):
         response = self.client.post("/universities/stanford-university-usa-ca/admissions-context", json={})
         self.assertEqual(503, response.status_code)
         self.assertEqual("Admissions catalog is unavailable", response.json()["detail"])
+
+    @staticmethod
+    def _keys_at_any_depth(node, found=None):
+        found = set() if found is None else found
+        if isinstance(node, dict):
+            for key, value in node.items():
+                found.add(key)
+                AdmissionsEndpointsTests._keys_at_any_depth(value, found)
+        elif isinstance(node, list):
+            for item in node:
+                AdmissionsEndpointsTests._keys_at_any_depth(item, found)
+        return found
+
+    def test_responses_omit_fields_no_page_reads_but_keep_rule_content(self):
+        institution = "stanford-university-usa-ca"
+        option_id, route_id = "stanford-option-cs-bs", "undergraduate-shared-evidence:stanford-first-year"
+        removed = {"excluded", "provenance", "index_attributes", "related_fact_ids", "content_reviewed_at"}
+
+        listing = self.client.get(f"/universities/{institution}/study-options", params={"limit": 100}).json()
+        self.assertTrue(listing["items"] and listing["shared_routes"])
+        self.assertFalse(removed & self._keys_at_any_depth(listing))
+        self.assertFalse(any("fact_ids" in row for row in [*listing["items"], *listing["shared_routes"]]))
+
+        request = {"context": {"study_option_id": option_id, "application_route_id": route_id, "study_level": "undergraduate",
+                               "applicant_route": "first_year", "intended_entry_cycle": "Fall 2027"}}
+        response = self.client.post(f"/universities/{institution}/admissions-context", json=request)
+        self.assertEqual(200, response.status_code)
+        result = response.json()
+        self.assertFalse(removed & self._keys_at_any_depth(result))
+        for row in [result["selected_option"], result["selected_route"], *result["available_routes"]]:
+            self.assertNotIn("fact_ids", row)
+        for source in result["sources"]:
+            self.assertNotIn("attributes", source)
+        for row in [*result["facts"], *result["unknowns"], *result["history"]["facts"], *result["history"]["unknowns"]]:
+            self.assertLessEqual(set(row.get("attributes", {})), {"catalog_costs", "deadline_events"})
+        for key in ("choices", "selectedContext", "unknowns", "sources"):
+            self.assertNotIn(key, result["assessment"])
+        # Evidence the pages read stays: rule content, the active choice's checks, and the historical reference IDs.
+        checks = result["assessment"]["activeChoice"]["details"]["checks"]
+        self.assertTrue(checks and all("sourceRule" in check for check in checks))
+        self.assertNotIn("stale_annotation", {check["kind"] for check in checks})
+        self.assertTrue(result["facts"] and all(row["value"] is not None for row in result["facts"] if "value" in row))
+        self.assertIn("fact_ids", result["history"])
+        self.assertIn("unknown_ids", result["history"])
+
+    def test_projection_leaves_complete_service_records_and_input_unchanged(self):
+        institution, ids = "stanford-university-usa-ca", ("stanford-option-cs-bs", "undergraduate-shared-evidence:stanford-first-year")
+        resolved = admissions_catalog.resolve_context(institution, context={
+            "study_option_id": ids[0], "application_route_id": ids[1], "study_level": "undergraduate", "applicant_route": "first_year"})
+        self.assertTrue(resolved["excluded"]["facts"])
+        self.assertIn("provenance", resolved["facts"][0])
+        before = copy.deepcopy(resolved)
+        public = admissions_catalog.public_context(resolved)
+        self.assertEqual(before, resolved)
+        self.assertNotIn("excluded", public)
+        self.assertEqual([row["value"] for row in resolved["facts"]], [row["value"] for row in public["facts"]])
+        self.assertEqual([row["id"] for row in resolved["facts"]], [row["id"] for row in public["facts"]])
+        self.assertIn("provenance", admissions_catalog.get_institution(institution)["facts"][0])
 
 
 if __name__ == "__main__":

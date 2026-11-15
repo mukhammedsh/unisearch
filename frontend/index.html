@@ -164,7 +164,7 @@
                 </div>
                 <div class="budget-range-labels" id="budgetRangeLabels">
                     <span id="minCostLabel">$0</span>
-                    <span id="maxCostLabel">$100,000</span>
+                    <span id="maxCostLabel">$100,000+</span>
                 </div>
                 <details class="catalog-cost-help">
                     <summary id="catalogCostHelp" data-i18n="universities.cost.filter_help_summary">Price limits hide unknown prices; profile budget affects UniFit.</summary>
@@ -288,11 +288,16 @@
             <span class="u-unifit-warning__icon" aria-hidden="true">
               <span data-heroicon="information-circle" data-icon-size="18"></span>
             </span>
-            <span class="u-unifit-warning__text" data-i18n="universities.unifit_banner.text">UniFit uses the available profile data. Minimum requirements are checked for the selected application path; missing information is not a failed requirement.</span>
+            <div class="u-unifit-warning__body">
+              <p id="unifitBannerTitle" class="u-unifit-warning__text"></p>
+              <p class="u-unifit-warning__note" data-i18n="universities.ux2.banner.disclaimer">A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.</p>
+            </div>
           </div>
+          <a id="unifitBannerEdit" class="u-unifit-warning__link" href="profile.html" data-route="profile"></a>
           <button id="dismissUnifitWarningBanner" class="u-unifit-warning__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.unifit_banner.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.unifit_banner.dismiss">
             <span data-heroicon="x-mark" data-icon-size="16"></span>
           </button>
+          <div id="unifitLegend" class="u-unifit-legend" role="group" aria-label="Icons on university cards" data-i18n-aria-label="universities.ux2.legend.aria" hidden></div>
         </div>
         <div id="mobileRecentSlot" class="u-mobile-recent-slot"></div>
         <div id="listState" class="u-state"></div>

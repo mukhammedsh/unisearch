@@ -3,11 +3,9 @@ import {
   EXAM_CONFIG,
   MAJOR_OPTIONS,
   animateElementOut,
-  calculateProfileCompletion,
   canonicalizeExamId,
   clearProfile,
   escapeHtml,
-  escapeHtmlAttr,
   formatExamValue,
   getExamConfig,
   getExamDisplayName,
@@ -15,25 +13,22 @@ import {
   initCustomSelect,
   loadProfile,
   isFutureProfile,
-  MAX_PROFILE_CITIZENSHIPS,
   markMotionEnter,
   motionPress,
   prefersReducedMotion,
   replayMotion,
   saveProfile,
-  setupSlidingIndicator,
   showToast,
   trapFocus,
 } from "../utils.js";
 import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { CURRENCY_FORMAT_MAP, convert, formatMoney } from "../currency.js";
+import { formatMoney } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { heroIcon, hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { COUNTRY_CODES, getCountryName, getCountryOptions } from "../utils/countries.js";
-import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
-import { isProfilePath, navigateToAppRoute, routeUniversities } from "../routes.js";
+import { hasUniversitiesTourResumeStep, requestUniversitiesTourSkipOnce } from "../pages/shared/cache.js";
+import { isProfilePath, navigateToAppRoute, routeGuide, routeUniversities } from "../routes.js";
 import {
   breakdownAllowsTotalOnly,
   breakdownSchemeFor,
@@ -41,7 +36,11 @@ import {
   renderSpecialExamInput as renderSpecialExamInputFromModule,
 } from "./profile/exam-breakdowns.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
+import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile/profile-summary.js";
+import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
+  applyBudgetEntry,
+  budgetInCurrency,
   cloneProfile,
   enforceGpaMaxLength,
   ensureProfileShape,
@@ -86,9 +85,6 @@ export const queryProfileElements = (modal) => {
         backdrop: modal.querySelector(".profile-backdrop"),
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
-        budgetHint: budgetInput?.closest(".profile-field")?.querySelector(".profile-hint"),
-        familyIncomeInput: document.getElementById("familyIncomeInput"),
-        familyIncomeCurrencySelect: document.getElementById("familyIncomeCurrencySelect"),
         gpaInput: document.getElementById("gpaInput"),
         gpaUnit: document.getElementById("gpaUnit"),
         gpaHint: document.getElementById("gpaHint"),
@@ -108,24 +104,13 @@ export const queryProfileElements = (modal) => {
         profileMajorSelect: document.getElementById("profileMajorSelect"),
         profileInterestsInput: document.getElementById("profileInterestsInput"),
         saveProfileBtn: document.getElementById("saveProfileBtn"),
+        showMatchesBtn: document.getElementById("profileShowMatchesBtn"),
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
-        citizenshipChipsList: document.getElementById("citizenshipChipsList"),
-        citizenshipCountrySelect: document.getElementById("citizenshipCountrySelect"),
-        citizenshipOtherInput: document.getElementById("citizenshipOtherInput"),
-        addCitizenshipBtn: document.getElementById("addCitizenshipBtn"),
-        countryOfEducationSelect: document.getElementById("countryOfEducationSelect"),
-        countryOfEducationOtherInput: document.getElementById("countryOfEducationOtherInput"),
-        educationCredentialSelect: document.getElementById("educationCredentialSelect"),
-        educationCredentialOtherInput: document.getElementById("educationCredentialOtherInput"),
-        applicantRouteSelect: document.getElementById("applicantRouteSelect"),
-        intendedEntryCycleInput: document.getElementById("intendedEntryCycleInput"),
-        currentResidenceCountrySelect: document.getElementById("currentResidenceCountrySelect"),
-        currentResidenceOtherInput: document.getElementById("currentResidenceOtherInput"),
-        feeStatusContextSelect: document.getElementById("feeStatusContextSelect"),
-        profileProgressText: document.getElementById("profileProgressText"),
-        profileProgressFill: document.getElementById("profileProgressFill"),
+        profileSummaryList: document.getElementById("profileSummaryList"),
+        profileSummarySentence: document.getElementById("profileSummarySentence"),
+        profileGuideLink: document.getElementById("profileUnifitGuideLink"),
         profileSectionTabs: Array.from(modal.querySelectorAll(".profile-section-tab")),
         profileSectionNodes: Array.from(modal.querySelectorAll("[data-profile-section]")),
     };
@@ -184,52 +169,6 @@ export const populateExamSelect = (els, state) => {
     initCommonSelects(["examNameSelect"]);
     syncExamScoreInputState(els, state);
     refreshExamActionButton(els, state);
-};
-
-export const populateFamilyIncomeCurrencyOptions = (select) => {
-    if (!select || select.options.length) return;
-    const fragment = document.createDocumentFragment();
-    Object.keys(CURRENCY_FORMAT_MAP).sort((left, right) => left.localeCompare(right)).forEach((code) => {
-        const option = document.createElement("option");
-        option.value = code;
-        option.dataset.i18n = `currency.opt.${code.toLowerCase()}`;
-        option.textContent = t(`currency.opt.${code.toLowerCase()}`, code);
-        fragment.appendChild(option);
-    });
-    select.appendChild(fragment);
-};
-
-export const getCountryLabel = (code) => {
-    const normalized = String(code || "").trim();
-    const upper = normalized.toUpperCase();
-    return COUNTRY_CODES.includes(upper) ? `${getCountryName(upper, getCurrentLanguage())} (${upper})` : normalized;
-};
-
-export const populateCountryOptionsInSelect = (select, searchPlaceholder) => {
-    if (!select) return;
-    select.querySelectorAll("option[data-country-code]").forEach((option) => option.remove());
-    const otherOption = select.querySelector('option[value="OTHER"]');
-    const fragment = document.createDocumentFragment();
-    getCountryOptions(getCurrentLanguage()).forEach(({ code, name }) => {
-        const option = document.createElement("option");
-        option.value = code;
-        option.textContent = `${name} (${code})`;
-        option.dataset.countryCode = code;
-        fragment.appendChild(option);
-    });
-    select.insertBefore(fragment, otherOption);
-    if (searchPlaceholder) select.dataset.searchPlaceholder = searchPlaceholder;
-};
-
-export const populateCitizenshipCountries = (select) =>
-    populateCountryOptionsInSelect(select, t("profile.citizenship.search_placeholder", "Search countries"));
-
-export const populateContextCountrySelect = (select) =>
-    populateCountryOptionsInSelect(select, t("profile.applicant_context.country_search", "Search countries"));
-
-export const syncOtherContextInput = (select, input, otherValue = "OTHER") => {
-    if (!select || !input) return;
-    input.hidden = select.value !== otherValue;
 };
 
 export const parseBudgetDraftValue = (els, state) => {
@@ -294,16 +233,11 @@ export const renderLowBudgetGrantHint = (els, state) => {
 export const updateBudgetUI = (els, state) => {
     const currency = getBudgetCurrency();
     const maxBudget = getMaxBudgetForCurrency(currency);
-    const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
     if (els.profileBudgetUnit) {
         els.profileBudgetUnit.removeAttribute("data-i18n");
         const caption = applyTokenSubstitutions(t("profile.unit.currency_year", "{currency} / year"));
         els.profileBudgetUnit.innerHTML = `${escapeHtml(caption)}${heroIcon("chevron-down", "ui-icon ui-icon--16")}`;
         els.profileBudgetUnit.setAttribute("aria-label", tFormat("profile.change_budget_currency", { currency }));
-    }
-    if (els.budgetHint) {
-        els.budgetHint.removeAttribute("data-i18n");
-        els.budgetHint.textContent = tFormat("profile.hint.budget_range", { max: formattedMax }, `Range: 0–${formattedMax}`);
     }
     if (els.budgetInput) {
         els.budgetInput.removeAttribute("data-i18n-placeholder");
@@ -314,25 +248,53 @@ export const updateBudgetUI = (els, state) => {
     renderLowBudgetGrantHint(els, state);
 };
 
-export const updateProfileProgress = (els, state) => {
-    const { completed, total, percentage } = calculateProfileCompletion(state.profile);
-    if (els.profileProgressText) {
-        els.profileProgressText.removeAttribute("data-i18n");
-        els.profileProgressText.textContent = completed
-            ? tFormat("profile.progress.count", { completed: String(completed), total: String(total) }, `${completed}/${total} profile areas complete`)
-            : t("profile.progress.empty", "Complete your profile for better matches.");
-    }
-    if (els.profileProgressFill) {
-        els.profileProgressFill.style.width = `${percentage}%`;
-    }
-    const meter = els.modal.querySelector(".profile-progress-meter");
-    if (meter) {
-        meter.setAttribute("role", "progressbar");
-        meter.setAttribute("aria-valuenow", String(percentage));
-        meter.setAttribute("aria-valuemin", "0");
-        meter.setAttribute("aria-valuemax", "100");
-        meter.setAttribute("title", `${percentage}% (${completed}/${total})`);
-    }
+const SUMMARY_STATE_ICONS = { used: "check-circle", partial: "adjustments-horizontal", not_used: "x-mark" };
+
+export const renderProfileSummary = (els, state) => {
+    if (!els.profileSummaryList) return;
+    const ctx = {
+        t,
+        tFormat,
+        formatMoney,
+        majorLabel: (major) => translateProgramName(major, major),
+        examLabel: (row) => {
+            const examId = row.exam ?? row.id;
+            const locale = getCurrentLanguage();
+            const value = formatExamValue(examId, row, { context: "profile", locale });
+            return [shortExamLabel(getExamDisplayName(examId, { locale })), value].filter(Boolean).join(" ");
+        },
+    };
+    const rows = buildProfileSummary(state.profile, ctx);
+    const sentence = buildSummarySentence(rows, ctx);
+    const fillStates = buildSectionFillStates(state.profile);
+    const signature = JSON.stringify([getCurrentLanguage(), rows, sentence, fillStates]);
+    if (state.summarySignature === signature) return;
+    state.summarySignature = signature;
+
+    els.profileSummaryList.innerHTML = rows.map((row) => `
+        <li class="profile-summary__row" data-state="${row.state}" data-summary-row="${escapeHtml(row.id)}">
+            <span class="profile-summary__icon" aria-hidden="true">${heroIcon(SUMMARY_STATE_ICONS[row.state] || "x-mark", "ui-icon ui-icon--16")}</span>
+            <div class="profile-summary__body">
+                <p class="profile-summary__row-head">
+                    <span class="profile-summary__row-title">${escapeHtml(row.title)}</span>
+                    <span class="sr-only">${escapeHtml(t(`profile.ux2.summary.state.${row.state}`))}</span>
+                </p>
+                ${row.value ? `<p class="profile-summary__row-value">${escapeHtml(row.value)}</p>` : ""}
+                ${row.state === "used" ? "" : `<p class="profile-summary__row-detail">${escapeHtml(row.detail)}</p>`}
+            </div>
+        </li>`).join("");
+    if (els.profileSummarySentence) els.profileSummarySentence.textContent = sentence;
+
+    els.profileSectionTabs.forEach((tab) => {
+        const filled = !!fillStates[String(tab.dataset.profileTab || "")];
+        tab.dataset.filled = filled ? "true" : "false";
+        const status = tab.querySelector(".profile-outline__status");
+        if (status) {
+            status.textContent = filled
+                ? t("profile.ux2.nav.filled", "has answers")
+                : t("profile.ux2.nav.empty", "no answers yet");
+        }
+    });
 };
 
 export const refreshSaveState = (els, state) => {
@@ -351,39 +313,31 @@ export const refreshSaveState = (els, state) => {
     }
     if (els.saveProfileBtn) els.saveProfileBtn.disabled = !dirty;
     renderLowBudgetGrantHint(els, state);
-    updateProfileProgress(els, state);
+    renderProfileSummary(els, state);
     return dirty;
 };
 
-export const setProfileSection = (els, state, section = "basics") => {
+const sectionIdOf = (node) => String(node?.getAttribute("data-profile-section") || "");
+
+export const setActiveProfileSection = (els, section) => {
     const active = String(section || "basics");
     els.profileSectionTabs.forEach((tab) => {
         const isActive = String(tab.dataset.profileTab || "") === active;
         tab.classList.toggle("is-active", isActive);
-        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+        if (isActive) tab.setAttribute("aria-current", "location");
+        else tab.removeAttribute("aria-current");
     });
-    els.profileSectionNodes.forEach((node) => {
-        const isActive = String(node.getAttribute("data-profile-section") || "") === active;
-        node.classList.toggle("is-section-hidden", !isActive);
-        if (isActive) replayMotion(node, "is-motion-active", { timeoutMs: 420 });
-    });
-    requestAnimationFrame(() => {
-        state.updateProfileTabsIndicator?.();
-        if (window.matchMedia("(max-width: 768px)").matches) {
-            const activeTab = els.modal.querySelector(".profile-section-tab.is-active");
-            if (activeTab && typeof activeTab.scrollIntoView === "function") {
-                try {
-                    activeTab.scrollIntoView({
-                        block: "nearest",
-                        inline: "nearest",
-                        behavior: prefersReducedMotion() ? "auto" : "smooth",
-                    });
-                } catch (error) {
-                    activeTab.scrollIntoView({ block: "nearest", inline: "nearest" });
-                }
-            }
-        }
-    });
+};
+
+// All sections stay visible; the outline only scrolls to one of them and marks it as current.
+export const goToProfileSection = (els, state, section, { focusHeading = true } = {}) => {
+    const node = els.profileSectionNodes.find((candidate) => sectionIdOf(candidate) === section);
+    if (!node) return;
+    setActiveProfileSection(els, section);
+    // Ignore the scroll observer while the smooth scroll runs, so the clicked item stays current.
+    state.sectionNavLockUntil = Date.now() + 900;
+    node.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
 };
 
 export const findExistingExamEntry = (examId, els, state) => {
@@ -424,6 +378,8 @@ export const syncExamScoreInputState = (els, state) => {
     const usesSpecialInput = mode === "band_select" || mode === "grade_combo" || mode === "subject_breakdown";
 
     els.examScoreInput.hidden = !usesNumberInput;
+    const scoreField = els.examScoreInput.closest(".profile-exam-score-wrap");
+    if (scoreField) scoreField.hidden = !usesNumberInput;
     els.examScoreInput.disabled = !usesNumberInput;
     els.examScoreInput.setAttribute("aria-hidden", usesNumberInput ? "false" : "true");
 
@@ -596,23 +552,10 @@ export const refreshExamActionButton = (els, state) => {
 
 export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
 
-export const syncApplicantContext = (els, profile) => {
-    profile.countryOfEducation = String(els.countryOfEducationSelect?.value || "").trim();
-    profile.countryOfEducationOther = profile.countryOfEducation === "OTHER" ? String(els.countryOfEducationOtherInput?.value || "").trim() : "";
-    profile.educationCredential = String(els.educationCredentialSelect?.value || "").trim();
-    profile.educationCredentialOther = profile.educationCredential === "other" ? String(els.educationCredentialOtherInput?.value || "").trim() : "";
-    profile.applicantRoute = String(els.applicantRouteSelect?.value || "").trim();
-    profile.intendedEntryCycle = String(els.intendedEntryCycleInput?.value || "").trim();
-    profile.currentResidenceCountry = String(els.currentResidenceCountrySelect?.value || "").trim();
-    profile.currentResidenceOther = profile.currentResidenceCountry === "OTHER" ? String(els.currentResidenceOtherInput?.value || "").trim() : "";
-    profile.feeStatusContext = String(els.feeStatusContextSelect?.value || "unknown").trim() || "unknown";
-};
-
 export const syncInputsToDraft = (els, state) => {
-    if (els.budgetInput) state.profile.budget = normalizeAmountRaw(els.budgetInput.value);
-    state.profile.budgetCurrency = getBudgetCurrency();
-    if (els.familyIncomeInput) state.profile.familyIncomeAmount = normalizeAmountRaw(els.familyIncomeInput.value).replace(/,/g, ".");
-    if (els.familyIncomeCurrencySelect) state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
+    if (els.budgetInput) {
+        state.profile = applyBudgetEntry(state.profile, normalizeAmountRaw(els.budgetInput.value), state.budgetInputCurrency || getBudgetCurrency());
+    }
     if (els.gpaInput) state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     if (els.studyModeSelect) state.profile.studyMode = String(els.studyModeSelect.value || "Any").trim() || "Any";
@@ -620,9 +563,6 @@ export const syncInputsToDraft = (els, state) => {
     if (els.profileMajorSelect) state.profile.major = String(els.profileMajorSelect.value || "").trim();
     if (els.profileInterestsInput) state.profile.interests = getInterestsDraft(els);
     if (els.studyLevelSelect) state.profile.studyLevel = String(els.studyLevelSelect.value || "Any").trim() || "Any";
-    syncApplicantContext(els, state.profile);
-    state.profile.citizenships = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
-    state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
     // University choices are edited separately and may have changed in another tab.
     state.profile.selectedAdmissionChoices = ensureProfileShape(loadProfile()).selectedAdmissionChoices;
     state.profile = ensureProfileShape(state.profile);
@@ -660,20 +600,6 @@ export const validateBudgetInput = (els) => {
     return { ok: true, value: val };
 };
 
-export const validateFamilyIncomeInput = (els) => {
-    const rawVal = normalizeAmountRaw(els.familyIncomeInput?.value).replace(/,/g, ".");
-    if (!rawVal) {
-        setFieldInvalid(els.familyIncomeInput, false);
-        return { ok: true, value: "" };
-    }
-    const val = Number(rawVal);
-    if (!Number.isFinite(val) || val < 0 || val > 1_000_000_000_000) {
-        return reportFieldValidationError(els.familyIncomeInput, t("profile.family_income_invalid", "Enter an amount from 0 to 1,000,000,000,000."));
-    }
-    setFieldInvalid(els.familyIncomeInput, false);
-    return { ok: true, value: val };
-};
-
 export const updateGpaScaleUI = (els, state, scale) => {
     const s = scale === 5 ? 5 : 4;
     state.profile.gpaScale = s;
@@ -693,12 +619,24 @@ export const updateGpaScaleUI = (els, state, scale) => {
         els.gpaUnit.setAttribute("aria-label", toggleLabel);
         els.gpaUnit.title = toggleLabel;
     }
-    if (els.gpaHint) {
-        els.gpaHint.removeAttribute("data-i18n");
-        els.gpaHint.textContent = s === 5
-            ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)")
-            : t("profile.scale.gpa_4", "4.0 (US / International)");
-    }
+    renderGpaHint(els, state);
+};
+
+// Warns while typing when a 5-point grade is entered on the 4.0 scale, instead of only failing on save.
+export const renderGpaHint = (els, state) => {
+    if (!els.gpaHint) return;
+    const scale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
+    const value = Number(normalizeGpaRaw(els.gpaInput?.value || ""));
+    const overScale = scale === 4 && Number.isFinite(value) && value > 4 && value <= 5;
+    els.gpaHint.removeAttribute("data-i18n");
+    els.gpaHint.setAttribute("aria-live", "polite");
+    els.gpaHint.classList.toggle("is-warning", overScale);
+    els.gpaHint.textContent = overScale
+        ? tFormat("profile.ux2.gpa.over_scale", { value: String(value) }, `${value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.`)
+        : tFormat("profile.ux2.gpa.scale_hint", {
+            scale: scale === 5 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)") : t("profile.scale.gpa_4", "4.0 (US / International)"),
+            unit: scale === 5 ? "/ 5.0" : "/ 4.0",
+        }, "");
 };
 
 export const validateGpaInput = (els, state) => {
@@ -724,68 +662,6 @@ export const validateGpaInput = (els, state) => {
     return { ok: true, value: Number(Math.round(val * 100) / 100) };
 };
 
-export const resetCitizenshipInputs = (els) => {
-    if (els.citizenshipCountrySelect) els.citizenshipCountrySelect.value = "";
-    if (els.citizenshipOtherInput) {
-        els.citizenshipOtherInput.value = "";
-        els.citizenshipOtherInput.style.display = "none";
-    }
-};
-
-export const renderCitizenshipChips = (els, state) => {
-    if (!els.citizenshipChipsList) return;
-    const list = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
-    if (!list.length) {
-        els.citizenshipChipsList.innerHTML = `<span class="profile-hint">${escapeHtml(t("profile.citizenship.empty_hint", "No citizenships added yet. Add them for fee and aid policy review."))}</span>`;
-        return;
-    }
-    els.citizenshipChipsList.innerHTML = list.map((countryCode, idx) => {
-        const isPrimary = idx === 0;
-        const label = getCountryLabel(countryCode);
-        const primaryBadge = isPrimary
-            ? `<span class="profile-citizenship-chip__badge">${escapeHtml(t("profile.citizenship.primary_badge", "Primary"))}</span>`
-            : `<button type="button" class="profile-citizenship-chip__btn" data-make-primary-idx="${idx}" title="${escapeHtmlAttr(t("profile.citizenship.set_primary_title", "Make primary citizenship"))}">
-                <span data-heroicon="arrow-up" data-icon-size="14"></span>
-              </button>`;
-        const removeBtn = `<button type="button" class="profile-citizenship-chip__btn" data-remove-citizenship-idx="${idx}" title="${escapeHtmlAttr(t("profile.citizenship.remove_title", "Remove citizenship"))}" aria-label="${escapeHtmlAttr(t("profile.citizenship.remove_title", "Remove citizenship"))}">
-            <span data-heroicon="x-mark" data-icon-size="14"></span>
-          </button>`;
-        return `
-          <div class="profile-citizenship-chip${isPrimary ? " profile-citizenship-chip--primary" : ""}" data-citizenship-chip="${idx}">
-            <span>${escapeHtml(label)}</span>
-            ${primaryBadge}
-            ${removeBtn}
-          </div>
-        `;
-    }).join("");
-    hydrateHeroIcons(els.citizenshipChipsList);
-
-    els.citizenshipChipsList.querySelectorAll("[data-remove-citizenship-idx]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const idx = Number(btn.getAttribute("data-remove-citizenship-idx"));
-            if (Number.isInteger(idx) && idx >= 0 && idx < state.profile.citizenships.length) {
-                state.profile.citizenships.splice(idx, 1);
-                state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
-                renderCitizenshipChips(els, state);
-                refreshSaveState(els, state);
-            }
-        });
-    });
-
-    els.citizenshipChipsList.querySelectorAll("[data-make-primary-idx]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const idx = Number(btn.getAttribute("data-make-primary-idx"));
-            if (Number.isInteger(idx) && idx > 0 && idx < state.profile.citizenships.length) {
-                const item = state.profile.citizenships.splice(idx, 1)[0];
-                state.profile.citizenships.unshift(item);
-                state.profile.citizenship = state.profile.citizenships[0];
-                renderCitizenshipChips(els, state);
-                refreshSaveState(els, state);
-            }
-        });
-    });
-};
-
 export const renderProfileData = (els, state) => {
     if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
     if (els.examList) {
@@ -795,8 +671,10 @@ export const renderProfileData = (els, state) => {
                     <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam, { locale: getCurrentLanguage() }))}</span>
                     <span class="profile-exam-score">${escapeHtml([formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }), ex.taken_on].filter(Boolean).join(" · "))}</span>
                 </div>
-                <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
-                <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
+                <div class="profile-list-actions">
+                    <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
+                    <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
+                </div>
             </div>
         `).join("");
         markMotionEnter(els.examList, ".profile-exam-item", { limit: 8, staggerMs: 18 });
@@ -806,29 +684,11 @@ export const renderProfileData = (els, state) => {
 
 export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
     setFieldInvalid(els.budgetInput, false);
-    setFieldInvalid(els.familyIncomeInput, false);
     setFieldInvalid(els.gpaInput, false);
     setFieldInvalid(els.examScoreInput, false);
 
-    const activeCurrency = getBudgetCurrency();
-    if (state.profile.budget !== "" && Number.isFinite(Number(state.profile.budget)) && state.profile.budgetCurrency && state.profile.budgetCurrency !== activeCurrency) {
-        const converted = Math.round(convert(Number(state.profile.budget), state.profile.budgetCurrency, activeCurrency));
-        state.profile.budget = converted;
-        state.profile.budgetCurrency = activeCurrency;
-        state.profileStoragePersistent = saveProfile(state.profile);
-        state.savedSignature = stableProfileSignature(state.profile);
-    } else if (!state.profile.budgetCurrency) {
-        state.profile.budgetCurrency = activeCurrency;
-    }
-
-    if (els.budgetInput) els.budgetInput.value = state.profile.budget === "" ? "" : String(state.profile.budget);
-    populateFamilyIncomeCurrencyOptions(els.familyIncomeCurrencySelect);
-    if (els.familyIncomeInput) els.familyIncomeInput.value = state.profile.familyIncomeAmount === "" ? "" : String(state.profile.familyIncomeAmount);
-    if (els.familyIncomeCurrencySelect) {
-        els.familyIncomeCurrencySelect.value = state.profile.familyIncomeAmount === ""
-            ? getBudgetCurrency()
-            : state.profile.familyIncomeCurrency || getBudgetCurrency();
-    }
+    state.budgetInputCurrency = getBudgetCurrency();
+    if (els.budgetInput) els.budgetInput.value = String(budgetInCurrency(state.profile, state.budgetInputCurrency));
     updateGpaScaleUI(els, state, Number(state.profile.gpaScale) === 5 ? 5 : 4);
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
     if (els.studyModeSelect) els.studyModeSelect.value = state.profile.studyMode || "Any";
@@ -836,23 +696,6 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     if (els.profileMajorSelect) els.profileMajorSelect.value = state.profile.major || "";
     if (els.profileInterestsInput) els.profileInterestsInput.value = state.profile.interests || "";
     if (els.studyLevelSelect) els.studyLevelSelect.value = state.profile.studyLevel || "Any";
-    populateContextCountrySelect(els.countryOfEducationSelect);
-    populateContextCountrySelect(els.currentResidenceCountrySelect);
-    if (els.countryOfEducationSelect) els.countryOfEducationSelect.value = state.profile.countryOfEducation || "";
-    if (els.countryOfEducationOtherInput) els.countryOfEducationOtherInput.value = state.profile.countryOfEducation === "OTHER" ? state.profile.countryOfEducationOther || "" : "";
-    if (els.educationCredentialSelect) els.educationCredentialSelect.value = state.profile.educationCredential || "";
-    if (els.educationCredentialOtherInput) els.educationCredentialOtherInput.value = state.profile.educationCredential === "other" ? state.profile.educationCredentialOther || "" : "";
-    if (els.applicantRouteSelect) els.applicantRouteSelect.value = state.profile.applicantRoute || "";
-    if (els.intendedEntryCycleInput) els.intendedEntryCycleInput.value = state.profile.intendedEntryCycle || "";
-    if (els.currentResidenceCountrySelect) els.currentResidenceCountrySelect.value = state.profile.currentResidenceCountry || "";
-    if (els.currentResidenceOtherInput) els.currentResidenceOtherInput.value = state.profile.currentResidenceCountry === "OTHER" ? state.profile.currentResidenceOther || "" : "";
-    if (els.feeStatusContextSelect) els.feeStatusContextSelect.value = state.profile.feeStatusContext || "unknown";
-    syncOtherContextInput(els.countryOfEducationSelect, els.countryOfEducationOtherInput);
-    syncOtherContextInput(els.educationCredentialSelect, els.educationCredentialOtherInput, "other");
-    syncOtherContextInput(els.currentResidenceCountrySelect, els.currentResidenceOtherInput);
-    populateCitizenshipCountries(els.citizenshipCountrySelect);
-    resetCitizenshipInputs(els);
-    renderCitizenshipChips(els, state);
     renderAdmissionEvidence(els.admissionEvidenceFields, state.profile, (next) => {
         state.profile = ensureProfileShape({
             ...state.profile,
@@ -881,16 +724,9 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     initCommonSelects([
         "studyModeSelect",
         "profileFundingTypeSelect",
-        "familyIncomeCurrencySelect",
         "profileMajorSelect",
         "examNameSelect",
         "studyLevelSelect",
-        "citizenshipCountrySelect",
-        "countryOfEducationSelect",
-        "educationCredentialSelect",
-        "applicantRouteSelect",
-        "currentResidenceCountrySelect",
-        "feeStatusContextSelect",
     ]);
     renderProfileData(els, state);
     updateBudgetUI(els, state);
@@ -905,7 +741,7 @@ export const resetFields = (els, state) => {
 
 export const saveAllProfileChanges = (els, state) => {
     if (state.examEditorDirty || state.languageEditorDirty) {
-        setProfileSection(els, state, state.examEditorDirty ? "scores" : "languages");
+        goToProfileSection(els, state, state.examEditorDirty ? "scores" : "languages", { focusHeading: false });
         (state.examEditorDirty ? els.addExamBtn : document.getElementById("langAddBtn"))?.focus();
         showToast(t("profile.report_draft_pending"), "error");
         return false;
@@ -914,15 +750,12 @@ export const saveAllProfileChanges = (els, state) => {
 
     const budgetCheck = validateBudgetInput(els);
     if (!budgetCheck.ok) return false;
-    const familyIncomeCheck = validateFamilyIncomeInput(els);
-    if (!familyIncomeCheck.ok) return false;
     const gpaCheck = validateGpaInput(els, state);
     if (!gpaCheck.ok) return false;
 
-    state.profile.budget = budgetCheck.value;
-    state.profile.budgetCurrency = getBudgetCurrency();
-    state.profile.familyIncomeAmount = familyIncomeCheck.value;
-    state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect?.value || getBudgetCurrency()).toUpperCase();
+    state.profile = applyBudgetEntry(state.profile, budgetCheck.value, state.budgetInputCurrency || getBudgetCurrency());
+    // A draft keeps the typed text; the saved profile stores the budget as a whole number, as before.
+    if (/^\d+$/.test(String(state.profile.budget))) state.profile.budget = Number(state.profile.budget);
     state.profile.gpa = gpaCheck.value;
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     state.profile.interests = getInterestsDraft(els);
@@ -930,12 +763,9 @@ export const saveAllProfileChanges = (els, state) => {
     state.profile.fundingType = normalizeFundingType(els.profileFundingTypeSelect?.value || state.profile.fundingType || "any");
     state.profile.major = String(els.profileMajorSelect?.value || state.profile.major || "").trim();
     state.profile.studyLevel = String(els.studyLevelSelect?.value || state.profile.studyLevel || "Any").trim() || "Any";
-    state.profile.citizenships = Array.isArray(state.profile.citizenships) ? state.profile.citizenships : [];
-    state.profile.citizenship = state.profile.citizenships.length ? state.profile.citizenships[0] : "";
     state.profile = ensureProfileShape(state.profile);
 
-    if (els.budgetInput) els.budgetInput.value = state.profile.budget === "" ? "" : String(state.profile.budget);
-    if (els.familyIncomeInput) els.familyIncomeInput.value = state.profile.familyIncomeAmount === "" ? "" : String(state.profile.familyIncomeAmount);
+    if (els.budgetInput) els.budgetInput.value = String(budgetInCurrency(state.profile, state.budgetInputCurrency || getBudgetCurrency()));
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
 
     state.profileStoragePersistent = saveProfile(state.profile);
@@ -1151,7 +981,7 @@ export const openProfile = (els, state) => {
         "profileMajorSelect",
     ]);
     refreshExamActionButton(els, state);
-    updateProfileProgress(els, state);
+    renderProfileSummary(els, state);
     hydrateHeroIcons(els.modal);
 
     window.dispatchEvent(new Event("profileModalOpened"));
@@ -1165,9 +995,6 @@ export const openProfile = (els, state) => {
         if (typeof state.cleanupFocusTrap === "function") state.cleanupFocusTrap();
         state.cleanupFocusTrap = trapFocus(els.modal);
     }
-    requestAnimationFrame(() => {
-        state.updateProfileTabsIndicator?.();
-    });
 };
 
 export const showExamScoreError = (inputEl, message) => {
@@ -1426,9 +1253,40 @@ export const bindProfileEvents = (els, state) => {
         void handleAddExam(els, state);
     });
     els.profileSectionTabs.forEach((tab) => {
-        tab.addEventListener("click", () => setProfileSection(els, state, tab.dataset.profileTab || "basics"));
+        tab.addEventListener("click", () => goToProfileSection(els, state, tab.dataset.profileTab || "basics"));
     });
-    setProfileSection(els, state, "basics");
+    els.modal.querySelectorAll("[data-profile-jump]").forEach((link) => {
+        link.addEventListener("click", () => goToProfileSection(els, state, link.dataset.profileJump));
+    });
+    setActiveProfileSection(els, "basics");
+
+    // Mark the section currently in view; a band near the top of the viewport decides which one it is.
+    const visibleSections = new Set();
+    const lastSectionId = sectionIdOf(els.profileSectionNodes[els.profileSectionNodes.length - 1]);
+    const navLocked = () => Date.now() < (state.sectionNavLockUntil || 0);
+    let sectionObserver = null;
+    if (typeof IntersectionObserver === "function") {
+        sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const id = sectionIdOf(entry.target);
+                if (entry.isIntersecting) visibleSections.add(id);
+                else visibleSections.delete(id);
+            });
+            if (navLocked()) return;
+            const current = els.profileSectionNodes.find((node) => visibleSections.has(sectionIdOf(node)));
+            if (current) setActiveProfileSection(els, sectionIdOf(current));
+        }, { rootMargin: "-20% 0px -65% 0px" });
+        els.profileSectionNodes.forEach((node) => sectionObserver.observe(node));
+    }
+    // The last section can end below the observed band; at the end of the page it is the current one.
+    const markLastSectionAtPageEnd = () => {
+        if (navLocked() || !lastSectionId) return;
+        const root = document.documentElement;
+        if (window.scrollY > 0 && window.innerHeight + window.scrollY >= root.scrollHeight - 2) {
+            setActiveProfileSection(els, lastSectionId);
+        }
+    };
+    listenGlobal(window, "scroll", markLastSectionAtPageEnd);
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect(els, state);
@@ -1490,62 +1348,6 @@ export const bindProfileEvents = (els, state) => {
         });
     }
 
-    const contextControls = [
-        els.countryOfEducationSelect,
-        els.countryOfEducationOtherInput,
-        els.educationCredentialSelect,
-        els.educationCredentialOtherInput,
-        els.applicantRouteSelect,
-        els.intendedEntryCycleInput,
-        els.currentResidenceCountrySelect,
-        els.currentResidenceOtherInput,
-        els.feeStatusContextSelect,
-    ].filter(Boolean);
-    for (const control of contextControls) {
-        const eventName = control.tagName === "INPUT" ? "input" : "change";
-        control.addEventListener(eventName, () => {
-            syncApplicantContext(els, state.profile);
-            syncOtherContextInput(els.countryOfEducationSelect, els.countryOfEducationOtherInput);
-            syncOtherContextInput(els.educationCredentialSelect, els.educationCredentialOtherInput, "other");
-            syncOtherContextInput(els.currentResidenceCountrySelect, els.currentResidenceOtherInput);
-            refreshSaveState(els, state);
-        });
-    }
-
-    if (els.citizenshipCountrySelect) {
-        els.citizenshipCountrySelect.addEventListener("change", () => {
-            if (els.citizenshipOtherInput) {
-                els.citizenshipOtherInput.style.display = els.citizenshipCountrySelect.value === "OTHER" ? "inline-block" : "none";
-                if (els.citizenshipCountrySelect.value === "OTHER") els.citizenshipOtherInput.focus();
-            }
-        });
-    }
-
-    if (els.addCitizenshipBtn) {
-        els.addCitizenshipBtn.addEventListener("click", () => {
-            let country = String(els.citizenshipCountrySelect?.value || "").trim();
-            if (country === "OTHER") {
-                country = String(els.citizenshipOtherInput?.value || "").trim();
-            }
-            if (!country) return;
-            if (!Array.isArray(state.profile.citizenships)) state.profile.citizenships = [];
-            const upper = country.toUpperCase();
-            if (state.profile.citizenships.some((c) => String(c).toUpperCase() === upper)) return;
-            if (state.profile.citizenships.length >= MAX_PROFILE_CITIZENSHIPS) {
-                showToast(
-                    tFormat("profile.citizenship.max_count", { count: MAX_PROFILE_CITIZENSHIPS }, `You can add up to ${MAX_PROFILE_CITIZENSHIPS} citizenships`),
-                    "error",
-                );
-                return;
-            }
-            state.profile.citizenships.push(country);
-            if (!state.profile.citizenship) state.profile.citizenship = country;
-            renderCitizenshipChips(els, state);
-            resetCitizenshipInputs(els);
-            refreshSaveState(els, state);
-        });
-    }
-
     if (els.profileInterestsInput) {
         els.profileInterestsInput.addEventListener("input", () => {
             state.profile.interests = getInterestsDraft(els);
@@ -1580,22 +1382,6 @@ export const bindProfileEvents = (els, state) => {
         els.budgetInput.addEventListener("keydown", handleEnterSave);
     }
 
-    if (els.familyIncomeInput) {
-        els.familyIncomeInput.addEventListener("input", () => {
-            setFieldInvalid(els.familyIncomeInput, false);
-            state.profile.familyIncomeAmount = normalizeAmountRaw(els.familyIncomeInput.value).replace(/,/g, ".");
-            refreshSaveState(els, state);
-        });
-        els.familyIncomeInput.addEventListener("keydown", handleEnterSave);
-    }
-
-    if (els.familyIncomeCurrencySelect) {
-        els.familyIncomeCurrencySelect.addEventListener("change", () => {
-            state.profile.familyIncomeCurrency = String(els.familyIncomeCurrencySelect.value || getBudgetCurrency()).toUpperCase();
-            refreshSaveState(els, state);
-        });
-    }
-
     els.lowBudgetGrantDismissBtn?.addEventListener("click", () => {
         motionPress(els.lowBudgetGrantDismissBtn);
         state.lowBudgetGrantHintDismissed = true;
@@ -1616,6 +1402,7 @@ export const bindProfileEvents = (els, state) => {
             enforceGpaMaxLength(els.gpaInput);
             setFieldInvalid(els.gpaInput, false);
             state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
+            renderGpaHint(els, state);
             refreshSaveState(els, state);
         });
         els.gpaInput.addEventListener("keydown", handleEnterSave);
@@ -1646,6 +1433,24 @@ export const bindProfileEvents = (els, state) => {
             if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeImmediately(els, state);
         });
     }
+
+    els.showMatchesBtn?.addEventListener("click", () => {
+        if (els.showMatchesBtn.disabled) return;
+        motionPress(els.showMatchesBtn);
+        syncInputsToDraft(els, state);
+        // A failed save (validation error, unfinished report draft) keeps the page open.
+        if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) return;
+        if (hasUniversitiesTourResumeStep()) {
+            closeImmediately(els, state);
+            return;
+        }
+        els.showMatchesBtn.disabled = true;
+        els.showMatchesBtn.setAttribute("aria-busy", "true");
+        // Carry the study level so the catalog level filter shows it; the tour must not cover the results.
+        const studyLevel = catalogStudyLevelFromProfile(state.profile);
+        requestUniversitiesTourSkipOnce();
+        navigateToAppRoute(routeUniversities(studyLevel ? { sort: "uni_ai", study_level: studyLevel } : { sort: "uni_ai" }));
+    });
 
     els.resetProfileBtn?.addEventListener("click", () => {
         motionPress(els.resetProfileBtn);
@@ -1727,34 +1532,15 @@ export const bindProfileEvents = (els, state) => {
     };
     listenGlobal(window, "languageChanged", handleLanguageChanged);
 
+    // The field follows the display currency, while the stored budget keeps the amount and currency it was entered in.
     const handleCurrencyChanged = () => {
         const activeCurrency = getBudgetCurrency();
-        if (els.familyIncomeInput && !String(els.familyIncomeInput.value || "").trim() && els.familyIncomeCurrencySelect) {
-            els.familyIncomeCurrencySelect.value = activeCurrency;
-            state.profile.familyIncomeCurrency = activeCurrency;
-        }
-        const prevCurrency = state.profile.budgetCurrency || "USD";
-        if (prevCurrency !== activeCurrency) {
-            const rawBudget = normalizeAmountRaw(els.budgetInput ? els.budgetInput.value : state.profile.budget);
-            if (rawBudget && !rawBudget.includes(".") && !rawBudget.includes(",")) {
-                const val = Number(rawBudget);
-                if (Number.isFinite(val) && val >= 0) {
-                    const converted = Math.round(convert(val, prevCurrency, activeCurrency));
-                    state.profile.budget = converted;
-                    if (els.budgetInput) els.budgetInput.value = String(converted);
-                }
-            }
-            state.profile.budgetCurrency = activeCurrency;
-            if (state.savedSignature) {
-                const savedProfile = ensureProfileShape(loadProfile());
-                if (savedProfile.budget !== "" && Number.isFinite(Number(savedProfile.budget))) {
-                    savedProfile.budget = Math.round(convert(Number(savedProfile.budget), savedProfile.budgetCurrency || prevCurrency, activeCurrency));
-                }
-                savedProfile.budgetCurrency = activeCurrency;
-                if (savedProfile.familyIncomeAmount === "") savedProfile.familyIncomeCurrency = activeCurrency;
-                state.profileStoragePersistent = saveProfile(savedProfile);
-                state.savedSignature = stableProfileSignature(savedProfile);
-            }
+        if (els.budgetInput) {
+            const typed = normalizeAmountRaw(els.budgetInput.value);
+            // A typed edit belongs to the currency the field showed when it was typed.
+            if (/^\d*$/.test(typed)) state.profile = applyBudgetEntry(state.profile, typed, state.budgetInputCurrency || activeCurrency);
+            state.budgetInputCurrency = activeCurrency;
+            els.budgetInput.value = String(budgetInCurrency(state.profile, activeCurrency));
         }
         updateBudgetUI(els, state);
         refreshSaveState(els, state);
@@ -1800,6 +1586,7 @@ export const bindProfileEvents = (els, state) => {
     listenGlobal(window, "beforeunload", handleBeforeUnload);
     return () => {
         state.disposed = true;
+        sectionObserver?.disconnect();
         settleNavigationClose(false);
         globalListenerDisposers.splice(0).forEach((dispose) => dispose());
         if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
@@ -1837,7 +1624,7 @@ export function initProfileUI() {
     bindInfoTooltips({ root: modal, wrapSelector: ".profile-info-wrap", buttonSelector: ".profile-info" });
 
     const els = queryProfileElements(modal);
-    const updateProfileTabsIndicator = setupSlidingIndicator(".profile-section-tabs", ".profile-section-tab", "is-active");
+    if (els.profileGuideLink) els.profileGuideLink.href = `${routeGuide()}#guide-unifit`;
 
     const state = {
         isDedicatedPage,
@@ -1850,7 +1637,6 @@ export function initProfileUI() {
         cleanupFocusTrap: null,
         cleanupUnsavedFocusTrap: null,
         cleanupResetFocusTrap: null,
-        updateProfileTabsIndicator,
         examValidationPending: false,
         examDraftRevision: 0,
         editorResetRevision: 0,

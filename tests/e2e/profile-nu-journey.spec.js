@@ -50,26 +50,18 @@ test("an empty profile keeps advanced evidence fields hidden until their type is
   await expect(page.locator("#institutionEvidenceCredentialScoreField")).toBeHidden();
 });
 
-test("profile money entry accepts group spaces and keeps optional reference data outside matching", async ({ page }) => {
+test("profile budget entry accepts group spaces and saves on Enter", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
-  await expect(page.locator(".profile-page-intro")).toContainText("All fields are optional");
+  await expect(page.locator(".profile-page-intro")).toContainText("Nothing here is required");
   await page.locator("#budgetInput").fill("1 000 000");
   await expect(page.locator("#budgetInput")).toHaveValue("1 000 000");
   await page.locator("#budgetInput").press("Enter");
   await expect(page.locator("#budgetInput")).toHaveValue("1000000");
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await expect(page.locator("#familyIncomeInput")).toBeHidden();
-  await page.locator("#familyIncomeDetails > summary").click();
-  await expect(page.locator("#familyIncomeDetails")).toContainText("not used in UniFit");
-  await page.locator("#familyIncomeInput").fill("85 000,50");
-  await page.locator("#familyIncomeInput").press("Enter");
-  await expect(page.locator("#familyIncomeInput")).toHaveValue("85000.5");
-  await expect(page.locator("#saveProfileBtn")).toBeDisabled();
   await page.reload();
   await expect(page.locator("#budgetInput")).toHaveValue("1000000");
-  await expect(page.locator("#familyIncomeInput")).toHaveValue("85000.5");
 });
 
 test("currency settings do not silently save unrelated profile drafts", async ({ page }) => {
@@ -79,10 +71,8 @@ test("currency settings do not silently save unrelated profile drafts", async ({
   await page.locator("#budgetInput").fill("20000");
   await page.locator("#budgetInput").press("Enter");
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await page.getByRole("tab", { name: "Preferences", exact: true }).click();
   await page.locator("#profileInterestsInput").fill("robotics and campus research");
   await expect(page.locator("#saveProfileBtn")).toBeEnabled();
-  await page.getByRole("tab", { name: "General", exact: true }).click();
   await page.locator("#budgetInput").fill("30000");
   await page.locator("#profileBudgetUnit").click();
   await setNativeSelect(page, "settingPreferredCurrency", "KZT");
@@ -94,8 +84,9 @@ test("currency settings do not silently save unrelated profile drafts", async ({
   await expect(page.locator("#profileBudgetUnit")).toBeFocused();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.interests || "").toBe("");
-  expect(saved.budgetCurrency).toBe("KZT");
-  expect(saved.budget).toBeLessThan(Number(await page.locator("#budgetInput").inputValue()));
+  // The saved budget keeps the amount and currency it was entered in; the field only shows a conversion.
+  expect(saved.budgetCurrency).toBe("USD");
+  expect(saved.budget).toBe(20000);
 });
 
 test("saving a profile keeps university choices saved by another tab", async ({ page, context }) => {
@@ -132,18 +123,15 @@ test("a saved NU Foundation choice can be compared with another university on a 
   await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
   const stanford = "stanford-university-usa-ca";
   const loaded = page.waitForResponse(response => response.url().includes(`/universities/${stanford}/admissions-context`));
-  await page.goto(`/compare.html?stage=configure&ids=${NU},${stanford}`);
+  await page.goto(`/compare.html?ids=${NU},${stanford}`);
   expect((await loaded).status()).toBe(200);
-  const chooser = page.locator(`#compare-options-${stanford}`);
-  await chooser.getByText("Choose a program or route", { exact: true }).click();
-  await expect(chooser.getByRole("alert")).toHaveCount(0);
-  await chooser.getByRole("combobox", { name: "University-wide application route", exact: true }).click();
-  await chooser.getByRole("option", { name: "First-year admission after school · Undergraduate", exact: true }).click();
-  await chooser.getByRole("button", { name: "Apply filters", exact: true }).click();
-  await expect(chooser.locator(".compare-context-current__value")).toContainText("First-year admission");
-  await page.locator('[data-action="build-compare-results"]').click();
-  await expect(page.locator("[data-reviewed-comparison]")).toContainText("12,000");
-  await expect(page.locator("[data-reviewed-comparison]")).toContainText("Stanford");
+  const comparison = page.locator("[data-reviewed-comparison]");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"]`)).toHaveAttribute("data-scope", "program");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${stanford}"]`)).toHaveAttribute("data-scope", "institution");
+  await expect(page.locator('[data-compare-row="cost"] dd').first()).toContainText("12,000");
+  await expect(comparison).toContainText("Stanford");
+  await expect(comparison.getByRole("alert")).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 });
 
 test("an unadded academic report survives translation, blocks false saving, and submits with Enter", async ({ page }) => {
@@ -155,12 +143,12 @@ test("an unadded academic report survives translation, blocks false saving, and 
   await page.locator("[data-breakdown-fixed-row='NUET_MATH'] input").fill("60");
   await page.locator("#saveProfileBtn").click();
   await expect(page.locator("#addExamBtn")).toBeFocused();
-  await expect(page.locator("#profileSaveState")).toContainText("Add or update");
+  await expect(page.locator("#profileSaveState")).toContainText("Press Add");
   await expect(page.locator("#examList .profile-exam-item")).toHaveCount(0);
 
   await setNativeSelect(page, "languageSelect", "rus");
   await expect(page.locator("html")).toHaveAttribute("lang", "ru");
-  await expect(page.locator("#profileSaveState")).toContainText("Добавьте или обновите");
+  await expect(page.locator("#profileSaveState")).toContainText("Нажмите «Добавить»");
   await expect(page.locator("#examScoreInput")).toHaveValue("120");
   await expect(page.locator("#examTakenOnInput")).toHaveValue("2026-03-15");
   await expect(page.locator("[data-breakdown-fixed-row='NUET_MATH'] input")).toHaveValue("60");

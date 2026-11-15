@@ -79,29 +79,18 @@ for (const presentation of [{ language: "eng", width: 1280, theme: "light" }, { 
     await page.evaluate(ids => localStorage.setItem("unisearch_compare_university_ids_v1", JSON.stringify(ids)), [IMPERIAL, MIT]);
     await page.goto("/compare.html");
     await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
-    await page.locator('[data-action="build-compare-results"], [data-reviewed-comparison]').first().waitFor();
-    const build = page.locator('[data-action="build-compare-results"]');
-    if (await build.count()) {
-      await expect(build).toBeEnabled();
-      await build.click();
-    }
     const summary = page.locator("[data-reviewed-comparison]");
-    await expect(summary).toBeVisible();
-    await expect(summary).toContainText("GBP");
-    await expect(summary).toContainText("USD");
+    await expect(summary.locator(".compare-reviewed__head")).toHaveCount(2);
+    await expect(summary.locator('[data-compare-row="cost"] dd').first()).toContainText(/≈ \$[\d,]+/); // pounds follow the default USD setting
+    await expect(summary.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/\$|USD/);
     await expect(summary.locator('a[href*="imperial-college-london-uk"][href$="#tab-finance"]')).toHaveCount(1);
-    await expect(page.locator(".compare-source-details").first()).not.toHaveAttribute("open", "");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
-    if (presentation.width < 768) {
-      const geometry = await summary.locator(".compare-table-wrap").evaluate(wrap => {
-        wrap.scrollLeft = wrap.scrollWidth;
-        const label = wrap.querySelector("tbody th").getBoundingClientRect();
-        const value = wrap.querySelector("tbody td:last-child").getBoundingClientRect();
-        return { labelRight: label.right, valueLeft: value.left, valueRight: value.right, wrapRight: wrap.getBoundingClientRect().right };
-      });
-      expect(geometry.valueLeft).toBeGreaterThanOrEqual(geometry.labelRight - 1);
-      expect(geometry.valueRight).toBeLessThanOrEqual(geometry.wrapRight + 1);
-    }
+    // Both values of a row stay inside their section at every width; the label sits above them on narrow screens.
+    const overflow = await summary.locator(".compare-reviewed__section").evaluateAll(sections => sections.some(section => {
+      const box = section.getBoundingClientRect();
+      return [...section.querySelectorAll(".compare-reviewed__cell")].some(cell => cell.getBoundingClientRect().right > box.right + 1);
+    }));
+    expect(overflow).toBe(false);
     await summary.scrollIntoViewIfNeeded();
     await page.screenshot({ path: testInfo.outputPath("comparison.png"), fullPage: false });
     await summary.locator('a[href*="imperial-college-london-uk"][href$="#tab-finance"]').click();

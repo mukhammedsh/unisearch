@@ -1,6 +1,7 @@
 """Read the active, reviewed admissions snapshot."""
 
 import copy
+import functools
 import hashlib
 import json
 import math
@@ -184,6 +185,12 @@ def get_institution(institution_id):
     return _load()["institutions"].get(institution_id)
 
 
+@functools.lru_cache(maxsize=2048)
+def _title_major_tags(title):
+    # Tag matching normalises every phrase of the subject taxonomy; option titles are static, so do it once each.
+    return _major_tags_from_text(title)
+
+
 def matching_study_options(institution_id, major=None, study_level=None):
     """Use the catalog subject taxonomy without choosing an application target."""
     institution = get_institution(institution_id)
@@ -193,7 +200,7 @@ def matching_study_options(institution_id, major=None, study_level=None):
     subject = _canonical_major(major) if major else None
     return [option for option in institution["study_options"]
             if (not level or level == "any" or level in option["levels"])
-            and (not major or (subject in _major_tags_from_text(option["title"]) if subject
+            and (not major or (subject in _title_major_tags(option["title"]) if subject
                  else _normalize_major_text(major) == _normalize_major_text(option["title"]))) ]
 
 
@@ -424,9 +431,11 @@ def _route_summary(route):
     summary = {key: route[key] for key in ("id", "title", "classification", "entry", "target", "destination", "shared_form_family",
                                          "option_ids", "source_ids", "fact_ids", "shared_policy_context_ids")}
     metadata = _route_metadata(route)
-    for key in ("application_url", "admission_scope", "applicant_route", "policy_for_route_ids"):
+    for key in ("application_url", "admission_scope", "policy_for_route_ids"):
         if key in metadata:
             summary[key] = metadata[key]
+    if route.get("applicant_route"):
+        summary["applicant_route"] = route["applicant_route"]
     return copy.deepcopy(summary)
 
 
@@ -438,6 +447,59 @@ def _reference_labels(indexed):
                 if alias and row.get("title"):
                     labels.setdefault(alias, set()).add(row["title"])
     return {alias: next(iter(titles)) for alias, titles in labels.items() if len(titles) == 1}
+
+
+# HTTP projections. Backend logic (scoring, assessment hashes, tests) reads the complete in-memory records; the
+# applicant pages never read the fields below, so the responses omit them. Project only after the assessment has
+# hashed the full facts, and never mutate the cached catalog records (the callers pass copies).
+RECORD_INTERNAL_KEYS = frozenset({"provenance", "index_attributes", "related_fact_ids", "content_reviewed_at"})
+PUBLIC_RECORD_ATTRIBUTES = ("catalog_costs", "deadline_events")
+ASSESSMENT_DUPLICATE_KEYS = frozenset({"choices", "selectedContext", "unknowns", "sources"})
+RESPONSE_SHAPE = "public-1"
+
+
+def _public_record(row):
+    """A fact or unknown without research-only fields; `value` and every applicant-facing field stay untouched."""
+    public = {key: value for key, value in row.items() if key not in RECORD_INTERNAL_KEYS and key != "attributes"}
+    attributes = {key: row["attributes"][key] for key in PUBLIC_RECORD_ATTRIBUTES if key in row.get("attributes", {})}
+    if attributes:
+        public["attributes"] = attributes
+    return public
+
+
+def _public_summary(summary):
+    """An option or route summary without the fact references used only to validate the catalog."""
+    return {key: value for key, value in summary.items() if key != "fact_ids"}
+
+
+def public_study_options(result):
+    """The study-options page as sent over HTTP."""
+    public = {**result, "items": [_public_summary(row) for row in result["items"]]}
+    if "shared_routes" in result:
+        public["shared_routes"] = [_public_summary(row) for row in result["shared_routes"]]
+    return public
+
+
+def public_context(resolved):
+    """The admissions-context response as sent over HTTP: the resolved context plus its assessment and prices."""
+    public = {key: value for key, value in resolved.items() if key != "excluded"}
+    for key in ("facts", "unknowns"):
+        if key in public:
+            public[key] = [_public_record(row) for row in public[key]]
+    for key in ("selected_option", "selected_route"):
+        if public.get(key):
+            public[key] = _public_summary(public[key])
+    if "available_routes" in public:
+        public["available_routes"] = [_public_summary(row) for row in public["available_routes"]]
+    if "sources" in public:
+        public["sources"] = [{key: value for key, value in source.items() if key != "attributes"} for source in public["sources"]]
+    if isinstance(public.get("history"), dict):
+        public["history"] = {key: [_public_record(row) for row in value] if key in ("facts", "unknowns") else value
+                             for key, value in public["history"].items()}
+    if isinstance(public.get("assessment"), dict):
+        # `choices` repeats `activeChoice`; the other keys repeat the top-level context, unknowns and sources.
+        public["assessment"] = {key: value for key, value in public["assessment"].items() if key not in ASSESSMENT_DUPLICATE_KEYS}
+    return public
 
 
 def list_study_options(institution_id, search_candidates=(), study_level=None, page=1, limit=30, *, major=None):
@@ -607,8 +669,13 @@ def resolve_context(institution_id, profile=None, context=None):
                       and _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate")
     if shared_reading:
         effective["study_level"] = effective["study_level"] or "undergraduate"
-        effective["applicant_route"] = effective["applicant_route"] or _route_metadata(route).get("applicant_route")
     statuses = {"option": "matched" if option else "unknown", "route": "matched" if route else "unknown", "level": "unknown"}
+    # A route that implies an applicant category governs. Only a category named in this request can contradict it; a
+    # profile or saved-selection value is a default and is replaced silently.
+    implied = route.get("applicant_route") if route else None
+    if implied:
+        statuses["applicant"] = "mismatched" if context.get("applicant_route") not in (None, "", implied) else "matched"
+        effective["applicant_route"] = implied
     if shared_reading:
         statuses["option"] = "not_required"
     if effective["study_level"]:
@@ -620,6 +687,7 @@ def resolve_context(institution_id, profile=None, context=None):
     invalid_selection = ((effective["study_option_id"] and option is None)
                          or (effective["application_route_id"] and route is None)
                          or statuses["route"] == "mismatched"
+                         or statuses.get("applicant") == "mismatched"
                          or (option is None and not shared_reading)
                          or (shared_reading and effective["study_level"] != "undergraduate")
                          or (option is None and route is None))

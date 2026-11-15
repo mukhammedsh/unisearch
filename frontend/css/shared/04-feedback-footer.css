@@ -20,8 +20,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
   min-width: 250px;
   max-width: 350px;
   animation: motion-toast-in var(--motion-medium, 260ms) var(--motion-ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
@@ -144,14 +144,14 @@
   box-sizing: border-box;
   min-height: 43px;
   padding: var(--space-3);
-  font-size: 14px;
+  font-size: var(--text-base);
   line-height: 1.35;
-  font-weight: 400;
+  font-weight: var(--font-weight-regular);
   color: var(--text);
   background: var(--surface-soft);
   box-shadow: var(--shadow-micro);
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-base);
   cursor: pointer;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
@@ -280,13 +280,6 @@
   transform: translateY(10px);
 }
 
-.custom-select-wrapper.open.open-up .custom-options {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-  transform: translateY(0);
-}
-
 /* Directional attachment: remove rounding on the side facing the trigger,
    close the gap so the panel grows directly from the trigger edge. */
 .custom-select-wrapper.open:not(.open-up) .custom-options {
@@ -297,6 +290,10 @@
 }
 
 .custom-select-wrapper.open.open-up .custom-options {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateY(0);
   margin-bottom: 0;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -324,7 +321,7 @@
 .custom-optgroup-label {
   padding: var(--space-2) var(--space-3) var(--space-1);
   font-size: var(--text-xs);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-transform: none;
   letter-spacing: normal;
   color: var(--text-muted);
@@ -368,7 +365,7 @@
 
 .custom-option.selected {
   background-color: var(--accent-panel);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--accent);
 }
 
@@ -402,7 +399,7 @@
   flex: 0 0 auto;
   display: inline-block;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   box-shadow: var(--shadow-xs);
 }
 
@@ -413,7 +410,7 @@
   vertical-align: middle;
   flex: 0 0 auto;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   box-shadow: var(--shadow-xs);
 }
 
@@ -440,8 +437,8 @@
 .footer-content p,
 .footer-copy {
     margin: 0;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
     color: var(--text-muted);
     line-height: 1.4;
 }
@@ -460,8 +457,8 @@
 }
 
 .footer-legal-links a {
-    font-size: 13px;
-    font-weight: 500;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
     color: var(--text-muted);
     line-height: 1.4;
     text-decoration: none;
@@ -476,7 +473,7 @@
 
 .footer-divider {
     color: var(--line-strong, var(--line));
-    font-size: 11px;
+    font-size: var(--text-xs);
     line-height: 1;
     user-select: none;
 }
@@ -495,10 +492,10 @@
     min-width: 32px;
     height: 32px;
     padding: 0 var(--space-2);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 500;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
     line-height: 1;
     text-decoration: none;
     border: 1px solid transparent;

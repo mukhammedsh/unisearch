@@ -40,88 +40,51 @@ function acceptedContext(institutionId, optionId, routeId, factId) {
         kind: "credential",
         status: "unassessed",
         rule: fact.value,
-        provided: { country_of_education: "KZ", education_credential: "national_secondary" },
         sourceRule: fact,
         source_ids: fact.source_ids,
       }] } },
       reportedEvidence: {
         origin: "self_reported",
-        institutional_evidence: [{ kind: "education", country: "KZ", credential: "national_secondary" }],
+        institutional_evidence: [{ kind: "enrollment", university_id: institutionId, status: "enrolled" }],
       },
     },
   };
 }
 
-test("Oxford rejects only the explicitly named Kazakhstan Attestat and accepts an IB diploma at qualification-type level", () => {
+test("Oxford guidance lists every published rule and fallback without any personal matching", () => {
   const oxford = universities["university-of-oxford-uk-oxford"];
-  const rejected = resolveQualificationGuidance({
-    university: oxford,
-    profile: {
-      studyLevel: "Bachelor",
-      applicantRoute: "first_year",
-      countryOfEducation: "KZ",
-      educationCredential: "other",
-      educationCredentialOther: "Attestat/Svidetel' stvo o Srednem Obrazovanii (Certificate of Secondary Education)",
-      intendedEntryCycle: "2027 Fall",
-    },
-  });
-  assert.equal(rejected.status, "not_accepted");
-  assert.equal(rejected.verifiedAt, "2026-09-24");
-  assert.match(rejected.sourceUrl, /^https:\/\/www\.ox\.ac\.uk\//);
-
-  const accepted = resolveQualificationGuidance({
-    university: oxford,
-    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "DE", educationCredential: "ib" },
-  });
-  assert.equal(accepted.status, "accepted");
-  assert.match(accepted.reason, /course-specific/i);
+  const { entries } = resolveQualificationGuidance({ university: oxford });
+  assert.deepEqual(
+    entries.map((entry) => [entry.id, entry.status, entry.studyLevel]),
+    [
+      ["oxford-kazakhstan-attestat-undergraduate", "not_accepted", "Bachelor"],
+      ["oxford-international-baccalaureate-undergraduate", "accepted", "Bachelor"],
+      ["", "needs_review", "Bachelor"],
+      ["", "needs_review", "graduate"],
+    ],
+  );
+  assert.equal(entries.length, oxford.qualification_guidance.rules.length + oxford.qualification_guidance.fallbacks.length);
+  assert.equal(entries[0].verifiedAt, "2026-09-24");
+  assert.match(entries[0].sourceUrl, /^https:\/\/www\.ox\.ac\.uk\//);
+  assert.match(entries[1].reason, /course-specific/i);
 });
 
-test("generic national-secondary and unlisted credentials stay in official review", () => {
-  const oxford = universities["university-of-oxford-uk-oxford"];
-  const broadCategory = resolveQualificationGuidance({
-    university: oxford,
-    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "KZ", educationCredential: "national_secondary" },
-  });
-  assert.equal(broadCategory.status, "needs_review");
-  assert.equal(broadCategory.needsExactCredential, true);
-
-  const unlisted = resolveQualificationGuidance({
-    university: oxford,
-    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "ZZ", educationCredential: "other", educationCredentialOther: "Unknown certificate" },
-  });
-  assert.equal(unlisted.status, "needs_review");
-  assert.equal(unlisted.needsExactCredential, false);
+test("Harvard guidance keeps its single rule and both fallbacks in review", () => {
+  const { entries } = resolveQualificationGuidance({ university: universities["harvard-usa-cambridge"] });
+  assert.equal(entries.length, 3);
+  assert.ok(entries.every((entry) => entry.status === "needs_review"));
+  assert.ok(entries.every((entry) => /^https:\/\//.test(entry.sourceUrl) || entry.requiresProgramPage));
 });
 
-test("Oxford KZ rejection requires an exact normalized Attestat title for either credential entry path", () => {
+test("resolution ignores whatever a saved profile contains", () => {
   const oxford = universities["university-of-oxford-uk-oxford"];
-  const base = { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "KZ" };
-
-  const nationalAttestat = resolveQualificationGuidance({
-    university: oxford,
-    profile: {
-      ...base,
-      educationCredential: "national_secondary",
-      educationCredentialOther: "Attestat/Svidetel' stvo o Srednem Obrazovanii (Certificate of Secondary Education)",
-    },
-  });
-  assert.equal(nationalAttestat.status, "not_accepted");
-
-  const otherNationalTitle = resolveQualificationGuidance({
-    university: oxford,
-    profile: { ...base, educationCredential: "national_secondary", educationCredentialOther: "National school leaving certificate" },
-  });
-  assert.equal(otherNationalTitle.status, "needs_review");
-
-  const mixedCredentialText = resolveQualificationGuidance({
-    university: oxford,
-    profile: { ...base, educationCredential: "national_secondary", educationCredentialOther: "IB instead of Attestat" },
-  });
-  assert.equal(mixedCredentialText.status, "needs_review");
+  assert.deepEqual(
+    resolveQualificationGuidance({ university: oxford, profile: { studyLevel: "Master", applicantRoute: "transfer", countryOfEducation: "KZ", intendedEntryCycle: "2031" } }),
+    resolveQualificationGuidance({ university: oxford }),
+  );
 });
 
-test("accepted MIT and Stanford qualification context stays source-scoped and unassessed; Harvard legacy guidance stays in review", () => {
+test("accepted MIT and Stanford qualification context stays source-scoped and unassessed", () => {
   const cases = [
     ["mit-usa-cambridge", "mit-course-6-3-bachelor", "mit-first-year", "first-year-foundations-context-not-prescribed-cutoffs", /National\/curricular context assessed/],
     ["stanford-university-usa-ca", "stanford-option-cs-bs", "undergraduate-shared-evidence:stanford-first-year", "undergraduate-shared-evidence:stanford-ug-international-academic-records", /school\/country/],
@@ -137,63 +100,50 @@ test("accepted MIT and Stanford qualification context stays source-scoped and un
     assert.doesNotMatch(html, /Accepted qualification|Explicitly not accepted/, institutionId);
     assert.match(html, /href="https:\/\//, institutionId);
   }
-
-  const harvard = resolveQualificationGuidance({
-    university: universities["harvard-usa-cambridge"],
-    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "US", educationCredential: "us_high_school_diploma" },
-  });
-  assert.equal(harvard.status, "needs_review");
-  assert.match(harvard.sourceUrl, /^https:\/\//);
 });
 
-test("graduate qualification guidance requires a selected official programme page", () => {
+test("graduate qualification guidance asks for a selected official programme page, then links it", () => {
   const oxford = universities["university-of-oxford-uk-oxford"];
-  const profile = { studyLevel: "Master", applicantRoute: "graduate", countryOfEducation: "KZ", educationCredential: "national_secondary", intendedEntryCycle: "2027 Fall" };
-  const noProgram = resolveQualificationGuidance({ university: oxford, profile });
-  assert.equal(noProgram.status, "needs_review");
-  assert.equal(noProgram.sourceUrl, "");
+  const graduate = (result) => result.entries.find((entry) => entry.requiresProgramPage);
+  const noProgram = resolveQualificationGuidance({ university: oxford });
+  assert.equal(graduate(noProgram).status, "needs_review");
+  assert.equal(graduate(noProgram).reasonKey, "university.qualification_guidance.reason.select_program");
+  assert.match(graduate(noProgram).sourceUrl, /^https:\/\/www\.ox\.ac\.uk\/admissions\/graduate\//);
 
   const program = { id: "msc", name: "MSc Computer Science", study_levels: ["Master"], url: "https://www.ox.ac.uk/admissions/graduate/courses/msc-advanced-computer-science" };
-  const selectedProgram = resolveQualificationGuidance({ university: oxford, profile, program });
-  assert.equal(selectedProgram.status, "needs_review");
-  assert.equal(selectedProgram.sourceUrl, program.url);
+  const selectedProgram = resolveQualificationGuidance({ university: oxford, program });
+  assert.equal(graduate(selectedProgram).reasonKey, "university.qualification_guidance.reason.graduate_review");
+  assert.equal(graduate(selectedProgram).sourceUrl, program.url);
 });
 
-test("a distant entry cycle and a different applicant route require review", () => {
+test("renderer shows every rule and fallback as published reference with status, checked date, and official source", () => {
   const oxford = universities["university-of-oxford-uk-oxford"];
-  const profile = { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "KZ", educationCredential: "other", educationCredentialOther: "Attestat", intendedEntryCycle: "2029 Fall" };
-  assert.equal(resolveQualificationGuidance({ university: oxford, profile }).status, "needs_review");
-  assert.equal(resolveQualificationGuidance({ university: oxford, profile: { ...profile, applicantRoute: "transfer", intendedEntryCycle: "2027 Fall" } }).status, "needs_review");
-});
-
-test("renderer exposes an official status, checked date, source, and a precise-certificate action", () => {
   const container = { innerHTML: "" };
-  const result = renderQualificationGuidance({
-    container,
-    university: universities["university-of-oxford-uk-oxford"],
-    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "KZ", educationCredential: "national_secondary" },
-  });
-  assert.equal(result.status, "needs_review");
+  const result = renderQualificationGuidance({ container, university: oxford });
+  assert.equal(result.entries.length, 4);
+  assert.equal(container.innerHTML.match(/data-qualification-entry/g).length, 4);
+  assert.match(container.innerHTML, /Explicitly not accepted/);
+  assert.match(container.innerHTML, /Accepted qualification/);
+  assert.match(container.innerHTML, /2026-09-24/);
   assert.match(container.innerHTML, /2026-09-23/);
   assert.match(container.innerHTML, /href="https:\/\/www\.ox\.ac\.uk\/[^"<>]*"/);
-  assert.match(container.innerHTML, /profile\.html/);
+  assert.match(container.innerHTML, /Each applies only to the qualification, study level, and cycle it names/);
+  assert.doesNotMatch(container.innerHTML, /profile\.html|your profile|Intended entry cycle/);
+});
+
+test("a university without catalogued guidance keeps the single no-verified-decision notice", () => {
+  const container = { innerHTML: "" };
+  renderQualificationGuidance({ container, university: { id: "no-guidance" } });
+  assert.equal(container.innerHTML.match(/data-qualification-entry/g).length, 1);
+  assert.match(container.innerHTML, /No verified decision for this exact qualification combination is catalogued/);
+  assert.doesNotMatch(container.innerHTML, /Each applies only to the qualification/);
 });
 
 test("Russian qualification rendering translates known scope and cycle text while unknown copy keeps its safe fallback", () => {
   const oxford = universities["university-of-oxford-uk-oxford"];
   const container = { innerHTML: "" };
   setLanguage("rus", { persist: false, emit: false });
-  renderQualificationGuidance({
-    container,
-    university: oxford,
-    profile: {
-      studyLevel: "Bachelor",
-      applicantRoute: "first_year",
-      countryOfEducation: "KZ",
-      educationCredential: "national_secondary",
-      educationCredentialOther: "Attestat",
-    },
-  });
+  renderQualificationGuidance({ container, university: oxford });
   assert.match(container.innerHTML, /Это относится к стандартному поступлению на первый курс бакалавриата в Оксфорде/);
   assert.match(container.innerHTML, /Действующие опубликованные правила; источник не указывает год поступления/);
   assert.doesNotMatch(container.innerHTML, /Undergraduate first-year qualification status|Current published policy/);
@@ -219,11 +169,7 @@ test("Russian qualification rendering translates known scope and cycle text whil
     },
   };
   container.innerHTML = "";
-  renderQualificationGuidance({
-    container,
-    university: unknownUniversity,
-    profile: { studyLevel: "Bachelor", applicantRoute: "first_year", countryOfEducation: "KZ", educationCredential: "national_secondary" },
-  });
+  renderQualificationGuidance({ container, university: unknownUniversity });
   assert.match(container.innerHTML, /Untranslated custom scope/);
   assert.match(container.innerHTML, /Untranslated custom cycle text/);
   setLanguage("eng", { persist: false, emit: false });

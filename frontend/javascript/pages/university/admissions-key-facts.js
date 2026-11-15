@@ -1,6 +1,7 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
+import { formatPrice, formatPriceRange } from "../../currency.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
-import { admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName, admissionWindowName } from "./admissions-render.js";
+import { ASSESSMENT_RECORD_DOMAINS, admissionDeadlineTitle, admissionsCycleLabel, admissionsRouteName, admissionWindowName, renderAssessmentChecks } from "./admissions-render.js";
 import { formatPublishedDate } from "./admissions-presentation.js";
 import { getReviewedDeadlineEvents, MONTHS } from "./deadline-calendar.js";
 import { isEvidenceReviewed, isPublishedReference, isReviewedPublished } from "./admissions-status.js";
@@ -19,13 +20,8 @@ const TEST_KINDS = new Set(["test", "test_submission", "booking"]);
 // Funding facts may state the university's need policy in one short field; only these named fields are shown as a policy.
 const FUNDING_POLICY_FIELDS = ["international_need"];
 
-function money(amount, currency) {
-  return new Intl.NumberFormat(locale(), { style: "currency", currency, maximumFractionDigits: 0 }).format(amount);
-}
-
-function moneyRange(min, max, currency) {
-  return min === max ? money(min, currency) : `${money(min, currency)}–${money(max, currency)}`;
-}
+// Short answers follow the reader's currency setting with rounded, compact converted amounts.
+const summary = () => ({ presentation: "summary", locale: locale() });
 
 export function requirementsFact(resolved) {
   const assessment = resolved?.assessment || {};
@@ -126,6 +122,8 @@ export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] }
     const { days, text } = countdown(upcoming);
     const earlier = ahead.find(entry => entry.day < upcoming.day && TEST_KINDS.has(entry.event.kind));
     return { status: "upcoming", days, tone: days <= 30 ? "warning" : "", terms: termsFor(upcoming.event.name, earlier?.event.name), text,
+      // The next date as structured parts, so a summary can lead with the date and show the round name separately.
+      next: { title: describe(upcoming).title, date: describe(upcoming).date },
       notes: earlier ? [tFormat("university.admissions.key_facts.deadline_earlier", { text: countdown(earlier).text })] : [] };
   }
   if (dated.length) return { status: "passed", tone: "danger", terms: termsFor(dated.at(-1).event.name), text: tFormat("university.admissions.key_facts.deadline_passed", describe(dated.at(-1))) };
@@ -145,12 +143,14 @@ export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] }
     const days = Math.round((next.day - today) / DAY_MS);
     const named = entry => ({ name: windowName(entry.window.name), date: formatPublishedDate(entry.window.application_due) });
     // Windows that passed more recently than the next one's last occurrence are named, so the applicant sees why it is the nearest.
-    const passed = annual.filter(entry => entry !== next && next.lapsed && entry.lapsed && entry.last > next.last)
-      .map(entry => tFormat("university.admissions.key_facts.deadline_recurring_passed", named(entry)));
+    const passedEntries = annual.filter(entry => entry !== next && next.lapsed && entry.lapsed && entry.last > next.last);
+    const passed = passedEntries.map(entry => tFormat("university.admissions.key_facts.deadline_recurring_passed", named(entry)));
     const upcoming = tFormat(`university.admissions.key_facts.deadline_recurring_${days ? "next" : "today"}`,
       { name: windowName(next.window.name), date: formatPublishedDate(new Date(next.day).toISOString().slice(0, 10)), days });
     return { status: "recurring", days, tone: days <= 30 ? "warning" : "", terms: termsFor(annual.map(entry => entry.window.name)),
-      text: [...passed, upcoming].join(" ") };
+      text: [...passed, upcoming].join(" "),
+      next: { title: windowName(next.window.name), date: formatPublishedDate(new Date(next.day).toISOString().slice(0, 10)) },
+      passedWindows: passedEntries.map(named) };
   }
   const windows = yearlessWindows(rows);
   const yearless = windows.map(window => `${windowName(window.name)}: ${formatPublishedDate(window.application_due)}`);
@@ -173,9 +173,10 @@ export function costFact(resolved, budgetUsd) {
   const basis = costs.annual_total ? "annual_total" : costs.tuition ? "tuition" : "";
   if (!basis) return { status: "unknown", tone: "", text: label("cost_unknown"), notes: [] };
   const quote = costs[basis];
-  const amount = moneyRange(quote.min, quote.max, quote.currency);
-  const converted = quote.currency !== "USD" && quote.usd ? ` (≈ ${moneyRange(quote.usd.min, quote.usd.max, "USD")})` : "";
-  const text = tFormat(`university.admissions.key_facts.${basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount: `${amount}${converted}` });
+  const amount = formatPriceRange(quote.min, quote.max, quote.currency, summary());
+  const text = tFormat(`university.admissions.key_facts.${basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount });
+  // The amount and its basis are also returned separately, so a summary can lead with the figure.
+  const parts = { amount, basis, period: quote.period || "" };
   const notes = [quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
@@ -184,16 +185,17 @@ export function costFact(resolved, budgetUsd) {
   if (feeStatusDepends) notes.push(label("cost_fee_status"), t("university.admissions.glossary.fee_status.text"));
   const feeStatusPage = feeStatusDepends ? feeStatusSource(resolved) : "";
   const links = feeStatusPage ? [{ url: feeStatusPage, label: label("cost_fee_status_source") }] : [];
-  if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean) };
-  if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean) };
-  if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean) };
-  const budget = money(budgetUsd, "USD");
+  if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean), ...parts };
+  if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean), ...parts };
+  if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean), ...parts };
+  // The applicant's own budget is never rounded.
+  const budget = formatPrice(budgetUsd, "USD");
   const status = quote.usd.min > budgetUsd ? "over" : quote.usd.max > budgetUsd ? "partial"
     : basis === "tuition" ? "tuition_within" : "within";
   // The published amount stays neutral; only the comparison with the applicant's budget carries a status colour.
   const flag = { text: tFormat(`university.admissions.key_facts.budget_${status}`, { budget }),
     tone: { over: "danger", partial: "warning", tuition_within: "warning", within: "success" }[status] };
-  return { status, tone: "", flag, text, links, notes: notes.filter(Boolean) };
+  return { status, tone: "", flag, text, links, notes: notes.filter(Boolean), ...parts };
 }
 
 // Reviewed funding records that apply to the selected route, never to another path of the university.
@@ -213,6 +215,9 @@ function fundingPolicy(rows) {
   return "";
 }
 
+// The university's published need policy for the selected route as one statement, or "" when none is published.
+export const fundingPolicyStatement = resolved => fundingPolicy(fundingRows(resolved));
+
 export function fundingFact(resolved) {
   const rows = fundingRows(resolved);
   const terms = glossaryTerms(rows.map(row => typeof row.value === "string" ? row.value : row.value?.required));
@@ -228,28 +233,49 @@ export function fundingFact(resolved) {
   return { terms, text: count ? tFormat("university.admissions.key_facts.funding_records", { count }) : label("funding_none") };
 }
 
-function row(key, fact, action = "") {
+function row(key, fact, action = "", shownTerms = null, extra = "") {
   const flag = fact.flag ? `<p class="admissions-key-facts__flag" data-tone="${fact.flag.tone}">${escapeHtml(fact.flag.text)}</p>` : "";
   const notes = flag + (fact.notes || (fact.note ? [fact.note] : [])).map(note => `<p class="admissions-reading__note">${escapeHtml(note)}</p>`).join("");
   const links = (fact.links || []).map(link => `<a class="admissions-key-facts__source" href="${escapeHtmlAttr(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>`).join("");
-  return `<div class="admissions-key-facts__row" data-key-fact="${key}"${fact.status ? ` data-key-fact-status="${escapeHtmlAttr(fact.status)}"` : ""}>
+  const marker = key === "requirements" ? " data-requirements-match" : "";
+  return `<div class="admissions-key-facts__row" data-key-fact="${key}"${marker}${fact.status ? ` data-key-fact-status="${escapeHtmlAttr(fact.status)}"` : ""}>
     <dt>${escapeHtml(label(key))}</dt>
-    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${notes}${links}${renderTermList(fact.terms || [])}${action}</dd></div>`;
+    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${notes}${links}${renderTermList(fact.terms || [], shownTerms)}${action}${extra}</dd></div>`;
 }
 
-export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileCycle = "", profileExamIds = [], now = new Date() } = {}) {
+// The page's single requirements-match summary: the key-fact result plus caveats that belong beside a number.
+// The detailed checks follow as one disclosure; they do not repeat the summary sentence.
+function requirementsRow(resolved, cycleAction, shownTerms) {
+  const fact = requirementsFact(resolved);
+  const assessment = resolved?.assessment || {};
+  const checks = assessment.activeChoice?.details?.checks || [];
+  const evaluated = checks.filter(check => check.measurable && ["met", "unmet"].includes(check.status));
+  const available = Number.isFinite(assessment.chancePercent) && evaluated.length;
+  const notes = [
+    ...(available && evaluated.some(check => check.status === "unmet") ? [t("university.admissions.catalog.reason.requirements_not_met")] : []),
+    ...(fact.notes || []),
+    ...(available ? [t("university.admissions.catalog.assessment_limits")] : []),
+  ];
+  const profileLink = assessment.reason === "missing_evidence"
+    ? `<a class="admissions-key-facts__link" href="/profile.html" data-route="profile">${escapeHtml(t("university.admissions.catalog.assessment_profile"))}</a>` : "";
+  const detail = renderAssessmentChecks(resolved, { recordDomains: ASSESSMENT_RECORD_DOMAINS });
+  return row("requirements", { ...fact, notes }, `${fact.cycleRequired ? cycleAction : ""}${profileLink}`, shownTerms, detail);
+}
+
+export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date() } = {}) {
   if (!resolved?.selected_route) return "";
-  const requirements = requirementsFact(resolved);
-  const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="${profileCycle ? "apply" : "edit"}">${escapeHtml(profileCycle
-    ? tFormat("university.admissions.key_facts.use_profile_cycle", { cycle: admissionsCycleLabel(profileCycle) }) : label("set_cycle"))}</button>`;
+  // The entry cycle belongs to this university's selection, so the action opens the entry-year field.
+  const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="edit">${escapeHtml(label("set_cycle"))}</button>`;
   const open = (tab, key) => `<button type="button" class="admissions-key-facts__link" data-open-tab="${tab}">${escapeHtml(label(key))}</button>`;
+  // A glossary term is explained once per key-facts block, in the first row that names it.
+  const shownTerms = new Set();
   return `<section class="admissions-key-facts" data-admissions-key-facts aria-labelledby="admissionsKeyFactsTitle">
     <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>
     <dl class="admissions-key-facts__list">
-      ${row("requirements", requirements, requirements.cycleRequired ? cycleAction : "")}
-      ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"))}
-      ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"))}
-      ${row("funding", fundingFact(resolved))}
+      ${requirementsRow(resolved, cycleAction, shownTerms)}
+      ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
+      ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
+      ${row("funding", fundingFact(resolved), "", shownTerms)}
     </dl>
     <p class="admissions-reading__note">${escapeHtml(label("note"))}</p>
   </section>`;

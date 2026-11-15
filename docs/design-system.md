@@ -133,9 +133,19 @@ Use `--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, 
 - **One owner for sibling spacing:** A flex/grid parent uses `gap`; direct children have zero margin on that same axis. Do not combine `gap` with child margins. When a title and its body need different spacing, group them in a wrapper and give that wrapper one `gap` value.
 - **Zero margins at container boundaries:** Inside any container that has `padding`, the first child must have `margin-top: 0` and the last child must have `margin-bottom: 0` (e.g., `:first-child { margin-top: 0; }` and `:last-child { margin-bottom: 0; }`).
 - **Single-layer padding responsibility:** Do not stack identical padding across nested wrapper divs (e.g. section padding + container padding + inner card padding). Allocate padding only to the visual surface boundary.
+- **No phantom slots:** An empty element still takes a flex/grid gap slot and keeps its own padding and margins. Hide empty hosts (`:empty { display: none; }`, or `:has()` for a wrapper around an empty list); keep an empty `aria-live` region rendered but out of the gap flow with `position: absolute`.
 - **No negative margin compensation:** Never use negative margins (`margin-top: -Npx`) to counteract unwanted gaps or line-height offsets. Eliminate the source margin or align the typography instead.
 
 Use shared `var(--space-*)` or semantic aliases in margin, padding, gap, and scroll-spacing declarations. `npm run check:design-lint` rejects raw nonzero pixel values, including values inside `calc()` and `clamp()`; a necessary optical or platform workaround needs a same-line `/* spacing-exception: reason */` comment. Browser E2E checks scan active catalog, profile, admissions, and finance layouts for margins stacked on a flex/grid gap axis; add the check when introducing another layout state.
+
+### Cascade and token checks
+
+`npm run check:stylelint` runs [Stylelint](https://stylelint.io/) with `stylelint.config.mjs`; editors with the Stylelint extension show the same findings while typing. It reports:
+
+- `no-duplicate-selectors`: a selector defined twice in the same at-rule context. Merge the rules; a breakpoint variant belongs in its own `@media` block.
+- `unisearch/no-overridden-declarations` (`scripts/stylelint/no-overridden-declarations.mjs`): a declaration that a later rule for the same selector always overrides, in the same context, a wider `max-width` query or the top level. Delete it, or move the later value into the first rule.
+- `declaration-block-no-duplicate-properties` and `declaration-block-no-shorthand-property-overrides`: a property repeated in one block, or a shorthand that resets a longhand above it. An intentional fallback (for example `100vh` before `100dvh`) carries a `stylelint-disable-next-line ... -- reason` comment.
+- `scale-unlimited/declaration-strict-value`: colors, `font-size`, `font-weight` and radii must use a token, a function or a keyword; raw values live only in `shared/01-foundation.css`.
 
 ### 3. Responsive Spacing
 - On desktop, page container padding uses `var(--layout-page-gutter)`; it resolves to 24px.

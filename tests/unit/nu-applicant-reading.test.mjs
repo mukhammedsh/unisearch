@@ -7,7 +7,6 @@ global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../fro
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { publishedTuitionQuotes, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
 const { admissionDeadlineTitle, admissionsCycleLabel, renderAdmissionsContext, renderAdmissionsValue, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
-const { renderReviewedComparison } = await import("../../frontend/javascript/pages/universities/compare-summary.js");
 const { translateFactSource } = await import("../../frontend/javascript/university-translations.js");
 await initI18n();
 window.location.href = "http://127.0.0.1/compare.html";
@@ -28,15 +27,12 @@ test("NU Foundation and undergraduate tuition keep their own quote in primary re
   const row = nu.facts.find(row => row.id === "nu-a-fact-admission-fees");
   const foundation = "nu-a-study-nu-foundation-year-program";
   const cs = "nu-a-study-bachelor-of-science-in-computer-science";
-  assert.deepEqual(publishedTuitionQuotes(row, foundation).map(quote => quote.amounts[0]), ["12,000 / year"]);
-  assert.deepEqual(publishedTuitionQuotes(row, cs).map(quote => quote.amounts[0]), ["15,000 / year"]);
+  assert.deepEqual(publishedTuitionQuotes(row, foundation).map(quote => quote.amounts[0]), ["$12,000 / year"]);
+  assert.deepEqual(publishedTuitionQuotes(row, cs).map(quote => quote.amounts[0]), ["$15,000 / year"]);
   const resolved = context(foundation, "nu-a-route-regular-foundation-undergraduate", { costs: [row.id] });
   const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
   assert.match(primary, /12,000/);
   assert.doesNotMatch(primary, /15,000/);
-  const comparison = renderReviewedComparison([{ id: "nu", name: "Nazarbayev University" }], new Map([["nu", { status: "ready", resolved, context: {} }]]));
-  assert.match(comparison, /12,000/);
-  assert.doesNotMatch(comparison, /15,000/);
 });
 
 test("a reviewed untranslated NU study description remains visible with its official source", () => {

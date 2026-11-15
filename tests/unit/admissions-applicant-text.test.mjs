@@ -5,6 +5,12 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { renderAdmissionsValue } from "../../frontend/javascript/pages/university/admissions-render.js";
 
+// Admissions labels come only from the language packs, so the English pack is loaded as in the app.
+global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
+const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+await initI18n();
+setLanguage("eng", { emit: false });
+
 const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
 const LOCALIZATION = ["eng", "ru", "kaz"].map(language => readFileSync(new URL(`../../frontend/Localization/${language}`, import.meta.url), "utf8"));
 const ENUM_KEY = /^university\.admissions\.catalog\.enum\.([a-z0-9_]+):/gm;

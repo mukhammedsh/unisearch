@@ -29,9 +29,11 @@ async function openContext(page, context, { language = "eng", theme = "light", p
     localStorage.setItem("unisearch_theme", selectedTheme);
   }, { selectedLanguage: language, selectedTheme: theme });
 
+  // The Overview also resolves the shared first-year route on the same endpoint; wait for this selection's answer.
   const responsePromise = page.waitForResponse((response) =>
     response.url().includes(`/universities/${MIT_ID}/admissions-context`)
-    && response.request().method() === "POST");
+    && response.request().method() === "POST"
+    && (response.request().postDataJSON()?.context?.study_option_id || "") === (context.option || ""));
   await page.goto(contextUrl(context));
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).not.toBeEmpty();
@@ -58,7 +60,7 @@ async function openFact(page, tab, id) {
 async function openAssessment(page) {
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements [data-requirements-match]");
 }
 
 async function openAdvanced(page) {
@@ -84,7 +86,6 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   const { data } = await openContext(page, context, {
     profile: {
       studyLevel: "Doctorate",
-      applicantRoute: "graduate",
       intendedEntryCycle: "2027 entry",
       languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 7.5, taken_on: "2025-03-15" }],
     },
@@ -117,7 +118,7 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   await expect(conflict).toContainText("Cambridge 190");
   await expect(conflict).toContainText(/Confirm accepted exam\/scale/i);
   await expect(page.locator("#admissionsCycle")).toHaveValue("");
-  await expect((await openAssessment(page)).locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 });
 
 test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an invented score", async ({ page }) => {
@@ -147,7 +148,7 @@ test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an inve
   await expect(fact).toContainText("GRE");
   const assessment = await openAssessment(page);
   await expect(assessment).toContainText(/No requirements-match percentage is available|Our data has no numeric minimum/i);
-  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   await expect(page.locator("#admissionsCycle")).toHaveValue("2027 entry");
 });
 
@@ -158,7 +159,7 @@ test("saved GRE evidence persists while Sloan's unassessed rule and cleared cycl
     localStorage.setItem("unisearch_ui_language_v1", "rus");
     localStorage.setItem("unisearch_theme", "dark");
     if (!sessionStorage.getItem("mit-mba-profile-seeded")) {
-      localStorage.setItem("unisearch_profile", JSON.stringify({ studyLevel: "Master", applicantRoute: "graduate" }));
+      localStorage.setItem("unisearch_profile", JSON.stringify({ studyLevel: "Master" }));
       sessionStorage.setItem("mit-mba-profile-seeded", "1");
     }
   });
@@ -225,6 +226,6 @@ test("saved GRE evidence persists while Sloan's unassessed rule and cleared cycl
   expect(cleared.assessment.chancePercent).toBeNull();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(cycle).toHaveValue("");
-  await expect((await openAssessment(page)).locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

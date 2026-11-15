@@ -20,6 +20,14 @@ const context = (extra = {}) => ({
 });
 const withRows = rows => context({ facts: rows, fact_groups: { deadlines: rows.map(row => row.id) } });
 const withDates = list => withRows([events(list)]);
+// Runs `run` with the reader's currency settings stored as the settings page stores them.
+const withCurrencySettings = (currency, mode, run) => {
+  const original = global.localStorage;
+  global.localStorage = { getItem: key => key === "unisearch_settings_cache_v1" ? JSON.stringify([
+    { key: "preferred_currency", value: currency }, { key: "currency_display_mode", value: mode },
+  ]) : null, setItem() {}, removeItem() {} };
+  try { run(); } finally { global.localStorage = original; }
+};
 const quote = extra => ({ min: 15000, max: 15000, currency: "USD", period: "2026-2027", billing_period: "academic_year",
   annual_comparable: true, fee_statuses: [], fee_status_match: "not_required", usd: { min: 15000, max: 15000 }, ...extra });
 
@@ -182,7 +190,13 @@ test("fee-status ranges, missing budgets, non-annual prices and missing prices s
   const range = costFact(context({ selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"],
     fee_status_match: "unknown", usd: { min: 13429, max: 63872 } }) } }), 0);
   assert.equal(range.status, "no_budget");
-  assert.match(range.text, /£10,050–£47,800 \(≈ \$13,429–\$63,872\)/);
+  // The range follows the reader's currency setting (USD by default); the "both" mode keeps the published pounds.
+  assert.match(range.text, /Tuition: ≈ \$[\d,]+ – \$[\d,]+\./);
+  withCurrencySettings("KZT", "both", () => {
+    const both = costFact(context({ selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", usd: { min: 13429, max: 63872 } }) } }), 0);
+    // Millions of tenge are written compactly; the published pounds stay exact.
+    assert.match(both.text, /≈ ₸\d+(?:\.\d)?M – ₸\d+M \(£10,050 – £47,800\)/);
+  });
   assert.match(range.notes.join(" "), /Depends on fee status/);
   assert.match(range.notes.join(" "), /Add a yearly budget/);
   const program = costFact(context({ selected_costs: { tuition: quote({ billing_period: "whole_program", annual_comparable: false, usd: null }) } }), 20000);
@@ -253,13 +267,13 @@ test("the block appears only for a selected route and links to the dates and cos
   setLanguage("eng", { emit: false });
 });
 
-test("a cycle-scoped requirement offers the profile entry cycle or the entry-year field", () => {
+test("a cycle-scoped requirement opens the entry-year field of this university's selection", () => {
   const blocked = context({ assessment: { chancePercent: null, reason: "entry_cycle_required", activeChoice: { details: { checks: [] } } } });
   assert.match(requirementsFact(blocked).text, /Choose your entry year/);
-  const withProfile = renderAdmissionsKeyFacts(blocked, { profileCycle: "Fall 2027", now: NOW });
-  assert.match(withProfile, /data-key-facts-cycle="apply"/);
-  const withoutProfile = renderAdmissionsKeyFacts(blocked, { now: NOW });
-  assert.match(withoutProfile, /data-key-facts-cycle="edit"[^>]*>Set entry year</);
+  // The general profile holds no entry cycle, so the action never offers to copy one.
+  const html = renderAdmissionsKeyFacts(blocked, { now: NOW });
+  assert.match(html, /data-key-facts-cycle="edit"[^>]*>Set entry year</);
+  assert.doesNotMatch(html, /data-key-facts-cycle="apply"/);
   assert.doesNotMatch(renderAdmissionsKeyFacts(context(), { now: NOW }), /data-key-facts-cycle/);
 });
 
