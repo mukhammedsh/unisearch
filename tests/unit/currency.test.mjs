@@ -295,18 +295,21 @@ describe('currency.js', () => {
   });
 
   test('startRatesLoading stops waiting for slow rates and announces them when they change prices', async () => {
-    global.fetch = () => new Promise((resolve) => setTimeout(() => resolve({
-      ok: true,
-      json: async () => ({ rates: { USD: 1.0, KZT: 512.0 }, date: '2026-11-15', source: 'api' }),
-    }), 40));
-    const started = Date.now();
+    // The rates response is held until the test releases it, so no assertion depends on wall-clock timing.
+    let releaseRates;
+    const response = new Promise((resolve) => { releaseRates = resolve; });
+    global.fetch = () => response;
+    // Resolving while the response is still held proves the first render does not wait for slow rates.
     await startRatesLoading(5);
-    assert.ok(Date.now() - started < 40, 'the first render does not wait for slow rates');
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 0);
+    assert.notStrictEqual(convert(1, 'USD', 'KZT'), 512.0);
+    releaseRates({ ok: true, json: async () => ({ rates: { USD: 1.0, KZT: 512.0 }, date: '2026-11-15', source: 'api' }) });
+    for (let tick = 0; tick < 50 && !dispatchedEvents.some((e) => e.type === 'currencyRatesUpdated'); tick += 1) {
+      await new Promise((resolve) => setImmediate(resolve));
+    }
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 1);
+    // Late rates never pose as a currency change, which would rebuild pages the reader is working in.
     assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 0);
-    await new Promise((resolve) => setTimeout(resolve, 80));
-    const announced = dispatchedEvents.filter((e) => e.type === 'currencyChanged');
-    assert.strictEqual(announced.length, 1);
-    assert.strictEqual(announced[0].detail.reason, 'rates');
     assert.strictEqual(convert(1, 'USD', 'KZT'), 512.0);
 
     // Rates that arrive in time are used by the first render without a redraw.
@@ -314,6 +317,6 @@ describe('currency.js', () => {
     global.fetch = async () => ({ ok: true, json: async () => ({ rates: { USD: 1.0, KZT: 515.0 }, date: '2026-11-15', source: 'api' }) });
     await startRatesLoading(1000);
     assert.strictEqual(convert(1, 'USD', 'KZT'), 515.0);
-    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 1);
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 1);
   });
 });
