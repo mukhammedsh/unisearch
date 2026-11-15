@@ -22,7 +22,9 @@ async function openContext(page, context) {
   });
   const responsePromise = page.waitForResponse((response) => {
     const url = new URL(response.url());
-    return url.pathname === `/universities/${context.university}/admissions-context` && response.request().method() === "POST";
+    // The Overview also resolves the shared first-year route on the same endpoint; wait for this selection's answer.
+    return url.pathname === `/universities/${context.university}/admissions-context` && response.request().method() === "POST"
+      && (response.request().postDataJSON()?.context?.study_option_id || "") === (context.option || "");
   });
   await page.goto(contextUrl(context));
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");

@@ -29,9 +29,11 @@ async function openContext(page, context, { language = "eng", theme = "light", p
     localStorage.setItem("unisearch_theme", selectedTheme);
   }, { selectedLanguage: language, selectedTheme: theme });
 
+  // The Overview also resolves the shared first-year route on the same endpoint; wait for this selection's answer.
   const responsePromise = page.waitForResponse((response) =>
     response.url().includes(`/universities/${MIT_ID}/admissions-context`)
-    && response.request().method() === "POST");
+    && response.request().method() === "POST"
+    && (response.request().postDataJSON()?.context?.study_option_id || "") === (context.option || ""));
   await page.goto(contextUrl(context));
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).not.toBeEmpty();
