@@ -817,6 +817,10 @@ university.admissions.poly_gpa: Деректер қолжетімді болға
 university.admissions.range: Шамамен алынған аралық
 university.admissions.supplementary_required: Қосымша талап етіледі
 university.back_to_list: Артқа
+university.cover_credit.text: Фото: {author}, {license}
+university.cover_credit.text_modified: Фото: {author}, {license} (кесілген)
+university.cover_credit.unknown_author: Авторы көрсетілмеген
+university.cover_credit.source_title: Фотосурет дереккөзінің лицензиясы бар бетін ашу
 university.chat_assistant: Чат көмекшісі
 university.clear: Тазалау
 university.discounts_scholarships: Жеңілдіктер мен стипендиялар

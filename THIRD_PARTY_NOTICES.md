@@ -58,7 +58,7 @@ This project uses or references the following third-party icon, font, and brand 
   - The root MIT License of this project does **NOT** apply to any third-party university trademarks, logos, or campus photographs.
 - Use in UniSearch:
   - University names, logos, and crests are used only to identify the institution a catalog entry refers to (nominative use), in a non-commercial educational project.
-  - Campus photographs are copyrighted works. Trademark nominative use does not cover them, so each photograph must come from a source that permits reuse, as described in `backend/data/university_assets/README.md`.
+  - Campus photographs are freely licensed files from Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA), cropped and resized. Each photograph's author, license and Commons file page are listed in `backend/data/university_assets/credits.json` and shown as a credit on the university page cover; see `backend/data/university_assets/README.md`.
   - Use of these assets does not imply any official affiliation with, endorsement by, or sponsorship from the respective academic institutions.
 - Notice & Takedown Policy:
   - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or removal, please contact us at **unisearch.sup@gmail.com** or open a GitHub Issue.

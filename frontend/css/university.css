@@ -162,6 +162,32 @@
   display: block;
 }
 
+/* Photo credit: the photo license requires a visible author and license next to the photograph. */
+.d-cover-credit {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 2;
+  max-width: calc(100% - 64px - var(--space-12)); /* spacing-exception: clears the 64px cover logo and its inset */
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--media-caption-bg);
+  color: var(--text-inverse);
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+a.d-cover-credit:hover {
+  text-decoration: underline;
+}
+
+a.d-cover-credit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .d-cover-back {
   position: absolute;
   top: 16px;

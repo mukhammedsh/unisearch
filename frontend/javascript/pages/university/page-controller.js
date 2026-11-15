@@ -19,6 +19,7 @@ import { renderCoverageSection, renderExtraSection, renderOverviewSection, rende
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
 import { mountOverviewSummary } from "./overview-summary.js";
+import { renderCoverCredit } from "./cover-credit.js";
 import { heroIcon } from "../../icons.js";
 import {
   fetchUniversityDetailCached,
@@ -185,7 +186,10 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
   const coverEl = document.getElementById("detailCover");
-  if (coverEl) coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
+  if (coverEl) {
+    coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
+    renderCoverCredit(coverEl, universityId);
+  }
 
   const logoEl = document.getElementById("detailLogo");
   if (logoEl) {

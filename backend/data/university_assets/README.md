@@ -23,8 +23,9 @@ This directory contains visual assets (logos and campus cover thumbnails) for un
    - They are used on the UniSearch platform only to identify the institution a catalog entry refers to (nominative use), in a non-commercial educational project.
 2. **Campus Photography**:
    - Campus photographs remain the property of their respective photographers, copyright holders, or academic institutions.
-   - Photographs are copyrighted works; nominative trademark use does not cover them. Add or replace a photograph only from a source that permits reuse: a freely licensed file (for example on Wikimedia Commons under CC0, CC BY, or CC BY-SA) or press or media material the university publishes for reuse. Do not take photographs from news sites, photo stocks, or social media.
-   - With every new or replaced photograph, record the university, file name, source page URL, author, and license in the pull request description, and keep any attribution the license requires.
+   - Photographs are copyrighted works; nominative trademark use does not cover them. Every campus photograph comes from a freely licensed file on Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA). Do not take photographs from search engines, news sites, photo stocks, or social media.
+   - `credits.json` records each photograph's Commons file page (`source_url`), `author`, `license`, `license_url`, and whether it was cropped (`modified`). The university page shows this credit on the cover with a link to the file page, as the CC licenses require. `npm run audit:images` fails when a university has no credit, a non-Commons source, or a license outside that list.
+   - To add or replace a photograph: pick a landscape file at least 1600 px wide on Commons, save its 1920 px rendition as `thumbnails/<university-id>.jpg`, add its entry to `credits.json` from the file page, then run `scripts/generate-university-image-variants.py` and `npm run audit:images`.
 3. **Exclusion from the MIT License**:
    - The UniSearch software MIT License (`LICENSE` at root) applies to the project source code and original software design.
    - It does **not** grant or convey any rights to third-party university trademarks, logos, or campus photographs.

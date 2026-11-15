@@ -21,10 +21,11 @@ FULL_SIZE = (1600, 900)
 MEDIUM_SIZE = (960, 540)
 SMALL_SIZE = (640, 360)
 
+# Byte limits match scripts/audit-university-images.mjs, which also requires each WebP to be smaller than its JPG.
 FULL_HARD_LIMIT = 800 * 1024
-FULL_WEBP_LIMIT = 900 * 1024
-MEDIUM_WEBP_LIMIT = 360 * 1024
-SMALL_WEBP_LIMIT = 180 * 1024
+FULL_WEBP_LIMIT = 700 * 1024
+MEDIUM_WEBP_LIMIT = 240 * 1024
+SMALL_WEBP_LIMIT = 105 * 1024
 
 
 def center_crop_resize(image: Image.Image, size: tuple[int, int]) -> Image.Image:
@@ -66,12 +67,14 @@ def save_webp(image: Image.Image, path: Path, quality: int) -> None:
     image.save(path, format="WEBP", quality=quality, method=6)
 
 
-def save_webp_under_limit(image: Image.Image, path: Path, start_quality: int, max_bytes: int) -> None:
-    for quality in range(start_quality, 67, -2):
+def save_webp_under_limit(image: Image.Image, path: Path, start_quality: int, max_bytes: int, jpeg_path: Path) -> None:
+    # The WebP must also stay smaller than its JPG fallback, otherwise serving it saves nothing.
+    limit = min(max_bytes, jpeg_path.stat().st_size - 1)
+    for quality in range(start_quality, 59, -2):
         save_webp(image, path, quality=quality)
-        if path.stat().st_size <= max_bytes:
+        if path.stat().st_size <= limit:
             return
-    save_webp(image, path, quality=68)
+    save_webp(image, path, quality=60)
 
 
 def should_rewrite_full(path: Path, image: Image.Image) -> bool:
@@ -123,18 +126,21 @@ def main() -> int:
             THUMBNAILS / webp_name,
             start_quality=86,
             max_bytes=FULL_WEBP_LIMIT,
+            jpeg_path=source_path,
         )
         save_webp_under_limit(
             medium,
             THUMBNAILS_MEDIUM / webp_name,
             start_quality=84,
             max_bytes=MEDIUM_WEBP_LIMIT,
+            jpeg_path=THUMBNAILS_MEDIUM / source_path.name,
         )
         save_webp_under_limit(
             small,
             THUMBNAILS_SMALL / webp_name,
             start_quality=82,
             max_bytes=SMALL_WEBP_LIMIT,
+            jpeg_path=THUMBNAILS_SMALL / source_path.name,
         )
         generated_medium += 1
         generated_small += 1

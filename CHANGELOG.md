@@ -7,6 +7,7 @@ All notable project changes should be recorded here.
 Minor release: returning users see a simpler profile and admission page, and a program with a single application route is read directly. Saved profiles keep working because removed profile keys are stripped on load, so the change is not major.
 
 ### Added
+- The university page cover shows a photo credit ("Photo: author, license (cropped)") that links to the photograph's Wikimedia Commons file page, as the photo licenses require. Credits come from `backend/data/university_assets/credits.json`, served with the other university assets.
 - Added `applicant_route` (`first_year`, `transfer`, `graduate` or null) to application route summaries in the admissions API responses, derived for every route during catalog preparation.
 - A live "How UniFit will use your profile" summary on the profile page lists each group of answers as used or not used, echoes the entered values (for example "GPA 4.6 / 5, IELTS 6.5") and says what to add.
 - A "Save and show matches" profile action saves the profile and opens the catalog sorted by UniFit with the profile's study level pre-selected. The first-visit catalog tour does not open over those results.
@@ -61,6 +62,9 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - The `citizenshipStatus` field from minimum-requirements responses, the citizenship service and its tests (`backend/app/services/citizenship.py`, `backend/tests/test_citizenship_service.py`), and the country list module (`frontend/javascript/utils/countries.js`).
 
 ### Fixed
+- Replaced every campus photograph whose source was unknown with a freely licensed Wikimedia Commons photograph (CC0, public domain, CC BY or CC BY-SA) for 48 universities. Astana Medical University and KIMEP University have no reusable photograph of sufficient size, so their old photographs were removed and their pages fall back to the logo.
+- `npm run audit:images` fails when a university photograph has no credit, a non-Commons source or a non-free license, and accepts a university without a photograph only when no photograph files remain.
+- `scripts/generate-university-image-variants.py` uses the same WebP byte limits as the image audit and keeps every WebP smaller than its JPG fallback, so regenerated thumbnails pass `npm run audit:images`.
 - The catalog map shows the "© OpenStreetMap contributors" attribution that the OpenStreetMap license and tile policy require, linked to the OpenStreetMap copyright page, and loads tiles from the single `tile.openstreetmap.org` host the tile policy recommends.
 - The Terms of Use and Privacy Policy (revised November 15, 2026) name the hosting providers (Firebase Hosting and Render) and say that technical request data may be processed outside Kazakhstan, state that the Terms are governed by the laws of the Republic of Kazakhstan, ask users under 18 to use the site with a parent's or guardian's knowledge, and describe the operator as a student team instead of listing personal names. University names and logos are described as used only to identify institutions, and campus photographs as used only from sources that permit reuse, in place of the US "fair use" wording, which does not cover photographs.
 - The About page introduces the co-founders by role without personal names, and `GOVERNANCE.md` identifies maintainers by GitHub handle only.

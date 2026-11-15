@@ -820,6 +820,10 @@ university.admissions.poly_gpa: GPA политехнического колле�
 university.admissions.range: Примерный диапазон
 university.admissions.supplementary_required: Нужна дополнительная заявка
 university.back_to_list: Назад
+university.cover_credit.text: Фото: {author}, {license}
+university.cover_credit.text_modified: Фото: {author}, {license} (кадрировано)
+university.cover_credit.unknown_author: Автор не указан
+university.cover_credit.source_title: Открыть страницу источника фото с лицензией
 university.chat_assistant: Чат-ассистент
 university.clear: Очистить
 university.discounts_scholarships: Скидки и стипендии
