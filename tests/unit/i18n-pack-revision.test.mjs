@@ -14,5 +14,5 @@ test("the locale pack revision matches the localization files", async () => {
   const expected = hash.digest("hex").slice(0, 8);
   const source = await readFile(new URL("../../frontend/javascript/i18n.js", import.meta.url), "utf8");
   const revision = source.match(/const I18N_PACK_REVISION = "([^"]+)"/)?.[1];
-  assert.equal(revision, expected, `Localization files changed: set I18N_PACK_REVISION in frontend/javascript/i18n.js to "${expected}".`);
+  assert.equal(revision, expected, `Localization files changed: run "npm run fix:i18n" (sets I18N_PACK_REVISION to "${expected}").`);
 });

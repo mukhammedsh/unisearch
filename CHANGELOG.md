@@ -21,6 +21,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A comparison pair stays within one data group. In compare mode, universities from the other group are marked and cannot join the pair, and the tray says why; an older link to a mixed pair explains why it is not compared and links both university pages.
 
 ### Changed
+- `npm run fix:i18n` updates the locale pack cache revision after localization edits, and `npm run check:i18n` fails while the revision is stale.
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
 - The applicant category follows the selected application route. The admissions page and the comparison no longer ask for it, and older links that still carry the removed applicant parameter ignore it.
 - A program with exactly one application route reads that route directly, without saving it.
@@ -66,6 +67,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - Earlier-format earnings figures on the Overview tab follow the currency settings.
 - Every page loads live exchange rates at start, not only the catalog. A university page, the comparison or the profile opened directly used to convert with the built-in fallback table (for example 450 ₸ per dollar) for the whole visit. Rates cached earlier in the session apply from the first render; rates that arrive after a short wait redraw the prices already on screen.
 - The profile budget keeps the amount and currency it was entered in. Changing the display currency used to convert, round and save the budget each time, so switching back and forth drifted it (10,000,000 ₸ became 9,999,900 ₸); the field now shows a conversion and stores a new amount only when one is typed.
+- With a price range set on the full yearly cost, a university with reviewed data that publishes only tuition (Imperial College London, Nazarbayev University) stays in the results with its tuition marked as a partial price match, as its card already shows tuition. They used to disappear from every price-filtered list. The budget filter still requires a full yearly cost.
 - The catalog price slider labels its right edge "$100,000+", because at that position the filter has no upper limit and pricier universities still match. Screen readers hear "and above".
 - The gap between the key figures and the next section on the university Overview tab is 32px on desktop, as on phones, instead of stacking the last row's padding and two box paddings (56px).
 - University page tabs end with one bottom inset (24px on desktop, 12px on phones) instead of stacking the last section's padding, trailing margins and empty helper rows (up to 100px on the Admission tab). The empty status row above the cover no longer adds 28px, and top-level Admission sections are separated like Overview sections.

@@ -2085,10 +2085,15 @@ def _filter_university_pairs(
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
-            cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
+            basis = cost_basis
+            cost = _catalog_cost_range_usd(u, basis, mode_pref)
+            # A reviewed card without a published total shows its tuition, so the filter reads the same price.
+            if cost is None and basis == "annual_total" and u.get("id") in admissions_catalog.INSTITUTION_IDS:
+                basis = "tuition"
+                cost = _catalog_cost_range_usd(u, basis, mode_pref)
             if cost is None:
                 continue
-            quote = _catalog_costs(u, mode_pref).get(cost_basis) or {}
+            quote = _catalog_costs(u, mode_pref).get(basis) or {}
             if quote.get("intervals") or quote.get("amounts"):
                 from app.services.currency import convert
                 try:
@@ -2108,7 +2113,8 @@ def _filter_university_pairs(
                 if (min_tuition is not None and cost[1] < min_tuition) or (max_tuition is not None and cost[0] > max_tuition):
                     continue
                 quote["filter_match"] = "full" if (min_tuition is None or cost[0] >= min_tuition) and (max_tuition is None or cost[1] <= max_tuition) else "partial"
-            if quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
+            # Tuition alone cannot confirm that a full yearly budget fits the range.
+            if basis != cost_basis or quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
                 quote["filter_match"] = "partial"
             filtered.append((u, m))
         pairs = filtered

@@ -27,7 +27,7 @@
 - **Frontend:** Vanilla JavaScript, HTML, and CSS in `frontend/`.
 - **Backend:** Python 3.12+ and FastAPI in `backend/app/`.
 - **UI styling:** No UI frameworks. Use CSS variables from `frontend/css/style.css`.
-- **Localization:** English, Russian and Kazakh strings live in `frontend/Localization/eng`, `frontend/Localization/ru` and `frontend/Localization/kaz`. Keep UI keys aligned across all three languages. Hardcoded user-facing text in HTML or JavaScript is prohibited; official source prose remains in its original language.
+- **Localization:** English, Russian and Kazakh strings live in `frontend/Localization/eng`, `frontend/Localization/ru` and `frontend/Localization/kaz`. Keep UI keys aligned across all three languages. After any change to these files, run `npm run fix:i18n`: it updates the locale pack cache revision, without which returning readers see new keys as blank text (`npm run check:i18n` fails until it is current). Hardcoded user-facing text in HTML or JavaScript is prohibited; official source prose remains in its original language.
 - **Icons:** Use Heroicons through `frontend/javascript/icons.js`. Run `npm run sync:heroicons` only when icon sources need refreshing.
 - **Data:** JSON storage in `backend/data/`; university media in `backend/data/university_assets/`.
 - **Tests:** Playwright E2E in `tests/e2e/`, Node.js tests in `tests/unit/`, and Python unittest in `backend/tests/`. Use commands from `package.json`; do not introduce another test runner without a demonstrated need. In Playwright E2E tests, always synchronize on page readiness (e.g. `data-page` attributes, non-skeleton content, or confirmed active state) before simulating user clicks and interactions to prevent dropped events and race conditions under CI load.
