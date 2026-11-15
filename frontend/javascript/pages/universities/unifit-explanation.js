@@ -104,7 +104,7 @@ export const unmetMinimums = (checks, { examLabel, formatValue, joiner }) => (Ar
   .map((check) => {
     const exam = text(check.examId || check.exam);
     return {
-      exam: exam.split(" or ").map(examLabel).join(` ${joiner} `),
+      exam: exam.split(" or ").map((name) => examLabel(name)).join(` ${joiner} `),
       minimum: formatValue(exam, check.minimum, "requirement"),
       provided: typeof check.provided === "string" ? examLabel(check.provided) : formatValue(exam, check.provided, "profile"),
     };
@@ -141,6 +141,6 @@ export const missingExamNames = (checks, { examLabel, languageTest, joiner }) =>
     .filter((check) => check && check.provided == null && check.status !== "met")
     .map((check) => (check.mode === "any"
       ? languageTest
-      : text(check.examId || check.exam).split(" or ").map(examLabel).join(` ${joiner} `)))
+      : text(check.examId || check.exam).split(" or ").map((name) => examLabel(name)).join(` ${joiner} `)))
     .filter(Boolean),
 )];

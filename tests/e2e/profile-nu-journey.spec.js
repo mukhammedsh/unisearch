@@ -84,8 +84,9 @@ test("currency settings do not silently save unrelated profile drafts", async ({
   await expect(page.locator("#profileBudgetUnit")).toBeFocused();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.interests || "").toBe("");
-  expect(saved.budgetCurrency).toBe("KZT");
-  expect(saved.budget).toBeLessThan(Number(await page.locator("#budgetInput").inputValue()));
+  // The saved budget keeps the amount and currency it was entered in; the field only shows a conversion.
+  expect(saved.budgetCurrency).toBe("USD");
+  expect(saved.budget).toBe(20000);
 });
 
 test("saving a profile keeps university choices saved by another tab", async ({ page, context }) => {

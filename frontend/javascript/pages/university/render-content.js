@@ -1,5 +1,5 @@
 import { escapeHtml, escapeHtmlAttr, markMotionEnter, motionPress } from "../../utils.js";
-import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { getCurrentLanguage, t } from "../../i18n.js";
 import { applyPercentWidths } from "../../university-detail-helpers.js";
 import { humanizeMachineLabel, translateAdmissionText, translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";

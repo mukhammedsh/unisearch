@@ -133,7 +133,7 @@ class RefreshScriptSourcesTests(unittest.TestCase):
             self.assertGreater(area["population"], 0, uid)
         universities = json.loads((backend / "data" / "universities.json").read_text(encoding="utf-8"))
         ids = {row["id"] for row in universities}
-        self.assertTrue(set(refresh.OFFICIAL_URBAN_AREA_POPULATION) <= ids)
+        self.assertLessEqual(set(refresh.OFFICIAL_URBAN_AREA_POPULATION), ids)
         for row in universities:
             # Stored factors match what the shared scales give for the stored raw metrics.
             self.assertEqual(row["factors"]["city_vs_campus"], pf.location(row), row["id"])

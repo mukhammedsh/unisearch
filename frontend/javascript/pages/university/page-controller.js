@@ -19,6 +19,7 @@ import { renderCoverageSection, renderExtraSection, renderOverviewSection, rende
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
 import { mountOverviewSummary } from "./overview-summary.js";
+import { renderCoverCredit } from "./cover-credit.js";
 import { heroIcon } from "../../icons.js";
 import {
   fetchUniversityDetailCached,
@@ -185,7 +186,11 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
   const coverEl = document.getElementById("detailCover");
-  if (coverEl) coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
+  if (coverEl) {
+    coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
+    // The photo credit loads after the cover; a failure leaves the cover without a caption instead of breaking the page.
+    renderCoverCredit(coverEl, universityId).catch((error) => console.warn("cover_credit_render_failed", error));
+  }
 
   const logoEl = document.getElementById("detailLogo");
   if (logoEl) {

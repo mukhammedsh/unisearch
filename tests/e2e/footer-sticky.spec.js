@@ -57,7 +57,7 @@ test.describe("Sticky Footer Verification Across Pages", () => {
     await markTourAsSeen(page);
     for (const pageItem of ["/terms.html", "/privacy.html"]) {
       await page.goto(pageItem);
-      await expect(page.locator(".legal-revision")).toHaveText("Last updated: September 14, 2026");
+      await expect(page.locator(".legal-revision")).toHaveText("Last updated: November 15, 2026");
     }
   });
 });

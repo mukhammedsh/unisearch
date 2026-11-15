@@ -429,6 +429,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    row-gap: var(--space-1);
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--space-5);
@@ -441,6 +443,23 @@
     font-weight: var(--font-weight-medium);
     color: var(--text-muted);
     line-height: 1.4;
+}
+
+/* QS requires its source notice next to the rankings it permits us to show: a full-width quiet row. */
+.footer-content .footer-attribution {
+    flex-basis: 100%;
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-regular);
+}
+
+.footer-attribution a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.footer-attribution a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 
 .footer-meta {
