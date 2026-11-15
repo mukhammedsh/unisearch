@@ -31,8 +31,9 @@ for (const scenario of scenarios) {
     await expectPageReady(page, "about", scenario.theme);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("UniSearch – талапкерлер үшін талапкерлер жасаған қызмет.");
     await expect(page.locator("#about-team-title")).toHaveText("Біздің команда");
-    await expect(page.locator(".about-team-member h3").nth(0)).toHaveText("Мұхаммед Шабдалұлы");
-    await expect(page.locator(".about-team-member h3").nth(1)).toHaveText("Ерболат Рашидов");
+    // The team is introduced by role, without personal names.
+    await expect(page.locator(".about-team-member h3").nth(0)).toHaveText("Тең құрылтайшы және жетекші әзірлеуші");
+    await expect(page.locator(".about-team-member h3").nth(1)).toHaveText("Тең құрылтайшы және интерфейстің жетекші әзірлеушісі");
     await expect(page.locator("#about-contact-title")).toHaveText("Бізбен байланысу");
 
     const contactLinks = page.locator(".about-contact-list a");

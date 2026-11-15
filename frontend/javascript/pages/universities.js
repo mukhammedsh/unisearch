@@ -2661,8 +2661,9 @@ export function initUniversitiesPage() {
                 wheelPxPerZoomLevel: 60,
                 keyboard: true,
             }).setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 noWrap: false,
+                attribution: `&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">${escapeHtml(t("universities.map_controls.osm_contributors", "OpenStreetMap contributors"))}</a>`,
             }).addTo(mapInstance);
             L.control.zoom({
                 position: "topleft",
@@ -4203,7 +4204,7 @@ ${rankInnerHtml}
         const logoImgHtml = `<img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
-            <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-final-src="${escapeHtmlAttr(logoSrcFull)}">
+            <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}">
             <div class="uni-logo">${logoImgHtml}</div>
             </div>`;
         const headHtml = hideMedia
