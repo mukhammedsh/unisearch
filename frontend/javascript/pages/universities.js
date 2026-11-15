@@ -2463,7 +2463,7 @@ export function initUniversitiesPage() {
         window.removeEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
     }
     __universitiesRatesUpdatedHandler = () => {
-        if (typeof fetchAndRender === "function" && !isCompareResultsMode()) fetchAndRender();
+        if (typeof fetchAndRender === "function" && !isCompareResultsMode()) fetchAndRender().catch((err) => console.error(err));
     };
     window.addEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
 
