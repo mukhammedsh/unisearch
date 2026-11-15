@@ -94,19 +94,11 @@ body[data-page="about"] {
   line-height: var(--leading-tight);
 }
 
-.about-team-identity p,
 .about-team-bio {
   margin: 0;
+  color: var(--text);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
-}
-
-.about-team-identity p {
-  color: var(--text-muted);
-}
-
-.about-team-bio {
-  color: var(--text);
 }
 
 .about-contact-method {

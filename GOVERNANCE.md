@@ -20,8 +20,8 @@ UniSearch is led jointly by its two co-founders, balanced by transparent public 
 
 | Role | Current Role Holders | Key Responsibilities | Access Level |
 | --- | --- | --- | --- |
-| **Co-founder & Lead Developer** | [Mukhammed Shabdaluly (@mukhammedsh)](https://github.com/mukhammedsh) | Core development, technical architecture, release signing, security disclosures, and repository administration. | GitHub repository Admin |
-| **Co-founder & UI/UX Lead** | [Yerbolat Rashidov (@raiselx)](https://github.com/raiselx) | UI/UX design direction, Calm Academic Workspace specification (`docs/design-system.md`), frontend styling reviews, and design token integrity. | GitHub repository Write |
+| **Co-founder & Lead Developer** | [@mukhammedsh](https://github.com/mukhammedsh) | Core development, technical architecture, release signing, security disclosures, and repository administration. | GitHub repository Admin |
+| **Co-founder & UI/UX Lead** | [@raiselx](https://github.com/raiselx) | UI/UX design direction, Calm Academic Workspace specification (`docs/design-system.md`), frontend styling reviews, and design token integrity. | GitHub repository Write |
 | **Core Contributors** | Named after nomination and approval | Code review, triage, subsystem maintenance (frontend, backend, data catalog), authoring tests. | Write only when separately granted |
 | **Community Contributors** | Open to all participants | Bug reports, localized translation fixes, university data corrections, feature PRs. | Read / Fork & PR |
 
@@ -88,7 +88,7 @@ Before granting a contributor write, maintain, admin, or secret access, the repo
 To satisfy OpenSSF sustainability requirements (`bus_factor` and `access_continuity`), UniSearch implements clear measures to ensure uninterrupted project maintenance:
 
 ### Access Redundancy & Bus Factor
-* **Bus Factor (>= 2):** Administrative and engineering continuity is distributed between [Mukhammed Shabdaluly (@mukhammedsh)](https://github.com/mukhammedsh), Co-founder & Lead Developer, and [Yerbolat Rashidov (@raiselx)](https://github.com/raiselx), Co-founder & UI/UX Lead. Both key members have write access and deep domain knowledge of their respective areas (Backend/Scoring and Frontend/UI/UX), ensuring the project maintains a verified bus factor of at least two.
+* **Bus Factor (>= 2):** Administrative and engineering continuity is distributed between [@mukhammedsh](https://github.com/mukhammedsh), Co-founder & Lead Developer, and [@raiselx](https://github.com/raiselx), Co-founder & UI/UX Lead. Both key members have write access and deep domain knowledge of their respective areas (Backend/Scoring and Frontend/UI/UX), ensuring the project maintains a verified bus factor of at least two.
 * **Repository Administration:** GitHub currently lists @mukhammedsh as the sole repository Admin and @raiselx with Write access. The maintainer confirmed administrator MFA with security keys on 2026-10-15. The owner manages repository settings and Actions secrets; any new sensitive access must require MFA.
 * **Credential & Secret Custody:** Production deployment keys, domain DNS management credentials, and publishing secrets are documented as residing in an encrypted project vault with emergency access delegation between the lead maintainers. Review the actual provider and vault access whenever responsibilities change.
 
