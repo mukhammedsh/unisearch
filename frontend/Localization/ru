@@ -24,6 +24,7 @@ about.role.planning: Сооснователь и ведущий разработ
 about.team_kicker: Наша команда
 about.title: UniSearch – сервис, созданный абитуриентами для абитуриентов.
 footer.copyright: © 2026 UniSearch
+footer.qs_attribution: Глобальный рейтинг: Source: QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). With permission from QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
 filter_any: Любой
 filter_grant: Грант
 filter_paid: Платно

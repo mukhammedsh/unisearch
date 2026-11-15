@@ -96,6 +96,18 @@ This project uses or references the following third-party icon, font, and brand 
   - The catalog map shows the tiles with a visible "© OpenStreetMap contributors" attribution that links to the copyright page
   - Heavy or bulk tile use, prefetching, and offline tile download are not permitted by the tile policy; move to another tile provider if traffic grows
 
+## 8. QS World University Rankings
+
+- Publisher: QS Quacquarelli Symonds Ltd.
+- Terms: https://www.topuniversities.com/terms-conditions
+- Permission relied on: the terms allow reproducing, distributing and displaying QS World University Rankings data as displayed on topuniversities.com, provided that the original source attribution, the copyright notice and the phrase "With permission from QS Quacquarelli Symonds" appear alongside it, with hyperlinks retained. The data may not be reconfigured.
+- How this project uses it:
+  - `backend/data/universities.json` stores each university's published QS World University Rankings 2026 position (`rank`, `rank_meta`) unchanged; universities QS does not publish carry no position
+  - The catalog, university and comparison pages show the position and name QS as the source, and their footer carries the notice "Source: QS Quacquarelli Symonds (www.qs.com). With permission from QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd." with a link to www.qs.com
+- Limits:
+  - The permission covers this non-commercial use. Any commercial use of the rankings (advertising, paid features, selling data) needs written permission from QS via content@qs.com
+  - Only the published position is shown; QS indicator scores and full ranking tables are not copied
+
 ## Summary
 
 - Main UI icon pack: Heroicons (MIT)
@@ -103,5 +115,6 @@ This project uses or references the following third-party icon, font, and brand 
 - Country flags: flag-icons (MIT)
 - Map libraries: Leaflet (BSD 2-Clause) and Leaflet.markercluster (MIT)
 - Map data and tiles: OpenStreetMap (ODbL, attribution required; Tile Usage Policy)
+- Global ranks: QS World University Rankings, shown with QS's required source notice; commercial use needs QS's written permission
 - GitHub: text link only; the logomark is governed by GitHub brand usage rules
 - University assets (logos and campus photos): Property of respective institutions and copyright holders; excluded from the MIT License; logos used to identify institutions, photographs only from sources that permit reuse, with a Notice & Takedown procedure.
