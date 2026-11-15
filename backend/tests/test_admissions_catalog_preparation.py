@@ -139,10 +139,19 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         snapshot = read(REPO / "backend/data/admissions/catalog.json")
         self.assertEqual(snapshot["schema_version"], self.batch["schema_version"])
         self.assertIs(snapshot["runtime_active"], True)
-        for original, stored in zip(self.batch["institutions"], snapshot["institutions"]):
-            for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources", "collection_tasks", "organization", "dossier_metadata"):
+        research = read(REPO / "backend/data/admissions/research.json")
+        self.assertEqual(research["schema_version"], preparation.RESEARCH_VERSION)
+        for original, stored, notes in zip(self.batch["institutions"], snapshot["institutions"], research["institutions"]):
+            for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources"):
                 self.assertEqual(stored[key], original[key], key)
             self.assertEqual([row["path"] for row in stored["inputs"]], [row["path"] for row in original["inputs"]])
+            self.assertTrue(set(preparation.MAINTAINER_KEYS).isdisjoint(stored), "maintainer records stay out of the runtime snapshot")
+            self.assertEqual(notes["id"], original["institution"]["id"])
+            for key in ("collection_tasks", "organization", "dossier_metadata"):
+                self.assertEqual(notes[key], original[key], key)
+            # Input hashes depend on the checkout's line endings, so file lists are compared by path.
+            for key in ("supporting_records", "historical_provenance"):
+                self.assertEqual([row["path"] for row in notes[key]], [row["path"] for row in original[key]], key)
 
     def test_every_resolved_fact_preserves_significant_evidence(self):
         cache = {}
@@ -324,7 +333,9 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             destination = repo / ".tmp_test" / "prepared"
             prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": []}
             path = preparation.write_output(prepared, destination, repo)
-            self.assertEqual(read(path), prepared)
+            runtime, research = preparation.split_maintainer_records(prepared)
+            self.assertEqual(read(path), runtime)
+            self.assertEqual(read(destination / "admissions-research.json"), research)
             with self.assertRaisesRegex(preparation.PreparationError, "already exists"):
                 preparation.write_output(prepared, destination, repo)
             for invalid in (repo / "backend/data", repo / ".tmp_test", repo / "outside"):

@@ -14,6 +14,8 @@ DRAFTS = REPO / "backend/data/drafts"
 DOSSIER_BATCH = ("mit", "imperial-college-london-uk", "stanford-university-usa-ca")
 BATCH = (*DOSSIER_BATCH, "nazarbayev-university-kaz-astana")
 VERSION = "admissions-storage-1.0"
+RESEARCH_VERSION = "admissions-research-1.0"
+MAINTAINER_KEYS = ("collection_tasks", "organization", "supporting_records", "dossier_metadata", "historical_provenance")
 VOCABULARY_PATH = DRAFTS / "integration/vocabulary.json"
 ENTRY_VALUES = ("external", "external_restricted", "internal", "no_admission", "closed", "unresolved")
 APPLICANT_ROUTES = ("first_year", "transfer", "graduate")
@@ -545,6 +547,19 @@ def dump_records(value, depth=4, level=0):
     return "[\n" + ",\n".join(pad + dump_records(item, depth, level + 1) for item in value) + "\n" + " " * level + "]"
 
 
+def split_maintainer_records(prepared):
+    """Separate the runtime snapshot from the research records only maintainers read.
+
+    The backend never reads these blocks, so they live in their own file and keep the runtime snapshot small.
+    """
+    runtime = {**prepared, "institutions": [{key: value for key, value in row.items() if key not in MAINTAINER_KEYS}
+                                            for row in prepared["institutions"]]}
+    research = {"schema_version": RESEARCH_VERSION,
+                "institutions": [{"id": row["institution"]["id"], **{key: row[key] for key in MAINTAINER_KEYS}}
+                                 for row in prepared["institutions"]]}
+    return runtime, research
+
+
 def write_output(prepared, directory, repo=REPO):
     destination = Path(directory).resolve()
     root = Path(repo).resolve()
@@ -554,8 +569,11 @@ def write_output(prepared, directory, repo=REPO):
     require(not destination.exists(), "Output directory already exists; refusing to overwrite")
     destination.mkdir(parents=True, exist_ok=False)
     path = destination / "admissions-catalog.json"
+    runtime, research = split_maintainer_records(prepared)
     with path.open("x", encoding="utf-8", newline="\n") as stream:
-        stream.write(dump_records(prepared) + "\n")
+        stream.write(dump_records(runtime) + "\n")
+    with (destination / "admissions-research.json").open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(dump_records(research, depth=2) + "\n")
     nu = next((row for row in prepared["institutions"] if row["institution"]["id"] == "nazarbayev-university-kaz-astana"), None)
     if nu is not None:
         annotations = {"schema_version": "admissions-assessments-1.0", "records": _nu_adapter().build_nu_assessments(nu)}

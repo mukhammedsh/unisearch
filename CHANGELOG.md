@@ -22,6 +22,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 
 ### Changed
 - The reviewed admissions snapshot `backend/data/admissions/catalog.json` is stored as compact JSON with one line per record, cutting it from 25.4 MB to 18.2 MB (about 1.9 MB to 1.6 MB compressed) with identical content. `prepare_admissions_catalog.py` writes this format, so snapshot refreshes keep one reviewable line per fact. Backend cache revisions and detail ETags change once because they hash the file bytes.
+- The maintainer-only blocks of each reviewed institution (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`, about 650 KB) moved from the runtime snapshot to `backend/data/admissions/research.json`. The backend never read them; the preparation script writes both files and the preparation and editorial tests check the new file.
 - `npm run fix:i18n` updates the locale pack cache revision after localization edits, and `npm run check:i18n` fails while the revision is stale.
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
 - The applicant category follows the selected application route. The admissions page and the comparison no longer ask for it, and older links that still carry the removed applicant parameter ignore it.

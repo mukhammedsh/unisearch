@@ -27,7 +27,7 @@ The [JSON Schema](../backend/data/drafts/integration/schema.json) describes the 
 
 ## Shared representation
 
-The envelope identifies the contract version and contains four institution records. Preparation explicitly emits `runtime_active: false`; the production loader requires `runtime_active: true` after the coordinated review and activation. The shared shape supports both states without changing evidence records. Each institution retains its catalog snapshot and an input manifest with repository-relative paths and SHA-256 hashes. Hashes identify the exact input bytes; they do not establish source freshness or research completeness.
+The envelope identifies the contract version and contains four institution records. Preparation explicitly emits `runtime_active: false`; the production loader requires `runtime_active: true` after the coordinated review and activation. The shared shape supports both states without changing evidence records. Each institution retains its catalog snapshot and an input manifest with repository-relative paths and SHA-256 hashes. The blocks only maintainers use (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`) are stored per institution in `backend/data/admissions/research.json` (`admissions-research-1.0`) instead of the runtime snapshot; the backend does not read that file. Hashes identify the exact input bytes; they do not establish source freshness or research completeness.
 
 | Entity | Shared fields and meaning |
 | --- | --- |
