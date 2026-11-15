@@ -754,6 +754,8 @@ export const saveAllProfileChanges = (els, state) => {
     if (!gpaCheck.ok) return false;
 
     state.profile = applyBudgetEntry(state.profile, budgetCheck.value, state.budgetInputCurrency || getBudgetCurrency());
+    // A draft keeps the typed text; the saved profile stores the budget as a whole number, as before.
+    if (/^\d+$/.test(String(state.profile.budget))) state.profile.budget = Number(state.profile.budget);
     state.profile.gpa = gpaCheck.value;
     state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     state.profile.interests = getInterestsDraft(els);

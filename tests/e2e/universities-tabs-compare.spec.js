@@ -390,7 +390,7 @@ test("reviewed comparison opens on shared facts and saves a program chosen in ea
 
   await pickProgram(page, IMPERIAL_ID, { search: "Computing", option: "imperial-option-computing-meng", level: "undergraduate" });
   await expect.poll(() => savedChoice(page, IMPERIAL_ID)).toMatchObject({ studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng" });
-  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText("£");
+  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/≈ \$[\d,]+/); // pounds follow the default USD setting
   await expect(page.locator('[data-compare-row="route"] dd').nth(1)).toContainText("UCAS");
   await pickProgram(page, MIT_ID, { search: "Computer Science and Engineering", option: "mit-course-6-3-bachelor", route: "mit-first-year" });
   await expect.poll(() => savedChoice(page, MIT_ID)).toMatchObject({ studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year" });

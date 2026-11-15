@@ -316,7 +316,7 @@ test("NU Finance keeps ALEKS presence separate from the whole-program fee and mi
   await expect(tuition).toContainText(/35[\s,.]*000/);
   await expect(tuition).toContainText(/14[\s,.]*000/);
   await expect(tuition).toContainText("толық бағдарлама үшін");
-  await expect(tuition).toContainText("USD");
+  await expect(tuition).toContainText("$35,000"); // the amount names its currency in the reader's display setting
   await expect(tuition).not.toContainText("2027");
   await expect(tuition).not.toContainText("Imperial");
   await tuition.scrollIntoViewIfNeeded();
