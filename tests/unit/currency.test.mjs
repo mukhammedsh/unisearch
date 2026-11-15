@@ -302,11 +302,11 @@ describe('currency.js', () => {
     const started = Date.now();
     await startRatesLoading(5);
     assert.ok(Date.now() - started < 40, 'the first render does not wait for slow rates');
-    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 0);
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 0);
     await new Promise((resolve) => setTimeout(resolve, 80));
-    const announced = dispatchedEvents.filter((e) => e.type === 'currencyChanged');
-    assert.strictEqual(announced.length, 1);
-    assert.strictEqual(announced[0].detail.reason, 'rates');
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 1);
+    // Late rates never pose as a currency change, which would rebuild pages the reader is working in.
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 0);
     assert.strictEqual(convert(1, 'USD', 'KZT'), 512.0);
 
     // Rates that arrive in time are used by the first render without a redraw.
@@ -314,6 +314,6 @@ describe('currency.js', () => {
     global.fetch = async () => ({ ok: true, json: async () => ({ rates: { USD: 1.0, KZT: 515.0 }, date: '2026-11-15', source: 'api' }) });
     await startRatesLoading(1000);
     assert.strictEqual(convert(1, 'USD', 'KZT'), 515.0);
-    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyChanged').length, 1);
+    assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 1);
   });
 });

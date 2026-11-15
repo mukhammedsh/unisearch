@@ -290,6 +290,7 @@ let __universitiesScrollHandler = null;
 let __universitiesPagehideHandler = null;
 let __universitiesBeforeunloadHandler = null;
 let __universitiesCurrencyChangedHandler = null;
+let __universitiesRatesUpdatedHandler = null;
 let __universitiesMobileFilterKeydownHandler = null;
 let __universitiesRecentRelocationHandler = null;
 let __universitiesResizeHandler = null;
@@ -343,6 +344,10 @@ export function disposeUniversitiesPage() {
     if (__universitiesCurrencyChangedHandler) {
         window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
         __universitiesCurrencyChangedHandler = null;
+    }
+    if (__universitiesRatesUpdatedHandler) {
+        window.removeEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
+        __universitiesRatesUpdatedHandler = null;
     }
     if (__universitiesOnlineReconnectHandler) {
         window.removeEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
@@ -2452,6 +2457,15 @@ export function initUniversitiesPage() {
         }
     };
     window.addEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
+
+    // Live rates that arrive after the first render redraw the cards and slider bounds; filters stay as they are.
+    if (__universitiesRatesUpdatedHandler) {
+        window.removeEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
+    }
+    __universitiesRatesUpdatedHandler = () => {
+        if (typeof fetchAndRender === "function" && !isCompareResultsMode()) fetchAndRender();
+    };
+    window.addEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
 
     if (__universitiesCurrencyChangedHandler) {
         window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
