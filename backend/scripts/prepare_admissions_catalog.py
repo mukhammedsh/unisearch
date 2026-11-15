@@ -530,6 +530,21 @@ def prepare_batch(drafts=DRAFTS):
     return {"schema_version": VERSION, "runtime_active": False, "institutions": institutions}
 
 
+def dump_records(value, depth=4, level=0):
+    """Serialize JSON with one line per record (institutions[i].facts[j], ...) and compact content inside it.
+
+    Indentation and spacing were about a quarter of the snapshot, while a single-line file would make every
+    review diff unreadable; one line per record keeps diffs per fact and loads the same through json.loads.
+    """
+    if level >= depth or not isinstance(value, (dict, list)) or not value:
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    pad = " " * (level + 1)
+    if isinstance(value, dict):
+        rows = [f"{pad}{json.dumps(key, ensure_ascii=False)}:{dump_records(item, depth, level + 1)}" for key, item in value.items()]
+        return "{\n" + ",\n".join(rows) + "\n" + " " * level + "}"
+    return "[\n" + ",\n".join(pad + dump_records(item, depth, level + 1) for item in value) + "\n" + " " * level + "]"
+
+
 def write_output(prepared, directory, repo=REPO):
     destination = Path(directory).resolve()
     root = Path(repo).resolve()
@@ -540,8 +555,7 @@ def write_output(prepared, directory, repo=REPO):
     destination.mkdir(parents=True, exist_ok=False)
     path = destination / "admissions-catalog.json"
     with path.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(prepared, stream, ensure_ascii=False, indent=2)
-        stream.write("\n")
+        stream.write(dump_records(prepared) + "\n")
     nu = next((row for row in prepared["institutions"] if row["institution"]["id"] == "nazarbayev-university-kaz-astana"), None)
     if nu is not None:
         annotations = {"schema_version": "admissions-assessments-1.0", "records": _nu_adapter().build_nu_assessments(nu)}

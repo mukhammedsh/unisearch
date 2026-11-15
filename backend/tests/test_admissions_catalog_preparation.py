@@ -332,6 +332,18 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
                     preparation.write_output(prepared, invalid, repo)
             self.assertFalse((repo / "backend").exists())
 
+    def test_snapshot_serialization_is_lossless_with_one_line_per_record(self):
+        prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": [
+            {"institution": {"id": "a"}, "facts": [{"id": "f1", "value": "Кафедра, \"quoted\"\nline"}, {"id": "f2", "value": []}], "unknowns": []},
+        ]}
+        text = preparation.dump_records(prepared)
+        self.assertEqual(json.loads(text), prepared)
+        self.assertIn("Кафедра", text)
+        lines = text.splitlines()
+        self.assertEqual(sum(1 for line in lines if '"id":"f1"' in line), 1)
+        self.assertEqual(sum(1 for line in lines if '"id":"f2"' in line), 1)
+        self.assertIn(' "runtime_active":false,', lines)
+
     def test_every_record_has_one_closed_status_and_entry_value(self):
         vocabulary = read(preparation.VOCABULARY_PATH)
         publication, review = set(vocabulary["publication"]), {*vocabulary["review"], "not_recorded"}

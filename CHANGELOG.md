@@ -21,6 +21,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A comparison pair stays within one data group. In compare mode, universities from the other group are marked and cannot join the pair, and the tray says why; an older link to a mixed pair explains why it is not compared and links both university pages.
 
 ### Changed
+- The reviewed admissions snapshot `backend/data/admissions/catalog.json` is stored as compact JSON with one line per record, cutting it from 25.4 MB to 18.2 MB (about 1.9 MB to 1.6 MB compressed) with identical content. `prepare_admissions_catalog.py` writes this format, so snapshot refreshes keep one reviewable line per fact. Backend cache revisions and detail ETags change once because they hash the file bytes.
 - `npm run fix:i18n` updates the locale pack cache revision after localization edits, and `npm run check:i18n` fails while the revision is stale.
 - Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
 - The applicant category follows the selected application route. The admissions page and the comparison no longer ask for it, and older links that still carry the removed applicant parameter ignore it.
