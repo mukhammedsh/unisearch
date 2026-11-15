@@ -61,7 +61,7 @@ This project uses or references the following third-party icon, font, and brand 
   - Campus photographs are copyrighted works. Trademark nominative use does not cover them, so each photograph must come from a source that permits reuse, as described in `backend/data/university_assets/README.md`.
   - Use of these assets does not imply any official affiliation with, endorsement by, or sponsorship from the respective academic institutions.
 - Notice & Takedown Policy:
-  - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or removal, please contact us at **unisearch@inbox.ru** or open a GitHub Issue.
+  - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or removal, please contact us at **unisearch.sup@gmail.com** or open a GitHub Issue.
   - We review each request and reply by email. A disputed asset is removed while the request is reviewed.
 
 ## 5. Inter

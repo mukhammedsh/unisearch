@@ -1311,7 +1311,7 @@ privacy.rights.p2: Use the profile reset control to delete your profile, or clea
 privacy.contacts.title: 8. Project Operators, Contact & Policy Updates
 privacy.contacts.operators: Project operator: UniSearch is an independent, non-commercial educational project run by a small team of students in the Republic of Kazakhstan. Send any request concerning data handling to the email address below.
 privacy.contacts.p1: We may update this Privacy Policy periodically as platform capabilities expand. The date of the latest revision is always indicated at the top of the page.
-privacy.contacts.p2: If you have questions or inquiries concerning data handling, contact us via email: unisearch@inbox.ru
+privacy.contacts.p2: If you have questions or inquiries concerning data handling, contact us via email: unisearch.sup@gmail.com
 terms.hero.badge: Legal Information
 terms.hero.title: Terms of Use
 terms.hero.revision: Last updated: November 15, 2026
@@ -1345,7 +1345,7 @@ terms.ip.title: 5. Intellectual Property & Fair Use
 terms.ip.non_affiliation: UniSearch is an independent catalog and is not affiliated with, sponsored by, or endorsed by any universities listed on the platform. All university names, crests, logos, and trademarks belong to their respective owners and are used only to identify the institution a listing refers to.
 terms.ip.p1: University names, crests, and official emblems remain the trademarks of their respective academic institutions, and campus photographs remain the property of their respective photographers and institutions. UniSearch uses names and logos only to identify institutions in a non-commercial educational project, and uses campus photographs only from sources that permit their reuse, with attribution where the license requires it.
 terms.ip.p2: The UniSearch source code, documentation, and original project assets are made available under the MIT License. University names, logos, crests, and campus photographs are excluded from that license as stated in the repository license notice.
-terms.ip.takedown: Notice & Takedown Procedure: if you are an authorized university representative, photographer, or intellectual property copyright owner and wish to request attribution credit, correction, or removal of any logo, photograph, or institutional reference, please contact us at unisearch@inbox.ru. We will review the request and respond by email.
+terms.ip.takedown: Notice & Takedown Procedure: if you are an authorized university representative, photographer, or intellectual property copyright owner and wish to request attribution credit, correction, or removal of any logo, photograph, or institutional reference, please contact us at unisearch.sup@gmail.com. We will review the request and respond by email.
 terms.acceptable_use.title: 6. Acceptable Use Policy
 terms.acceptable_use.p1: When accessing or utilizing the platform, users agree not to engage in prohibited activities:
 terms.acceptable_use.li1: Attempting unauthorized access to server infrastructure or circumventing security controls.
@@ -1357,7 +1357,7 @@ terms.updates.title: 8. Project Operators, Modifications & Contact Information
 terms.updates.operators: Project operator: UniSearch is an independent, non-commercial educational project run by a small team of students in the Republic of Kazakhstan.
 terms.updates.p1: We reserve the right to revise these Terms at any time. The current version will always be published on this page with an updated timestamp.
 terms.updates.law: These Terms are governed by the laws of the Republic of Kazakhstan. Mandatory consumer protection rules of your country of residence continue to apply.
-terms.updates.p2: For any questions or feedback concerning these terms, please contact us at: unisearch@inbox.ru
+terms.updates.p2: For any questions or feedback concerning these terms, please contact us at: unisearch.sup@gmail.com
 fields_of_study: Fields of study
 exam.component.overall: Overall
 exam.component.total: Total
