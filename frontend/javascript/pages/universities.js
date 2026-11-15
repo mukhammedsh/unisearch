@@ -2647,8 +2647,9 @@ export function initUniversitiesPage() {
                 wheelPxPerZoomLevel: 60,
                 keyboard: true,
             }).setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 noWrap: false,
+                attribution: `&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">${escapeHtml(t("universities.map_controls.osm_contributors", "OpenStreetMap contributors"))}</a>`,
             }).addTo(mapInstance);
             L.control.zoom({
                 position: "topleft",
