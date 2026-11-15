@@ -152,6 +152,7 @@
   --surface-badge: #ffffff;
   --surface-badge-text: #0f172a;
   --backdrop: rgba(0, 0, 0, 0.45);
+  --media-caption-bg: rgba(0, 0, 0, 0.62);
   --tooltip-bg: #18191b;
   --tooltip-text: #f3f4f6;
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -236,6 +237,7 @@
   --surface-badge: #ffffff;
   --surface-badge-text: #0f172a;
   --backdrop: rgba(0, 0, 0, 0.65);
+  --media-caption-bg: rgba(0, 0, 0, 0.72);
   --tooltip-bg: #222427;
   --tooltip-text: #f3f4f6;
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);

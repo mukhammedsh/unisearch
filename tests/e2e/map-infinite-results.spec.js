@@ -71,6 +71,10 @@ test("map results rail loads the next 100 universities at the end of the list", 
 
   const mapList = page.locator("#mapResultsPanel .u-map-results-list");
   await expect(mapList.locator(".uni-card")).toHaveCount(100);
+  // The OpenStreetMap license and tile policy require a visible attribution linking to the copyright page.
+  const osmAttribution = page.locator('#mapContainer .leaflet-control-attribution a[href="https://www.openstreetmap.org/copyright"]');
+  await expect(osmAttribution).toBeVisible();
+  await expect(osmAttribution).toHaveText("OpenStreetMap contributors");
   await expect(mapList.locator(".u-map-results-count")).toContainText("100");
   const firstMapCard = mapList.locator(".uni-card").first();
   await firstMapCard.hover();

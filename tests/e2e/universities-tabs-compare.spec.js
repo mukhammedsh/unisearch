@@ -390,15 +390,23 @@ test("reviewed comparison opens on shared facts and saves a program chosen in ea
 
   await pickProgram(page, IMPERIAL_ID, { search: "Computing", option: "imperial-option-computing-meng", level: "undergraduate" });
   await expect.poll(() => savedChoice(page, IMPERIAL_ID)).toMatchObject({ studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng" });
-  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/≈ \$[\d,]+/); // pounds follow the default USD setting
+  // The applicant compares in their own currency: the published pound price is converted to the setting (USD by default).
+  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/≈ \$[\d,]+/);
+  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).not.toContainText("£");
   await expect(page.locator('[data-compare-row="route"] dd').nth(1)).toContainText("UCAS");
   await pickProgram(page, MIT_ID, { search: "Computer Science and Engineering", option: "mit-course-6-3-bachelor", route: "mit-first-year" });
   await expect.poll(() => savedChoice(page, MIT_ID)).toMatchObject({ studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year" });
 
+  await page.evaluate(() => localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([
+    { key: "preferred_currency", value: "KZT" }, { key: "currency_display_mode", value: "preferred" },
+  ])));
   await page.reload();
   await waitForReviewedComparison(page);
   await expect(mitHead.locator(".compare-reviewed__scope-title")).toContainText("Computer Science and Engineering");
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${IMPERIAL_ID}"] .compare-reviewed__scope-meta`)).toContainText("MEng");
+  // A different preferred currency converts both columns to it.
+  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText("₸");
+  await expect(page.locator('[data-compare-row="cost"] dd').nth(0)).toContainText("₸");
 });
 
 test("choosing the shared first year again clears a saved program", async ({ page }) => {

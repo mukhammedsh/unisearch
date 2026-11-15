@@ -169,7 +169,42 @@ const ids = universities.map((row) => String(row?.id || "").trim()).filter(Boole
 const errors = [];
 const warnings = [];
 
+// Every campus photograph needs a recorded reusable source, because the cover shows its credit
+// and the photo licenses require attribution.
+const creditsPath = path.join(assetsRoot, "credits.json");
+const FREE_LICENSE = /^(CC0( 1\.0)?|Public domain|CC BY(-SA)? \d\.\d)$/;
+const credits = fs.existsSync(creditsPath) ? readJson(creditsPath).photos || {} : null;
+if (!credits) errors.push("missing university_assets/credits.json");
+for (const id of credits ? Object.keys(credits) : []) {
+  if (!ids.includes(id)) errors.push(`credits.json: ${id} is not a catalog university`);
+}
+
+const THUMBNAIL_FOLDERS = ["thumbnails", "thumbnails-medium", "thumbnails-small"];
+let withoutPhoto = 0;
+
 for (const id of ids) {
+  const credit = credits?.[id];
+  if (credits && !credit) {
+    // No reusable photograph was found: the university must ship no photo, and the pages fall back to its logo.
+    const leftovers = THUMBNAIL_FOLDERS.flatMap((folder) => [".jpg", ".webp"]
+      .map((ext) => `${folder}/${id}${ext}`)
+      .filter((rel) => fs.existsSync(path.join(assetsRoot, rel))));
+    if (leftovers.length) errors.push(`${id}: photo without a credit in credits.json (${leftovers.join(", ")})`);
+    withoutPhoto += 1;
+    continue;
+  }
+  if (credit) {
+    if (!/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(String(credit.source_url || ""))) {
+      errors.push(`${id}: photo credit source_url must be a Wikimedia Commons file page`);
+    }
+    if (!FREE_LICENSE.test(String(credit.license || ""))) {
+      errors.push(`${id}: photo credit license "${credit.license}" is not an accepted free license`);
+    }
+    if (!String(credit.author || "").trim()) {
+      errors.push(`${id}: photo credit has no author`);
+    }
+  }
+
   for (const rule of IMAGE_RULES) {
     const filePath = path.join(assetsRoot, rule.folder, `${id}${rule.ext}`);
     if (!fs.existsSync(filePath)) {
@@ -217,7 +252,7 @@ for (const id of ids) {
     }
   }
 
-  for (const folder of ["thumbnails", "thumbnails-medium", "thumbnails-small"]) {
+  for (const folder of THUMBNAIL_FOLDERS) {
     const jpgPath = path.join(assetsRoot, folder, `${id}.jpg`);
     const webpPath = path.join(assetsRoot, folder, `${id}.webp`);
     if (!fs.existsSync(jpgPath) || !fs.existsSync(webpPath)) continue;
@@ -238,4 +273,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Image audit passed for ${ids.length} universities.`);
+console.log(`Image audit passed for ${ids.length} universities (${withoutPhoto} without a campus photo).`);
