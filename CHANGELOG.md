@@ -2,7 +2,10 @@
 
 All notable project changes should be recorded here.
 
-## 10.3.4 (2026-11-16) - University page loading fix
+## 10.4.0 (2026-11-17) - Campus photo galleries
+
+### Added
+- Open campus covers in a full-size viewer and browse credited alternate photos with arrows, photo indicators, keyboard controls, or a swipe.
 
 ### Fixed
 - Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
@@ -10,7 +13,7 @@ All notable project changes should be recorded here.
 - Replace the distant Seoul National University medical-campus panorama with a street-level photograph of the historic Daehan Hospital building.
 
 ### Changed
-- Retain former covers and alternate campus views with per-photo credits for future gallery use.
+- Retain former covers and alternate campus views with per-photo credits in the gallery.
 
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 
