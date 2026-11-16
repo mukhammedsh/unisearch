@@ -6,6 +6,10 @@ All notable project changes should be recorded here.
 
 ### Fixed
 - Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
+- Use recognizable campus exteriors for Australian National University, Delft University of Technology, the National University of Singapore, Tsinghua University, and the University of Melbourne.
+
+### Changed
+- Retain former covers and alternate campus views with per-photo credits for future gallery use.
 
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 
