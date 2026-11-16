@@ -59,7 +59,7 @@ guide.section_navigation: Section navigation
 guide.contents: Contents
 guide.contents_current: Contents: {section}
 guide.ml.p1: Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors with the multilingual-e5 model and compares their cosine similarity, rescaled into a 0–1 score:
-guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim + offset - 0.55) / 0.35, 0, 1)\noffset = 0.038 for non-English queries, else 0
+guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim - 0.55) / 0.35, 0, 1)
 guide.ml.p2: That similarity becomes the semantic third of the {fit} score, which is why universities described the way you think float upward. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching — gamedev counts as game development, ML as machine learning — so you can write the way you speak.
 guide.ml.p3: The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off — "game development" outranks a vague "IT" — while every extra filler word dilutes the signal.
 guide.ml.p4: Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion. Write what you want, never what you want to avoid.
@@ -82,15 +82,17 @@ guide.group.glossary: Glossary
 guide.back_home: Back to homepage
 guide.tags.title: Tags
 guide.tags.intro: Tags compress the verdict onto the card so that a dozen universities can be scanned without opening each one. Standard tags state published facts, while AI tags interpret your profile — and when a tag is absent, its condition simply did not trigger.
+guide.tags.icons_note: Cards of rechecked universities show some tags as compact icons. In UniFit sorting the catalog banner lists the icons on the current page, and each icon's tooltip names what it means.
 guide.tags.standard_title: Standard Tags
 guide.tags.standard.acceptance: Acceptance Rate carries the official selectivity figure wherever the university publishes one, so you can feel the competition before doing any math.
 guide.tags.standard.aid_available: Aid Available means the university runs at least one grant track that is worth opening.
 guide.tags.standard.over_budget: Over Budget warns that the estimated year cost runs above the budget in your profile — the option stays visible, but the gap is explicit.
 guide.tags.standard.over_budget_aid: Over Budget • Aid Available means the published cost exceeds your budget and a funding option exists. Its award and amount are not confirmed.
+guide.tags.standard.check_cost: Check the cost marks a price that depends on a fee status (such as Home or Overseas) that is not set yet, so the price shown may not be the one that applies to you.
 guide.tags.ai_note: AI tags appear only under {fit} sorting, because only that mode computes the numbers behind them.
 guide.tags.ai_title: AI Tags
 guide.tags.ai.conditional: Exam result needed marks a choice where a required exam has no result in your profile yet: add it to see whether you meet the minimum.
-guide.tags.ai.your_vibe: Your Vibe marks near-perfect preference alignment — a mismatch of 0.14 or less across the four sliders.
+guide.tags.ai.your_vibe: Your Vibe marks near-perfect preference alignment — a mismatch of 0.14 or less across the sliders you moved.
 guide.tags.ai.top_match: Good Match is its looser sibling: a mismatch of 0.22 or less, a solid fit that stops short of Your Vibe.
 guide.tags.ai.requirements_met: Requirements Met means all evaluable published academic and language minimums pass on your current data; other admission conditions may still apply.
 guide.tags.ai.below_requirements: Below Requirements means at least one evaluable published minimum is unmet; see the requirements fit section for details.
@@ -103,8 +105,9 @@ guide.roi.p3: When a university publishes no usable salary data, the ROI block s
 guide.roi.p4: Treat the number as a planning ratio rather than a promise: your program, country, skills, and right to work shape the real outcome far more than any average, and the labels follow fixed cutoffs — above 2.0 Excellent Return, above 1.0 Positive Return, anything below High Investment.
 guide.roi.p5: ROI does not describe admission eligibility. Read it alongside the {chance} score, published acceptance statistics, and the full yearly cost.
 guide.comparison.title: University comparison
-guide.comparison.p1: Comparing lives on the Universities page in its own Comparing tab, while the rest of the catalog keeps working as usual — only this tab collects a shortlist. Pick universities from cards or map pins and press Compare, and click a picked card again to remove it, so putting two or three candidates side by side takes seconds.
-guide.comparison.p2: The results table only ever compares like with like: the same academic year, the same fee status, the same scope. Each row then ends with an honest verdict — an advantage for one side, a trade-off, parity, incomparable data, or simply missing data — and the page never crowns an overall winner, because the best university depends on what you personally value.
+guide.comparison.p1: Comparing lives on the Universities page. Press Compare on a card or a map pin to add a university to the pair; the tray holds two universities, and a click on a picked card removes it. A pair is compared within one group: universities with rechecked data, or universities whose data is not rechecked yet. Cards from the other group are marked and cannot join the pair.
+guide.comparison.p2: The comparison only compares like with like: the same academic year, the same fee status, the same scope. It never crowns an overall winner, because the best university depends on what you personally value. For pairs of universities whose data is not rechecked yet, each row ends with an honest verdict: an advantage for one side, a trade-off, parity, incomparable data, or simply missing data.
+guide.comparison.columns: For universities with rechecked data, each column starts from the university's shared first-year application, or asks for a program where the university admits by program. It shows when to apply, what you will need, the cost before aid checked against your budget, financial aid, and the university's published figures with their sources. Where a price depends on the Home or Overseas fee status, the cost cell lets you switch between the two.
 guide.comparison.p3: Published acceptance rates are institution or course statistics, depending on their source. They are separate from the {chance} score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.
 guide.unichance.p1: {chance} is a 0–100 score for the share of evaluable published academic and language minimums met in the selected requirement profile. 100% means all assessed numeric minimums are met; it does not confirm subject prerequisites, documents, eligibility, or other admission conditions. It is not an admission probability or a funding prediction.
 guide.unichance.formula: requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100
@@ -115,9 +118,10 @@ guide.unichance.title: {chance} (fit to published requirements, 0–100)
 guide.unifit.p1: {fit} sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from the {chance} score, which reflects only the requirements component:
 guide.unifit.formula: without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40\nwith semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35\naffordability_gap × 0.20 is added when annual cost and profile budget are known; available components are normalized by their total weight
 guide.unifit.p2: Requirements gap is derived from the requirements fit score and is omitted when that score is unavailable. Known annual cost and profile budget add an affordability gap; potential awards do not reduce the cost. The ranking renormalizes the weights of available components.
-guide.unifit.p3: Focus, Atmosphere, Finance, and Location are preference sliders. The Finance slider expresses a preference between budget and prestige; it is not your budget amount and does not estimate admission outcomes or funding awards.
+guide.unifit.p3: Focus, Selectivity, Cost vs Prestige, and Location are preference sliders. A centred slider means "doesn't matter" and is ignored; the further you move it, the more that axis counts. Focus compares research intensity (publications per student), Selectivity compares how competitive first-year admission is (applicants per place), and Location compares the size of the university's city. If a university has no data for a slider you moved, it counts as a typical university, so missing data neither wins a perfect match nor reads as a failure. Cost vs Prestige expresses a preference between budget and prestige; it is not your budget amount and does not estimate admission outcomes or funding awards.
 guide.unifit.p4: Preference badges describe slider alignment. Requirement badges describe whether the current profile meets applicable published minimums. Neither predicts an admission decision or funding award.
 guide.unifit.p5: Missing exam or language evidence can make a requirements fit score unavailable. The university remains in the catalog, and the missing evidence is shown separately.
+guide.unifit.p6: The profile page shows which of your answers UniFit uses and which it does not, and in UniFit sorting the catalog banner lists the answers behind the current ranking.
 guide.unifit.title: {fit} (smart sorting)
 nav.about: About Us
 nav.close_menu: Close menu
@@ -931,7 +935,7 @@ guide.glossary.comparison: The side-by-side table that compares only same-scope 
 guide.glossary.mode_all: Every proof from the language list is required.
 guide.glossary.mode_any: A single proof from the language list is enough.
 guide.glossary.requirements: The minimum scores a profile demands before an application is even considered.
-guide.glossary.stats_avg: The average scores of previously admitted students — the number worth planning against.
+guide.glossary.stats_avg: The average scores of previously admitted students: historical context, not a cutoff or a guarantee.
 guide.glossary.term.admission_track: Admission Choice
 guide.glossary.term.language_requirements: Language Requirements
 guide.glossary.term.match_score: Match Score

@@ -6,6 +6,9 @@ All notable project changes should be recorded here.
 
 Patch release with no new capability: the reviewed admissions data keeps the same content in a smaller, leaner stored form, and exchange rates that arrive late no longer reset a university page. The backend cache revisions and detail ETags change once because they hash the snapshot bytes.
 
+### Added
+- The guide explains the "Check the cost" tag, the compact card icons with the catalog banner legend, and how the profile page shows which answers UniFit uses.
+
 ### Changed
 - The reviewed admissions snapshot `backend/data/admissions/catalog.json` is stored as compact JSON with one line per record, cutting it from 25.4 MB to 18.2 MB (about 1.9 MB to 1.6 MB compressed) with identical content. `prepare_admissions_catalog.py` writes this format, so snapshot refreshes keep one reviewable line per fact. Backend cache revisions and detail ETags change once because they hash the file bytes.
 - The maintainer-only blocks of each reviewed institution (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`, about 650 KB) moved from the runtime snapshot to `backend/data/admissions/research.json`. The backend never read them; the preparation script writes both files and the preparation and editorial tests check the new file.
@@ -13,6 +16,11 @@ Patch release with no new capability: the reviewed admissions data keeps the sam
 
 ### Fixed
 - Exchange rates that arrive after the first render (for example while the API wakes up) no longer rebuild a university page the reader is working in. In 10.3.0 they were announced as a currency change, so an open program and route editor closed and its choices were lost. Late rates now redraw only the catalog cards in place; other pages use them from the next page view.
+- The guide named the old UniFit sliders. It now uses the current names (Focus, Selectivity, Cost vs Prestige, Location), says what each one measures, that a centred slider is ignored, and that a moved slider without university data counts as a typical university. The Your Vibe tag description counts only the sliders the reader moved.
+- The interests formula no longer shows a non-English query offset that the ranking dropped; it is `clip((sim - 0.55) / 0.35, 0, 1)`.
+- The comparison section no longer promises two or three candidates or a separate tab step. It describes the two-university pair, the one-group rule, the columns of rechecked universities and the Home/Overseas price switch.
+- The glossary calls admitted-student averages historical context instead of a number to plan against, in line with the admission section.
+- Replaced the stale English fallback formulas in `guide.html` with the current text.
 
 ### Tests
 - A browser test holds the rates response while the admissions editor is open, and another checks that catalog card prices redraw when live rates arrive late.

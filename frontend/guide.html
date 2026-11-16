@@ -85,11 +85,14 @@
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from minimum requirements match, which is only the requirements fit component:</p>
-            <pre class="guide-formula" data-i18n="guide.unifit.formula">mismatch = (|practice - uni| + |social - uni| + |city - uni| + |budget - uni|) / 4</pre>
+            <pre class="guide-formula" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
+with semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35
+affordability_gap × 0.20 is added when annual cost and profile budget are known; available components are normalized by their total weight</pre>
             <p data-i18n="guide.unifit.p2">Change anything in the profile — an exam score, the budget, a slider — and the list is recomputed from scratch, so what you see always reflects your current data. Each ingredient is scaled from 0 to 1.</p>
-            <p data-i18n="guide.unifit.p3">Focus, Atmosphere, Finance, and Location are preference sliders. The Finance slider expresses a preference between budget and prestige; it is not your budget amount and does not estimate grant or paid admission odds.</p>
+            <p data-i18n="guide.unifit.p3">Focus, Selectivity, Cost vs Prestige, and Location are preference sliders. A centred slider means "doesn't matter" and is ignored; the further you move it, the more that axis counts. Focus compares research intensity (publications per student), Selectivity compares how competitive first-year admission is (applicants per place), and Location compares the size of the university's city. If a university has no data for a slider you moved, it counts as a typical university, so missing data neither wins a perfect match nor reads as a failure. Cost vs Prestige expresses a preference between budget and prestige; it is not your budget amount and does not estimate admission outcomes or funding awards.</p>
             <p data-i18n="guide.unifit.p4">Preference badges describe slider alignment. Requirement badges describe whether the current profile meets applicable published minimums. Neither predicts an admission decision or funding award.</p>
             <p data-i18n="guide.unifit.p5">Missing exam or language evidence can make a requirements fit score unavailable. The university remains in the catalog, and the missing evidence is shown separately.</p>
+            <p data-i18n="guide.unifit.p6">The profile page shows which of your answers UniFit uses and which it does not, and in UniFit sorting the catalog banner lists the answers behind the current ranking.</p>
           </div>
         </section>
 
@@ -97,7 +100,8 @@
           <h2 data-i18n="guide.ml.title">How your interests are used</h2>
           <div class="guide-doc">
             <p data-i18n="guide.ml.p1">Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors and compares their cosine similarity, rescaled into a 0–1 score:</p>
-            <pre class="guide-formula" data-i18n="guide.ml.formula">mlScore = clip((sim + offset - 0.55) / 0.35, 0, 1)</pre>
+            <pre class="guide-formula" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
+mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
             <p data-i18n="guide.ml.p2">That similarity becomes the semantic third of the UniFit score. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching.</p>
             <p data-i18n="guide.ml.p3">The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off, while every extra filler word dilutes the signal.</p>
             <p data-i18n="guide.ml.p4">Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion.</p>
@@ -131,8 +135,9 @@
         <section id="guide-comparison" class="guide-section">
           <h2 data-i18n="guide.comparison.title">University comparison</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.comparison.p1">Comparing lives on the Universities page in its own Comparing tab, while the rest of the catalog keeps working as usual — only this tab collects a shortlist. Pick universities from cards or map pins and press Compare, and click a picked card again to remove it.</p>
-            <p data-i18n="guide.comparison.p2">The results table only ever compares like with like: the same academic year, the same fee status, the same scope. Each row then ends with an honest verdict — an advantage for one side, a trade-off, parity, incomparable data, or simply missing data — and the page never crowns an overall winner.</p>
+            <p data-i18n="guide.comparison.p1">Comparing lives on the Universities page. Press Compare on a card or a map pin to add a university to the pair; the tray holds two universities, and a click on a picked card removes it. A pair is compared within one group: universities with rechecked data, or universities whose data is not rechecked yet. Cards from the other group are marked and cannot join the pair.</p>
+            <p data-i18n="guide.comparison.p2">The comparison only compares like with like: the same academic year, the same fee status, the same scope. It never crowns an overall winner, because the best university depends on what you personally value. For pairs of universities whose data is not rechecked yet, each row ends with an honest verdict: an advantage for one side, a trade-off, parity, incomparable data, or simply missing data.</p>
+            <p data-i18n="guide.comparison.columns">For universities with rechecked data, each column starts from the university's shared first-year application, or asks for a program where the university admits by program. It shows when to apply, what you will need, the cost before aid checked against your budget, financial aid, and the university's published figures with their sources. Where a price depends on the Home or Overseas fee status, the cost cell lets you switch between the two.</p>
             <p data-i18n="guide.comparison.p3">Published acceptance rates are institution or course statistics, depending on their source. They are separate from your minimum requirements match requirements fit score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.</p>
           </div>
         </section>
@@ -170,6 +175,7 @@
           <h2 data-i18n="guide.tags.title">Tags</h2>
           <div class="guide-doc">
             <p data-i18n="guide.tags.intro">Tags compress the verdict onto the card so that a dozen universities can be scanned without opening each one. Standard tags state published facts, while AI tags interpret your profile.</p>
+            <p data-i18n="guide.tags.icons_note">Cards of rechecked universities show some tags as compact icons. In UniFit sorting the catalog banner lists the icons on the current page, and each icon's tooltip names what it means.</p>
 
             <div class="guide-tags-group">
               <h4 id="guide-tags-standard" data-i18n="guide.tags.standard_title">Standard Tags</h4>
@@ -178,6 +184,7 @@
                 <li data-i18n="guide.tags.standard.aid_available">Aid Available: the university runs at least one grant track worth opening.</li>
                 <li data-i18n="guide.tags.standard.over_budget">Over Budget: the estimated year cost runs above your budget — the gap is explicit.</li>
                 <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available means the published cost exceeds your budget and a funding option exists. Its award and amount are not confirmed.</li>
+                <li data-i18n="guide.tags.standard.check_cost">Check the cost marks a price that depends on a fee status (such as Home or Overseas) that is not set yet, so the price shown may not be the one that applies to you.</li>
               </ul>
             </div>
 
@@ -186,7 +193,7 @@
               <p class="guide-tags-note" data-i18n="guide.tags.ai_note">AI tags appear only under UniFit sorting, because only that mode computes the numbers behind them.</p>
               <ul class="guide-list">
                 <li data-i18n="guide.tags.ai.conditional">Conditional / Exam Needed: a required exam still has no evidence in your profile.</li>
-                <li data-i18n="guide.tags.ai.your_vibe">Your Vibe: near-perfect preference alignment — mismatch of 0.14 or less.</li>
+                <li data-i18n="guide.tags.ai.your_vibe">Your Vibe marks near-perfect preference alignment — a mismatch of 0.14 or less across the sliders you moved.</li>
                 <li data-i18n="guide.tags.ai.top_match">Good Match: mismatch of 0.22 or less, a solid fit short of Your Vibe.</li>
                 <li data-i18n="guide.tags.ai.requirements_met">Requirements Met means all evaluable published academic and language minimums pass on your current data; other admission conditions may still apply.</li>
                 <li data-i18n="guide.tags.ai.below_requirements">Below Requirements means at least one evaluable published minimum is unmet; see the requirements fit section for details.</li>
