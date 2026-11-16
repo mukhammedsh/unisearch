@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# A new push to a pull request cancels the superseded run; main, schedule and manual runs always finish.
+concurrency:
+  group: tests-${{ github.event_name == 'pull_request' && github.head_ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   backend-tests:
     if: github.event_name != 'schedule'
@@ -72,9 +77,16 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
 
-  e2e-pr:
+  # The API is one Python process, so extra workers on one runner only queue behind it (three workers
+  # saved 4 of 23 minutes). Each shard is its own runner with its own API and one worker.
+  e2e-shard:
+    name: e2e-shard (${{ matrix.shard }}/6)
     if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -115,7 +127,7 @@ jobs:
       - name: Run E2E PR suite
         env:
           CODECOV_BROWSER_COVERAGE_DIR: coverage/frontend/tmp
-        run: npm run test:e2e:pr
+        run: npm run test:e2e:pr -- --shard=${{ matrix.shard }}/6
 
       - name: Merge browser coverage into frontend report
         run: |
@@ -134,11 +146,20 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
-          name: playwright-report-pr
+          name: playwright-report-pr-${{ matrix.shard }}
           path: |
             playwright-report
             test-results
           if-no-files-found: ignore
+
+  # Keeps the required check name `e2e-pr`; `always()` is needed because a skipped job counts as passing.
+  e2e-pr:
+    if: ${{ always() && github.event_name != 'schedule' }}
+    needs: e2e-shard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every E2E shard to pass
+        run: test "${{ needs.e2e-shard.result }}" = "success"
 
   nightly-full:
     if: github.event_name == 'schedule'

@@ -78,12 +78,14 @@ async function applyContext(page, route, cycle) {
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
   await page.locator("#admissionsCycle").fill(cycle);
   await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
+  const response = page
+    .waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST")
+    .then(async (item) => ({ status: item.status(), body: await item.json() }));
   await page.locator("#admissionsContextApply").click();
   const result = await response;
-  expect(result.status()).toBe(200);
+  expect(result.status).toBe(200);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  return result.json();
+  return result.body;
 }
 
 async function openFact(page, tab, id) {
@@ -265,9 +267,12 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
 
   await page.goto(bcsContextUrl);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  const incompleteResponse = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
+  // Read the body as soon as the response arrives: Chromium may drop it once the reloaded page keeps working.
+  const incompleteResponse = page
+    .waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST")
+    .then((item) => item.json());
   await page.reload();
-  const updated = await (await incompleteResponse).json();
+  const updated = await incompleteResponse;
   expect(updated.assessment.chancePercent).toBeNull();
   const overallMissing = updated.assessment.activeChoice.details.checks.find((check) => check.checkId === "overall-gpa");
   expect(overallMissing.status).toBe("missing");
