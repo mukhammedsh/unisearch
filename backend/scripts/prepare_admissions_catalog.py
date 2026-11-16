@@ -14,6 +14,8 @@ DRAFTS = REPO / "backend/data/drafts"
 DOSSIER_BATCH = ("mit", "imperial-college-london-uk", "stanford-university-usa-ca")
 BATCH = (*DOSSIER_BATCH, "nazarbayev-university-kaz-astana")
 VERSION = "admissions-storage-1.0"
+RESEARCH_VERSION = "admissions-research-1.0"
+MAINTAINER_KEYS = ("collection_tasks", "organization", "supporting_records", "dossier_metadata", "historical_provenance")
 VOCABULARY_PATH = DRAFTS / "integration/vocabulary.json"
 ENTRY_VALUES = ("external", "external_restricted", "internal", "no_admission", "closed", "unresolved")
 APPLICANT_ROUTES = ("first_year", "transfer", "graduate")
@@ -101,12 +103,8 @@ def scope(row, original=None, category_alias=None):
 
 
 def provenance(index, raw, filename):
-    return {
-        "evidence_file": filename,
-        "original_id": raw["id"],
-        "original_scope": raw.get("scope"),
-        "original_source_ids": raw.get("source_ids"),
-    }
+    # The original scope and source IDs stay in the evidence file, where this reference finds them.
+    return {"evidence_file": filename, "original_id": raw["id"]}
 
 
 def _nu_adapter():
@@ -530,6 +528,34 @@ def prepare_batch(drafts=DRAFTS):
     return {"schema_version": VERSION, "runtime_active": False, "institutions": institutions}
 
 
+def dump_records(value, depth=4, level=0):
+    """Serialize JSON with one line per record (institutions[i].facts[j], ...) and compact content inside it.
+
+    Indentation and spacing were about a quarter of the snapshot, while a single-line file would make every
+    review diff unreadable; one line per record keeps diffs per fact and loads the same through json.loads.
+    """
+    if level >= depth or not isinstance(value, (dict, list)) or not value:
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    pad = " " * (level + 1)
+    if isinstance(value, dict):
+        rows = [f"{pad}{json.dumps(key, ensure_ascii=False)}:{dump_records(item, depth, level + 1)}" for key, item in value.items()]
+        return "{\n" + ",\n".join(rows) + "\n" + " " * level + "}"
+    return "[\n" + ",\n".join(pad + dump_records(item, depth, level + 1) for item in value) + "\n" + " " * level + "]"
+
+
+def split_maintainer_records(prepared):
+    """Separate the runtime snapshot from the research records only maintainers read.
+
+    The backend never reads these blocks, so they live in their own file and keep the runtime snapshot small.
+    """
+    runtime = {**prepared, "institutions": [{key: value for key, value in row.items() if key not in MAINTAINER_KEYS}
+                                            for row in prepared["institutions"]]}
+    research = {"schema_version": RESEARCH_VERSION,
+                "institutions": [{"id": row["institution"]["id"], **{key: row[key] for key in MAINTAINER_KEYS}}
+                                 for row in prepared["institutions"]]}
+    return runtime, research
+
+
 def write_output(prepared, directory, repo=REPO):
     destination = Path(directory).resolve()
     root = Path(repo).resolve()
@@ -539,9 +565,11 @@ def write_output(prepared, directory, repo=REPO):
     require(not destination.exists(), "Output directory already exists; refusing to overwrite")
     destination.mkdir(parents=True, exist_ok=False)
     path = destination / "admissions-catalog.json"
+    runtime, research = split_maintainer_records(prepared)
     with path.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(prepared, stream, ensure_ascii=False, indent=2)
-        stream.write("\n")
+        stream.write(dump_records(runtime) + "\n")
+    with (destination / "admissions-research.json").open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(dump_records(research, depth=2) + "\n")
     nu = next((row for row in prepared["institutions"] if row["institution"]["id"] == "nazarbayev-university-kaz-astana"), None)
     if nu is not None:
         annotations = {"schema_version": "admissions-assessments-1.0", "records": _nu_adapter().build_nu_assessments(nu)}

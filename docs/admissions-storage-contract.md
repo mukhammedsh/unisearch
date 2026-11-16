@@ -27,7 +27,7 @@ The [JSON Schema](../backend/data/drafts/integration/schema.json) describes the 
 
 ## Shared representation
 
-The envelope identifies the contract version and contains four institution records. Preparation explicitly emits `runtime_active: false`; the production loader requires `runtime_active: true` after the coordinated review and activation. The shared shape supports both states without changing evidence records. Each institution retains its catalog snapshot and an input manifest with repository-relative paths and SHA-256 hashes. Hashes identify the exact input bytes; they do not establish source freshness or research completeness.
+The envelope identifies the contract version and contains four institution records. Preparation explicitly emits `runtime_active: false`; the production loader requires `runtime_active: true` after the coordinated review and activation. The shared shape supports both states without changing evidence records. Each institution retains its catalog snapshot and an input manifest with repository-relative paths and SHA-256 hashes. The blocks only maintainers use (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`) are stored per institution in `backend/data/admissions/research.json` (`admissions-research-1.0`) instead of the runtime snapshot; the backend does not read that file. Hashes identify the exact input bytes; they do not establish source freshness or research completeness.
 
 | Entity | Shared fields and meaning |
 | --- | --- |
@@ -40,7 +40,7 @@ The envelope identifies the contract version and contains four institution recor
 
 `attributes` retains institution-specific fields not represented by the shared fields. Linked index metadata that is not part of the original evidence is retained separately. These fields may contain significant curriculum, application-classification, fee-panel, phase, or source-review details; a later consumer must inspect them rather than discard them because they lack a numeric check. Original values, condition prose, labelled fee panels, and conflicts are not summarized or parsed into invented thresholds.
 
-Resolved evidence remains traceable to its original record ID and evidence file. Catalog IDs are the authoritative cross-reference keys in the prepared representation. Local dossier IDs remain provenance, and Stanford's namespaced IDs remain namespaced. IDs are never regenerated from translated titles. Same-named routes, shared portals, and repeated dossier views are not deduplicated into one application.
+Resolved evidence remains traceable to its original record ID and evidence file. A record's `provenance` holds only that reference (`evidence_file`, `original_id`, plus NU's `packet_id`); the original scope and source IDs stay in the evidence file instead of being copied into the snapshot, and the preparation test resolves every reference against that file. Catalog IDs are the authoritative cross-reference keys in the prepared representation. Local dossier IDs remain provenance, and Stanford's namespaced IDs remain namespaced. IDs are never regenerated from translated titles. Same-named routes, shared portals, and repeated dossier views are not deduplicated into one application.
 
 Catalog inventory, subjects, families, variant relationships, and exclusions retain their institutional meaning. Supporting research files and historical runtime snapshots remain references with hashes where they are not current entity records. Historical runtime imports do not become freshly reviewed policies.
 

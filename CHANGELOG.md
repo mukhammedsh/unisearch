@@ -2,9 +2,14 @@
 
 All notable project changes should be recorded here.
 
-## 10.3.1 (2026-11-16) - Late exchange rates no longer reset the university page
+## 10.3.1 (2026-11-16) - Smaller admissions snapshot and steady university pages under late exchange rates
 
-Patch release: one fix to the live exchange rates added in 10.3.0, with no new capability.
+Patch release with no new capability: the reviewed admissions data keeps the same content in a smaller, leaner stored form, and exchange rates that arrive late no longer reset a university page. The backend cache revisions and detail ETags change once because they hash the snapshot bytes.
+
+### Changed
+- The reviewed admissions snapshot `backend/data/admissions/catalog.json` is stored as compact JSON with one line per record, cutting it from 25.4 MB to 18.2 MB (about 1.9 MB to 1.6 MB compressed) with identical content. `prepare_admissions_catalog.py` writes this format, so snapshot refreshes keep one reviewable line per fact. Backend cache revisions and detail ETags change once because they hash the file bytes.
+- The maintainer-only blocks of each reviewed institution (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`, about 650 KB) moved from the runtime snapshot to `backend/data/admissions/research.json`. The backend never read them; the preparation script writes both files and the preparation and editorial tests check the new file.
+- Records in the reviewed admissions snapshot keep only a reference to their research record (`evidence_file`, `original_id`) instead of a copy of its original scope and source IDs (about 1.6 MB; the snapshot is now 16.4 MB). The preparation test resolves every reference against the evidence file. The reviewed assessment mappings in `assessments.json` were re-hashed against the unchanged fact content after confirming that each old hash matched its old fact.
 
 ### Fixed
 - Exchange rates that arrive after the first render (for example while the API wakes up) no longer rebuild a university page the reader is working in. In 10.3.0 they were announced as a currency change, so an open program and route editor closed and its choices were lost. Late rates now redraw only the catalog cards in place; other pages use them from the next page view.

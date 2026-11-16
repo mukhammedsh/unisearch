@@ -139,10 +139,19 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         snapshot = read(REPO / "backend/data/admissions/catalog.json")
         self.assertEqual(snapshot["schema_version"], self.batch["schema_version"])
         self.assertIs(snapshot["runtime_active"], True)
-        for original, stored in zip(self.batch["institutions"], snapshot["institutions"]):
-            for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources", "collection_tasks", "organization", "dossier_metadata"):
+        research = read(REPO / "backend/data/admissions/research.json")
+        self.assertEqual(research["schema_version"], preparation.RESEARCH_VERSION)
+        for original, stored, notes in zip(self.batch["institutions"], snapshot["institutions"], research["institutions"]):
+            for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources"):
                 self.assertEqual(stored[key], original[key], key)
             self.assertEqual([row["path"] for row in stored["inputs"]], [row["path"] for row in original["inputs"]])
+            self.assertTrue(set(preparation.MAINTAINER_KEYS).isdisjoint(stored), "maintainer records stay out of the runtime snapshot")
+            self.assertEqual(notes["id"], original["institution"]["id"])
+            for key in ("collection_tasks", "organization", "dossier_metadata"):
+                self.assertEqual(notes[key], original[key], key)
+            # Input hashes depend on the checkout's line endings, so file lists are compared by path.
+            for key in ("supporting_records", "historical_provenance"):
+                self.assertEqual([row["path"] for row in notes[key]], [row["path"] for row in original[key]], key)
 
     def test_every_resolved_fact_preserves_significant_evidence(self):
         cache = {}
@@ -155,8 +164,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
                     cache[path] = {row["id"]: row for row in read(path)["facts"]}
                 raw = cache[path][origin["original_id"]]
                 self.assertEqual(fact["value"], raw["value"], fact["id"])
-                self.assertEqual(origin["original_scope"], raw["scope"], fact["id"])
-                self.assertEqual(origin["original_source_ids"], raw["source_ids"], fact["id"])
+                self.assertEqual(origin, {"evidence_file": origin["evidence_file"], "original_id": origin["original_id"]}, fact["id"])
                 for key in ("conditions", "conditions_and_exceptions", "exceptions", "publication_status", "review_status", "checked_at", "period"):
                     self.assertEqual(fact[key], raw.get(key), (fact["id"], key))
                 for key, value in raw.items():
@@ -324,13 +332,27 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             destination = repo / ".tmp_test" / "prepared"
             prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": []}
             path = preparation.write_output(prepared, destination, repo)
-            self.assertEqual(read(path), prepared)
+            runtime, research = preparation.split_maintainer_records(prepared)
+            self.assertEqual(read(path), runtime)
+            self.assertEqual(read(destination / "admissions-research.json"), research)
             with self.assertRaisesRegex(preparation.PreparationError, "already exists"):
                 preparation.write_output(prepared, destination, repo)
             for invalid in (repo / "backend/data", repo / ".tmp_test", repo / "outside"):
                 with self.assertRaisesRegex(preparation.PreparationError, "below repository"):
                     preparation.write_output(prepared, invalid, repo)
             self.assertFalse((repo / "backend").exists())
+
+    def test_snapshot_serialization_is_lossless_with_one_line_per_record(self):
+        prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": [
+            {"institution": {"id": "a"}, "facts": [{"id": "f1", "value": "Кафедра, \"quoted\"\nline"}, {"id": "f2", "value": []}], "unknowns": []},
+        ]}
+        text = preparation.dump_records(prepared)
+        self.assertEqual(json.loads(text), prepared)
+        self.assertIn("Кафедра", text)
+        lines = text.splitlines()
+        self.assertEqual(sum(1 for line in lines if '"id":"f1"' in line), 1)
+        self.assertEqual(sum(1 for line in lines if '"id":"f2"' in line), 1)
+        self.assertIn(' "runtime_active":false,', lines)
 
     def test_every_record_has_one_closed_status_and_entry_value(self):
         vocabulary = read(preparation.VOCABULARY_PATH)

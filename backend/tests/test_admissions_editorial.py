@@ -38,9 +38,12 @@ def catalog_strings():
         elif isinstance(value, str):
             yield value
 
+    research = json.loads((DATA_DIR / "admissions" / "research.json").read_text(encoding="utf-8"))
     for institution in catalog["institutions"]:
-        for collection in ("facts", "unknowns", "study_options", "application_routes", "organization"):
+        for collection in ("facts", "unknowns", "study_options", "application_routes"):
             yield from walk(institution[collection])
+    for institution in research["institutions"]:
+        yield from walk(institution["organization"])
 
 
 def json_strings(value):
