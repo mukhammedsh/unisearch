@@ -100,6 +100,12 @@
   border-radius: var(--radius-xl);
 }
 
+.d-gallery {
+  container: university-gallery / inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .d-cover {
   height: auto;
   position: relative;
@@ -112,7 +118,6 @@
   overflow: hidden;
 }
 
-.d-gallery-cover,
 .d-gallery-preview,
 .d-gallery-preview-media {
   position: absolute;
@@ -129,10 +134,6 @@
   touch-action: pan-y pinch-zoom;
 }
 
-.d-gallery-cover {
-  border-radius: inherit;
-}
-
 .d-gallery-preview > span {
   pointer-events: none;
 }
@@ -147,19 +148,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.d-gallery-preview::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-  180deg,
-  color-mix(in srgb, var(--backdrop) 8%, transparent),
-  color-mix(in srgb, var(--backdrop) 34%, transparent)
-  );
-  border-radius: inherit;
 }
 
 .d-gallery-button,
@@ -183,19 +171,23 @@
   z-index: 1;
 }
 
-.d-gallery-arrows {
-  position: absolute;
-  inset: 50% var(--space-3) auto;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-  pointer-events: none;
+.d-gallery-navigation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-self: center;
+  width: max-content;
+  max-width: 100%;
+}
+
+.d-gallery-navigation[hidden],
+.d-gallery-cover-credit:empty {
+  display: none;
 }
 
 .d-gallery-button {
   cursor: pointer;
-  pointer-events: auto;
+  touch-action: manipulation;
 }
 
 .d-gallery-button:is(:hover, :active),
@@ -221,6 +213,7 @@
   background: transparent;
   color: inherit;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .d-gallery-dots button::before {
@@ -238,11 +231,6 @@
 
 .d-gallery-dots button[aria-current]::before {
   width: var(--space-4);
-}
-
-.d-gallery-arrows[hidden],
-.d-gallery-dots[hidden] {
-  display: none;
 }
 
 .d-gallery-preview:focus-visible,
@@ -280,14 +268,20 @@
   background: var(--media-viewer-bg);
 }
 
+.d-photo-viewer[open] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--space-16) minmax(0, 1fr) minmax(var(--space-16), auto);
+}
+
 .d-photo-stage {
-  position: absolute;
-  inset: var(--space-20) var(--space-4);
+  grid-row: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+  padding-inline: var(--space-4);
   touch-action: pan-y pinch-zoom;
 }
 
@@ -318,10 +312,11 @@
 }
 
 .d-photo-footer {
-  position: absolute;
-  inset: auto var(--space-3) var(--space-2);
+  grid-row: 3;
   display: grid;
+  align-content: end;
   justify-items: center;
+  padding: 0 var(--space-3) var(--space-2);
   text-align: center;
 }
 
@@ -330,14 +325,27 @@
 }
 
 .d-photo-footer .d-cover-credit {
-  position: static;
-  display: inline-block;
-  max-width: none;
+  background: transparent;
 }
 
-@media (max-width: 350px) {
-  .d-cover:has(.d-gallery-arrows:not([hidden])) {
-    min-height: 192px;
+@media (max-width: 768px), (max-height: 480px) {
+  .d-photo-stage {
+    padding-inline: 0;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .d-photo-viewer[open] {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .d-photo-stage {
+    grid-row: 1;
+    padding: var(--space-2) var(--space-16) 0;
+  }
+
+  .d-photo-footer {
+    grid-row: 2;
   }
 }
 
@@ -376,11 +384,7 @@
 
 /* Photo credit: the photo license requires a visible author and license next to the photograph. */
 .d-cover-credit {
-  position: absolute;
-  right: var(--space-3);
-  bottom: var(--space-3);
-  z-index: 2;
-  max-width: calc(100% - 64px - var(--space-12)); /* spacing-exception: clears the 64px cover logo and its inset */
+  display: block;
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--media-caption-bg);
@@ -439,6 +443,108 @@ a.d-cover-credit:focus-visible {
 .d-cover-back:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+@container university-gallery (width > 44rem) {
+  .d-cover,
+  .d-gallery-cover-credit,
+  .d-gallery > .d-gallery-navigation .d-gallery-control {
+    grid-area: 1 / 1;
+  }
+
+  .d-gallery-preview::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--backdrop) 8%, transparent),
+      color-mix(in srgb, var(--backdrop) 34%, transparent)
+    );
+    border-radius: inherit;
+  }
+
+  .d-gallery > .d-gallery-navigation:not([hidden]) {
+    display: contents;
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-control {
+    z-index: 1;
+    align-self: center;
+    padding-inline: var(--space-3);
+  }
+
+  .d-gallery-control--previous {
+    justify-self: start;
+  }
+
+  .d-gallery-control--next {
+    justify-self: end;
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-dots {
+    grid-area: 2 / 1;
+  }
+
+  .d-gallery-cover-credit {
+    z-index: 2;
+    align-self: end;
+    justify-self: end;
+    box-sizing: border-box;
+    max-width: calc(100% - 64px - var(--space-6)); /* Clears the 64px cover logo and its inset. */
+    padding: var(--space-3);
+    pointer-events: none;
+  }
+
+  .d-gallery-cover-credit a {
+    pointer-events: auto;
+  }
+}
+
+@container university-gallery (width <= 44rem) {
+  .d-gallery-cover-credit {
+    padding: var(--space-2) var(--space-4);
+    text-align: center;
+  }
+
+  .d-gallery-navigation:not([hidden]) + .d-gallery-cover-credit {
+    padding-block-start: 0;
+  }
+
+  .d-gallery-cover-credit .d-cover-credit {
+    padding: 0;
+    background: transparent;
+    color: var(--text-muted);
+    line-height: var(--space-4);
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-button {
+    background: transparent;
+    color: var(--text);
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-button:is(:hover, :active) {
+    background: var(--surface-soft);
+  }
+
+  .d-gallery-zoom {
+    width: var(--space-8);
+    height: var(--space-8);
+  }
+
+  .d-gallery-zoom .ui-icon {
+    width: var(--space-4);
+    height: var(--space-4);
+  }
+
+  .d-cover .d-cover-logo {
+    bottom: var(--space-3);
+    left: var(--space-3);
+    width: var(--space-10);
+    height: var(--space-10);
+    border-radius: var(--radius-md);
+  }
 }
 
 .d-head {

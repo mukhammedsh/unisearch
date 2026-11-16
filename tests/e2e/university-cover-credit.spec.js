@@ -14,27 +14,25 @@ async function openUniversity(page, id, theme = "light") {
 
 test("the university cover credits the photo's author and license and links its Commons page", async ({ page }) => {
   await openUniversity(page, "mit-usa-cambridge");
-  const credit = page.locator("#detailCover .d-cover-credit");
+  const credit = page.locator(".d-gallery-cover-credit .d-cover-credit");
   await expect(credit).toBeVisible();
   await expect(credit).toHaveText(/^Photo: .+, CC BY-SA 3\.0 \(cropped\)$/);
   await expect(credit).toHaveAttribute("href", /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
   await expect(credit).toHaveAttribute("target", "_blank");
 
-  // The credit stays inside the cover and clear of the logo badge on a phone.
+  // The full attribution stays legible underneath the photo on a phone.
   await page.setViewportSize({ width: 375, height: 812 });
   const coverBox = await page.locator("#detailCover").boundingBox();
   const creditBox = await credit.boundingBox();
-  const logoBox = await page.locator("#detailLogo").boundingBox();
   expect(creditBox.x + creditBox.width).toBeLessThanOrEqual(coverBox.x + coverBox.width);
-  expect(creditBox.y + creditBox.height).toBeLessThanOrEqual(coverBox.y + coverBox.height);
-  expect(creditBox.x).toBeGreaterThanOrEqual(logoBox.x + logoBox.width);
+  expect(creditBox.y).toBeGreaterThanOrEqual(coverBox.y + coverBox.height);
 });
 
 test("the credit follows the interface language", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "ru"));
   await page.goto("/university.html?id=nazarbayev-university-kaz-astana");
   await expect(page.locator("#detailCard")).toBeVisible();
-  await expect(page.locator("#detailCover .d-cover-credit")).toHaveText(/^Фото: .+, CC BY-SA 4\.0 \(кадрировано\)$/);
+  await expect(page.locator(".d-gallery-cover-credit .d-cover-credit")).toHaveText(/^Фото: .+, CC BY-SA 4\.0 \(кадрировано\)$/);
   await expect(page.getByRole("button", { name: "Увеличить фото" })).toBeVisible();
 });
 
@@ -44,7 +42,7 @@ test("a university without a reusable photo shows no credit", async ({ page }) =
   await openUniversity(page, "kimep-university-kaz-almaty");
   expect((await creditsLoaded).ok()).toBe(true);
   await expect(page.locator("#detailCover")).toBeVisible();
-  await expect(page.locator("#detailCover .d-cover-credit")).toHaveCount(0);
+  await expect(page.locator(".d-gallery-cover-credit .d-cover-credit")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Enlarge photo" })).toHaveCount(0);
 });
 
@@ -53,15 +51,16 @@ test("the cover gallery and full-size viewer keep the same photo and attribution
   await openUniversity(page, "australian-national-university-au-canberra");
   const cover = page.locator("#detailCover");
   const preview = cover.getByRole("button", { name: /Enlarge photo/ });
-  const credit = cover.locator(".d-cover-credit");
-  const next = cover.getByRole("button", { name: "Next photo" });
+  const credit = page.locator(".d-gallery-cover-credit .d-cover-credit");
+  const next = page.getByRole("button", { name: "Next photo" });
   const dot = page.getByRole("button", { name: "Photo 2 of 3", exact: true });
   await expect(preview.locator("img")).toHaveAttribute("src", /thumbnails\/australian-national-university-au-canberra\.webp$/);
   await next.click();
+  await expect(next).toBeFocused();
   await expect(dot).toHaveAttribute("aria-current", "true");
   await expect(credit).toContainText("-wuppertaler");
   await expect(preview.locator("img")).toBeVisible();
-  await preview.click();
+  await preview.press("Enter");
 
   const viewer = page.getByRole("dialog", { name: "Campus photos" });
   await expect(viewer).toHaveCSS("background-color", "rgb(0, 0, 0)");
@@ -82,12 +81,15 @@ test("the cover gallery and full-size viewer keep the same photo and attribution
   await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 3 of 3");
   await dot.click();
   await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 2 of 3");
+  await page.keyboard.press("ArrowLeft");
+  await expect(dot).toBeFocused();
+  await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
 });
 
 test("a single campus photo opens on a small screen without carousel controls", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 667 });
   await openUniversity(page, "mit-usa-cambridge", "dark");
-  await expect(page.locator("#detailCover .d-cover-credit")).toBeVisible();
+  await expect(page.locator(".d-gallery-cover-credit .d-cover-credit")).toBeVisible();
   await expect(page.getByRole("button", { name: "Next photo" })).toHaveCount(0);
   const preview = page.getByRole("button", { name: "Enlarge photo" });
   await preview.click();
@@ -125,17 +127,44 @@ test.describe("image recovery", () => {
 test.describe("touch navigation", () => {
   test.use({ isMobile: true, hasTouch: true, viewport: { width: 320, height: 667 } });
 
+  test("phone controls stay below the photo and respond to taps", async ({ page }) => {
+    await openUniversity(page, "australian-national-university-au-canberra", "dark");
+    const preview = page.getByRole("button", { name: /Enlarge photo/ });
+    await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
+    const layout = await page.locator(".d-gallery").evaluate((gallery) => {
+      const photo = gallery.querySelector("#detailCover").getBoundingClientRect();
+      const arrow = gallery.querySelector(".d-gallery-button--previous").getBoundingClientRect();
+      const dots = gallery.querySelector(".d-gallery-dots").getBoundingClientRect();
+      const credit = gallery.querySelector(".d-gallery-cover-credit .d-cover-credit").getBoundingClientRect();
+      return {
+        coverBottom: photo.bottom,
+        arrowTop: arrow.top,
+        arrowSize: Math.min(arrow.width, arrow.height),
+        dotsBottom: dots.bottom,
+        creditTop: credit.top,
+      };
+    });
+    expect(layout.arrowTop).toBeGreaterThanOrEqual(layout.coverBottom);
+    expect(layout.arrowSize).toBeGreaterThanOrEqual(44);
+    expect(layout.creditTop).toBeGreaterThanOrEqual(layout.dotsBottom);
+
+    await page.getByRole("button", { name: "Next photo" }).tap();
+    await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 2 of 3");
+    await page.getByRole("button", { name: "Photo 1 of 3", exact: true }).tap();
+    await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
+
+    await preview.tap();
+    const viewer = page.getByRole("dialog", { name: "Campus photos" });
+    await viewer.getByRole("button", { name: "Next photo" }).tap();
+    await expect(viewer.getByRole("img", { name: "Photo 2 of 3" })).toBeVisible();
+    await viewer.getByRole("button", { name: "Photo 3 of 3", exact: true }).tap();
+    await expect(viewer.getByRole("img", { name: "Photo 3 of 3" })).toBeVisible();
+  });
+
   test("a swipe changes the photo and a tap opens it", async ({ page }) => {
     await openUniversity(page, "australian-national-university-au-canberra", "dark");
-    const cover = page.locator("#detailCover");
-    const preview = cover.getByRole("button", { name: /Enlarge photo/ });
+    const preview = page.getByRole("button", { name: /Enlarge photo/ });
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
-    const overlap = await cover.evaluate((element) => {
-      const arrow = element.querySelector(".d-gallery-button--previous").getBoundingClientRect();
-      const logo = element.querySelector("#detailLogo").getBoundingClientRect();
-      return arrow.bottom - logo.top;
-    });
-    expect(overlap).toBeLessThanOrEqual(0);
 
     const session = await page.context().newCDPSession(page);
     async function swipeLeftAt(y) {
@@ -153,8 +182,22 @@ test.describe("touch navigation", () => {
     await preview.tap();
     await expect(viewer.getByRole("img", { name: "Photo 2 of 3" })).toBeVisible();
     await swipeLeftAt(333);
-    await expect(viewer.getByRole("img", { name: "Photo 3 of 3" })).toBeVisible();
-    await viewer.getByRole("button", { name: "Close" }).tap();
+    const enlargedPhoto = viewer.getByRole("img", { name: "Photo 3 of 3" });
+    await expect(enlargedPhoto).toBeVisible();
+    expect((await enlargedPhoto.boundingBox()).width).toBeCloseTo(320, 0);
+
+    await page.setViewportSize({ width: 667, height: 320 });
+    const photo = await enlargedPhoto.boundingBox();
+    const arrow = await viewer.getByRole("button", { name: "Next photo" }).boundingBox();
+    const license = await viewer.locator(".d-cover-credit").boundingBox();
+    const close = viewer.getByRole("button", { name: "Close" });
+    const closeBox = await close.boundingBox();
+    expect(photo.height).toBeGreaterThan(220);
+    expect(photo.x + photo.width).toBeLessThanOrEqual(closeBox.x);
+    expect(photo.y + photo.height).toBeLessThanOrEqual(arrow.y);
+    expect(license.y + license.height).toBeLessThanOrEqual(320);
+
+    await close.tap();
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 3 of 3");
   });
 });

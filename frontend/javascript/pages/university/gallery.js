@@ -14,10 +14,15 @@ function galleryButton(action, icon, label) {
   </button>`;
 }
 
-function navigationHtml() {
-  return `<div class="d-gallery-arrows" hidden>
-    ${galleryButton("previous", "chevron-left", t("university.gallery.previous", "Previous photo"))}
-    ${galleryButton("next", "chevron-right", t("university.gallery.next", "Next photo"))}
+function navigationHtml(label) {
+  return `<div class="d-gallery-navigation" hidden>
+    <div class="d-gallery-control d-gallery-control--previous">
+      ${galleryButton("previous", "chevron-left", t("university.gallery.previous", "Previous photo"))}
+    </div>
+    <div class="d-gallery-dots" role="group" aria-label="${escapeHtmlAttr(label)}"></div>
+    <div class="d-gallery-control d-gallery-control--next">
+      ${galleryButton("next", "chevron-right", t("university.gallery.next", "Next photo"))}
+    </div>
   </div>`;
 }
 
@@ -92,39 +97,35 @@ export function mountUniversityGallery(cover, universityId) {
   let current = 0;
   const listeners = new AbortController();
 
-  cover.insertAdjacentHTML("beforeend", `<div class="d-gallery-cover">
-    <button type="button" class="d-gallery-preview" aria-haspopup="dialog" aria-label="${escapeHtmlAttr(openLabel)}">
-      <span class="d-gallery-preview-media"></span>
-      <span class="d-gallery-zoom">${heroIcon("magnifying-glass", "ui-icon ui-icon--20")}</span>
-    </button>
-    ${navigationHtml()}
+  cover.insertAdjacentHTML("beforeend", `<button type="button" class="d-gallery-preview" aria-haspopup="dialog" aria-label="${escapeHtmlAttr(openLabel)}">
+    <span class="d-gallery-preview-media"></span>
+    <span class="d-gallery-zoom">${heroIcon("magnifying-glass", "ui-icon ui-icon--20")}</span>
+  </button>`);
+  cover.insertAdjacentHTML("afterend", `${navigationHtml(label)}
     <div class="d-gallery-cover-credit"></div>
-  </div>`);
-  cover.insertAdjacentHTML("afterend", `<div class="d-gallery-dots" role="group" aria-label="${escapeHtmlAttr(label)}" hidden></div>
     <span class="d-gallery-status sr-only" role="status"></span>
     <dialog class="d-photo-viewer" aria-label="${escapeHtmlAttr(label)}">
       ${galleryButton("close", "x-mark", t("common.close", "Close"))}
       <div class="d-photo-stage"></div>
-      ${navigationHtml()}
       <div class="d-photo-footer">
-        <div class="d-gallery-dots" role="group" aria-label="${escapeHtmlAttr(label)}" hidden></div>
+        ${navigationHtml(label)}
         <div class="d-gallery-viewer-credit"></div>
       </div>
       <span class="sr-only" role="status"></span>
     </dialog>`);
 
-  const coverContent = cover.querySelector(".d-gallery-cover");
-  const preview = coverContent.querySelector(".d-gallery-preview");
+  const preview = cover.querySelector(".d-gallery-preview");
   const previewMedia = preview.querySelector(".d-gallery-preview-media");
-  const coverCredit = coverContent.querySelector(".d-gallery-cover-credit");
-  const coverDots = gallery.querySelector(".d-gallery-dots");
+  const coverCredit = gallery.querySelector(".d-gallery-cover-credit");
+  const coverNavigation = gallery.querySelector(".d-gallery-navigation");
   const coverStatus = gallery.querySelector(".d-gallery-status");
   const dialog = gallery.querySelector(".d-photo-viewer");
   const stage = dialog.querySelector(".d-photo-stage");
   const close = dialog.querySelector(".d-gallery-button--close");
   const viewerCredit = dialog.querySelector(".d-gallery-viewer-credit");
   const viewerStatus = dialog.querySelector("[role=status]");
-  const dots = [coverDots, dialog.querySelector(".d-gallery-dots")];
+  const navigation = [coverNavigation, dialog.querySelector(".d-gallery-navigation")];
+  const dots = navigation.map((group) => group.querySelector(".d-gallery-dots"));
 
   function renderPreview() {
     preview.hidden = false;
@@ -205,13 +206,12 @@ export function mountUniversityGallery(cover, universityId) {
       photos.push({ src, credit });
     }
     if (photos.length > 1) {
-      for (const area of [coverContent, dialog]) {
-        area.querySelector(".d-gallery-arrows").hidden = false;
+      for (const area of navigation) {
+        area.hidden = false;
         area.querySelector(".d-gallery-button--previous").addEventListener("click", () => step(-1));
         area.querySelector(".d-gallery-button--next").addEventListener("click", () => step(1));
       }
       for (const group of dots) {
-        group.hidden = false;
         for (const [index] of photos.entries()) {
           const button = document.createElement("button");
           button.type = "button";
@@ -228,8 +228,9 @@ export function mountUniversityGallery(cover, universityId) {
     listeners.abort();
     dialog.close();
     dialog.remove();
-    coverDots.remove();
+    coverNavigation.remove();
+    coverCredit.remove();
     coverStatus.remove();
-    coverContent.remove();
+    preview.remove();
   };
 }
