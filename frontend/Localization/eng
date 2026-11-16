@@ -832,6 +832,8 @@ university.gallery.previous: Previous photo
 university.gallery.next: Next photo
 university.gallery.position: Photo {current} of {total}
 university.gallery.unavailable: Photo unavailable
+university.gallery.zoom_in: Zoom in
+university.gallery.zoom_out: Zoom out
 university.chat_assistant: Chat Assistant
 university.clear: Clear
 university.discounts_scholarships: Discounts & Scholarships

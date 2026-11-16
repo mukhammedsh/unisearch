@@ -105,6 +105,45 @@ test("a single campus photo opens on a small screen without carousel controls", 
   await expect(preview).toBeFocused();
 });
 
+test("the viewer zooms around the pointer and resets when changing photos", async ({ page }) => {
+  await page.setViewportSize({ width: 900, height: 700 });
+  await openUniversity(page, "australian-national-university-au-canberra");
+  const preview = page.getByRole("button", { name: /Enlarge photo/ });
+  await preview.click();
+  const viewer = page.getByRole("dialog", { name: "Campus photos" });
+  const image = viewer.getByRole("img", { name: "Photo 1 of 3" });
+  const zoomIn = viewer.getByRole("button", { name: "Zoom in" });
+  const zoomOut = viewer.getByRole("button", { name: "Zoom out" });
+  await expect(image).toBeVisible();
+  await expect(zoomOut).toBeDisabled();
+  const fit = await image.boundingBox();
+  const x = fit.x + fit.width / 2;
+  const y = fit.y + fit.height / 2;
+
+  await page.mouse.move(x, y);
+  await page.mouse.wheel(0, -160);
+  await expect.poll(async () => (await image.boundingBox()).width).toBeGreaterThan(fit.width);
+  const beforeDrag = await image.boundingBox();
+  await page.mouse.down();
+  await page.mouse.move(x + 70, y, { steps: 4 });
+  await page.mouse.up();
+  const afterDrag = await image.boundingBox();
+  expect(afterDrag.x).toBeGreaterThan(beforeDrag.x + 25);
+  await page.keyboard.press("Shift+ArrowRight");
+  await expect.poll(async () => (await image.boundingBox()).x).toBeLessThan(afterDrag.x - 20);
+
+  await page.keyboard.press("0");
+  await expect(zoomOut).toBeDisabled();
+  expect((await image.boundingBox()).width).toBeCloseTo(fit.width, 0);
+  await page.mouse.dblclick(x, y);
+  await expect(zoomOut).toBeEnabled();
+  await zoomIn.press("ArrowRight");
+  await expect(viewer.getByRole("img", { name: "Photo 2 of 3" })).toBeVisible();
+  await expect(zoomOut).toBeDisabled();
+  await page.keyboard.press("Escape");
+  await expect(preview).toBeFocused();
+});
+
 test.describe("image recovery", () => {
   test.use({ serviceWorkers: "block" });
 
@@ -155,10 +194,38 @@ test.describe("touch navigation", () => {
 
     await preview.tap();
     const viewer = page.getByRole("dialog", { name: "Campus photos" });
+    await viewer.getByRole("button", { name: "Zoom in" }).tap();
+    const zoomOut = viewer.getByRole("button", { name: "Zoom out" });
+    await expect(zoomOut).toBeEnabled();
+    await zoomOut.tap();
+    await expect(zoomOut).toBeDisabled();
     await viewer.getByRole("button", { name: "Next photo" }).tap();
     await expect(viewer.getByRole("img", { name: "Photo 2 of 3" })).toBeVisible();
     await viewer.getByRole("button", { name: "Photo 3 of 3", exact: true }).tap();
     await expect(viewer.getByRole("img", { name: "Photo 3 of 3" })).toBeVisible();
+  });
+
+  test("pinching zooms the photo and dragging pans it without changing the frame", async ({ page }) => {
+    await openUniversity(page, "australian-national-university-au-canberra", "dark");
+    await page.getByRole("button", { name: /Enlarge photo/ }).tap();
+    const viewer = page.getByRole("dialog", { name: "Campus photos" });
+    const image = viewer.getByRole("img", { name: "Photo 1 of 3" });
+    await expect(image).toBeVisible();
+    const fit = await image.boundingBox();
+    const y = Math.round(fit.y + fit.height / 2);
+    const session = await page.context().newCDPSession(page);
+
+    await session.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 125, y, id: 1 }, { x: 195, y, id: 2 }] });
+    await session.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 65, y, id: 1 }, { x: 255, y, id: 2 }] });
+    await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await expect.poll(async () => (await image.boundingBox()).width).toBeGreaterThan(fit.width * 2);
+    const beforePan = await image.boundingBox();
+
+    await session.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 120, y }] });
+    await session.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 200, y }] });
+    await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await expect.poll(async () => (await image.boundingBox()).x).toBeGreaterThan(beforePan.x + 40);
+    await expect(image).toBeVisible();
   });
 
   test("a swipe changes the photo and a tap opens it", async ({ page }) => {

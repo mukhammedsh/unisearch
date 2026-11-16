@@ -832,6 +832,8 @@ university.gallery.previous: Алдыңғы фотосурет
 university.gallery.next: Келесі фотосурет
 university.gallery.position: {total} фотосуреттің {current}-суреті
 university.gallery.unavailable: Фотосурет қолжетімсіз
+university.gallery.zoom_in: Масштабты үлкейту
+university.gallery.zoom_out: Масштабты кішірейту
 university.chat_assistant: Чат көмекшісі
 university.clear: Тазалау
 university.discounts_scholarships: Жеңілдіктер мен стипендиялар

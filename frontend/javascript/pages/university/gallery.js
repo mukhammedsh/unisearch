@@ -3,6 +3,7 @@ import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
 import { buildApiUrl, safePathSegment, uniThumbnailSrc } from "../_shared.js";
 import { coverCreditHtml, loadPhotoCredits } from "./cover-credit.js";
+import { bindGalleryZoom } from "./gallery-zoom.js";
 
 function photoPosition(index, total) {
   return tFormat("university.gallery.position", { current: index + 1, total }, `Photo ${index + 1} of ${total}`);
@@ -26,7 +27,7 @@ function navigationHtml(label) {
   </div>`;
 }
 
-function displayPhoto(host, photo, alt, { onUnavailable, retry } = {}) {
+function displayPhoto(host, photo, alt, { onLoad, onUnavailable, retry } = {}) {
   const image = new Image();
   image.alt = alt;
   image.draggable = false;
@@ -35,8 +36,10 @@ function displayPhoto(host, photo, alt, { onUnavailable, retry } = {}) {
     <span class="d-gallery-error" hidden role="status">${escapeHtml(t("university.gallery.unavailable", "Photo unavailable"))}</span>`;
   const [spinner, error] = host.children;
   image.addEventListener("load", () => {
+    if (!host.contains(image)) return;
     image.hidden = false;
     spinner.hidden = true;
+    onLoad?.(image);
   });
   image.addEventListener("error", () => {
     if (!host.contains(image)) return;
@@ -106,7 +109,11 @@ export function mountUniversityGallery(cover, universityId) {
     <span class="d-gallery-status sr-only" role="status"></span>
     <dialog class="d-photo-viewer" aria-label="${escapeHtmlAttr(label)}">
       ${galleryButton("close", "x-mark", t("common.close", "Close"))}
-      <div class="d-photo-stage"></div>
+      <div class="d-photo-zoom-controls">
+        ${galleryButton("zoom-out", "minus", t("university.gallery.zoom_out", "Zoom out"))}
+        ${galleryButton("zoom-in", "plus", t("university.gallery.zoom_in", "Zoom in"))}
+      </div>
+      <div class="d-photo-stage"><div class="d-photo-canvas"></div></div>
       <div class="d-photo-footer">
         ${navigationHtml(label)}
         <div class="d-gallery-viewer-credit"></div>
@@ -120,12 +127,19 @@ export function mountUniversityGallery(cover, universityId) {
   const coverNavigation = gallery.querySelector(".d-gallery-navigation");
   const coverStatus = gallery.querySelector(".d-gallery-status");
   const dialog = gallery.querySelector(".d-photo-viewer");
-  const stage = dialog.querySelector(".d-photo-stage");
+  const canvas = dialog.querySelector(".d-photo-canvas");
   const close = dialog.querySelector(".d-gallery-button--close");
   const viewerCredit = dialog.querySelector(".d-gallery-viewer-credit");
   const viewerStatus = dialog.querySelector("[role=status]");
   const navigation = [coverNavigation, dialog.querySelector(".d-gallery-navigation")];
   const dots = navigation.map((group) => group.querySelector(".d-gallery-dots"));
+  const zoom = bindGalleryZoom({
+    canvas,
+    dialog,
+    zoomIn: dialog.querySelector(".d-gallery-button--zoom-in"),
+    zoomOut: dialog.querySelector(".d-gallery-button--zoom-out"),
+    onSwipe: step,
+  });
 
   function renderPreview() {
     preview.hidden = false;
@@ -137,7 +151,9 @@ export function mountUniversityGallery(cover, universityId) {
   }
 
   function renderViewer() {
-    displayPhoto(stage, photos[current], photos.length > 1 ? photoPosition(current, photos.length) : label, {
+    zoom.setImage(null);
+    displayPhoto(canvas, photos[current], photos.length > 1 ? photoPosition(current, photos.length) : label, {
+      onLoad: zoom.setImage,
       retry: () => {
         close.focus();
         renderViewer();
@@ -175,7 +191,7 @@ export function mountUniversityGallery(cover, universityId) {
 
   for (const area of [gallery, dialog]) {
     area.addEventListener("keydown", (event) => {
-      if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest("a")) return;
+      if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.target.closest("a")) return;
       const direction = event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
       if (direction && step(direction)) {
         event.preventDefault();
@@ -185,13 +201,15 @@ export function mountUniversityGallery(cover, universityId) {
   }
 
   bindSwipe(preview, step);
-  bindSwipe(stage, step);
   preview.addEventListener("click", () => {
     renderViewer();
     preview.focus({ preventScroll: true });
     dialog.showModal();
   });
   close.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("close", () => {
+    if (!dialog.open) zoom.setImage(null);
+  });
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });
@@ -226,6 +244,7 @@ export function mountUniversityGallery(cover, universityId) {
 
   return () => {
     listeners.abort();
+    zoom.dispose();
     dialog.close();
     dialog.remove();
     coverNavigation.remove();

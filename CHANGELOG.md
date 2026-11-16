@@ -6,6 +6,7 @@ All notable project changes should be recorded here.
 
 ### Added
 - Open campus covers in a full-size viewer and browse credited alternate photos with arrows, photo indicators, keyboard controls, or a swipe.
+- Zoom and move campus photos in the viewer using a mouse, touch gestures, or keyboard controls.
 
 ### Fixed
 - Keep campus photos clear on narrow screens by placing the gallery controls and attribution below the image.
