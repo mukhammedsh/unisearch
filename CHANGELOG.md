@@ -2,6 +2,20 @@
 
 All notable project changes should be recorded here.
 
+## 10.3.2 (2026-11-16) - Guide matches the current UniFit and comparison
+
+Patch release: copy corrections on the guide page in English, Russian and Kazakh; no new capability, API or data change.
+
+### Fixed
+- The guide named the old UniFit sliders. It now uses the current names (Focus, Selectivity, Cost vs Prestige, Location), says what each one measures, that a centred slider is ignored, and that a moved slider without university data counts as a typical university. The Your Vibe tag description counts only the sliders the reader moved.
+- The interests formula no longer shows a non-English query offset that the ranking dropped; it is `clip((sim - 0.55) / 0.35, 0, 1)`.
+- The comparison section no longer promises two or three candidates or a separate tab step. It describes the two-university pair, the one-group rule, the columns of rechecked universities and the Home/Overseas price switch.
+- The glossary calls admitted-student averages historical context instead of a number to plan against, in line with the admission section.
+- Replaced the stale English fallback formulas in `guide.html` with the current text.
+
+### Added
+- The guide explains the "Check the cost" tag, the compact card icons with the catalog banner legend, and how the profile page shows which answers UniFit uses.
+
 ## 10.3.1 (2026-11-16) - Smaller admissions snapshot
 
 Patch release: the reviewed admissions data keeps the same content in a smaller, leaner stored form. Applicants see no change; the backend cache revisions and detail ETags change once because they hash the snapshot bytes.
