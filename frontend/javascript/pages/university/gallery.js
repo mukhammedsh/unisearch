@@ -63,28 +63,66 @@ function displayPhoto(host, photo, alt, { onLoad, onUnavailable, retry } = {}) {
   image.src = photo.src;
 }
 
-function bindSwipe(element, step) {
-  let start = null;
-  let swiped = false;
-  element.addEventListener("pointerdown", (event) => {
-    swiped = false;
-    if (event.pointerType === "touch" && event.isPrimary && !event.target.closest("button:not(.d-gallery-preview)")) {
-      start = event;
+function bindTouchGalleryButtons(gallery, preview, step, signal) {
+  let press = null;
+  let pendingClick = null;
+  let suppressClick = null;
+
+  function cancelPendingClick() {
+    clearTimeout(pendingClick?.timer);
+    pendingClick = null;
+  }
+
+  gallery.addEventListener("pointerdown", (event) => {
+    cancelPendingClick();
+    suppressClick = event.pointerType === "touch" && !event.isPrimary ? press?.button : null;
+    const button = event.target.closest("button");
+    press = button && event.pointerType === "touch" && event.isPrimary
+      ? { button, id: event.pointerId, x: event.clientX, y: event.clientY, moved: false }
+      : null;
+  }, { signal });
+
+  gallery.addEventListener("pointermove", (event) => {
+    if (press?.id === event.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > 10) {
+      press.moved = true;
     }
-  });
-  element.addEventListener("pointercancel", () => { start = null; });
-  element.addEventListener("pointerup", (event) => {
-    if (start?.pointerId !== event.pointerId) return;
-    const x = event.clientX - start.clientX;
-    const y = event.clientY - start.clientY;
-    start = null;
-    if (Math.abs(x) < 40 || Math.abs(x) <= Math.abs(y)) return;
-    swiped = step(x < 0 ? 1 : -1);
-  });
-  element.addEventListener("click", (event) => {
-    if (swiped && event.detail) event.stopImmediatePropagation();
-    swiped = false;
-  }, { capture: true });
+  }, { signal });
+
+  gallery.addEventListener("pointercancel", (event) => {
+    if (press?.id !== event.pointerId) return;
+    suppressClick = press.button;
+    press = null;
+  }, { signal });
+
+  gallery.addEventListener("pointerup", (event) => {
+    if (press?.id !== event.pointerId) return;
+    const { button, x, y, moved } = press;
+    press = null;
+    const dx = event.clientX - x;
+    const dy = event.clientY - y;
+    if (moved || Math.hypot(dx, dy) > 10 || !button.contains(document.elementFromPoint(event.clientX, event.clientY))) {
+      suppressClick = button;
+      if (button === preview && Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1);
+      return;
+    }
+
+    // Let native clicks take priority. Chromium can omit one after a swipe.
+    const timer = setTimeout(() => {
+      pendingClick = null;
+      if (!button.getClientRects().length || button.disabled || button.getAttribute("aria-disabled") === "true") return;
+      suppressClick = button;
+      button.click();
+    }, 100);
+    pendingClick = { button, timer };
+  }, { signal });
+
+  gallery.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (button && pendingClick?.button === button) cancelPendingClick();
+    if (button && suppressClick === button && event.detail) event.stopImmediatePropagation();
+  }, { capture: true, signal });
+
+  return cancelPendingClick;
 }
 
 export function mountUniversityGallery(cover, universityId) {
@@ -200,8 +238,9 @@ export function mountUniversityGallery(cover, universityId) {
     }, { signal: listeners.signal });
   }
 
-  bindSwipe(preview, step);
+  const cancelGalleryTap = bindTouchGalleryButtons(gallery, preview, step, listeners.signal);
   preview.addEventListener("click", () => {
+    if (dialog.open || !preview.isConnected || preview.hidden) return;
     renderViewer();
     preview.focus({ preventScroll: true });
     dialog.showModal();
@@ -244,6 +283,7 @@ export function mountUniversityGallery(cover, universityId) {
 
   return () => {
     listeners.abort();
+    cancelGalleryTap();
     zoom.dispose();
     dialog.close();
     dialog.remove();

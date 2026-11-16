@@ -240,12 +240,24 @@ test.describe("touch navigation", () => {
       await session.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: 90, y }] });
       await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
     }
+    async function omitNextNativeClick(locator) {
+      await locator.evaluate((button) => {
+        function omitClick(event) {
+          if (!event.isTrusted || !button.contains(event.target)) return;
+          window.removeEventListener("click", omitClick, true);
+          event.stopImmediatePropagation();
+        }
+        window.addEventListener("click", omitClick, true);
+      });
+    }
     const box = await preview.boundingBox();
     await swipeLeftAt(Math.round(box.y + box.height / 2));
 
     const viewer = page.getByRole("dialog", { name: "Campus photos" });
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 2 of 3");
     await expect(viewer).toHaveCount(0);
+    // Some Chromium touch streams omit the synthesized click after a swipe.
+    await omitNextNativeClick(preview);
     await preview.tap();
     await expect(viewer.getByRole("img", { name: "Photo 2 of 3" })).toBeVisible();
     await swipeLeftAt(333);
@@ -264,7 +276,9 @@ test.describe("touch navigation", () => {
     expect(photo.y + photo.height).toBeLessThanOrEqual(arrow.y);
     expect(license.y + license.height).toBeLessThanOrEqual(320);
 
+    await omitNextNativeClick(close);
     await close.tap();
+    await expect(viewer).toHaveCount(0);
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 3 of 3");
   });
 });
