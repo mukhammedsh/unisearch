@@ -156,7 +156,7 @@ class RequestBodyLimitMiddleware:
 def _is_expensive_request(request: Request) -> bool:
     if request.method.upper() != "POST":
         return False
-    path = request_scope_path(request).rstrip("/") or "/"
+    path = request_scope_path(request, strip_root_path=True).rstrip("/") or "/"
     if path in _EXPENSIVE_POST_PATHS:
         return True
     if path.endswith(("/uni-chance", "/roi", "/admissions-context")) or path == "/ops/warmup":
@@ -165,7 +165,7 @@ def _is_expensive_request(request: Request) -> bool:
 
 
 def _expensive_rate_limit_path(request: Request) -> str:
-    path = request_scope_path(request).rstrip("/") or "/"
+    path = request_scope_path(request, strip_root_path=True).rstrip("/") or "/"
     parts = path.strip("/").split("/")
     if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] in {"uni-chance", "roi", "admissions-context"}:
         return "/" + "/".join([*parts[:-2], "{id}", parts[-1]])
