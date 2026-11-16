@@ -9,6 +9,9 @@ Patch release: CI-only change with no application, API or data change. A pull-re
 ### Changed
 - The pull-request E2E job is split into six parallel shards, one worker each, on separate runners (the 524-test suite took about 23 minutes on one runner, and three workers on one runner saved only about 4 minutes because the API is a single process). The required `e2e-pr` check is kept as a job that passes only when every shard passes. A new push to a pull request cancels its superseded Tests run; runs on `main`, the nightly schedule and manual dispatch are never cancelled.
 
+### Tests
+- The admissions journeys browser test reads each admissions-context response body as soon as it arrives, so it no longer fails with a dropped-response protocol error when the page reloads or re-renders first.
+
 ## 10.3.1 (2026-11-16) - Smaller admissions snapshot and steady university pages under late exchange rates
 
 Patch release with no new capability: the reviewed admissions data keeps the same content in a smaller, leaner stored form, and exchange rates that arrive late no longer reset a university page. The backend cache revisions and detail ETags change once because they hash the snapshot bytes.
