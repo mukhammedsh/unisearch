@@ -2,6 +2,11 @@
 
 All notable project changes should be recorded here.
 
+## 10.3.4 (2026-11-16) - University page loading fix
+
+### Fixed
+- Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
+
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 
 Patch release: documentation-only change with no application, API or data change.

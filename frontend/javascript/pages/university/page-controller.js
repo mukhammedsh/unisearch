@@ -320,7 +320,7 @@ function mountOverviewSummaryBlock(options) {
   return mountOverviewSummary({ container, ...options });
 }
 
-async function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
+function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
   if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
   const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
   const nameEl = document.getElementById("detailName");
@@ -351,7 +351,6 @@ async function renderReviewedUniversityPage({ id, preserveVisibleContent, univer
     : initialUrl.searchParams.get("admission_option") ? "programs" : "general");
   if (!preserveVisibleContent) document.querySelector(`[data-tab="tab-${initialTab}"]`)?.click();
   bindDetailRefreshLifecycle();
-  await mounted.ready;
 }
 
 async function renderLegacyUniversityPage({ id, university, universityId, cardEl, stateEl }) {
@@ -578,7 +577,7 @@ export async function initUniversityPage(options = {}) {
   }
 
   try {
-    setDetailLoading(true);
+    setDetailLoading(!cardEl?.classList.contains("is-mounted"));
     if (stateEl) stateEl.textContent = "";
 
     const [university] = await Promise.all([
@@ -591,7 +590,7 @@ export async function initUniversityPage(options = {}) {
     rememberRecentUniversity(universityId);
 
     if (REVIEWED_ADMISSIONS_IDS.has(universityId)) {
-      await renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl });
+      renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl });
       return;
     }
 
