@@ -1,7 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
-const { setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
 
 const viewports = [
   { name: "narrow", width: 320, height: 568 },

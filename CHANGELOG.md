@@ -2,6 +2,11 @@
 
 All notable project changes should be recorded here.
 
+## 10.4.1 (2026-11-17) - CodeQL test fixes
+
+### Fixed
+- Verify the full MIT Admissions link in comparison tests and remove unused imports from responsive layout and profile language tests.
+
 ## 10.4.0 (2026-11-17) - Campus photo galleries
 
 ### Added

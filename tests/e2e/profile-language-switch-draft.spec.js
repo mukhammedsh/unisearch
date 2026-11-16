@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test("language switch keeps unsaved profile draft", async ({ page }) => {
