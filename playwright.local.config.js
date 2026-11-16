@@ -15,11 +15,8 @@ process.env.UNISEARCH_E2E_BACKEND_PORT = String(backendPort);
 module.exports = defineConfig({
   testDir: './tests/e2e',
   timeout: 60000,
-  // CI runners have 4 vCPUs shared with the API and the static server. Four workers starve the API
-  // (catalog requests stalled for 60 s in full-suite runs), so CI uses three; local runs use two.
-  workers: process.env.CI ? 3 : 2,
-  // One retry absorbs load-dependent timeouts; Playwright still lists the test as flaky in the summary.
-  retries: process.env.CI ? 1 : 0,
+  // shortcut: cap local E2E at two; raise after three-worker API-backed runs pass reliably.
+  workers: process.env.CI ? 1 : 2,
   expect: { timeout: 12000 },
   use: {
     baseURL: 'http://127.0.0.1:5510',
