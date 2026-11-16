@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# A new push to a pull request cancels the superseded run; main, schedule and manual runs always finish.
+concurrency:
+  group: tests-${{ github.event_name == 'pull_request' && github.head_ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   backend-tests:
     if: github.event_name != 'schedule'
