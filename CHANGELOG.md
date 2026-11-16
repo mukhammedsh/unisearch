@@ -7,6 +7,7 @@ All notable project changes should be recorded here.
 ### Fixed
 - Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
 - Use recognizable campus exteriors for Australian National University, Delft University of Technology, the National University of Singapore, Tsinghua University, and the University of Melbourne.
+- Replace the distant Seoul National University medical-campus panorama with a street-level photograph of the historic Daehan Hospital building.
 
 ### Changed
 - Retain former covers and alternate campus views with per-photo credits for future gallery use.

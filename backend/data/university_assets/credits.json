@@ -217,11 +217,11 @@
       "modified": true
     },
     "seoul-national-university-kr-seoul": {
-      "file": "File:Seoul National University Yeongeon Campus at Naksan Park view.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:Seoul_National_University_Yeongeon_Campus_at_Naksan_Park_view.jpg",
-      "author": "U2em",
-      "license": "CC BY-SA 3.0",
-      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "file": "File:Daehan Hospital (2025-01).jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Daehan_Hospital_(2025-01).jpg",
+      "author": "Sadopaul",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
       "modified": true
     },
     "stanford-university-usa-ca": {
@@ -421,6 +421,16 @@
         "author": "ZKang123",
         "license": "CC BY-SA 4.0",
         "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "modified": true
+      }
+    },
+    "seoul-national-university-kr-seoul": {
+      "yeongeon-campus-panorama.jpg": {
+        "file": "File:Seoul National University Yeongeon Campus at Naksan Park view.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Seoul_National_University_Yeongeon_Campus_at_Naksan_Park_view.jpg",
+        "author": "U2em",
+        "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
         "modified": true
       }
     },
