@@ -23,13 +23,11 @@ def _scope(row):
 
 
 def _provenance(row):
-    original = copy.deepcopy(row.get("provenance") or {})
-    scope = original.get("original_scope")
-    if scope is not None and not isinstance(scope, dict):
-        scope = {"source_scope_text": scope}
+    # The original scope and source IDs stay in the packet file that the evidence reference names.
+    original = {key: value for key, value in copy.deepcopy(row.get("provenance") or {}).items()
+                if key not in ("original_scope", "original_source_ids")}
     return {**original, "evidence_file": original.get("evidence_file") or "research-catalog.json",
-            "original_id": original.get("original_id") or row["id"], "original_scope": scope,
-            "original_source_ids": original.get("original_source_ids")}
+            "original_id": original.get("original_id") or row["id"]}
 
 
 def convert_research_catalog(catalog):
