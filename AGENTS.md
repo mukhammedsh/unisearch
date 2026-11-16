@@ -25,6 +25,7 @@
 ## 2. Stack and architecture
 
 - **Frontend:** Vanilla JavaScript, HTML, and CSS in `frontend/`.
+- **Modern web platform:** Before new or changed HTML, CSS, or client-side JS, consult the `modern-web-guidance` skill and prefer native platform features over custom code or dependencies. Browser support: Baseline Widely available features need no fallback; use Newly available features only when feature-detected with graceful degradation and a fallback of at most 20 lines with no external dependencies. The Calm Academic Workspace rules in section 3 (borderless surfaces, `opacity`/`transform`-only animation) still take precedence over what a guide suggests.
 - **Backend:** Python 3.12+ and FastAPI in `backend/app/`.
 - **UI styling:** No UI frameworks. Use CSS variables from `frontend/css/style.css`.
 - **Localization:** English, Russian and Kazakh strings live in `frontend/Localization/eng`, `frontend/Localization/ru` and `frontend/Localization/kaz`. Keep UI keys aligned across all three languages. After any change to these files, run `npm run fix:i18n`: it updates the locale pack cache revision, without which returning readers see new keys as blank text (`npm run check:i18n` fails until it is current). Hardcoded user-facing text in HTML or JavaScript is prohibited; official source prose remains in its original language.

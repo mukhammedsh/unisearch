@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 10.3.3 (2026-11-16) - Modern web platform rule for agents
+
+Patch release: documentation-only change with no application, API or data change.
+
+### Changed
+- `AGENTS.md` now tells agents to consult the `modern-web-guidance` skill before new or changed HTML, CSS or client-side JavaScript and to prefer native platform features over custom code or dependencies. Browser support policy: Baseline Widely available features need no fallback; Newly available features require feature detection, graceful degradation and a fallback of at most 20 lines with no external dependencies. The Calm Academic Workspace rules still take precedence over a guide's suggestions.
+
 ## 10.3.2 (2026-11-16) - Faster pull-request E2E checks
 
 Patch release: CI-only change with no application, API or data change. A pull-request Tests run takes about 6.5 minutes instead of about 25.
