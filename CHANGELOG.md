@@ -2,14 +2,21 @@
 
 All notable project changes should be recorded here.
 
-## 10.3.1 (2026-11-16) - Smaller admissions snapshot
+## 10.3.1 (2026-11-16) - Smaller admissions snapshot and steady university pages under late exchange rates
 
-Patch release: the reviewed admissions data keeps the same content in a smaller, leaner stored form. Applicants see no change; the backend cache revisions and detail ETags change once because they hash the snapshot bytes.
+Patch release with no new capability: the reviewed admissions data keeps the same content in a smaller, leaner stored form, and exchange rates that arrive late no longer reset a university page. The backend cache revisions and detail ETags change once because they hash the snapshot bytes.
 
 ### Changed
 - The reviewed admissions snapshot `backend/data/admissions/catalog.json` is stored as compact JSON with one line per record, cutting it from 25.4 MB to 18.2 MB (about 1.9 MB to 1.6 MB compressed) with identical content. `prepare_admissions_catalog.py` writes this format, so snapshot refreshes keep one reviewable line per fact. Backend cache revisions and detail ETags change once because they hash the file bytes.
 - The maintainer-only blocks of each reviewed institution (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`, about 650 KB) moved from the runtime snapshot to `backend/data/admissions/research.json`. The backend never read them; the preparation script writes both files and the preparation and editorial tests check the new file.
 - Records in the reviewed admissions snapshot keep only a reference to their research record (`evidence_file`, `original_id`) instead of a copy of its original scope and source IDs (about 1.6 MB; the snapshot is now 16.4 MB). The preparation test resolves every reference against the evidence file. The reviewed assessment mappings in `assessments.json` were re-hashed against the unchanged fact content after confirming that each old hash matched its old fact.
+
+### Fixed
+- Exchange rates that arrive after the first render (for example while the API wakes up) no longer rebuild a university page the reader is working in. In 10.3.0 they were announced as a currency change, so an open program and route editor closed and its choices were lost. Late rates now redraw only the catalog cards in place; other pages use them from the next page view.
+
+### Tests
+- A browser test holds the rates response while the admissions editor is open, and another checks that catalog card prices redraw when live rates arrive late.
+- The slow-rates unit test checks event order instead of wall-clock time, so it no longer fails on a loaded CI runner.
 
 ## 10.3.0 (2026-11-13) - Simplified profile and admission pages
 
@@ -85,7 +92,7 @@ Minor release: returning users see a simpler profile and admission page, and a p
 - A price range shows one approximation sign and one bracketed original range ("≈ ₸4.5M – ₸9M ($10,000 – $20,000)") instead of repeating them for each end, in reviewed and earlier-format comparison cells alike.
 - A price in a currency without an exchange rate is shown as published instead of being labeled with the preferred currency's symbol unconverted.
 - Earlier-format earnings figures on the Overview tab follow the currency settings.
-- Every page loads live exchange rates at start, not only the catalog. A university page, the comparison or the profile opened directly used to convert with the built-in fallback table (for example 450 ₸ per dollar) for the whole visit. Rates cached earlier in the session apply from the first render. Rates that arrive after a one-second wait redraw the catalog cards and apply to other pages from the next page view, so a university page the reader is working in is never rebuilt under them.
+- Every page loads live exchange rates at start, not only the catalog. A university page, the comparison or the profile opened directly used to convert with the built-in fallback table (for example 450 ₸ per dollar) for the whole visit. Rates cached earlier in the session apply from the first render; rates that arrive after a short wait redraw the prices already on screen.
 - The profile budget keeps the amount and currency it was entered in. Changing the display currency used to convert, round and save the budget each time, so switching back and forth drifted it (10,000,000 ₸ became 9,999,900 ₸); the field now shows a conversion and stores a new amount only when one is typed.
 - With a price range set on the full yearly cost, a university with reviewed data that publishes only tuition (Imperial College London, Nazarbayev University) stays in the results with its tuition marked as a partial price match, as its card already shows tuition. They used to disappear from every price-filtered list. The budget filter still requires a full yearly cost.
 - The catalog price slider labels its right edge "$100,000+", because at that position the filter has no upper limit and pricier universities still match. Screen readers hear "and above".
