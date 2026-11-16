@@ -829,6 +829,14 @@ university.cover_credit.text: Фото: {author}, {license}
 university.cover_credit.text_modified: Фото: {author}, {license} (кадрировано)
 university.cover_credit.unknown_author: Автор не указан
 university.cover_credit.source_title: Открыть страницу источника фото с лицензией
+university.gallery.label: Фото кампуса
+university.gallery.open: Увеличить фото
+university.gallery.previous: Предыдущее фото
+university.gallery.next: Следующее фото
+university.gallery.position: Фото {current} из {total}
+university.gallery.unavailable: Фото недоступно
+university.gallery.zoom_in: Увеличить масштаб
+university.gallery.zoom_out: Уменьшить масштаб
 university.chat_assistant: Чат-ассистент
 university.clear: Очистить
 university.discounts_scholarships: Скидки и стипендии

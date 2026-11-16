@@ -128,14 +128,10 @@ Phase 4: Academic Expansion & Community
 ### 7. Campus Media Gallery on University Detail Pages
 * **Track:** Features & UX
 * **Priority:** P2 (Medium)
-* **Status:** Planned
-* **Goal:** Enhance visual discovery by introducing a dedicated "Gallery" tab on university detail pages featuring high-resolution campus photography.
-* **Key Tasks:**
-  - **Gallery UI:** Implement an accessible gallery tab with sliding indicator, responsive thumbnail grid, and keyboard-navigable lightbox.
-  - **Content Acquisition:** Gather and verify official photography (campuses, lecture halls, libraries, dormitories, sports facilities) for all 50 catalog institutions.
-  - **Asset Optimization:** Convert media to modern WebP format, generate responsive `srcset` thumbnails, and enforce lazy loading.
-  - **Media Storage:** Organize asset directories in `backend/data/university_assets/gallery/` with CDN caching rules.
-* **Dependencies:** Executed on the initial 50 universities before catalog expansion to maintain quality control.
+* **Status:** Cover gallery and photo viewer implemented. Additional photo coverage is ongoing.
+* **Gallery UI:** The university cover opens a keyboard-navigable lightbox. Universities with additional photos have arrows, photo indicators, and swipe navigation on the cover and in the lightbox.
+* **Content Acquisition:** Gather and verify reusable photography (campuses, lecture halls, libraries, dormitories, and sports facilities) for all 50 catalog institutions.
+* **Media Storage:** Add licensed JPEGs to `backend/data/university_assets/gallery/<university-id>/` and register each filename and its attribution in the matching `gallery` entry in `credits.json`. Run `npm run audit:images` after changing media.
 
 ---
 

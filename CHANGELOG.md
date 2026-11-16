@@ -2,6 +2,22 @@
 
 All notable project changes should be recorded here.
 
+## 10.4.0 (2026-11-17) - Campus photo galleries
+
+### Added
+- Open campus covers in a full-size viewer and browse credited alternate photos with arrows, photo indicators, keyboard controls, or a swipe.
+- Zoom and move campus photos in the viewer using a mouse, touch gestures, or keyboard controls.
+
+### Fixed
+- Keep campus photos clear on narrow screens by placing the gallery controls and attribution below the image.
+- Keep touch controls responsive immediately after swiping between campus photos.
+- Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
+- Use recognizable campus exteriors for Australian National University, Delft University of Technology, the National University of Singapore, Tsinghua University, and the University of Melbourne.
+- Replace the distant Seoul National University medical-campus panorama with a street-level photograph of the historic Daehan Hospital building.
+
+### Changed
+- Retain former covers and alternate campus views with per-photo credits in the gallery.
+
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 
 Patch release: documentation-only change with no application, API or data change.

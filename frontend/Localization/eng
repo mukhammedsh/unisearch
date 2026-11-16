@@ -826,6 +826,14 @@ university.cover_credit.text: Photo: {author}, {license}
 university.cover_credit.text_modified: Photo: {author}, {license} (cropped)
 university.cover_credit.unknown_author: Unknown author
 university.cover_credit.source_title: Open the photo's source page with its license
+university.gallery.label: Campus photos
+university.gallery.open: Enlarge photo
+university.gallery.previous: Previous photo
+university.gallery.next: Next photo
+university.gallery.position: Photo {current} of {total}
+university.gallery.unavailable: Photo unavailable
+university.gallery.zoom_in: Zoom in
+university.gallery.zoom_out: Zoom out
 university.chat_assistant: Chat Assistant
 university.clear: Clear
 university.discounts_scholarships: Discounts & Scholarships

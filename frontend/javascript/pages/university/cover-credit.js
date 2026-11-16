@@ -1,4 +1,4 @@
-/* cover-credit.js - Author and license credit for the university cover photograph */
+/* cover-credit.js - Author and license credit for university photographs */
 
 import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
@@ -7,14 +7,13 @@ import { buildApiUrl, safeUrl } from "../_shared.js";
 let creditsPromise = null;
 
 // The credits file lives next to the photographs and is served by the same static asset route.
-export function loadCoverCredits() {
+export function loadPhotoCredits() {
   if (!creditsPromise) {
     creditsPromise = fetch(buildApiUrl("universities/assets/credits.json"), { credentials: "omit" })
       .then((response) => {
         if (!response.ok) throw new Error(`credits.json responded ${response.status}`);
         return response.json();
       })
-      .then((data) => (data && typeof data.photos === "object" && data.photos) || {})
       .catch((error) => {
         // Without credits the cover keeps its photograph but shows no caption; the next page view retries.
         console.warn("cover_credits_unavailable", error);
@@ -40,15 +39,4 @@ export function coverCreditHtml(credit) {
   return href
     ? `<a class="d-cover-credit" href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer" title="${title}">${escapeHtml(text)}</a>`
     : `<span class="d-cover-credit">${escapeHtml(text)}</span>`;
-}
-
-export async function renderCoverCredit(coverEl, universityId) {
-  if (!coverEl) return;
-  coverEl.querySelector(".d-cover-credit")?.remove();
-  coverEl.dataset.creditFor = String(universityId || "");
-  const credits = await loadCoverCredits();
-  // A later navigation may have reused the cover for another university while the file loaded.
-  if (!credits || coverEl.dataset.creditFor !== String(universityId || "")) return;
-  const html = coverCreditHtml(credits[universityId]);
-  if (html) coverEl.insertAdjacentHTML("beforeend", html);
 }
