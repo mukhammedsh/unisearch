@@ -123,7 +123,7 @@ function glossaryEntries() {
     { term: chanceName, desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is the 0–100 admission estimate for one choice; the card shows your best choice.`) },
     { term: t("guide.glossary.term.admission_track", "Admission Choice"), desc: t("guide.glossary.admission_track", "Category, profile, and funding selected together as one choice — the unit everything is computed for.") },
     { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "The minimum scores a profile demands before an application is even considered.") },
-    { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "The average scores of previously admitted students — the number worth planning against.") },
+    { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "The average scores of previously admitted students: historical context, not a cutoff or a guarantee.") },
     { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "The language proofs a route accepts: native language, CEFR level, or exam score.") },
     { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Early salary divided by one year of cost: a planning ratio, not a promise.") },
     { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "The side-by-side table that compares only same-scope published numbers and never names an overall winner.") },
