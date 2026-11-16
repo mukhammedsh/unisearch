@@ -165,7 +165,7 @@ test("university rows show published figures with sources, mark missing ones and
   } });
   const html = renderReviewedComparisonPage([mit, chooseColumn()], {});
   assert.match(cell(html, "selectivity", 0), /4\.6%/);
-  assert.match(cell(html, "selectivity", 0), /mitadmissions\.org/);
+  assert.ok(cell(html, "selectivity", 0).includes('<a href="https://mitadmissions.org/stats"'));
   assert.match(cell(html, "students", 0), /11,886/);
   assert.match(cell(html, "students", 1), /Not published/);
   assert.doesNotMatch(html, /120,000|salary/i);
