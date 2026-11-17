@@ -8,6 +8,7 @@ import {
   loadProfileForApi,
   markMotionEnter,
   replayMotion,
+  UNIVERSITY_ICON_SRC,
 } from "../utils.js";
 import { t, tFormat } from "../i18n.js";
 import { heroIcon } from "../icons.js";
@@ -25,7 +26,6 @@ import {
   readIdListStorage,
   renderInlineIcon,
   shouldOpenUniversitiesInNewTab,
-  uniLogoSrc,
 } from "./_shared.js";
 import {
   compareAdmissionChoiceOptionLabel,
@@ -125,8 +125,6 @@ function compareCardsHtml(universities) {
   return universities.map((u, index) => {
     const id = String(u?.id || "");
     const detailUrl = routeUniversityDetail(id);
-    const logoSrc = uniLogoSrc(id);
-    const logoSrcFull = uniLogoSrc(id, { forceFull: true });
     const publishedAdmission = comparePublishedAdmission(u, compareAdmissionChoices);
     const cost = compareSelectedCostContext(u, compareAdmissionChoices);
     const admissionContext = [
@@ -144,7 +142,7 @@ function compareCardsHtml(universities) {
           <div class="compare-uni-card__identity">
             <span class="compare-uni-card__slot">${escapeHtml(compareSlotLabel(index))}</span>
             <div class="compare-uni-card__logo">
-              <img src="${logoSrc}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}">
+              <img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}">
             </div>
           </div>
         </div>
@@ -245,8 +243,6 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
       ${activeUniversities.map((u, index) => {
         const id = String(u?.id || "");
         const selected = compareChoiceKey(compareAdmissionChoices.get(id));
-        const logoSrc = uniLogoSrc(id);
-        const logoSrcFull = uniLogoSrc(id, { forceFull: true });
         const uniName = compareUniversityName(u);
         const location = compareLocationText(u);
         return `
@@ -255,7 +251,7 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
               <div class="compare-config-column__identity">
                 <span class="compare-config-column__slot">${escapeHtml(compareSlotLabel(index))}</span>
                 <div class="compare-config-column__logo">
-                  <img src="${logoSrc}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(uniName))}">
+                  <img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(uniName))}">
                 </div>
               </div>
               <h2>${escapeHtml(uniName)}</h2>
@@ -453,7 +449,7 @@ function renderMixedState(container, universities) {
           const id = String(u?.id || "");
           const isReviewed = hasReviewedAdmissions(u);
           return `<li class="compare-mixed__item" data-uni-id="${escapeHtmlAttr(id)}">
-            <span class="compare-mixed__logo"><img src="${escapeHtmlAttr(uniLogoSrc(id))}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(id, { forceFull: true }))}" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}"></span>
+            <span class="compare-mixed__logo"><img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}"></span>
             <span class="compare-mixed__text"><strong>${escapeHtml(compareUniversityName(u))}</strong><small>${escapeHtml(t(isReviewed ? "universities.compare.mixed.reviewed" : "universities.compare.mixed.legacy"))}</small></span>
             <a class="compare-mixed__link" href="${escapeHtmlAttr(routeUniversityDetail(id))}"${linkAttrs}>${escapeHtml(t("universities.card.view_details"))}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</a>
           </li>`;

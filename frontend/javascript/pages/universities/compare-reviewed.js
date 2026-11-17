@@ -7,12 +7,12 @@
 // program is chosen in the picker. A choice made here is the same saved choice the university page uses.
 // Layout follows the familiar product-comparison pattern: identity heads, topic sections, a label per row and one
 // value per university, with a compact sticky strip of names while the heads are out of view.
-import { API_BASE, bindImageFallbacks, debounce, initials, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice } from "../../utils.js";
+import { API_BASE, bindImageFallbacks, debounce, initials, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice, UNIVERSITY_ICON_SRC } from "../../utils.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { navigateToAppRoute, routeCompareSelection, routeUniversityDetail } from "../../routes.js";
-import { formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource, uniLogoSrc } from "../_shared.js";
+import { formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource } from "../_shared.js";
 import { compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
 import { admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
@@ -346,7 +346,7 @@ function scopeText(column) {
 
 function logoHtml(column, className) {
   const name = compareUniversityName(column.university);
-  return `<span class="${className}"><img src="${escapeHtmlAttr(uniLogoSrc(column.id))}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(column.id, { forceFull: true }))}" data-fallback-text="${escapeHtmlAttr(initials(name))}"></span>`;
+  return `<span class="${className}"><img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(name))}"></span>`;
 }
 
 function headHtml(column, index) {

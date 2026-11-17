@@ -26,6 +26,7 @@ import {
   setupSlidingIndicator,
   safeSessionStorage,
   showToast,
+  UNIVERSITY_ICON_SRC,
 } from "../utils.js";
 
 import {
@@ -78,7 +79,6 @@ import {
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
-  uniLogoSrc,
   SAVED_UNIVERSITIES_KEY,
   COMPARE_UNIVERSITIES_KEY,
   RECENT_UNIVERSITIES_KEY,
@@ -1060,11 +1060,10 @@ export function initUniversitiesPage() {
         const notice = isComparePairMixed() ? t("universities.compare.tray_mixed") : compareTrayNotice;
         const chipsHtml = ids.map((id) => {
             const name = getUniversityDisplayNameById(id);
-            const logoSrc = uniLogoSrc(id);
             const removeLabel = t("universities.compare.remove", "Remove from comparison");
             return `
                 <div class="compare-tray__chip" role="listitem">
-                    ${logoSrc ? `<img class="compare-tray__chip-logo" src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy">` : ""}
+                    <img class="compare-tray__chip-logo" src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy">
                     <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
                     <button class="compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
                         ${renderInlineIcon("x-mark", 12)}
@@ -2675,19 +2674,9 @@ export function initUniversitiesPage() {
                 showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
                 chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
                 iconCreateFunction: function(cluster) {
-                    const markers = cluster.getAllChildMarkers();
-                    const count = markers.length;
-                    let best = null;
-                    for (const m of markers) {
-                        const r = Number(m?.options?.uniRank);
-                        if (!Number.isFinite(r)) continue;
-                        if (!best || r < best.rank) best = { rank: r, id: m?.options?.uniId };
-                    }
-                    const fallbackId = markers[0]?.options?.uniId || "default";
-                    const bestId = (best && best.id) ? best.id : fallbackId;
-                    const logoUrl = uniLogoSrc(bestId, { forceFull: true });
+                    const count = cluster.getChildCount();
                     return L.divIcon({
-                        html: clusterMarkerLogoHtml(logoUrl, count - 1),
+                        html: clusterMarkerLogoHtml(UNIVERSITY_ICON_SRC, count - 1),
                         className: "cluster-icon-container",
                         iconSize: [44, 44],
                         iconAnchor: [22, 22],
@@ -3178,7 +3167,7 @@ export function initUniversitiesPage() {
         return `
             <div class="map-card-wrapper map-point-popup" data-uni-id="${escapeHtmlAttr(id)}">
                 <div class="map-point-popup__head">
-                    <span class="map-point-popup__logo"><img src="${escapeHtmlAttr(uniLogoSrc(id, { forceFull: true }))}" alt="" loading="lazy" decoding="async"></span>
+                    <span class="map-point-popup__logo"><img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async"></span>
                     <span class="map-point-popup__copy">
                         <strong>${escapeHtml(name)}</strong>
                         ${locationText ? `<span>${escapeHtml(locationText)}</span>` : ""}
@@ -3265,16 +3254,14 @@ export function initUniversitiesPage() {
                 const uniId = String(u.id || "");
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
-                    html: mapMarkerLogoHtml(uniLogoSrc(uniId, { forceFull: true })),
+                    html: mapMarkerLogoHtml(UNIVERSITY_ICON_SRC),
                     iconSize: [44, 44],
                     iconAnchor: [22, 22],
                     popupAnchor: [0, -24],
                 });
-                const rankValue = Number(u.rank);
                 const marker = L.marker([latitude, longitude], {
                     icon: customIcon,
-                    uniId: uniId,
-                    uniRank: Number.isFinite(rankValue) ? rankValue : 999999
+                    uniId: uniId
                 });
                 const loadedCard = findLoadedMapCard(uniId);
                 const cardHTML = loadedCard ? renderFullMapPopup(loadedCard) : renderMapPointPopup(u, "loading");
@@ -4141,8 +4128,6 @@ export function initUniversitiesPage() {
 
         // ROI intentionally removed from university cards.
 
-        const logoSrc = uniLogoSrc(id);
-        const logoSrcFull = uniLogoSrc(id, { forceFull: true });
         const thumbSrc = uniThumbnailSrc(id);
         const thumbSrcMedium = uniThumbnailSrc(id, { size: "medium" });
         const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
@@ -4201,7 +4186,7 @@ ${rankInnerHtml}
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
         const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"));
-        const logoImgHtml = `<img src="${logoSrc}" alt="${initials(name)}" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
+        const logoImgHtml = `<img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}">

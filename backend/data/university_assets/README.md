@@ -1,11 +1,10 @@
 # University Media Assets
 
-This directory contains visual assets (logos and campus cover thumbnails) for universities indexed in the UniSearch platform.
+This directory contains visual assets (a shared university icon and campus photos) for universities indexed in the UniSearch platform.
 
 ## Directory Structure
 
-- `logos/`: Master square university logos (PNG format, 1:1 aspect ratio).
-- `logos-small/`: Optimized mobile/compact logo variants (PNG format, 1:1 aspect ratio).
+- `university-icon.png`: Shared catalog icon derived from the Heroicons Academic Cap outline by Tailwind Labs. See [the MIT license](HEROICONS-LICENSE.txt). Existing university logo URLs for catalog entries serve this same image.
 - `thumbnails/`: Master university campus cover images (1600x900, 16:9 aspect ratio, JPG and WebP formats).
 - `thumbnails-medium/`: Tablet/preview variants (960x540, 16:9 aspect ratio, JPG and WebP formats).
 - `thumbnails-small/`: Mobile/list variants (640x360, 16:9 aspect ratio, JPG and WebP formats).
@@ -13,7 +12,6 @@ This directory contains visual assets (logos and campus cover thumbnails) for un
 
 ## Technical Specifications
 
-- **Logos**: PNG format with transparent background where appropriate, square 1:1 aspect ratio.
 - **Thumbnails**: 16:9 aspect ratio (`1600x900` full, `960x540` medium, `640x360` small). Must pass `npm run audit:images`.
 - Variant generation script: `scripts/generate-university-image-variants.py`.
 
@@ -21,7 +19,7 @@ This directory contains visual assets (logos and campus cover thumbnails) for un
 
 1. **Trademarks & Logos**:
    - University names, crests, and emblems are registered or unregistered trademarks of their respective academic institutions.
-   - They are used on the UniSearch platform only to identify the institution a catalog entry refers to (nominative use), in a non-commercial educational project.
+   - Public listings use the institution name and the shared icon. Before introducing a university mark, record the source and written permission or published terms that explicitly allow that use. An image license alone does not grant trademark rights.
 2. **Campus Photography**:
    - Campus photographs remain the property of their respective photographers, copyright holders, or academic institutions.
    - Photographs are copyrighted works; nominative trademark use does not cover them. Every campus photograph comes from a freely licensed file on Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA). Do not take photographs from search engines, news sites, photo stocks, or social media.

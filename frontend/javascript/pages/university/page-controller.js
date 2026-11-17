@@ -7,6 +7,7 @@ import {
   loadProfileForApi,
   motionPress,
   replayMotion,
+  UNIVERSITY_ICON_SRC,
 } from "../../utils.js";
 import { renderErrorScreen, setupTabs } from "../../components.js";
 import { classifyError } from "../../components/network-status.js";
@@ -35,7 +36,6 @@ import {
   trCity,
   trCountry,
   trUniversityName,
-  uniLogoSrc,
   unknownFieldText,
   writeIdListStorage,
 } from "../_shared.js";
@@ -182,7 +182,7 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   const logoEl = document.getElementById("detailLogo");
   if (logoEl) {
     const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
-    logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(universityId, { forceFull: true })}" alt="Logo" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(universityId))}" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
+    logoEl.innerHTML = `<img class="d-logo-img" src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
   }
 
   const websiteBtn = document.getElementById("detailWebsite");

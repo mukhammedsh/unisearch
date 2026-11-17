@@ -6,6 +6,7 @@ import {
   escapeHtml,
   escapeHtmlAttr,
   initials,
+  UNIVERSITY_ICON_SRC,
 } from "../utils.js";
 import { getCurrentLanguage, t } from "../i18n.js";
 import {
@@ -20,12 +21,6 @@ const searchCache = new Map();
 let activeAbortController = null;
 let highlightedIndex = -1;
 let globalClickBound = false;
-
-function buildLogoUrl(universityId, forceFull = false) {
-  const safeId = encodeURIComponent(String(universityId || "").trim());
-  const folder = forceFull ? "logos" : "logos-small";
-  return `${API_BASE}/universities/assets/${folder}/${safeId}.png`;
-}
 
 export function isGlobalSearchDisabledWorkspace() {
   if (typeof document === "undefined") return false;
@@ -134,8 +129,6 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1, query = "") 
     const city = String(item?.location?.city || "").trim();
     const country = String(item?.location?.country || "").trim();
     const locationText = [city, country].filter(Boolean).join(", ");
-    const logoSrc = buildLogoUrl(id, false);
-    const logoSrcFull = buildLogoUrl(id, true);
     const initialsText = initials(name);
     const href = routeUniversityDetail(id);
     const isHigh = idx === highlightedIdx;
@@ -156,7 +149,7 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1, query = "") 
     return `
       <a href="${escapeHtmlAttr(href)}" class="navbar-search-suggestion${isHigh ? " is-highlighted" : ""}" role="option" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isHigh ? "true" : "false"}"${targetAttrs}>
         <span class="navbar-search-suggestion__logo">
-          <img src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initialsText)}" />
+          <img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initialsText)}" />
         </span>
         <span class="navbar-search-suggestion__body">
           <span class="navbar-search-suggestion__name">${nameHtml}${matchedAliasBadge}</span>

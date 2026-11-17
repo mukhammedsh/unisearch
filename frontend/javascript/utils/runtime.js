@@ -3,6 +3,7 @@ import { t } from "../i18n.js";
 const inferredApiBase = `${window.location?.protocol || "http:"}//${window.location?.hostname || "127.0.0.1"}:8000`;
 
 export const API_BASE = window.API_BASE_URL || inferredApiBase;
+export const UNIVERSITY_ICON_SRC = `${API_BASE.trim().replace(/\/+$/, "")}/universities/assets/university-icon.png`;
 export const AI_DEFAULTS = { fit: "UniFit", chance: "Minimum requirements match" };
 export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
 export const $ = (id) => document.getElementById(id);
