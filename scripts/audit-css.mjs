@@ -160,12 +160,22 @@ function analyzeCrossFileCascade(bundles) {
     }
 
     for (const [selector, list] of bySelector.entries()) {
-      const distinctFiles = [...new Set(list.map((item) => item.relFile))];
-      if (distinctFiles.length > 1 && selector !== ":root") {
-        if (!crossFileDuplicateSelectors.has(selector)) {
-          crossFileDuplicateSelectors.set(selector, new Set());
+      if (selector !== ":root") {
+        const byContext = new Map();
+        for (const item of list) {
+          const ctxKey = item.context.join(" ") || "top-level";
+          if (!byContext.has(ctxKey)) byContext.set(ctxKey, new Set());
+          byContext.get(ctxKey).add(item.relFile);
         }
-        for (const f of distinctFiles) crossFileDuplicateSelectors.get(selector).add(f);
+        for (const [ctxKey, filesSet] of byContext.entries()) {
+          if (filesSet.size > 1) {
+            const dupKey = ctxKey === "top-level" ? selector : `${selector} (${ctxKey})`;
+            if (!crossFileDuplicateSelectors.has(dupKey)) {
+              crossFileDuplicateSelectors.set(dupKey, new Set());
+            }
+            for (const f of filesSet) crossFileDuplicateSelectors.get(dupKey).add(f);
+          }
+        }
       }
 
       if (list.length < 2) continue;
@@ -230,6 +240,7 @@ function analyzeCustomPropertiesAndImportants(cssFiles) {
   const nonFoundationTokens = [];
   const unknownTokenUsages = [];
   const rootBlocksOutsideFoundation = [];
+  const darkThemeSelectorsOutsideFoundation = [];
   const importantUsages = [];
 
   // First collect all defined custom properties across all files
@@ -258,6 +269,13 @@ function analyzeCustomPropertiesAndImportants(cssFiles) {
     root.walkRules((rule) => {
       if (relFile !== "frontend/css/shared/01-foundation.css" && /\b:root\b/.test(rule.selector)) {
         rootBlocksOutsideFoundation.push({
+          file: relFile,
+          line: rule.source?.start?.line ?? 0,
+          selector: rule.selector.replace(/\s+/g, " "),
+        });
+      }
+      if (relFile !== "frontend/css/shared/01-foundation.css" && /data-theme\s*=\s*["']?dark["']?/i.test(rule.selector)) {
+        darkThemeSelectorsOutsideFoundation.push({
           file: relFile,
           line: rule.source?.start?.line ?? 0,
           selector: rule.selector.replace(/\s+/g, " "),
@@ -300,6 +318,7 @@ function analyzeCustomPropertiesAndImportants(cssFiles) {
     nonFoundationTokens,
     unknownTokenUsages,
     rootBlocksOutsideFoundation,
+    darkThemeSelectorsOutsideFoundation,
     importantUsages,
   };
 }
@@ -412,6 +431,7 @@ async function run() {
       totalImportantsCount: tokensAndImportants.importantUsages.length,
       nonFoundationCustomPropsCount: tokensAndImportants.nonFoundationTokens.length,
       rootBlocksOutsideFoundationCount: tokensAndImportants.rootBlocksOutsideFoundation.length,
+      darkThemeSelectorsOutsideFoundationCount: tokensAndImportants.darkThemeSelectorsOutsideFoundation.length,
       unknownTokenUsagesCount: tokensAndImportants.unknownTokenUsages.length,
     },
     cascade,
@@ -467,6 +487,20 @@ async function run() {
     });
   }
 
+  if (tokensAndImportants.darkThemeSelectorsOutsideFoundation.length > 0) {
+    console.log(`\n--- [data-theme="dark"] Selectors Outside 01-foundation.css (${tokensAndImportants.darkThemeSelectorsOutsideFoundation.length}) ---`);
+    tokensAndImportants.darkThemeSelectorsOutsideFoundation.forEach((d) => {
+      console.log(`  ${d.file}:${d.line} -> ${d.selector}`);
+    });
+  }
+
+  if (cascade.crossFileSelectors.length > 0) {
+    console.log(`\n--- Same-Context Cross-File Duplicate Selectors (${cascade.crossFileSelectors.length}) ---`);
+    cascade.crossFileSelectors.forEach((s) => {
+      console.log(`  "${s.selector}" in ${s.files.join(", ")}`);
+    });
+  }
+
   if (tokensAndImportants.unknownTokenUsages.length > 0) {
     console.log(`\n--- Unknown CSS Custom Properties (${tokensAndImportants.unknownTokenUsages.length}) ---`);
     tokensAndImportants.unknownTokenUsages.forEach((u) => {
@@ -491,7 +525,16 @@ async function run() {
     });
   }
 
-  if (strictMode && (cascade.crossFileOverrides.length > 0 || tokensAndImportants.unknownTokenUsages.length > 0 || tokensAndImportants.rootBlocksOutsideFoundation.length > 0 || totalDeadSelectors > 0 || nonA11yImportants.length > 0)) {
+  if (
+    strictMode &&
+    (cascade.crossFileOverrides.length > 0 ||
+      cascade.crossFileSelectors.length > 0 ||
+      tokensAndImportants.unknownTokenUsages.length > 0 ||
+      tokensAndImportants.rootBlocksOutsideFoundation.length > 0 ||
+      tokensAndImportants.darkThemeSelectorsOutsideFoundation.length > 0 ||
+      totalDeadSelectors > 0 ||
+      nonA11yImportants.length > 0)
+  ) {
     process.exit(1);
   }
 }

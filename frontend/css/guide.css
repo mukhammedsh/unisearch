@@ -284,7 +284,6 @@
   width: 100%;
   font-size: var(--text-md);
   line-height: 1.54;
-  letter-spacing: normal;
   color: var(--text);
 }
 
@@ -330,7 +329,6 @@
   color: var(--text);
   font-size: var(--text-md);
   line-height: 1.54;
-  letter-spacing: normal;
 }
 
 .guide-list li + li {
@@ -392,11 +390,6 @@
    -------------------------------------------------------------------------- */
 body[data-page="guide"] {
   background: var(--bg);
-}
-
-:root[data-theme="dark"] .guide-doc code {
-  background: var(--surface-soft);
-  color: var(--text);
 }
 
 /* --------------------------------------------------------------------------

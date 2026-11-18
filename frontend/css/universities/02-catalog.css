@@ -214,15 +214,6 @@
   opacity: 0.88;
 }
 
-.u-map-container {
-  position: relative;
-  border-radius: var(--radius-xl);
-  border: none;
-  box-shadow: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
 .u-map-stage.is-loading .u-map-container::before,
 .u-map-stage.is-loading .u-map-container::after {
   content: "";
@@ -441,7 +432,6 @@
   color: var(--text);
   min-height: 0;
   line-height: 1.25;
-  letter-spacing: 0;
   white-space: normal;
   overflow-wrap: anywhere;
 }
@@ -709,8 +699,6 @@
   font-size: var(--text-md);
   line-height: 1.2;
   font-weight: var(--font-weight-medium);
-  text-transform: none;
-  letter-spacing: 0;
 }
 
 .u-recent__clear {
@@ -932,7 +920,6 @@
   justify-content: center;
   color: var(--text-muted);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
   padding: 0 var(--space-1);
   line-height: 1;
   height: 40px;
@@ -1137,14 +1124,10 @@
   font-weight: var(--font-weight-semibold);
   line-height: 1;
   cursor: pointer;
-  box-shadow: var(--shadow-micro);
+  box-shadow: var(--uni-status-overflow-shadow);
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard);
-}
-
-:root[data-theme="dark"] .uni-status-overflow-trigger {
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 40%, transparent);
 }
 
 .uni-status-overflow-trigger:focus-visible {

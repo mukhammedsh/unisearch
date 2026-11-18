@@ -4,12 +4,6 @@
   --mobile-safe-gutter: clamp(var(--space-3), 4vw, var(--space-5));
 }
 
-html {
-  scroll-padding-top: calc(var(--nav-height) + var(--space-4));
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
 main,
 section,
 article,
@@ -660,7 +654,6 @@ body .has-sliding-indicator .active::after {
   color: var(--accent);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
   vertical-align: middle;
 }
 

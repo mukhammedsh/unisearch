@@ -65,7 +65,7 @@ body[data-page="universities"] {
 
 .u-page {
   background: var(--bg);
-  padding: var(--space-3) 0 var(--space-16);
+  padding: var(--space-4) 0 var(--space-16);
 }
 
 .u-section-bar {
@@ -212,12 +212,6 @@ body[data-page="universities"] {
     gap: var(--space-2);
     padding-bottom: var(--space-2);
   }
-
-  .u-section-meta {
-    width: 100%;
-    justify-content: space-between;
-    padding-bottom: 0;
-  }
 }
 
 @media (max-width: 480px) {
@@ -251,14 +245,6 @@ body[data-page="universities"] {
   align-items: start;
 }
 
-.compare-results {
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 0 auto;
-  padding: 0 var(--layout-page-gutter);
-}
-
-
 .u-sidebar {
   min-width: 0;
   align-self: start;
@@ -288,7 +274,6 @@ body[data-page="universities"] {
   margin-bottom: var(--space-4);
   font-size: var(--text-xl);
   line-height: 1.2;
-  letter-spacing: 0;
 }
 
 .u-filter-icon {
@@ -515,7 +500,6 @@ body[data-page="universities"] {
   color: var(--text-muted);
   box-shadow: var(--shadow-micro);
   font-family: inherit;
-  font-style: normal;
   line-height: 0;
   text-align: center;
   display: inline-flex;
@@ -680,7 +664,6 @@ body[data-page="universities"] {
   font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   line-height: 1.4;
-  letter-spacing: 0;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
@@ -1076,144 +1059,6 @@ body[data-page="universities"] {
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: 1.5;
-}
-
-.u-tour-modal {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  border: none;
-  background: transparent;
-  color: inherit;
-  z-index: var(--z-modal);
-  display: none;
-}
-
-.u-tour-modal[open] {
-  display: flex;
-}
-
-.u-tour-modal.is-open::backdrop {
-  animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
-}
-
-.u-tour-modal.is-open .u-tour-card {
-  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
-}
-
-.u-tour-modal.is-closing::backdrop {
-  animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
-}
-
-.u-tour-modal.is-closing .u-tour-card {
-  animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
-}
-
-.u-tour-card {
-  position: relative;
-  z-index: 1;
-}
-
-.u-tour-progress {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.u-tour-step {
-  display: flex;
-  flex-direction: column;
-}
-
-.u-tour-slide.is-enter-forward .u-tour-step {
-  animation: motion-slide-forward var(--motion-medium) var(--motion-ease-enter) both;
-}
-
-.u-tour-slide.is-enter-back .u-tour-step {
-  animation: motion-slide-back var(--motion-medium) var(--motion-ease-enter) both;
-}
-
-.u-tour-kicker {
-  display: inline-flex;
-  width: fit-content;
-  letter-spacing: normal;
-}
-
-.u-tour-title {
-  margin: 0;
-  line-height: 1.2;
-  color: var(--text);
-  font-weight: var(--font-weight-medium);
-}
-
-.u-tour-desc {
-  margin: 0;
-  color: var(--text-muted);
-}
-
-.u-tour-list {
-  color: var(--text-muted);
-}
-
-.u-tour-inline-btn {
-  align-self: flex-start;
-  margin-top: var(--space-1-5);
-  border: none;
-  background: var(--surface-solid);
-  color: var(--accent);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-  transition: background-color var(--motion-fast) var(--motion-ease-standard);
-}
-@media (hover: hover) and (pointer: fine) {
-
-.u-tour-inline-btn:hover {
-  background: var(--accent-panel);
-}
-}
-
-.u-tour-actions {
-  display: flex;
-  align-items: center;
-}
-
-.u-tour-actions-right {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.u-tour-btn {
-  border: none;
-  background: var(--surface-soft);
-  color: var(--text);
-  font-weight: var(--font-weight-medium);
-  cursor: pointer;
-}
-
-.u-tour-btn--primary {
-  border: none;
-  background: var(--accent);
-  color: var(--text-inverse);
-  min-width: 84px;
-}
-@media (hover: hover) and (pointer: fine) {
-
-.u-tour-btn:hover,
-.u-tour-inline-btn:hover {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
-}
-
-  .u-tour-btn--primary:hover {
-    background: var(--accent-strong);
-    color: var(--text-inverse);
-  }
 }
 
 .u-unifit-warning {

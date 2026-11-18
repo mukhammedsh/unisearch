@@ -146,6 +146,7 @@
   --uni-status-info-text: #1d4ed8;
   --uni-status-overflow-bg: #111827;
   --uni-status-overflow-text: var(--text-inverse);
+  --uni-status-overflow-shadow: var(--shadow-micro);
   --uni-status-hover-border: #111827;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
@@ -243,6 +244,7 @@
   --line-info: rgba(147, 197, 253, 0.32);
   --uni-status-hover-border: #111827;
   --uni-status-overflow-bg: #090a0b;
+  --uni-status-overflow-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 40%, transparent);
   --skeleton-base: #222427;
   --skeleton-highlight: rgba(255, 255, 255, 0.08);
   --selection-bg: color-mix(in srgb, var(--accent) 35%, transparent);
@@ -350,6 +352,9 @@ body::-webkit-scrollbar-track:horizontal {
 html {
   height: 100%;
   scrollbar-gutter: stable;
+  scroll-padding-top: calc(var(--nav-height) + var(--space-4));
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -517,10 +522,6 @@ body {
 ::view-transition-new(root) {
   animation-duration: var(--motion-fast, 160ms);
   animation-timing-function: var(--motion-ease-standard, ease);
-}
-
-.navbar {
-  view-transition-name: main-navbar;
 }
 
 ::view-transition-old(main-navbar),

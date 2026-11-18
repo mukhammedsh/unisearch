@@ -676,8 +676,6 @@ details[open] > summary > .admissions-disclosure-icon {
   color: var(--text-muted);
   font-size: var(--text-base);
   font-weight: var(--font-weight-regular);
-  letter-spacing: normal;
-  text-transform: none;
 }
 
 #tab-programs .admissions-programs__overview .admissions-programs__essentials {
@@ -709,8 +707,6 @@ details[open] > summary > .admissions-disclosure-icon {
   color: var(--text-muted);
   font-size: var(--text-base);
   font-weight: var(--font-weight-regular);
-  letter-spacing: normal;
-  text-transform: none;
 }
 
 #tab-programs .program-card__body-inner > .program-card-rows .program-card-value {
@@ -1137,8 +1133,6 @@ details[open] > summary > .admissions-disclosure-icon {
 
 #tab-programs .program-card__kicker {
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
   color: color-mix(in srgb, var(--text-muted) 85%, var(--text));
 }
 

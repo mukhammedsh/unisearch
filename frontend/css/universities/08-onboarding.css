@@ -1,9 +1,25 @@
 /* First-visit onboarding is a focused workspace, not a dismissible tooltip. */
 .u-tour-modal {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  z-index: var(--z-modal);
+  display: none;
   align-items: center;
   justify-content: center;
   padding: var(--space-6);
   pointer-events: auto;
+}
+
+.u-tour-modal[open] {
+  display: flex;
 }
 
 .u-tour-modal::backdrop {
@@ -11,7 +27,17 @@
   backdrop-filter: blur(1px);
 }
 
+.u-tour-modal.is-open::backdrop {
+  animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
+}
+
+.u-tour-modal.is-closing::backdrop {
+  animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
+}
+
 .u-tour-card {
+  position: relative;
+  z-index: 1;
   width: min(960px, calc(100vw - var(--space-12)));
   max-height: min(720px, calc(100dvh - var(--space-12)));
   padding: var(--space-6);
@@ -20,6 +46,14 @@
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   box-shadow: var(--shadow-md);
+}
+
+.u-tour-modal.is-open .u-tour-card {
+  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
+}
+
+.u-tour-modal.is-closing .u-tour-card {
+  animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
 .u-tour-header {
@@ -52,6 +86,10 @@
 }
 
 .u-tour-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
   flex: 0 0 auto;
   color: var(--text-muted);
   font-size: var(--text-sm);
@@ -127,24 +165,44 @@
 }
 
 .u-tour-step {
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
 }
 
+.u-tour-slide.is-enter-forward .u-tour-step {
+  animation: motion-slide-forward var(--motion-medium) var(--motion-ease-enter) both;
+}
+
+.u-tour-slide.is-enter-back .u-tour-step {
+  animation: motion-slide-back var(--motion-medium) var(--motion-ease-enter) both;
+}
+
 .u-tour-kicker {
+  display: inline-flex;
+  width: fit-content;
   padding: 0;
   border-radius: 0;
   background: transparent;
 }
 
 .u-tour-title {
+  margin: 0;
+  line-height: 1.2;
+  color: var(--text);
+  font-weight: var(--font-weight-medium);
   font-size: var(--text-xl);
-  letter-spacing: 0;
 }
 
 .u-tour-desc,
 .u-tour-list {
+  color: var(--text-muted);
   font-size: var(--text-md);
   line-height: var(--leading-normal);
+}
+
+.u-tour-desc {
+  margin: 0;
 }
 
 .u-tour-list {
@@ -162,8 +220,30 @@
 .u-tour-btn {
   min-height: 44px;
   padding: var(--space-3) var(--space-4);
+  border: none;
   border-radius: var(--radius-base);
   font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.u-tour-inline-btn {
+  align-self: flex-start;
+  margin-top: var(--space-1-5);
+  background: var(--surface-solid);
+  color: var(--accent);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.u-tour-btn {
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.u-tour-btn--primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+  min-width: 84px;
 }
 
 .u-tour-inline-btn:focus-visible,
@@ -173,8 +253,16 @@
 }
 
 .u-tour-actions {
+  display: flex;
+  align-items: center;
   margin-top: var(--space-6);
   justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.u-tour-actions-right {
+  display: inline-flex;
+  align-items: center;
   gap: var(--space-2);
 }
 
@@ -184,9 +272,16 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .u-tour-btn:hover,
+  .u-tour-inline-btn:hover,
   .u-tour-btn[data-action="skip"]:hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
+  }
+
+  .u-tour-btn--primary:hover {
+    background: var(--accent-strong);
+    color: var(--text-inverse);
   }
 }
 

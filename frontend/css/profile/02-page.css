@@ -308,7 +308,6 @@ body[data-page="profile"] {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
-  letter-spacing: 0;
 }
 
 .profile-subsection-title {

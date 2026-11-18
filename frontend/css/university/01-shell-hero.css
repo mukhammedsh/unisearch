@@ -466,7 +466,6 @@ a.d-cover-credit:focus-visible {
   overflow-wrap: anywhere;
   word-break: break-word;
   font-size: clamp(22px, 5vw, 38px);
-  letter-spacing: 0;
   font-weight: var(--font-weight-regular);
   flex: 1 1 auto;
   min-width: 0;
@@ -513,7 +512,6 @@ a.d-cover-credit:focus-visible {
   margin-bottom: var(--space-2);
   font-size: var(--text-lg);
   color: var(--text);
-  letter-spacing: 0;
 }
 
 .d-box-note {
@@ -569,7 +567,6 @@ a.d-cover-credit:focus-visible {
 .d-rank-emphasis {
   color: var(--text);
   font-weight: var(--font-weight-regular);
-  letter-spacing: normal;
 }
 
 .d-kv-label {
@@ -925,12 +922,6 @@ a.d-cover-credit:focus-visible {
   display: none; /* Chrome, Safari, Opera */
 }
 
-:root[data-theme="dark"] .d-card {
-  box-shadow: none;
-  background: var(--surface-solid);
-  border: none;
-}
-
 .d-head,
 .d-tabs,
 .d-tab-content {
@@ -966,11 +957,6 @@ a.d-cover-credit:focus-visible {
 .d-tab-btn span:last-child {
   min-width: 0;
   white-space: nowrap;
-}
-
-
-:root[data-theme="dark"] .d-tab-content {
-  border-top-color: transparent;
 }
 
 @media (max-width: 768px) {
@@ -1055,10 +1041,6 @@ a.d-cover-credit:focus-visible {
     line-height: 1.15;
   }
 
-}
-
-:root[data-theme="dark"] .d-page {
-  background: var(--bg);
 }
 
 .d-site-link.is-saved {
@@ -1223,13 +1205,6 @@ body[data-page="university"],
   box-shadow: var(--shadow-card);
   overflow: visible;
   isolation: isolate;
-}
-
-:root[data-theme="dark"] .d-box {
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
 }
 
 @media (max-width: 768px) {

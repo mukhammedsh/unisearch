@@ -146,8 +146,6 @@
   color: var(--text-muted);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
 }
 
 .admission-category-title,
@@ -292,16 +290,12 @@
   color: var(--text-muted);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
 }
 
 .admission-funding-diff-title {
   color: var(--text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-  letter-spacing: 0;
-  text-transform: none;
 }
 
 .admission-funding-diff-section {
@@ -377,6 +371,13 @@
 
   .track-select-btn {
     width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track-select-btn {
+    transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -489,8 +490,6 @@ button.track-factor-chip {
 .track-extra-req-title {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
   color: var(--text-muted);
 }
 
@@ -551,8 +550,6 @@ button.track-factor-chip {
 .track-stats-title {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
   margin-bottom: var(--space-2);
   color: var(--text-muted);
 }
@@ -569,7 +566,6 @@ button.track-factor-chip {
 
 .track-muted-italic {
   color: var(--text-muted);
-  font-style: normal;
 }
 
 /* ===== Track Exam Groups (Global) ===== */
@@ -587,8 +583,6 @@ button.track-factor-chip {
 .track-exam-group-title {
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
   margin-bottom: var(--space-1-5);
   color: var(--text-muted);
 }
@@ -643,8 +637,6 @@ button.track-factor-chip {
 .finance-option-total strong {
   color: var(--text);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
-  text-transform: none;
 }
 
 .track-select-row {

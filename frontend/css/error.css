@@ -71,7 +71,6 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
   color: var(--text-muted);
-  letter-spacing: normal;
   max-width: 420px;
 }
 
@@ -95,7 +94,6 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
   border: none;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
   text-decoration: none;
   cursor: pointer;
   color: var(--text-inverse);

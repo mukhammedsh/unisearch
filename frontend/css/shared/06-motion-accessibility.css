@@ -561,7 +561,6 @@ body.route-loading main {
   font-weight: var(--font-weight-medium);
   margin: 0 0 var(--space-3);
   color: var(--text);
-  letter-spacing: 0;
 }
 
 .error-desc {
