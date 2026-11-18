@@ -20,6 +20,7 @@ Backward-compatible minor version update for catalog cost references and missing
 
 ### Tests
 - Cover scoped annual budget ranges, living-cost provenance, localized price explanations and missing campus-photo states.
+- Check that the catalog level selector uses the solid surface token across themes and layouts.
 
 ## 10.4.4 (2026-11-18) - University media policy wording
 
