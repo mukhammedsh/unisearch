@@ -71,6 +71,19 @@ async function chooseOption(page, optionId, search, level) {
   await expect(page.locator("#admissionsRoute")).toHaveValue(routes.length === 1 ? routes[0] : "");
 }
 
+function waitForAdmissionsContext(page, routeId) {
+  return page
+    .waitForResponse((item) => {
+      if (!item.url().includes("/admissions-context") || item.request().method() !== "POST") return false;
+      try {
+        return item.request().postDataJSON()?.context?.application_route_id === routeId;
+      } catch {
+        return false;
+      }
+    })
+    .then(async (item) => ({ status: item.status(), body: await item.json() }));
+}
+
 async function applyContext(page, route, cycle) {
   await selectRoute(page, route);
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
@@ -78,9 +91,7 @@ async function applyContext(page, route, cycle) {
   if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
   await page.locator("#admissionsCycle").fill(cycle);
   await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = page
-    .waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST")
-    .then(async (item) => ({ status: item.status(), body: await item.json() }));
+  const response = waitForAdmissionsContext(page, route);
   await page.locator("#admissionsContextApply").click();
   const result = await response;
   expect(result.status).toBe(200);
@@ -267,12 +278,11 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
 
   await page.goto(bcsContextUrl);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  // Read the body as soon as the response arrives: Chromium may drop it once the reloaded page keeps working.
-  const incompleteResponse = page
-    .waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST")
-    .then((item) => item.json());
+  // Let overview-summary's background POST settle too so reload() cannot drop an in-flight response from the previous document.
+  await expect(page.locator('#detailOverviewSummary [data-summary-card], #detailOverviewSummary .overview-summary__state[role="alert"]').first()).toBeAttached();
+  const incompleteResponse = waitForAdmissionsContext(page, "mit_bcs_meng_admissions");
   await page.reload();
-  const updated = await incompleteResponse;
+  const { body: updated } = await incompleteResponse;
   expect(updated.assessment.chancePercent).toBeNull();
   const overallMissing = updated.assessment.activeChoice.details.checks.find((check) => check.checkId === "overall-gpa");
   expect(overallMissing.status).toBe("missing");
@@ -298,15 +308,7 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy", "Data, Economics, and Design of Policy", "masters");
-  await selectRoute(page, "mit_grad_dedp_admissions");
-  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
-  const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await page.locator("#admissionsCycle").fill("Spring 2028");
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
-  await page.locator("#admissionsContextApply").click();
-  const result = await (await response).json();
+  const result = await applyContext(page, "mit_grad_dedp_admissions", "Spring 2028");
   expect(result.selected_route.id).toBe("mit_grad_dedp_admissions");
   expect(result.selected_route.target).toMatch(/Data, Economics, and Design of Policy/i);
   await expect(page.locator("#admissionsCycle")).toHaveValue("Spring 2028");
