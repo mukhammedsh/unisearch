@@ -9,6 +9,7 @@ All notable project changes should be recorded here.
 - Remove university logo placeholders throughout UniSearch. Use dots and counts on the map and credited campus photos in comparison headers.
 - Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
 - Show a themed campus photo placeholder when a catalog card has no usable image.
+- Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
 
 ## 10.4.0 (2026-11-17) - Campus photo galleries
 

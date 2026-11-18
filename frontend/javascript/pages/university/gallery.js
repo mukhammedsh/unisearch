@@ -3,7 +3,92 @@ import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
 import { buildApiUrl, safePathSegment, uniThumbnailSrc } from "../_shared.js";
 import { coverCreditHtml, loadPhotoCredits } from "./cover-credit.js";
-import { bindGalleryZoom } from "./gallery-zoom.js";
+import { bindGalleryZoom, isPointInVisiblePhoto } from "./gallery-zoom.js";
+
+const DISMISS_MOVE_TOLERANCE_PX = 8;
+const NON_DISMISS_SELECTOR = [
+  "button",
+  "a",
+  ".d-cover-credit",
+  ".d-gallery-navigation",
+  ".d-photo-zoom-controls",
+  ".d-gallery-error",
+  ".center-loading-spinner",
+].join(", ");
+
+function isDismissibleDarkArea(dialog, canvas, clientX, clientY) {
+  if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return false;
+  const hitTarget = document.elementFromPoint(clientX, clientY);
+  if (!(hitTarget instanceof Element) || !dialog.contains(hitTarget)) return false;
+  if (hitTarget.closest(NON_DISMISS_SELECTOR)) return false;
+  return !isPointInVisiblePhoto(canvas, clientX, clientY);
+}
+
+/**
+ * Close the full-size viewer on single clicks/taps in the dark area outside the photo and controls.
+ * Because the modal dialog fills the viewport, native closedby="any" only sees clicks outside the
+ * dialog box; tracking press/release inside the dark backdrop ignores pans, swipes, and pinches.
+ */
+function bindBackdropDismiss({ dialog, canvas, signal }) {
+  let press = null;
+  let pendingDismissTimer = null;
+  let dismissReady = false;
+
+  function cancelPendingDismiss() {
+    clearTimeout(pendingDismissTimer);
+    pendingDismissTimer = null;
+    dismissReady = false;
+  }
+
+  dialog.addEventListener("pointerdown", (event) => {
+    cancelPendingDismiss();
+    if (!event.isPrimary || event.button !== 0 || !isDismissibleDarkArea(dialog, canvas, event.clientX, event.clientY)) {
+      press = null;
+      return;
+    }
+    press = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
+  }, { signal });
+
+  dialog.addEventListener("pointermove", (event) => {
+    if (press?.id === event.pointerId && Math.hypot(event.clientX - press.x, event.clientY - press.y) > DISMISS_MOVE_TOLERANCE_PX) {
+      press.moved = true;
+    }
+  }, { signal });
+
+  dialog.addEventListener("pointercancel", (event) => {
+    if (press?.id !== event.pointerId) return;
+    press = null;
+    cancelPendingDismiss();
+  }, { signal });
+
+  dialog.addEventListener("pointerup", (event) => {
+    if (press?.id !== event.pointerId) return;
+    const valid = !press.moved && isDismissibleDarkArea(dialog, canvas, event.clientX, event.clientY);
+    press = null;
+    if (!valid) return;
+    dismissReady = true;
+    // Wait for native click first to avoid click-through to the page beneath; fall back if a post-swipe tap omits click.
+    pendingDismissTimer = setTimeout(() => {
+      pendingDismissTimer = null;
+      const shouldClose = dismissReady && dialog.open;
+      dismissReady = false;
+      if (shouldClose) dialog.close();
+    }, 100);
+  }, { signal });
+
+  dialog.addEventListener("click", (event) => {
+    const shouldClose = dismissReady || (event.detail === 0 && event.target === dialog);
+    cancelPendingDismiss();
+    if (shouldClose && dialog.open) dialog.close();
+  }, { signal });
+
+  dialog.addEventListener("close", () => {
+    press = null;
+    cancelPendingDismiss();
+  }, { signal });
+
+  return cancelPendingDismiss;
+}
 
 function photoPosition(index, total) {
   return tFormat("university.gallery.position", { current: index + 1, total }, `Photo ${index + 1} of ${total}`);
@@ -145,7 +230,7 @@ export function mountUniversityGallery(cover, universityId) {
   cover.insertAdjacentHTML("afterend", `${navigationHtml(label)}
     <div class="d-gallery-cover-credit"></div>
     <span class="d-gallery-status sr-only" role="status"></span>
-    <dialog class="d-photo-viewer" aria-label="${escapeHtmlAttr(label)}">
+    <dialog class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
       ${galleryButton("close", "x-mark", t("common.close", "Close"))}
       <div class="d-photo-zoom-controls">
         ${galleryButton("zoom-out", "minus", t("university.gallery.zoom_out", "Zoom out"))}
@@ -239,6 +324,7 @@ export function mountUniversityGallery(cover, universityId) {
   }
 
   const cancelGalleryTap = bindTouchGalleryButtons(gallery, preview, step, listeners.signal);
+  const cancelBackdropDismiss = bindBackdropDismiss({ dialog, canvas, signal: listeners.signal });
   preview.addEventListener("click", () => {
     if (dialog.open || !preview.isConnected || preview.hidden) return;
     renderViewer();
@@ -248,9 +334,6 @@ export function mountUniversityGallery(cover, universityId) {
   close.addEventListener("click", () => dialog.close());
   dialog.addEventListener("close", () => {
     if (!dialog.open) zoom.setImage(null);
-  });
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
   });
 
   renderPreview();
@@ -284,6 +367,7 @@ export function mountUniversityGallery(cover, universityId) {
   return () => {
     listeners.abort();
     cancelGalleryTap();
+    cancelBackdropDismiss();
     zoom.dispose();
     dialog.close();
     dialog.remove();

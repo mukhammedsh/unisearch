@@ -304,14 +304,18 @@
 
 .d-photo-canvas.can-zoom {
   touch-action: none;
+}
+
+.d-photo-canvas.can-zoom.is-over-photo {
   cursor: zoom-in;
 }
 
-.d-photo-canvas.is-zoomed {
+.d-photo-canvas.is-zoomed.is-over-photo {
   cursor: grab;
 }
 
-.d-photo-canvas.is-zoomed:active {
+.d-photo-canvas.is-zoomed.is-over-photo:active,
+.d-photo-canvas.is-zoomed.is-dragging {
   cursor: grabbing;
 }
 

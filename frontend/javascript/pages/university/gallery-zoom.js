@@ -7,12 +7,36 @@ function clamp(value, min, max) {
   return Math.max(min, Math.min(value, max));
 }
 
+/**
+ * Check whether viewport coordinates fall within the visible rendered photo inside the canvas.
+ */
+export function isPointInVisiblePhoto(canvas, clientX, clientY) {
+  const image = canvas?.querySelector("img:not([hidden])");
+  if (!image || !image.naturalWidth || !image.naturalHeight) return false;
+  const box = image.getBoundingClientRect();
+  const bounds = canvas.getBoundingClientRect();
+  if (!box.width || !box.height || !bounds.width || !bounds.height) return false;
+  const fitScale = Math.min(box.width / image.naturalWidth, box.height / image.naturalHeight);
+  const width = image.naturalWidth * fitScale;
+  const height = image.naturalHeight * fitScale;
+  const left = Math.max(box.left + (box.width - width) / 2, bounds.left);
+  const top = Math.max(box.top + (box.height - height) / 2, bounds.top);
+  const right = Math.min(box.left + (box.width + width) / 2, bounds.right);
+  const bottom = Math.min(box.top + (box.height + height) / 2, bounds.bottom);
+  return left < right && top < bottom && clientX >= left && clientX <= right && clientY >= top && clientY <= bottom;
+}
+
 export function bindGalleryZoom({ canvas, dialog, zoomIn, zoomOut, onSwipe }) {
   const pointers = new Map();
   let image = null;
   let view = FIT;
   let gesture = null;
   let canSwipe = false;
+
+  function updatePhotoHover(point) {
+    const over = Boolean(image) && Boolean(point) && isPointInVisiblePhoto(canvas, point.x, point.y);
+    canvas.classList.toggle("is-over-photo", over);
+  }
 
   function apply(scale, x, y) {
     if (!image || !canvas.clientWidth || !canvas.clientHeight) return;
@@ -56,7 +80,7 @@ export function bindGalleryZoom({ canvas, dialog, zoomIn, zoomOut, onSwipe }) {
     pointers.clear();
     canSwipe = false;
     canvas.classList.toggle("can-zoom", Boolean(image));
-    canvas.classList.remove("is-zoomed");
+    canvas.classList.remove("is-zoomed", "is-over-photo", "is-dragging");
     zoomIn.setAttribute("aria-disabled", String(!image));
     zoomOut.setAttribute("aria-disabled", "true");
   }
@@ -66,22 +90,34 @@ export function bindGalleryZoom({ canvas, dialog, zoomIn, zoomOut, onSwipe }) {
 
   canvas.addEventListener("pointerdown", (event) => {
     if (!image || event.button !== 0 || pointers.size >= 2) return;
+    const point = pointFor(event);
+    updatePhotoHover(point);
     canSwipe = pointers.size === 0 && event.pointerType === "touch" && view.scale === 1;
-    pointers.set(event.pointerId, pointFor(event));
+    pointers.set(event.pointerId, point);
     canvas.setPointerCapture(event.pointerId);
     gesture = { ...measureGesture(), view };
+    if (pointers.size === 1 && view.scale > 1) canvas.classList.add("is-dragging");
   });
 
   canvas.addEventListener("pointermove", (event) => {
-    if (!pointers.has(event.pointerId)) return;
-    pointers.set(event.pointerId, pointFor(event));
+    const point = pointFor(event);
+    if (!pointers.has(event.pointerId)) {
+      if (event.pointerType === "mouse") updatePhotoHover(point);
+      return;
+    }
+    pointers.set(event.pointerId, point);
     const { center, distance } = measureGesture();
     if (pointers.size === 2) {
+      canvas.classList.remove("is-dragging");
       const scale = gesture.view.scale * distance / Math.max(1, gesture.distance);
       zoomAt(gesture.view, scale, viewPoint(gesture.center), viewPoint(center));
     } else if (view.scale > 1) {
       apply(view.scale, gesture.view.x + center.x - gesture.center.x, gesture.view.y + center.y - gesture.center.y);
     }
+  });
+
+  canvas.addEventListener("pointerleave", () => {
+    if (!pointers.size) canvas.classList.remove("is-over-photo");
   });
 
   function finishPointer(event) {
@@ -91,6 +127,10 @@ export function bindGalleryZoom({ canvas, dialog, zoomIn, zoomOut, onSwipe }) {
     pointers.delete(event.pointerId);
     gesture = pointers.size ? { ...measureGesture(), view } : null;
     canSwipe = false;
+    if (!pointers.size) {
+      canvas.classList.remove("is-dragging");
+      if (event.pointerType === "mouse") updatePhotoHover(pointFor(event));
+    }
     if (swipe) {
       const dx = event.clientX - start.x;
       const dy = event.clientY - start.y;
@@ -111,7 +151,9 @@ export function bindGalleryZoom({ canvas, dialog, zoomIn, zoomOut, onSwipe }) {
   }, { passive: false });
 
   canvas.addEventListener("dblclick", (event) => {
-    if (image) zoomAt(view, view.scale > 1 ? 1 : 2.5, viewPoint(pointFor(event)));
+    if (image && isPointInVisiblePhoto(canvas, event.clientX, event.clientY)) {
+      zoomAt(view, view.scale > 1 ? 1 : 2.5, viewPoint(pointFor(event)));
+    }
   });
 
   zoomIn.addEventListener("click", () => zoomAt(view, view.scale * ZOOM_STEP, ORIGIN));
