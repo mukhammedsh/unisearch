@@ -15,6 +15,9 @@ Patch release: UI and asset refinements with no new user-facing capability or br
 ### Fixed
 - Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
 
+### Tests
+- Scope `admissions-final-journeys` reload and context waiters to the selected application route and settle overview requests before reloading so background responses cannot drop during navigation.
+
 ## 10.4.1 (2026-11-17) - CodeQL test fixes
 
 ### Fixed
