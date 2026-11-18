@@ -56,7 +56,6 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
 
 .error-kicker,
 .error-code {
-  margin: 0;
   font-family: inherit;
   font-size: inherit;
   font-weight: var(--font-weight-medium);
@@ -91,7 +90,6 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
   min-height: 42px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-md);
-  border: none;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
@@ -99,11 +97,6 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
   color: var(--text-inverse);
   background: var(--accent);
   transition: background-color var(--motion-fast, 0.15s) ease;
-}
-
-.error-page .error-btn:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 @media (hover: hover) and (pointer: fine) {

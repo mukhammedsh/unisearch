@@ -8,7 +8,6 @@
   transform: translateX(-50%);
   width: min(680px, calc(100vw - 32px));
   padding: var(--space-2) var(--space-3);
-  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   box-shadow: var(--shadow-md);
@@ -79,7 +78,6 @@
   width: 18px;
   height: 18px;
   border-radius: var(--radius-full);
-  border: 0;
   background: var(--surface-solid);
   box-shadow: var(--shadow-xs);
   color: var(--text-muted);
@@ -90,13 +88,6 @@
   flex-shrink: 0;
   padding: 0;
   transition: color var(--motion-fast), background-color var(--motion-fast);
-}
-@media (hover: hover) and (pointer: fine) {
-
-.compare-tray__chip-remove:hover {
-  color: var(--color-danger-muted);
-  background: var(--color-danger-bg);
-}
 }
 
 /* Actions */
@@ -112,7 +103,6 @@
   box-sizing: border-box;
   height: 32px;
   padding: 0 var(--space-3);
-  border: none;
   border-radius: var(--radius-sm);
   font-weight: var(--font-weight-medium);
   font-size: var(--text-sm);
@@ -128,26 +118,12 @@
 
 .compare-tray__btn--ghost {
   background: var(--surface-soft);
-  border: none;
   color: var(--text-muted);
-}
-@media (hover: hover) and (pointer: fine) {
-
-.compare-tray__btn--ghost:hover {
-  color: var(--interaction-hover-text);
-  background: var(--interaction-hover-surface);
-}
 }
 
 .compare-tray__btn--primary {
   background: var(--accent);
   color: var(--text-inverse);
-}
-@media (hover: hover) and (pointer: fine) {
-
-.compare-tray__btn--primary:hover:not(:disabled) {
-  background: var(--accent-strong);
-}
 }
 
 .compare-tray__btn:disabled {
@@ -170,7 +146,6 @@
   gap: var(--space-3);
   min-width: 0;
   padding: var(--space-5);
-  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   box-shadow: var(--shadow-card);
@@ -254,17 +229,12 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  border-block: none;
 }
 
 .compare-uni-card__metrics span {
   min-width: 0;
   padding: var(--space-3) var(--space-2);
   text-align: center;
-}
-
-.compare-uni-card__metrics span + span {
-  border-left: none;
 }
 
 .compare-uni-card__metrics small,
@@ -298,7 +268,6 @@
   width: fit-content;
   max-width: 100%;
   padding: var(--space-1) var(--space-2);
-  border: none;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   color: var(--text);
@@ -360,12 +329,6 @@
   cursor: pointer;
   transition: background-color var(--motion-fast);
 }
-@media (hover: hover) and (pointer: fine) {
-
-.compare-track-select:hover {
-  background: var(--surface-solid);
-}
-}
 
 .compare-track-select:focus {
   outline: 2px solid var(--focus-ring);
@@ -374,7 +337,6 @@
 
 .compare-uni-card__link {
   min-height: 40px;
-  border: none;
   border-radius: var(--radius-base);
   background: transparent;
   color: var(--text);
@@ -384,22 +346,6 @@
   text-decoration: none;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-}
-@media (hover: hover) and (pointer: fine) {
-
-.compare-uni-card__link:hover {
-  color: var(--interaction-hover-text);
-}
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :root .compare-uni-card:hover {
-    background: color-mix(in srgb, var(--accent) 2%, var(--surface-soft));
-  }
-
-  :root .compare-uni-card:hover .compare-uni-card__link {
-    color: var(--interaction-hover-text);
-  }
 }
 
 .compare-table-wrap {
@@ -412,11 +358,6 @@
   position: relative;
   background: var(--surface-solid);
   box-shadow: none;
-}
-
-.compare-table-wrap:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .compare-table-wrap.is-diff-only tr.compare-row--identical {
@@ -553,7 +494,6 @@
   box-sizing: border-box;
   min-width: 0;
   padding: var(--space-3) var(--space-3);
-  border: none;
   border-radius: var(--radius-lg);
   background: var(--accent-panel);
   display: grid;
@@ -603,7 +543,6 @@
   align-items: center;
   justify-content: center;
   background: var(--surface-solid);
-  border: none;
   color: var(--text);
   font-size: var(--text-md);
   line-height: 1;
@@ -647,22 +586,18 @@
 
 .compare-config-chance .chance-fill.chance-high {
   background: var(--color-chance-high);
-  border: 0;
 }
 
 .compare-config-chance .chance-fill.chance-good {
   background: var(--color-chance-good);
-  border: 0;
 }
 
 .compare-config-chance .chance-fill.chance-medium {
   background: var(--color-chance-medium);
-  border: 0;
 }
 
 .compare-config-chance .chance-fill.chance-low {
   background: var(--color-chance-low);
-  border: 0;
 }
 
 .compare-results-action {
@@ -674,7 +609,6 @@
   white-space: nowrap;
   min-height: 40px;
   padding: var(--space-2) var(--space-4);
-  border: none;
   border-radius: var(--radius-md, 12px);
   background: var(--accent);
   color: var(--text-inverse);
@@ -688,30 +622,13 @@
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.compare-results-action:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 .compare-results-action--ghost {
   background: var(--surface-solid);
   color: var(--text);
-  border: none;
   box-shadow: var(--shadow-xs);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .compare-results-action:hover {
-    background: var(--accent-strong);
-  }
-
-  .compare-results-action--ghost:hover {
-    background: var(--surface-soft);
-  }
-}
-
 .compare-results-empty {
-  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   box-sizing: border-box;
@@ -724,7 +641,6 @@
 .compare-analysis-block {
   box-sizing: border-box;
   min-width: 0;
-  border: none;
   border-radius: var(--radius-xl);
   background: var(--card);
 }
@@ -732,7 +648,6 @@
 .compare-block-head {
   box-sizing: border-box;
   padding: var(--space-4);
-  border-bottom: none;
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -762,12 +677,6 @@
   color: var(--text-muted);
   transition: color var(--motion-fast);
 }
-@media (hover: hover) and (pointer: fine) {
-
-.compare-diff-toggle:hover {
-  color: var(--interaction-hover-text);
-}
-}
 
 .compare-diff-toggle input {
   position: absolute;
@@ -784,7 +693,6 @@
   height: 20px;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
-  border: none;
   box-shadow: var(--shadow-micro);
   transition: background-color var(--motion-fast);
 }
@@ -962,33 +870,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  border: none;
   background: var(--surface-solid);
   box-shadow: var(--shadow-card);
 }
 
-.compare-config-options .admission-category-title {
-  margin: 0;
-}
-
-.compare-config-options .admission-category-description,
-.compare-config-options .admission-applicable-programs,
-.compare-config-options .requirement-profile-tabs,
-.compare-config-options .admission-requirement-grid,
-.compare-config-options .track-extra-req {
+.compare-config-options .admission-category-title,
+.compare-config-options .admission-category-description {
   margin: 0;
 }
 
 .compare-config-options .admission-applicable-programs {
   align-items: baseline;
-  border-top: none;
   padding-top: var(--space-2);
   color: var(--text-muted);
 }
 
 .compare-config-options .admission-applicable-programs .tag {
   padding: 0;
-  border: 0;
   border-radius: 0;
   background: transparent;
   color: var(--text);
@@ -1012,7 +910,6 @@
 
 .compare-config-options .admission-requirement-grid {
   gap: var(--space-5);
-  border-top: none;
   padding-top: var(--space-2);
 }
 
@@ -1021,25 +918,21 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-3);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
 }
 
 .compare-config-options .track-stats-box--avg {
   padding-left: var(--space-3);
-  border-left: 0;
 }
 
 .compare-config-options .track-stats-title {
   margin: 0;
   padding-bottom: var(--space-1);
-  border-bottom: none;
 }
 
 .compare-config-options .track-exam-group {
   padding: 0;
-  border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
@@ -1048,19 +941,14 @@
 .compare-config-options .track-exam-group + .track-exam-group {
   margin-top: var(--space-3);
   padding-top: var(--space-3);
-  border-top: none;
 }
 
-.compare-config-options .track-exam-group--info .track-exam-group-title,
-.compare-config-options .track-exam-group--success .track-exam-group-title,
-.compare-config-options .track-exam-group--neutral .track-exam-group-title {
+.compare-config-options :is(.track-exam-group--info, .track-exam-group--success, .track-exam-group--neutral) .track-exam-group-title {
   color: var(--text-muted);
 }
 
 .compare-config-options .track-extra-req {
   padding: var(--space-3) 0 0;
-  border: 0;
-  border-top: none;
   border-radius: 0;
   background: transparent;
 }
@@ -1070,14 +958,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  margin: 0;
   padding-top: var(--space-4);
-  border-top: none;
-}
-
-.compare-config-options .admission-funding-title,
-.compare-config-options .admission-funding-list {
-  margin: 0;
 }
 
 .compare-config-options .admission-funding-list {
@@ -1092,20 +973,12 @@
   flex-wrap: nowrap;
   gap: var(--space-3);
   padding: var(--space-4);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .compare-config-options .admission-funding-option:hover {
-    background: var(--surface-solid);
-    box-shadow: var(--shadow-xs);
-  }
 }
 
 .compare-config-options .admission-funding-option.is-active {
@@ -1131,14 +1004,9 @@
   width: auto;
 }
 
-.compare-config-options .track-factors-badges {
-  margin: 0;
-}
-
 .compare-config-options .track-cost-preview,
 .compare-config-options .track-cost-preview--grant {
   padding: 0;
-  border: 0;
   border-radius: 0;
   background: transparent;
   color: var(--text);
@@ -1148,16 +1016,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
-  margin: 0;
   padding-top: var(--space-2);
-  border-top: none;
 }
 
 .compare-config-options .admission-option-meta .tag {
   display: inline-flex;
   gap: var(--space-1);
   padding: 0;
-  border: 0;
   border-radius: 0;
   background: transparent;
   color: var(--text);
@@ -1173,9 +1038,7 @@
   width: auto;
   min-height: 0;
   height: auto;
-  margin: 0;
   padding-top: var(--space-3);
-  border-top: none;
 }
 
 .compare-config-column .track-funding-badge {
@@ -1189,7 +1052,6 @@
   min-height: 24px;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-md);
-  border: none;
   font-size: var(--text-xs);
   line-height: 1.15;
   font-weight: var(--font-weight-medium);
@@ -1246,10 +1108,6 @@
   display: grid;
 }
 
-.compare-decision-theme + .compare-decision-theme {
-  border-top: none;
-}
-
 .compare-decision-theme__head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -1268,7 +1126,6 @@
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   background: var(--surface-solid);
-  border: none;
 }
 
 .compare-decision-theme__head h3,
@@ -1298,7 +1155,6 @@
   min-height: 28px;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
-  border: none;
   background: var(--surface-solid);
   color: var(--text-muted);
   font-size: var(--text-xs);
@@ -1330,10 +1186,6 @@
 .compare-decision-side {
   min-width: 0;
   padding: var(--space-5);
-}
-
-.compare-decision-side + .compare-decision-side {
-  border-left: none;
 }
 
 .compare-decision-side__slot {
@@ -1393,12 +1245,6 @@
   text-underline-offset: 2px;
 }
 
-.compare-decision-source a:focus-visible,
-.compare-source-link:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 .compare-table-scroll-hint {
   display: none;
 }
@@ -1416,8 +1262,6 @@
   .compare-config-options .track-stats-box--avg {
     padding-top: var(--space-3);
     padding-left: var(--space-3);
-    border-top: 0;
-    border-left: 0;
   }
 
   .compare-config-options .admission-funding-option-header {
@@ -1447,16 +1291,10 @@
     padding: var(--space-4);
   }
 
-  .compare-decision-side + .compare-decision-side {
-    border-left: 0;
-    border-top: none;
-  }
-
   .compare-table-scroll-hint {
     display: block;
     margin: 0;
     padding: var(--space-3) var(--space-4);
-    border-bottom: none;
     background: var(--surface-soft);
     color: var(--text-muted);
     font-size: var(--text-xs);
@@ -1473,11 +1311,6 @@
   .compare-uni-card__metrics {
     grid-template-columns: 1fr;
   }
-
-  .compare-uni-card__metrics span + span {
-    border-left: 0;
-    border-top: none;
-  }
 }
 
 .compare-config-options .admissions-context {
@@ -1485,11 +1318,6 @@
   padding: 0;
   background: none;
   border-radius: 0;
-}
-
-.compare-config-options .admissions-programs__option:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .compare-config-options .admissions-programs__list {
@@ -1505,7 +1333,6 @@
   gap: var(--space-1);
   padding: var(--space-3) var(--space-4);
   appearance: none;
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
@@ -1523,4 +1350,47 @@
 .compare-config-options .admissions-programs__option:active {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .compare-tray__chip-remove:hover {
+    color: var(--color-danger-muted);
+    background: var(--color-danger-bg);
+  }
+
+  .compare-tray__btn--ghost:hover {
+    color: var(--interaction-hover-text);
+    background: var(--interaction-hover-surface);
+  }
+
+  .compare-tray__btn--primary:hover:not(:disabled) {
+    background: var(--accent-strong);
+  }
+
+  .compare-track-select:hover {
+    background: var(--surface-solid);
+  }
+
+  .compare-uni-card__link:hover,
+  :root .compare-uni-card:hover .compare-uni-card__link,
+  .compare-diff-toggle:hover {
+    color: var(--interaction-hover-text);
+  }
+
+  :root .compare-uni-card:hover {
+    background: color-mix(in srgb, var(--accent) 2%, var(--surface-soft));
+  }
+
+  .compare-results-action:hover {
+    background: var(--accent-strong);
+  }
+
+  .compare-results-action--ghost:hover {
+    background: var(--surface-soft);
+  }
+
+  .compare-config-options .admission-funding-option:hover {
+    background: var(--surface-solid);
+    box-shadow: var(--shadow-xs);
+  }
 }

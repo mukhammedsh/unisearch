@@ -33,9 +33,7 @@
   display: block;
 }
 
-.profile-input:user-invalid:focus,
-.profile-input.is-invalid:focus,
-.profile-input[aria-invalid="true"]:focus {
+.profile-input:is(:user-invalid, .is-invalid, [aria-invalid="true"]):focus {
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 
@@ -127,7 +125,6 @@
   display: flex;
   align-items: center;
   padding: 0 var(--space-4);
-  border: none;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   color: var(--text);
@@ -139,7 +136,6 @@
   align-items: center;
   padding: 0 var(--space-4);
   border-radius: var(--radius-base);
-  border: none;
   color: var(--text-muted);
   background: var(--bg-soft);
 }
@@ -157,7 +153,6 @@
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-  border: 0;
 }
 
 /* Extracted from 03-settings-profile.css. */
@@ -166,8 +161,7 @@
   border-radius: var(--radius-sm);
 }
 
-.profile-confirm-actions .profile-delete,
-.profile-confirm-actions .profile-add {
+.profile-confirm-actions :is(.profile-delete, .profile-add) {
   min-height: 44px;
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-base);
@@ -176,8 +170,7 @@
   justify-content: center;
 }
 
-#profileResetModal .profile-confirm-actions .profile-delete,
-#profileResetModal .profile-confirm-actions .profile-add {
+#profileResetModal .profile-confirm-actions :is(.profile-delete, .profile-add) {
   width: 160px;
   min-width: 160px;
   flex: 0 0 160px;
@@ -215,8 +208,7 @@
     padding: var(--space-3) var(--space-3);
   }
 
-  .profile-confirm-actions .profile-delete,
-  .profile-confirm-actions .profile-add {
+  .profile-confirm-actions :is(.profile-delete, .profile-add) {
     width: 100%;
   }
 }
@@ -233,16 +225,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .profile-confirm-modal.is-open .profile-confirm-card,
-  .profile-confirm-modal.is-closing .profile-confirm-card {
+  .profile-confirm-modal:is(.is-open, .is-closing) .profile-confirm-card {
     animation: none !important;
   }
 }
 
 /* Extracted from 08-device-responsive.css. */
 @media (max-width: 640px) {
-  .profile-confirm-actions .profile-delete,
-  .profile-confirm-actions .profile-add {
+  .profile-confirm-actions :is(.profile-delete, .profile-add) {
     min-height: 44px;
   }
 

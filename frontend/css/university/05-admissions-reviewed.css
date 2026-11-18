@@ -53,7 +53,7 @@
   color: var(--text);
 }
 
-.admissions-reading :is(h3, h4, p, dl, dt, dd) {
+.admissions-reading :is(h3, h4, p, dl, dd) {
   margin: 0;
 }
 
@@ -109,12 +109,6 @@
   text-underline-offset: var(--space-1);
 }
 
-.admissions-reading__ref:focus-visible,
-.admissions-reading__source-list a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .admissions-reading__sources {
   display: grid;
   gap: var(--space-2);
@@ -157,11 +151,6 @@
 .admissions-reading__table-wrap {
   min-width: 0;
   overflow-x: auto;
-}
-
-.admissions-reading__table-wrap:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .admissions-reading__table {
@@ -225,7 +214,7 @@
   color: var(--text);
 }
 
-.admissions-key-facts :is(h3, dl, dt, dd, p) {
+.admissions-key-facts :is(h3, dl, dd, p) {
   margin: 0;
 }
 
@@ -289,7 +278,6 @@
 .admissions-key-facts__link {
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   color: var(--text);
@@ -313,11 +301,6 @@ a.admissions-key-facts__link {
 .admissions-key-facts__link:active {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
-}
-
-.admissions-key-facts__link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 @media (max-width: 480px) {
@@ -374,7 +357,6 @@ a.admissions-key-facts__link {
     justify-content: center;
     min-height: 44px;
     padding: 0;
-    border: 0;
     border-radius: var(--radius-sm);
     background: var(--surface-soft);
     color: var(--text);
@@ -497,7 +479,6 @@ a.admissions-key-facts__link {
 .admissions-study {
   gap: 0;
   padding: 0 var(--space-4) var(--space-4);
-  border: 0;
 }
 
 #tab-programs .program-card[hidden] {
@@ -624,7 +605,6 @@ details[open] > summary > .admissions-disclosure-icon {
   gap: var(--space-2);
   min-height: 44px;
   padding: var(--space-2) var(--space-3);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   color: var(--text);
@@ -668,7 +648,7 @@ details[open] > summary > .admissions-disclosure-icon {
   display: none;
 }
 
-.admissions-programs__overview :is(dl, dt, dd) {
+.admissions-programs__overview :is(dl, dd) {
   margin: 0;
 }
 
@@ -682,7 +662,6 @@ details[open] > summary > .admissions-disclosure-icon {
   display: grid;
   gap: var(--space-3);
   padding-top: var(--space-2);
-  border-top: 0;
 }
 
 #tab-programs .admissions-programs__overview .admissions-programs__essentials .program-card-row {
@@ -691,7 +670,6 @@ details[open] > summary > .admissions-disclosure-icon {
   align-items: baseline;
   gap: var(--space-4);
   padding: 0;
-  border-top: 0;
 }
 
 #tab-programs .admissions-programs__overview .program-card-value {
@@ -760,11 +738,6 @@ details[open] > summary > .admissions-disclosure-icon {
   color: var(--text);
 }
 
-.admissions-programs__references > summary:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 .admissions-programs__references-body {
   display: grid;
   gap: var(--space-2);
@@ -804,14 +777,12 @@ details[open] > summary > .admissions-disclosure-icon {
   text-decoration-thickness: 2px;
 }
 
-.admissions-programs__source-list a:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+.admissions-context__heading h2 {
+  margin: 0;
 }
 
 .admissions-context__heading h2,
 .admissions-catalog__heading {
-  margin: 0;
   color: var(--text);
   font-family: var(--font-display);
   font-weight: var(--font-weight-semibold);
@@ -832,7 +803,6 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-context__heading button {
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
@@ -897,7 +867,6 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-context__field .custom-select-trigger {
   min-height: 44px;
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
@@ -928,14 +897,15 @@ details[open] > summary > .admissions-disclosure-icon {
   min-width: 0;
 }
 
-.admissions-context__heading button,
-.admissions-context__actions button,
-.admissions-programs__toolbar > button,
-.admissions-programs__pagination button,
-.admissions-state button {
+:is(
+  .admissions-context__heading button,
+  .admissions-context__actions button,
+  .admissions-programs__toolbar > button,
+  .admissions-programs__pagination button,
+  .admissions-state button
+) {
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
@@ -946,29 +916,35 @@ details[open] > summary > .admissions-disclosure-icon {
   font-weight: var(--font-weight-medium);
 }
 
-.admissions-context__heading button:hover:not(:disabled),
-.admissions-context__actions button:hover:not(:disabled),
-.admissions-programs__toolbar > button:hover:not(:disabled),
-.admissions-programs__pagination button:hover:not(:disabled),
-.admissions-state button:hover:not(:disabled) {
+:is(
+  .admissions-context__heading button,
+  .admissions-context__actions button,
+  .admissions-programs__toolbar > button,
+  .admissions-programs__pagination button,
+  .admissions-state button
+):hover:not(:disabled) {
   background: var(--interaction-hover-surface);
   color: var(--interaction-hover-text);
 }
 
-.admissions-context__heading button:active:not(:disabled),
-.admissions-context__actions button:active:not(:disabled),
-.admissions-programs__toolbar > button:active:not(:disabled),
-.admissions-programs__pagination button:active:not(:disabled),
-.admissions-state button:active:not(:disabled) {
+:is(
+  .admissions-context__heading button,
+  .admissions-context__actions button,
+  .admissions-programs__toolbar > button,
+  .admissions-programs__pagination button,
+  .admissions-state button
+):active:not(:disabled) {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
 }
 
-.admissions-context__heading button:disabled,
-.admissions-context__actions button:disabled,
-.admissions-programs__toolbar > button:disabled,
-.admissions-programs__pagination button:disabled,
-.admissions-state button:disabled {
+:is(
+  .admissions-context__heading button,
+  .admissions-context__actions button,
+  .admissions-programs__toolbar > button,
+  .admissions-programs__pagination button,
+  .admissions-state button
+):disabled {
   cursor: not-allowed;
   opacity: var(--interaction-disabled-opacity);
 }
@@ -1274,10 +1250,12 @@ details[open] > summary > .admissions-disclosure-icon {
   border-bottom: 0;
 }
 
-.admissions-catalog__entry dt,
 .admissions-catalog__entry dd {
-  min-width: 0;
   margin: 0;
+}
+
+.admissions-catalog__entry :is(dt, dd) {
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
@@ -1320,7 +1298,6 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-catalog__record-link {
   padding: 0;
-  border: none;
   background: none;
   color: var(--accent);
   font: inherit;
@@ -1433,19 +1410,6 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-state .center-loading-spinner {
   color: var(--accent);
-}
-
-.admissions-context :where(button, input, select, textarea, .custom-select-trigger),
-.admissions-programs :where(button, input, select, textarea),
-.admissions-catalog :where(a, button, summary) {
-  outline-offset: 2px;
-}
-
-.admissions-context :where(button, input, select, textarea, .custom-select-trigger):focus-visible,
-.admissions-context :where(a, summary):focus-visible,
-.admissions-programs :where(button, input, select, textarea):focus-visible,
-.admissions-catalog :where(a, button, summary):focus-visible {
-  outline: 2px solid var(--focus-ring);
 }
 
 @media (max-width: 768px) {
@@ -1673,7 +1637,6 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-selection__actions button {
   min-height: 44px;
   padding: var(--space-2) var(--space-3);
-  border: 0;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
@@ -1770,7 +1733,6 @@ details[open] > summary > .admissions-disclosure-icon {
   gap: var(--space-2);
   min-height: 44px;
   padding: var(--space-2) var(--space-4);
-  border: none;
   border-radius: var(--radius-base);
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
@@ -1881,11 +1843,6 @@ details[open] > summary > .admissions-disclosure-icon {
   overflow-x: auto;
 }
 
-.admissions-catalog__table-wrap:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 .admissions-catalog__table {
   width: 100%;
   border-collapse: collapse;
@@ -1918,11 +1875,6 @@ details[open] > summary > .admissions-disclosure-icon {
   margin: 0;
   color: var(--text-muted);
   line-height: var(--leading-normal);
-}
-
-.university--reviewed :where(button, input, select, textarea, .custom-select-trigger, summary, a):focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
@@ -2032,11 +1984,6 @@ details[open] > summary > .admissions-disclosure-icon {
   color: var(--text);
 }
 
-.admissions-term .admissions-term__trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .admissions-term__bubble {
   max-width: min(280px, calc(100vw - 64px));
 }
@@ -2048,11 +1995,6 @@ details[open] > summary > .admissions-disclosure-icon {
   color: var(--accent-strong);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-}
-
-.admissions-key-facts__source:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 /* University page layout pass (2026-11-13): one side-padding layer, one heading scale and clear section breaks. */

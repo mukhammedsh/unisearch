@@ -155,11 +155,6 @@ body[data-page="about"] {
   }
 }
 
-.about-contact-item a:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 @media (max-width: 768px) {
   .about-page {
     width: calc(100% - var(--space-8));

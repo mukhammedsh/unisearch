@@ -389,7 +389,6 @@ body[data-page="guide"] {
   z-index: var(--z-toast);
   min-height: 44px;
   padding: var(--space-3) var(--space-4);
-  border: none;
   box-shadow: var(--shadow-sm);
   border-radius: var(--radius-base);
   background: var(--surface-solid);
@@ -574,7 +573,6 @@ body.route-loading main {
 .error-btn {
   background: var(--accent);
   color: var(--text-inverse);
-  border: none;
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-base);
   font-weight: var(--font-weight-medium);
@@ -625,7 +623,6 @@ body.route-loading main {
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
   background: var(--surface-solid);
-  border: none;
   border-radius: var(--radius-full);
   box-shadow: var(--shadow-sm);
   font-size: var(--text-sm);

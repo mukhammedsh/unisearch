@@ -15,7 +15,6 @@
   min-width: 0;
   padding: 0;
   overflow: hidden;
-  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
 }
@@ -30,7 +29,6 @@
   aspect-ratio: auto;
   overflow: hidden;
   isolation: isolate;
-  border: none;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
   box-shadow: none;
@@ -67,11 +65,6 @@
 .u-map-container .leaflet-control-zoom a:focus {
   background: var(--surface-soft);
   color: var(--accent);
-}
-
-.u-map-container .leaflet-control-zoom a:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .u-map-container .leaflet-control-zoom a.leaflet-disabled {
@@ -121,7 +114,6 @@
 .u-map-results-empty {
   margin: var(--space-3);
   padding: var(--space-4);
-  border: none;
   border-radius: var(--radius-lg);
   color: var(--text-muted);
   line-height: 1.6;
@@ -153,7 +145,6 @@
 
 .u-map-results-list::-webkit-scrollbar-thumb {
   min-height: 48px;
-  border: none;
   border-radius: var(--radius-full);
   background: var(--scrollbar-thumb);
 }
@@ -285,7 +276,6 @@
   justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--space-4);
-  border: none;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   color: var(--text);
@@ -297,11 +287,6 @@
 
 .u-map-results-more:hover:not(:disabled) {
   background: color-mix(in srgb, var(--surface-soft) 92%, var(--text) 8%);
-}
-
-.u-map-results-more:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .u-map-results-more:disabled {
@@ -393,7 +378,6 @@
 
 .map-card-wrapper .uni-card {
   box-shadow: none;
-  border: none;
   border-radius: 0;
   height: auto;
   min-height: 0;
@@ -416,12 +400,6 @@
   top: var(--space-2);
   right: var(--space-2);
   z-index: 2;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .leaflet-container .custom-map-popup a.leaflet-popup-close-button:hover {
-    color: var(--text-muted);
-  }
 }
 
 .custom-div-icon,
@@ -476,23 +454,20 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :root .u-map-results-list .uni-card:not(.uni-card--compare-selected):hover,
-  .u-map-results-list .uni-card.uni-card--compare-selected:hover {
+  .leaflet-container .custom-map-popup a.leaflet-popup-close-button:hover {
+    color: var(--text-muted);
+  }
+
+  :root .u-map-results-list .uni-card:hover,
+  :root .custom-map-popup .map-card-wrapper .uni-card:hover {
     transform: none;
   }
 
-  :root .custom-map-popup .map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover,
-  .custom-map-popup .map-card-wrapper .uni-card.uni-card--compare-selected:hover {
-    transform: none;
-  }
-
-  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) .leaflet-popup-content-wrapper,
-  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) .leaflet-popup-tip {
+  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
     background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
   }
 
-  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) .leaflet-popup-content-wrapper,
-  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) .leaflet-popup-tip {
+  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
     background: var(--accent-soft);
   }
 

@@ -143,8 +143,6 @@
     width: min(420px, 92vw);
     height: calc(100dvh - var(--nav-height, 72px));
     max-height: calc(100dvh - var(--nav-height, 72px));
-    margin: 0;
-    border-left: none;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
@@ -204,7 +202,6 @@
     padding: var(--space-3) var(--space-5);
     background: var(--accent);
     color: var(--text-inverse);
-    border: none;
     border-radius: var(--radius-base);
     font-weight: var(--font-weight-medium);
     font-size: var(--text-base);
@@ -248,7 +245,6 @@
     gap: var(--space-3);
     padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
     background: var(--surface-solid);
-    border-top: none;
   }
 
   /* Range thumbs must stay below the sticky sheet title while scrolling. */
@@ -280,7 +276,6 @@
   }
 
   .u-filter-footer__reset {
-    border: none;
     background: var(--surface-soft);
     color: var(--text);
     box-shadow: var(--shadow-xs);
@@ -295,7 +290,6 @@
   }
 
   .u-filter-footer__apply {
-    border: 0;
     background: var(--accent);
     color: var(--text-inverse);
   }
@@ -313,7 +307,6 @@
   .u-mobile-recent-slot .u-recent {
     padding: 0;
     gap: var(--space-2);
-    border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
@@ -349,7 +342,6 @@
     min-height: 38px;
     padding: var(--space-2) var(--space-3);
     align-items: center;
-    border: none;
     border-radius: var(--radius-base);
     background: var(--surface-soft);
     box-shadow: var(--shadow-micro);
@@ -384,7 +376,6 @@
     min-width: 22px;
     min-height: 22px;
     padding: 0;
-    border: none;
     border-radius: var(--radius-xs);
     background: transparent;
     color: var(--text-muted);
@@ -414,7 +405,6 @@
     min-width: 0;
     min-height: 32px;
     padding: var(--space-1) 0;
-    border: 0;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
@@ -638,8 +628,6 @@
     width: 100%;
     height: min(88dvh, calc(100dvh - var(--nav-height, 72px)));
     max-height: min(88dvh, calc(100dvh - var(--nav-height, 72px)));
-    border-left: 0;
-    border-top: none;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
     padding: 0;
     transform: translateY(100%);
@@ -671,7 +659,6 @@
     margin: 0 0 var(--space-3);
     padding: var(--space-4) var(--space-4) var(--space-3);
     background: var(--card);
-    border-bottom: none;
     border-top-left-radius: var(--radius-xl);
     border-top-right-radius: var(--radius-xl);
   }

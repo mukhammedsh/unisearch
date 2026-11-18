@@ -1,6 +1,5 @@
 /* ===== Shared Admission & Funding Option Cards ===== */
 .track-select-btn {
-  border: none;
   background: var(--surface-soft);
   color: var(--text);
   border-radius: var(--radius-md);
@@ -15,13 +14,6 @@
     box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .track-select-btn:hover:not(:disabled) {
-    background: var(--accent-panel);
-    color: var(--interaction-hover-text);
-  }
-}
-
 .track-select-btn:disabled,
 .track-select-btn.is-active {
   cursor: default;
@@ -32,7 +24,6 @@
 .admission-empty-state {
   margin-top: var(--space-2);
   padding: var(--space-4) var(--space-4);
-  border: none;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -44,7 +35,6 @@
   display: flex;
   gap: var(--space-5);
   margin: var(--space-5) 0 0;
-  border-bottom: none;
   overflow-x: auto;
 }
 
@@ -87,17 +77,15 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .track-select-btn:hover:not(:disabled) {
+    background: var(--accent-panel);
+    color: var(--interaction-hover-text);
+  }
+
   .admission-program-option:hover,
   .requirement-profile-tab:hover {
     color: var(--interaction-hover-text);
   }
-}
-
-.admission-program-option:focus-visible,
-.requirement-profile-tab:focus-visible,
-.track-select-btn:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .admission-program-option.is-active,
@@ -124,7 +112,6 @@
 }
 
 .admission-category-card {
-  border: none;
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
   padding: var(--component-card-padding);
@@ -171,7 +158,6 @@
 .admission-category-count,
 .track-selection-badge {
   flex: 0 0 auto;
-  border: none;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -191,7 +177,6 @@
 
 .admission-applicable-programs .tag,
 .admission-option-meta .tag {
-  border: none;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   color: var(--text);
@@ -203,7 +188,6 @@
 .requirement-profile-tabs {
   display: flex;
   gap: var(--space-5);
-  border-bottom: none;
   overflow-x: auto;
 }
 
@@ -230,7 +214,6 @@
 .admission-funding-block {
   display: grid;
   gap: var(--space-3);
-  border-top: none;
 }
 
 .admission-funding-list {
@@ -239,7 +222,6 @@
 }
 
 .admission-funding-option {
-  border: none;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   padding: var(--space-4);
@@ -247,19 +229,6 @@
 }
 
 .admission-funding-option.is-active {
-  border: none;
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-xs);
-}
-
-.admission-funding-option--grant {
-  border: none;
-  background: var(--surface-soft);
-}
-
-.admission-funding-option--grant.is-active {
-  border: none;
-  background: var(--surface-soft);
   box-shadow: var(--shadow-xs);
 }
 
@@ -283,7 +252,6 @@
 .admission-funding-diff {
   display: grid;
   gap: var(--space-3);
-  border-top: none;
 }
 
 .admission-funding-diff-kicker {
@@ -303,10 +271,6 @@
   gap: var(--space-2);
 }
 
-.admission-funding-diff-content .track-exam-group {
-  margin: 0;
-}
-
 .admission-funding-diff-list {
   margin: 0;
   padding: 0;
@@ -323,7 +287,6 @@
   align-items: baseline;
   gap: var(--space-2);
   padding: var(--space-2) 0;
-  border-bottom: none;
 }
 
 .admission-funding-diff-list li:first-child {
@@ -331,7 +294,6 @@
 }
 
 .admission-funding-diff-list li:last-child {
-  border-bottom: none;
   padding-bottom: 0;
 }
 
@@ -346,7 +308,6 @@
 }
 
 .admission-funding-diff-note {
-  border-top: none;
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: 1.45;
@@ -410,7 +371,6 @@
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   background: var(--surface-soft);
-  border: none;
   color: var(--text-muted);
   white-space: normal;
   overflow-wrap: anywhere;
@@ -482,7 +442,6 @@ button.track-factor-chip {
   display: grid;
   gap: var(--space-2);
   border-radius: var(--radius-base);
-  border: none;
   background: var(--surface-soft);
   padding: var(--space-3) var(--space-4);
 }
@@ -509,7 +468,6 @@ button.track-factor-chip {
   color: var(--text);
   font-size: var(--text-sm);
   line-height: 1.45;
-  border-bottom: none;
 }
 
 .track-extra-req-list li:first-child {
@@ -517,7 +475,6 @@ button.track-factor-chip {
 }
 
 .track-extra-req-list li:last-child {
-  border-bottom: none;
   padding-bottom: 0;
 }
 
@@ -533,7 +490,6 @@ button.track-factor-chip {
 
 /* ===== Track Stats Boxes & Minimums (Global) ===== */
 .track-stats-box {
-  border: none;
   border-radius: var(--radius-base);
   padding: var(--space-3);
   background: var(--surface-soft);
@@ -571,7 +527,6 @@ button.track-factor-chip {
 /* ===== Track Exam Groups (Global) ===== */
 .track-exam-group {
   border-radius: var(--radius-md);
-  border: none;
   background: var(--surface-soft);
   padding: var(--space-3);
 }
@@ -620,7 +575,6 @@ button.track-factor-chip {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  border: none;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   padding: var(--space-2) var(--space-3);

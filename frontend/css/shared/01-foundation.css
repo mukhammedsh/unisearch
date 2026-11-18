@@ -551,17 +551,15 @@ a {
   color: inherit;
 }
 
+:where(button) {
+  border: none;
+}
+
 /* Composite fields keep inputs, icons, and embedded actions in one state surface. */
 .ui-input-composite {
   position: relative;
   min-width: 0;
   background: var(--surface-soft);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .ui-input-composite:hover {
-    background: var(--interaction-hover-surface);
-  }
 }
 
 .ui-input-composite:focus-within {
@@ -573,7 +571,7 @@ a {
   opacity: var(--interaction-disabled-opacity);
 }
 
-:where(a[href], button, input, select, textarea, [role="button"], .custom-select-trigger):focus-visible {
+:where(a[href], button, input, select, textarea, summary, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
@@ -591,8 +589,11 @@ textarea:disabled,
   box-shadow: none;
 }
 
-
 @media (hover: hover) and (pointer: fine) {
+  .ui-input-composite:hover {
+    background: var(--interaction-hover-surface);
+  }
+
   :where(a[href]:not([class])):hover {
     color: var(--interaction-hover-text);
   }
@@ -632,6 +633,9 @@ dialog::backdrop {
   .custom-options,
   .u-tooltip,
   .ui-tooltip-bubble,
+  .profile-tooltip,
+  .d-tooltip,
+  .uni-status-tooltip__content,
   .toast,
   .profile-confirm-card,
   .d-box,
@@ -686,7 +690,7 @@ dialog::backdrop {
     border-block-end-color: Highlight;
   }
 
-  :where(a[href], button, input, select, textarea, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
+  :where(a[href], button, input, select, textarea, summary, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
     outline: 2px solid Highlight;
     outline-offset: 2px;
   }

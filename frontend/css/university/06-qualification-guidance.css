@@ -59,11 +59,6 @@
   text-underline-offset: var(--space-1);
 }
 
-.qualification-guidance__source:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 .program-coverage {
   display: grid;
   gap: var(--space-3);
@@ -123,11 +118,6 @@
   font-size: var(--text-sm);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
-}
-
-.program-coverage__source:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
 }
 
 .program-coverage__awards-list {

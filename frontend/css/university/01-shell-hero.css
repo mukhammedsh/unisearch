@@ -45,7 +45,6 @@
   gap: var(--space-5);
   padding: 0;
   background: transparent;
-  border: none;
   border-radius: 0;
   box-shadow: none;
   pointer-events: none;
@@ -96,7 +95,6 @@
   min-height: 180px;
   max-height: 420px;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  border-bottom: none;
   overflow: hidden;
 }
 
@@ -123,7 +121,6 @@
 .d-gallery-preview {
   width: 100%;
   padding: 0;
-  border: none;
   border-radius: inherit;
   background: transparent;
   cursor: zoom-in;
@@ -153,7 +150,6 @@
   width: 44px;
   height: 44px;
   padding: 0;
-  border: none;
   border-radius: var(--radius-md);
   background: var(--media-caption-bg);
   color: var(--text-inverse);
@@ -220,13 +216,6 @@
 .d-gallery-button:is(:hover, :active),
 .d-cover-back:is(:hover, :active) {
   background: var(--media-viewer-bg);
-}
-
-.d-gallery-preview:focus-visible,
-.d-gallery-button:focus-visible,
-.d-cover-back:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 .d-gallery-preview:focus-visible {
@@ -380,11 +369,6 @@ a.d-cover-credit:hover {
   text-decoration: underline;
 }
 
-a.d-cover-credit:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .d-cover-back .ui-icon {
   width: 20px;
   height: 20px;
@@ -397,7 +381,6 @@ a.d-cover-credit:focus-visible {
   gap: var(--space-5);
   box-shadow: none;
   background: var(--card);
-  border-bottom: none;
   padding: var(--space-4) var(--space-6);
 }
 
@@ -496,12 +479,10 @@ a.d-cover-credit:focus-visible {
 }
 
 .d-box {
-  margin-bottom: 0;
   break-inside: avoid;
   display: block;
   width: 100%;
   background: transparent;
-  border: none;
   border-radius: 0;
   box-shadow: none;
   padding: var(--space-6);
@@ -534,16 +515,10 @@ a.d-cover-credit:focus-visible {
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-3) 0;
-  border-bottom: none;
-}
-
-.d-kv:last-child {
-  border-bottom: 0;
 }
 
 /* The last row hands its trailing space to the box padding so the gap before the next section is not doubled. */
 .d-kv.d-kv--last {
-  border-bottom: 0;
   padding-bottom: 0;
 }
 
@@ -583,25 +558,12 @@ a.d-cover-credit:focus-visible {
   transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
-.d-info-wrap:hover,
-.d-info-wrap:focus-within,
-.d-info-wrap.is-open,
-.d-info-wrap.is-closed,
-.d-info-wrap.is-closing {
+.d-info-wrap:is(:hover, :focus-within, .is-open, .is-closed, .is-closing) {
   z-index: calc(var(--z-dropdown) + 1);
   transition-delay: 0s;
 }
 
-.d-kv-label:has(.d-info-wrap:hover),
-.d-kv-label:has(.d-info-wrap:focus-within),
-.d-kv-label:has(.d-info-wrap.is-open),
-.d-kv-label:has(.d-info-wrap.is-closed),
-.d-kv-label:has(.d-info-wrap.is-closing),
-.d-kv:has(.d-info-wrap:hover),
-.d-kv:has(.d-info-wrap:focus-within),
-.d-kv:has(.d-info-wrap.is-open),
-.d-kv:has(.d-info-wrap.is-closed),
-.d-kv:has(.d-info-wrap.is-closing) {
+:is(.d-kv-label, .d-kv):has(.d-info-wrap:is(:hover, :focus-within, .is-open, .is-closed, .is-closing)) {
   position: relative;
   z-index: var(--z-dropdown);
 }
@@ -612,7 +574,6 @@ a.d-cover-credit:focus-visible {
   min-width: 22px;
   min-height: 22px;
   box-sizing: border-box;
-  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -647,27 +608,11 @@ a.d-cover-credit:focus-visible {
 }
 
 .d-tooltip {
-  position: absolute;
-  left: 0;
-  top: calc(100% + 8px);
   width: min(320px, calc(100vw - 48px));
   max-width: calc(100vw - 48px);
-  background: var(--tooltip-bg);
-  color: var(--tooltip-text);
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-3);
+  padding: var(--space-3);
   font-size: var(--text-sm);
-  line-height: 1.35;
-  z-index: var(--z-dropdown);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4px);
-  pointer-events: none;
-  transition:
-  opacity var(--motion-fast) var(--motion-ease-standard),
-  transform var(--motion-fast) var(--motion-ease-enter),
-  visibility var(--motion-fast) var(--motion-ease-standard);
-  overflow-wrap: anywhere;
+  font-weight: var(--font-weight-regular);
 }
 
 .d-tooltip strong {
@@ -691,29 +636,6 @@ a.d-cover-credit:focus-visible {
   text-decoration: underline;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .d-info-wrap:not(.is-closed):hover .d-tooltip {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
-}
-
-.d-info-wrap:not(.is-closed):focus-within .d-tooltip,
-.d-info-wrap.is-open .d-tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.d-info-wrap.is-closed .d-tooltip {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
 @media (max-width: 640px) {
   .d-tooltip {
     left: auto;
@@ -724,17 +646,13 @@ a.d-cover-credit:focus-visible {
 
 .d-tabs {
   display: flex;
-  margin-bottom: 0;
   flex-wrap: wrap;
   --sliding-indicator-extra-width: 0px;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
-  margin-top: 0;
   padding: 0 var(--space-5);
   gap: var(--space-5);
-  border-top: 0;
-  border-bottom: none;
   background: var(--card);
 }
 
@@ -754,7 +672,6 @@ a.d-cover-credit:focus-visible {
   min-width: 116px;
   min-height: 48px;
   padding: var(--space-4) var(--space-2) var(--space-4);
-  border: 0;
   border-radius: 0;
   background: transparent;
   color: var(--muted);
@@ -775,13 +692,6 @@ a.d-cover-credit:focus-visible {
   height: 18px;
 }
 
-.d-tab-btn:focus-visible,
-.d-site-link:focus-visible,
-.d-info:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 .d-tab-pane,
 .d-tab-pane[hidden] {
   display: none;
@@ -798,7 +708,6 @@ a.d-cover-credit:focus-visible {
 
 .d-tab-content {
   min-width: 0;
-  border-top: 0;
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   background: var(--card);
 }
@@ -810,7 +719,6 @@ a.d-cover-credit:focus-visible {
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
   color: var(--text);
-  border: none;
   box-shadow: var(--shadow-xs);
   display: inline-flex;
   align-items: center;
@@ -846,13 +754,6 @@ a.d-cover-credit:focus-visible {
 
 .d-site-link.is-saved .uni-action-icon * {
   fill: currentColor;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .d-site-link.is-saved:hover {
-    background: var(--color-warning-bg);
-    color: var(--color-warning);
-  }
 }
 
 .d-site-link--disabled {
@@ -943,7 +844,6 @@ a.d-cover-credit:focus-visible {
 .d-head-links {
   flex-wrap: wrap;
   order: 0;
-  margin-top: 0;
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
@@ -1047,13 +947,6 @@ a.d-cover-credit:focus-visible {
   background: var(--color-warning-bg);
   color: var(--color-warning);
   box-shadow: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .d-tab-btn:hover {
-    transform: none;
-    background: transparent;
-  }
 }
 
 .d-tab-btn.active {
@@ -1200,7 +1093,6 @@ body[data-page="university"],
 
 .d-card {
   background: var(--surface-solid);
-  border: none;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-card);
   overflow: visible;
@@ -1213,31 +1105,31 @@ body[data-page="university"],
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .d-site-link:hover {
-  background: var(--accent-panel);
-  color: var(--accent);
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .d-info:hover {
-    background: var(--accent-panel);
-    color: var(--accent);
-  }
-}
-
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
   color: var(--accent);
 }
 
-
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
-  .d-tooltip a:hover,
+  :is(.d-site-link, .d-info):hover {
+    background: var(--accent-panel);
+    color: var(--accent);
+  }
+
+  .d-site-link.is-saved:hover {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+  }
+
   .d-tab-btn:hover {
+    transform: none;
+    background: transparent;
+    color: var(--interaction-hover-text);
+  }
+
+  .d-tooltip a:hover {
     color: var(--interaction-hover-text);
   }
 }
