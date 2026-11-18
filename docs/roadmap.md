@@ -156,7 +156,7 @@ Phase 4: Academic Expansion & Community
 * **Goal:** Double catalog coverage from 50 to 100+ institutions across Europe, North America, Asia, and Central Asia.
 * **Key Tasks:**
   - **Official Data Ingestion:** Collect verified admissions data strictly following Section 5 of `AGENTS.md` (official university admissions pages and official PDFs; aggregators prohibited).
-  - **Institution Media:** Collect verified square logos (1:1 PNG), 16:9 covers, and gallery assets.
+  - **Institution Media:** Collect credited campus covers and gallery photographs from Wikimedia Commons under the project's allowed licenses.
   - **Scoring Re-calibration:** Validate multilingual-e5 embeddings and UniFit distribution across the expanded catalog.
   - **Data Auditing:** Run `npm run audit:data` for local data checks. Check affected official URLs separately; an HTTP success does not prove that the content or its scope is correct.
 * **Dependencies:** Final expansion milestone executed once platform architecture, mobile apps, and community features are fully mature.

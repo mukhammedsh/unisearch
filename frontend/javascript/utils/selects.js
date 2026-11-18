@@ -1,4 +1,5 @@
 import { escapeHtml, getFlagImg } from "./format.js";
+import { heroIcon } from "../icons.js";
 
 let customSelectGlobalClickBound = false;
 
@@ -93,37 +94,27 @@ function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) 
   return { trigger, customOptions, optionList, searchInput, listboxId };
 }
 
-function shouldOpenUp(trigger, wrapper) {
+function positionSelectPanel(trigger, wrapper, panel) {
   if (typeof trigger.getBoundingClientRect !== "function") return false;
 
   const triggerRect = trigger.getBoundingClientRect();
-  let scrollParent = null;
-
-  if (typeof wrapper.closest === "function") {
-    const filterCard = wrapper.closest(".u-filter-card");
-    const sidebar = wrapper.closest(".u-sidebar");
-    if (filterCard && typeof window !== "undefined" && typeof window.getComputedStyle === "function") {
-      const fcOverflow = window.getComputedStyle(filterCard).overflowY;
-      if (fcOverflow === "auto" || fcOverflow === "scroll") {
-        scrollParent = filterCard;
-      }
-    }
-    if (!scrollParent && sidebar) {
-      scrollParent = sidebar;
-    }
+  const viewport = window.visualViewport;
+  let top = viewport?.offsetTop ?? 0;
+  let bottom = top + (viewport?.height ?? window.innerHeight);
+  for (let parent = wrapper.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+    if (window.getComputedStyle(parent).overflowY === "visible") continue;
+    const innerTop = parent.getBoundingClientRect().top + parent.clientTop;
+    top = Math.max(top, innerTop);
+    bottom = Math.min(bottom, innerTop + parent.clientHeight);
   }
 
-  let parentBottom = typeof window !== "undefined" && window.innerHeight ? window.innerHeight : 800;
-  let parentTop = 0;
-  if (scrollParent && typeof scrollParent.getBoundingClientRect === "function") {
-    const parentRect = scrollParent.getBoundingClientRect();
-    parentBottom = Math.min(parentBottom, parentRect.bottom);
-    parentTop = Math.max(parentTop, parentRect.top);
-  }
-
-  const spaceBelow = parentBottom - triggerRect.bottom;
-  const spaceAbove = triggerRect.top - parentTop;
-  return spaceBelow < 210 && spaceAbove > spaceBelow;
+  panel.style.removeProperty("--dropdown-available-height");
+  const gap = Number.parseFloat(window.getComputedStyle(panel).marginBlockStart) || 0;
+  const spaceBelow = bottom - triggerRect.bottom - gap;
+  const spaceAbove = triggerRect.top - top - gap;
+  const openUp = spaceBelow < panel.offsetHeight && spaceAbove > spaceBelow;
+  panel.style.setProperty("--dropdown-available-height", `${Math.max(0, openUp ? spaceAbove : spaceBelow)}px`);
+  return openUp;
 }
 
 function createOptionNode(option, index, listboxId, showFlags) {
@@ -139,7 +130,7 @@ function createOptionNode(option, index, listboxId, showFlags) {
     node.setAttribute("aria-disabled", "true");
   }
   const flag = showFlags ? getFlagImg(option.value) : "";
-  node.innerHTML = flag ? `${flag} <span>${escapeHtml(option.text)}</span>` : escapeHtml(option.text);
+  node.innerHTML = `${flag}<span>${escapeHtml(option.text)}</span>${heroIcon("check", "custom-option-check")}`;
   if (option.selected) node.classList.add("selected");
   return node;
 }
@@ -190,9 +181,10 @@ function updateTriggerContent(trigger, select, isLanguageSelect, showFlags) {
     trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
     return;
   }
-  trigger.innerHTML = flag
+  const label = flag
     ? `<div class="custom-select-trigger-content">${flag} <span>${escapeHtml(selectedOption.text)}</span></div>`
     : `<span>${escapeHtml(selectedOption.text)}</span>`;
+  trigger.innerHTML = label + heroIcon("chevron-down", "custom-select-chevron");
 }
 
 function findTypeaheadMatch(enabled, currentIdx, buffer) {
@@ -419,16 +411,14 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
       }
     });
 
-    if (shouldOpenUp(trigger, wrapper)) wrapper.classList.add("open-up");
-    else wrapper.classList.remove("open-up");
-
-    wrapper.classList.add("open");
-    trigger.setAttribute("aria-expanded", "true");
-
     if (searchInput) {
       searchInput.value = "";
       customOptions.querySelectorAll(".custom-option[hidden]").forEach((option) => { option.hidden = false; });
     }
+
+    wrapper.classList.toggle("open-up", positionSelectPanel(trigger, wrapper, customOptions));
+    wrapper.classList.add("open");
+    trigger.setAttribute("aria-expanded", "true");
 
     const enabled = getEnabledOptions();
     const curVal = String(select.value || "");

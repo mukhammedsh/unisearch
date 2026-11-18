@@ -103,6 +103,8 @@ test("the cost card states the price before aid, names tuition-only prices and c
   const card = costCard(costFact(resolved, 50000), "MIT meets full demonstrated need");
   assert.match(card.headline, /^\$92,760 a year$/);
   assert.match(card.lines[0], /^Before financial aid\. Source period: 2026.2027$/);
+  const calculated = costCard(costFact({ selected_costs: { annual_total: quote({ calculation: "tuition_plus_living_range", living_period: "9 months" }) } }, 50000));
+  assert.equal(calculated.lines[1], "Calculated reference: tuition plus a living-cost estimate.");
   assert.deepEqual(card.aside.map(line => line.tone), ["danger", undefined]);
   assert.match(card.aside[1].text, /^Published policy: MIT meets full demonstrated need$/);
   const tuition = costCard(costFact({ selected_costs: { tuition: quote({ min: 66720, max: 66720, usd: { min: 66720, max: 66720 } }) } }, undefined));

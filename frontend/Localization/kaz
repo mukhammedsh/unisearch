@@ -440,8 +440,8 @@ universities.cost.fee_status_unknown: Төлем санаты расталмағ
 universities.cost.filter_partial: Баға бойынша ішінара сәйкестік
 universities.cost.tooltip_open: Баға туралы түсіндірме
 universities.cost.tooltip_title: Баға ауқымы туралы
-universities.cost.tooltip_range: Бұл ағымдағы таңдауға сай белгілі ең төменгі және ең жоғары бағалар, орташа баға емес. Сома бағдарлама мен төлем санатына қарай өзгереді.
-universities.cost.tooltip_living_range: Шеткі мәндер белгілі оқу ақысына жарияланған тұру шығындарының ауқымын қосу арқылы алынған, орташа баға емес. Тұру шығындарының бағасы басқа жылға қатысты болуы мүмкін.
+universities.cost.tooltip_range: Бұл белгілі ең төменгі және ең жоғары бағалар ауқымы. Профильді толтыру (оқу деңгейі, төлем санаты, бағдарлама) ауқымды нақтырақ нұсқаға дейін тарылтуы мүмкін.
+universities.cost.tooltip_living_range: Бұл анықтамалық ауқым жарияланған оқу ақысы мен тұру шығындарының бағасын біріктіреді; тұру шығындары басқа жылға қатысты болуы мүмкін. Профильді толтыру (оқу деңгейі, төлем санаты, бағдарлама) ауқымды тарылтуы мүмкін, бірақ жалпы сомаға кепілдік берілмейді.
 universities.cost.tooltip_single: Бұл ағымдағы таңдауға сай белгілі бір баға. Бағдарламаны, төлем санатын және жылды нақтылаңыз.
 universities.cost.tooltip_filter_variants: Баға сүзгісі әрбір белгілі нұсқаны жеке тексереді. Кемінде бір нұсқа сіз таңдаған шектерге сай келсе, көрсетілген ауқым сол шектерден кең болса да, ЖОО көрсетіледі. Шеткі бағалардың арасындағы барлық сомалар ұсыныла бермейді.
 universities.cost.tooltip_filter_reference: Жалпы анықтамалық ауқым сіз таңдаған шектермен қиылысуы мүмкін, бірақ сәйкес бағдарлама анықталмауы мүмкін. Оның бағасын университеттен нақтылаңыз.
@@ -3340,6 +3340,7 @@ university.admissions.key_facts.cost: Жылдық құны
 university.admissions.key_facts.cost_total: Жарияланған бюджет: {amount}
 university.admissions.key_facts.cost_tuition: Оқу ақысы: {amount}. Тұру шығыны кірмейді
 university.admissions.key_facts.cost_period: Дереккөз кезеңі: {period}
+university.admissions.key_facts.cost_calculated_reference: Есептік бағдар: оқу ақысы мен тұру шығындарының бағасы.
 university.admissions.key_facts.cost_fee_status: Төлем мәртебесіне (Home немесе Overseas) байланысты; оны жоғарыдағы қосымша параметрлерде көрсетуге болады
 university.admissions.key_facts.cost_not_annual: Баға бір жылға жарияланбаған; толығырақ «Құны» қойындысында
 university.admissions.key_facts.cost_unknown: Бұл таңдау үшін баға жарияланбаған

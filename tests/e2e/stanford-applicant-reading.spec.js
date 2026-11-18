@@ -390,7 +390,8 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   await expect(card).toBeVisible();
   await select(page, "studyLevelSelect", "master");
   await expect(page.locator("#studyLevelSelect")).toHaveValue("master");
-  await expect(card).toHaveCount(0);
+  // Stanford publishes master's programs, so it remains a match at this level.
+  await expect(card).toBeVisible();
   await select(page, "studyLevelSelect", "bachelor");
   await expect(card).toBeVisible();
   await page.locator("#settingsBtn").click();

@@ -219,7 +219,7 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
         return {
           theme: document.documentElement.dataset.theme,
           control: getComputedStyle(document.querySelector("#catalogLevelFilter .custom-select-trigger")).backgroundColor,
-          controlSurface: valueForToken("--surface-soft"),
+          controlSurface: valueForToken("--surface-solid"),
         };
       });
 

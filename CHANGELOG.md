@@ -2,20 +2,44 @@
 
 All notable project changes should be recorded here.
 
-## 10.5.0 (2026-11-18) - Currency fallback snapshot sync and rate update status
+## 10.5.0 (2026-11-18) - Annual cost references, campus photo fallback, and currency rate status
 
-Minor release: synchronizes static offline exchange rates across backend and frontend with an explicit snapshot date and displays localized currency rate freshness or offline snapshot status in Settings.
+Backward-compatible minor version update for catalog cost references, missing campus-photo states, synchronized offline currency snapshots, and rate freshness status in Settings.
 
 ### Added
+- Calculate annual reference ranges from compatible published tuition and living-cost facts, retaining program scope, source periods, exclusions and living-cost provenance.
+- Show a localized campus-photo placeholder when a university has no reusable cover image.
 - Added `FALLBACK_RATES_DATE` (`2026-11-18`) alongside `FALLBACK_RATES` in both `backend/app/services/currency.py` and `frontend/javascript/currency.js`, plus `scripts/sync-currency-fallback.mjs` to refresh rates from ExchangeRate-API and check backend/frontend parity.
 - Exported `getRatesMetadata()` and `formatRatesTimestamp()` from `frontend/javascript/currency.js` to format UTC timestamps in the user's local timezone and keep `YYYY-MM-DD` calendar dates anchored in UTC without negative-offset day shift.
 - Added `#currencyRatesStatus` inside `.settings-attribution` in `#settingsModal` (`frontend/javascript/components.js`, `frontend/javascript/components/settings-ui.js`, `frontend/css/shared/02-shell-settings-feedback.css`) with localized `currency.rates_updated` and `currency.rates_offline` strings in English, Russian, and Kazakh, updating reactively on modal open, background rate arrival (`currencyRatesStatusUpdated` / `currencyRatesUpdated`), and language switches.
 
 ### Changed
+- Remove the unreviewed-data notice from university catalog cards; review status remains available on university pages and in comparison guidance.
+- Explain that price ranges can narrow as study level, fee status and program details are set, and label tuition-plus-living calculations as references.
+- Identify calculated tuition-plus-living references in university summaries and comparison.
+- Rename Russian university favorites filter labels to saved wording.
 - Updated `FALLBACK_RATES` across backend and frontend to the 2026-11-18 ExchangeRate-API USD snapshot (166 currencies) and returned `FALLBACK_RATES_DATE` instead of `"fallback"` in `get_rates()` and frontend fallback paths, skipping `sessionStorage` persistence for fallback responses.
 
+### Fixed
+- Keep each priced program variant on its latest published period instead of mixing prices from different entry years.
+
 ### Tests
+- Cover scoped annual budget ranges, living-cost provenance, localized price explanations and missing campus-photo states.
+- Check that the catalog level selector uses the solid surface token across themes and layouts.
 - Added backend and frontend unit tests covering `FALLBACK_RATES` / `FALLBACK_RATES_DATE` parity, fallback `date` responses, timezone-aware and calendar-safe timestamp formatting, and reactive Settings attribution updates, and updated existing unit and currency E2E expectations for the refreshed fallback rates.
+
+## 10.4.4 (2026-11-18) - University media policy wording
+
+Patch release: university media guidance and interface refinements with no breaking API or storage changes.
+
+### Changed
+- Clarified that UniSearch identifies institutions by name and campus photography and does not publish university logos; aligned the third-party notice, photo contribution guidance, architecture diagram, and catalog expansion roadmap.
+- Simplified the campus photo gallery with a clickable cover, translucent photo count and credits, side arrows, and a back arrow in the full-size viewer.
+
+### Fixed
+- Unified dropdown spacing, panel styling, and selection feedback across catalog filters, profile, settings, and university pages.
+- Set the catalog study-level filter button to the solid surface color.
+- Standardized website, map, and save actions across all university pages, including their typography and stable localized save-state width.
 
 ## 10.4.3 (2026-11-18) - Modern web platform baseline, accessibility, and security hardening
 

@@ -201,19 +201,10 @@
 }
 
 .navbar-right .lang-control .custom-options {
-  left: 50%;
-  right: auto;
-  min-width: 170px;
-  width: max-content;
-  transform: translateX(-50%) translateY(-10px);
-}
-
-.navbar-right .lang-control .custom-select-wrapper.open .custom-options {
-  transform: translateX(-50%) translateY(0);
-}
-
-.navbar-right .lang-control .custom-option {
-  white-space: nowrap;
+  inset-inline-start: auto;
+  width: min(11rem, calc(100vw - var(--space-6)));
+  border-radius: var(--radius-base);
+  margin-block-start: var(--space-1);
 }
 
 /* Auto-compact navbar layout when one-row navigation does not fit */
@@ -808,23 +799,6 @@
   border: none;
   border-radius: var(--radius-md);
   box-shadow: none;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .settings-row .custom-select-trigger:hover {
-    background: var(--bg-soft);
-  }
-}
-
-.settings-row .custom-options {
-  left: 0;
-  right: 0;
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
 }
 
 .settings-attribution {
@@ -1066,10 +1040,21 @@
   }
 }
 
-/* --- Custom Select (Single canonical dropdown panel) ---
-   All custom selects reuse .custom-options below. Do not fork
-   background/border/shadow/radius in page CSS; only positioning
-   or sizing variants may override layout properties. */
+/* --- Dropdowns --- */
+.custom-select-wrapper,
+select:not(.u-select-hidden) {
+  --dropdown-surface: var(--surface-solid);
+  --dropdown-radius: var(--radius-base);
+  --dropdown-row-height: 36px;
+}
+
+@media (pointer: coarse) {
+  .custom-select-wrapper,
+  select:not(.u-select-hidden) {
+    --dropdown-row-height: 44px;
+  }
+}
+
 .custom-select-wrapper {
   position: relative;
   width: 100%;
@@ -1100,6 +1085,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-2);
   width: 100%;
   box-sizing: border-box;
   min-height: 43px;
@@ -1113,30 +1099,27 @@
   background: var(--surface-soft);
   box-shadow: var(--shadow-micro);
   border: none;
-  border-radius: var(--radius-base);
+  border-radius: var(--dropdown-radius);
   cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .custom-select-trigger:hover {
+  .custom-select-trigger:hover:not(.is-disabled) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 }
 
-.custom-select-trigger::after {
-  content: '';
-  width: 10px;
-  height: 6px;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23999' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
+.custom-select-chevron,
+.custom-option-check {
+  width: 1em;
+  height: 1em;
+  flex: none;
+}
+
+.custom-select-chevron {
+  color: var(--text-muted);
   transition: transform var(--motion-fast) var(--motion-ease-emphasized);
-  flex-shrink: 0;
 }
 
 .custom-select-trigger > span,
@@ -1149,135 +1132,64 @@
   white-space: nowrap;
 }
 
-.custom-select-wrapper.open .custom-select-trigger {
-  background: var(--accent-active-surface);
-  color: var(--interaction-active-text);
+.custom-select-wrapper.open:not(.custom-select-wrapper--language) > .custom-select-trigger {
+  background: var(--dropdown-surface);
+  color: var(--text);
+  box-shadow: none;
 }
 
-.custom-select-wrapper.open .custom-select-trigger::after {
+.custom-select-wrapper.open .custom-select-chevron {
   transform: rotate(180deg);
 }
 
-/* Attached morph: the trigger sheds rounding on the side facing the menu,
-   so trigger + panel read as one sheet growing from the trigger edge. */
-.custom-select-wrapper.open:not(.open-up) .custom-select-trigger {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.custom-select-wrapper.open:not(.custom-select-wrapper--language, .open-up) > .custom-select-trigger {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
-.custom-select-wrapper.open.open-up .custom-select-trigger {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.custom-select-wrapper.open.open-up:not(.custom-select-wrapper--language) > .custom-select-trigger {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
 }
 
 .custom-options {
   position: absolute;
-  display: block;
-  top: 100%;
-  left: 0;
-  right: 0;
-  border-radius: var(--radius-base);
-  box-shadow: var(--shadow-card);
-  background: var(--surface-solid);
-  transition:
-    opacity var(--motion-fast) var(--motion-ease-standard),
-    visibility var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-enter);
-  opacity: 0;
+  inset-block-start: 100%;
+  inset-inline: 0;
+  border-radius: var(--dropdown-radius);
+  box-shadow: var(--shadow-md);
+  background: var(--dropdown-surface);
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(-10px);
   z-index: var(--z-dropdown);
-  max-height: 220px;
+  max-block-size: min(220px, var(--dropdown-available-height, 220px));
   overflow-x: hidden;
   overflow-y: auto;
-  margin-top: var(--space-1);
+  overscroll-behavior-y: contain;
   padding: var(--space-1);
 }
 
-.custom-options::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-options::-webkit-scrollbar-track {
-  background: var(--scrollbar-track);
-  margin: var(--space-2) 0;
-}
-
-.custom-options::-webkit-scrollbar-thumb {
-  background: var(--scrollbar-thumb);
-  border-radius: var(--radius-full);
-}
-
-.custom-options::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollbar-thumb-hover);
-}
-
-.custom-options::-webkit-scrollbar-button,
-.custom-options::-webkit-scrollbar-corner {
-  display: none;
-  width: 0;
-  height: 0;
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  .custom-options {
-    scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--text-muted) 38%, transparent) transparent;
-  }
-}
-
 .custom-select-wrapper.open .custom-options {
-  opacity: 1;
   visibility: visible;
-  pointer-events: all;
-  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .custom-select-wrapper.open-up .custom-options {
-  top: auto;
-  bottom: 100%;
-  margin-top: 0;
-  margin-bottom: var(--space-1);
-  transform: translateY(10px);
+  inset-block: auto 100%;
 }
 
-/* Directional attachment: remove rounding on the side facing the trigger,
-   close the gap so the panel grows directly from the trigger edge. */
-.custom-select-wrapper.open:not(.open-up) .custom-options {
-  margin-top: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  transform-origin: top center;
+.custom-select-wrapper:not(.custom-select-wrapper--language, .open-up) .custom-options {
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
 }
 
-.custom-select-wrapper.open.open-up .custom-options {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: all;
-  transform: translateY(0);
-  margin-bottom: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  transform-origin: bottom center;
+.custom-select-wrapper.open-up:not(.custom-select-wrapper--language) .custom-options {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
-/* Navbar language menu is centered and wider than its trigger,
-   so it stays a detached floating panel with full rounding and gap. */
-.navbar-right .lang-control .custom-select-wrapper.open:not(.open-up) .custom-options {
-  margin-top: var(--space-1);
-  border-top-left-radius: var(--radius-base);
-  border-top-right-radius: var(--radius-base);
-}
-
-.navbar-right .lang-control .custom-select-wrapper.open.open-up .custom-options {
-  margin-bottom: var(--space-1);
-  border-bottom-left-radius: var(--radius-base);
-  border-bottom-right-radius: var(--radius-base);
-}
-
-.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
-  border-radius: var(--radius-md);
+.custom-select-wrapper--language.open-up .custom-options {
+  margin-block: 0 var(--space-1);
 }
 
 .custom-optgroup-label {
@@ -1291,16 +1203,28 @@
   user-select: none;
 }
 
-.custom-option {
+.custom-option,
+.custom-select-search {
   padding: var(--space-2) var(--space-3);
+  min-block-size: var(--dropdown-row-height);
   font-size: var(--text-sm);
+  line-height: var(--leading-tight);
   color: var(--text);
   border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.custom-select-search {
+  width: 100%;
+  background: var(--surface-soft);
+  border: none;
+}
+
+.custom-option:not([hidden]) {
   display: flex;
+}
+
+.custom-option {
+  cursor: pointer;
   align-items: center;
   gap: var(--space-2);
   min-width: 0;
@@ -1314,32 +1238,82 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .custom-option:hover {
+  .custom-option:hover:not(.is-disabled) {
     background-color: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 }
 
-.custom-option.is-highlighted {
-  background-color: var(--surface-soft);
-  color: var(--accent);
+.custom-option.selected {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
+  font-weight: var(--font-weight-medium);
 }
 
-.custom-option.selected {
-  background-color: var(--accent-panel);
-  font-weight: var(--font-weight-medium);
-  color: var(--accent);
+.custom-option.is-highlighted:not(.selected) {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.custom-option-check {
+  margin-inline-start: auto;
+  visibility: hidden;
+}
+
+.custom-option.selected .custom-option-check {
+  visibility: visible;
 }
 
 .custom-option.is-disabled {
-  opacity: 0.55;
+  opacity: var(--interaction-disabled-opacity);
   cursor: not-allowed;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .custom-option.is-disabled:hover {
-    background-color: transparent;
+@supports (appearance: base-select) and selector(::picker(select)) {
+  select:not(.u-select-hidden, [multiple], [size]),
+  select:not(.u-select-hidden, [multiple], [size])::picker(select) {
+    appearance: base-select;
+  }
+
+  select:not(.u-select-hidden, [multiple], [size]) {
+    background-image: none;
+    align-items: center;
+  }
+
+  select:not(.u-select-hidden, [multiple], [size])::picker(select) {
+    max-block-size: min(220px, 50dvh);
+    padding: var(--space-1);
+    border: none;
+    border-radius: var(--dropdown-radius);
+    background: var(--dropdown-surface);
     color: var(--text);
+    box-shadow: var(--shadow-md);
+    overscroll-behavior-y: contain;
+  }
+
+  select:not(.u-select-hidden) option {
+    min-block-size: var(--dropdown-row-height);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  select:not(.u-select-hidden) option:is(:hover, :focus-visible):not(:disabled) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  select:not(.u-select-hidden) option:checked {
+    background: var(--interaction-active-surface);
+    color: var(--interaction-active-text);
+    font-weight: var(--font-weight-medium);
+  }
+
+  select:not(.u-select-hidden) option::checkmark {
+    order: 1;
+    margin-inline-start: auto;
   }
 }
 

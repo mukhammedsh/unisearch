@@ -128,7 +128,9 @@ test("a saved NU Foundation choice can be compared with another university on a 
   const comparison = page.locator("[data-reviewed-comparison]");
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"]`)).toHaveAttribute("data-scope", "program");
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${stanford}"]`)).toHaveAttribute("data-scope", "institution");
-  await expect(page.locator('[data-compare-row="cost"] dd').first()).toContainText("12,000");
+  const comparedCost = page.locator('[data-compare-row="cost"] dd').first();
+  await expect(comparedCost).toContainText("15,600");
+  await expect(comparedCost).toContainText("Calculated reference: tuition plus a living-cost estimate.");
   await expect(comparison).toContainText("Stanford");
   await expect(comparison.getByRole("alert")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

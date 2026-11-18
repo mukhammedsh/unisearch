@@ -34,7 +34,7 @@ This directory contains credited campus photographs for the UniSearch catalog.
 
 If you are an authorized university representative, photographer, or intellectual property rights holder and wish to:
 - request attribution credit for a photograph,
-- provide an official updated logo or photo, or
+- suggest a replacement campus photograph on Wikimedia Commons (include its file-page link), or
 - request the immediate removal or replacement of any image,
 
 Please contact the project maintainers at **unisearch.sup@gmail.com** or open an issue on the UniSearch GitHub repository. We review each request and reply by email; a disputed asset is removed while the request is reviewed.

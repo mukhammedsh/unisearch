@@ -1062,13 +1062,24 @@ def _profiled_legacy_costs(u, format_preference="any", profile=None):
     return published
 
 
-def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any"):
+def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any", *, published_only=False):
     quote = _catalog_costs(u, format_preference).get(basis)
     if not isinstance(quote, dict):
         return None
     if quote.get("annual_comparable") is False:
         return None
-    low, high = _to_float(quote.get("min")), _to_float(quote.get("max"))
+    if published_only and "published_intervals" in quote:
+        intervals = quote["published_intervals"]
+        if not intervals:
+            return None
+        bounds = [(_to_float(interval.get("min")), _to_float(interval.get("max"))) for interval in intervals]
+        if any(low is None or high is None for low, high in bounds):
+            return None
+        low, high = min(bound[0] for bound in bounds), max(bound[1] for bound in bounds)
+    elif published_only and quote.get("calculation") == "tuition_plus_living_range":
+        return None
+    else:
+        low, high = _to_float(quote.get("min")), _to_float(quote.get("max"))
     if low is None or high is None or not math.isfinite(low) or not math.isfinite(high) or low < 0 or high < low:
         return None
     currency = quote.get("currency")
@@ -2080,7 +2091,8 @@ def _filter_university_pairs(
 
     if user_budget is not None:
         pairs = [(u, m) for u, m in pairs
-                 if (cost := _catalog_cost_range_usd(u, "annual_total", mode_pref)) is not None and cost[0] <= user_budget]
+                 if (cost := _catalog_cost_range_usd(u, "annual_total", mode_pref, published_only=True)) is not None
+                 and cost[0] <= user_budget]
 
     if min_tuition is not None or max_tuition is not None:
         filtered = []
