@@ -487,16 +487,18 @@ body[data-page="universities"] {
 .u-label-with-help:has(.u-info-wrap.is-open),
 .u-label-with-help:has(.u-info-wrap.is-closed),
 .u-label-with-help:has(.u-info-wrap.is-closing),
-.tradeoff-field:has(.u-info-wrap:hover),
-.tradeoff-field:has(.u-info-wrap:focus-within),
-.tradeoff-field:has(.u-info-wrap.is-open),
-.tradeoff-field:has(.u-info-wrap.is-closed),
-.tradeoff-field:has(.u-info-wrap.is-closing),
+.u-field:has(.custom-select-wrapper.open),
+.u-field--sort:has(.custom-select-wrapper.open),
 .u-field:has(.u-info-wrap:hover),
 .u-field:has(.u-info-wrap:focus-within),
 .u-field:has(.u-info-wrap.is-open),
 .u-field:has(.u-info-wrap.is-closed),
-.u-field:has(.u-info-wrap.is-closing) {
+.u-field:has(.u-info-wrap.is-closing),
+.tradeoff-field:has(.u-info-wrap:hover),
+.tradeoff-field:has(.u-info-wrap:focus-within),
+.tradeoff-field:has(.u-info-wrap.is-open),
+.tradeoff-field:has(.u-info-wrap.is-closed),
+.tradeoff-field:has(.u-info-wrap.is-closing) {
   position: relative;
   z-index: var(--z-dropdown);
 }
@@ -618,9 +620,14 @@ body[data-page="universities"] {
 }
 
 .u-info-wrap.is-closed .u-tooltip {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.u-input,
+.u-select {
+  color: var(--text);
 }
 
 .u-input,
@@ -945,10 +952,18 @@ body[data-page="universities"] {
   cursor: pointer;
 }
 
+.dual-slider-container input[type="range"]::-webkit-slider-thumb,
+.dual-slider-container input[type="range"]::-moz-range-thumb,
+.tradeoff-slider::-webkit-slider-thumb,
+.tradeoff-slider::-moz-range-thumb {
+  color: var(--accent);
+}
+
 .view-toggles {
   display: inline-flex;
   align-items: center;
   background: var(--surface-solid);
+  color: var(--text);
   border: none;
   border-radius: var(--radius-md);
   padding: 0;
@@ -1195,8 +1210,171 @@ body[data-page="universities"] {
   color: var(--interaction-hover-text);
 }
 
-.u-tour-btn--primary:hover {
-  background: var(--accent-strong);
-  color: var(--text-inverse);
+  .u-tour-btn--primary:hover {
+    background: var(--accent-strong);
+    color: var(--text-inverse);
+  }
 }
+
+.u-unifit-warning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+.u-unifit-warning[hidden] {
+  display: none;
+}
+
+.u-unifit-warning__content {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.u-unifit-warning__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-width: 0;
+}
+
+.u-unifit-warning__note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+/* Legend of the status icons on the rendered cards: the same icons and tones as the badges, with a short label. */
+.u-unifit-legend {
+  display: flex;
+  flex: 1 0 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1-5) var(--space-4);
+  min-width: 0;
+}
+
+.u-unifit-legend[hidden] {
+  display: none;
+}
+
+.u-unifit-legend__lead {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.u-unifit-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-width: 0;
+  color: var(--text);
+  font-size: var(--text-xs);
+  line-height: 1.3;
+}
+
+.u-unifit-legend .uni-status-trigger {
+  flex: 0 0 auto;
+  width: var(--space-6);
+  height: var(--space-6);
+  cursor: default;
+}
+
+.u-unifit-legend .uni-status-icon {
+  width: var(--space-4);
+  height: var(--space-4);
+}
+
+.u-unifit-warning__link {
+  flex-shrink: 0;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  /* accent in light; body text in dark, where the accent stays below 4.5:1 on this surface */
+  color: var(--interaction-active-text);
+  font-weight: var(--font-weight-medium);
+  text-decoration: underline;
+  text-underline-offset: var(--space-0-5);
+  white-space: nowrap;
+}
+
+.u-unifit-warning__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-unifit-warning__link:hover {
+    background: var(--surface-solid);
+  }
+}
+
+.u-unifit-warning__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  line-height: 0;
+}
+
+.u-unifit-warning__text {
+  margin: 0;
+  color: var(--text);
+  font-weight: var(--font-weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.u-unifit-warning__dismiss {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-muted);
+  line-height: 0;
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--motion-ease-standard),
+              opacity var(--motion-fast) var(--motion-ease-standard);
+  opacity: 0.75;
+}
+
+.u-unifit-warning__dismiss .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.u-unifit-warning__dismiss:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.u-unifit-warning__dismiss:active {
+  background: transparent;
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .u-unifit-warning__dismiss:hover {
+    background: transparent;
+    color: var(--text-muted);
+    opacity: 1;
+  }
 }

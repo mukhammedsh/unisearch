@@ -491,7 +491,7 @@ async function run() {
     });
   }
 
-  if (strictMode && (cascade.crossFileOverrides.length > 0 || tokensAndImportants.unknownTokenUsages.length > 0 || tokensAndImportants.rootBlocksOutsideFoundation.length > 0 || totalDeadSelectors > 0)) {
+  if (strictMode && (cascade.crossFileOverrides.length > 0 || tokensAndImportants.unknownTokenUsages.length > 0 || tokensAndImportants.rootBlocksOutsideFoundation.length > 0 || totalDeadSelectors > 0 || nonA11yImportants.length > 0)) {
     process.exit(1);
   }
 }

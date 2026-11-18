@@ -498,11 +498,12 @@ body {
 }
 
 .page-exit {
-  opacity: 0 !important;
-  transform: translateY(-4px) !important;
+  animation: none;
+  opacity: 0;
+  transform: translateY(-4px);
   transition: opacity var(--motion-fast, 120ms) var(--motion-ease-standard, ease),
-              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease) !important;
-  pointer-events: none !important;
+              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease);
+  pointer-events: none;
 }
 
 /* View Transitions API (Chrome 111+, Edge, Safari 18+) */
@@ -571,11 +572,14 @@ a {
 }
 
 /* ===== Global Component State Baseline ===== */
-:where(button, input, select, textarea):disabled,
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
 [aria-disabled="true"],
 .is-disabled {
   opacity: var(--interaction-disabled-opacity);
-  cursor: not-allowed !important;
+  cursor: not-allowed;
   pointer-events: none;
   box-shadow: none;
 }

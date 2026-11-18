@@ -774,9 +774,9 @@ a.d-cover-credit:focus-visible {
 }
 
 .d-info-wrap.is-closed .d-tooltip {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 @media (max-width: 640px) {

@@ -420,7 +420,7 @@
 }
 
 .compare-table-wrap.is-diff-only tr.compare-row--identical {
-  display: none !important;
+  display: none;
 }
 
 .compare-table {
@@ -1229,17 +1229,6 @@
   padding: var(--space-5) 0;
   display: grid;
   gap: var(--space-4);
-}
-
-.uni-footer {
-  justify-content: flex-end;
-  color: var(--text-muted);
-  font-weight: var(--font-weight-medium);
-  font-size: var(--text-sm);
-}
-
-.uni-details {
-  text-decoration: none;
 }
 
 .compare-uni-card__chance > small {

@@ -30,7 +30,6 @@ export default {
           "frontend/css/universities/01-shell-controls.css",
           "frontend/css/universities/02-catalog.css",
           "frontend/css/universities/03-comparison.css",
-          "frontend/css/universities/05-catalog-polish.css",
           "frontend/css/universities/06-map.css",
           "frontend/css/universities/07-responsive.css",
           "frontend/css/universities/08-onboarding.css",

@@ -150,12 +150,12 @@
 
 .motion-row-exit {
   animation: motion-row-exit var(--motion-fast) var(--motion-ease-exit) forwards;
-  pointer-events: none !important;
+  pointer-events: none;
 }
 
 .motion-chip-remove {
   animation: motion-chip-remove var(--motion-fast) var(--motion-ease-exit) forwards;
-  pointer-events: none !important;
+  pointer-events: none;
 }
 
 @keyframes motion-state-ring {
@@ -361,7 +361,7 @@
 :root[data-theme-switching] *,
 :root[data-theme-switching] *::before,
 :root[data-theme-switching] *::after {
-  transition: none !important;
+  transition: none;
 }
 
 body[data-page="about"],
@@ -439,9 +439,10 @@ textarea {
 
 /* Initial Page Loader */
 .initial-loading > *:not(#siteInitialLoader) {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
+  animation: none;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 body.route-loading main {

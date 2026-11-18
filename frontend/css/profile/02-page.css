@@ -677,7 +677,7 @@ body[data-page="profile"] {
 }
 
 .profile-budget-grant-hint[hidden] {
-  display: none !important;
+  display: none;
 }
 
 .profile-budget-grant-hint__content {
@@ -894,7 +894,7 @@ body[data-page="profile"] {
   font-size: var(--text-xs);
 }
 
-.profile-info-wrap:focus-within .profile-tooltip,
+.profile-info-wrap:not(.is-closed):focus-within .profile-tooltip,
 .profile-info-wrap.is-open .profile-tooltip {
   opacity: 1;
   visibility: visible;
@@ -903,7 +903,7 @@ body[data-page="profile"] {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .profile-info-wrap:hover .profile-tooltip {
+  .profile-info-wrap:not(.is-closed):hover .profile-tooltip {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -912,9 +912,9 @@ body[data-page="profile"] {
 }
 
 .profile-info-wrap.is-closed .profile-tooltip {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .profile-card-block:has(.profile-info-wrap.is-open),

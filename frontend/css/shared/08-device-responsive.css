@@ -335,7 +335,7 @@ nav {
 
 body .has-sliding-indicator .is-active::after,
 body .has-sliding-indicator .active::after {
-  display: none !important;
+  display: none;
 }
 
 /* Keep the primary destinations visually independent from the brand and utilities. */
@@ -369,7 +369,7 @@ body .has-sliding-indicator .active::after {
 }
 
 .navbar-search[hidden] {
-  display: none !important;
+  display: none;
 }
 
 .navbar-search-field {
@@ -390,7 +390,7 @@ body .has-sliding-indicator .active::after {
 /* Mobile search overlay trigger (YouTube-style): sizing and visuals come from
    the shared navbar button group above, so the loupe always matches them. */
 .navbar-search-toggle[hidden] {
-  display: none !important;
+  display: none;
 }
 
 /* Back control shown only while the mobile search overlay is open. */
@@ -418,7 +418,7 @@ body .has-sliding-indicator .active::after {
 }
 
 .navbar-search-back[hidden] {
-  display: none !important;
+  display: none;
 }
 
 /* Scrim dims page content below the navbar while mobile search is focused. */
@@ -445,7 +445,7 @@ body .has-sliding-indicator .active::after {
 }
 
 .navbar-search-scrim[hidden] {
-  display: none !important;
+  display: none;
 }
 
 .navbar-search-icon {
@@ -741,7 +741,7 @@ body .has-sliding-indicator .active::after {
     margin-left: auto;
   }
 
-  .navbar.has-university-search .navbar-search-toggle {
+  .navbar.has-university-search .navbar-search-toggle:not([hidden]) {
     display: inline-flex;
     order: 1;
   }
@@ -755,7 +755,7 @@ body .has-sliding-indicator .active::after {
     display: none;
   }
 
-  .navbar.has-university-search.is-search-open .navbar-search {
+  .navbar.has-university-search.is-search-open .navbar-search:not([hidden]) {
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -763,7 +763,7 @@ body .has-sliding-indicator .active::after {
     width: 100%;
   }
 
-  .navbar.has-university-search.is-search-open .navbar-search-back {
+  .navbar.has-university-search.is-search-open .navbar-search-back:not([hidden]) {
     display: inline-flex;
   }
 
