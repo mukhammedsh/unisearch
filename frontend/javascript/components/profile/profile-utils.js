@@ -34,7 +34,7 @@ export const normalizeFundingType = (value) => {
     return (raw === "grant" || raw === "paid") ? raw : "any";
 };
 
-export const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
+export const cloneProfile = (value) => structuredClone(value && typeof value === "object" ? value : {});
 
 export const GPA_MAX_CHARS = 4;
 

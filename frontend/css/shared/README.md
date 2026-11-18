@@ -1,8 +1,6 @@
 # Global CSS modules
 
-`../style.css` is the public global stylesheet entry point. It imports these
-modules in their historical cascade order so existing pages keep the same
-specificity and responsive overrides.
+HTML pages link these shared stylesheet modules directly in the cascade order below (avoiding CSS `@import` request chains) so pages keep the same specificity and responsive overrides.
 
 | Order | Module | Responsibility |
 | --- | --- | --- |
@@ -21,10 +19,7 @@ specificity and responsive overrides.
 ## Ownership rules
 
 - Keep semantic color and elevation tokens in `01-foundation.css`.
-- Keep page-only rules in that page's stylesheet. The university catalog entry
-  point remains `../universities.css`.
-- Profile-only rules belong to `../profile.css`; catalog-only rules belong to
-  `../universities.css`.
+- Keep page-only rules in that page's stylesheets (`css/universities/*` for catalog/compare, `css/profile/*` for profile).
 - Put a reusable component in the narrowest shared module that owns it.
 - Do not reorder imports to fix specificity. Resolve the selector ownership
   instead.

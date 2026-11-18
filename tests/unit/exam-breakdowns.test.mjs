@@ -178,7 +178,7 @@ test("special exam inputs render grade, band, fixed-score, and selectable-subjec
   assert.equal(renderSpecialExamInput("A_LEVEL_CERT", aLevels), true);
   assert.match(aLevels.innerHTML, /data-breakdown-selectable-row="3"/);
 
-  const unknown = { dataset: {}, innerHTML: "stale" };
+  const unknown = { dataset: {}, innerHTML: "stale", replaceChildren() { this.innerHTML = ""; } };
   assert.equal(renderSpecialExamInput("unknown exam", unknown), false);
   assert.equal(unknown.innerHTML, "");
 });

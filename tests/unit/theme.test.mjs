@@ -151,4 +151,38 @@ describe('theme.js', () => {
     assert.strictEqual(docAttributes['data-theme'], 'dark');
     assert.strictEqual(mockLocalStorage['unisearch_theme'], 'dark');
   });
+
+  test('interactive applyTheme toggles data-theme-switching without injecting style elements', () => {
+    const frames = [];
+    const origRaf = global.window.requestAnimationFrame;
+    const origCreateElement = global.document.createElement;
+    global.document.documentElement.removeAttribute = (name) => {
+      delete docAttributes[name];
+    };
+    global.window.requestAnimationFrame = (cb) => {
+      frames.push(cb);
+      return frames.length;
+    };
+    global.document.createElement = () => {
+      throw new Error('Unexpected element creation during theme switch');
+    };
+
+    try {
+      applyTheme('dark', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], '1');
+      assert.strictEqual(frames.length, 1);
+      frames.shift()();
+      assert.strictEqual(frames.length, 1);
+      frames.shift()();
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+
+      // Initial hydration with animate: false does not toggle transition suppression.
+      initTheme();
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+      assert.strictEqual(frames.length, 0);
+    } finally {
+      global.window.requestAnimationFrame = origRaf;
+      global.document.createElement = origCreateElement;
+    }
+  });
 });

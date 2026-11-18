@@ -63,7 +63,7 @@ export const normalizeBreakdownRows = (rows) => {
             if (!exam) return null;
             const rawValue = String(row.raw_value || row.rawValue || row.display_value || row.displayValue || "").trim();
             const details = row.details && typeof row.details === "object" && !Array.isArray(row.details)
-                ? JSON.parse(JSON.stringify(row.details))
+                ? structuredClone(row.details)
                 : null;
             const score = row?.score === null || row?.score === undefined || row?.score === ""
                 ? null
@@ -468,6 +468,6 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
         return true;
     }
 
-    container.innerHTML = "";
+    container.replaceChildren();
     return false;
 }

@@ -640,7 +640,7 @@ export const compareBestIdsForSpec = (universities, spec) => {
     const rows = compareSpecRows(universities, spec);
     if (rows.length < 2) return new Set();
     if (typeof spec.comparable === "function" && !spec.comparable(rows)) return new Set();
-    const sorted = rows.slice().sort((a, b) => spec.direction === "higher" ? b.value - a.value : a.value - b.value);
+    const sorted = rows.toSorted((a, b) => spec.direction === "higher" ? b.value - a.value : a.value - b.value);
     const best = sorted[0]?.value;
     if (!Number.isFinite(best)) return new Set();
     const bestRows = sorted.filter((row) => Math.abs(row.value - best) <= 0.000001);
@@ -731,7 +731,7 @@ export const compareSpecValue = (spec, u, metrics) => {
 export const compareRowsHtml = (universities, metrics) => {
     const sections = compareSpecSections();
     const sectionOrder = ["overview", "programs", "admissions", "finance", "outcomes", "data", "context"];
-    const orderedSpecs = (metrics.specs || []).slice().sort((a, b) => {
+    const orderedSpecs = (metrics.specs || []).toSorted((a, b) => {
         const left = sectionOrder.includes(a.section) ? sectionOrder.indexOf(a.section) : sectionOrder.length;
         const right = sectionOrder.includes(b.section) ? sectionOrder.indexOf(b.section) : sectionOrder.length;
         if (left !== right) return left - right;

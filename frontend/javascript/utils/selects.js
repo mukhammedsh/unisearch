@@ -140,10 +140,10 @@ function createOptionNode(option, index, listboxId, showFlags) {
 }
 
 function rebuildCustomOptions(select, customOptions, optionList, searchInput, listboxId, showFlags) {
-  customOptions.innerHTML = "";
+  customOptions.replaceChildren();
   if (searchInput) customOptions.appendChild(searchInput);
   if (optionList) {
-    optionList.innerHTML = "";
+    optionList.replaceChildren();
     customOptions.appendChild(optionList);
   }
   const fragment = document.createDocumentFragment();
@@ -240,7 +240,7 @@ function bindSearchInputEvents(searchInput, customOptions, closeSelect, setHighl
     } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       setHighlightedOption(event.key === "ArrowDown" ? 1 : -1, true, true);
-    } else if (event.key === "Enter") {
+    } else if (event.key === "Enter" && !event.isComposing && event.keyCode !== 229) {
       event.preventDefault();
       const option = getSelectedOption();
       if (option) selectOptionByNode(option);

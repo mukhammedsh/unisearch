@@ -258,7 +258,7 @@
   height: 0;
 }
 
-@supports (-moz-appearance: none) {
+@supports not selector(::-webkit-scrollbar) {
   .custom-options {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in srgb, var(--text-muted) 38%, transparent) transparent;

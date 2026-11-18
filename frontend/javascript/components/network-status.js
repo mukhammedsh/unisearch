@@ -45,15 +45,16 @@ export async function checkConnectivity(options = {}) {
 
   if (typeof window === "undefined" || typeof fetch !== "function") return true;
 
-  const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-  const timer = controller ? window.setTimeout(() => controller.abort(), timeoutMs) : 0;
+  const signal = typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function"
+    ? AbortSignal.timeout(timeoutMs)
+    : undefined;
 
   try {
     const healthUrl = `${API_BASE}/health`;
     const res = await fetch(healthUrl, {
       method: "GET",
       cache: "no-store",
-      signal: controller ? controller.signal : undefined,
+      ...(signal ? { signal } : {}),
     });
     const reachable = Boolean(res && (res.ok || res.status < 500));
     lastConnectivityResult = reachable;
@@ -63,8 +64,6 @@ export async function checkConnectivity(options = {}) {
     lastConnectivityResult = false;
     lastConnectivityAt = Date.now();
     return false;
-  } finally {
-    if (timer) window.clearTimeout(timer);
   }
 }
 
@@ -149,10 +148,16 @@ export function showNetworkStatusBanner(status) {
     ? t("network.offline.banner", "You are offline. Showing cached workspace data.")
     : t("network.online.banner", "Connection restored.");
 
-  banner.innerHTML = `
-    <span class="network-status-banner__icon" aria-hidden="true">${heroIcon(iconName, iconClass) || heroIcon("exclamation-triangle", iconClass)}</span>
-    <span class="network-status-banner__text">${text}</span>
-  `;
+  const iconSpan = document.createElement("span");
+  iconSpan.className = "network-status-banner__icon";
+  iconSpan.setAttribute("aria-hidden", "true");
+  iconSpan.innerHTML = heroIcon(iconName, iconClass) || heroIcon("exclamation-triangle", iconClass);
+
+  const textSpan = document.createElement("span");
+  textSpan.className = "network-status-banner__text";
+  textSpan.textContent = text;
+
+  banner.replaceChildren(iconSpan, textSpan);
 
   // Trigger smooth enter animation
   banner.classList.add("is-visible");

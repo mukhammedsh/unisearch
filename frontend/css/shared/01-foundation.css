@@ -375,8 +375,13 @@ body {
   border-radius: 50%;
   border: 8px solid var(--line);
   border-top-color: var(--accent);
-  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
   box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .center-loading-spinner {
+    animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+  }
 }
 
 .center-loading-spinner--sm {

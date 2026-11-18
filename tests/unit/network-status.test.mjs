@@ -178,5 +178,17 @@ describe("network-status.js", () => {
       assert.ok(html.includes("Custom Server Down"));
       assert.ok(html.includes("id=\"errorRetryBtn\""));
     });
+
+    it("escapes HTML in custom error titles and descriptions", () => {
+      const html = renderErrorScreen({
+        type: "generic",
+        title: "<img src=x onerror=alert(1)>",
+        desc: "<script>alert(2)</script>",
+      });
+      assert.ok(!html.includes("<img "));
+      assert.ok(!html.includes("<script>"));
+      assert.ok(html.includes("&lt;img src=x onerror=alert(1)&gt;"));
+      assert.ok(html.includes("&lt;script&gt;alert(2)&lt;/script&gt;"));
+    });
   });
 });

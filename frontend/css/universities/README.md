@@ -1,7 +1,6 @@
 # University catalog CSS modules
 
-`../universities.css` is the catalog stylesheet entry point. It imports the
-modules below in cascade order.
+Catalog and comparison HTML pages link these modules directly in the cascade order below.
 
 | Order | Module | Responsibility |
 | --- | --- | --- |

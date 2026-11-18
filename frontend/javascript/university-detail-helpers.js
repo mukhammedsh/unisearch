@@ -222,7 +222,7 @@ export function renderGroupedExamPairRows(pairs, opts = {}) {
       const parentExamId = group.exam;
       const parentLabel = getExamDisplayName(parentExamId, opts);
       const hasCompositeChildren = group.entries.some((row) => row.exam !== parentExamId);
-      const sortedEntries = group.entries.slice().sort((a, b) => {
+      const sortedEntries = group.entries.toSorted((a, b) => {
         const left = compositeEntryOrder(parentExamId, a.exam, opts);
         const right = compositeEntryOrder(parentExamId, b.exam, opts);
         if (left !== right) return left - right;

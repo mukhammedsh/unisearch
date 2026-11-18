@@ -106,6 +106,12 @@ class MockElement {
     }
   }
 
+  replaceChildren(...nodes) {
+    this._innerHTML = '';
+    this.children = [];
+    nodes.forEach((node) => this.appendChild(node));
+  }
+
   get options() {
     if (this.tagName !== 'SELECT') return [];
     const opts = [];
@@ -126,6 +132,14 @@ class MockElement {
       this.classList = new ClassList();
       String(val).split(' ').filter(Boolean).forEach((c) => this.classList.add(c));
     }
+  }
+
+  get className() {
+    return this.attributes.get('class') || '';
+  }
+
+  set className(val) {
+    this.setAttribute('class', val);
   }
 
   getAttribute(name) {
@@ -234,6 +248,8 @@ class MockElement {
   }
 
   scrollIntoView() {}
+
+  focus() {}
 }
 
 function createSelectWithOptgroups() {
@@ -563,5 +579,36 @@ describe('custom-select-typeahead and optgroups', () => {
 
     assert.ok(wrapper.classList.has('open'));
     assert.ok(!wrapper.classList.has('open-up'));
+  });
+
+  it('ignores Enter in searchable select while IME composition is active', () => {
+    const { select } = createSelectWithOptgroups();
+    select.dataset.searchable = 'true';
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    const searchInput = wrapper.querySelector('.custom-select-search');
+    assert.ok(searchInput);
+
+    trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
+    assert.ok(wrapper.classList.has('open'));
+
+    searchInput.value = 'Kaz';
+    searchInput.dispatchEvent({ type: 'input' });
+
+    searchInput.dispatchEvent({ type: 'keydown', key: 'Enter', isComposing: true, preventDefault: () => {} });
+    assert.equal(select.value, 'USD');
+    assert.ok(wrapper.classList.has('open'));
+
+    searchInput.dispatchEvent({ type: 'keydown', key: 'Enter', keyCode: 229, preventDefault: () => {} });
+    assert.equal(select.value, 'USD');
+    assert.ok(wrapper.classList.has('open'));
+
+    searchInput.dispatchEvent({ type: 'keydown', key: 'Enter', isComposing: false, keyCode: 13, preventDefault: () => {} });
+    assert.equal(select.value, 'KZT');
+    assert.ok(!wrapper.classList.has('open'));
   });
 });

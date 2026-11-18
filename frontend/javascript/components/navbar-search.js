@@ -57,7 +57,7 @@ export function hideGlobalSearchSuggestions() {
   const container = document.querySelector(".navbar-search-suggestions");
   if (container) {
     container.classList.remove("is-open");
-    container.innerHTML = "";
+    container.replaceChildren();
   }
   highlightedIndex = -1;
 }
@@ -471,6 +471,7 @@ export function initGlobalNavbarSearch() {
     }
 
     if (event.key === "Enter") {
+      if (event.isComposing || event.keyCode === 229) return;
       if (isOpen && suggestions.length > 0 && highlightedIndex >= 0) {
         event.preventDefault();
         const target = suggestions[highlightedIndex];

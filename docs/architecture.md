@@ -93,7 +93,7 @@ The frontend uses **Vanilla JavaScript (ES Modules)**, HTML5, and CSS without a 
   Dynamic client-side internationalization supporting English, Russian, and Kazakh without full page reloads. Strings are loaded from `frontend/Localization/` with a fallback key mechanism.
 * **State Persistence (`frontend/javascript/utils/persistence.js` & `safe-storage.js`):**
   Safely syncs applicant preferences (GPA, exam scores, budget, currency choices, comparison trays) to browser `localStorage` with migration versioning and corrupted JSON recovery.
-* **Design System & Styling (`frontend/css/style.css`):**
+* **Design System & Styling (`frontend/css/shared/*`):**
   Adheres strictly to the **Calm Academic Workspace** specification (`docs/design-system.md`):
   - **Borderless by default:** Components use semantic surface shifts (`--bg` → `--surface-solid` → `--surface-soft`) and micro-elevation (`--shadow-xs`) rather than box borders.
   - **4/8-px spacing scale:** Strict layout rhythm without arbitrary margin/padding offsets.

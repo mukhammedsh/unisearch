@@ -153,7 +153,6 @@ function listCssFiles(dir) {
 export function scanCssFile(filePath) {
   const content = fs.readFileSync(filePath, "utf8");
   const relPath = path.relative(rootDir, filePath).replace(/\\/g, "/");
-  const isStyleCss = path.basename(filePath) === "style.css";
 
   // Mask multiline comments while preserving exact line positions
   const maskedContent = content.replace(/\/\*[\s\S]*?\*\//g, (match) =>
@@ -164,7 +163,6 @@ export function scanCssFile(filePath) {
   const rawLines = content.split("\n");
   const violations = [];
 
-  let inRootBlock = false;
   let currentSelector = "";
   let selectorBuffer = "";
 
@@ -186,12 +184,6 @@ export function scanCssFile(filePath) {
       selectorBuffer = "";
     } else if (!trimmed.includes(":") && !trimmed.includes(";")) {
       selectorBuffer += " " + trimmed;
-    }
-
-    if (isStyleCss) {
-      if (trimmed.startsWith(":root")) inRootBlock = true;
-      if (inRootBlock && trimmed.endsWith("}") && !trimmed.includes("{")) inRootBlock = false;
-      if (inRootBlock && trimmed.startsWith("--")) continue;
     }
 
     // Ignore lines that are fully commented out or empty

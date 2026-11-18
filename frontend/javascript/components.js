@@ -1,5 +1,6 @@
 /* frontend/javascript/components.js - Interface shell and layout components */
 import {
+  escapeHtml,
   initCustomSelect,
   replayMotion,
   setupSlidingIndicator,
@@ -674,8 +675,8 @@ export function renderErrorScreen(options = {}) {
       <div class="error-icon-wrap" aria-hidden="true">
         ${heroIcon(iconName, "ui-icon ui-icon--32") || heroIcon("exclamation-triangle", "ui-icon ui-icon--32")}
       </div>
-      <h2 class="error-title" ${titleAttr}>${resolvedTitle}</h2>
-      <p class="error-desc" ${descAttr}>${resolvedDesc}</p>
+      <h2 class="error-title" ${titleAttr}>${escapeHtml(resolvedTitle)}</h2>
+      <p class="error-desc" ${descAttr}>${escapeHtml(resolvedDesc)}</p>
       ${
         onRetry
           ? `

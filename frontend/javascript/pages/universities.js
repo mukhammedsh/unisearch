@@ -1051,7 +1051,7 @@ export function initUniversitiesPage() {
         const ids = comparePairIds();
         if (!ids.length || !isCompareSelectionMode() || isCompareResultsMode()) {
             el.compareTray.hidden = true;
-            el.compareTray.innerHTML = "";
+            el.compareTray.replaceChildren();
             return;
         }
         el.compareTray.hidden = false;
@@ -1249,7 +1249,7 @@ export function initUniversitiesPage() {
         const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
         if (!recentIds.length) {
             el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.innerHTML = "";
+            el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
             return;
         }
@@ -1258,7 +1258,7 @@ export function initUniversitiesPage() {
             .filter((row) => row.label);
         if (!rows.length) {
             el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.innerHTML = "";
+            el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
             return;
         }
@@ -1475,7 +1475,7 @@ export function initUniversitiesPage() {
         const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
         const node = host?.querySelector(".navbar-search-suggestions");
         if (node) {
-            node.innerHTML = "";
+            node.replaceChildren();
             node.classList.remove("is-open");
         }
     };
@@ -1505,7 +1505,7 @@ export function initUniversitiesPage() {
         }
 
         if (!blocks.length) {
-            el.state.innerHTML = "";
+            el.state.replaceChildren();
             return;
         }
 
@@ -3568,7 +3568,7 @@ export function initUniversitiesPage() {
         else {
             el.citySelect.disabled = false;
             el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
-            [...cities].sort((a, b) => a.localeCompare(b)).forEach((c) => {
+            cities.toSorted((a, b) => a.localeCompare(b)).forEach((c) => {
                 const value = String(c || "");
                 const opt = document.createElement("option");
                 opt.value = value;
@@ -3805,8 +3805,8 @@ export function initUniversitiesPage() {
             hasInitialListPaint = true;
 
             if (!items.length) {
-                if (el.list) el.list.innerHTML = "";
-                if (el.pagination) el.pagination.innerHTML = "";
+                if (el.list) el.list.replaceChildren();
+                if (el.pagination) el.pagination.replaceChildren();
                 warmMapMode(items);
                 renderUniversitiesState({
                     warningText,
@@ -3876,8 +3876,8 @@ export function initUniversitiesPage() {
             state.lastCatalogTotal = 0;
             if (el.total) el.total.textContent = "0";
             renderUniversitiesState();
-            if (state.viewMode === 'list') el.list.innerHTML = "";
-            if (el.pagination) el.pagination.innerHTML = "";
+            if (state.viewMode === 'list') el.list.replaceChildren();
+            if (el.pagination) el.pagination.replaceChildren();
         }
         if (state.viewMode === "map" && !mapInstance) await initMap();
         if (!isCurrentCatalog()) return;
@@ -4237,7 +4237,7 @@ ${rankInnerHtml}
     function renderPagination(total) {
         if (!el.pagination) return;
         const totalPages = Math.ceil(total / state.limit);
-        if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
+        if (totalPages <= 1) { el.pagination.replaceChildren(); return; }
         let html = ""; const p = state.page; const maxVisible = 5;
         const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
             const activeClass = isActive ? "page-btn--active" : "";

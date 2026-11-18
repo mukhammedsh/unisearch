@@ -281,8 +281,6 @@
 
   .global-loading-overlay__bar,
 
-.center-loading-spinner,
-
 .skeleton-block,
 
 .skeleton-line,
@@ -303,15 +301,23 @@
     display: none !important;
   }
 
-  ::view-transition-old(root),
+  ::view-transition-group(*),
 
-::view-transition-new(root) {
+::view-transition-old(*),
+
+::view-transition-new(*) {
     animation: none !important;
   }
 
   .page-exit {
     transition: none !important;
   }
+}
+
+:root[data-theme-switching] *,
+:root[data-theme-switching] *::before,
+:root[data-theme-switching] *::after {
+  transition: none !important;
 }
 
 body {

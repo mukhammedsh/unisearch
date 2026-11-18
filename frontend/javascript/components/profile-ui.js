@@ -716,7 +716,7 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
             els.examTakenOnInput.max = new Date().toISOString().slice(0, 10);
         }
         if (els.examSpecialInputContainer) {
-            els.examSpecialInputContainer.innerHTML = "";
+            els.examSpecialInputContainer.replaceChildren();
             els.examSpecialInputContainer.style.display = "none";
             delete els.examSpecialInputContainer.dataset.breakdownExam;
         }
@@ -1247,7 +1247,7 @@ export const bindProfileEvents = (els, state) => {
     examForm?.addEventListener("input", markExamDraftChanged);
     examForm?.addEventListener("change", markExamDraftChanged);
     examForm?.addEventListener("keydown", event => {
-        if (event.key !== "Enter" || event.defaultPrevented || event.repeat || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
+        if (event.key !== "Enter" || event.isComposing || event.keyCode === 229 || event.defaultPrevented || event.repeat || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
         if (event.target.closest(".custom-select-wrapper.open, button")) return;
         event.preventDefault();
         void handleAddExam(els, state);
@@ -1367,7 +1367,7 @@ export const bindProfileEvents = (els, state) => {
     }
 
     const handleEnterSave = (e) => {
-        if (e.key !== "Enter") return;
+        if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
         e.preventDefault();
         saveAllProfileChanges(els, state);
     };
@@ -1570,9 +1570,9 @@ export const bindProfileEvents = (els, state) => {
     const requestNavigationClose = () => {
         if (!hasUnsavedChanges()) return true;
         if (pendingNavigationPromise) return pendingNavigationPromise;
-        pendingNavigationPromise = new Promise((resolve) => {
-            resolvePendingNavigation = resolve;
-        });
+        const deferred = Promise.withResolvers();
+        pendingNavigationPromise = deferred.promise;
+        resolvePendingNavigation = deferred.resolve;
         openUnsavedDialog(els, state);
         return pendingNavigationPromise;
     };

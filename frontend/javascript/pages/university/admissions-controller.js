@@ -457,7 +457,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const readable = hasReadableAdmissionContext(resolved);
     if (status === "loading") assessmentHost.innerHTML = loading();
     else if (status === "error") {
-      assessmentHost.innerHTML = "";
+      assessmentHost.replaceChildren();
     } else if (readable) {
       // Key facts open the tab and carry its single requirements-match summary with the checks beneath it.
       assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
@@ -488,12 +488,12 @@ export function mountAdmissionsCatalog(institutionId) {
       if (id === "admissionsUniversityInfo") {
         target.hidden = status !== "ready" || (!readable && !option);
       }
-      if (id === "detailRequirements" && status !== "ready") target.innerHTML = "";
+      if (id === "detailRequirements" && status !== "ready") target.replaceChildren();
       else if (status === "loading") target.innerHTML = loading();
       else if (status === "error") {
         target.innerHTML = failure("context");
         target.querySelector("button").onclick = refreshContext;
-      } else if (id === "detailRequirements" && !readable) target.innerHTML = "";
+      } else if (id === "detailRequirements" && !readable) target.replaceChildren();
       else if ((!option && !readable) || (!resolved?.selected_route && !programOnly)) {
         const canChooseRoute = option && resolved.available_routes?.length;
         if (!option && sharedRoutes.length) {

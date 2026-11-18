@@ -94,30 +94,17 @@ function _parseLocalizationFile(content) {
 }
 
 async function _fetchLocalizationText(file, timeoutMs) {
-  const controller = typeof AbortController === "function" ? new AbortController() : null;
-  let timeoutId = 0;
-  const fetchPromise = fetch(file, {
-    cache: "no-cache",
-    ...(controller ? { signal: controller.signal } : {}),
-  })
-    .then((res) => (res.ok ? res.text() : ""))
-    .catch(() => "");
-
-  const timeoutPromise = new Promise((resolve) => {
-    timeoutId = setTimeout(() => {
-      try {
-        controller?.abort();
-      } catch (e) {
-        // ignore
-      }
-      resolve("");
-    }, timeoutMs);
-  });
-
+  const signal = typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function"
+    ? AbortSignal.timeout(timeoutMs)
+    : undefined;
   try {
-    return await Promise.race([fetchPromise, timeoutPromise]);
-  } finally {
-    clearTimeout(timeoutId);
+    const res = await fetch(file, {
+      cache: "no-cache",
+      ...(signal ? { signal } : {}),
+    });
+    return res.ok ? await res.text() : "";
+  } catch (e) {
+    return "";
   }
 }
 

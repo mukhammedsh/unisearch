@@ -341,7 +341,7 @@ async function initializeCurrentRoute() {
   const compareTray = document.getElementById("compareTray");
   if (compareTray && !ctx.isUniversitiesPage) {
     compareTray.hidden = true;
-    compareTray.innerHTML = "";
+    compareTray.replaceChildren();
   }
 
   const mobileFilterToggle = document.getElementById("mobileFilterToggle");

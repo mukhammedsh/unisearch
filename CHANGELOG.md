@@ -2,6 +2,26 @@
 
 All notable project changes should be recorded here.
 
+## 10.3.4 (2026-11-18) - Modern web platform baseline, security headers, and rendering optimizations
+
+Patch release with no new user-visible capability: replaces legacy JavaScript and CSS patterns with Baseline Widely available platform APIs, eliminates CSS `@import` waterfalls, adds static security headers and IME Enter guards, and removes synchronous layout thrashing.
+
+### Changed
+- Adopted modern JavaScript APIs across frontend modules (`Element.prototype.replaceChildren()`, `structuredClone()`, `Array.prototype.toSorted()`, `Promise.withResolvers()`, and `AbortSignal.timeout()`).
+- Updated the reviewed comparison program picker `<dialog>` to use `closedby="any"` with a pointer-coordinate backdrop fallback where unsupported, removing `body { overflow: hidden }` scroll locking.
+- Flattened CSS `@import` chains in `style.css`, `universities.css`, and `profile.css` into direct ordered `<link rel="stylesheet">` tags in HTML pages, added `<meta name="color-scheme" content="light dark">`, and preloaded the primary Latin Inter font.
+- Replaced runtime `<style>` tag injection and synchronous layout flush in `theme.js` with a `:root[data-theme-switching]` CSS rule toggled over animation frames on interactive theme switches.
+- Added `font-src 'self'`, `form-action 'self'`, and `https://tile.openstreetmap.org` to backend and dev-server Content Security Policies, and configured security headers and CSP in `firebase.json` and `frontend/.htaccess`.
+- Added `100dvh` fallbacks, expanded reduced-motion handling to `.center-loading-spinner` (`prefers-reduced-motion: no-preference`) and `::view-transition-*(*)`, replaced `@supports (-moz-appearance: none)` with `@supports not selector(::-webkit-scrollbar)`, used `min-height` instead of fixed `height` on `.settings-select` and `.profile-action-btn`, and removed `user-select: none` from readable status/summary labels.
+
+### Fixed
+- Prevented premature Enter activation during IME composition (`event.isComposing || event.keyCode === 229`) in navbar search, profile forms, language forms, and searchable custom select inputs.
+- Batched DOM reads and writes in `markMotionEnter()` to eliminate per-item forced layout reflows during list animations.
+- Rendered the network status banner message with `textContent` and `replaceChildren()`, and HTML-escaped custom titles and descriptions in `renderErrorScreen()`.
+
+### Tests
+- Added unit and backend tests covering IME composition Enter guards, theme transition-attribute switching, `renderErrorScreen()` HTML escaping, backend CSP directives, dev-server Report-Only CSP, and direct CSS module loading on university detail routes.
+
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 
 Patch release: documentation-only change with no application, API or data change.

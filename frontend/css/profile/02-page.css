@@ -7,6 +7,7 @@
 
 body[data-page="profile"] {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--bg);
@@ -1295,7 +1296,6 @@ textarea.profile-input,
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-success);
-  user-select: none;
   line-height: var(--leading-tight);
   transition:
     color var(--motion-fast) var(--motion-ease-standard),
@@ -1313,8 +1313,8 @@ textarea.profile-input,
 }
 
 .profile-action-btn {
-  height: 42px;
-  padding: 0 var(--space-4);
+  min-height: 42px;
+  padding: var(--space-1-5) var(--space-4);
   border: none;
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
@@ -1460,6 +1460,7 @@ textarea.profile-input,
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   display: none;
   align-items: center;
   justify-content: center;
@@ -1476,6 +1477,7 @@ textarea.profile-input,
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: var(--backdrop);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);

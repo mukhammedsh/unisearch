@@ -41,6 +41,17 @@ class FrontendDevServerApiPortTests(unittest.TestCase):
         base = self.serve(8010)
         self.assertNotIn("API_PORT", self.fetch(f"{base}/config.js").split("initRuntimeConfig")[0])
 
+    def test_security_headers_and_report_only_csp_match_policy(self):
+        base = self.serve(None)
+        with urllib.request.urlopen(f"{base}/index.html") as response:
+            self.assertEqual(response.headers.get("X-Content-Type-Options"), "nosniff")
+            self.assertEqual(response.headers.get("X-Frame-Options"), "DENY")
+            csp = response.headers.get("Content-Security-Policy-Report-Only", "")
+            self.assertIn("https://tile.openstreetmap.org", csp)
+            self.assertIn("font-src 'self'", csp)
+            self.assertIn("form-action 'self'", csp)
+            self.assertIn("sha256-CVvF3tNBc9I3R2PMh2zyrgWdsvvjzZzREOqw2vKxSEg=", csp)
+
 
 if __name__ == "__main__":
     unittest.main()
