@@ -15,7 +15,7 @@ for (const [name, route, root] of [
     await expect(page.locator("#detailName")).not.toHaveText("University Name");
     expect(await page.evaluate(() => new URL(document.baseURI).pathname)).toBe(root);
     expect(loadedAssets).toEqual(expect.arrayContaining([
-      `${root}javascript/main.js`, `${root}css/style.css`, `${root}css/university.css`,
+      `${root}javascript/main.js`, `${root}css/shared/01-foundation.css`, `${root}css/university.css`,
     ]));
   });
 }
@@ -33,7 +33,7 @@ test("university detail loads its page resources under the /frontend mount", asy
 
   expect(frontendRequests).toEqual(expect.arrayContaining([
     "/frontend/javascript/main.js",
-    "/frontend/css/style.css",
+    "/frontend/css/shared/01-foundation.css",
     "/frontend/css/university.css",
   ]));
   await expect.poll(() => page.evaluate(() => document.querySelector("base")?.href))

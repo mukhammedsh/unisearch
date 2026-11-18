@@ -335,7 +335,7 @@ export const FALLBACK_LANG_LIMITS = {
 };
 
 function cloneDefaultExamConfig() {
-  return JSON.parse(JSON.stringify(DEFAULT_EXAM_CONFIG));
+  return structuredClone(DEFAULT_EXAM_CONFIG);
 }
 
 export const EXAM_CONFIG = cloneDefaultExamConfig();

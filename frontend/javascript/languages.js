@@ -133,7 +133,7 @@ function isMultipleOfStep(score, min, step) {
 function clonePlainObject(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   try {
-    return JSON.parse(JSON.stringify(value));
+    return structuredClone(value);
   } catch (e) {
     return null;
   }
@@ -456,7 +456,7 @@ export function initLanguagesPanel() {
 
     function populateLangCode() {
       const current = String(langCode.value || "").trim().toLowerCase();
-      langCode.innerHTML = "";
+      langCode.replaceChildren();
       (cfg.languages || []).forEach((row) => {
         const opt = document.createElement("option");
         opt.value = row.code;
@@ -468,7 +468,7 @@ export function initLanguagesPanel() {
 
     function populateLangKind() {
       const current = normalizeKind(langKind.value);
-      langKind.innerHTML = "";
+      langKind.replaceChildren();
       const placeholder = document.createElement("option");
       placeholder.value = "";
       placeholder.textContent = t("languages.select_type", "Select type");
@@ -489,7 +489,7 @@ export function initLanguagesPanel() {
       const code = String(langCode.value || "").trim().toLowerCase();
       const list = getVisibleExamList(cfg, code);
       const current = String(langExam.value || "").trim();
-      langExam.innerHTML = "";
+      langExam.replaceChildren();
 
       if (!list.length) {
         const opt = document.createElement("option");
@@ -575,7 +575,7 @@ export function initLanguagesPanel() {
       if (!examObj || getExamInputMode(examObj) !== "subject_breakdown") {
         langExamSpecialContainer.hidden = true;
         langExamSpecialContainer.style.display = "none";
-        langExamSpecialContainer.innerHTML = "";
+        langExamSpecialContainer.replaceChildren();
         return;
       }
 
@@ -583,7 +583,7 @@ export function initLanguagesPanel() {
       if (!defs.length) {
         langExamSpecialContainer.hidden = true;
         langExamSpecialContainer.style.display = "none";
-        langExamSpecialContainer.innerHTML = "";
+        langExamSpecialContainer.replaceChildren();
         return;
       }
 
@@ -697,7 +697,7 @@ export function initLanguagesPanel() {
       langExamScore.value = "";
       if (langExamTakenOn) langExamTakenOn.value = "";
       if (langExamSpecialContainer) {
-        langExamSpecialContainer.innerHTML = "";
+        langExamSpecialContainer.replaceChildren();
         langExamSpecialContainer.hidden = true;
         langExamSpecialContainer.style.display = "none";
       }
@@ -795,7 +795,7 @@ export function initLanguagesPanel() {
     });
 
     const submitLanguageOnEnter = (ev) => {
-      if (ev.key !== "Enter") return;
+      if (ev.key !== "Enter" || ev.isComposing || ev.keyCode === 229) return;
       if (ev.defaultPrevented || ev.repeat) return;
       if (ev.shiftKey || ev.ctrlKey || ev.altKey || ev.metaKey) return;
       if (ev.target instanceof Element && ev.target.closest(".custom-select-wrapper.open, button")) return;

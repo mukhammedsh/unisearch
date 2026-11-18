@@ -188,7 +188,7 @@ test("normalized tuition keeps campus-specific whole-program and credit prices i
     const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
     for (const text of [totalLabel, "$24,000", "≈ $", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
     assert.ok(primary.includes({ eng: "Years of study: 1, 2", rus: "Годы обучения: 1, 2", kaz: "Оқу жылдары: 1, 2" }[language]), language);
-    assert.match(primary, /<th scope="row" role="rowheader"[^>]*>Astana/);
+    assert.match(primary, /<th scope="row"[^>]*>Astana/);
     assert.doesNotMatch(primary, /Imperial|Home and Overseas|24,000.*per year/);
   }
   setLanguage("eng", { emit: false });

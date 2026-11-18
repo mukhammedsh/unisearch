@@ -861,6 +861,8 @@ university.tab.admission: Поступление
 university.tab.costs: Стоимость и финансирование
 university.tab.general: Обзор
 university.tab.programs: Программы
+university.tabs.aria: Разделы университета
+universities.filter.drawer_aria: Фильтры каталога
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
 university.finance.title: Стоимость и финансирование
@@ -894,6 +896,7 @@ common.placeholder_unknown: {field}: нет данных
 common.no_data: Нет данных
 common.na: Недоступно
 common.close: Закрыть
+common.notifications: Уведомления
 placeholder.field.university_name: Название университета
 placeholder.field.location: Расположение
 placeholder.field.official_website: Официальный сайт

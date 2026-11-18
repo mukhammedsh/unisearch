@@ -576,10 +576,6 @@
   background: var(--backdrop);
 }
 
-body.compare-picker-open {
-  overflow: hidden;
-}
-
 .compare-picker__panel {
   display: flex;
   flex: 1;

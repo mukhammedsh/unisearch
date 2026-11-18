@@ -1,4 +1,4 @@
-import { closeMotionLayer, initCustomSelect, replayMotion, trapFocus } from "../utils.js";
+import { closeMotionLayer, initCustomSelect, replayMotion } from "../utils.js";
 import { applyTheme, getThemePreference } from "../utils.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
@@ -20,12 +20,11 @@ export function initSettingsUI() {
   const modal = document.getElementById("settingsModal");
   const openBtn = document.getElementById("settingsBtn");
   const closeBtn = document.getElementById("settingsCloseBtn");
-  const backdrop = modal?.querySelector(".settings-backdrop");
+  const card = modal?.querySelector(".settings-card");
   const settingInputs = Array.from(modal?.querySelectorAll("[data-setting-input]") || []);
   const themeInputs = Array.from(modal?.querySelectorAll("[data-theme-input]") || []);
   if (!modal || !openBtn || (!settingInputs.length && !themeInputs.length)) return;
 
-  let cleanupFocusTrap = null;
   let previouslyFocused = null;
 
   const syncSettingsInputs = () => {
@@ -48,29 +47,28 @@ export function initSettingsUI() {
   };
 
   const openSettings = () => {
-    previouslyFocused = document.activeElement;
     syncSettingsInputs();
     syncThemeInputs();
     modal.classList.remove("is-closing");
-    modal.setAttribute("aria-hidden", "false");
     modal.classList.add("is-open");
-    document.body.classList.add("modal-open");
-    if (typeof cleanupFocusTrap === "function") cleanupFocusTrap();
-    cleanupFocusTrap = trapFocus(modal);
+    if (typeof modal.showModal === "function") {
+      if (!modal.open) modal.showModal();
+    } else {
+      previouslyFocused = document.activeElement;
+    }
     closeBtn?.focus({ preventScroll: true });
   };
 
   const closeSettings = () => {
-    if (typeof cleanupFocusTrap === "function") {
-      cleanupFocusTrap();
-      cleanupFocusTrap = null;
-    }
+    if (modal.classList.contains("is-closing") || (!modal.classList.contains("is-open") && !modal.open)) return;
     const finish = () => {
       modal.classList.remove("is-open", "is-closing");
-      modal.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("modal-open");
-      const focusTarget = previouslyFocused?.isConnected && previouslyFocused !== document.body ? previouslyFocused : openBtn;
-      focusTarget.focus({ preventScroll: true });
+      if (typeof modal.close === "function") {
+        if (modal.open) modal.close();
+      } else {
+        const focusTarget = previouslyFocused?.isConnected && previouslyFocused !== document.body ? previouslyFocused : openBtn;
+        focusTarget.focus({ preventScroll: true });
+      }
     };
     closeMotionLayer(modal, finish);
   };
@@ -92,7 +90,20 @@ export function initSettingsUI() {
 
   openBtn.addEventListener("click", openSettings);
   closeBtn?.addEventListener("click", closeSettings);
-  backdrop?.addEventListener("click", closeSettings);
+  modal.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeSettings();
+  });
+  let pressedBackdrop = false;
+  modal.addEventListener("pointerdown", (event) => {
+    pressedBackdrop = Boolean((modal.open || modal.classList.contains("is-open")) && card && event.target === modal);
+  });
+  modal.addEventListener("pointerup", (event) => {
+    if (pressedBackdrop && (modal.open || modal.classList.contains("is-open")) && card && event.target === modal) {
+      closeSettings();
+    }
+    pressedBackdrop = false;
+  });
   settingInputs.forEach((input) => {
     input.addEventListener("change", () => {
       const key = String(input.getAttribute("data-setting-input") || "").trim();
@@ -133,9 +144,11 @@ export function initSettingsUI() {
 
   window.addEventListener("settingsChanged", syncSettingsInputs);
   window.addEventListener("themeChanged", syncThemeInputs);
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && modal.classList.contains("is-open")) {
-      closeSettings();
-    }
-  });
+  if (typeof modal.showModal !== "function") {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("is-open")) {
+        closeSettings();
+      }
+    });
+  }
 }

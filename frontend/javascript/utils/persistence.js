@@ -454,7 +454,7 @@ export function normalizeProfileData(profile) {
     let details = null;
     if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
       try {
-        details = JSON.parse(JSON.stringify(row.details));
+        details = structuredClone(row.details);
       } catch {
         details = null;
       }
@@ -531,7 +531,7 @@ export function normalizeProfileData(profile) {
       let details = null;
       if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
         try {
-          details = JSON.parse(JSON.stringify(row.details));
+          details = structuredClone(row.details);
         } catch {
           details = null;
         }
@@ -652,7 +652,7 @@ export function loadProfileForApi() {
       let details = null;
       if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
         try {
-          details = JSON.parse(JSON.stringify(row.details));
+          details = structuredClone(row.details);
         } catch {
           details = null;
         }
@@ -688,7 +688,7 @@ export function loadProfileForApi() {
       let details = null;
       if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
         try {
-          details = JSON.parse(JSON.stringify(row.details));
+          details = structuredClone(row.details);
         } catch {
           details = null;
         }

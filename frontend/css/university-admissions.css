@@ -119,6 +119,8 @@
   display: grid;
   gap: var(--space-2);
   min-width: 0;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 180px;
 }
 
 .admissions-reading__source-list {
@@ -155,6 +157,11 @@
 .admissions-reading__table-wrap {
   min-width: 0;
   overflow-x: auto;
+}
+
+.admissions-reading__table-wrap:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .admissions-reading__table {
@@ -1877,6 +1884,11 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-catalog__table-wrap {
   max-width: 100%;
   overflow-x: auto;
+}
+
+.admissions-catalog__table-wrap:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .admissions-catalog__table {

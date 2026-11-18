@@ -170,6 +170,7 @@ describe('Global Navbar Search Component', () => {
     const container = {
       className: 'navbar-search-suggestions',
       innerHTML: '',
+      replaceChildren: () => { container.innerHTML = ''; },
       classList: {
         add: (cls) => classes.add(cls),
         remove: (cls) => classes.delete(cls),

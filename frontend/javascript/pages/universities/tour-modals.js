@@ -1,6 +1,6 @@
 /* frontend/javascript/pages/universities/tour-modals.js */
 
-import { escapeHtml, closeMotionLayer, aiName, trapFocus } from "../../utils.js";
+import { escapeHtml, closeMotionLayer, aiName } from "../../utils.js";
 import { t, tFormat } from "../../i18n.js";
 import { saveUniversitiesTourResumeStep } from "../shared/cache.js";
 
@@ -14,14 +14,13 @@ export function ensureUniversitiesTourModal() {
         return universitiesTourModal;
     }
 
-    const modal = document.createElement("div");
+    const modal = document.createElement("dialog");
     modal.id = "uTourModal";
     modal.className = "u-tour-modal";
-    modal.style.display = "none";
-    modal.setAttribute("aria-hidden", "true");
+    modal.setAttribute("closedby", "none");
+    modal.setAttribute("aria-labelledby", "uTourTitle");
     modal.innerHTML = `
-        <div class="u-tour-backdrop" aria-hidden="true"></div>
-        <div class="u-tour-card" role="dialog" aria-modal="true" aria-labelledby="uTourTitle">
+        <div class="u-tour-card">
             <div class="u-tour-header">
                 <div>
                     <p class="u-tour-overline">${escapeHtml(t("tour.overline", "Getting started"))}</p>
@@ -37,7 +36,7 @@ export function ensureUniversitiesTourModal() {
                         <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">${escapeHtml(t("tour.skip_all", "Skip tutorial"))}</button>
                         <div class="u-tour-actions-right">
                             <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">${escapeHtml(t("tour.back", "Back"))}</button>
-                            <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next">${escapeHtml(t("tour.next", "Next"))}</button>
+                            <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next" autofocus>${escapeHtml(t("tour.next", "Next"))}</button>
                         </div>
                     </div>
                 </div>
@@ -59,7 +58,6 @@ export function showUniversitiesTour(options = {}) {
         const nextBtn = modal.querySelector("[data-action='next']");
         const skipBtn = modal.querySelector("[data-action='skip']");
         const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-        let cleanupFocusTrap = () => {};
 
         const steps = [
             {
@@ -177,30 +175,34 @@ export function showUniversitiesTour(options = {}) {
                     if (!profileBtn) return;
                     isPausedForProfile = true;
                     saveUniversitiesTourResumeStep(idx);
-                    cleanupFocusTrap();
-                    cleanupFocusTrap = () => {};
-                    modal.style.display = "none";
-                    modal.setAttribute("aria-hidden", "true");
+                    modal.classList.remove("is-open", "is-closing");
+                    if (typeof modal.close === "function" && modal.open) modal.close();
                     profileBtn.click();
                 }, { once: true });
             }
         };
 
         const cleanup = () => {
-            cleanupFocusTrap();
+            if (modal.classList.contains("is-closing")) return;
             window.removeEventListener("profileModalClosed", onProfileClosed);
+            modal.removeEventListener("cancel", onCancel);
             prevBtn?.removeEventListener("click", onPrev);
             nextBtn?.removeEventListener("click", onNext);
             skipBtn?.removeEventListener("click", onSkip);
             closeMotionLayer(modal, () => {
                 modal.classList.remove("is-open", "is-closing");
-                modal.setAttribute("aria-hidden", "true");
-                modal.style.display = "none";
-                if (previouslyFocused && previouslyFocused !== document.body && previouslyFocused.isConnected) {
+                if (typeof modal.close === "function") {
+                    if (modal.open) modal.close();
+                } else if (previouslyFocused && previouslyFocused !== document.body && previouslyFocused.isConnected) {
                     previouslyFocused.focus();
                 }
                 resolve();
             });
+        };
+
+        const onCancel = (event) => {
+            // The first-visit tutorial requires completion or an explicit skip instead of Escape dismissal.
+            event.preventDefault();
         };
 
         const onPrev = () => {
@@ -224,26 +226,23 @@ export function showUniversitiesTour(options = {}) {
         const onProfileClosed = () => {
             if (!isPausedForProfile) return;
             isPausedForProfile = false;
-            modal.style.display = "flex";
-            modal.removeAttribute("aria-hidden");
             modal.classList.remove("is-closing");
             modal.classList.add("is-open");
+            if (typeof modal.showModal === "function" && !modal.open) modal.showModal();
             renderStep("forward");
-            cleanupFocusTrap = trapFocus(modal);
             slideEl?.querySelector("[data-action='open-profile']")?.focus();
         };
 
         prevBtn?.addEventListener("click", onPrev);
         nextBtn?.addEventListener("click", onNext);
         skipBtn?.addEventListener("click", onSkip);
+        modal.addEventListener("cancel", onCancel);
         window.addEventListener("profileModalClosed", onProfileClosed);
 
-        modal.style.display = "flex";
         modal.classList.remove("is-closing");
         modal.classList.add("is-open");
-        modal.removeAttribute("aria-hidden");
+        if (typeof modal.showModal === "function" && !modal.open) modal.showModal();
         renderStep("forward");
-        cleanupFocusTrap = trapFocus(modal);
         nextBtn?.focus();
     });
 }

@@ -2,6 +2,22 @@
 
 All notable project changes should be recorded here.
 
+## 10.4.3 (2026-11-18) - Modern web platform baseline, accessibility, and security hardening
+
+Patch release with no new user-visible capability: adopts Baseline Widely available JS/CSS APIs, converts overlays to native `<dialog>` elements, upgrades WAI-ARIA tabs/tables/selects/toasts and Forced Colors support, removes CSS `@import` waterfalls, and tightens static security headers.
+
+### Changed
+- Adopted modern JavaScript and CSS primitives (`replaceChildren()`, `structuredClone()`, `toSorted()`, `Promise.withResolvers()`, `AbortSignal.timeout()`, `100dvh` fallbacks, `:user-invalid`, `content-visibility: auto` on deep admissions sources, and `:root[data-theme-switching]` transitions without layout thrashing).
+- Migrated `#settingsModal`, profile confirmation dialogs, `#uTourModal`, and the reviewed comparison program picker `<dialog>` to native modal `<dialog>` (`showModal()`, `::backdrop`, `overscroll-behavior: contain`, `h2` headings, safe `autofocus`, and `closedby` with fallbacks), and updated `#uSidebar` to isolate background content with `inert` instead of locking `body` overflow.
+- Upgraded UI semantics and keyboard/High Contrast support: WAI-ARIA `tablist`/`tab`/`tabpanel` navigation and `border-block-end` indicator on university sections, `@media (forced-colors: active)` token/control fallbacks, native `<button>` triggers for custom selects with `<label>` focus forwarding, `<search>` landmark with `enterkeyhint="search"`, scrollable `role="region"` + `<caption>` + `<th scope="row|col">` on tables, progressive `popover="manual"` + `role="status"` toasts, and post-transition focus routing (`focusRouteDestination()`).
+- Flattened CSS `@import` chains into consolidated shared `<link rel="stylesheet">` modules (dropping unused page-level CSS links) with `<meta name="color-scheme" content="light dark">` and font preloads, added CSP/security headers in `firebase.json`, `frontend/.htaccess`, and backend/dev-server policies, and aligned localized accessibility labels.
+
+### Fixed
+- Guarded Enter key submission against active IME composition, restored profile validation focus after closing the native unsaved confirmation dialog, eliminated per-item layout reflows in `markMotionEnter()`, and escaped `renderErrorScreen()` / network-status messages.
+
+### Tests
+- Added unit and backend tests and updated existing E2E/unit suites for WAI-ARIA tabs, native `<dialog>` modals, accessible toasts, custom select buttons, `<th scope="row">` tables, IME composition guards, theme transitions, error escaping, and CSP headers.
+
 ## 10.4.2 (2026-11-18) - Campus photos and viewer fixes
 
 Patch release: UI and asset refinements with no new user-facing capability or breaking API/storage change.

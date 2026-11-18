@@ -1,7 +1,6 @@
 import {
   API_BASE,
   escapeHtml,
-  escapeHtmlAttr,
   getFlagImg,
   loadProfile,
   loadProfileForApi,

@@ -77,7 +77,7 @@ test("first-visit tutorial requires completion or an explicit skip", async ({ pa
   });
   expect(inactiveStepContrast).toBeGreaterThanOrEqual(4.5);
   await expect(tour.locator("[data-action='next']")).toBeFocused();
-  await page.keyboard.press("Tab");
+  await page.keyboard.press("Shift+Tab");
   await expect(tour.locator("[data-action='skip']")).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(tour).toBeVisible();

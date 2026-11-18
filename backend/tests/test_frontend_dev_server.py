@@ -35,11 +35,22 @@ class FrontendDevServerApiPortTests(unittest.TestCase):
 
     def test_env_js_is_served_unchanged_without_an_api_port(self):
         base = self.serve(None)
-        self.assertEqual(self.fetch(f"{base}/env.js"), (ROOT / "frontend" / "env.js").read_text(encoding="utf-8"))
+        self.assertEqual(self.fetch(f"{base}/env.js"), (ROOT / "frontend" / "env.js").read_bytes().decode("utf-8"))
 
     def test_other_files_are_not_modified(self):
         base = self.serve(8010)
         self.assertNotIn("API_PORT", self.fetch(f"{base}/config.js").split("initRuntimeConfig")[0])
+
+    def test_security_headers_and_report_only_csp_match_policy(self):
+        base = self.serve(None)
+        with urllib.request.urlopen(f"{base}/index.html") as response:
+            self.assertEqual(response.headers.get("X-Content-Type-Options"), "nosniff")
+            self.assertEqual(response.headers.get("X-Frame-Options"), "DENY")
+            csp = response.headers.get("Content-Security-Policy-Report-Only", "")
+            self.assertIn("https://tile.openstreetmap.org", csp)
+            self.assertIn("font-src 'self'", csp)
+            self.assertIn("form-action 'self'", csp)
+            self.assertIn("sha256-CVvF3tNBc9I3R2PMh2zyrgWdsvvjzZzREOqw2vKxSEg=", csp)
 
 
 if __name__ == "__main__":

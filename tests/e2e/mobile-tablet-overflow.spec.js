@@ -154,7 +154,13 @@ for (const viewport of viewports) {
       const dialog = page.locator("dialog.compare-picker[open]");
       await expect(dialog).toBeVisible();
       await expectNoHorizontalOverflow(page, `comparison picker ${viewport.name}`);
+      const searchResponse = page.waitForResponse((response) => {
+        if (!response.url().includes("/study-options") || !response.ok()) return false;
+        return new URL(response.url()).searchParams.get("search") === choice.query;
+      });
       await dialog.locator("#comparePickerSearch").fill(choice.query);
+      await searchResponse;
+      await expect(dialog.locator("[data-picker-count]")).not.toBeEmpty();
       await dialog.locator(`[data-picker-option="${choice.option}"]`).click();
       if (choice.route) await dialog.locator(`[data-picker-route="${choice.route}"]`).click();
       await expect(page.locator("dialog.compare-picker")).toHaveCount(0);

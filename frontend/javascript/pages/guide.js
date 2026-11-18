@@ -201,7 +201,7 @@ function renderLanguageExams(languageWrap) {
     const arr = Array.isArray(groups[code]) ? groups[code] : [];
     if (!arr.length) return "";
     const title = getLanguageTitle(code, nameByCode[code] || code.toUpperCase());
-    const sortedArr = [...arr].sort((a, b) => {
+    const sortedArr = arr.toSorted((a, b) => {
       const left = stableExamSortKey(a?.id);
       const right = stableExamSortKey(b?.id);
       const byKey = left.localeCompare(right);

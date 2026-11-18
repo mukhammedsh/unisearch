@@ -412,6 +412,7 @@ function loadingHtml() {
 function openPicker({ column, trigger, onApply }) {
   const dialog = document.createElement("dialog");
   dialog.className = "compare-picker";
+  dialog.setAttribute("closedby", "any");
   dialog.setAttribute("aria-labelledby", "comparePickerTitle");
   const suggestions = programProfileSuggestions(loadProfileForApi());
   const offeredLevels = new Set(column.university?.admissions_catalog?.study_levels || []);
@@ -584,9 +585,16 @@ function openPicker({ column, trigger, onApply }) {
 
   const searchLater = debounce(() => { void loadPrograms(); }, 250);
 
+  if (!("closedBy" in HTMLDialogElement.prototype)) {
+    const outsideDialog = (e) => {
+      const rect = dialog.getBoundingClientRect();
+      return e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
+    };
+    let pressedOutside = false;
+    dialog.addEventListener("pointerdown", (e) => { pressedOutside = outsideDialog(e); });
+    dialog.addEventListener("pointerup", (e) => { if (pressedOutside && outsideDialog(e)) dialog.close(); });
+  }
   dialog.addEventListener("click", (event) => {
-    // A click on the backdrop lands on the dialog element itself.
-    if (event.target === dialog) { dialog.close(); return; }
     const target = event.target.closest("button");
     if (!target) return;
     if (target.matches("[data-picker-close]")) dialog.close();
@@ -616,13 +624,11 @@ function openPicker({ column, trigger, onApply }) {
   dialog.addEventListener("close", () => {
     picker.request?.abort();
     dialog.remove();
-    document.body.classList.remove("compare-picker-open");
     if (trigger?.isConnected) trigger.focus();
   });
 
   document.body.append(dialog);
   render();
-  document.body.classList.add("compare-picker-open");
   dialog.showModal();
   (dialog.querySelector("#comparePickerSearch") || dialog.querySelector("[data-picker-route]"))?.focus();
   void loadPrograms();

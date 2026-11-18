@@ -86,7 +86,7 @@
   pointer-events: none;
 }
 
-.u-tour-backdrop {
+.u-tour-modal::backdrop {
   background: transparent;
   backdrop-filter: none;
 }
@@ -906,7 +906,7 @@
     padding: 0;
   }
 
-  .u-tour-backdrop {
+  .u-tour-modal::backdrop {
     background: var(--backdrop);
   }
 

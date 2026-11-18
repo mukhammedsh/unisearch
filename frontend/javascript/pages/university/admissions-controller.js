@@ -457,7 +457,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const readable = hasReadableAdmissionContext(resolved);
     if (status === "loading") assessmentHost.innerHTML = loading();
     else if (status === "error") {
-      assessmentHost.innerHTML = "";
+      assessmentHost.replaceChildren();
     } else if (readable) {
       // Key facts open the tab and carry its single requirements-match summary with the checks beneath it.
       assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
@@ -488,12 +488,12 @@ export function mountAdmissionsCatalog(institutionId) {
       if (id === "admissionsUniversityInfo") {
         target.hidden = status !== "ready" || (!readable && !option);
       }
-      if (id === "detailRequirements" && status !== "ready") target.innerHTML = "";
+      if (id === "detailRequirements" && status !== "ready") target.replaceChildren();
       else if (status === "loading") target.innerHTML = loading();
       else if (status === "error") {
         target.innerHTML = failure("context");
         target.querySelector("button").onclick = refreshContext;
-      } else if (id === "detailRequirements" && !readable) target.innerHTML = "";
+      } else if (id === "detailRequirements" && !readable) target.replaceChildren();
       else if ((!option && !readable) || (!resolved?.selected_route && !programOnly)) {
         const canChooseRoute = option && resolved.available_routes?.length;
         if (!option && sharedRoutes.length) {
@@ -874,7 +874,7 @@ export function mountAdmissionsCatalog(institutionId) {
       const optionHtml = option => `<article class="program-card" role="listitem">${programToggle(option)}<div class="program-card__select-actions">${programSelectAction(option)}</div></article>`;
       const restricted = items.filter(option => programRestriction(option));
       const standard = items.filter(option => !programRestriction(option));
-      list.innerHTML = items.length ? `${standard.map(optionHtml).join("")}${restricted.length ? `<details class="admissions-programs__restricted" role="listitem"><summary>${escapeHtml(t("university.programs.entry.restricted_options"))} (${restricted.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="program-list" role="list">${restricted.map(optionHtml).join("")}</div></details>` : ""}` : empty(label("no_options"));
+      list.innerHTML = items.length ? `${standard.map(optionHtml).join("")}${restricted.length ? `<div role="listitem"><details class="admissions-programs__restricted"><summary>${escapeHtml(t("university.programs.entry.restricted_options"))} (${restricted.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="program-list" role="list">${restricted.map(optionHtml).join("")}</div></details></div>` : ""}` : empty(label("no_options"));
       renderProfileSuggestions();
       renderProgramSelection();
       programs.querySelector("#admissionsProgramCount").textContent = tFormat("university.admissions.catalog.results", { from: total ? (page - 1) * limit + 1 : 0, to: Math.min(page * limit, total), total });

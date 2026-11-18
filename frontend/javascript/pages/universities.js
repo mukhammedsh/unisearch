@@ -383,9 +383,10 @@ export function disposeUniversitiesPage() {
     }
     document.documentElement.classList.remove("sidebar-filters-open");
     document.body.classList.remove("sidebar-filters-open");
-    if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = "";
-    }
+    document.querySelectorAll("[data-sidebar-inert='1']").forEach((node) => {
+        node.inert = false;
+        delete node.dataset.sidebarInert;
+    });
 }
 
 function collectUniversitiesElements() {
@@ -862,7 +863,6 @@ export function initUniversitiesPage() {
         [el.btnList, el.btnMap].forEach((button) => {
             if (!button) return;
             button.disabled = !viewModesReady;
-            button.setAttribute("aria-disabled", viewModesReady ? "false" : "true");
         });
     };
 
@@ -1047,7 +1047,7 @@ export function initUniversitiesPage() {
         const ids = comparePairIds();
         if (!ids.length || !isCompareSelectionMode() || isCompareResultsMode()) {
             el.compareTray.hidden = true;
-            el.compareTray.innerHTML = "";
+            el.compareTray.replaceChildren();
             return;
         }
         el.compareTray.hidden = false;
@@ -1243,7 +1243,7 @@ export function initUniversitiesPage() {
         const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
         if (!recentIds.length) {
             el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.innerHTML = "";
+            el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
             return;
         }
@@ -1252,7 +1252,7 @@ export function initUniversitiesPage() {
             .filter((row) => row.label);
         if (!rows.length) {
             el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.innerHTML = "";
+            el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
             return;
         }
@@ -1469,7 +1469,7 @@ export function initUniversitiesPage() {
         const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
         const node = host?.querySelector(".navbar-search-suggestions");
         if (node) {
-            node.innerHTML = "";
+            node.replaceChildren();
             node.classList.remove("is-open");
         }
     };
@@ -1499,7 +1499,7 @@ export function initUniversitiesPage() {
         }
 
         if (!blocks.length) {
-            el.state.innerHTML = "";
+            el.state.replaceChildren();
             return;
         }
 
@@ -1947,8 +1947,29 @@ export function initUniversitiesPage() {
             updateMobileFilterUi();
         };
 
+        const setBackgroundInert = (active) => {
+            if (!active) {
+                document.querySelectorAll("[data-sidebar-inert='1']").forEach((node) => {
+                    node.inert = false;
+                    delete node.dataset.sidebarInert;
+                });
+                return;
+            }
+            let current = sidebar;
+            while (current && current.parentElement && current !== document.body) {
+                for (const sibling of current.parentElement.children) {
+                    if (sibling !== current && sibling.tagName !== "SCRIPT" && sibling.id !== "toast-container") {
+                        sibling.inert = true;
+                        sibling.dataset.sidebarInert = "1";
+                    }
+                }
+                current = current.parentElement;
+            }
+        };
+
         const setOpen = (isOpen, { apply = false } = {}) => {
-            if (!isMobileViewport()) return;
+            if (isOpen && !isMobileViewport()) return;
+            const wasOpen = sidebar.classList.contains("is-open");
             if (isOpen) {
                 draftSnapshot = { ...state };
                 isEditing = true;
@@ -1957,14 +1978,28 @@ export function initUniversitiesPage() {
                 applyToForm();
             }
             sidebar.classList.toggle("is-open", isOpen);
+            if (isOpen) {
+                sidebar.setAttribute("role", "dialog");
+                sidebar.setAttribute("aria-modal", "true");
+            } else {
+                sidebar.removeAttribute("role");
+                sidebar.removeAttribute("aria-modal");
+            }
             toggleBtn.classList.toggle("is-active", isOpen);
+            toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
             toggleBtn.hidden = isOpen;
-            document.body.style.overflow = isOpen ? "hidden" : "";
+            setBackgroundInert(isOpen);
             document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
-            if (!isOpen) {
+            if (isOpen) {
+                const firstFocusTarget = el.mobileFilterClose || sidebar.querySelector("button, input, select, [tabindex='0']");
+                firstFocusTarget?.focus({ preventScroll: true });
+            } else {
                 isEditing = false;
                 draftSnapshot = null;
                 updateMobileFilterUi();
+                if (wasOpen) {
+                    toggleBtn.focus({ preventScroll: true });
+                }
             }
         };
 
@@ -1994,7 +2029,14 @@ export function initUniversitiesPage() {
         };
         document.addEventListener("keydown", __universitiesMobileFilterKeydownHandler);
 
-        return { isEditing: () => isEditing };
+        return {
+            isEditing: () => isEditing,
+            closeIfDesktop: () => {
+                if (!isMobileViewport() && sidebar.classList.contains("is-open")) {
+                    setOpen(false);
+                }
+            },
+        };
     };
     const mobileFilters = setupMobileFilters();
 
@@ -2565,6 +2607,7 @@ export function initUniversitiesPage() {
     window.addEventListener("beforeunload", __universitiesBeforeunloadHandler);
 
     __universitiesResizeHandler = () => {
+        mobileFilters?.closeIfDesktop?.();
         scheduleSyncWorkspaceDepth();
         scheduleSyncSidebarMaxHeight();
         syncMobileFilterFooterClearance();
@@ -3548,7 +3591,7 @@ export function initUniversitiesPage() {
         else {
             el.citySelect.disabled = false;
             el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
-            [...cities].sort((a, b) => a.localeCompare(b)).forEach((c) => {
+            cities.toSorted((a, b) => a.localeCompare(b)).forEach((c) => {
                 const value = String(c || "");
                 const opt = document.createElement("option");
                 opt.value = value;
@@ -3785,8 +3828,8 @@ export function initUniversitiesPage() {
             hasInitialListPaint = true;
 
             if (!items.length) {
-                if (el.list) el.list.innerHTML = "";
-                if (el.pagination) el.pagination.innerHTML = "";
+                if (el.list) el.list.replaceChildren();
+                if (el.pagination) el.pagination.replaceChildren();
                 warmMapMode(items);
                 renderUniversitiesState({
                     warningText,
@@ -3856,8 +3899,8 @@ export function initUniversitiesPage() {
             state.lastCatalogTotal = 0;
             if (el.total) el.total.textContent = "0";
             renderUniversitiesState();
-            if (state.viewMode === 'list') el.list.innerHTML = "";
-            if (el.pagination) el.pagination.innerHTML = "";
+            if (state.viewMode === 'list') el.list.replaceChildren();
+            if (el.pagination) el.pagination.replaceChildren();
         }
         if (state.viewMode === "map" && !mapInstance) await initMap();
         if (!isCurrentCatalog()) return;
@@ -4217,7 +4260,7 @@ ${rankInnerHtml}
     function renderPagination(total) {
         if (!el.pagination) return;
         const totalPages = Math.ceil(total / state.limit);
-        if (totalPages <= 1) { el.pagination.innerHTML = ""; return; }
+        if (totalPages <= 1) { el.pagination.replaceChildren(); return; }
         let html = ""; const p = state.page; const maxVisible = 5;
         const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
             const activeClass = isActive ? "page-btn--active" : "";

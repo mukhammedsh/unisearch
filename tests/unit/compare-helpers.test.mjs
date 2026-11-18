@@ -710,6 +710,7 @@ test("compare specs produce complete rows, metrics, sources, and accessible tabl
   assert.match(compareCell("Value", { subHtml: "<small>Safe</small>" }), /<small>Safe<\/small>/);
   assert.match(compareSectionRow("Finance", "finance", universities), /colspan="3"/);
   assert.match(compareDataRow("Same", universities, () => "Equal", "context"), /compare-row--identical/);
+  assert.match(compareDataRow("Same", universities, () => "Equal", "context"), /<th scope="row">Same<\/th>/);
 });
 
 test("spec comparison rejects unsafe, tied, immaterial, and incomparable winners", () => {

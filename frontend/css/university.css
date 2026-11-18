@@ -1249,7 +1249,8 @@ a.d-cover-credit:focus-visible {
   outline-offset: 2px;
 }
 
-.d-tab-pane {
+.d-tab-pane,
+.d-tab-pane[hidden] {
   display: none;
 }
 
@@ -5356,7 +5357,6 @@ body[data-page="university"],
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   color: var(--text-muted);
-  user-select: none;
   list-style: none;
   transition: color var(--motion-fast) var(--motion-ease-standard), background var(--motion-fast) var(--motion-ease-standard);
 }

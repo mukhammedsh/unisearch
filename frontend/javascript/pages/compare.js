@@ -340,12 +340,13 @@ async function renderCompareResults(container, { pushState = false } = {}) {
         </div>
       </div>
       <p class="compare-table-scroll-hint">${escapeHtml(t("universities.compare.table_scroll_hint", "Swipe horizontally to see both universities."))}</p>
-      <div class="compare-table-wrap compare-table-wrap--pair${isDiffOnly ? " is-diff-only" : ""}">
+      <div class="compare-table-wrap compare-table-wrap--pair${isDiffOnly ? " is-diff-only" : ""}" tabindex="0" role="region" aria-labelledby="compareTestsTitle">
         <table class="compare-table">
+          <caption class="sr-only">${escapeHtml(t("universities.compare.tests.title", "Tests and characteristics"))}</caption>
           <thead>
             <tr>
-              <th>${escapeHtml(t("universities.compare.row.metric", "Metric"))}</th>
-              ${activeUniversities.map((u) => `<th>${escapeHtml(compareUniversityName(u))}</th>`).join("")}
+              <th scope="col">${escapeHtml(t("universities.compare.row.metric", "Metric"))}</th>
+              ${activeUniversities.map((u) => `<th scope="col">${escapeHtml(compareUniversityName(u))}</th>`).join("")}
             </tr>
           </thead>
           <tbody>${rowsHtml}</tbody>

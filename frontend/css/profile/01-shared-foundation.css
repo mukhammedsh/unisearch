@@ -5,7 +5,7 @@
   animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
 }
 
-.profile-confirm-modal.is-closing .profile-confirm-backdrop {
+.profile-confirm-modal.is-closing::backdrop {
   animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
@@ -151,6 +151,7 @@
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
+.profile-input:user-invalid,
 .profile-input.is-invalid,
 .profile-input[aria-invalid="true"] {
   box-shadow: 0 0 0 3px var(--line-danger);
@@ -164,6 +165,7 @@
   font-weight: var(--font-weight-medium);
 }
 
+.profile-input:user-invalid:focus,
 .profile-input.is-invalid:focus,
 .profile-input[aria-invalid="true"]:focus {
   box-shadow: 0 0 0 3px var(--line-danger);
@@ -456,20 +458,26 @@
 .profile-confirm-modal{
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
   display: none;
   align-items: center;
   justify-content: center;
   z-index: var(--z-modal-raised);
 }
 
-.profile-confirm-modal.is-open,
-.profile-confirm-modal.is-closing{
+.profile-confirm-modal[open]{
   display: flex;
 }
 
-.profile-confirm-backdrop{
-  position: absolute;
-  inset: 0;
+.profile-confirm-modal::backdrop{
   background: var(--backdrop);
 }
 
@@ -486,7 +494,7 @@
   gap: var(--space-3);
 }
 
-.profile-confirm-card h3{
+.profile-confirm-card h2{
   margin: 0;
   font-size: var(--text-lg);
 }

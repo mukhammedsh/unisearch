@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <base href="./" />
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.profile">Applicant Profile | UniSearch</title>
@@ -30,9 +31,15 @@
   <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/inter/inter-latin-wght-normal.woff2" crossorigin />
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/profile.css" />
+  <link rel="stylesheet" href="css/shared/01-foundation.css" />
+  <link rel="stylesheet" href="css/shared/02-shell-settings-feedback.css" />
+  <link rel="stylesheet" href="css/shared/06-motion-accessibility.css" />
+  <link rel="stylesheet" href="css/shared/08-device-responsive.css" />
+  <link rel="stylesheet" href="css/shared/10-admissions.css" />
+  <link rel="stylesheet" href="css/profile/01-shared-foundation.css" />
+  <link rel="stylesheet" href="css/profile/02-page.css" />
 </head>
 <body data-page="profile">
   <div id="siteInitialLoader" class="site-initial-loader">
@@ -413,31 +420,29 @@
     </section>
 
     <!-- Confirmations: Unsaved Changes -->
-    <div class="profile-confirm-modal" id="profileUnsavedModal" aria-hidden="true">
-      <div class="profile-confirm-backdrop" data-close="unsaved"></div>
-      <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileUnsavedTitle" aria-describedby="profileUnsavedMessage">
-        <h3 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h3>
+    <dialog class="profile-confirm-modal" id="profileUnsavedModal" closedby="any" aria-labelledby="profileUnsavedTitle" aria-describedby="profileUnsavedMessage">
+      <div class="profile-confirm-card">
+        <h2 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h2>
         <p id="profileUnsavedMessage" data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
         <div class="profile-confirm-actions">
-          <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.unsaved.cancel">Keep editing</button>
+          <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" autofocus data-i18n="profile.unsaved.cancel">Keep editing</button>
           <button id="profileDiscardBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.unsaved.discard">Discard changes</button>
           <button id="profileSaveAndCloseBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <!-- Confirmations: Reset Profile -->
-    <div class="profile-confirm-modal" id="profileResetModal" aria-hidden="true">
-      <div class="profile-confirm-backdrop" data-close="reset"></div>
-      <div class="profile-confirm-card" role="dialog" aria-modal="true" aria-labelledby="profileResetTitle">
-        <h3 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h3>
+    <dialog class="profile-confirm-modal" id="profileResetModal" closedby="any" aria-labelledby="profileResetTitle">
+      <div class="profile-confirm-card">
+        <h2 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h2>
         <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
         <div class="profile-confirm-actions">
-          <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" data-i18n="profile.reset.cancel">Cancel</button>
+          <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" autofocus data-i18n="profile.reset.cancel">Cancel</button>
           <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
         </div>
       </div>
-    </div>
+    </dialog>
   </main>
 
   <script src="env.js"></script>

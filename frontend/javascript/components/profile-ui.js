@@ -72,12 +72,12 @@ export const queryProfileElements = (modal) => {
     return {
         modal,
         unsavedModal,
-        unsavedBackdrop: unsavedModal?.querySelector(".profile-confirm-backdrop"),
+        unsavedCard: unsavedModal?.querySelector(".profile-confirm-card"),
         discardBtn: document.getElementById("profileDiscardBtn"),
         cancelCloseBtn: document.getElementById("profileCancelCloseBtn"),
         saveAndCloseBtn: document.getElementById("profileSaveAndCloseBtn"),
         resetModal,
-        resetBackdrop: resetModal?.querySelector(".profile-confirm-backdrop"),
+        resetCard: resetModal?.querySelector(".profile-confirm-card"),
         resetCancelBtn: document.getElementById("profileResetCancelBtn"),
         resetConfirmBtn: document.getElementById("profileResetConfirmBtn"),
         openBtn: document.getElementById("profileBtn"),
@@ -716,7 +716,7 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
             els.examTakenOnInput.max = new Date().toISOString().slice(0, 10);
         }
         if (els.examSpecialInputContainer) {
-            els.examSpecialInputContainer.innerHTML = "";
+            els.examSpecialInputContainer.replaceChildren();
             els.examSpecialInputContainer.style.display = "none";
             delete els.examSpecialInputContainer.dataset.breakdownExam;
         }
@@ -777,15 +777,28 @@ export const saveAllProfileChanges = (els, state) => {
     return true;
 };
 
+export const profileValidationFocusTarget = (els, state) => {
+    if (state.examEditorDirty) return els.addExamBtn || null;
+    if (state.languageEditorDirty) return document.getElementById("langAddBtn");
+    if (els.budgetInput?.getAttribute("aria-invalid") === "true") return els.budgetInput;
+    if (els.gpaInput?.getAttribute("aria-invalid") === "true") return els.gpaInput;
+    return null;
+};
+
 export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClose) => {
-    if (!modal) return;
+    if (!modal || modal.classList.contains("is-closing")) return;
     window.clearTimeout(modal._closeMotionTimer);
+    const isNativeDialog = typeof modal.close === "function";
     const finish = () => {
         modal._closeMotionTimer = null;
         focusTrapCleanup?.();
         modal.classList.remove("is-open", "is-closing");
-        modal.setAttribute("aria-hidden", "true");
-        modal.style.display = "none";
+        if (isNativeDialog) {
+            if (modal.open) modal.close();
+        } else {
+            modal.setAttribute("aria-hidden", "true");
+            modal.style.display = "none";
+        }
         if (focusTargetOnClose) focusTargetOnClose.focus();
     };
     if (prefersReducedMotion() || !modal.classList.contains("is-open")) {
@@ -796,12 +809,12 @@ export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClos
     modal._closeMotionTimer = window.setTimeout(finish, 180);
 };
 
-export const closeUnsavedDialog = (els, state, focusCloseButton = false) => {
+export const closeUnsavedDialog = (els, state, focusCloseButton = false, focusTarget = null) => {
     if (!els.unsavedModal) return;
     closeDialogWithMotion(els.unsavedModal, () => {
         state.cleanupUnsavedFocusTrap?.();
         state.cleanupUnsavedFocusTrap = null;
-    }, focusCloseButton ? els.closeBtn : null);
+    }, focusTarget || (focusCloseButton ? els.closeBtn : null));
 };
 
 export const closeResetDialog = (els, state, focusResetButton = false) => {
@@ -870,12 +883,16 @@ export const closeImmediately = (els, state) => {
 export const openUnsavedDialog = (els, state) => {
     if (!els.unsavedModal) return;
     window.clearTimeout(els.unsavedModal._closeMotionTimer);
-    els.unsavedModal.style.display = "flex";
     els.unsavedModal.classList.remove("is-closing");
     els.unsavedModal.classList.add("is-open");
-    els.unsavedModal.setAttribute("aria-hidden", "false");
-    state.cleanupUnsavedFocusTrap?.();
-    state.cleanupUnsavedFocusTrap = trapFocus(els.unsavedModal);
+    if (typeof els.unsavedModal.showModal === "function") {
+        if (!els.unsavedModal.open) els.unsavedModal.showModal();
+    } else {
+        els.unsavedModal.style.display = "flex";
+        els.unsavedModal.setAttribute("aria-hidden", "false");
+        state.cleanupUnsavedFocusTrap?.();
+        state.cleanupUnsavedFocusTrap = trapFocus(els.unsavedModal);
+    }
     els.cancelCloseBtn?.focus();
 };
 
@@ -887,12 +904,16 @@ export const openResetDialog = (els, state) => {
         return;
     }
     window.clearTimeout(els.resetModal._closeMotionTimer);
-    els.resetModal.style.display = "flex";
     els.resetModal.classList.remove("is-closing");
     els.resetModal.classList.add("is-open");
-    els.resetModal.setAttribute("aria-hidden", "false");
-    state.cleanupResetFocusTrap?.();
-    state.cleanupResetFocusTrap = trapFocus(els.resetModal);
+    if (typeof els.resetModal.showModal === "function") {
+        if (!els.resetModal.open) els.resetModal.showModal();
+    } else {
+        els.resetModal.style.display = "flex";
+        els.resetModal.setAttribute("aria-hidden", "false");
+        state.cleanupResetFocusTrap?.();
+        state.cleanupResetFocusTrap = trapFocus(els.resetModal);
+    }
     els.resetCancelBtn?.focus();
 };
 
@@ -1247,7 +1268,7 @@ export const bindProfileEvents = (els, state) => {
     examForm?.addEventListener("input", markExamDraftChanged);
     examForm?.addEventListener("change", markExamDraftChanged);
     examForm?.addEventListener("keydown", event => {
-        if (event.key !== "Enter" || event.defaultPrevented || event.repeat || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
+        if (event.key !== "Enter" || event.isComposing || event.keyCode === 229 || event.defaultPrevented || event.repeat || event.shiftKey || event.ctrlKey || event.altKey || event.metaKey) return;
         if (event.target.closest(".custom-select-wrapper.open, button")) return;
         event.preventDefault();
         void handleAddExam(els, state);
@@ -1367,7 +1388,7 @@ export const bindProfileEvents = (els, state) => {
     }
 
     const handleEnterSave = (e) => {
-        if (e.key !== "Enter") return;
+        if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
         e.preventDefault();
         saveAllProfileChanges(els, state);
     };
@@ -1485,7 +1506,7 @@ export const bindProfileEvents = (els, state) => {
         motionPress(els.saveAndCloseBtn);
         syncInputsToDraft(els, state);
         if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) {
-            closeUnsavedDialog(els, state, false);
+            closeUnsavedDialog(els, state, false, profileValidationFocusTarget(els, state));
             settleNavigationClose(false);
             return;
         }
@@ -1496,11 +1517,28 @@ export const bindProfileEvents = (els, state) => {
         }
         closeImmediately(els, state);
     });
-    els.unsavedBackdrop?.addEventListener("click", () => {
+    const bindDialogLightDismiss = (modal, card, onDismiss) => {
+        if (!modal) return;
+        modal.addEventListener("cancel", (event) => {
+            event.preventDefault();
+            onDismiss();
+        });
+        let pressedBackdrop = false;
+        modal.addEventListener("pointerdown", (event) => {
+            pressedBackdrop = Boolean((modal.open || modal.classList.contains("is-open")) && card && event.target === modal);
+        });
+        modal.addEventListener("pointerup", (event) => {
+            if (pressedBackdrop && (modal.open || modal.classList.contains("is-open")) && card && event.target === modal) {
+                onDismiss();
+            }
+            pressedBackdrop = false;
+        });
+    };
+    bindDialogLightDismiss(els.unsavedModal, els.unsavedCard, () => {
         closeUnsavedDialog(els, state, true);
         settleNavigationClose(false);
     });
-    els.resetBackdrop?.addEventListener("click", () => {
+    bindDialogLightDismiss(els.resetModal, els.resetCard, () => {
         closeResetDialog(els, state, true);
     });
     els.resetCancelBtn?.addEventListener("click", () => {
@@ -1570,9 +1608,9 @@ export const bindProfileEvents = (els, state) => {
     const requestNavigationClose = () => {
         if (!hasUnsavedChanges()) return true;
         if (pendingNavigationPromise) return pendingNavigationPromise;
-        pendingNavigationPromise = new Promise((resolve) => {
-            resolvePendingNavigation = resolve;
-        });
+        const deferred = Promise.withResolvers();
+        pendingNavigationPromise = deferred.promise;
+        resolvePendingNavigation = deferred.resolve;
         openUnsavedDialog(els, state);
         return pendingNavigationPromise;
     };
