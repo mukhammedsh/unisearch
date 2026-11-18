@@ -138,6 +138,7 @@
 
 .u-tour-title {
   font-size: var(--text-xl);
+  letter-spacing: 0;
 }
 
 .u-tour-desc,
@@ -173,6 +174,7 @@
 
 .u-tour-actions {
   margin-top: var(--space-6);
+  justify-content: flex-end;
   gap: var(--space-2);
 }
 

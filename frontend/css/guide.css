@@ -375,7 +375,6 @@
   line-height: 1.45;
 }
 
-.guide-tag,
 .guide-doc code {
   display: inline-block;
   padding: var(--space-0-5) var(--space-2);
@@ -395,7 +394,6 @@ body[data-page="guide"] {
   background: var(--bg);
 }
 
-:root[data-theme="dark"] .guide-tag,
 :root[data-theme="dark"] .guide-doc code {
   background: var(--surface-soft);
   color: var(--text);

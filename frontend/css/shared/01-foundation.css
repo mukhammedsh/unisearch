@@ -181,6 +181,14 @@
   --scrollbar-thumb: color-mix(in srgb, var(--text-muted) 38%, transparent);
   --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 56%, transparent);
   --scrollbar-track: transparent;
+  /* Runtime JS-driven layout & progress custom properties */
+  --dropdown-available-height: 220px;
+  --compare-min-width: 640px;
+  --fill-width: 0%;
+  --fill-scale: 0;
+  --sidebar-max-height: calc(100vh - 105px);
+  --u-mobile-filter-footer-clearance: 0px;
+  --photo-fit-height: 100%;
   color-scheme: light;
 }
 
@@ -344,6 +352,7 @@ body {
   background: var(--bg);
   color: var(--text);
   padding-top: var(--nav-height);
+  letter-spacing: 0;
   min-height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
@@ -356,20 +365,6 @@ body {
 }
 
 /* Shared centered loading spinner */
-.center-loading {
-  width: 100%;
-  min-height: 140px;
-  padding: var(--space-5) 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.center-loading--compact {
-  min-height: 72px;
-  padding: var(--space-2) 0;
-}
-
 .center-loading-spinner {
   width: 56px;
   height: 56px;
@@ -587,7 +582,7 @@ a {
 
 
 @media (hover: hover) and (pointer: fine) {
-  :where(a[href]:not([class]), .text-link):hover {
+  :where(a[href]:not([class])):hover {
     color: var(--interaction-hover-text);
   }
 }
@@ -627,7 +622,6 @@ dialog::backdrop {
   .u-tooltip,
   .ui-tooltip-bubble,
   .toast,
-  .profile-card,
   .profile-confirm-card,
   .d-box,
   .compare-uni-card,
@@ -670,11 +664,9 @@ dialog::backdrop {
 
   .d-tab-btn[aria-selected="true"],
   .view-btn.active,
-  .u-saved-filter-btn.is-active,
   .custom-option.selected,
   .custom-option.is-highlighted,
-  .profile-section-tab.is-active,
-  .nav-link[aria-current="page"] {
+  .profile-section-tab.is-active {
     outline: 2px solid Highlight;
     outline-offset: -2px;
   }

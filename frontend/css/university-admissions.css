@@ -580,16 +580,8 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .university--reviewed .admissions-context__advanced > summary:hover,
 .university--reviewed .admissions-catalog__evidence > summary:hover,
-.university--reviewed .admissions-catalog__assessment-detail > summary:hover,
-.university--reviewed .admissions-context__summary a:hover {
+.university--reviewed .admissions-catalog__assessment-detail > summary:hover {
   color: var(--text);
-}
-
-.university--reviewed .admissions-context__summary a {
-  color: var(--text);
-  overflow-wrap: anywhere;
-  text-decoration-thickness: 1px;
-  text-underline-offset: var(--space-1);
 }
 
 .university--reviewed :is(.finance-summary-container, .qualification-guidance, .university-coverage-section)[hidden] {
@@ -914,19 +906,6 @@ details[open] > summary > .admissions-disclosure-icon {
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
   color: var(--text);
-}
-
-.admissions-context__summary {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-4);
-  min-width: 0;
-}
-
-.admissions-context__summary > * {
-  min-width: 0;
-  overflow-wrap: anywhere;
 }
 
 .admissions-catalog__status {
@@ -1550,10 +1529,6 @@ details[open] > summary > .admissions-disclosure-icon {
   margin-top: var(--space-2);
 }
 
-.d-head-links {
-  gap: var(--space-2);
-}
-
 .d-head-links .d-site-link {
   width: auto;
   min-width: 44px;
@@ -2112,14 +2087,7 @@ details[open] > summary > .admissions-disclosure-icon {
   font-size: var(--text-base);
 }
 
-/* On phones the site, map and save actions share one row instead of stacking into two. */
 @media (max-width: 768px) {
-  .d-head-links {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-2);
-  }
-
   .d-head-links > .d-site-link {
     width: auto;
     min-width: 0;
@@ -2192,10 +2160,6 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 /* Answer cards keep their own height and stack tightly in two columns, so no card leaves an empty gap beside another. */
-.overview-summary__grid {
-  align-items: start;
-}
-
 .overview-summary__column {
   display: flex;
   flex-direction: column;

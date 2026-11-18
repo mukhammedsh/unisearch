@@ -10,11 +10,6 @@ html {
   text-size-adjust: 100%;
 }
 
-body {
-  padding-top: var(--nav-height);
-  background: var(--bg);
-}
-
 main,
 section,
 article,
@@ -25,10 +20,7 @@ nav {
   min-width: 0;
 }
 
-img,
-svg,
-video,
-canvas {
+:where(img, svg, video, canvas) {
   max-width: 100%;
 }
 
@@ -146,12 +138,6 @@ canvas {
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger--language::after {
   transform: rotate(180deg);
-}
-
-.navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
-  width: auto;
-  justify-content: center;
-  gap: var(--space-2);
 }
 
 @media (max-width: 380px) {
@@ -350,50 +336,6 @@ canvas {
 body .has-sliding-indicator .is-active::after,
 body .has-sliding-indicator .active::after {
   display: none !important;
-}
-
-/* ===== 2026 Profile Layout Density Pass ===== */
-
-/* ===== 2026 Surface & Component Alignment ===== */
-.navbar {
-  border-bottom: none;
-  box-shadow: var(--shadow-sm);
-}
-
-.site-footer {
-  background: var(--surface);
-  border: none;
-}
-
-.settings-trigger-btn,
-.profile-trigger-btn,
-.lang-switch,
-.navbar-right .lang-control .custom-select-trigger {
-  border: none;
-  box-shadow: var(--shadow-xs);
-  background: var(--surface-soft);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .settings-trigger-btn:hover,
-.profile-trigger-btn:hover,
-.lang-switch:hover,
-.navbar-right .lang-control .custom-select-trigger:hover {
-    background: var(--accent-panel);
-    border: none;
-    box-shadow: var(--shadow-sm);
-    color: var(--accent);
-  }
-}
-
-.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
-  border: none;
-  box-shadow: var(--shadow-sm);
-}
-
-.center-loading-spinner {
-  border-color: var(--line);
-  border-top-color: var(--accent);
 }
 
 /* Keep the primary destinations visually independent from the brand and utilities. */

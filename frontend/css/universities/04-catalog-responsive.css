@@ -1,10 +1,3 @@
-@media (hover: hover) and (pointer: fine) {
-
-.uni-details:hover {
-  color: var(--accent);
-}
-}
-
 .u-pagination {
   margin-top: var(--space-10);
   display: flex;
@@ -76,13 +69,6 @@
   display: block;
 }
 
-.page-btn__symbol {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  font-size: var(--text-base);
-}
 @media (hover: hover) and (pointer: fine) {
 
 .page-btn:hover {
@@ -222,64 +208,25 @@
 
 @media (max-width: 1180px) {
   .u-layout {
-    grid-template-columns: 272px minmax(0, 1fr);
-    gap: var(--space-4);
     padding: 0 var(--space-4);
   }
-
-  .u-controls {
-    gap: var(--space-4);
-  }
-
 }
 
 @media (max-width: 1024px) {
   .u-layout {
-    grid-template-columns: 1fr;
     padding: 0 var(--space-4);
   }
 
   .u-filter-card {
-    position: relative;
     top: 0;
   }
 
   .u-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
-
-  .u-toolbar,
-  .u-top {
-    gap: var(--space-3);
-  }
-
-  .u-results-bar,
-  .u-controls {
-    width: 100%;
-    justify-content: space-between;
-    gap: var(--space-3);
-  }
-
 }
 
 @media (max-width: 768px) {
-  .u-toolbar,
-  .u-top {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-2);
-  }
-
-  .u-results-bar,
-  .u-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    min-width: 0;
-    gap: var(--space-3);
-  }
-
   .u-found {
     white-space: normal;
     line-height: 1.25;
@@ -292,48 +239,9 @@
     justify-self: end;
   }
 
-  .u-map-container {
-    height: 380px;
-  }
-
   .u-content {
     --u-loading-top: 150px;
   }
-
-}
-
-@media (max-width: 640px) {
-  .u-tour-card {
-    width: min(96vw, 620px);
-    padding: var(--space-4) var(--space-4) var(--space-4);
-  }
-
-  .u-tour-title {
-    font-size: var(--text-xl);
-  }
-
-  .u-tour-slide {
-    min-height: 270px;
-  }
-
-  .u-tour-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .u-tour-actions-right {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-2);
-  }
-
-  .u-tour-actions .u-tour-btn,
-  .u-tour-actions-right .u-tour-btn {
-    width: 100%;
-  }
-
 }
 
 @media (max-width: 640px) {
@@ -343,15 +251,6 @@
 
   .u-grid {
     grid-template-columns: 1fr;
-  }
-
-  .uni-card {
-    height: auto;
-    min-height: 0;
-  }
-
-  .u-filter-card {
-    padding: var(--space-3) var(--space-3);
   }
 
   .custom-map-popup .leaflet-popup-content {
@@ -364,31 +263,12 @@
     height: 120px;
   }
 
-  .uni-badge {
-    min-height: 0;
-  }
-
   .u-content {
     --u-loading-top: 240px;
   }
-
 }
 
 @media (max-width: 480px) {
-  .u-controls {
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
-  }
-
-  .u-found {
-    text-align: center;
-    font-size: var(--text-sm);
-  }
-
-  .u-map-container {
-    height: 300px;
-  }
-
   .u-content {
     --u-loading-top: 196px;
   }
@@ -402,5 +282,4 @@
   .tradeoff-field .u-label--subtle.u-label--between > span {
     font-size: var(--text-xs);
   }
-
 }

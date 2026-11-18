@@ -42,137 +42,8 @@
   }
 }
 
-.u-toolbar,
-.u-top {
-  padding: 0;
-  margin-bottom: var(--space-4);
-}
-
 .compare-results-head {
   margin-bottom: 0;
-}
-
-.compare-config-subtitle {
-  max-width: 680px;
-  margin-top: var(--space-1-5);
-}
-
-.compare-config-panel {
-  gap: var(--space-3);
-}
-
-.compare-config-column {
-  border-radius: var(--radius-lg);
-}
-
-.compare-config-column__head {
-  padding: var(--space-4);
-  gap: var(--space-1);
-}
-
-.compare-config-chance {
-  margin: var(--space-2) 0 var(--space-3);
-  padding: 0 var(--space-3);
-}
-
-.compare-config-chance .chance-panel {
-  padding: var(--space-3) var(--space-3);
-}
-
-.compare-config-options {
-  padding: var(--space-3);
-  gap: var(--space-3);
-}
-
-.compare-config-column .track-funding-badge {
-  max-width: 100%;
-  min-height: 24px;
-  padding: var(--space-1) var(--space-2);
-  line-height: 1.15;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.compare-config-column .track-exam-entry-group-list {
-  line-height: 1.38;
-}
-
-.uni-badge {
-  --uni-pill-font-size: var(--text-xs);
-  --uni-pill-pad-y: var(--space-1);
-  --uni-pill-pad-x: var(--space-2);
-  --uni-badge-gap: var(--space-2);
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: stretch;
-  gap: var(--uni-badge-gap);
-  width: 100%;
-  margin-top: var(--space-0-5);
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  background: none;
-  color: inherit;
-  overflow: visible;
-}
-
-.uni-badge .uni-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-}
-
-.uni-pill {
-  gap: var(--space-2);
-  padding: var(--uni-pill-pad-y, var(--space-1)) var(--uni-pill-pad-x, var(--space-2));
-  border-radius: var(--radius-md);
-  font-size: var(--uni-pill-font-size, var(--text-xs));
-  line-height: 1.2;
-  min-height: 34px;
-}
-
-.uni-pill-icon {
-  width: 12px;
-  height: 12px;
-  flex: 0 0 12px;
-}
-
-.uni-pill-text {
-  display: block;
-  min-width: 0;
-  overflow: visible;
-  text-overflow: unset;
-  white-space: normal;
-  word-break: break-word;
-}
-
-.uni-body {
-  gap: var(--space-2);
-}
-
-.uni-title {
-  min-height: 0;
-}
-
-.uni-card-separator {
-  margin: 0;
-}
-
-
-@media (max-width: 768px) {
-  .uni-badge {
-    --uni-pill-font-size: var(--text-xs);
-    --uni-pill-pad-y: var(--space-1);
-    --uni-pill-pad-x: var(--space-1-5);
-    --uni-badge-gap: var(--space-1);
-  }
-
 }
 
 @media (max-width: 640px) {
@@ -188,27 +59,22 @@
   .u-map-stage {
     gap: var(--space-3);
   }
-
 }
 
 @media (max-width: 480px) {
-
   .u-found {
     text-align: left;
     font-size: var(--text-sm);
   }
-
 }
 
 @media (max-width: 380px) {
-
   .u-filter-card,
   .u-map-results,
   .u-map-container {
     border-radius: var(--radius-xl);
   }
 
-  .u-controls,
   .view-toggles {
     min-width: 0;
   }
@@ -217,10 +83,6 @@
   .u-skeleton-card {
     width: 100%;
     max-width: 100%;
-  }
-
-  .uni-badge {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .u-map-results {
@@ -235,13 +97,11 @@
     width: min(260px, calc(100vw - 24px)) !important;
     max-width: calc(100vw - 24px) !important;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
   .view-btn,
   .uni-card,
-  .uni-action-btn,
   .u-recent,
   .u-recent__chip,
   .u-recent__clear,
@@ -263,7 +123,6 @@
     transition: none !important;
     animation: none !important;
   }
-
 }
 
 @media (max-width: 1024px) {
@@ -282,11 +141,6 @@
     padding-right: var(--mobile-safe-gutter, var(--space-4));
   }
 
-  .u-sidebar {
-    top: var(--nav-height, 72px);
-    z-index: var(--z-drawer);
-  }
-
   .u-filter-card {
     width: min(420px, 92vw);
     height: calc(100dvh - var(--nav-height, 72px));
@@ -295,14 +149,6 @@
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
-  }
-
-
-  .u-toolbar,
-  .u-top {
-    margin-bottom: var(--space-3);
-    padding: 0;
-    gap: var(--space-2);
   }
 
   .view-toggles {
@@ -315,15 +161,6 @@
     height: 100%;
     min-height: 0;
     padding: 0;
-  }
-
-  .u-results-bar,
-  .u-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-3);
-    width: 100%;
   }
 
   .u-section-meta .u-found,
@@ -650,12 +487,6 @@
 }
 
 @media (max-width: 480px) {
-  .u-toolbar,
-  .u-top {
-    padding: 0;
-    gap: var(--space-2);
-  }
-
   .u-section-meta {
     justify-content: space-between;
     align-items: center;
