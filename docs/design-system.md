@@ -105,7 +105,7 @@ Use one main detail shell with a real cover image, header metadata, tabs, and ta
 
 Good reference:
 
-- `frontend/css/university.css`, especially the final `2026 University Refresh` and later polish overrides.
+- `frontend/css/university/`, especially the detail shell, overview/programs, admissions, and finance modules.
 
 ## Spacing and Grid System
 

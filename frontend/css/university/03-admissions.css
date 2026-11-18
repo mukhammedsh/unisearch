@@ -1,0 +1,1183 @@
+#tab-admission .d-box {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: var(--space-6);
+}
+
+.admissions-summary-grid,
+.admissions-program-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.admissions-summary-top,
+.admissions-program-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.admissions-summary-eyebrow {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: normal;
+  text-transform: none;
+  margin: 0;
+}
+
+.admissions-summary-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.admissions-summary-sub {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+  color: var(--text);
+  text-wrap: pretty;
+}
+
+.admissions-summary-note,
+.admissions-program-note {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.admissions-summary-meta {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.admissions-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.admissions-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  border: none;
+}
+
+.admissions-source-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: none;
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admissions-source-link__icon {
+  color: var(--text-muted);
+}
+
+.admissions-source-link__copy {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.admissions-source-link__eyebrow {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.admissions-source-link__title {
+  overflow: hidden;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admissions-source-link__action {
+  color: var(--accent);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .admissions-source-link:hover {
+    color: var(--accent);
+  }
+
+  .admissions-source-link:hover .admissions-source-link__action {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+.admissions-source-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.admissions-program-title {
+  font-size: var(--text-base);
+  line-height: 1.4;
+  font-weight: var(--font-weight-medium);
+}
+
+.chance-warning {
+  border: none;
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+  padding: var(--space-3) var(--space-3);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.chance-head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.chance-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text);
+  letter-spacing: normal;
+}
+
+.chance-sub {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+  max-width: 700px;
+}
+
+.chance-percent {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chance-percent-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.chance-meter {
+  margin-top: var(--space-2);
+  width: 100%;
+  height: 10px;
+  background: var(--surface-soft);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.chance-fill {
+  width: var(--fill-width, 0%);
+  height: 100%;
+  border-radius: var(--radius-full);
+}
+
+.chance-foot {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-2);
+}
+
+.chance-inline-note {
+  line-height: 1.45;
+  border: none;
+  background: transparent;
+  padding: var(--space-2) 0 0;
+  margin-top: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.chance-track-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  border: none;
+}
+
+.chance-high {
+  color: var(--color-success);
+  background: var(--color-success-bg);
+}
+
+.chance-good {
+  color: var(--color-info);
+  background: var(--color-info-bg);
+}
+
+.chance-medium {
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
+}
+
+.chance-low {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+
+.chance-percent.chance-high,
+.chance-percent.chance-good,
+.chance-percent.chance-medium,
+.chance-percent.chance-low {
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.chance-fill.chance-high {
+  background: var(--color-success);
+}
+
+.chance-fill.chance-good {
+  background: var(--color-info);
+}
+
+.chance-fill.chance-medium {
+  background: var(--color-warning);
+}
+
+.chance-fill.chance-low {
+  background: var(--color-danger);
+}
+
+.track-funding-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-sm);
+  border: none;
+  box-shadow: var(--shadow-xs);
+}
+
+.track-funding-badge--grant {
+  color: var(--color-success-muted);
+  background: var(--grant-soft-strong);
+}
+
+@media (max-width: 480px) {
+  .admissions-source-link {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .admissions-source-link__action {
+    grid-column: 2;
+    white-space: normal;
+  }
+}
+
+.track-funding-badge--paid {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.admission-context-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.admission-context-control {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.admission-context-control select {
+  min-width: 180px;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  color: var(--text);
+  background: var(--surface-soft);
+  border: 0;
+  border-radius: var(--radius-base);
+  font: inherit;
+}
+
+.admission-context-control select:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.admissions-deadline-scope {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 480px) {
+  .admission-context-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admission-context-control select {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.mit-admission-context__action {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
+  color: var(--accent);
+  font: inherit;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+.mit-admission-context__action:hover {
+  background: var(--accent-panel);
+}
+
+.mit-admission-context__action:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+
+  .chance-head {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .chance-percent {
+    font-size: var(--text-2xl);
+  }
+
+  .chance-percent-wrap {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .chance-sub {
+    overflow-wrap: anywhere;
+  }
+
+}
+
+.chance-warning,
+.chance-inline-note {
+  border-radius: var(--radius-base);
+}
+
+#tab-admission .d-box::before {
+  display: none;
+}
+
+.admissions-section-title,
+.admissions-summary-value,
+.admissions-program-title {
+  color: var(--text);
+}
+
+.admissions-summary-eyebrow,
+.admissions-section-note,
+.admissions-summary-note,
+.admissions-program-note,
+.admissions-summary-meta {
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .track-select-btn {
+    transition: none !important;
+    animation: none !important;
+  }
+
+}
+
+.track-funding-badge,
+.chance-track-chip {
+  max-width: 100%;
+  min-height: 24px;
+  padding: var(--space-1) var(--space-2);
+  margin-top: 0;
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+
+  .admissions-summary-grid,
+.admissions-program-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+}
+
+:root[data-theme="dark"] #tab-admission .d-box {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@media (max-width: 768px) {
+  #tab-admission .d-box {
+    padding: var(--space-4);
+  }
+}
+
+/* ====================================================================
+   Admission Tab Deep Flattening (Calm Academic Workspace)
+   ==================================================================== */
+
+.admissions-overview,
+.admissions-programs-block {
+  margin-top: var(--space-6);
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.admissions-summary-card,
+.admissions-program-card {
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  padding: var(--space-5);
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .admissions-summary-card,
+:root[data-theme="dark"] .admissions-program-card {
+  background: var(--surface-soft);
+}
+
+.admission-check-assessments {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.admission-check-assessments h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.admission-check-assessments p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.admission-check-assessments ul {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admission-check-assessments__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.2fr) repeat(2, minmax(100px, 1fr)) minmax(100px, 0.8fr);
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.admission-check-assessments__row strong,
+.admission-check-assessments__status {
+  color: var(--text);
+  font-weight: var(--font-weight-medium);
+}
+
+.admissions-programs-block {
+  border: none;
+  border-top: none;
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.admissions-section-title {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text);
+  margin-bottom: var(--space-1);
+}
+
+.admissions-section-note {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  margin: 0 0 var(--space-4);
+}
+
+.admissions-program-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 1024px) {
+  .admissions-program-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
+
+.admissions-program-card {
+  border: none;
+  border-radius: var(--radius-lg, 16px);
+  background: var(--surface-soft);
+  padding: var(--space-5);
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .admissions-program-card {
+  background: var(--surface-soft);
+}
+
+@media (max-width: 768px) {
+  .admission-check-assessments__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chance-panel {
+  border: none;
+  border-radius: var(--radius-lg, 16px);
+  background: var(--surface-soft);
+  padding: var(--space-5) var(--space-5);
+  margin-bottom: var(--space-5);
+  box-shadow: none;
+}
+
+@media (max-width: 640px) {
+  .chance-panel {
+    padding: var(--space-4) var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+}
+
+/* ===== Deadlines & Application Rounds ===== */
+
+
+
+
+
+.admissions-deadlines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-3);
+}
+
+.admissions-deadline-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
+}
+
+.admissions-deadline-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.admissions-deadline-level {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: none;
+  letter-spacing: normal;
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+}
+
+.admissions-deadline-portal {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admissions-deadline-name {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+.admissions-deadline-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+}
+
+.admissions-deadline-label {
+  font-weight: var(--font-weight-medium);
+  flex-shrink: 0;
+}
+
+.admissions-deadline-date {
+  color: var(--accent);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-sm);
+}
+
+.admissions-deadline-fee-row {
+  margin-top: auto;
+  padding-top: var(--space-1);
+}
+
+.admissions-fee-waiver {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  margin-left: var(--space-1);
+}
+
+.admissions-deadline-notes {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-style: normal;
+  line-height: var(--leading-normal);
+}
+
+/* ===== Admissions & Programs Level Filter ===== */
+.admissions-level-filter {
+  display: flex;
+  gap: var(--space-5);
+  margin: 0 0 var(--space-4);
+  border-bottom: none;
+  overflow-x: auto;
+}
+
+.admissions-level-tab {
+  appearance: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  padding: var(--space-2) var(--space-0-5);
+  white-space: nowrap;
+  transition: color var(--motion-fast) var(--motion-ease-standard), border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admissions-level-tab:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.admissions-level-tab.is-active {
+  color: var(--interaction-active-text);
+  border-bottom-color: var(--accent);
+}
+
+.admission-category-deadline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: var(--surface-soft);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  margin-top: var(--space-2);
+}
+
+/* ===== Interactive Admissions Timeline ===== */
+.deadlines-timeline-wrapper {
+  margin: 0 0 var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.deadlines-timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.deadlines-timeline-title {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.deadlines-timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+  position: relative;
+}
+
+.timeline-milestone {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-soft);
+  border-radius: var(--radius-md);
+  position: relative;
+}
+
+.timeline-milestone-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.timeline-milestone-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--surface-solid);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  flex-shrink: 0;
+}
+
+.timeline-milestone-phase {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-muted);
+}
+
+.timeline-milestone-date {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+}
+
+.timeline-milestone-title {
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--accent);
+  margin: 0;
+}
+
+.timeline-milestone-desc {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+}
+
+/* ===== Collapsible Requirement Details ===== */
+.track-collapsible-details {
+  background: var(--surface-soft);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.track-collapsible-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  list-style: none;
+  transition: color var(--motion-fast) var(--motion-ease-standard), background var(--motion-fast) var(--motion-ease-standard);
+}
+
+.track-collapsible-summary::-webkit-details-marker {
+  display: none;
+}
+
+.track-collapsible-summary:hover {
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.track-collapsible-summary:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.track-collapsible-chevron {
+  transition: transform var(--motion-fast) var(--motion-ease-standard);
+  flex-shrink: 0;
+}
+
+.track-collapsible-details[open] .track-collapsible-chevron {
+  transform: rotate(180deg);
+}
+
+.track-collapsible-content {
+  padding: 0 var(--space-3) var(--space-2);
+}
+
+#detailDeadlines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.deadline-calendar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.deadline-calendar > h4,
+.deadline-calendar__head h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.deadline-calendar > p,
+.deadline-calendar__note,
+.deadline-calendar__details small {
+  margin: 0;
+  display: block;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.deadline-calendar__details p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.deadline-calendar__head,
+.deadline-calendar__navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.deadline-calendar__navigation strong {
+  min-width: 120px;
+  text-align: center;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.deadline-calendar__navigation button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--surface-soft);
+  color: var(--text);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.deadline-calendar__navigation button:hover,
+.deadline-calendar__day--event:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.deadline-calendar__navigation button:focus-visible,
+.deadline-calendar__day--event:focus-visible,
+.deadline-calendar__details a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.deadline-calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+
+.deadline-calendar__weekday {
+  padding: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.deadline-calendar__day,
+.deadline-calendar__blank {
+  min-height: 48px;
+  padding: var(--space-2);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font: inherit;
+  text-align: left;
+}
+
+.deadline-calendar__blank {
+  background: transparent;
+}
+
+.deadline-calendar__day--event {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-1);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.deadline-calendar__day--event.is-active {
+  background: var(--accent-panel);
+  color: var(--accent);
+}
+
+.deadline-calendar__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: var(--radius-circle);
+  background: var(--surface-solid);
+  color: var(--text);
+  font-size: var(--text-xs);
+  box-shadow: var(--shadow-micro);
+}
+
+.deadline-calendar__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  color: var(--text);
+}
+
+.deadline-calendar__details > strong {
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.deadline-calendar__details ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-inline-start: var(--space-5);
+}
+
+.deadline-calendar__details a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.deadline-calendar__export,
+.admissions-deadline-source,
+.deadline-guidance-item a {
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--surface-solid);
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  box-shadow: var(--shadow-micro);
+}
+
+.deadline-calendar__export {
+  cursor: pointer;
+}
+
+.deadline-calendar__export:hover,
+.admissions-deadline-source:hover,
+.deadline-guidance-item a:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.deadline-calendar__export:focus-visible,
+.admissions-deadline-source:focus-visible,
+.deadline-guidance-item a:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.deadline-guidance-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.deadline-guidance-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+
+.deadline-guidance-item h4,
+.deadline-guidance-item p {
+  margin: 0;
+}
+
+.deadline-guidance-item p,
+.deadline-guidance-item span {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 480px) {
+  .admissions-level-filter {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .deadline-calendar__head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .deadline-calendar__navigation {
+    width: 100%;
+  }
+
+  .deadline-calendar__day,
+  .deadline-calendar__blank {
+    min-height: 44px;
+    padding: var(--space-1);
+  }
+}
+
+.mit-admission-analysis {
+  margin-top: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+}
+
+.mit-admission-analysis > summary {
+  padding: var(--space-4);
+  color: var(--text);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.mit-admission-analysis > summary:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.mit-admission-analysis > :not(summary) {
+  margin: 0 var(--space-4) var(--space-4);
+}
+
+.admission-decision-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Gap-owning containers already space these children; their own margins (and browser paragraph margins) doubled it. */
+#detailDeadlines > :is(.admission-empty-state, .deadlines-timeline-wrapper) {
+  margin-block: 0;
+}
