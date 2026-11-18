@@ -100,15 +100,11 @@ function galleryButton(action, icon, label) {
   </button>`;
 }
 
-function navigationHtml(label) {
+function navigationHtml() {
   return `<div class="d-gallery-navigation" hidden>
-    <div class="d-gallery-control d-gallery-control--previous">
-      ${galleryButton("previous", "chevron-left", t("university.gallery.previous", "Previous photo"))}
-    </div>
-    <div class="d-gallery-dots" role="group" aria-label="${escapeHtmlAttr(label)}"></div>
-    <div class="d-gallery-control d-gallery-control--next">
-      ${galleryButton("next", "chevron-right", t("university.gallery.next", "Next photo"))}
-    </div>
+    ${galleryButton("previous", "chevron-left", t("university.gallery.previous", "Previous photo"))}
+    ${galleryButton("next", "chevron-right", t("university.gallery.next", "Next photo"))}
+    <span class="d-gallery-count" aria-hidden="true"></span>
   </div>`;
 }
 
@@ -225,22 +221,19 @@ export function mountUniversityGallery(cover, universityId) {
 
   cover.insertAdjacentHTML("beforeend", `<button type="button" class="d-gallery-preview" aria-haspopup="dialog" aria-label="${escapeHtmlAttr(openLabel)}">
     <span class="d-gallery-preview-media"></span>
-    <span class="d-gallery-zoom">${heroIcon("magnifying-glass", "ui-icon ui-icon--20")}</span>
-  </button>`);
-  cover.insertAdjacentHTML("afterend", `${navigationHtml(label)}
+  </button>
     <div class="d-gallery-cover-credit"></div>
-    <span class="d-gallery-status sr-only" role="status"></span>
-    <dialog class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
-      ${galleryButton("close", "x-mark", t("common.close", "Close"))}
+    ${navigationHtml()}
+    <span class="d-gallery-status sr-only" role="status"></span>`);
+  cover.insertAdjacentHTML("afterend", `<dialog class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
+      ${galleryButton("close", "arrow-left", t("common.close", "Close"))}
+      <div class="d-gallery-viewer-credit"></div>
       <div class="d-photo-zoom-controls">
         ${galleryButton("zoom-out", "minus", t("university.gallery.zoom_out", "Zoom out"))}
         ${galleryButton("zoom-in", "plus", t("university.gallery.zoom_in", "Zoom in"))}
       </div>
       <div class="d-photo-stage"><div class="d-photo-canvas"></div></div>
-      <div class="d-photo-footer">
-        ${navigationHtml(label)}
-        <div class="d-gallery-viewer-credit"></div>
-      </div>
+      ${navigationHtml()}
       <span class="sr-only" role="status"></span>
     </dialog>`);
 
@@ -255,7 +248,7 @@ export function mountUniversityGallery(cover, universityId) {
   const viewerCredit = dialog.querySelector(".d-gallery-viewer-credit");
   const viewerStatus = dialog.querySelector("[role=status]");
   const navigation = [coverNavigation, dialog.querySelector(".d-gallery-navigation")];
-  const dots = navigation.map((group) => group.querySelector(".d-gallery-dots"));
+  const counters = navigation.map((group) => group.querySelector(".d-gallery-count"));
   const zoom = bindGalleryZoom({
     canvas,
     dialog,
@@ -275,8 +268,14 @@ export function mountUniversityGallery(cover, universityId) {
 
   function renderViewer() {
     zoom.setImage(null);
+    dialog.style.removeProperty("--photo-fit-height");
     displayPhoto(canvas, photos[current], photos.length > 1 ? photoPosition(current, photos.length) : label, {
-      onLoad: zoom.setImage,
+      onLoad: (image) => {
+        zoom.setImage(image);
+        const heightRatio = image.naturalHeight / image.naturalWidth;
+        dialog.style.setProperty("--photo-fit-height",
+          `min(${image.naturalHeight}px, calc((100vw - 2 * var(--photo-stage-gutter)) * ${heightRatio}), 100%)`);
+      },
       retry: () => {
         close.focus();
         renderViewer();
@@ -290,10 +289,7 @@ export function mountUniversityGallery(cover, universityId) {
     const credit = coverCreditHtml(photos[current].credit);
     coverCredit.innerHTML = credit;
     viewerCredit.innerHTML = credit;
-    for (const group of dots) {
-      group.querySelector("[aria-current]")?.removeAttribute("aria-current");
-      group.children[current]?.setAttribute("aria-current", "true");
-    }
+    for (const counter of counters) counter.textContent = `${current + 1} / ${photos.length}`;
   }
 
   function selectPhoto(index) {
@@ -350,15 +346,6 @@ export function mountUniversityGallery(cover, universityId) {
         area.hidden = false;
         area.querySelector(".d-gallery-button--previous").addEventListener("click", () => step(-1));
         area.querySelector(".d-gallery-button--next").addEventListener("click", () => step(1));
-      }
-      for (const group of dots) {
-        for (const [index] of photos.entries()) {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.setAttribute("aria-label", photoPosition(index, photos.length));
-          button.addEventListener("click", () => selectPhoto(index));
-          group.append(button);
-        }
       }
     }
     updateLabels();

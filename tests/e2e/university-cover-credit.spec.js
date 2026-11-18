@@ -17,15 +17,17 @@ test("the university cover credits the photo's author and license and links its 
   const credit = page.locator(".d-gallery-cover-credit .d-cover-credit");
   await expect(credit).toBeVisible();
   await expect(credit).toHaveText(/^Photo: .+, CC BY-SA 3\.0 \(cropped\)$/);
+  await expect(credit).toHaveCSS("color", "rgb(255, 255, 255)");
   await expect(credit).toHaveAttribute("href", /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
   await expect(credit).toHaveAttribute("target", "_blank");
 
-  // The full attribution stays legible underneath the photo on a phone.
+  // The full attribution stays inside the photo on a phone.
   await page.setViewportSize({ width: 375, height: 812 });
   const coverBox = await page.locator("#detailCover").boundingBox();
   const creditBox = await credit.boundingBox();
   expect(creditBox.x + creditBox.width).toBeLessThanOrEqual(coverBox.x + coverBox.width);
-  expect(creditBox.y).toBeGreaterThanOrEqual(coverBox.y + coverBox.height);
+  expect(creditBox.y).toBeGreaterThan(coverBox.y);
+  expect(creditBox.y + creditBox.height).toBeLessThan(coverBox.y + coverBox.height);
 });
 
 test("the credit follows the interface language", async ({ page }) => {
@@ -53,21 +55,26 @@ test("the cover gallery and full-size viewer keep the same photo and attribution
   const preview = cover.getByRole("button", { name: /Enlarge photo/ });
   const credit = page.locator(".d-gallery-cover-credit .d-cover-credit");
   const next = page.getByRole("button", { name: "Next photo" });
-  const dot = page.getByRole("button", { name: "Photo 2 of 3", exact: true });
+  const count = cover.locator(".d-gallery-count");
+  await expect(count).toHaveText("1 / 3");
   await expect(preview.locator("img")).toHaveAttribute("src", /thumbnails\/australian-national-university-au-canberra\.webp$/);
   await next.click();
   await expect(next).toBeFocused();
-  await expect(dot).toHaveAttribute("aria-current", "true");
+  await expect(count).toHaveText("2 / 3");
   await expect(credit).toContainText("-wuppertaler");
   await expect(preview.locator("img")).toBeVisible();
   await preview.press("Enter");
 
   const viewer = page.getByRole("dialog", { name: "Campus photos" });
+  const viewerCount = viewer.locator(".d-gallery-count");
   await expect(viewer).toHaveCSS("background-color", "rgb(0, 0, 0)");
+  await expect(page.locator("html")).toHaveCSS("scrollbar-gutter", "auto");
   await expect(viewer.getByRole("button", { name: "Close" })).toBeFocused();
+  await expect(viewerCount).toHaveText("2 / 3");
   const image = viewer.getByRole("img");
   await expect(image).toHaveAttribute("src", /campus-entrance-sign\.jpg$/);
   await expect(viewer.locator(".d-cover-credit")).toContainText("-wuppertaler");
+  await expect(viewer.locator(".d-cover-credit")).toHaveCSS("color", "rgb(255, 255, 255)");
   const desktopPhoto = await image.evaluate((photo) => ({
     renderedWidth: photo.width,
     naturalWidth: photo.naturalWidth,
@@ -75,14 +82,13 @@ test("the cover gallery and full-size viewer keep the same photo and attribution
   expect(desktopPhoto.renderedWidth).toBe(desktopPhoto.naturalWidth);
   await page.keyboard.press("ArrowRight");
   await expect(image).toHaveAttribute("src", /old-canberra-house\.jpg$/);
+  await expect(viewerCount).toHaveText("3 / 3");
   await page.keyboard.press("Escape");
   await expect(viewer).toHaveCount(0);
   await expect(preview).toBeFocused();
   await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 3 of 3");
-  await dot.click();
-  await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 2 of 3");
-  await page.keyboard.press("ArrowLeft");
-  await expect(dot).toBeFocused();
+  await expect(count).toHaveText("3 / 3");
+  await next.click();
   await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
 });
 
@@ -91,10 +97,12 @@ test("a single campus photo opens on a small screen without carousel controls", 
   await openUniversity(page, "mit-usa-cambridge", "dark");
   await expect(page.locator(".d-gallery-cover-credit .d-cover-credit")).toBeVisible();
   await expect(page.getByRole("button", { name: "Next photo" })).toHaveCount(0);
+  await expect(page.locator("#detailCover .d-gallery-count")).toBeHidden();
   const preview = page.getByRole("button", { name: "Enlarge photo" });
   await preview.click();
   const viewer = page.getByRole("dialog", { name: "Campus photos" });
   await expect(viewer.getByRole("button", { name: "Next photo" })).toHaveCount(0);
+  await expect(viewer.locator(".d-gallery-count")).toBeHidden();
   const image = viewer.getByRole("img");
   await expect(image).toBeVisible();
   const box = await image.boundingBox();
@@ -178,13 +186,14 @@ test("clicking the dark backdrop closes the viewer while clicking or panning the
   const resetBox = await image.boundingBox();
   expect(resetBox.x).toBeGreaterThan(80);
   const darkX = Math.floor(resetBox.x / 2);
-  await page.mouse.move(darkX, centerY);
+  const darkY = centerY - 64;
+  await page.mouse.move(darkX, darkY);
   await expect(canvas).toHaveCSS("cursor", "auto");
-  await page.mouse.click(darkX, centerY);
+  await page.mouse.click(darkX, darkY);
   await expect(viewer).toHaveCount(0);
   await expect(preview).toBeFocused();
 
-  // Re-open and close by clicking the dark area in the footer away from controls/attribution.
+  // Re-open and close by clicking dark space away from controls and attribution.
   await preview.click();
   await expect(image).toBeVisible();
   await page.mouse.click(24, 780);
@@ -214,30 +223,27 @@ test.describe("image recovery", () => {
 test.describe("touch navigation", () => {
   test.use({ isMobile: true, hasTouch: true, viewport: { width: 320, height: 667 } });
 
-  test("phone controls stay below the photo and respond to taps", async ({ page }) => {
+  test("phone controls overlay the photo and respond to taps", async ({ page }) => {
     await openUniversity(page, "australian-national-university-au-canberra", "dark");
     const preview = page.getByRole("button", { name: /Enlarge photo/ });
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
-    const layout = await page.locator(".d-gallery").evaluate((gallery) => {
-      const photo = gallery.querySelector("#detailCover").getBoundingClientRect();
-      const arrow = gallery.querySelector(".d-gallery-button--previous").getBoundingClientRect();
-      const dots = gallery.querySelector(".d-gallery-dots").getBoundingClientRect();
-      const credit = gallery.querySelector(".d-gallery-cover-credit .d-cover-credit").getBoundingClientRect();
-      return {
-        coverBottom: photo.bottom,
-        arrowTop: arrow.top,
-        arrowSize: Math.min(arrow.width, arrow.height),
-        dotsBottom: dots.bottom,
-        creditTop: credit.top,
-      };
-    });
-    expect(layout.arrowTop).toBeGreaterThanOrEqual(layout.coverBottom);
-    expect(layout.arrowSize).toBeGreaterThanOrEqual(44);
-    expect(layout.creditTop).toBeGreaterThanOrEqual(layout.dotsBottom);
+    const cover = page.locator("#detailCover");
+    const count = cover.locator(".d-gallery-count");
+    await expect(count).toHaveText("1 / 3");
+    const photo = await cover.boundingBox();
+    const arrow = await cover.getByRole("button", { name: "Previous photo" }).boundingBox();
+    const counter = await count.boundingBox();
+    const credit = await cover.locator(".d-cover-credit").boundingBox();
+    expect(Math.min(arrow.width, arrow.height)).toBeGreaterThanOrEqual(44);
+    expect(arrow.y + arrow.height / 2).toBeCloseTo(photo.y + photo.height / 2, 0);
+    expect(counter.y + counter.height).toBeLessThan(photo.y + photo.height);
+    expect(counter.y).toBeGreaterThan(arrow.y + arrow.height);
+    expect(credit.y).toBeGreaterThan(photo.y);
+    expect(credit.y + credit.height).toBeLessThan(arrow.y);
 
     await page.getByRole("button", { name: "Next photo" }).tap();
-    await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 2 of 3");
-    await page.getByRole("button", { name: "Photo 1 of 3", exact: true }).tap();
+    await expect(count).toHaveText("2 / 3");
+    await page.getByRole("button", { name: "Previous photo" }).tap();
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
 
     await preview.tap();
@@ -249,7 +255,8 @@ test.describe("touch navigation", () => {
     await expect(zoomOut).toBeDisabled();
     await viewer.getByRole("button", { name: "Next photo" }).tap();
     await expect(viewer.getByRole("img", { name: "Photo 2 of 3" })).toBeVisible();
-    await viewer.getByRole("button", { name: "Photo 3 of 3", exact: true }).tap();
+    await expect(viewer.locator(".d-gallery-count")).toHaveText("2 / 3");
+    await viewer.getByRole("button", { name: "Next photo" }).tap();
     await expect(viewer.getByRole("img", { name: "Photo 3 of 3" })).toBeVisible();
   });
 
@@ -311,7 +318,11 @@ test.describe("touch navigation", () => {
     await swipeLeftAt(333);
     const enlargedPhoto = viewer.getByRole("img", { name: "Photo 3 of 3" });
     await expect(enlargedPhoto).toBeVisible();
-    expect((await enlargedPhoto.boundingBox()).width).toBeCloseTo(320, 0);
+    const portraitPhoto = await enlargedPhoto.boundingBox();
+    const portraitCounter = await viewer.locator(".d-gallery-count").boundingBox();
+    expect(portraitPhoto.width).toBeCloseTo(320, 0);
+    expect(portraitCounter.y).toBeGreaterThan(portraitPhoto.y);
+    expect(portraitCounter.y + portraitCounter.height).toBeLessThan(portraitPhoto.y + portraitPhoto.height);
 
     await page.setViewportSize({ width: 667, height: 320 });
     const photo = await enlargedPhoto.boundingBox();
@@ -319,10 +330,12 @@ test.describe("touch navigation", () => {
     const license = await viewer.locator(".d-cover-credit").boundingBox();
     const close = viewer.getByRole("button", { name: "Close" });
     const closeBox = await close.boundingBox();
+    const counter = await viewer.locator(".d-gallery-count").boundingBox();
     expect(photo.height).toBeGreaterThan(220);
-    expect(photo.x + photo.width).toBeLessThanOrEqual(closeBox.x);
-    expect(photo.y + photo.height).toBeLessThanOrEqual(arrow.y);
-    expect(license.y + license.height).toBeLessThanOrEqual(320);
+    expect(closeBox.x + closeBox.width).toBeLessThan(license.x);
+    expect(arrow.y + arrow.height / 2).toBeCloseTo(photo.y + photo.height / 2, 0);
+    expect(counter.y + counter.height).toBeLessThan(photo.y + photo.height);
+    expect(license.y + license.height).toBeLessThan(counter.y);
 
     await omitNextNativeClick(close);
     await close.tap();

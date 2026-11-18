@@ -4,10 +4,11 @@ All notable project changes should be recorded here.
 
 ## 10.4.4 (2026-11-18) - University media policy wording
 
-Patch release: documentation correction with no new user-visible capability or breaking API/storage change.
+Patch release: university media guidance and interface refinements with no breaking API or storage changes.
 
 ### Changed
 - Clarified that UniSearch identifies institutions by name and campus photography and does not publish university logos; aligned the third-party notice, photo contribution guidance, architecture diagram, and catalog expansion roadmap.
+- Simplified the campus photo gallery with a clickable cover, translucent photo count and credits, side arrows, and a back arrow in the full-size viewer.
 
 ### Fixed
 - Standardized website, map, and save actions across all university pages, including their typography and stable localized save-state width.
