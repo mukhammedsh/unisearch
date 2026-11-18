@@ -1,3 +1,20 @@
+import { escapeHtmlAttr } from "../../utils/format.js";
+import { uniThumbnailSrc } from "../_shared.js";
+import { coverCreditHtml } from "../university/cover-credit.js";
+
+export function compareCampusHtml(id, photos) {
+  const credit = photos?.[id];
+  if (!credit) return "";
+  const src = uniThumbnailSrc(id);
+  const fallback = uniThumbnailSrc(id, { forceFull: true, format: "jpg" });
+  return `<figure class="compare-campus">
+    <div class="compare-campus__photo">
+      <img src="${escapeHtmlAttr(src)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(fallback)}" data-remove-on-error="1">
+    </div>
+    <figcaption class="compare-campus__credit">${coverCreditHtml({ ...credit, modified: true })}</figcaption>
+  </figure>`;
+}
+
 export async function loadCompareUniversities(ids, options = {}) {
   const cleanIds = Array.isArray(ids)
     ? ids.map((id) => String(id || "").trim()).filter(Boolean)

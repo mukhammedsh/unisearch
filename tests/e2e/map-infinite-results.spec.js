@@ -162,7 +162,8 @@ test("map marker opens the complete university card and responds to zoom control
   await page.click("#viewMapBtn");
 
   const marker = page.locator("#mapContainer .custom-div-icon").first();
-  await expect(marker).toBeVisible();
+  await expect(marker.locator(".map-university-dot")).toBeVisible();
+  await expect(marker.locator("img")).toHaveCount(0);
 
   const map = page.locator("#mapContainer");
   const mapBox = await map.boundingBox();

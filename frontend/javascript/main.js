@@ -166,7 +166,6 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
       skeletonEl.innerHTML = Array.from({ length: skeletonCount }, () => `
         <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
           <div class="uni-media">
-            <div class="uni-logo" aria-hidden="true"></div>
           </div>
           <div class="uni-body">
             <div class="skeleton-line u-skeleton-title"></div>

@@ -24,6 +24,29 @@ async function noOverflow(page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
 
+for (const { width, theme } of [{ width: 1280, theme: "light" }, { width: 390, theme: "dark" }]) {
+  test(`Stanford removes the page skeleton while admissions load at ${width}px in ${theme} mode`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.addInitScript((theme) => localStorage.setItem("unisearch_theme", theme), theme);
+    let releaseContext;
+    const contextGate = new Promise((resolve) => { releaseContext = resolve; });
+    await page.route("**/universities/stanford-university-usa-ca/admissions-context", async (route) => {
+      await contextGate;
+      await route.continue();
+    });
+
+    try {
+      await page.goto("/university.html?id=stanford-university-usa-ca#tab-admission");
+      await expect(page.locator("#detailName")).toBeVisible();
+      await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "loading");
+      await expect(page.locator("#detailLoading")).toBeHidden();
+    } finally {
+      releaseContext();
+    }
+    await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  });
+}
+
 test("shared MIT route is compact, editable by keyboard, saved and exports its own calendar", async ({ page }, testInfo) => {
   await openUniversity(page, "mit-usa-cambridge");
   await tab(page, "admission");

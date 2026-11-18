@@ -1,14 +1,14 @@
 import { getPreferredCurrency } from "./currency.js";
 import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
-import { escapeHtml, escapeHtmlAttr, registerUiTranslator } from "./utils/format.js";
+import { escapeHtml, escapeHtmlAttr } from "./utils/format.js";
 import { aiName } from "./utils/runtime.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 // Fingerprint of the three localization files (first 8 hex characters of their SHA-256 with LF line endings).
 // It names the tab's cached packs, so a changed file is fetched again even when the app version is unchanged.
 // tests/unit/i18n-pack-revision.test.mjs fails with the expected value whenever a localization file changes.
-const I18N_PACK_REVISION = "7f44b85b";
+const I18N_PACK_REVISION = "da06cdc4";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";
@@ -94,17 +94,30 @@ function _parseLocalizationFile(content) {
 }
 
 async function _fetchLocalizationText(file, timeoutMs) {
-  const signal = typeof AbortSignal !== "undefined" && typeof AbortSignal.timeout === "function"
-    ? AbortSignal.timeout(timeoutMs)
-    : undefined;
+  const controller = typeof AbortController === "function" ? new AbortController() : null;
+  let timeoutId = 0;
+  const fetchPromise = fetch(file, {
+    cache: "no-cache",
+    ...(controller ? { signal: controller.signal } : {}),
+  })
+    .then((res) => (res.ok ? res.text() : ""))
+    .catch(() => "");
+
+  const timeoutPromise = new Promise((resolve) => {
+    timeoutId = setTimeout(() => {
+      try {
+        controller?.abort();
+      } catch (e) {
+        // ignore
+      }
+      resolve("");
+    }, timeoutMs);
+  });
+
   try {
-    const res = await fetch(file, {
-      cache: "no-cache",
-      ...(signal ? { signal } : {}),
-    });
-    return res.ok ? await res.text() : "";
-  } catch (e) {
-    return "";
+    return await Promise.race([fetchPromise, timeoutPromise]);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
@@ -180,8 +193,6 @@ export function t(key, fallback = "", language = currentLang) {
   if (enValue !== undefined && enValue !== null) return stabilizeNumericRanges(String(enValue));
   return stabilizeNumericRanges(String(fallback || ""));
 }
-
-registerUiTranslator(t);
 
 export function tFormat(key, params = {}, fallback = "") {
   let out = t(key, fallback);

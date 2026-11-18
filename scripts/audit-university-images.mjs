@@ -167,17 +167,54 @@ function formatKb(bytes) {
 const universities = readJson(dataPath);
 const ids = universities.map((row) => String(row?.id || "").trim()).filter(Boolean);
 const errors = [];
+for (const retiredDirectory of ["logos", "logos-small"]) {
+  if (fs.existsSync(path.join(assetsRoot, retiredDirectory))) {
+    errors.push(`${retiredDirectory}: legacy logo directory must not ship in the public media bundle`);
+  }
+}
 const warnings = [];
 
 // Every campus photograph needs a recorded reusable source, because the cover shows its credit
 // and the photo licenses require attribution.
 const creditsPath = path.join(assetsRoot, "credits.json");
 const FREE_LICENSE = /^(CC0( 1\.0)?|Public domain|CC BY(-SA)? \d\.\d)$/;
-const credits = fs.existsSync(creditsPath) ? readJson(creditsPath).photos || {} : null;
+const mediaCredits = fs.existsSync(creditsPath) ? readJson(creditsPath) : null;
+const credits = mediaCredits?.photos;
 if (!credits) errors.push("missing university_assets/credits.json");
 for (const id of credits ? Object.keys(credits) : []) {
   if (!ids.includes(id)) errors.push(`credits.json: ${id} is not a catalog university`);
 }
+
+function auditCredit(label, credit) {
+  if (!/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(String(credit?.source_url || ""))) {
+    errors.push(`${label}: photo credit source_url must be a Wikimedia Commons file page`);
+  }
+  if (!FREE_LICENSE.test(String(credit?.license || ""))) {
+    errors.push(`${label}: photo credit license "${credit?.license}" is not an accepted free license`);
+  }
+  if (!String(credit?.author || "").trim()) {
+    errors.push(`${label}: photo credit has no author`);
+  }
+}
+
+const galleryRoot = path.join(assetsRoot, "gallery");
+const galleryFiles = new Set(fs.existsSync(galleryRoot)
+  ? fs.readdirSync(galleryRoot, { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile())
+    .map((entry) => path.relative(galleryRoot, path.join(entry.parentPath, entry.name)).split(path.sep).join("/"))
+  : []);
+for (const [id, photos] of Object.entries(mediaCredits?.gallery || {})) {
+  if (!ids.includes(id)) errors.push(`credits.json: ${id} is not a catalog university`);
+  for (const [filename, credit] of Object.entries(photos)) {
+    const relativePath = `${id}/${filename}`;
+    const label = `gallery/${relativePath}`;
+    if (!/^[a-z0-9-]+\.jpg$/.test(filename) || !galleryFiles.delete(relativePath)) {
+      errors.push(`${label}: missing gallery JPEG or invalid filename`);
+    }
+    auditCredit(label, credit);
+  }
+}
+for (const uncredited of galleryFiles) errors.push(`gallery/${uncredited}: photo without a credit in credits.json`);
 
 const THUMBNAIL_FOLDERS = ["thumbnails", "thumbnails-medium", "thumbnails-small"];
 let withoutPhoto = 0;
@@ -185,7 +222,7 @@ let withoutPhoto = 0;
 for (const id of ids) {
   const credit = credits?.[id];
   if (credits && !credit) {
-    // No reusable photograph was found: the university must ship no photo, and the pages fall back to its logo.
+    // No reusable photograph was found: the university must ship no photo, and the pages show the shared university icon.
     const leftovers = THUMBNAIL_FOLDERS.flatMap((folder) => [".jpg", ".webp"]
       .map((ext) => `${folder}/${id}${ext}`)
       .filter((rel) => fs.existsSync(path.join(assetsRoot, rel))));
@@ -193,17 +230,7 @@ for (const id of ids) {
     withoutPhoto += 1;
     continue;
   }
-  if (credit) {
-    if (!/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(String(credit.source_url || ""))) {
-      errors.push(`${id}: photo credit source_url must be a Wikimedia Commons file page`);
-    }
-    if (!FREE_LICENSE.test(String(credit.license || ""))) {
-      errors.push(`${id}: photo credit license "${credit.license}" is not an accepted free license`);
-    }
-    if (!String(credit.author || "").trim()) {
-      errors.push(`${id}: photo credit has no author`);
-    }
-  }
+  if (credit) auditCredit(id, credit);
 
   for (const rule of IMAGE_RULES) {
     const filePath = path.join(assetsRoot, rule.folder, `${id}${rule.ext}`);

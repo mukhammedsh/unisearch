@@ -2,31 +2,39 @@
 
 All notable project changes should be recorded here.
 
-## 10.3.4 (2026-11-18) - Modern web platform baseline, accessibility, and rendering optimizations
+## 10.4.2 (2026-11-18) - Campus photos and viewer fixes
 
-Patch release with no new user-visible capability: replaces legacy JavaScript and CSS patterns with Baseline Widely available platform APIs, converts overlays to native `<dialog>` elements, upgrades WAI-ARIA tab/table/toast semantics and Forced Colors support, eliminates CSS `@import` waterfalls, adds static security headers and IME Enter guards, and removes synchronous layout thrashing.
+Patch release: UI and asset refinements with no new user-facing capability or breaking API/storage change.
 
 ### Changed
-- Adopted modern JavaScript APIs across frontend modules (`Element.prototype.replaceChildren()`, `structuredClone()`, `Array.prototype.toSorted()`, `Promise.withResolvers()`, and `AbortSignal.timeout()`).
-- Updated `#settingsModal`, `#profileUnsavedModal`, `#profileResetModal`, `#uTourModal`, and the reviewed comparison program picker `<dialog>` to use native modal `<dialog>` (`showModal()`, `::backdrop`, `overscroll-behavior: contain` scroll containment, consistent `h2` dialog headings, and `closedby` with pointer-coordinate/backdrop fallbacks), removing manual focus traps, `aria-modal` wrappers, `body.modal-open`, and `body { overflow: hidden }` scroll locking while keeping the first-visit tutorial's skip/completion requirement on `Escape`.
-- Upgraded `#uSidebar` mobile filter drawer to manage background `inert` state, `role="dialog"`, `aria-expanded`/`aria-controls`, focus entry, and focus return without mutating `document.body.style.overflow`.
-- Implemented full WAI-ARIA `tablist`/`tab`/`tabpanel` semantics (`aria-selected`, roving `tabindex`, `hidden` panel state, `ArrowLeft`/`ArrowRight`/`Home`/`End` keyboard navigation) on university detail tabs and rendered `.sliding-indicator` via `border-block-end` so selection remains visible in Forced Colors Mode.
-- Added `@media (forced-colors: active)` system-color fallbacks for tokens, cards, inputs, validation outlines, active controls, switches, tabs, and `:focus-visible` indicators, plus `:user-invalid` validation selectors and `content-visibility: auto` on deep admissions source lists.
-- Upgraded custom selects (`utils/selects.js`) to use a native `<button type="button">` combobox trigger, visually hide the native `<select>` cleanly with `tabindex="-1"` / `aria-hidden="true"`, forward associated `<label for="...">` clicks and focus to the custom trigger, and prevent Spacebar `keyup` synthetic double-toggles.
-- Added programmatic post-transition focus management (`focusRouteDestination()`) after client-side route updates and View Transitions in `main.js`.
-- Replaced `#universitySearch` `<div role="search">` with semantic `<search>` and `autocorrect="off" autocapitalize="none" enterkeyhint="search"`, replaced generic `"Logo"` image alt attributes with descriptive institution/brand names, added `role="region"` + progressive `popover="manual"` + `role="status"` + localized close label + focus/hover pause + focus restoration and `>= 24x24px` target sizing on `#toast-container`/`.toast-close`, added scrollable region semantics/`<caption>`/`<th scope="row|col">` across comparison and admissions tables while stripping redundant native table ARIA roles, and removed redundant `aria-disabled` / `<details role="listitem">` misuse.
-- Flattened CSS `@import` chains in `style.css`, `universities.css`, and `profile.css` into direct ordered `<link rel="stylesheet">` tags in HTML pages, added `<meta name="color-scheme" content="light dark">`, and preloaded the primary Latin Inter font.
-- Replaced runtime `<style>` tag injection and synchronous layout flush in `theme.js` with a `:root[data-theme-switching]` CSS rule toggled over animation frames on interactive theme switches.
-- Added `font-src 'self'`, `form-action 'self'`, and `https://tile.openstreetmap.org` to backend and dev-server Content Security Policies, and configured security headers and CSP in `firebase.json` and `frontend/.htaccess`.
-- Added `100dvh` fallbacks, expanded reduced-motion handling to `.center-loading-spinner` (`prefers-reduced-motion: no-preference`) and `::view-transition-*(*)`, replaced `@supports (-moz-appearance: none)` with `@supports not selector(::-webkit-scrollbar)`, used `min-height` instead of fixed `height` on `.settings-select` and `.profile-action-btn`, and removed `user-select: none` from readable status/summary labels.
+- Remove university logo placeholders throughout UniSearch; use dots and counts on the map and credited campus photos in comparison headers.
+- Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
+- Show a themed campus photo placeholder when a catalog card has no usable image.
+- Limit the CI Node dependency audit to runtime packages (`npm audit --omit=dev`) because frontend assets ship without a bundler and Node packages are CI/test/lint tooling only.
 
 ### Fixed
-- Prevented premature Enter activation during IME composition (`event.isComposing || event.keyCode === 229`) in navbar search, profile forms, language forms, and searchable custom select inputs.
-- Batched DOM reads and writes in `markMotionEnter()` to eliminate per-item forced layout reflows during list animations.
-- Rendered the network status banner message with `textContent` and `replaceChildren()`, and HTML-escaped custom titles and descriptions in `renderErrorScreen()`.
+- Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
 
-### Tests
-- Added unit tests and updated existing unit and E2E suites covering WAI-ARIA tab keyboard navigation, native `<dialog>` settings/tour modals, accessible toast `popover="manual"` / live status / pause-on-focus, custom select button triggers and `<label>` focus forwarding, `<th scope="row">` comparison/admissions markup, IME composition Enter guards, theme transition-attribute switching, `renderErrorScreen()` HTML escaping, backend CSP directives, dev-server Report-Only CSP, and direct CSS module loading on university detail routes.
+## 10.4.1 (2026-11-17) - CodeQL test fixes
+
+### Fixed
+- Verify the full MIT Admissions link in comparison tests and remove unused imports from responsive layout and profile language tests.
+
+## 10.4.0 (2026-11-17) - Campus photo galleries
+
+### Added
+- Open campus covers in a full-size viewer and browse credited alternate photos with arrows, photo indicators, keyboard controls, or a swipe.
+- Zoom and move campus photos in the viewer using a mouse, touch gestures, or keyboard controls.
+
+### Fixed
+- Keep campus photos clear on narrow screens by placing the gallery controls and attribution below the image.
+- Keep touch controls responsive immediately after swiping between campus photos.
+- Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
+- Use recognizable campus exteriors for Australian National University, Delft University of Technology, the National University of Singapore, Tsinghua University, and the University of Melbourne.
+- Replace the distant Seoul National University medical-campus panorama with a street-level photograph of the historic Daehan Hospital building.
+
+### Changed
+- Retain former covers and alternate campus views with per-photo credits in the gallery.
 
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 

@@ -33,11 +33,11 @@
       "modified": true
     },
     "australian-national-university-au-canberra": {
-      "file": "File:AUS Canberra, Central, Australian National University 001.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:AUS_Canberra,_Central,_Australian_National_University_001.jpg",
-      "author": "-wuppertaler",
-      "license": "CC BY 4.0",
-      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "file": "File:RG Menzies Building ANU University Library.jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:RG_Menzies_Building_ANU_University_Library.jpg",
+      "author": "ColonelLight",
+      "license": "CC0 1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
       "modified": true
     },
     "caltech-usa-pasadena": {
@@ -73,11 +73,11 @@
       "modified": true
     },
     "delft-university-of-technology-nl-delft": {
-      "file": "File:Aerial view of TU Delft campus.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_TU_Delft_campus.jpg",
-      "author": "We Like Sharing",
-      "license": "CC0",
-      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "file": "File:Aula TU Delft 2017.jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Aula_TU_Delft_2017.jpg",
+      "author": "Choinowski",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
       "modified": true
     },
     "epfl-ch-lausanne": {
@@ -185,11 +185,11 @@
       "modified": true
     },
     "national-university-of-singapore-sg-singapore": {
-      "file": "File:Entrance E of the National University of Singapore 20210426 165000.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:Entrance_E_of_the_National_University_of_Singapore_20210426_165000.jpg",
-      "author": "ZKang123",
+      "file": "File:University Town, National University of Singapore, February 2020 (2).jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:University_Town,_National_University_of_Singapore,_February_2020_(2).jpg",
+      "author": "Joshua Rommel Hayag Vargas",
       "license": "CC BY-SA 4.0",
-      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
       "modified": true
     },
     "nazarbayev-university-kaz-astana": {
@@ -217,11 +217,11 @@
       "modified": true
     },
     "seoul-national-university-kr-seoul": {
-      "file": "File:Seoul National University Yeongeon Campus at Naksan Park view.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:Seoul_National_University_Yeongeon_Campus_at_Naksan_Park_view.jpg",
-      "author": "U2em",
-      "license": "CC BY-SA 3.0",
-      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "file": "File:Daehan Hospital (2025-01).jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Daehan_Hospital_(2025-01).jpg",
+      "author": "Sadopaul",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
       "modified": true
     },
     "stanford-university-usa-ca": {
@@ -249,11 +249,11 @@
       "modified": true
     },
     "tsinghua-university-cn-beijing": {
-      "file": "File:2018年清華校河秋景2.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:2018%E5%B9%B4%E6%B8%85%E8%8F%AF%E6%A0%A1%E6%B2%B3%E7%A7%8B%E6%99%AF2.jpg",
-      "author": "清華匿名學生",
-      "license": "CC0",
-      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "file": "File:12 Tsinghua.jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:12_Tsinghua.jpg",
+      "author": "Jon",
+      "license": "CC BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0/",
       "modified": true
     },
     "uc-berkeley-usa-berkeley": {
@@ -313,11 +313,11 @@
       "modified": true
     },
     "university-of-melbourne-au-melbourne": {
-      "file": "File:Aerial panorama of University of Melbourne facing the city skyline. September 2023.jpg",
-      "source_url": "https://commons.wikimedia.org/wiki/File:Aerial_panorama_of_University_of_Melbourne_facing_the_city_skyline._September_2023.jpg",
-      "author": "Bob Tan",
-      "license": "CC BY 4.0",
-      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "file": "File:Old Arts Building. Parkville Campus of University of Melbourne (cropped).JPG",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Old_Arts_Building._Parkville_Campus_of_University_of_Melbourne_(cropped).JPG",
+      "author": "Polly clip",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
       "modified": true
     },
     "university-of-oxford-uk-oxford": {
@@ -383,6 +383,84 @@
       "license": "CC BY-SA 4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
       "modified": true
+    }
+  },
+  "gallery": {
+    "australian-national-university-au-canberra": {
+      "campus-entrance-sign.jpg": {
+        "file": "File:AUS Canberra, Central, Australian National University 001.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:AUS_Canberra,_Central,_Australian_National_University_001.jpg",
+        "author": "-wuppertaler",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0",
+        "modified": true
+      },
+      "old-canberra-house.jpg": {
+        "file": "File:Old Canberra House.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Old_Canberra_House.jpg",
+        "author": "Toby Hudson",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "modified": true
+      }
+    },
+    "delft-university-of-technology-nl-delft": {
+      "campus-aerial.jpg": {
+        "file": "File:Aerial view of TU Delft campus.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_TU_Delft_campus.jpg",
+        "author": "We Like Sharing",
+        "license": "CC0",
+        "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "modified": true
+      }
+    },
+    "national-university-of-singapore-sg-singapore": {
+      "kent-ridge-entrance-e.jpg": {
+        "file": "File:Entrance E of the National University of Singapore 20210426 165000.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Entrance_E_of_the_National_University_of_Singapore_20210426_165000.jpg",
+        "author": "ZKang123",
+        "license": "CC BY-SA 4.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+        "modified": true
+      }
+    },
+    "seoul-national-university-kr-seoul": {
+      "yeongeon-campus-panorama.jpg": {
+        "file": "File:Seoul National University Yeongeon Campus at Naksan Park view.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Seoul_National_University_Yeongeon_Campus_at_Naksan_Park_view.jpg",
+        "author": "U2em",
+        "license": "CC BY-SA 3.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+        "modified": true
+      }
+    },
+    "tsinghua-university-cn-beijing": {
+      "campus-river-in-autumn.jpg": {
+        "file": "File:2018年清華校河秋景2.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:2018%E5%B9%B4%E6%B8%85%E8%8F%AF%E6%A0%A1%E6%B2%B3%E7%A7%8B%E6%99%AF2.jpg",
+        "author": "清華匿名學生",
+        "license": "CC0",
+        "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "modified": true
+      }
+    },
+    "university-of-melbourne-au-melbourne": {
+      "parkville-and-city-skyline.jpg": {
+        "file": "File:Aerial panorama of University of Melbourne facing the city skyline. September 2023.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Aerial_panorama_of_University_of_Melbourne_facing_the_city_skyline._September_2023.jpg",
+        "author": "Bob Tan",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0",
+        "modified": true
+      },
+      "parkville-historic-building.jpg": {
+        "file": "File:Melbourne University grand building.jpg",
+        "source_url": "https://commons.wikimedia.org/wiki/File:Melbourne_University_grand_building.jpg",
+        "author": "Geoff Penaluna",
+        "license": "CC BY-SA 2.0",
+        "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "modified": true
+      }
     }
   }
 }

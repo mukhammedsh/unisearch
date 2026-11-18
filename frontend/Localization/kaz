@@ -398,6 +398,7 @@ universities.card.est_cost_year: Жылдық шамамен шығын
 universities.card.in_ranking: рейтингте
 universities.card.view_details: Толығырақ
 universities.card.metrics: Негізгі көрсеткіштер
+universities.card.photo_unavailable: Кампус фотосы қолжетімсіз
 universities.card.statuses: Университет белгілері
 universities.card.cost_short: Шығын
 universities.card.per_year: / жыл
@@ -826,6 +827,14 @@ university.cover_credit.text: Фото: {author}, {license}
 university.cover_credit.text_modified: Фото: {author}, {license} (кесілген)
 university.cover_credit.unknown_author: Авторы көрсетілмеген
 university.cover_credit.source_title: Фотосурет дереккөзінің лицензиясы бар бетін ашу
+university.gallery.label: Кампус фотосуреттері
+university.gallery.open: Фотосуретті үлкейту
+university.gallery.previous: Алдыңғы фотосурет
+university.gallery.next: Келесі фотосурет
+university.gallery.position: {total} фотосуреттің {current}-суреті
+university.gallery.unavailable: Фотосурет қолжетімсіз
+university.gallery.zoom_in: Масштабты үлкейту
+university.gallery.zoom_out: Масштабты кішірейту
 university.chat_assistant: Чат көмекшісі
 university.clear: Тазалау
 university.discounts_scholarships: Жеңілдіктер мен стипендиялар
@@ -850,7 +859,6 @@ university.tab.costs: Оқу құны және қаржыландыру
 university.tab.general: Қысқаша ақпарат
 university.tab.programs: Бағдарламалар
 university.tabs.aria: Университет бөлімдері
-university.logo_alt: {name} логотипі
 universities.filter.drawer_aria: Каталог сүзгілері
 university.total_cost_calculator: Жалпы құн калькуляторы
 university.total_estimated_cost: Болжалды жалпы құн
@@ -1355,8 +1363,8 @@ terms.accounts.title: 4. Пайдаланушы аккаунттары және 
 terms.accounts.p1: Қазіргі нұсқада аккаунт ашу, жүйеге кіру немесе профильді құрылғылар арасында синхрондау мүмкіндігі жоқ.
 terms.accounts.p2: Қонақ профилінің деректері браузерде сақталады. Сондықтан браузеріңіз бен құрылғыңызға кіру қауіпсіздігін өзіңіз қамтамасыз етесіз.
 terms.ip.title: 5. Зияткерлік меншік және әділ пайдалану
-terms.ip.non_affiliation: UniSearch — тәуелсіз каталог. Ол сайтта аталған университеттерге қарасты емес, олар демеушілік етпейді және қолдамайды. Университеттердің атаулары, елтаңбалары, логотиптері мен тауар белгілері өз иелеріне тиесілі және тек қай оқу орны туралы сөз болып тұрғанын көрсету үшін қолданылады.
-terms.ip.p1: Университет атаулары, елтаңбалары мен ресми белгілері тиісті оқу орындарының тауар белгілері болып қалады. Кампус фотосуреттерінің құқықтары олардың авторлары мен оқу орындарына тиесілі. UniSearch атаулар мен логотиптерді коммерциялық емес білім беру жобасында тек оқу орнын көрсету үшін қолданады, ал кампус фотосуреттерін тек қайта пайдалануға рұқсат беретін дереккөздерден алады және лицензия талап етсе, авторын көрсетеді.
+terms.ip.non_affiliation: UniSearch — тәуелсіз каталог. Каталогта аталған университеттер оны басқармайды, қаржыландырмайды және қолдамайды.
+terms.ip.p1: Университеттердің атаулары оқу орындарын көрсету үшін қолданылады. Кампус фотосуреттері өз дереккөздерінің шарттарына сай, авторы көрсетіліп пайдаланылады.
 terms.ip.p2: UniSearch бастапқы коды, құжаттамасы және жобаның түпнұсқа материалдары MIT лицензиясымен қолжетімді. Репозиторийдегі лицензия ескертуіне сай университет атаулары, логотиптері, елтаңбалары және кампус фотосуреттері бұл лицензияға кірмейді.
 terms.ip.takedown: Түзету немесе жою туралы өтініш: егер сіз университеттің уәкілетті өкілі, фотограф немесе зияткерлік меншік құқығының иесі болсаңыз, логотипке, фотосуретке не университет туралы мәліметке авторын көрсетуді, түзетуді немесе жоюды сұрай аласыз. unisearch.sup@gmail.com мекенжайына жазыңыз. Біз өтінішті қарап, электрондық пошта арқылы жауап береміз.
 terms.acceptable_use.title: 6. Пайдалану ережелері

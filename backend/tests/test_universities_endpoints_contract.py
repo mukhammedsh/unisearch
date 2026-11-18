@@ -422,9 +422,10 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         university_id = self._first_university_id()
         self.assertTrue(university_id)
 
-        logo_small = self.client.get(f"/universities/assets/logos-small/{university_id}.png")
-        self.assertEqual(logo_small.status_code, 200)
-        self.assertIn("image/", str(logo_small.headers.get("content-type") or ""))
+        for directory in ("logos", "logos-small"):
+            with self.subTest(directory=directory):
+                legacy_path = f"/universities/assets/{directory}/{university_id}.png"
+                self.assertEqual(self.client.get(legacy_path).status_code, 404)
 
         thumb_full = self.client.get(f"/universities/assets/thumbnails/{university_id}.jpg")
         self.assertEqual(thumb_full.status_code, 200)

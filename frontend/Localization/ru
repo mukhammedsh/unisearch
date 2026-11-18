@@ -401,6 +401,7 @@ universities.card.est_cost_year: Примерная цена/год
 universities.card.in_ranking: в рейтинге
 universities.card.view_details: Открыть детали
 universities.card.metrics: Ключевые метрики
+universities.card.photo_unavailable: Фото кампуса недоступно
 universities.card.statuses: Статусы университета
 universities.card.cost_short: Цена
 universities.card.per_year: в год
@@ -829,6 +830,14 @@ university.cover_credit.text: Фото: {author}, {license}
 university.cover_credit.text_modified: Фото: {author}, {license} (кадрировано)
 university.cover_credit.unknown_author: Автор не указан
 university.cover_credit.source_title: Открыть страницу источника фото с лицензией
+university.gallery.label: Фото кампуса
+university.gallery.open: Увеличить фото
+university.gallery.previous: Предыдущее фото
+university.gallery.next: Следующее фото
+university.gallery.position: Фото {current} из {total}
+university.gallery.unavailable: Фото недоступно
+university.gallery.zoom_in: Увеличить масштаб
+university.gallery.zoom_out: Уменьшить масштаб
 university.chat_assistant: Чат-ассистент
 university.clear: Очистить
 university.discounts_scholarships: Скидки и стипендии
@@ -853,7 +862,6 @@ university.tab.costs: Стоимость и финансирование
 university.tab.general: Обзор
 university.tab.programs: Программы
 university.tabs.aria: Разделы университета
-university.logo_alt: Логотип {name}
 universities.filter.drawer_aria: Фильтры каталога
 university.total_cost_calculator: Калькулятор общей стоимости
 university.total_estimated_cost: Ориентировочная общая стоимость
@@ -1354,8 +1362,8 @@ terms.accounts.title: 4. Учетные записи и безопасность
 terms.accounts.p1: В текущей версии нет пользовательских аккаунтов, входа в систему и синхронизации профиля между устройствами.
 terms.accounts.p2: Вы отвечаете за безопасность доступа к своему браузеру и устройству, поскольку гостевой профиль хранится в этом браузере.
 terms.ip.title: 5. Интеллектуальная собственность и добросовестное использование
-terms.ip.non_affiliation: UniSearch является полностью независимым проектом и не аффилирован, не спонсируется и не поддерживается упомянутыми в каталоге университетами. Названия учебных заведений, эмблемы, логотипы и товарные знаки принадлежат их законным правообладателям и используются только для того, чтобы указать, о каком вузе идёт речь.
-terms.ip.p1: Названия учебных заведений, их официальные логотипы и эмблемы являются товарными знаками соответствующих университетов, а фотографии кампусов — собственностью их авторов и учебных заведений. UniSearch использует названия и логотипы только для обозначения вузов в некоммерческом образовательном проекте, а фотографии кампусов — только из источников, которые разрешают их повторное использование, с указанием авторства, если этого требует лицензия.
+terms.ip.non_affiliation: UniSearch — независимый каталог. Упомянутые в нём вузы не управляют им, не спонсируют и не поддерживают его.
+terms.ip.p1: Названия вузов помогают определить, о каком учебном заведении идёт речь. Фотографии кампусов используются на условиях их источников с указанием авторства.
 terms.ip.p2: Исходный код UniSearch, документация и оригинальные материалы проекта доступны по лицензии MIT. Названия университетов, логотипы, эмблемы и фотографии кампусов исключены из этой лицензии согласно уведомлению в репозитории.
 terms.ip.takedown: Процедура Notice & Takedown: если вы являетесь официальным представителем университета, автором фотографии или правообладателем интеллектуальной собственности и желаете запросить указание авторства, корректировку или удаление логотипа, снимка либо информации о вузе, напишите на unisearch.sup@gmail.com. Мы рассмотрим обращение и ответим по электронной почте.
 terms.acceptable_use.title: 6. Правила использования платформы

@@ -41,7 +41,6 @@
 }
 
 .is-skeleton .uni-media,
-.is-skeleton .uni-logo,
 .is-skeleton .uni-price,
 .is-skeleton .skeleton-line {
   position: relative;
@@ -51,7 +50,6 @@
 }
 
 .is-skeleton .uni-media::after,
-.is-skeleton .uni-logo::after,
 .is-skeleton .uni-price::after,
 .is-skeleton .skeleton-line::after {
   content: "";
@@ -73,13 +71,8 @@
   z-index: 1;
 }
 
-.is-skeleton .uni-price,
-.is-skeleton .uni-logo {
+.is-skeleton .uni-price {
   z-index: 2;
-}
-
-.is-skeleton .uni-logo {
-  position: absolute;
 }
 
 .is-skeleton .skeleton-line {
@@ -331,11 +324,28 @@
   z-index: 0;
 }
 
-.uni-media::after {
+.uni-media:has(> .uni-media-img)::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--backdrop) 50%, transparent) 100%);
+}
+
+.uni-media-empty {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.uni-media-img + .uni-media-empty {
+  display: none;
 }
 
 .uni-price {
@@ -396,30 +406,6 @@
 .catalog-cost-help > p {
   margin: 0;
   padding-inline-start: var(--space-4);
-}
-
-.uni-logo {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  z-index: 2;
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-base);
-  background: var(--surface-badge);
-  border: none;
-  display: grid;
-  place-items: center;
-  font-weight: var(--font-weight-medium);
-  color: var(--surface-badge-text);
-  box-shadow: var(--shadow-sm);
-}
-
-.uni-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: var(--space-1);
 }
 
 .uni-body {

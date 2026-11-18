@@ -32,11 +32,9 @@ const {
   admissionChoiceKey,
   applyPercentWidths,
   chanceTone,
-  clusterMarkerLogoHtml,
   getAdmissionChoicesFromCategories,
   getGrantsFromCategories,
   getTrackFundingType,
-  mapMarkerLogoHtml,
   renderExamGroup,
   renderGroupedExamPairRows,
   renderRequirementChecks,
@@ -740,14 +738,6 @@ test("Harvard Law JD shows its published tuition without presenting it as total 
     saveProfile(previousProfile);
     window.location.search = previousSearch;
   }
-});
-
-test("map marker markup escapes URLs and cluster counts are normalized", () => {
-  const marker = mapMarkerLogoHtml('logo.png" onerror="alert(1)');
-  assert.match(marker, /logo\.png&quot; onerror=&quot;alert\(1\)/);
-  assert.match(marker, /data-remove-on-error="1"/);
-  assert.match(clusterMarkerLogoHtml("logo.png", "3"), /cluster-badge">\+3</);
-  assert.match(clusterMarkerLogoHtml("logo.png", "invalid"), /cluster-badge">\+0</);
 });
 
 test("applyPercentWidths clamps invalid and out-of-range values", () => {

@@ -100,12 +100,16 @@
   border-radius: var(--radius-xl);
 }
 
+.d-gallery {
+  container: university-gallery / inline-size;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .d-cover {
   height: auto;
   position: relative;
   background-color: var(--surface-soft);
-  background-size: cover;
-  background-position: center;
   aspect-ratio: 16 / 5.4;
   min-height: 180px;
   max-height: 420px;
@@ -114,61 +118,278 @@
   overflow: hidden;
 }
 
-.d-cover-overlay {
+.d-gallery-preview,
+.d-gallery-preview-media {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--backdrop) 40%, transparent));
-  background: linear-gradient(
-  180deg,
-  color-mix(in srgb, var(--backdrop) 8%, transparent),
-  color-mix(in srgb, var(--backdrop) 34%, transparent)
-  );
-  border-radius: inherit;
+  inset: 0;
 }
 
-.d-cover-logo {
-  position: absolute;
-  z-index: 2;
-  overflow: hidden;
+.d-gallery-preview {
+  width: 100%;
+  padding: 0;
   border: none;
-  display: grid;
-  place-items: center;
-  font-weight: var(--font-weight-medium);
-  left: 16px;
-  bottom: 16px;
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  /* Guaranteed contrasting background for university logo */
-  background: var(--surface-badge);
-  color: var(--surface-badge-text);
+  border-radius: inherit;
+  background: transparent;
+  cursor: zoom-in;
+  touch-action: pan-y pinch-zoom;
 }
 
-/* Same recipe as the catalog card logo: the badge owns the surface and radius,
-   the image only contains itself inside a small inset. */
-.d-logo-img {
-  box-sizing: border-box;
+.d-gallery-preview > span {
+  pointer-events: none;
+}
+
+.d-gallery-preview-media {
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+}
+
+.d-gallery-preview img {
   width: 100%;
   height: 100%;
-  min-width: 0;
-  min-height: 0;
-  padding: var(--space-1);
+  object-fit: cover;
+}
+
+.d-gallery-button,
+.d-gallery-zoom {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--media-caption-bg);
+  color: var(--text-inverse);
+}
+
+.d-gallery-zoom,
+.d-gallery-button--close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 1;
+}
+
+.d-photo-zoom-controls {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 1;
+  display: flex;
+}
+
+.d-photo-zoom-controls [aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.d-gallery-navigation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  justify-self: center;
+  width: max-content;
+  max-width: 100%;
+}
+
+.d-gallery-navigation[hidden],
+.d-gallery-cover-credit:empty {
+  display: none;
+}
+
+.d-gallery-button {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.d-gallery-button:is(:hover, :active),
+.d-gallery-preview:hover .d-gallery-zoom {
+  background: var(--media-viewer-bg);
+}
+
+.d-gallery-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: var(--text);
+}
+
+.d-gallery-dots button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.d-gallery-dots button::before {
+  content: "";
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-circle);
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.d-gallery-dots button:is(:hover, [aria-current])::before {
+  opacity: 1;
+}
+
+.d-gallery-dots button[aria-current]::before {
+  width: var(--space-4);
+}
+
+.d-gallery-preview:focus-visible,
+.d-gallery-button:focus-visible,
+.d-gallery-dots button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.d-gallery-preview:focus-visible {
+  z-index: 1;
+  outline-offset: -3px;
+}
+
+.d-photo-viewer {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  border: none;
+  background: var(--media-viewer-bg);
+  color: var(--text-inverse);
+}
+
+.d-photo-viewer::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: var(--media-viewer-bg);
+}
+
+.d-photo-viewer[open] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: var(--space-16) minmax(0, 1fr) minmax(var(--space-16), auto);
+}
+
+.d-photo-stage {
+  grid-row: 2;
+  padding-inline: var(--space-4);
+}
+
+.d-photo-canvas {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  overflow: hidden;
+}
+
+.d-photo-canvas.can-zoom {
+  touch-action: none;
+}
+
+.d-photo-canvas.can-zoom.is-over-photo {
+  cursor: zoom-in;
+}
+
+.d-photo-canvas.is-zoomed.is-over-photo {
+  cursor: grab;
+}
+
+.d-photo-canvas.is-zoomed.is-over-photo:active,
+.d-photo-canvas.is-zoomed.is-dragging {
+  cursor: grabbing;
+}
+
+.d-photo-canvas img {
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  object-position: center;
-  display: block;
+  pointer-events: none;
+}
+
+.d-gallery-error {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--media-caption-bg);
+  color: var(--text-inverse);
+  font-size: var(--text-sm);
+}
+
+.d-gallery-retry {
+  width: auto;
+  padding: 0 var(--space-3);
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
+.d-gallery-retry:is(:hover, :active) {
+  background: var(--surface-soft);
+}
+
+.d-photo-footer {
+  grid-row: 3;
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  padding: 0 var(--space-3) var(--space-2);
+  text-align: center;
+}
+
+.d-photo-footer .d-gallery-dots {
+  color: inherit;
+}
+
+.d-photo-footer .d-cover-credit {
+  background: transparent;
+}
+
+@media (max-width: 768px), (max-height: 480px) {
+  .d-photo-stage {
+    padding-inline: 0;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 480px) {
+  .d-photo-viewer[open] {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .d-photo-stage {
+    grid-row: 1;
+    padding: var(--space-2) var(--space-16) 0;
+  }
+
+  .d-photo-zoom-controls {
+    flex-direction: column-reverse;
+  }
+
+  .d-photo-footer {
+    grid-row: 2;
+  }
 }
 
 /* Photo credit: the photo license requires a visible author and license next to the photograph. */
 .d-cover-credit {
-  position: absolute;
-  right: var(--space-3);
-  bottom: var(--space-3);
-  z-index: 2;
-  max-width: calc(100% - 64px - var(--space-12)); /* spacing-exception: clears the 64px cover logo and its inset */
+  display: block;
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--media-caption-bg);
@@ -227,6 +448,101 @@ a.d-cover-credit:focus-visible {
 .d-cover-back:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+@container university-gallery (width > 44rem) {
+  .d-cover,
+  .d-gallery-cover-credit,
+  .d-gallery > .d-gallery-navigation .d-gallery-control {
+    grid-area: 1 / 1;
+  }
+
+  .d-gallery-preview::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--backdrop) 8%, transparent),
+      color-mix(in srgb, var(--backdrop) 34%, transparent)
+    );
+    border-radius: inherit;
+  }
+
+  .d-gallery > .d-gallery-navigation:not([hidden]) {
+    display: contents;
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-control {
+    z-index: 1;
+    align-self: center;
+    padding-inline: var(--space-3);
+  }
+
+  .d-gallery-control--previous {
+    justify-self: start;
+  }
+
+  .d-gallery-control--next {
+    justify-self: end;
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-dots {
+    grid-area: 2 / 1;
+  }
+
+  .d-gallery-cover-credit {
+    z-index: 2;
+    align-self: end;
+    justify-self: end;
+    box-sizing: border-box;
+    max-width: calc(100% - 64px - var(--space-6)); /* Clears the 64px cover logo and its inset. */
+    padding: var(--space-3);
+    pointer-events: none;
+  }
+
+  .d-gallery-cover-credit a {
+    pointer-events: auto;
+  }
+}
+
+@container university-gallery (width <= 44rem) {
+  .d-gallery-cover-credit {
+    padding: var(--space-2) var(--space-4);
+    text-align: center;
+  }
+
+  .d-gallery-navigation:not([hidden]) + .d-gallery-cover-credit {
+    padding-block-start: 0;
+  }
+
+  .d-gallery-cover-credit .d-cover-credit {
+    padding: 0;
+    background: transparent;
+    color: var(--text-muted);
+    line-height: var(--space-4);
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-button {
+    background: transparent;
+    color: var(--text);
+  }
+
+  .d-gallery > .d-gallery-navigation .d-gallery-button:is(:hover, :active) {
+    background: var(--surface-soft);
+  }
+
+  .d-gallery-zoom {
+    width: var(--space-8);
+    height: var(--space-8);
+  }
+
+  .d-gallery-zoom .ui-icon {
+    width: var(--space-4);
+    height: var(--space-4);
+  }
+
 }
 
 .d-head {
@@ -2245,11 +2561,6 @@ a.d-cover-credit:focus-visible {
     width: 100%;
     max-width: 100%;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  }
-
-  .d-cover-logo {
-    width: 56px;
-    height: 56px;
   }
 
   .d-title {

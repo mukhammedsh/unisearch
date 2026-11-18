@@ -1,7 +1,6 @@
 import {
   API_BASE,
   escapeHtml,
-  escapeHtmlAttr,
   getFlagImg,
   loadProfile,
   loadProfileForApi,
@@ -19,7 +18,7 @@ import { renderCoverageSection, renderExtraSection, renderOverviewSection, rende
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
 import { mountOverviewSummary } from "./overview-summary.js";
-import { renderCoverCredit } from "./cover-credit.js";
+import { mountUniversityGallery } from "./gallery.js";
 import { heroIcon } from "../../icons.js";
 import {
   fetchUniversityDetailCached,
@@ -35,8 +34,6 @@ import {
   trCity,
   trCountry,
   trUniversityName,
-  uniLogoSrc,
-  uniThumbnailSrc,
   unknownFieldText,
   writeIdListStorage,
 } from "../_shared.js";
@@ -50,6 +47,7 @@ let detailOnlineReconnectHandler = null;
 let detailPopStateHandler = null;
 let detailAdmissionsCleanup = null;
 let detailOverviewSummaryCleanup = null;
+let detailGalleryCleanup = null;
 let detailPageVersion = 0;
 
 function clearDetailLanguageSkeletons() {
@@ -96,17 +94,9 @@ function bindDetailLanguageLifecycle() {
   window.addEventListener("languageChangeFinished", detailLanguageFinishedHandler);
 }
 
-function cssString(value) {
-  return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-}
-
-function thumbnailBackgroundImage(universityId) {
-  const webp = cssString(uniThumbnailSrc(universityId, { forceFull: true }));
-  const jpg = cssString(uniThumbnailSrc(universityId, { forceFull: true, format: "jpg" }));
-  return `image-set(url("${webp}") type("image/webp"), url("${jpg}") type("image/jpeg"))`;
-}
-
 function cleanupDetailListeners() {
+  detailGalleryCleanup?.();
+  detailGalleryCleanup = null;
   detailAdmissionsCleanup?.();
   detailAdmissionsCleanup = null;
   detailOverviewSummaryCleanup?.();
@@ -183,23 +173,8 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
       ? tFormat("university.price_from", { price: formattedPrice }, `from ${formattedPrice} / year`)
       : unknownFieldText("placeholder.field.cost", "Cost"),
   );
-  setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
-  const coverEl = document.getElementById("detailCover");
-  if (coverEl) {
-    coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
-    // The photo credit loads after the cover; a failure leaves the cover without a caption instead of breaking the page.
-    renderCoverCredit(coverEl, universityId).catch((error) => console.warn("cover_credit_render_failed", error));
-  }
-
-  const logoEl = document.getElementById("detailLogo");
-  if (logoEl) {
-    const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
-    const logoAlt = translatedName
-      ? tFormat("university.logo_alt", { name: translatedName }, `${translatedName} logo`)
-      : "UniSearch";
-    logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(universityId, { forceFull: true })}" alt="${escapeHtmlAttr(logoAlt)}" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(universityId))}" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
-  }
+  detailGalleryCleanup = mountUniversityGallery(document.getElementById("detailCover"), universityId);
 
   const websiteBtn = document.getElementById("detailWebsite");
   if (websiteBtn) {
@@ -323,7 +298,7 @@ function mountOverviewSummaryBlock(options) {
   return mountOverviewSummary({ container, ...options });
 }
 
-async function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
+function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
   if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
   const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
   const nameEl = document.getElementById("detailName");
@@ -354,7 +329,6 @@ async function renderReviewedUniversityPage({ id, preserveVisibleContent, univer
     : initialUrl.searchParams.get("admission_option") ? "programs" : "general");
   if (!preserveVisibleContent) document.querySelector(`[data-tab="tab-${initialTab}"]`)?.click();
   bindDetailRefreshLifecycle();
-  await mounted.ready;
 }
 
 async function renderLegacyUniversityPage({ id, university, universityId, cardEl, stateEl }) {
@@ -581,7 +555,7 @@ export async function initUniversityPage(options = {}) {
   }
 
   try {
-    setDetailLoading(true);
+    setDetailLoading(!cardEl?.classList.contains("is-mounted"));
     if (stateEl) stateEl.textContent = "";
 
     const [university] = await Promise.all([
@@ -594,7 +568,7 @@ export async function initUniversityPage(options = {}) {
     rememberRecentUniversity(universityId);
 
     if (REVIEWED_ADMISSIONS_IDS.has(universityId)) {
-      await renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl });
+      renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl });
       return;
     }
 

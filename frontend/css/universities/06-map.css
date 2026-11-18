@@ -99,21 +99,6 @@
   pointer-events: none;
 }
 
-.u-map-results-list .is-skeleton .uni-logo--inline {
-  position: static;
-  background-color: var(--skeleton-base);
-  background-image: linear-gradient(
-  100deg,
-  transparent 0%,
-  transparent 34%,
-  var(--skeleton-highlight) 46%,
-  transparent 58%,
-  transparent 100%
-  );
-  background-size: 220% 100%;
-  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
-}
-
 .u-map-results-list .is-skeleton .uni-head-copy {
   flex: 1 1 auto;
   min-width: 0;
@@ -271,20 +256,6 @@
   padding-right: var(--space-8);
 }
 
-.u-map-results-list .uni-logo--inline {
-  position: relative;
-  left: auto;
-  bottom: auto;
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-base);
-}
-
-.u-map-results-list .uni-logo--inline img {
-  padding: var(--space-1);
-}
-
 .u-map-results-footer {
   display: grid;
   justify-items: center;
@@ -351,22 +322,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-}
-
-.map-point-popup__logo {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  overflow: hidden;
-  border-radius: var(--radius-base);
-  background: var(--surface-badge);
-}
-
-.map-point-popup__logo img {
-  width: 100%;
-  height: 100%;
-  padding: var(--space-1);
-  object-fit: contain;
 }
 
 .map-point-popup__copy {
@@ -496,12 +451,6 @@
 
   .u-map-results-list::-webkit-scrollbar {
     display: none;
-  }
-
-  .u-map-results-list .uni-logo--inline {
-    flex-basis: 36px;
-    width: 36px;
-    height: 36px;
   }
 
   .uni-card--map .uni-title {

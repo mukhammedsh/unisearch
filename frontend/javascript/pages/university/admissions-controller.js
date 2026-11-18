@@ -939,8 +939,9 @@ export function mountAdmissionsCatalog(institutionId) {
   };
   window.addEventListener("profileUpdated", onProfileUpdated);
   window.addEventListener("popstate", onPopState);
-  const ready = Promise.all([refreshPrograms(), refreshContext()]);
-  void ready.then(updateTabArrows);
+  void Promise.all([refreshPrograms(), refreshContext()])
+    .then(updateTabArrows)
+    .catch((error) => console.error(error));
   const dispose = () => {
     browsingByInstitution.set(institutionId, { search, language: searchLanguage, level: filterLevel, page, major: suggestedMajor, suggestedLevel });
     disposed = true;
@@ -956,5 +957,5 @@ export function mountAdmissionsCatalog(institutionId) {
     window.removeEventListener("profileUpdated", onProfileUpdated);
     window.removeEventListener("popstate", onPopState);
   };
-  return { ready, dispose };
+  return { dispose };
 }

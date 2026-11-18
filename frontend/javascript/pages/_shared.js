@@ -1069,13 +1069,6 @@ export function uniThumbnailSrc(universityId, opts = {}) {
   return buildApiUrl(`universities/assets/${folder}/${safeId}.${format}`);
 }
 
-export function uniLogoSrc(universityId, opts = {}) {
-  const safeId = safePathSegment(universityId);
-  const forceFull = !!opts.forceFull;
-  const folder = forceFull ? "logos" : "logos-small";
-  return buildApiUrl(`universities/assets/${folder}/${safeId}.png`);
-}
-
 // Formatting & Price Resolution Helpers
 export function toFiniteNumber(value) {
     if (value === null || value === undefined || value === "") return null;
