@@ -9,6 +9,9 @@ Patch release: documentation correction with no new user-visible capability or b
 ### Changed
 - Clarified that UniSearch identifies institutions by name and campus photography and does not publish university logos; aligned the third-party notice, photo contribution guidance, architecture diagram, and catalog expansion roadmap.
 
+### Fixed
+- Standardized website, map, and save actions across all university pages, including their typography and stable localized save-state width.
+
 ## 10.4.3 (2026-11-18) - Modern web platform baseline, accessibility, and security hardening
 
 Patch release with no new user-visible capability: adopts Baseline Widely available JS/CSS APIs, converts overlays to native `<dialog>` elements, upgrades WAI-ARIA tabs/tables/selects/toasts and Forced Colors support, removes CSS `@import` waterfalls, and tightens static security headers.
