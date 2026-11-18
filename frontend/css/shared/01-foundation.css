@@ -385,12 +385,6 @@ body {
   box-shadow: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .center-loading-spinner {
-    animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
-  }
-}
-
 .center-loading-spinner--sm {
   width: 40px;
   height: 40px;
@@ -536,6 +530,10 @@ main {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .center-loading-spinner {
+    animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+  }
+
   main {
     animation: page-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
@@ -543,7 +541,6 @@ main {
   .d-card.is-mounted {
     animation: detail-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
-
 }
 
 a {

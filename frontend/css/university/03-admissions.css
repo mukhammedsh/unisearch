@@ -1,10 +1,6 @@
 #tab-admission .d-box {
   position: relative;
   overflow: visible;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  padding: var(--space-6);
 }
 
 .admissions-summary-grid,
@@ -275,17 +271,6 @@
   background: var(--grant-soft-strong);
 }
 
-@media (max-width: 480px) {
-  .admissions-source-link {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
-  .admissions-source-link__action {
-    grid-column: 2;
-    white-space: normal;
-  }
-}
-
 .track-funding-badge--paid {
   color: var(--text);
   background: var(--surface-soft);
@@ -320,18 +305,6 @@
   font-size: var(--text-sm);
 }
 
-@media (max-width: 480px) {
-  .admission-context-controls {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .admission-context-control select {
-    width: 100%;
-    min-width: 0;
-  }
-}
-
 .mit-admission-context__action {
   flex: 0 0 auto;
   min-height: 44px;
@@ -349,38 +322,9 @@
   background: var(--accent-panel);
 }
 
-@media (max-width: 640px) {
-
-  .chance-head {
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .chance-percent {
-    font-size: var(--text-2xl);
-  }
-
-  .chance-percent-wrap {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-  }
-
-  .chance-sub {
-    overflow-wrap: anywhere;
-  }
-
-}
-
 .chance-warning,
 .chance-inline-note {
   border-radius: var(--radius-base);
-}
-
-#tab-admission .d-box::before {
-  display: none;
 }
 
 .admissions-section-title,
@@ -405,21 +349,6 @@
   line-height: 1.15;
   white-space: normal;
   overflow-wrap: anywhere;
-}
-
-@media (max-width: 640px) {
-
-  .admissions-summary-grid,
-.admissions-program-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-}
-
-@media (max-width: 768px) {
-  #tab-admission .d-box {
-    padding: var(--space-4);
-  }
 }
 
 /* ====================================================================
@@ -487,11 +416,7 @@
 }
 
 .admissions-programs-block {
-  margin-top: var(--space-6);
   padding-top: var(--space-5);
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
 }
 
 .admissions-section-title {
@@ -514,39 +439,12 @@
   gap: var(--space-4);
 }
 
-@media (max-width: 1024px) {
-  .admissions-program-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-  }
-}
-
-.admissions-program-card {
-  border-radius: var(--radius-lg, 16px);
-  background: var(--surface-soft);
-  padding: var(--space-5);
-  box-shadow: none;
-}
-
-@media (max-width: 768px) {
-  .admission-check-assessments__row {
-    grid-template-columns: 1fr;
-  }
-}
-
 .chance-panel {
   border-radius: var(--radius-lg, 16px);
   background: var(--surface-soft);
   padding: var(--space-5) var(--space-5);
   margin-bottom: var(--space-5);
   box-shadow: none;
-}
-
-@media (max-width: 640px) {
-  .chance-panel {
-    padding: var(--space-4) var(--space-4);
-    margin-bottom: var(--space-4);
-  }
 }
 
 /* ===== Deadlines & Application Rounds ===== */
@@ -1025,31 +923,6 @@
   font-size: var(--text-sm);
 }
 
-@media (max-width: 480px) {
-  .admissions-level-filter {
-    box-sizing: border-box;
-    flex-wrap: wrap;
-    max-width: 100%;
-    min-width: 0;
-    overflow: visible;
-  }
-
-  .deadline-calendar__head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .deadline-calendar__navigation {
-    width: 100%;
-  }
-
-  .deadline-calendar__day,
-  .deadline-calendar__blank {
-    min-height: 44px;
-    padding: var(--space-1);
-  }
-}
-
 .mit-admission-analysis {
   margin-top: var(--space-5);
   border-radius: var(--radius-lg);
@@ -1078,4 +951,94 @@
 /* Gap-owning containers already space these children; their own margins (and browser paragraph margins) doubled it. */
 #detailDeadlines > :is(.admission-empty-state, .deadlines-timeline-wrapper) {
   margin-block: 0;
+}
+
+@media (max-width: 1024px) {
+  .admissions-program-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 768px) {
+  .admission-check-assessments__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admissions-summary-grid,
+  .admissions-program-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chance-head {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .chance-percent {
+    font-size: var(--text-2xl);
+  }
+
+  .chance-percent-wrap {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .chance-sub {
+    overflow-wrap: anywhere;
+  }
+
+  .chance-panel {
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .admissions-source-link {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .admissions-source-link__action {
+    grid-column: 2;
+    white-space: normal;
+  }
+
+  .admission-context-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admission-context-control select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .admissions-level-filter {
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .deadline-calendar__head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .deadline-calendar__navigation {
+    width: 100%;
+  }
+
+  .deadline-calendar__day,
+  .deadline-calendar__blank {
+    min-height: 44px;
+    padding: var(--space-1);
+  }
 }

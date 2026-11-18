@@ -133,6 +133,7 @@
 }
 
 .navbar-right .lang-control .custom-select-trigger::after {
+  content: "";
   width: 8px;
   height: 5px;
   position: static;
@@ -312,27 +313,6 @@
   height: 24px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .profile-trigger-btn:hover,
-  .settings-trigger-btn:hover,
-  .navbar-search-toggle:hover,
-  .lang-switch:hover,
-  .navbar-right .lang-control .custom-select-trigger:hover {
-    background: var(--accent-panel);
-    box-shadow: var(--shadow-sm);
-    color: var(--accent);
-  }
-
-  .navbar-right .lang-control .custom-select-trigger:hover::after {
-    opacity: 1;
-    background-color: var(--accent);
-  }
-
-  .icon-btn:hover{
-    background: var(--line);
-  }
-}
-
 /* Shared profile content */
 
 /* ====================================================================
@@ -399,15 +379,6 @@
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
 }
 
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip).is-closed > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
@@ -776,25 +747,6 @@
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .settings-close:hover {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
-
-  .settings-switch:hover .settings-switch-track {
-    background: var(--line-strong);
-  }
-
-  .settings-switch-input:checked:hover + .settings-switch-track {
-    background: var(--accent-strong);
-  }
-
-  .settings-attribution a:hover {
-    color: var(--accent);
-  }
-}
-
 @media (max-width: 640px) {
   .settings-card {
     width: min(100%, calc(100vw - 24px));
@@ -835,11 +787,6 @@
     width: 100%;
     max-width: 100%;
   }
-}
-
-#saveProfileBtn[disabled]{
-  cursor: not-allowed;
-  opacity: 0.6;
 }
 
 /* ===== Languages block ===== */
@@ -959,9 +906,6 @@
 .toast-close:focus-visible {
   opacity: 1;
 }
-@media (hover: hover) and (pointer: fine) {
-  .toast-close:hover { opacity: 1; }
-}
 
 @keyframes motion-toast-in {
   from {
@@ -1045,13 +989,6 @@ select:not(.u-select-hidden) {
   box-shadow: var(--shadow-micro);
   border-radius: var(--dropdown-radius);
   cursor: pointer;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .custom-select-trigger:hover:not(.is-disabled) {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
 }
 
 .custom-select-chevron,
@@ -1179,13 +1116,6 @@ select:not(.u-select-hidden) {
   overflow-wrap: anywhere;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .custom-option:hover:not(.is-disabled) {
-    background-color: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
-}
-
 .custom-option.selected {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
@@ -1199,11 +1129,11 @@ select:not(.u-select-hidden) {
 
 .custom-option-check {
   margin-inline-start: auto;
-  visibility: hidden;
+  opacity: 0;
 }
 
 .custom-option.selected .custom-option-check {
-  visibility: visible;
+  opacity: 1;
 }
 
 .custom-option.is-disabled {
@@ -1397,13 +1327,70 @@ select:not(.u-select-hidden) {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .profile-trigger-btn:hover,
+  .settings-trigger-btn:hover,
+  .navbar-search-toggle:hover,
+  .lang-switch:hover,
+  .navbar-right .lang-control .custom-select-trigger:hover {
+    background: var(--accent-panel);
+    box-shadow: var(--shadow-sm);
+    color: var(--accent);
+  }
+
+  .navbar-right .lang-control .custom-select-trigger:hover::after {
+    opacity: 1;
+    background-color: var(--accent);
+  }
+
+  .icon-btn:hover {
+    background: var(--line);
+  }
+
+  :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .settings-close:hover {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .settings-switch:hover .settings-switch-track {
+    background: var(--line-strong);
+  }
+
+  .settings-switch-input:checked:hover + .settings-switch-track {
+    background: var(--accent-strong);
+  }
+
+  .settings-attribution a:hover {
+    color: var(--accent);
+  }
+
+  .toast-close:hover {
+    opacity: 1;
+  }
+
+  .custom-select-trigger:hover:not(.is-disabled) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .custom-option:hover:not(.is-disabled) {
+    background-color: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
   .footer-legal-links a:hover {
-      color: var(--accent);
+    color: var(--accent);
   }
 
   .social-links a:hover {
-      color: var(--interaction-hover-text);
-      background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+    background: var(--interaction-hover-surface);
   }
 }
 

@@ -18,103 +18,6 @@ nav {
   max-width: 100%;
 }
 
-@media (max-width: 1024px) {
-  .navbar {
-    height: var(--nav-height);
-    min-height: var(--nav-height);
-    padding: 0 var(--mobile-safe-gutter);
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-  }
-
-  .navbar-left {
-    order: 1;
-    width: auto;
-    min-width: 0;
-    justify-content: flex-start;
-    flex: 0 1 auto;
-  }
-
-  .navbar-logo-link {
-    min-width: 0;
-    justify-content: flex-start;
-    max-width: min(32vw, 132px);
-  }
-
-  .logo {
-    height: 34px;
-    max-width: min(36vw, 148px);
-    object-fit: contain;
-  }
-
-  .navbar-right {
-    order: 2;
-    width: auto;
-    flex: 0 0 auto;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-2);
-  }
-
-  .navbar-right > * {
-    margin: 0;
-  }
-
-  .navbar-search-toggle,
-.settings-trigger-btn,
-.profile-trigger-btn,
-.navbar-right .lang-control .custom-select-trigger {
-    min-width: 40px;
-    min-height: 40px;
-  }
-
-  .lang-control {
-    order: 2;
-    margin-right: 0;
-  }
-
-  .settings-trigger-btn {
-    order: 4;
-    width: 40px;
-    height: 40px;
-  }
-
-  .profile-trigger-btn {
-    order: 5;
-    width: 40px;
-    height: 40px;
-  }
-
-  .navbar-right .lang-control .custom-select-wrapper,
-.navbar-right .lang-control .custom-select-trigger {
-    width: 82px;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger {
-    padding: 0 var(--space-5) 0 var(--space-2);
-    border-radius: var(--radius-base);
-    font-size: var(--text-xs);
-  }
-}
-
-@media (max-width: 380px) {
-
-  .navbar-right .lang-control .custom-select-trigger {
-    padding: 0 var(--space-2);
-  }
-}
-
-@media (max-width: 340px) {
-  :root {
-    --nav-height: 104px;
-  }
-
-}
-
 /* Keep the compact language arrow anchored while the flag/label changes. */
 .navbar-right .lang-control .custom-select-trigger--language {
   position: relative;
@@ -123,191 +26,12 @@ nav {
   padding: 0 var(--space-3);
 }
 
-.navbar-right .lang-control .custom-select-trigger--language::after {
-  position: static;
-  display: inline-block;
-  transform: none;
-}
-
-.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger--language::after {
-  transform: rotate(180deg);
-}
-
-@media (max-width: 380px) {
-
-  .navbar-right .lang-control .custom-select-trigger--language::after {
-    position: static;
-  }
-}
-
-/* Final mobile navbar sizing: keep five controls readable without crowding. */
-@media (max-width: 640px) {
-  .navbar {
-    gap: var(--space-3);
-    padding-left: var(--space-3);
-    padding-right: var(--space-3);
-  }
-
-  .navbar-left {
-    flex: 0 0 auto;
-    width: auto;
-    min-width: 0;
-    justify-content: flex-start;
-  }
-
-  .navbar-left > a,
-.navbar-logo-link {
-    width: auto;
-    max-width: min(32vw, 132px);
-    justify-content: flex-start;
-  }
-
-  .logo {
-    width: auto;
-    height: 31px;
-    max-width: 100%;
-    object-position: left center;
-  }
-
-  .navbar-right {
-    gap: var(--space-2);
-    margin-left: auto;
-  }
-
-  .navbar-search-toggle,
-.settings-trigger-btn,
-.profile-trigger-btn {
-    flex: 0 0 36px;
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    min-height: 36px;
-    border-radius: var(--radius-md);
-  }
-
-  .navbar-right .lang-control .custom-select-wrapper,
-.navbar-right .lang-control .custom-select-trigger {
-    width: 64px;
-    min-width: 64px;
-    height: 36px;
-    min-height: 36px;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language {
-    padding: 0 var(--space-2);
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language::after {
-    display: none;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
-    gap: var(--space-1);
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language img {
-    width: 20px;
-    height: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  /* The logo and the utilities line up with the page gutter below them. */
-  .navbar {
-    gap: var(--space-2);
-    padding-left: var(--layout-page-gutter);
-    padding-right: var(--layout-page-gutter);
-  }
-
-  .navbar-left > a,
-.navbar-logo-link {
-    width: auto;
-    max-width: 100%;
-    justify-content: flex-start;
-  }
-
-  .navbar-left {
-    flex-basis: clamp(76px, 26vw, 92px);
-    width: clamp(76px, 26vw, 92px);
-    justify-content: flex-start;
-  }
-
-  .navbar-right {
-    gap: var(--space-1);
-    margin-left: auto;
-  }
-
-  .navbar-search-toggle,
-.settings-trigger-btn,
-.profile-trigger-btn {
-    flex-basis: 34px;
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    min-height: 34px;
-  }
-
-  .navbar-right .lang-control .custom-select-wrapper,
-.navbar-right .lang-control .custom-select-trigger {
-    width: 58px;
-    min-width: 58px;
-    height: 34px;
-    min-height: 34px;
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language {
-    padding: 0 var(--space-2);
-  }
-
-  .navbar-right .lang-control .custom-select-trigger--language img {
-    width: 18px;
-    height: 14px;
-  }
-}
-
-@media (max-width: 340px) {
-  .navbar {
-    height: var(--nav-height);
-    min-height: var(--nav-height);
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    padding-top: var(--space-2);
-    padding-bottom: var(--space-2);
-    gap: 0;
-  }
-
-  .navbar-left {
-    flex: 0 0 100%;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .navbar-logo-link {
-    width: auto;
-    max-width: 132px;
-    justify-content: center;
-  }
-
-  .logo {
-    width: auto;
-    object-position: center;
-  }
-
-  .navbar-right {
-    flex: 0 0 100%;
-    width: 100%;
-    justify-content: center;
-    gap: var(--space-2);
-    margin-left: 0;
-  }
-}
-
 /* Sliding Indicator */
 .has-sliding-indicator {
   position: relative;
   --sliding-indicator-extra-width: 0px;
 }
+
 .sliding-indicator {
   position: absolute;
   bottom: 0;
@@ -329,26 +53,6 @@ nav {
 body .has-sliding-indicator .is-active::after,
 body .has-sliding-indicator .active::after {
   display: none;
-}
-
-/* Keep the primary destinations visually independent from the brand and utilities. */
-@media (min-width: 1025px) {
-  .navbar {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    column-gap: var(--space-6);
-  }
-
-  .navbar-left {
-    justify-self: start;
-  }
-
-  .navbar-right {
-    justify-self: end;
-  }
-
-  .navbar.is-compact {
-    display: flex;
-  }
 }
 
 /* ===== University workspace search ===== */
@@ -380,7 +84,7 @@ body .has-sliding-indicator .active::after {
 }
 
 /* Mobile search overlay trigger (YouTube-style): sizing and visuals come from
-   the shared navbar button group above, so the loupe always matches them. */
+   the shared navbar button group below, so the loupe always matches them. */
 .navbar-search-toggle[hidden] {
   display: none;
 }
@@ -469,21 +173,6 @@ body .has-sliding-indicator .active::after {
 
 .navbar-search input::placeholder {
   color: var(--text-muted);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .navbar-search-back:hover,
-  .navbar-search-field:hover {
-    background: var(--interaction-hover-surface);
-  }
-
-  .navbar-search-back:hover {
-    color: var(--interaction-hover-text);
-  }
-
-  .navbar-search-field:hover .navbar-search-icon {
-    color: var(--interaction-hover-text);
-  }
 }
 
 .navbar-search input:focus {
@@ -588,17 +277,6 @@ body .has-sliding-indicator .active::after {
   outline: 0;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .navbar-search-clear:hover {
-    background: var(--interaction-active-surface);
-    color: var(--interaction-hover-text);
-  }
-
-  .navbar-search-suggestion:hover {
-    background: var(--surface-soft);
-  }
-}
-
 .navbar-search-suggestion__body {
   display: flex;
   flex-direction: column;
@@ -664,8 +342,38 @@ body .has-sliding-indicator .active::after {
   margin: var(--space-1);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .navbar-search-back:hover,
+  .navbar-search-field:hover {
+    background: var(--interaction-hover-surface);
+  }
+
+  .navbar-search-back:hover {
+    color: var(--interaction-hover-text);
+  }
+
+  .navbar-search-field:not(:focus-within):hover .navbar-search-icon {
+    color: var(--interaction-hover-text);
+  }
+
+  .navbar-search-clear:hover {
+    background: var(--interaction-active-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .navbar-search-suggestion:hover {
+    background: var(--surface-soft);
+  }
+}
+
+/* Keep the primary destinations visually independent from the brand and utilities. */
 @media (min-width: 1025px) {
   .navbar {
+    display: flex;
+    column-gap: var(--space-6);
+  }
+
+  .navbar.is-compact {
     display: flex;
   }
 
@@ -690,15 +398,94 @@ body .has-sliding-indicator .active::after {
 }
 
 @media (max-width: 1024px) {
+  .navbar {
+    height: var(--nav-height);
+    min-height: var(--nav-height);
+    padding: 0 var(--mobile-safe-gutter);
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .navbar-left {
+    order: 1;
+    width: auto;
+    min-width: 0;
+    justify-content: flex-start;
+    flex: 0 1 auto;
+  }
+
+  .navbar-logo-link {
+    min-width: 0;
+    justify-content: flex-start;
+    max-width: min(32vw, 132px);
+  }
+
+  .logo {
+    height: 34px;
+    max-width: min(36vw, 148px);
+    object-fit: contain;
+  }
+
+  .navbar-right {
+    order: 2;
+    width: auto;
+    flex: 0 0 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+
+  .navbar-right > * {
+    margin: 0;
+  }
+
+  .navbar-search-toggle {
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .lang-control {
+    order: 2;
+    margin-right: 0;
+  }
+
+  .settings-trigger-btn,
+  .profile-trigger-btn {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .settings-trigger-btn {
+    order: 4;
+  }
+
+  .profile-trigger-btn {
+    order: 5;
+  }
+
+  .navbar-right .lang-control .custom-select-wrapper {
+    width: 82px;
+  }
+
+  .navbar-right .lang-control .custom-select-trigger {
+    width: 82px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 var(--space-5) 0 var(--space-2);
+    border-radius: var(--radius-base);
+    font-size: var(--text-xs);
+  }
+
   /* Single-row navbar on mobile: the search field is hidden behind a
      YouTube-style loupe button and expands into a full-width overlay. */
   .navbar.has-university-search {
     display: flex;
-    height: var(--nav-height);
-    min-height: var(--nav-height);
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: var(--space-3);
   }
 
   .navbar.has-university-search .navbar-left {
@@ -767,7 +554,172 @@ body .has-sliding-indicator .active::after {
   }
 }
 
+/* Final mobile navbar sizing: keep five controls readable without crowding. */
+@media (max-width: 640px) {
+  .navbar {
+    gap: var(--space-3);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  .navbar-left {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+    justify-content: flex-start;
+  }
+
+  .navbar-left > a,
+  .navbar-logo-link {
+    width: auto;
+    max-width: min(32vw, 132px);
+    justify-content: flex-start;
+  }
+
+  .logo {
+    width: auto;
+    height: 31px;
+    max-width: 100%;
+    object-position: left center;
+  }
+
+  .navbar-right {
+    gap: var(--space-2);
+    margin-left: auto;
+  }
+
+  .navbar-search-toggle,
+  .settings-trigger-btn,
+  .profile-trigger-btn {
+    flex: 0 0 36px;
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    border-radius: var(--radius-md);
+  }
+
+  .navbar-right .lang-control .custom-select-wrapper,
+  .navbar-right .lang-control .custom-select-trigger {
+    width: 64px;
+    min-width: 64px;
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .navbar-right .lang-control .custom-select-trigger--language {
+    padding: 0 var(--space-2);
+  }
+
+  .navbar-right .lang-control .custom-select-trigger--language::after {
+    display: none;
+  }
+
+  .navbar-right .lang-control .custom-select-trigger--language .custom-select-trigger-content {
+    gap: var(--space-1);
+  }
+
+  .navbar-right .lang-control .custom-select-trigger--language img {
+    width: 20px;
+    height: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* The logo and the utilities line up with the page gutter below them. */
+  .navbar {
+    gap: var(--space-2);
+    padding-left: var(--layout-page-gutter);
+    padding-right: var(--layout-page-gutter);
+  }
+
+  .navbar-left > a,
+  .navbar-logo-link {
+    width: auto;
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+
+  .navbar-left {
+    flex-basis: clamp(76px, 26vw, 92px);
+    width: clamp(76px, 26vw, 92px);
+    justify-content: flex-start;
+  }
+
+  .navbar-right {
+    gap: var(--space-1);
+    margin-left: auto;
+  }
+
+  .navbar-search-toggle,
+  .settings-trigger-btn,
+  .profile-trigger-btn {
+    flex-basis: 34px;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+  }
+
+  .navbar-right .lang-control .custom-select-wrapper,
+  .navbar-right .lang-control .custom-select-trigger {
+    width: 58px;
+    min-width: 58px;
+    height: 34px;
+    min-height: 34px;
+  }
+
+  .navbar-right .lang-control .custom-select-trigger--language img {
+    width: 18px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .navbar-right .lang-control .custom-select-trigger {
+    padding: 0 var(--space-2);
+  }
+}
+
 @media (max-width: 340px) {
+  :root {
+    --nav-height: 104px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+    gap: 0;
+  }
+
+  .navbar-left {
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar-logo-link {
+    width: auto;
+    max-width: 132px;
+    justify-content: center;
+  }
+
+  .logo {
+    width: auto;
+    object-position: center;
+  }
+
+  .navbar-right {
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-left: 0;
+  }
+
   .navbar.has-university-search .navbar-left,
   .navbar.has-university-search .navbar-right {
     flex: 0 0 auto;

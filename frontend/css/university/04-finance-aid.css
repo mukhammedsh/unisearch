@@ -1,10 +1,6 @@
-#tab-finance .finance-box {
+.finance-box {
   position: relative;
   overflow: visible;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  padding: var(--space-6);
 }
 
 .finance-list-full {
@@ -122,18 +118,6 @@
   text-underline-offset: var(--space-1);
 }
 
-@media (max-width: 480px) {
-  .finance-award-head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .finance-award-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-}
-
 .finance-option-head {
   justify-content: space-between;
   flex-wrap: wrap;
@@ -185,7 +169,7 @@
 }
 
 .cost-legend {
-  grid-template-columns: 1fr 1fr; /* 2 columns on desktop */
+  grid-template-columns: 1fr;
   align-items: stretch;
   grid-auto-rows: auto;
   display: grid;
@@ -243,28 +227,6 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-@media (max-width: 1024px) and (min-width: 769px) {
-
-  .finance-summary-right {
-    flex: 0 0 260px;
-  }
-
-}
-
-@media (max-width: 768px) {
-
-  .finance-summary-container {
-    flex-direction: column;
-    grid-template-columns: minmax(0, 1fr);
-    margin-bottom: var(--space-6);
-  }
-
-  .finance-summary-right {
-    flex: auto;
-  }
-
 }
 
 .finance-grid-new + .roi-box {
@@ -327,88 +289,6 @@
   display: none;
 }
 
-@media (max-width: 640px) {
-
-  .roi-metrics-row {
-    gap: var(--space-3);
-  }
-
-  .roi-metric {
-    flex-basis: 100%;
-  }
-
-  .roi-metric-value--accent {
-    font-size: var(--text-3xl);
-  }
-
-  .roi-metrics-divider {
-    display: none;
-  }
-
-}
-
-@media (max-width: 640px) {
-  .cost-legend {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-.finance-option-card::before {
-  height: 2px;
-  background: var(--accent);
-}
-
-.finance-option-card--grant::before {
-  background: var(--color-success);
-}
-
-#tab-finance .cost-legend {
-  grid-template-columns: 1fr;
-}
-
-@media (max-width: 380px) {
-
-  .price-inline-row,
-  .finance-option-total {
-    min-width: 0;
-  }
-
-}
-
-#tab-finance .finance-box,
-.finance-option-card,
-.finance-track-group,
-.finance-option-total,
-.scholarship-card,
-.total-price-card,
-.roi-box {
-  box-shadow: none;
-}
-
-.finance-option-card::before,
-#tab-finance .finance-box::before {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-  .finance-option-card,
-.cost-progress-segment {
-    transition: none !important;
-    animation: none !important;
-  }
-
-}
-
-@media (max-width: 640px) {
-
-  .finance-option-head {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-}
-
 .scholarship-line--muted {
   color: var(--text-muted);
 }
@@ -418,12 +298,6 @@
   min-height: 112px;
   align-items: flex-start;
   text-align: left;
-}
-
-@media (max-width: 768px) {
-  #tab-finance .finance-box {
-    padding: var(--space-4);
-  }
 }
 
 .finance-track-group {
@@ -629,12 +503,6 @@
 
 .finance-option-card--grant {
   background: var(--surface-soft);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  :is(.finance-option-card--paid, .finance-option-card--grant):hover {
-    box-shadow: var(--shadow-xs);
-  }
 }
 
 .finance-option-label {
@@ -859,48 +727,6 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
-}
-
-@media (max-width: 1024px) {
-  .finance-track-options-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .finance-one-time-costs__row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-
-  .finance-one-time-costs dd {
-    text-align: left;
-  }
-}
-
-@media (max-width: 480px) {
-  .finance-section-header {
-    margin-bottom: var(--space-4);
-  }
-
-  .scholarship-card,
-  .total-price-card,
-  .finance-option-card {
-    padding: var(--space-4);
-  }
-
-  .finance-option-total,
-  .finance-option-meta__row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-
-  .finance-option-total__value,
-  .finance-option-meta dd {
-    text-align: left;
-  }
-
-  .finance-track-group + .finance-track-group {
-    padding-top: var(--space-6);
-  }
 }
 
 /* ROI metrics block styled with Calm Academic tokens */
@@ -1144,4 +970,109 @@
 /* Gap-owning containers already space these children; their own margins (and browser paragraph margins) doubled it. */
 .finance-option-total > p {
   margin-block: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(.finance-option-card--paid, .finance-option-card--grant):hover {
+    box-shadow: var(--shadow-xs);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .finance-option-card,
+  .cost-progress-segment {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .finance-track-options-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .finance-one-time-costs__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .finance-one-time-costs dd {
+    text-align: left;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .finance-summary-right {
+    flex: 0 0 260px;
+  }
+}
+
+@media (max-width: 768px) {
+  .finance-summary-container {
+    flex-direction: column;
+    grid-template-columns: minmax(0, 1fr);
+    margin-bottom: var(--space-6);
+  }
+
+  .finance-summary-right {
+    flex: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .roi-metrics-row {
+    gap: var(--space-3);
+  }
+
+  .roi-metric {
+    flex-basis: 100%;
+  }
+
+  .finance-option-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .finance-award-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .finance-award-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .finance-section-header {
+    margin-bottom: var(--space-4);
+  }
+
+  .scholarship-card,
+  .total-price-card,
+  .finance-option-card {
+    padding: var(--space-4);
+  }
+
+  .finance-option-total,
+  .finance-option-meta__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+
+  .finance-option-total__value,
+  .finance-option-meta dd {
+    text-align: left;
+  }
+
+  .finance-track-group + .finance-track-group {
+    padding-top: var(--space-6);
+  }
+}
+
+@media (max-width: 380px) {
+  .price-inline-row,
+  .finance-option-total {
+    min-width: 0;
+  }
 }
