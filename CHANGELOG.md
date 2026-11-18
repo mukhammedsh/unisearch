@@ -2,6 +2,21 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.0 (2026-11-19) - Currency fallback snapshot sync and rate update status
+
+Minor release: synchronizes static offline exchange rates across backend and frontend with an explicit snapshot date and displays localized currency rate freshness or offline snapshot status in Settings.
+
+### Added
+- Added `FALLBACK_RATES_DATE` (`2026-11-18`) alongside `FALLBACK_RATES` in both `backend/app/services/currency.py` and `frontend/javascript/currency.js`, plus `scripts/sync-currency-fallback.mjs` to refresh rates from ExchangeRate-API and check backend/frontend parity.
+- Exported `getRatesMetadata()` and `formatRatesTimestamp()` from `frontend/javascript/currency.js` to format UTC timestamps in the user's local timezone and keep `YYYY-MM-DD` calendar dates anchored in UTC without negative-offset day shift.
+- Added `#currencyRatesStatus` inside `.settings-attribution` in `#settingsModal` (`frontend/javascript/components.js`, `frontend/javascript/components/settings-ui.js`, `frontend/css/shared/02-shell-settings-feedback.css`) with localized `currency.rates_updated` and `currency.rates_offline` strings in English, Russian, and Kazakh, updating reactively on modal open, background rate arrival (`currencyRatesStatusUpdated` / `currencyRatesUpdated`), and language switches.
+
+### Changed
+- Updated `FALLBACK_RATES` across backend and frontend to the 2026-11-18 ExchangeRate-API USD snapshot (166 currencies) and returned `FALLBACK_RATES_DATE` instead of `"fallback"` in `get_rates()` and frontend fallback paths, skipping `sessionStorage` persistence for fallback responses.
+
+### Tests
+- Added backend and frontend unit tests covering `FALLBACK_RATES` / `FALLBACK_RATES_DATE` parity, fallback `date` responses, timezone-aware and calendar-safe timestamp formatting, and reactive Settings attribution updates, and updated existing unit and currency E2E expectations for the refreshed fallback rates.
+
 ## 10.5.0 (2026-11-18) - Broader annual cost ranges and campus photo fallback
 
 Backward-compatible minor version update for catalog cost references and missing campus-photo states.

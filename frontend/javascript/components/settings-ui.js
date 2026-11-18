@@ -1,5 +1,7 @@
 import { closeMotionLayer, initCustomSelect, replayMotion } from "../utils.js";
 import { applyTheme, getThemePreference } from "../utils.js";
+import { formatRatesTimestamp, getRatesMetadata } from "../currency.js";
+import { getCurrentLanguage, tFormat } from "../i18n.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_PREFERRED_CURRENCY,
@@ -46,9 +48,29 @@ export function initSettingsUI() {
     });
   };
 
+  const syncRatesAttribution = () => {
+    const statusEl = modal.querySelector?.("#currencyRatesStatus") || document.getElementById("currencyRatesStatus");
+    if (!statusEl) return;
+    const { date, source } = getRatesMetadata();
+    const formattedDate = formatRatesTimestamp(date, getCurrentLanguage());
+    if (!formattedDate) {
+      statusEl.hidden = true;
+      statusEl.textContent = "";
+      statusEl.removeAttribute?.("data-rates-status");
+      return;
+    }
+    const isFallback = source === "fallback";
+    statusEl.textContent = isFallback
+      ? tFormat("currency.rates_offline", { date: formattedDate }, "Offline rates from {date}")
+      : tFormat("currency.rates_updated", { date: formattedDate }, "Updated: {date}");
+    statusEl.hidden = false;
+    statusEl.setAttribute("data-rates-status", isFallback ? "fallback" : "live");
+  };
+
   const openSettings = () => {
     syncSettingsInputs();
     syncThemeInputs();
+    syncRatesAttribution();
     modal.classList.remove("is-closing");
     modal.classList.add("is-open");
     if (typeof modal.showModal === "function") {
@@ -87,6 +109,7 @@ export function initSettingsUI() {
   writeSettingsArray(readSettingsArray());
   syncSettingsInputs();
   syncThemeInputs();
+  syncRatesAttribution();
 
   openBtn.addEventListener("click", openSettings);
   closeBtn?.addEventListener("click", closeSettings);
@@ -144,6 +167,9 @@ export function initSettingsUI() {
 
   window.addEventListener("settingsChanged", syncSettingsInputs);
   window.addEventListener("themeChanged", syncThemeInputs);
+  window.addEventListener("currencyRatesStatusUpdated", syncRatesAttribution);
+  window.addEventListener("currencyRatesUpdated", syncRatesAttribution);
+  window.addEventListener("languageChanged", syncRatesAttribution);
   if (typeof modal.showModal !== "function") {
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && modal.classList.contains("is-open")) {

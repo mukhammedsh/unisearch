@@ -169,6 +169,8 @@ currency.region.asia_pacific: Азиатско-Тихоокеанский рег
 currency.region.middle_east_africa: Ближний Восток и Африка
 currency.region.other: Другие валюты
 currency.attribution: Курсы валют предоставлены
+currency.rates_updated: Обновлено: {date}
+currency.rates_offline: Офлайн-курсы · на {date}
 currency.opt.kzt: Казахстанский тенге (KZT, ₸)
 currency.opt.rub: Российский рубль (RUB, ₽)
 currency.opt.uzs: Узбекский сум (UZS, soʻm)

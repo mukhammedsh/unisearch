@@ -11,173 +11,175 @@ import {
 const RATES_STORAGE_KEY = "unisearch_currency_rates_cache_v1";
 const RATES_CACHE_TTL_MS = 3600 * 1000; // 1 hour client cache TTL
 
+// Snapshot from ExchangeRate-API (time_last_update_utc: Wed, 18 Nov 2026 00:02:31 +0000)
+export const FALLBACK_RATES_DATE = "2026-11-18";
 export const FALLBACK_RATES = {
   USD: 1.0,
-  AED: 3.67,
-  AFN: 64.8243,
-  ALL: 79.173,
-  AMD: 363.83,
+  AED: 3.6725,
+  AFN: 65.569445,
+  ALL: 82.33211,
+  AMD: 360.496742,
   ANG: 1.79,
-  AOA: 925.654,
-  ARS: 950.0,
-  AUD: 1.39,
+  AOA: 929.147823,
+  ARS: 1552.2627,
+  AUD: 1.48436,
   AWG: 1.79,
-  AZN: 1.7,
-  BAM: 1.6835,
+  AZN: 1.700728,
+  BAM: 1.778167,
   BBD: 2.0,
-  BDT: 118.0,
-  BGN: 1.68,
-  BHD: 0.38,
-  BIF: 3002.2714,
+  BDT: 124.86223,
+  BGN: 1.778167,
+  BHD: 0.376,
+  BIF: 3006.888053,
   BMD: 1.0,
-  BND: 1.2671,
-  BOB: 12.5706,
-  BRL: 5.11,
+  BND: 1.288383,
+  BOB: 11.662995,
+  BRL: 5.781701,
   BSD: 1.0,
-  BTN: 95.5302,
-  BWP: 13.7503,
-  BYN: 3.04,
+  BTN: 93.516187,
+  BWP: 14.508283,
+  BYN: 3.000459,
   BZD: 2.0,
-  CAD: 1.38,
-  CDF: 2303.2866,
-  CHF: 0.81,
-  CLF: 0.0235,
-  CLP: 910.0,
-  CNH: 6.7101,
-  CNY: 6.73,
-  COP: 3950.0,
-  CRC: 454.4902,
+  CAD: 1.429407,
+  CDF: 2308.716632,
+  CHF: 0.840712,
+  CLF: 0.025263,
+  CLP: 998.564588,
+  CNH: 6.667956,
+  CNY: 6.679863,
+  COP: 3320.186806,
+  CRC: 446.134339,
   CUP: 24.0,
-  CVE: 94.9137,
-  CZK: 20.87,
+  CVE: 100.248771,
+  CZK: 22.170826,
   DJF: 177.721,
-  DKK: 6.43,
-  DOP: 58.8248,
-  DZD: 133.1346,
-  EGP: 47.0,
+  DKK: 6.800425,
+  DOP: 60.637513,
+  DZD: 137.146457,
+  EGP: 53.717698,
   ERN: 15.0,
-  ETB: 161.2708,
-  EUR: 0.86,
-  FJD: 2.2159,
-  FKP: 0.7398,
-  FOK: 6.4314,
-  GBP: 0.74,
-  GEL: 2.61,
-  GGP: 0.7398,
-  GHS: 11.417,
-  GIP: 0.7398,
-  GMD: 74.6582,
-  GNF: 8785.4424,
-  GTQ: 7.6431,
-  GYD: 209.2915,
-  HKD: 7.84,
-  HNL: 26.8569,
-  HRK: 6.4855,
-  HTG: 130.7193,
-  HUF: 313.96,
-  IDR: 17561.81,
-  ILS: 3.04,
-  IMP: 0.7398,
-  INR: 95.51,
-  IQD: 1310.9894,
-  IRR: 1453530.6071,
-  ISK: 125.0,
-  JEP: 0.7398,
-  JMD: 157.9683,
+  ETB: 161.134959,
+  EUR: 0.909215,
+  FJD: 2.296274,
+  FKP: 0.757555,
+  FOK: 6.800422,
+  GBP: 0.757596,
+  GEL: 2.593,
+  GGP: 0.757555,
+  GHS: 11.778354,
+  GIP: 0.757555,
+  GMD: 74.811158,
+  GNF: 8850.036393,
+  GTQ: 7.648031,
+  GYD: 209.072444,
+  HKD: 7.846176,
+  HNL: 26.949218,
+  HRK: 6.850083,
+  HTG: 131.070255,
+  HUF: 332.590881,
+  IDR: 18278.202017,
+  ILS: 3.246957,
+  IMP: 0.757555,
+  INR: 93.513494,
+  IQD: 1513.72549,
+  IRR: 1816886.218373,
+  ISK: 124.365658,
+  JEP: 0.757555,
+  JMD: 158.61453,
   JOD: 0.709,
-  JPY: 154.25,
-  KES: 130.0,
-  KGS: 87.49,
-  KHR: 4044.1834,
-  KID: 1.3953,
-  KMF: 423.475,
-  KRW: 1345.06,
-  KWD: 0.31,
-  KYD: 0.8333,
-  KZT: 450.0,
-  LAK: 22275.7659,
+  JPY: 159.393063,
+  KES: 130.099085,
+  KGS: 87.453407,
+  KHR: 4063.157895,
+  KID: 1.48436,
+  KMF: 447.278487,
+  KRW: 1335.360704,
+  KWD: 0.311342,
+  KYD: 0.833333,
+  KZT: 444.34436,
+  LAK: 22344.408775,
   LBP: 89500.0,
-  LKR: 328.2571,
-  LRD: 174.7516,
-  LSL: 16.1895,
-  LYD: 6.3274,
-  MAD: 9.8,
-  MDL: 17.25,
-  MGA: 4310.5225,
-  MKD: 52.9848,
-  MMK: 2101.8401,
-  MNT: 3450.0,
-  MOP: 8.0764,
-  MRU: 40.1419,
-  MUR: 47.0001,
-  MVR: 15.4499,
-  MWK: 1744.4538,
-  MXN: 16.97,
-  MYR: 4.07,
-  MZN: 63.7013,
-  NAD: 16.1895,
-  NGN: 1450.0,
-  NIO: 36.8288,
-  NOK: 9.27,
-  NPR: 152.8483,
-  NZD: 1.72,
-  OMR: 0.38,
+  LKR: 332.614594,
+  LRD: 169.562219,
+  LSL: 16.929365,
+  LYD: 6.458359,
+  MAD: 9.969406,
+  MDL: 18.254106,
+  MGA: 4579.234102,
+  MKD: 54.865608,
+  MMK: 2101.068478,
+  MNT: 3602.456854,
+  MOP: 8.081579,
+  MRU: 40.690473,
+  MUR: 47.856783,
+  MVR: 15.447647,
+  MWK: 1744.899877,
+  MXN: 18.442572,
+  MYR: 4.093341,
+  MZN: 63.721322,
+  NAD: 16.929365,
+  NGN: 1352.738411,
+  NIO: 36.830151,
+  NOK: 9.623495,
+  NPR: 149.625899,
+  NZD: 1.818615,
+  OMR: 0.384497,
   PAB: 1.0,
-  PEN: 3.7,
-  PGK: 4.5047,
-  PHP: 62.66,
-  PKR: 278.0,
-  PLN: 3.72,
-  PYG: 5904.8669,
+  PEN: 3.41413,
+  PGK: 4.526625,
+  PHP: 63.683951,
+  PKR: 276.818953,
+  PLN: 4.002539,
+  PYG: 6201.196113,
   QAR: 3.64,
-  RON: 4.3,
-  RSD: 101.0,
-  RUB: 84.37,
-  RWF: 1474.8231,
+  RON: 4.863092,
+  RSD: 106.932051,
+  RUB: 82.343695,
+  RWF: 1479.712832,
   SAR: 3.75,
-  SBD: 7.896,
-  SCR: 13.879,
-  SDG: 511.8921,
-  SEK: 9.67,
-  SGD: 1.27,
-  SHP: 0.7398,
-  SLE: 24.6816,
-  SLL: 24681.6189,
-  SOS: 571.5101,
-  SRD: 38.1123,
-  SSP: 5652.926,
-  STN: 21.0891,
-  SYP: 121.8891,
-  SZL: 16.1895,
-  THB: 33.0,
-  TJS: 9.23,
-  TMT: 3.5014,
-  TND: 2.9066,
-  TOP: 2.3652,
-  TRY: 48.56,
-  TTD: 6.7778,
-  TVD: 1.3953,
-  TWD: 31.6,
-  TZS: 2643.5621,
-  UAH: 44.62,
-  UGX: 3763.4748,
-  UYU: 40.2769,
-  UZS: 11792.97,
-  VES: 832.4883,
-  VND: 25879.19,
-  VUV: 117.9454,
-  WST: 2.6887,
-  XAF: 564.6333,
+  SBD: 8.017727,
+  SCR: 14.762627,
+  SDG: 446.888567,
+  SEK: 10.116792,
+  SGD: 1.288508,
+  SHP: 0.757555,
+  SLE: 23.06523,
+  SLL: 23065.229822,
+  SOS: 571.851852,
+  SRD: 37.553204,
+  SSP: 5751.280712,
+  STN: 22.274474,
+  SYP: 121.79865,
+  SZL: 16.929365,
+  THB: 33.82355,
+  TJS: 9.208671,
+  TMT: 3.5,
+  TND: 3.031605,
+  TOP: 2.397597,
+  TRY: 50.448894,
+  TTD: 6.765163,
+  TVD: 1.48436,
+  TWD: 32.967382,
+  TZS: 2645.508886,
+  UAH: 45.401903,
+  UGX: 4047.220753,
+  UYU: 40.684563,
+  UZS: 11984.031548,
+  VES: 916.6477,
+  VND: 25704.339633,
+  VUV: 120.845917,
+  WST: 2.778094,
+  XAF: 596.371316,
   XCD: 2.7,
   XCG: 1.79,
-  XDR: 0.7284,
-  XOF: 564.6333,
-  XPF: 102.7184,
-  YER: 237.2217,
-  ZAR: 16.19,
-  ZMW: 19.2177,
-  ZWG: 26.6758,
-  ZWL: 26.6758,
+  XDR: 0.743691,
+  XOF: 596.371316,
+  XPF: 108.492145,
+  YER: 236.637722,
+  ZAR: 16.926458,
+  ZMW: 20.60103,
+  ZWG: 26.6142,
+  ZWL: 26.6142,
 };
 
 export const STATIC_FILTER_LIMITS = {
@@ -257,9 +259,90 @@ export const CURRENCY_FORMAT_MAP = {
 
 let memoryRates = { ...FALLBACK_RATES };
 let memoryFilterLimits = { ...STATIC_FILTER_LIMITS };
-let memoryRatesDate = "";
+let memoryRatesDate = FALLBACK_RATES_DATE;
 let memoryRatesSource = "fallback";
 let inFlightRatesPromise = null;
+
+const DATE_ONLY_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+const RATES_LOCALE_BY_LANGUAGE = {
+  eng: "en-US",
+  en: "en-US",
+  rus: "ru-RU",
+  ru: "ru-RU",
+  kaz: "kk-KZ",
+  kk: "kk-KZ",
+};
+
+function normalizeRatesDate(rawDate) {
+  const value = String(rawDate || "").trim();
+  if (!value || value.toLowerCase() === "fallback") {
+    return FALLBACK_RATES_DATE;
+  }
+  return value;
+}
+
+export function getRatesMetadata() {
+  return {
+    date: normalizeRatesDate(memoryRatesDate),
+    source: String(memoryRatesSource || "fallback").trim().toLowerCase() || "fallback",
+  };
+}
+
+export function formatRatesTimestamp(dateValue, language = "eng", options = {}) {
+  const raw = String(dateValue || "").trim();
+  if (!raw || raw.toLowerCase() === "fallback") return "";
+
+  const langKey = String(language || "eng").trim().toLowerCase();
+  const locale = RATES_LOCALE_BY_LANGUAGE[langKey] || "en-US";
+
+  // Calendar-only YYYY-MM-DD strings must stay in UTC so negative local offsets do not shift them a day earlier.
+  const dateOnlyMatch = raw.match(DATE_ONLY_PATTERN);
+  if (dateOnlyMatch) {
+    const year = Number(dateOnlyMatch[1]);
+    const month = Number(dateOnlyMatch[2]);
+    const day = Number(dateOnlyMatch[3]);
+    const utcDate = new Date(Date.UTC(year, month - 1, day));
+    if (
+      Number.isNaN(utcDate.getTime()) ||
+      utcDate.getUTCFullYear() !== year ||
+      utcDate.getUTCMonth() !== month - 1 ||
+      utcDate.getUTCDate() !== day
+    ) {
+      return "";
+    }
+    return new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    }).format(utcDate);
+  }
+
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+
+  const formatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  };
+  if (options.timeZone) {
+    formatOptions.timeZone = options.timeZone;
+  }
+
+  try {
+    return new Intl.DateTimeFormat(locale, formatOptions).format(parsed);
+  } catch (e) {
+    const fallbackOptions = { ...formatOptions };
+    delete fallbackOptions.timeZone;
+    return new Intl.DateTimeFormat(locale, fallbackOptions).format(parsed);
+  }
+}
 
 export function getPreferredCurrency() {
   const settingVal = getSettingValue(SETTING_PREFERRED_CURRENCY);
@@ -324,14 +407,16 @@ function restoreFromSessionStorage() {
     const now = Date.now();
     const timestamp = Number(parsed.timestamp || 0);
     if (now - timestamp > RATES_CACHE_TTL_MS) return false;
+    const cachedSource = String(parsed.source || "cache").trim().toLowerCase();
+    if (cachedSource === "fallback") return false;
 
     if (parsed.rates && typeof parsed.rates === "object" && Object.keys(parsed.rates).length > 0) {
       memoryRates = { ...FALLBACK_RATES, ...parsed.rates };
       if (parsed.filter_limits && typeof parsed.filter_limits === "object") {
         memoryFilterLimits = { ...STATIC_FILTER_LIMITS, ...parsed.filter_limits };
       }
-      memoryRatesDate = String(parsed.date || "");
-      memoryRatesSource = String(parsed.source || "cache");
+      memoryRatesDate = normalizeRatesDate(parsed.date);
+      memoryRatesSource = cachedSource || "cache";
       return true;
     }
   } catch (e) {
@@ -408,26 +493,35 @@ export async function loadRates() {
         if (json.filter_limits && typeof json.filter_limits === "object") {
           memoryFilterLimits = { ...STATIC_FILTER_LIMITS, ...json.filter_limits };
         }
-        memoryRatesDate = String(json.date || "");
-        memoryRatesSource = String(json.source || "api");
+        memoryRatesDate = normalizeRatesDate(json.date);
+        memoryRatesSource = String(json.source || "api").trim().toLowerCase() || "api";
 
-        persistToSessionStorage({
-          rates: memoryRates,
-          filter_limits: memoryFilterLimits,
-          date: memoryRatesDate,
-          source: memoryRatesSource,
-        });
+        if (memoryRatesSource !== "fallback") {
+          persistToSessionStorage({
+            rates: memoryRates,
+            filter_limits: memoryFilterLimits,
+            date: memoryRatesDate,
+            source: memoryRatesSource,
+          });
+        }
       }
     } catch (e) {
       // If fetch fails, keep cached or static fallback
       if (!restoreFromSessionStorage()) {
         memoryRates = { ...FALLBACK_RATES };
         memoryFilterLimits = { ...STATIC_FILTER_LIMITS };
-        memoryRatesDate = "";
+        memoryRatesDate = FALLBACK_RATES_DATE;
         memoryRatesSource = "fallback";
       }
     } finally {
       inFlightRatesPromise = null;
+      try {
+        window.dispatchEvent(new CustomEvent("currencyRatesStatusUpdated", {
+          detail: getRatesMetadata(),
+        }));
+      } catch (e) {
+        // ignore event error
+      }
     }
 
     return {

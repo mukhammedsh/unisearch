@@ -175,3 +175,157 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
     window.setTimeout = originalTimeout;
   }
 });
+
+test("settings modal displays and reactively updates currency rate status in user language and timezone", async () => {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const localValues = {};
+  const sessionValues = {};
+  global.localStorage = window.localStorage = {
+    getItem: (key) => localValues[key] ?? null,
+    setItem: (key, value) => { localValues[key] = String(value); },
+    removeItem: (key) => { delete localValues[key]; },
+  };
+  global.sessionStorage = window.sessionStorage = {
+    getItem: (key) => sessionValues[key] ?? null,
+    setItem: (key, value) => { sessionValues[key] = String(value); },
+    removeItem: (key) => { delete sessionValues[key]; },
+  };
+
+  const originalDocument = global.document;
+  const originalAdd = window.addEventListener;
+  const originalDispatch = window.dispatchEvent;
+  const originalMatchMedia = window.matchMedia;
+  const originalTimeout = window.setTimeout;
+  const originalFetch = global.fetch;
+  const windowHandlers = new Map();
+
+  const modal = new FakeElement({ tagName: "DIALOG" });
+  const card = new FakeElement({ tagName: "SECTION" });
+  const openButton = new FakeElement();
+  const closeButton = new FakeElement();
+  const statusEl = new FakeElement({ tagName: "P", id: "currencyRatesStatus" });
+  statusEl.hidden = true;
+  statusEl.removeAttribute = (name) => { delete statusEl.attrs[name]; };
+  const currency = new FakeElement({ tagName: "SELECT", settingKey: "preferred_currency" });
+  const settingsInputs = [currency];
+  modal.querySelector = (selector) => {
+    if (selector === ".settings-card") return card;
+    if (selector === "#currencyRatesStatus") return statusEl;
+    return null;
+  };
+  modal.querySelectorAll = (selector) => {
+    if (selector === "[data-setting-input]") return settingsInputs;
+    if (selector === "[data-theme-input]") return [];
+    return [closeButton];
+  };
+  modal.contains = (node) => node === closeButton;
+
+  const body = new FakeElement();
+  const htmlAttrs = { "data-theme": "light", lang: "en" };
+  global.document = {
+    body,
+    activeElement: closeButton,
+    documentElement: {
+      getAttribute: (name) => htmlAttrs[name] ?? null,
+      setAttribute: (name, value) => { htmlAttrs[name] = String(value); },
+      style: {},
+      classList: { add() {}, remove() {} },
+    },
+    getElementById: (id) => ({
+      settingsModal: modal,
+      settingsBtn: openButton,
+      settingsCloseBtn: closeButton,
+      currencyRatesStatus: statusEl,
+    }[id] || null),
+    querySelectorAll: () => [],
+    addEventListener: () => {},
+  };
+  window.addEventListener = (type, handler) => {
+    if (!windowHandlers.has(type)) windowHandlers.set(type, new Set());
+    windowHandlers.get(type).add(handler);
+  };
+  window.dispatchEvent = (event) => {
+    const handlers = windowHandlers.get(event.type);
+    if (handlers) {
+      for (const handler of handlers) handler(event);
+    }
+  };
+  window.matchMedia = () => ({ matches: true });
+  window.setTimeout = (callback) => { callback(); return 1; };
+  global.CustomEvent = class CustomEvent {
+    constructor(type, options = {}) { this.type = type; this.detail = options.detail; }
+  };
+
+  const readLoc = (rel) => fs.readFileSync(path.resolve(process.cwd(), rel), "utf8");
+  global.fetch = async (url) => {
+    const textUrl = String(url);
+    if (textUrl.includes("Localization/eng")) return { ok: true, text: async () => readLoc("frontend/Localization/eng") };
+    if (textUrl.includes("Localization/ru")) return { ok: true, text: async () => readLoc("frontend/Localization/ru") };
+    if (textUrl.includes("Localization/kaz")) return { ok: true, text: async () => readLoc("frontend/Localization/kaz") };
+    throw new Error("API offline");
+  };
+
+  try {
+    const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+    const { FALLBACK_RATES, FALLBACK_RATES_DATE, formatRatesTimestamp, loadRates } = await import("../../frontend/javascript/currency.js");
+    const { initSettingsUI } = await import("../../frontend/javascript/components/settings-ui.js?case=rates-status");
+
+    await initI18n();
+    setLanguage("eng", { emit: false });
+    await loadRates();
+
+    initSettingsUI();
+    assert.equal(statusEl.hidden, false);
+    assert.equal(statusEl.getAttribute("data-rates-status"), "fallback");
+    assert.equal(
+      statusEl.textContent,
+      `Offline rates from ${formatRatesTimestamp(FALLBACK_RATES_DATE, "eng")}`,
+    );
+
+    // Simulate background live rates arrival (cache/api from server)
+    global.fetch = async () => ({
+      ok: true,
+      json: async () => ({
+        rates: { USD: 1.0, KZT: FALLBACK_RATES.KZT },
+        date: "Wed, 18 Nov 2026 00:02:31 +0000",
+        source: "cache",
+      }),
+    });
+    await loadRates();
+    assert.equal(statusEl.getAttribute("data-rates-status"), "live");
+    assert.equal(
+      statusEl.textContent,
+      `Updated: ${formatRatesTimestamp("Wed, 18 Nov 2026 00:02:31 +0000", "eng")}`,
+    );
+    assert.equal(/\b(cache|api)\b/i.test(statusEl.textContent), false);
+
+    // Language switch updates attribution status text & localized date
+    setLanguage("rus");
+    assert.equal(
+      statusEl.textContent,
+      `Обновлено: ${formatRatesTimestamp("Wed, 18 Nov 2026 00:02:31 +0000", "rus")}`,
+    );
+
+    setLanguage("kaz");
+    assert.equal(
+      statusEl.textContent,
+      `Жаңартылды: ${formatRatesTimestamp("Wed, 18 Nov 2026 00:02:31 +0000", "kaz")}`,
+    );
+
+    // Opening settings keeps attribution synced
+    delete sessionValues.unisearch_currency_rates_cache_v1;
+    global.fetch = async () => { throw new Error("Offline"); };
+    await loadRates();
+    openButton.emit("click");
+    assert.equal(statusEl.getAttribute("data-rates-status"), "fallback");
+    assert.match(statusEl.textContent, /Офлайн-режим/);
+  } finally {
+    global.document = originalDocument;
+    window.addEventListener = originalAdd;
+    window.dispatchEvent = originalDispatch;
+    window.matchMedia = originalMatchMedia;
+    window.setTimeout = originalTimeout;
+    global.fetch = originalFetch;
+  }
+});
