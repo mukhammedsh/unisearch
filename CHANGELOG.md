@@ -10,6 +10,7 @@ Patch release: UI and asset refinements with no new user-facing capability or br
 - Remove university logo placeholders throughout UniSearch; use dots and counts on the map and credited campus photos in comparison headers.
 - Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
 - Show a themed campus photo placeholder when a catalog card has no usable image.
+- Limit the CI Node dependency audit to runtime packages (`npm audit --omit=dev`) because frontend assets ship without a bundler and Node packages are CI/test/lint tooling only.
 
 ### Fixed
 - Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
