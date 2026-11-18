@@ -608,10 +608,12 @@ export function setupTabs() {
       p.hidden = !isActive;
     });
     const targetPane = targetId ? document.getElementById(targetId) : null;
-    if (animate && targetPane) {
-      replayMotion(targetPane, "motion-panel-enter", { timeoutMs: 420 });
+    if (animate) {
+      if (targetPane) {
+        replayMotion(targetPane, "motion-panel-enter", { timeoutMs: 420 });
+      }
+      btn.scrollIntoView?.({ block: "nearest", inline: "nearest" });
     }
-    btn.scrollIntoView?.({ block: "nearest", inline: "nearest" });
     updateIndicator?.();
   };
 

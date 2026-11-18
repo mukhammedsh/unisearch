@@ -47,6 +47,7 @@ class MockTabNode extends global.HTMLElement {
     this.listeners = new Map();
     this.focusCalls = 0;
     this.clickCalls = 0;
+    this.scrollIntoViewCalls = 0;
   }
 
   getAttribute(name) {
@@ -109,6 +110,10 @@ class MockTabNode extends global.HTMLElement {
     this.clickCalls += 1;
     this.emit("click", { target: this });
   }
+
+  scrollIntoView() {
+    this.scrollIntoViewCalls += 1;
+  }
 }
 
 test("setupTabs manages WAI-ARIA tab states, panel hidden flags, and keyboard navigation", async () => {
@@ -160,6 +165,7 @@ test("setupTabs manages WAI-ARIA tab states, panel hidden flags, and keyboard na
 
     assert.equal(tabs[0].getAttribute("aria-selected"), "true");
     assert.equal(tabs[0].getAttribute("tabindex"), "0");
+    assert.equal(tabs[0].scrollIntoViewCalls, 0);
     assert.equal(tabs[1].getAttribute("aria-selected"), "false");
     assert.equal(tabs[1].getAttribute("tabindex"), "-1");
     assert.equal(panes[0].hidden, false);
@@ -168,6 +174,7 @@ test("setupTabs manages WAI-ARIA tab states, panel hidden flags, and keyboard na
 
     tabsRoot.emit("keydown", { key: "ArrowRight", target: tabs[0] });
     assert.equal(tabs[1].focusCalls, 1);
+    assert.equal(tabs[1].scrollIntoViewCalls, 1);
     assert.equal(tabs[1].getAttribute("aria-selected"), "true");
     assert.equal(tabs[1].getAttribute("tabindex"), "0");
     assert.equal(tabs[0].getAttribute("aria-selected"), "false");
