@@ -2,14 +2,22 @@
 
 All notable project changes should be recorded here.
 
+## 10.4.2 (2026-11-18) - Campus photos and viewer fixes
+
+Patch release: UI and asset refinements with no new user-facing capability or breaking API/storage change.
+
+### Changed
+- Remove university logo placeholders throughout UniSearch; use dots and counts on the map and credited campus photos in comparison headers.
+- Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
+- Show a themed campus photo placeholder when a catalog card has no usable image.
+
+### Fixed
+- Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
+
 ## 10.4.1 (2026-11-17) - CodeQL test fixes
 
 ### Fixed
 - Verify the full MIT Admissions link in comparison tests and remove unused imports from responsive layout and profile language tests.
-- Remove university logo placeholders throughout UniSearch. Use dots and counts on the map and credited campus photos in comparison headers.
-- Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
-- Show a themed campus photo placeholder when a catalog card has no usable image.
-- Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
 
 ## 10.4.0 (2026-11-17) - Campus photo galleries
 
