@@ -11,6 +11,7 @@ Patch release: university media guidance and interface refinements with no break
 - Simplified the campus photo gallery with a clickable cover, translucent photo count and credits, side arrows, and a back arrow in the full-size viewer.
 
 ### Fixed
+- Unified dropdown spacing, panel styling, and selection feedback across catalog filters, profile, settings, and university pages.
 - Set the catalog study-level filter button to the solid surface color.
 - Standardized website, map, and save actions across all university pages, including their typography and stable localized save-state width.
 
