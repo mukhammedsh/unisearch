@@ -369,7 +369,6 @@ function headHtml(column, index, photos) {
 
 function stripHtml(columns) {
   return `<div class="compare-reviewed__strip-anchor"><div class="compare-reviewed__strip" data-compare-strip aria-hidden="true">
-    <span class="compare-reviewed__strip-spacer"></span>
     ${columns.map((column) => `<span class="compare-reviewed__strip-item"><span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span></span>`).join("")}
   </div></div>`;
 }
@@ -386,11 +385,11 @@ export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamId
         <p class="compare-results-kicker">${escapeHtml(t("universities.compare.results.kicker"))}</p>
         <h1 class="compare-reviewed__title">${escapeHtml(t("universities.compare.results.title"))}</h1>
         <p class="compare-reviewed__intro">${escapeHtml(label("intro"))}</p>
+        <p class="compare-reviewed__hint">${escapeHtml(label("heads_note"))}</p>
       </div>
       <button class="compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
     </header>
     <div class="compare-reviewed__heads" data-compare-heads>
-      <p class="compare-reviewed__heads-note">${escapeHtml(label("heads_note"))}</p>
       ${columns.map((column, index) => headHtml(column, index, photos)).join("")}
     </div>
     ${stripHtml(columns)}

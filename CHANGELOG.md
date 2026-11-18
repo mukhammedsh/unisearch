@@ -7,6 +7,7 @@ All notable project changes should be recorded here.
 ### Fixed
 - Verify the full MIT Admissions link in comparison tests and remove unused imports from responsive layout and profile language tests.
 - Remove university logo placeholders throughout UniSearch. Use dots and counts on the map and credited campus photos in comparison headers.
+- Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
 
 ## 10.4.0 (2026-11-17) - Campus photo galleries
 

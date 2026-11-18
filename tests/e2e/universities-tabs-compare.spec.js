@@ -49,7 +49,7 @@ async function waitForReviewedComparison(page) {
 
 const savedChoice = (page, id) => page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[uid], id);
 
-test("comparison shows credited campus covers on desktop and phone", async ({ page }) => {
+test("comparison keeps cards, values, and pinned names aligned on desktop and phone", async ({ page }) => {
   await clearCompareState(page);
   await page.addInitScript(() => localStorage.setItem("unisearch_theme", innerWidth < 600 ? "dark" : "light"));
 
@@ -57,6 +57,7 @@ test("comparison shows credited campus covers on desktop and phone", async ({ pa
     await page.setViewportSize(viewport);
     await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
     await waitForReviewedComparison(page);
+    await expect(page.locator(".compare-reviewed__heading .compare-reviewed__hint")).toBeVisible();
     const heads = page.locator(".compare-reviewed__head");
     for (const head of await heads.all()) {
       const photo = head.locator(".compare-campus__photo img");
@@ -67,6 +68,28 @@ test("comparison shows credited campus covers on desktop and phone", async ({ pa
       await expect(head.locator(".compare-campus__credit a")).toHaveAttribute("href", /^https:\/\/commons\.wikimedia\.org\//);
       await expect(head.locator(".compare-reviewed__identity strong")).toBeVisible();
     }
+
+    const row = page.locator("[data-compare-row]").last();
+    await row.scrollIntoViewIfNeeded();
+    await expect(page.locator("[data-compare-strip]")).toHaveClass(/is-visible/);
+    const grid = await row.evaluate((element) => {
+      const root = element.closest("[data-reviewed-comparison]");
+      const bounds = (node) => node.getBoundingClientRect();
+      const columns = (nodes) => Array.from(nodes, (node) => ({ x: bounds(node).x, width: bounds(node).width }));
+      return {
+        left: bounds(root).x,
+        heads: columns(root.querySelectorAll(".compare-reviewed__head")),
+        titles: columns(root.querySelectorAll(".compare-reviewed__identity")),
+        names: columns(root.querySelectorAll(".compare-reviewed__strip-name")).map(({ x }) => x),
+        values: columns(element.querySelectorAll("dd")),
+        labelAboveValues: bounds(element.querySelector("dt")).bottom <= bounds(element.querySelector("dd")).top,
+      };
+    });
+    expect(grid.heads[0].x).toBe(grid.left);
+    expect(grid.heads[0].width).toBeCloseTo(grid.heads[1].width, 1);
+    expect(grid.values).toEqual(grid.titles);
+    expect(grid.names).toEqual(grid.titles.map(({ x }) => x));
+    expect(grid.labelAboveValues).toBe(true);
   }
 });
 
