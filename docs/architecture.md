@@ -31,7 +31,7 @@ flowchart TD
     subgraph Persistence ["Data & Cache Layer"]
         Redis[("Optional Redis Cache\n(Query and rate cache)")]
         Disk[("Source-Controlled JSON Catalog\n(Coverage varies by institution)")]
-        Media[("Media Assets\n(1:1 PNG Logos, 16:9 WebP Thumbnails)")]
+        Media["Media Assets\n(Credited Campus Photos, 16:9 Variants)"]
     end
 
     subgraph External ["External Interfaces"]
