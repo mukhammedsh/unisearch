@@ -14,7 +14,6 @@ This project uses or references the following third-party icon, font, and brand 
   - UI action icons and state icons rendered via `frontend/javascript/icons.js`
   - Source SVG data is synced from the official `@heroicons/react` `24/outline` package
   - Used across navigation, filters, tabs, badges, toasts, and other interface controls
-  - The shared university badge rasterizes the upstream Academic Cap outline.
 - Integration note:
   - Icons are embedded as inline SVG generated from the upstream Heroicons package and styled through `currentColor`
   - The project uses a unified `24/outline`-style visual language for UI icons
@@ -57,8 +56,8 @@ This project uses or references the following third-party icon, font, and brand 
   - Campus photographs are the intellectual property of their respective photographers, copyright holders, or academic institutions.
   - The root MIT License of this project does **NOT** apply to any third-party university trademarks, logos, or campus photographs.
 - Use in UniSearch:
-  - The catalog identifies each institution by name and displays the shared Heroicons badge.
-  - Campus photographs are freely licensed files from Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA), cropped and resized. Each photograph's author, license and Commons file page are listed in `backend/data/university_assets/credits.json` and shown as a credit on the university page cover; see `backend/data/university_assets/README.md`.
+  - The catalog identifies each institution by its name and campus photographs. UniSearch does not display university logos.
+  - Campus photographs are freely licensed files from Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA), cropped and resized. Each photograph's author, license and Commons file page are listed in `backend/data/university_assets/credits.json` and shown as a credit on university covers and comparison headers; see `backend/data/university_assets/README.md`.
   - Use of these assets does not imply any official affiliation with, endorsement by, or sponsorship from the respective academic institutions.
 - Notice & Takedown Policy:
   - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or removal, please contact us at **unisearch.sup@gmail.com** or open a GitHub Issue.

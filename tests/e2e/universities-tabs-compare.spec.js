@@ -49,6 +49,38 @@ async function waitForReviewedComparison(page) {
 
 const savedChoice = (page, id) => page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[uid], id);
 
+test("comparison shows credited campus covers on desktop and phone", async ({ page }) => {
+  await clearCompareState(page);
+  await page.addInitScript(() => localStorage.setItem("unisearch_theme", innerWidth < 600 ? "dark" : "light"));
+
+  for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
+    await waitForReviewedComparison(page);
+    const heads = page.locator(".compare-reviewed__head");
+    for (const head of await heads.all()) {
+      const photo = head.locator(".compare-campus__photo img");
+      await expect(photo).toBeVisible();
+      await expect.poll(() => photo.evaluate((img) => img.naturalWidth)).toBeGreaterThan(0);
+      const fade = await photo.evaluate((img) => getComputedStyle(img.parentElement, "::after").backgroundImage);
+      expect(fade).toContain("linear-gradient");
+      await expect(head.locator(".compare-campus__credit a")).toHaveAttribute("href", /^https:\/\/commons\.wikimedia\.org\//);
+      await expect(head.locator(".compare-reviewed__identity strong")).toBeVisible();
+    }
+  }
+});
+
+test("comparison skips a missing campus photo and keeps the university name", async ({ page }) => {
+  await clearCompareState(page);
+  const kimep = "kimep-university-kaz-almaty";
+  await page.goto(`/compare.html?lang=eng&stage=configure&ids=${OXFORD_ID},${kimep}`);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
+  const column = page.locator(`.compare-config-column[data-uni-id="${kimep}"]`);
+  await expect(column.getByRole("heading", { name: "KIMEP University" })).toBeVisible();
+  await expect(column.locator(".compare-campus")).toHaveCount(0);
+  await expect(page.locator(`.compare-config-column[data-uni-id="${OXFORD_ID}"] .compare-campus__photo img`)).toBeVisible();
+});
+
 // Chooses a program in a column's picker dialog; a program with several routes asks for the route in the same dialog.
 async function pickProgram(page, id, { search, option, route = "", level = "" }) {
   await page.locator(`[data-compare-pick="${id}"]`).click();

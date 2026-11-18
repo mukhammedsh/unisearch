@@ -52,7 +52,7 @@ describe('Global Navbar Search Component', () => {
     }
   });
 
-  it('generateSuggestionsHtml renders a shared decorative icon, name and location', () => {
+  it('generateSuggestionsHtml renders names and locations without university logos', () => {
     const items = [
       { id: 'mit-usa-cambridge', name: 'Massachusetts Institute of Technology', location: { city: 'Cambridge', country: 'USA' } },
       { id: 'nu-kaz-astana', name: 'Nazarbayev University', location: { city: 'Astana', country: 'Kazakhstan' } },
@@ -64,12 +64,8 @@ describe('Global Navbar Search Component', () => {
     assert.ok(html.includes('data-uni-id="mit-usa-cambridge"'));
     assert.ok(html.includes('data-uni-id="nu-kaz-astana"'));
 
-    // Verify the shared icon and fallback initials.
-    assert.ok(html.includes('navbar-search-suggestion__logo'));
-    assert.equal((html.match(/\/universities\/assets\/university-icon\.png" alt=""/g) || []).length, 2);
-    assert.doesNotMatch(html, /\/universities\/assets\/logos(?:-small)?\//);
-    assert.ok(html.includes('data-fallback-text="MI"'));
-    assert.ok(html.includes('data-fallback-text="NU"'));
+    assert.doesNotMatch(html, /<img\b/);
+    assert.doesNotMatch(html, /data-fallback-text/);
 
     // Verify names
     assert.ok(html.includes('navbar-search-suggestion__name">Massachusetts Institute of Technology</span>'));

@@ -167,11 +167,6 @@ function formatKb(bytes) {
 const universities = readJson(dataPath);
 const ids = universities.map((row) => String(row?.id || "").trim()).filter(Boolean);
 const errors = [];
-for (const file of ["university-icon.png", "HEROICONS-LICENSE.txt"]) {
-  if (!fs.existsSync(path.join(assetsRoot, file))) {
-    errors.push(`${file}: shared university badge and its license must ship together`);
-  }
-}
 for (const retiredDirectory of ["logos", "logos-small"]) {
   if (fs.existsSync(path.join(assetsRoot, retiredDirectory))) {
     errors.push(`${retiredDirectory}: legacy logo directory must not ship in the public media bundle`);

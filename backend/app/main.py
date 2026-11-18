@@ -5,9 +5,9 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.core.observability import setup_observability
@@ -39,7 +39,6 @@ from app.core.settings import (
 from app.routers import root, universities, exams, languages, currency, admissions
 from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
 from app.services.background_tasks import warmup_runtime
-from app.services.universities import get_university_by_id
 
 
 logging.basicConfig(
@@ -316,17 +315,6 @@ def _finalize_request_response(
         duration_ms,
     )
     return response
-
-
-@app.api_route("/universities/assets/logos/{university_id}.png", methods=["GET", "HEAD"], include_in_schema=False)
-@app.api_route("/universities/assets/logos-small/{university_id}.png", methods=["GET", "HEAD"], include_in_schema=False)
-def legacy_university_logo(university_id: str) -> FileResponse:
-    if get_university_by_id(university_id) is None:
-        raise HTTPException(status_code=404)
-    return FileResponse(
-        UNIVERSITY_ASSETS_DIR / "university-icon.png",
-        headers={"Cache-Control": "no-store"},
-    )
 
 
 app.mount(

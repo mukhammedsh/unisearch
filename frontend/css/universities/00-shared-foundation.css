@@ -29,13 +29,11 @@
 
 .is-skeleton .uni-media,
 
-.is-skeleton .uni-logo,
 
 .is-skeleton .uni-price,
 
 .is-skeleton .uni-media::after,
 
-.is-skeleton .uni-logo::after,
 
 .is-skeleton .uni-price::after {
     animation: none !important;
@@ -43,7 +41,6 @@
 
 .is-skeleton .uni-media::after,
 
-.is-skeleton .uni-logo::after,
 
 .is-skeleton .uni-price::after {
     display: none !important;

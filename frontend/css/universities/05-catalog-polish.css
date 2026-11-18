@@ -467,15 +467,6 @@
   font-weight: var(--font-weight-medium);
 }
 
-.uni-logo {
-  left: 12px;
-  bottom: 12px;
-  width: 58px;
-  height: 58px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
 .uni-body {
   padding: var(--space-4);
   gap: var(--space-3);

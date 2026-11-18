@@ -10,7 +10,6 @@ import {
   nested,
   escapeHtml,
   escapeHtmlAttr,
-  initials,
   loadProfile,
   loadProfileForApi,
   formatExamValue,
@@ -26,14 +25,11 @@ import {
   setupSlidingIndicator,
   safeSessionStorage,
   showToast,
-  UNIVERSITY_ICON_SRC,
 } from "../utils.js";
 
 import {
-  clusterMarkerLogoHtml,
   getGrantsFromCategories,
   chanceNoDataHelpNote,
-  mapMarkerLogoHtml,
 } from "../university-detail-helpers.js";
 
 import { renderErrorScreen } from "../components.js";
@@ -1063,7 +1059,6 @@ export function initUniversitiesPage() {
             const removeLabel = t("universities.compare.remove", "Remove from comparison");
             return `
                 <div class="compare-tray__chip" role="listitem">
-                    <img class="compare-tray__chip-logo" src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy">
                     <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
                     <button class="compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
                         ${renderInlineIcon("x-mark", 12)}
@@ -1521,7 +1516,6 @@ export function initUniversitiesPage() {
                         <article class="uni-card uni-card--no-media u-skeleton-card is-skeleton" aria-hidden="true">
                             <div class="uni-body">
                                 <div class="uni-head">
-                                    <span class="uni-logo uni-logo--inline"></span>
                                     <span class="uni-head-copy">
                                         <span class="skeleton-line" style="width: 84%; height: 15px;"></span>
                                         <span class="skeleton-line" style="width: 58%; height: 12px;"></span>
@@ -1599,7 +1593,6 @@ export function initUniversitiesPage() {
                     el.skeleton.innerHTML = Array.from({ length: skeletonCount }, () => `
                         <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
                             <div class="uni-media">
-                                <div class="uni-logo" aria-hidden="true"></div>
                             </div>
                             <div class="uni-body">
                                 <div class="skeleton-line u-skeleton-title"></div>
@@ -2676,7 +2669,7 @@ export function initUniversitiesPage() {
                 iconCreateFunction: function(cluster) {
                     const count = cluster.getChildCount();
                     return L.divIcon({
-                        html: clusterMarkerLogoHtml(UNIVERSITY_ICON_SRC, count - 1),
+                        html: `<span class="map-cluster-count">${count}</span>`,
                         className: "cluster-icon-container",
                         iconSize: [44, 44],
                         iconAnchor: [22, 22],
@@ -3167,7 +3160,6 @@ export function initUniversitiesPage() {
         return `
             <div class="map-card-wrapper map-point-popup" data-uni-id="${escapeHtmlAttr(id)}">
                 <div class="map-point-popup__head">
-                    <span class="map-point-popup__logo"><img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async"></span>
                     <span class="map-point-popup__copy">
                         <strong>${escapeHtml(name)}</strong>
                         ${locationText ? `<span>${escapeHtml(locationText)}</span>` : ""}
@@ -3254,13 +3246,14 @@ export function initUniversitiesPage() {
                 const uniId = String(u.id || "");
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
-                    html: mapMarkerLogoHtml(UNIVERSITY_ICON_SRC),
+                    html: '<span class="map-university-dot" aria-hidden="true"></span>',
                     iconSize: [44, 44],
                     iconAnchor: [22, 22],
                     popupAnchor: [0, -24],
                 });
                 const marker = L.marker([latitude, longitude], {
                     icon: customIcon,
+                    title: trUniversityName(u),
                     uniId: uniId
                 });
                 const loadedCard = findLoadedMapCard(uniId);
@@ -4186,14 +4179,12 @@ ${rankInnerHtml}
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
         const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"));
-        const logoImgHtml = `<img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(name))}">`;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
             <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}">
-            <div class="uni-logo">${logoImgHtml}</div>
             </div>`;
         const headHtml = hideMedia
-            ? `<div class="uni-head"><span class="uni-logo uni-logo--inline">${logoImgHtml}</span><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
+            ? `<div class="uni-head"><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
             : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
         const detailsHtml = mapVariant
             ? `<a class="uni-details" href="${detailHref}"${universityLinkAttrs()}>${detailLabel}<span aria-hidden="true">→</span></a>`

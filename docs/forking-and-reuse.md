@@ -2,7 +2,7 @@
 
 UniSearch source code and software are licensed under the MIT License. You may copy, modify, redistribute, sublicense, and use the project commercially, as long as the original license and copyright notice are preserved.
 
-University names identify the institutions in the catalog. The shared university badge uses a MIT-licensed Heroicons icon. Campus photographs retain the terms listed in the [university media guide](../backend/data/university_assets/README.md). The project license grants no rights to university trademarks.
+University names identify the institutions in the catalog. Campus photographs retain the terms listed in the [university media guide](../backend/data/university_assets/README.md). The project license grants no rights to university trademarks.
 
 This guide is for people who want to run their own version of the project.
 

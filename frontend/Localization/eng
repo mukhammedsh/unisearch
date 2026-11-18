@@ -1360,7 +1360,7 @@ terms.accounts.p1: The current release has no user accounts, sign-in, or cross-d
 terms.accounts.p2: You are responsible for keeping access to your browser and device secure, because guest profile data is stored in that browser.
 terms.ip.title: 5. Intellectual Property & Fair Use
 terms.ip.non_affiliation: UniSearch is an independent catalog. The listed universities do not operate, sponsor, or endorse it.
-terms.ip.p1: UniSearch uses university names to identify institutions and a shared academic-cap icon for their badges. The icon is from Heroicons under the MIT License. Campus photographs are credited and used under the terms of their respective sources.
+terms.ip.p1: UniSearch uses university names to identify institutions. Campus photographs are credited and used under the terms of their respective sources.
 terms.ip.p2: The UniSearch source code, documentation, and original project assets are made available under the MIT License. University names, logos, crests, and campus photographs are excluded from that license as stated in the repository license notice.
 terms.ip.takedown: Notice & Takedown Procedure: if you are an authorized university representative, photographer, or intellectual property copyright owner and wish to request attribution credit, correction, or removal of any logo, photograph, or institutional reference, please contact us at unisearch.sup@gmail.com. We will review the request and respond by email.
 terms.acceptable_use.title: 6. Acceptable Use Policy

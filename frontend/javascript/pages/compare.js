@@ -3,12 +3,10 @@ import {
   bindImageFallbacks,
   escapeHtml,
   escapeHtmlAttr,
-  initials,
   loadProfile,
   loadProfileForApi,
   markMotionEnter,
   replayMotion,
-  UNIVERSITY_ICON_SRC,
 } from "../utils.js";
 import { t, tFormat } from "../i18n.js";
 import { heroIcon } from "../icons.js";
@@ -32,6 +30,7 @@ import {
   compareAdmissionOptionEntries,
   compareAdmissionSelectionFromEntry,
   compareChoiceKey,
+  compareCampusHtml,
   compareLocationText,
   compareRankText,
   comparePublishedAdmission,
@@ -59,6 +58,7 @@ import {
   renderUniChanceSummary,
 } from "../university-detail-helpers.js";
 import { getFinanceForChoice, renderAdmissionSection } from "./university/render-sections.js";
+import { loadPhotoCredits } from "./university/cover-credit.js";
 import { mountReviewedComparison } from "./universities/compare-reviewed.js";
 import { initUniversityTranslations } from "../university-translations.js";
 
@@ -66,6 +66,7 @@ const COMPARE_PAIR_SIZE = 2;
 const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
 
 let activeUniversities = [];
+let comparePhotos = null;
 let compareChancesByUniId = new Map();
 let compareAdmissionChoices = new Map();
 let isDiffOnly = false;
@@ -138,14 +139,8 @@ function compareCardsHtml(universities) {
 
     return `
       <article class="compare-uni-card compare-uni-card--pair" data-compare-slot="${index + 1}" data-uni-id="${escapeHtmlAttr(id)}">
-        <div class="compare-uni-card__head">
-          <div class="compare-uni-card__identity">
-            <span class="compare-uni-card__slot">${escapeHtml(compareSlotLabel(index))}</span>
-            <div class="compare-uni-card__logo">
-              <img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}">
-            </div>
-          </div>
-        </div>
+        ${compareCampusHtml(id, comparePhotos)}
+        <span class="compare-uni-card__slot">${escapeHtml(compareSlotLabel(index))}</span>
         <h3>${escapeHtml(compareUniversityName(u))}</h3>
         <p>${escapeHtml(compareLocationText(u))}</p>
         <p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>
@@ -248,12 +243,8 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
         return `
           <article class="compare-config-column" data-uni-id="${escapeHtmlAttr(id)}">
             <div class="compare-config-column__head">
-              <div class="compare-config-column__identity">
-                <span class="compare-config-column__slot">${escapeHtml(compareSlotLabel(index))}</span>
-                <div class="compare-config-column__logo">
-                  <img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(uniName))}">
-                </div>
-              </div>
+              ${compareCampusHtml(id, comparePhotos)}
+              <span class="compare-config-column__slot">${escapeHtml(compareSlotLabel(index))}</span>
               <h2>${escapeHtml(uniName)}</h2>
               ${location ? `<p class="compare-config-column__location">${escapeHtml(location)}</p>` : ""}
               <p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>
@@ -449,7 +440,6 @@ function renderMixedState(container, universities) {
           const id = String(u?.id || "");
           const isReviewed = hasReviewedAdmissions(u);
           return `<li class="compare-mixed__item" data-uni-id="${escapeHtmlAttr(id)}">
-            <span class="compare-mixed__logo"><img src="${escapeHtmlAttr(UNIVERSITY_ICON_SRC)}" alt="" loading="lazy" decoding="async" data-fallback-text="${escapeHtmlAttr(initials(compareUniversityName(u)))}"></span>
             <span class="compare-mixed__text"><strong>${escapeHtml(compareUniversityName(u))}</strong><small>${escapeHtml(t(isReviewed ? "universities.compare.mixed.reviewed" : "universities.compare.mixed.legacy"))}</small></span>
             <a class="compare-mixed__link" href="${escapeHtmlAttr(routeUniversityDetail(id))}"${linkAttrs}>${escapeHtml(t("universities.card.view_details"))}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</a>
           </li>`;
@@ -529,13 +519,14 @@ export async function initComparePage() {
   `;
 
   try {
-    const [universities, compareProfiles] = await Promise.all([
+    const [universities, compareProfiles, photoCredits] = await Promise.all([
       loadCompareUniversities(ids, { fetchUniversityDetailCached }),
       fetchCompareProfiles(ids, {
         apiBase: API_BASE,
         fetchImpl: fetch,
         loadProfileForApi,
       }),
+      loadPhotoCredits(),
     ]);
     if (loadRun !== compareLoadRun || !container.isConnected) return;
 
@@ -545,6 +536,7 @@ export async function initComparePage() {
     }
 
     activeUniversities = universities;
+    comparePhotos = photoCredits?.photos;
     // Reading the stored legacy choices also clears obsolete pointers to rechecked universities, for any pair.
     ignoreProfileUpdates = true;
     compareAdmissionChoices = readCompareAdmissionChoices();
@@ -554,7 +546,7 @@ export async function initComparePage() {
       // The reviewed comparison has one stage; an older configure link opens the results.
       currentStage = "results";
       syncUrlWithState("results");
-      reviewedView = mountReviewedComparison(container, universities);
+      reviewedView = mountReviewedComparison(container, universities, comparePhotos);
       await reviewedView.ready;
       return;
     }

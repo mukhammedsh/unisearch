@@ -6,7 +6,7 @@ All notable project changes should be recorded here.
 
 ### Fixed
 - Verify the full MIT Admissions link in comparison tests and remove unused imports from responsive layout and profile language tests.
-- Replace university logos throughout the catalog, map, search, comparison, and detail pages with the shared MIT-licensed academic cap. Existing logo URLs serve the shared icon.
+- Remove university logo placeholders throughout UniSearch. Use dots and counts on the map and credited campus photos in comparison headers.
 
 ## 10.4.0 (2026-11-17) - Campus photo galleries
 
