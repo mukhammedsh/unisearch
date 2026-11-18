@@ -209,6 +209,7 @@ body[data-page="universities"] {
   min-height: 36px;
   height: 36px;
   padding-block: 0;
+  background: var(--surface-solid);
 }
 
 @media (max-width: 1024px) {
