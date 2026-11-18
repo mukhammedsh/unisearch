@@ -112,6 +112,20 @@
   overflow: hidden;
 }
 
+.d-cover-placeholder:not([hidden]) {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
 .d-gallery-preview,
 .d-gallery-preview-media {
   position: absolute;

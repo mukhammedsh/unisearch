@@ -129,8 +129,8 @@ function displayPhoto(host, photo, alt, { onLoad, onUnavailable, retry } = {}) {
       return;
     }
     spinner.hidden = true;
-    error.hidden = false;
-    onUnavailable?.();
+    if (onUnavailable) onUnavailable();
+    else error.hidden = false;
     if (retry) {
       const button = document.createElement("button");
       button.type = "button";
@@ -219,7 +219,11 @@ export function mountUniversityGallery(cover, universityId) {
   let current = 0;
   const listeners = new AbortController();
 
-  cover.insertAdjacentHTML("beforeend", `<button type="button" class="d-gallery-preview" aria-haspopup="dialog" aria-label="${escapeHtmlAttr(openLabel)}">
+  cover.insertAdjacentHTML("beforeend", `<div class="d-cover-placeholder" hidden role="status">
+    ${heroIcon("building-office-2", "ui-icon ui-icon--24")}
+    <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
+  </div>
+  <button type="button" class="d-gallery-preview" aria-haspopup="dialog" aria-label="${escapeHtmlAttr(openLabel)}">
     <span class="d-gallery-preview-media"></span>
   </button>
     <div class="d-gallery-cover-credit"></div>
@@ -238,6 +242,7 @@ export function mountUniversityGallery(cover, universityId) {
     </dialog>`);
 
   const preview = cover.querySelector(".d-gallery-preview");
+  const placeholder = cover.querySelector(".d-cover-placeholder");
   const previewMedia = preview.querySelector(".d-gallery-preview-media");
   const coverCredit = gallery.querySelector(".d-gallery-cover-credit");
   const coverNavigation = gallery.querySelector(".d-gallery-navigation");
@@ -259,8 +264,10 @@ export function mountUniversityGallery(cover, universityId) {
 
   function renderPreview() {
     preview.hidden = false;
+    placeholder.hidden = true;
     displayPhoto(previewMedia, photos[current], "", {
       onUnavailable: () => {
+        placeholder.hidden = false;
         if (photos.length === 1 && !photos[0].credit) preview.hidden = true;
       },
     });
@@ -362,5 +369,6 @@ export function mountUniversityGallery(cover, universityId) {
     coverCredit.remove();
     coverStatus.remove();
     preview.remove();
+    placeholder.remove();
   };
 }

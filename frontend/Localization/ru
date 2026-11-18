@@ -441,8 +441,8 @@ universities.cost.fee_status_unknown: Категория оплаты не по�
 universities.cost.filter_partial: Частичное совпадение по цене
 universities.cost.tooltip_open: Как рассчитана цена
 universities.cost.tooltip_title: О диапазоне цен
-universities.cost.tooltip_range: Это минимальная и максимальная известные цены для текущего выбора, а не среднее. Сумма зависит от программы и категории оплаты.
-universities.cost.tooltip_living_range: Границы получены сложением известных цен обучения и опубликованного диапазона расходов на проживание, а не усреднением. Оценка проживания может относиться к другому году.
+universities.cost.tooltip_range: Это диапазон от минимальной до максимальной известной цены. Заполненный профиль (уровень, категория оплаты, программа) может сузить его до более конкретного варианта.
+universities.cost.tooltip_living_range: Это справочный диапазон: опубликованная стоимость обучения плюс оценка расходов на проживание. Оценка проживания может относиться к другому году. Заполненный профиль (уровень, категория оплаты, программа) может сузить диапазон, но итоговая сумма не гарантирована.
 universities.cost.tooltip_single: Это одна известная цена для текущего выбора. Уточните программу, категорию оплаты и год.
 universities.cost.tooltip_filter_variants: Фильтр проверяет каждый известный вариант. Вуз показывается, если хотя бы один вариант пересекает ваши границы, даже когда весь диапазон шире их. Цены между крайними значениями могут отсутствовать.
 universities.cost.tooltip_filter_reference: Общий справочный диапазон может пересекать ваши границы без подтверждённой подходящей программы. Уточните её цену в вузе.
@@ -454,10 +454,10 @@ universities.filter_mobile: Фильтр
 universities.filter.close: Закрыть фильтры
 universities.filter.actions: Действия с фильтрами
 universities.filter.apply: Применить фильтры
-universities.filter.favorites: Избранные
+universities.filter.favorites: Сохраненные
 universities.filter.none_active: Нет активных фильтров
 universities.filter.saved_scope: Область списка университетов
-universities.filter.saved_only: Только избранные
+universities.filter.saved_only: Только сохраненные
 universities.found_prefix: Найдено
 universities.found_suffix: университетов
 universities.global: Глобально

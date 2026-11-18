@@ -14,6 +14,42 @@ STANFORD = "stanford-university-usa-ca"
 
 
 class CatalogCostTests(unittest.TestCase):
+    def test_program_budget_does_not_suppress_another_programs_living_reference(self):
+        def fact(fact_id, option_id, *, value=None, catalog_costs=None, topic="tuition"):
+            return {
+                "id": fact_id, "publication_status": "published", "review_status": "verified",
+                "normalized_status": {"publication": "published", "review": "verified"},
+                "source_ids": ["official"], "scope": {"option_ids": [option_id], "route_ids": [], "levels": ["undergraduate"]},
+                "topic": topic, "value": value or {},
+                "attributes": {"catalog_costs": catalog_costs or {"quotes": []}},
+            }
+
+        def quote(basis, amount, option_id):
+            return {"basis": basis, "amount": amount, "currency": "USD", "billing_period": "academic_year",
+                    "period_label": "2027 entry", "option_ids": [option_id]}
+
+        institution = {
+            "study_options": [
+                {"id": "program-a", "title": "Program A", "levels": ["undergraduate"]},
+                {"id": "program-b", "title": "Program B", "levels": ["undergraduate"]},
+            ],
+            "application_routes": [],
+            "sources": [{"id": "official", "url": "https://example.edu/"}],
+            "facts": [
+                fact("program-a-budget", "program-a", catalog_costs={"quotes": [quote("annual_total", 30000, "program-a")]}),
+                fact("program-a-tuition", "program-a", catalog_costs={"quotes": [quote("tuition", 20000, "program-a")]}),
+                fact("program-b-tuition", "program-b", catalog_costs={"quotes": [quote("tuition", 22000, "program-b")]}),
+                fact("program-b-living", "program-b", topic="living",
+                     value={"period": "month", "amount": 4000, "currency": "USD", "year": 2026}),
+            ],
+        }
+        with patch.object(admissions_catalog, "get_institution", return_value=institution):
+            costs = admissions_catalog.catalog_costs("test-university", "undergraduate")
+
+        self.assertEqual([{"min": 30000, "max": 30000}, {"min": 58000, "max": 58000}], costs["annual_total"]["intervals"])
+        self.assertEqual([{"min": 30000, "max": 30000}], costs["annual_total"]["published_intervals"])
+        self.assertIn("program-b-living", costs["annual_total"]["fact_ids"])
+
     def test_program_price_is_visible_without_becoming_an_annual_budget(self):
         fact = {"id": "finance-fee", "publication_status": "published", "review_status": "verified",
                 "normalized_status": {"publication": "published", "review": "verified"},
@@ -42,7 +78,7 @@ class CatalogCostTests(unittest.TestCase):
         self.assertEqual(66720, mit["tuition"]["min"])
         self.assertEqual("2026-2027", mit["annual_total"]["period"])
         self.assertEqual("", mit["annual_total"]["study_level"])
-        self.assertEqual(["undergraduate"], mit["annual_total"]["levels"])
+        self.assertIn("undergraduate", mit["annual_total"]["levels"])
         self.assertIn("insurance", mit["annual_total"]["exclusions"])
         stanford = admissions_catalog.catalog_costs(STANFORD)
         self.assertEqual(97545, stanford["annual_total"]["min"])
@@ -53,7 +89,9 @@ class CatalogCostTests(unittest.TestCase):
         nu = admissions_catalog.selected_costs("nazarbayev-university-kaz-astana", {
             "study_option_id": "nu-a-study-bachelor-of-science-in-computer-science", "study_level": "undergraduate",
             "application_route_id": "nu-a-route-regular-foundation-undergraduate"})
-        self.assertIsNone(nu["annual_total"])
+        self.assertEqual((18600, 18600), (nu["annual_total"]["min"], nu["annual_total"]["max"]))
+        self.assertEqual("tuition_plus_living_range", nu["annual_total"]["calculation"])
+        self.assertIn("nu-a-fact-living", nu["annual_total"]["fact_ids"])
         self.assertEqual({"min": 15000, "max": 15000}, nu["tuition"]["usd"])
         self.assertIn("living", nu["tuition"]["exclusions"])
         with patch("app.services.currency.convert", side_effect=lambda amount, source, target: amount * 2):
@@ -66,15 +104,18 @@ class CatalogCostTests(unittest.TestCase):
 
     def test_imperial_does_not_sum_different_years_or_use_placement_year_fees(self):
         costs = admissions_catalog.catalog_costs(IMPERIAL)
-        self.assertIsNone(costs["annual_total"])
+        self.assertEqual(26442, costs["annual_total"]["min"])
+        self.assertEqual(69342, costs["annual_total"]["max"])
+        self.assertEqual("2026 estimate", costs["annual_total"]["living_reference"])
+        self.assertIn("imperial-london-living-2026", costs["annual_total"]["fact_ids"])
         self.assertEqual(10050, costs["tuition"]["min"])
         self.assertGreaterEqual(costs["tuition"]["max"], 47800)
         self.assertEqual("2027 entry", costs["tuition"]["period"])
         self.assertEqual(["Home fee", "Overseas fee"], costs["tuition"]["fee_statuses"])
 
     def test_level_and_mode_do_not_borrow_undergraduate_or_campus_budgets(self):
-        self.assertIsNone(admissions_catalog.catalog_costs(MIT, "masters")["annual_total"])
-        self.assertIsNone(admissions_catalog.catalog_costs(STANFORD, "doctoral")["annual_total"])
+        self.assertEqual(109017, admissions_catalog.catalog_costs(MIT, "masters")["annual_total"]["min"])
+        self.assertEqual(118833, admissions_catalog.catalog_costs(STANFORD, "doctoral")["annual_total"]["min"])
         self.assertIsNone(admissions_catalog.catalog_costs(MIT, study_mode="online")["annual_total"])
 
     def test_price_basis_drives_card_filters_and_sort_without_restoring_legacy_finance(self):
@@ -95,14 +136,16 @@ class CatalogCostTests(unittest.TestCase):
             gap = universities.list_universities(q="Imperial", study_level="undergraduate", min_tuition=20000, max_tuition=30000, cost_basis="tuition")["items"]
         self.assertIn(IMPERIAL, [row["id"] for row in rows])
         self.assertNotIn(IMPERIAL, [row["id"] for row in gap])
-        # Without a published full budget the card shows tuition, so the total filter reads it as a partial match.
+        # A derived tuition-plus-living range stays marked as a partial reference for the total filter.
         tuition_only = universities.list_universities(q="Imperial", max_tuition=1000000)["items"]
         card = next(row for row in tuition_only if row["id"] == IMPERIAL)
-        self.assertIsNone(card["catalog_costs"]["annual_total"])
-        self.assertEqual("partial", card["catalog_costs"]["tuition"]["filter_match"])
+        self.assertEqual("tuition_plus_living_range", card["catalog_costs"]["annual_total"]["calculation"])
+        self.assertEqual("partial", card["catalog_costs"]["annual_total"]["filter_match"])
         with patch("app.services.currency.convert", side_effect=lambda amount, _source, _target: amount * 1.25):
             below = universities.list_universities(q="Imperial", max_tuition=5000)["items"]
         self.assertNotIn(IMPERIAL, [row["id"] for row in below])
+        too_low = universities.list_universities(q="Imperial", max_tuition=10000, cost_basis="annual_total")["items"]
+        self.assertNotIn(IMPERIAL, [row["id"] for row in too_low])
 
     def test_profiled_ranges_filter_individual_prices_and_living_intervals(self):
         costs = admissions_catalog.catalog_costs(IMPERIAL, "undergraduate", profile={})
@@ -148,7 +191,8 @@ class CatalogCostTests(unittest.TestCase):
     def test_subject_level_fee_and_cycle_narrow_one_projection_without_program_selection(self):
         costs = admissions_catalog.catalog_costs(IMPERIAL, "masters", major="computer science",
             fee_status_context="self_reported_international_overseas", intended_entry_cycle="Fall 2027")
-        self.assertIsNone(costs["annual_total"])
+        self.assertEqual(64692, costs["annual_total"]["min"])
+        self.assertEqual(65342, costs["annual_total"]["max"])
         self.assertEqual(48300, costs["tuition"]["min"])
         self.assertEqual(["Overseas fee"], costs["tuition"]["fee_statuses"])
         self.assertEqual("matched", costs["tuition"]["cycle_status"])
@@ -164,7 +208,7 @@ class CatalogCostTests(unittest.TestCase):
         self.assertIn("undergraduate", costs["tuition"]["levels"])
         profiled = admissions_catalog.catalog_costs(IMPERIAL, profile={})
         self.assertIn("masters", profiled["tuition"]["levels"])
-        self.assertIsNone(profiled["annual_total"])
+        self.assertEqual(26442, profiled["annual_total"]["min"])
         with patch("app.services.currency.convert", side_effect=lambda amount, _source, _target: amount):
             result = universities.list_universities(q="Imperial", study_level="undergraduate", max_tuition=20000, cost_basis="tuition")
         quote = next(row for row in result["items"] if row["id"] == IMPERIAL)["catalog_costs"]["tuition"]

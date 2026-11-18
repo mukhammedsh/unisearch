@@ -38,14 +38,18 @@ test("the credit follows the interface language", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Увеличить фото" })).toBeVisible();
 });
 
-test("a university without a reusable photo shows no credit", async ({ page }) => {
+test("a university without a reusable photo shows a placeholder and no credit", async ({ page }) => {
   // Wait for the credits file so the absence is not a race with its loading.
   const creditsLoaded = page.waitForResponse((response) => response.url().endsWith("/universities/assets/credits.json"));
   await openUniversity(page, "kimep-university-kaz-almaty");
   expect((await creditsLoaded).ok()).toBe(true);
   await expect(page.locator("#detailCover")).toBeVisible();
+  await expect(page.locator("#detailCover").getByText("Campus photo unavailable")).toBeVisible();
   await expect(page.locator(".d-gallery-cover-credit .d-cover-credit")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Enlarge photo" })).toHaveCount(0);
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.evaluate(() => document.documentElement.dataset.theme = "dark");
+  await expect(page.locator("#detailCover").getByText("Campus photo unavailable")).toBeVisible();
 });
 
 test("the cover gallery and full-size viewer keep the same photo and attribution", async ({ page }) => {
@@ -99,6 +103,8 @@ test("a single campus photo opens on a small screen without carousel controls", 
   await expect(page.getByRole("button", { name: "Next photo" })).toHaveCount(0);
   await expect(page.locator("#detailCover .d-gallery-count")).toBeHidden();
   const preview = page.getByRole("button", { name: "Enlarge photo" });
+  await expect(preview.locator("img")).toBeVisible();
+  await expect(page.locator("#detailCover").getByText("Campus photo unavailable")).toBeHidden();
   await preview.click();
   const viewer = page.getByRole("dialog", { name: "Campus photos" });
   await expect(viewer.getByRole("button", { name: "Next photo" })).toHaveCount(0);
@@ -211,9 +217,10 @@ test.describe("image recovery", () => {
     );
     await openUniversity(page, "australian-national-university-au-canberra");
     await page.getByRole("button", { name: "Next photo" }).click();
+    await expect(page.locator("#detailCover").getByText("Campus photo unavailable")).toBeVisible();
     await page.getByRole("button", { name: /Enlarge photo/ }).click();
     const viewer = page.getByRole("dialog", { name: "Campus photos" });
-    await expect(viewer.getByText("Photo unavailable")).toBeVisible();
+    await expect(viewer.getByText("Photo unavailable", { exact: true })).toBeVisible();
     shouldFail = false;
     await viewer.getByRole("button", { name: "Retry" }).click();
     await expect(viewer.getByRole("img")).toBeVisible();

@@ -30,6 +30,7 @@ Defects, inconsistencies and ideas that need the user's decision because they ch
 ## Delivery and boundaries
 
 - [x] Keep scoped tuition visible on reviewed cards with no comparable study and living budget. Verified Imperial before and after choosing Computer Science on desktop and mobile. The price filters and sorting use the selected basis.
+- [x] Derive a labeled annual reference range from published tuition and living estimates that match by currency, level, and option scope; retain the living fact IDs and source year when available. Price filters use individual intervals, while UniFit keeps calculated references separate from tuition-based budget assessment.
 
 ### University page: answers first (2026-11-13)
 

@@ -2,6 +2,25 @@
 
 All notable project changes should be recorded here.
 
+## 10.5.0 (2026-11-18) - Broader annual cost ranges and campus photo fallback
+
+Backward-compatible minor version update for catalog cost references and missing campus-photo states.
+
+### Added
+- Calculate annual reference ranges from compatible published tuition and living-cost facts, retaining program scope, source periods, exclusions and living-cost provenance.
+- Show a localized campus-photo placeholder when a university has no reusable cover image.
+
+### Changed
+- Remove the unreviewed-data notice from university catalog cards; review status remains available on university pages and in comparison guidance.
+- Explain that price ranges can narrow as study level, fee status and program details are set, and label tuition-plus-living calculations as references.
+- Rename Russian university favorites filter labels to saved wording.
+
+### Fixed
+- Keep each priced program variant on its latest published period instead of mixing prices from different entry years.
+
+### Tests
+- Cover scoped annual budget ranges, living-cost provenance, localized price explanations and missing campus-photo states.
+
 ## 10.4.4 (2026-11-18) - University media policy wording
 
 Patch release: university media guidance and interface refinements with no breaking API or storage changes.
