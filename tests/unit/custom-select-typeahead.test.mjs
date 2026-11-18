@@ -638,10 +638,16 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.equal(labelDefaultPrevented, true);
     assert.equal(triggerFocusCount, 1);
 
+    select.dispatchEvent({ type: 'focus' });
+    assert.equal(triggerFocusCount, 2);
+
     trigger.dispatchEvent({ type: 'keydown', key: ' ', preventDefault: () => {} });
     assert.ok(wrapper.classList.has('open'));
-    trigger.dispatchEvent({ type: 'keyup', key: ' ', preventDefault: () => {} });
     trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
     assert.ok(wrapper.classList.has('open'));
+    trigger.dispatchEvent({ type: 'keyup', key: ' ', preventDefault: () => {} });
+    trigger.dispatchEvent({ type: 'pointerdown' });
+    trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
+    assert.ok(!wrapper.classList.has('open'));
   });
 });

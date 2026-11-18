@@ -248,12 +248,16 @@ test('showToast and removeToast', async (t) => {
     });
     registerUiTranslator((key) => (key === 'common.close' ? 'Закрыть' : ''));
 
+    const containerListeners = new Map();
     const container = {
       dataset: {},
       attrs: {},
       hasAttribute: (name) => Object.hasOwn(container.attrs, name),
       setAttribute: (name, value) => { container.attrs[name] = String(value); },
       matches: (sel) => (sel === ':popover-open' ? popoverOpen : false),
+      addEventListener: (evt, fn) => containerListeners.set(evt, fn),
+      emit: (evt, payload = {}) => containerListeners.get(evt)?.(payload),
+      contains: () => false,
       showPopover: () => { popoverOpen = true; popoverCalls.push('show'); },
       hidePopover: () => { popoverOpen = false; popoverCalls.push('hide'); },
       appendChild: (node) => {
@@ -263,20 +267,27 @@ test('showToast and removeToast', async (t) => {
       querySelectorAll: () => toasts.filter((item) => !item._removed),
     };
 
+    const prevFocusEl = { focusCalls: 0, focus() { prevFocusEl.focusCalls += 1; } };
+    const origActiveElement = Object.getOwnPropertyDescriptor(global.document, 'activeElement');
+
     global.document.getElementById = (id) => (id === 'toast-container' ? container : null);
     global.document.createElement = () => {
       const listeners = new Map();
+      const closeBtn = { focusCalls: 0, focus() { closeBtn.focusCalls += 1; }, onclick: null };
+      const insideChild = { id: 'toast-child' };
       const node = {
         dataset: {},
         style: {},
         innerHTML: '',
         addEventListener: (evt, fn) => listeners.set(evt, fn),
         emit: (evt, payload = {}) => listeners.get(evt)?.(payload),
-        querySelector: () => null,
-        contains: () => false,
+        querySelector: (sel) => (sel === '.toast-close' ? closeBtn : null),
+        contains: (target) => target === closeBtn || target === insideChild,
         remove: () => {
           node._removed = true;
         },
+        _closeBtn: closeBtn,
+        _insideChild: insideChild,
       };
       return node;
     };
@@ -292,7 +303,15 @@ test('showToast and removeToast', async (t) => {
 
       const timerBeforeFocus = toast._dismissTimer;
       assert.ok(timerBeforeFocus);
+      container.emit('focusin', { relatedTarget: prevFocusEl });
+      toast.emit('pointerenter');
+      assert.strictEqual(toast._dismissTimer, null);
+      toast.emit('pointerleave');
+      assert.ok(toast._dismissTimer);
+
       toast.emit('focusin');
+      assert.strictEqual(toast._dismissTimer, null);
+      toast.emit('focusout', { relatedTarget: toast._insideChild });
       assert.strictEqual(toast._dismissTimer, null);
       toast.emit('focusout', {});
       assert.ok(toast._dismissTimer);
@@ -300,9 +319,13 @@ test('showToast and removeToast', async (t) => {
       toast.addEventListener = (evt, cb) => {
         if (evt === 'animationend') cb();
       };
-      removeToast(toast);
+      Object.defineProperty(global.document, 'activeElement', { value: toast._closeBtn, configurable: true });
+      toast._closeBtn.onclick();
+      assert.strictEqual(prevFocusEl.focusCalls, 1);
       assert.deepStrictEqual(popoverCalls, ['show', 'hide']);
     } finally {
+      if (origActiveElement) Object.defineProperty(global.document, 'activeElement', origActiveElement);
+      else delete global.document.activeElement;
       registerUiTranslator(null);
       if (!hadPopover) delete HTMLElement.prototype.popover;
       global.document.getElementById = origGetElementById;

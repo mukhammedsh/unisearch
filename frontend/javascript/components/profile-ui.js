@@ -777,6 +777,14 @@ export const saveAllProfileChanges = (els, state) => {
     return true;
 };
 
+export const profileValidationFocusTarget = (els, state) => {
+    if (state.examEditorDirty) return els.addExamBtn || null;
+    if (state.languageEditorDirty) return document.getElementById("langAddBtn");
+    if (els.budgetInput?.getAttribute("aria-invalid") === "true") return els.budgetInput;
+    if (els.gpaInput?.getAttribute("aria-invalid") === "true") return els.gpaInput;
+    return null;
+};
+
 export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClose) => {
     if (!modal || modal.classList.contains("is-closing")) return;
     window.clearTimeout(modal._closeMotionTimer);
@@ -801,12 +809,12 @@ export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClos
     modal._closeMotionTimer = window.setTimeout(finish, 180);
 };
 
-export const closeUnsavedDialog = (els, state, focusCloseButton = false) => {
+export const closeUnsavedDialog = (els, state, focusCloseButton = false, focusTarget = null) => {
     if (!els.unsavedModal) return;
     closeDialogWithMotion(els.unsavedModal, () => {
         state.cleanupUnsavedFocusTrap?.();
         state.cleanupUnsavedFocusTrap = null;
-    }, focusCloseButton ? els.closeBtn : null);
+    }, focusTarget || (focusCloseButton ? els.closeBtn : null));
 };
 
 export const closeResetDialog = (els, state, focusResetButton = false) => {
@@ -1498,7 +1506,7 @@ export const bindProfileEvents = (els, state) => {
         motionPress(els.saveAndCloseBtn);
         syncInputsToDraft(els, state);
         if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) {
-            closeUnsavedDialog(els, state, false);
+            closeUnsavedDialog(els, state, false, profileValidationFocusTarget(els, state));
             settleNavigationClose(false);
             return;
         }

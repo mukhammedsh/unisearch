@@ -154,6 +154,17 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
     assert.equal(modal.open, false);
     assert.equal(modal.classList.contains("is-open"), false);
 
+    // Fallback path when native HTMLDialogElement showModal/close methods are unavailable.
+    modal.showModal = null;
+    modal.close = null;
+    global.document.activeElement = openButton;
+    openButton.emit("click");
+    assert.equal(modal.classList.contains("is-open"), true);
+    modal.emit("pointerdown", { target: modal });
+    modal.emit("pointerup", { target: modal });
+    assert.equal(modal.classList.contains("is-open"), false);
+    assert.equal(openButton.focusCalls, 1);
+
     initSettingsUI();
     assert.equal(openButton.listeners.size, 1);
   } finally {
