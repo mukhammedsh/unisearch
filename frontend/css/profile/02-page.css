@@ -580,11 +580,6 @@ body[data-page="profile"] {
   }
 }
 
-.profile-shell .custom-select-wrapper.open .custom-select-trigger {
-  background: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
-}
-
 .profile-input:user-invalid,
 .profile-input.is-invalid,
 .profile-input[aria-invalid="true"] {

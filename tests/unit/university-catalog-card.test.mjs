@@ -154,7 +154,6 @@ test("large converted card amounts use compact local notation without changing t
   }
 });
 
-
 test("reviewed UniFit indicators describe only the saved route and measurable checks", () => {
   setLanguage("eng", { emit: false });
   const match = { finalScore: 0.2, preferenceMismatch: 0.1, selectedByUser: true,
@@ -264,4 +263,42 @@ test("a price that depends on fee status asks for the fee status instead of hidi
   assert.match(check.detail, /^\$13,000 to \$63,000 a year, depending on your fee status\. Set it on the university page\./);
   // Without a price or a fee-status reason there is still nothing to compare.
   assert.deepEqual(reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "unknown_cost" } }, 30000), []);
+});
+
+test("annual total displays min-max range without profile and narrows when specified", () => {
+  setLanguage("eng", { emit: false });
+  const broad = {
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: {
+      annual_total: {
+        min: 26442, max: 69342, currency: "USD", period: "",
+        calculation: "tuition_plus_living_range", billing_period: "academic_year",
+        living_reference: "2026 estimate",
+        levels: ["undergraduate", "masters"], fee_statuses: ["Home fee", "Overseas fee"]
+      }
+    }
+  };
+  const broadHtml = renderUniversityCardCosts(broad, "annual_total");
+  assert.match(broadHtml, /\$26,442 – \$69,342/);
+  assert.match(broadHtml, /This reference range combines published tuition with living-cost estimates/);
+  assert.match(broadHtml, /Living-cost estimate: 2026/);
+  assert.match(broadHtml, /Published reference, before aid/);
+
+  setLanguage("rus", { emit: false });
+  const broadRu = renderUniversityCardCosts(broad, "annual_total");
+  assert.match(broadRu, /Это справочный диапазон: опубликованная стоимость обучения/);
+  assert.match(broadRu, /Оценка проживания: 2026 год/);
+
+  const exact = {
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: {
+      annual_total: {
+        min: 64192, max: 64192, currency: "USD", period: "2027 entry",
+        billing_period: "academic_year", levels: ["undergraduate"], fee_statuses: ["Overseas fee"]
+      }
+    }
+  };
+  const exactRu = renderUniversityCardCosts(exact, "annual_total");
+  assert.match(exactRu, /\$64,192/);
+  assert.doesNotMatch(exactRu, /–/);
 });

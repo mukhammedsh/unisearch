@@ -438,8 +438,8 @@ universities.cost.fee_status_unknown: Fee category unconfirmed
 universities.cost.filter_partial: Partial price match
 universities.cost.tooltip_open: Explain this price
 universities.cost.tooltip_title: How this price works
-universities.cost.tooltip_range: These are the lowest and highest known prices matching the current selection, not an average. The amount can vary by program and fee category.
-universities.cost.tooltip_living_range: The endpoints add the published living-cost range to known tuition prices; they are not an average. The living estimate may come from a different year.
+universities.cost.tooltip_range: These are the lowest and highest known prices. Completing your profile (study level, fee status, program) can narrow the range to a more specific option.
+universities.cost.tooltip_living_range: This reference range combines published tuition with living-cost estimates; living costs may come from a different year. Completing your profile (study level, fee status, program) can narrow the range, but the total is not guaranteed.
 universities.cost.tooltip_single: This is one known price for the current selection. Confirm the program, fee category and year.
 universities.cost.tooltip_filter_variants: The price filter checks each known option. A university appears if at least one option overlaps your limits, even when the displayed range extends beyond them. Prices between the endpoints are not necessarily offered.
 universities.cost.tooltip_filter_reference: A broad reference range may overlap your limits without identifying a matching program. Confirm its price with the university.
@@ -3338,6 +3338,7 @@ university.admissions.key_facts.cost: Cost per year
 university.admissions.key_facts.cost_total: Published budget: {amount}
 university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
 university.admissions.key_facts.cost_period: Source period: {period}
+university.admissions.key_facts.cost_calculated_reference: Calculated reference: tuition plus a living-cost estimate.
 university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas); you can set it in the details above
 university.admissions.key_facts.cost_not_annual: The published price is not per year; see the cost tab
 university.admissions.key_facts.cost_unknown: No price is published for this selection

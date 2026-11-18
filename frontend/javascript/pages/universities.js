@@ -195,7 +195,8 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
     }
     const known = price.amount !== null && Number.isFinite(price.amount);
     const range = known && price.max > price.min;
-    const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference");
+    const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference"
+        || price.calculation === "tuition_plus_living_range");
     const money = value => splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, {
         presentation: "summary", locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
     }));
@@ -4245,7 +4246,6 @@ ${rankInnerHtml}
             ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
             <div class="uni-body">
             ${headHtml}
-            ${reviewedAdmissions ? "" : `<p class="uni-data-note" title="${escapeHtmlAttr(t("university.ux2.legacy.badge_detail"))}">${escapeHtml(t("university.ux2.legacy.badge"))}</p>`}
             ${metricsHtml}
             <div class="uni-footer">
                 ${priceHtml}

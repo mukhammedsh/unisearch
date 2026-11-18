@@ -116,4 +116,4 @@ This project uses or references the following third-party icon, font, and brand 
 - Map data and tiles: OpenStreetMap (ODbL, attribution required; Tile Usage Policy)
 - Global ranks: QS World University Rankings, shown with QS's required source notice; commercial use needs QS's written permission
 - GitHub: text link only; the logomark is governed by GitHub brand usage rules
-- University assets (logos and campus photos): Property of respective institutions and copyright holders; excluded from the MIT License; logos used to identify institutions, photographs only from sources that permit reuse, with a Notice & Takedown procedure.
+- University media: UniSearch identifies institutions by name and credited campus photographs; their logos, crests, and emblems are not displayed. Campus photographs remain the property of their respective rights holders, are excluded from the MIT License, and are reused only under the listed Wikimedia Commons licenses with attribution and a Notice & Takedown procedure.

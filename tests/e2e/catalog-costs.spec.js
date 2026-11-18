@@ -64,28 +64,28 @@ test("Imperial card shows the applicable tuition and living-cost range", async (
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/26[\s,]?442/);
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/64[\s,]?842/);
   await card.locator(".uni-cost-tooltip .uni-price").click();
-  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("not an average");
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("This reference range combines published tuition with living-cost estimates");
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Living-cost estimate: 2026.");
   await page.goto("/index.html?q=Imperial&study_level=undergraduate&max_tuition=90000&cost_basis=annual_total");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(card).toBeVisible();
 });
 
-test("Imperial shows published tuition when the full budget is unavailable and narrows it by subject", async ({ page }, testInfo) => {
+test("Imperial keeps published tuition selectable and narrows it by subject", async ({ page }, testInfo) => {
   await page.addInitScript(() => {
     if (!localStorage.getItem("unisearch_ui_language_v1")) localStorage.setItem("unisearch_ui_language_v1", "eng");
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
     localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([{ key: "currency_display_mode", value: "original" }]));
   });
   const card = page.locator('#universitiesList .uni-card[data-uni-id="imperial-college-london-uk"]');
-  await page.goto("/index.html?q=Imperial&sort=name_asc");
+  await page.goto("/index.html?q=Imperial&sort=name_asc&cost_basis=tuition");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const price = card.locator('[data-cost-basis="tuition"]');
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £52[\s,]?300/);
-  await expect(card.locator(".uni-footer .uni-cost-meta__label")).toHaveText("Tuition");
   await price.click();
   const tooltip = card.locator(".uni-cost-tooltip__content");
   await expect(tooltip).toBeVisible();
-  await expect(tooltip).toContainText("No comparable full budget");
+  await expect(tooltip).toContainText("Living and other costs are additional.");
   await expect(tooltip).toContainText("Home fee");
   await expect(tooltip).toContainText("Overseas fee");
 
@@ -99,7 +99,7 @@ test("Imperial shows published tuition when the full budget is unavailable and n
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £48[\s,]?300/);
-  await expect(card.locator(".uni-footer .uni-cost-meta__label")).toHaveText("Обучение");
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Проживание и другие расходы оплачиваются отдельно.");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await card.screenshot({ path: testInfo.outputPath("imperial-subject-tuition-mobile.png") });
 });

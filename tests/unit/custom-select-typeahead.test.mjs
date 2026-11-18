@@ -47,6 +47,12 @@ class MockElement {
     this._listeners = new Map();
     this.disabled = false;
     this.dataset = {};
+    const properties = new Map();
+    this.style = {
+      removeProperty: (key) => properties.delete(key),
+      setProperty: (key, value) => properties.set(key, value),
+      getPropertyValue: (key) => properties.get(key),
+    };
     this._value = '';
     this._text = '';
     this._textContent = '';
@@ -534,6 +540,9 @@ describe('custom-select-typeahead and optgroups', () => {
     });
 
     global.window.innerHeight = 540;
+    global.window.getComputedStyle = () => ({ marginBlockStart: '0px' });
+    const panel = wrapper.querySelector('.custom-options');
+    panel.offsetHeight = 160;
 
     trigger.dispatchEvent({
       type: 'click',
@@ -542,6 +551,7 @@ describe('custom-select-typeahead and optgroups', () => {
 
     assert.ok(wrapper.classList.has('open'));
     assert.ok(wrapper.classList.has('open-up'));
+    assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '400px');
 
     trigger.dispatchEvent({
       type: 'click',
@@ -552,7 +562,7 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.ok(!wrapper.classList.has('open-up'));
   });
 
-  it('does not add open-up class when space below is ample', () => {
+  it('opens a short panel below the trigger if it fits', () => {
     const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
@@ -562,15 +572,18 @@ describe('custom-select-typeahead and optgroups', () => {
     const trigger = wrapper.querySelector('.custom-select-trigger');
 
     trigger.getBoundingClientRect = () => ({
-      top: 100,
-      bottom: 140,
+      top: 400,
+      bottom: 440,
       left: 10,
       right: 200,
       width: 190,
       height: 40,
     });
 
-    global.window.innerHeight = 640;
+    global.window.innerHeight = 540;
+    global.window.getComputedStyle = () => ({ marginBlockStart: '0px' });
+    const panel = wrapper.querySelector('.custom-options');
+    panel.offsetHeight = 80;
 
     trigger.dispatchEvent({
       type: 'click',
@@ -579,6 +592,7 @@ describe('custom-select-typeahead and optgroups', () => {
 
     assert.ok(wrapper.classList.has('open'));
     assert.ok(!wrapper.classList.has('open-up'));
+    assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '100px');
   });
 
   it('ignores Enter in searchable select while IME composition is active', () => {

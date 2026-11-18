@@ -2,6 +2,40 @@
 
 All notable project changes should be recorded here.
 
+## 10.5.0 (2026-11-18) - Broader annual cost ranges and campus photo fallback
+
+Backward-compatible minor version update for catalog cost references and missing campus-photo states.
+
+### Added
+- Calculate annual reference ranges from compatible published tuition and living-cost facts, retaining program scope, source periods, exclusions and living-cost provenance.
+- Show a localized campus-photo placeholder when a university has no reusable cover image.
+
+### Changed
+- Remove the unreviewed-data notice from university catalog cards; review status remains available on university pages and in comparison guidance.
+- Explain that price ranges can narrow as study level, fee status and program details are set, and label tuition-plus-living calculations as references.
+- Identify calculated tuition-plus-living references in university summaries and comparison.
+- Rename Russian university favorites filter labels to saved wording.
+
+### Fixed
+- Keep each priced program variant on its latest published period instead of mixing prices from different entry years.
+
+### Tests
+- Cover scoped annual budget ranges, living-cost provenance, localized price explanations and missing campus-photo states.
+- Check that the catalog level selector uses the solid surface token across themes and layouts.
+
+## 10.4.4 (2026-11-18) - University media policy wording
+
+Patch release: university media guidance and interface refinements with no breaking API or storage changes.
+
+### Changed
+- Clarified that UniSearch identifies institutions by name and campus photography and does not publish university logos; aligned the third-party notice, photo contribution guidance, architecture diagram, and catalog expansion roadmap.
+- Simplified the campus photo gallery with a clickable cover, translucent photo count and credits, side arrows, and a back arrow in the full-size viewer.
+
+### Fixed
+- Unified dropdown spacing, panel styling, and selection feedback across catalog filters, profile, settings, and university pages.
+- Set the catalog study-level filter button to the solid surface color.
+- Standardized website, map, and save actions across all university pages, including their typography and stable localized save-state width.
+
 ## 10.4.3 (2026-11-18) - Modern web platform baseline, accessibility, and security hardening
 
 Patch release with no new user-visible capability: adopts Baseline Widely available JS/CSS APIs, converts overlays to native `<dialog>` elements, upgrades WAI-ARIA tabs/tables/selects/toasts and Forced Colors support, removes CSS `@import` waterfalls, and tightens static security headers.

@@ -297,6 +297,15 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
             add(row, "tuition", value.get("tuition"), value.get("currency"), period)
             add(row, "annual_total", value.get("total_before_aid"), value.get("currency"), period,
                 exclusions=value.get("exclusions", ["insurance", "travel"] if value.get("health_insurance") else []))
+        # Published budget tables: only the nine-month column matches an academic-year comparison.
+        for budget in value.get("budgets") or []:
+            if isinstance(budget, dict) and budget.get("months") == 9 and "tuition" in budget and "total" in budget:
+                add(row, "tuition", budget["tuition"], value.get("currency"), period)
+                add(row, "annual_total", budget["total"], value.get("currency"), period)
+        # Quarterly full-time graduate rates cover three academic quarters (Autumn, Winter, Spring).
+        quarterly = (value.get("graduate_engineering_quarterly_tuition") or {}).get("11-18_units")
+        if isinstance(quarterly, (int, float)) and not isinstance(quarterly, bool):
+            add(row, "tuition", quarterly * 3, value.get("currency"), value.get("academic_year"))
         panels = value.get("course_page_tuition_fees")
         if not isinstance(panels, dict):
             continue
@@ -310,61 +319,101 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                     if annual or one_year:
                         add(row, "tuition", float((annual or one_year)[1].replace(",", "")), panel.get("currency"), panel.get("panel_cycle_label"), status)
 
+    def period_matches(quote):
+        actual = re.fullmatch(r"(20\d{2})-(?:\d{2}|20\d{2})", quote["period"])
+        published = actual[1] if actual else quote["period"]
+        target = _cycle(intended_entry_cycle)
+        return _cycle_axis(published, str(target[0]) if target and target[1] != "spring" else intended_entry_cycle) == "matched"
+
+    def period_rank(quote):
+        return period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]
+
+    # Every priced variant without a published full budget gains the applicable living-cost range.
+    living = _living_estimates(institution)
+    published_budgets = [quote for quote in quotes if quote["basis"] == "annual_total"]
+    for quote in [quote for quote in quotes if quote["basis"] == "tuition" and quote["billing_period"] == "academic_year"]:
+        option_ids = set(quote["option_ids"])
+        covered_options = set()
+        quote_scope = (quote["currency"], quote["period"], quote["billing_period"], quote["fee_status"], quote["campus"])
+        for budget in published_budgets:
+            budget_scope = (budget["currency"], budget["period"], budget["billing_period"], budget["fee_status"], budget["campus"])
+            if budget_scope != quote_scope:
+                continue
+            covered_options.update(option_ids.intersection(budget["option_ids"]))
+        option_ids.difference_update(covered_options)
+        if not option_ids:
+            continue
+        quote = {**quote, "option_ids": sorted(option_ids)}
+        matches = [estimate for estimate in living if estimate["currency"] == quote["currency"]
+                   and (not estimate["levels"] or set(estimate["levels"]).intersection(quote["levels"]))
+                   and (not estimate["option_ids"] or set(estimate["option_ids"]).intersection(option_ids))]
+        if not matches:
+            continue
+        low, high = min(estimate["min"] for estimate in matches), max(estimate["max"] for estimate in matches)
+        living_references = {estimate["reference"] for estimate in matches if estimate["reference"]}
+        quotes.append({**quote, "basis": "annual_total", "amount": quote["amount"] + low, "amount_max": quote["amount"] + high,
+                       "living": (low, high), "exclusions": sorted({item for estimate in matches for item in estimate["exclusions"]}),
+                       "living_fact_ids": sorted({estimate["fact_id"] for estimate in matches}),
+                       "living_reference": next(iter(living_references)) if len(living_references) == 1 else "",
+                       "source_ids": sorted({*quote["source_ids"], *(value for estimate in matches for value in estimate["source_ids"])})})
+
     for basis in ("annual_total", "tuition"):
         candidates = [quote for quote in quotes if quote["basis"] == basis]
         if not candidates:
             continue
         if not selected_option and any(quote["annual_comparable"] for quote in candidates):
             candidates = [quote for quote in candidates if quote["annual_comparable"]]
-        # Keep one source period and currency; do not join prices across entry years.
-        def period_matches(quote):
-            actual = re.fullmatch(r"(20\d{2})-(?:\d{2}|20\d{2})", quote["period"])
-            published = actual[1] if actual else quote["period"]
-            target = _cycle(intended_entry_cycle)
-            return _cycle_axis(published, str(target[0]) if target and target[1] != "spring" else intended_entry_cycle) == "matched"
-
-        latest = max(candidates, key=lambda quote: (period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]))
-        candidates = [quote for quote in candidates if (quote["period"], quote["currency"], quote["billing_period"]) == (latest["period"], latest["currency"], latest["billing_period"])]
-        bounds = [min(candidates, key=lambda quote: quote["amount"]), max(candidates, key=lambda quote: quote["amount"])]
+        # Keep one published period per priced variant, so a variant is never counted for two entry years.
+        variants = {}
+        for quote in candidates:
+            key = (tuple(quote["option_ids"]), quote["fee_status"], quote["campus"])
+            if key not in variants or period_rank(quote) > period_rank(variants[key]):
+                variants[key] = quote
+        latest = max(variants.values(), key=period_rank)
+        candidates = [quote for quote in variants.values()
+                      if (quote["currency"], quote["billing_period"]) == (latest["currency"], latest["billing_period"])]
+        bounds = [min(candidates, key=lambda quote: quote["amount"]),
+                  max(candidates, key=lambda quote: quote.get("amount_max", quote["amount"]))]
         evidence = candidates if profile is not None else bounds
         source_ids = {source_id for quote in evidence for source_id in quote["source_ids"]}
-        summary[basis] = {"min": min(quote["amount"] for quote in candidates), "max": max(quote["amount"] for quote in candidates),
-                          "amounts": sorted({quote["amount"] for quote in candidates}),
-                          "currency": latest["currency"], "period": latest["period"], "study_level": level or "",
-                          "billing_period": latest["billing_period"], "annual_comparable": all(quote["annual_comparable"] for quote in candidates),
-                          "campuses": sorted({quote["campus"] for quote in candidates if quote.get("campus")}),
-                          "source_year": latest.get("source_year"),
-                          "fee_statuses": sorted({quote["fee_status"] for quote in candidates if quote["fee_status"]}),
-                          "fee_status_match": ("not_required" if not any(quote["fee_status"] for quote in candidates)
-                                               else "unknown" if fee_status_context in (None, "unknown") else "matched"),
-                          "cycle_status": "matched" if period_matches(latest) else "dated_reference" if intended_entry_cycle else "unspecified",
-                          "levels": sorted({value for quote in candidates for value in quote["levels"]}),
-                          "option_ids": sorted({value for quote in candidates for value in quote["option_ids"]}),
-                          "candidate_option_count": len(candidate_ids),
-                          "priced_option_count": len({value for quote in candidates for value in quote["option_ids"]}),
-                          "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
-                          "fact_ids": sorted({quote["fact_id"] for quote in evidence}),
-                          "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
-    defaulted_undergraduate = not level and summary["tuition"] and set(summary["tuition"]["levels"]) == {"undergraduate"}
-    if (profile is not None and institution_id == "imperial-college-london-uk"
-            and (level == "undergraduate" or defaulted_undergraduate)
-            and summary["tuition"] and not summary["annual_total"]):
-        tuition = summary["tuition"]
-        living_fact = next((row for row in institution["facts"] if row["id"] == "imperial-london-living-2026"), None)
-        living_range = (living_fact or {}).get("value", {}).get("average_9months", {})
-        living_min, living_max = living_range.get("min"), living_range.get("max")
-        if (tuition["currency"] == "GBP" and isinstance(living_min, (int, float)) and not isinstance(living_min, bool)
-                and isinstance(living_max, (int, float)) and not isinstance(living_max, bool)
-                and math.isfinite(living_min) and math.isfinite(living_max) and 0 <= living_min <= living_max):
-            intervals = [{"min": amount + living_min, "max": amount + living_max} for amount in tuition["amounts"]]
-            total = {**tuition, "min": min(interval["min"] for interval in intervals),
-                     "max": max(interval["max"] for interval in intervals), "intervals": intervals,
-                     "calculation": "tuition_plus_living_range", "living_min": living_min,
-                     "living_max": living_max, "living_period": "9 months", "living_reference": "2026 estimate"}
-            total.pop("amounts")
-            total["source_urls"] = tuition["source_urls"] + [
-                source["url"] for source in institution["sources"] if source["id"] in living_fact["source_ids"]]
-            summary["annual_total"] = total
+        derived = [quote["living"] for quote in candidates if quote.get("living")]
+        quote_summary = {"min": min(quote["amount"] for quote in candidates),
+                         "max": max(quote.get("amount_max", quote["amount"]) for quote in candidates),
+                         "amounts": sorted({quote["amount"] for quote in candidates}),
+                         "currency": latest["currency"], "period": latest["period"],
+                         "study_level": level or "",
+                         "billing_period": latest["billing_period"], "annual_comparable": all(quote["annual_comparable"] for quote in candidates),
+                         "campuses": sorted({quote["campus"] for quote in candidates if quote.get("campus")}),
+                         "source_year": latest.get("source_year"),
+                         "fee_statuses": sorted({quote["fee_status"] for quote in candidates if quote["fee_status"]}),
+                         "fee_status_match": ("not_required" if not any(quote["fee_status"] for quote in candidates)
+                                              else "unknown" if fee_status_context in (None, "unknown") else "matched"),
+                         "cycle_status": "matched" if period_matches(latest) else "dated_reference" if intended_entry_cycle else "unspecified",
+                         "levels": sorted({value for quote in candidates for value in quote["levels"]}),
+                         "option_ids": sorted({value for quote in candidates for value in quote["option_ids"]}),
+                         "candidate_option_count": len(candidate_ids),
+                         "priced_option_count": len({value for quote in candidates for value in quote["option_ids"]}),
+                         "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
+                         "fact_ids": sorted({quote["fact_id"] for quote in evidence} |
+                                            {fact_id for quote in evidence for fact_id in quote.get("living_fact_ids", [])}),
+                         "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
+        if basis == "annual_total":
+            published_quotes = [quote for quote in candidates if not quote.get("living")]
+            quote_summary["published_intervals"] = [
+                {"min": quote["amount"], "max": quote.get("amount_max", quote["amount"])}
+                for quote in published_quotes
+            ]
+        if derived:
+            quote_summary.pop("amounts")
+            quote_summary.update(
+                intervals=sorted({(quote["amount"], quote.get("amount_max", quote["amount"])) for quote in candidates}),
+                calculation="tuition_plus_living_range", living_period="9 months",
+                living_min=min(low for low, _high in derived), living_max=max(high for _low, high in derived))
+            quote_summary["intervals"] = [{"min": low, "max": high} for low, high in quote_summary["intervals"]]
+            living_references = {quote["living_reference"] for quote in candidates if quote.get("living_reference")}
+            if len(living_references) == 1:
+                quote_summary["living_reference"] = next(iter(living_references))
+        summary[basis] = quote_summary
     return summary
 
 
@@ -390,6 +439,40 @@ def selected_costs(institution_id, context):
         if isinstance(costs.get(basis), dict):
             costs[basis]["usd"] = _usd_range(costs[basis])
     return costs
+
+
+def _living_estimates(institution):
+    """Read published non-tuition estimates and express them for one nine-month academic year."""
+    estimates = []
+    for row in institution["facts"]:
+        if (not str(row.get("publication_status") or "").startswith("published")
+                or not re.search(r"verified|reviewed", row.get("review_status") or "")
+                or re.search(r"superseded|conflict|partial|pending", row.get("review_status") or "")):
+            continue
+        value = row.get("value")
+        if not isinstance(value, dict):
+            continue
+        if isinstance(value.get("average_9months"), dict):
+            low, high, exclusions = value["average_9months"].get("min"), value["average_9months"].get("max"), ["insurance", "travel"]
+        elif "three_quarter_non_tuition_total" in value:
+            low = high = value["three_quarter_non_tuition_total"]
+            exclusions = ["travel"]
+        elif "living" in str(row.get("topic") or "") and value.get("period") == "month" and isinstance(value.get("amount"), (int, float)):
+            low = high = value["amount"] * 9
+            exclusions = ["travel"]
+        else:
+            continue
+        if (any(isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount) for amount in (low, high))
+                or not 0 <= low <= high or not re.fullmatch(r"[A-Z]{3}", str(value.get("currency") or ""))):
+            continue
+        reference = value.get("cycle") or value.get("year") or value.get("academic_year")
+        if not reference:
+            period = row.get("period")
+            reference = period.get("label") if isinstance(period, dict) else period
+        estimates.append({"min": low, "max": high, "currency": value["currency"], "exclusions": exclusions,
+                          "levels": row["scope"]["levels"], "option_ids": row["scope"]["option_ids"],
+                          "fact_id": row["id"], "source_ids": row["source_ids"], "reference": str(reference or "")})
+    return estimates
 
 
 def get_public_contract(institution_id):

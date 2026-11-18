@@ -114,17 +114,6 @@ canvas {
     border-radius: var(--radius-base);
     font-size: var(--text-xs);
   }
-
-  .navbar-right .lang-control .custom-options {
-    right: 0;
-    left: auto;
-    min-width: min(188px, calc(100vw - 24px));
-    transform: translateY(-10px);
-  }
-
-  .navbar-right .lang-control .custom-select-wrapper.open .custom-options {
-    transform: translateY(0);
-  }
 }
 
 @media (max-width: 380px) {
@@ -295,10 +284,6 @@ canvas {
     width: 18px;
     height: 14px;
   }
-
-  .navbar-right .lang-control .custom-options {
-    min-width: min(176px, calc(100vw - 20px));
-  }
 }
 
 @media (max-width: 340px) {
@@ -380,14 +365,6 @@ body .has-sliding-indicator .active::after {
   border: none;
 }
 
-.custom-options {
-  background: var(--surface-solid);
-}
-
-.navbar-right .lang-control .custom-options {
-  box-shadow: var(--shadow-card);
-}
-
 .settings-trigger-btn,
 .profile-trigger-btn,
 .lang-switch,
@@ -407,26 +384,11 @@ body .has-sliding-indicator .active::after {
     box-shadow: var(--shadow-sm);
     color: var(--accent);
   }
-
-  .custom-select-trigger:hover {
-    background: var(--accent-panel);
-    color: var(--accent);
-  }
-}
-
-.custom-select-wrapper.open .custom-select-trigger {
-  background: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
 }
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
   border: none;
   box-shadow: var(--shadow-sm);
-}
-
-.custom-option.selected {
-  color: var(--interaction-active-text);
-  background: var(--interaction-active-surface);
 }
 
 .center-loading-spinner {
@@ -654,17 +616,16 @@ body .has-sliding-indicator .active::after {
 
 .navbar-search-suggestions {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + var(--space-1));
   right: 0;
   left: 0;
   z-index: var(--z-dropdown);
   display: grid;
-  gap: var(--space-1);
-  padding: var(--space-2);
+  padding: var(--space-1);
   border: none;
   border-radius: var(--radius-base);
   background: var(--surface-solid);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-md);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
