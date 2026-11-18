@@ -6,7 +6,7 @@
   pointer-events: auto;
 }
 
-.u-tour-backdrop {
+.u-tour-modal::backdrop {
   background: var(--backdrop);
   backdrop-filter: blur(1px);
 }

@@ -211,7 +211,7 @@ function aidSummary(rows, resolved) {
 }
 
 function table(caption, headings, rows) {
-  return `<div class="admissions-reading__table-wrap"><table class="admissions-reading__table" role="table"><caption>${escapeHtml(caption)}</caption><thead role="rowgroup"><tr role="row">${headings.map(heading => `<th scope="col" role="columnheader">${escapeHtml(heading)}</th>`).join("")}</tr></thead><tbody role="rowgroup">${rows.map(cells => `<tr role="row">${cells.map((cell, index) => `<${index ? 'td role="cell"' : 'th scope="row" role="rowheader"'} data-label="${escapeHtmlAttr(headings[index])}">${cell}</${index ? "td" : "th"}>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  return `<div class="admissions-reading__table-wrap" tabindex="0" role="region" aria-label="${escapeHtmlAttr(caption)}"><table class="admissions-reading__table"><caption>${escapeHtml(caption)}</caption><thead><tr>${headings.map(heading => `<th scope="col">${escapeHtml(heading)}</th>`).join("")}</tr></thead><tbody>${rows.map(cells => `<tr>${cells.map((cell, index) => `<${index ? "td" : 'th scope="row"'} data-label="${escapeHtmlAttr(headings[index])}">${cell}</${index ? "td" : "th"}>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 
 function requirements(rows, resolved) {

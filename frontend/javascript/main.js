@@ -351,14 +351,19 @@ async function initializeCurrentRoute() {
   }
 
   if (!ctx.isUniversitiesPage) {
-    document.documentElement.classList.remove("sidebar-filters-open");
-    document.body.classList.remove("sidebar-filters-open");
-    if (document.body.style.overflow === "hidden") {
-      document.body.style.overflow = "";
-    }
+    clearSidebarFiltersState();
   }
 
   await initRoutePage(ctx);
+}
+
+function clearSidebarFiltersState() {
+  document.documentElement.classList.remove("sidebar-filters-open");
+  document.body.classList.remove("sidebar-filters-open");
+  document.querySelectorAll("[data-sidebar-inert=\"1\"]").forEach((node) => {
+    node.inert = false;
+    delete node.dataset.sidebarInert;
+  });
 }
 
 function stylesheetKeyFrom(link, baseUrl) {
@@ -502,6 +507,33 @@ function shouldPrefetchLink(link) {
   }
 }
 
+function focusRouteDestination(hash = "") {
+  if (hash && hash.length > 1) {
+    try {
+      const hashTarget = document.querySelector(hash);
+      if (hashTarget instanceof HTMLElement) {
+        hashTarget.scrollIntoView({ block: "start" });
+        if (!hashTarget.hasAttribute("tabindex") && !hashTarget.matches("a[href], button, input, select, textarea, summary")) {
+          hashTarget.setAttribute("tabindex", "-1");
+        }
+        hashTarget.focus({ preventScroll: true });
+        return;
+      }
+    } catch (_) {
+      // Ignore invalid hash selectors and fall back to the main destination heading.
+    }
+  }
+  const target =
+    document.querySelector("main h1:not([hidden]), #mainContent h1:not([hidden])") ||
+    document.querySelector("main, #mainContent");
+  if (target instanceof HTMLElement) {
+    if (!target.hasAttribute("tabindex") && !target.matches("a[href], button, input, select, textarea, summary")) {
+      target.setAttribute("tabindex", "-1");
+    }
+    target.focus({ preventScroll: true });
+  }
+}
+
 async function loadAppRoute(rawHref, options = {}) {
   const url = new URL(rawHref, window.location.href);
   if (!isAppRouteUrl(url)) {
@@ -593,11 +625,7 @@ async function loadAppRoute(rawHref, options = {}) {
     const updateDomAndState = () => {
       replaceRouteDom(nextDoc);
 
-      document.documentElement.classList.remove("sidebar-filters-open");
-      document.body.classList.remove("sidebar-filters-open");
-      if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = "";
-      }
+      clearSidebarFiltersState();
 
       if (options.history !== false) {
         const method = options.replace ? "replaceState" : "pushState";
@@ -633,11 +661,9 @@ async function loadAppRoute(rawHref, options = {}) {
     }
 
     await initializeCurrentRoute();
-    if (url.hash) {
-      window.requestAnimationFrame(() => {
-        document.querySelector(url.hash)?.scrollIntoView({ block: "start" });
-      });
-    }
+    window.requestAnimationFrame(() => {
+      focusRouteDestination(url.hash);
+    });
     return true;
   } catch (error) {
     if (error?.name === "AbortError") return false;

@@ -126,7 +126,7 @@ test("floating motion layers close cleanly and stay above docked controls", asyn
   await expect.poll(async () =>
     page.locator("#settingsModal.is-open, #settingsModal.is-closing").count()
   ).toBe(0);
-  await expect(page.locator("#settingsModal")).toHaveAttribute("aria-hidden", "true");
+  await expect(page.locator("#settingsModal")).not.toHaveAttribute("open", "");
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click("#mobileFilterToggle");

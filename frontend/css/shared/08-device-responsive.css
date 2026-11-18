@@ -347,9 +347,10 @@ canvas {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 2px;
+  height: 0;
   width: 1px;
-  background: var(--accent);
+  background: transparent;
+  border-block-end: 2px solid var(--accent);
   transition:
     transform var(--motion-medium) var(--motion-ease-emphasized),
     width var(--motion-medium) var(--motion-ease-emphasized),

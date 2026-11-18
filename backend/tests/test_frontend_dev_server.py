@@ -35,7 +35,7 @@ class FrontendDevServerApiPortTests(unittest.TestCase):
 
     def test_env_js_is_served_unchanged_without_an_api_port(self):
         base = self.serve(None)
-        self.assertEqual(self.fetch(f"{base}/env.js"), (ROOT / "frontend" / "env.js").read_text(encoding="utf-8"))
+        self.assertEqual(self.fetch(f"{base}/env.js"), (ROOT / "frontend" / "env.js").read_bytes().decode("utf-8"))
 
     def test_other_files_are_not_modified(self):
         base = self.serve(8010)

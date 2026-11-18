@@ -585,6 +585,7 @@ body[data-page="profile"] {
   color: var(--interaction-active-text);
 }
 
+.profile-input:user-invalid,
 .profile-input.is-invalid,
 .profile-input[aria-invalid="true"] {
   border: none;
@@ -641,12 +642,12 @@ body[data-page="profile"] {
   color: var(--interaction-active-text);
 }
 
-.profile-budget--with-unit:has(.profile-input:is(.is-invalid, [aria-invalid="true"])) {
+.profile-budget--with-unit:has(.profile-input:is(:user-invalid, .is-invalid, [aria-invalid="true"])) {
   outline: 2px solid var(--color-danger);
   outline-offset: 2px;
 }
 
-.profile-budget--with-unit .profile-input:is(.is-invalid, [aria-invalid="true"]) {
+.profile-budget--with-unit .profile-input:is(:user-invalid, .is-invalid, [aria-invalid="true"]) {
   box-shadow: none;
 }
 
@@ -1461,23 +1462,24 @@ textarea.profile-input,
   width: 100vw;
   height: 100vh;
   height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
   display: none;
   align-items: center;
   justify-content: center;
   z-index: var(--z-modal-raised, 8200);
 }
 
-.profile-confirm-modal.is-open,
-.profile-confirm-modal.is-closing {
+.profile-confirm-modal[open] {
   display: flex;
 }
 
-.profile-confirm-backdrop {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
+.profile-confirm-modal::backdrop {
   background: var(--backdrop);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
@@ -1496,7 +1498,7 @@ textarea.profile-input,
   box-shadow: var(--shadow-md);
 }
 
-.profile-confirm-card h3 {
+.profile-confirm-card h2 {
   margin: 0;
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);

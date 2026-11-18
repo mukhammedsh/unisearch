@@ -37,15 +37,20 @@ function ensureSelectWrapper(select) {
     wrapper.appendChild(select);
   }
   select.classList.add("u-select-hidden");
+  select.tabIndex = -1;
+  select.setAttribute("aria-hidden", "true");
   return wrapper;
 }
 
 function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) {
   let trigger = wrapper.querySelector(".custom-select-trigger");
   if (!trigger) {
-    trigger = document.createElement("div");
+    trigger = document.createElement("button");
+    trigger.type = "button";
     trigger.classList.add("custom-select-trigger");
     wrapper.appendChild(trigger);
+  } else if (trigger.tagName === "BUTTON" && !trigger.getAttribute("type")) {
+    trigger.setAttribute("type", "button");
   }
   if (isLanguageSelect) {
     wrapper.classList.add("custom-select-wrapper--language");
@@ -312,6 +317,10 @@ function bindTriggerKeyboardEvents({ select, wrapper, trigger, getEnabledOptions
       case "Enter":
       case " ":
         event.preventDefault();
+        if (event.key === " " && trigger.dataset) {
+          // Suppress native <button> Space keyup click so keydown toggle is not immediately inverted.
+          trigger.dataset.suppressKeyClick = "1";
+        }
         if (!isOpen) openSelect();
         else {
           const enabled = getEnabledOptions();
@@ -342,6 +351,22 @@ function bindTriggerKeyboardEvents({ select, wrapper, trigger, getEnabledOptions
           handleTypeahead(event.key, isOpen);
         }
         break;
+    }
+  });
+
+  trigger.addEventListener("pointerdown", () => {
+    if (trigger.dataset) delete trigger.dataset.suppressKeyClick;
+  });
+
+  trigger.addEventListener("keyup", (event) => {
+    if (event.key !== " ") return;
+    event.preventDefault();
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(() => {
+        if (trigger.dataset) delete trigger.dataset.suppressKeyClick;
+      });
+    } else if (trigger.dataset) {
+      delete trigger.dataset.suppressKeyClick;
     }
   });
 }
@@ -537,13 +562,33 @@ export function initCustomSelect(selectId) {
   if (wrapper.dataset.bound !== "1") {
     wrapper.dataset.bound = "1";
     trigger.addEventListener("click", (event) => {
+      if (trigger.dataset?.suppressKeyClick === "1") {
+        delete trigger.dataset.suppressKeyClick;
+        return;
+      }
       if (select.disabled) return;
       event.stopPropagation();
       if (wrapper.classList.contains("open")) state.closeSelect(false);
       else state.openSelect();
     });
     select.addEventListener("change", state.syncFromNativeSelect);
+    select.addEventListener("focus", () => {
+      if (!select.disabled && typeof trigger.focus === "function") {
+        trigger.focus();
+      }
+    });
   }
+
+  Array.from(select.labels || []).forEach((label) => {
+    if (!label || label.dataset?.customSelectLabelBound === "1") return;
+    if (label.dataset) label.dataset.customSelectLabelBound = "1";
+    label.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (!select.disabled && typeof trigger.focus === "function") {
+        trigger.focus();
+      }
+    });
+  });
 
   bindTriggerKeyboardEvents({
     select,

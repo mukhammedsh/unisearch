@@ -933,7 +933,8 @@ a.d-cover-credit:focus-visible {
   outline-offset: 2px;
 }
 
-.d-tab-pane {
+.d-tab-pane,
+.d-tab-pane[hidden] {
   display: none;
 }
 

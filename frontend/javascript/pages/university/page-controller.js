@@ -195,7 +195,10 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
   const logoEl = document.getElementById("detailLogo");
   if (logoEl) {
     const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
-    logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(universityId, { forceFull: true })}" alt="Logo" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(universityId))}" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
+    const logoAlt = translatedName
+      ? tFormat("university.logo_alt", { name: translatedName }, `${translatedName} logo`)
+      : "UniSearch";
+    logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(universityId, { forceFull: true })}" alt="${escapeHtmlAttr(logoAlt)}" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(universityId))}" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
   }
 
   const websiteBtn = document.getElementById("detailWebsite");

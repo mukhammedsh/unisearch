@@ -15,6 +15,7 @@ class FakeElement extends global.HTMLElement {
     this.attrs = {};
     this.classes = new Set();
     this.listeners = new Map();
+    this.open = false;
     this.focusCalls = 0;
     this.offsetWidth = 10;
     this.offsetHeight = 10;
@@ -32,9 +33,11 @@ class FakeElement extends global.HTMLElement {
   }
 
   setAttribute(name, value) { this.attrs[name] = String(value); }
+  showModal() { this.open = true; this.setAttribute("open", ""); }
+  close() { this.open = false; delete this.attrs.open; }
   addEventListener(type, handler) { this.listeners.set(type, handler); }
   removeEventListener(type, handler) { if (this.listeners.get(type) === handler) this.listeners.delete(type); }
-  emit(type, event = {}) { this.listeners.get(type)?.(event); }
+  emit(type, event = {}) { this.listeners.get(type)?.({ preventDefault() {}, ...event }); }
   focus() { this.focusCalls += 1; }
   getClientRects() { return [{}]; }
   closest() { return { querySelector: () => this.track }; }
@@ -57,10 +60,10 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
   const documentHandlers = {};
   const dispatched = [];
 
-  const modal = new FakeElement();
+  const modal = new FakeElement({ tagName: "DIALOG" });
+  const card = new FakeElement({ tagName: "SECTION" });
   const openButton = new FakeElement();
   const closeButton = new FakeElement();
-  const backdrop = new FakeElement();
   const recent = new FakeElement({ tagName: "INPUT", type: "checkbox", settingKey: "disable_recent_universities" });
   recent.track = new FakeElement();
   const newTab = new FakeElement({ tagName: "INPUT", type: "checkbox", settingKey: "open_universities_new_tab" });
@@ -70,7 +73,7 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
   const theme = new FakeElement({ tagName: "SELECT", theme: true });
   const settingsInputs = [recent, newTab, currency, display];
   const themeInputs = [theme];
-  modal.querySelector = (selector) => (selector === ".settings-backdrop" ? backdrop : null);
+  modal.querySelector = (selector) => (selector === ".settings-card" ? card : null);
   modal.querySelectorAll = (selector) => {
     if (selector === "[data-setting-input]") return settingsInputs;
     if (selector === "[data-theme-input]") return themeInputs;
@@ -109,9 +112,8 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
     assert.equal(theme.value, "system");
 
     openButton.emit("click");
+    assert.equal(modal.open, true);
     assert.equal(modal.classList.contains("is-open"), true);
-    assert.equal(modal.attrs["aria-hidden"], "false");
-    assert.equal(body.classList.contains("modal-open"), true);
     assert.equal(closeButton.focusCalls, 1);
 
     recent.checked = false;
@@ -142,16 +144,15 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
 
     windowHandlers.settingsChanged();
     windowHandlers.themeChanged();
-    backdrop.emit("click");
+    modal.emit("pointerdown", { target: modal });
+    modal.emit("pointerup", { target: modal });
+    assert.equal(modal.open, false);
     assert.equal(modal.classList.contains("is-open"), false);
-    assert.equal(modal.attrs["aria-hidden"], "true");
-    assert.equal(body.classList.contains("modal-open"), false);
-    assert.equal(openButton.focusCalls, 1);
 
     openButton.emit("click");
-    documentHandlers.keydown({ key: "Escape" });
+    modal.emit("cancel");
+    assert.equal(modal.open, false);
     assert.equal(modal.classList.contains("is-open"), false);
-    documentHandlers.keydown({ key: "Enter" });
 
     initSettingsUI();
     assert.equal(openButton.listeners.size, 1);

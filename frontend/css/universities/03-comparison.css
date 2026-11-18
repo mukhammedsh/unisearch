@@ -411,6 +411,11 @@
   box-shadow: none;
 }
 
+.compare-table-wrap:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .compare-table-wrap.is-diff-only tr.compare-row--identical {
   display: none !important;
 }
@@ -460,7 +465,7 @@
   z-index: 2;
 }
 
-.compare-table td:first-child {
+.compare-table :is(tbody th, td):first-child {
   color: var(--text-muted);
   font-weight: var(--font-weight-medium);
 }

@@ -849,6 +849,9 @@ university.tab.admission: Admission
 university.tab.costs: Costs & funding
 university.tab.general: Overview
 university.tab.programs: Programs
+university.tabs.aria: University sections
+university.logo_alt: {name} logo
+universities.filter.drawer_aria: Catalog filters
 university.total_cost_calculator: Total Cost Calculator
 university.total_estimated_cost: Total Estimated Cost
 university.finance.title: Costs & funding
@@ -883,6 +886,7 @@ common.placeholder_unknown: {field} unknown
 common.no_data: No data
 common.na: N/A
 common.close: Close
+common.notifications: Notifications
 placeholder.field.university_name: University name
 placeholder.field.location: Location
 placeholder.field.official_website: Official website

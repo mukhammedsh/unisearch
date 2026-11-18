@@ -5,6 +5,7 @@ import assert from 'node:assert';
 import {
   escapeHtml,
   escapeHtmlAttr,
+  registerUiTranslator,
   showToast,
   removeToast,
   nested,
@@ -229,6 +230,84 @@ test('showToast and removeToast', async (t) => {
       assert.strictEqual(isLeaving(secondToast), false);
     } finally {
       global.document.getElementById = origGetElementById;
+    }
+  });
+
+  await t.test('uses localized close label, status role, progressive popover, and pauses auto-dismiss on focus', () => {
+    const toasts = [];
+    let popoverCalls = [];
+    let popoverOpen = false;
+    const origGetElementById = global.document.getElementById;
+    const origCreateElement = global.document.createElement;
+    const origHasOwn = Object.hasOwn;
+    const hadPopover = Object.hasOwn(HTMLElement.prototype, 'popover');
+
+    Object.defineProperty(HTMLElement.prototype, 'popover', {
+      value: null,
+      configurable: true,
+    });
+    registerUiTranslator((key) => (key === 'common.close' ? 'Закрыть' : ''));
+
+    const container = {
+      dataset: {},
+      attrs: {},
+      hasAttribute: (name) => Object.hasOwn(container.attrs, name),
+      setAttribute: (name, value) => { container.attrs[name] = String(value); },
+      matches: (sel) => (sel === ':popover-open' ? popoverOpen : false),
+      showPopover: () => { popoverOpen = true; popoverCalls.push('show'); },
+      hidePopover: () => { popoverOpen = false; popoverCalls.push('hide'); },
+      appendChild: (node) => {
+        node.parentNode = container;
+        toasts.push(node);
+      },
+      querySelectorAll: () => toasts.filter((item) => !item._removed),
+    };
+
+    global.document.getElementById = (id) => (id === 'toast-container' ? container : null);
+    global.document.createElement = () => {
+      const listeners = new Map();
+      const node = {
+        dataset: {},
+        style: {},
+        innerHTML: '',
+        addEventListener: (evt, fn) => listeners.set(evt, fn),
+        emit: (evt, payload = {}) => listeners.get(evt)?.(payload),
+        querySelector: () => null,
+        contains: () => false,
+        remove: () => {
+          node._removed = true;
+        },
+      };
+      return node;
+    };
+
+    try {
+      showToast('Saved changes', 'success');
+      assert.strictEqual(toasts.length, 1);
+      const toast = toasts[0];
+      assert.match(toast.innerHTML, /<span role="status" aria-live="polite">Saved changes<\/span>/);
+      assert.match(toast.innerHTML, /aria-label="Закрыть"/);
+      assert.strictEqual(container.attrs.popover, 'manual');
+      assert.deepStrictEqual(popoverCalls, ['show']);
+
+      const timerBeforeFocus = toast._dismissTimer;
+      assert.ok(timerBeforeFocus);
+      toast.emit('focusin');
+      assert.strictEqual(toast._dismissTimer, null);
+      toast.emit('focusout', {});
+      assert.ok(toast._dismissTimer);
+
+      toast.addEventListener = (evt, cb) => {
+        if (evt === 'animationend') cb();
+      };
+      removeToast(toast);
+      assert.deepStrictEqual(popoverCalls, ['show', 'hide']);
+    } finally {
+      registerUiTranslator(null);
+      if (!hadPopover) delete HTMLElement.prototype.popover;
+      global.document.getElementById = origGetElementById;
+      global.document.createElement = origCreateElement;
+      assert.strictEqual(Object.hasOwn, origHasOwn);
     }
   });
 });

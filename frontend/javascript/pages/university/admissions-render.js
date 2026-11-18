@@ -460,8 +460,11 @@ function hasPublishedIdentity(row, resolved) {
 function renderPublishedTable(table, title) {
   if (!Array.isArray(table) || !table.length) return "";
   const [header, ...rows] = table.filter(Array.isArray);
-  const cells = (values, tag) => `<tr>${values.map(value => `<${tag}>${escapeHtml(String(value ?? ""))}</${tag}>`).join("")}</tr>`;
-  return `<div class="admissions-catalog__table-wrap"><table class="admissions-catalog__table" aria-label="${escapeHtmlAttr(title)}"><thead>${cells(header || [], "th")}</thead><tbody>${rows.map(row => cells(row, "td")).join("")}</tbody></table></div>`;
+  const label = String(title || "").trim();
+  const cells = (values, tag, attrs = "") => `<tr>${values.map(value => `<${tag}${attrs}>${escapeHtml(String(value ?? ""))}</${tag}>`).join("")}</tr>`;
+  const regionAttrs = label ? ` role="region" aria-label="${escapeHtmlAttr(label)}"` : "";
+  const captionHtml = label ? `<caption class="sr-only">${escapeHtml(label)}</caption>` : "";
+  return `<div class="admissions-catalog__table-wrap" tabindex="0"${regionAttrs}><table class="admissions-catalog__table">${captionHtml}<thead>${cells(header || [], "th", ' scope="col"')}</thead><tbody>${rows.map(row => cells(row, "td")).join("")}</tbody></table></div>`;
 }
 
 function factStatusBadges(row) {

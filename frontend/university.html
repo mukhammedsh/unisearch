@@ -106,21 +106,21 @@
           </div>
         </div>
 
-        <div class="d-tabs">
-          <button class="d-tab-btn active" data-tab="tab-general">
-            <span class="icon" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">Overview</span>
+        <div class="d-tabs" role="tablist" aria-label="University sections" data-i18n-aria-label="university.tabs.aria">
+          <button id="tab-btn-general" class="d-tab-btn active" type="button" role="tab" aria-selected="true" tabindex="0" data-tab="tab-general">
+            <span class="icon" aria-hidden="true" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">Overview</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-programs">
-            <span class="icon" data-heroicon="academic-cap" data-icon-size="18"></span> <span data-i18n="university.tab.programs">Programs</span>
+          <button id="tab-btn-programs" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-programs">
+            <span class="icon" aria-hidden="true" data-heroicon="academic-cap" data-icon-size="18"></span> <span data-i18n="university.tab.programs">Programs</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-admission">
-            <span class="icon" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
+          <button id="tab-btn-admission" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-admission">
+            <span class="icon" aria-hidden="true" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-deadlines">
-            <span class="icon" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Dates</span>
+          <button id="tab-btn-deadlines" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-deadlines">
+            <span class="icon" aria-hidden="true" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Dates</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-finance">
-            <span class="icon" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs &amp; funding</span>
+          <button id="tab-btn-finance" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-finance">
+            <span class="icon" aria-hidden="true" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs &amp; funding</span>
           </button>
         </div>
 
@@ -128,7 +128,7 @@
 
         <div class="d-tab-content">
           
-          <div id="tab-general" class="d-tab-pane active">
+          <div id="tab-general" class="d-tab-pane active" role="tabpanel" aria-labelledby="tab-btn-general">
             <div id="detailOverviewSummary" class="d-box overview-summary" data-overview-summary hidden></div>
             <div class="d-box">
                <div class="d-box-title" data-i18n="university.ux2.overview.numbers_title">Key figures</div>
@@ -147,7 +147,7 @@
             </div>
           </div>
 
-          <div id="tab-programs" class="d-tab-pane">
+          <div id="tab-programs" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-programs" hidden>
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.available_majors">Available Majors</div>
               <p class="d-box-note" data-i18n="university.programs_scope_note">Official programs and degree routes published by the institution.</p>
@@ -159,14 +159,14 @@
             </div>
           </div>
 
-          <div id="tab-admission" class="d-tab-pane">
+          <div id="tab-admission" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-admission" hidden>
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.entry_requirements">Published admission routes</div>
               <div id="detailRequirements" class="d-box-text"></div>
             </div>
           </div>
 
-          <div id="tab-deadlines" class="d-tab-pane">
+          <div id="tab-deadlines" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-deadlines" hidden>
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.deadlines.title">Dates and deadlines</div>
               <p class="d-box-note" data-i18n="university.deadlines.intro">Published application deadlines, decision dates, and fees. Check the university's official admissions page for the current cycle.</p>
@@ -174,7 +174,7 @@
             </div>
           </div>
 
-          <div id="tab-finance" class="d-tab-pane">
+          <div id="tab-finance" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-finance" hidden>
              <div class="d-box finance-box">
               <header class="finance-section-header">
                 <h2 class="d-box-title" data-i18n="university.finance.title">Costs and funding</h2>

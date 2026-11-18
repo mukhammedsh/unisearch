@@ -849,6 +849,9 @@ university.tab.admission: Қабылдау
 university.tab.costs: Оқу құны және қаржыландыру
 university.tab.general: Қысқаша ақпарат
 university.tab.programs: Бағдарламалар
+university.tabs.aria: Университет бөлімдері
+university.logo_alt: {name} логотипі
+universities.filter.drawer_aria: Каталог сүзгілері
 university.total_cost_calculator: Жалпы құн калькуляторы
 university.total_estimated_cost: Болжалды жалпы құн
 university.finance.title: Шығындар және қаржыландыру
@@ -883,6 +886,7 @@ common.placeholder_unknown: {field} белгісіз
 common.no_data: Деректер жоқ
 common.na: Дерек жоқ
 common.close: Жабу
+common.notifications: Хабарландырулар
 placeholder.field.university_name: Университет атауы
 placeholder.field.location: Орналасқан жері
 placeholder.field.official_website: Ресми веб-сайт

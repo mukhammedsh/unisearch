@@ -596,3 +596,94 @@ html, body {
   width: 100%;        /* Keeps the layout within the viewport width */
   position: relative; /* Stabilizes positioning */
 }
+
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+@media (forced-colors: active) {
+  :root {
+    --line: CanvasText;
+    --line-faint: CanvasText;
+    --line-strong: CanvasText;
+    --focus-ring: Highlight;
+    --accent: Highlight;
+    --interaction-focus-ring: Highlight;
+    --scrollbar-thumb: CanvasText;
+    --scrollbar-track: Canvas;
+  }
+
+  .uni-card,
+  .u-filter-card,
+  .u-tour-card,
+  .settings-card,
+  .custom-options,
+  .u-tooltip,
+  .ui-tooltip-bubble,
+  .toast,
+  .profile-card,
+  .profile-confirm-card,
+  .d-box,
+  .compare-uni-card,
+  .compare-analysis-block,
+  .u-state-card {
+    outline: 1px solid CanvasText;
+  }
+
+  .custom-select-trigger,
+  .ui-input-composite,
+  .profile-input,
+  .u-input,
+  .settings-switch-track,
+  .compare-diff-toggle__track {
+    outline: 1px solid CanvasText;
+  }
+
+  .settings-switch-thumb,
+  .compare-diff-toggle__thumb {
+    background: CanvasText;
+  }
+
+  .settings-switch-input:checked + .settings-switch-track,
+  .compare-diff-toggle input:checked + .compare-diff-toggle__track {
+    background: Highlight;
+    outline: 2px solid Highlight;
+  }
+
+  .settings-switch-input:checked + .settings-switch-track .settings-switch-thumb,
+  .compare-diff-toggle input:checked + .compare-diff-toggle__track .compare-diff-toggle__thumb {
+    background: HighlightText;
+    outline: 1px solid CanvasText;
+  }
+
+  :where(.is-invalid, [aria-invalid="true"], input:user-invalid, select:user-invalid, textarea:user-invalid),
+  .profile-budget--with-unit:has(.profile-input:is(:user-invalid, .is-invalid, [aria-invalid="true"])) {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
+
+  .d-tab-btn[aria-selected="true"],
+  .view-btn.active,
+  .u-saved-filter-btn.is-active,
+  .custom-option.selected,
+  .custom-option.is-highlighted,
+  .profile-section-tab.is-active,
+  .nav-link[aria-current="page"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .sliding-indicator {
+    border-block-end-color: Highlight;
+  }
+
+  :where(a[href], button, input, select, textarea, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

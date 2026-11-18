@@ -1156,6 +1156,14 @@ body[data-page="universities"] {
 .u-tour-modal {
   position: fixed;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
   z-index: var(--z-modal);
   display: none;
   align-items: center;
@@ -1163,12 +1171,11 @@ body[data-page="universities"] {
   padding: var(--space-5);
 }
 
-.u-tour-modal.is-open,
-.u-tour-modal.is-closing {
+.u-tour-modal[open] {
   display: flex;
 }
 
-.u-tour-modal.is-open .u-tour-backdrop {
+.u-tour-modal.is-open::backdrop {
   animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-standard) both;
 }
 
@@ -1176,7 +1183,7 @@ body[data-page="universities"] {
   animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
 }
 
-.u-tour-modal.is-closing .u-tour-backdrop {
+.u-tour-modal.is-closing::backdrop {
   animation: motion-backdrop-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
@@ -1184,9 +1191,7 @@ body[data-page="universities"] {
   animation: motion-modal-out var(--motion-fast) var(--motion-ease-exit) forwards;
 }
 
-.u-tour-backdrop {
-  position: absolute;
-  inset: 0;
+.u-tour-modal::backdrop {
   background: var(--backdrop);
   backdrop-filter: blur(1px);
 }

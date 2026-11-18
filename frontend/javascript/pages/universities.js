@@ -387,9 +387,10 @@ export function disposeUniversitiesPage() {
     }
     document.documentElement.classList.remove("sidebar-filters-open");
     document.body.classList.remove("sidebar-filters-open");
-    if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = "";
-    }
+    document.querySelectorAll("[data-sidebar-inert='1']").forEach((node) => {
+        node.inert = false;
+        delete node.dataset.sidebarInert;
+    });
 }
 
 function collectUniversitiesElements() {
@@ -866,7 +867,6 @@ export function initUniversitiesPage() {
         [el.btnList, el.btnMap].forEach((button) => {
             if (!button) return;
             button.disabled = !viewModesReady;
-            button.setAttribute("aria-disabled", viewModesReady ? "false" : "true");
         });
     };
 
@@ -1955,8 +1955,29 @@ export function initUniversitiesPage() {
             updateMobileFilterUi();
         };
 
+        const setBackgroundInert = (active) => {
+            if (!active) {
+                document.querySelectorAll("[data-sidebar-inert='1']").forEach((node) => {
+                    node.inert = false;
+                    delete node.dataset.sidebarInert;
+                });
+                return;
+            }
+            let current = sidebar;
+            while (current && current.parentElement && current !== document.body) {
+                for (const sibling of current.parentElement.children) {
+                    if (sibling !== current && sibling.tagName !== "SCRIPT" && sibling.id !== "toast-container") {
+                        sibling.inert = true;
+                        sibling.dataset.sidebarInert = "1";
+                    }
+                }
+                current = current.parentElement;
+            }
+        };
+
         const setOpen = (isOpen, { apply = false } = {}) => {
-            if (!isMobileViewport()) return;
+            if (isOpen && !isMobileViewport()) return;
+            const wasOpen = sidebar.classList.contains("is-open");
             if (isOpen) {
                 draftSnapshot = { ...state };
                 isEditing = true;
@@ -1965,14 +1986,28 @@ export function initUniversitiesPage() {
                 applyToForm();
             }
             sidebar.classList.toggle("is-open", isOpen);
+            if (isOpen) {
+                sidebar.setAttribute("role", "dialog");
+                sidebar.setAttribute("aria-modal", "true");
+            } else {
+                sidebar.removeAttribute("role");
+                sidebar.removeAttribute("aria-modal");
+            }
             toggleBtn.classList.toggle("is-active", isOpen);
+            toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
             toggleBtn.hidden = isOpen;
-            document.body.style.overflow = isOpen ? "hidden" : "";
+            setBackgroundInert(isOpen);
             document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
-            if (!isOpen) {
+            if (isOpen) {
+                const firstFocusTarget = el.mobileFilterClose || sidebar.querySelector("button, input, select, [tabindex='0']");
+                firstFocusTarget?.focus({ preventScroll: true });
+            } else {
                 isEditing = false;
                 draftSnapshot = null;
                 updateMobileFilterUi();
+                if (wasOpen) {
+                    toggleBtn.focus({ preventScroll: true });
+                }
             }
         };
 
@@ -2002,7 +2037,14 @@ export function initUniversitiesPage() {
         };
         document.addEventListener("keydown", __universitiesMobileFilterKeydownHandler);
 
-        return { isEditing: () => isEditing };
+        return {
+            isEditing: () => isEditing,
+            closeIfDesktop: () => {
+                if (!isMobileViewport() && sidebar.classList.contains("is-open")) {
+                    setOpen(false);
+                }
+            },
+        };
     };
     const mobileFilters = setupMobileFilters();
 
@@ -2573,6 +2615,7 @@ export function initUniversitiesPage() {
     window.addEventListener("beforeunload", __universitiesBeforeunloadHandler);
 
     __universitiesResizeHandler = () => {
+        mobileFilters?.closeIfDesktop?.();
         scheduleSyncWorkspaceDepth();
         scheduleSyncSidebarMaxHeight();
         syncMobileFilterFooterClearance();

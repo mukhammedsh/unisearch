@@ -2,13 +2,19 @@
 
 All notable project changes should be recorded here.
 
-## 10.3.4 (2026-11-18) - Modern web platform baseline, security headers, and rendering optimizations
+## 10.3.4 (2026-11-18) - Modern web platform baseline, accessibility, and rendering optimizations
 
-Patch release with no new user-visible capability: replaces legacy JavaScript and CSS patterns with Baseline Widely available platform APIs, eliminates CSS `@import` waterfalls, adds static security headers and IME Enter guards, and removes synchronous layout thrashing.
+Patch release with no new user-visible capability: replaces legacy JavaScript and CSS patterns with Baseline Widely available platform APIs, converts overlays to native `<dialog>` elements, upgrades WAI-ARIA tab/table/toast semantics and Forced Colors support, eliminates CSS `@import` waterfalls, adds static security headers and IME Enter guards, and removes synchronous layout thrashing.
 
 ### Changed
 - Adopted modern JavaScript APIs across frontend modules (`Element.prototype.replaceChildren()`, `structuredClone()`, `Array.prototype.toSorted()`, `Promise.withResolvers()`, and `AbortSignal.timeout()`).
-- Updated the reviewed comparison program picker `<dialog>` to use `closedby="any"` with a pointer-coordinate backdrop fallback where unsupported, removing `body { overflow: hidden }` scroll locking.
+- Updated `#settingsModal`, `#profileUnsavedModal`, `#profileResetModal`, `#uTourModal`, and the reviewed comparison program picker `<dialog>` to use native modal `<dialog>` (`showModal()`, `::backdrop`, `overscroll-behavior: contain` scroll containment, consistent `h2` dialog headings, and `closedby` with pointer-coordinate/backdrop fallbacks), removing manual focus traps, `aria-modal` wrappers, `body.modal-open`, and `body { overflow: hidden }` scroll locking while keeping the first-visit tutorial's skip/completion requirement on `Escape`.
+- Upgraded `#uSidebar` mobile filter drawer to manage background `inert` state, `role="dialog"`, `aria-expanded`/`aria-controls`, focus entry, and focus return without mutating `document.body.style.overflow`.
+- Implemented full WAI-ARIA `tablist`/`tab`/`tabpanel` semantics (`aria-selected`, roving `tabindex`, `hidden` panel state, `ArrowLeft`/`ArrowRight`/`Home`/`End` keyboard navigation) on university detail tabs and rendered `.sliding-indicator` via `border-block-end` so selection remains visible in Forced Colors Mode.
+- Added `@media (forced-colors: active)` system-color fallbacks for tokens, cards, inputs, validation outlines, active controls, switches, tabs, and `:focus-visible` indicators, plus `:user-invalid` validation selectors and `content-visibility: auto` on deep admissions source lists.
+- Upgraded custom selects (`utils/selects.js`) to use a native `<button type="button">` combobox trigger, visually hide the native `<select>` cleanly with `tabindex="-1"` / `aria-hidden="true"`, forward associated `<label for="...">` clicks and focus to the custom trigger, and prevent Spacebar `keyup` synthetic double-toggles.
+- Added programmatic post-transition focus management (`focusRouteDestination()`) after client-side route updates and View Transitions in `main.js`.
+- Replaced `#universitySearch` `<div role="search">` with semantic `<search>` and `autocorrect="off" autocapitalize="none" enterkeyhint="search"`, replaced generic `"Logo"` image alt attributes with descriptive institution/brand names, added `role="region"` + progressive `popover="manual"` + `role="status"` + localized close label + focus/hover pause + focus restoration and `>= 24x24px` target sizing on `#toast-container`/`.toast-close`, added scrollable region semantics/`<caption>`/`<th scope="row|col">` across comparison and admissions tables while stripping redundant native table ARIA roles, and removed redundant `aria-disabled` / `<details role="listitem">` misuse.
 - Flattened CSS `@import` chains in `style.css`, `universities.css`, and `profile.css` into direct ordered `<link rel="stylesheet">` tags in HTML pages, added `<meta name="color-scheme" content="light dark">`, and preloaded the primary Latin Inter font.
 - Replaced runtime `<style>` tag injection and synchronous layout flush in `theme.js` with a `:root[data-theme-switching]` CSS rule toggled over animation frames on interactive theme switches.
 - Added `font-src 'self'`, `form-action 'self'`, and `https://tile.openstreetmap.org` to backend and dev-server Content Security Policies, and configured security headers and CSP in `firebase.json` and `frontend/.htaccess`.
@@ -20,7 +26,7 @@ Patch release with no new user-visible capability: replaces legacy JavaScript an
 - Rendered the network status banner message with `textContent` and `replaceChildren()`, and HTML-escaped custom titles and descriptions in `renderErrorScreen()`.
 
 ### Tests
-- Added unit and backend tests covering IME composition Enter guards, theme transition-attribute switching, `renderErrorScreen()` HTML escaping, backend CSP directives, dev-server Report-Only CSP, and direct CSS module loading on university detail routes.
+- Added unit tests and updated existing unit and E2E suites covering WAI-ARIA tab keyboard navigation, native `<dialog>` settings/tour modals, accessible toast `popover="manual"` / live status / pause-on-focus, custom select button triggers and `<label>` focus forwarding, `<th scope="row">` comparison/admissions markup, IME composition Enter guards, theme transition-attribute switching, `renderErrorScreen()` HTML escaping, backend CSP directives, dev-server Report-Only CSP, and direct CSS module loading on university detail routes.
 
 ## 10.3.3 (2026-11-16) - Modern web platform rule for agents
 

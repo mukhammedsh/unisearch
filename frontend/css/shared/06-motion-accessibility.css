@@ -253,11 +253,11 @@
 
 .motion-card-remove,
 
-.settings-modal.is-open .settings-backdrop,
+.settings-modal.is-open::backdrop,
 
 .settings-modal.is-open .settings-card,
 
-.settings-modal.is-closing .settings-backdrop,
+.settings-modal.is-closing::backdrop,
 
 .settings-modal.is-closing .settings-card,
 

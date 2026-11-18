@@ -611,4 +611,37 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.equal(select.value, 'KZT');
     assert.ok(!wrapper.classList.has('open'));
   });
+
+  it('uses a native button trigger, focuses trigger on associated label click, and ignores Space synthetic click', () => {
+    const { select } = createSelectWithOptgroups();
+    const label = new MockElement('label');
+    select.labels = [label];
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    assert.equal(trigger.tagName, 'BUTTON');
+    assert.equal(trigger.type, 'button');
+    assert.equal(select.tabIndex, -1);
+    assert.equal(select.getAttribute('aria-hidden'), 'true');
+
+    let triggerFocusCount = 0;
+    trigger.focus = () => { triggerFocusCount += 1; };
+
+    let labelDefaultPrevented = false;
+    label.dispatchEvent({
+      type: 'click',
+      preventDefault: () => { labelDefaultPrevented = true; },
+    });
+    assert.equal(labelDefaultPrevented, true);
+    assert.equal(triggerFocusCount, 1);
+
+    trigger.dispatchEvent({ type: 'keydown', key: ' ', preventDefault: () => {} });
+    assert.ok(wrapper.classList.has('open'));
+    trigger.dispatchEvent({ type: 'keyup', key: ' ', preventDefault: () => {} });
+    trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
+    assert.ok(wrapper.classList.has('open'));
+  });
 });

@@ -694,7 +694,7 @@ export const compareDataRow = (label, universities, renderValue, section = "") =
     const sectionAttr = section ? ` data-row-section="${escapeHtmlAttr(section)}"` : "";
     return `
         <tr class="compare-table__row${identicalClass}"${sectionAttr}>
-            <td>${escapeHtml(label)}</td>
+            <th scope="row">${escapeHtml(label)}</th>
             ${renderedCells.map((c) => compareCell(c.text, c)).join("")}
         </tr>
     `;
