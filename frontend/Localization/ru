@@ -3336,6 +3336,7 @@ university.admissions.key_facts.cost: Стоимость в год
 university.admissions.key_facts.cost_total: Опубликованный бюджет: {amount}
 university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
 university.admissions.key_facts.cost_period: Период источника: {period}
+university.admissions.key_facts.cost_calculated_reference: Расчётный ориентир: обучение плюс оценка расходов на проживание.
 university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas); его можно указать в дополнительных параметрах выше
 university.admissions.key_facts.cost_not_annual: Цена опубликована не за год; подробности на вкладке «Стоимость»
 university.admissions.key_facts.cost_unknown: Для этого выбора цена не опубликована

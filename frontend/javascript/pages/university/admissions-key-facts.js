@@ -180,14 +180,16 @@ export function costFact(resolved, budgetUsd) {
   const notes = [quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
+  const referenceNote = quote.calculation === "tuition_plus_living_range"
+    ? t("university.admissions.key_facts.cost_calculated_reference") : "";
   // The explanation is general: the university, not the applicant's nationality or residence, sets the classification.
   const feeStatusDepends = quote.fee_status_match === "unknown" && quote.fee_statuses?.length > 1;
   if (feeStatusDepends) notes.push(label("cost_fee_status"), t("university.admissions.glossary.fee_status.text"));
   const feeStatusPage = feeStatusDepends ? feeStatusSource(resolved) : "";
   const links = feeStatusPage ? [{ url: feeStatusPage, label: label("cost_fee_status_source") }] : [];
-  if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean), ...parts };
-  if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean), ...parts };
-  if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean), ...parts };
+  if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, notes: [...notes, label("cost_not_annual")].filter(Boolean), referenceNote, ...parts };
+  if (!quote.usd) return { status: "not_comparable", tone: "", text, links, notes: notes.filter(Boolean), referenceNote, ...parts };
+  if (!(Number.isFinite(budgetUsd) && budgetUsd > 0)) return { status: "no_budget", tone: "", text, links, notes: [...notes, label("budget_missing")].filter(Boolean), referenceNote, ...parts };
   // The applicant's own budget is never rounded.
   const budget = formatPrice(budgetUsd, "USD");
   const status = quote.usd.min > budgetUsd ? "over" : quote.usd.max > budgetUsd ? "partial"
@@ -195,7 +197,7 @@ export function costFact(resolved, budgetUsd) {
   // The published amount stays neutral; only the comparison with the applicant's budget carries a status colour.
   const flag = { text: tFormat(`university.admissions.key_facts.budget_${status}`, { budget }),
     tone: { over: "danger", partial: "warning", tuition_within: "warning", within: "success" }[status] };
-  return { status, tone: "", flag, text, links, notes: notes.filter(Boolean), ...parts };
+  return { status, tone: "", flag, text, links, notes: notes.filter(Boolean), referenceNote, ...parts };
 }
 
 // Reviewed funding records that apply to the selected route, never to another path of the university.

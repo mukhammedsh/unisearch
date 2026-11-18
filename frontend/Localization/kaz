@@ -3338,6 +3338,7 @@ university.admissions.key_facts.cost: Жылдық құны
 university.admissions.key_facts.cost_total: Жарияланған бюджет: {amount}
 university.admissions.key_facts.cost_tuition: Оқу ақысы: {amount}. Тұру шығыны кірмейді
 university.admissions.key_facts.cost_period: Дереккөз кезеңі: {period}
+university.admissions.key_facts.cost_calculated_reference: Есептік бағдар: оқу ақысы мен тұру шығындарының бағасы.
 university.admissions.key_facts.cost_fee_status: Төлем мәртебесіне (Home немесе Overseas) байланысты; оны жоғарыдағы қосымша параметрлерде көрсетуге болады
 university.admissions.key_facts.cost_not_annual: Баға бір жылға жарияланбаған; толығырақ «Құны» қойындысында
 university.admissions.key_facts.cost_unknown: Бұл таңдау үшін баға жарияланбаған

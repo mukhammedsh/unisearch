@@ -201,6 +201,7 @@ export function costCard(fact, policy = "") {
   const lines = fact.status === "not_annual" ? [] : [
     [label("cost.before_aid"), fact.period ? tFormat("university.admissions.key_facts.cost_period", {
       period: /\bentry\b/i.test(fact.period) ? admissionsCycleLabel(fact.period) || fact.period : fact.period }) : ""].filter(Boolean).join(" "),
+    fact.referenceNote,
     fact.basis === "tuition" ? label("cost.living_extra") : "",
   ].filter(Boolean);
   const aside = [];

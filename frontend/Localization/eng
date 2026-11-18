@@ -3338,6 +3338,7 @@ university.admissions.key_facts.cost: Cost per year
 university.admissions.key_facts.cost_total: Published budget: {amount}
 university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
 university.admissions.key_facts.cost_period: Source period: {period}
+university.admissions.key_facts.cost_calculated_reference: Calculated reference: tuition plus a living-cost estimate.
 university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas); you can set it in the details above
 university.admissions.key_facts.cost_not_annual: The published price is not per year; see the cost tab
 university.admissions.key_facts.cost_unknown: No price is published for this selection

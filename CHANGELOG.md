@@ -13,6 +13,7 @@ Backward-compatible minor version update for catalog cost references and missing
 ### Changed
 - Remove the unreviewed-data notice from university catalog cards; review status remains available on university pages and in comparison guidance.
 - Explain that price ranges can narrow as study level, fee status and program details are set, and label tuition-plus-living calculations as references.
+- Identify calculated tuition-plus-living references in university summaries and comparison.
 - Rename Russian university favorites filter labels to saved wording.
 
 ### Fixed
