@@ -398,6 +398,7 @@ universities.card.est_cost_year: Est. Cost/Year
 universities.card.in_ranking: in ranking
 universities.card.view_details: View details
 universities.card.metrics: Key metrics
+universities.card.photo_unavailable: Campus photo unavailable
 universities.card.statuses: University status
 universities.card.cost_short: Cost
 universities.card.per_year: / year

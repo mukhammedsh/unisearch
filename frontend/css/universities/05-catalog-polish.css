@@ -177,7 +177,7 @@
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
-.uni-media::after {
+.uni-media:has(> .uni-media-img)::after {
   background: linear-gradient(180deg, transparent 35%, color-mix(in srgb, var(--backdrop) 50%, transparent) 100%);
 }
 

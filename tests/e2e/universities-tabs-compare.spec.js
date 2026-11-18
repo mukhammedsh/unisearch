@@ -157,6 +157,35 @@ test("catalog layout has no stacked gap and child margins", async ({ page }) => 
   await expectNoStackedGapMargins(page, "#universitiesCatalogPane");
 });
 
+test.describe("catalog photo sources", () => {
+  test.use({ serviceWorkers: "block" });
+
+  test("catalog shows the campus placeholder only after its image sources fail", async ({ page }) => {
+    await clearCompareState(page, "rus");
+    await page.addInitScript(() => localStorage.setItem("unisearch_theme", innerWidth < 600 ? "dark" : "light"));
+    const kimep = "kimep-university-kaz-almaty";
+    await page.route(`**/universities/assets/thumbnails*/${MIT_ID}.webp`, (route) => route.abort());
+
+    for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/index.html?lang=rus&q=KIMEP");
+      await waitForUniversitiesReady(page);
+      const missing = page.locator(`#universitiesList [data-uni-id="${kimep}"] .uni-media`);
+      await expect(missing.getByText("Фото кампуса недоступно")).toBeVisible();
+      await expect(missing.locator("img")).toHaveCount(0);
+      expect(await missing.evaluate((media) => getComputedStyle(media, "::after").content)).toBe("none");
+
+      await page.goto("/index.html?lang=rus&q=MIT");
+      await waitForUniversitiesReady(page);
+      const available = page.locator(`#universitiesList [data-uni-id="${MIT_ID}"] .uni-media`);
+      const photo = available.locator("img");
+      await expect(photo).toHaveAttribute("src", /\.jpg$/);
+      await expect.poll(() => photo.evaluate((img) => img.naturalWidth)).toBeGreaterThan(0);
+      await expect(available.locator(".uni-media-empty")).toBeHidden();
+    }
+  });
+});
+
 test("spacing audit permits automatic alignment but rejects a fixed child margin", async ({ page }) => {
   await page.setContent('<main id="spacingProbe" style="display:flex;flex-direction:column;gap:12px;height:100px"><span style="margin-top:auto">Aligned content</span></main>');
   await expectNoStackedGapMargins(page, "#spacingProbe");

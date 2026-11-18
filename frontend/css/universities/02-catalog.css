@@ -324,11 +324,28 @@
   z-index: 0;
 }
 
-.uni-media::after {
+.uni-media:has(> .uni-media-img)::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, transparent 45%, color-mix(in srgb, var(--backdrop) 50%, transparent) 100%);
+}
+
+.uni-media-empty {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.uni-media-img + .uni-media-empty {
+  display: none;
 }
 
 .uni-price {
