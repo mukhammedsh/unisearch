@@ -49,6 +49,61 @@ async function waitForReviewedComparison(page) {
 
 const savedChoice = (page, id) => page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[uid], id);
 
+test("comparison keeps cards, values, and pinned names aligned on desktop and phone", async ({ page }) => {
+  await clearCompareState(page);
+  await page.addInitScript(() => localStorage.setItem("unisearch_theme", innerWidth < 600 ? "dark" : "light"));
+
+  for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
+    await waitForReviewedComparison(page);
+    await expect(page.locator(".compare-reviewed__heading .compare-reviewed__hint")).toBeVisible();
+    const heads = page.locator(".compare-reviewed__head");
+    for (const head of await heads.all()) {
+      const photo = head.locator(".compare-campus__photo img");
+      await expect(photo).toBeVisible();
+      await expect.poll(() => photo.evaluate((img) => img.naturalWidth)).toBeGreaterThan(0);
+      const fade = await photo.evaluate((img) => getComputedStyle(img.parentElement, "::after").backgroundImage);
+      expect(fade).toContain("linear-gradient");
+      await expect(head.locator(".compare-campus__credit a")).toHaveAttribute("href", /^https:\/\/commons\.wikimedia\.org\//);
+      await expect(head.locator(".compare-reviewed__identity strong")).toBeVisible();
+    }
+
+    const row = page.locator("[data-compare-row]").last();
+    await row.scrollIntoViewIfNeeded();
+    await expect(page.locator("[data-compare-strip]")).toHaveClass(/is-visible/);
+    const grid = await row.evaluate((element) => {
+      const root = element.closest("[data-reviewed-comparison]");
+      const bounds = (node) => node.getBoundingClientRect();
+      const columns = (nodes) => Array.from(nodes, (node) => ({ x: bounds(node).x, width: bounds(node).width }));
+      return {
+        left: bounds(root).x,
+        heads: columns(root.querySelectorAll(".compare-reviewed__head")),
+        titles: columns(root.querySelectorAll(".compare-reviewed__identity")),
+        names: columns(root.querySelectorAll(".compare-reviewed__strip-name")).map(({ x }) => x),
+        values: columns(element.querySelectorAll("dd")),
+        labelAboveValues: bounds(element.querySelector("dt")).bottom <= bounds(element.querySelector("dd")).top,
+      };
+    });
+    expect(grid.heads[0].x).toBe(grid.left);
+    expect(grid.heads[0].width).toBeCloseTo(grid.heads[1].width, 1);
+    expect(grid.values).toEqual(grid.titles);
+    expect(grid.names).toEqual(grid.titles.map(({ x }) => x));
+    expect(grid.labelAboveValues).toBe(true);
+  }
+});
+
+test("comparison skips a missing campus photo and keeps the university name", async ({ page }) => {
+  await clearCompareState(page);
+  const kimep = "kimep-university-kaz-almaty";
+  await page.goto(`/compare.html?lang=eng&stage=configure&ids=${OXFORD_ID},${kimep}`);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
+  const column = page.locator(`.compare-config-column[data-uni-id="${kimep}"]`);
+  await expect(column.getByRole("heading", { name: "KIMEP University" })).toBeVisible();
+  await expect(column.locator(".compare-campus")).toHaveCount(0);
+  await expect(page.locator(`.compare-config-column[data-uni-id="${OXFORD_ID}"] .compare-campus__photo img`)).toBeVisible();
+});
+
 // Chooses a program in a column's picker dialog; a program with several routes asks for the route in the same dialog.
 async function pickProgram(page, id, { search, option, route = "", level = "" }) {
   await page.locator(`[data-compare-pick="${id}"]`).click();
@@ -100,6 +155,35 @@ test("catalog layout has no stacked gap and child margins", async ({ page }) => 
   await waitForUniversitiesReady(page);
 
   await expectNoStackedGapMargins(page, "#universitiesCatalogPane");
+});
+
+test.describe("catalog photo sources", () => {
+  test.use({ serviceWorkers: "block" });
+
+  test("catalog shows the campus placeholder only after its image sources fail", async ({ page }) => {
+    await clearCompareState(page, "rus");
+    await page.addInitScript(() => localStorage.setItem("unisearch_theme", innerWidth < 600 ? "dark" : "light"));
+    const kimep = "kimep-university-kaz-almaty";
+    await page.route(`**/universities/assets/thumbnails*/${MIT_ID}.webp`, (route) => route.abort());
+
+    for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
+      await page.setViewportSize(viewport);
+      await page.goto("/index.html?lang=rus&q=KIMEP");
+      await waitForUniversitiesReady(page);
+      const missing = page.locator(`#universitiesList [data-uni-id="${kimep}"] .uni-media`);
+      await expect(missing.getByText("Фото кампуса недоступно")).toBeVisible();
+      await expect(missing.locator("img")).toHaveCount(0);
+      expect(await missing.evaluate((media) => getComputedStyle(media, "::after").content)).toBe("none");
+
+      await page.goto("/index.html?lang=rus&q=MIT");
+      await waitForUniversitiesReady(page);
+      const available = page.locator(`#universitiesList [data-uni-id="${MIT_ID}"] .uni-media`);
+      const photo = available.locator("img");
+      await expect(photo).toHaveAttribute("src", /\.jpg$/);
+      await expect.poll(() => photo.evaluate((img) => img.naturalWidth)).toBeGreaterThan(0);
+      await expect(available.locator(".uni-media-empty")).toBeHidden();
+    }
+  });
 });
 
 test("spacing audit permits automatic alignment but rejects a fixed child margin", async ({ page }) => {

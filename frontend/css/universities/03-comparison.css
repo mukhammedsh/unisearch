@@ -63,17 +63,6 @@
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.compare-tray__chip-logo {
-  width: 18px;
-  height: 18px;
-  border-radius: var(--radius-xs);
-  object-fit: contain;
-  background: var(--surface-badge);
-  border: none;
-  padding: var(--space-0-25);
-  flex-shrink: 0;
-}
-
 .compare-tray__chip-name {
   min-width: 0;
   flex: 1;
@@ -189,11 +178,54 @@
     background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.compare-uni-card__head {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-3);
+.compare-campus {
+  display: grid;
+  gap: var(--space-0-5);
+  min-width: 0;
+  margin: 0;
+}
+
+.compare-campus:not(:has(img)) {
+  display: none;
+}
+
+.compare-campus__photo {
+  position: relative;
+  overflow: hidden;
+  height: clamp(var(--space-16), 10vw, calc(var(--space-16) * 2));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.compare-campus__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+.compare-campus__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom in oklab, transparent 40%, var(--surface-solid));
+  pointer-events: none;
+}
+
+.compare-config-column__head .compare-campus__photo::after {
+  background: linear-gradient(to bottom in oklab, transparent 40%, var(--bg));
+}
+
+.compare-campus__credit {
+  justify-self: end;
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+  text-align: end;
+}
+
+.compare-campus__credit a {
+  color: inherit;
 }
 
 .compare-uni-card__slot {
@@ -201,35 +233,6 @@
   font-size: var(--text-xs);
   line-height: 1.15;
   font-weight: var(--font-weight-medium);
-}
-
-.compare-uni-card__identity {
-  min-width: 0;
-  display: grid;
-  justify-items: start;
-  gap: var(--space-2);
-}
-
-.compare-uni-card__logo {
-  width: 52px;
-  height: 52px;
-  border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-badge);
-  color: var(--surface-badge-text);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.compare-uni-card__logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: var(--space-1);
 }
 
 .compare-uni-card h3 {
@@ -963,39 +966,11 @@
   gap: var(--space-2);
 }
 
-.compare-config-column__identity {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-}
-
 .compare-config-column__slot {
   color: var(--text-muted);
   font-size: var(--text-xs);
   line-height: 1.15;
   font-weight: var(--font-weight-medium);
-}
-
-.compare-config-column__logo {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: var(--surface-badge);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--surface-badge-text);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-.compare-config-column__logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: var(--space-1);
 }
 
 .compare-config-column__head h2,

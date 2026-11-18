@@ -304,14 +304,18 @@
 
 .d-photo-canvas.can-zoom {
   touch-action: none;
+}
+
+.d-photo-canvas.can-zoom.is-over-photo {
   cursor: zoom-in;
 }
 
-.d-photo-canvas.is-zoomed {
+.d-photo-canvas.is-zoomed.is-over-photo {
   cursor: grab;
 }
 
-.d-photo-canvas.is-zoomed:active {
+.d-photo-canvas.is-zoomed.is-over-photo:active,
+.d-photo-canvas.is-zoomed.is-dragging {
   cursor: grabbing;
 }
 
@@ -381,39 +385,6 @@
   .d-photo-footer {
     grid-row: 2;
   }
-}
-
-.d-cover-logo {
-  position: absolute;
-  z-index: 2;
-  overflow: hidden;
-  border: none;
-  display: grid;
-  place-items: center;
-  font-weight: var(--font-weight-medium);
-  left: 16px;
-  bottom: 16px;
-  width: 64px;
-  height: 64px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  /* Guaranteed contrasting background for university logo */
-  background: var(--surface-badge);
-  color: var(--surface-badge-text);
-}
-
-/* Same recipe as the catalog card logo: the badge owns the surface and radius,
-   the image only contains itself inside a small inset. */
-.d-logo-img {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  min-width: 0;
-  min-height: 0;
-  padding: var(--space-1);
-  object-fit: contain;
-  object-position: center;
-  display: block;
 }
 
 /* Photo credit: the photo license requires a visible author and license next to the photograph. */
@@ -572,13 +543,6 @@ a.d-cover-credit:focus-visible {
     height: var(--space-4);
   }
 
-  .d-cover .d-cover-logo {
-    bottom: var(--space-3);
-    left: var(--space-3);
-    width: var(--space-10);
-    height: var(--space-10);
-    border-radius: var(--radius-md);
-  }
 }
 
 .d-head {
@@ -2596,11 +2560,6 @@ a.d-cover-credit:focus-visible {
     width: 100%;
     max-width: 100%;
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  }
-
-  .d-cover-logo {
-    width: 56px;
-    height: 56px;
   }
 
   .d-title {

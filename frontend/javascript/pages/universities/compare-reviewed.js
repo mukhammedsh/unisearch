@@ -7,13 +7,13 @@
 // program is chosen in the picker. A choice made here is the same saved choice the university page uses.
 // Layout follows the familiar product-comparison pattern: identity heads, topic sections, a label per row and one
 // value per university, with a compact sticky strip of names while the heads are out of view.
-import { API_BASE, bindImageFallbacks, debounce, initials, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice } from "../../utils.js";
+import { API_BASE, bindImageFallbacks, debounce, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice } from "../../utils.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { navigateToAppRoute, routeCompareSelection, routeUniversityDetail } from "../../routes.js";
-import { formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource, uniLogoSrc } from "../_shared.js";
-import { compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
+import { formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource } from "../_shared.js";
+import { compareCampusHtml, compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
 import { admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
 import { costFact, deadlineFact, fundingFact, requirementsFact } from "../university/admissions-key-facts.js";
@@ -344,12 +344,7 @@ function scopeText(column) {
   return { title: label("scope.choose"), meta: label("scope.choose_meta") };
 }
 
-function logoHtml(column, className) {
-  const name = compareUniversityName(column.university);
-  return `<span class="${className}"><img src="${escapeHtmlAttr(uniLogoSrc(column.id))}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(column.id, { forceFull: true }))}" data-fallback-text="${escapeHtmlAttr(initials(name))}"></span>`;
-}
-
-function headHtml(column, index) {
+function headHtml(column, index, photos) {
   const name = compareUniversityName(column.university);
   const scope = columnScope(column);
   const text = scopeText(column);
@@ -357,8 +352,8 @@ function headHtml(column, index) {
     ? `<button type="button" class="compare-reviewed__button" data-compare-retry="${escapeHtmlAttr(column.id)}">${heroIcon("arrow-path", "ui-icon ui-icon--16")}<span>${escapeHtml(label("retry"))}</span></button>`
     : `<button type="button" class="compare-reviewed__button${["choose", "route", "mismatch"].includes(scope) ? " compare-reviewed__button--primary" : ""}" data-compare-pick="${escapeHtmlAttr(column.id)}"${scope === "loading" ? " disabled" : ""}>${heroIcon(column.context.study_option_id ? "pencil-square" : "academic-cap", "ui-icon ui-icon--16")}<span>${escapeHtml(label(scope === "route" ? "action.choose_route" : column.context.study_option_id ? "action.change" : "action.choose"))}</span></button>`;
   return `<article class="compare-reviewed__head" data-uni-id="${escapeHtmlAttr(column.id)}" data-compare-slot="${index + 1}" data-scope="${escapeHtmlAttr(scope)}">
+    ${compareCampusHtml(column.id, photos)}
     <a class="compare-reviewed__identity" href="${escapeHtmlAttr(detailHref(column))}"${linkAttrs()}>
-      ${logoHtml(column, "compare-reviewed__logo")}
       <span class="compare-reviewed__identity-text"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(compareLocationText(column.university))}</small></span>
     </a>
     <div class="compare-reviewed__scope" aria-live="polite">
@@ -374,12 +369,11 @@ function headHtml(column, index) {
 
 function stripHtml(columns) {
   return `<div class="compare-reviewed__strip-anchor"><div class="compare-reviewed__strip" data-compare-strip aria-hidden="true">
-    <span class="compare-reviewed__strip-spacer"></span>
-    ${columns.map((column) => `<span class="compare-reviewed__strip-item">${logoHtml(column, "compare-reviewed__strip-logo")}<span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span></span>`).join("")}
+    ${columns.map((column) => `<span class="compare-reviewed__strip-item"><span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span></span>`).join("")}
   </div></div>`;
 }
 
-export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamIds = [] } = {}) {
+export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamIds = [], photos } = {}) {
   const hasProgram = columns.some((column) => ["program", "route", "no_route"].includes(columnScope(column)));
   const readable = columns.some((column) => readsFacts(column));
   const profileNote = (text) => `<p class="compare-reviewed__section-note">${escapeHtml(text)} <a href="/profile.html" data-route="profile">${escapeHtml(label("open_profile"))}</a></p>`;
@@ -391,12 +385,12 @@ export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamId
         <p class="compare-results-kicker">${escapeHtml(t("universities.compare.results.kicker"))}</p>
         <h1 class="compare-reviewed__title">${escapeHtml(t("universities.compare.results.title"))}</h1>
         <p class="compare-reviewed__intro">${escapeHtml(label("intro"))}</p>
+        <p class="compare-reviewed__hint">${escapeHtml(label("heads_note"))}</p>
       </div>
       <button class="compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
     </header>
     <div class="compare-reviewed__heads" data-compare-heads>
-      <p class="compare-reviewed__heads-note">${escapeHtml(label("heads_note"))}</p>
-      ${columns.map(headHtml).join("")}
+      ${columns.map((column, index) => headHtml(column, index, photos)).join("")}
     </div>
     ${stripHtml(columns)}
     ${hasProgram ? sectionHtml("program", columns, programRows()) : ""}
@@ -636,7 +630,7 @@ function openPicker({ column, trigger, onApply }) {
 }
 
 // Mounts the comparison for two reviewed universities. Returns controls the page uses on profile and language changes.
-export function mountReviewedComparison(container, universities) {
+export function mountReviewedComparison(container, universities, photos) {
   let disposed = false;
   let saving = false;
   let observer = null;
@@ -678,6 +672,7 @@ export function mountReviewedComparison(container, universities) {
     if (disposed || !container.isConnected) return;
     const profile = loadProfileForApi();
     container.innerHTML = renderReviewedComparisonPage(columns, {
+      photos,
       budgetUsd: profile.budget,
       profileExamIds: (profile.exams || []).map((exam) => exam.id),
     });

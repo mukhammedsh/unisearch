@@ -9,7 +9,7 @@ This project uses or references the following third-party icon, font, and brand 
 - Project: https://heroicons.com/
 - Source repository: https://github.com/tailwindlabs/heroicons
 - License: MIT
-- License note: The Heroicons repository states that the library is MIT licensed.
+- License text: [Heroicons MIT license](backend/data/university_assets/HEROICONS-LICENSE.txt)
 - How this project uses it:
   - UI action icons and state icons rendered via `frontend/javascript/icons.js`
   - Source SVG data is synced from the official `@heroicons/react` `24/outline` package
@@ -50,15 +50,14 @@ This project uses or references the following third-party icon, font, and brand 
 
 - Subject: University names, official emblems, logos, and campus photographs
 - Assets location:
-  - `backend/data/university_assets/logos/` (and `logos-small/`)
   - `backend/data/university_assets/thumbnails/` (and `thumbnails-medium/`, `thumbnails-small/`)
 - Rights & Ownership:
   - University names, logos, crests, and emblems are registered or unregistered trademarks and intellectual property of their respective academic institutions.
   - Campus photographs are the intellectual property of their respective photographers, copyright holders, or academic institutions.
   - The root MIT License of this project does **NOT** apply to any third-party university trademarks, logos, or campus photographs.
 - Use in UniSearch:
-  - University names, logos, and crests are used only to identify the institution a catalog entry refers to (nominative use), in a non-commercial educational project.
-  - Campus photographs are freely licensed files from Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA), cropped and resized. Each photograph's author, license and Commons file page are listed in `backend/data/university_assets/credits.json` and shown as a credit on the university page cover; see `backend/data/university_assets/README.md`.
+  - The catalog identifies each institution by its name and campus photographs. UniSearch does not display university logos.
+  - Campus photographs are freely licensed files from Wikimedia Commons (CC0, public domain, CC BY or CC BY-SA), cropped and resized. Each photograph's author, license and Commons file page are listed in `backend/data/university_assets/credits.json` and shown as a credit on university covers and comparison headers; see `backend/data/university_assets/README.md`.
   - Use of these assets does not imply any official affiliation with, endorsement by, or sponsorship from the respective academic institutions.
 - Notice & Takedown Policy:
   - If you are an authorized university representative, a photographer, or a copyright holder of any media asset and wish to request attribution credit, correction, or removal, please contact us at **unisearch.sup@gmail.com** or open a GitHub Issue.

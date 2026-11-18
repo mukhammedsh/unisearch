@@ -167,6 +167,11 @@ function formatKb(bytes) {
 const universities = readJson(dataPath);
 const ids = universities.map((row) => String(row?.id || "").trim()).filter(Boolean);
 const errors = [];
+for (const retiredDirectory of ["logos", "logos-small"]) {
+  if (fs.existsSync(path.join(assetsRoot, retiredDirectory))) {
+    errors.push(`${retiredDirectory}: legacy logo directory must not ship in the public media bundle`);
+  }
+}
 const warnings = [];
 
 // Every campus photograph needs a recorded reusable source, because the cover shows its credit
@@ -217,7 +222,7 @@ let withoutPhoto = 0;
 for (const id of ids) {
   const credit = credits?.[id];
   if (credits && !credit) {
-    // No reusable photograph was found: the university must ship no photo, and the pages fall back to its logo.
+    // No reusable photograph was found: the university must ship no photo, and the pages show the shared university icon.
     const leftovers = THUMBNAIL_FOLDERS.flatMap((folder) => [".jpg", ".webp"]
       .map((ext) => `${folder}/${id}${ext}`)
       .filter((rel) => fs.existsSync(path.join(assetsRoot, rel))));

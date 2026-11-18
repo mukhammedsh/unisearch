@@ -37,8 +37,8 @@ from app.core.settings import (
     REQUEST_BODY_MAX_BYTES,
 )
 from app.routers import root, universities, exams, languages, currency, admissions
-from app.services.background_tasks import warmup_runtime
 from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
+from app.services.background_tasks import warmup_runtime
 
 
 logging.basicConfig(
@@ -315,6 +315,7 @@ def _finalize_request_response(
         duration_ms,
     )
     return response
+
 
 app.mount(
     "/universities/assets",

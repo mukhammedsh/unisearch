@@ -22,8 +22,6 @@ test("shared URL and asset helpers encode untrusted identifiers", () => {
   assert.equal(shared.buildApiUrl("/universities"), "http://localhost:8000/universities");
   assert.equal(shared.safeUrl("https://example.com/a"), "https://example.com/a");
   assert.equal(shared.safeUrl("https://[invalid"), "");
-  assert.equal(shared.uniLogoSrc("a/b"), "http://localhost:8000/universities/assets/logos-small/a%2Fb.png");
-  assert.equal(shared.uniLogoSrc("a/b", { forceFull: true }), "http://localhost:8000/universities/assets/logos/a%2Fb.png");
 });
 
 test("presentation helpers render escaped text, icons, and location fallbacks", () => {

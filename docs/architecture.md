@@ -195,7 +195,6 @@ Implemented in `backend/app/services/ml_scoring.py`:
 * **Catalog (`backend/data/`):**
   Stored as structured JSON files under source control. Coverage varies by institution and program; missing facts remain unknown rather than being inferred. Admission facts are scoped to their source, program, applicant route, and cycle where published.
 * **Asset Directory (`backend/data/university_assets/`):**
-  - Institutional logos: 1:1 square PNG format with responsive fallbacks.
   - Campus thumbnails: 16:9 WebP and JPEG images generated in multiple responsive resolutions.
 * **Data Auditing (`npm run audit:data`):**
   Checks local data structure, required fields and asset references. It does not visit official pages. Run affected HTTP source checks separately and review the source content when its facts or scope change.

@@ -64,7 +64,7 @@
 
 - **Fact sources:** Use only official university websites, official admissions pages, and university-hosted admissions PDFs. Aggregators are prohibited. Missing data is better than invented data. Clearly separate computed UniFit/UniChance proxy values from verified facts.
 - **Names:** Display full university names. Keep abbreviations only in hidden `search_aliases`.
-- **Media:** Logos are square PNG files; covers are 16:9 JPG files. The institution must remain recognizable.
+- **Media:** Identify universities by name and credited 16:9 campus photographs. UniSearch does not publish university logos.
 - **Auditing:** After changes to `backend/data/` or synchronization scripts, run `npm run audit:data`. Run HTTP source checks only for affected URLs or before a data release.
 
 ## 6. Changelog and release workflow

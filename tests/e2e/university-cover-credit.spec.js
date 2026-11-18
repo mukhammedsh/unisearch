@@ -144,6 +144,54 @@ test("the viewer zooms around the pointer and resets when changing photos", asyn
   await expect(preview).toBeFocused();
 });
 
+test("clicking the dark backdrop closes the viewer while clicking or panning the photo keeps it open", async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 800 });
+  await openUniversity(page, "australian-national-university-au-canberra");
+  const preview = page.getByRole("button", { name: /Enlarge photo/ });
+  await preview.click();
+  const viewer = page.getByRole("dialog", { name: "Campus photos" });
+  const canvas = viewer.locator(".d-photo-canvas");
+  const image = viewer.getByRole("img", { name: "Photo 1 of 3" });
+  await expect(image).toBeVisible();
+
+  const fit = await image.boundingBox();
+  const centerX = fit.x + fit.width / 2;
+  const centerY = fit.y + fit.height / 2;
+
+  // Hovering the photo uses zoom cursor; hovering dark space resets it and clicking the photo stays open.
+  await page.mouse.move(centerX, centerY);
+  await expect(canvas).toHaveCSS("cursor", "zoom-in");
+  await page.mouse.click(centerX, centerY);
+  await expect(viewer).toBeVisible();
+
+  // Dragging from the photo into the dark margin when zoomed must not dismiss the viewer.
+  await page.mouse.dblclick(centerX, centerY);
+  await expect(viewer.getByRole("button", { name: "Zoom out" })).toBeEnabled();
+  await page.mouse.move(centerX, centerY);
+  await page.mouse.down();
+  await page.mouse.move(10, centerY, { steps: 4 });
+  await page.mouse.up();
+  await expect(viewer).toBeVisible();
+
+  // Reset zoom, verify dark space inside canvas shows default cursor, and click it to close.
+  await page.keyboard.press("0");
+  const resetBox = await image.boundingBox();
+  expect(resetBox.x).toBeGreaterThan(80);
+  const darkX = Math.floor(resetBox.x / 2);
+  await page.mouse.move(darkX, centerY);
+  await expect(canvas).toHaveCSS("cursor", "auto");
+  await page.mouse.click(darkX, centerY);
+  await expect(viewer).toHaveCount(0);
+  await expect(preview).toBeFocused();
+
+  // Re-open and close by clicking the dark area in the footer away from controls/attribution.
+  await preview.click();
+  await expect(image).toBeVisible();
+  await page.mouse.click(24, 780);
+  await expect(viewer).toHaveCount(0);
+  await expect(preview).toBeFocused();
+});
+
 test.describe("image recovery", () => {
   test.use({ serviceWorkers: "block" });
 
@@ -280,5 +328,20 @@ test.describe("touch navigation", () => {
     await close.tap();
     await expect(viewer).toHaveCount(0);
     await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 3 of 3");
+
+    // Re-open on phone portrait, verify dark-zone swipe changes photo without closing, and dark-zone tap closes.
+    await page.setViewportSize({ width: 320, height: 667 });
+    await preview.tap();
+    const reopenedImage = viewer.getByRole("img", { name: "Photo 3 of 3" });
+    await expect(reopenedImage).toBeVisible();
+    const phoneBox = await reopenedImage.boundingBox();
+    const darkAboveY = Math.round(phoneBox.y - 40);
+    expect(darkAboveY).toBeGreaterThan(64);
+    expect(darkAboveY).toBeLessThan(phoneBox.y);
+    await swipeLeftAt(darkAboveY);
+    await expect(viewer.getByRole("img", { name: "Photo 1 of 3" })).toBeVisible();
+    await page.touchscreen.tap(160, darkAboveY);
+    await expect(viewer).toHaveCount(0);
+    await expect(preview).toHaveAccessibleName("Enlarge photo · Photo 1 of 3");
   });
 });

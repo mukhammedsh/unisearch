@@ -3,8 +3,8 @@
    and a compact sticky strip of names while the heads are out of view. Earlier-format pairs keep 03-comparison.css. */
 
 .compare-reviewed {
-  --compare-label-column: 184px; /* spacing-exception: fixed label column shared by heads and rows */
   --compare-column-gap: var(--space-6);
+  --compare-column-inset: var(--component-card-padding);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
@@ -42,12 +42,20 @@
   line-height: var(--leading-tight);
 }
 
-.compare-reviewed__intro {
+.compare-reviewed__intro,
+.compare-reviewed__hint {
   max-width: 64ch;
   margin: 0;
   color: var(--text-muted);
-  font-size: var(--text-base);
   line-height: var(--leading-normal);
+}
+
+.compare-reviewed__intro {
+  font-size: var(--text-base);
+}
+
+.compare-reviewed__hint {
+  font-size: var(--text-sm);
 }
 
 /* Buttons */
@@ -122,22 +130,14 @@
   outline-offset: 2px;
 }
 
-/* Heads: one card per university, aligned with the value columns below */
+/* University cards, values, and pinned names share two columns. */
 
-.compare-reviewed__heads {
+.compare-reviewed__heads,
+.compare-reviewed__row,
+.compare-reviewed__strip {
   display: grid;
-  grid-template-columns: var(--compare-label-column) repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: var(--compare-column-gap);
-  row-gap: var(--space-3);
-  align-items: stretch;
-}
-
-.compare-reviewed__heads-note {
-  align-self: end;
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
 }
 
 .compare-reviewed__head {
@@ -145,7 +145,7 @@
   flex-direction: column;
   gap: var(--space-4);
   min-width: 0;
-  padding: var(--component-card-padding);
+  padding: var(--compare-column-inset);
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
 }
@@ -158,31 +158,6 @@
   border-radius: var(--radius-sm);
   color: var(--text);
   text-decoration: none;
-}
-
-.compare-reviewed__logo,
-.compare-reviewed__strip-logo {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background: var(--surface-badge);
-  box-shadow: var(--shadow-xs);
-}
-
-.compare-reviewed__logo {
-  width: var(--space-12);
-  height: var(--space-12);
-  padding: var(--space-1);
-  border-radius: var(--radius-base);
-}
-
-.compare-reviewed__logo img,
-.compare-reviewed__strip-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 .compare-reviewed__identity-text {
@@ -268,11 +243,8 @@
 }
 
 .compare-reviewed__strip {
-  display: grid;
-  grid-template-columns: var(--compare-label-column) repeat(2, minmax(0, 1fr));
-  column-gap: var(--compare-column-gap);
   align-items: center;
-  padding: var(--space-2) var(--space-4);
+  padding-block: var(--space-2);
   border-radius: 0 0 var(--radius-base) var(--radius-base);
   background: var(--surface-solid);
   box-shadow: var(--shadow-micro);
@@ -294,13 +266,7 @@
   align-items: center;
   gap: var(--space-2);
   min-width: 0;
-}
-
-.compare-reviewed__strip-logo {
-  width: var(--space-6);
-  height: var(--space-6);
-  padding: var(--space-0-5);
-  border-radius: var(--radius-xs);
+  padding-inline: var(--compare-column-inset);
 }
 
 .compare-reviewed__strip-name {
@@ -321,7 +287,7 @@
   flex-direction: column;
   gap: var(--space-2);
   min-width: 0;
-  padding: var(--component-card-padding) var(--component-card-padding) var(--space-2);
+  padding: var(--component-card-padding) var(--compare-column-inset) var(--space-2);
   border-radius: var(--radius-lg);
   background: var(--surface-solid);
 }
@@ -341,9 +307,7 @@
 }
 
 .compare-reviewed__row {
-  display: grid;
-  grid-template-columns: var(--compare-label-column) repeat(2, minmax(0, 1fr));
-  column-gap: var(--compare-column-gap);
+  column-gap: calc(var(--compare-column-gap) + 2 * var(--compare-column-inset));
   row-gap: var(--space-2);
   padding: var(--space-4) 0;
 }
@@ -353,6 +317,7 @@
 }
 
 .compare-reviewed__row-label {
+  grid-column: 1 / -1;
   margin: 0;
   color: var(--text-muted);
   font-size: var(--text-sm);
@@ -916,27 +881,6 @@ body.compare-picker-open {
   background: var(--surface-soft);
 }
 
-.compare-mixed__logo {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--space-10);
-  height: var(--space-10);
-  padding: var(--space-1);
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: var(--surface-badge);
-  box-shadow: var(--shadow-xs);
-  box-sizing: border-box;
-}
-
-.compare-mixed__logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
 .compare-mixed__text {
   display: flex;
   flex: 1;
@@ -1011,34 +955,17 @@ body.compare-picker-open {
   line-height: var(--leading-normal);
 }
 
-/* Narrow screens: the label moves above the two values, and heads stack their parts */
+/* Narrow screens use a tighter column gap. */
 
 @media (max-width: 900px) {
   .compare-reviewed {
     --compare-column-gap: var(--space-4);
   }
-
-  .compare-reviewed__heads,
-  .compare-reviewed__row,
-  .compare-reviewed__strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .compare-reviewed__heads-note {
-    grid-column: 1 / -1;
-  }
-
-  .compare-reviewed__strip-spacer {
-    display: none;
-  }
-
-  .compare-reviewed__row-label {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 640px) {
   .compare-reviewed {
+    --compare-column-inset: var(--space-3);
     --compare-column-gap: var(--space-3);
     gap: var(--space-4);
   }
@@ -1058,18 +985,12 @@ body.compare-picker-open {
 
   .compare-reviewed__head {
     gap: var(--space-3);
-    padding: var(--space-3);
   }
 
   .compare-reviewed__identity {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-2);
-  }
-
-  .compare-reviewed__logo {
-    width: var(--space-10);
-    height: var(--space-10);
   }
 
   .compare-reviewed__identity-text strong {
@@ -1085,7 +1006,7 @@ body.compare-picker-open {
   }
 
   .compare-reviewed__section {
-    padding: var(--space-4) var(--space-3) var(--space-1);
+    padding-block: var(--space-4) var(--space-1);
   }
 
   .compare-reviewed__row {
@@ -1099,10 +1020,6 @@ body.compare-picker-open {
   .compare-reviewed__value[data-kind="text"],
   .compare-reviewed__muted {
     font-size: var(--text-sm);
-  }
-
-  .compare-reviewed__strip {
-    padding: var(--space-2) var(--space-3);
   }
 
   .compare-mixed {

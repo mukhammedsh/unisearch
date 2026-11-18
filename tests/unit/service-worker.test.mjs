@@ -88,7 +88,7 @@ function request(pathname, options = {}) {
 
 test("activating the worker removes old UniSearch caches and claims clients", async () => {
   const worker = loadWorker();
-  const currentCache = "unisearch-api-2026-05-05-1";
+  const currentCache = "unisearch-api-2026-11-18-1";
   await worker.seedCache("unisearch-api-old");
   await worker.seedCache(currentCache);
   await worker.seedCache("unrelated-cache");
@@ -123,13 +123,13 @@ test("university assets try the network first and fall back to their cached copy
   let online = true;
   const worker = loadWorker(async () => {
     if (!online) throw new Error("offline");
-    return new TestResponse("university logo");
+    return new TestResponse("campus thumbnail");
   });
-  const logo = request("/universities/assets/logos/mit.png");
+  const thumbnail = request("/universities/assets/thumbnails/mit-usa-cambridge.webp");
 
-  assert.equal(await (await worker.dispatchFetch(logo)).response.text(), "university logo");
+  assert.equal(await (await worker.dispatchFetch(thumbnail)).response.text(), "campus thumbnail");
   online = false;
-  assert.equal(await (await worker.dispatchFetch(logo)).response.text(), "university logo");
+  assert.equal(await (await worker.dispatchFetch(thumbnail)).response.text(), "campus thumbnail");
 });
 
 test("localization cache ignores failed and no-store responses", async () => {
@@ -138,26 +138,26 @@ test("localization cache ignores failed and no-store responses", async () => {
   const failedRequest = request("/Localization/eng");
 
   assert.equal((await worker.dispatchFetch(failedRequest)).response.status, 503);
-  assert.equal(worker.cached("unisearch-static-2026-05-05-1", failedRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-18-1", failedRequest.url), undefined);
 
   response = new TestResponse("private", { headers: { "cache-control": "no-store" } });
   const privateRequest = request("/Localization/ru");
   await worker.dispatchFetch(privateRequest);
-  assert.equal(worker.cached("unisearch-static-2026-05-05-1", privateRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-18-1", privateRequest.url), undefined);
 });
 
 test("image cache evicts the oldest entry when it exceeds its configured limit", async () => {
   const worker = loadWorker();
-  const firstUrl = request("/universities/assets/logos/0.png").url;
+  const firstUrl = request("/universities/assets/thumbnails/0.jpg").url;
   let lastUrl;
   for (let index = 0; index <= 260; index += 1) {
-    const image = request(`/universities/assets/logos/${index}.png`);
+    const image = request(`/universities/assets/thumbnails/${index}.jpg`);
     lastUrl = image.url;
     await worker.dispatchFetch(image);
   }
 
   const keys = await worker.cacheNames();
-  const imageCache = "unisearch-images-2026-05-05-1";
+  const imageCache = "unisearch-images-2026-11-18-1";
   assert.equal(keys.includes(imageCache), true);
   assert.equal(worker.cached(imageCache, firstUrl), undefined);
   assert.equal(worker.cached(imageCache, lastUrl).body, "network");
