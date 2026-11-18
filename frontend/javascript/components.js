@@ -367,8 +367,11 @@ const LAYOUT_HTML = `
         </select>
       </article>
       <div class="settings-attribution">
-        <span data-i18n="currency.attribution">Rates provided by</span>
-        <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
+        <p class="settings-attribution-provider">
+          <span data-i18n="currency.attribution">Rates provided by</span>
+          <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
+        </p>
+        <p class="settings-attribution-status" id="currencyRatesStatus" aria-live="polite" hidden></p>
       </div>
     </div>
   </section>

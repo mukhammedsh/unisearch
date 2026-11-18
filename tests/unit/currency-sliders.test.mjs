@@ -2,8 +2,11 @@ import './setup.mjs';
 import { beforeEach, describe, test } from 'node:test';
 import assert from 'node:assert';
 import {
+  FALLBACK_RATES,
   convert,
   getFilterLimits,
+  niceMax,
+  niceStep,
   setPreferredCurrency,
   formatMoney,
 } from '../../frontend/javascript/currency.js';
@@ -39,15 +42,19 @@ describe('Currency-Aware Filter Sliders Logic', () => {
     assert.strictEqual(usdLimits.max, 100000);
     assert.strictEqual(usdLimits.step, 100);
 
+    const kztStep = niceStep(100 * FALLBACK_RATES.KZT);
+    const kztMax = niceMax(100000 * FALLBACK_RATES.KZT, kztStep);
     const kztLimits = getFilterLimits('KZT');
     assert.strictEqual(kztLimits.min, 0);
-    assert.strictEqual(kztLimits.max, 45000000);
-    assert.strictEqual(kztLimits.step, 50000);
+    assert.strictEqual(kztLimits.max, kztMax);
+    assert.strictEqual(kztLimits.step, kztStep);
 
+    const eurStep = niceStep(100 * FALLBACK_RATES.EUR);
+    const eurMax = niceMax(100000 * FALLBACK_RATES.EUR, eurStep);
     const eurLimits = getFilterLimits('EUR');
     assert.strictEqual(eurLimits.min, 0);
-    assert.strictEqual(eurLimits.max, 86000);
-    assert.strictEqual(eurLimits.step, 100);
+    assert.strictEqual(eurLimits.max, eurMax);
+    assert.strictEqual(eurLimits.step, eurStep);
   });
 
   test('getFilterLimits converts default limits for unknown currencies', () => {
@@ -72,14 +79,12 @@ describe('Currency-Aware Filter Sliders Logic', () => {
     }
 
     const kztLimits = getFilterLimits('KZT');
-    
+    const kztRate = FALLBACK_RATES.KZT;
+
     // Middle values in KZT (e.g. 10,000,000 KZT)
-    // 10,000,000 / 450 = 22222.222... USD
     const params = computeApiTuitionParams(450000, 10000000, 'KZT', kztLimits);
-    // min: 450000 KZT = 1000 USD -> floor(1000) - 1 = 999 USD
-    assert.strictEqual(params.min_tuition, 999);
-    // max: 10,000,000 KZT = 22222.22 USD -> ceil(22222.22) + 1 = 22224 USD
-    assert.strictEqual(params.max_tuition, 22224);
+    assert.strictEqual(params.min_tuition, Math.max(0, Math.floor(450000 / kztRate) - 1));
+    assert.strictEqual(params.max_tuition, Math.ceil(10000000 / kztRate) + 1);
   });
 
   test('boundary saturation omits parameters at limits', () => {
@@ -124,8 +129,8 @@ describe('Currency-Aware Filter Sliders Logic', () => {
     const usdMid = convert(oldMidVal, 'USD', 'USD');
     const kztMid = convert(usdMid, 'USD', 'KZT');
     const steppedKzt = Math.round(kztMid / newLimits.step) * newLimits.step;
-    // 20000 * 450 = 9,000,000 KZT
-    assert.strictEqual(steppedKzt, 9000000);
+    const expectedStepped = Math.round((20000 * FALLBACK_RATES.KZT) / newLimits.step) * newLimits.step;
+    assert.strictEqual(steppedKzt, expectedStepped);
   });
 
   test('applyTokenSubstitutions replaces {currency} token with preferred currency', () => {

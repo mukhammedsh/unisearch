@@ -54,8 +54,8 @@ test("live rates that arrive late redraw catalog card prices", async ({ page }) 
 
   await page.goto("/index.html");
   const card = page.locator(`#universitiesList .uni-card[data-uni-id="${kaznmu}"]`);
-  // Before live rates arrive, the built-in rate (450 ₸ per dollar) prices the tenge tuition.
-  await expect(card).toContainText("≈ $4,200");
+  // Before live rates arrive, the built-in rate (444.34 ₸ per dollar) prices the tenge tuition.
+  await expect(card).toContainText("≈ $4,300");
   releaseRates();
   // Half the tenge per dollar doubles the dollar estimate once the cards redraw.
   await expect(card).toContainText("≈ $8,400");

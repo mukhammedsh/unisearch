@@ -166,6 +166,8 @@ currency.region.asia_pacific: Азия-Тынық мұхиты аймағы
 currency.region.middle_east_africa: Таяу Шығыс және Африка
 currency.region.other: Басқа валюталар
 currency.attribution: Бағамдарды ұсынған
+currency.rates_updated: Жаңартылды: {date}
+currency.rates_offline: Офлайн-режим · {date} күнгі бағамдар
 currency.opt.kzt: Қазақстан теңгесі (KZT, ₸)
 currency.opt.rub: Ресей рублі (RUB, ₽)
 currency.opt.uzs: Өзбекстан сумы (UZS, soʻm)
