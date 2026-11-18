@@ -185,4 +185,36 @@ describe('theme.js', () => {
       global.document.createElement = origCreateElement;
     }
   });
+
+  test('theme switching cancels a pending frame and clears itself without requestAnimationFrame', () => {
+    const origRaf = global.window.requestAnimationFrame;
+    const origCancel = global.window.cancelAnimationFrame;
+    const cancelled = [];
+    let nextFrame = 0;
+    global.window.requestAnimationFrame = () => ++nextFrame;
+    global.window.cancelAnimationFrame = (id) => cancelled.push(id);
+    global.document.documentElement.removeAttribute = (name) => {
+      delete docAttributes[name];
+    };
+
+    try {
+      applyTheme('dark', { persist: true });
+      applyTheme('light', { persist: true });
+      assert.deepStrictEqual(cancelled, [1]);
+      assert.strictEqual(docAttributes['data-theme-switching'], '1');
+
+      global.window.requestAnimationFrame = undefined;
+      applyTheme('dark', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+
+      const bare = global.document.documentElement.removeAttribute;
+      global.document.documentElement.removeAttribute = undefined;
+      applyTheme('light', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+      global.document.documentElement.removeAttribute = bare;
+    } finally {
+      global.window.requestAnimationFrame = origRaf;
+      global.window.cancelAnimationFrame = origCancel;
+    }
+  });
 });
