@@ -252,6 +252,7 @@ export function mountUniversityGallery(cover, universityId) {
   const coverStatus = gallery.querySelector(".d-gallery-status");
   const dialog = gallery.querySelector(".d-photo-viewer");
   const canvas = dialog.querySelector(".d-photo-canvas");
+  const close = dialog.querySelector(".d-gallery-button--close");
   const viewerCredit = dialog.querySelector(".d-gallery-viewer-credit");
   const viewerStatus = dialog.querySelector("[role=status]");
   const navigation = [coverNavigation, dialog.querySelector(".d-gallery-navigation")];
