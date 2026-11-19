@@ -60,7 +60,7 @@ export async function checkConnectivity(options = {}) {
     lastConnectivityResult = reachable;
     lastConnectivityAt = Date.now();
     return reachable;
-  } catch (err) {
+  } catch {
     lastConnectivityResult = false;
     lastConnectivityAt = Date.now();
     return false;

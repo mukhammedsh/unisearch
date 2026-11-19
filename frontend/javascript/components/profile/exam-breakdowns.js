@@ -101,7 +101,7 @@ export const gradeOptionsForExam = (examId) => {
         : ["A*", "A", "B", "C", "D", "E", "U"];
 };
 
-export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, valueState, isExtra = false }) => {
+export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, valueState }) => {
     const cfg = getExamConfig(examId);
     const mode = getExamInputMode(examId);
     const rawValue = String(valueState?.raw_value || "").trim();
@@ -447,7 +447,7 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                         </div>
                         <div class="profile-exam-breakdown-score">
                             <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
-                            ${renderBreakdownValueControl({ parentExamId: examId, examId: item.exam, slotKey: `extra-${item.exam}`, valueState: item.row, isExtra: true })}
+                          ${renderBreakdownValueControl({ parentExamId: examId, examId: item.exam, slotKey: `extra-${item.exam}`, valueState: item.row })}
                         </div>
                     </div>
                 `).join("")}

@@ -32,7 +32,7 @@ export async function loadCompareUniversities(ids, options = {}) {
     try {
       const detail = await fetchUniversityDetailCached(id);
       return detail || fallbackById.get(id);
-    } catch (error) {
+    } catch {
       return fallbackById.get(id);
     }
   }));
@@ -80,7 +80,7 @@ export async function fetchCompareProfiles(ids, options = {}) {
     });
 
     return { chances, rois };
-  } catch (error) {
+  } catch {
     return fetchCompareProfilesIndividually(cleanIds.filter(id => !REVIEWED_ADMISSIONS_IDS.has(id)), { apiBase, fetchImpl, profile });
   }
 }
@@ -94,7 +94,7 @@ async function fetchJsonOrNull(fetchImpl, url, profile) {
     });
     if (!response.ok) return null;
     return await response.json();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -526,14 +526,14 @@ export function readCompareAdmissionChoices() {
     const resetIds = Object.keys(raw).filter(id => REVIEWED_ADMISSIONS_IDS.has(id));
     if (resetIds.length) {
       try { localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(retained)); }
-      catch (error) { console.warn("Failed to persist the comparison selection reset; obsolete choices are ignored for this session."); }
+      catch { console.warn("Failed to persist the comparison selection reset; obsolete choices are ignored for this session."); }
       const profile = loadProfile();
       saveProfile({ ...profile, admissionChoiceResetNotices: Array.from(new Set([...(profile.admissionChoiceResetNotices || []), ...resetIds])) });
     }
     return new Map(Object.entries(retained)
       .map(([id, selection]) => [String(id || "").trim(), normalizeCompareAdmissionSelection(selection)])
       .filter(([id, selection]) => id && selection));
-  } catch (e) {
+  } catch {
     return new Map();
   }
 }
@@ -550,7 +550,7 @@ export function writeCompareAdmissionChoices(choicesMap, activeIds = []) {
   }
   try {
     localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(data));
-  } catch (e) {
+  } catch {
     // Ignore storage failures
   }
 }

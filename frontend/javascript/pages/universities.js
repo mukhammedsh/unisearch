@@ -456,7 +456,7 @@ function initTranslationDebugLogger() {
             console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
             Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
             console.groupEnd();
-        } catch (e) {
+        } catch {
             // ignore logging errors
         }
     };
@@ -544,7 +544,7 @@ export function initUniversitiesPage() {
     if (window.history && "scrollRestoration" in window.history) {
         try {
             window.history.scrollRestoration = "manual";
-        } catch (e) {}
+        } catch {}
     }
 
     const saveCurrentScrollPosition = () => {
@@ -600,7 +600,7 @@ export function initUniversitiesPage() {
         }
     });
 
-    const updateUnifitWarningBanner = (items = []) => {
+    const updateUnifitWarningBanner = () => {
         if (!el.unifitWarningBanner) return;
         if (state.sort !== "uni_ai") {
             el.unifitWarningBanner.hidden = true;
@@ -662,7 +662,7 @@ export function initUniversitiesPage() {
     const readPageParams = () => {
         try {
             return new URLSearchParams(window.location.search || "");
-        } catch (e) {
+        } catch {
             return new URLSearchParams();
         }
     };
@@ -966,7 +966,7 @@ export function initUniversitiesPage() {
         syncHeaderSearchContext();
         syncCompareModeControls();
         renderCompareTray();
-        updateUnifitWarningBanner(lastRenderedItems);
+        updateUnifitWarningBanner();
         if (updateUrl) setSectionUrl(replaceUrl);
 
         await switchView(state.viewMode || "list", false);
@@ -1680,7 +1680,7 @@ export function initUniversitiesPage() {
     }
 
     // --- Sliders ---
-    function applySliderBounds(limits, prefCurrency = (currentCurrency || getPreferredCurrency())) {
+    function applySliderBounds(limits) {
         currentLimits = limits;
         [el.minSlider, el.maxSlider, el.minInput, el.maxInput].forEach((input) => {
             if (!input) return;
@@ -1894,7 +1894,7 @@ export function initUniversitiesPage() {
     if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) initLocations();
     window.addEventListener("citiesLoaded", initLocations);
 
-    applySliderBounds(currentLimits, currentCurrency);
+    applySliderBounds(currentLimits);
     applyToForm();
     updateSliderVisibility();
     syncSidebarMaxHeight();
@@ -1904,7 +1904,7 @@ export function initUniversitiesPage() {
         if (pref === currentCurrency) {
             const freshLimits = getFilterLimits(pref);
             currentLimits = freshLimits;
-            applySliderBounds(freshLimits, pref);
+            applySliderBounds(freshLimits);
             fillTrack();
             updateSliderLabels();
         }
@@ -2549,7 +2549,7 @@ export function initUniversitiesPage() {
         }
 
         // 5. Update slider min/max/step attributes
-        applySliderBounds(newLimits, newCurrency);
+        applySliderBounds(newLimits);
 
         // 6. Update slider positions and input values
         if (el.minSlider) el.minSlider.value = String(clampedMin);
@@ -2750,7 +2750,7 @@ export function initUniversitiesPage() {
         return mapInitPromise;
     }
 
-    function warmMapMode(items) {
+    function warmMapMode() {
         if (mapInstance || mapWarmupScheduled) return;
         mapWarmupScheduled = true;
 
@@ -2796,7 +2796,7 @@ export function initUniversitiesPage() {
         }
         try {
             if (mapInstance._panAnim) mapInstance._panAnim.stop();
-        } catch (error) {
+        } catch {
             // Pan-animation internals are version-specific; the flight below
             // still works, it just cannot reuse the cleanup.
         }
@@ -2824,7 +2824,7 @@ export function initUniversitiesPage() {
             let arrived = false;
             try {
                 arrived = mapInstance.distance(mapInstance.getCenter(), latLng) < 20;
-            } catch (error) {
+            } catch {
                 arrived = false;
             }
             if (!arrived) return;
@@ -2835,7 +2835,7 @@ export function initUniversitiesPage() {
                 if (openPopup) {
                     try {
                         if (!current.getPopup()?.isOpen()) current.openPopup();
-                    } catch (error) {
+                    } catch {
                         current.openPopup();
                     }
                 }
@@ -2850,7 +2850,7 @@ export function initUniversitiesPage() {
                 if (focusSeq !== mapFocusSeq || !mapInstance || state.viewMode !== "map") return;
                 try {
                     if (mapInstance._panAnim) mapInstance._panAnim.stop();
-                } catch (error) {
+                } catch {
                     // Pan-animation internals are version-specific.
                 }
             }, 400);
@@ -2875,7 +2875,7 @@ export function initUniversitiesPage() {
             let popupOpen = false;
             try {
                 popupOpen = Boolean(current && typeof current.getPopup === "function" && current.getPopup()?.isOpen());
-            } catch (error) {
+            } catch {
                 popupOpen = false;
             }
             if (popupOpen) return;
@@ -2979,6 +2979,14 @@ export function initUniversitiesPage() {
         __universitiesMapResultsObserver.observe(loadMoreButton);
     }
 
+    function bindMapResultsFooter() {
+        const loadMoreButton = el.mapResults?.querySelector('[data-action="load-more-map-results"]');
+        loadMoreButton?.addEventListener("click", () => {
+            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
+        });
+        syncMapResultsObserver();
+    }
+
     function renderMapResultsPanel(items, options = {}) {
         if (!el.mapResults) return;
         const append = options.append === true;
@@ -3024,22 +3032,14 @@ export function initUniversitiesPage() {
         }
 
         refreshUnifitLegend();
-        const loadMoreButton = el.mapResults.querySelector('[data-action="load-more-map-results"]');
-        loadMoreButton?.addEventListener("click", () => {
-            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
-        });
-        syncMapResultsObserver();
+        bindMapResultsFooter();
     }
 
     function refreshMapResultsFooter() {
         const footer = el.mapResults?.querySelector("[data-map-results-footer]");
         if (!footer) return;
         footer.outerHTML = mapResultsFooterHtml();
-        const loadMoreButton = el.mapResults.querySelector('[data-action="load-more-map-results"]');
-        loadMoreButton?.addEventListener("click", () => {
-            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
-        });
-        syncMapResultsObserver();
+        bindMapResultsFooter();
     }
 
     async function fetchMapResultsPage(page) {
@@ -3093,7 +3093,7 @@ export function initUniversitiesPage() {
             lastRenderedItems = mapResultsItems;
             state.lastCatalogTotal = mapResultsTotal;
             if (el.total) el.total.textContent = String(mapResultsTotal);
-            updateUnifitWarningBanner(mapResultsItems);
+            updateUnifitWarningBanner();
 
             renderMapResultsPanel(uniqueItems, { append: !reset });
             if (animateResults && uniqueItems.length) {
@@ -3315,7 +3315,7 @@ export function initUniversitiesPage() {
                         let popupOpen = false;
                         try {
                             popupOpen = Boolean(clickedMarker.getPopup()?.isOpen());
-                        } catch (error) {
+                        } catch {
                             popupOpen = false;
                         }
                         if (!popupOpen) clickedMarker.openPopup();
@@ -3821,7 +3821,7 @@ export function initUniversitiesPage() {
             ? t("universities.state.ml_unavailable", "Interests from your profile are temporarily not affecting sorting.")
             : "";
 
-        updateUnifitWarningBanner(items);
+        updateUnifitWarningBanner();
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
@@ -3831,7 +3831,7 @@ export function initUniversitiesPage() {
             if (!items.length) {
                 if (el.list) el.list.replaceChildren();
                 if (el.pagination) el.pagination.replaceChildren();
-                warmMapMode(items);
+                warmMapMode();
                 renderUniversitiesState({
                     warningText,
                     emptyText: state.only_saved
@@ -3849,7 +3849,7 @@ export function initUniversitiesPage() {
             const userBudget = Number.parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
             refreshUnifitLegend();
-            warmMapMode(items);
+            warmMapMode();
             if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
             renderPagination(total);
             if (animateResults) markMotionEnter(el.pagination, ".page-btn", { limit: 10, staggerMs: 12 });

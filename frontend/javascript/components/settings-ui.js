@@ -151,7 +151,7 @@ export function initSettingsUI() {
               displayMode: key === SETTING_CURRENCY_DISPLAY ? nextValue : getSettingValue(SETTING_CURRENCY_DISPLAY),
             },
           }));
-        } catch (e) {
+        } catch {
           // ignore event error
         }
       }

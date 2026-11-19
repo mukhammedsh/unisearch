@@ -852,7 +852,7 @@ export const closeImmediately = (els, state) => {
                         }
                         return;
                     }
-                } catch (_) {}
+                } catch {}
             }
 
             if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
@@ -1122,7 +1122,7 @@ export const handleAddExam = async (els, state) => {
         let json = {};
         try {
             json = await res.json();
-        } catch (e) {
+        } catch {
             json = {};
         }
         if (!res.ok) {

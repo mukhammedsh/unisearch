@@ -157,7 +157,7 @@ function renderDetailLocation(university, translatedCity, translatedCountry) {
   locationEl.innerHTML = `${cityHtml}${countryHtml}`;
 }
 
-function bindDetailActions({ id, minPrice, translatedName, university, universityId }) {
+function bindDetailActions({ id, minPrice, university, universityId }) {
   const setTxt = (elementId, value) => {
     const element = document.getElementById(elementId);
     if (!element) return;
@@ -307,7 +307,7 @@ function renderReviewedUniversityPage({ id, preserveVisibleContent, university, 
     nameEl.textContent = translatedName;
   }
   renderDetailLocation(university, trCity(university?.location?.city), trCountry(university?.location?.country));
-  bindDetailActions({ id, minPrice: undefined, translatedName, university, universityId });
+  bindDetailActions({ id, minPrice: undefined, university, universityId });
   renderExtraSection({ container: document.getElementById("detailExtra"), university });
   const rankStatus = String(university.rank_meta?.status || "").trim().toLowerCase();
   const rankValue = toFiniteNumber(university.rank);
@@ -371,7 +371,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   }
 
   renderDetailLocation(university, translatedCity, translatedCountry);
-  bindDetailActions({ id, minPrice, translatedName, university, universityId });
+  bindDetailActions({ id, minPrice, university, universityId });
 
   let uniChance = null;
   let uniChanceByChoiceKey = new Map();
@@ -492,7 +492,6 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       profileStudyMode,
       scholarshipContainer: scholarshipEl,
       uniRoi,
-      uniChance,
       university,
     });
   };
@@ -598,7 +597,7 @@ function bindDetailRefreshLifecycle() {
     const refreshPromise = (async () => {
       try {
         await initUniversityTranslations();
-      } catch (error) {
+      } catch {
         // keep local fallback copy when translation pack refresh fails
       }
       await initUniversityPage({ preserveVisibleContent: true });

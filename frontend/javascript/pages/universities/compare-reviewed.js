@@ -523,7 +523,7 @@ function openPicker({ column, trigger, onApply }) {
       picker.items = append ? [...picker.items, ...data.items] : data.items;
       picker.total = data.total;
       picker.status = "ready";
-    } catch (error) {
+    } catch {
       if (request.signal.aborted || request !== picker.request) return;
       picker.status = "error";
     }
@@ -559,7 +559,7 @@ function openPicker({ column, trigger, onApply }) {
       }
       onApply(context, resolved);
       dialog.close();
-    } catch (error) {
+    } catch {
       if (!dialog.open) return;
       picker.step = "programs";
       picker.status = "error";
@@ -576,7 +576,7 @@ function openPicker({ column, trigger, onApply }) {
       if (!dialog.open) return;
       onApply(context, resolved);
       dialog.close();
-    } catch (error) {
+    } catch {
       if (!dialog.open) return;
       picker.step = "routes";
       render();

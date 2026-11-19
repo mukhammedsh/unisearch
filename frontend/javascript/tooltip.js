@@ -64,7 +64,7 @@ export function bindInfoTooltips(options = {}) {
         wrap.classList.remove(openClass);
         wrap.classList.add(closedClass);
         btn.setAttribute("aria-expanded", "false");
-        try { btn.blur(); } catch (e) {}
+        try { btn.blur(); } catch {}
       }
       return;
     }
@@ -96,7 +96,7 @@ export function bindInfoTooltips(options = {}) {
       closeAll();
       lastOpen.classList.add(closedClass);
       if (btn) {
-        try { btn.focus(); } catch (e) {}
+        try { btn.focus(); } catch {}
       }
     }
   });

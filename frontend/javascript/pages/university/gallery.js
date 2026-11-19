@@ -6,6 +6,7 @@ import { coverCreditHtml, loadPhotoCredits } from "./cover-credit.js";
 import { bindGalleryZoom, isPointInVisiblePhoto } from "./gallery-zoom.js";
 
 const DISMISS_MOVE_TOLERANCE_PX = 8;
+const VIEWER_DIALOG_ID = "university-photo-viewer";
 const NON_DISMISS_SELECTOR = [
   "button",
   "a",
@@ -95,7 +96,9 @@ function photoPosition(index, total) {
 }
 
 function galleryButton(action, icon, label) {
-  return `<button type="button" class="d-gallery-button d-gallery-button--${action}" aria-label="${escapeHtmlAttr(label)}"${action === "close" ? " autofocus" : ""}>
+  const actionClass = action === "close" ? "d-gallery-button--close" : `d-gallery-button--${action}`;
+  const closeCommand = action === "close" ? ` commandfor="${VIEWER_DIALOG_ID}" command="close"` : "";
+  return `<button type="button" class="d-gallery-button ${actionClass}" aria-label="${escapeHtmlAttr(label)}"${closeCommand}${action === "close" ? " autofocus" : ""}>
     ${heroIcon(icon, "ui-icon ui-icon--20")}
   </button>`;
 }
@@ -229,7 +232,7 @@ export function mountUniversityGallery(cover, universityId) {
     <div class="d-gallery-cover-credit"></div>
     ${navigationHtml()}
     <span class="d-gallery-status sr-only" role="status"></span>`);
-  cover.insertAdjacentHTML("afterend", `<dialog class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
+  cover.insertAdjacentHTML("afterend", `<dialog id="${VIEWER_DIALOG_ID}" class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
       ${galleryButton("close", "arrow-left", t("common.close", "Close"))}
       <div class="d-gallery-viewer-credit"></div>
       <div class="d-photo-zoom-controls">
@@ -249,7 +252,6 @@ export function mountUniversityGallery(cover, universityId) {
   const coverStatus = gallery.querySelector(".d-gallery-status");
   const dialog = gallery.querySelector(".d-photo-viewer");
   const canvas = dialog.querySelector(".d-photo-canvas");
-  const close = dialog.querySelector(".d-gallery-button--close");
   const viewerCredit = dialog.querySelector(".d-gallery-viewer-credit");
   const viewerStatus = dialog.querySelector("[role=status]");
   const navigation = [coverNavigation, dialog.querySelector(".d-gallery-navigation")];
@@ -334,7 +336,6 @@ export function mountUniversityGallery(cover, universityId) {
     preview.focus({ preventScroll: true });
     dialog.showModal();
   });
-  close.addEventListener("click", () => dialog.close());
   dialog.addEventListener("close", () => {
     if (!dialog.open) zoom.setImage(null);
   });

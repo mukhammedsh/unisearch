@@ -10,6 +10,8 @@ Patch release: refreshes the graduate-preparatory offering's official name and s
 - Updated the offering to Zero Year of Graduate Programs (ZYGP), retained NUZYP as a search alias, and localized its School-recommendation description.
 - Kept current-cycle availability, general entry terms, tuition, and funding unconfirmed where NU's public applicant pages do not publish them.
 - Included reviewed offering descriptions in the admissions detail response and program overview.
+### Improved
+- Corrected catalog and Guide semantics, named the map-results landmark, replaced the gallery's close listener with a native dialog command, removed unused JavaScript bindings and repeated map-footer wiring, and routed toast exit motion through shared CSS tokens.
 
 ## 10.6.3 (2026-11-19) - Align documentation with the reviewed admissions model
 

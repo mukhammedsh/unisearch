@@ -152,7 +152,7 @@ async function networkFirst(request, cacheName, maxEntries) {
       await trimCache(cacheName, maxEntries);
     }
     return response;
-  } catch (error) {
+  } catch {
     const cached = await cache.match(request);
     if (cached) return cached;
     return new Response("Offline", { status: 503, statusText: "Offline" });

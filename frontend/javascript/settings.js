@@ -235,7 +235,7 @@ function getRawSettingsMap() {
       byKey.set(key, row?.value);
     });
     return byKey;
-  } catch (e) {
+  } catch {
     return new Map();
   }
 }
@@ -264,7 +264,7 @@ export function writeSettingsArray(settings) {
     }));
     localStorage.setItem(SETTINGS_CACHE_KEY, JSON.stringify(normalized));
     return normalized;
-  } catch (e) {
+  } catch {
     return readSettingsArray();
   }
 }
@@ -289,7 +289,7 @@ export function setSettingValue(key, value) {
   const saved = writeSettingsArray(next);
   try {
     window.dispatchEvent(new CustomEvent("settingsChanged", { detail: { settings: saved, key, value } }));
-  } catch (e) {
+  } catch {
     // ignore event dispatch errors
   }
   return saved;

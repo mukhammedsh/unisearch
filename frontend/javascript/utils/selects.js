@@ -396,7 +396,7 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
     if (searchInput) searchInput.value = "";
     highlightedIndex = -1;
     if (restoreFocus) {
-      try { trigger.focus(); } catch (e) {}
+      try { trigger.focus(); } catch {}
     }
   };
 

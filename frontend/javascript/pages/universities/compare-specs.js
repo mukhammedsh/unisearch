@@ -621,7 +621,7 @@ export const compareSpecRawValue = (spec, u) => {
         if (spec.type === "number") return toFiniteNumber(value);
         if (spec.type === "boolean") return !!value;
         return value;
-    } catch (e) {
+    } catch {
         return spec.type === "number" ? null : "";
     }
 };
@@ -675,7 +675,7 @@ export const compareCell = (text, opts = {}) => {
     return `<td class="compare-cell${tone}"${titleAttr}><span>${escapeHtml(text || t("common.na", "N/A"))}</span>${sub}</td>`;
 };
 
-export const compareSectionRow = (label, kind, universities, renderValue) => `
+export const compareSectionRow = (label, kind, universities) => `
     <tr class="compare-table__section-row" data-section="${escapeHtmlAttr(kind)}">
         <td colspan="${universities.length + 1}">${escapeHtml(label)}</td>
     </tr>
