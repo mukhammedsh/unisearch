@@ -115,10 +115,10 @@ const normalizeSelector = (selector) =>
 export function normalizeAtRuleParams(params) {
   return String(params || "")
     .replace(/\s+/g, " ")
-    .replace(/\(\s+/g, "(")
-    .replace(/\s+\)/g, ")")
-    .replace(/\s*:\s*/g, ": ")
-    .replace(/\s*,\s*/g, ", ")
+    .replaceAll("( ", "(")
+    .replaceAll(" )", ")")
+    .replace(/ ?: ?/g, ": ")
+    .replace(/ ?, ?/g, ", ")
     .trim();
 }
 
@@ -175,10 +175,35 @@ export function splitSelectorList(selector) {
 }
 
 function stripAttributesAndStrings(selectorPart) {
-  return selectorPart
-    .replace(/"(?:\\.|[^"\\])*"/g, '""')
-    .replace(/'(?:\\.|[^'\\])*'/g, "''")
-    .replace(/\[[^\]]*\]/g, "[]");
+  let out = "";
+  let bracketDepth = 0;
+  let quote = "";
+
+  for (let i = 0; i < selectorPart.length; i++) {
+    const ch = selectorPart[i];
+    if (quote) {
+      if (ch === "\\" && i + 1 < selectorPart.length) {
+        i++;
+      } else if (ch === quote) {
+        quote = "";
+      }
+      continue;
+    }
+
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      if (bracketDepth === 0) out += ch + ch;
+    } else if (ch === "[") {
+      if (bracketDepth === 0) out += "[]";
+      bracketDepth++;
+    } else if (ch === "]" && bracketDepth > 0) {
+      bracketDepth--;
+    } else if (bracketDepth === 0) {
+      out += ch;
+    }
+  }
+
+  return out;
 }
 
 export function extractSelectorIds(selectorPart) {
@@ -339,12 +364,16 @@ function listFiles(dir, ext) {
 }
 
 function getHtmlBundles() {
-  const htmlFiles = listFiles(frontendDir, ".html").sort();
+  const htmlFiles = listFiles(frontendDir, ".html").sort((a, b) => a.localeCompare(b));
   return htmlFiles.map((htmlPath) => {
     const html = fs.readFileSync(htmlPath, "utf8");
     const pageName = path.relative(frontendDir, htmlPath).replace(/\\/g, "/");
-    const cssLinks = [...html.matchAll(/<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"/gi)]
-      .map((m) => m[1].replace(/\?.*$/, ""))
+    const cssLinks = [...html.matchAll(/<link\b[^>]*>/gi)]
+      .map((m) => m[0])
+      .filter((tag) => /\brel="stylesheet"/i.test(tag))
+      .map((tag) => /\bhref="([^"]+)"/i.exec(tag)?.[1] || "")
+      .filter(Boolean)
+      .map((href) => href.split("?")[0])
       .map((href) => path.resolve(frontendDir, href))
       .filter((p) => fs.existsSync(p));
     return { pageName, cssLinks };

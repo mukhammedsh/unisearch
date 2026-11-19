@@ -19,12 +19,15 @@ function formatNumberLiteral(num) {
   return Number.isInteger(num) ? num.toFixed(1) : String(num);
 }
 
-function toUtcDateString(rawTimestamp) {
+function parseUtcSnapshotTimestamp(rawTimestamp) {
   const parsed = new Date(String(rawTimestamp || "").trim());
   if (Number.isNaN(parsed.getTime())) {
-    throw new Error(`Invalid time_last_update_utc from API: ${rawTimestamp}`);
+    throw new Error("Invalid time_last_update_utc from ExchangeRate-API");
   }
-  return parsed.toISOString().slice(0, 10);
+  return {
+    dateStr: parsed.toISOString().slice(0, 10),
+    utcLabel: parsed.toUTCString(),
+  };
 }
 
 function normalizeRatesMap(rawRates) {
@@ -52,7 +55,8 @@ export function extractFallbackFromPython(source) {
   }
   const rates = {};
   for (const line of blockMatch[1].split(/\r?\n/)) {
-    const m = line.match(/^\s*["']([A-Z]{3,5})["']\s*:\s*([0-9]+(?:\.[0-9]+)?)\s*,?\s*$/);
+    const trimmed = line.trim().replace(/,$/, "").trim();
+    const m = /^["']([A-Z]{3,5})["']\s*:\s*(\d+(?:\.\d+)?)$/.exec(trimmed);
     if (m) {
       rates[m[1]] = Number(m[2]);
     }
@@ -68,7 +72,8 @@ export function extractFallbackFromJavaScript(source) {
   }
   const rates = {};
   for (const line of blockMatch[1].split(/\r?\n/)) {
-    const m = line.match(/^\s*([A-Z]{3,5})\s*:\s*([0-9]+(?:\.[0-9]+)?)\s*,?\s*$/);
+    const trimmed = line.trim().replace(/,$/, "").trim();
+    const m = /^([A-Z]{3,5})\s*:\s*(\d+(?:\.\d+)?)$/.exec(trimmed);
     if (m) {
       rates[m[1]] = Number(m[2]);
     }
@@ -93,7 +98,7 @@ export function checkFallbackParity() {
 
   const pyKeys = Object.keys(py.rates);
   const jsKeys = Object.keys(js.rates);
-  const allKeys = Array.from(new Set([...pyKeys, ...jsKeys])).sort();
+  const allKeys = Array.from(new Set([...pyKeys, ...jsKeys])).sort((a, b) => a.localeCompare(b));
 
   for (const code of allKeys) {
     if (!(code in py.rates)) {
@@ -154,8 +159,7 @@ async function syncFromApi() {
     throw new Error(`Unexpected API response: ${JSON.stringify(data?.["error-type"] || "invalid payload")}`);
   }
 
-  const utcLabel = String(data.time_last_update_utc || "").trim();
-  const dateStr = toUtcDateString(utcLabel);
+  const { dateStr, utcLabel } = parseUtcSnapshotTimestamp(data.time_last_update_utc);
   const rates = normalizeRatesMap(data.rates);
   const count = Object.keys(rates).length;
   if (count < 100) {
