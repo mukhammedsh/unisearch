@@ -12,6 +12,8 @@ Patch release: refreshes the graduate-preparatory offering's official name and s
 - Included reviewed offering descriptions in the admissions detail response and program overview.
 ### Improved
 - Corrected catalog and Guide semantics, named the map-results landmark, replaced the gallery's close listener with a native dialog command, removed unused JavaScript bindings and repeated map-footer wiring, and routed toast exit motion through shared CSS tokens.
+### Fixed
+- Added Russian and Kazakh exact translations for the reviewed NU ZYGP source gaps, next steps, historical notes, and program scope.
 
 ## 10.6.3 (2026-11-19) - Align documentation with the reviewed admissions model
 
