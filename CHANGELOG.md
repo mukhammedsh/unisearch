@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.2 (2026-11-19) - Fix university page styles on hosted pretty-URL SPA navigation
+
+Patch release: fixes missing university stylesheets during client-side navigation to nested pretty URLs (`/universities/<id>`) and prevents the service worker from caching HTML pages as API responses.
+
+### Fixed
+- Resolved client-side routed stylesheets against the application root (`resolveAppBaseUrl` / `resolveAppBasePath` in `frontend/javascript/routes.js`) and synchronized `<base href>` in `frontend/javascript/main.js` so SPA navigation from `/` to hosted `/universities/<id>` loads `/css/university/*.css` instead of 404 `/universities/css/...` paths and keeps `document.baseURI` anchored at the app root.
+- Increased the client router stylesheet load wait timeout from `150 ms` to `1500 ms` to avoid brief flashes of unstyled content on cold-cache transitions.
+- Excluded navigation, document, and `Accept: text/html` requests from `isApiRequest` in `frontend/javascript/sw-worker.js`, prevented `text/html` responses from entering `API_CACHE`, and bumped the service worker version (`2026-11-19-1`) in `frontend/sw.js` and `frontend/javascript/sw-worker.js` to purge previously cached HTML entries on activation.
+
+### Tests
+- Added unit tests for `resolveAppBasePath`, `resolveAppBaseUrl`, and service worker HTML/navigation pass-through in `tests/unit/routes.test.mjs` and `tests/unit/service-worker.test.mjs`, plus an E2E regression test for SPA navigation to `/universities/<id>` in `tests/e2e/university-frontend-mount.spec.js`.
+
 ## 10.6.1 (2026-11-19) - CSS cascade cleanup, university stylesheet modularization, and strict CSS audit
 
 Patch release: internal CSS architecture refactoring and tooling with no user-visible feature or API changes.

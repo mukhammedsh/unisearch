@@ -4,7 +4,7 @@ import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensu
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, resolveAppBasePath, resolveAppBaseUrl, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 import { startRatesLoading } from "./currency.js";
 import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
@@ -365,6 +365,16 @@ function clearSidebarFiltersState() {
   });
 }
 
+function syncDocumentBase(pathname = window.location.pathname) {
+  if (!/^https?:$/i.test(String(window.location?.protocol || ""))) return;
+  const baseEl = document.querySelector("base");
+  if (!baseEl) return;
+  const nextHref = resolveAppBasePath(pathname);
+  if (baseEl.getAttribute("href") !== nextHref) {
+    baseEl.setAttribute("href", nextHref);
+  }
+}
+
 function stylesheetKeyFrom(link, baseUrl) {
   const href = String(link.getAttribute("href") || "").trim();
   if (!href) return "";
@@ -376,6 +386,12 @@ function stylesheetKeyFrom(link, baseUrl) {
 }
 
 async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
+  const resolvedRouteUrl = routeUrl instanceof URL
+    ? routeUrl
+    : new URL(String(routeUrl || window.location.href), window.location.href);
+  const assetBaseUrl = resolveAppBaseUrl(resolvedRouteUrl);
+  syncDocumentBase(resolvedRouteUrl.pathname);
+
   const nextTitle = nextDoc.querySelector("title");
   if (nextTitle) {
     const currentTitle = document.querySelector("title");
@@ -386,13 +402,13 @@ async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
 
   const existingStyles = new Set(
     Array.from(document.querySelectorAll('link[rel~="stylesheet"][href]'))
-      .map((link) => stylesheetKeyFrom(link, document.baseURI))
+      .map((link) => stylesheetKeyFrom(link, assetBaseUrl))
       .filter(Boolean)
   );
 
   const stylePromises = [];
   nextDoc.querySelectorAll('link[rel~="stylesheet"][href]').forEach((link) => {
-    const key = stylesheetKeyFrom(link, routeUrl);
+    const key = stylesheetKeyFrom(link, assetBaseUrl);
     if (!key || existingStyles.has(key)) return;
     const clone = document.importNode(link, true);
     clone.setAttribute("href", key);
@@ -407,7 +423,7 @@ async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
       };
       clone.addEventListener("load", done, { once: true });
       clone.addEventListener("error", done, { once: true });
-      window.setTimeout(done, 150);
+      window.setTimeout(done, 1500);
     });
     stylePromises.push(waitPromise);
 
@@ -794,6 +810,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const ratesPromise = startRatesLoading();
 
     await Promise.all([i18nInitPromise, ratesPromise]);
+    syncDocumentBase(window.location.pathname);
     await loadGlobalLayout();
     installClientRouter();
     syncBodyPageFromRoute();
