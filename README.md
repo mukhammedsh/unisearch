@@ -196,6 +196,8 @@ Start with [the university data workflow](CONTRIBUTING.md#university-data-change
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Governance](GOVERNANCE.md)
 - [Security Policy](SECURITY.md)
+- [Support Information](SUPPORT.md)
+- [Accessibility](ACCESSIBILITY.md)
 - [Forking and reuse](docs/forking-and-reuse.md)
 - [Privacy Policy](frontend/privacy.html)
 - [Changelog](CHANGELOG.md)
