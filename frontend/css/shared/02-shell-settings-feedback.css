@@ -415,6 +415,57 @@
   z-index: var(--z-dropdown);
 }
 
+/* Shared info-button primitives */
+:where(.u-info-wrap, .profile-info-wrap, .d-info-wrap) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  z-index: 1;
+  transition: z-index 0s linear var(--motion-fast, 160ms);
+}
+
+:where(.u-info-wrap, .profile-info-wrap, .d-info-wrap):is(:hover, :focus-within, .is-open, .is-closed, .is-closing) {
+  z-index: calc(var(--z-dropdown) + 1);
+  transition-delay: 0s;
+}
+
+:where(.u-info, .profile-info, .d-info) {
+  min-width: 22px;
+  min-height: 22px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  flex: 0 0 auto;
+  line-height: 0;
+  padding: 0;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  cursor: pointer;
+  appearance: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+:where(.u-info, .profile-info, .d-info) > * {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  line-height: 0;
+}
+
+:where(.u-info, .profile-info, .d-info) .ui-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
 :where(input, select, textarea):user-invalid,
 
 :where(input, select, textarea).is-invalid,

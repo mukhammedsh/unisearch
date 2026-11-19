@@ -44,20 +44,32 @@
   }
 }
 
-.admission-program-option,
-.requirement-profile-tab {
+:where(.admission-program-option, .requirement-profile-tab, .programs-level-tab, .admissions-level-tab) {
   appearance: none;
-  position: relative;
-  border: 0;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
   font: inherit;
-  font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-  padding: var(--space-3) var(--space-0-5) var(--space-3);
+  line-height: var(--leading-tight);
   white-space: nowrap;
+}
+
+:where(.programs-level-tab, .admissions-level-tab) {
+  border-bottom: 2px solid transparent;
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-0-5);
+  transition:
+    color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.admission-program-option,
+.requirement-profile-tab {
+  position: relative;
+  border: 0;
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-0-5) var(--space-3);
   transition:
     color var(--motion-fast) var(--motion-ease-standard),
     background-color var(--motion-fast) var(--motion-ease-standard);
@@ -82,15 +94,17 @@
     color: var(--interaction-hover-text);
   }
 
-  .admission-program-option:hover,
-  .requirement-profile-tab:hover {
+  :where(.admission-program-option, .requirement-profile-tab, .programs-level-tab, .admissions-level-tab):hover {
     color: var(--interaction-hover-text);
   }
 }
 
-.admission-program-option.is-active,
-.requirement-profile-tab.is-active {
+:where(.admission-program-option, .requirement-profile-tab, .programs-level-tab, .admissions-level-tab).is-active {
   color: var(--interaction-active-text);
+}
+
+:where(.programs-level-tab, .admissions-level-tab).is-active {
+  border-bottom-color: var(--accent);
 }
 
 .admission-program-option.is-active::after,

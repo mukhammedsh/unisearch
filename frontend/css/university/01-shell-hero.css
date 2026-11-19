@@ -537,19 +537,6 @@ a.d-cover-credit:hover {
   gap: var(--space-2);
 }
 
-.d-info-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  z-index: 1;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
-}
-
-.d-info-wrap:is(:hover, :focus-within, .is-open, .is-closed, .is-closing) {
-  z-index: calc(var(--z-dropdown) + 1);
-  transition-delay: 0s;
-}
-
 :is(.d-kv-label, .d-kv):has(.d-info-wrap:is(:hover, :focus-within, .is-open, .is-closed, .is-closing)) {
   position: relative;
   z-index: var(--z-dropdown);
@@ -558,40 +545,7 @@ a.d-cover-credit:hover {
 .d-info {
   width: 22px;
   height: 22px;
-  min-width: 22px;
-  min-height: 22px;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: middle;
-  flex: 0 0 auto;
-  line-height: 0;
-  cursor: pointer;
-  padding: 0;
-  appearance: none;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
-  color: var(--text-muted);
-}
-
-.d-info > * {
-  width: 14px;
-  height: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  line-height: 0;
-}
-
-.d-info .ui-icon {
-  width: 14px;
-  height: 14px;
-  display: block;
 }
 
 .d-tooltip {

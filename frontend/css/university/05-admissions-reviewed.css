@@ -1229,10 +1229,6 @@ details[open] > summary > .admissions-disclosure-icon {
   padding-inline: var(--space-6);
 }
 
-.university--reviewed .d-tab-btn {
-  min-height: 48px;
-}
-
 .university--reviewed .d-tab-content {
   padding: var(--space-2) var(--space-6) var(--space-6);
 }
@@ -1434,10 +1430,6 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-reading__excerpt > p,
 .admissions-programs__overview > .program-card__description {
   max-inline-size: 75ch;
-}
-
-.university--reviewed .d-tab-btn.active {
-  color: var(--interaction-active-text);
 }
 
 .university--reviewed .admissions-selection__actions button:hover,

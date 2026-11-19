@@ -112,6 +112,224 @@ const normalizeSelector = (selector) =>
     .sort()
     .join(", ");
 
+export function normalizeAtRuleParams(params) {
+  return String(params || "")
+    .replace(/\s+/g, " ")
+    .replace(/\(\s+/g, "(")
+    .replace(/\s+\)/g, ")")
+    .replace(/\s*:\s*/g, ": ")
+    .replace(/\s*,\s*/g, ", ")
+    .trim();
+}
+
+/**
+ * Split a comma-separated CSS selector list on top-level commas only,
+ * preserving commas inside pseudo-class functions (:is, :where, :has) and attributes.
+ */
+export function splitSelectorList(selector) {
+  const parts = [];
+  let current = "";
+  let parenDepth = 0;
+  let bracketDepth = 0;
+  let quote = "";
+
+  for (let i = 0; i < selector.length; i++) {
+    const ch = selector[i];
+    if (quote) {
+      current += ch;
+      if (ch === "\\" && i + 1 < selector.length) {
+        current += selector[++i];
+      } else if (ch === quote) {
+        quote = "";
+      }
+      continue;
+    }
+
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      current += ch;
+    } else if (ch === "(") {
+      parenDepth++;
+      current += ch;
+    } else if (ch === ")" && parenDepth > 0) {
+      parenDepth--;
+      current += ch;
+    } else if (ch === "[") {
+      bracketDepth++;
+      current += ch;
+    } else if (ch === "]" && bracketDepth > 0) {
+      bracketDepth--;
+      current += ch;
+    } else if (ch === "," && parenDepth === 0 && bracketDepth === 0) {
+      const trimmed = current.replace(/\s+/g, " ").trim();
+      if (trimmed) parts.push(trimmed);
+      current = "";
+    } else {
+      current += ch;
+    }
+  }
+
+  const trimmed = current.replace(/\s+/g, " ").trim();
+  if (trimmed) parts.push(trimmed);
+  return parts;
+}
+
+function stripAttributesAndStrings(selectorPart) {
+  return selectorPart
+    .replace(/"(?:\\.|[^"\\])*"/g, '""')
+    .replace(/'(?:\\.|[^'\\])*'/g, "''")
+    .replace(/\[[^\]]*\]/g, "[]");
+}
+
+export function extractSelectorIds(selectorPart) {
+  const stripped = stripAttributesAndStrings(selectorPart);
+  return stripped.match(/#[a-zA-Z_-][a-zA-Z0-9_-]*/g) || [];
+}
+
+/**
+ * Explicit allowlist of ID selectors keyed by `relFile::normalizedSelectorPart`.
+ * Every entry must correspond to a genuine classless element, tab-scoped container,
+ * or test/JS-pinned ID target; new ID specificity hacks are rejected by `--strict`.
+ */
+export const ALLOWED_ID_SELECTORS = new Map([
+  [
+    "frontend/css/profile/02-page.css::#profileBudgetUnit:focus-visible",
+    "Explicitly targeted focus-visible selector for the currency unit toggle (verified by interaction-states E2E tests).",
+  ],
+  [
+    "frontend/css/universities/01-shell-controls.css::.u-compare-mode-btn #compareModeLabel",
+    "Classless compare-mode label span inside .u-compare-mode-btn (frontend/index.html).",
+  ],
+  [
+    "frontend/css/universities/07-responsive.css::.u-filter-card #aiSliderContainer",
+    "Responsive layout override targeting the AI weight slider field container (frontend/index.html).",
+  ],
+  [
+    "frontend/css/universities/07-responsive.css::.u-compare-mode-btn #compareModeLabel",
+    "Responsive label visibility rule for the classless #compareModeLabel span inside .u-compare-mode-btn.",
+  ],
+  [
+    "frontend/css/university/03-admissions.css::#tab-admission .d-box",
+    "Tab-scoped admissions layout spacing for .d-box panels inside #tab-admission (frontend/university.html).",
+  ],
+  [
+    "frontend/css/university/03-admissions.css::#detailDeadlines",
+    "Deadlines container styling scoped to the #detailDeadlines element (frontend/university.html).",
+  ],
+  [
+    "frontend/css/university/03-admissions.css::#detailDeadlines > :is(.admission-empty-state, .deadlines-timeline-wrapper)",
+    "Direct-child layout reset inside the #detailDeadlines container.",
+  ],
+  [
+    "frontend/css/university/05-admissions-reviewed.css::#admissionsUniversityInfo",
+    "Dynamically created classless section container for institution-level reviewed admissions info (admissions-controller.js).",
+  ],
+  [
+    "frontend/css/university/05-admissions-reviewed.css::#admissionsUniversityInfo[hidden]",
+    "Hidden state override for the classless #admissionsUniversityInfo container.",
+  ],
+  [
+    "frontend/css/university/05-admissions-reviewed.css::#admissionsContextApply",
+    "Classless submit button inside .admissions-context__actions (admissions-controller.js).",
+  ],
+  [
+    "frontend/css/university/05-admissions-reviewed.css::#admissionsContextApply:hover:not(:disabled)",
+    "Hover state for the classless #admissionsContextApply submit button.",
+  ],
+  [
+    "frontend/css/university/05-admissions-reviewed.css::#admissionsContextApply:active:not(:disabled)",
+    "Active state for the classless #admissionsContextApply submit button.",
+  ],
+]);
+
+export function findDuplicateMediaBlocks(cssContent, relFile = "inline.css") {
+  const root = postcss.parse(cssContent, { from: relFile });
+  const seen = new Map();
+
+  root.walkAtRules("media", (atRule) => {
+    const query = `@media ${normalizeAtRuleParams(atRule.params)}`;
+    const context = contextOf(atRule).join(" > ") || "top-level";
+    const key = `${context}::${query}`;
+    if (!seen.has(key)) {
+      seen.set(key, { file: relFile, context, query, lines: [] });
+    }
+    seen.get(key).lines.push(atRule.source?.start?.line ?? 0);
+  });
+
+  return [...seen.values()]
+    .filter((entry) => entry.lines.length > 1)
+    .map((entry) => ({
+      ...entry,
+      occurrences: entry.lines.length,
+    }));
+}
+
+export function analyzeDuplicateMediaBlocks(cssFiles) {
+  const duplicates = [];
+  for (const filePath of cssFiles) {
+    const relFile = path.relative(rootDir, filePath).replace(/\\/g, "/");
+    const content = fs.readFileSync(filePath, "utf8");
+    duplicates.push(...findDuplicateMediaBlocks(content, relFile));
+  }
+  return duplicates;
+}
+
+export function findIdSelectors(cssContent, relFile = "inline.css", allowlist = ALLOWED_ID_SELECTORS) {
+  const root = postcss.parse(cssContent, { from: relFile });
+  const matches = [];
+
+  root.walkRules((rule) => {
+    if (rule.parent?.type === "atrule" && /keyframes$/i.test(rule.parent.name)) return;
+    const context = contextOf(rule).join(" > ") || "top-level";
+    const line = rule.source?.start?.line ?? 0;
+
+    for (const selectorPart of splitSelectorList(rule.selector)) {
+      const ids = extractSelectorIds(selectorPart);
+      if (ids.length === 0) continue;
+      const key = `${relFile}::${selectorPart}`;
+      const reason = allowlist.get(key) ?? null;
+      matches.push({
+        file: relFile,
+        line,
+        context,
+        selector: selectorPart,
+        ids,
+        key,
+        allowed: reason !== null,
+        reason,
+      });
+    }
+  });
+
+  return matches;
+}
+
+export function analyzeIdSelectors(cssFiles, allowlist = ALLOWED_ID_SELECTORS) {
+  const all = [];
+  const matchedKeys = new Set();
+
+  for (const filePath of cssFiles) {
+    const relFile = path.relative(rootDir, filePath).replace(/\\/g, "/");
+    const content = fs.readFileSync(filePath, "utf8");
+    const found = findIdSelectors(content, relFile, allowlist);
+    for (const entry of found) {
+      all.push(entry);
+      if (entry.allowed) matchedKeys.add(entry.key);
+    }
+  }
+
+  const unexpected = all.filter((entry) => !entry.allowed);
+  const staleAllowlistEntries = [...allowlist.entries()]
+    .filter(([key]) => !matchedKeys.has(key))
+    .map(([key, reason]) => ({ key, reason }));
+
+  return {
+    all,
+    unexpected,
+    staleAllowlistEntries,
+  };
+}
+
 function listFiles(dir, ext) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const full = path.join(dir, entry.name);
@@ -408,36 +626,52 @@ function analyzeWithProjectWallace(cssFiles) {
   };
 }
 
-async function run() {
-  const cssFiles = listFiles(cssDir, ".css").sort();
+export async function buildAuditReport(cssFiles = listFiles(cssDir, ".css").sort()) {
   const bundles = getHtmlBundles();
 
   const wallace = analyzeWithProjectWallace(cssFiles);
   const cascade = analyzeCrossFileCascade(bundles);
   const tokensAndImportants = analyzeCustomPropertiesAndImportants(cssFiles);
   const deadCss = await analyzeDeadCssWithPurgeCss(cssFiles);
+  const duplicateMediaBlocks = analyzeDuplicateMediaBlocks(cssFiles);
+  const idSelectors = analyzeIdSelectors(cssFiles);
 
   const totalDeadSelectors = deadCss.reduce((acc, f) => acc + f.rejectedSelectors.length, 0);
   const nonA11yImportants = tokensAndImportants.importantUsages.filter((i) => !i.isA11yException);
 
-  const report = {
-    overall: wallace.overall,
-    perFileStats: wallace.perFileStats,
-    summary: {
-      crossFileOverridesCount: cascade.crossFileOverrides.length,
-      crossFileSelectorsCount: cascade.crossFileSelectors.length,
-      deadSelectorsCount: totalDeadSelectors,
-      nonA11yImportantsCount: nonA11yImportants.length,
-      totalImportantsCount: tokensAndImportants.importantUsages.length,
-      nonFoundationCustomPropsCount: tokensAndImportants.nonFoundationTokens.length,
-      rootBlocksOutsideFoundationCount: tokensAndImportants.rootBlocksOutsideFoundation.length,
-      darkThemeSelectorsOutsideFoundationCount: tokensAndImportants.darkThemeSelectorsOutsideFoundation.length,
-      unknownTokenUsagesCount: tokensAndImportants.unknownTokenUsages.length,
+  return {
+    cssFiles,
+    totalDeadSelectors,
+    nonA11yImportants,
+    report: {
+      overall: wallace.overall,
+      perFileStats: wallace.perFileStats,
+      summary: {
+        crossFileOverridesCount: cascade.crossFileOverrides.length,
+        crossFileSelectorsCount: cascade.crossFileSelectors.length,
+        deadSelectorsCount: totalDeadSelectors,
+        nonA11yImportantsCount: nonA11yImportants.length,
+        totalImportantsCount: tokensAndImportants.importantUsages.length,
+        nonFoundationCustomPropsCount: tokensAndImportants.nonFoundationTokens.length,
+        rootBlocksOutsideFoundationCount: tokensAndImportants.rootBlocksOutsideFoundation.length,
+        darkThemeSelectorsOutsideFoundationCount: tokensAndImportants.darkThemeSelectorsOutsideFoundation.length,
+        unknownTokenUsagesCount: tokensAndImportants.unknownTokenUsages.length,
+        duplicateMediaBlocksCount: duplicateMediaBlocks.length,
+        idSelectorsCount: idSelectors.all.length,
+        unexpectedIdSelectorsCount: idSelectors.unexpected.length,
+      },
+      cascade,
+      tokensAndImportants,
+      deadCss,
+      duplicateMediaBlocks,
+      idSelectors,
     },
-    cascade,
-    tokensAndImportants,
-    deadCss,
   };
+}
+
+async function run() {
+  const { cssFiles, totalDeadSelectors, nonA11yImportants, report } = await buildAuditReport();
+  const { cascade, tokensAndImportants, deadCss, duplicateMediaBlocks, idSelectors } = report;
 
   if (jsonMode) {
     console.log(JSON.stringify(report, null, 2));
@@ -446,10 +680,10 @@ async function run() {
 
   console.log("=== UniSearch Deep CSS Architecture & Cascade Audit ===");
   console.log(
-    `Files: ${cssFiles.length} | Lines: ${wallace.overall.totalLines} | Rules: ${wallace.overall.totalRules} | Selectors: ${wallace.overall.totalSelectors} (${wallace.overall.uniqueSelectors} unique)`
+    `Files: ${cssFiles.length} | Lines: ${report.overall.totalLines} | Rules: ${report.overall.totalRules} | Selectors: ${report.overall.totalSelectors} (${report.overall.uniqueSelectors} unique)`
   );
   console.log("\n--- Per-File Complexity (@projectwallace/css-analyzer) ---");
-  console.table(wallace.perFileStats);
+  console.table(report.perFileStats);
 
   console.log("\n--- Key Structural Issues Summary ---");
   console.table(report.summary);
@@ -518,6 +752,27 @@ async function run() {
     }
   }
 
+  if (duplicateMediaBlocks.length > 0) {
+    console.log(`\n--- Fragmented Duplicate @media Blocks (${duplicateMediaBlocks.length}) ---`);
+    duplicateMediaBlocks.forEach((dup) => {
+      console.log(`  ${dup.file} (${dup.context}): ${dup.query} at lines ${dup.lines.join(", ")}`);
+    });
+  }
+
+  if (idSelectors.unexpected.length > 0) {
+    console.log(`\n--- Unexpected ID Selectors (${idSelectors.unexpected.length}) ---`);
+    idSelectors.unexpected.forEach((entry) => {
+      console.log(`  ${entry.file}:${entry.line} (${entry.context}) -> ${entry.selector} [ids: ${entry.ids.join(", ")}]`);
+    });
+  }
+
+  if (idSelectors.staleAllowlistEntries.length > 0) {
+    console.log(`\n--- Stale ALLOWED_ID_SELECTORS Entries (${idSelectors.staleAllowlistEntries.length}) ---`);
+    idSelectors.staleAllowlistEntries.forEach((entry) => {
+      console.log(`  ${entry.key} (${entry.reason})`);
+    });
+  }
+
   if (deadCss.length > 0) {
     console.log(`\n--- Unused CSS Selectors via PurgeCSS (${totalDeadSelectors} total across ${deadCss.length} files) ---`);
     deadCss.forEach((d) => {
@@ -533,13 +788,17 @@ async function run() {
       tokensAndImportants.rootBlocksOutsideFoundation.length > 0 ||
       tokensAndImportants.darkThemeSelectorsOutsideFoundation.length > 0 ||
       totalDeadSelectors > 0 ||
-      nonA11yImportants.length > 0)
+      nonA11yImportants.length > 0 ||
+      duplicateMediaBlocks.length > 0 ||
+      idSelectors.unexpected.length > 0)
   ) {
     process.exit(1);
   }
 }
 
-run().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  run().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

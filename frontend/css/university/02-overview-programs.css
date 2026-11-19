@@ -576,26 +576,6 @@
   overflow-x: auto;
 }
 
-.programs-level-tab {
-  appearance: none;
-  border-bottom: 2px solid transparent;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--leading-tight);
-  padding: var(--space-2) var(--space-0-5);
-  white-space: nowrap;
-  transition: color var(--motion-fast) var(--motion-ease-standard), border-color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.programs-level-tab.is-active {
-  color: var(--interaction-active-text);
-  border-bottom-color: var(--accent);
-}
-
 .university-coverage-section {
   padding-top: var(--space-4);
 }

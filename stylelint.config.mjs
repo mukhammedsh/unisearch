@@ -25,7 +25,6 @@ export default {
           "frontend/css/shared/06-motion-accessibility.css",
           "frontend/css/shared/08-device-responsive.css",
           "frontend/css/shared/10-admissions.css",
-          "frontend/css/profile/01-shared-foundation.css",
           "frontend/css/profile/02-page.css",
           "frontend/css/universities/01-shell-controls.css",
           "frontend/css/universities/02-catalog.css",
