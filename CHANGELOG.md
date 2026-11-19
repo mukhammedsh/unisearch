@@ -11,7 +11,7 @@ Patch release: documentation and Guide copy corrections with no API or storage c
 - Reconciled the current four-institution batch, remaining 46 legacy institutions, and first-ten expansion boundary across the roadmap, task checklist, runbook, architecture overview, and admissions storage contract.
 - Removed the unapproved Google-auth state-sync proposal because its implementation inventory was stale and the work was not scheduled.
 - Added README links to Support and Accessibility, and corrected Support's program-coverage description to match the catalog.
-- Reduced the always-read project instructions and active admissions tracker, condensed the admissions runbook and roadmap, and removed completed checkpoint history plus the stale unapproved profile-sync proposal.
+- Reduced the active project instructions, removed completed checkpoints from the admissions tracker, and condensed the runbook and roadmap to current work.
 - Aligned the release checklist with explicit push, tag, and publication permissions; dated the OSPS assessment and refreshed the verified `main` ruleset facts.
 
 ## 10.6.2 (2026-11-19) - Fix university page styles on hosted pretty-URL SPA navigation
