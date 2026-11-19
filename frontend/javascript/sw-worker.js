@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-11-18-1";
+const SW_VERSION = "2026-11-19-1";
 const CACHE_PREFIX = "unisearch";
 
 const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
@@ -53,10 +53,20 @@ function isUniversityAssetRequest(url) {
   return normalizeApiPath(url.pathname.toLowerCase()).startsWith("/universities/assets/");
 }
 
+function isDocumentOrHtmlRequest(request) {
+  if (!request) return false;
+  if (request.mode === "navigate" || request.destination === "document") return true;
+  const accept = typeof request.headers?.get === "function"
+    ? String(request.headers.get("accept") || "").toLowerCase()
+    : "";
+  return accept.includes("text/html");
+}
+
 function isApiRequest(request, url) {
   if (request.method !== "GET") return false;
   if (!/^https?:$/i.test(url.protocol)) return false;
   if (url.origin !== self.location.origin) return false;
+  if (isDocumentOrHtmlRequest(request)) return false;
   return isKnownApiPath(url.pathname);
 }
 
@@ -110,10 +120,11 @@ self.addEventListener("fetch", (event) => {
 async function staleWhileRevalidate(event, request, cacheName, maxEntries) {
   const cache = await caches.open(cacheName);
   const cached = await cache.match(request);
+  const rejectHtml = cacheName === API_CACHE;
 
   const networkUpdate = fetch(request)
     .then(async (response) => {
-      if (response && isCacheableResponse(response)) {
+      if (response && isCacheableResponse(response, { rejectHtml })) {
         await cache.put(request, response.clone());
         await trimCache(cacheName, maxEntries);
       }
@@ -148,11 +159,16 @@ async function networkFirst(request, cacheName, maxEntries) {
   }
 }
 
-function isCacheableResponse(response) {
+function isCacheableResponse(response, { rejectHtml = false } = {}) {
   if (!response) return false;
   if (!(response.ok || response.type === "opaque")) return false;
-  const cacheControl = String(response.headers.get("Cache-Control") || "").toLowerCase();
-  return !cacheControl.includes("no-store");
+  const cacheControl = String(response.headers?.get?.("Cache-Control") || "").toLowerCase();
+  if (cacheControl.includes("no-store")) return false;
+  if (rejectHtml) {
+    const contentType = String(response.headers?.get?.("Content-Type") || "").toLowerCase();
+    if (contentType.includes("text/html")) return false;
+  }
+  return true;
 }
 
 async function trimCache(cacheName, maxEntries) {
