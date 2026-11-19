@@ -179,7 +179,7 @@ export function getUniversityIdFromPath(pathname = "") {
   if (!match) return "";
   try {
     return decodeURIComponent(match[1] || "").trim();
-  } catch (e) {
+  } catch {
     return String(match[1] || "").trim();
   }
 }
@@ -193,7 +193,7 @@ export function extractUniversityIdFromLocation(locationLike = null) {
     const params = new URLSearchParams(search);
     const queryId = String(params.get("id") || "").trim();
     if (queryId) return queryId;
-  } catch (e) {
+  } catch {
     // continue with path parsing
   }
 

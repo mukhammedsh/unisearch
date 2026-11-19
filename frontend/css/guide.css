@@ -312,7 +312,7 @@
 }
 
 .guide-subsection h4,
-.guide-tags-group h4 {
+.guide-tags-group h3 {
   margin: 0 0 var(--space-2);
   font-size: var(--text-lg);
   font-weight: var(--font-weight-medium);

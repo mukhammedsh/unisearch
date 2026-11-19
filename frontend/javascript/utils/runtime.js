@@ -197,7 +197,7 @@ function isBackendApiRequest(input) {
     const apiPath = String(apiUrl.pathname || "/");
     const apiPrefix = apiPath.endsWith("/") ? apiPath : `${apiPath}/`;
     return requestUrl.pathname === apiPath || requestUrl.pathname.startsWith(apiPrefix) || apiPrefix === "/";
-  } catch (error) {
+  } catch {
     return raw.startsWith(API_BASE);
   }
 }

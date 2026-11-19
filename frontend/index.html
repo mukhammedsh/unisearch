@@ -161,18 +161,18 @@
                 </select>
                 <div class="budget-inputs">
                     <label class="sr-only" for="minCostInput" data-i18n="universities.cost_min">Min cost</label>
-                    <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
+                    <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" />
                     <span class="budget-range-separator" aria-hidden="true">&ndash;</span>
                     <label class="sr-only" for="maxCostInput" data-i18n="universities.cost_max">Max cost</label>
-                    <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="100000" aria-label="Max cost" data-i18n-aria-label="universities.cost_max" />
+                    <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="100000" />
                 </div>
 
                 <div class="dual-slider-container">
                     <div class="slider-track" id="sliderTrack"></div>
                     <label class="sr-only" for="minCostSlider" data-i18n="universities.cost_min">Min cost</label>
-                    <input id="minCostSlider" type="range" min="0" value="0" step="100" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
+                    <input id="minCostSlider" type="range" min="0" value="0" step="100" />
                     <label class="sr-only" for="maxCostSlider" data-i18n="universities.cost_max">Max cost</label>
-                    <input id="maxCostSlider" type="range" min="0" value="100000" step="100" aria-label="Max cost" data-i18n-aria-label="universities.cost_max" />
+                    <input id="maxCostSlider" type="range" min="0" value="100000" step="100" />
                 </div>
                 <div class="budget-range-labels" id="budgetRangeLabels">
                     <span id="minCostLabel">$0</span>
@@ -188,13 +188,13 @@
           <div class="u-sep u-sep--sort"></div>
 
           <div class="u-field u-field--sort">
-            <label class="u-label u-label-with-help" for="sortSelect">
-              <span class="u-label-icon"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></span>
+            <div class="u-label u-label-with-help">
+              <label class="u-label-icon" for="sortSelect"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></label>
               <span class="u-info-wrap">
                 <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
                 <span class="u-tooltip" role="tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
               </span>
-            </label>
+            </div>
             <select id="sortSelect" class="u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
               <option value="relevance" data-i18n="universities.sort_relevance">Relevance</option>
@@ -284,7 +284,7 @@
             </div>
           </div>
 
-          <div class="u-filter-footer" aria-label="Filter actions" data-i18n-aria-label="universities.filter.actions">
+          <div class="u-filter-footer" role="group" aria-label="Filter actions" data-i18n-aria-label="universities.filter.actions">
             <button id="mobileResetFilters" class="u-filter-footer__reset" type="button" data-i18n="universities.reset">Reset</button>
             <button id="mobileApplyFilters" class="u-filter-footer__apply" type="button" data-i18n="universities.filter.apply">Apply filters</button>
           </div>
@@ -320,7 +320,7 @@
 
         <div id="mapStage" class="u-map-stage" style="display: none;">
           <div id="mapContainer" class="u-map-container"></div>
-          <aside id="mapResultsPanel" class="u-map-results" aria-live="polite"></aside>
+          <aside id="mapResultsPanel" class="u-map-results" aria-live="polite" aria-label="Results on the map" data-i18n-aria-label="universities.map_panel.title"></aside>
         </div>
 
         <div id="pagination" class="u-pagination"></div>

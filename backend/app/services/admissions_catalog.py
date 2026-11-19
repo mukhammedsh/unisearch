@@ -498,7 +498,7 @@ def _option_summary(option):
     metadata = option.get("attributes", {})
     for key in ("application", "application_classification", "application_classifications", "catalog_classification",
                 "new_applicant_availability", "inventory_status", "application_relationship", "reconciled_application_relationship",
-                "independent_application_status", "ucas_course_codes", "course_url", "catalog_code", "format"):
+                "independent_application_status", "ucas_course_codes", "course_url", "catalog_code", "format", "description"):
         if key in metadata:
             summary[key] = metadata[key]
     if not summary.get("course_url") and metadata.get("official_program_url"):

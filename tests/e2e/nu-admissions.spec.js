@@ -71,10 +71,10 @@ for (const { theme, mobile } of [{ theme: "light", mobile: false }, { theme: "da
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   const unknowns = page.locator("#admissionsStudyInfo .admissions-catalog__unknowns");
   await unknowns.locator(":scope > summary").click();
-  await expect(unknowns).toContainText("Текущий набор, требования, длительность, стоимость и финансирование эти источники не подтверждают");
-  await expect(unknowns).toContainText("Найдите объявление о текущем наборе NUZYP");
+  await expect(unknowns).toContainText("В ней не указаны текущий цикл набора, общие требования к поступлению, стоимость обучения или условия финансирования");
+  await expect(unknowns).toContainText("Проверьте актуальную страницу приёма в магистратуру выбранной школы");
   await expect(unknowns).toContainText("Уточнение области применения");
-  await expect(unknowns).toContainText("Подготовительная программа NU Zero Year Program");
+  await expect(unknowns).toContainText("Подготовительная программа нулевого года для магистратуры и докторантуры (ZYGP)");
   await expect(unknowns.locator("a[href*='nuzyp_instructions']")).toBeVisible();
 });
 
@@ -125,11 +125,11 @@ test("NUZYP exposes its source uncertainty without an invented application route
   await seed(page);
   await page.goto(`/university.html?id=${NU}&admission_option=nu-a-study-nuzyp&admission_level=preparation`);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsStudyOverview")).toContainText("published study details below");
+  await expect(page.locator("#admissionsStudyOverview")).toContainText("The Zero Year of Graduate Programs (ZYGP) is a graduate-preparatory option.");
   await expect(page.locator("#admissionsStudyOverview")).not.toContainText("has not been collected");
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   await page.locator("#admissionsStudyInfo .admissions-catalog__unknowns > summary").click();
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("None gives a current intake");
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("They do not list a current intake cycle");
   await expect(page.locator("#admissionsStudyInfo .admissions-catalog__unknowns a[href*='nuzyp_instructions']")).toBeVisible();
   await showTab(page, "general");
   // The legacy funding page is a historical source record, so it stays in the collapsed history list.

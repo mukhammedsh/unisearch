@@ -55,7 +55,7 @@ export function hideGlobalSearchSuggestions() {
   highlightedIndex = -1;
 }
 
-function updateHighlightedItem(items) {
+function updateHighlightedItem() {
   const container = document.querySelector(".navbar-search-suggestions");
   if (!container) return;
   const nodes = Array.from(container.querySelectorAll(".navbar-search-suggestion"));
@@ -196,7 +196,7 @@ export function isMobileSearchViewport() {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
   try {
     return window.matchMedia(MOBILE_SEARCH_MEDIA).matches;
-  } catch (err) {
+  } catch {
     return false;
   }
 }
@@ -445,7 +445,7 @@ export function initGlobalNavbarSearch() {
       event.preventDefault();
       if (!isOpen || !suggestions.length) return;
       highlightedIndex = (highlightedIndex + 1) % suggestions.length;
-      updateHighlightedItem(suggestions);
+      updateHighlightedItem();
       return;
     }
 
@@ -453,7 +453,7 @@ export function initGlobalNavbarSearch() {
       event.preventDefault();
       if (!isOpen || !suggestions.length) return;
       highlightedIndex = (highlightedIndex - 1 + suggestions.length) % suggestions.length;
-      updateHighlightedItem(suggestions);
+      updateHighlightedItem();
       return;
     }
 

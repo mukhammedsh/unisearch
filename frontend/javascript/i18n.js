@@ -59,7 +59,7 @@ function detectDeviceLang() {
 function readStoredLang() {
   try {
     return normalizeLang(localStorage.getItem(I18N_STORAGE_KEY));
-  } catch (e) {
+  } catch {
     return "";
   }
 }
@@ -67,7 +67,7 @@ function readStoredLang() {
 function writeStoredLang(lang) {
   try {
     localStorage.setItem(I18N_STORAGE_KEY, lang);
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
@@ -107,7 +107,7 @@ async function _fetchLocalizationText(file, timeoutMs) {
     timeoutId = setTimeout(() => {
       try {
         controller?.abort();
-      } catch (e) {
+      } catch {
         // ignore
       }
       resolve("");
@@ -136,7 +136,7 @@ function _hydratePacksFromSession() {
       const code = String(parsed["meta.code"] || "").trim();
       const navKey = `nav.lang.${lang}`;
       if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
-    } catch (e) {
+    } catch {
       // ignore
     }
   });
@@ -168,7 +168,7 @@ function _loadLocalizationPack(lang) {
       const navKey = `nav.lang.${lang}`;
       if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   })();
@@ -394,7 +394,7 @@ if (typeof window !== "undefined" && typeof window.addEventListener === "functio
   window.addEventListener("currencyChanged", () => {
     try {
       applyTranslations();
-    } catch (e) {
+    } catch {
       // ignore
     }
   });

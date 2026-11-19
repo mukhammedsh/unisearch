@@ -12,7 +12,7 @@
     {
       "packet_id": "assignment",
       "path": "backend/data/drafts/nazarbayev-university-kaz-astana/assignment.json",
-      "sha256": "050d0f02cb7b73c1c47dd00864d3495c3ca423832f151ea0f6cfce94a6f52460",
+      "sha256": "145bc3078c96e9bccae9c066c7649d6932a77e9d8e7095e027b5a92cbae3613a",
       "handoff_status": "not_applicable",
       "handoff_path": null,
       "handoff_sha256": null
@@ -20,15 +20,15 @@
     {
       "packet_id": "a",
       "path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-a/research.json",
-      "sha256": "ffc223262933e5fcd90ae26d0ca57eb4d9ed93f5bfd557acb9caff57f9f2e874",
+      "sha256": "88ccf684ab927f42850c3d77564c9669317c6873e913c3957959de430bc8a67d",
       "handoff_status": "ready_for_review",
       "handoff_path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-a/handoff.md",
-      "handoff_sha256": "f49ceabfbf23a7372a73b8865203b85095028ef7f75c6cc211937344b5842891"
+      "handoff_sha256": "15687b1f18dde3d20b15a71556552d7a5519d76e4d55d21d31f1b92ca6b60952"
     },
     {
       "packet_id": "b",
       "path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-b/research.json",
-      "sha256": "269c8a251770b2d040490cc62c8597d964242b382c207b0a3d0ccc09957b3dff",
+      "sha256": "c97eb72894235d2203647bee9ebe292c23a0a8768b4dabc073578418b89a02de",
       "handoff_status": "ready_for_review",
       "handoff_path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-b/handoff.md",
       "handoff_sha256": "87a479b404a2b20403e1217699355a851c75bfff234f80078568a76c00cebc82"
@@ -13726,9 +13726,9 @@
       "topic": "preparatory_program_status",
       "topic_field": "kind",
       "value": {
-        "official_acronym": "Nazarbayev University Zero Year Program",
+        "official_acronym": "ZYGP (formerly NUZYP)",
         "historical_activity": "Official NU report says launched 2017-11-20; 58 enrolled from over 120 applicants in initial cohort. Academic English 16 hours/week; second-semester additional quantitative course (Linear Algebra for STEM or Social Science Research Methods for non-STEM).",
-        "current_official_instruction": "CPS instructions page is accessible and directs candidates through application, with selected NU school recommending NUZYP."
+        "current_official_instruction": "Applicants follow the process of their chosen Nazarbayev University School because requirements differ by program; the School makes the recommendation for ZYGP."
       },
       "scope": {
         "option_ids": null,
@@ -13738,14 +13738,14 @@
         "cycle": null,
         "fee_status": null,
         "additional_dimensions": {
-          "program": "NUZYP; graduate preparatory"
+          "program": "Zero Year of Graduate Programs (ZYGP; formerly NUZYP)"
         },
         "original_scope": {
-          "program": "NUZYP; graduate preparatory"
+          "program": "Zero Year of Graduate Programs (ZYGP; formerly NUZYP)"
         }
       },
       "conditions": [
-        "Current page exposes no cycle dates, detailed requirements, duration, tuition or admission/funding results. Historical 2017 course details must not be presented as current structure."
+        "The public CPS instructions explain the selected-School recommendation process but do not publish a current intake cycle, general entry criteria, tuition or funding terms. Confirm program-specific requirements and ZYGP availability with the chosen School. The 2017 curriculum and archived scholarship reference are historical, not current terms."
       ],
       "conditions_and_exceptions": null,
       "exceptions": null,
@@ -13754,24 +13754,26 @@
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
-        "nu-a-src-nuzyp-history"
+        "nu-a-src-nuzyp-history",
+        "nu-a-src-zygp-registrar"
       ],
       "publication_status": "official_instructions_accessible_current_intake_not_confirmed",
       "review_status": "verified",
       "review_status_field": "review_status",
-      "checked_at": "2026-10-23",
+      "checked_at": "2026-11-19",
       "attributes": {},
       "provenance": {
         "packet_id": "a",
         "evidence_file": "packet-a/research.json",
         "original_id": "nu-a-fact-nuzyp-current-status",
         "original_scope": {
-          "program": "NUZYP; graduate preparatory"
+          "program": "Zero Year of Graduate Programs (ZYGP; formerly NUZYP)"
         },
         "original_source_ids": [
           "nu-a-src-nuzyp-instructions",
           "nu-a-src-nuzyp-glossary",
-          "nu-a-src-nuzyp-history"
+          "nu-a-src-nuzyp-history",
+          "nu-a-src-zygp-registrar"
         ]
       }
     },
@@ -37038,21 +37040,21 @@
       "id": "nu-a-src-nuzyp-instructions",
       "owner_packet": "a",
       "url": "https://cps.nu.edu.kz/nuzyp_instructions",
-      "title": "NUZYP application instructions/EN",
-      "checked_at": "2026-10-23",
-      "content_reviewed_at": "2026-10-23",
+      "title": "Zero Year of Graduate Programs application instructions",
+      "checked_at": "2026-11-19",
+      "content_reviewed_at": "2026-11-19",
       "access_status": "accessible",
       "review_status": "reviewed",
       "review_status_field": "content_review_status",
       "publication_status": "official_instructions_page_no_cycle_dates_or_minima",
       "attributes": {
-        "scope": "Zero Year of Graduate Programs (NUZYP); page says applicants follow application process because programs differ and the selected NU school recommends candidates."
+        "scope": "Public CPS instructions say applicants follow the selected School's application process because requirements differ by program, and the School recommends candidates for the Zero Year of Graduate Programs."
       },
       "provenance": {
         "packet_id": "a",
         "evidence_file": "packet-a/research.json",
         "original_id": "nu-a-src-nuzyp-instructions",
-        "original_scope": "Zero Year of Graduate Programs (NUZYP); page says applicants follow application process because programs differ and the selected NU school recommends candidates.",
+        "original_scope": "Public CPS instructions say applicants follow the selected School's application process because requirements differ by program, and the School recommends candidates for the Zero Year of Graduate Programs.",
         "original_source_ids": null
       }
     },
@@ -38087,6 +38089,28 @@
         "evidence_file": "packet-a/research.json",
         "original_id": "nu-a-src-midyear-indexed-page",
         "original_scope": "Official NU admissions portal indexed page; exact current portal body could not be directly loaded.",
+        "original_source_ids": null
+      }
+    },
+    {
+      "id": "nu-a-src-zygp-registrar",
+      "owner_packet": "a",
+      "url": "https://registrar.nu.edu.kz/quick-links/nufyp-and-zygp",
+      "title": "NUFYP and ZYGP | Registrar",
+      "checked_at": "2026-11-19",
+      "content_reviewed_at": "2026-11-19",
+      "access_status": "accessible",
+      "review_status": "reviewed",
+      "review_status_field": "content_review_status",
+      "publication_status": "current_official_name_and_former_acronym",
+      "attributes": {
+        "scope": "The Registrar identifies the Zero Year of Graduate Programs as ZYGP, formerly NUZYP; the page does not announce a current applicant cycle."
+      },
+      "provenance": {
+        "packet_id": "a",
+        "evidence_file": "packet-a/research.json",
+        "original_id": "nu-a-src-zygp-registrar",
+        "original_scope": "The Registrar identifies the Zero Year of Graduate Programs as ZYGP, formerly NUZYP; the page does not announce a current applicant cycle.",
         "original_source_ids": null
       }
     },
@@ -41354,34 +41378,36 @@
         "cycle": null,
         "fee_status": null,
         "additional_dimensions": {
-          "unparsed_scope": "NUZYP"
+          "unparsed_scope": "ZYGP (formerly NUZYP)"
         },
-        "original_scope": "NUZYP"
+        "original_scope": "ZYGP (formerly NUZYP)"
       },
-      "reason": "Official CPS instructions page is accessible and says an applicant applies through the process because program requirements differ, after which the selected NU school recommends them. Official glossary expands NUZYP, and the archived official news page confirms a 2017 launch and describes the initial cohort. None establishes a current intake or current requirements, duration, fee or funding terms.",
-      "official_next_step": "Find a current NUZYP cycle notice or current School/Graduate admissions requirements; preserve the 2017 curriculum/funding detail as historical only.",
+      "reason": "The CPS instructions say applicants apply through their chosen School and that the School recommends candidates for ZYGP. They do not list a current intake cycle, general entry requirements, tuition or funding terms; requirements may vary by School.",
+      "official_next_step": "Check the chosen School's current graduate-admissions page for ZYGP recommendation in the intended cycle. Ask the School for any current entry requirements, dates, tuition and funding terms not published there.",
       "next_step_field": "official_next_step",
       "cross_packet_ref_ids": [],
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
         "nu-a-src-nuzyp-history",
-        "nu-a-src-nuzyp-funding-history"
+        "nu-a-src-nuzyp-funding-history",
+        "nu-a-src-zygp-registrar"
       ],
       "publication_status": "current_intake_and_terms_not_established_historical_activity_only",
       "review_status": "verified",
-      "checked_at": "2026-10-23",
+      "checked_at": "2026-11-19",
       "attributes": {},
       "provenance": {
         "packet_id": "a",
         "evidence_file": "packet-a/research.json",
         "original_id": "nu-a-gap-nuzyp-activity",
-        "original_scope": "NUZYP",
+        "original_scope": "ZYGP (formerly NUZYP)",
         "original_source_ids": [
           "nu-a-src-nuzyp-instructions",
           "nu-a-src-nuzyp-glossary",
           "nu-a-src-nuzyp-history",
-          "nu-a-src-nuzyp-funding-history"
+          "nu-a-src-nuzyp-funding-history",
+          "nu-a-src-zygp-registrar"
         ]
       }
     },
@@ -43262,14 +43288,15 @@
       "id": "nu-a-study-nuzyp",
       "owner_packet": "a",
       "inventory_card_id": null,
-      "title": "NU Zero Year Program (NUZYP)",
+      "title": "Zero Year of Graduate Programs (ZYGP)",
       "classification": "graduate_preparatory",
       "route_ids": null,
       "linked_degree_option_id": null,
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
-        "nu-a-src-nuzyp-history"
+        "nu-a-src-nuzyp-history",
+        "nu-a-src-zygp-registrar"
       ],
       "fact_ids": [
         "nu-a-fact-nuzyp-current-status",
@@ -43277,7 +43304,13 @@
       ],
       "attributes": {
         "inventory_status": "additional_offering_not_in_93_degree_cards",
-        "route_status": "official instructions page accessible; current cycle/details not established"
+        "route_status": "Public instructions describe School recommendation; current intake and general terms are not established.",
+        "search_aliases": [
+          "NUZYP",
+          "NU Zero Year Program",
+          "Zero Year Program"
+        ],
+        "description": "The Zero Year of Graduate Programs (ZYGP) is a graduate-preparatory option. Applicants follow the application process of their chosen Nazarbayev University School because requirements differ by program; the School makes the recommendation for ZYGP."
       },
       "provenance": {
         "packet_id": "a",
@@ -43287,7 +43320,8 @@
         "original_source_ids": [
           "nu-a-src-nuzyp-instructions",
           "nu-a-src-nuzyp-glossary",
-          "nu-a-src-nuzyp-history"
+          "nu-a-src-nuzyp-history",
+          "nu-a-src-zygp-registrar"
         ]
       }
     },
@@ -44256,12 +44290,12 @@
     "fact_count": 333,
     "study_option_fact_link_count": 1012,
     "study_options_with_facts": 93,
-    "source_count": 161,
+    "source_count": 162,
     "unknown_count": 29,
     "resolved_gap_history_count": 3,
     "additional_offering_count": 3,
     "source_review_status_counts": {
-      "reviewed": 116,
+      "reviewed": 117,
       "not_provided": 1,
       "reviewed_wrong_program_content": 1,
       "reviewed_historical_content": 2,
@@ -44281,7 +44315,7 @@
         "study_option_count": 31,
         "route_count": 11,
         "fact_count": 81,
-        "source_count": 55,
+        "source_count": 56,
         "unknown_count": 14,
         "resolved_gap_history_count": 1,
         "additional_offering_count": 3

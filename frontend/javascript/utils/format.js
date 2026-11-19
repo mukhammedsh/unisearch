@@ -108,7 +108,7 @@ export function formatCurrency(amount, code = "USD", options = {}) {
       maximumFractionDigits: options.maximumFractionDigits ?? 0,
       ...options,
     }).format(num);
-  } catch (e) {
+  } catch {
     const formattedNum = new Intl.NumberFormat("en-US", {
       maximumFractionDigits: options.maximumFractionDigits ?? 0,
     }).format(num);
@@ -356,7 +356,7 @@ export function showToast(message, type = "error") {
     if (!container.matches?.(":popover-open")) {
       try {
         container.showPopover();
-      } catch (_) {}
+      } catch {}
     }
   }
   container.appendChild(toast);
@@ -389,7 +389,7 @@ export function removeToast(toast) {
         if (parentContainer.matches?.(":popover-open")) {
           parentContainer.hidePopover();
         }
-      } catch (_) {}
+      } catch {}
     }
   };
 
@@ -404,9 +404,6 @@ export function removeToast(toast) {
     toast.classList.add("is-leaving");
   } else {
     toast.className = `${toast.className || ""} is-leaving`.trim();
-  }
-  if (toast.style) {
-    toast.style.animation = "motion-toast-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards";
   }
   if (typeof toast.addEventListener === "function") {
     toast.addEventListener("animationend", cleanup, { once: true });

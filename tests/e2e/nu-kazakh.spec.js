@@ -35,8 +35,8 @@ test("Kazakh NUZYP source gaps retain their uncertainty", async ({ page }) => {
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   await page.locator("#admissionsStudyInfo .admissions-catalog__unknowns > summary").click();
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("қазіргі қабылдауды немесе қазіргі талаптарды");
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("Ағымдағы NUZYP қабылдау хабарламасын");
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("Онда ағымдағы қабылдау циклі, жалпы қабылдау талаптары, оқу ақысы немесе қаржыландыру шарттары көрсетілмеген");
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("Жоспарланған циклде ZYGP бағдарламасына кандидаттарды ұсынатынын білу үшін таңдалған мектептің магистратураға қабылдау жөніндегі қазіргі бетін тексеріңіз");
   await expect(page.locator("#admissionsStudyInfo")).not.toContainText("тек тарихи дерек ретінде сақтаңыз");
 });
 

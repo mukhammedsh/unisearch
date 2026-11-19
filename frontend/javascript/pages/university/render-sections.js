@@ -2260,7 +2260,6 @@ export function renderFinanceSection({
   profileStudyMode,
   scholarshipContainer,
   uniRoi,
-  uniChance,
   university,
 }) {
   if (university.finance) {

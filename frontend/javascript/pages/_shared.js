@@ -103,7 +103,7 @@ export function safeUrl(raw) {
   try {
     const url = new URL(candidate);
     if (SAFE_PROTOCOLS.has(url.protocol)) return url.href;
-  } catch (e) {
+  } catch {
     return "";
   }
   return "";
@@ -564,7 +564,7 @@ export function formatUiNumber(value, options = {}) {
   const lang = currentLanguage === "rus" ? "ru-RU" : currentLanguage === "kaz" ? "kk-KZ" : "en-US";
   try {
     return new Intl.NumberFormat(lang, options).format(n);
-  } catch (e) {
+  } catch {
     return String(n);
   }
 }

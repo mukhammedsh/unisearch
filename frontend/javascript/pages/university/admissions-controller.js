@@ -569,7 +569,7 @@ export function mountAdmissionsCatalog(institutionId) {
       renderControls();
       renderContextContent("ready");
       if (revealSelection && hasReadableAdmissionContext(data)) selectionSummary?.scrollIntoView({ block: "start" });
-    } catch (error) {
+    } catch {
       if (request.signal.aborted || request !== contextAbort || !currentPage()) return;
       resolved = null;
       renderControls("error");
@@ -829,7 +829,7 @@ export function mountAdmissionsCatalog(institutionId) {
       renderStudyDetails(entry.body, data, "ready");
       entry.body.removeAttribute("aria-busy");
       animateStudyHeight(entry.body, option.id, height, entry.body.scrollHeight);
-    } catch (error) {
+    } catch {
       if (request.signal.aborted || request !== entry.abort || previews.get(option.id) !== entry || !openProgramIds.has(option.id) || !currentPage()) return;
       entry.abort = null;
       renderStudyDetails(entry.body, null, "error", () => void previewStudyOption(option, entry));
@@ -880,7 +880,7 @@ export function mountAdmissionsCatalog(institutionId) {
       programs.querySelector("#admissionsProgramCount").textContent = tFormat("university.admissions.catalog.results", { from: total ? (page - 1) * limit + 1 : 0, to: Math.min(page * limit, total), total });
       previous.disabled = page === 1;
       next.disabled = page * limit >= total;
-    } catch (error) {
+    } catch {
       if (request.signal.aborted || request !== catalogAbort || !currentPage()) return;
       list.innerHTML = failure("programs");
       list.querySelector("button").onclick = refreshPrograms;

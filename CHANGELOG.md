@@ -2,6 +2,19 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.4 (2026-11-19) - Update Nazarbayev University Zero Year information
+
+Patch release: refreshes the graduate-preparatory offering's official name and source-backed description without changing admissions routes or assessment behavior.
+
+### Changed
+- Updated the offering to Zero Year of Graduate Programs (ZYGP), retained NUZYP as a search alias, and localized its School-recommendation description.
+- Kept current-cycle availability, general entry terms, tuition, and funding unconfirmed where NU's public applicant pages do not publish them.
+- Included reviewed offering descriptions in the admissions detail response and program overview.
+### Improved
+- Corrected catalog and Guide semantics, named the map-results landmark, replaced the gallery's close listener with a native dialog command, removed unused JavaScript bindings and repeated map-footer wiring, and routed toast exit motion through shared CSS tokens.
+### Fixed
+- Added Russian and Kazakh exact translations for the reviewed NU ZYGP source gaps, next steps, historical notes, and program scope; rewrote the next step as applicant guidance and removed obsolete NUZYP editorial rules and translation entries.
+
 ## 10.6.3 (2026-11-19) - Align documentation with the reviewed admissions model
 
 Patch release: documentation and Guide copy corrections with no API or storage contract changes.

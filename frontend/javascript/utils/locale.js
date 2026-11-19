@@ -24,7 +24,7 @@ export function getUiLanguageForApi() {
       : (navigator.language || "");
     const detected = normalizeUiLanguageForApi(first);
     if (detected) return detected;
-  } catch (error) {
+  } catch {
     return API_LANG_DEFAULT;
   }
 

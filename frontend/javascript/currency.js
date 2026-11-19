@@ -337,7 +337,7 @@ export function formatRatesTimestamp(dateValue, language = "eng", options = {}) 
 
   try {
     return new Intl.DateTimeFormat(locale, formatOptions).format(parsed);
-  } catch (e) {
+  } catch {
     const fallbackOptions = { ...formatOptions };
     delete fallbackOptions.timeZone;
     return new Intl.DateTimeFormat(locale, fallbackOptions).format(parsed);
@@ -369,7 +369,7 @@ export function setPreferredCurrency(code) {
         displayMode: getCurrencyDisplayMode(),
       },
     }));
-  } catch (e) {
+  } catch {
     // ignore event error
   }
   return normalized;
@@ -394,7 +394,7 @@ export function setCurrencyDisplayMode(mode) {
         preferredCurrency: getPreferredCurrency(),
       },
     }));
-  } catch (e) {
+  } catch {
     // ignore event error
   }
   return valid;
@@ -419,7 +419,7 @@ function restoreFromSessionStorage() {
       memoryRatesSource = cachedSource || "cache";
       return true;
     }
-  } catch (e) {
+  } catch {
     // ignore storage read error
   }
   return false;
@@ -434,7 +434,7 @@ function persistToSessionStorage(data) {
       source: data.source,
       timestamp: Date.now(),
     });
-  } catch (e) {
+  } catch {
     // ignore storage write error
   }
 }
@@ -454,7 +454,7 @@ export function startRatesLoading(waitMs = 1000) {
     if (!waited || sameRates(before, memoryRates)) return;
     try {
       window.dispatchEvent(new CustomEvent("currencyRatesUpdated", { detail: { currency: getPreferredCurrency() } }));
-    } catch (e) {
+    } catch {
       // ignore event error
     }
   });
@@ -505,7 +505,7 @@ export async function loadRates() {
           });
         }
       }
-    } catch (e) {
+    } catch {
       // If fetch fails, keep cached or static fallback
       if (!restoreFromSessionStorage()) {
         memoryRates = { ...FALLBACK_RATES };
@@ -519,7 +519,7 @@ export async function loadRates() {
         window.dispatchEvent(new CustomEvent("currencyRatesStatusUpdated", {
           detail: getRatesMetadata(),
         }));
-      } catch (e) {
+      } catch {
         // ignore event error
       }
     }
@@ -730,7 +730,7 @@ if (typeof window !== "undefined" && typeof window.addEventListener === "functio
             displayMode: getCurrencyDisplayMode(),
           },
         }));
-      } catch (err) {
+      } catch {
         // ignore
       }
     }

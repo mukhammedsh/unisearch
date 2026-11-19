@@ -416,7 +416,6 @@
       "preserve older aliases as reference",
       "preserve only explicitly shared course content until then",
       "preserve stated total120 and request official course plan rather than summing inconsistent figures",
-      "preserve the 2017 curriculum/funding detail as historical only",
       "preserve the category/scope and do not make it a universal UG threshold",
       "preserve the date but confirm which intake label Sociology intends before displaying it",
       "preserve the departmental access condition and documentation",
@@ -606,11 +605,9 @@
       "точные источники сохранены",
       "указанное основание сохраняется",
       "универсальное требование исследовательского плана при подаче не предполагается",
-      "учебный план и финансирование 2017 года сохраняйте только как историческую информацию",
       "это сохраняется только как прогноз страницы"
     ],
     "kaz": [
-      "2017 жылғы оқу жоспары мен қаржыландыруды тек тарихи дерек ретінде сақтаңыз",
       "2026/27 оқу жылы ортасындағы қабылдау үшін іздеу көшірмесі арқылы алынған ресми портал мазмұны",
       "2027–28 оқу ақысы ретінде қабылдамаңыз",
       "248 ECTS осы бетте жарияланған мән ретінде сақталып, қазіргі тіркеуші оқу жоспарымен қайта расталуы тиіс",
@@ -1711,20 +1708,12 @@
         "replace": "the EMBA 2027-28 heading still shows 2026/27 windows"
       },
       {
-        "phrase": "must not be presented as current structure",
-        "replace": "are not the current structure"
-      },
-      {
         "phrase": "MAR and authorized committee/authority retain applicability decisions",
         "replace": "MAR and the authorized committee/authority decide what applies"
       },
       {
         "phrase": "reference values retain their source labels",
         "replace": "reference values keep the labels NU gives them"
-      },
-      {
-        "phrase": "None establishes a current intake",
-        "replace": "None gives a current intake"
       },
       {
         "phrase": "Numeric grant CGPA is not silently imposed on regular profile described as competitive",
@@ -2093,10 +2082,6 @@
         "replace": "В заголовке EMBA 2027–28 по-прежнему указаны окна 2026/27"
       },
       {
-        "phrase": "Сведения о курсах 2017 года нельзя представлять как текущую структуру",
-        "replace": "Сведения о курсах 2017 года не отражают текущую структуру"
-      },
-      {
         "phrase": "Справочные суммы сохраняют валюту и учебный год, указанные в источнике",
         "replace": "Справочные суммы приведены с валютой и учебным годом, указанными в источнике"
       },
@@ -2245,10 +2230,6 @@
       {
         "phrase": "EMBA-ның 2027–28 тақырыбы астында 2026/27 мерзімдері сақталған",
         "replace": "EMBA-ның 2027–28 тақырыбында әлі де 2026/27 мерзімдері көрсетілген"
-      },
-      {
-        "phrase": "2017 жылғы тарихи оқу мазмұнын ағымдағы құрылым ретінде көрсетуге болмайды",
-        "replace": "2017 жылғы тарихи оқу мазмұны ағымдағы құрылымды көрсетпейді"
       },
       {
         "phrase": "дереккөздегі белгілерін сақтайды",

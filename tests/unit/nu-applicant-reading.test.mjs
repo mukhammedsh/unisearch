@@ -85,13 +85,13 @@ test("NU unknown records show translated reason and next step while preserving E
   resolved.unknowns = [nu.unknowns.find(row => row.id === "nu-a-gap-nuzyp-activity"), { reason: "<untranslated>", scope: { option_ids: ["nu-a-study-nuzyp"], route_ids: [] }, source_ids: [] }];
   setLanguage("rus", { emit: false });
   const html = renderAdmissionsContext(resolved, { domains: [], programOnly: true, includeAssessment: false });
-  assert.match(html, /Текущий набор, требования, длительность, стоимость и финансирование/);
-  assert.match(html, /Найдите объявление о текущем наборе NUZYP/);
-  assert.match(html, /Подготовительная программа NU Zero Year Program/);
+  assert.match(html, /не указаны текущий цикл набора, общие требования к поступлению, стоимость обучения или условия финансирования/);
+  assert.match(html, /Проверьте актуальную страницу приёма в магистратуру выбранной школы/);
+  assert.match(html, /Подготовительная программа нулевого года для магистратуры и докторантуры \(ZYGP\)/);
   assert.match(html, /Уточнение области применения/);
   assert.match(html, /&lt;untranslated&gt;/);
   setLanguage("eng", { emit: false });
-  assert.match(renderAdmissionsContext(resolved, { domains: [], programOnly: true }), /None establishes a current intake/);
+  assert.match(renderAdmissionsContext(resolved, { domains: [], programOnly: true }), /They do not list a current intake cycle/);
 });
 
 test("source-specific field labels translate without changing values or English", () => {

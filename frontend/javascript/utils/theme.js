@@ -50,7 +50,7 @@ export function getThemePreference() {
 function systemTheme() {
   try {
     if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) return THEME_DARK;
-  } catch (error) {
+  } catch {
     return THEME_LIGHT;
   }
   return THEME_LIGHT;
@@ -104,7 +104,7 @@ export function initTheme() {
     try {
       mediaQuery.addEventListener("change", onChange);
       themeWatchBound = true;
-    } catch (error) {
+    } catch {
       if (typeof mediaQuery.addListener === "function") {
         mediaQuery.addListener(onChange);
         themeWatchBound = true;

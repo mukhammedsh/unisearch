@@ -134,7 +134,7 @@ function clonePlainObject(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   try {
     return structuredClone(value);
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -913,7 +913,7 @@ export function initLanguagesPanel() {
         let json = {};
         try {
           json = await res.json();
-        } catch (e) {
+        } catch {
           json = {};
         }
 

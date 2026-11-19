@@ -500,7 +500,7 @@ function initLanguageSwitcher() {
             if (pageNeedsUniversityTranslations()) {
                 try {
                     await loadUniversityTranslationsForLanguage(nextLang);
-                } catch (e) {
+                } catch {
                     // keep fallback localization when translation endpoint is unavailable
                 }
             }

@@ -302,7 +302,7 @@ class AdmissionsEditorialEndpointTests(unittest.TestCase):
         self.assertIn("A shared GRE requirement for all graduate programs cannot be assumed", masters)
         self.assertNotIn("can be inferred for all graduate programs", masters)
         nuzyp = context(NU, "nu-a-study-nuzyp", "preparation")
-        self.assertIn("None gives a current intake or current requirements, duration, fee or funding terms", nuzyp)
+        self.assertIn("They do not list a current intake cycle, general entry requirements, tuition or funding terms", nuzyp)
         # Valid guidance to the applicant is not rewritten.
         self.assertIn("Do not treat a conditional offer as unconditional eligibility or a promised seat",
                       context(NU, "nu-a-study-bachelor-of-science-in-computer-science", "undergraduate", "nu-a-route-regular-foundation-undergraduate"))

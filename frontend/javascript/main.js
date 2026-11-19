@@ -82,7 +82,7 @@ function maybeWakeBackend() {
     const last = Number(lastRaw || 0);
     if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
     sessionStorage.setItem(BACKEND_WAKE_PING_KEY, String(now));
-  } catch (e) {}
+  } catch {}
 
   const pingUrl = `${API_BASE}/health?t=${now}`;
   fetch(pingUrl, {
@@ -380,7 +380,7 @@ function stylesheetKeyFrom(link, baseUrl) {
   if (!href) return "";
   try {
     return new URL(href, baseUrl).href;
-  } catch (e) {
+  } catch {
     return href;
   }
 }
@@ -503,7 +503,7 @@ export function prefetchRoute(href) {
     if (!isAppRouteUrl(url)) return;
     if (getCachedRouteHtml(url.href)) return;
     fetchRouteHtml(url.href).catch(() => {});
-  } catch (e) {}
+  } catch {}
 }
 
 function shouldPrefetchLink(link) {
@@ -517,7 +517,7 @@ function shouldPrefetchLink(link) {
   try {
     const url = new URL(link.getAttribute("href") || "", window.location.href);
     return isAppRouteUrl(url);
-  } catch (e) {
+  } catch {
     return false;
   }
 }
@@ -534,7 +534,7 @@ function focusRouteDestination(hash = "") {
         hashTarget.focus({ preventScroll: true });
         return;
       }
-    } catch (_) {
+    } catch {
       // Ignore invalid hash selectors and fall back to the main destination heading.
     }
   }
@@ -600,7 +600,7 @@ async function loadAppRoute(rawHref, options = {}) {
   if (appRouteNavigationInFlight) {
     try {
       appRouteNavigationInFlight.abort();
-    } catch (e) {}
+    } catch {}
   }
 
   const controller = new AbortController();
