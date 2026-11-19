@@ -1,15 +1,15 @@
 {
   "status": "accepted",
-  "reviewed_at": "2026-10-26",
-  "review_owner": "B",
-  "catalog_sha256": "efd036caf229090e0a4d21f2beb9ce0949cb3a45ad896e7565f9907d8fa4dc4e",
+  "reviewed_at": "2026-11-19",
+  "review_owner": "B (base acceptance); Codex (scoped ZYGP refresh 2026-11-19)",
+  "catalog_sha256": "c0c936b66acd251ae833af233cc36ccde4a3e9293abf2a26b0d58657ef7f52ef",
   "coverage": {
     "assigned_options": 93,
     "additional_offerings": 3,
-    "source_records": 161,
+    "source_records": 162,
     "source_backed_unknowns": 29
   },
-  "review": "Independent program/route/cycle contrast review and source-value provenance checks completed; publication gaps and conflicts are retained, not passed minima.",
+  "review": "B independently reviewed the base catalog on 2026-10-26. Codex rechecked the scoped ZYGP name and applicant-facing description against current NU Registrar and CPS pages on 2026-11-19; no cycle, entry threshold, tuition or funding claim was added. Unchanged records remain covered by the original review.",
   "runtime_scope_resolutions": [
     "Financial-support NUET/qualification checks apply only to the support application, not ordinary undergraduate admission.",
     "Source level labels resolve to actual option levels while original labels/scopes remain in provenance.",
@@ -20,7 +20,7 @@
     "Transfer, progression, joint BBA and NDS interpretations are reachable from their original source facts."
   ],
   "publication_limitations": [
-    "NUZYP and NDS current recruitment remains unconfirmed.",
+    "ZYGP (formerly NUZYP) and NDS current recruitment remains unconfirmed.",
     "Yearless or past fees and TBA/conflicting dates remain reference evidence.",
     "Prior-degree equivalence, waivers, licensing and funding decisions remain manual."
   ],

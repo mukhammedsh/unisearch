@@ -310,7 +310,7 @@ export function renderStudyOptionOverview(resolved, { includeSources = true } = 
   if (!option) return "";
   const overview = option.overviews?.find(row => typeof row.text === "string" && row.text.trim());
   const descriptionRow = studyDescriptionRow(resolved);
-  const description = studyDescriptionEntry(descriptionRow)?.[1] || overview?.text;
+  const description = studyDescriptionEntry(descriptionRow)?.[1] || overview?.text || option.description;
   const summary = translateAdmissionSummary(description, { section: "study" });
   const translatedDescription = summary || translateAdmissionSummary(description);
   const hasStudyRecords = (resolved.fact_groups?.study || []).some(id => resolved.facts?.some(row =>
