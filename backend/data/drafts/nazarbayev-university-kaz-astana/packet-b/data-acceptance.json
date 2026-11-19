@@ -1,15 +1,15 @@
 {
   "status": "accepted",
-  "reviewed_at": "2026-11-19",
-  "review_owner": "B (base acceptance); Codex (scoped ZYGP refresh 2026-11-19)",
-  "catalog_sha256": "c0c936b66acd251ae833af233cc36ccde4a3e9293abf2a26b0d58657ef7f52ef",
+  "reviewed_at": "2026-11-20",
+  "review_owner": "B (base acceptance); Codex (scoped ZYGP source review 2026-11-19; applicant-copy review 2026-11-20)",
+  "catalog_sha256": "ec2fdcc5dfc9f29c48fce4f1cf238c5e180a3a662535864e97fce3a332e5e0da",
   "coverage": {
     "assigned_options": 93,
     "additional_offerings": 3,
     "source_records": 162,
     "source_backed_unknowns": 29
   },
-  "review": "B independently reviewed the base catalog on 2026-10-26. Codex rechecked the scoped ZYGP name and applicant-facing description against current NU Registrar and CPS pages on 2026-11-19; no cycle, entry threshold, tuition or funding claim was added. Unchanged records remain covered by the original review.",
+  "review": "B independently reviewed the base catalog on 2026-10-26. Codex rechecked the scoped ZYGP name and source description against current NU Registrar and CPS pages on 2026-11-19; on 2026-11-20 the applicant-facing reason and next step were rephrased without changing source facts, scope or publication status. No current intake, entry threshold, tuition or funding claim was added. Unchanged records remain covered by the original review.",
   "runtime_scope_resolutions": [
     "Financial-support NUET/qualification checks apply only to the support application, not ordinary undergraduate admission.",
     "Source level labels resolve to actual option levels while original labels/scopes remain in provenance.",

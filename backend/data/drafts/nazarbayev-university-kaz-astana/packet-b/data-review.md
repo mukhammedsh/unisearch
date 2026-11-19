@@ -1,6 +1,6 @@
 # Consolidated NU evidence review
 
-Status: accepted. Base review by B: 2026-10-26. Scoped ZYGP title and description refresh by Codex: 2026-11-19, checked against current Registrar and CPS pages; no current intake or fee claims were added. The refreshed snapshot hash is recorded in `data-acceptance.json`.
+Status: accepted. Base review by B: 2026-10-26. Scoped ZYGP name and source review by Codex: 2026-11-19, checked against current Registrar and CPS pages. Applicant-facing reason and next-step wording was rephrased on 2026-11-20 without changing facts, scope or publication status; no current intake or fee claims were added. The refreshed snapshot hash is recorded in `data-acceptance.json`.
 
 ## Content fidelity checked
 

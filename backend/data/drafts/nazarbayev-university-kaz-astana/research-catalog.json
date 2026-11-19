@@ -20,7 +20,7 @@
     {
       "packet_id": "a",
       "path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-a/research.json",
-      "sha256": "9a5982000a1bb138a27cf478b29c893b843512ed6ab12c9d4bd41a5de4cd959e",
+      "sha256": "88ccf684ab927f42850c3d77564c9669317c6873e913c3957959de430bc8a67d",
       "handoff_status": "ready_for_review",
       "handoff_path": "backend/data/drafts/nazarbayev-university-kaz-astana/packet-a/handoff.md",
       "handoff_sha256": "15687b1f18dde3d20b15a71556552d7a5519d76e4d55d21d31f1b92ca6b60952"
@@ -41382,8 +41382,8 @@
         },
         "original_scope": "ZYGP (formerly NUZYP)"
       },
-      "reason": "The public CPS instructions describe the selected-School application and recommendation process, and the Registrar identifies the program as ZYGP (formerly NUZYP). The reviewed public instruction page does not establish a current intake cycle, general entry criteria, tuition or funding terms; program-specific requirements may vary by School.",
-      "official_next_step": "Check the chosen School's current graduate-admissions page and confirm whether it is recommending candidates for ZYGP in the intended cycle; keep unpublished cycle, tuition and funding terms unresolved.",
+      "reason": "The CPS instructions say applicants apply through their chosen School and that the School recommends candidates for ZYGP. They do not list a current intake cycle, general entry requirements, tuition or funding terms; requirements may vary by School.",
+      "official_next_step": "Check the chosen School's current graduate-admissions page for ZYGP recommendation in the intended cycle. Ask the School for any current entry requirements, dates, tuition and funding terms not published there.",
       "next_step_field": "official_next_step",
       "cross_packet_ref_ids": [],
       "source_ids": [

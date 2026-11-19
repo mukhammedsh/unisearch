@@ -6011,8 +6011,8 @@
     {
       "id": "nu-a-gap-nuzyp-activity",
       "scope": "ZYGP (formerly NUZYP)",
-      "reason": "The public CPS instructions describe the selected-School application and recommendation process, and the Registrar identifies the program as ZYGP (formerly NUZYP). The reviewed public instruction page does not establish a current intake cycle, general entry criteria, tuition or funding terms; program-specific requirements may vary by School.",
-      "official_next_step": "Check the chosen School's current graduate-admissions page and confirm whether it is recommending candidates for ZYGP in the intended cycle; keep unpublished cycle, tuition and funding terms unresolved.",
+      "reason": "The CPS instructions say applicants apply through their chosen School and that the School recommends candidates for ZYGP. They do not list a current intake cycle, general entry requirements, tuition or funding terms; requirements may vary by School.",
+      "official_next_step": "Check the chosen School's current graduate-admissions page for ZYGP recommendation in the intended cycle. Ask the School for any current entry requirements, dates, tuition and funding terms not published there.",
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
