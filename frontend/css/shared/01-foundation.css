@@ -55,6 +55,8 @@
   --leading-normal: 1.5;
   --leading-loose: 1.7;
   --accent: #5D17EB;
+  --accent2: var(--accent);
+  --accent-highlight: var(--accent);
   --accent-strong: color-mix(in srgb, var(--accent) 76%, #000);
   --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
   --accent-faint: color-mix(in srgb, var(--accent) 6%, transparent);
@@ -75,6 +77,7 @@
   --card: var(--surface-solid);
   --text: #111827;
   --text-muted: #5f6b7d;
+  --muted: var(--text-muted);
   --line: rgba(15, 23, 42, 0.20);
   --line-strong: rgba(15, 23, 42, 0.30);
   --line-faint: rgba(15, 23, 42, 0.05);
@@ -143,6 +146,7 @@
   --uni-status-info-text: #1d4ed8;
   --uni-status-overflow-bg: #111827;
   --uni-status-overflow-text: var(--text-inverse);
+  --uni-status-overflow-shadow: var(--shadow-micro);
   --uni-status-hover-border: #111827;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
@@ -158,6 +162,7 @@
   --tooltip-text: #f3f4f6;
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow: var(--shadow-sm);
   --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.12);
   --shadow-micro: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.035);
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.025), 0 6px 20px rgba(0, 0, 0, 0.035);
@@ -181,6 +186,14 @@
   --scrollbar-thumb: color-mix(in srgb, var(--text-muted) 38%, transparent);
   --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 56%, transparent);
   --scrollbar-track: transparent;
+  /* Runtime JS-driven layout & progress custom properties */
+  --dropdown-available-height: 220px;
+  --compare-min-width: 640px;
+  --fill-width: 0%;
+  --fill-scale: 0;
+  --sidebar-max-height: calc(100vh - 105px);
+  --u-mobile-filter-footer-clearance: 0px;
+  --photo-fit-height: 100%;
   color-scheme: light;
 }
 
@@ -202,6 +215,7 @@
   --card: var(--surface-solid);
   --text: #f3f4f6;
   --text-muted: #94a3b8;
+  --muted: var(--text-muted);
   --line: rgba(255, 255, 255, 0.20);
   --line-strong: rgba(255, 255, 255, 0.30);
   --line-faint: rgba(255, 255, 255, 0.06);
@@ -230,6 +244,7 @@
   --line-info: rgba(147, 197, 253, 0.32);
   --uni-status-hover-border: #111827;
   --uni-status-overflow-bg: #090a0b;
+  --uni-status-overflow-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 40%, transparent);
   --skeleton-base: #222427;
   --skeleton-highlight: rgba(255, 255, 255, 0.08);
   --selection-bg: color-mix(in srgb, var(--accent) 35%, transparent);
@@ -243,6 +258,7 @@
   --tooltip-text: #f3f4f6;
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
+  --shadow: var(--shadow-sm);
   --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.5);
   --shadow-micro: 0 2px 10px rgba(0, 0, 0, 0.35);
   --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.45);
@@ -336,6 +352,9 @@ body::-webkit-scrollbar-track:horizontal {
 html {
   height: 100%;
   scrollbar-gutter: stable;
+  scroll-padding-top: calc(var(--nav-height) + var(--space-4));
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -344,6 +363,7 @@ body {
   background: var(--bg);
   color: var(--text);
   padding-top: var(--nav-height);
+  letter-spacing: 0;
   min-height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
@@ -356,20 +376,6 @@ body {
 }
 
 /* Shared centered loading spinner */
-.center-loading {
-  width: 100%;
-  min-height: 140px;
-  padding: var(--space-5) 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.center-loading--compact {
-  min-height: 72px;
-  padding: var(--space-2) 0;
-}
-
 .center-loading-spinner {
   width: 56px;
   height: 56px;
@@ -377,12 +383,6 @@ body {
   border: 8px solid var(--line);
   border-top-color: var(--accent);
   box-shadow: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .center-loading-spinner {
-    animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
-  }
 }
 
 .center-loading-spinner--sm {
@@ -503,11 +503,12 @@ body {
 }
 
 .page-exit {
-  opacity: 0 !important;
-  transform: translateY(-4px) !important;
+  animation: none;
+  opacity: 0;
+  transform: translateY(-4px);
   transition: opacity var(--motion-fast, 120ms) var(--motion-ease-standard, ease),
-              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease) !important;
-  pointer-events: none !important;
+              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease);
+  pointer-events: none;
 }
 
 /* View Transitions API (Chrome 111+, Edge, Safari 18+) */
@@ -515,10 +516,6 @@ body {
 ::view-transition-new(root) {
   animation-duration: var(--motion-fast, 160ms);
   animation-timing-function: var(--motion-ease-standard, ease);
-}
-
-.navbar {
-  view-transition-name: main-navbar;
 }
 
 ::view-transition-old(main-navbar),
@@ -533,6 +530,10 @@ main {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .center-loading-spinner {
+    animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+  }
+
   main {
     animation: page-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
@@ -540,7 +541,6 @@ main {
   .d-card.is-mounted {
     animation: detail-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
-
 }
 
 a {
@@ -548,17 +548,15 @@ a {
   color: inherit;
 }
 
+:where(button) {
+  border: none;
+}
+
 /* Composite fields keep inputs, icons, and embedded actions in one state surface. */
 .ui-input-composite {
   position: relative;
   min-width: 0;
   background: var(--surface-soft);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .ui-input-composite:hover {
-    background: var(--interaction-hover-surface);
-  }
 }
 
 .ui-input-composite:focus-within {
@@ -570,24 +568,30 @@ a {
   opacity: var(--interaction-disabled-opacity);
 }
 
-:where(a[href], button, input, select, textarea, [role="button"], .custom-select-trigger):focus-visible {
+:where(a[href], button, input, select, textarea, summary, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
 /* ===== Global Component State Baseline ===== */
-:where(button, input, select, textarea):disabled,
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled,
 [aria-disabled="true"],
 .is-disabled {
   opacity: var(--interaction-disabled-opacity);
-  cursor: not-allowed !important;
+  cursor: not-allowed;
   pointer-events: none;
   box-shadow: none;
 }
 
-
 @media (hover: hover) and (pointer: fine) {
-  :where(a[href]:not([class]), .text-link):hover {
+  .ui-input-composite:hover {
+    background: var(--interaction-hover-surface);
+  }
+
+  :where(a[href]:not([class])):hover {
     color: var(--interaction-hover-text);
   }
 }
@@ -626,8 +630,10 @@ dialog::backdrop {
   .custom-options,
   .u-tooltip,
   .ui-tooltip-bubble,
+  .profile-tooltip,
+  .d-tooltip,
+  .uni-status-tooltip__content,
   .toast,
-  .profile-card,
   .profile-confirm-card,
   .d-box,
   .compare-uni-card,
@@ -670,11 +676,9 @@ dialog::backdrop {
 
   .d-tab-btn[aria-selected="true"],
   .view-btn.active,
-  .u-saved-filter-btn.is-active,
   .custom-option.selected,
   .custom-option.is-highlighted,
-  .profile-section-tab.is-active,
-  .nav-link[aria-current="page"] {
+  .profile-section-tab.is-active {
     outline: 2px solid Highlight;
     outline-offset: -2px;
   }
@@ -683,7 +687,7 @@ dialog::backdrop {
     border-block-end-color: Highlight;
   }
 
-  :where(a[href], button, input, select, textarea, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
+  :where(a[href], button, input, select, textarea, summary, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
     outline: 2px solid Highlight;
     outline-offset: 2px;
   }

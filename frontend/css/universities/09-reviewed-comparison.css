@@ -68,7 +68,6 @@
   gap: var(--space-2);
   min-height: var(--space-10);
   padding: var(--space-2) var(--space-4);
-  border: none;
   border-radius: var(--radius-base);
   background: var(--surface-soft);
   color: var(--text);
@@ -94,18 +93,6 @@
   box-shadow: var(--shadow-xs);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .compare-reviewed__button:hover {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
-
-  .compare-reviewed__button--primary:hover {
-    background: var(--accent-strong);
-    color: var(--text-inverse);
-  }
-}
-
 .compare-reviewed__button:active {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
@@ -119,15 +106,6 @@
 .compare-reviewed__button:disabled {
   opacity: var(--interaction-disabled-opacity);
   cursor: default;
-}
-
-.compare-reviewed__button:focus-visible,
-.compare-reviewed__identity:focus-visible,
-.compare-reviewed__link:focus-visible,
-.compare-reviewed__source a:focus-visible,
-.compare-reviewed__section-note a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 /* University cards, values, and pinned names share two columns. */
@@ -180,12 +158,6 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .compare-reviewed__identity:hover strong {
-    color: var(--interaction-hover-text);
-  }
 }
 
 .compare-reviewed__scope {
@@ -318,7 +290,6 @@
 
 .compare-reviewed__row-label {
   grid-column: 1 / -1;
-  margin: 0;
   color: var(--text-muted);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
@@ -467,14 +438,6 @@
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .compare-reviewed__link:hover,
-  .compare-reviewed__source a:hover,
-  .compare-reviewed__section-note a:hover {
-    color: var(--interaction-hover-text);
-  }
-}
-
 .compare-reviewed__section-note {
   margin: 0;
   padding: var(--space-3) 0 var(--space-3);
@@ -520,7 +483,6 @@
 .compare-reviewed__fee-option {
   min-height: var(--space-8);
   padding: var(--space-1) var(--space-3);
-  border: none;
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -533,21 +495,9 @@
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .compare-reviewed__fee-option:hover {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
-}
-
 .compare-reviewed__fee-option[aria-pressed="true"] {
   background: var(--accent-soft);
   color: var(--accent);
-}
-
-.compare-reviewed__fee-option:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 /* Program picker dialog */
@@ -621,7 +571,6 @@
   width: var(--space-8);
   height: var(--space-8);
   padding: 0;
-  border: none;
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -629,20 +578,6 @@
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .compare-picker__close:hover {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
-}
-
-.compare-picker__close:focus-visible,
-.compare-picker__option:focus-visible,
-.compare-picker__level:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 .compare-picker__body {
@@ -705,7 +640,6 @@
 .compare-picker__level {
   min-height: var(--space-8);
   padding: var(--space-1) var(--space-3);
-  border: none;
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -716,13 +650,6 @@
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .compare-picker__level:hover {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
 }
 
 .compare-picker__level[aria-pressed="true"] {
@@ -748,7 +675,6 @@
   gap: var(--space-3);
   width: 100%;
   padding: var(--space-3) var(--space-3);
-  border: none;
   border-radius: var(--radius-md);
   background: transparent;
   color: var(--text);
@@ -762,12 +688,6 @@
 
 .compare-picker__option--shared {
   background: var(--surface-soft);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .compare-picker__option:hover {
-    background: var(--interaction-hover-surface);
-  }
 }
 
 .compare-picker__option[aria-current="true"] {
@@ -912,17 +832,6 @@
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .compare-mixed__link:hover {
-    color: var(--interaction-hover-text);
-  }
-}
-
-.compare-mixed__link:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .compare-mixed__actions {
   display: flex;
 }
@@ -949,6 +858,37 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(
+    .compare-reviewed__button:not(:active),
+    .compare-reviewed__fee-option:not([aria-pressed="true"]),
+    .compare-picker__close,
+    .compare-picker__level:not([aria-pressed="true"])
+  ):hover {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .compare-reviewed__button--primary:not(:active):hover {
+    background: var(--accent-strong);
+    color: var(--text-inverse);
+  }
+
+  :is(
+    .compare-reviewed__link,
+    .compare-reviewed__source a,
+    .compare-reviewed__section-note a,
+    .compare-mixed__link
+  ):hover,
+  .compare-reviewed__identity:hover strong {
+    color: var(--interaction-hover-text);
+  }
+
+  .compare-picker__option:not([aria-current="true"]):hover {
+    background: var(--interaction-hover-surface);
+  }
 }
 
 /* Narrow screens use a tighter column gap. */

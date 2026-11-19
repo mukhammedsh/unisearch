@@ -166,6 +166,8 @@ currency.region.asia_pacific: Asia-Pacific
 currency.region.middle_east_africa: Middle East & Africa
 currency.region.other: Other currencies
 currency.attribution: Rates provided by
+currency.rates_updated: Updated: {date}
+currency.rates_offline: Offline rates from {date}
 currency.opt.kzt: Kazakhstani Tenge (KZT, ₸)
 currency.opt.rub: Russian Ruble (RUB, ₽)
 currency.opt.uzs: Uzbekistani Som (UZS, soʻm)

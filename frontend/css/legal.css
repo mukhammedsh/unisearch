@@ -25,7 +25,6 @@ body[data-page="terms"] {
    -------------------------------------------------------------------------- */
 .legal-hero {
   padding: 0 0 var(--space-6);
-  margin: 0;
 }
 
 .legal-hero h1,
@@ -52,7 +51,6 @@ body[data-page="terms"] {
    -------------------------------------------------------------------------- */
 .legal-card {
   background: var(--surface-solid);
-  border: none;
   border-radius: var(--radius-xl);
   padding: var(--space-8);
   box-shadow: var(--shadow-micro);
@@ -66,7 +64,6 @@ body[data-page="terms"] {
   font-family: var(--font-sans);
   font-size: var(--text-md);
   line-height: var(--leading-loose);
-  letter-spacing: normal;
   color: var(--text);
 }
 

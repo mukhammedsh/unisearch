@@ -2,13 +2,17 @@ import './setup.mjs';
 import { beforeEach, describe, test } from 'node:test';
 import assert from 'node:assert';
 import {
+  FALLBACK_RATES,
+  FALLBACK_RATES_DATE,
   convert,
   formatMoney,
   formatPrice,
   formatPriceRange,
+  formatRatesTimestamp,
   getCurrencyDisplayMode,
   getFilterLimits,
   getPreferredCurrency,
+  getRatesMetadata,
   loadRates,
   setCurrencyDisplayMode,
   setPreferredCurrency,
@@ -16,6 +20,7 @@ import {
   niceStep,
   niceMax,
 } from '../../frontend/javascript/currency.js';
+import { checkFallbackParity } from '../../scripts/sync-currency-fallback.mjs';
 
 describe('currency.js', () => {
   let mockLocalStorage;
@@ -89,6 +94,13 @@ describe('currency.js', () => {
     assert.strictEqual(setCurrencyDisplayMode('invalid_mode'), 'preferred');
   });
 
+  test('FALLBACK_RATES and FALLBACK_RATES_DATE match backend/app/services/currency.py', () => {
+    const parity = checkFallbackParity();
+    assert.strictEqual(parity.ok, true, parity.errors.join('\n'));
+    assert.match(FALLBACK_RATES_DATE, /^\d{4}-\d{2}-\d{2}$/);
+    assert.strictEqual(parity.date, FALLBACK_RATES_DATE);
+  });
+
   test('convert performs correct conversions between currencies', () => {
     // Same currency
     assert.strictEqual(convert(1000, 'USD', 'USD'), 1000);
@@ -98,18 +110,20 @@ describe('currency.js', () => {
     assert.strictEqual(convert(NaN, 'USD', 'KZT'), 0);
     assert.strictEqual(convert(null, 'USD', 'KZT'), 0);
 
-    // USD to KZT: 1 USD = 450 KZT (fallback rate)
-    const usdToKzt = convert(100, 'USD', 'KZT');
-    assert.strictEqual(usdToKzt, 45000);
+    const kztRate = FALLBACK_RATES.KZT;
+    const chfRate = FALLBACK_RATES.CHF;
 
-    // KZT to USD: 45000 KZT = 100 USD
-    const kztToUsd = convert(45000, 'KZT', 'USD');
-    assert.strictEqual(kztToUsd, 100);
+    // USD to KZT
+    const usdToKzt = convert(100, 'USD', 'KZT');
+    assert.ok(Math.abs(usdToKzt - 100 * kztRate) < 1e-6);
+
+    // KZT to USD
+    const kztToUsd = convert(100 * kztRate, 'KZT', 'USD');
+    assert.ok(Math.abs(kztToUsd - 100) < 1e-6);
 
     // Cross-rate: CHF to KZT
-    // 1 USD = 0.81 CHF, 1 USD = 450 KZT => 81 CHF = 45000 KZT
-    const chfToKzt = convert(81, 'CHF', 'KZT');
-    assert.strictEqual(Math.round(chfToKzt), 45000);
+    const chfToKzt = convert(100 * chfRate, 'CHF', 'KZT');
+    assert.ok(Math.abs(chfToKzt - 100 * kztRate) < 1e-6);
   });
 
   test('getFilterLimits returns specific or converted limits', () => {
@@ -186,7 +200,17 @@ describe('currency.js', () => {
     assert.strictEqual(formatMoney(null, 'USD'), '—');
   });
 
-  test('formatPrice respects preferred currency and display mode', () => {
+  test('formatPrice respects preferred currency and display mode', async () => {
+    global.fetch = async () => ({
+      ok: true,
+      json: async () => ({
+        rates: { USD: 1.0, KZT: 450.0 },
+        date: '2026-11-18',
+        source: 'api',
+      }),
+    });
+    await loadRates();
+
     // Reset to default USD, preferred mode
     setPreferredCurrency('USD');
     setCurrencyDisplayMode('preferred');
@@ -240,7 +264,17 @@ describe('currency.js', () => {
     assert.strictEqual(formatPrice(NaN, 'USD'), '—');
   });
 
-  test('formatPriceRange writes one approximation sign and keeps the published range in "both" mode', () => {
+  test('formatPriceRange writes one approximation sign and keeps the published range in "both" mode', async () => {
+    global.fetch = async () => ({
+      ok: true,
+      json: async () => ({
+        rates: { USD: 1.0, KZT: 450.0 },
+        date: '2026-11-18',
+        source: 'api',
+      }),
+    });
+    await loadRates();
+
     setPreferredCurrency('USD');
     setCurrencyDisplayMode('preferred');
     assert.strictEqual(formatPriceRange(10000, 20000, 'USD'), '$10,000 – $20,000');
@@ -292,6 +326,61 @@ describe('currency.js', () => {
     // Verify sessionStorage was populated
     const cached = JSON.parse(mockSessionStorage['unisearch_currency_rates_cache_v1']);
     assert.strictEqual(cached.rates.KZT, 460.0);
+
+    // Verify fallback path sets date to FALLBACK_RATES_DATE and source to "fallback"
+    mockSessionStorage = {};
+    global.fetch = async () => { throw new Error('Network offline'); };
+    const fallbackData = await loadRates();
+    assert.strictEqual(fallbackData.source, 'fallback');
+    assert.strictEqual(fallbackData.date, FALLBACK_RATES_DATE);
+    assert.deepStrictEqual(getRatesMetadata(), { date: FALLBACK_RATES_DATE, source: 'fallback' });
+
+    // Backend fallback payload with legacy "fallback" date also normalizes to FALLBACK_RATES_DATE
+    global.fetch = async () => ({
+      ok: true,
+      json: async () => ({
+        rates: { USD: 1.0, KZT: FALLBACK_RATES.KZT },
+        date: 'fallback',
+        source: 'fallback',
+      }),
+    });
+    const normalizedFallback = await loadRates();
+    assert.strictEqual(normalizedFallback.source, 'fallback');
+    assert.strictEqual(normalizedFallback.date, FALLBACK_RATES_DATE);
+  });
+
+  test('formatRatesTimestamp respects user timezone for UTC timestamps and prevents day shift on YYYY-MM-DD', () => {
+    const utcTimestamp = 'Wed, 18 Nov 2026 00:02:31 +0000';
+
+    // In UTC-5 (America/New_York), 00:02 UTC on Nov 18 is Nov 17 at 7:02 PM.
+    const nyFormattedEn = formatRatesTimestamp(utcTimestamp, 'eng', { timeZone: 'America/New_York' });
+    assert.match(nyFormattedEn, /Nov 17, 2026/);
+    assert.match(nyFormattedEn, /7:02/);
+
+    // In UTC+5 (Asia/Almaty), 00:02 UTC on Nov 18 is Nov 18 at 05:02.
+    const almatyFormattedRu = formatRatesTimestamp(utcTimestamp, 'rus', { timeZone: 'Asia/Almaty' });
+    assert.match(almatyFormattedRu, /18/);
+    assert.match(almatyFormattedRu, /2026/);
+    assert.match(almatyFormattedRu, /05:02/);
+
+    const almatyFormattedKaz = formatRatesTimestamp(utcTimestamp, 'kaz', { timeZone: 'Asia/Almaty' });
+    assert.match(almatyFormattedKaz, /18/);
+    assert.match(almatyFormattedKaz, /2026/);
+    assert.match(almatyFormattedKaz, /05:02/);
+
+    // Calendar-only YYYY-MM-DD must NOT shift to Nov 17 even in negative UTC offsets.
+    const calendarNyEn = formatRatesTimestamp('2026-11-18', 'eng', { timeZone: 'America/New_York' });
+    assert.strictEqual(calendarNyEn, 'Nov 18, 2026');
+
+    const calendarNyRu = formatRatesTimestamp('2026-11-18', 'rus', { timeZone: 'America/New_York' });
+    assert.match(calendarNyRu, /18/);
+    assert.match(calendarNyRu, /2026/);
+
+    // Invalid or placeholder dates return empty string.
+    assert.strictEqual(formatRatesTimestamp('', 'eng'), '');
+    assert.strictEqual(formatRatesTimestamp('fallback', 'eng'), '');
+    assert.strictEqual(formatRatesTimestamp('2026-02-30', 'eng'), '');
+    assert.strictEqual(formatRatesTimestamp('not-a-date', 'eng'), '');
   });
 
   test('startRatesLoading stops waiting for slow rates and announces them when they change prices', async () => {

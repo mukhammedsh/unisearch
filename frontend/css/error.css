@@ -7,8 +7,8 @@ body[data-page="error-404"] {
   background: var(--bg);
 }
 
-body[data-page="error-404"] main.error-page {
-  animation: none !important;
+body[data-page="error-404"] main.error-page:not(.page-exit) {
+  animation: none;
   opacity: 1;
   transform: none;
 }
@@ -41,7 +41,7 @@ body[data-page="error-404"] main.error-page {
   margin: 0 auto;
 }
 
-.error-title {
+.error-page .error-title {
   margin: 0;
   display: flex;
   align-items: baseline;
@@ -56,7 +56,6 @@ body[data-page="error-404"] main.error-page {
 
 .error-kicker,
 .error-code {
-  margin: 0;
   font-family: inherit;
   font-size: inherit;
   font-weight: var(--font-weight-medium);
@@ -64,14 +63,13 @@ body[data-page="error-404"] main.error-page {
   letter-spacing: inherit;
 }
 
-.error-desc {
+.error-page .error-desc {
   margin: var(--space-3) 0 0;
   font-family: var(--font-sans);
   font-size: clamp(16px, 2vw, 18px);
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
   color: var(--text-muted);
-  letter-spacing: normal;
   max-width: 420px;
 }
 
@@ -85,17 +83,15 @@ body[data-page="error-404"] main.error-page {
   justify-content: center;
 }
 
-.error-btn {
+.error-page .error-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 42px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-md);
-  border: none;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
-  letter-spacing: normal;
   text-decoration: none;
   cursor: pointer;
   color: var(--text-inverse);
@@ -103,13 +99,8 @@ body[data-page="error-404"] main.error-page {
   transition: background-color var(--motion-fast, 0.15s) ease;
 }
 
-.error-btn:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
 @media (hover: hover) and (pointer: fine) {
-  .error-btn:hover {
+  .error-page .error-btn:hover {
     background: var(--accent-strong);
   }
 }
@@ -122,7 +113,7 @@ body[data-page="error-404"] main.error-page {
     padding: var(--space-6) var(--space-4);
   }
 
-  .error-title {
+  .error-page .error-title {
     gap: var(--space-2);
   }
 
@@ -131,14 +122,14 @@ body[data-page="error-404"] main.error-page {
     width: 100%;
   }
 
-  .error-btn {
+  .error-page .error-btn {
     width: 100%;
     max-width: 280px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .error-btn {
+  .error-page .error-btn {
     transition: none;
   }
 }

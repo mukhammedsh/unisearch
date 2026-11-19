@@ -2,6 +2,41 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.1 (2026-11-19) - CSS cascade cleanup, university stylesheet modularization, and strict CSS audit
+
+Patch release: internal CSS architecture refactoring and tooling with no user-visible feature or API changes.
+
+### Added
+- Added `scripts/audit-css.mjs` (`npm run audit:css`, wired into `npm run test:all`) powered by `@projectwallace/css-analyzer`, `purgecss`, and PostCSS HTML-bundle cascade analysis to enforce zero cross-file property overrides, zero same-context cross-file duplicate selectors, zero unknown CSS custom properties, zero `[data-theme="dark"]` or `:root` blocks outside `shared/01-foundation.css`, zero non-accessibility `!important` declarations, zero unused CSS selectors, zero fragmented duplicate `@media` blocks per file, and zero unapproved ID selectors, alongside `stylelint-value-no-unknown-custom-properties` in `stylelint.config.mjs` and unit tests in `tests/unit/audit-css.test.mjs`.
+
+### Changed
+- Consolidated 763 cross-file overridden CSS declarations and remaining same-context split selectors across `frontend/css/**` (`shared/*`, `profile/*`, `universities/*`, `university/*`, `error.css`, `guide.css`), reducing total CSS volume by ~3,350 lines.
+- Dissolved `frontend/css/universities/04-catalog-responsive.css` and `frontend/css/universities/05-catalog-polish.css` into their owning catalog modules (`01-shell-controls.css`, `02-catalog.css`, `06-map.css`, `07-responsive.css`) and removed their stylesheet links from `index.html` and `compare.html`.
+- Modularized `frontend/css/university.css`, `frontend/css/university-admissions.css`, and `frontend/css/university-qualification-guidance.css` into `frontend/css/university/01..06` (`01-shell-hero.css`, `02-overview-programs.css`, `03-admissions.css`, `04-finance-aid.css`, `05-admissions-reviewed.css`, `06-qualification-guidance.css`) and updated references in `university.html`, `compare.html`, `stylelint.config.mjs`, `docs/design-system.md`, and E2E tests.
+- Removed all 21 component-level `:root[data-theme="dark"]` selectors (moving the dark overflow-trigger shadow into a root token), all 42 non-accessibility `!important` declarations, 151 unused CSS selectors, and redundant defensive reset declarations.
+- Deduplicated shared CSS across all 24 stylesheets (-1,276 net lines, 21,543 → 20,267): expanded the global zero-specificity `:focus-visible` rule and added `:where(button) { border: none; }` in `shared/01-foundation.css`, unified all five tooltip surfaces and open/hover/focus/closed state rules (`.ui-tooltip-bubble`, `.u-tooltip`, `.profile-tooltip`, `.d-tooltip`, `.uni-status-tooltip__content`) in `shared/02-shell-settings-feedback.css`, stripped redundant `:focus-visible`, no-op `border: none`/`0`, and no-op `margin: 0` declarations, collapsed scattered `@media (hover: hover) and (pointer: fine)` blocks, and simplified repetitive `:has()`/state selector chains with `:is()` and `:where()`.
+- Eliminated the `#tab-programs` and ID specificity overrides across `frontend/css/university/01..05` (`02-overview-programs.css` 17 → 0 ID rules, `05-admissions-reviewed.css` 75 → 4 classless-element ID rules, `04-finance-aid.css` 5 → 0, `01-shell-hero.css` 1 → 0) by consolidating `.program-card*` into `02-overview-programs.css`, collapsed fragmented same-breakpoint `@media` blocks across `shared/*`, `guide.css`, and `university/01..05` into strict descending breakpoint order (-612 net lines, 20,267 → 19,655), and updated the four `university-detail-design.spec.js` cover snapshots for the gallery controls refresh.
+- Unified shared zero-specificity info-button primitives (`.u-info*`, `.profile-info*`, `.d-info*`) in `shared/02-shell-settings-feedback.css` and underlined-tab primitives (`.admission-program-option`, `.requirement-profile-tab`, `.programs-level-tab`, `.admissions-level-tab`) in `shared/10-admissions.css`, merged `frontend/css/profile/01-shared-foundation.css` into `frontend/css/profile/02-page.css` (reducing profile ID rules 4 → 1 and total CSS to 23 files / 19,503 lines, -152 net lines), and updated `frontend/profile.html`, `stylelint.config.mjs`, and `frontend/css/profile/README.md`.
+
+### Fixed
+- Fixed `.center-loading-spinner` accent spinner color in `frontend/css/shared/01-foundation.css` where `08-device-responsive.css` previously overwrote `border-top-color` with `border-color: var(--line)`.
+- Fixed the missing navbar language dropdown chevron (`content: ""` on `.navbar-right .lang-control .custom-select-trigger::after`) and stray checkmark leaking from closed `.custom-options` menus (switched `.custom-option-check` from `visibility` to `opacity`) in `frontend/css/shared/02-shell-settings-feedback.css`.
+
+## 10.6.0 (2026-11-19) - Currency fallback snapshot sync and rate update status
+
+Minor release: synchronizes static offline exchange rates across backend and frontend with an explicit snapshot date and displays localized currency rate freshness or offline snapshot status in Settings.
+
+### Added
+- Added `FALLBACK_RATES_DATE` (`2026-11-18`) alongside `FALLBACK_RATES` in both `backend/app/services/currency.py` and `frontend/javascript/currency.js`, plus `scripts/sync-currency-fallback.mjs` to refresh rates from ExchangeRate-API and check backend/frontend parity.
+- Exported `getRatesMetadata()` and `formatRatesTimestamp()` from `frontend/javascript/currency.js` to format UTC timestamps in the user's local timezone and keep `YYYY-MM-DD` calendar dates anchored in UTC without negative-offset day shift.
+- Added `#currencyRatesStatus` inside `.settings-attribution` in `#settingsModal` (`frontend/javascript/components.js`, `frontend/javascript/components/settings-ui.js`, `frontend/css/shared/02-shell-settings-feedback.css`) with localized `currency.rates_updated` and `currency.rates_offline` strings in English, Russian, and Kazakh, updating reactively on modal open, background rate arrival (`currencyRatesStatusUpdated` / `currencyRatesUpdated`), and language switches.
+
+### Changed
+- Updated `FALLBACK_RATES` across backend and frontend to the 2026-11-18 ExchangeRate-API USD snapshot (166 currencies) and returned `FALLBACK_RATES_DATE` instead of `"fallback"` in `get_rates()` and frontend fallback paths, skipping `sessionStorage` persistence for fallback responses.
+
+### Tests
+- Added backend and frontend unit tests covering `FALLBACK_RATES` / `FALLBACK_RATES_DATE` parity, fallback `date` responses, timezone-aware and calendar-safe timestamp formatting, and reactive Settings attribution updates, and updated existing unit and currency E2E expectations for the refreshed fallback rates.
+
 ## 10.5.0 (2026-11-18) - Broader annual cost ranges and campus photo fallback
 
 Backward-compatible minor version update for catalog cost references and missing campus-photo states.

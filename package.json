@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "10.5.0",
+  "version": "10.6.1",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -9,6 +9,7 @@
     "dev:backend": "node scripts/dev-backend.mjs",
     "dev:frontend": "node scripts/dev-frontend.mjs",
     "audit:data": "node scripts/audit-data.mjs",
+    "audit:css": "node scripts/audit-css.mjs --strict",
     "audit:images": "node scripts/audit-university-images.mjs && python scripts/audit-university-webp-visual.py",
     "audit:performance": "node scripts/performance-audit.mjs",
     "check:i18n": "node scripts/i18n-check.mjs && node scripts/i18n-pack-revision.mjs",
@@ -29,15 +30,18 @@
     "test:smoke": "npm run test:unit && npx playwright test tests/e2e/smoke-home.spec.js --config=playwright.local.config.js",
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
     "test:e2e:nightly": "npx playwright test --project=chromium --project=firefox --project=webkit",
-    "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:stylelint && npm run check:hardcoded-text && npm run check:inline-styles && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
+    "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:stylelint && npm run audit:css && npm run check:hardcoded-text && npm run check:inline-styles && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@heroicons/react": "^2.2.0",
     "@playwright/test": "^1.64.1",
+    "@projectwallace/css-analyzer": "^9.9.9",
     "c8": "12.0.0",
+    "purgecss": "^9.1.0",
     "stylelint": "17.16.0",
-    "stylelint-declaration-strict-value": "1.12.1"
+    "stylelint-declaration-strict-value": "1.12.1",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1"
   },
   "overrides": {
     "glob": "^14.0.3",

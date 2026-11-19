@@ -25,6 +25,9 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
 
     const modal = page.locator("#settingsModal");
     await expect(modal).toHaveClass(/is-open/);
+    const ratesStatus = modal.locator("#currencyRatesStatus");
+    await expect(ratesStatus).toBeVisible();
+    await expect(ratesStatus).toHaveText(/^(Updated: |Offline rates from ).+\d{4}/);
 
     // Preferred currency custom trigger and select
     const currencySelect = modal.locator('[data-setting-input="preferred_currency"]');
@@ -131,6 +134,7 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
 
     const themeTitleRu = modal.locator('[data-setting-key="theme_preference"] .settings-copy h3');
     await expect(themeTitleRu).toHaveText("Тема");
+    await expect(modal.locator("#currencyRatesStatus")).toHaveText(/^(Обновлено: |Офлайн-курсы · на ).+\d{4}/);
 
     // Verify optgroup labels in Russian
     const optgroupLabelsRu = await Promise.all(
@@ -216,6 +220,9 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
 
     const modal = page.locator("#settingsModal");
     await expect(modal).toHaveClass(/is-open/);
+    const ratesStatus = modal.locator("#currencyRatesStatus");
+    await expect(ratesStatus).toBeVisible();
+    await expect(ratesStatus).toHaveText(/^(Updated: |Offline rates from ).+\d{4}/);
 
     const currencyWrapper = modal.locator('[data-setting-key="preferred_currency"] .custom-select-wrapper');
     await expect(currencyWrapper).toBeVisible();
@@ -232,6 +239,9 @@ test.describe("Settings Modal — Multi-Currency Controls", () => {
     await page.click("#settingsBtn");
     const modal = page.locator("#settingsModal");
     await expect(modal).toHaveClass(/is-open/);
+    const ratesStatus = modal.locator("#currencyRatesStatus");
+    await expect(ratesStatus).toBeVisible();
+    await expect(ratesStatus).toHaveText(/^(Updated: |Offline rates from ).+\d{4}/);
 
     const currencyTrigger = modal.locator('[data-setting-key="preferred_currency"] .custom-select-trigger');
     await expect(currencyTrigger).toBeVisible();

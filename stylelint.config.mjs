@@ -3,6 +3,7 @@
 export default {
   plugins: [
     "stylelint-declaration-strict-value",
+    "stylelint-value-no-unknown-custom-properties",
     "./scripts/stylelint/no-overridden-declarations.mjs",
   ],
   rules: {
@@ -14,6 +15,32 @@ export default {
     "declaration-block-no-shorthand-property-overrides": true,
     // A later rule for the same selector that always wins makes the earlier declaration dead code.
     "unisearch/no-overridden-declarations": true,
+    // Every var(--token) must be defined in the CSS codebase (or explicitly passed via inline JS style).
+    "csstools/value-no-unknown-custom-properties": [
+      true,
+      {
+        importFrom: [
+          "frontend/css/shared/01-foundation.css",
+          "frontend/css/shared/02-shell-settings-feedback.css",
+          "frontend/css/shared/06-motion-accessibility.css",
+          "frontend/css/shared/08-device-responsive.css",
+          "frontend/css/shared/10-admissions.css",
+          "frontend/css/profile/02-page.css",
+          "frontend/css/universities/01-shell-controls.css",
+          "frontend/css/universities/02-catalog.css",
+          "frontend/css/universities/03-comparison.css",
+          "frontend/css/universities/06-map.css",
+          "frontend/css/universities/07-responsive.css",
+          "frontend/css/universities/08-onboarding.css",
+          "frontend/css/universities/09-reviewed-comparison.css",
+          "frontend/css/university/01-shell-hero.css",
+          "frontend/css/university/02-overview-programs.css",
+          "frontend/css/university/03-admissions.css",
+          "frontend/css/university/04-finance-aid.css",
+          "frontend/css/university/05-admissions-reviewed.css",
+        ],
+      },
+    ],
     // Colors, type sizes, weights and radii come from the tokens in shared/01-foundation.css.
     "scale-unlimited/declaration-strict-value": [
       ["/color$/", "fill", "stroke", "font-size", "font-weight", "/radius$/"],

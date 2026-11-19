@@ -1,6 +1,7 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { FALLBACK_RATES } from "../../frontend/javascript/currency.js";
 
 const {
   GPA_MAX_CHARS,
@@ -161,7 +162,7 @@ test("formatExamValidationToast formats structured error messages for exam valid
 test("a budget keeps the amount and currency it was entered in when the display currency changes", () => {
   const entered = { budget: "10000000", budgetCurrency: "KZT" };
   const inDollars = budgetInCurrency(entered, "USD");
-  assert.equal(inDollars, Math.round(10000000 / 450));
+  assert.equal(inDollars, Math.round(10000000 / FALLBACK_RATES.KZT));
   // Saving the shown conversion unchanged keeps the original entry, so switching back shows the exact amount.
   const kept = applyBudgetEntry(entered, String(inDollars), "USD");
   assert.equal(kept, entered);
