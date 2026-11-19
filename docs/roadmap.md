@@ -1,7 +1,6 @@
 # UniSearch Product Roadmap
 
-This document outlines the planned direction, engineering tracks, and product milestones for UniSearch.
-Items are ordered by strategic execution phases and dependencies rather than fixed calendar dates.
+This document records UniSearch's current product priority and older, unprioritized proposals. It is not a dated delivery schedule.
 
 ## Current priority: admissions product model
 
@@ -13,36 +12,19 @@ The [admissions product model](admissions-product-model.md) is the current contr
 
 Stage 1 reviews data relationships and applicant questions; it does not require implementing every field or approving a finished interface. The next catalog milestone is the first ten institutions in local catalog order, followed by the remaining forty. Oxford, Harvard and Cambridge research remains paused until explicitly resumed. Track accepted evidence, delivery scope and verification in [todo.md](../todo.md).
 
-Use profile fields that already exist, including education country and credential, applicant route, intended entry cycle, current residence, and self-reported fee-status context. Do not add a duplicate questionnaire. Do not infer immigration status, university-assessed Home/Overseas fee status, or aid eligibility from residence or nationality alone; show unknown when applicability is not established.
+Follow the [applicant-facing profile and context contract](admissions-product-model.md#applicant-facing-model). Keep general preferences and evidence in the profile; select a study option and application route on each university page. The route determines applicant category, while entry-cycle and fee-status context are chosen there when relevant. Do not add profile questions without a published rule the application can assess. Keep sourced eligibility and fee conditions visible when their applicability remains unresolved.
 
 This work covers the levels each institution actually offers, including preparation, undergraduate, master's, doctoral, professional, residency and non-degree study where applicable. It does not depend on authentication, PostgreSQL or a native mobile app. The later proposals below require separate prioritization; they are not prerequisites for improving the catalog.
 
 ---
 
-## Other strategic phases and milestones
+## Older proposals (unprioritized)
 
-```
-Phase 1: Stabilization & Refinement
-  ├── [Core & Polish] Product Stabilization & UI Polish (In Progress)
-  ├── [Features & UX] Percentage GPA Scale (0–100%)
-  └── [Features & UX] Preferred Instruction Language & Program Warnings
-
-Phase 2: Authentication & Persistence
-  ├── [Backend & Infra] Google Accounts Sign-In & Cloud Profile Sync
-  └── [Backend & Infra] Database Migration to PostgreSQL
-
-Phase 3: Mobile Experience & Rich Media
-  ├── [Mobile] Native Android App in Kotlin (Jetpack Compose)
-  └── [Features & UX] Campus Media Gallery on University Detail Pages
-
-Phase 4: Academic Expansion & Community
-  ├── [Features & UX] Student & Alumni Reviews and Community Ratings
-  └── [Expansion] Global Catalog Scaling (100+ Institutions)
-```
+The phase order, priority labels, and statuses below are historical planning notes, not current commitments or prerequisites. Recheck an item against the admissions product model and add it to `todo.md` before scheduling it.
 
 ---
 
-## Phase 1: Stabilization & Refinement
+## Earlier proposal: stabilization and refinement
 
 ### 1. Product Stabilization, Bug Fixes, and UI Polish
 * **Track:** Core & Polish
@@ -81,7 +63,7 @@ Phase 4: Academic Expansion & Community
 
 ---
 
-## Phase 2: Authentication & Persistence
+## Earlier proposals: authentication and persistence
 
 ### 4. Google Accounts Sign-In & Cloud Profile Sync
 * **Track:** Backend & Infra
@@ -110,7 +92,7 @@ Phase 4: Academic Expansion & Community
 
 ---
 
-## Phase 3: Mobile Experience & Rich Media
+## Earlier proposals: mobile experience and media
 
 ### 6. Native Android App in Kotlin (Jetpack Compose)
 * **Track:** Mobile
@@ -135,7 +117,7 @@ Phase 4: Academic Expansion & Community
 
 ---
 
-## Phase 4: Academic Expansion & Community
+## Earlier proposals: catalog expansion and community
 
 ### 8. Student & Alumni Reviews and Community Ratings
 * **Track:** Features & UX

@@ -117,7 +117,7 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
         <section id="guide-unichance" class="guide-section">
           <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">minimum requirements match</span> (fit to published requirements, 0–100)</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">minimum requirements match</span> is a 0–100 fit score for your profile against evaluable published academic and language minimums for the selected requirement profile. It is not an admission probability and does not predict a funding award.</p>
+            <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">minimum requirements match</span> is a 0–100 score for the share of evaluable published academic and language minimums met in the applicable admissions context. On reviewed pages, it uses the selected study option and application route within the applicant context. It is not an admission probability or funding prediction.</p>
             <pre class="guide-formula" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
             <p data-i18n="guide.unichance.p2">The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.</p>
             <p data-i18n="guide.unichance.p3">The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.</p>
@@ -130,7 +130,7 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
           <div class="guide-doc">
             <p data-i18n="guide.roi.p1">ROI answers one narrow question: how does the money coming back compare to the money going in. It divides the estimated early-career salary of graduates by the cost of one study year:</p>
             <pre class="guide-formula" data-i18n="guide.roi.formula">roi = salary / yearCost</pre>
-            <p data-i18n="guide.roi.p2">The cost is the cheapest admission choice total for your study mode, converted into one currency. The salary comes only from verified graduate data: your selected major when published, otherwise the average across published majors.</p>
+            <p data-i18n="guide.roi.p2">For this estimate, UniSearch uses the lowest available annual cost for your study mode and converts it into USD. Salary comes only from verified graduate data: your selected major when published, otherwise the average across published majors.</p>
             <p data-i18n="guide.roi.p3">When a university publishes no usable salary data, the ROI block simply disappears instead of guessing. Missing data is never plotted as zero.</p>
             <p data-i18n="guide.roi.p4">Treat the number as a planning ratio rather than a promise: your program, country, skills, and right to work shape the real outcome far more than any average.</p>
             <p data-i18n="guide.roi.p5">ROI does not describe admission eligibility. Read it alongside minimum requirements match, published acceptance statistics, and the full yearly cost.</p>
@@ -140,18 +140,18 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
         <section id="guide-comparison" class="guide-section">
           <h2 data-i18n="guide.comparison.title">University comparison</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.comparison.p1">Comparing lives on the Universities page. Press Compare on a card or a map pin to add a university to the pair; the tray holds two universities, and a click on a picked card removes it. A pair is compared within one group: universities with rechecked data, or universities whose data is not rechecked yet. Cards from the other group are marked and cannot join the pair.</p>
-            <p data-i18n="guide.comparison.p2">The comparison only compares like with like: the same academic year, the same fee status, the same scope. It never crowns an overall winner, because the best university depends on what you personally value. For pairs of universities whose data is not rechecked yet, each row ends with an honest verdict: an advantage for one side, a trade-off, parity, incomparable data, or simply missing data.</p>
-            <p data-i18n="guide.comparison.columns">For universities with rechecked data, each column starts from the university's shared first-year application, or asks for a program where the university admits by program. It shows when to apply, what you will need, the cost before aid checked against your budget, financial aid, and the university's published figures with their sources. Where a price depends on the Home or Overseas fee status, the cost cell lets you switch between the two.</p>
-            <p data-i18n="guide.comparison.p3">Published acceptance rates are institution or course statistics, depending on their source. They are separate from your minimum requirements match requirements fit score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.</p>
+            <p data-i18n="guide.comparison.p1">Comparing lives on the Universities page. Press Compare on a card or a map pin to add a university to the pair; the tray holds two universities, and a click on a picked card removes it. A pair must use one data group: universities with reviewed admissions data, or universities still using the earlier format. Mixed groups cannot be compared.</p>
+            <p data-i18n="guide.comparison.p2">Each column keeps its selected study option and applicant context visible. The comparison labels differences in program, entry cycle, fee status, or scope, and marks incomparable or missing data instead of treating unlike figures as equivalent. It never names an overall winner. For earlier-format pairs, rows may show an advantage, trade-off, parity, incomparable data, or missing data.</p>
+            <p data-i18n="guide.comparison.columns">On reviewed pages, each column reuses the university context selected on its overview and lets you choose a study option when needed. It shows dates, applicable requirements, costs before aid, funding, and published statistics with source links. Each figure keeps its program and applicant context; differences in entry cycle or fee status remain visible.</p>
+            <p data-i18n="guide.comparison.p3">Published acceptance rates are institution or course statistics, depending on their source. They are separate from the minimum requirements match score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.</p>
           </div>
         </section>
 
         <section id="guide-admission" class="guide-section">
-          <h2 data-i18n="guide.admission.title">How admission choices work</h2>
+          <h2 data-i18n="guide.admission.title">How application routes work</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.admission.p1">Universities do not admit "in general" — they admit onto routes. A category is one such route; inside it sit requirement profiles, the score variants of that route; and a funding option completes the picture. Category plus profile plus funding is called a choice, and everything on this site is computed per choice.</p>
-            <p data-i18n="guide.admission.p2">Published minimums describe route-specific requirements, but exceptions or holistic review may apply. Published admitted-student score ranges are historical context, not cutoffs or guarantees.</p>
+            <p data-i18n="guide.admission.p1">Admissions requirements are tied to the selected study option and application route, and may depend on applicant category, entry cycle, or fee-status context. Funding opportunities are listed separately; an award does not change the admission assessment, and displayed annual costs are before aid. Check the context shown on the page.</p>
+            <p data-i18n="guide.admission.p2">Published minimums and conditions apply to a specific study option and application route. Applicant category, fee status, and entry cycle may affect which facts apply; exceptions or holistic review may also apply. Admitted-student score ranges are historical context, not cutoffs or guarantees.</p>
             <p data-i18n="guide.admission.p3">Language proof follows the same logic with one extra switch. Mode any means a single proof from the list is enough; mode all means every listed proof is required. A native language counts wherever the route accepts it.</p>
             <p data-i18n="guide.admission.p4">Scores from different countries are first brought to common scales — GPA is normalized to 4.0 before anything is computed. Higher is better for every exam with a single exception, JLPT, where a lower number means stronger Japanese.</p>
           </div>
@@ -160,9 +160,9 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
         <section id="guide-exam-basics" class="guide-section">
           <h2 data-i18n="guide.exam_basics.title">What admissions check</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.exam_basics.p1">Every admission choice runs two independent checks: your academic scores and your language proof. The two never compensate for each other — a brilliant math score will not cover a missing IELTS.</p>
-            <p data-i18n="guide.exam_basics.p2">Thresholds are set per university, per category, and per profile, which is why two tracks at the same university can demand completely different scores. Read the selected choice itself.</p>
-            <p data-i18n="guide.exam_basics.p3">Check the published minimums for your selected route and profile. Compare admitted-student ranges only as historical context; they are not requirements and do not predict an individual outcome.</p>
+            <p data-i18n="guide.exam_basics.p1">Academic and language minimums are separate when a route publishes both: meeting one does not offset missing evidence or an unmet minimum for the other. Routes may also include prerequisites, documents, or conditions that score checks cannot assess. Published information remains available when your profile is incomplete.</p>
+            <p data-i18n="guide.exam_basics.p2">Requirements and conditions can differ by study option, application route, applicant category, and entry cycle. Read the route and context attached to the selected option; university-wide figures are orientation, not requirements.</p>
+            <p data-i18n="guide.exam_basics.p3">Check published minimums for the selected study option and route, within the applicable applicant and entry context. Compare admitted-student ranges only as historical context; they are not requirements and do not predict an individual result.</p>
           </div>
         </section>
 
@@ -179,14 +179,14 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
         <section id="guide-tags" class="guide-section">
           <h2 data-i18n="guide.tags.title">Tags</h2>
           <div class="guide-doc">
-            <p data-i18n="guide.tags.intro">Tags compress the verdict onto the card so that a dozen universities can be scanned without opening each one. Standard tags state published facts, while AI tags interpret your profile.</p>
-            <p data-i18n="guide.tags.icons_note">Cards of rechecked universities show some tags as compact icons. In UniFit sorting the catalog banner lists the icons on the current page, and each icon's tooltip names what it means.</p>
+            <p data-i18n="guide.tags.intro">Tags summarize catalog information and price context on each card. Profile-based tags appear in UniFit sorting and describe how available evidence matches your preferences or published minimums. A missing tag can mean its condition did not apply or the available data could not establish a result.</p>
+            <p data-i18n="guide.tags.icons_note">Cards for universities with reviewed admissions data show some tags as compact icons. In UniFit sorting the catalog banner lists the icons on the current page, and each icon's tooltip names what it means.</p>
 
             <div class="guide-tags-group">
               <h4 id="guide-tags-standard" data-i18n="guide.tags.standard_title">Standard Tags</h4>
               <ul class="guide-list">
                 <li data-i18n="guide.tags.standard.acceptance">Acceptance Rate: official selectivity, wherever the university publishes one.</li>
-                <li data-i18n="guide.tags.standard.aid_available">Aid Available: the university runs at least one grant track worth opening.</li>
+                <li data-i18n="guide.tags.standard.aid_available">Aid Available means the catalog includes a published funding opportunity; it does not confirm your eligibility or an award.</li>
                 <li data-i18n="guide.tags.standard.over_budget">Over Budget: the estimated year cost runs above your budget — the gap is explicit.</li>
                 <li data-i18n="guide.tags.standard.over_budget_aid">Over Budget • Aid Available means the published cost exceeds your budget and a funding option exists. Its award and amount are not confirmed.</li>
                 <li data-i18n="guide.tags.standard.check_cost">Check the cost marks a price that depends on a fee status (such as Home or Overseas) that is not set yet, so the price shown may not be the one that applies to you.</li>

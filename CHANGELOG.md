@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.3 (2026-11-19) - Align documentation with the reviewed admissions model
+
+Patch release: documentation and Guide copy corrections with no API or storage contract changes.
+
+### Changed
+- Added the reviewed study-options and admissions-context endpoints to the README API overview and aligned the Guide's English, Russian, and Kazakh explanations with the selected study option, application route, and applicant context.
+- Reconciled the current four-institution batch, remaining 46 legacy institutions, and first-ten expansion boundary across the roadmap, task checklist, runbook, architecture overview, and admissions storage contract.
+- Marked Google-auth state synchronization as an unprioritized proposal rather than current architecture or roadmap work.
+
 ## 10.6.2 (2026-11-19) - Fix university page styles on hosted pretty-URL SPA navigation
 
 Patch release: fixes missing university stylesheets during client-side navigation to nested pretty URLs (`/universities/<id>`) and prevents the service worker from caching HTML pages as API responses.

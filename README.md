@@ -150,6 +150,8 @@ After the `FIREBASE_SERVICE_ACCOUNT_UNISEARCH_B3B5F` repository secret is config
 Core API routes include:
 
 - GET /universities and GET /universities/{id} for catalog and university details
+- GET /universities/{id}/study-options for reviewed study options
+- POST /universities/{id}/admissions-context to resolve a selected study option and application route against reviewed facts
 - POST /universities/ai-sort for personalized ordering
 - POST /universities/compare-profiles for comparison
 - POST /universities/{id}/uni-chance and POST /universities/{id}/roi for estimates

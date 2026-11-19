@@ -1,6 +1,6 @@
-# Prepared admissions storage contract
+# Admissions storage contract
 
-This contract prepares the accepted Massachusetts Institute of Technology, Imperial College London, Stanford University, and Nazarbayev University datasets for coordinated Stage 2 integration. It follows [the product model](admissions-product-model.md). The existing [runtime contract](admissions-runtime-contract.md) continues to describe the currently active application.
+This contract defines the active `admissions-storage-1.0` representation for the accepted Massachusetts Institute of Technology, Imperial College London, Stanford University, and Nazarbayev University datasets. Offline preparation still emits inactive candidates for review; [snapshot maintenance](../backend/data/admissions/README.md) documents activation, and the [runtime contract](admissions-runtime-contract.md) documents the live APIs. This contract follows [the product model](admissions-product-model.md).
 
 Preparation does not activate a catalog or migrate a saved selection. The accepted four-institution runtime reads the activated snapshot in `backend/data/admissions/catalog.json`, through the APIs and consumers documented in [the runtime contract](admissions-runtime-contract.md). The coordinated cutover removes their earlier policy fields from `universities.json`, preserves retired records outside runtime, and deliberately resets earlier selections with a visible explanation. Track remaining verification and later batches in [todo.md](../todo.md).
 
