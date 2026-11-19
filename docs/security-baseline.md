@@ -3,6 +3,10 @@
 UniSearch tracks its security posture against the Open Source Project Security (OSPS) Baseline.
 This document records a point-in-time self-assessment; it is not an independent audit or certification.
 
+## Review status
+
+The published badges are based on the full 2026-10-15 self-assessment; individual evidence below retains its verification date. Repository workflows and branch settings changed afterward, so older control statuses are a historical snapshot and must be rechecked before the next compliance statement. A targeted read-only check on 2026-11-19 verified the current `main` ruleset; it did not re-attest the other controls.
+
 ## Target
 
 UniSearch has earned **OSPS Baseline Levels 1 and 2, version 2026.08.28**. The next
@@ -24,8 +28,8 @@ version 2026.08.28. Level 3 has not been assessed.
 | --- | --- | --- |
 | OSPS-AC-01.01 MFA for sensitive actions | Met | The maintainer confirms all repository administrators have MFA enabled with security keys. Verified 2026-10-15. |
 | OSPS-AC-02.01 Restrict collaborator permissions | Met | GitHub grants collaborator access to this personal repository only by an explicit owner invitation. General contributors use forks and pull requests; direct write access is reserved for trusted maintainers. Verified 2026-10-15. |
-| OSPS-AC-03.01 Protect the primary branch from direct commits | Met | The active `main` ruleset requires a pull request and ten required checks (including DCO), blocks deletion and force pushes, and has no bypass actors. Approvals are not required. Code-owner review is not required. Verified 2026-10-20. |
-| OSPS-AC-03.02 Protect the primary branch from deletion | Met | The active repository ruleset blocks deletion of `main`. Verified 2026-10-15. |
+| OSPS-AC-03.01 Protect the primary branch from direct commits | Met | GitHub API verification on 2026-11-19 found an active `main` ruleset requiring pull requests and ten status checks, blocking deletion and non-fast-forward updates, with no bypass actors. It requires thread resolution but zero approving reviews; code-owner and last-push approval are disabled. |
+| OSPS-AC-03.02 Protect the primary branch from deletion | Met | The active `main` ruleset blocks deletion. Verified 2026-11-19. |
 | OSPS-BR-01.01 Sanitize untrusted CI metadata | Met | Workflow review found no unvalidated branch, pull-request, or manual inputs. Release tags are strictly validated before checkout or publication steps use them. |
 | OSPS-BR-01.03 Isolate untrusted CI code | Met | Fork-origin pull requests receive a read-only token and no repository secrets. `CODECOV_TOKEN` is passed only to Codecov upload steps; published-release credentials are isolated to the release workflow. |
 | OSPS-BR-03.01 Encrypt official project channels | Met | Public project and repository channels use HTTPS; plain HTTP references are limited to localhost development and the private Docker proxy upstream. |
@@ -55,7 +59,7 @@ is not an independent audit or certification.
 
 - `security-insights.yml` is the machine-readable declaration used by OSPS-compatible tooling.
 - GitHub Actions runs CodeQL, dependency auditing, Trivy, Scorecard, fuzzing, and the test suites.
-- The active `main` ruleset requires backend tests, browser tests, repository hygiene, dependency audit, both CodeQL analyses, Trivy, repository guards, SonarCloud, and DCO. Verified 2026-10-15.
+- On 2026-11-19, the active `main` ruleset required these ten checks: `backend-tests`, `e2e-pr`, `hygiene`, `dependency-audit`, `repository-guards`, `CodeQL (python)`, `CodeQL (javascript-typescript)`, `Trivy (secrets and configuration)`, `SonarCloud Code Analysis`, and `DCO`.
 - Contributor commits require DCO sign-off; the installed DCO App check is required by the ruleset.
 - Release automation verifies and publishes GitHub build provenance bundles alongside all three ZIP artifacts and attests the container image.
 - The OpenSSF Best Practices Badge application accepts human-reviewed OSPS Baseline self-assessments; its saved project record remains the source of the displayed badge status.
