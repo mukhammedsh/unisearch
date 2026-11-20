@@ -56,6 +56,7 @@ import {
   compareBachelorProgramCount,
   compareLanguageCount,
   compareStudyFormatCount,
+  compareStudyFormatSource,
   compareMajorTagCount,
   compareAidScore,
   compareCostBreakdownText,
@@ -322,6 +323,7 @@ const getBaseCompareSpecs = () => [
             direction: "neutral",
             getter: compareStudyFormatCount,
             formatter: compareCountText,
+            sourceGetter: compareStudyFormatSource,
             reason: false,
         },
         {

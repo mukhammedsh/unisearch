@@ -322,6 +322,26 @@
         "title": "MIT Facts — Enrollment Statistics",
         "scope": "All students; headcount in October 2025 for academic year 2025–2026",
         "checked_at": "2026-11-20"
+      },
+      {
+        "topic": "formats",
+        "url": "https://catalog.mit.edu/mit/undergraduate-education/academic-programs/",
+        "title": "MIT Course Catalog — Academic Programs",
+        "scope": "Undergraduate degree study; MIT describes a four-year residential college with a full-time academic program.",
+        "checked_at": "2026-11-20",
+        "format_modes": [
+          "On-campus"
+        ]
+      },
+      {
+        "topic": "formats",
+        "url": "https://oge.mit.edu/faqs/",
+        "title": "MIT Office of Graduate Education — FAQs",
+        "scope": "Graduate degree programs; the FAQ says degree-granting programs must be completed on campus.",
+        "checked_at": "2026-11-20",
+        "format_modes": [
+          "On-campus"
+        ]
       }
     ],
     "admissions_catalog_id": "mit-usa-cambridge"

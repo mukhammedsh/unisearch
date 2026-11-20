@@ -831,7 +831,17 @@ export function compareLanguageCount(u) {
   return langs.size;
 }
 
+export function compareStudyFormatSource(u) {
+  const sources = (Array.isArray(u?.verified_sources) ? u.verified_sources : [])
+    .filter((source) => source?.topic === "formats" && String(source.url || "").trim());
+  if (!sources.length) return null;
+  const join = (key) => [...new Set(sources.map((source) => String(source[key] || "").trim()).filter(Boolean))].join("; ");
+  return { source: join("title"), sourceUrl: String(sources[0].url).trim(), verifiedAt: join("checked_at"), scope: join("scope") };
+}
+
 export function compareStudyFormatCount(u) {
+  // Formats without a linked official source are not a verified fact, so they stay out of the comparison.
+  if (!compareStudyFormatSource(u)) return null;
   const formats = Array.isArray(u?.academics?.formats) ? u.academics.formats : [];
   const fromPrograms = compareBachelorPrograms(u).map((program) => String(program?.study_mode || "").trim()).filter(Boolean);
   return new Set([...formats, ...fromPrograms].map((item) => String(item || "").trim().toLowerCase()).filter(Boolean)).size;

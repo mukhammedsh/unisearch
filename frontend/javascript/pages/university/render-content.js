@@ -48,13 +48,22 @@ export function universityStudyFormats(values) {
   return ["on_campus", "hybrid", "online"].filter((bucket) => found.has(bucket));
 }
 
-function metricSourceLink(url, label, checkedAt = "", scope = "") {
+function disclosure(summary, body) {
+  return `<details class="d-fact-scope"><summary>${escapeHtml(summary)}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary>${body}</details>`;
+}
+
+// `expandScope` prints the scope as plain text, for sources that already sit inside a disclosure.
+function metricSourceLink(url, label, checkedAt = "", scope = "", expandScope = false) {
   const href = safeUrl(url);
   if (!href) return "";
   const checked = String(checkedAt || "").trim();
   const date = checked ? `${t("university.admissions.checked", "Last checked")}: ${checked}` : t("university.admissions.check_date_unrecorded", "Check date not recorded");
-  const scopeLine = scope ? `<span>${escapeHtml(t("university.admissions.catalog.scope", "Source scope"))}: ${escapeHtml(scope)}</span>` : "";
-  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a>${scopeLine}<span>${escapeHtml(date)}</span></span>`;
+  const scopeLabel = t("university.admissions.catalog.scope", "Source scope");
+  // The scope is the longest and least often needed part, so it sits in a collapsed disclosure under the link and date.
+  const scopeLine = !scope ? ""
+    : expandScope ? `<span>${escapeHtml(scopeLabel)}: ${escapeHtml(scope)}</span>`
+      : disclosure(scopeLabel, `<span>${escapeHtml(scope)}</span>`);
+  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a><span>${escapeHtml(date)}</span>${scopeLine}</span>`;
 }
 
 export function renderOverviewSection({
@@ -145,17 +154,12 @@ export function renderOverviewSection({
     trFactSource(studentCountFact?.source) || t("university.admissions.official_source", "Official source"), studentCountFact?.verified_at, studentCountScope);
   const rawFormats = Array.isArray(university.academics?.formats) ? university.academics.formats : [];
   const formatBuckets = universityStudyFormats(rawFormats);
-  // Program-level wording (for example one evening professional program) does not describe the whole university:
-  // the overview names only the recognised formats and keeps the original values when none is recognised.
   const formatValues = formatBuckets.length
     ? formatBuckets.map((bucket) => escapeHtml(bucket === "hybrid" ? t("university.ux2.format.hybrid") : trStudyMode(bucket === "online" ? "Online" : "On-campus")))
     : [...new Set(rawFormats
       .filter((value) => String(value || "").trim().toLowerCase() !== "not_stated")
       .map((value) => escapeHtml(trStudyMode(String(value))))
       .filter(Boolean))];
-  const formats = formatValues.length > 3
-    ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
-    : formatValues.join(", ");
   const formatSourceMap = new Map();
   for (const source of Array.isArray(university?.verified_sources) ? university.verified_sources : []) {
     if (source?.topic !== "formats") continue;
@@ -172,10 +176,21 @@ export function renderOverviewSection({
     const modes = [...source.modes].map(trStudyMode);
     const title = [...source.titles].join(" · ") || new URL(source.url).hostname.replace(/^www\./, "");
     const label = [...modes, title].filter(Boolean).join(" · ");
-    return metricSourceLink(source.url, label, [...source.dates].join(", "), [...source.scopes].join("; "));
-  }).join("");
-  const formatScopeNote = formatSources
-    ? `<span class="d-fact-source">${escapeHtml(t("university.ux2.format_scope_note"))}</span>` : "";
+    return metricSourceLink(source.url, label, [...source.dates].join(", "), [...source.scopes].join("; "), true);
+  }).filter(Boolean);
+  // Program-level wording (for example one evening professional program) does not describe the whole university:
+  // the overview names only the recognised formats and keeps the original values when none is recognised.
+  // Formats are shown only with a linked official source, so reviewed-catalog modes without one stay hidden.
+  const formats = formatSources.length && formatValues.length
+    ? formatValues.length > 3
+      ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
+      : formatValues.join(", ")
+    : "";
+  // Sources and the availability note share one collapsed disclosure, so the row stays a value plus one line.
+  const formatSourcesBlock = formatSources.length
+    ? disclosure(t(formatSources.length > 1 ? "university.ux2.sources.many" : "university.ux2.sources.one"),
+      `${formatSources.join("")}<span class="d-fact-source">${escapeHtml(t("university.ux2.format_scope_note"))}</span>`)
+    : "";
 
   // A row without data is left out rather than shown as "No data"; the last remaining row drops its divider.
   const rows = [
@@ -188,7 +203,7 @@ export function renderOverviewSection({
     </div>`,
     includeAdmissionRate ? acceptanceRow : "",
     `<div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span class="d-kv-value"><span>${escapeHtml(studentCount)}</span>${studentCountSource}</span></div>`,
-    formats ? `<div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats}${formatSources}${formatScopeNote}</div></div>` : "",
+    formats ? `<div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats}${formatSourcesBlock}</div></div>` : "",
     campusArea ? `<div class="d-kv" data-campus-area><span>${escapeHtml(t("university.ux2.campus.area_label"))}</span><div class="d-campus-area"><span>${escapeHtml(campusArea.text)}</span>${campusArea.comparison ? `<span class="d-campus-area__note">${escapeHtml(campusArea.comparison)}</span>` : ""}${campusArea.sourceUrl ? metricSourceLink(campusArea.sourceUrl, campusArea.sourceTitle || t("university.ux2.campus.source"), campusArea.checkedAt, campusArea.scope) : ""}</div></div>` : "",
   ].filter(Boolean);
   const last = rows.length - 1;

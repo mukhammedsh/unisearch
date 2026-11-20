@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.7 (2026-11-21) - Cite reviewed study formats
+
+### Improved
+- Show university study formats only when official source metadata is linked; hide reviewed-catalog modes that lack a displayable source.
+- Add scoped official MIT sources for undergraduate and graduate on-campus study formats.
+- Collapse each overview fact's source scope into a disclosure under the source link and check date, fold the study-format sources and availability note into one "Sources" disclosure, and rename the "В цифрах" overview heading to "Ключевые факты" (Key facts / Негізгі деректер).
+- Show the study-format and campus-area values in the primary text colour, matching the other overview facts, and keep the "Sources" toggle small and muted.
+- Keep the study-format count in university comparison to universities with a linked official formats source, and show that source and its check date beside it.
+
 ## 10.6.6 (2026-11-20) - Show sources for university overview facts
 
 ### Improved

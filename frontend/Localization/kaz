@@ -3613,7 +3613,7 @@ university.ux2.needs.presence_required: міндетті
 university.ux2.needs.presence_recommended: ұсынылады
 university.ux2.needs.presence_strongly_recommended: кейбір үміткерлерге қатаң ұсынылады
 university.ux2.format.hybrid: Аралас (кампус және онлайн)
-university.ux2.format_scope_note: Форматтар сілтеме жасалған бағдарламалар беттеріне негізделген және бағдарлама мен оқу жылына қарай өзгеруі мүмкін.
+university.ux2.format_scope_note: Форматтар көрсетілген ресми дереккөздерге негізделген; қолжетімділігі бағдарлама мен оқу жылына қарай өзгеруі мүмкін.
 university.ux2.deadlines.not_collected: UniSearch бұл университеттің өтініш мерзімдерін әлі жинамаған. Өзекті күндерді қабылдау комиссиясының ресми сайтынан қараңыз.
 university.ux2.deadline.legacy_none: Мерзімдер әлі жиналмаған
 university.ux2.deadline.legacy_none_detail: UniSearch-те бұл университеттің өтініш мерзімдері әлі жоқ. Оларды ресми сайттан тексеріңіз.
@@ -3639,7 +3639,7 @@ university.ux2.campus.pitches_many: шамамен {count} футбол алаң
 university.ux2.campus.pitches_few: шамамен {count} футбол алаңы
 university.ux2.campus.pitches_other: шамамен {count} футбол алаңы
 university.ux2.campus.source: Ресми дереккөз
-university.ux2.overview.numbers_title: Сандармен
+university.ux2.overview.numbers_title: Негізгі деректер
 university.ux2.prompt.shared_routes: Бакалавриатқа барлық бағдарламаға бір өтініш беріледі. Қалай түсетініңізді таңдаңыз:
 university.ux2.sources.one: Дереккөз
 university.ux2.sources.many: Дереккөздер
