@@ -75,7 +75,7 @@
     ],
     "description_source": "https://www.mit.edu/about/",
     "factors": {
-      "practice_vs_science": 0.9925,
+      "practice_vs_science": 0.994,
       "social_vs_hardcore": 0.8347,
       "budget_vs_prestige": 0.9918,
       "city_vs_campus": 0.0

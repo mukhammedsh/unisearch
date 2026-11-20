@@ -64,10 +64,14 @@ test("the overview links metric sources and shows recorded check dates", async (
       rank: 1,
       rank_meta: { source: "Example Ranking", source_url: "https://ranking.example/", verified_at: "2026-04-09" },
       student_count: 11920,
-      fact_provenance: { facts: { student_count: { source: "University Facts", source_url: "https://facts.example/", verified_at: "2026-03-12" } } },
+      fact_provenance: { facts: { student_count: { source: "University Facts", source_url: "https://facts.example/", verified_at: "2026-03-12",
+        basis: { scope: "All students, 2025–2026" } } } },
       academics: { formats: ["On-campus"] },
-      verified_sources: [{ topic: "formats", url: "https://www.university.example/study", title: "Computer Science Bachelor",
-        scope: "BSc Computer Science", checked_at: "2026-11-20", format_modes: ["On-campus"] }],
+      verified_sources: [
+        { topic: "formats", url: "https://www.university.example/study", title: "Computer Science Bachelor",
+          scope: "BSc Computer Science", checked_at: "2026-11-20", format_modes: ["On-campus"] },
+        { topic: "formats", url: "https://catalog.example/study" },
+      ],
     },
   });
   assert.match(container.innerHTML, /href="https:\/\/ranking\.example\/"/);
@@ -76,6 +80,7 @@ test("the overview links metric sources and shows recorded check dates", async (
   assert.match(container.innerHTML, /href="https:\/\/facts\.example\/"/);
   assert.match(container.innerHTML, /University Facts/);
   assert.match(container.innerHTML, /Last checked: 2026.03-12/);
+  assert.match(container.innerHTML, /Scope: All students, 2025/);
   assert.match(container.innerHTML, /Check date not recorded/);
   assert.match(container.innerHTML, /href="https:\/\/www\.university\.example\/study"/);
   assert.match(container.innerHTML, /On-campus · Computer Science Bachelor/);
