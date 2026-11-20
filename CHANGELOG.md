@@ -15,6 +15,9 @@ Patch release: refreshes the graduate-preparatory offering's official name and s
 ### Fixed
 - Added Russian and Kazakh exact translations for the reviewed NU ZYGP source gaps, next steps, historical notes, and program scope; rewrote the next step as applicant guidance and removed obsolete NUZYP editorial rules and translation entries.
 
+### Tests
+- Made the admissions-selection E2E helper wait for its edit button to become actionable after history navigation.
+
 ## 10.6.3 (2026-11-19) - Align documentation with the reviewed admissions model
 
 Patch release: documentation and Guide copy corrections with no API or storage contract changes.
