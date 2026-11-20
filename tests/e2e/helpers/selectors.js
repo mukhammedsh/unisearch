@@ -65,8 +65,7 @@ async function revealRestrictedProgram(locator) {
 async function openAdmissionSelectionEditor(page) {
   const editor = page.locator("#admissionsSelectionEditor");
   if (!(await editor.isVisible())) {
-    const edit = page.locator("#admissionsReferenceSummary button");
-    if (await edit.isVisible()) await edit.click();
+    await page.locator("#admissionsReferenceSummary button").click();
   }
   await editor.waitFor({ state: "visible" });
 }
