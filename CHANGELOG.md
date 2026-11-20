@@ -2,6 +2,11 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.5 (2026-11-20) - Show sources for university overview facts
+
+### Improved
+- Made ranking sources clickable, displayed existing student-count provenance, linked explicitly tagged study-format sources, and surfaced available check dates beside university facts.
+
 ## 10.6.4 (2026-11-20) - Update Nazarbayev University Zero Year information
 
 Patch release: refreshes the graduate-preparatory offering's official name and source-backed description without changing admissions routes or assessment behavior.
