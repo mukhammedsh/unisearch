@@ -265,6 +265,18 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertIn("compound", result["fact_groups"]["funding"])
         self.assertEqual({row["id"] for row in result["facts"]}, {record_id for group in result["fact_groups"].values() for record_id in group})
 
+    def test_public_conflict_projection_exposes_resolution_without_research_attributes(self):
+        conflict = fact("conflict", publication_status="conflicting", review_status="conflicting",
+                        normalized_status={"publication": "conflicting", "review": "conflicting"},
+                        value={"amounts": [100, 120], "next_official_step": "Ask the Registrar for the current bill."},
+                        attributes={"group": "costs", "resolution": {"reason": "The official pages publish different amounts.",
+                                                                           "internal_note": "Do not expose this research note."}})
+        public = service.public_context({"facts": [conflict], "unknowns": []})["facts"][0]
+        self.assertEqual(public["reason"], "The official pages publish different amounts.")
+        self.assertEqual(public["official_next_step"], "Ask the Registrar for the current bill.")
+        self.assertNotIn("attributes", public)
+        self.assertNotIn("internal_note", public)
+
     def test_controlled_topics_group_requirements_without_scoring_completion_rules(self):
         for topic in ("standardized_tests", "academic_prerequisites_and_placement", "english_proficiency_waiver",
                       "academic_application", "language_exemptions", "tests_and_waivers"):

@@ -521,12 +521,19 @@ function conflictExplanation(row) {
   return `${reason ? `<p>${escapeHtml(translateAdmissionSummary(reason) || reason)}</p>` : ""}${next ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(translateAdmissionSummary(next) || next)}</p>` : ""}`;
 }
 
+function applicantFactValue(row) {
+  const value = row.value;
+  if (!row.official_next_step || !value || typeof value !== "object" || Array.isArray(value)
+    || value.next_official_step !== row.official_next_step) return value;
+  return Object.fromEntries(Object.entries(value).filter(([key]) => key !== "next_official_step"));
+}
+
 function renderGroupedFact(row, resolved, domain, { withSources = true } = {}) {
   const conditions = recordConditions(row, resolved);
   const inline = ["deadlines", "costs", "funding"].includes(domain);
   return `<div class="admissions-catalog__group-record" data-admissions-fact="${escapeHtmlAttr(row.id || "")}">
     ${renderStatusBadges(factStatusBadges(row))}
-    ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+    ${renderAdmissionsValue(applicantFactValue(row), resolved.reference_labels)}
     ${conflictExplanation(row)}
     ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
     ${inline ? scope(row, resolved) : ""}${periodLine(row)}
@@ -538,6 +545,7 @@ function renderGroupedFact(row, resolved, domain, { withSources = true } = {}) {
 function renderFact(row, resolved, domain = "other", historical = false, simple = false) {
   const title = simple ? factTitle(row, resolved, domain) : row.title || row.label;
   const topic = escapeHtml(label(`domain.${domain}`));
+  const value = applicantFactValue(row);
   const conditions = recordConditions(row, resolved);
   const period = periodOf(row);
   const publication = publicationLabel(row, historical);
@@ -549,7 +557,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
     return `<details class="admissions-catalog__fact" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" ${inline ? "open" : ""}>
     <summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span>${historical || !isPublished(row) ? `<span class="admissions-catalog__status">${escapeHtml(publication)}</span>` : ""}${!historical && reviewWarning && review !== publication ? `<span class="admissions-catalog__status">${escapeHtml(review)}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
-      ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+      ${renderAdmissionsValue(value, resolved.reference_labels)}
       ${conflictExplanation(row)}
       ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
       ${inline ? scope(row, resolved) : ""}${periodLine(row)}
@@ -564,7 +572,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
     <div class="admissions-catalog__body">
       ${!historical ? `<p class="admissions-catalog__meta">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "conditional"))}</p>` : ""}
       <p class="admissions-catalog__meta">${escapeHtml(label("review"))}: ${escapeHtml(reviewLabel(row))}</p>
-      ${renderAdmissionsValue(row.value, resolved.reference_labels)}
+      ${renderAdmissionsValue(value, resolved.reference_labels)}
       ${conflictExplanation(row)}
       ${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}
       ${scope(row, resolved)}

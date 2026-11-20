@@ -542,11 +542,23 @@ RESPONSE_SHAPE = "public-1"
 
 
 def _public_record(row):
-    """A fact or unknown without research-only fields; `value` and every applicant-facing field stay untouched."""
+    """A fact or unknown without research-only fields; expose only the resolution copy needed for conflicts."""
     public = {key: value for key, value in row.items() if key not in RECORD_INTERNAL_KEYS and key != "attributes"}
     attributes = {key: row["attributes"][key] for key in PUBLIC_RECORD_ATTRIBUTES if key in row.get("attributes", {})}
     if attributes:
         public["attributes"] = attributes
+    status = row.get("normalized_status") if isinstance(row.get("normalized_status"), dict) else {}
+    if status.get("publication") == "conflicting" or status.get("review") in {"conflicting", "needs_resolution"}:
+        resolution = row.get("attributes", {}).get("resolution")
+        if isinstance(resolution, dict):
+            reason = resolution.get("reason")
+            next_step = resolution.get("next_official_step")
+            value = row.get("value") if isinstance(row.get("value"), dict) else {}
+            next_step = next_step or value.get("next_official_step")
+            if isinstance(reason, str) and reason.strip() and not (isinstance(public.get("reason"), str) and public["reason"].strip()):
+                public["reason"] = reason
+            if isinstance(next_step, str) and next_step.strip() and not (isinstance(public.get("official_next_step"), str) and public["official_next_step"].strip()):
+                public["official_next_step"] = next_step
     return public
 
 

@@ -407,13 +407,14 @@ test("unselected and incompatible contexts do not display unrelated facts", () =
 
 test("publication, evidence review, and applicability remain independent", () => {
   const resolved = context();
-  resolved.facts = [fact("Read both official versions.", { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
+  resolved.facts = [fact({ amounts: [100, 120], next_official_step: "Ask the admissions office." }, { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
   resolved.fact_groups = { costs: ["private-fact-id"] };
   const html = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(html, /<span class="admissions-catalog__status">Published<\/span>/);
   assert.match(html, /Evidence review: Conflicting official sources/);
   assert.match(html, /The published values differ/);
   assert.match(html, /Ask the admissions office/);
+  assert.equal((html.match(/Ask the admissions office/g) || []).length, 1);
   assert.match(html, /Conditional — applicability still needs verification<\/span><\/summary>/);
   assert.doesNotMatch(html, /UnknownUnknown|<strong>Conditions and exceptions<\/strong>/);
   resolved.facts[0] = withStatus({ ...resolved.facts[0], publication_status: "unknown", review_status: "verified", normalized_status: undefined });
