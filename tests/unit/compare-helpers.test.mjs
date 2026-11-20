@@ -39,6 +39,8 @@ const {
   fetchCompareAdmissionContext,
   compareAdmissionOptionEntries,
   readCompareAdmissionChoices,
+  compareStudyFormatCount,
+  compareStudyFormatSource,
 } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
 
 const {
@@ -809,4 +811,16 @@ test("graduate comparison costs do not borrow the undergraduate university budge
   assert.equal(compareSelectedAnnualCost(university), null);
   university.admission_categories[0].finance_override = { total_cost_year_usd: 0 };
   assert.equal(compareSelectedAnnualCost(university), 0);
+});
+
+test("study formats are compared only when an official formats source is linked", () => {
+  const formats = ["On-campus", "Hybrid"];
+  assert.equal(compareStudyFormatCount({ academics: { formats } }), null);
+  assert.equal(compareStudyFormatCount({ academics: { formats }, verified_sources: [{ topic: "requirements", url: "https://example.edu/r" }] }), null);
+  const university = { academics: { formats }, verified_sources: [
+    { topic: "formats", url: "https://example.edu/f", title: "Programmes", scope: "Undergraduate", checked_at: "2026-11-20" },
+  ] };
+  assert.equal(compareStudyFormatCount(university), 2);
+  assert.deepEqual(compareStudyFormatSource(university),
+    { source: "Programmes", sourceUrl: "https://example.edu/f", verifiedAt: "2026-11-20", scope: "Undergraduate" });
 });

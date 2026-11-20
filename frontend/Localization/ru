@@ -3611,7 +3611,7 @@ university.ux2.needs.presence_required: обязательно
 university.ux2.needs.presence_recommended: рекомендуется
 university.ux2.needs.presence_strongly_recommended: настоятельно рекомендуется некоторым абитуриентам
 university.ux2.format.hybrid: Гибридно (кампус и онлайн)
-university.ux2.format_scope_note: Форматы указаны по ссылкам на программы и могут различаться по программе и учебному году.
+university.ux2.format_scope_note: Форматы основаны на указанных официальных источниках; доступность может различаться по программе и учебному году.
 university.ux2.deadlines.not_collected: UniSearch пока не собрал сроки подачи для этого университета. Актуальные даты смотрите на официальном сайте приёмной комиссии.
 university.ux2.deadline.legacy_none: Сроки пока не собраны
 university.ux2.deadline.legacy_none_detail: У UniSearch ещё нет сроков подачи этого университета. Проверьте их на официальном сайте.

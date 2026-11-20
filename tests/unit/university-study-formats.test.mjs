@@ -85,5 +85,35 @@ test("the overview links metric sources and shows recorded check dates", async (
   assert.match(container.innerHTML, /href="https:\/\/www\.university\.example\/study"/);
   assert.match(container.innerHTML, /On-campus · Computer Science Bachelor/);
   assert.match(container.innerHTML, /Source scope: BSc Computer Science/);
-  assert.match(container.innerHTML, /Formats are based on cited program pages/);
+  assert.match(container.innerHTML, /Formats are based on cited official sources/);
+});
+
+test("study formats without a linked official source are not shown", async () => {
+  global.fetch = async (url) => String(url).split("?")[0].endsWith("Localization/eng")
+    ? { ok: true, async text() { return readFile(new URL("../../frontend/Localization/eng", import.meta.url), "utf8"); } }
+    : { ok: false, async text() { return ""; } };
+  const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+  await initI18n();
+  setLanguage("eng", { persist: false, emit: false });
+  const render = (verified_sources) => {
+    const container = { innerHTML: "" };
+    renderOverviewSection({ container, includeAdmissionRate: false, officialRank: true,
+      university: { rank: 1, student_count: 11920, academics: { formats: ["On-campus"] }, verified_sources } });
+    return container.innerHTML;
+  };
+  assert.doesNotMatch(render([]), /d-study-formats/);
+  assert.doesNotMatch(render([{ topic: "requirements", url: "https://www.university.example/requirements" }]), /d-study-formats/);
+  assert.match(render([{ topic: "formats", url: "https://www.university.example/study", format_modes: ["On-campus"] }]), /d-study-formats/);
+});
+
+test("MIT's study formats link scoped official sources in the runtime data", async () => {
+  const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
+  const mit = (Array.isArray(rows) ? rows : rows.universities).find(row => row.id === "mit-usa-cambridge");
+  const sources = mit.verified_sources.filter(source => source.topic === "formats");
+  assert.equal(sources.length, 2);
+  for (const source of sources) {
+    assert.match(source.url, /^https:\/\/(catalog|oge)\.mit\.edu\//);
+    assert.ok(source.scope && source.checked_at);
+    assert.deepEqual(source.format_modes, ["On-campus"]);
+  }
 });

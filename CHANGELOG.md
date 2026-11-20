@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 10.6.7 (2026-11-20) - Cite reviewed study formats
+
+### Improved
+- Show university study formats only when official source metadata is linked; hide reviewed-catalog modes that lack a displayable source.
+- Add scoped official MIT sources for undergraduate and graduate on-campus study formats.
+- Keep the study-format count in university comparison to universities with a linked official formats source, and show that source and its check date beside it.
+
 ## 10.6.6 (2026-11-20) - Show sources for university overview facts
 
 ### Improved

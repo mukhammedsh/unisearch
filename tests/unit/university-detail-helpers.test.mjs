@@ -404,7 +404,7 @@ test("reviewed overview shows institution facts without a university-wide admiss
 test("an institution with many delivery formats names the formats rather than each program's schedule", () => {
   setLanguage("eng", { persist: false, emit: false });
   const container = { innerHTML: "" };
-  renderOverviewSection({ container, includeAdmissionRate: false, university: { academics: {
+  renderOverviewSection({ container, includeAdmissionRate: false, university: { verified_sources: [{ topic: "formats", url: "https://example.edu/formats" }], academics: {
     formats: ["Full-time", "Full-time", "Hybrid", "Low-residency campus intensives", "Part-time online"],
   } } });
   assert.match(container.innerHTML, /Hybrid \(campus and online\), Online/);
@@ -414,7 +414,7 @@ test("an institution with many delivery formats names the formats rather than ea
 test("unrecognised format wording is still shown, in one disclosure when long", () => {
   setLanguage("eng", { persist: false, emit: false });
   const container = { innerHTML: "" };
-  renderOverviewSection({ container, includeAdmissionRate: false, university: { academics: {
+  renderOverviewSection({ container, includeAdmissionRate: false, university: { verified_sources: [{ topic: "formats", url: "https://example.edu/formats" }], academics: {
     formats: ["Full-time", "Full-time", "Part-time", "Evening", "Weekend"],
   } } });
   assert.match(container.innerHTML, /<summary>Varies by program/);

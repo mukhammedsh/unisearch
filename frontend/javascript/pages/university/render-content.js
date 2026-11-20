@@ -145,17 +145,12 @@ export function renderOverviewSection({
     trFactSource(studentCountFact?.source) || t("university.admissions.official_source", "Official source"), studentCountFact?.verified_at, studentCountScope);
   const rawFormats = Array.isArray(university.academics?.formats) ? university.academics.formats : [];
   const formatBuckets = universityStudyFormats(rawFormats);
-  // Program-level wording (for example one evening professional program) does not describe the whole university:
-  // the overview names only the recognised formats and keeps the original values when none is recognised.
   const formatValues = formatBuckets.length
     ? formatBuckets.map((bucket) => escapeHtml(bucket === "hybrid" ? t("university.ux2.format.hybrid") : trStudyMode(bucket === "online" ? "Online" : "On-campus")))
     : [...new Set(rawFormats
       .filter((value) => String(value || "").trim().toLowerCase() !== "not_stated")
       .map((value) => escapeHtml(trStudyMode(String(value))))
       .filter(Boolean))];
-  const formats = formatValues.length > 3
-    ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
-    : formatValues.join(", ");
   const formatSourceMap = new Map();
   for (const source of Array.isArray(university?.verified_sources) ? university.verified_sources : []) {
     if (source?.topic !== "formats") continue;
@@ -174,6 +169,14 @@ export function renderOverviewSection({
     const label = [...modes, title].filter(Boolean).join(" · ");
     return metricSourceLink(source.url, label, [...source.dates].join(", "), [...source.scopes].join("; "));
   }).join("");
+  // Program-level wording (for example one evening professional program) does not describe the whole university:
+  // the overview names only the recognised formats and keeps the original values when none is recognised.
+  // Formats are shown only with a linked official source, so reviewed-catalog modes without one stay hidden.
+  const formats = formatSources && formatValues.length
+    ? formatValues.length > 3
+      ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
+      : formatValues.join(", ")
+    : "";
   const formatScopeNote = formatSources
     ? `<span class="d-fact-source">${escapeHtml(t("university.ux2.format_scope_note"))}</span>` : "";
 
