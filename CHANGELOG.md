@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## 10.6.5 (2026-11-20) - Show sources for university overview facts
+## 10.6.6 (2026-11-20) - Show sources for university overview facts
 
 ### Improved
 - Made ranking sources clickable, displayed existing student-count provenance, linked explicitly tagged study-format sources, and surfaced available check dates beside university facts.
