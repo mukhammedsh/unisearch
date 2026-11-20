@@ -547,6 +547,12 @@ const getBaseCompareSpecs = () => [
             direction: "neutral",
             getter: (u) => toFiniteNumber(u?.student_life?.campus_area_m2),
             formatter: compareCampusAreaText,
+            sourceGetter: (u) => ({
+                source: u?.student_life?.size_source_title || "",
+                sourceUrl: u?.student_life?.size_source_url || "",
+                verifiedAt: u?.student_life?.size_checked_at || "",
+                scope: u?.student_life?.size_scope || "",
+            }),
             score: false,
             reason: false,
         },
@@ -712,7 +718,9 @@ export const compareSpecValue = (spec, u, metrics) => {
     const sourceLabel = String(sourceMeta?.source || sourceMeta?.text || "").trim();
     const sourceUrl = String(sourceMeta?.sourceUrl || sourceMeta?.url || "").trim();
     const verifiedAt = String(sourceMeta?.verifiedAt || "").trim();
-    const sourceParts = [sourceLabel, verifiedAt].filter(Boolean);
+    const sourceScope = String(sourceMeta?.scope || "").trim();
+    const checkedLabel = verifiedAt ? `${t("university.admissions.checked", "Checked")}: ${verifiedAt}` : "";
+    const sourceParts = [sourceLabel, sourceScope, checkedLabel].filter(Boolean);
     const sourceText = sourceParts.join(" · ");
     const sourceHtml = sourceText
         ? `<small>${sourceUrl

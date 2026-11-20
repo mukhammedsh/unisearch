@@ -367,7 +367,7 @@ ranking.source_status.not_published: Недоступно
 ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
-ranking.source_tooltip: Источник: {source} | Тип: {status} | Проверено: {verified_at}
+ranking.source_tooltip: Источник: {source} | Тип: {status} | Последняя проверка: {verified_at}
 title.about: О нас | UniSearch
 title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
@@ -782,7 +782,8 @@ university.admissions.university_wide: По университету
 university.admissions.program_level: По программам
 university.admissions.program_signals: Данные о поступлении по программам
 university.admissions.program_signals_note: Если данные опубликованы, здесь показаны процент зачисления, количество заявок и предложений, число мест, проходной порог или профиль поступающих. В остальных случаях официальный источник объясняет, почему отдельных данных нет.
-university.admissions.checked: Проверено
+university.admissions.checked: Последняя проверка
+university.admissions.check_date_unrecorded: Дата проверки не указана
 university.admissions.cycle: Цикл
 university.admissions.rows_count: Официальных строк: {count}
 university.admissions.no_university_rate: Университет не публикует официальный процент зачисления по университету в целом.
@@ -3598,6 +3599,7 @@ university.ux2.needs.empty: Экзамены и документы перечи�
 university.ux2.needs.varies: Требования различаются у программ бакалавриата.
 university.ux2.needs.profile_hint: Добавьте результаты экзаменов в профиль, чтобы увидеть, что у вас уже есть.
 university.ux2.people.international: {percent}% иностранных студентов · {count} из {total} на бакалавриате
+university.ux2.people.international_share: {percent}% студентов бакалавриата — иностранцы (всего {total})
 university.ux2.people.housing_one: Жильё гарантировано на {years} год
 university.ux2.people.housing_few: Жильё гарантировано на {years} года
 university.ux2.people.housing_many: Жильё гарантировано на {years} лет
@@ -3609,6 +3611,7 @@ university.ux2.needs.presence_required: обязательно
 university.ux2.needs.presence_recommended: рекомендуется
 university.ux2.needs.presence_strongly_recommended: настоятельно рекомендуется некоторым абитуриентам
 university.ux2.format.hybrid: Гибридно (кампус и онлайн)
+university.ux2.format_scope_note: Форматы указаны по ссылкам на программы и могут различаться по программе и учебному году.
 university.ux2.deadlines.not_collected: UniSearch пока не собрал сроки подачи для этого университета. Актуальные даты смотрите на официальном сайте приёмной комиссии.
 university.ux2.deadline.legacy_none: Сроки пока не собраны
 university.ux2.deadline.legacy_none_detail: У UniSearch ещё нет сроков подачи этого университета. Проверьте их на официальном сайте.

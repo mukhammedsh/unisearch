@@ -4189,9 +4189,9 @@ export function initUniversitiesPage() {
             ? rankingStatusLabel(rankStatusRaw)
             : translateWord("global_rank", "Global Rank");
         const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
-            || unknownFieldText("placeholder.field.verification_date", "Verification date");
+            || t("university.admissions.check_date_unrecorded", "Check date not recorded");
         const sourceTooltip = rankSource
-            ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Checked: ${rankVerifiedAt}`)
+            ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Last checked: ${rankVerifiedAt}`)
             : "";
         const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
         const rankAriaLabel = sourceTooltip

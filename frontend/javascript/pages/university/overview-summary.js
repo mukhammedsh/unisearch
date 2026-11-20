@@ -117,17 +117,18 @@ export function selectivityItem(statistics, source) {
   if (measure === "offers") details.push(label("people.selectivity_offers_note"));
   const year = toFiniteNumber(statistics.entry_year);
   return { kind: "selectivity", text: tFormat(`university.ux2.people.selectivity_${measure}`, { rate: percentText(rate) }), details,
-    source: source(statistics.source, statistics.source_url, year ? tFormat("university.ux2.people.intake", { year }) : "") };
+    source: source(statistics.source, statistics.source_url, year ? tFormat("university.ux2.people.intake", { year }) : "", statistics.checked_at) };
 }
 
 // Who studies here: only published figures that exist, each with its official source.
 export function peopleItems(university, { acceptanceRate = null, acceptanceMeta = null } = {}) {
   const items = [];
-  const source = (name, url, extra = "") => {
+  const source = (name, url, extra = "", checkedAt = "") => {
     const href = safeUrl(url);
     const text = [isString(name) ? trFactSource(name) : "", extra].filter(Boolean).join(" · ");
+    const checked = String(checkedAt || "").trim();
     // A source with no published name is shown as a plain "Official source" link, without a "Source:" caption.
-    return text ? { label: text, url: href } : href ? { label: t("university.admissions.official_source"), url: href, unnamed: true } : null;
+    return text ? { label: text, url: href, checkedAt: checked } : href ? { label: t("university.admissions.official_source"), url: href, unnamed: true, checkedAt: checked } : null;
   };
   const selectivity = selectivityItem(university?.admission_statistics, source);
   if (selectivity) items.push(selectivity);
@@ -136,15 +137,17 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
     const kind = String(university?.academics?.admissions?.university_wide?.kind || "").toLowerCase();
     items.push({ kind: "acceptance", text: tFormat(`university.ux2.people.acceptance${kind.startsWith("undergraduate") ? "_undergraduate" : ""}`,
       { rate: formatUiNumber(Math.round(rate * 10) / 10, { maximumFractionDigits: 1 }) }),
-    source: source(acceptanceMeta?.source, acceptanceMeta?.source_url) });
+    source: source(acceptanceMeta?.source, acceptanceMeta?.source_url, "", acceptanceMeta?.verified_at) });
   }
   const enrollment = university?.enrollment_breakdown;
   const [percent, count, total] = ["undergraduate_international_percent", "undergraduate_international_count", "undergraduate_count"]
     .map(key => toFiniteNumber(enrollment?.[key]));
-  if (percent !== null && count !== null && total !== null && total > 0) {
-    items.push({ kind: "international", text: tFormat("university.ux2.people.international",
-      { percent: formatUiNumber(Math.round(percent)), count: formatUiNumber(count), total: formatUiNumber(total) }),
-    source: source(enrollment.source, enrollment.source_url, enrollment.census_year) });
+  if (percent !== null && total !== null && total > 0) {
+    const text = count !== null
+      ? tFormat("university.ux2.people.international", { percent: formatUiNumber(Math.round(percent)), count: formatUiNumber(count), total: formatUiNumber(total) })
+      : tFormat("university.ux2.people.international_share", { percent: formatUiNumber(Math.round(percent)), total: formatUiNumber(total) });
+    items.push({ kind: "international", text,
+    source: source(enrollment.source, enrollment.source_url, enrollment.census_year, enrollment.checked_at || enrollment.verified_at) });
   }
   const years = toFiniteNumber(university?.housing?.undergraduate_guarantee_years);
   if (years !== null && years > 0) {
@@ -153,7 +156,7 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
     const form = getCurrentLanguage() === "rus" ? (years % 100 >= 11 && years % 100 <= 14 ? "many" : mod10 === 1 ? "one" : mod10 >= 2 && mod10 <= 4 ? "few" : "many")
       : years === 1 ? "one" : "many";
     items.push({ kind: "housing", text: tFormat(`university.ux2.people.housing_${form}`, { years: formatUiNumber(years) }),
-      source: source("", university.housing.source_url) });
+      source: source(university.housing.source, university.housing.source_url, "", university.housing.checked_at || university.housing.verified_at) });
   }
   // Reviewed universities show no earnings figure, as in comparison: their reviewed data holds no rechecked outcomes.
   const reviewed = university?.admissions_catalog?.availability === "reviewed";
@@ -161,7 +164,7 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
     const value = toFiniteNumber(university?.outcomes?.[outcomeKey]);
     const fact = university?.fact_provenance?.facts?.[factKey];
     if (value === null || !safeUrl(fact?.source_url)) continue;
-    items.push({ kind, text: tFormat(`university.ux2.people.${kind}`, { amount: usd(value) }), source: source(fact.source, fact.source_url) });
+    items.push({ kind, text: tFormat(`university.ux2.people.${kind}`, { amount: usd(value) }), source: source(fact.source, fact.source_url, "", fact.verified_at) });
     break;
   }
   return items;
@@ -292,8 +295,9 @@ const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
 function renderSource(source) {
   if (!source) return "";
   const text = escapeHtml(source.label);
+  const checked = ` · ${source.checkedAt ? `${escapeHtml(t("university.admissions.checked", "Last checked"))}: ${escapeHtml(source.checkedAt)}` : escapeHtml(t("university.admissions.check_date_unrecorded", "Check date not recorded"))}`;
   return `<span class="overview-summary__source">${source.unnamed ? "" : `${t("university.ux2.source")} `}${source.url
-    ? `<a href="${escapeHtmlAttr(source.url)}" target="_blank" rel="noopener noreferrer">${text}</a>` : text}</span>`;
+    ? `<a href="${escapeHtmlAttr(source.url)}" target="_blank" rel="noopener noreferrer">${text}</a>` : text}${checked}</span>`;
 }
 
 function renderItem(card, entry) {

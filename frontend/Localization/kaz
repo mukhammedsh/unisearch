@@ -364,7 +364,7 @@ ranking.source_status.not_published: Дерек жоқ
 ranking.source_status.curated: Қолмен тексерілген
 ranking.source_status.derived: Модель бағалауы
 ranking.source_status.derived_prestige_order: Модель бағалауы
-ranking.source_tooltip: Дереккөз: {source} | Түрі: {status} | Тексерілген күні: {verified_at}
+ranking.source_tooltip: Дереккөз: {source} | Түрі: {status} | Соңғы тексеру: {verified_at}
 title.about: Біз туралы | UniSearch
 title.profile: Талапкер профилі | UniSearch
 title.guide: Нұсқаулық | UniSearch
@@ -779,7 +779,8 @@ university.admissions.university_wide: Университет бойынша
 university.admissions.program_level: Бағдарлама деңгейінде
 university.admissions.program_signals: Бағдарлама бойынша қабылдау деректері
 university.admissions.program_signals_note: Деректер қолжетімді болған жағдайда, бұл карточкаларда қабылдау көрсеткіші, үміткерлер мен ұсыныстар саны, сыйымдылық, шекті балл немесе қабылдау талаптары көрсетіледі. Басқа жағдайда, ресми дереккөз жеке деректердің неге жоқ екенін түсіндіреді.
-university.admissions.checked: Тексерілген
+university.admissions.checked: Соңғы тексеру
+university.admissions.check_date_unrecorded: Тексеру күні көрсетілмеген
 university.admissions.cycle: Цикл
 university.admissions.rows_count: {count} ресми жазба
 university.admissions.no_university_rate: Университет бойынша жалпы қабылдау көрсеткіші жарияланбаған.
@@ -3600,6 +3601,7 @@ university.ux2.needs.empty: Емтихандар мен құжаттар «Қа�
 university.ux2.needs.varies: Талаптар бакалавриат бағдарламаларына қарай әртүрлі.
 university.ux2.needs.profile_hint: Бар нәрсені көру үшін емтихан нәтижелерін профильге қосыңыз.
 university.ux2.people.international: {percent}% шетелдік студент · бакалавриатта {total} студенттің {count}-ы
+university.ux2.people.international_share: Бакалавриаттағы {total} студенттің {percent}%-ы шетелдік
 university.ux2.people.housing_one: Тұрғын үй {years} жылға кепілдендірілген
 university.ux2.people.housing_few: Тұрғын үй {years} жылға кепілдендірілген
 university.ux2.people.housing_many: Тұрғын үй {years} жылға кепілдендірілген
@@ -3611,6 +3613,7 @@ university.ux2.needs.presence_required: міндетті
 university.ux2.needs.presence_recommended: ұсынылады
 university.ux2.needs.presence_strongly_recommended: кейбір үміткерлерге қатаң ұсынылады
 university.ux2.format.hybrid: Аралас (кампус және онлайн)
+university.ux2.format_scope_note: Форматтар сілтеме жасалған бағдарламалар беттеріне негізделген және бағдарлама мен оқу жылына қарай өзгеруі мүмкін.
 university.ux2.deadlines.not_collected: UniSearch бұл университеттің өтініш мерзімдерін әлі жинамаған. Өзекті күндерді қабылдау комиссиясының ресми сайтынан қараңыз.
 university.ux2.deadline.legacy_none: Мерзімдер әлі жиналмаған
 university.ux2.deadline.legacy_none_detail: UniSearch-те бұл университеттің өтініш мерзімдері әлі жоқ. Оларды ресми сайттан тексеріңіз.

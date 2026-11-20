@@ -6,7 +6,7 @@ import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
 import { glossaryTerms, renderTermList } from "./admissions-glossary.js";
-import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution } from "./admissions-status.js";
+import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution, reviewState } from "./admissions-status.js";
 
 const label = key => t(`university.admissions.reading.${key}`);
 const period = row => typeof row.period === "object" ? row.period?.label || "" : row.period || "";
@@ -53,7 +53,7 @@ function safeSourceUrl(value) {
 // so every excerpt marker and the area's source list agree.
 function createSourceRegistry(resolved) {
   const entries = new Map();
-  const cite = ids => {
+  const cite = (ids, checkedAt = "") => {
     const cited = [];
     for (const id of ids || []) {
       const source = (resolved.sources || []).find(item => item.id === id);
@@ -65,6 +65,8 @@ function createSourceRegistry(resolved) {
       if (source.checked_at) entry.dates.add(source.checked_at);
       if (!cited.includes(entry)) cited.push(entry);
     }
+    const factDate = String(checkedAt || "").trim();
+    if (factDate) for (const entry of cited) if (!entry.dates.size) entry.dates.add(factDate);
     return cited.sort((left, right) => left.number - right.number);
   };
   return { cite, entries: () => [...entries.values()] };
@@ -73,7 +75,7 @@ function createSourceRegistry(resolved) {
 const sourceTitle = entry => [...entry.titles].join(" · ") || new URL(entry.url).hostname;
 
 function markers(row, resolved) {
-  const cited = resolved.readingSources?.cite(row.source_ids) || [];
+  const cited = resolved.readingSources?.cite(row.source_ids, row.checked_at) || [];
   // The numbers are named as sources, so a reader can tell they point to the official pages listed under the tab.
   return cited.length ? `<span class="admissions-reading__refs"><span class="admissions-reading__refs-label">${escapeHtml(t(`university.ux2.sources.${cited.length > 1 ? "many" : "one"}`))}</span>${cited.map(entry => `<a class="admissions-reading__ref" href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtmlAttr(tFormat("university.admissions.reading.source_marker", { number: entry.number, title: sourceTitle(entry) }))}" title="${escapeHtmlAttr(sourceTitle(entry))}" data-source-ref="${entry.number}">${entry.number}</a>`).join("")}</span>` : "";
 }
@@ -113,11 +115,14 @@ function renderSourceList(registry) {
   if (!entries.length) return "";
   const hints = sourceDistinguishingHints(entries);
   const checked = escapeHtml(t("university.admissions.checked"));
-  const dateNote = dates => `<span class="admissions-reading__note" data-source-checked>${checked}: ${[...dates].map(escapeHtml).join(", ")}</span>`;
+  const missingDate = escapeHtml(t("university.admissions.check_date_unrecorded"));
+  const dateNote = dates => dates.size
+    ? `<span class="admissions-reading__note" data-source-checked>${checked}: ${[...dates].map(escapeHtml).join(", ")}</span>`
+    : `<span class="admissions-reading__note" data-source-check-date-missing>${missingDate}</span>`;
   // One shared check date is stated once for the list instead of on every line.
   const allDates = new Set(entries.flatMap(entry => [...entry.dates]));
   const shared = entries.length > 1 && allDates.size === 1 && entries.every(entry => entry.dates.size === 1);
-  return `<section class="admissions-reading__sources" data-reading-sources><h3>${escapeHtml(tFormat("university.admissions.reading.official_sources_count", { count: entries.length }))}</h3>${shared ? dateNote(allDates) : ""}<ol class="admissions-reading__source-list">${entries.map(entry => `<li value="${entry.number}" data-source-number="${entry.number}"><a href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceTitle(entry))}</a>${hints.get(entry) ? `<span class="admissions-reading__note" data-source-hint>${escapeHtml(hints.get(entry))}</span>` : ""}${entry.dates.size && !shared ? dateNote(entry.dates) : ""}</li>`).join("")}</ol></section>`;
+  return `<section class="admissions-reading__sources" data-reading-sources><h3>${escapeHtml(tFormat("university.admissions.reading.official_sources_count", { count: entries.length }))}</h3>${shared ? dateNote(allDates) : ""}<ol class="admissions-reading__source-list">${entries.map(entry => `<li value="${entry.number}" data-source-number="${entry.number}"><a href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceTitle(entry))}</a>${hints.get(entry) ? `<span class="admissions-reading__note" data-source-hint>${escapeHtml(hints.get(entry))}</span>` : ""}${!shared ? dateNote(entry.dates) : ""}</li>`).join("")}</ol></section>`;
 }
 
 const PERIOD_LABELS = {
@@ -171,7 +176,7 @@ function sourceSummaries(rows, resolved, section, options = {}) {
     || row.scope.levels.some(level => resolved.selected_option.levels.includes(level))).sort((left, right) => Number(linked(right, resolved)) - Number(linked(left, resolved))).map(row => {
     const value = row.value || {};
     const values = typeof value === "string" ? [value] : [JSON.stringify(value), value.full_course_specific_academic_requirement_and_exceptions, value.A_level_rules_by_option_panel, value.IB_rules_by_option_panel, ...Object.values(value)].flat();
-    const status = evidenceReviewed(row) ? "reviewed" : reviewNeedsResolution(row) ? "conflict" : "unverified";
+    const status = reviewState(row) === "carried_forward" ? "carried_forward" : evidenceReviewed(row) ? "reviewed" : reviewNeedsResolution(row) ? "conflict" : "unverified";
     // An excerpt that would read exactly like one already shown on this tab (same text, sources, period and status) is printed once.
     const texts = [...new Set([...new Set(values.filter(item => typeof item === "string"))].map(item => translateAdmissionSummary(item, { section })).filter(Boolean))].filter(text => {
       const key = JSON.stringify([text, sourceUrls(row), period(row) || row.scope?.cycle || "", status]);
@@ -184,7 +189,11 @@ function sourceSummaries(rows, resolved, section, options = {}) {
   if (!excerpts.length) return "";
   // A period shared by every excerpt of the section is stated once under its heading; differing periods stay beside their excerpts.
   const sharedPeriod = excerpts.length > 1 && excerpts[0].period && excerpts.every(item => item.period === excerpts[0].period) ? excerpts[0].period : "";
-  const blocks = excerpts.map(({ row, texts, status }) => `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${status !== "reviewed" ? `<p class="admissions-context__note" ${status === "conflict" ? "data-summary-conflict" : "data-summary-unverified"}>${escapeHtml(label(status === "conflict" ? "source_conflict" : "source_unverified"))}</p>` : ""}${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, { ...options, omitPeriod: Boolean(sharedPeriod) })}</div>`);
+  const statusNote = status => status === "conflict" ? label("source_conflict")
+    : status === "carried_forward" ? t("university.admissions.catalog.review.carried_forward_review") : label("source_unverified");
+  const statusAttribute = status => status === "conflict" ? "data-summary-conflict"
+    : status === "carried_forward" ? "data-summary-carried-forward" : "data-summary-unverified";
+  const blocks = excerpts.map(({ row, texts, status }) => `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${status !== "reviewed" ? `<p class="admissions-context__note" ${statusAttribute(status)}>${escapeHtml(statusNote(status))}</p>` : ""}${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, { ...options, omitPeriod: Boolean(sharedPeriod) })}</div>`);
   return `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${sharedPeriod ? `<div class="admissions-reading__source" data-section-period>${sharedPeriod}</div>` : ""}${blocks.join("")}</section>`;
 }
 

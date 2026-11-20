@@ -5,9 +5,11 @@
 }
 
 .d-study-formats {
+  flex: 1 1 45%;
   min-width: 0;
   line-height: var(--leading-normal);
   overflow-wrap: anywhere;
+  text-align: right;
 }
 
 .admissions-context {

@@ -105,15 +105,37 @@ test("excerpts cite numbered sources that match one de-duplicated list with real
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);
   assert.equal((html.match(/data-reading-sources/g) || []).length, 1);
   const list = html.split("data-reading-sources")[1];
-  assert.match(list, /<li value="1" data-source-number="1"><a href="https:\/\/example.edu\/tests"[^>]*>Testing policy<\/a><span class="admissions-reading__note" data-source-checked>Проверено: 2026[-‑]10-01/);
+  assert.match(list, /<li value="1" data-source-number="1"><a href="https:\/\/example.edu\/tests"[^>]*>Testing policy<\/a><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑]10-01/);
   assert.match(list, /<li value="2" data-source-number="2"><a href="https:\/\/example.edu\/apply"[^>]*>Application · Application copy<\/a>/);
   assert.doesNotMatch(html, /user:pass|private/);
   // A check date shared by every listed source is stated once for the list, not on each line.
   const sameDate = { ...resolved, sources: resolved.sources.map(source => ({ ...source, checked_at: "2026-10-01" })) };
   const sharedList = renderApplicantSection(sameDate, ["requirements"]).split('<details class="admissions-reading__references"')[0].split("data-reading-sources")[1];
   assert.equal((sharedList.match(/data-source-checked/g) || []).length, 1);
-  assert.match(sharedList, /<\/h3><span class="admissions-reading__note" data-source-checked>Проверено: 2026[-‑]10-01<\/span><ol/);
+  assert.match(sharedList, /<\/h3><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑]10-01<\/span><ol/);
   setLanguage("eng", { emit: false });
+});
+
+test("source lists fall back to a fact check date and identify an unrecorded date", () => {
+  setLanguage("eng", { emit: false });
+  const render = checkedAt => {
+    const row = fact("test-policy", { presence: "required", alternatives: ["SAT"] }, { source_ids: ["sat-policy"], checked_at: checkedAt });
+    const resolved = context([row], { requirements: [row.id] });
+    resolved.sources = [{ id: "sat-policy", title: "SAT policy", url: "https://example.edu/tests" }];
+    return renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  };
+  assert.match(render("2026-10-01"), /Last checked: 2026[-‑]10-01/);
+  assert.match(render(undefined), /Check date not recorded/);
+});
+
+test("reading summaries disclose a carried-forward source review", () => {
+  setLanguage("eng", { emit: false });
+  const row = fact("carried-policy", { presence: "required", alternatives: ["SAT"] }, {
+    review_status: "carried_forward_review",
+    normalized_status: { publication: "published", review: "carried_forward" },
+  });
+  const html = renderApplicantSection(context([row], { requirements: [row.id] }), ["requirements"]);
+  assert.ok(html.includes(t("university.admissions.catalog.review.carried_forward_review")));
 });
 
 test("official pages that share a title get a short URL hint in the numbered list, unique titles stay unchanged", () => {

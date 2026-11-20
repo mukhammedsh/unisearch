@@ -31,29 +31,35 @@
       "checked_at": "2026-11-13"
     },
     "enrollment_breakdown": {
-      "census_year": "2024-2025",
-      "total_headcount": 11886,
-      "undergraduate_count": 4535,
-      "graduate_count": 7351,
-      "undergraduate_share_percent": 38.15,
-      "graduate_share_percent": 61.85,
+      "census_year": "2025–2026",
+      "census_date": "October 2025",
+      "total_headcount": 11816,
+      "undergraduate_count": 4561,
+      "graduate_count": 7255,
+      "undergraduate_share_percent": 39,
+      "graduate_share_percent": 61,
       "undergraduate_international_count": 529,
-      "undergraduate_international_percent": 11.66,
+      "undergraduate_international_percent": 12,
       "graduate_international_count": 2908,
-      "graduate_international_percent": 39.56,
+      "graduate_international_percent": 41,
       "total_international_count": 3437,
-      "total_international_percent": 28.92,
-      "source": "MIT Facts & MIT Registrar Official Enrollment Statistics",
-      "source_url": "https://facts.mit.edu/"
+      "source": "MIT Facts — Enrollment Statistics",
+      "source_url": "https://facts.mit.edu/enrollment-statistics/",
+      "checked_at": "2026-11-20"
     },
     "housing": {
       "undergraduate_guarantee_semesters": 8,
       "undergraduate_guarantee_years": 4,
       "undergraduate_freshman_mandate": true,
-      "undergraduate_housing_note": "MIT guarantees on-campus housing for all eight undergraduate semesters (all 4 years) for students who submit their annual Housing Intent form. Living on campus is mandatory for all first-year undergraduates across 10 residential dormitories.",
+      "undergraduate_housing_note": "MIT guarantees on-campus housing for eight consecutive undergraduate semesters. All first-year students live in on-campus residence halls.",
       "graduate_housing_guaranteed": false,
-      "graduate_housing_note": "Graduate housing is allocated through an annual lottery/waitlist system; options include single-student apartments, couple residences, and family housing for students with children.",
-      "source_url": "https://mitadmissions.org/discover/life-culture/housing-dining/"
+      "graduate_housing_note": "MIT Graduate Housing offers on-campus options for single students and students with families. First-year graduate students receive priority in the General Allocation Lottery, which typically runs in April.",
+      "source_url": "https://mitadmissions.org/discover/life-culture/reslife/",
+      "source": "MIT Admissions — Housing at MIT",
+      "checked_at": "2026-11-20",
+      "graduate_source": "MIT Office of Graduate Education — Additional Considerations and Information",
+      "graduate_source_url": "https://oge.mit.edu/graduate-admissions/costs-funding/additional-considerations-and-information/",
+      "graduate_checked_at": "2026-11-20"
     },
     "description": "Massachusetts Institute of Technology (MIT) is the world's preeminent private research institution in science, engineering, and technology. Located on 168 acres along the Charles River in Cambridge, Massachusetts, MIT combines an undergraduate college of ~4,500 students with a powerhouse graduate research body of ~7,350 students across five schools and the Stephen A. Schwarzman College of Computing. MIT operates a fully need-blind admissions policy for all undergraduate students worldwide, meeting 100% of demonstrated need with zero loans, and offers department-specific doctoral research funding, with terms stated in each offer.",
     "tags": [
@@ -69,14 +75,14 @@
     ],
     "description_source": "https://www.mit.edu/about/",
     "factors": {
-      "practice_vs_science": 0.9925,
+      "practice_vs_science": 0.994,
       "social_vs_hardcore": 0.8347,
       "budget_vs_prestige": 0.9918,
       "city_vs_campus": 0.0
     },
     "factors_meta": {
       "version": "internet_v2",
-      "computed_at": "2026-05-23T22:07:21Z",
+      "computed_at": "2026-11-20T17:00:55Z",
       "method": "Fixed scales from app/services/preference_factors.py: research focus is OpenAlex works per enrolled student (log scale, 0.1 to 30); selectivity (social_vs_hardcore) is applicants per place from the published first-year admission rate (log scale, 1 to 40); location is city population on the OECD functional-urban-area size classes (log scale, 50,000 = outside a city to 1.5 million = large metropolitan). Null means the source data is missing. Location prefers the official urban-area population (OECD functional urban areas or national statistics). Cost vs prestige averages annual cost in USD (log scale, $1,000 to $100,000) and the official rank (log scale, 1 to 1,000).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Massachusetts+Institute+of+Technology&per-page=8",
@@ -146,14 +152,19 @@
           "method": "Official 2026-27 undergraduate cost of attendance, including tuition, student life fee, housing, food, books and personal expenses."
         },
         "student_count": {
-          "value": 11920,
+          "value": 11816,
           "unit": "students",
-          "source": "MIT Facts",
-          "source_url": "https://facts.mit.edu/",
-          "verified_at": "2026-03-12",
+          "source": "MIT Facts — Enrollment Statistics",
+          "source_url": "https://facts.mit.edu/enrollment-statistics/",
+          "verified_at": "2026-11-20",
           "confidence": "high",
           "status": "official",
-          "method": "Direct student headcount published on MIT Facts."
+          "method": "MIT Facts reports 11,816 all students in October 2025 for academic year 2025–2026.",
+          "basis": {
+            "scope": "All students; headcount in October 2025 for academic year 2025–2026",
+            "census_date": "October 2025",
+            "academic_year": "2025–2026"
+          }
         },
         "acceptance_rate_percent": {
           "value": 4.56,
@@ -219,12 +230,15 @@
       "verified_at": "2026-04-09",
       "note": "Official QS WUR 2026 rank value."
     },
-    "student_count": 11920,
+    "student_count": 11816,
     "student_life": {
       "size": "medium",
       "campus_area_m2": 679968,
       "size_source_url": "https://facts.mit.edu/mit-campus/",
-      "size_note": "Official MIT Facts campus footprint: 168 acres (0.68 km²)."
+      "size_source_title": "MIT Facts — MIT Campus",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Cambridge campus; 168 acres (0.68 km²)",
+      "size_is_approximate": true
     },
     "outcomes": {
       "early_career_salary_usd": 98741
@@ -287,10 +301,6 @@
         "url": "https://www.mit.edu/about/mission-statement/"
       },
       {
-        "topic": "student_count",
-        "url": "https://facts.mit.edu/"
-      },
-      {
         "topic": "acceptance_rate",
         "url": "https://mitadmissions.org/apply/process/stats/"
       },
@@ -305,6 +315,13 @@
       {
         "topic": "outcomes",
         "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://facts.mit.edu/enrollment-statistics/",
+        "title": "MIT Facts — Enrollment Statistics",
+        "scope": "All students; headcount in October 2025 for academic year 2025–2026",
+        "checked_at": "2026-11-20"
       }
     ],
     "admissions_catalog_id": "mit-usa-cambridge"
@@ -536,8 +553,6 @@
     "student_count": 25143,
     "student_life": {
       "size": "medium",
-      "size_source_url": "https://www.imperial.ac.uk/campusinfo",
-      "size_note": "Medium bucket based on Imperial's multi-campus estate across London and the South East, including South Kensington, White City, and Silwood Park.",
       "enrollment_breakdown": {
         "census_year": "2023-24 / 2024-25",
         "total_students": 23248,
@@ -626,13 +641,10 @@
     "student_count": 17552,
     "student_life": {
       "size": "large",
-      "campus_area_m2": 33104376,
       "campus_area_acres": 8180,
       "housing_guarantee_years": 4,
       "undergrads_living_on_campus_percent": 97,
-      "residential_system": "Neighborhoods system across ~80 undergraduate residences, theme dorms, co-ops, and residential colleges",
-      "size_source_url": "https://facts.stanford.edu/campuslife/campus/",
-      "size_note": "Official Stanford campus land: 8,180 contiguous acres in Silicon Valley."
+      "residential_system": "Neighborhoods system across ~80 undergraduate residences, theme dorms, co-ops, and residential colleges"
     },
     "outcomes": {},
     "description": "Stanford University is a world-leading private research university located in California's Silicon Valley. Renowned for its entrepreneurial culture, academic excellence across undergraduate and graduate disciplines, groundbreaking research, and transformative financial aid, Stanford encompasses seven world-class schools: Humanities and Sciences, Engineering, Doerr School of Sustainability, Business (GSB), Law, Medicine, and Education.",
@@ -962,9 +974,6 @@
     },
     "student_life": {
       "size": "large",
-      "campus_area_m2": 2205723,
-      "size_source_url": "https://www.harvard.edu/community/wp-content/uploads/sites/14/2024/11/2023_facts_impact_final.pdf",
-      "size_note": "Official Harvard footprint is reported at roughly 5,450 acres across Cambridge, Allston, Boston Longwood Medical Area, and the Arnold Arboretum.",
       "undergraduate_residential_system": {
         "has_residential_house_system": true,
         "house_count": 12,
@@ -1549,10 +1558,7 @@
       ]
     },
     "academics": {
-      "formats": [
-        "On-campus",
-        "Online"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Economics",
@@ -5977,7 +5983,7 @@
       "economics",
       "business"
     ],
-    "student_count": 26760,
+    "student_count": 26800,
     "student_count_breakdown": {
       "total_students": 26475,
       "undergraduate_students": 12460,
@@ -8774,10 +8780,6 @@
         "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/engineering-science"
       },
       {
-        "topic": "formats",
-        "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science"
-      },
-      {
         "topic": "description",
         "url": "https://www.ox.ac.uk/about"
       },
@@ -8794,10 +8796,6 @@
         "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford"
       },
       {
-        "topic": "student_count",
-        "url": "https://www.ox.ac.uk/about/facts-and-figures"
-      },
-      {
         "topic": "acceptance_rate",
         "url": "https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students/current/overall-numbers"
       },
@@ -8808,17 +8806,34 @@
       {
         "topic": "finance",
         "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/about-your-studies",
+        "title": "Oxford — About Your Studies",
+        "scope": "Ordinary undergraduate degree study",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
+      },
+      {
+        "topic": "student_count",
+        "url": "https://www.ox.ac.uk/about/the-university/facts-and-figures/student-numbers",
+        "title": "Oxford Student Numbers",
+        "scope": "Fully enrolled students across all study levels; figures as of 2025-12-01, rounded to the nearest five",
+        "checked_at": "2026-11-20"
       }
     ],
     "factors": {
-      "practice_vs_science": 0.9531,
+      "practice_vs_science": 0.9528,
       "social_vs_hardcore": 0.4893,
       "budget_vs_prestige": 0.7993,
       "city_vs_campus": 0.2661
     },
     "factors_meta": {
       "version": "internet_v2",
-      "computed_at": "2026-05-23T22:07:21Z",
+      "computed_at": "2026-11-20T17:00:55Z",
       "method": "Fixed scales from app/services/preference_factors.py: research focus is OpenAlex works per enrolled student (log scale, 0.1 to 30); selectivity (social_vs_hardcore) is applicants per place from the published first-year admission rate (log scale, 1 to 40); location is city population on the OECD functional-urban-area size classes (log scale, 50,000 = outside a city to 1.5 million = large metropolitan). Null means the source data is missing. Location prefers the official urban-area population (OECD functional urban areas or national statistics). Cost vs prestige averages annual cost in USD (log scale, $1,000 to $100,000) and the official rank (log scale, 1 to 1,000).",
       "raw_metrics": {
         "rank": {
@@ -8868,14 +8883,19 @@
           "method": "No single university-wide cost is stated. Course-level fees depend on programme and Home/Overseas fee status."
         },
         "student_count": {
-          "value": 26760,
+          "value": 26800,
           "unit": "students",
-          "source": "University of Oxford facts and figures",
-          "source_url": "https://www.ox.ac.uk/about/facts-and-figures",
-          "verified_at": "2026-04-04",
-          "confidence": "medium",
-          "status": "reviewed",
-          "method": "Curated from the university's published facts / quick-facts materials."
+          "source": "Oxford Student Numbers",
+          "source_url": "https://www.ox.ac.uk/about/the-university/facts-and-figures/student-numbers",
+          "verified_at": "2026-11-20",
+          "confidence": "high",
+          "status": "official",
+          "method": "Oxford Student Numbers reports 26,800 fully enrolled students as of 1 December 2025.",
+          "basis": {
+            "scope": "Fully enrolled students across all study levels; figures as of 2025-12-01, rounded to the nearest five",
+            "data_as_of": "2025-12-01",
+            "rounded_to_nearest": 5
+          }
         },
         "acceptance_rate_percent": {
           "value": 16.45,
@@ -8924,35 +8944,35 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://www.ox.ac.uk/about/facts-and-figures/student-numbers",
-      "size_note": "Total collegiate student body exceeding 26,000 students across 39 colleges and 4 halls."
+      "size": "large"
     },
     "enrollment_breakdown": {
-      "census_year": "2024-2025",
-      "total_headcount": 26475,
+      "census_year": "2025-12-01",
+      "total_headcount": 26800,
       "undergraduate_count": 12460,
       "graduate_count": 13755,
-      "undergraduate_share_percent": 47.06,
-      "graduate_share_percent": 52.94,
-      "undergraduate_international_count": 2617,
+      "other_count": 585,
+      "undergraduate_share_percent": 47,
+      "graduate_share_percent": 51,
+      "other_share_percent": 2,
       "undergraduate_international_percent": 21,
-      "graduate_international_count": 8253,
       "graduate_international_percent": 60,
-      "total_international_count": 12565,
-      "total_international_percent": 43,
-      "countries_represented": 160,
-      "source": "University of Oxford Facts and Figures: Student Numbers",
-      "source_url": "https://www.ox.ac.uk/about/facts-and-figures/student-numbers"
+      "countries_represented": 175,
+      "source": "Oxford Student Numbers",
+      "source_url": "https://www.ox.ac.uk/about/the-university/facts-and-figures/student-numbers",
+      "checked_at": "2026-11-20",
+      "scope": "Fully enrolled students; page data as of 2025-12-01 and rounded to the nearest five"
     },
     "housing": {
-      "undergraduate_guarantee_years": 1,
-      "undergraduate_typical_guarantee_years": "1 to 3 years depending on college (many colleges guarantee all 3 years)",
+      "undergraduate_guarantee_years": 2,
+      "undergraduate_typical_guarantee_years": "At least two years; some colleges offer accommodation for the full degree.",
       "undergraduate_freshman_guarantee": true,
-      "undergraduate_housing_note": "All colleges guarantee accommodation in college rooms or college flats to first-year undergraduates. Most colleges accommodate undergraduates for 2 to 3 years in historic college quads or modern annexes.",
+      "undergraduate_housing_note": "All first-year undergraduates are offered college accommodation. Every college offers at least one further year, and some offer accommodation for the full degree.",
       "graduate_housing_guaranteed": false,
-      "graduate_housing_note": "Colleges prioritize single rooms for incoming overseas master's and doctoral students where collegiate accommodation capacity allows.",
-      "source_url": "https://www.ox.ac.uk/admissions/undergraduate/student-life/accommodation"
+      "graduate_housing_note": "Accommodation availability varies by college. Some colleges can guarantee housing for incoming graduates; others can house only a proportion. University accommodation is available to full-time graduates who are not housed by their college.",
+      "source_url": "https://www.ox.ac.uk/students/life/accommodation",
+      "source": "Oxford — Accommodation",
+      "checked_at": "2026-11-20"
     },
     "outcomes": {},
     "career_outcomes": {
@@ -9262,10 +9282,6 @@
         "url": "https://inf.ethz.ch/studies.html"
       },
       {
-        "topic": "formats",
-        "url": "https://inf.ethz.ch/studies.html"
-      },
-      {
         "topic": "description",
         "url": "https://ethz.ch/en/the-eth-zurich/portrait.html"
       },
@@ -9292,6 +9308,16 @@
       {
         "topic": "local_exam_requirements",
         "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
+      },
+      {
+        "topic": "formats",
+        "url": "https://inf.ethz.ch/studies/bachelor.html",
+        "title": "ETH Zurich — Computer Science Bachelor",
+        "scope": "Bachelor's degree in Computer Science",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "ETH Zurich is a public research university in Switzerland, focused primarily on science, technology, engineering, and mathematics, with a strong emphasis on foundational and applied research.",
@@ -9435,10 +9461,7 @@
     },
     "student_count": 26198,
     "student_life": {
-      "size": "small",
-      "campus_area_m2": 460000,
-      "size_source_url": "https://ethz.ch/en/the-eth-zurich/campus/real-estate/campus-hoenggerberg-2040.html",
-      "size_note": "Small bucket reflects the 46-hectare H?nggerberg campus, ETH Zurich's main expandable site, while ETH also operates the urban Zentrum campus."
+      "size": "small"
     },
     "admission_categories": [
       {
@@ -9690,9 +9713,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -9868,10 +9889,6 @@
       {
         "topic": "programs",
         "url": "https://www.comp.nus.edu.sg/programmes/ug/cs/"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.comp.nus.edu.sg/programmes/"
       },
       {
         "topic": "description",
@@ -10086,10 +10103,7 @@
     },
     "student_count": 51679,
     "student_life": {
-      "size": "medium",
-      "campus_area_m2": 1658000,
-      "size_source_url": "https://sustainability.nus.edu.sg/wp-content/uploads/2021/11/NUS_Sustainability_Strategic_Plan_2017_2020.pdf",
-      "size_note": "Official university land area for Kent Ridge, Bukit Timah, and Outram is 165.8 hectares."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -10341,9 +10355,7 @@
           "duration": "3 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -10512,10 +10524,6 @@
       {
         "topic": "programs",
         "url": "https://www.undergraduate.study.cam.ac.uk/courses/engineering"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science"
       },
       {
         "topic": "description",
@@ -10697,9 +10705,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.cam.ac.uk/about-the-university/cambridge-at-a-glance",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "medium"
     },
     "student_count": 24450,
     "admission_categories": [
@@ -11209,9 +11215,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -11379,10 +11383,6 @@
       {
         "topic": "programs",
         "url": "https://apply.join-tsinghua.edu.cn/international/res/file/2025_Undergraduate_Divisions_for_International_Students_of_Tsinghua_University.pdf"
-      },
-      {
-        "topic": "formats",
-        "url": "https://international.join-tsinghua.edu.cn/Divisions1.htm"
       },
       {
         "topic": "campus_size",
@@ -11559,7 +11559,10 @@
       "size": "large",
       "campus_area_m2": 4834300,
       "size_source_url": "https://www.tsinghua.edu.cn/en/About/Facts_and_Figures.htm",
-      "size_note": "Official Tsinghua facts list campus area at 483.43 hectares (~4.83 km²)."
+      "size_source_title": "Tsinghua Facts and Figures",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Campus area reported as of 2025-12-31",
+      "size_is_approximate": false
     },
     "admission_categories": [
       {
@@ -11975,10 +11978,6 @@
         "url": "https://edsc.unimelb.edu.au/course-planning/sample-course-plans/computing"
       },
       {
-        "topic": "formats",
-        "url": "https://handbook.unimelb.edu.au/2025/components/b-des-major-3/course-structure"
-      },
-      {
         "topic": "campus_size",
         "url": "https://about.unimelb.edu.au/__data/assets/pdf_file/0024/153483/Guiding-Our-Estate-Final.pdf"
       },
@@ -12001,6 +12000,17 @@
       {
         "topic": "tags",
         "url": "https://about.unimelb.edu.au/strategy/our-structure/faculties-and-graduate-schools"
+      },
+      {
+        "topic": "formats",
+        "url": "https://students.unimelb.edu.au/course-admin/planning-your-course-and-subjects/subjects",
+        "title": "University of Melbourne — Course and Subject Delivery",
+        "scope": "On-campus undergraduate and selected online graduate subjects",
+        "format_modes": [
+          "On-campus",
+          "Online"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "The University of Melbourne positions itself as a research-intensive university whose teaching is closely connected to deep research, with broad disciplinary strength across the humanities, sciences, business, law, medicine and education.",
@@ -12141,10 +12151,7 @@
     },
     "student_count": 77162,
     "student_life": {
-      "size": "large",
-      "campus_area_m2": 25070600,
-      "size_source_url": "https://about.unimelb.edu.au/__data/assets/pdf_file/0024/153483/Guiding-Our-Estate-Final.pdf",
-      "size_note": "Official estate plan snapshot lists 2,507.06 hectares across the university estate."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -12578,10 +12585,6 @@
         "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
       },
       {
-        "topic": "formats",
-        "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc"
-      },
-      {
         "topic": "description",
         "url": "https://www.tum.de/en/about-tum"
       },
@@ -12612,6 +12615,16 @@
       {
         "topic": "tags",
         "url": "https://www.tum.de/en/about-tum"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc",
+        "title": "TUM — Informatics BSc",
+        "scope": "BSc Informatics, Garching",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "The Technical University of Munich is a public research university in Germany, specializing in engineering, natural sciences, life sciences, and medicine.",
@@ -12760,9 +12773,7 @@
     },
     "student_count": 53581,
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.tum.de/en/about-tum/our-university/locations",
-      "size_note": "Medium bucket reflects TUM's distributed multi-campus setup across Munich, Garching, Freising, Heilbronn, Straubing, and related sites."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -12988,9 +12999,7 @@
           "duration": "3 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -13140,10 +13149,6 @@
       },
       {
         "topic": "programs",
-        "url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/"
-      },
-      {
-        "topic": "formats",
         "url": "https://www.epfl.ch/schools/ic/education/bachelor/computer-science/"
       },
       {
@@ -13323,8 +13328,11 @@
     "student_life": {
       "size": "medium",
       "campus_area_m2": 550000,
-      "size_source_url": "https://actu.epfl.ch/news/a-collective-of-young-farmers-now-runs-the-basse-2",
-      "size_note": "Official EPFL campus area in Ecublens is stated as 55 hectares."
+      "size_source_url": "https://actu.epfl.ch/news/a-collective-of-young-farmers-now-runs-the-basse-2/",
+      "size_source_title": "EPFL — Bassenges farm and campus",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "EPFL campus in Ecublens",
+      "size_is_approximate": false
     },
     "admission_categories": [
       {
@@ -13554,9 +13562,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -13728,10 +13734,6 @@
       {
         "topic": "programs",
         "url": "https://www.ee.caltech.edu/"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.cms.caltech.edu/academics/computer-science"
       },
       {
         "topic": "description",
@@ -13916,9 +13918,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://www.caltech.edu/about/at-a-glance",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "small"
     },
     "student_count": 2369,
     "admission_categories": [
@@ -14175,6 +14175,7 @@
       ],
       "formats": [
         "On-campus",
+        "Hybrid",
         "Online"
       ],
       "majors": [
@@ -14482,10 +14483,6 @@
         "url": "https://web.cs.toronto.edu/"
       },
       {
-        "topic": "formats",
-        "url": "https://web.cs.toronto.edu/"
-      },
-      {
         "topic": "description",
         "url": "https://www.utoronto.ca/about-u-of-t"
       },
@@ -14520,6 +14517,27 @@
       {
         "topic": "tags",
         "url": "https://www.utoronto.ca/about-u-of-t"
+      },
+      {
+        "topic": "formats",
+        "url": "https://kpe.utoronto.ca/sites/default/files/2026-02/ug_academic_tt_2025-26_-_feb_23.pdf",
+        "title": "University of Toronto — Undergraduate Teaching Modes 2025–26",
+        "scope": "University-wide undergraduate teaching modes, 2025–26",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
+      },
+      {
+        "topic": "formats",
+        "url": "https://onlinelearning.utoronto.ca/online-courses/",
+        "title": "University of Toronto — Online Courses",
+        "scope": "Online and hybrid courses across selected divisions; not every degree",
+        "format_modes": [
+          "Online",
+          "Hybrid"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "The University of Toronto is a public research university in Canada, offering a wide array of undergraduate and graduate programs and recognized for its strong research output.",
@@ -14672,7 +14690,10 @@
       "size": "large",
       "campus_area_m2": 2560000,
       "size_source_url": "https://governingcouncil.utoronto.ca/outline-organization-university-toronto",
-      "size_note": "St. George, Scarborough, and Mississauga campuses sum to about 256 hectares in official governance materials."
+      "size_source_title": "University of Toronto — Outline of the Organization",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Combined St. George, Scarborough, and Mississauga campuses; approximate",
+      "size_is_approximate": true
     },
     "admission_categories": [
       {
@@ -15056,9 +15077,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -15246,10 +15265,6 @@
       },
       {
         "topic": "programs",
-        "url": "https://www.cse.cuhk.edu.hk/about/department/"
-      },
-      {
-        "topic": "formats",
         "url": "https://www.cse.cuhk.edu.hk/about/department/"
       },
       {
@@ -15466,9 +15481,12 @@
     "student_count": 23088,
     "student_life": {
       "size": "medium",
-      "campus_area_m2": 1373000,
+      "campus_area_m2": 1384000,
       "size_source_url": "https://www.cuhk.edu.hk/english/campus/campus.html",
-      "size_note": "Official CUHK campus area is about 137.3?138.4 hectares, depending on the reference page year."
+      "size_source_title": "CUHK — Campus",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Sha Tin campus",
+      "size_is_approximate": false
     },
     "admission_categories": [
       {
@@ -15724,9 +15742,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -16230,10 +16246,6 @@
         "url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html"
       },
       {
-        "topic": "formats",
-        "url": "https://www.u-tokyo.ac.jp/en/prospective-students/undergraduate_english.html"
-      },
-      {
         "topic": "campus_size",
         "url": "https://www.u-tokyo.ac.jp/en/whyutokyo/komaba_history.html"
       },
@@ -16402,10 +16414,7 @@
     },
     "student_count": 29230,
     "student_life": {
-      "size": "medium",
-      "campus_area_m2": 1060000,
-      "size_source_url": "https://www.u-tokyo.ac.jp/en/whyutokyo/komaba_history.html",
-      "size_note": "Medium bucket is based on the core Hongo (about 56 ha) and Komaba (about 50 ha) campuses used by most undergraduate students."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -16864,10 +16873,6 @@
         "url": "https://college.uchicago.edu/academics/economics"
       },
       {
-        "topic": "formats",
-        "url": "https://cs.uchicago.edu/education/undergraduate-programs/"
-      },
-      {
         "topic": "description",
         "url": "https://www.uchicago.edu/who-we-are"
       },
@@ -16894,6 +16899,16 @@
       {
         "topic": "outcomes",
         "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+      },
+      {
+        "topic": "formats",
+        "url": "https://college.uchicago.edu/advising/enrollment-policies",
+        "title": "UChicago College — Enrollment Policies",
+        "scope": "College during Autumn, Winter, and Spring; some remote courses are available in Summer",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Chicago is known for analytical rigor, strong economics and social science traditions, and serious research culture across mathematics, computing, natural sciences, and policy.",
@@ -17055,9 +17070,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?id=144050&fields=school.name,latest.student.enrollment.undergrad_12_month,latest.student.enrollment.grad_12_month&api_key=DEMO_KEY",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "small"
     },
     "student_count": 21145,
     "admission_categories": [
@@ -17329,9 +17342,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -17494,10 +17505,6 @@
       },
       {
         "topic": "programs",
-        "url": "https://en.snu.ac.kr/academics/programs/undergraduate"
-      },
-      {
-        "topic": "formats",
         "url": "https://en.snu.ac.kr/academics/programs/undergraduate"
       },
       {
@@ -17673,8 +17680,11 @@
     "student_life": {
       "size": "large",
       "campus_area_m2": 4300000,
-      "size_source_url": "https://snupharm.snu.ac.kr/en/campus-map/",
-      "size_note": "Official SNU Gwanak Campus area is about 4.3 km?."
+      "size_source_url": "https://snupharm.snu.ac.kr/wp-content/uploads/sites/229/2023/12/Campus_Life.pdf",
+      "size_source_title": "SNU — Campus Life",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Gwanak main campus only; not all SNU sites",
+      "size_is_approximate": true
     },
     "admission_categories": [
       {
@@ -18080,10 +18090,6 @@
         "url": "https://ocw.tudelft.nl/programs/bachelor/aerospace-engineering/"
       },
       {
-        "topic": "formats",
-        "url": "https://ocw.tudelft.nl/programs/bachelor/computer-science-engineering/"
-      },
-      {
         "topic": "campus_size",
         "url": "https://www.tudelft.nl/en/education/campus"
       },
@@ -18110,6 +18116,16 @@
       {
         "topic": "extra_requirements",
         "url": "https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.tudelft.nl/onderwijs/opleidingen/bachelors/cse/bsc-computer-science-and-engineering",
+        "title": "TU Delft — BSc Computer Science and Engineering",
+        "scope": "Bachelor's degree in Computer Science and Engineering",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "TU Delft says it is the oldest and largest technical university in the Netherlands, combining nearly 40 technological and scientific disciplines with research facilities, a major library and a strong focus on innovation and sustainability.",
@@ -18255,8 +18271,11 @@
     "student_life": {
       "size": "medium",
       "campus_area_m2": 1610000,
-      "size_source_url": "https://www.tudelft.nl/en/education/campus",
-      "size_note": "Official TU Delft campus references describe the Mekelpark campus as spanning roughly 161 hectares."
+      "size_source_url": "https://www.tudelft.nl/en/about-tu-delft/working-at-tu-delft/coming-to-the-netherlands-tu-delft/support-for-international-employees/why-tu-delft",
+      "size_source_title": "TU Delft — Why TU Delft",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "TU Delft campus",
+      "size_is_approximate": false
     },
     "admission_categories": [
       {
@@ -18469,9 +18488,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -18643,10 +18660,6 @@
       {
         "topic": "programs",
         "url": "https://economics.sas.upenn.edu/undergraduate"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.cis.upenn.edu/undergraduate/"
       },
       {
         "topic": "description",
@@ -18839,7 +18852,10 @@
       "size": "medium",
       "campus_area_m2": 1209996,
       "size_source_url": "https://www.upenn.edu/about/facts",
-      "size_note": "Official Penn facts list the West Philadelphia campus at 299 acres (~1.21 km²) across 225 buildings."
+      "size_source_title": "Penn — Facts",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "West Philadelphia campus; excludes hospital and other sites",
+      "size_is_approximate": true
     },
     "student_count": 29384,
     "admission_categories": [
@@ -19083,9 +19099,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -19270,10 +19284,6 @@
         "url": "https://www.iup.kyoto-u.ac.jp/academics/"
       },
       {
-        "topic": "formats",
-        "url": "https://www.iup.kyoto-u.ac.jp/about/overview.html"
-      },
-      {
         "topic": "campus_size",
         "url": "https://www.kyoto-u.ac.jp/en/archive/prev/profile/president/speech/e_070530_1"
       },
@@ -19435,10 +19445,7 @@
     },
     "student_count": 22300,
     "student_life": {
-      "size": "large",
-      "campus_area_m2": 5330000,
-      "size_source_url": "https://www.kyoto-u.ac.jp/en/archive/prev/profile/president/speech/e_070530_1",
-      "size_note": "Official Kyoto University speech materials state the campuses have a total area of 5,330,000 square meters."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -19652,9 +19659,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -19825,10 +19830,6 @@
       {
         "topic": "programs",
         "url": "https://www.mae.cornell.edu/mae/programs/undergraduate-programs"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.cs.cornell.edu/undergrad"
       },
       {
         "topic": "description",
@@ -20019,8 +20020,11 @@
     "student_life": {
       "size": "large",
       "campus_area_m2": 3014909,
-      "size_source_url": "https://www.cornell.edu/about/",
-      "size_note": "Official Cornell facts describe the central Ithaca campus at 745 acres (~3.01 km²), with total university estate and natural lands totaling 2,300 acres."
+      "size_source_url": "https://fcs.cornell.edu/departments/real-estate/real-estate-faq",
+      "size_source_title": "Cornell — Real Estate FAQ",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Central Ithaca campus; not the full university estate",
+      "size_is_approximate": true
     },
     "student_count": 26727,
     "admission_categories": [
@@ -20429,10 +20433,6 @@
         "url": "https://me.berkeley.edu/academics/undergraduate/"
       },
       {
-        "topic": "formats",
-        "url": "https://eecs.berkeley.edu/academics/undergraduate/"
-      },
-      {
         "topic": "description",
         "url": "https://www.berkeley.edu/about/"
       },
@@ -20459,6 +20459,26 @@
       {
         "topic": "outcomes",
         "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+      },
+      {
+        "topic": "formats",
+        "url": "https://undergraduate.catalog.berkeley.edu/programs/A5201U",
+        "title": "UC Berkeley Catalog — Computer Science BA",
+        "scope": "Computer Science BA",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
+      },
+      {
+        "topic": "formats",
+        "url": "https://undergraduate.catalog.berkeley.edu/programs/16306U",
+        "title": "UC Berkeley Catalog — Electrical Engineering and Computer Sciences BS",
+        "scope": "Electrical Engineering and Computer Sciences BS",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Berkeley is a flagship public research university known for scale, academic breadth, strong engineering and computing, and close ties to science, policy, and entrepreneurship.",
@@ -20623,8 +20643,11 @@
     "student_life": {
       "size": "medium",
       "campus_area_m2": 720341,
-      "size_source_url": "https://www.berkeley.edu/about/",
-      "size_note": "Official UC Berkeley facts report the central campus park at 178 acres (~0.72 km²), with total campus properties extending across 1,232 acres in the Berkeley Hills."
+      "size_source_url": "https://capitalstrategies.berkeley.edu/node/903",
+      "size_source_title": "UC Berkeley — Campus Strategies",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Central Campus Park; not all university properties",
+      "size_is_approximate": true
     },
     "student_count": 48556,
     "admission_categories": [
@@ -20851,7 +20874,8 @@
         }
       ],
       "formats": [
-        "On-campus"
+        "On-campus",
+        "Hybrid"
       ],
       "majors": [
         "Computer Science",
@@ -21012,10 +21036,6 @@
         "url": "https://www.unsw.edu.au/study/undergraduate/engineering-honours"
       },
       {
-        "topic": "formats",
-        "url": "https://www.unsw.edu.au/study/undergraduate/computer-science"
-      },
-      {
         "topic": "description",
         "url": "https://www.unsw.edu.au/about-us"
       },
@@ -21046,6 +21066,17 @@
       {
         "topic": "finance",
         "url": "https://www.unsw.edu.au/study/international-students/costs-scholarships"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.unsw.edu.au/study/undergraduate/bachelor-of-computer-science",
+        "title": "UNSW — Bachelor of Computer Science",
+        "scope": "Bachelor of Computer Science at Kensington; face-to-face includes blended",
+        "format_modes": [
+          "On-campus",
+          "Hybrid"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "UNSW is a large Sydney research university with strong engineering, computing, design, business, and innovation culture, and one of Australia's best-known industry links.",
@@ -21188,8 +21219,11 @@
     "student_life": {
       "size": "large",
       "campus_area_m2": 380000,
-      "size_source_url": "https://www.unsw.edu.au/about-us/our-story/unsw-at-a-glance",
-      "size_note": "Official UNSW At a Glance materials list 70,238 students and a 38-hectare Kensington campus."
+      "size_source_url": "https://www.unsw.edu.au/content/dam/pdfs/news/annual-reports/2026-05-unsw-annual-report-2025.pdf",
+      "size_source_title": "UNSW Annual Report 2025",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Kensington campus",
+      "size_is_approximate": true
     },
     "student_count": 65000,
     "admission_categories": [
@@ -21487,9 +21521,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -21662,10 +21694,6 @@
       {
         "topic": "programs",
         "url": "https://seas.yale.edu/biomedical-engineering"
-      },
-      {
-        "topic": "formats",
-        "url": "https://cpsc.yale.edu/undergraduate-program"
       },
       {
         "topic": "description",
@@ -21860,9 +21888,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://www.yale.edu/about-yale/yale-facts",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "small"
     },
     "student_count": 15490,
     "admission_categories": [
@@ -22297,10 +22323,6 @@
         "url": "https://ece.princeton.edu/academics/undergraduate-program"
       },
       {
-        "topic": "formats",
-        "url": "https://www.cs.princeton.edu/academics/undergraduate"
-      },
-      {
         "topic": "description",
         "url": "https://www.princeton.edu/about"
       },
@@ -22327,6 +22349,16 @@
       {
         "topic": "outcomes",
         "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+      },
+      {
+        "topic": "formats",
+        "url": "https://ua.princeton.edu/policies-resources/academic-regulations/academic-year",
+        "title": "Princeton — Academic Regulations",
+        "scope": "Undergraduate academic year; residential, in-person study",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Princeton is a highly selective private research university known for undergraduate focus, strong advising, and broad excellence across humanities, science, engineering, and public affairs.",
@@ -22489,9 +22521,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://www.princeton.edu/meet-princeton/facts-figures",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "small"
     },
     "student_count": 9106,
     "admission_categories": [
@@ -22759,9 +22789,7 @@
           "duration": "3–4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -22920,10 +22948,6 @@
       {
         "topic": "programs",
         "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-engineering-honours-software-engineering.html"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html"
       },
       {
         "topic": "description",
@@ -23099,9 +23123,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://www.sydney.edu.au/content/dam/corporate/documents/about-us/values-and-visions/annual-report/university-of-sydney-2024-annual-report.pdf",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "large"
     },
     "student_count": 74000,
     "admission_categories": [
@@ -23423,9 +23445,7 @@
           "duration": "3–4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -23590,10 +23610,6 @@
       {
         "topic": "programs",
         "url": "https://www.mcgill.ca/undergraduate-admissions/program/software-engineering"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.cs.mcgill.ca/academic/undergrad/"
       },
       {
         "topic": "description",
@@ -23771,9 +23787,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.mcgill.ca/about/quickfacts",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "medium"
     },
     "student_count": 40000,
     "admission_categories": [
@@ -24285,10 +24299,6 @@
         "url": "https://engineering.jhu.edu/biomedical-engineering/academics/undergraduate/"
       },
       {
-        "topic": "formats",
-        "url": "https://engineering.jhu.edu/computer-science/academics/undergraduate-studies/"
-      },
-      {
         "topic": "description",
         "url": "https://www.jhu.edu/about/"
       },
@@ -24315,6 +24325,16 @@
       {
         "topic": "outcomes",
         "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+      },
+      {
+        "topic": "formats",
+        "url": "https://engineering.jhu.edu/resource-finder/?degree_level=bachelors-degree&learning_mode=&query=",
+        "title": "Johns Hopkins — Whiting Resource Finder",
+        "scope": "Computer Science BA and BS, undergraduate",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Johns Hopkins is a research-intensive private university known especially for medicine, public health, biomedical engineering, and data-rich scientific work, with strong computing and engineering as well.",
@@ -24483,9 +24503,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?id=162928&fields=school.name,latest.student.enrollment.undergrad_12_month,latest.student.enrollment.grad_12_month&api_key=DEMO_KEY",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "small"
     },
     "student_count": 39148,
     "admission_categories": [
@@ -24910,10 +24928,6 @@
         "url": "https://programsandcourses.anu.edu.au/program/bengh"
       },
       {
-        "topic": "formats",
-        "url": "https://programsandcourses.anu.edu.au/program/bcomp"
-      },
-      {
         "topic": "description",
         "url": "https://www.anu.edu.au/about"
       },
@@ -24944,6 +24958,16 @@
       {
         "topic": "finance",
         "url": "https://study.anu.edu.au/student-life/living-canberra/cost-living"
+      },
+      {
+        "topic": "formats",
+        "url": "https://programsandcourses.anu.edu.au/program/bcomp",
+        "title": "ANU — Bachelor of Computing",
+        "scope": "Bachelor of Computing",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "ANU is Australia's national university, known for policy, international affairs, science, and research intensity, with a strong Canberra campus and close links to public institutions.",
@@ -25091,9 +25115,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.anu.edu.au/about/facts-about-anu",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "medium"
     },
     "student_count": 18000,
     "admission_categories": [
@@ -25415,9 +25437,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -25574,10 +25594,6 @@
       {
         "topic": "programs",
         "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=H651"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400"
       },
       {
         "topic": "description",
@@ -25755,9 +25771,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://www.ed.ac.uk/about/facts",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "large"
     },
     "student_count": 49000,
     "admission_categories": [
@@ -26056,9 +26070,7 @@
           "duration": "3 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -26224,10 +26236,6 @@
       {
         "topic": "programs",
         "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00367/beng-mechanical-engineering/"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/"
       },
       {
         "topic": "description",
@@ -26403,9 +26411,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://www.manchester.ac.uk/discover/",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "large"
     },
     "student_count": 46000,
     "admission_categories": [
@@ -26914,9 +26920,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -27089,10 +27093,6 @@
       {
         "topic": "programs",
         "url": "https://www.bme.columbia.edu/academics/undergraduate"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.cs.columbia.edu/education/undergraduate/"
       },
       {
         "topic": "description",
@@ -27282,9 +27282,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://api.data.gov/ed/collegescorecard/v1/schools?id=190150&fields=school.name,latest.student.enrollment.undergrad_12_month,latest.student.enrollment.grad_12_month&api_key=DEMO_KEY",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "small"
     },
     "student_count": 39113,
     "admission_categories": [
@@ -27714,10 +27712,6 @@
         "url": "https://apsc.ubc.ca/"
       },
       {
-        "topic": "formats",
-        "url": "https://www.cs.ubc.ca/students/undergrad"
-      },
-      {
         "topic": "description",
         "url": "https://www.ubc.ca/about/"
       },
@@ -27748,6 +27742,16 @@
       {
         "topic": "finance",
         "url": "https://students.ubc.ca/ubclife/cost-living"
+      },
+      {
+        "topic": "formats",
+        "url": "https://www.cs.ubc.ca/category/audience/undergrads/bcs?page=2",
+        "title": "UBC — BCS (ICS) Undergraduate FAQ",
+        "scope": "Bachelor of Computer Science (Integrated Computer Science)",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "UBC is a leading Canadian public research university with strong science, engineering, business, sustainability, and global engagement across its Vancouver and Okanagan campuses.",
@@ -27897,9 +27901,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://www.ubc.ca/_assets/pdf/ubc_fact_sheet_2024.pdf",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "large"
     },
     "student_count": 68000,
     "admission_categories": [
@@ -28197,9 +28199,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -28371,10 +28371,6 @@
       {
         "topic": "programs",
         "url": "https://www.ee.ucla.edu/academics/undergraduate/"
-      },
-      {
-        "topic": "formats",
-        "url": "https://www.cs.ucla.edu/undergraduate-study/"
       },
       {
         "topic": "description",
@@ -28563,9 +28559,7 @@
       "note": "Official QS WUR 2026 rank value."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.ucla.edu/about/facts-and-figures",
-      "size_note": "Campus size bucket derived from the available student enrollment figure stored for this university."
+      "size": "medium"
     },
     "student_count": 46678,
     "admission_categories": [
@@ -28988,10 +28982,6 @@
         "url": "https://uwaterloo.ca/future-students/programs/software-engineering"
       },
       {
-        "topic": "formats",
-        "url": "https://uwaterloo.ca/future-students/programs/computer-science"
-      },
-      {
         "topic": "description",
         "url": "https://uwaterloo.ca/about/"
       },
@@ -29022,6 +29012,16 @@
       {
         "topic": "finance",
         "url": "https://uwaterloo.ca/future-students/life-residence/costs"
+      },
+      {
+        "topic": "formats",
+        "url": "https://uwaterloo.ca/new-math-students/faq",
+        "title": "University of Waterloo — Math and CS FAQ",
+        "scope": "Computer Science courses in Fall 2026; some courses may include online components",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Waterloo is known for co-op, software, engineering, and entrepreneurship, with strong industry links and a practical project culture across technology-heavy programs.",
@@ -29174,7 +29174,10 @@
       "size": "medium",
       "campus_area_m2": 4046856,
       "size_source_url": "https://uwaterloo.ca/about/facts",
-      "size_note": "Official Waterloo quick facts state 41,000+ students and a 1,000-acre main campus."
+      "size_source_title": "University of Waterloo — Quick Facts",
+      "size_checked_at": "2026-11-20",
+      "size_scope": "Main campus; excludes satellite campuses",
+      "size_is_approximate": true
     },
     "student_count": 42000,
     "admission_categories": [
@@ -29471,9 +29474,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -29633,10 +29634,6 @@
       {
         "topic": "programs",
         "url": "https://admission.kaist.ac.kr/wz/api/admin/files/view/intl-undergraduate/KAIST%20Admission%20Guide%20for%20international%20applicants%202024.pdf"
-      },
-      {
-        "topic": "formats",
-        "url": "https://engineering.kaist.ac.kr/education/department"
       },
       {
         "topic": "campus_size",
@@ -29807,9 +29804,7 @@
     },
     "student_count": 10793,
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.kaist.ac.kr/en/",
-      "size_note": "Medium bucket reflects KAIST's large residential science-and-technology campus layout in Daejeon with multiple academic, residential, and research zones."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -29940,10 +29935,6 @@
       {
         "topic": "programs",
         "url": "https://seds.nu.edu.kz/undergraduate_programs"
-      },
-      {
-        "topic": "formats",
-        "url": "https://nu.edu.kz/admissions/programs/"
       },
       {
         "topic": "finance",
@@ -30095,9 +30086,7 @@
     },
     "student_count": 7089,
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://nu.edu.kz/admissions/how-to-apply/foundation-undergraduate/regular-admissions/",
-      "size_note": "Campus area removed on 2026-11-13: the linked official page and the NU about and campus pages checked that day do not state it. The size bucket is kept from the earlier record."
+      "size": "medium"
     },
     "admissions_catalog_id": "nazarbayev-university-kaz-astana"
   },
@@ -30234,9 +30223,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -30407,10 +30394,6 @@
       {
         "topic": "programs",
         "url": "https://sdu.edu.kz/en/business-information-systems/"
-      },
-      {
-        "topic": "formats",
-        "url": "https://sdu.edu.kz/en/information-system-example/"
       },
       {
         "topic": "finance",
@@ -30588,9 +30571,7 @@
     },
     "student_count": 4300,
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://sdu.edu.kz/en/accomodation/",
-      "size_note": "Small bucket reflects SDU's compact smart-campus layout centered on the main academic building, student house, and adjacent sports grounds."
+      "size": "small"
     },
     "admission_categories": [
       {
@@ -30848,9 +30829,7 @@
           "duration": "3 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -31037,10 +31016,6 @@
       {
         "topic": "programs",
         "url": "https://astanait.edu.kz/en/bachelor/"
-      },
-      {
-        "topic": "formats",
-        "url": "https://astanait.edu.kz/en/bachelor/"
       }
     ],
     "description": "Astana IT University says its mission is to promote the digital transformation of Kazakhstan and its vision is to lead innovative continuous IT education and science with high social responsibility.",
@@ -31191,9 +31166,7 @@
     },
     "student_count": 6725,
     "student_life": {
-      "size": "small",
-      "size_source_url": "https://astanait.edu.kz/en/students-dormitory/",
-      "size_note": "Small bucket reflects AITU's urban academic footprint and nearby student-house complex in Astana."
+      "size": "small"
     },
     "admission_categories": [
       {
@@ -31591,6 +31564,16 @@
       {
         "topic": "tags",
         "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://amu.edu.kz/upload/iblock/8a3/8a38087eececc5dcf34e60ab3cba8f40.pdf",
+        "title": "AMU — Nursing Applied Bachelor's Entrance Exam Program 2026",
+        "scope": "10-month applied bachelor's program 6B10101 Nursing",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Astana Medical University is a major medical university in Astana with bachelor programs in medicine, dentistry, public health, pharmacy and related healthcare fields. Official program pages describe integrated medical education, clinical training and multilingual instruction in Kazakh, Russian and English.",
@@ -31718,9 +31701,7 @@
       "note": "No official QS World University Rankings 2026 position is published for Astana Medical University on the official QS WUR 2026 table."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://amu.edu.kz/",
-      "size_note": "Large bucket reflects the university's multi-school medical profile and urban campus in Astana."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -31956,9 +31937,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -32263,9 +32242,7 @@
       "note": "No official QS World University Rankings 2026 position is published for International Information Technology University on the official QS WUR 2026 table."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://iitu.edu.kz/en/",
-      "size_note": "Medium bucket reflects IITU's compact city campus and IT-focused student community in Almaty."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -32704,6 +32681,16 @@
       {
         "topic": "tags",
         "url": "https://satbayev.university/en/undergraduate"
+      },
+      {
+        "topic": "formats",
+        "url": "https://official.satbayev.university/download/document/52850/%D0%A4%D0%B8%D0%BD%D0%B0%D0%BD%D1%81%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0%206B06107%202025-2026.pdf",
+        "title": "Satbayev — Financial Analytics 6B06107, 2025–2026",
+        "scope": "Bachelor's program 6B06107, 2025–2026",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Satbayev University is Kazakhstan's leading technical university in Almaty, focused on engineering, technology, architecture, energy, geology and applied research. Its official undergraduate page emphasizes modern laboratories, research centers and industry-oriented projects.",
@@ -32828,9 +32815,7 @@
       "note": "Satbayev University is listed at #331 in the QS World University Rankings 2026."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://satbayev.university/en",
-      "size_note": "Large bucket reflects Satbayev University's multi-institute technical campus in central Almaty."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -33052,9 +33037,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -33363,9 +33346,7 @@
       "note": "Kazakhstan-British Technical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://kbtu.edu.kz/en",
-      "size_note": "Medium bucket reflects KBTU's urban academic building and specialized technical/business schools in central Almaty."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -33806,6 +33787,16 @@
       {
         "topic": "tags",
         "url": "https://www.kaznu.kz/en/3360"
+      },
+      {
+        "topic": "formats",
+        "url": "https://welcome.kaznu.kz/ru/17998/page",
+        "title": "Al-Farabi KazNU — Applicant Programs 2026",
+        "scope": "Full-time undergraduate programs across faculties; MBA modes vary and are not covered",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Al-Farabi Kazakh National University is a comprehensive national university in Almaty with more than 100 bachelor specialities across its faculties. Official materials describe KazNU as an innovative center for professional education and competitive personal development.",
@@ -33938,9 +33929,7 @@
       "note": "Al-Farabi Kazakh National University is listed at #166 in the QS World University Rankings 2026."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://www.kaznu.kz/en",
-      "size_note": "Large bucket reflects KazNU's broad multi-faculty campus, dormitory network and student organizations in Almaty."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -34175,9 +34164,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -34488,9 +34475,7 @@
       "note": "L.N. Gumilyov Eurasian National University is listed at #317 in the QS World University Rankings 2026."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://enu.kz/en/",
-      "size_note": "Large bucket reflects ENU's broad national-university profile and multi-building campus in Astana."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -34725,9 +34710,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -35028,9 +35011,7 @@
       "note": "Narxoz University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://en.narxoz.kz/",
-      "size_note": "Medium bucket reflects Narxoz University's city campus and school-based academic structure in Almaty."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -35257,9 +35238,7 @@
           "duration": "4 years"
         }
       ],
-      "formats": [
-        "On-campus"
-      ],
+      "formats": [],
       "majors": [
         "Computer Science",
         "Software Engineering",
@@ -35563,9 +35542,7 @@
       "note": "No official QS World University Rankings 2026 position is published for KIMEP University on the official QS WUR 2026 table."
     },
     "student_life": {
-      "size": "medium",
-      "size_source_url": "https://www.kimep.kz/prospective-students/en/",
-      "size_note": "Medium bucket reflects KIMEP's compact central Almaty campus and college-based undergraduate community."
+      "size": "medium"
     },
     "admission_categories": [
       {
@@ -35955,6 +35932,16 @@
       {
         "topic": "tags",
         "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://kaznmu.edu.kz/wp-content/uploads/2026/01/%D0%9B%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F-%D0%BD%D0%B0-%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%83%D1%8E-%D0%B4%D0%B5%D1%8F%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D1%8C-%D0%9D%D0%90%D0%9E-%D0%9A%D0%B0%D0%B7%D0%9D%D0%9C%D1%83.pdf",
+        "title": "KazNMU — License Appendix: Healthcare 6B101",
+        "scope": "Bachelor of Healthcare 6B101",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Asfendiyarov Kazakh National Medical University is a long-standing Almaty medical university with bachelor programs in medicine, public health, pharmacy, nursing and related healthcare fields. Official applicant pages describe UNT thresholds for healthcare, psychometric examination and enrollment stages.",
@@ -36089,9 +36076,7 @@
       "note": "Asfendiyarov Kazakh National Medical University is published by QS in the #1001-1200 band, but UniSearch keeps rank null because no single ordinal position is published."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://kaznmu.edu.kz/en/",
-      "size_note": "Large bucket reflects KazNMU's multi-school medical profile and central Almaty campus."
+      "size": "large"
     },
     "admission_categories": [
       {
@@ -36465,6 +36450,16 @@
       {
         "topic": "tags",
         "url": "https://abaiuniversity.edu.kz/en/"
+      },
+      {
+        "topic": "formats",
+        "url": "https://abaiuniversity.edu.kz/docs/docs/xudgraphkorkebilim/KorkembilimIr.pdf",
+        "title": "Abai University — Art Education 6B01416",
+        "scope": "Bachelor's program 6B01416 Art Education; other university formats not covered",
+        "format_modes": [
+          "On-campus"
+        ],
+        "checked_at": "2026-11-20"
       }
     ],
     "description": "Abai Kazakh National Pedagogical University is Kazakhstan's first higher education institution and a major pedagogical university in Almaty. Official materials and QS profile describe broad teacher-training, humanities, social-science and informatics programs across multiple faculties.",
@@ -36603,9 +36598,7 @@
       "note": "Abai Kazakh National Pedagogical University is listed at #628 in the QS World University Rankings 2026."
     },
     "student_life": {
-      "size": "large",
-      "size_source_url": "https://abaiuniversity.edu.kz/en/",
-      "size_note": "Large bucket reflects Abai KazNPU's national pedagogical profile and multiple educational buildings in Almaty."
+      "size": "large"
     },
     "admission_categories": [
       {

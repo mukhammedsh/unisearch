@@ -57,28 +57,48 @@ def _normalize_tags(value: Any) -> List[str]:
     return out
 
 
-def _replace_verified_sources_for_topic(row: Dict[str, Any], topic: str, urls: List[str]) -> bool:
+def _replace_verified_sources_for_topic(row: Dict[str, Any], topic: str, sources: List[Any]) -> bool:
     topic_text = _clean_text(topic)
     if not topic_text:
         return False
-    normalized_urls = []
+    verified = row.get("verified_sources")
+    if not isinstance(verified, list):
+        verified = []
+    previous = {
+        _clean_text(item.get("url")): item
+        for item in verified
+        if isinstance(item, dict) and _clean_text(item.get("topic")).lower() == topic_text.lower() and _clean_text(item.get("url"))
+    }
+    normalized_sources = []
     seen = set()
-    for url in urls:
+    for source in sources:
+        source = source if isinstance(source, dict) else {"url": source}
+        url = source.get("url")
         url_text = _clean_text(url)
         if not url_text or url_text in seen:
             continue
         seen.add(url_text)
-        normalized_urls.append(url_text)
+        output = {"topic": topic_text, "url": url_text}
+        old = previous.get(url_text, {})
+        for key in ("title", "scope", "checked_at"):
+            metadata = _clean_text(source.get(key)) or _clean_text(old.get(key))
+            if metadata:
+                output[key] = metadata
+        modes = source.get("format_modes")
+        if not isinstance(modes, list) or not modes:
+            modes = old.get("format_modes")
+        if isinstance(modes, list):
+            normalized_modes = list(dict.fromkeys(_clean_text(mode) for mode in modes if _clean_text(mode)))
+            if normalized_modes:
+                output["format_modes"] = normalized_modes
+        normalized_sources.append(output)
 
-    verified = row.get("verified_sources")
-    if not isinstance(verified, list):
-        verified = []
     filtered = [
         item
         for item in verified
         if not isinstance(item, dict) or _clean_text(item.get("topic")).lower() != topic_text.lower()
     ]
-    filtered.extend({"topic": topic_text, "url": url_text} for url_text in normalized_urls)
+    filtered.extend(normalized_sources)
     if filtered != verified:
         row["verified_sources"] = filtered
         return True
@@ -410,7 +430,7 @@ def _apply_verified_source_overrides(row: Dict[str, Any], payload: Dict[str, Any
     if not isinstance(entries, list):
         return changed
 
-    grouped: Dict[str, List[str]] = {}
+    grouped: Dict[str, List[Dict[str, str]]] = {}
     order: List[str] = []
     for entry in entries:
         if not isinstance(entry, dict):
@@ -422,7 +442,17 @@ def _apply_verified_source_overrides(row: Dict[str, Any], payload: Dict[str, Any
         if topic not in grouped:
             grouped[topic] = []
             order.append(topic)
-        grouped[topic].append(url)
+        source = {"url": url}
+        for key in ("title", "scope", "checked_at"):
+            metadata = _clean_text(entry.get(key))
+            if metadata:
+                source[key] = metadata
+        modes = entry.get("format_modes")
+        if isinstance(modes, list):
+            normalized_modes = list(dict.fromkeys(_clean_text(mode) for mode in modes if _clean_text(mode)))
+            if normalized_modes:
+                source["format_modes"] = normalized_modes
+        grouped[topic].append(source)
 
     for topic in order:
         changed = _replace_verified_sources_for_topic(row, topic, grouped.get(topic) or []) or changed

@@ -407,13 +407,14 @@ test("unselected and incompatible contexts do not display unrelated facts", () =
 
 test("publication, evidence review, and applicability remain independent", () => {
   const resolved = context();
-  resolved.facts = [fact("Read both official versions.", { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
+  resolved.facts = [fact({ amounts: [100, 120], next_official_step: "Ask the admissions office." }, { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
   resolved.fact_groups = { costs: ["private-fact-id"] };
   const html = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(html, /<span class="admissions-catalog__status">Published<\/span>/);
   assert.match(html, /Evidence review: Conflicting official sources/);
   assert.match(html, /The published values differ/);
   assert.match(html, /Ask the admissions office/);
+  assert.equal((html.match(/Ask the admissions office/g) || []).length, 1);
   assert.match(html, /Conditional — applicability still needs verification<\/span><\/summary>/);
   assert.doesNotMatch(html, /UnknownUnknown|<strong>Conditions and exceptions<\/strong>/);
   resolved.facts[0] = withStatus({ ...resolved.facts[0], publication_status: "unknown", review_status: "verified", normalized_status: undefined });
@@ -535,7 +536,7 @@ test("a record is rendered once with one compact source line and no repeated bas
   assert.equal((html.match(/Fees apply\./g) || []).length, 1);
   assert.equal((html.match(/class="admissions-catalog__sources"/g) || []).length, 1);
   assert.doesNotMatch(html, /Official page checked|Publication status|Evidence review/);
-  assert.match(html, /Checked: 2026[‑-]10-12|Checked: 2026-10-12/);
+  assert.match(html, /Last checked: 2026[‑-]10-12|Last checked: 2026-10-12/);
 });
 
 test("records of one group list their identical official sources once", () => {
@@ -772,4 +773,8 @@ test("status badges read the closed vocabulary rather than research label spelli
   const historical = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(historical, /Historical source record/);
   assert.match(historical, /Evidence review: Superseded source review/);
+  resolved.facts = [fact("A previous source review was retained.", { publication_status: "published", review_status: "carried_forward_review",
+    normalized_status: { publication: "published", review: "carried_forward" } })];
+  const carriedForward = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(carriedForward, /Previous source review retained/);
 });
