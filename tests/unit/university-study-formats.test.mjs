@@ -34,8 +34,13 @@ test("the campus area is stated in hectares with an everyday comparison and its 
   await initI18n();
   setLanguage("eng", { persist: false, emit: false });
   assert.equal(campusAreaFact({ size: "medium" }), null);
-  const mit = campusAreaFact({ campus_area_m2: 679968, size_source_url: "https://facts.mit.edu/mit-campus/" });
+  const mit = campusAreaFact({ campus_area_m2: 679968, size_source_url: "https://facts.mit.edu/mit-campus/", size_is_approximate: true,
+    size_source_title: "MIT Facts — Campus", size_checked_at: "2026-11-20", size_scope: "Cambridge campus" });
   assert.equal(mit.sourceUrl, "https://facts.mit.edu/mit-campus/");
+  assert.equal(mit.sourceTitle, "MIT Facts — Campus");
+  assert.equal(mit.checkedAt, "2026-11-20");
+  assert.equal(mit.scope, "Cambridge campus");
+  assert.match(mit.text, /^≈/);
   assert.match(mit.comparison, /95/);
   // Very large estates are given in km² without a pitch count.
   const stanford = campusAreaFact({ campus_area_m2: 33104376 });
@@ -61,7 +66,8 @@ test("the overview links metric sources and shows recorded check dates", async (
       student_count: 11920,
       fact_provenance: { facts: { student_count: { source: "University Facts", source_url: "https://facts.example/", verified_at: "2026-03-12" } } },
       academics: { formats: ["On-campus"] },
-      verified_sources: [{ topic: "formats", url: "https://www.university.example/study" }],
+      verified_sources: [{ topic: "formats", url: "https://www.university.example/study", title: "Computer Science Bachelor",
+        scope: "BSc Computer Science", checked_at: "2026-11-20", format_modes: ["On-campus"] }],
     },
   });
   assert.match(container.innerHTML, /href="https:\/\/ranking\.example\/"/);
@@ -72,4 +78,7 @@ test("the overview links metric sources and shows recorded check dates", async (
   assert.match(container.innerHTML, /Last checked: 2026.03-12/);
   assert.match(container.innerHTML, /Check date not recorded/);
   assert.match(container.innerHTML, /href="https:\/\/www\.university\.example\/study"/);
+  assert.match(container.innerHTML, /On-campus · Computer Science Bachelor/);
+  assert.match(container.innerHTML, /Scope: BSc Computer Science/);
+  assert.match(container.innerHTML, /Formats are based on cited program pages/);
 });

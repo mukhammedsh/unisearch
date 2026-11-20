@@ -48,12 +48,13 @@ export function universityStudyFormats(values) {
   return ["on_campus", "hybrid", "online"].filter((bucket) => found.has(bucket));
 }
 
-function metricSourceLink(url, label, checkedAt = "") {
+function metricSourceLink(url, label, checkedAt = "", scope = "") {
   const href = safeUrl(url);
   if (!href) return "";
   const checked = String(checkedAt || "").trim();
   const date = checked ? `${t("university.admissions.checked", "Last checked")}: ${checked}` : t("university.admissions.check_date_unrecorded", "Check date not recorded");
-  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a><span>${escapeHtml(date)}</span></span>`;
+  const scopeLine = scope ? `<span>${escapeHtml(t("university.admissions.catalog.scope", "Source scope"))}: ${escapeHtml(scope)}</span>` : "";
+  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a>${scopeLine}<span>${escapeHtml(date)}</span></span>`;
 }
 
 export function renderOverviewSection({
@@ -139,8 +140,9 @@ export function renderOverviewSection({
   const studentCountValue = toFiniteNumber(university?.student_count);
   const studentCount = studentCountValue !== null ? formatUiNumber(studentCountValue) : t("common.no_data", "No data");
   const studentCountFact = university?.fact_provenance?.facts?.student_count;
+  const studentCountScope = String(studentCountFact?.basis?.scope || "").trim();
   const studentCountSource = metricSourceLink(studentCountFact?.source_url,
-    trFactSource(studentCountFact?.source) || t("university.admissions.official_source", "Official source"), studentCountFact?.verified_at);
+    trFactSource(studentCountFact?.source) || t("university.admissions.official_source", "Official source"), studentCountFact?.verified_at, studentCountScope);
   const rawFormats = Array.isArray(university.academics?.formats) ? university.academics.formats : [];
   const formatBuckets = universityStudyFormats(rawFormats);
   // Program-level wording (for example one evening professional program) does not describe the whole university:
@@ -154,12 +156,26 @@ export function renderOverviewSection({
   const formats = formatValues.length > 3
     ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map(value => `<li>${value}</li>`).join("")}</ul></details>`
     : formatValues.join(", ");
-  const formatSources = [...new Set((Array.isArray(university?.verified_sources) ? university.verified_sources : [])
-    .filter(source => source?.topic === "formats")
-    .map(source => safeUrl(source.url))
-    .filter(Boolean))]
-    .map(url => metricSourceLink(url, new URL(url).hostname.replace(/^www\./, "")))
-    .join("");
+  const formatSourceMap = new Map();
+  for (const source of Array.isArray(university?.verified_sources) ? university.verified_sources : []) {
+    if (source?.topic !== "formats") continue;
+    const url = safeUrl(source.url);
+    if (!url) continue;
+    let entry = formatSourceMap.get(url);
+    if (!entry) formatSourceMap.set(url, entry = { url, titles: new Set(), modes: new Set(), scopes: new Set(), dates: new Set() });
+    if (source.title) entry.titles.add(trFactSource(source.title) || source.title);
+    if (source.scope) entry.scopes.add(source.scope);
+    if (source.checked_at) entry.dates.add(source.checked_at);
+    for (const mode of Array.isArray(source.format_modes) ? source.format_modes : []) entry.modes.add(mode);
+  }
+  const formatSources = [...formatSourceMap.values()].map(source => {
+    const modes = [...source.modes].map(trStudyMode);
+    const title = [...source.titles].join(" · ") || new URL(source.url).hostname.replace(/^www\./, "");
+    const label = [...modes, title].filter(Boolean).join(" · ");
+    return metricSourceLink(source.url, label, [...source.dates].join(", "), [...source.scopes].join("; "));
+  }).join("");
+  const formatScopeNote = formatSources
+    ? `<span class="d-fact-source">${escapeHtml(t("university.ux2.format_scope_note"))}</span>` : "";
 
   // A row without data is left out rather than shown as "No data"; the last remaining row drops its divider.
   const rows = [
@@ -172,8 +188,8 @@ export function renderOverviewSection({
     </div>`,
     includeAdmissionRate ? acceptanceRow : "",
     `<div class="d-kv"><span>${escapeHtml(translateWord("total_students", "Total Students"))}</span><span class="d-kv-value"><span>${escapeHtml(studentCount)}</span>${studentCountSource}</span></div>`,
-    formats ? `<div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats}${formatSources}</div></div>` : "",
-    campusArea ? `<div class="d-kv" data-campus-area><span>${escapeHtml(t("university.ux2.campus.area_label"))}</span><div class="d-campus-area"><span>${escapeHtml(campusArea.text)}</span>${campusArea.comparison ? `<span class="d-campus-area__note">${escapeHtml(campusArea.comparison)}</span>` : ""}${campusArea.sourceUrl ? metricSourceLink(campusArea.sourceUrl, t("university.ux2.campus.source")) : ""}</div></div>` : "",
+    formats ? `<div class="d-kv"><span>${escapeHtml(translateWord("study_formats", "Study Formats"))}</span><div class="d-study-formats">${formats}${formatSources}${formatScopeNote}</div></div>` : "",
+    campusArea ? `<div class="d-kv" data-campus-area><span>${escapeHtml(t("university.ux2.campus.area_label"))}</span><div class="d-campus-area"><span>${escapeHtml(campusArea.text)}</span>${campusArea.comparison ? `<span class="d-campus-area__note">${escapeHtml(campusArea.comparison)}</span>` : ""}${campusArea.sourceUrl ? metricSourceLink(campusArea.sourceUrl, campusArea.sourceTitle || t("university.ux2.campus.source"), campusArea.checkedAt, campusArea.scope) : ""}</div></div>` : "",
   ].filter(Boolean);
   const last = rows.length - 1;
   rows[last] = rows[last].replace('class="d-kv', 'class="d-kv d-kv--last');

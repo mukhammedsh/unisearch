@@ -119,6 +119,26 @@ class OfficialFactsSyncTests(unittest.TestCase):
         self.assertEqual(["https://example.edu/programs"], self._topic_urls(row, "formats"))
         self.assertEqual([], self._topic_urls(row, "obsolete_topic"))
 
+    def test_verified_source_override_preserves_check_metadata(self):
+        universities = [{"id": "demo", "verified_sources": []}]
+        catalog = {"universities": {"demo": {"verified_sources": [{
+            "topic": "formats", "url": "https://example.edu/program", "title": "Bachelor programme", "scope": "Computing bachelor",
+            "checked_at": "2026-11-20", "format_modes": ["On-campus"],
+        }]}}}
+        self.assertEqual(1, apply_official_facts(universities, catalog, verified_at="2026-11-20"))
+        self.assertEqual({"topic": "formats", "url": "https://example.edu/program", "title": "Bachelor programme", "scope": "Computing bachelor",
+                          "checked_at": "2026-11-20", "format_modes": ["On-campus"]},
+                         universities[0]["verified_sources"][0])
+
+        # A later source-only override keeps the check details while the URL stays the same.
+        source_only_catalog = {"universities": {"demo": {"verified_sources": [{
+            "topic": "formats", "url": "https://example.edu/program",
+        }]}}}
+        self.assertEqual(0, apply_official_facts(universities, source_only_catalog, verified_at="2026-11-20"))
+        self.assertEqual("2026-11-20", universities[0]["verified_sources"][0]["checked_at"])
+        self.assertEqual("Computing bachelor", universities[0]["verified_sources"][0]["scope"])
+        self.assertEqual(["On-campus"], universities[0]["verified_sources"][0]["format_modes"])
+
     def test_apply_official_facts_keeps_neutral_updates_but_skips_acceptance_for_catalog_owned_rows(self):
         universities = [
             {"id": "owned", "admissions_catalog_id": "owned"},

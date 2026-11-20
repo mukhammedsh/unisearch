@@ -549,11 +549,14 @@ export function campusAreaFact(studentLife) {
   const lang = { eng: "en", rus: "ru", kaz: "kk" }[getCurrentLanguage()] || "en";
   const form = new Intl.PluralRules(lang).select(pitches);
   return {
-    text: tFormat(`university.ux2.campus.${km ? "area_km" : "area_ha"}`, { ha, km }),
+    text: `${studentLife?.size_is_approximate ? "≈ " : ""}${tFormat(`university.ux2.campus.${km ? "area_km" : "area_ha"}`, { ha, km })}`,
     comparison: pitches >= 1 && pitches <= MAX_PITCH_COMPARISON
       ? tFormat(`university.ux2.campus.pitches_${form}`, { count: formatUiNumber(pitches) }) || tFormat("university.ux2.campus.pitches_other", { count: formatUiNumber(pitches) })
       : "",
     sourceUrl: safeUrl(studentLife?.size_source_url),
+    sourceTitle: String(studentLife?.size_source_title || "").trim(),
+    checkedAt: String(studentLife?.size_checked_at || "").trim(),
+    scope: String(studentLife?.size_scope || "").trim(),
   };
 }
 

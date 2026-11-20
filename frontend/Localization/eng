@@ -3601,6 +3601,7 @@ university.ux2.needs.empty: Tests and documents are listed on the Admission tab.
 university.ux2.needs.varies: Requirements differ between undergraduate programs.
 university.ux2.needs.profile_hint: Add your test results to your profile to see what you already have.
 university.ux2.people.international: {percent}% international · {count} of {total} undergraduates
+university.ux2.people.international_share: {percent}% of {total} undergraduates are international
 university.ux2.people.housing_one: Housing guaranteed for {years} year
 university.ux2.people.housing_few: Housing guaranteed for {years} years
 university.ux2.people.housing_many: Housing guaranteed for {years} years
@@ -3612,6 +3613,7 @@ university.ux2.needs.presence_required: required
 university.ux2.needs.presence_recommended: recommended
 university.ux2.needs.presence_strongly_recommended: strongly recommended for some applicants
 university.ux2.format.hybrid: Hybrid (campus and online)
+university.ux2.format_scope_note: Formats are based on cited program pages; availability can vary by program and year.
 university.ux2.deadlines.not_collected: UniSearch hasn't collected application dates for this university yet. Check the current dates on its official admissions site.
 university.ux2.deadline.legacy_none: Dates not collected yet
 university.ux2.deadline.legacy_none_detail: UniSearch doesn't have this university's application dates yet. Check them on its official site.

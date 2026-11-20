@@ -775,6 +775,7 @@ export function compareSourceMeta(u, factKey) {
     text: compareSourceText(u, factKey),
     url: String(fact?.source_url || "").trim(),
     verifiedAt: String(fact?.verified_at || "").trim(),
+    scope: String(fact?.basis?.scope || "").trim(),
   };
 }
 
@@ -806,8 +807,8 @@ export function compareScoreText(value) {
 }
 
 // The official area in hectares, as on the university page; the raw square-metre figure is not shown.
-export function compareCampusAreaText(value) {
-  const fact = campusAreaFact({ campus_area_m2: value });
+export function compareCampusAreaText(value, university) {
+  const fact = campusAreaFact({ campus_area_m2: value, size_is_approximate: university?.student_life?.size_is_approximate });
   return fact ? fact.text : t("common.na", "N/A");
 }
 

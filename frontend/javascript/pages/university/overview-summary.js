@@ -142,9 +142,11 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
   const enrollment = university?.enrollment_breakdown;
   const [percent, count, total] = ["undergraduate_international_percent", "undergraduate_international_count", "undergraduate_count"]
     .map(key => toFiniteNumber(enrollment?.[key]));
-  if (percent !== null && count !== null && total !== null && total > 0) {
-    items.push({ kind: "international", text: tFormat("university.ux2.people.international",
-      { percent: formatUiNumber(Math.round(percent)), count: formatUiNumber(count), total: formatUiNumber(total) }),
+  if (percent !== null && total !== null && total > 0) {
+    const text = count !== null
+      ? tFormat("university.ux2.people.international", { percent: formatUiNumber(Math.round(percent)), count: formatUiNumber(count), total: formatUiNumber(total) })
+      : tFormat("university.ux2.people.international_share", { percent: formatUiNumber(Math.round(percent)), total: formatUiNumber(total) });
+    items.push({ kind: "international", text,
     source: source(enrollment.source, enrollment.source_url, enrollment.census_year, enrollment.checked_at || enrollment.verified_at) });
   }
   const years = toFiniteNumber(university?.housing?.undergraduate_guarantee_years);
@@ -154,7 +156,7 @@ export function peopleItems(university, { acceptanceRate = null, acceptanceMeta 
     const form = getCurrentLanguage() === "rus" ? (years % 100 >= 11 && years % 100 <= 14 ? "many" : mod10 === 1 ? "one" : mod10 >= 2 && mod10 <= 4 ? "few" : "many")
       : years === 1 ? "one" : "many";
     items.push({ kind: "housing", text: tFormat(`university.ux2.people.housing_${form}`, { years: formatUiNumber(years) }),
-      source: source("", university.housing.source_url, "", university.housing.checked_at || university.housing.verified_at) });
+      source: source(university.housing.source, university.housing.source_url, "", university.housing.checked_at || university.housing.verified_at) });
   }
   // Reviewed universities show no earnings figure, as in comparison: their reviewed data holds no rechecked outcomes.
   const reviewed = university?.admissions_catalog?.availability === "reviewed";
