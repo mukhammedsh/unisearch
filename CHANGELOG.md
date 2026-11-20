@@ -6,6 +6,7 @@ All notable project changes should be recorded here.
 
 ### Improved
 - Made ranking sources clickable, displayed existing student-count provenance, linked explicitly tagged study-format sources, and surfaced available check dates beside university facts.
+- Clarified source check dates, exposed missing check dates and carried-forward reviews, and kept cycle-specific applicability visible.
 
 ## 10.6.4 (2026-11-20) - Update Nazarbayev University Zero Year information
 

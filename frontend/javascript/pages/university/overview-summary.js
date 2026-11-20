@@ -293,7 +293,7 @@ const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
 function renderSource(source) {
   if (!source) return "";
   const text = escapeHtml(source.label);
-  const checked = source.checkedAt ? ` · ${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(source.checkedAt)}` : "";
+  const checked = ` · ${source.checkedAt ? `${escapeHtml(t("university.admissions.checked", "Last checked"))}: ${escapeHtml(source.checkedAt)}` : escapeHtml(t("university.admissions.check_date_unrecorded", "Check date not recorded"))}`;
   return `<span class="overview-summary__source">${source.unnamed ? "" : `${t("university.ux2.source")} `}${source.url
     ? `<a href="${escapeHtmlAttr(source.url)}" target="_blank" rel="noopener noreferrer">${text}</a>` : text}${checked}</span>`;
 }

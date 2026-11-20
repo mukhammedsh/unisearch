@@ -52,7 +52,8 @@ function metricSourceLink(url, label, checkedAt = "") {
   const href = safeUrl(url);
   if (!href) return "";
   const checked = String(checkedAt || "").trim();
-  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a>${checked ? `<span>${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(checked)}</span>` : ""}</span>`;
+  const date = checked ? `${t("university.admissions.checked", "Last checked")}: ${checked}` : t("university.admissions.check_date_unrecorded", "Check date not recorded");
+  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a><span>${escapeHtml(date)}</span></span>`;
 }
 
 export function renderOverviewSection({

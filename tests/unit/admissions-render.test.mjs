@@ -535,7 +535,7 @@ test("a record is rendered once with one compact source line and no repeated bas
   assert.equal((html.match(/Fees apply\./g) || []).length, 1);
   assert.equal((html.match(/class="admissions-catalog__sources"/g) || []).length, 1);
   assert.doesNotMatch(html, /Official page checked|Publication status|Evidence review/);
-  assert.match(html, /Checked: 2026[‑-]10-12|Checked: 2026-10-12/);
+  assert.match(html, /Last checked: 2026[‑-]10-12|Last checked: 2026-10-12/);
 });
 
 test("records of one group list their identical official sources once", () => {
@@ -772,4 +772,8 @@ test("status badges read the closed vocabulary rather than research label spelli
   const historical = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(historical, /Historical source record/);
   assert.match(historical, /Evidence review: Superseded source review/);
+  resolved.facts = [fact("A previous source review was retained.", { publication_status: "published", review_status: "carried_forward_review",
+    normalized_status: { publication: "published", review: "carried_forward" } })];
+  const carriedForward = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(carriedForward, /Previous source review retained/);
 });

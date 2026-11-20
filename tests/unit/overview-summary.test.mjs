@@ -245,7 +245,7 @@ test("official admission statistics name who was counted, the intake and the sou
   assert.deepEqual(mit.details, ["1,334 admitted out of 29,281 applicants", "International applicants: 136 of 6,926 admitted (about 2%)"]);
   assert.equal(mit.source.label, "MIT Admissions Statistics · 2025 intake");
   assert.equal(mit.source.checkedAt, "2026-11-13");
-  assert.match(renderSummary([{ id: "people", items: [mit], headline: "" }]), /Checked: 2026.11-13/);
+  assert.match(renderSummary([{ id: "people", items: [mit], headline: "" }]), /Last checked: 2026.11-13/);
   const imperial = selectivityItem({ scope: "undergraduate_applications", measure: "offers", entry_year: 2025, applicants: 33923, admitted: 8143, rate_percent: 24 }, source);
   assert.equal(imperial.text, "About 24% of undergraduate applications receive an offer");
   assert.match(imperial.details.at(-1), /not the share of people admitted/);

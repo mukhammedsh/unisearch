@@ -364,7 +364,7 @@ ranking.source_status.not_published: Дерек жоқ
 ranking.source_status.curated: Қолмен тексерілген
 ranking.source_status.derived: Модель бағалауы
 ranking.source_status.derived_prestige_order: Модель бағалауы
-ranking.source_tooltip: Дереккөз: {source} | Түрі: {status} | Тексерілген күні: {verified_at}
+ranking.source_tooltip: Дереккөз: {source} | Түрі: {status} | Соңғы тексеру: {verified_at}
 title.about: Біз туралы | UniSearch
 title.profile: Талапкер профилі | UniSearch
 title.guide: Нұсқаулық | UniSearch
@@ -779,7 +779,8 @@ university.admissions.university_wide: Университет бойынша
 university.admissions.program_level: Бағдарлама деңгейінде
 university.admissions.program_signals: Бағдарлама бойынша қабылдау деректері
 university.admissions.program_signals_note: Деректер қолжетімді болған жағдайда, бұл карточкаларда қабылдау көрсеткіші, үміткерлер мен ұсыныстар саны, сыйымдылық, шекті балл немесе қабылдау талаптары көрсетіледі. Басқа жағдайда, ресми дереккөз жеке деректердің неге жоқ екенін түсіндіреді.
-university.admissions.checked: Тексерілген
+university.admissions.checked: Соңғы тексеру
+university.admissions.check_date_unrecorded: Тексеру күні көрсетілмеген
 university.admissions.cycle: Цикл
 university.admissions.rows_count: {count} ресми жазба
 university.admissions.no_university_rate: Университет бойынша жалпы қабылдау көрсеткіші жарияланбаған.

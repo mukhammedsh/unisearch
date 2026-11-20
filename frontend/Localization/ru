@@ -367,7 +367,7 @@ ranking.source_status.not_published: Недоступно
 ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
-ranking.source_tooltip: Источник: {source} | Тип: {status} | Проверено: {verified_at}
+ranking.source_tooltip: Источник: {source} | Тип: {status} | Последняя проверка: {verified_at}
 title.about: О нас | UniSearch
 title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
@@ -782,7 +782,8 @@ university.admissions.university_wide: По университету
 university.admissions.program_level: По программам
 university.admissions.program_signals: Данные о поступлении по программам
 university.admissions.program_signals_note: Если данные опубликованы, здесь показаны процент зачисления, количество заявок и предложений, число мест, проходной порог или профиль поступающих. В остальных случаях официальный источник объясняет, почему отдельных данных нет.
-university.admissions.checked: Проверено
+university.admissions.checked: Последняя проверка
+university.admissions.check_date_unrecorded: Дата проверки не указана
 university.admissions.cycle: Цикл
 university.admissions.rows_count: Официальных строк: {count}
 university.admissions.no_university_rate: Университет не публикует официальный процент зачисления по университету в целом.

@@ -364,7 +364,7 @@ ranking.source_status.not_published: N/A
 ranking.source_status.curated: Manually reviewed
 ranking.source_status.derived: Model estimate
 ranking.source_status.derived_prestige_order: Model estimate
-ranking.source_tooltip: Source: {source} | Type: {status} | Checked: {verified_at}
+ranking.source_tooltip: Source: {source} | Type: {status} | Last checked: {verified_at}
 title.about: About Us | UniSearch
 title.profile: Applicant Profile | UniSearch
 title.guide: Guide | UniSearch
@@ -779,7 +779,8 @@ university.admissions.university_wide: University-wide
 university.admissions.program_level: Program-level
 university.admissions.program_signals: Admissions data by program
 university.admissions.program_signals_note: When available, these cards show acceptance rates, applicant and offer counts, capacity, cutoffs, or entry profiles. Otherwise, the official source explains why separate data is unavailable.
-university.admissions.checked: Checked
+university.admissions.checked: Last checked
+university.admissions.check_date_unrecorded: Check date not recorded
 university.admissions.cycle: Cycle
 university.admissions.rows_count: {count} official rows
 university.admissions.no_university_rate: No official university-wide acceptance rate published.
