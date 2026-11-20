@@ -2,7 +2,7 @@
 
 All notable project changes should be recorded here.
 
-## 10.6.7 (2026-11-20) - Cite reviewed study formats
+## 10.6.7 (2026-11-21) - Cite reviewed study formats
 
 ### Improved
 - Show university study formats only when official source metadata is linked; hide reviewed-catalog modes that lack a displayable source.
