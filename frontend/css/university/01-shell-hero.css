@@ -549,6 +549,29 @@ a.d-cover-credit:hover {
   text-underline-offset: var(--space-1);
 }
 
+/* The source scope stays collapsed so a row shows only the link and check date until the reader asks for it. */
+.d-fact-scope {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.d-fact-scope > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  cursor: pointer;
+  list-style: none;
+}
+
+.d-fact-scope > summary::-webkit-details-marker {
+  display: none;
+}
+
+.d-fact-scope > summary:hover {
+  color: var(--text);
+}
+
 .d-rank-emphasis {
   color: var(--text);
   font-weight: var(--font-weight-regular);

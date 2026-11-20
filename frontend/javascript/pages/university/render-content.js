@@ -53,8 +53,11 @@ function metricSourceLink(url, label, checkedAt = "", scope = "") {
   if (!href) return "";
   const checked = String(checkedAt || "").trim();
   const date = checked ? `${t("university.admissions.checked", "Last checked")}: ${checked}` : t("university.admissions.check_date_unrecorded", "Check date not recorded");
-  const scopeLine = scope ? `<span>${escapeHtml(t("university.admissions.catalog.scope", "Source scope"))}: ${escapeHtml(scope)}</span>` : "";
-  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a>${scopeLine}<span>${escapeHtml(date)}</span></span>`;
+  // The scope is the longest and least often needed part, so it sits in a collapsed disclosure under the link and date.
+  const scopeLine = scope
+    ? `<details class="d-fact-scope"><summary>${escapeHtml(t("university.admissions.catalog.scope", "Source scope"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><span>${escapeHtml(scope)}</span></details>`
+    : "";
+  return `<span class="d-fact-source"><a href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || t("university.admissions.official_source", "Official source"))}</a><span>${escapeHtml(date)}</span>${scopeLine}</span>`;
 }
 
 export function renderOverviewSection({
