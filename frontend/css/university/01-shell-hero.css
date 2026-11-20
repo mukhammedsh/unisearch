@@ -558,6 +558,8 @@ a.d-cover-credit:hover {
 }
 
 .d-fact-scope > summary {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);

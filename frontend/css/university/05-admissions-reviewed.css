@@ -5,6 +5,7 @@
 }
 
 .d-study-formats {
+  color: var(--text);
   flex: 1 1 45%;
   min-width: 0;
   line-height: var(--leading-normal);
