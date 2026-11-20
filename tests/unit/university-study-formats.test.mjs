@@ -84,6 +84,6 @@ test("the overview links metric sources and shows recorded check dates", async (
   assert.match(container.innerHTML, /Check date not recorded/);
   assert.match(container.innerHTML, /href="https:\/\/www\.university\.example\/study"/);
   assert.match(container.innerHTML, /On-campus · Computer Science Bachelor/);
-  assert.match(container.innerHTML, /Scope: BSc Computer Science/);
+  assert.match(container.innerHTML, /Source scope: BSc Computer Science/);
   assert.match(container.innerHTML, /Formats are based on cited program pages/);
 });
