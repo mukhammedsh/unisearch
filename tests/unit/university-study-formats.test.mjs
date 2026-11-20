@@ -80,7 +80,7 @@ test("the overview links metric sources and shows recorded check dates", async (
   assert.match(container.innerHTML, /href="https:\/\/facts\.example\/"/);
   assert.match(container.innerHTML, /University Facts/);
   assert.match(container.innerHTML, /Last checked: 2026.03-12/);
-  assert.match(container.innerHTML, /Scope: All students, 2025/);
+  assert.match(container.innerHTML, /Source scope: All students, 2025/);
   assert.match(container.innerHTML, /Check date not recorded/);
   assert.match(container.innerHTML, /href="https:\/\/www\.university\.example\/study"/);
   assert.match(container.innerHTML, /On-campus · Computer Science Bachelor/);

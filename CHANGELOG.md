@@ -9,7 +9,7 @@ All notable project changes should be recorded here.
 - Clarified source check dates, exposed missing check dates and carried-forward reviews, and kept cycle-specific applicability visible.
 - Exposed conflict reasons and official next steps through the response's narrow public projection.
 - Updated MIT and Oxford enrollment figures and aligned Oxford's international shares and accommodation guarantee with current official publications.
-- Recalculated MIT's research-focus factor from the refreshed student count.
+- Recalculated MIT and Oxford research-focus factors from their refreshed student counts.
 - Limited campus areas and study formats to official evidence with a clear campus or program scope; removed disputed areas and unsupported formats.
 - Added source scope, checked dates, and approximate-area labels to university comparison rows.
 

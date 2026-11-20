@@ -82,7 +82,7 @@
     },
     "factors_meta": {
       "version": "internet_v2",
-      "computed_at": "2026-05-23T22:07:21Z",
+      "computed_at": "2026-11-20T17:00:55Z",
       "method": "Fixed scales from app/services/preference_factors.py: research focus is OpenAlex works per enrolled student (log scale, 0.1 to 30); selectivity (social_vs_hardcore) is applicants per place from the published first-year admission rate (log scale, 1 to 40); location is city population on the OECD functional-urban-area size classes (log scale, 50,000 = outside a city to 1.5 million = large metropolitan). Null means the source data is missing. Location prefers the official urban-area population (OECD functional urban areas or national statistics). Cost vs prestige averages annual cost in USD (log scale, $1,000 to $100,000) and the official rank (log scale, 1 to 1,000).",
       "source_urls": {
         "openalex_query": "https://api.openalex.org/institutions?search=Massachusetts+Institute+of+Technology&per-page=8",
@@ -8826,14 +8826,14 @@
       }
     ],
     "factors": {
-      "practice_vs_science": 0.9531,
+      "practice_vs_science": 0.9528,
       "social_vs_hardcore": 0.4893,
       "budget_vs_prestige": 0.7993,
       "city_vs_campus": 0.2661
     },
     "factors_meta": {
       "version": "internet_v2",
-      "computed_at": "2026-05-23T22:07:21Z",
+      "computed_at": "2026-11-20T17:00:55Z",
       "method": "Fixed scales from app/services/preference_factors.py: research focus is OpenAlex works per enrolled student (log scale, 0.1 to 30); selectivity (social_vs_hardcore) is applicants per place from the published first-year admission rate (log scale, 1 to 40); location is city population on the OECD functional-urban-area size classes (log scale, 50,000 = outside a city to 1.5 million = large metropolitan). Null means the source data is missing. Location prefers the official urban-area population (OECD functional urban areas or national statistics). Cost vs prestige averages annual cost in USD (log scale, $1,000 to $100,000) and the official rank (log scale, 1 to 1,000).",
       "raw_metrics": {
         "rank": {
