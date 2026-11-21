@@ -194,6 +194,11 @@ def _resolve_scopes(options, routes, facts, unknowns):
         if row["id"] in {"nu-a-fact-nuet-support", "nu-a-fact-financial-support-eligibility-2027-28"}:
             row["attributes"]["reading_route_ids"] = scope["route_ids"]
             scope["route_ids"] = ["nu-a-route-financial-support"]
+        # Source level labels such as "PhD" name a known level; dropping them would show the record on every level's path.
+        aliases = {"phd": "doctoral", "doctorate": "doctoral", "master": "masters", "bachelor": "undergraduate", "foundation": "preparation"}
+        named = [aliases.get(str(value).casefold(), value) for value in scope["levels"]]
+        if scope["levels"] and named != scope["levels"] and set(named).issubset(LEVELS):
+            scope["levels"] = list(dict.fromkeys(named))
         if scope["levels"] and not set(scope["levels"]).issubset(LEVELS):
             scope["additional_dimensions"]["source_level_labels"] = scope["levels"]
             scope["levels"] = []

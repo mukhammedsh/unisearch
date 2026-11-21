@@ -2553,7 +2553,7 @@ university.admissions.catalog.domain.student_support: Поддержка сту�
 university.admissions.catalog.domain.other: Другие сведения источников
 university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
 university.admissions.catalog.reason.missing_evidence: Добавьте свои результаты в профиль, чтобы сверить их с минимумами.
-university.admissions.catalog.reason.unassessed_minimums: Эти требования нельзя проверить автоматически: сверьте их с подробностями ниже.
+university.admissions.catalog.reason.unassessed_minimums: Часть требований нельзя проверить автоматически: сверьте их с подробностями ниже.
 university.admissions.catalog.reason.entry_cycle_required: Укажите год поступления, например «осень 2027», чтобы проверить ваши баллы по этим минимумам.
 university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
 university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
@@ -3323,7 +3323,7 @@ university.admissions.key_facts.title: Главное по этому пути
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Условий для самостоятельной сверки с официальными правилами: {count}. Они описаны в подробностях ниже.
+university.admissions.key_facts.requirements_manual: Остальные условия ({count}) нужно проверить самостоятельно — они описаны ниже.
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -3335,9 +3335,11 @@ university.admissions.key_facts.deadline_period: Период подачи за�
 university.admissions.key_facts.deadline_described: Точная дата с годом не указана; опубликованные сроки — на вкладке «Сроки»
 university.admissions.key_facts.open_deadlines: Все сроки
 university.admissions.key_facts.cost: Стоимость в год
-university.admissions.key_facts.cost_total: Опубликованный бюджет: {amount}
+university.admissions.key_facts.cost_total: Годовой бюджет по данным вуза: {amount}
+university.admissions.key_facts.cost_breakdown: Обучение {tuition} + проживание ≈ {living} за 9 месяцев учёбы
+university.admissions.key_facts.cost_estimate: Обучение и проживание: ≈ {amount} в год
 university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
-university.admissions.key_facts.cost_period: Период источника: {period}
+university.admissions.key_facts.cost_period: Цены: {period}
 university.admissions.key_facts.cost_calculated_reference: Расчётный ориентир: обучение плюс оценка расходов на проживание.
 university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas); его можно указать в дополнительных параметрах выше
 university.admissions.key_facts.cost_not_annual: Цена опубликована не за год; подробности на вкладке «Стоимость»
@@ -3393,6 +3395,7 @@ university.admissions.entry.how_to_apply: Как поступить
 university.admissions.catalog.assessment_count: Среди оценённых числовых минимумов выполнено: {met} из {total}
 university.admissions.catalog.assessment_limits: Здесь не оцениваются остальные условия поступления и право на подачу. Это не вероятность зачисления и не прогноз финансирования.
 university.admissions.catalog.assessment_no_route: Выберите путь поступления для проверки требований.
+university.admissions.catalog.check_route: Проверить по пути «{route}»
 university.admissions.catalog.assessment_next_missing: Добавьте недостающие данные в профиль, затем просмотрите проверки ниже.
 university.admissions.catalog.assessment_next_unassessed: Некоторые опубликованные условия нельзя проверить автоматически. Ознакомьтесь с официальными требованиями ниже.
 university.admissions.catalog.assessment_next_no_numeric: В наших данных нет числового минимума для этого пути, который можно автоматически сравнить. Ознакомьтесь с официальными требованиями ниже.

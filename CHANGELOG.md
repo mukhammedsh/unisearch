@@ -24,10 +24,14 @@ Minor release: map markers now say which university they mark, and search matche
 - Fill the Overview "What you'll need" card from the same minimums when a university publishes them (NU), keeping published test and English wording where no minimum is checkable (MIT's recommended English test).
 - Add a "Where to apply" row with the official application link to the key facts, instead of a separate link below the path selection.
 - Name the level a two-level path is read for ("Regular first-year admission", "Regular Foundation admission") and drop the repeated applicant category from the selection summary of shared paths.
+- State a calculated yearly cost as tuition plus living with both parts ("Tuition $15,000 + living ≈ $3,600"), in the key facts, the Overview and comparison, so it is not read as a published figure that contradicts the tuition shown under Costs.
+- List NU's regular path as first-year admission when the Foundation Year has its own entry, or when a bachelor's program is selected, without a Foundation term under it that read as a second Foundation path.
+- Drop the separate "choose a path" prompt above the shared paths, which repeated the list right below it; say "some" of the requirements cannot be checked automatically, and that the living estimate covers the 9-month academic year.
 - Rewrite remaining jargon in the key facts: what to add instead of "Required applicant evidence is missing", conditions to check yourself, requirements that cannot be checked automatically, and funding options without record counts.
 - Use plain wording in admission details: no record-count badges, "Details and sources", "Not yet published by the university", "Check the conditions on the university site", and the optional fields named "Entry year and fee status".
 
 ### Fixed
+- Keep NU's state-grant work obligation on master's, doctoral and residency paths instead of every path: source level labels such as "PhD" are now recognized rather than dropped.
 - Stop showing first-pass master's and doctoral research notes (such as a master's IELTS rule) as history on NU undergraduate paths.
 
 ### Tests

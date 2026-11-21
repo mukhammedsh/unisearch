@@ -2555,7 +2555,7 @@ university.admissions.catalog.domain.student_support: Student support
 university.admissions.catalog.domain.other: Other source information
 university.admissions.catalog.reason.applicability_unknown: The selected context or applicant applicability has not been established.
 university.admissions.catalog.reason.missing_evidence: Add your results to your profile to compare them with the minimums.
-university.admissions.catalog.reason.unassessed_minimums: These requirements cannot be checked automatically; compare them with the details below.
+university.admissions.catalog.reason.unassessed_minimums: Some of these requirements cannot be checked automatically; compare them with the details below.
 university.admissions.catalog.reason.entry_cycle_required: Choose your entry year, for example "Fall 2027", to check your scores against these minimums.
 university.admissions.catalog.reason.no_published_requirements: No evaluable published numeric minimum is catalogued for this context.
 university.admissions.catalog.reason.requirements_not_met: At least one evaluated published minimum was not met.
@@ -3325,7 +3325,7 @@ university.admissions.key_facts.title: Key facts for this path
 university.admissions.key_facts.note: A summary of published facts, not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: Conditions to check yourself against the official rules: {count}. They are described in the details below.
+university.admissions.key_facts.requirements_manual: The other conditions ({count}) need checking yourself; they are described below.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -3337,9 +3337,11 @@ university.admissions.key_facts.deadline_period: Application period: {period}
 university.admissions.key_facts.deadline_described: No exact date with a year is listed; see the published dates on the Dates tab
 university.admissions.key_facts.open_deadlines: All dates
 university.admissions.key_facts.cost: Cost per year
-university.admissions.key_facts.cost_total: Published budget: {amount}
+university.admissions.key_facts.cost_total: Yearly budget published by the university: {amount}
+university.admissions.key_facts.cost_breakdown: Tuition {tuition} + living ≈ {living} for the 9-month academic year
+university.admissions.key_facts.cost_estimate: Tuition and living: ≈ {amount} a year
 university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
-university.admissions.key_facts.cost_period: Source period: {period}
+university.admissions.key_facts.cost_period: Prices: {period}
 university.admissions.key_facts.cost_calculated_reference: Calculated reference: tuition plus a living-cost estimate.
 university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas); you can set it in the details above
 university.admissions.key_facts.cost_not_annual: The published price is not per year; see the cost tab
@@ -3395,6 +3397,7 @@ university.admissions.entry.how_to_apply: How to apply
 university.admissions.catalog.assessment_count: {met} of {total} evaluated numeric minimum checks met
 university.admissions.catalog.assessment_limits: Other admission requirements and eligibility are not assessed here. This score is not an admission probability or a funding prediction.
 university.admissions.catalog.assessment_no_route: Choose an application path to check its requirements.
+university.admissions.catalog.check_route: Check against “{route}”
 university.admissions.catalog.assessment_next_missing: Add the missing evidence in your profile, then review the checks below.
 university.admissions.catalog.assessment_next_unassessed: Some published rules cannot be checked automatically. Review the official requirements below.
 university.admissions.catalog.assessment_next_no_numeric: Our data has no numeric minimum for this path that can be compared automatically. Review the official requirements below.

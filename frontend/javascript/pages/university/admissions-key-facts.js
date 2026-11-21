@@ -229,14 +229,20 @@ export function costFact(resolved, budgetUsd) {
   if (!basis) return { status: "unknown", tone: "", text: label("cost_unknown"), notes: [] };
   const quote = costs[basis];
   const amount = formatPriceRange(quote.min, quote.max, quote.currency, summary());
-  const text = tFormat(`university.admissions.key_facts.${basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount });
+  // A total this site adds up (published tuition plus a living estimate) says so and shows both parts,
+  // so it is never mistaken for a published figure or contradicted by the tuition shown elsewhere.
+  const calculated = quote.calculation === "tuition_plus_living_range" && costs.tuition && Number.isFinite(quote.living_min);
+  const text = tFormat(`university.admissions.key_facts.${calculated ? "cost_estimate" : basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount });
+  const breakdown = calculated ? tFormat("university.admissions.key_facts.cost_breakdown", {
+    tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()),
+    living: formatPriceRange(quote.living_min, quote.living_max, quote.currency, summary()) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
   const parts = { amount, basis, period: quote.period || "" };
-  const notes = [quote.period ? tFormat("university.admissions.key_facts.cost_period", {
+  const notes = [breakdown, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
-  const referenceNote = quote.calculation === "tuition_plus_living_range"
-    ? t("university.admissions.key_facts.cost_calculated_reference") : "";
+  const referenceNote = breakdown || (quote.calculation === "tuition_plus_living_range"
+    ? t("university.admissions.key_facts.cost_calculated_reference") : "");
   // The explanation is general: the university, not the applicant's nationality or residence, sets the classification.
   const feeStatusDepends = quote.fee_status_match === "unknown" && quote.fee_statuses?.length > 1;
   if (feeStatusDepends) notes.push(label("cost_fee_status"), t("university.admissions.glossary.fee_status.text"));

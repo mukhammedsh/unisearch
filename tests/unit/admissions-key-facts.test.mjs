@@ -181,7 +181,7 @@ test("tuition-only prices never look like a full budget", () => {
   assert.match(within.flag.text, /living costs are extra/);
   const over = costFact(context({ selected_costs: { annual_total: quote({ min: 92760, max: 92760, usd: { min: 92760, max: 92760 } }), tuition: quote() } }), 10000);
   assert.equal(over.status, "over");
-  assert.match(over.text, /Published budget: \$92,760/);
+  assert.match(over.text, /Yearly budget published by the university: \$92,760/);
   assert.equal(over.flag.tone, "danger");
   assert.match(over.flag.text, /Above your budget of \$10,000/);
 });
@@ -209,7 +209,7 @@ test("requirements summarise measurable checks and fall back to the published re
     { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" }] } } } }));
   assert.match(measured.text, /1 of 2 measurable minimums met \(50%\)/);
   assert.equal(measured.tone, "warning");
-  assert.deepEqual(measured.notes, ["Conditions to check yourself against the official rules: 1. They are described in the details below."]);
+  assert.deepEqual(measured.notes, ["The other conditions (1) need checking yourself; they are described below."]);
   const unavailable = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [] } } } }));
   assert.equal(unavailable.text, "Add your results to your profile to compare them with the minimums.");
 });
@@ -229,7 +229,7 @@ test("missing requirement evidence names what to add and which overall scores al
   assert.equal(fact.text, "Add your results to your profile to compare them with the minimums.");
   assert.equal(fact.tone, "");
   // The checklist names each published minimum and what to add, so the notes keep only the manual conditions.
-  assert.deepEqual(fact.notes, ["Conditions to check yourself against the official rules: 1. They are described in the details below."]);
+  assert.deepEqual(fact.notes, ["The other conditions (1) need checking yourself; they are described below."]);
   const resolved = context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } });
   assert.deepEqual(minimumChecklist(resolved).map(({ kind, mark, text, note }) => ({ kind, mark, text, note })), [

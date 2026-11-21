@@ -130,7 +130,8 @@ test("a saved NU Foundation choice can be compared with another university on a 
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${stanford}"]`)).toHaveAttribute("data-scope", "institution");
   const comparedCost = page.locator('[data-compare-row="cost"] dd').first();
   await expect(comparedCost).toContainText("15,600");
-  await expect(comparedCost).toContainText("Calculated reference: tuition plus a living-cost estimate.");
+  // The calculated total names its parts, so it is not read as a published figure.
+  await expect(comparedCost).toContainText(/Tuition \$12,000 \+ living ≈ \$3,600/);
   await expect(comparison).toContainText("Stanford");
   await expect(comparison.getByRole("alert")).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);

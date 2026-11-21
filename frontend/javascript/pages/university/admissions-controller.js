@@ -6,7 +6,7 @@ import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
 import { renderAdmissionsKeyFacts } from "./admissions-key-facts.js";
-import { renderTermHelp, renderTermsFor, routeWording } from "./admissions-glossary.js";
+import { glossaryTerms, renderTermHelp, renderTermList, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 
@@ -346,13 +346,19 @@ export function mountAdmissionsCatalog(institutionId) {
       || (selected ? "" : t("university.admissions.entry.route_help_generic"));
     const specialRoutes = option?.id === "stanford-option-cs-ms" || option?.id === "stanford-option-cs-phd"
       ? routes.filter(item => item.id.startsWith("engineering-doerr-evidence:cs-")) : [];
-    const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`;
+    // A program's paths are named for the program's level (a bachelor's program reads NU's regular path as first-year).
+    const routeOption = item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-read-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(admissionsRouteName(item, { presentation: "simple", level: context.study_level }))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermList(glossaryTerms(routeWording(item)).filter(term => !(context.study_level === "undergraduate" && term === "foundation")))}</div>`;
     root.dataset.state = status;
     // Without a program, a shared undergraduate application comes first and program browsing follows it.
     const chooseProgramAction = `<div class="admissions-context__actions"><button type="button" id="admissionsChooseProgram">${escapeHtml(label(option ? "change_program" : "browse_programs"))}</button></div>`;
     // Without a program the university's shared paths lead, its preparatory year right after the main one; with a program
     // they follow that program's own paths as alternatives.
-    const sharedOptions = sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`);
+    // Shared paths are read for the first year; a preparatory year offered as its own entry is not repeated
+    // under the regular path's name or terms, so it never reads as a second Foundation path.
+    const separatePreparation = !option && preparationEntries.length > 0;
+    const sharedName = item => separatePreparation ? admissionsRouteName(item, { presentation: "simple", level: "undergraduate" }) : routeName(item);
+    const sharedTerms = item => renderTermList(glossaryTerms(routeWording(item)).filter(term => !(separatePreparation && term === "foundation")));
+    const sharedOptions = sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(sharedName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${sharedTerms(item)}</div>`);
     const preparationOptions = option ? [] : preparationEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-preparation-entry="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(admissionsProgramLabel(item).title)}</button></div><p class="admissions-context__note">${escapeHtml(t("university.admissions.entry.preparation_help"))}</p></div>`);
     const sharedBlock = sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${sharedOptions.toSpliced(1, 0, ...preparationOptions).join("")}</div>` : "";
     root.innerHTML = `<div class="admissions-context__heading"><div><h2>${escapeHtml(label("simple_title"))}</h2>${route || noRoute || (!option && sharedEntries.length) ? "" : `<p>${escapeHtml(label("route_intro"))}</p>`}</div></div>
@@ -509,6 +515,22 @@ export function mountAdmissionsCatalog(institutionId) {
       assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id),
         applicationUrl: getApplicationLink(resolved) });
       bindKeyFacts(assessmentHost);
+    }
+    // Without a program the shared paths are listed right below, so this block checks the main one at once instead of
+    // pointing at the list.
+    else if (!option && sharedRoutes.some(route => route.classification !== "financial_support_application")) {
+      const main = sharedRoutes.find(route => route.classification !== "financial_support_application");
+      const name = admissionsRouteName(main, { presentation: "simple", level: preparationEntries.length ? "undergraduate" : "" });
+      assessmentHost.innerHTML = `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match><h2>${escapeHtml(label("assessment"))}</h2>${prompt(label("assessment_no_route"), `<button type="button" data-check-shared-route="${escapeHtmlAttr(main.id)}">${escapeHtml(tFormat("university.admissions.catalog.check_route", { route: name }))}</button>`)}</section>`;
+      assessmentHost.querySelector("button").onclick = () => {
+        context.study_option_id = "";
+        context.application_route_id = main.id;
+        context.study_level = "undergraduate";
+        contextDirty = false;
+        saveStatus = "";
+        setUrl();
+        void refreshContext({ revealSelection: true });
+      };
     }
     else {
       const canChooseRoute = option ? Boolean(resolved?.available_routes?.length) : Boolean(sharedRoutes.length);

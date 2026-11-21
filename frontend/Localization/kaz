@@ -2555,7 +2555,7 @@ university.admissions.catalog.domain.student_support: Студенттерге �
 university.admissions.catalog.domain.other: Дереккөздегі өзге ақпарат
 university.admissions.catalog.reason.applicability_unknown: Таңдалған контекст немесе талаптардың өтініш берушіге қолданылуы анықталмаған.
 university.admissions.catalog.reason.missing_evidence: Минимумдармен салыстыру үшін нәтижелеріңізді профильге қосыңыз.
-university.admissions.catalog.reason.unassessed_minimums: Бұл талаптарды автоматты түрде тексеру мүмкін емес: оларды төмендегі толығырақ мәліметпен салыстырыңыз.
+university.admissions.catalog.reason.unassessed_minimums: Кейбір талаптарды автоматты түрде тексеру мүмкін емес: оларды төмендегі толығырақ мәліметпен салыстырыңыз.
 university.admissions.catalog.reason.entry_cycle_required: Баллдарыңызды осы минимумдармен салыстыру үшін түсу жылын көрсетіңіз, мысалы «2027 жылғы күз».
 university.admissions.catalog.reason.no_published_requirements: Бұл контекст үшін бағалауға болатын сандық минимум каталогқа енгізілмеген.
 university.admissions.catalog.reason.requirements_not_met: Бағаланған жарияланған минимумдардың кемінде бірі орындалмаған.
@@ -3325,7 +3325,7 @@ university.admissions.key_facts.title: Осы жол бойынша негізг
 university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
-university.admissions.key_facts.requirements_manual: Ресми ережелермен өзіңіз тексеретін шарттар: {count}. Олар төмендегі толығырақ бөлімде сипатталған.
+university.admissions.key_facts.requirements_manual: Қалған шарттарды ({count}) өзіңіз тексеруіңіз керек — олар төменде сипатталған.
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -3337,9 +3337,11 @@ university.admissions.key_facts.deadline_period: Өтінім беру кезе�
 university.admissions.key_facts.deadline_described: Жылы көрсетілген нақты күн жоқ; жарияланған мерзімдер «Мерзімдер» қойындысында
 university.admissions.key_facts.open_deadlines: Барлық мерзімдер
 university.admissions.key_facts.cost: Жылдық құны
-university.admissions.key_facts.cost_total: Жарияланған бюджет: {amount}
+university.admissions.key_facts.cost_total: Университет жариялаған жылдық бюджет: {amount}
+university.admissions.key_facts.cost_breakdown: Оқу {tuition} + 9 айлық оқу кезеңінде тұру ≈ {living}
+university.admissions.key_facts.cost_estimate: Оқу және тұру: жылына ≈ {amount}
 university.admissions.key_facts.cost_tuition: Оқу ақысы: {amount}. Тұру шығыны кірмейді
-university.admissions.key_facts.cost_period: Дереккөз кезеңі: {period}
+university.admissions.key_facts.cost_period: Бағалар: {period}
 university.admissions.key_facts.cost_calculated_reference: Есептік бағдар: оқу ақысы мен тұру шығындарының бағасы.
 university.admissions.key_facts.cost_fee_status: Төлем мәртебесіне (Home немесе Overseas) байланысты; оны жоғарыдағы қосымша параметрлерде көрсетуге болады
 university.admissions.key_facts.cost_not_annual: Баға бір жылға жарияланбаған; толығырақ «Құны» қойындысында
@@ -3395,6 +3397,7 @@ university.admissions.entry.how_to_apply: Қалай өтініш беруге �
 university.admissions.catalog.assessment_count: Бағаланған {total} сандық минимумның {met} орындалды
 university.admissions.catalog.assessment_limits: Мұнда өзге қабылдау шарттары мен өтініш беруге құқық бағаланбайды. Көрсеткіш оқуға қабылдану ықтималдығын немесе қаржыландыруды болжамдамайды.
 university.admissions.catalog.assessment_no_route: Талаптарды тексеру үшін өтініш беру жолын таңдаңыз.
+university.admissions.catalog.check_route: «{route}» жолы бойынша тексеру
 university.admissions.catalog.assessment_next_missing: Жетіспейтін деректерді профильге қосып, төмендегі тексерулерді қарап шығыңыз.
 university.admissions.catalog.assessment_next_unassessed: Жарияланған кейбір талаптарды автоматты түрде тексеру мүмкін емес. Ресми талаптарды төменнен қарап шығыңыз.
 university.admissions.catalog.assessment_next_no_numeric: Біздің деректерде осы жол бойынша автоматты салыстыруға болатын сандық минимум жоқ. Ресми талаптарды төменнен қарап шығыңыз.

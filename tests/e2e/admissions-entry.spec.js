@@ -30,10 +30,10 @@ test("requirements match appears before route selection and shows the selected r
   await expect(assessment).not.toContainText("Choose a program");
   await expect(assessment).not.toContainText("%");
   expect(await assessment.evaluate(node => Boolean(node.compareDocumentPosition(document.querySelector("#admissionsContext")) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
-  await assessment.getByRole("button").click();
-  await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeFocused();
-  await page.locator('[data-shared-route="mit-first-year"]').click();
+  // The block checks the main shared path directly rather than pointing at the list below it.
+  await assessment.getByRole("button", { name: /Check against/ }).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe("mit-first-year");
   await expect(assessment).toContainText("100%");
   await expect(assessment).toContainText("1 of 1");
   await expect(assessment).toContainText("not an admission probability");
