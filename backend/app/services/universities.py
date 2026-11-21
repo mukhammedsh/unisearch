@@ -110,16 +110,23 @@ def _load_university_name_variants() -> Dict[str, Dict[str, Any]]:
 
 
 def _names_in_language(uid: str, lang: str) -> Dict[str, Any]:
-    """One university's names in one language: official full name, abbreviations, alternatives."""
+    """One university's names in one language.
+
+    official: the full name; main_abbreviation: the one abbreviation the map shows ("" when there is none);
+    short_name: what the map shows instead when there is no main abbreviation; abbreviations and
+    alternatives: every other name, searched in every language.
+    """
     names = _load_university_name_variants().get(uid, {}).get(lang)
     if not isinstance(names, dict):
-        return {"official": "", "abbreviations": [], "alternatives": []}
+        return {"official": "", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
 
     def clean(values: Any) -> List[str]:
         return [str(value).strip() for value in values or [] if str(value or "").strip()]
 
     return {
         "official": str(names.get("official") or "").strip(),
+        "main_abbreviation": str(names.get("main_abbreviation") or "").strip(),
+        "short_name": str(names.get("short_name") or "").strip(),
         "abbreviations": clean(names.get("abbreviations")),
         "alternatives": clean(names.get("alternatives")),
     }
@@ -133,12 +140,13 @@ _MAP_LABEL_FALLBACK_ORDER = {
 
 
 def _map_label_for_university(uid: str, lang: str) -> Optional[str]:
-    """Short marker text for the locale; Kazakh falls back to Russian, Russian to English."""
-    labels = _load_university_name_variants().get(uid, {}).get("map_label")
-    if not isinstance(labels, dict):
-        return None
+    """Marker text for the locale: the main abbreviation, else the short name.
+
+    A language with nothing to show falls back to Russian for Kazakh and to English for Russian.
+    """
     for key in _MAP_LABEL_FALLBACK_ORDER.get(lang, (SEARCH_LANG_ENG,)):
-        label = str(labels.get(key) or "").strip()
+        names = _names_in_language(uid, key)
+        label = names["main_abbreviation"] or names["short_name"]
         if label:
             return label
     return None

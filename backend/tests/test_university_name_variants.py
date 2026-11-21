@@ -28,7 +28,7 @@ class UniversityNameVariantsDataTests(unittest.TestCase):
         missing = []
         for university in universities_service.load_universities():
             entry = entries.get(university["id"]) or {}
-            if not entry.get("map_label", {}).get("eng") or not all((entry.get(lang) or {}).get("official") for lang in LANGS):
+            if not all((entry.get(lang) or {}).get("official") for lang in LANGS):
                 missing.append(university["id"])
         self.assertEqual(missing, [])
 
@@ -54,7 +54,7 @@ class UniversityNameVariantsDataTests(unittest.TestCase):
         for uid, entry in _entries().items():
             for lang in LANGS:
                 names = entry[lang]
-                if set(names) != {"official", "abbreviations", "alternatives"}:
+                if set(names) != {"official", "main_abbreviation", "short_name", "abbreviations", "alternatives"}:
                     problems.append((uid, lang, "keys"))
                     continue
                 if not isinstance(names["official"], str) or not names["official"].strip():
@@ -68,11 +68,34 @@ class UniversityNameVariantsDataTests(unittest.TestCase):
                     problems.append((uid, lang, "duplicate"))
         self.assertEqual(problems, [])
 
-    def test_map_labels_are_abbreviations_or_alternatives(self):
+    def test_main_abbreviation_and_short_name_are_listed_names(self):
         for uid, entry in _entries().items():
-            known = {name for lang in LANGS for name in (*entry[lang]["abbreviations"], *entry[lang]["alternatives"])}
-            for lang, label in entry["map_label"].items():
-                self.assertIn(label, known, f"{uid}: {lang} map label {label!r} is not an abbreviation or alternative")
+            for lang in LANGS:
+                names = entry[lang]
+                if names["main_abbreviation"]:
+                    self.assertIn(names["main_abbreviation"], names["abbreviations"], f"{uid}/{lang}: main abbreviation is not in abbreviations")
+                if names["short_name"]:
+                    self.assertIn(names["short_name"], names["alternatives"], f"{uid}/{lang}: short name is not in alternatives")
+
+    def test_every_catalog_university_has_something_to_show_on_the_map(self):
+        for university in universities_service.load_universities():
+            for lang in LANGS:
+                self.assertTrue(
+                    universities_service._map_label_for_university(university["id"], lang),
+                    f"{university['id']}: nothing to show on the map in {lang}",
+                )
+
+    def test_main_abbreviation_wins_over_short_name(self):
+        entries = _entries()
+        changed = json.loads(json.dumps(entries))
+        changed["harvard-usa-cambridge"]["eng"]["main_abbreviation"] = "HU"
+        changed["harvard-usa-cambridge"]["eng"]["abbreviations"].append("HU")
+        universities_service._NAME_VARIANTS_CACHE["data"] = changed
+        try:
+            self.assertEqual(universities_service._map_label_for_university("harvard-usa-cambridge", "eng"), "HU")
+            self.assertEqual(universities_service._map_label_for_university("harvard-usa-cambridge", "rus"), "Гарвард")
+        finally:
+            universities_service._NAME_VARIANTS_CACHE["mtime"] = None
 
     def test_no_name_is_shared_between_universities(self):
         owners = defaultdict(set)
@@ -82,9 +105,9 @@ class UniversityNameVariantsDataTests(unittest.TestCase):
         shared = {name: sorted(ids) for name, ids in owners.items() if len(ids) > 1}
         self.assertEqual(shared, {})
 
-    def test_kazakh_map_labels_keep_their_official_source(self):
+    def test_kazakh_main_abbreviations_keep_their_official_source(self):
         for uid, entry in _entries().items():
-            if entry["map_label"].get("kaz"):
+            if entry["kaz"]["main_abbreviation"]:
                 source = entry.get("source") or {}
                 self.assertTrue(str(source.get("url", "")).startswith("https://"), uid)
                 self.assertTrue(source.get("checked"), uid)
@@ -141,10 +164,10 @@ class UniversityNameVariantsSearchTests(unittest.TestCase):
         return max(scores, key=scores.get) if scores else None
 
     def test_every_map_label_finds_its_university_first(self):
-        entries = _entries()
         wrong = []
         for university in self.items:
-            for lang, label in entries[university["id"]]["map_label"].items():
+            for lang in LANGS:
+                label = universities_service._map_label_for_university(university["id"], lang)
                 _, scores = universities_service._filter_by_search_query(self.pairs, label, lang)
                 own = scores.get(university["id"])
                 if own is None or any(score >= own for uid, score in scores.items() if uid != university["id"]):
