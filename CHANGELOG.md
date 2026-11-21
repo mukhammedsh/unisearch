@@ -2,6 +2,23 @@
 
 All notable project changes should be recorded here.
 
+## 10.7.0 (2026-11-21) - Name universities on the map and search every name
+
+Minor release: map markers now say which university they mark, and search matches every name a university goes by in any language.
+
+### Added
+- Label each university on the map with a short name next to a graduation-cap icon: an established abbreviation such as MIT or KBTU, or a distinctive name such as Harvard. The Russian interface uses Cyrillic forms and the Kazakh one Kazakh forms such as ҚБТУ; the full name appears in a tooltip on hover or focus. The map-point API now returns `map_label`.
+- Name map groups instead of showing a bare number: a group is labelled with its city or country and a count, or, when it is only part of a city, with its best-ranked university and the number of others (for example "KBTU +3"). Groups merge at a wider radius so labels do not overlap.
+- Keep every name a university goes by in one file, `backend/data/university_name_variants.json`: per university id, three languages (English, Russian, Kazakh), each split into the official full name, abbreviations and alternatives (other full names, short names, transliterations), plus the map marker label. Kazakh-script forms cite the official pages they were checked on.
+
+### Improved
+- Search matches the official name, abbreviations and alternative names in all three languages whatever the interface language is, so an abbreviation, an alternate full name or a renamed university is found from any language. The official name must equal the stored full name that cards display; a university missing from the file keeps its stored name.
+- List abbreviations separately in the card payload (`abbreviations`), so the search box shows the abbreviation badge only for real abbreviations rather than for other names.
+- Show the university campus photo as a backdrop in the map-mode result cards, fading smoothly into the card surface the same way as in university comparison.
+
+### Tests
+- Check that every catalog university has all three languages, that no name belongs to two universities, that map labels are listed abbreviations or alternatives, and that search ranks each university first for its map labels and finds it by alternate full names.
+
 ## 10.6.7 (2026-11-21) - Cite reviewed study formats
 
 ### Improved
