@@ -187,10 +187,6 @@
   pointer-events: none;
 }
 
-.compare-config-column__head .compare-campus__photo::after {
-  background: linear-gradient(to bottom in oklab, transparent 40%, var(--bg));
-}
-
 .compare-campus__credit {
   justify-self: end;
   color: var(--text-muted);
@@ -486,8 +482,8 @@
 }
 
 .compare-config-chance {
-  margin: var(--space-2) 0 var(--space-3);
-  padding: 0 var(--space-3);
+  margin: 0;
+  padding: 0;
 }
 
 .compare-config-chance .chance-panel {
@@ -804,11 +800,15 @@
   align-content: start;
   gap: var(--space-4);
   min-width: 0;
-  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
 }
 
 .compare-config-column__head {
-  padding: var(--space-4);
+  padding: 0;
   display: grid;
   gap: var(--space-1);
 }
@@ -847,7 +847,7 @@
 }
 
 .compare-config-options {
-  padding: var(--space-3);
+  padding: 0;
   display: grid;
   gap: var(--space-3);
 }
@@ -863,20 +863,6 @@
 .compare-config-options .admission-scope-note,
 .compare-config-options .admission-category-list {
   margin: 0;
-}
-
-.compare-config-options .admission-empty-state {
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-micro);
-}
-
-.compare-config-options .admission-category-card {
-  padding: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-card);
 }
 
 .compare-config-options .admission-category-title,
@@ -934,22 +920,6 @@
 .compare-config-options .track-stats-title {
   margin: 0;
   padding-bottom: var(--space-1);
-}
-
-.compare-config-options .track-exam-group {
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.compare-config-options .track-exam-group + .track-exam-group {
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
-}
-
-.compare-config-options :is(.track-exam-group--info, .track-exam-group--success, .track-exam-group--neutral) .track-exam-group-title {
-  color: var(--text-muted);
 }
 
 .compare-config-options .track-extra-req {
@@ -1256,13 +1226,13 @@
 }
 
 @media (max-width: 768px) {
+  .compare-config-column {
+    padding: var(--space-4);
+  }
+
   .compare-config-options .admission-program-selector {
     flex-wrap: nowrap;
     overflow-x: auto;
-  }
-
-  .compare-config-options .admission-category-card {
-    padding: var(--space-4);
   }
 
   .compare-config-options .track-stats-box--avg {
@@ -1340,8 +1310,8 @@
   padding: var(--space-3) var(--space-4);
   appearance: none;
   border-radius: var(--radius-base);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-micro);
+  background: var(--surface-soft);
+  box-shadow: none;
   color: var(--text);
   cursor: pointer;
   font: inherit;

@@ -569,12 +569,19 @@ a {
   .admission-funding-option,
   .finance-summary-container,
   .finance-option-card,
+  .finance-fee-status-banner,
+  .finance-threshold-item,
+  .finance-phd-guarantee-card,
+  .roi-box,
   .track-stats-box,
   .track-extra-req,
   .admissions-deadline-item,
   .deadline-calendar__details,
   .deadline-guidance-item,
-  .admissions-selection
+  .admissions-selection,
+  .profile-exam-item,
+  .lang-item,
+  .profile-summary
 ) {
   --control-bg: var(--surface-solid);
   --control-shadow: var(--shadow-xs);
