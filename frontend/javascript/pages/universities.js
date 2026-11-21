@@ -2779,31 +2779,26 @@ export function initUniversitiesPage() {
         }
     }
 
-    // Labels a cluster so it says something at a glance: a group that is only
-    // part of one city names its best-ranked university ("КазНУ +3"); otherwise
-    // the shared city, else the shared country, with the count. A mixed group
-    // has no label and shows only its count.
+    // Where each university stands in the results list the user is looking at
+    // (the selected sort, UniFit included). The list holds every matching
+    // university, so this is the order a group is labelled by.
+    let mapResultsOrder = new Map();
+
+    function syncMapResultsOrder() {
+        mapResultsOrder = new Map(mapResultsItems.map((item, index) => [String(item?.id || "").trim(), index]));
+        if (markersLayer && typeof markersLayer.refreshClusters === "function") markersLayer.refreshClusters();
+    }
+
+    // A group is named like a single marker: by the university that comes
+    // first in the selected sort, plus how many others it holds ("КазНУ +3").
+    // Without any label to show it is just the count.
     function mapClusterLabel(cluster) {
         const markers = cluster.getAllChildMarkers();
-        const shared = (key) => {
-            const values = new Set(markers.map((marker) => marker.options[key] || ""));
-            return values.size === 1 ? [...values][0] : "";
-        };
-        const city = shared("mapCity");
-        if (city) {
-            let inCity = 0;
-            markersByUniId.forEach((marker) => {
-                if (marker.options.mapCity === city) inCity += 1;
-            });
-            if (inCity > markers.length) {
-                const top = markers
-                    .filter((marker) => marker.options.mapLabel)
-                    .sort((a, b) => a.options.mapRank - b.options.mapRank)[0];
-                if (top) return { text: top.options.mapLabel, count: `+${markers.length - 1}` };
-            }
-        }
-        const place = city || shared("mapCountry");
-        return place ? { text: place, count: String(markers.length) } : null;
+        const orderOf = (marker) => mapResultsOrder.get(marker.options.uniId) ?? Number.MAX_SAFE_INTEGER;
+        const top = markers
+            .filter((marker) => marker.options.mapLabel)
+            .sort((a, b) => (orderOf(a) - orderOf(b)) || (a.options.mapRank - b.options.mapRank))[0];
+        return top ? { text: top.options.mapLabel, count: `+${markers.length - 1}` } : null;
     }
 
     function updateMapResultsSelection(uniId) {
@@ -3099,6 +3094,7 @@ export function initUniversitiesPage() {
             mapResultsTotal = 0;
             mapResultsHasMore = true;
             mapResultsLoadFailed = false;
+            syncMapResultsOrder();
         }
 
         mapResultsLoadingMore = true;
@@ -3120,6 +3116,7 @@ export function initUniversitiesPage() {
             });
 
             mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
+            syncMapResultsOrder();
             mapResultsPage = nextPage;
             mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
             mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
@@ -3316,7 +3313,7 @@ export function initUniversitiesPage() {
             autoPanPaddingBottomRight: L.point(20, 20)
         };
         const newMarkers = [];
-        items.forEach(u => {
+        items.forEach((u, index) => {
             const latitude = Number(u?.coordinates?.lat);
             const longitude = Number(u?.coordinates?.lon);
             if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
@@ -3335,9 +3332,7 @@ export function initUniversitiesPage() {
                     title: trUniversityName(u),
                     uniId: uniId,
                     mapLabel,
-                    mapRank: Number.isFinite(Number(u.rank)) && u.rank !== null ? Number(u.rank) : 1e9,
-                    mapCity: String(u?.location?.city || "").trim(),
-                    mapCountry: String(u?.location?.country || "").trim(),
+                    mapRank: index,
                 });
                 marker.bindTooltip(escapeHtml(trUniversityName(u)), {
                     direction: "top",
@@ -3959,6 +3954,7 @@ export function initUniversitiesPage() {
             if (mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
             if (state.only_saved && savedUniversityIds.size === 0) {
                 mapResultsItems = [];
+                syncMapResultsOrder();
                 mapResultsPage = 0;
                 mapResultsTotal = 0;
                 mapResultsHasMore = false;

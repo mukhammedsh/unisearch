@@ -7,8 +7,8 @@ All notable project changes should be recorded here.
 Minor release: map markers now say which university they mark, and search matches every name a university goes by in any language.
 
 ### Added
-- Label each university on the map with a short name next to a graduation-cap icon: an established abbreviation such as MIT or KBTU, or a distinctive name such as Harvard. The Russian interface uses Cyrillic forms and the Kazakh one Kazakh forms such as ҚБТУ; the full name appears in a tooltip on hover or focus. The map-point API now returns `map_label`.
-- Name map groups instead of showing a bare number: a group is labelled with its city or country and a count, or, when it is only part of a city, with its best-ranked university and the number of others (for example "KBTU +3"). Groups merge at a wider radius so labels do not overlap.
+- Label each university on the map with a short name next to a graduation-cap icon: an established abbreviation such as MIT or KBTU, or a distinctive name such as Harvard. The Russian interface uses Cyrillic forms and the Kazakh one Kazakh forms such as ҚБТУ; the full name appears in a tooltip on hover or focus. The map-point API now returns `map_label`. All markers share one calm style: a raised surface pill with a soft shadow and no border, with the accent colour kept for the icon and the count.
+- Name map groups like single universities instead of showing a bare number: a group carries the label of the university that comes first in the selected sort (the order of the results list, UniFit included, so "MIT +11" under Global Rank and "КазНУ +12" there for Kazakhstan) and the number of other universities it holds. Labels follow the sort when it changes, and groups merge at a wider radius so labels do not overlap.
 - Keep every name a university goes by in one file, `backend/data/university_name_variants.json`: per university id, three languages (English, Russian, Kazakh), each split into the official full name, abbreviations and alternatives (other full names, short names, transliterations), plus the map marker label. Kazakh-script forms cite the official pages they were checked on.
 
 ### Improved
