@@ -197,14 +197,14 @@ test("the visible requirements summary emphasizes unmet checks and keeps details
   ] } } };
   const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
   assert.match(html, /At least one evaluated published minimum was not met/);
-  assert.match(html, /Required applicant evidence is missing/);
+  assert.match(html, /Add your results to your profile to compare them with the minimums/);
   assert.match(html, /not an admission probability/);
   assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
   assert.ok(html.indexOf("At least one evaluated published minimum was not met") < html.indexOf("<details class=\"admissions-catalog__assessment-detail\">"));
   assert.doesNotMatch(html, /<strong>0%<\/strong>/);
   const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail">');
   assert.match(summary, /Add the missing evidence in your profile/);
-  assert.doesNotMatch(summary, /Required applicant evidence is missing|of 2 evaluated numeric/);
+  assert.doesNotMatch(summary, /Add your results to your profile to compare them with the minimums|of 2 evaluated numeric/);
   assert.doesNotMatch(summary, /No requirements-match percentage|self-reported|not an admission probability/);
   assert.match(details, /self-reported/);
   assert.match(details, /not an admission probability/);

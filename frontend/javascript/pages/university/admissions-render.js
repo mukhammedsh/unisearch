@@ -42,8 +42,10 @@ function hasLabel(key) {
   return Boolean(t(`${PREFIX}${key}`));
 }
 
-export function admissionsRouteName(route, { presentation } = {}) {
-  const localized = presentation === "simple" && route?.id ? t(`${PREFIX}route_name.${route.id.replaceAll(":", ".")}`) : "";
+// A route serving two levels (NU's Foundation-or-first-year application) can name the level being read.
+export function admissionsRouteName(route, { presentation, level = "" } = {}) {
+  const key = route?.id ? `${PREFIX}route_name.${route.id.replaceAll(":", ".")}` : "";
+  const localized = presentation === "simple" && key ? (level && t(`${key}.${level}`)) || t(key) : "";
   if (localized) return localized;
   if (presentation === "simple" && !route?.title && !route?.target && route?.classification) {
     const key = `route_class.${route.classification}`;

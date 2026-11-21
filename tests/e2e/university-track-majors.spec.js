@@ -175,7 +175,7 @@ for (const [width, language, theme] of [[1280, "eng", "light"], [390, "rus", "da
     await expect(fact).toContainText("102");
     await expect(page.locator("#admissionsRoute option[value='mit_eecs_meng_admissions']")).toHaveCount(0);
     await noFitPercentage(page);
-    await expect(page.locator("#detailRequirements [data-requirements-match]")).toContainText(/Evidence missing|Сведений нет|Не хватает необходимых/i);
+    await expect(page.locator("#detailRequirements [data-requirements-match]")).toContainText(/Evidence missing|Сведений нет|Не хватает необходимых|Добавьте свои результаты|Add your results/i);
     await fitsViewport(page, width);
   });
 }

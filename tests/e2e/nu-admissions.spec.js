@@ -204,7 +204,9 @@ async function seed(page, profile = {}, { language = "eng", theme = "light", mob
 async function openContext(page, option, route, level, { cycle = "2027/28", applicant = "first_year" } = {}) {
   const params = new URLSearchParams({ id: NU, admission_option: option || "", admission_application_route: route,
     admission_level: level, admission_route: applicant, admission_cycle: cycle, admission_fee: "unknown" });
-  const response = page.waitForResponse(item => item.url().includes(`/universities/${NU}/admissions-context`) && item.request().method() === "POST");
+  // The Overview reads NU's shared first-year path too, so wait for this selection's own request.
+  const response = page.waitForResponse(item => item.url().includes(`/universities/${NU}/admissions-context`) && item.request().method() === "POST"
+    && item.request().postDataJSON()?.context?.application_route_id === route && (item.request().postDataJSON()?.context?.study_option_id || "") === (option || ""));
   await page.goto(`/university.html?${params}`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).toHaveText(/^(Nazarbayev University|Назарбаев [Уу]ниверситет(?:і)?)$/);

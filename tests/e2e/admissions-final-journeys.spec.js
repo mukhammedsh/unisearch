@@ -291,7 +291,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const updatedAssessment = await openAssessment(page);
-  await expect(updatedAssessment).toContainText("Required applicant evidence is missing");
+  await expect(updatedAssessment).toContainText("Add your results to your profile");
   await expect(updatedAssessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
@@ -340,6 +340,6 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(funding.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
 
   await openAdmission(page);
-  await expect(page.locator('#admissionsContext a[href^="https://apply.mit.edu/"]')).toBeVisible();
+  await expect(page.locator('#detailRequirements .admissions-application-link[href^="https://apply.mit.edu/"]')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

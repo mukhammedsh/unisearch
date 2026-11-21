@@ -2554,8 +2554,8 @@ university.admissions.catalog.domain.career: Мансап және нәтиже�
 university.admissions.catalog.domain.student_support: Студенттерге қолдау
 university.admissions.catalog.domain.other: Дереккөздегі өзге ақпарат
 university.admissions.catalog.reason.applicability_unknown: Таңдалған контекст немесе талаптардың өтініш берушіге қолданылуы анықталмаған.
-university.admissions.catalog.reason.missing_evidence: Қажетті растау енгізілмеген.
-university.admissions.catalog.reason.unassessed_minimums: Кейбір жарияланған минимумдар немесе олардың шарттары әзірге бағаланбайды.
+university.admissions.catalog.reason.missing_evidence: Минимумдармен салыстыру үшін нәтижелеріңізді профильге қосыңыз.
+university.admissions.catalog.reason.unassessed_minimums: Бұл талаптарды автоматты түрде тексеру мүмкін емес: оларды төмендегі толығырақ мәліметпен салыстырыңыз.
 university.admissions.catalog.reason.entry_cycle_required: Баллдарыңызды осы минимумдармен салыстыру үшін түсу жылын көрсетіңіз, мысалы «2027 жылғы күз».
 university.admissions.catalog.reason.no_published_requirements: Бұл контекст үшін бағалауға болатын сандық минимум каталогқа енгізілмеген.
 university.admissions.catalog.reason.requirements_not_met: Бағаланған жарияланған минимумдардың кемінде бірі орындалмаған.
@@ -3325,7 +3325,7 @@ university.admissions.key_facts.title: Осы жол бойынша негізг
 university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
-university.admissions.key_facts.requirements_manual: Ресми ережелермен салыстыруды қажет ететін тағы шарттар: {count}
+university.admissions.key_facts.requirements_manual: Ресми ережелермен өзіңіз тексеретін шарттар: {count}. Олар төмендегі толығырақ бөлімде сипатталған.
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -3353,7 +3353,7 @@ university.admissions.key_facts.open_finance: Құны мен қаржыланд
 university.admissions.key_facts.open_funding_route: Грант шарттары
 university.admissions.key_facts.funding: Қаржыландыру
 university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
-university.admissions.key_facts.funding_records: Бұл жол бойынша қаржыландыру жазбалары: {count}. Грант кепілдендірілмейді
+university.admissions.key_facts.funding_records: Қаржыландыру нұсқалары «Құны және қаржыландыру» қойындысында сипатталған. Грант кепілдендірілмейді.
 university.admissions.key_facts.funding_none: Бұл жол үшін қаржыландыру тізімге енгізілмеген; ресми қаржыландыру бетін тексеріңіз
 university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
 university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
@@ -3439,13 +3439,13 @@ university.admissions.glossary.fee_status.text: Төлем мәртебесі қ
 university.admissions.glossary.what_is: {term} дегеніміз не?
 university.admissions.key_facts.cost_fee_status_source: Төлем мәртебесі туралы ресми бет
 university.admissions.key_facts.funding_policy: Университеттің жарияланған саясаты: {policy}
-university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес. Осы жол бойынша қаржыландыру жазбалары: {count}.
+university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес.
 university.admissions.key_facts.deadline_earlier: Бұрынырақ: {text}
 university.admissions.key_facts.deadline_recurring_next: Келесі: {name} — {date}, {days} күннен кейін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
 university.admissions.key_facts.deadline_recurring_today: Келесі: {name} — {date}, бүгін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — мерзімі өтті.
-university.admissions.key_facts.requirements_kind_academic: Академиялық талап
-university.admissions.key_facts.requirements_kind_language: Ағылшын тілі талабы
+university.admissions.key_facts.requirements_kind_academic: Академиялық нәтиже
+university.admissions.key_facts.requirements_kind_language: Ағылшын тілі
 university.admissions.key_facts.requirements_kind_exam: Міндетті емтихан
 university.admissions.key_facts.requirements_need_one: {requirement}: {items} қосыңыз
 university.admissions.key_facts.requirements_need_any: {requirement}: мыналардың біреуін қосыңыз: {items}
@@ -3454,6 +3454,18 @@ university.admissions.key_facts.requirements_add_date: {exam} тапсырылғ
 university.admissions.key_facts.requirements_add_sections: {exam} бөлімдер бойынша балдарын
 university.admissions.key_facts.requirements_add_date_sections: {exam} тапсырылған күнін және бөлімдер бойынша балдарын
 university.admissions.key_facts.requirements_add_gpa: орташа балды (GPA)
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Foundation бағдарламасына жалпы қабылдау
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Бірінші курсқа жалпы қабылдау
+university.admissions.key_facts.apply: Қайда тапсыру керек
+university.admissions.key_facts.apply_text: Өтініш университеттің ресми сайтында беріледі.
+university.admissions.key_facts.minimum_add: Қосыңыз: {items}
+university.admissions.key_facts.minimum_any: {requirement}, біреуі: {items}
+university.admissions.key_facts.minimum_gpa: GPA {minimum}
+university.admissions.key_facts.minimum_gpa_scale: GPA {minimum}, {scale} шкаласы бойынша
+university.admissions.key_facts.minimum_have: Сізде: {result}
+university.admissions.key_facts.minimum_have_below: Сізде: {result}, минимумнан төмен
+university.admissions.key_facts.minimum_have_unconfirmed: Сізде: {result}; оның есепке алынуы төмендегі шарттарға байланысты
+university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}
 profile.ux2.intro: Тек білетініңізге ғана жауап беріңіз. Ештеңе міндетті емес, жауаптар осы құрылғыда сақталады.
 profile.ux2.section.study.title: Нені оқығыңыз келеді

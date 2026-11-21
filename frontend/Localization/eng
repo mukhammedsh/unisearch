@@ -2554,8 +2554,8 @@ university.admissions.catalog.domain.career: Careers and outcomes
 university.admissions.catalog.domain.student_support: Student support
 university.admissions.catalog.domain.other: Other source information
 university.admissions.catalog.reason.applicability_unknown: The selected context or applicant applicability has not been established.
-university.admissions.catalog.reason.missing_evidence: Required applicant evidence is missing.
-university.admissions.catalog.reason.unassessed_minimums: Some published minima or their conditions cannot yet be assessed.
+university.admissions.catalog.reason.missing_evidence: Add your results to your profile to compare them with the minimums.
+university.admissions.catalog.reason.unassessed_minimums: These requirements cannot be checked automatically; compare them with the details below.
 university.admissions.catalog.reason.entry_cycle_required: Choose your entry year, for example "Fall 2027", to check your scores against these minimums.
 university.admissions.catalog.reason.no_published_requirements: No evaluable published numeric minimum is catalogued for this context.
 university.admissions.catalog.reason.requirements_not_met: At least one evaluated published minimum was not met.
@@ -3325,7 +3325,7 @@ university.admissions.key_facts.title: Key facts for this path
 university.admissions.key_facts.note: A summary of published facts, not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: Conditions to check against the official rules: {count}
+university.admissions.key_facts.requirements_manual: Conditions to check yourself against the official rules: {count}. They are described in the details below.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -3353,7 +3353,7 @@ university.admissions.key_facts.open_finance: Costs and funding
 university.admissions.key_facts.open_funding_route: Grant conditions
 university.admissions.key_facts.funding: Funding
 university.admissions.key_facts.funding_route: Applied for separately: {route}
-university.admissions.key_facts.funding_records: Funding records for this path: {count}. An award is not guaranteed
+university.admissions.key_facts.funding_records: Funding options are described under Costs and funding. An award is not guaranteed.
 university.admissions.key_facts.funding_none: No funding is catalogued for this path; check the official funding page
 university.admissions.catalog.domain.reference: Related source comparisons
 university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
@@ -3439,13 +3439,13 @@ university.admissions.glossary.fee_status.text: Fee status decides which tuition
 university.admissions.glossary.what_is: What is {term}?
 university.admissions.key_facts.cost_fee_status_source: Official fee-status page
 university.admissions.key_facts.funding_policy: Published policy: {policy}
-university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you. Funding records for this path: {count}.
+university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you.
 university.admissions.key_facts.deadline_earlier: Earlier: {text}
 university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date}, in {days} days (annual date; confirm the year on the official page)
 university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date}, today (annual date; confirm the year on the official page)
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} has passed.
-university.admissions.key_facts.requirements_kind_academic: Academic requirement
-university.admissions.key_facts.requirements_kind_language: English requirement
+university.admissions.key_facts.requirements_kind_academic: Academic result
+university.admissions.key_facts.requirements_kind_language: English
 university.admissions.key_facts.requirements_kind_exam: Required test
 university.admissions.key_facts.requirements_need_one: {requirement}: add {items}
 university.admissions.key_facts.requirements_need_any: {requirement}: add any one of: {items}
@@ -3454,6 +3454,18 @@ university.admissions.key_facts.requirements_add_date: {exam} test date
 university.admissions.key_facts.requirements_add_sections: {exam} section scores
 university.admissions.key_facts.requirements_add_date_sections: {exam} test date and section scores
 university.admissions.key_facts.requirements_add_gpa: GPA
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Regular Foundation admission
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Regular first-year admission
+university.admissions.key_facts.apply: Where to apply
+university.admissions.key_facts.apply_text: Applications are made on the university's official site.
+university.admissions.key_facts.minimum_add: Add: {items}
+university.admissions.key_facts.minimum_any: {requirement}, one of: {items}
+university.admissions.key_facts.minimum_gpa: GPA {minimum}
+university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} of {scale}
+university.admissions.key_facts.minimum_have: You have: {result}
+university.admissions.key_facts.minimum_have_below: You have: {result}, below the minimum
+university.admissions.key_facts.minimum_have_unconfirmed: You have: {result}; whether it counts depends on the conditions below
+university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
 profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study

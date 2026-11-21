@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { costFact, deadlineFact, fundingFact, renderAdmissionsKeyFacts, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+const { costFact, deadlineFact, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 await initI18n();
 setLanguage("eng", { emit: false });
 
@@ -209,9 +209,9 @@ test("requirements summarise measurable checks and fall back to the published re
     { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" }] } } } }));
   assert.match(measured.text, /1 of 2 measurable minimums met \(50%\)/);
   assert.equal(measured.tone, "warning");
-  assert.deepEqual(measured.notes, ["Conditions to check against the official rules: 1"]);
+  assert.deepEqual(measured.notes, ["Conditions to check yourself against the official rules: 1. They are described in the details below."]);
   const unavailable = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [] } } } }));
-  assert.equal(unavailable.text, "Required applicant evidence is missing.");
+  assert.equal(unavailable.text, "Add your results to your profile to compare them with the minimums.");
 });
 
 test("missing requirement evidence names what to add and which overall scores already meet a minimum, never as a pass or fail", () => {
@@ -226,33 +226,44 @@ test("missing requirement evidence names what to add and which overall scores al
   const presence = { kind: "required_exam_presence", status: "missing", examIds: ["SAT", "ACT"] };
   const fact = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } }));
-  assert.equal(fact.text, "Required applicant evidence is missing.");
+  assert.equal(fact.text, "Add your results to your profile to compare them with the minimums.");
   assert.equal(fact.tone, "");
-  assert.deepEqual(fact.notes, [
-    "Academic requirement: add any one of: UNT (Kazakhstan) section scores; SAT test date",
-    "English requirement: add IELTS Academic test date and section scores",
-    "Required test: add TMUA result",
-    "Required test: add any one of: SAT result; ACT result",
-    // Only the overall score is named; the met IELTS Writing section is not a met requirement.
-    "Overall score already meets the published minimum: UNT (Kazakhstan), IELTS Academic",
-    "Conditions to check against the official rules: 1",
+  // The checklist names each published minimum and what to add, so the notes keep only the manual conditions.
+  assert.deepEqual(fact.notes, ["Conditions to check yourself against the official rules: 1. They are described in the details below."]);
+  const resolved = context({ assessment: { chancePercent: null, reason: "missing_evidence",
+    activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } });
+  assert.deepEqual(minimumChecklist(resolved).map(({ kind, mark, text, note }) => ({ kind, mark, text, note })), [
+    { kind: "academic", mark: "todo", text: "Academic result, one of: UNT (Kazakhstan) 85, SAT 1240", note: "Add: UNT (Kazakhstan) section scores, SAT test date" },
+    { kind: "language", mark: "todo", text: "English: IELTS Academic", note: "Add: IELTS Academic test date and section scores" },
+    // A required test known only from what to add is still named.
+    { kind: "exam", mark: "todo", text: "Required test: TMUA", note: "Add: TMUA result" },
+    { kind: "exam", mark: "todo", text: "Required test, one of: SAT, ACT", note: "" },
   ]);
+  // Met and unmet checks state the applicant's own result; IELTS bands keep one decimal and scores no digit grouping.
+  const ielts = { kind: "language_requirement", status: "unmet", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6 }] }, provided: { exam: "IELTS", score: 5.5 } };
+  const sat = { kind: "academic_requirement", status: "met", rule: { alternatives: [{ profile_field: "gpa", minimum: 4, scale: 5 }, { exam_id: "SAT", minimum: 1240 }] }, provided: { exam: "SAT", score: 1300 } };
+  assert.deepEqual(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [ielts, sat] } } } })).map(({ mark, text, note }) => ({ mark, text, note })), [
+    { mark: "below", text: "English: IELTS Academic 6.0", note: "You have: IELTS Academic 5.5, below the minimum" },
+    { mark: "met", text: "Academic result, one of: GPA 4 of 5, SAT 1240", note: "You have: SAT 1300" },
+  ]);
+  // A result the check could not count is named without being presented as met.
+  const uncounted = { ...sat, status: "missing", missingInputs: [] };
+  assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [uncounted] } } } }))[0].note,
+    "You have: SAT 1300; whether it counts depends on the conditions below");
   // A check without nameable inputs adds no instruction, and a resolved assessment adds none either.
   const unnamed = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [{ kind: "scoped_gpa", status: "missing" }] } } } }));
   assert.deepEqual(unnamed.notes, []);
   assert.deepEqual(requirementsFact(context({ assessment: { chancePercent: 100, reason: "", activeChoice: { details: { checks: [{ ...academic, status: "met" }] } } } })).notes, []);
   setLanguage("rus", { emit: false });
-  assert.match(requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [academic] } } } })).notes[0],
-    /^Академическое требование: добавьте что-то одно из: баллы .* по разделам; дату сдачи SAT$/);
+  assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [academic] } } } }))[0].text, "Академический результат, одно из: ЕНТ 85, SAT 1240");
   setLanguage("eng", { emit: false });
 });
-
 test("funding names a separate support application before counting records", () => {
   const support = fundingFact(context({ available_routes: [{ id: "support", title: "Financial support selection", classification: "financial_support_application" }],
     fact_groups: { funding: ["a"] } }));
   assert.match(support.text, /Applied for separately: Financial support selection/);
-  assert.match(fundingFact(context({ fact_groups: { funding: ["a", "b"] } })).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(context({ fact_groups: { funding: ["a", "b"] } })).text, /Funding options are described under Costs and funding/);
   assert.match(fundingFact(context()).text, /No funding is catalogued/);
 });
 
@@ -306,15 +317,15 @@ test("funding shows one published need policy for the selected route as policy, 
   const withAid = row => context({ facts: [row], fact_groups: { funding: ["aid", "other"] } });
   const policy = fundingFact(withAid(aid()));
   assert.equal(policy.text, "Published policy: MIT meets full demonstrated need using same consideration process");
-  assert.match(policy.notes[0], /not an award offered to you\. Funding records for this path: 2/);
+  assert.match(policy.notes[0], /not an award offered to you\.$/);
   setLanguage("rus", { emit: false });
   assert.match(fundingFact(withAid(aid())).text, /^Опубликованная политика вуза: /);
   setLanguage("eng", { emit: false });
   // Facts for another route, an unreviewed fact, and facts without the policy field never produce a policy.
-  assert.match(fundingFact(withAid(aid({ applicability: { route: "mismatched", status: "mismatched" } }))).text, /Funding records for this path: 2/);
-  assert.match(fundingFact(withAid(aid({ applicability: { route: "unknown", status: "conditional" } }))).text, /Funding records for this path: 2/);
-  assert.match(fundingFact(withAid(aid({ normalized_status: { publication: "published", review: "needs_resolution" } }))).text, /Funding records for this path: 2/);
-  assert.match(fundingFact(withAid(reviewedFact("aid", "funding", { summary: "Aid exists" }))).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(withAid(aid({ applicability: { route: "mismatched", status: "mismatched" } }))).text, /Funding options are described under Costs and funding/);
+  assert.match(fundingFact(withAid(aid({ applicability: { route: "unknown", status: "conditional" } }))).text, /Funding options are described under Costs and funding/);
+  assert.match(fundingFact(withAid(aid({ normalized_status: { publication: "published", review: "needs_resolution" } }))).text, /Funding options are described under Costs and funding/);
+  assert.match(fundingFact(withAid(reviewedFact("aid", "funding", { summary: "Aid exists" }))).text, /Funding options are described under Costs and funding/);
 });
 
 test("funding and deadline rows name the terms the applicant sees without relying on translated text", () => {

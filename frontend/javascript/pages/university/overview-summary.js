@@ -11,9 +11,9 @@ import { translateAdmissionText } from "../../university-translations.js";
 import { getExamDisplayName } from "../../utils/config.js";
 import { withoutBracketedText } from "../../utils/text.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
-import { admissionsRequest } from "./admissions-controller.js";
+import { admissionsRequest, singlePublishedCycle } from "./admissions-controller.js";
 import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
-import { costFact, deadlineFact, fundingPolicyStatement } from "./admissions-key-facts.js";
+import { costFact, deadlineFact, fundingPolicyStatement, minimumChecklist } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
 import { extractUniversityDeadlines, getUndergraduateCategories } from "./render-sections.js";
 
@@ -43,7 +43,9 @@ const usd = amount => formatPrice(amount, "USD");
 // The first undergraduate first-year application shared by every major, or null when the university has none
 // (a route without programs, such as a mid-year intake, cannot describe all majors).
 export function firstYearSharedRoute(sharedRoutes) {
+  // A post-offer funding application shares the programs but is not how one applies.
   return (Array.isArray(sharedRoutes) ? sharedRoutes : []).find(route => route?.applicant_route === "first_year"
+    && route.classification !== "financial_support_application"
     && Array.isArray(route.levels) && route.levels.includes("undergraduate")
     && Array.isArray(route.option_ids) && route.option_ids.length > 0) || null;
 }
@@ -90,7 +92,13 @@ export function checklistItems(resolved) {
   }
   const tests = structured.tests.slice(0, 1).concat(structured.tests.length ? [] : plain.tests.slice(0, 1));
   const documents = structured.documents.length ? structured.documents : plain.documents.slice(0, 1);
-  return [...tests, ...structured.language.slice(0, 1), ...documents].slice(0, MAX_CHECKLIST_ITEMS);
+  // Published numeric minimums (NU's IELTS and SAT, for example) say more than a test name, so they lead when assessed.
+  // A kind of requirement without a checkable minimum keeps its published wording (MIT's recommended English test).
+  const minimums = minimumChecklist(resolved).map(({ kind, factId, mark, text }) => ({ kind, factId, mark, text }));
+  const kinds = new Set(minimums.map(entry => entry.kind));
+  const testsAndLanguage = [...minimums, ...(kinds.has("exam") || kinds.has("academic") ? [] : tests),
+    ...(kinds.has("language") ? [] : structured.language.slice(0, 1))];
+  return [...testsAndLanguage, ...documents].slice(0, MAX_CHECKLIST_ITEMS);
 }
 
 const percentText = value => formatUiNumber(Math.round(value * 10) / 10, { maximumFractionDigits: 1 });
@@ -434,13 +442,20 @@ export function mountOverviewSummary({ container, university, universityId, revi
       let resolved = null;
       if (route) {
         const context = { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" };
-        resolved = await fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" }, signal: request.signal,
+        const read = () => fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" }, signal: request.signal,
           body: JSON.stringify(admissionsRequest(apiProfile, context, universityId)) });
+        resolved = await read();
+        // As in the Admission tab, a route publishing one entry cycle is read for it, so its minimums can be checked.
+        const onlyCycle = resolved?.assessment?.reason === "entry_cycle_required" ? singlePublishedCycle(resolved) : "";
+        if (onlyCycle && current === version) {
+          context.intended_entry_cycle = onlyCycle;
+          resolved = await read();
+        }
         if (current !== version) return;
         if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
       }
       const cards = reviewedCards({ resolved, university, budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
-      show(renderSummary(cards, resolved ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple" }) }) : ""));
+      show(renderSummary(cards, resolved ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: "undergraduate" }) }) : ""));
     } catch (error) {
       if (request.signal.aborted || current !== version) return;
       console.error(error);

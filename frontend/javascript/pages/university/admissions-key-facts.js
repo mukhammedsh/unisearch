@@ -35,7 +35,8 @@ export function requirementsFact(resolved) {
     })
     : t(`university.admissions.catalog.reason.${assessment.reason}`) || t("university.admissions.catalog.assessment_unavailable");
   const tone = assessment.reason === "requirements_not_met" ? "warning" : Number.isFinite(percent) && percent >= 100 ? "success" : "";
-  const missing = assessment.reason === "missing_evidence" ? missingEvidenceNotes(checks) : [];
+  // With a checklist the items themselves say what to add; without one, the notes do.
+  const missing = assessment.reason === "missing_evidence" && !minimumChecklist(resolved).length ? missingEvidenceNotes(checks) : [];
   return { text, tone, cycleRequired: assessment.reason === "entry_cycle_required",
     notes: [...missing, manual ? tFormat("university.admissions.key_facts.requirements_manual", { count: manual }) : ""].filter(Boolean) };
 }
@@ -68,6 +69,60 @@ function missingEvidenceNotes(checks) {
     return (check.provided?.minimum_checks || []).filter(item => item.status === "met" && totals.has(item.exam)).map(item => examName(item.exam));
   }))];
   return [...new Set(lines), ...(met.length ? [tFormat("university.admissions.key_facts.requirements_already_met", { items: met.join(", ") })] : [])];
+}
+
+// Test scores are written as on score reports: no digit grouping (SAT 1240), and IELTS bands with one decimal (6.0).
+const minimumNumber = (exam, value) => new Intl.NumberFormat(locale(), { useGrouping: false,
+  minimumFractionDigits: /^IELTS/i.test(exam || "") && Number.isInteger(value) ? 1 : 0 }).format(value);
+
+// One accepted result as published: the test and its overall minimum, or the GPA and its scale.
+function alternativeText(alternative) {
+  if (alternative.profile_field === "gpa") {
+    return Number.isFinite(alternative.minimum) ? tFormat(`university.admissions.key_facts.minimum_gpa${alternative.scale ? "_scale" : ""}`,
+      { minimum: minimumNumber("", alternative.minimum), scale: alternative.scale }) : label("requirements_add_gpa");
+  }
+  const name = examName(alternative.exam_id);
+  return Number.isFinite(alternative.minimum) ? `${name} ${minimumNumber(alternative.exam_id, alternative.minimum)}` : name;
+}
+
+// What the applicant entered for a check, in the same plain form.
+function providedText(provided) {
+  if (!provided || typeof provided !== "object") return "";
+  if (provided.exam && Number.isFinite(provided.score)) return `${examName(provided.exam)} ${minimumNumber(provided.exam, provided.score)}`;
+  if (provided.field === "gpa" && Number.isFinite(provided.value)) return `GPA ${minimumNumber("", provided.value)}`;
+  return "";
+}
+
+// The path's published academic and language minimums as a short checklist, each with the applicant's own status:
+// met, below the minimum, or what to add. Shared by the Admission key facts and the Overview "What you'll need" card.
+export function minimumChecklist(resolved) {
+  const checks = resolved?.assessment?.activeChoice?.details?.checks || [];
+  return checks.filter(check => REQUIREMENT_KINDS[check.kind]).map(check => {
+    // A required test may come with only what to add (Imperial's TMUA), which still names the test.
+    const named = ids => [...new Set(ids.filter(Boolean))].map(exam_id => ({ exam_id }));
+    const alternatives = check.kind === "required_exam_presence" ? named(check.examIds || [])
+      : check.rule?.alternatives?.length ? check.rule.alternatives : named((check.missingInputs || []).map(input => input.exam));
+    const items = [...new Set(alternatives.map(alternativeText))];
+    if (!items.length) return null;
+    const mark = { met: "met", unmet: "below" }[check.status] || "todo";
+    const requirement = label(`requirements_kind_${REQUIREMENT_KINDS[check.kind]}`);
+    const text = tFormat(`university.admissions.key_facts.minimum_${items.length > 1 ? "any" : "one"}`, { requirement, items: items.join(", ") });
+    const have = providedText(check.provided);
+    const adds = check.status === "missing" ? [...new Set((check.missingInputs || []).map(missingInputItem))] : [];
+    const note = adds.length ? tFormat("university.admissions.key_facts.minimum_add", { items: adds.join(", ") })
+      // A result the check could not count (NU accepts SAT for Foundation only from international applicants) is not a pass.
+      : have ? tFormat(`university.admissions.key_facts.minimum_have${{ below: "_below", todo: "_unconfirmed" }[mark] || ""}`, { result: have }) : "";
+    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note };
+  }).filter(Boolean);
+}
+
+// The same marks as the Overview checklist: a check, a warning, or a dot for something still to add.
+const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
+
+function renderMinimumChecklist(items) {
+  if (!items.length) return "";
+  return `<ul class="admissions-key-facts__checklist">${items.map(item => `<li data-mark="${item.mark}"><span class="admissions-key-facts__mark" aria-hidden="true">${MARK_ICONS[item.mark] ? heroIcon(MARK_ICONS[item.mark], "ui-icon ui-icon--16") : ""}</span>
+    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${item.note ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.note)}</span>` : ""}</span></li>`).join("")}</ul>`;
 }
 
 // Keeps a test-specific date only when the applicant has not entered a different test of the same requirement.
@@ -242,7 +297,7 @@ function row(key, fact, action = "", shownTerms = null, extra = "") {
   const marker = key === "requirements" ? " data-requirements-match" : "";
   return `<div class="admissions-key-facts__row" data-key-fact="${key}"${marker}${fact.status ? ` data-key-fact-status="${escapeHtmlAttr(fact.status)}"` : ""}>
     <dt>${escapeHtml(label(key))}</dt>
-    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${notes}${links}${renderTermList(fact.terms || [], shownTerms)}${action}${extra}</dd></div>`;
+    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${fact.before || ""}${notes}${links}${renderTermList(fact.terms || [], shownTerms)}${action}${extra}</dd></div>`;
 }
 
 // The page's single requirements-match summary: the key-fact result plus caveats that belong beside a number.
@@ -261,20 +316,30 @@ function requirementsRow(resolved, cycleAction, shownTerms) {
   const profileLink = assessment.reason === "missing_evidence"
     ? `<a class="admissions-key-facts__link" href="/profile.html" data-route="profile">${escapeHtml(t("university.admissions.catalog.assessment_profile"))}</a>` : "";
   const detail = renderAssessmentChecks(resolved, { recordDomains: ASSESSMENT_RECORD_DOMAINS });
-  return row("requirements", { ...fact, notes }, `${fact.cycleRequired ? cycleAction : ""}${profileLink}`, shownTerms, detail);
+  return row("requirements", { ...fact, notes, before: renderMinimumChecklist(minimumChecklist(resolved)) },
+    `${fact.cycleRequired ? cycleAction : ""}${profileLink}`, shownTerms, detail);
 }
 
-export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date() } = {}) {
+// Where the application is made, as one link to the university's own application page.
+function applyRow(applicationUrl) {
+  if (!applicationUrl) return "";
+  const action = `<a class="admissions-application-link" href="${escapeHtmlAttr(applicationUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_application"))}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>`;
+  return row("apply", { text: label("apply_text") }, action);
+}
+
+export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date(), applicationUrl = "" } = {}) {
   if (!resolved?.selected_route) return "";
   // The entry cycle belongs to this university's selection, so the action opens the entry-year field.
   const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="edit">${escapeHtml(label("set_cycle"))}</button>`;
   const open = (tab, key) => `<button type="button" class="admissions-key-facts__link" data-open-tab="${tab}">${escapeHtml(label(key))}</button>`;
-  // A glossary term is explained once per key-facts block, in the first row that names it.
-  const shownTerms = new Set();
+  // A glossary term is explained once per key-facts block, in the first row that names it. A path read for the first
+  // year does not need the Foundation term its shared route name carries.
+  const shownTerms = new Set(resolved.context?.study_level === "undergraduate" ? ["foundation"] : []);
   return `<section class="admissions-key-facts" data-admissions-key-facts aria-labelledby="admissionsKeyFactsTitle">
     <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>
     <dl class="admissions-key-facts__list">
       ${requirementsRow(resolved, cycleAction, shownTerms)}
+      ${applyRow(applicationUrl)}
       ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
       ${(() => {

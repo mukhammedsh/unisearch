@@ -2552,8 +2552,8 @@ university.admissions.catalog.domain.career: Карьера и результа�
 university.admissions.catalog.domain.student_support: Поддержка студентов
 university.admissions.catalog.domain.other: Другие сведения источников
 university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
-university.admissions.catalog.reason.missing_evidence: Не хватает необходимых сведений заявителя.
-university.admissions.catalog.reason.unassessed_minimums: Некоторые опубликованные минимальные требования или условия их применения пока нельзя оценить.
+university.admissions.catalog.reason.missing_evidence: Добавьте свои результаты в профиль, чтобы сверить их с минимумами.
+university.admissions.catalog.reason.unassessed_minimums: Эти требования нельзя проверить автоматически: сверьте их с подробностями ниже.
 university.admissions.catalog.reason.entry_cycle_required: Укажите год поступления, например «осень 2027», чтобы проверить ваши баллы по этим минимумам.
 university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
 university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
@@ -3323,7 +3323,7 @@ university.admissions.key_facts.title: Главное по этому пути
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Ещё условий, которые нужно сверить с официальными правилами: {count}
+university.admissions.key_facts.requirements_manual: Условий для самостоятельной сверки с официальными правилами: {count}. Они описаны в подробностях ниже.
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -3351,7 +3351,7 @@ university.admissions.key_facts.open_finance: Стоимость и финанс
 university.admissions.key_facts.open_funding_route: Условия гранта
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
-university.admissions.key_facts.funding_records: Записей о финансировании для этого пути: {count}. Грант не гарантирован
+university.admissions.key_facts.funding_records: Варианты финансирования описаны во вкладке «Стоимость и финансирование». Грант не гарантирован.
 university.admissions.key_facts.funding_none: Для этого пути финансирование не каталогизировано; проверьте официальную страницу о финансировании
 university.admissions.catalog.domain.reference: Связанные сопоставления источников
 university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
@@ -3437,13 +3437,13 @@ university.admissions.glossary.fee_status.text: Статус оплаты опр
 university.admissions.glossary.what_is: Что такое {term}?
 university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
 university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
-university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили. Записей о финансировании для этого пути: {count}.
+university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили.
 university.admissions.key_facts.deadline_earlier: Раньше: {text}
 university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date}, через {days} дн. (ежегодная дата; год уточните на официальной странице)
 university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date}, сегодня (ежегодная дата; год уточните на официальной странице)
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
-university.admissions.key_facts.requirements_kind_academic: Академическое требование
-university.admissions.key_facts.requirements_kind_language: Требование по английскому
+university.admissions.key_facts.requirements_kind_academic: Академический результат
+university.admissions.key_facts.requirements_kind_language: Английский язык
 university.admissions.key_facts.requirements_kind_exam: Обязательный экзамен
 university.admissions.key_facts.requirements_need_one: {requirement}: добавьте {items}
 university.admissions.key_facts.requirements_need_any: {requirement}: добавьте что-то одно из: {items}
@@ -3452,6 +3452,18 @@ university.admissions.key_facts.requirements_add_date: дату сдачи {exam
 university.admissions.key_facts.requirements_add_sections: баллы {exam} по разделам
 university.admissions.key_facts.requirements_add_date_sections: дату сдачи {exam} и баллы по разделам
 university.admissions.key_facts.requirements_add_gpa: средний балл (GPA)
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Обычный приём на Foundation
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Обычный приём на первый курс
+university.admissions.key_facts.apply: Где подать
+university.admissions.key_facts.apply_text: Заявка подаётся на официальном сайте университета.
+university.admissions.key_facts.minimum_add: Добавьте: {items}
+university.admissions.key_facts.minimum_any: {requirement}, одно из: {items}
+university.admissions.key_facts.minimum_gpa: GPA {minimum}
+university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} из {scale}
+university.admissions.key_facts.minimum_have: У вас: {result}
+university.admissions.key_facts.minimum_have_below: У вас: {result}, ниже минимума
+university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; засчитывается ли он, зависит от условий ниже
+university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
 profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать

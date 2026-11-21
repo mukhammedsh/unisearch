@@ -260,6 +260,60 @@
   font-weight: var(--font-weight-regular);
 }
 
+/* Published minimums with the applicant's own status, marked like the Overview checklist. */
+.admissions-key-facts__checklist {
+  display: grid;
+  gap: var(--space-2);
+  /* The key-fact cell's own gap spaces the checklist from the answer above it. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admissions-key-facts__checklist > li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  line-height: var(--leading-normal);
+}
+
+.admissions-key-facts__mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-4);
+  height: calc(1em * var(--leading-normal));
+  color: var(--text-muted);
+}
+
+.admissions-key-facts__checklist > li[data-mark="todo"] .admissions-key-facts__mark::before {
+  content: "";
+  width: var(--space-1-5);
+  height: var(--space-1-5);
+  border-radius: var(--radius-circle);
+  background: currentColor;
+}
+
+.admissions-key-facts__checklist > li[data-mark="met"] .admissions-key-facts__mark {
+  color: var(--color-success);
+}
+
+.admissions-key-facts__checklist > li[data-mark="below"] .admissions-key-facts__mark {
+  color: var(--color-warning);
+}
+
+.admissions-key-facts__checklist-text {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.admissions-key-facts__checklist-note {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
 .admissions-key-facts__flag {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);

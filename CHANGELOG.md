@@ -20,6 +20,11 @@ Minor release: map markers now say which university they mark, and search matche
 - Stop listing a post-offer funding application among the ways to apply; the key facts name it as the next step and open its grant conditions with one button.
 - Read a path for its only published entry cycle, so the minimums check runs without first asking for a year; the cycle shows in the selection summary, can be changed, and is not carried over to another path.
 - List a program's own paths before the university's other shared paths, and lead the shared list with the main application.
+- Show a path's published academic and language minimums as a checklist in its key facts, each with the applicant's own status (met, below the minimum, what to add, or a result whose counting depends on conditions), for example NU's IELTS 6.0 and one of SAT 1240, ACT 26, GPA 4 of 5 or UNT 85.
+- Fill the Overview "What you'll need" card from the same minimums when a university publishes them (NU), keeping published test and English wording where no minimum is checkable (MIT's recommended English test).
+- Add a "Where to apply" row with the official application link to the key facts, instead of a separate link below the path selection.
+- Name the level a two-level path is read for ("Regular first-year admission", "Regular Foundation admission") and drop the repeated applicant category from the selection summary of shared paths.
+- Rewrite remaining jargon in the key facts: what to add instead of "Required applicant evidence is missing", conditions to check yourself, requirements that cannot be checked automatically, and funding options without record counts.
 - Use plain wording in admission details: no record-count badges, "Details and sources", "Not yet published by the university", "Check the conditions on the university site", and the optional fields named "Entry year and fee status".
 
 ### Fixed
