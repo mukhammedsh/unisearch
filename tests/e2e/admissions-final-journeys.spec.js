@@ -88,11 +88,19 @@ async function applyContext(page, route, cycle) {
   await selectRoute(page, route);
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await page.locator("#admissionsCycle").fill(cycle);
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = waitForAdmissionsContext(page, route);
-  await page.locator("#admissionsContextApply").click();
+  let response;
+  if (!(await advanced.isVisible())) {
+    // A path with one intake and no fee classes asks for neither; it is read as linked.
+    expect(cycle, `${route} offers no entry-year field`).toBe("");
+    response = waitForAdmissionsContext(page, route);
+    await page.reload();
+  } else {
+    if (!(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
+    await page.locator("#admissionsCycle").fill(cycle);
+    if (await page.locator("select#admissionsFee").count()) await setNativeSelect(page, "admissionsFee", "unknown");
+    response = waitForAdmissionsContext(page, route);
+    await page.locator("#admissionsContextApply").click();
+  }
   const result = await response;
   expect(result.status).toBe(200);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
@@ -129,10 +137,10 @@ test("Kazakhstan secondary-school guest and applicant can distinguish university
   await preparePage(page);
 
   const journeys = [
-    { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-first-year", applicant: "first_year", cycle: "Fall 2027 entry", guest: true },
+    { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-first-year", applicant: "first_year", cycle: "", guest: true },
     { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-transfer", applicant: "transfer", cycle: "Fall 2027 entry" },
-    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-first-year", applicant: "first_year", cycle: "2027 entry" },
-    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-transfer", applicant: "transfer", cycle: "2027 entry", guest: true },
+    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-first-year", applicant: "first_year", cycle: "" },
+    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-transfer", applicant: "transfer", cycle: "", guest: true },
   ];
 
   for (const journey of journeys) {
@@ -308,10 +316,10 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy", "Data, Economics, and Design of Policy", "masters");
-  const result = await applyContext(page, "mit_grad_dedp_admissions", "Spring 2028");
+  // DEDP publishes one Spring 2028 intake, read with its dates without an entry-year field.
+  const result = await applyContext(page, "mit_grad_dedp_admissions", "");
   expect(result.selected_route.id).toBe("mit_grad_dedp_admissions");
   expect(result.selected_route.target).toMatch(/Data, Economics, and Design of Policy/i);
-  await expect(page.locator("#admissionsCycle")).toHaveValue("Spring 2028");
   await expect(page.locator("#admissionsContext")).toContainText("Data, Economics, and Design of Policy");
   await page.locator("#admissionsContext").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("mit-dedp-context-mobile.png") });

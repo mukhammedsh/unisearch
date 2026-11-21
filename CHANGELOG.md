@@ -46,6 +46,7 @@ Minor release: map markers now say which university they mark, and search matche
 - Fix same-surface blending and low-contrast dark-theme colors across CSS stylesheets: nested controls and cards in admissions, finance, comparison, map results, tour modal, profile breakdowns, search suggestions, and empty/error states now step cleanly between `--bg`/`--bg-soft`, `--surface-solid`, and `--surface-soft`, while dark-mode links, badges, tooltips, danger hover actions, and milestone steps use readable semantic text/status tokens instead of dark `--accent` or pale `--color-danger` backgrounds with white text.
 
 ### Tests
+- Check that the Dates and Costs tabs lead with their plain answers and keep sources behind one closed disclosure, that the entry-year and fee-status fields appear only where a path needs them (MIT transfer windows, Imperial fee classes), that NU's mid-year path reads its Spring 2027 deadline, and update the admissions E2E specs for the new wording.
 - Check that NU's shared undergraduate paths read without a program and without graduate history, that the Foundation Year is offered beside them, and that a single requirement cycle is used only for its own path.
 - Check that every catalog university has all three languages, that no name belongs to two universities, that map labels are listed abbreviations or alternatives, and that search ranks each university first for its map labels and finds it by alternate full names.
 

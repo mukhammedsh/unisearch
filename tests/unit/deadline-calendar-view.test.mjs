@@ -30,3 +30,9 @@ test("yearless and approximate dates produce an honest empty calendar without ex
   assert.match(html, /No deadline is confirmed for calendar export/);
   assert.doesNotMatch(html, /data-calendar-day|data-calendar-export/);
 });
+
+test("a page that states its dates in words can leave out the empty calendar note", () => {
+  setLanguage("eng", { emit: false });
+  assert.equal(renderDeadlineCalendar([{ deadline: "November 1" }], {}, { emptyNote: false }), "");
+  assert.match(renderDeadlineCalendar([{ deadline: "2027-01-13" }], {}, { emptyNote: false }), /data-calendar-day/);
+});

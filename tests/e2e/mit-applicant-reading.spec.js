@@ -94,19 +94,10 @@ for (const item of cases) {
     expect(await page.locator("#detailRequirements").innerText()).not.toMatch(/Scope varies|Область применения зависит от условий|Қолданылу аясы шарттарға байланысты|Current published policy/);
     await expectNoStackedGapMargins(page, "#tab-admission");
 
+    // First-year publishes one set of yearless dates and no fee classes, so the page asks for neither.
     await openAdmissionSelectionEditor(page);
-    await page.locator("#admissionsAdvanced > summary").click();
-    await page.locator("#admissionsCycle").fill("Not decided yet");
-    await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
-    await page.locator("#admissionsCycle").fill("2027 entry");
-    await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-    await page.locator("#admissionsCycle").fill(item.cycle);
-    await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-    const response = page.waitForResponse(response => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
-    await page.locator("#admissionsContextApply").click();
-    const resolved = await (await response).json();
-    expect(resolved.context.intended_entry_cycle).toBe("Fall 2027");
-    expect(resolved.facts.some(row => row.applicability.cycle === "matched")).toBe(true);
+    await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+    await expect(page.locator("#admissionsContextApply")).toBeHidden();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     await page.locator("#admissionsSaveChoice").click();
     await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();

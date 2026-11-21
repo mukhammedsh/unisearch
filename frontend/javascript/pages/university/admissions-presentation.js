@@ -334,7 +334,8 @@ function finance(rows, resolved) {
       : availability === "not_established" ? "funding_unconfirmed" : "potential_aid";
     return `<section class="admissions-reading__section" data-funding-availability="${escapeHtmlAttr(availability || "conditional")}"><h3>${escapeHtml(row.value.funding_program === "Need-based Aid" ? label("aid_title") : row.value.funding_program)}</h3><p>${escapeHtml(label(status))}</p>${row.value.eligibility_note ? `<p>${escapeHtml(translateAdmissionSummary(row.value.eligibility_note) || row.value.eligibility_note)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
   }).join("");
-  return `${budgets.length ? "" : `<p class="admissions-reading__note">${escapeHtml(label("no_budget"))}</p>`}${budgetHtml}${fundingHtml}`;
+  // Without a published budget the tab's cost answer above already says what is known; no extra note repeats it.
+  return `${budgetHtml}${fundingHtml}`;
 }
 
 export function billingPeriodLabel(value) {
@@ -419,7 +420,7 @@ export function renderApplicantSection(source, domains) {
   const tbaSource = tba && { ...tba, source_ids: tba.source_ids?.filter(id => resolved.selected_option?.levels?.includes("masters") ? id.includes("master-regular") : id.includes("doctoral-regular")) };
   const hasYearlessDates = focused.some(row => reviewed(row) && !row.scope?.cycle && Array.isArray(row.value?.windows)
     && row.value.windows.some(window => typeof window.name === "string" && typeof window.application_due === "string") && !/20\d{2}/.test(JSON.stringify(row.value.windows)));
-  const highlights = mode === "finance" ? `<p class="admissions-reading__note" data-finance-scope>${escapeHtml(label("cost_scope"))}</p>${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
+  const highlights = mode === "finance" ? `${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
     : mode === "dates" ? `${tba ? `<section class="admissions-reading__section" data-dates-tba><p>${escapeHtml(label("dates_tba"))}</p><p>${escapeHtml(label("dates_tba_next"))}</p>${sourceNote(tbaSource, resolved)}</section>` : ""}${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines", { omitYearless: hasYearlessDates })}`
       : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
   const references = facts => renderAdmissionsContext({ ...source, facts }, {
@@ -428,12 +429,15 @@ export function renderApplicantSection(source, domains) {
   });
   const unknowns = mode === "requirements" ? source.unknowns || [] : [];
   const count = focused.length + general.length + unknowns.length;
-  const hasReading = highlights.includes("admissions-reading__section");
-  // Every full record, the additional references and the unresolved information sit behind one disclosure, with one language note.
-  const records = count ? `<details class="admissions-reading__references" data-all-records ${hasReading ? "" : "open"}><summary>${escapeHtml(label("full_records"))} (${count})</summary>
+  // The tab's plain answers come first (the key facts above it); the official pages, every full record, the additional
+  // references and the unresolved information sit behind one closed "Sources" disclosure with one language note.
+  const fullRecords = count ? `<details class="admissions-reading__references" data-full-records><summary>${escapeHtml(label("full_records"))}</summary>
     <p class="admissions-reading__note">${escapeHtml(label("reference_scope_note"))}</p>${focused.length ? references(focused) : ""}
     ${general.length ? `<details class="admissions-reading__references" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}
-    ${unknowns.length ? renderAdmissionsUnknowns(source) : ""}</details>`
+    ${unknowns.length ? renderAdmissionsUnknowns(source) : ""}</details>` : "";
+  const sourceList = renderSourceList(resolved.readingSources);
+  const sourceCount = resolved.readingSources.entries().length;
+  const records = sourceList || fullRecords ? `<details class="admissions-reading__references admissions-reading__provenance" data-all-records><summary>${escapeHtml(sourceCount ? tFormat("university.admissions.reading.sources_disclosure_count", { count: sourceCount }) : label("sources_disclosure"))}</summary>${sourceList}${fullRecords}</details>`
     : tba ? "" : references([]);
-  return `<div class="admissions-reading">${highlights}${mode === "finance" && !focused.some(row => row.value?.funding_program) ? `<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>` : ""}${renderSourceList(resolved.readingSources)}${records}</div>`;
+  return `<div class="admissions-reading">${highlights}${records}</div>`;
 }

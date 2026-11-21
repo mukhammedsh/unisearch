@@ -203,9 +203,8 @@ test("an old link or saved choice naming a different applicant category does not
     expect(body.profile.selectedAdmissionChoices?.["imperial-college-london-uk"]).toBeUndefined();
   }
   await page.locator("#admissionsReferenceSummary button").click();
-  await page.locator("#admissionsAdvanced > summary").click();
-  await page.locator("#admissionsCycle").fill("2027 entry");
-  await page.locator("#admissionsContextApply").click();
+  // The UK course asks for a fee status; its single published intake is read without an entry-year field.
+  await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Fee status");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   expect(new URL(page.url()).searchParams.has("admission_route")).toBe(false);
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();

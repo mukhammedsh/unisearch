@@ -281,7 +281,7 @@ function fundingPolicy(rows) {
 // The university's published need policy for the selected route as one statement, or "" when none is published.
 export const fundingPolicyStatement = resolved => fundingPolicy(fundingRows(resolved));
 
-export function fundingFact(resolved) {
+export function fundingFact(resolved, { onCostsTab = false } = {}) {
   const rows = fundingRows(resolved);
   const terms = glossaryTerms(rows.map(row => typeof row.value === "string" ? row.value : row.value?.required));
   const policy = fundingPolicy(rows);
@@ -293,7 +293,8 @@ export function fundingFact(resolved) {
   const count = (resolved?.fact_groups?.funding || []).length;
   if (policy && count) return { terms, text: tFormat("university.admissions.key_facts.funding_policy", { policy }),
     notes: [tFormat("university.admissions.key_facts.funding_policy_note", { count })] };
-  return { terms, text: count ? tFormat("university.admissions.key_facts.funding_records", { count }) : label("funding_none") };
+  // On the Costs tab the options are listed right below, so the answer does not send the reader to the tab they are on.
+  return { terms, text: count ? tFormat(`university.admissions.key_facts.${onCostsTab ? "funding_records_here" : "funding_records"}`, { count }) : label("funding_none") };
 }
 
 function row(key, fact, action = "", shownTerms = null, extra = "") {
@@ -333,6 +334,31 @@ function applyRow(applicationUrl) {
   return row("apply", { text: label("apply_text") }, action);
 }
 
+// The funding row: what the university offers for this path and, when it is a separate application, the action that opens it.
+function fundingRow(resolved, shownTerms, { onCostsTab = false } = {}) {
+  // The funding application is not a way in, so it is opened from here rather than offered among the paths.
+  const funding = fundingFact(resolved, { onCostsTab });
+  const action = funding.supportRouteId ? `<button type="button" class="admissions-key-facts__link" data-key-facts-route="${escapeHtmlAttr(funding.supportRouteId)}">${escapeHtml(label("open_funding_route"))}</button>` : "";
+  return row("funding", funding, action, shownTerms);
+}
+
+// The plain answers that open the Dates and Costs tabs: the same facts as the Admission key facts, so every tab
+// answers its question first and keeps the official records behind its sources disclosure.
+/**
+ * @param {object|null} resolved The admissions-context response; nothing is rendered without a selected route.
+ * @param {"deadlines"|"finance"} tab The tab whose answers lead it.
+ * @param {{budgetUsd?: number, profileExamIds?: string[], now?: Date}} [options]
+ * @returns {string} The answers block as HTML, or "".
+ */
+export function renderTabAnswers(resolved, tab, { budgetUsd, profileExamIds = [], now = new Date() } = {}) {
+  if (!resolved?.selected_route) return "";
+  const shownTerms = new Set(resolved.context?.study_level === "undergraduate" ? ["foundation"] : []);
+  const rows = tab === "deadlines" ? [row("deadline", deadlineFact(resolved, now, { profileExamIds }), "", shownTerms)]
+    : [row("cost", costFact(resolved, budgetUsd), "", shownTerms), fundingRow(resolved, shownTerms, { onCostsTab: true })];
+  return `<section class="admissions-key-facts admissions-key-facts--tab" data-tab-answers="${tab}" aria-label="${escapeHtmlAttr(label("title"))}">
+    <dl class="admissions-key-facts__list">${rows.join("")}</dl></section>`;
+}
+
 export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date(), applicationUrl = "" } = {}) {
   if (!resolved?.selected_route) return "";
   // The entry cycle belongs to this university's selection, so the action opens the entry-year field.
@@ -348,12 +374,7 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
       ${applyRow(applicationUrl)}
       ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
-      ${(() => {
-        // The funding application is not a way in, so it is opened from here rather than offered among the paths.
-        const funding = fundingFact(resolved);
-        const action = funding.supportRouteId ? `<button type="button" class="admissions-key-facts__link" data-key-facts-route="${escapeHtmlAttr(funding.supportRouteId)}">${escapeHtml(label("open_funding_route"))}</button>` : "";
-        return row("funding", funding, action, shownTerms);
-      })()}
+      ${fundingRow(resolved, shownTerms)}
     </dl>
     <p class="admissions-reading__note">${escapeHtml(label("note"))}</p>
   </section>`;

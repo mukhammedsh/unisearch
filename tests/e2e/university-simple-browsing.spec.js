@@ -417,7 +417,9 @@ async function expectReferenceTabs(page, item) {
     await expect(summary).toBeVisible();
     const fullRecords = page.locator(`${pane} > .admissions-reading > [data-all-records]`);
     if (await fullRecords.count() && !(await fullRecords.evaluate(node => node.open))) await fullRecords.locator(":scope > summary").click();
-    const general = fullRecords.locator(":scope > [data-general-references]");
+    const records = fullRecords.locator(":scope > [data-full-records]");
+    if (await records.count() && !(await records.evaluate(node => node.open))) await records.locator(":scope > summary").click();
+    const general = records.locator(":scope > [data-general-references]");
     if (await general.count() && !(await general.evaluate(node => node.open))) await general.locator(":scope > summary").click();
     await expect(page.locator(`${pane} [data-admissions-domain="${domain}"]`).first()).toBeVisible();
     await expect(page.locator(`${pane} .admissions-catalog__fact[open]`).first()).toBeVisible();
@@ -431,7 +433,8 @@ async function expectReferenceTabs(page, item) {
     if (item.name === "MIT first-year") await saveScreenshot(page, `mit-${domain === "deadlines" ? "dates" : "costs"}.png`);
     if (domain === "costs") {
       await expect(page.locator(`${pane} [data-admissions-domain="funding"]`).first()).toBeVisible();
-      await expect(page.locator(pane)).toContainText(/potential funding is not awarded aid|не считается предоставленной помощью|тағайындалған көмек емес/i);
+      // The tab answers what funding exists before its records.
+      await expect(page.locator(`${pane} [data-tab-answers="finance"] [data-key-fact="funding"]`)).toBeVisible();
       if (item.name === "MIT first-year") {
         await expect(page.locator(pane)).toContainText("USD");
         await expect(page.locator(pane)).toContainText("66,720");
@@ -748,8 +751,11 @@ test("Kazakh browsing keeps all three reviewed catalogs usable and searches a tr
     await expect(page.locator("#admissionsContext h2")).toHaveText("Қалай өтініш беруге болады");
     await chooseRoute(page, item);
     await openAdmissionSelectionEditor(page);
-    await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Түсу жылы және ақы төлеу мәртебесі");
-    await expect(page.locator("#admissionsContextApply")).toHaveText("Сүзгілерді қолдану");
+    // Only the fields a path needs are offered: a UK fee status (Imperial), several intakes, or neither.
+    if (await page.locator("#admissionsAdvanced").isVisible()) {
+      await expect(page.locator("#admissionsAdvanced > summary")).toHaveText(/^(?:Түсу жылы|Төлем мәртебесі|Түсу жылы және ақы төлеу мәртебесі)$/);
+      await expect(page.locator("#admissionsContextApply")).toHaveText("Сүзгілерді қолдану");
+    } else await expect(page.locator("#admissionsContextApply")).toBeHidden();
     await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open", "");
   }
 });

@@ -2399,9 +2399,9 @@ profile.evidence.error.credential_score: Укажите опубликованн
 profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
 university.admissions.catalog.simple_title: Как поступить
 university.admissions.catalog.browse_note: Ищите по направлению или программе. Откройте результат, чтобы узнать об учёбе и поступлении.
-university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
+university.admissions.catalog.advanced_note: Нужно, только если университет публикует разные условия для разных лет поступления или статусов оплаты.
 university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
-university.admissions.catalog.select_program: Выбрать программу
+university.admissions.catalog.select_program: Смотреть поступление на программу
 university.admissions.catalog.requirements_tab_hint: Условия поступления — во вкладке «Поступление».
 university.admissions.catalog.study_info: О программе
 university.admissions.catalog.program_detail.study: Обучение
@@ -2464,15 +2464,17 @@ university.admissions.catalog.next: Далее
 university.admissions.catalog.results: {from}–{to} из {total} программ
 university.admissions.catalog.study_options_title: Программы обучения
 university.admissions.catalog.admission_title: Требования и опубликованные пути поступления
-university.admissions.catalog.finance_intro: Опубликованные цены и финансирование для выбранной программы и пути с исходными периодами, валютами и условиями.
+university.admissions.catalog.finance_intro: Сколько стоит год учёбы и какое финансирование есть на выбранном пути.
 university.admissions.catalog.deadlines_title: Даты и сроки
-university.admissions.catalog.deadlines_intro: Здесь собраны даты подачи, финансирования, ответа и внесения депозита для выбранной программы и пути. У каждой записи сохранены исходный период и официальный источник.
+university.admissions.catalog.deadlines_intro: Когда подавать заявку и другие сроки выбранного пути.
 university.admissions.catalog.route_intro: Выберите путь поступления — требования и порядок подачи откроются сразу. Профиль не нужен.
 university.admissions.catalog.reference_scope: Вы смотрите
 university.admissions.catalog.route_not_selected: Выберите, как поступать
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
 university.admissions.catalog.reference_filters: Год поступления и статус оплаты
+university.admissions.catalog.reference_filters_fee: Статус оплаты
+university.admissions.catalog.reference_filters_cycle: Год поступления
 university.admissions.catalog.selected_route: Выбранный путь
 university.admissions.catalog.official_course_page: Официальная страница курса
 university.admissions.catalog.application_class.post_admission_major: Сначала поступают в университет; основное направление выбирают после зачисления.
@@ -2681,15 +2683,15 @@ university.admissions.reading.food_estimate: Питание, оценка
 university.admissions.reading.materials_estimate: Учебные материалы
 university.admissions.reading.personal_estimate: Личные расходы
 university.admissions.reading.insurance_extra: Страховка и ограничения расчёта:
-university.admissions.reading.cost_scope: Стоимость сохраняет опубликованный охват программы, категорию поступающего и период.
 university.admissions.reading.tuition_budget_note: Обучение — лишь часть бюджета; проживание и другие расходы оплачиваются отдельно.
 university.admissions.reading.exclusion.insurance: Страховка оплачивается отдельно.
 university.admissions.reading.exclusion.one_time_fees: Разовые сборы оплачиваются отдельно.
 university.admissions.reading.degree.MEng: Магистр инженерии
 university.admissions.reading.degree.MEng_ucas_note: Это интегрированная программа бакалавриата, ведущая к степени Master of Engineering.
 university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
-university.admissions.reading.no_budget: Сопоставимый бюджет для этого выбора не подтверждён. Ниже каждая сумма сохраняет свой период, валюту и условия.
-university.admissions.reading.full_records: Подробности и источники
+university.admissions.reading.full_records: Полные записи на языке источника
+university.admissions.reading.sources_disclosure_count: Источники ({count})
+university.admissions.reading.sources_disclosure: Источники
 university.admissions.reading.general_references: Дополнительные справочные сведения
 university.admissions.reading.general_reference_note: Эти записи относятся к общим или особым ситуациям. Их применимость к вашему выбору не установлена; проверьте область действия, прежде чем считать запись требованием.
 university.admissions.reading.update_selection: Обновить выбор
@@ -2875,8 +2877,8 @@ university.admissions.catalog.enum.to_be_announced: Будет объявлен�
 university.admissions.catalog.enum.per_option_key_facts: ключевые факты по варианту программы
 university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесты, баллы, отбор, собеседование и портфолио
 university.admissions.catalog.reset_notice: Прежний выбор поступления относился к предыдущему каталогу и сброшен. Выберите программу и путь подачи заново. Остальные данные профиля сохранены.
-university.admissions.catalog.save_choice: Сохранить выбор поступления
-university.admissions.catalog.choice_saved: Контекст поступления сохранён для этого вуза.
+university.admissions.catalog.save_choice: Запомнить этот путь
+university.admissions.catalog.choice_saved: Путь запомнен на этом устройстве.
 university.admissions.catalog.choice_session_only: Выбор доступен только в этой сессии. Сохранить его на устройстве не удалось.
 university.admissions.catalog.apply_before_save: Примените изменённый контекст перед сохранением выбора.
 universities.cost.budget_within_reference: Бюджет покрывает этот ориентир.
@@ -3354,6 +3356,7 @@ university.admissions.key_facts.open_funding_route: Условия гранта
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
 university.admissions.key_facts.funding_records: Варианты финансирования описаны во вкладке «Стоимость и финансирование». Грант не гарантирован.
+university.admissions.key_facts.funding_records_here: Условия финансирования для этого пути описаны ниже и в разделе «Источники». Грант не гарантирован и из стоимости не вычитается.
 university.admissions.key_facts.funding_none: Для этого пути финансирование не каталогизировано; проверьте официальную страницу о финансировании
 university.admissions.catalog.domain.reference: Связанные сопоставления источников
 university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
@@ -3372,9 +3375,9 @@ university.admissions.catalog.field.timezone: Часовой пояс
 university.admissions.catalog.field.scope: Относится к
 university.admissions.catalog.record_link: Показать полную запись источника
 profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})
-university.admissions.entry.browsing_not_saved: Этот выбор не сохранён для UniFit.
-university.admissions.entry.saved_context: Этот выбор сохранён для UniFit.
-university.admissions.entry.saved_other: Сохранено для UniFit: {details}.
+university.admissions.entry.browsing_not_saved: Если запомнить путь, каталог и сравнение будут сверять ваши результаты с его минимумами. В университет ничего не отправляется.
+university.admissions.entry.saved_context: Путь запомнен: каталог и сравнение сверяют ваши результаты с его минимумами. В университет ничего не отправляется.
+university.admissions.entry.saved_other: Запомнен другой путь: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Подайте заявление на выбранную программу бакалавриата через UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Подайте заявление на выбранную программу последипломного обучения.
 university.admissions.entry.route_class_help.department_or_program: Подавайте через соответствующий департамент или программу; условия конкретного пути указаны ниже.
@@ -3401,7 +3404,7 @@ university.admissions.catalog.assessment_next_unassessed: Некоторые о�
 university.admissions.catalog.assessment_next_no_numeric: В наших данных нет числового минимума для этого пути, который можно автоматически сравнить. Ознакомьтесь с официальными требованиями ниже.
 university.admissions.catalog.assessment_next_applicability: Проверьте программу, путь подачи и год поступления. Ознакомьтесь с официальными условиями ниже.
 university.admissions.catalog.assessment_profile: Изменить профиль
-university.admissions.catalog.saved: Сохранено
+university.admissions.catalog.saved: Путь запомнен
 university.admissions.catalog.check_next_missing: Раскройте проверку, чтобы увидеть, каких данных не хватает.
 university.admissions.catalog.check_next_unassessed: Эта проверка не выполнена автоматически. Сверьте опубликованные условия и источник.
 university.admissions.catalog.check_group_count: Правил из источников: {count}

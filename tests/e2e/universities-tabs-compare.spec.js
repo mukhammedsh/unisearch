@@ -559,8 +559,8 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
   await waitForReviewedComparison(page);
   const needs = page.locator('[data-compare-row="needs"] dd');
-  await expect(needs.nth(0)).toContainText(/SAT or ACT|ACT or SAT/);
-  await expect(needs.nth(1)).not.toContainText(/SAT or ACT/);
+  await expect(needs.nth(0)).toContainText(/SAT, ACT|SAT or ACT|ACT or SAT/);
+  await expect(needs.nth(1)).not.toContainText(/SAT, ACT|SAT or ACT/);
   await expect(needs.nth(1).locator("a")).toHaveAttribute("href", /admission_option=imperial-option-computing-meng.*#tab-admission/);
   await expect(page.locator("[data-reviewed-comparison]")).not.toContainText(/1,450|1,550/);
 });

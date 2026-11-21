@@ -2401,9 +2401,9 @@ profile.evidence.error.credential_score: Жарияланған біліктіл
 profile.evidence.error.max_institution: Ең көбі 20 оқу орны туралы растау сақтауға болады.
 university.admissions.catalog.simple_title: Қалай өтініш беруге болады
 university.admissions.catalog.browse_note: Бағыт немесе бағдарлама бойынша іздеңіз. Оқу және қабылдау туралы білу үшін нәтижені ашыңыз.
-university.admissions.catalog.advanced_note: Бұл сүзгілер дереккөз жазбаларын жарияланған өтініш беруші санаты, қабылдау кезеңі немесе оқу ақысы санаты бойынша тарылтады. Бағдарлама мен жолға қатысты барлық жазбаны көру үшін бос қалдырыңыз.
+university.admissions.catalog.advanced_note: Университет түсу жылына немесе төлем мәртебесіне қарай әртүрлі шарттар жарияласа ғана қажет.
 university.admissions.catalog.choose_program_hint: Жарияланған қабылдау жолдарын көру үшін «Бағдарламалар» бөлімінен бағдарламаны таңдаңыз.
-university.admissions.catalog.select_program: Бағдарламаны таңдау
+university.admissions.catalog.select_program: Осы бағдарламаға түсуді көру
 university.admissions.catalog.requirements_tab_hint: Қабылдау талаптары — «Қабылдау» қойындысында.
 university.admissions.catalog.study_info: Бағдарлама туралы
 university.admissions.catalog.program_detail.study: Оқу
@@ -2466,15 +2466,17 @@ university.admissions.catalog.next: Келесі
 university.admissions.catalog.results: {from}–{to} / {total} оқу нұсқасы
 university.admissions.catalog.study_options_title: Оқу нұсқалары
 university.admissions.catalog.admission_title: Талаптар және жарияланған өтініш жолдары
-university.admissions.catalog.finance_intro: Таңдалған бағдарлама мен жолға арналған жарияланған бағалар мен қаржыландыру; бастапқы кезеңдері, валюталары және шарттары сақталады.
+university.admissions.catalog.finance_intro: Бір оқу жылының құны және таңдалған жолда қандай қаржыландыру бар.
 university.admissions.catalog.deadlines_title: Күндер мен мерзімдер
-university.admissions.catalog.deadlines_intro: Таңдалған бағдарлама мен жолға арналған өтінім, қаржыландыру, жауап және депозит мерзімдерін қараңыз. Әр жазбада бастапқы кезеңі мен ресми дереккөзі сақталған.
+university.admissions.catalog.deadlines_intro: Өтінімді қашан беру керек және таңдалған жолдың басқа мерзімдері.
 university.admissions.catalog.route_intro: Жарияланған жолды таңдаңыз — талаптар мен өтініш тәртібі бірден ашылады. Профиль қажет емес.
 university.admissions.catalog.reference_scope: Сіз қарап отырсыз
 university.admissions.catalog.route_not_selected: Қалай түсетініңізді таңдаңыз
 university.admissions.catalog.browse_programs: Бағдарламаларды шолу
 university.admissions.catalog.change_program: Бағдарламаны өзгерту
 university.admissions.catalog.reference_filters: Түсу жылы және ақы төлеу мәртебесі
+university.admissions.catalog.reference_filters_fee: Төлем мәртебесі
+university.admissions.catalog.reference_filters_cycle: Түсу жылы
 university.admissions.catalog.selected_route: Таңдалған жол
 university.admissions.catalog.official_course_page: Курстың ресми беті
 university.admissions.catalog.application_class.post_admission_major: Алдымен университетке қабылданады; негізгі бағыт оқуға түскеннен кейін таңдалады.
@@ -2683,15 +2685,15 @@ university.admissions.reading.food_estimate: Тамақ, бағалау
 university.admissions.reading.materials_estimate: Оқу материалдары
 university.admissions.reading.personal_estimate: Жеке шығындар
 university.admissions.reading.insurance_extra: Сақтандыру және есеп шектеулері:
-university.admissions.reading.cost_scope: Шығындар жарияланған бағдарлама, талапкер санаты және кезең аясында беріледі.
 university.admissions.reading.tuition_budget_note: Оқу ақысы бюджеттің бір бөлігі ғана; тұру және басқа шығындар бөлек төленеді.
 university.admissions.reading.exclusion.insurance: Сақтандыру бөлек төленеді.
 university.admissions.reading.exclusion.one_time_fees: Бір реттік алымдар бөлек төленеді.
 university.admissions.reading.degree.MEng: Инженерия магистрі
 university.admissions.reading.degree.MEng_ucas_note: Бұл Master of Engineering дәрежесіне апаратын біріктірілген бакалавриат бағдарламасы.
 university.admissions.reading.potential_aid: Ықтимал қаржыландыру тағайындалған көмек емес. Оның шарттары, құжаттары мен мерзімдері бөлек тексеріледі; ол құннан шегерілмейді.
-university.admissions.reading.no_budget: Бұл таңдау үшін салыстырмалы бюджет расталмаған. Төмендегі әр сома өз кезеңін, валютасы мен шарттарын сақтайды.
-university.admissions.reading.full_records: Толығырақ және дереккөздер
+university.admissions.reading.full_records: Дереккөз тіліндегі толық жазбалар
+university.admissions.reading.sources_disclosure_count: Дереккөздер ({count})
+university.admissions.reading.sources_disclosure: Дереккөздер
 university.admissions.reading.general_references: Қосымша анықтамалық мәліметтер
 university.admissions.reading.general_reference_note: Бұл жазбалар жалпы немесе ерекше жағдайларға арналған. Олардың осы таңдауға қолданылуы анықталмаған; талап деп қабылдамас бұрын әр жазбаның аясын тексеріңіз.
 university.admissions.reading.update_selection: Таңдауды жаңарту
@@ -2877,8 +2879,8 @@ university.admissions.catalog.enum.to_be_announced: Жарияланады
 university.admissions.catalog.enum.per_option_key_facts: бағдарлама нұсқасына арналған негізгі деректер
 university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесттер, балдар, іріктеу, сұхбат және портфолио
 university.admissions.catalog.reset_notice: Бұрынғы қабылдау таңдауыңыз ескі каталогты пайдаланғандықтан тазартылды. Оқу нұсқасы мен өтініш беру бағытын қайта таңдаңыз. Профильдегі басқа мәліметтер сақталған.
-university.admissions.catalog.save_choice: Өтініш таңдауын сақтау
-university.admissions.catalog.choice_saved: Осы университетке арналған өтініш контексті сақталды.
+university.admissions.catalog.save_choice: Осы жолды есте сақтау
+university.admissions.catalog.choice_saved: Жол осы құрылғыда сақталды.
 university.admissions.catalog.choice_session_only: Бұл таңдау тек осы сеансқа қолжетімді. Оны осы құрылғыда сақтау мүмкін болмады.
 university.admissions.catalog.apply_before_save: Таңдауды сақтамас бұрын өзгертілген контексті қолданыңыз.
 universities.cost.budget_within_reference: Бюджетіңіз осы бағдарды жабады.
@@ -3356,6 +3358,7 @@ university.admissions.key_facts.open_funding_route: Грант шарттары
 university.admissions.key_facts.funding: Қаржыландыру
 university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
 university.admissions.key_facts.funding_records: Қаржыландыру нұсқалары «Құны және қаржыландыру» қойындысында сипатталған. Грант кепілдендірілмейді.
+university.admissions.key_facts.funding_records_here: Осы жолдың қаржыландыру шарттары төменде және «Дереккөздер» бөлімінде сипатталған. Грант кепілдендірілмейді және құннан шегерілмейді.
 university.admissions.key_facts.funding_none: Бұл жол үшін қаржыландыру тізімге енгізілмеген; ресми қаржыландыру бетін тексеріңіз
 university.admissions.catalog.domain.reference: Дереккөздердің қатысты салыстырулары
 university.admissions.entry.shared_path_alternative: Университетке түсудің басқа ортақ жолдарын бөлек оқуға болады. Оны ашқанда бағдарлама таңдауы жойылады: бұл бағдарламаның сол жол арқылы қолжетімді екенін растамайды.
@@ -3374,9 +3377,9 @@ university.admissions.catalog.field.timezone: Уақыт белдеуі
 university.admissions.catalog.field.scope: Қатысты
 university.admissions.catalog.record_link: Дереккөздің толық жазбасын көрсету
 profile.change_budget_currency: Бюджет валютасын баптауларда өзгерту (қазір {currency})
-university.admissions.entry.browsing_not_saved: Бұл таңдау UniFit үшін сақталмаған.
-university.admissions.entry.saved_context: Бұл таңдау UniFit үшін сақталған.
-university.admissions.entry.saved_other: UniFit үшін сақталған: {details}.
+university.admissions.entry.browsing_not_saved: Жолды сақтасаңыз, каталог пен салыстыру нәтижелеріңізді оның ең төменгі талаптарымен салыстырады. Университетке ештеңе жіберілмейді.
+university.admissions.entry.saved_context: Жол сақталды: каталог пен салыстыру нәтижелеріңізді оның ең төменгі талаптарымен салыстырады. Университетке ештеңе жіберілмейді.
+university.admissions.entry.saved_other: Басқа жол сақталған: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Таңдалған бакалавриат курсына UCAS арқылы өтініш беріңіз.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Таңдалған жоғары оқу орнынан кейінгі бағдарламаға өтініш беріңіз.
 university.admissions.entry.route_class_help.department_or_program: Тиісті департамент немесе бағдарлама арқылы өтініш беріңіз; нақты түсу жолының шарттарын төменнен қараңыз.
@@ -3403,7 +3406,7 @@ university.admissions.catalog.assessment_next_unassessed: Жарияланған
 university.admissions.catalog.assessment_next_no_numeric: Біздің деректерде осы жол бойынша автоматты салыстыруға болатын сандық минимум жоқ. Ресми талаптарды төменнен қарап шығыңыз.
 university.admissions.catalog.assessment_next_applicability: Бағдарламаны, өтініш беру жолын және қабылдау жылын тексеріңіз. Ресми шарттарды төменнен қарап шығыңыз.
 university.admissions.catalog.assessment_profile: Профильді өңдеу
-university.admissions.catalog.saved: Сақталды
+university.admissions.catalog.saved: Жол сақталды
 university.admissions.catalog.check_next_missing: Жетіспейтін деректерді көру үшін тексеру бөлімін ашыңыз.
 university.admissions.catalog.check_next_unassessed: Бұл тексеру автоматты түрде бағаланбады. Жарияланған шарттар мен дереккөзді салыстырыңыз.
 university.admissions.catalog.check_group_count: Дереккөздегі ережелер саны: {count}

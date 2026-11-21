@@ -2401,9 +2401,9 @@ profile.evidence.error.credential_score: Enter the published credential score pe
 profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
 university.admissions.catalog.simple_title: How to apply
 university.admissions.catalog.browse_note: Search by subject or program. Open a result for study and admission details.
-university.admissions.catalog.advanced_note: These optional filters narrow source records by published applicant group, entry cycle or fee category. Leave them unspecified to browse all records for this program and path.
+university.admissions.catalog.advanced_note: Needed only when the university publishes different terms for different entry years or fee statuses.
 university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
-university.admissions.catalog.select_program: Select program
+university.admissions.catalog.select_program: See admission for this program
 university.admissions.catalog.requirements_tab_hint: Admission requirements: see the Admission tab.
 university.admissions.catalog.study_info: About the program
 university.admissions.catalog.program_detail.study: Study details
@@ -2466,15 +2466,17 @@ university.admissions.catalog.next: Next
 university.admissions.catalog.results: {from}–{to} of {total} study options
 university.admissions.catalog.study_options_title: Study options
 university.admissions.catalog.admission_title: Requirements and published application paths
-university.admissions.catalog.finance_intro: Published prices and funding for the selected program and path, with their original periods, currencies and conditions.
+university.admissions.catalog.finance_intro: What a year of study costs and what funding the selected path offers.
 university.admissions.catalog.deadlines_title: Dates and deadlines
-university.admissions.catalog.deadlines_intro: Browse application, funding, reply and deposit dates for the selected program and path. Each record keeps its stated period and official source.
+university.admissions.catalog.deadlines_intro: When to apply and the other dates of the selected path.
 university.admissions.catalog.route_intro: Choose a published path to open its requirements and process. No profile is needed.
 university.admissions.catalog.reference_scope: Browsing
 university.admissions.catalog.route_not_selected: Choose a published application path
 university.admissions.catalog.browse_programs: Browse programs
 university.admissions.catalog.change_program: Change program
 university.admissions.catalog.reference_filters: Entry year and fee status
+university.admissions.catalog.reference_filters_fee: Fee status
+university.admissions.catalog.reference_filters_cycle: Entry year
 university.admissions.catalog.selected_route: Selected path
 university.admissions.catalog.official_course_page: Official course page
 university.admissions.catalog.application_class.post_admission_major: University admission comes first; the major is selected after enrollment.
@@ -2683,15 +2685,15 @@ university.admissions.reading.food_estimate: Food estimate
 university.admissions.reading.materials_estimate: Study materials
 university.admissions.reading.personal_estimate: Personal expenses
 university.admissions.reading.insurance_extra: Insurance and other limits:
-university.admissions.reading.cost_scope: Costs keep their published program, applicant category and period.
 university.admissions.reading.tuition_budget_note: Tuition is one part of the budget; living and other costs are additional.
 university.admissions.reading.exclusion.insurance: Insurance is additional.
 university.admissions.reading.exclusion.one_time_fees: One-time charges are additional.
 university.admissions.reading.degree.MEng: Master of Engineering
 university.admissions.reading.degree.MEng_ucas_note: This is an undergraduate entry route that leads to the Master of Engineering award.
 university.admissions.reading.potential_aid: Potential funding is not awarded aid. Eligibility, documents and deadlines are separate; no award is subtracted from published costs.
-university.admissions.reading.no_budget: No comparable budget is confirmed for this selection. Published amounts below keep their own period, currency and conditions.
-university.admissions.reading.full_records: Details and sources
+university.admissions.reading.full_records: Full records in the source language
+university.admissions.reading.sources_disclosure_count: Sources ({count})
+university.admissions.reading.sources_disclosure: Sources
 university.admissions.reading.general_references: Additional reference information
 university.admissions.reading.general_reference_note: These records cover broader or special situations. Their applicability to this selection is unresolved; check each record's scope before treating it as a requirement.
 university.admissions.reading.update_selection: Update selection
@@ -2877,8 +2879,8 @@ university.admissions.catalog.enum.to_be_announced: To be announced
 university.admissions.catalog.enum.per_option_key_facts: option-specific key facts
 university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: tests, scores, selection, interview and portfolio
 university.admissions.catalog.reset_notice: Your previous admission choice used the earlier catalog and has been cleared. Choose a study option and route again. Your other profile information is preserved.
-university.admissions.catalog.save_choice: Save application choice
-university.admissions.catalog.choice_saved: Application context saved for this university.
+university.admissions.catalog.save_choice: Remember this path
+university.admissions.catalog.choice_saved: Path remembered on this device.
 university.admissions.catalog.choice_session_only: This choice is available for this session only. It could not be saved on this device.
 university.admissions.catalog.apply_before_save: Apply the changed context before saving this choice.
 universities.cost.budget_within_reference: Budget covers this reference.
@@ -3356,6 +3358,7 @@ university.admissions.key_facts.open_funding_route: Grant conditions
 university.admissions.key_facts.funding: Funding
 university.admissions.key_facts.funding_route: Applied for separately: {route}
 university.admissions.key_facts.funding_records: Funding options are described under Costs and funding. An award is not guaranteed.
+university.admissions.key_facts.funding_records_here: Funding terms for this path are described below and under Sources. Funding is not guaranteed and is not subtracted from the cost.
 university.admissions.key_facts.funding_none: No funding is catalogued for this path; check the official funding page
 university.admissions.catalog.domain.reference: Related source comparisons
 university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
@@ -3374,9 +3377,9 @@ university.admissions.catalog.field.timezone: Time zone
 university.admissions.catalog.field.scope: Applies to
 university.admissions.catalog.record_link: Show full source record
 profile.change_budget_currency: Change budget currency in Settings (currently {currency})
-university.admissions.entry.browsing_not_saved: This choice is not saved for UniFit.
-university.admissions.entry.saved_context: This choice is saved for UniFit.
-university.admissions.entry.saved_other: Saved for UniFit: {details}.
+university.admissions.entry.browsing_not_saved: Remember the path, and the catalog and comparison will check your results against its minimums. Nothing is sent to the university.
+university.admissions.entry.saved_context: Path remembered: the catalog and comparison check your results against its minimums. Nothing is sent to the university.
+university.admissions.entry.saved_other: Another path is remembered: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Apply to the selected undergraduate course through UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Apply to the selected postgraduate program.
 university.admissions.entry.route_class_help.department_or_program: Apply through the relevant department or program; check the specific route conditions below.
@@ -3403,7 +3406,7 @@ university.admissions.catalog.assessment_next_unassessed: Some published rules c
 university.admissions.catalog.assessment_next_no_numeric: Our data has no numeric minimum for this path that can be compared automatically. Review the official requirements below.
 university.admissions.catalog.assessment_next_applicability: Check your program, application path and entry year. Review the official conditions below.
 university.admissions.catalog.assessment_profile: Edit profile
-university.admissions.catalog.saved: Saved
+university.admissions.catalog.saved: Path remembered
 university.admissions.catalog.check_next_missing: Expand the check to see what information is missing.
 university.admissions.catalog.check_next_unassessed: This check was not assessed automatically. Review the published conditions and source.
 university.admissions.catalog.check_group_count: {count} source rules

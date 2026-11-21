@@ -239,7 +239,7 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
   });
 }
 
-test("Imperial language changes, invalid cycles and saving preserve a synthetic general profile", async ({ page }) => {
+test("Imperial language changes, fee status and saving preserve a synthetic general profile", async ({ page }) => {
   await prepare(page, presentations[0]);
   await page.addInitScript(() => {
     if (!localStorage.getItem("unisearch_profile")) localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, gpa: 3.8, budget: 30000, intendedEntryCycle: "2028 entry" }));
@@ -261,11 +261,13 @@ test("Imperial language changes, invalid cycles and saving preserve a synthetic 
     await expect(page.locator("#admissionsReferenceSummary")).toContainText("MEng");
   }
   await openAdvanced(page);
-  await page.locator("#admissionsCycle").fill("undecided cycle");
-  await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
-  await page.locator("#admissionsCycle").fill("2027 entry");
+  // The course publishes one intake, so only the UK fee status is asked.
+  await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Fee status");
+  await expect(page.locator("#admissionsCycle")).toBeHidden();
+  await select(page, "admissionsFee", "self_reported_international_overseas");
   await page.locator("#admissionsContextApply").click();
   await ready(page);
+  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Overseas");
   await page.locator("#admissionsSaveChoice").click();
   await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
   const profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));

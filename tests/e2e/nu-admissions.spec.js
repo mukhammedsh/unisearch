@@ -35,7 +35,9 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   // Foundation has one way in (the funding application follows an offer), so that path opens directly.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(REGULAR);
-  await expect(page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first()).toBeVisible();
+  const languageGroup = page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first();
+  await openDisclosureParents(languageGroup);
+  await expect(languageGroup).toBeVisible();
   await showTab(page, "finance");
   const tuition = page.locator("#detailFinance [data-course-tuition]");
   await expect(tuition).toContainText("12,000");
@@ -156,14 +158,13 @@ test("NU program readers can discover the separate institution-wide mid-year pat
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe("");
   await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
   await expect(page.locator("#detailRequirements")).toContainText("130");
+  // The mid-year path is read for its single published intake without asking for a year.
   await openAdmissionSelectionEditor(page);
-  await page.locator("#admissionsAdvanced > summary").click();
-  await page.locator("#admissionsCycle").fill("2027/28");
-  await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-  await page.locator("#admissionsContextApply").click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+  expect(new URL(page.url()).searchParams.get("admission_cycle")).toBe("Spring 2027");
   await showTab(page, "deadlines");
-  await expect(page.locator("#detailDeadlines")).not.toContainText(/2026[-‑]11[-‑]28/);
+  // The Dates tab answers first with the path's own application period.
+  await expect(page.locator('#detailDeadlines [data-tab-answers="deadlines"]')).toContainText(/2026[-‑]11[-‑]28/);
 });
 
 test("comparison language changes keep its stage and the two independent saved contexts", async ({ page }) => {
@@ -355,7 +356,7 @@ test("NU residency keeps unconditional reports distinct from UMC conditional adm
   await expect(page.locator("#detailRequirements")).toContainText(/first.*year|first enrollment year/i);
   await openAdmissionSelectionEditor(page);
   await page.locator("#admissionsSaveChoice").click();
-  await expect(page.locator("#admissionsSaveStatus")).toContainText("saved");
+  await expect(page.locator("#admissionsSaveStatus")).toContainText("remembered");
   await page.reload();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(conditional);

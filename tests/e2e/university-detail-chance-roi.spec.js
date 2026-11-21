@@ -60,7 +60,8 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
 
   await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
   const finance = page.locator("#detailFinance");
-  await expect(finance).toContainText(/No comparable budget is confirmed for this selection/i);
+  await expect(finance.locator('[data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
+  await expect(finance).not.toContainText(/No comparable budget is confirmed/i);
   const feeConflict = finance.locator('[data-admissions-domain="costs"] [data-admissions-fact="mba-tuition-fee-conflict"]');
   await openDisclosureParents(feeConflict);
   await expect(feeConflict).toBeVisible();
@@ -115,6 +116,7 @@ test("rank tooltip stays usable for the legacy catalog and MIT admissions source
   const records = page.locator("#detailRequirements [data-all-records]");
   await expect(records).not.toHaveAttribute("open");
   await records.locator(":scope > summary").click();
+  await records.locator("[data-full-records] > summary").click();
   await expect(group).not.toHaveAttribute("open");
   await group.locator(":scope > summary").click();
   await expect(group).toHaveAttribute("open", "");

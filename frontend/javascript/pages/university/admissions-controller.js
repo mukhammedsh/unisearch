@@ -5,7 +5,7 @@ import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, stud
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
-import { renderAdmissionsKeyFacts } from "./admissions-key-facts.js";
+import { renderAdmissionsKeyFacts, renderTabAnswers } from "./admissions-key-facts.js";
 import { glossaryTerms, renderTermHelp, renderTermList, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
@@ -74,10 +74,41 @@ export function isRecognizedAdmissionCycle(value) {
 // The only entry cycle the path's requirements publish, so the minimums check can run without asking for a year; "" when
 // there are several or none. Fee and date records name their own academic years and do not choose the intake.
 export function singlePublishedCycle(resolved) {
-  const requirementIds = new Set(resolved?.fact_groups?.requirements || []);
-  const cycles = new Set((resolved?.facts || []).filter(row => requirementIds.has(row.id)).map(row => row.scope?.cycle)
-    .filter(value => typeof value === "string" && isRecognizedAdmissionCycle(value)).map(normalizeAdmissionCycle));
+  const cycles = publishedEntryCycles(resolved);
   return cycles.size === 1 ? [...cycles][0] : "";
+}
+
+// The entry cycles the path's requirements publish.
+function publishedEntryCycles(resolved) {
+  const requirementIds = new Set(resolved?.fact_groups?.requirements || []);
+  return new Set((resolved?.facts || []).filter(row => requirementIds.has(row.id)).map(row => row.scope?.cycle)
+    .filter(value => typeof value === "string" && isRecognizedAdmissionCycle(value)).map(normalizeAdmissionCycle));
+}
+
+// Which of the entry-year and fee-status fields this path needs. A path with one published intake reads it on its own and
+// a university without fee classes (MIT, Stanford, NU) never asks for one; a value the reader set stays editable.
+/**
+ * @param {object|null} resolved The admissions-context response for the selected path.
+ * @param {{intended_entry_cycle?: string, fee_status_context?: string}} [context] The reader's current selection.
+ * @returns {{cycle: boolean, fee: boolean}} Whether the entry-year and fee-status fields are offered.
+ */
+export function admissionContextFields(resolved, context = {}) {
+  const cycles = publishedEntryCycles(resolved);
+  // Application windows published for several intakes (MIT's Fall and Spring transfer) also make the year a choice.
+  const deadlineIds = new Set(resolved?.fact_groups?.deadlines || []);
+  const windowEntries = new Set((resolved?.facts || []).filter(row => deadlineIds.has(row.id))
+    .flatMap(row => Array.isArray(row.value?.windows) ? row.value.windows.map(window => String(window?.entry || "").replace(/\s*\([^)]*\)$/, "")) : [])
+    .filter(value => typeof value === "string" && isRecognizedAdmissionCycle(value)).map(normalizeAdmissionCycle));
+  const cycle = normalizeAdmissionCycle(context.intended_entry_cycle);
+  const costs = resolved?.selected_costs || {};
+  const feeClasses = ["annual_total", "tuition"].some(key => costs[key]?.fee_statuses?.length > 1
+    || (costs[key]?.fee_status_match && costs[key].fee_status_match !== "not_required"))
+    || (resolved?.facts || []).some(row => (Array.isArray(row.scope?.fee_status) ? row.scope.fee_status : [row.scope?.fee_status])
+      .some(value => /\b(?:home|overseas)\b/i.test(String(value || ""))));
+  return {
+    cycle: cycles.size > 1 || windowEntries.size > 1 || resolved?.assessment?.reason === "entry_cycle_required" || Boolean(cycle && !(cycles.size === 1 && cycles.has(cycle))),
+    fee: feeClasses || Boolean(context.fee_status_context && context.fee_status_context !== "unknown"),
+  };
 }
 
 export function getApplicationLink(resolved) {
@@ -261,7 +292,8 @@ export function mountAdmissionsCatalog(institutionId) {
   const empty = (message) => `<p class="admissions-state">${escapeHtml(message)}</p>`;
   // A choice the reader must make: the explanation on its own line, its actions in one row beneath it.
   const prompt = (message, actions) => `<div class="admissions-state admissions-state--prompt"><p>${escapeHtml(message)}</p><div class="admissions-state__actions">${actions}</div></div>`;
-  const sharedRouteButtons = () => sharedRoutes.map(item => `<button type="button" data-prompt-shared-route="${escapeHtmlAttr(item.id)}">${escapeHtml(routeName(item))}</button>`).join("");
+  // A post-offer funding application is not a way in, so tab prompts list only the ways to apply.
+  const sharedRouteButtons = () => sharedRoutes.filter(item => item.classification !== "financial_support_application").map(item => `<button type="button" data-prompt-shared-route="${escapeHtmlAttr(item.id)}">${escapeHtml(routeName(item))}</button>`).join("");
   // Reading a shared undergraduate route needs no program; the reader stays on the tab they opened.
   const bindSharedRoutePrompt = host => host.querySelectorAll("[data-prompt-shared-route]").forEach(button => {
     button.onclick = () => {
@@ -329,6 +361,7 @@ export function mountAdmissionsCatalog(institutionId) {
     const legacyPending = !context.study_option_id && new URL(window.location.href).searchParams.has("admission_program");
     const canSave = status === "ready" && readable && (option ? ["option", "route", "level"] : ["route", "level"]).every((key) => resolved.context_applicability[key] === "matched");
     const cycles = [...new Set((resolved?.facts || []).map(row => row.scope?.cycle).filter(value => typeof value === "string" && value.length <= 40))];
+    const fields = admissionContextFields(resolved, context);
     const profile = loadProfileForApi();
     const savedChoice = profile.selectedAdmissionChoices?.[institutionId];
     const isSaved = admissionContextIsSaved(context, savedChoice);
@@ -375,13 +408,15 @@ export function mountAdmissionsCatalog(institutionId) {
         <div class="admissions-context__primary" ${(!route && routes.length > 1) || (route && routes.length <= 1) ? "hidden" : ""}>
         ${selectHtml("admissionsRoute", label("route_label"), [["", label("choose_route")], ...routes.map((row) => [row.id, routeName(row)])], context.application_route_id, (!option && !readable) || status === "loading")}
         </div>
-        <details id="admissionsAdvanced" class="admissions-context__advanced" data-admissions-advanced ${advancedOpen ? "open" : ""}><summary>${escapeHtml(label("reference_filters"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary>
+        <details id="admissionsAdvanced" class="admissions-context__advanced" data-admissions-advanced ${advancedOpen && (fields.cycle || fields.fee) ? "open" : ""} ${fields.cycle || fields.fee ? "" : "hidden"}><summary>${escapeHtml(label(fields.cycle && fields.fee ? "reference_filters" : fields.fee ? "reference_filters_fee" : "reference_filters_cycle"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary>
         <div class="admissions-context__fields">
-        <label class="admissions-context__field" for="admissionsCycle"><span>${escapeHtml(label("cycle_label"))}</span><input id="admissionsCycle" type="text" maxlength="40" list="admissionsCycleOptions" aria-describedby="admissionsCycleHelp admissionsCycleNotice" value="${escapeHtmlAttr(context.intended_entry_cycle)}" placeholder="${escapeHtmlAttr(label("cycle_example"))}"></label>
+        ${fields.cycle ? `<label class="admissions-context__field" for="admissionsCycle"><span>${escapeHtml(label("cycle_label"))}</span><input id="admissionsCycle" type="text" maxlength="40" list="admissionsCycleOptions" aria-describedby="admissionsCycleHelp admissionsCycleNotice" value="${escapeHtmlAttr(context.intended_entry_cycle)}" placeholder="${escapeHtmlAttr(label("cycle_example"))}"></label>`
+          : `<input id="admissionsCycle" type="hidden" value="${escapeHtmlAttr(context.intended_entry_cycle)}">`}
         <datalist id="admissionsCycleOptions">${cycles.map(value => `<option value="${escapeHtmlAttr(value)}"></option>`).join("")}</datalist>
-        ${selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context, false, renderTermHelp("fee_status"))}
-        </div><p class="admissions-context__note">${escapeHtml(label("advanced_note"))}</p><p class="admissions-context__note" id="admissionsCycleHelp">${escapeHtml(t("university.admissions.reading.cycle_help"))}</p><p class="admissions-context__note" id="admissionsCycleNotice" role="status" hidden>${escapeHtml(t("university.admissions.reading.cycle_invalid"))}</p></details>
-        <div class="admissions-context__actions"><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" ${status === "loading" || (!option && !readable) ? "disabled" : ""}>${escapeHtml(label("apply_context"))}</button></div>
+        ${fields.fee ? selectHtml("admissionsFee", label("fee_label"), ["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"].map((value) => [value, label(`fee.${value}`)]), context.fee_status_context, false, renderTermHelp("fee_status"))
+          : `<input id="admissionsFee" type="hidden" value="${escapeHtmlAttr(context.fee_status_context || "unknown")}">`}
+        </div><p class="admissions-context__note">${escapeHtml(label("advanced_note"))}</p><p class="admissions-context__note" id="admissionsCycleHelp" ${fields.cycle ? "" : "hidden"}>${escapeHtml(t("university.admissions.reading.cycle_help"))}</p><p class="admissions-context__note" id="admissionsCycleNotice" role="status" hidden>${escapeHtml(t("university.admissions.reading.cycle_invalid"))}</p></details>
+        <div class="admissions-context__actions" ${fields.cycle || fields.fee ? "" : "hidden"}><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" ${status === "loading" || (!option && !readable) ? "disabled" : ""}>${escapeHtml(label("apply_context"))}</button></div>
       </form></div></div>
       <div class="admissions-context__actions" ${(option && !noRoute) || readable ? "" : "hidden"}><button type="button" id="admissionsSaveChoice" ${canSave && !contextDirty && !isSaved ? "" : "disabled"}>${escapeHtml(label(isSaved ? "saved" : "save_choice"))}</button><span id="admissionsSaveStatus" class="admissions-context__note" role="status">${saveStatus ? escapeHtml(label(saveStatus)) : ""}</span></div>
       ${readable ? `<p class="admissions-context__note" data-saved-context>${escapeHtml(t(`university.admissions.entry.${isSaved ? "saved_context" : "browsing_not_saved"}`))}${savedDetails ? ` ${escapeHtml(tFormat("university.admissions.entry.saved_other", { details: savedDetails }))}` : ""}</p>` : ""}
@@ -580,8 +615,12 @@ export function mountAdmissionsCatalog(institutionId) {
         };
       }
       else if (["detailRequirements", "detailDeadlines", "detailFinance"].includes(id)) {
-        target.innerHTML = `${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains)}`;
-        if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState);
+        // Dates and Costs answer their question first, in the same words as the Admission key facts.
+        const answers = id === "detailRequirements" ? "" : renderTabAnswers(resolved, id === "detailDeadlines" ? "deadlines" : "finance", {
+          budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
+        target.innerHTML = `${answers}${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains)}`;
+        bindKeyFacts(target);
+        if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState, { emptyNote: false });
       }
       else target.innerHTML = renderAdmissionsContext(resolved, {
         domains, includeAssessment: id === "detailRequirements", includeUnknowns: id === "detailRequirements" || programOnly,
@@ -839,7 +878,9 @@ export function mountAdmissionsCatalog(institutionId) {
     context.study_option_id = option.id;
     if (expand) openProgramIds.add(option.id);
     else openProgramIds.delete(option.id);
-    context.application_route_id = "";
+    // A shared path the program is also applied through stays chosen (NU's one undergraduate application); any other path is
+    // chosen again for the program.
+    if (!option.route_ids?.includes(context.application_route_id)) context.application_route_id = "";
     contextDirty = false;
     advancedOpen = false;
     root.querySelector("#admissionsAdvanced").open = false;

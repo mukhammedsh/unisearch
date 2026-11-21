@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { costFact, deadlineFact, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+const { costFact, deadlineFact, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, renderTabAnswers, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 await initI18n();
 setLanguage("eng", { emit: false });
 
@@ -342,4 +342,22 @@ test("funding and deadline rows name the terms the applicant sees without relyin
   setLanguage("rus", { emit: false });
   assert.match(renderAdmissionsKeyFacts(withRows([rounds]), { now: NOW }), /data-term="early_action"/);
   setLanguage("eng", { emit: false });
+});
+
+test("the Dates and Costs tabs open with the same plain answers as the key facts, without record detail", () => {
+  const resolved = { ...withRows([events([{ date: "2026-12-01", deadline_type: "application", publication_status: "published" }])]),
+    selected_costs: { tuition: quote() }, available_routes: [{ id: "aid", title: "Funding selection", classification: "financial_support_application" }] };
+  const dates = renderTabAnswers(resolved, "deadlines", { now: NOW });
+  assert.match(dates, /data-tab-answers="deadlines"/);
+  assert.match(dates, /data-key-fact="deadline"/);
+  assert.doesNotMatch(dates, /data-key-fact="(?:cost|funding|requirements)"/);
+  const costs = renderTabAnswers(resolved, "finance", { now: NOW });
+  assert.match(costs, /data-key-fact="cost"[\s\S]*data-key-fact="funding"/);
+  // A separate funding application is opened from the answer, as in the key facts.
+  assert.match(costs, /data-key-facts-route="aid"/);
+  assert.equal(renderTabAnswers({ ...resolved, selected_route: null }, "finance"), "");
+  // On the Costs tab the funding answer points below instead of at the tab the reader is on.
+  const records = { ...resolved, available_routes: [], fact_groups: { ...resolved.fact_groups, funding: ["grant"] } };
+  assert.match(renderTabAnswers(records, "finance"), /described below and under Sources/);
+  assert.doesNotMatch(renderTabAnswers(records, "finance"), /Costs and funding/);
 });

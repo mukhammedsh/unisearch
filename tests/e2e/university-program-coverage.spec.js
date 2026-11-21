@@ -129,8 +129,9 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   await openTab(page, "admission");
   const unknowns = page.locator("#detailRequirements details.admissions-catalog__unknowns");
   // Unresolved information is grouped with the full records behind the tab's single records disclosure.
-  await expect(page.locator("#detailRequirements [data-all-records] > details.admissions-catalog__unknowns")).toHaveCount(1);
+  await expect(page.locator("#detailRequirements [data-all-records] [data-full-records] > details.admissions-catalog__unknowns")).toHaveCount(1);
   await page.locator("#detailRequirements [data-all-records] > summary").click();
+  await page.locator("#detailRequirements [data-all-records] [data-full-records] > summary").click();
   await expect(unknowns).toBeVisible();
   await unknowns.locator(":scope > summary").click();
   await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011]28 Engineering prices are not published/ })).toHaveCount(1);

@@ -170,26 +170,28 @@ test("periods are plain text, stated once for a section when shared and kept bes
   global.fetch = async () => ({ ok: true, json: async () => ({ lang: "eng", data: { admission_summaries: { "Rule A": { requirements: "Rule A" }, "Rule B": { requirements: "Rule B" } } } }) });
   try { await loadUniversityTranslationsForLanguage("eng", true); } finally { global.fetch = originalFetch; }
   const same = [fact("a", "Rule A", { period: { label: "Current published policy; year not stated" } }), fact("b", "Rule B", { period: { label: "Current published policy; year not stated" } })];
-  const shared = renderApplicantSection(context(same, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  const shared = renderApplicantSection(context(same, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references')[0];
   assert.doesNotMatch(shared, /<details/);
   assert.equal((shared.match(/Published policy; entry year not specified/g) || []).length, 1);
   assert.doesNotMatch(shared, /Current published policy/);
   assert.match(shared, /data-section-period/);
   const differ = [fact("a", "Rule A", { period: { label: "2026 entry" } }), fact("b", "Rule B", { period: { label: "2027 entry" } })];
-  const separate = renderApplicantSection(context(differ, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  const separate = renderApplicantSection(context(differ, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references')[0];
   assert.doesNotMatch(separate, /data-section-period/);
   assert.match(separate, /2026 entry[\s\S]*2027 entry/);
 });
 
-test("all source records, additional references and unresolved information sit behind one disclosure with one language note", () => {
+test("official sources, full records, additional references and unresolved information sit behind one closed Sources disclosure", () => {
   setLanguage("eng", { emit: false });
   const rows = [fact("tests", { presence: "required", alternatives: ["SAT", "ACT"] }), fact("internal", "Graduate residence policy", { scope: { option_ids: [], route_ids: [] }, topic: "funding" })];
   const resolved = { ...context(rows, { requirements: ["tests", "internal"] }), unknowns: [{ id: "gap", reason: "Interview policy is not published.", scope: {}, source_ids: ["official"] }] };
   const html = renderApplicantSection(resolved, ["requirements"]);
-  const disclosures = html.split('<details class="admissions-reading__references" data-all-records');
+  const disclosures = html.split('<details class="admissions-reading__references admissions-reading__provenance" data-all-records');
   assert.equal(disclosures.length, 2);
-  assert.match(disclosures[1], /^ ><summary>Details and sources \(3\)<\/summary>/);
-  for (const part of ['data-admissions-fact="tests"', "data-general-references", "Interview policy is not published.", "admissions-catalog__unknowns"]) assert.ok(disclosures[1].includes(part), part);
+  // Closed, named for its official pages, with no record count; the full records are one level further in.
+  assert.match(disclosures[1], /^><summary>Sources(?: \(\d+\))?<\/summary>/);
+  assert.match(disclosures[1], /data-full-records><summary>Full records in the source language<\/summary>/);
+  for (const part of ["data-reading-sources", 'data-admissions-fact="tests"', "data-general-references", "Interview policy is not published.", "admissions-catalog__unknowns"]) assert.ok(disclosures[1].includes(part), part);
   assert.equal(html.split(t("university.admissions.reading.reference_scope_note")).length - 1, 1);
 });
 
@@ -465,7 +467,8 @@ test("reference budgets keep zero, period and currency and funding is summarized
   assert.match(html, /SAT source record/);
   assert.match(html, /ACT source record/);
   const noBudget = renderApplicantSection(context(rows.slice(1), { funding: ["sat-aid", "act-aid"] }), ["costs", "funding"]);
-  assert.match(noBudget, /No comparable budget is confirmed/);
+  // The tab's cost answer says what is known; the reading adds no research note about a missing budget.
+  assert.doesNotMatch(noBudget, /No comparable budget is confirmed/);
 });
 
 test("structured catalog cost references retain original prose and expose their dated budget", () => {
