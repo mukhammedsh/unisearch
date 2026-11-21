@@ -164,22 +164,58 @@
   background: transparent;
 }
 
-/* Map rail reuses the list-mode .uni-card without the cover photo. */
+/* Map rail reuses the list-mode .uni-card; the campus photo is a faded backdrop, as in comparison. */
 .u-map-results-list .uni-card {
+  --uni-card-bg: var(--surface-solid);
   flex: none;
   width: 100%;
   max-width: none;
   min-height: 148px;
   cursor: pointer;
+  background: var(--uni-card-bg);
+}
+
+.u-map-results-list .uni-card:is(.is-active, .uni-card--compare-selected) {
+  --uni-card-bg: var(--accent-panel);
 }
 
 .u-map-results-list .uni-card.is-active {
-  background: var(--accent-panel);
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
 
+.uni-card-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.uni-card-backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  filter: brightness(0.85);
+}
+
+.uni-card-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom in oklab,
+    color-mix(in oklab, var(--uni-card-bg) 55%, transparent),
+    var(--uni-card-bg) 80%
+  );
+}
+
 .u-map-results-list .uni-card .uni-body {
+  position: relative;
+  z-index: 1;
   padding: var(--space-3);
   gap: var(--space-2);
 }
@@ -402,39 +438,105 @@
   z-index: 2;
 }
 
+/* Marker boxes have no fixed size: each pill is as wide as its label and is
+   centred on its map point by the inner element. */
 .custom-div-icon,
 .cluster-icon-container {
-  display: grid;
-  place-items: center;
   background: transparent;
   border: none;
+  outline: none;
 }
 
-.map-university-dot,
+.map-university-marker,
+.map-cluster-pill,
 .map-cluster-count {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  translate: -50% -50%;
+  white-space: nowrap;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  border: 2px solid var(--surface-solid);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+}
+
+/* A single university: light pill with a cap icon and its short label. */
+.map-university-marker {
+  width: max-content;
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1);
+  background: var(--surface-solid);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.map-university-marker__icon {
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  color: var(--accent-strong);
+}
+
+.map-university-marker__label {
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Without a label the marker is just the icon in a disc. */
+.map-university-marker:not(:has(.map-university-marker__label)) {
+  padding: var(--space-1);
+}
+
+/* A group: filled accent pill with the place and how many universities it holds. */
+.map-cluster-pill,
+.map-cluster-count {
   background: var(--accent);
   color: var(--text-inverse);
-  border: 2px solid var(--surface-solid);
-  border-radius: 50%;
+}
+
+.map-cluster-pill {
+  width: max-content;
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
+}
+
+.map-cluster-pill__count {
+  display: grid;
+  place-items: center;
+  min-width: var(--space-5);
+  height: var(--space-5);
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--text-inverse) 22%, transparent);
+}
+
+/* A mixed group has no single place to name: a plain count. */
+.map-cluster-count {
+  justify-content: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-circle);
+}
+
+.map-university-tooltip {
+  max-width: 240px;
+  white-space: normal;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  background: var(--surface-solid);
+  border: none;
   box-shadow: var(--shadow-xs);
 }
 
-.map-university-dot {
-  width: var(--space-4);
-  height: var(--space-4);
+.map-university-tooltip::before {
+  border-top-color: var(--surface-solid);
 }
 
-.map-cluster-count {
-  width: var(--space-8);
-  height: var(--space-8);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-semibold);
-}
-
-.custom-div-icon:is(:hover, :focus-visible) .map-university-dot,
-.cluster-icon-container:is(:hover, :focus-visible) .map-cluster-count {
+.custom-div-icon:is(:hover, :focus-visible) .map-university-marker,
+.cluster-icon-container:is(:hover, :focus-visible) :is(.map-cluster-pill, .map-cluster-count) {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
