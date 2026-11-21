@@ -5,7 +5,7 @@ import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, stud
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
-import { renderAdmissionsKeyFacts, renderTabAnswers } from "./admissions-key-facts.js";
+import { renderAdmissionsKeyFacts, renderTabAnswers, requirementsCheckDetails } from "./admissions-key-facts.js";
 import { glossaryTerms, renderTermHelp, renderTermList, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
@@ -548,7 +548,7 @@ export function mountAdmissionsCatalog(institutionId) {
     } else if (readable) {
       // Key facts open the tab and carry its single requirements-match summary with the checks beneath it.
       assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id),
-        applicationUrl: getApplicationLink(resolved) });
+        applicationUrl: getApplicationLink(resolved), profile: apiProfile });
       bindKeyFacts(assessmentHost);
     }
     // Without a program the shared paths are listed right below, so this block checks the main one at once instead of
@@ -618,7 +618,9 @@ export function mountAdmissionsCatalog(institutionId) {
         // Dates and Costs answer their question first, in the same words as the Admission key facts.
         const answers = id === "detailRequirements" ? "" : renderTabAnswers(resolved, id === "detailDeadlines" ? "deadlines" : "finance", {
           budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
-        target.innerHTML = `${answers}${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains)}`;
+        // How the Admission key facts checked each condition sits in this tab's closed "Sources" disclosure.
+        const checkDetails = id === "detailRequirements" ? requirementsCheckDetails(resolved) : "";
+        target.innerHTML = `${answers}${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains, { checkDetails })}`;
         bindKeyFacts(target);
         if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState, { emptyNote: false });
       }
@@ -691,8 +693,10 @@ export function mountAdmissionsCatalog(institutionId) {
       renderControls();
       renderContextContent("ready");
       if (revealSelection && hasReadableAdmissionContext(data)) selectionSummary?.scrollIntoView({ block: "start" });
-    } catch {
+    } catch (error) {
       if (request.signal.aborted || request !== contextAbort || !currentPage()) return;
+      // A failed request or a rendering defect both show the retry state; the cause is reported for diagnosis.
+      console.error(error);
       resolved = null;
       renderControls("error");
       renderContextContent("error");

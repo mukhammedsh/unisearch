@@ -2412,7 +2412,7 @@ university.admissions.catalog.source_note_simple: Текст официальн�
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
 university.admissions.catalog.source_scope_details: Источник и условия
-university.admissions.catalog.check_details: Сравнить мои результаты с минимумами
+university.admissions.catalog.check_details: Как проверялось каждое условие
 university.admissions.catalog.publication: Статус публикации
 university.admissions.catalog.topic.eligibility: Условия для заявителей
 university.admissions.catalog.topic.academic: Академические квалификации
@@ -2555,7 +2555,7 @@ university.admissions.catalog.domain.student_support: Поддержка сту�
 university.admissions.catalog.domain.other: Другие сведения источников
 university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
 university.admissions.catalog.reason.missing_evidence: Добавьте свои результаты в профиль, чтобы сверить их с минимумами.
-university.admissions.catalog.reason.unassessed_minimums: Часть требований нельзя проверить автоматически: сверьте их с подробностями ниже.
+university.admissions.catalog.reason.unassessed_minimums: Часть условий нельзя сравнить с вашим профилем — прочитайте их ниже.
 university.admissions.catalog.reason.entry_cycle_required: Укажите год поступления, например «осень 2027», чтобы проверить ваши баллы по этим минимумам.
 university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
 university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
@@ -2649,7 +2649,7 @@ university.admissions.catalog.enum.paper: Бумажный
 university.admissions.catalog.enum.digital: Цифровой
 university.admissions.reading.tests: Академические экзамены
 university.admissions.reading.or: или
-university.admissions.reading.no_numeric_cutoff: В этой записи нет числового порога. Необходимость сдать экзамен и решение о зачислении — разные вещи.
+university.admissions.reading.no_numeric_cutoff: Проходного балла нет: результат нужен, а решение принимают по всему заявлению.
 university.admissions.reading.language: Английский язык
 university.admissions.reading.english_condition: Настоятельная рекомендация относится к тем, для кого английский не родной и кто использует его менее пяти лет либо не говорит на нём дома или в школе. Это отдельное условие от обязательного SAT или ACT.
 university.admissions.reading.language_scores: Опубликованные баллы по английскому
@@ -2912,7 +2912,7 @@ university.admissions.reading.aid_finances_title: Для CSS Profile подго�
 university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи
 university.programs.all_levels: Все уровни обучения
 university.programs.search_clear: Очистить поиск
-university.admissions.reading.summary_requirements: Основные опубликованные требования
+university.admissions.reading.summary_requirements: Чего ждёт университет
 university.admissions.reading.summary_application: Как подать заявку
 university.admissions.reading.summary_deadlines: Даты курса и раунды подачи
 university.admissions.reading.summary_costs: Опубликованная стоимость и условия оплаты
@@ -3325,7 +3325,7 @@ university.admissions.key_facts.title: Главное по этому пути
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Остальные условия ({count}) нужно проверить самостоятельно — они описаны ниже.
+university.admissions.key_facts.requirements_manual: Документы и другие условия здесь не проверяются — они описаны ниже.
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -3471,6 +3471,14 @@ university.admissions.key_facts.minimum_have_below: У вас: {result}, ниж�
 university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; засчитывается ли он, зависит от условий ниже
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
+university.admissions.key_facts.requirements_checklist_lead: Ваши результаты и опубликованные минимумы:
+university.admissions.key_facts.recommended_english: Рекомендуемый тест по английскому: {minimum}
+university.admissions.key_facts.recommended_english_better: Рекомендуемый тест по английскому: {minimum} (лучше {better})
+university.admissions.key_facts.recommended_english_condition: Не обязательно: университет настоятельно советует сдать тест, если английский для вас не родной и вы пользуетесь им меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_condition_not_native: Не обязательно: относится к вам, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_native_hint: Английский — ваш родной язык? Укажите это в профиле, и эта строка будет показываться, только когда она к вам относится.
+university.ux2.needs.mark_recommended: Рекомендация, а не требование
+languages.exam_sections_label: Баллы по секциям (если они есть в сертификате)
 profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать
 profile.ux2.section.study.desc: Уровень обучения сужает список. Специальность и темы меняют порядок.

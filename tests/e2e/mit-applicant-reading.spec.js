@@ -172,3 +172,69 @@ test("changing language preserves program search, browsing level and admission s
     expect(page.url()).toBe(url);
   }
 });
+
+test("MIT's English-test recommendation sits beside the applicant's IELTS and links to the profile", async ({ page }) => {
+  // Aruzhan: IELTS 6.5 without section scores, SAT 1300, no native language stated yet.
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    // Seeded once, so later steps can change the stored profile across reloads.
+    if (!localStorage.getItem("unisearch_profile")) localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2,
+      exams: [{ id: "SAT", exam: "SAT", score: 1300 }], languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] }));
+  });
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-first-year&admission_level=undergraduate#tab-admission");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  const recommendation = page.locator("[data-key-fact='requirements'] li[data-recommendation]");
+  await expect(recommendation).toContainText("Recommended English test: IELTS Academic 7.0 (better 7.5)");
+  await expect(recommendation).toContainText("Not required");
+  await expect(recommendation).toContainText("You have: IELTS Academic 6.5");
+  await expect(recommendation).not.toContainText("below the minimum");
+  // The check records stay behind the closed Sources disclosure.
+  await expect(page.locator("[data-admissions-key-facts] .admissions-catalog__assessment-detail")).toHaveCount(0);
+  await expect(page.locator("#detailRequirements details[data-all-records]")).not.toHaveAttribute("open", "");
+  await recommendation.getByRole("link", { name: /Is English your native language/ }).click();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  // A new "native" entry opens without choosing the language for the applicant.
+  await expect(page.locator("#langKind")).toHaveValue("native");
+  await expect(page.locator("#languagesBlock")).toBeInViewport();
+
+  // Saying another language is native keeps the row without the hint; saying English is native removes it.
+  // The profile is changed from the university page, so the profile page does not save its own copy over it.
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-first-year&admission_level=undergraduate#tab-admission");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.evaluate(() => {
+    const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
+    profile.languages.push({ code: "ru", kind: "native" });
+    localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+  });
+  await page.reload();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(recommendation).toContainText("You have: IELTS Academic 6.5");
+  await expect(recommendation.getByRole("link")).toHaveCount(0);
+  await page.evaluate(() => {
+    const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
+    profile.languages.push({ code: "en", kind: "native" });
+    localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+  });
+  await page.reload();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("[data-key-fact='requirements'] li[data-mark]").first()).toBeVisible();
+  await expect(recommendation).toHaveCount(0);
+});
+
+test("a profile link to an English test opens it with the section scores right below the overall score", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] }));
+  });
+  await page.goto("/profile.html?language_exam=IELTS");
+  await expect(page.locator("#langExam")).toHaveValue("IELTS");
+  await expect(page.locator("#langExamScore")).toHaveValue("6.5");
+  const listening = page.locator('[data-lang-breakdown-input="IELTS_LISTENING"]');
+  await expect(listening).toBeFocused();
+  await expect(page.locator(".profile-lang-sections legend")).toHaveText("Section scores (if your report shows them)");
+  const score = await page.locator("#langExamScore").boundingBox();
+  const sections = await page.locator("#langExamSpecialContainer").boundingBox();
+  const date = await page.locator("#langExamTakenOn").boundingBox();
+  expect(sections.y).toBeGreaterThan(score.y);
+  expect(date.y).toBeGreaterThan(sections.y);
+});

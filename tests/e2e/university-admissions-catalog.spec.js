@@ -159,6 +159,9 @@ async function openAdvanced(page) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
 }

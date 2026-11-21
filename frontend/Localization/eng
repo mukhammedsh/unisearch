@@ -2414,7 +2414,7 @@ university.admissions.catalog.source_note_simple: Official source text is shown 
 university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
 university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
 university.admissions.catalog.source_scope_details: Source and conditions
-university.admissions.catalog.check_details: Compare my results with the minimums
+university.admissions.catalog.check_details: How each condition was checked
 university.admissions.catalog.publication: Publication status
 university.admissions.catalog.topic.eligibility: Eligibility
 university.admissions.catalog.topic.academic: Academic qualifications
@@ -2557,7 +2557,7 @@ university.admissions.catalog.domain.student_support: Student support
 university.admissions.catalog.domain.other: Other source information
 university.admissions.catalog.reason.applicability_unknown: The selected context or applicant applicability has not been established.
 university.admissions.catalog.reason.missing_evidence: Add your results to your profile to compare them with the minimums.
-university.admissions.catalog.reason.unassessed_minimums: Some of these requirements cannot be checked automatically; compare them with the details below.
+university.admissions.catalog.reason.unassessed_minimums: Some conditions cannot be compared with your profile; read them below.
 university.admissions.catalog.reason.entry_cycle_required: Choose your entry year, for example "Fall 2027", to check your scores against these minimums.
 university.admissions.catalog.reason.no_published_requirements: No evaluable published numeric minimum is catalogued for this context.
 university.admissions.catalog.reason.requirements_not_met: At least one evaluated published minimum was not met.
@@ -2651,7 +2651,7 @@ university.admissions.catalog.enum.paper: Paper-based
 university.admissions.catalog.enum.digital: Digital
 university.admissions.reading.tests: Academic tests
 university.admissions.reading.or: or
-university.admissions.reading.no_numeric_cutoff: This source record does not set a numeric cutoff. Test submission and admission selection are separate.
+university.admissions.reading.no_numeric_cutoff: There is no passing score: you need a result, and the decision looks at your whole application.
 university.admissions.reading.language: English proficiency
 university.admissions.reading.english_condition: This strong recommendation applies to non-native English speakers who have used English for fewer than five years or do not speak it at home or school. It is separate from the required SAT or ACT.
 university.admissions.reading.language_scores: Published English-test scores
@@ -2914,7 +2914,7 @@ university.admissions.reading.aid_finances_title: Prepare financial information 
 university.admissions.reading.aid_priority_dates: Priority aid application dates
 university.programs.all_levels: All degree levels
 university.programs.search_clear: Clear search
-university.admissions.reading.summary_requirements: Key published entry requirements
+university.admissions.reading.summary_requirements: What the university expects
 university.admissions.reading.summary_application: How to apply
 university.admissions.reading.summary_deadlines: Course dates and application rounds
 university.admissions.reading.summary_costs: Published costs and fee conditions
@@ -3327,7 +3327,7 @@ university.admissions.key_facts.title: Key facts for this path
 university.admissions.key_facts.note: A summary of published facts, not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: The other conditions ({count}) need checking yourself; they are described below.
+university.admissions.key_facts.requirements_manual: Documents and other conditions are not checked here; they are described below.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -3473,6 +3473,14 @@ university.admissions.key_facts.minimum_have_below: You have: {result}, below th
 university.admissions.key_facts.minimum_have_unconfirmed: You have: {result}; whether it counts depends on the conditions below
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
+university.admissions.key_facts.requirements_checklist_lead: Your results against the published minimums:
+university.admissions.key_facts.recommended_english: Recommended English test: {minimum}
+university.admissions.key_facts.recommended_english_better: Recommended English test: {minimum} (better {better})
+university.admissions.key_facts.recommended_english_condition: Not required: the university strongly recommends it if English is not your first language and you have used it for less than five years or do not speak it at home or at school.
+university.admissions.key_facts.recommended_english_condition_not_native: Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.
+university.admissions.key_facts.recommended_english_native_hint: Is English your native language? Say so in your profile, and this line will show only when it applies to you.
+university.ux2.needs.mark_recommended: Recommendation, not a requirement
+languages.exam_sections_label: Section scores (if your report shows them)
 profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study
 profile.ux2.section.study.desc: Study level narrows the list. Subject and topics change the order.

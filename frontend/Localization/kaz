@@ -2414,7 +2414,7 @@ university.admissions.catalog.source_note_simple: Ресми дереккөз м
 university.admissions.catalog.route_class.ucas_course_choice: UCAS арқылы курс таңдау
 university.admissions.catalog.route_class.postgraduate_course_choice: Жоғары оқу орнынан кейінгі бағдарламаға өтініш
 university.admissions.catalog.source_scope_details: Дереккөз және шарттар
-university.admissions.catalog.check_details: Нәтижелерімді минимумдармен салыстыру
+university.admissions.catalog.check_details: Әр шарт қалай тексерілді
 university.admissions.catalog.publication: Жариялану күйі
 university.admissions.catalog.topic.eligibility: Талаптарға сәйкестік
 university.admissions.catalog.topic.academic: Академиялық біліктілік
@@ -2557,7 +2557,7 @@ university.admissions.catalog.domain.student_support: Студенттерге �
 university.admissions.catalog.domain.other: Дереккөздегі өзге ақпарат
 university.admissions.catalog.reason.applicability_unknown: Таңдалған контекст немесе талаптардың өтініш берушіге қолданылуы анықталмаған.
 university.admissions.catalog.reason.missing_evidence: Минимумдармен салыстыру үшін нәтижелеріңізді профильге қосыңыз.
-university.admissions.catalog.reason.unassessed_minimums: Кейбір талаптарды автоматты түрде тексеру мүмкін емес: оларды төмендегі толығырақ мәліметпен салыстырыңыз.
+university.admissions.catalog.reason.unassessed_minimums: Кейбір шарттарды профиліңізбен салыстыру мүмкін емес — оларды төменнен оқыңыз.
 university.admissions.catalog.reason.entry_cycle_required: Баллдарыңызды осы минимумдармен салыстыру үшін түсу жылын көрсетіңіз, мысалы «2027 жылғы күз».
 university.admissions.catalog.reason.no_published_requirements: Бұл контекст үшін бағалауға болатын сандық минимум каталогқа енгізілмеген.
 university.admissions.catalog.reason.requirements_not_met: Бағаланған жарияланған минимумдардың кемінде бірі орындалмаған.
@@ -2651,7 +2651,7 @@ university.admissions.catalog.enum.paper: Қағаз
 university.admissions.catalog.enum.digital: Цифрлық
 university.admissions.reading.tests: Академиялық емтихандар
 university.admissions.reading.or: немесе
-university.admissions.reading.no_numeric_cutoff: Бұл жазбада сандық шек белгіленбеген. Емтихан тапсыру талабы мен қабылдау шешімі бөлек.
+university.admissions.reading.no_numeric_cutoff: Өту балы жоқ: нәтиже қажет, ал шешім бүкіл өтініш бойынша қабылданады.
 university.admissions.reading.language: Ағылшын тілі
 university.admissions.reading.english_condition: Бұл ұсыныс ағылшын тілі ана тілі емес және оны бес жылдан аз қолданатын не үйде немесе мектепте ағылшынша сөйлемейтін талапкерлерге қатысты. Ол міндетті SAT немесе ACT талабынан бөлек.
 university.admissions.reading.language_scores: Ағылшын тілі бойынша жарияланған балдар
@@ -2914,7 +2914,7 @@ university.admissions.reading.aid_finances_title: CSS Profile үшін дайы�
 university.admissions.reading.aid_priority_dates: Қаржылай көмек өтінішінің басым мерзімдері
 university.programs.all_levels: Барлық оқу деңгейлері
 university.programs.search_clear: Іздестіруді тазарту
-university.admissions.reading.summary_requirements: Негізгі жарияланған қабылдау талаптары
+university.admissions.reading.summary_requirements: Университет не күтеді
 university.admissions.reading.summary_application: Өтініш беру тәртібі
 university.admissions.reading.summary_deadlines: Курс күндері мен өтініш раундтары
 university.admissions.reading.summary_costs: Жарияланған шығындар мен төлем шарттары
@@ -3327,7 +3327,7 @@ university.admissions.key_facts.title: Осы жол бойынша негізг
 university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
-university.admissions.key_facts.requirements_manual: Қалған шарттарды ({count}) өзіңіз тексеруіңіз керек — олар төменде сипатталған.
+university.admissions.key_facts.requirements_manual: Құжаттар мен басқа шарттар мұнда тексерілмейді — олар төменде сипатталған.
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -3473,6 +3473,14 @@ university.admissions.key_facts.minimum_have_below: Сізде: {result}, мин
 university.admissions.key_facts.minimum_have_unconfirmed: Сізде: {result}; оның есепке алынуы төмендегі шарттарға байланысты
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}
+university.admissions.key_facts.requirements_checklist_lead: Нәтижелеріңіз және жарияланған минимумдар:
+university.admissions.key_facts.recommended_english: Ұсынылатын ағылшын тілі тесті: {minimum}
+university.admissions.key_facts.recommended_english_better: Ұсынылатын ағылшын тілі тесті: {minimum} (жақсырақ {better})
+university.admissions.key_facts.recommended_english_condition: Міндетті емес: ағылшын тілі сіздің ана тіліңіз болмаса және оны бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, университет тест тапсыруды қатты ұсынады.
+university.admissions.key_facts.recommended_english_condition_not_native: Міндетті емес: ағылшын тілін бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, бұл сізге қатысты.
+university.admissions.key_facts.recommended_english_native_hint: Ағылшын тілі — ана тіліңіз бе? Мұны профильде көрсетіңіз, сонда бұл жол тек сізге қатысты болғанда ғана көрсетіледі.
+university.ux2.needs.mark_recommended: Талап емес, ұсыныс
+languages.exam_sections_label: Секциялар бойынша балл (сертификатта болса)
 profile.ux2.intro: Тек білетініңізге ғана жауап беріңіз. Ештеңе міндетті емес, жауаптар осы құрылғыда сақталады.
 profile.ux2.section.study.title: Нені оқығыңыз келеді
 profile.ux2.section.study.desc: Оқу деңгейі тізімді тарылтады. Мамандық пен тақырыптар реттілікті өзгертеді.

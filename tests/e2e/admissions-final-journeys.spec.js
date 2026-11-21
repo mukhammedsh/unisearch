@@ -125,9 +125,12 @@ async function openFact(page, tab, id) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements [data-requirements-match]");
+  return page.locator("#detailRequirements");
 }
 
 test("Kazakhstan secondary-school guest and applicant can distinguish university-wide MIT and Stanford first-year and transfer routes", async ({ page }, testInfo) => {
@@ -258,7 +261,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   expect(checks["overall-gpa"].sourceRule.id).toBe("bcs-meng-entry-conditions");
   const bcsContextUrl = page.url();
   const assessment = await openAssessment(page);
-  await expect(assessment.locator(".admissions-key-facts__value")).toContainText("(100%)");
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).toContainText("(100%)");
   const scopedAverages = assessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" });
   await expect(scopedAverages).toHaveCount(2);
   await expect(scopedAverages.nth(0).locator(":scope > summary")).toContainText(/Met/i);
@@ -300,7 +303,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const updatedAssessment = await openAssessment(page);
   await expect(updatedAssessment).toContainText("Add your results to your profile");
-  await expect(updatedAssessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(updatedAssessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
   await missingOverall.locator(":scope > summary").click();

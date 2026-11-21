@@ -303,6 +303,18 @@
   color: var(--color-warning);
 }
 
+/* A note that asks for a missing result opens that field in the profile. */
+a.admissions-key-facts__checklist-note {
+  width: fit-content;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+a.admissions-key-facts__checklist-note:hover {
+  color: var(--interaction-hover-text);
+}
+
 .admissions-key-facts__checklist-text {
   display: block;
   overflow-wrap: anywhere;

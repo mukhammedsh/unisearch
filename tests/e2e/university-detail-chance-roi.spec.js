@@ -7,9 +7,12 @@ const MBA_URL = "/university.html?id=mit-usa-cambridge&admission_option=mit-sloa
 const MIT_FIRST_YEAR_URL = "/university.html?id=mit-usa-cambridge&admission_option=mit-course-6-3-bachelor&admission_application_route=mit-first-year&admission_level=undergraduate&admission_route=first_year&admission_cycle=Fall%202027%20entry&admission_fee=unknown";
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements [data-requirements-match]");
+  return page.locator("#detailRequirements");
 }
 
 async function openEvidence(fact) {
@@ -41,7 +44,7 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
-  await expect(assessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);

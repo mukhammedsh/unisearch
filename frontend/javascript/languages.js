@@ -603,34 +603,31 @@ export function initLanguagesPanel() {
       langExamSpecialContainer.hidden = false;
       langExamSpecialContainer.style.display = "block";
       langExamSpecialContainer.dataset.examId = String(examObj.id || "");
+      const lang = String(langCode.value || "").trim().toLowerCase();
+      // One labelled group of short section fields under the overall score, as on a score report.
       langExamSpecialContainer.innerHTML = `
-        <div class="profile-exam-special-grid profile-exam-special-grid--breakdown">
+        <fieldset class="profile-lang-sections">
+          <legend class="profile-form-label">${escapeHtml(t("languages.exam_sections_label", "Section scores (if your report shows them)"))}</legend>
+          <div class="profile-exam-special-grid profile-exam-special-grid--grades">
           ${defs.map((def) => {
-            const childExam = getExam(cfg, String(langCode.value || "").trim().toLowerCase(), def.exam);
-            const existingValue = existingComponents.get(def.exam);
-            const valueText = escapeHtml(formatValuePart(existingValue));
+            const childExam = getExam(cfg, lang, def.exam);
+            const name = getExamDisplayName(def.exam, { langCode: lang, locale: getCurrentLanguage() });
+            const valueText = escapeHtml(formatValuePart(existingComponents.get(def.exam)));
             return `
-              <div class="profile-exam-breakdown-row" data-lang-breakdown-row="${escapeHtml(def.exam)}">
-                <div class="profile-exam-breakdown-subject">
-                  <span class="mini-label">${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase(), locale: getCurrentLanguage() }))}</span>
-                  <div class="profile-exam-breakdown-chip">${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase(), locale: getCurrentLanguage() }))}</div>
-                </div>
-                <div class="profile-exam-breakdown-score">
-                  <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
-                  <input
-                    type="text"
-                    inputmode="decimal"
-                    aria-label="${escapeHtml(getExamDisplayName(def.exam, { langCode: String(langCode.value || "").trim().toLowerCase(), locale: getCurrentLanguage() }))}"
-                    class="profile-input"
-                    value="${valueText}"
-                    placeholder="${escapeHtml(t("profile.placeholder.score", "Score"))}"
-                    data-lang-breakdown-input="${escapeHtml(def.exam)}"
-                    ${childExam?.min !== undefined ? `min="${escapeHtml(String(childExam.min))}"` : ""}
-                    ${childExam?.max !== undefined ? `max="${escapeHtml(String(childExam.max))}"` : ""}
-                    ${childExam?.step !== undefined ? `step="${escapeHtml(String(childExam.step))}"` : ""}
-                  />
-                </div>
-              </div>
+              <label class="profile-exam-special-field" data-lang-breakdown-row="${escapeHtml(def.exam)}">
+                <span class="mini-label">${escapeHtml(name)}</span>
+                <input
+                  type="text"
+                  inputmode="decimal"
+                  class="profile-input"
+                  value="${valueText}"
+                  placeholder="${escapeHtml(t("profile.placeholder.score", "Score"))}"
+                  data-lang-breakdown-input="${escapeHtml(def.exam)}"
+                  ${childExam?.min !== undefined ? `min="${escapeHtml(String(childExam.min))}"` : ""}
+                  ${childExam?.max !== undefined ? `max="${escapeHtml(String(childExam.max))}"` : ""}
+                  ${childExam?.step !== undefined ? `step="${escapeHtml(String(childExam.step))}"` : ""}
+                />
+              </label>
             `;
           }).join("")}
           <div class="profile-exam-special-hint">${escapeHtml(
@@ -639,7 +636,8 @@ export function initLanguagesPanel() {
               "Section scores are optional: enter the overall score, or fill every section and it is calculated automatically. Sections allow a more precise check."
             )
           )}</div>
-        </div>
+          </div>
+        </fieldset>
       `;
     }
 
@@ -728,6 +726,52 @@ export function initLanguagesPanel() {
         });
       }
       refreshLangActionButton();
+    }
+
+    // Fills the editor with a saved entry, or with a new one for the given language, kind and test.
+    function loadIntoEditor(entry) {
+      langCode.value = entry.code;
+      langKind.value = entry.kind || "";
+      populateLangExam();
+      if (entry.kind === KIND_CEFR) langCefr.value = String(entry.level);
+      if (entry.kind === KIND_EXAM) {
+        langExam.value = entry.exam;
+        if (langExamTakenOn) langExamTakenOn.value = entry.taken_on || "";
+        langExamScore.value = entry.score != null && Number.isFinite(Number(entry.score)) ? String(entry.score) : "";
+      }
+      initCustomSelect("langCode");
+      initCustomSelect("langKind");
+      initCustomSelect("langCefr");
+      initCustomSelect("langExam");
+      syncExamUi();
+      setEditorDirty(false);
+      refreshLangActionButton();
+    }
+
+    // A university page links here to add a missing English result (?language_exam=IELTS), opening the editor at that test on
+    // its first empty section score or the overall score, or to state a native language (?language=en), opening a new
+    // "native" entry on the language list without choosing the language for the applicant.
+    function openFromLink() {
+      const params = new URLSearchParams(window.location.search);
+      const exam = String(params.get("language_exam") || "").trim();
+      const code = String(params.get("language") || "").trim().toLowerCase();
+      if (!exam && !code) return;
+      const lang = code || "en";
+      if (!(cfg.languages || []).some(row => row.code === lang)) return;
+      if (exam && !getExam(cfg, lang, exam)) return;
+      const languages = loadEditableProfile().languages;
+      const entries = (Array.isArray(languages) ? languages : []).map(normalizeLangEntry).filter(Boolean);
+      const saved = exam ? entries.filter(entry => entry.code === lang && entry.kind === KIND_EXAM && entry.exam === exam).at(-1) : null;
+      loadIntoEditor(saved || (exam ? { code: lang, kind: KIND_EXAM, exam } : { code: langCode.value, kind: KIND_NATIVE }));
+      const target = !exam ? langCode
+        : [...langExamSpecialContainer.querySelectorAll("[data-lang-breakdown-input]")].find(input => saved && !input.value) || langExamScore;
+      // A custom select hides its native control, so the visible trigger takes focus. The route moves focus to the page
+      // heading in the next frame, so the field is focused one frame later.
+      const field = () => target === langCode ? langCode.parentElement?.querySelector(".custom-select-trigger") || langCode : target;
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        languagesBlock.scrollIntoView({ block: "center" });
+        field().focus({ preventScroll: true });
+      }));
     }
 
     renderForm();
@@ -992,23 +1036,7 @@ export function initLanguagesPanel() {
         const prof = loadEditableProfile();
         const entry = (Array.isArray(prof.languages) ? prof.languages : []).map(normalizeLangEntry).filter(Boolean)[idx];
         if (!entry) return;
-        langCode.value = entry.code;
-        langKind.value = entry.kind;
-        populateLangExam();
-        if (entry.kind === KIND_CEFR) langCefr.value = String(entry.level);
-        if (entry.kind === KIND_EXAM) {
-          langExam.value = entry.exam;
-          if (langExamTakenOn) langExamTakenOn.value = entry.taken_on || "";
-          if (Number.isFinite(Number(entry.score))) langExamScore.value = String(entry.score);
-          else langExamScore.value = "";
-        }
-        initCustomSelect("langCode");
-        initCustomSelect("langKind");
-        initCustomSelect("langCefr");
-        initCustomSelect("langExam");
-        syncExamUi();
-        setEditorDirty(false);
-        refreshLangActionButton();
+        loadIntoEditor(entry);
         (entry.kind === KIND_EXAM ? langExamTakenOn : langCefr)?.focus();
         return;
       }
@@ -1032,7 +1060,13 @@ export function initLanguagesPanel() {
       });
     });
 
-    const onProfileModalOpened = () => renderForm();
+    // The profile opens after this panel boots and rebuilds its selects, so a link to a test is followed once it is open.
+    let linkPending = true;
+    const onProfileModalOpened = () => {
+      renderForm();
+      if (linkPending) openFromLink();
+      linkPending = false;
+    };
     const onLanguageChanged = () => renderForm({ preserveDraft: true });
     const onProfileUpdated = () => renderForm({ preserveDraft: true });
     window.addEventListener("profileModalOpened", onProfileModalOpened);

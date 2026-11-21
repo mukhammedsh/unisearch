@@ -6,7 +6,7 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage, t } = await import("../../frontend/javascript/i18n.js");
 const { formatPublishedDate, renderApplicantSection, sourceDistinguishingHints } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
-const { renderAdmissionsKeyFacts } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+const { renderAdmissionsKeyFacts, requirementsCheckDetails } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 const { admissionsCycleLabel, admissionsRouteName, admissionDeadlineTitle, renderStudyOptionOverview, renderAdmissionsAssessment, renderAdmissionsValue } = await import("../../frontend/javascript/pages/university/admissions-render.js");
 await initI18n();
 
@@ -45,7 +45,7 @@ function context(rows, groups) {
     unknowns: [], assessment: {}, history: {} };
 }
 
-test("key facts carry the single requirements-match summary and its checks, and the reading area does not repeat it", () => {
+test("key facts carry the single requirements-match summary and the Sources disclosure keeps how each check was made", () => {
   setLanguage("eng", { emit: false });
   const resolved = context([], {});
   resolved.assessment = { chancePercent: 100, activeChoice: { details: { checks: [{ kind: "scoped_gpa", measurable: true, status: "met" }] } } };
@@ -53,13 +53,16 @@ test("key facts carry the single requirements-match summary and its checks, and 
   assert.equal((keyFacts.match(/data-requirements-match/g) || []).length, 1);
   assert.match(keyFacts, /1 of 1 measurable minimums met \(100%\)/);
   assert.ok(keyFacts.includes(t("university.admissions.catalog.assessment_limits")));
-  assert.match(keyFacts, /<details class="admissions-catalog__assessment-detail">/);
+  // The answer leads; the check records are not part of the key facts.
+  assert.doesNotMatch(keyFacts, /admissions-catalog__assessment-detail/);
   assert.ok(keyFacts.indexOf('data-key-fact="requirements"') < keyFacts.indexOf('data-key-fact="deadline"'));
-  // The detail keeps the definition caveat but not a second percentage sentence.
-  const detail = keyFacts.split('<details class="admissions-catalog__assessment-detail">')[1];
+  const reading = renderApplicantSection(resolved, ["requirements", "application"], { checkDetails: requirementsCheckDetails(resolved) });
+  const sources = reading.split("<details class=\"admissions-reading__references admissions-reading__provenance\" data-all-records>")[1];
+  assert.ok(sources, "the check details open a closed Sources disclosure even without source pages");
+  const detail = sources.split('<details class="admissions-catalog__assessment-detail">')[1];
   assert.match(detail, /not an admission probability/);
   assert.doesNotMatch(detail, /<strong>100%|evaluated numeric minimum checks met/);
-  assert.doesNotMatch(renderApplicantSection(resolved, ["requirements", "application"]), /data-requirements-match|100%/);
+  assert.doesNotMatch(reading.split("data-all-records")[0], /data-requirements-match|100%/);
 });
 
 test("missing evidence and unassessed rules give distinct localized next steps without repeating the result", () => {
@@ -69,8 +72,8 @@ test("missing evidence and unassessed rules give distinct localized next steps w
     resolved.assessment = { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [
       { kind: "academic_requirement", status: "missing", numericMinimum: true }, { kind: "published_rule", status: "unassessed" },
     ] } } };
-    const html = renderAdmissionsKeyFacts(resolved);
-    const [summary, detail] = html.split('<details class="admissions-catalog__assessment-detail">');
+    const summary = renderAdmissionsKeyFacts(resolved);
+    const detail = requirementsCheckDetails(resolved);
     const missing = t("university.admissions.catalog.check_next_missing");
     const manual = t("university.admissions.catalog.check_next_unassessed");
     const reason = t("university.admissions.catalog.reason.missing_evidence");
@@ -82,7 +85,7 @@ test("missing evidence and unassessed rules give distinct localized next steps w
     assert.ok(detail.includes(missing));
     assert.ok(detail.includes(manual));
     resolved.assessment.reason = "unassessed_minimums";
-    assert.ok(renderAdmissionsKeyFacts(resolved).includes(t("university.admissions.catalog.assessment_next_unassessed")));
+    assert.ok(requirementsCheckDetails(resolved).includes(t("university.admissions.catalog.assessment_next_unassessed")));
   }
 });
 
@@ -163,7 +166,7 @@ test("official pages that share a title get a short URL hint in the numbered lis
   assert.deepEqual([...sourceDistinguishingHints(differsByQuery).values()], ["course ?id=1", "course ?id=2"]);
 });
 
-test("periods are plain text, stated once for a section when shared and kept beside excerpts that differ", async () => {
+test("periods are plain text: an entry year is stated once when shared, beside excerpts that differ, and a missing year is not shown", async () => {
   setLanguage("eng", { emit: false });
   const { loadUniversityTranslationsForLanguage } = await import("../../frontend/javascript/university-translations.js");
   const originalFetch = global.fetch;
@@ -172,9 +175,12 @@ test("periods are plain text, stated once for a section when shared and kept bes
   const same = [fact("a", "Rule A", { period: { label: "Current published policy; year not stated" } }), fact("b", "Rule B", { period: { label: "Current published policy; year not stated" } })];
   const shared = renderApplicantSection(context(same, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references')[0];
   assert.doesNotMatch(shared, /<details/);
-  assert.equal((shared.match(/Published policy; entry year not specified/g) || []).length, 1);
-  assert.doesNotMatch(shared, /Current published policy/);
-  assert.match(shared, /data-section-period/);
+  // That a page names no entry year is research scope; it stays in the full records, not beside the answer.
+  assert.doesNotMatch(shared, /Published policy; entry year not specified|Current published policy|data-section-period|data-source-period/);
+  const sameYear = [fact("a", "Rule A", { period: { label: "2027 entry" } }), fact("b", "Rule B", { period: { label: "2027 entry" } })];
+  const once = renderApplicantSection(context(sameYear, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references')[0];
+  assert.match(once, /data-section-period/);
+  assert.equal((once.match(/2027 entry/g) || []).length, 1);
   const differ = [fact("a", "Rule A", { period: { label: "2026 entry" } }), fact("b", "Rule B", { period: { label: "2027 entry" } })];
   const separate = renderApplicantSection(context(differ, { requirements: ["a", "b"] }), ["requirements"]).split('<details class="admissions-reading__references')[0];
   assert.doesNotMatch(separate, /data-section-period/);

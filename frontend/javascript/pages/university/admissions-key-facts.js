@@ -93,8 +93,62 @@ function providedText(provided) {
   return "";
 }
 
+// A profile link that opens the language editor at one English test, so a missing result or section score is entered in place.
+export const profileLanguageExamHref = exam => `/profile.html?language_exam=${encodeURIComponent(exam)}`;
+
+// The published English-test names of a recommendation record, as the profile's language exam ids.
+const RECOMMENDED_ENGLISH_EXAMS = {
+  "IELTS Academic": () => "IELTS", "PTE Academic": () => "PTE", "Duolingo English Test": () => "DET",
+  "Cambridge C1 Advanced": () => "Cambridge_C1_Advanced", "Cambridge C2 Proficiency": () => "Cambridge_C2_Proficiency",
+  "TOEFL iBT": row => ({ "0-120": "TOEFL_iBT_0_120", "1-6": "TOEFL_iBT_1_6" })[row.scale] || "",
+};
+// A recommendation that applies only to applicants whose first language is not English (MIT's English proficiency exams).
+const NON_NATIVE_ENGLISH = /\bnon-native English\b/i;
+
+/**
+ * The applicant's English as the profile states it: a native English entry, another native language only, or nothing said.
+ * @param {{languages?: Array<{code?: string, kind?: string, exam?: string, score?: number}>}} [profile] The API profile.
+ * @returns {"native"|"not_native"|"unknown"}
+ */
+export function englishStatus(profile) {
+  const native = (profile?.languages || []).filter(row => row?.kind === "native").map(row => String(row.code || "").toLowerCase());
+  return native.includes("en") ? "native" : native.length ? "not_native" : "unknown";
+}
+
+/**
+ * A published English-test recommendation for applicants whose first language is not English, as one checklist item.
+ * It is never a pass or fail: the applicant's own result is shown beside it, and an unknown native language adds a hint.
+ * @param {object|null} resolved The admissions-context response.
+ * @param {{languages?: Array<object>}} [profile] The API profile, for the native language and English test results.
+ * @returns {object|null} A checklist item, or null when no such recommendation applies or English is the applicant's native language.
+ */
+export function englishRecommendationItem(resolved, profile = {}) {
+  const status = englishStatus(profile);
+  if (status === "native") return null;
+  const ids = new Set(resolved?.fact_groups?.requirements || []);
+  const fact = (resolved?.facts || []).find(row => ids.has(row.id) && isReviewedPublished(row) && row.applicability?.status !== "mismatched"
+    && row.value?.presence === "strongly_recommended" && Array.isArray(row.value.minima_and_recommendations)
+    && (row.conditions || []).some(condition => NON_NATIVE_ENGLISH.test(condition?.when || "")));
+  if (!fact) return null;
+  const published = fact.value.minima_and_recommendations.map(row => ({ ...row, examId: RECOMMENDED_ENGLISH_EXAMS[row.exam]?.(row) || "" }))
+    .filter(row => row.examId && Number.isFinite(row.minimum));
+  const results = (profile?.languages || []).filter(row => row?.kind === "exam" && Number.isFinite(row.score));
+  // The applicant's own test leads; without one, IELTS stands for the list, which stays on the Admission tab below.
+  const own = published.find(row => results.some(result => result.exam === row.examId));
+  const shown = own || published.find(row => row.examId === "IELTS") || published[0];
+  if (!shown) return null;
+  const result = own ? results.find(row => row.exam === own.examId) : null;
+  const score = value => `${examName(shown.examId)} ${minimumNumber(shown.examId, value)}`;
+  const text = tFormat(`university.admissions.key_facts.recommended_english${Number.isFinite(shown.recommended) ? "_better" : ""}`, {
+    minimum: score(shown.minimum), better: Number.isFinite(shown.recommended) ? minimumNumber(shown.examId, shown.recommended) : "" });
+  const have = result ? tFormat("university.admissions.key_facts.minimum_have", { result: `${examName(result.exam)} ${minimumNumber(result.exam, result.score)}` }) : "";
+  return { kind: "language_recommendation", factId: fact.id, mark: "recommended", text, note: label(`recommended_english_condition${status === "not_native" ? "_not_native" : ""}`), ...(have ? { have } : {}),
+    ...(status === "unknown" ? { hint: { text: label("recommended_english_native_hint"), href: "/profile.html?language=en" } } : {}) };
+}
+
 // The path's published academic and language minimums as a short checklist, each with the applicant's own status:
 // met, below the minimum, or what to add. Shared by the Admission key facts and the Overview "What you'll need" card.
+// A language check that needs a result or section scores links to that test in the profile.
 export function minimumChecklist(resolved) {
   const checks = resolved?.assessment?.activeChoice?.details?.checks || [];
   return checks.filter(check => REQUIREMENT_KINDS[check.kind]).map(check => {
@@ -112,17 +166,25 @@ export function minimumChecklist(resolved) {
     const note = adds.length ? tFormat("university.admissions.key_facts.minimum_add", { items: adds.join(", ") })
       // A result the check could not count (NU accepts SAT for Foundation only from international applicants) is not a pass.
       : have ? tFormat(`university.admissions.key_facts.minimum_have${{ below: "_below", todo: "_unconfirmed" }[mark] || ""}`, { result: have }) : "";
-    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note };
+    const languageExam = check.kind === "language_requirement" && adds.length ? (check.missingInputs || []).find(input => input.exam)?.exam : "";
+    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(languageExam ? { href: profileLanguageExamHref(languageExam) } : {}) };
   }).filter(Boolean);
 }
 
-// The same marks as the Overview checklist: a check, a warning, or a dot for something still to add.
-const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
+// The same marks as the Overview checklist: a check, a warning, or a dot for something still to add; a recommendation
+// carries an information mark, never a pass or fail.
+const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle", recommended: "information-circle" };
+
+const profileLink = (href, text, className) => `<a class="${className}" href="${escapeHtmlAttr(href)}" data-route="profile">${escapeHtml(text)}</a>`;
 
 function renderMinimumChecklist(items) {
   if (!items.length) return "";
-  return `<ul class="admissions-key-facts__checklist">${items.map(item => `<li data-mark="${item.mark}"><span class="admissions-key-facts__mark" aria-hidden="true">${MARK_ICONS[item.mark] ? heroIcon(MARK_ICONS[item.mark], "ui-icon ui-icon--16") : ""}</span>
-    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${item.note ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.note)}</span>` : ""}</span></li>`).join("")}</ul>`;
+  // A note that asks for a missing result is itself the link to that test in the profile.
+  const note = item => !item.note ? "" : item.href ? profileLink(item.href, item.note, "admissions-key-facts__checklist-note")
+    : `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.note)}</span>`;
+  const hint = item => item.hint ? profileLink(item.hint.href, item.hint.text, "admissions-key-facts__checklist-note") : "";
+  return `<ul class="admissions-key-facts__checklist">${items.map(item => `<li data-mark="${item.mark}"${item.kind === "language_recommendation" ? " data-recommendation" : ""}><span class="admissions-key-facts__mark" aria-hidden="true">${MARK_ICONS[item.mark] ? heroIcon(MARK_ICONS[item.mark], "ui-icon ui-icon--16") : ""}</span>
+    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${note(item)}${item.have ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.have)}</span>` : ""}${hint(item)}</span></li>`).join("")}</ul>`;
 }
 
 // Keeps a test-specific date only when the applicant has not entered a different test of the same requirement.
@@ -307,25 +369,36 @@ function row(key, fact, action = "", shownTerms = null, extra = "") {
     <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${fact.before || ""}${notes}${links}${renderTermList(fact.terms || [], shownTerms)}${action}${extra}</dd></div>`;
 }
 
-// The page's single requirements-match summary: the key-fact result plus caveats that belong beside a number.
-// The detailed checks follow as one disclosure; they do not repeat the summary sentence.
-function requirementsRow(resolved, cycleAction, shownTerms) {
+// The page's single requirements-match summary: the key-fact result, the minimums checklist and caveats that belong
+// beside a number. How each check was made stays behind the tab's closed "Sources" disclosure (requirementsCheckDetails).
+function requirementsRow(resolved, cycleAction, shownTerms, profile) {
   const fact = requirementsFact(resolved);
   const assessment = resolved?.assessment || {};
   const checks = assessment.activeChoice?.details?.checks || [];
   const evaluated = checks.filter(check => check.measurable && ["met", "unmet"].includes(check.status));
   const available = Number.isFinite(assessment.chancePercent) && evaluated.length;
+  const recommendation = englishRecommendationItem(resolved, profile);
+  const checklist = [...minimumChecklist(resolved), ...(recommendation ? [recommendation] : [])];
+  // Without a measured share the checklist itself is the answer, so the row introduces it instead of describing the check.
+  const text = !available && checklist.length && assessment.reason === "unassessed_minimums" ? label("requirements_checklist_lead") : fact.text;
   const notes = [
     ...(available && evaluated.some(check => check.status === "unmet") ? [t("university.admissions.catalog.reason.requirements_not_met")] : []),
     ...(fact.notes || []),
     ...(available ? [t("university.admissions.catalog.assessment_limits")] : []),
   ];
-  const profileLink = assessment.reason === "missing_evidence"
+  const profileAction = assessment.reason === "missing_evidence"
     ? `<a class="admissions-key-facts__link" href="/profile.html" data-route="profile">${escapeHtml(t("university.admissions.catalog.assessment_profile"))}</a>` : "";
-  const detail = renderAssessmentChecks(resolved, { recordDomains: ASSESSMENT_RECORD_DOMAINS });
-  return row("requirements", { ...fact, notes, before: renderMinimumChecklist(minimumChecklist(resolved)) },
-    `${fact.cycleRequired ? cycleAction : ""}${profileLink}`, shownTerms, detail);
+  return row("requirements", { ...fact, text, notes, before: renderMinimumChecklist(checklist) },
+    `${fact.cycleRequired ? cycleAction : ""}${profileAction}`, shownTerms);
 }
+
+/**
+ * How each published condition was checked against the profile, as one closed disclosure for the Admission tab's
+ * "Sources" block; the key facts above already state the result.
+ * @param {object|null} resolved The admissions-context response.
+ * @returns {string} The disclosure as HTML, or "" without an assessment.
+ */
+export const requirementsCheckDetails = resolved => renderAssessmentChecks(resolved, { recordDomains: ASSESSMENT_RECORD_DOMAINS });
 
 // Where the application is made, as one link to the university's own application page.
 function applyRow(applicationUrl) {
@@ -359,7 +432,13 @@ export function renderTabAnswers(resolved, tab, { budgetUsd, profileExamIds = []
     <dl class="admissions-key-facts__list">${rows.join("")}</dl></section>`;
 }
 
-export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date(), applicationUrl = "" } = {}) {
+/**
+ * @param {object|null} resolved The admissions-context response; nothing is rendered without a selected route.
+ * @param {{budgetUsd?: number, profileExamIds?: string[], now?: Date, applicationUrl?: string,
+ *   profile?: {languages?: Array<object>}}} [options] `profile` is the API profile, read for the native language and English tests.
+ * @returns {string} The key-facts block as HTML, or "".
+ */
+export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date(), applicationUrl = "", profile = {} } = {}) {
   if (!resolved?.selected_route) return "";
   // The entry cycle belongs to this university's selection, so the action opens the entry-year field.
   const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="edit">${escapeHtml(label("set_cycle"))}</button>`;
@@ -370,7 +449,7 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
   return `<section class="admissions-key-facts" data-admissions-key-facts aria-labelledby="admissionsKeyFactsTitle">
     <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>
     <dl class="admissions-key-facts__list">
-      ${requirementsRow(resolved, cycleAction, shownTerms)}
+      ${requirementsRow(resolved, cycleAction, shownTerms, profile)}
       ${applyRow(applicationUrl)}
       ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}

@@ -35,9 +35,12 @@ async function openAdvanced(page) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements [data-requirements-match]");
+  return page.locator("#detailRequirements");
 }
 
 async function openTab(page, name) {
@@ -122,7 +125,7 @@ async function noFitPercentage(page) {
   await openAdmission(page);
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
-  await expect(assessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
   await expect(assessment).toContainText(/not.*probability|не вероятность (?:поступления|зачисления)/i);
 }
 
