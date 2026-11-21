@@ -2414,7 +2414,7 @@ university.admissions.catalog.source_note_simple: Official source text is shown 
 university.admissions.catalog.route_class.ucas_course_choice: UCAS course choice
 university.admissions.catalog.route_class.postgraduate_course_choice: Postgraduate course application
 university.admissions.catalog.source_scope_details: Source and conditions
-university.admissions.catalog.check_details: Optional profile check of published minimums
+university.admissions.catalog.check_details: Compare my results with the minimums
 university.admissions.catalog.publication: Publication status
 university.admissions.catalog.topic.eligibility: Eligibility
 university.admissions.catalog.topic.academic: Academic qualifications
@@ -2474,7 +2474,7 @@ university.admissions.catalog.reference_scope: Browsing
 university.admissions.catalog.route_not_selected: Choose a published application path
 university.admissions.catalog.browse_programs: Browse programs
 university.admissions.catalog.change_program: Change program
-university.admissions.catalog.reference_filters: Refine context (optional)
+university.admissions.catalog.reference_filters: Entry year and fee status
 university.admissions.catalog.selected_route: Selected path
 university.admissions.catalog.official_course_page: Official course page
 university.admissions.catalog.application_class.post_admission_major: University admission comes first; the major is selected after enrollment.
@@ -2486,7 +2486,6 @@ university.admissions.catalog.application_class.external_and_coterm: Separate ex
 university.admissions.catalog.application_class.department_or_program: Department or program application path.
 university.admissions.catalog.published_qualification_table: Published English qualification tables
 university.admissions.catalog.qualification_count: {count} qualifications
-university.admissions.catalog.record_count: {count} records
 university.admissions.catalog.full_source_text: Full published wording
 university.admissions.catalog.full_source_record: Full source record
 university.admissions.catalog.source_text_note: Official wording stays in its original language. Each record has its own scope, period and conditions; expand it for details and the official source.
@@ -2496,7 +2495,7 @@ university.admissions.catalog.matched: Matches selected context
 university.admissions.catalog.unknown: Unknown
 university.admissions.catalog.published: Published
 university.admissions.catalog.partly_published: Partly published
-university.admissions.catalog.limited_publication: Published with a limited or unresolved scope
+university.admissions.catalog.limited_publication: Check the conditions on the university site
 university.admissions.catalog.conflicting: Conflicting official sources
 university.admissions.catalog.review: Evidence review
 university.admissions.catalog.review.verified: Verified
@@ -2523,7 +2522,7 @@ university.admissions.catalog.exceptions: Exceptions
 university.admissions.catalog.source: Official source
 university.admissions.catalog.no_facts: No source records are catalogued for this selection in this section. Check the official program and application pages.
 university.admissions.catalog.no_context: Select a study option and its application route to view scoped source records.
-university.admissions.catalog.unknowns: Unresolved source information
+university.admissions.catalog.unknowns: Not yet published by the university
 university.admissions.catalog.next_step: Official next step
 university.admissions.catalog.history: Historical records
 university.admissions.catalog.history_note: These records are retained as historical context and are not current requirements or prices for the selected cycle.
@@ -2692,7 +2691,7 @@ university.admissions.reading.degree.MEng: Master of Engineering
 university.admissions.reading.degree.MEng_ucas_note: This is an undergraduate entry route that leads to the Master of Engineering award.
 university.admissions.reading.potential_aid: Potential funding is not awarded aid. Eligibility, documents and deadlines are separate; no award is subtracted from published costs.
 university.admissions.reading.no_budget: No comparable budget is confirmed for this selection. Published amounts below keep their own period, currency and conditions.
-university.admissions.reading.full_records: Full source records and conditions
+university.admissions.reading.full_records: Details and sources
 university.admissions.reading.general_references: Additional reference information
 university.admissions.reading.general_reference_note: These records cover broader or special situations. Their applicability to this selection is unresolved; check each record's scope before treating it as a requirement.
 university.admissions.reading.update_selection: Update selection
@@ -2948,8 +2947,8 @@ university.admissions.reading.month_standalone.10: October
 university.admissions.reading.month_standalone.11: November
 university.admissions.reading.month_standalone.12: December
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · departmental application
-university.admissions.entry.institution_wide: Undergraduate admission is to the university as a whole. Read the published first-year or transfer path without choosing a major; Programs remains available to explore study interests.
-university.admissions.entry.route_situations: Choose the published path for your situation, or leave it unresolved. Shared university policies appear within the selected path, rather than as another application.
+university.admissions.entry.institution_wide: One shared undergraduate application, with the same requirements for every program. Choose your situation; you can explore majors in Programs.
+university.admissions.entry.route_situations: Choose the path that matches your situation.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: External applicants apply to the CS MS program. Shared graduate and department policies are included with this application.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: For current Stanford undergraduates seeking the CS coterminal MS; department eligibility and term deadlines apply.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: For current Stanford students applying for an additional or different CS degree through regular admission. This differs from coterm and the same-program PhD intermediate MS petition.
@@ -3268,7 +3267,7 @@ university.deadlines.test_for_funding: Last {exam} test date for funding conside
 university.deadlines.kind.test_submission: Test-result submission deadline
 university.deadlines.dated_reference: Past-cycle reference
 universities.cost.study_years: Years of study: {years}
-university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Regular Foundation/Undergraduate admission
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Regular admission: first year or Foundation
 university.admissions.catalog.route_name.nu-a-route-financial-support: Post-offer financial-support consideration
 university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Undergraduate mid-year fee-paying intake
 university.admissions.catalog.route_name.nu-a-route-transfer: Undergraduate transfer admission
@@ -3315,7 +3314,7 @@ university.admissions.catalog.route_name.nu-c-residency-route: Shared residency 
 university.admissions.catalog.route_name.nu-residency-unconditional: Residency: unconditional admission
 university.admissions.catalog.route_name.nu-residency-conditional-umc: Residency: UMC-recommended conditional admission
 university.admissions.reading.formats_vary: Varies by program — view published formats
-university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Start here to read entry requirements and apply. English requirements and an accepted academic qualification are separate. Financial-support selection follows an offer and has its own conditions.
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: For school and college leavers applying to the first year. Shows the IELTS or TOEFL minimum and the accepted academic results (SAT, ACT, GPA, UNT, IB or A-level). Funding is a separate application after an offer.
 university.admissions.entry.route_help.nu-a-route-financial-support: For applicants with an admission offer: read grant categories, additional tests and funding dates. Meeting a minimum does not confirm an award.
 university.admissions.entry.route_help.nu-a-route-transfer: For students moving from another university. Previous study, credit recognition and any English-test waiver require individual review.
 university.admissions.entry.route_help.nu-a-route-nufyp-progression: For current NUFYP students progressing to an undergraduate program. Foundation completion does not automatically guarantee a place; progression conditions apply.
@@ -3351,6 +3350,7 @@ university.admissions.key_facts.budget_tuition_within: Tuition fits your budget 
 university.admissions.key_facts.budget_partial: Part of the range is above your budget of {budget}
 university.admissions.key_facts.budget_missing: Add a yearly budget to your profile to compare
 university.admissions.key_facts.open_finance: Costs and funding
+university.admissions.key_facts.open_funding_route: Grant conditions
 university.admissions.key_facts.funding: Funding
 university.admissions.key_facts.funding_route: Applied for separately: {route}
 university.admissions.key_facts.funding_records: Funding records for this path: {count}. An award is not guaranteed
@@ -3389,6 +3389,8 @@ university.admissions.entry.route_help.mit-transfer: Apply to MIT as a transfer 
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-first-year: Apply to Stanford as a first-year undergraduate applicant.
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-transfer: Apply to Stanford as an undergraduate transfer applicant.
 university.admissions.entry.route_help_generic: Open this route to review the published conditions and how to apply.
+university.admissions.entry.preparation_help: A preparatory year before the bachelor's degree, with its own minimums. Read it if your results do not yet meet the first-year minimums.
+university.admissions.entry.route_help.nu-a-route-midyear-2026-27: A fee-paying intake that starts in the middle of the academic year. Check whether it is open for your year.
 university.admissions.entry.how_to_apply: How to apply
 university.admissions.catalog.assessment_count: {met} of {total} evaluated numeric minimum checks met
 university.admissions.catalog.assessment_limits: Other admission requirements and eligibility are not assessed here. This score is not an admission probability or a funding prediction.

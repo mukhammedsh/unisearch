@@ -2414,7 +2414,7 @@ university.admissions.catalog.source_note_simple: Ресми дереккөз м
 university.admissions.catalog.route_class.ucas_course_choice: UCAS арқылы курс таңдау
 university.admissions.catalog.route_class.postgraduate_course_choice: Жоғары оқу орнынан кейінгі бағдарламаға өтініш
 university.admissions.catalog.source_scope_details: Дереккөз және шарттар
-university.admissions.catalog.check_details: Жарияланған минимумдарды профильмен салыстыру (міндетті емес)
+university.admissions.catalog.check_details: Нәтижелерімді минимумдармен салыстыру
 university.admissions.catalog.publication: Жариялану күйі
 university.admissions.catalog.topic.eligibility: Талаптарға сәйкестік
 university.admissions.catalog.topic.academic: Академиялық біліктілік
@@ -2474,7 +2474,7 @@ university.admissions.catalog.reference_scope: Сіз қарап отырсыз
 university.admissions.catalog.route_not_selected: Қалай түсетініңізді таңдаңыз
 university.admissions.catalog.browse_programs: Бағдарламаларды шолу
 university.admissions.catalog.change_program: Бағдарламаны өзгерту
-university.admissions.catalog.reference_filters: Контексті нақтылау (міндетті емес)
+university.admissions.catalog.reference_filters: Түсу жылы және ақы төлеу мәртебесі
 university.admissions.catalog.selected_route: Таңдалған жол
 university.admissions.catalog.official_course_page: Курстың ресми беті
 university.admissions.catalog.application_class.post_admission_major: Алдымен университетке қабылданады; негізгі бағыт оқуға түскеннен кейін таңдалады.
@@ -2486,7 +2486,6 @@ university.admissions.catalog.application_class.external_and_coterm: Сыртт�
 university.admissions.catalog.application_class.department_or_program: Факультет немесе бағдарлама арқылы өтініш беру жолы.
 university.admissions.catalog.published_qualification_table: Жарияланған тілдік біліктілік кестелері
 university.admissions.catalog.qualification_count: Біліктілік саны: {count}
-university.admissions.catalog.record_count: Жазба саны: {count}
 university.admissions.catalog.full_source_text: Дереккөздің толық мәтіні
 university.admissions.catalog.full_source_record: Дереккөздің толық жазбасы
 university.admissions.catalog.source_text_note: Ресми мәтін дереккөздің түпнұсқа тілінде сақталады. Әр жазбаның қолданылу аясы, кезеңі және шарттары бөлек; толық ақпарат пен дереккөзді көру үшін ашыңыз.
@@ -2496,7 +2495,7 @@ university.admissions.catalog.matched: Таңдалған контекстке �
 university.admissions.catalog.unknown: Белгісіз
 university.admissions.catalog.published: Жарияланған
 university.admissions.catalog.partly_published: Ішінара жарияланған
-university.admissions.catalog.limited_publication: Шектеулі не толық анықталмаған аясымен жарияланған
+university.admissions.catalog.limited_publication: Шарттарын университет сайтынан нақтылаңыз
 university.admissions.catalog.conflicting: Ресми дереккөздерде қайшылық бар
 university.admissions.catalog.review: Дереккөзді тексеру
 university.admissions.catalog.review.verified: Расталған
@@ -2523,7 +2522,7 @@ university.admissions.catalog.exceptions: Ерекшеліктер
 university.admissions.catalog.source: Ресми дереккөз
 university.admissions.catalog.no_facts: Бұл бөлімде осы таңдауға арналған дереккөз жазбалары каталогқа енгізілмеген. Ресми бағдарлама және өтініш беру беттерін тексеріңіз.
 university.admissions.catalog.no_context: Қолданылу аясы белгіленген дереккөз жазбаларын көру үшін оқу нұсқасы мен оған қатысты өтініш беру бағытын таңдаңыз.
-university.admissions.catalog.unknowns: Нақтылауды қажет ететін дереккөз ақпараты
+university.admissions.catalog.unknowns: Университет әлі жарияламаған
 university.admissions.catalog.next_step: Ресми келесі қадам
 university.admissions.catalog.history: Тарихи жазбалар
 university.admissions.catalog.history_note: Бұл жазбалар тарихи контекст ретінде сақталған; таңдалған циклдің қолданыстағы талаптары немесе оқу ақысы болып саналмайды.
@@ -2692,7 +2691,7 @@ university.admissions.reading.degree.MEng: Инженерия магистрі
 university.admissions.reading.degree.MEng_ucas_note: Бұл Master of Engineering дәрежесіне апаратын біріктірілген бакалавриат бағдарламасы.
 university.admissions.reading.potential_aid: Ықтимал қаржыландыру тағайындалған көмек емес. Оның шарттары, құжаттары мен мерзімдері бөлек тексеріледі; ол құннан шегерілмейді.
 university.admissions.reading.no_budget: Бұл таңдау үшін салыстырмалы бюджет расталмаған. Төмендегі әр сома өз кезеңін, валютасы мен шарттарын сақтайды.
-university.admissions.reading.full_records: Дереккөздің толық жазбалары мен шарттары
+university.admissions.reading.full_records: Толығырақ және дереккөздер
 university.admissions.reading.general_references: Қосымша анықтамалық мәліметтер
 university.admissions.reading.general_reference_note: Бұл жазбалар жалпы немесе ерекше жағдайларға арналған. Олардың осы таңдауға қолданылуы анықталмаған; талап деп қабылдамас бұрын әр жазбаның аясын тексеріңіз.
 university.admissions.reading.update_selection: Таңдауды жаңарту
@@ -2948,8 +2947,8 @@ university.admissions.reading.month_standalone.10: қазан
 university.admissions.reading.month_standalone.11: қараша
 university.admissions.reading.month_standalone.12: желтоқсан
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · кафедраға өтініш
-university.admissions.entry.institution_wide: Бакалавриатқа қабылдау университетке тұтастай жүргізіледі. Болашақ мамандықты таңдамай, бірінші курсқа немесе ауысу арқылы түсу жолын оқыңыз; оқу бағыттарын «Бағдарламалар» бөлімінен қарауға болады.
-university.admissions.entry.route_situations: Жағдайыңызға сай жарияланған жолды таңдаңыз немесе таңдауды ашық қалдырыңыз. Университеттің ортақ ережелері бөлек өтініш ретінде емес, таңдалған жолдың ішінде көрсетіледі.
+university.admissions.entry.institution_wide: Бакалавриатқа бір ортақ өтініш беріледі, талаптар барлық бағдарламаға бірдей. Өз жағдайыңызды таңдаңыз; бағыттарды «Бағдарламалар» бөлімінен қарауға болады.
+university.admissions.entry.route_situations: Өз жағдайыңызға сай түсу жолын таңдаңыз.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Сыртқы талапкерлер CS MS бағдарламасына өтініш береді. Graduate қабылдаудың және кафедраның ортақ ережелері осы жолға енгізілген.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: CS coterminal MS бағдарламасына түсетін қазіргі Stanford бакалаврларына арналған; кафедра талаптары мен оқу кезеңдерінің мерзімдері қолданылады.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: Қалыпты қабылдау арқылы қосымша немесе басқа CS дәрежесіне өтініш беретін қазіргі Stanford студенттеріне арналған. Coterm және CS PhD ішіндегі аралық MS сұрауынан бөлек.
@@ -3268,7 +3267,7 @@ university.deadlines.test_for_funding: Қаржыландыруға ірікте
 university.deadlines.kind.test_submission: Тест нәтижесін ұсыну мерзімі
 university.deadlines.dated_reference: Өткен циклдің бағдары
 universities.cost.study_years: Оқу жылдары: {years}
-university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Дайындық бағдарламасына немесе бакалавриатқа жалпы қабылдау
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Жалпы қабылдау: бірінші курс немесе Foundation
 university.admissions.catalog.route_name.nu-a-route-financial-support: Қабылдау ұсынысынан кейін қаржыландыруға іріктеу
 university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Оқу жылының ортасындағы ақылы бакалавриат қабылдауы
 university.admissions.catalog.route_name.nu-a-route-transfer: Басқа жоғары оқу орнынан бакалавриатқа ауысу
@@ -3315,7 +3314,7 @@ university.admissions.catalog.route_name.nu-c-residency-route: Резидент�
 university.admissions.catalog.route_name.nu-residency-unconditional: Резидентура: шартсыз қабылдау
 university.admissions.catalog.route_name.nu-residency-conditional-umc: Резидентура: UMC ұсынымымен шартты қабылдау
 university.admissions.reading.formats_vary: Бағдарламаға байланысты — оқу форматтарын көру
-university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Осы жерден бастаңыз: түсу талаптары мен өтініш беру. Ағылшын тілі мен академиялық біліктілік талаптары бөлек тексеріледі. Қаржыландыруға іріктеу оқуға қабылдау ұсынысынан кейін өтеді және оның өз шарттары бар.
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Бірінші курсқа түсетін мектеп пен колледж түлектеріне. Мұнда IELTS не TOEFL минимумы және қабылданатын академиялық нәтижелер (SAT, ACT, GPA, ҰБТ, IB немесе A-level) көрсетілген. Грант — қабылдау ұсынысынан кейінгі жеке өтініш.
 university.admissions.entry.route_help.nu-a-route-financial-support: Оқуға қабылдау ұсынысын алғандарға: грант санаттары, қосымша емтихандар және қаржыландыру мерзімдері. Ең төменгі талапты орындау грант берілетінін растамайды.
 university.admissions.entry.route_help.nu-a-route-transfer: Басқа университеттен ауысатын студенттерге. Бұрынғы оқу, кредиттерді тану және тіл емтиханынан босату жеке қарауды талап етеді.
 university.admissions.entry.route_help.nu-a-route-nufyp-progression: Бакалавриатқа өтетін қазіргі NUFYP студенттеріне. Foundation бағдарламасын аяқтау орынға автоматты түрде кепілдік бермейді: өту шарттары қолданылады.
@@ -3351,6 +3350,7 @@ university.admissions.key_facts.budget_tuition_within: Оқу ақысы {budget
 university.admissions.key_facts.budget_partial: Ауқымның бір бөлігі {budget} бюджетіңізден жоғары
 university.admissions.key_facts.budget_missing: Салыстыру үшін профильде жылдық бюджетті көрсетіңіз
 university.admissions.key_facts.open_finance: Құны мен қаржыландыру
+university.admissions.key_facts.open_funding_route: Грант шарттары
 university.admissions.key_facts.funding: Қаржыландыру
 university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
 university.admissions.key_facts.funding_records: Бұл жол бойынша қаржыландыру жазбалары: {count}. Грант кепілдендірілмейді
@@ -3389,6 +3389,8 @@ university.admissions.entry.route_help.mit-transfer: MIT-ке басқа жоғ�
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-first-year: Stanford-қа бакалавриаттың бірінші курсына түсетін талапкер ретінде өтініш беріңіз.
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-transfer: Stanford-қа басқа жоғары оқу орнынан ауысатын бакалавриат талапкері ретінде өтініш беріңіз.
 university.admissions.entry.route_help_generic: Жарияланған шарттар мен өтініш беру тәсілін қарау үшін осы түсу жолын ашыңыз.
+university.admissions.entry.preparation_help: Бакалавриат алдындағы өз минимумдары бар дайындық жылы. Нәтижелеріңіз әзірге бірінші курс минимумдарына жетпесе, осыны қараңыз.
+university.admissions.entry.route_help.nu-a-route-midyear-2026-27: Оқуы оқу жылының ортасында басталатын ақылы қабылдау. Өзіңізге қажет жылы ашық екенін тексеріңіз.
 university.admissions.entry.how_to_apply: Қалай өтініш беруге болады
 university.admissions.catalog.assessment_count: Бағаланған {total} сандық минимумның {met} орындалды
 university.admissions.catalog.assessment_limits: Мұнда өзге қабылдау шарттары мен өтініш беруге құқық бағаланбайды. Көрсеткіш оқуға қабылдану ықтималдығын немесе қаржыландыруды болжамдамайды.

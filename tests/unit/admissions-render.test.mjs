@@ -745,7 +745,7 @@ test("simple unknown information is closed by default while retaining every next
   resolved.unknowns = [{ reason: "Award applicability has not been established.", official_next_step: "Ask the official funding office.", scope: { option_ids: ["example-option"], levels: ["undergraduate"], cycle: "Fall 2027", additional_dimensions: { employer: "Employer sponsorship remains unverified." } }, source_ids: ["official"] }];
   resolved.sources = [{ id: "official", title: "Official funding scope", url: "https://example.edu/funding" }];
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
-  assert.match(html, /<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">Unresolved source information \(1\)/);
+  assert.match(html, /<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">Not yet published by the university \(1\)/);
   for (const text of ["Award applicability has not been established", "Ask the official funding office", "Computing", "Fall 2027", "Employer sponsorship remains unverified", "https://example.edu/funding"]) assert.ok(html.includes(text), text);
   assert.doesNotMatch(renderAdmissionsContext(resolved), /admissions-catalog__unknowns/);
 });
@@ -766,7 +766,7 @@ test("status badges read the closed vocabulary rather than research label spelli
   resolved.facts = [fact("Cycle label awaits confirmation.", { publication_status: "published_but_source_year_unspecified", review_status: "needs_cycle_label_confirmation",
     normalized_status: { publication: "published_with_limits", review: "needs_resolution" } })];
   const html = renderAdmissionsFacts(resolved, ["costs"]);
-  assert.match(html, /Published with a limited or unresolved scope/);
+  assert.match(html, /Check the conditions on the university site/);
   assert.match(html, /Evidence review: Source review needs resolution/);
   resolved.facts = [fact("A label that looks published.", { publication_status: "published_everywhere", review_status: "verified_everything",
     normalized_status: { publication: "historical", review: "superseded" } })];

@@ -284,7 +284,8 @@ test("reviewed MIT program levels use Russian labels while source names remain d
 test("MIT program requires an explicit admission route and keeps funding separate", async ({ page }) => {
   await openCatalog(page);
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("Choose a published path to open its requirements and process. No profile is needed.");
+  // Without a program the shared application explains itself once, above its paths.
+  await expect(page.locator("#admissionsContext")).toContainText("One shared undergraduate application, with the same requirements for every program.");
   await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeVisible();
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
@@ -612,7 +613,9 @@ test("nazarbayev university keeps regular admission separate from financial supp
 
   const supportResponse = page.waitForResponse(response => response.url().endsWith("/admissions-context")
     && response.request().method() === "POST" && response.request().postDataJSON().context.application_route_id === supportRoute);
-  await applyContext(page, supportRoute, "2027/28");
+  // The funding application is opened from the key facts; it is not offered among the ways to apply.
+  await expect(page.locator(`#admissionsRoute option[value='${supportRoute}']`)).toHaveCount(0);
+  await page.locator(`[data-key-facts-route='${supportRoute}']`).click();
   const support = await (await supportResponse).json();
   expect(support.selected_option.id).toBe(regular.selected_option.id);
   expect(support.selected_route.id).toBe(supportRoute);

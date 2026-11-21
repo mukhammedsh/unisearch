@@ -1,7 +1,7 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, admissionContextIsSaved, programProfileSuggestions, programRestriction } from "../../frontend/javascript/pages/university/admissions-controller.js";
+import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, admissionContextIsSaved, programProfileSuggestions, programRestriction, singlePublishedCycle } from "../../frontend/javascript/pages/university/admissions-controller.js";
 
 test("browsing is saved only when every application context field matches", () => {
   const saved = { studyOptionId: "course", applicationRouteId: "route", studyLevel: "undergraduate", applicantRoute: "first_year", intendedEntryCycle: "2027", feeStatusContext: "unknown" };
@@ -131,4 +131,13 @@ test("only deliberately saved or URL-selected scope filters the public reference
   assert.equal(saved.study_level, "Master");
   url.searchParams.set("admission_cycle", "Fall 2028 entry");
   assert.equal(readAdmissionContext(url, saved, uid).intended_entry_cycle, "Fall 2028 entry");
+});
+
+test("a path's single requirement cycle is used for the minimums check; fee years and several intakes are not", () => {
+  const fact = (id, cycle) => ({ id, scope: { cycle } });
+  const resolved = (facts, requirements) => ({ facts, fact_groups: { requirements } });
+  assert.equal(singlePublishedCycle(resolved([fact("english", "Fall 2027"), fact("academic", "2027/28"), fact("fees", "2026/27")], ["english", "academic"])), "");
+  assert.equal(singlePublishedCycle(resolved([fact("english", "Fall 2027"), fact("academic", "Fall 2027"), fact("fees", "2026/27"), fact("policy", "current yearless policy")], ["english", "academic", "policy"])), "Fall 2027");
+  assert.equal(singlePublishedCycle(resolved([fact("english", "Fall 2027"), fact("spring", "Spring 2028")], ["english", "spring"])), "");
+  assert.equal(singlePublishedCycle(resolved([fact("english", null)], ["english"])), "");
 });

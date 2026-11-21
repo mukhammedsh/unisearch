@@ -2412,7 +2412,7 @@ university.admissions.catalog.source_note_simple: Текст официальн�
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
 university.admissions.catalog.source_scope_details: Источник и условия
-university.admissions.catalog.check_details: Необязательная сверка профиля с опубликованными минимумами
+university.admissions.catalog.check_details: Сравнить мои результаты с минимумами
 university.admissions.catalog.publication: Статус публикации
 university.admissions.catalog.topic.eligibility: Условия для заявителей
 university.admissions.catalog.topic.academic: Академические квалификации
@@ -2472,7 +2472,7 @@ university.admissions.catalog.reference_scope: Вы смотрите
 university.admissions.catalog.route_not_selected: Выберите, как поступать
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
-university.admissions.catalog.reference_filters: Уточнить контекст (необязательно)
+university.admissions.catalog.reference_filters: Год поступления и статус оплаты
 university.admissions.catalog.selected_route: Выбранный путь
 university.admissions.catalog.official_course_page: Официальная страница курса
 university.admissions.catalog.application_class.post_admission_major: Сначала поступают в университет; основное направление выбирают после зачисления.
@@ -2484,7 +2484,6 @@ university.admissions.catalog.application_class.external_and_coterm: Внешн�
 university.admissions.catalog.application_class.department_or_program: Путь подачи через факультет или программу.
 university.admissions.catalog.published_qualification_table: Опубликованные таблицы языковых квалификаций
 university.admissions.catalog.qualification_count: Квалификаций: {count}
-university.admissions.catalog.record_count: Записей: {count}
 university.admissions.catalog.full_source_text: Полный текст источника
 university.admissions.catalog.full_source_record: Полная запись источника
 university.admissions.catalog.source_text_note: Официальные формулировки сохранены на языке источника. У каждой записи свои область применения, период и условия; разверните её, чтобы увидеть подробности и источник.
@@ -2494,7 +2493,7 @@ university.admissions.catalog.matched: Соответствует выбранн
 university.admissions.catalog.unknown: Неизвестно
 university.admissions.catalog.published: Опубликовано
 university.admissions.catalog.partly_published: Опубликовано частично
-university.admissions.catalog.limited_publication: Опубликовано с ограниченной или неуточнённой областью применения
+university.admissions.catalog.limited_publication: Условия уточняйте на сайте вуза
 university.admissions.catalog.conflicting: Официальные источники противоречат друг другу
 university.admissions.catalog.review: Проверка сведений
 university.admissions.catalog.review.verified: Проверено
@@ -2521,7 +2520,7 @@ university.admissions.catalog.exceptions: Исключения
 university.admissions.catalog.source: Официальный источник
 university.admissions.catalog.no_facts: В этом разделе нет сведений источников для выбранного контекста. Проверьте официальные страницы программы и поступления.
 university.admissions.catalog.no_context: Выберите программу и связанный с ней маршрут поступления, чтобы увидеть сведения с подходящей областью применения.
-university.admissions.catalog.unknowns: Неуточнённые сведения источников
+university.admissions.catalog.unknowns: Вуз пока не опубликовал
 university.admissions.catalog.next_step: Следующий шаг по официальным сведениям
 university.admissions.catalog.history: Исторические сведения
 university.admissions.catalog.history_note: Эти сведения сохранены как исторический контекст и не являются актуальными требованиями или ценами для выбранного набора.
@@ -2690,7 +2689,7 @@ university.admissions.reading.degree.MEng: Магистр инженерии
 university.admissions.reading.degree.MEng_ucas_note: Это интегрированная программа бакалавриата, ведущая к степени Master of Engineering.
 university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
 university.admissions.reading.no_budget: Сопоставимый бюджет для этого выбора не подтверждён. Ниже каждая сумма сохраняет свой период, валюту и условия.
-university.admissions.reading.full_records: Полные записи источников и условия
+university.admissions.reading.full_records: Подробности и источники
 university.admissions.reading.general_references: Дополнительные справочные сведения
 university.admissions.reading.general_reference_note: Эти записи относятся к общим или особым ситуациям. Их применимость к вашему выбору не установлена; проверьте область действия, прежде чем считать запись требованием.
 university.admissions.reading.update_selection: Обновить выбор
@@ -2946,8 +2945,8 @@ university.admissions.reading.month_standalone.10: октябрь
 university.admissions.reading.month_standalone.11: ноябрь
 university.admissions.reading.month_standalone.12: декабрь
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
-university.admissions.entry.institution_wide: На бакалавриат поступают в университет в целом. Читайте правила первого курса или перевода без выбора будущей специальности; изучить направления можно в разделе «Программы».
-university.admissions.entry.route_situations: Выберите опубликованный путь для своей ситуации или оставьте выбор открытым. Общие правила университета показаны внутри пути, а не как отдельная заявка.
+university.admissions.entry.institution_wide: На бакалавриат подают одну общую заявку, требования одинаковы для всех программ. Выберите свой случай; направления можно посмотреть в разделе «Программы».
+university.admissions.entry.route_situations: Выберите свой случай поступления.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Внешние абитуриенты подают заявку на CS MS. Общие правила graduate-поступления и кафедры включены в этот путь.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: Для нынешних бакалавров Stanford, поступающих на coterminal CS MS; действуют требования кафедры и сроки по учебным периодам.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: Для нынешних студентов Stanford, поступающих на дополнительную или другую степень CS через обычный приём. Отличается от coterm и запроса промежуточной MS внутри CS PhD.
@@ -3266,7 +3265,7 @@ university.deadlines.test_for_funding: Последняя дата сдачи {e
 university.deadlines.kind.test_submission: Срок предоставления результата теста
 university.deadlines.dated_reference: Ориентир прошлого цикла
 universities.cost.study_years: Годы обучения: {years}
-university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Обычное поступление на подготовительную программу или бакалавриат
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Обычный приём: первый курс или Foundation
 university.admissions.catalog.route_name.nu-a-route-financial-support: Отбор на финансирование после предложения о зачислении
 university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Платный набор на бакалавриат в середине учебного года
 university.admissions.catalog.route_name.nu-a-route-transfer: Перевод на бакалавриат из другого вуза
@@ -3313,7 +3312,7 @@ university.admissions.catalog.route_name.nu-c-residency-route: Общая зая
 university.admissions.catalog.route_name.nu-residency-unconditional: Резидентура: безусловное зачисление
 university.admissions.catalog.route_name.nu-residency-conditional-umc: Резидентура: условное зачисление по рекомендации UMC
 university.admissions.reading.formats_vary: Зависит от программы — посмотреть форматы
-university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Начните здесь: требования и подача заявления. Требования к английскому и допустимая академическая квалификация проверяются отдельно. Отбор на финансирование проходит после предложения места и имеет свои условия.
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Для выпускников школ и колледжей, поступающих на первый курс. Здесь минимум по IELTS или TOEFL и принимаемые академические результаты (SAT, ACT, GPA, ЕНТ, IB или A-level). Грант — отдельная заявка после предложения о зачислении.
 university.admissions.entry.route_help.nu-a-route-financial-support: Для получивших предложение о зачислении: категории грантов, дополнительные экзамены и сроки финансирования. Выполнение минимума не подтверждает получение гранта.
 university.admissions.entry.route_help.nu-a-route-transfer: Для перевода из другого университета. Предыдущее обучение, зачёт кредитов и возможное освобождение от языкового экзамена требуют индивидуальной проверки.
 university.admissions.entry.route_help.nu-a-route-nufyp-progression: Для действующих студентов NUFYP, переходящих на бакалавриат. Завершение Foundation само по себе не гарантирует место: действуют условия перехода.
@@ -3349,6 +3348,7 @@ university.admissions.key_facts.budget_tuition_within: Обучение укла
 university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
 university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
 university.admissions.key_facts.open_finance: Стоимость и финансирование
+university.admissions.key_facts.open_funding_route: Условия гранта
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
 university.admissions.key_facts.funding_records: Записей о финансировании для этого пути: {count}. Грант не гарантирован
@@ -3387,6 +3387,8 @@ university.admissions.entry.route_help.mit-transfer: Подайте заявле
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-first-year: Подайте заявление в Stanford как абитуриент первого курса бакалавриата.
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-transfer: Подайте заявление в Stanford как абитуриент бакалавриата, переводящийся из другого вуза.
 university.admissions.entry.route_help_generic: Откройте этот путь, чтобы изучить опубликованные условия и способ подачи заявления.
+university.admissions.entry.preparation_help: Подготовительный год перед бакалавриатом со своими минимумами. Посмотрите его, если ваши результаты пока не дотягивают до минимумов первого курса.
+university.admissions.entry.route_help.nu-a-route-midyear-2026-27: Платный набор с началом учёбы в середине учебного года. Проверьте, открыт ли он в нужном вам году.
 university.admissions.entry.how_to_apply: Как поступить
 university.admissions.catalog.assessment_count: Среди оценённых числовых минимумов выполнено: {met} из {total}
 university.admissions.catalog.assessment_limits: Здесь не оцениваются остальные условия поступления и право на подачу. Это не вероятность зачисления и не прогноз финансирования.

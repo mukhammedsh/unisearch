@@ -624,7 +624,7 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
         const lines = group.map(row => sources(row, resolved));
         const shared = lines[0] && lines.every(line => line === lines[0]);
         return `<details class="admissions-catalog__fact admissions-catalog__fact-group" data-admissions-group="${escapeHtmlAttr(domain)}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
-          <summary class="admissions-catalog__heading"><span>${escapeHtml(item)}</span><span class="admissions-catalog__status">${escapeHtml(label("record_count").replace("{count}", String(group.length)))}</span>${renderStatusBadges(warnings)}</summary>
+          <summary class="admissions-catalog__heading"><span>${escapeHtml(item)}</span>${renderStatusBadges(warnings)}</summary>
           <div class="admissions-catalog__body"><div class="admissions-catalog__group-list">${group.map(row => renderGroupedFact(row, resolved, domain, { withSources: !shared })).join("")}</div>${shared ? sourcesBlock(lines[0]) : ""}</div>
         </details>`;
       }).join("");

@@ -15,8 +15,18 @@ Minor release: map markers now say which university they mark, and search matche
 - Search matches the official name, abbreviations and alternative names in all three languages whatever the interface language is, so an abbreviation, an alternate full name or a renamed university is found from any language. The official name must equal the stored full name that cards display; a university missing from the file keeps its stored name.
 - List abbreviations separately in the card payload (`abbreviations`), so the search box shows the abbreviation badge only for real abbreviations rather than for other names.
 - Show the university campus photo as a backdrop in the map-mode result cards, fading smoothly into the card surface the same way as in university comparison.
+- Open Nazarbayev University's Admission tab on its real ways in: regular first-year admission, the Foundation Year, transfer and the mid-year intake, readable without choosing a program first, the same way as MIT and Stanford. NU publishes one set of undergraduate minimums for all bachelor programs; Nursing and the joint BBA keep their own paths.
+- Offer a university's preparatory year (NU Foundation) beside its shared undergraduate paths, with its own requirements and price.
+- Stop listing a post-offer funding application among the ways to apply; the key facts name it as the next step and open its grant conditions with one button.
+- Read a path for its only published entry cycle, so the minimums check runs without first asking for a year; the cycle shows in the selection summary, can be changed, and is not carried over to another path.
+- List a program's own paths before the university's other shared paths, and lead the shared list with the main application.
+- Use plain wording in admission details: no record-count badges, "Details and sources", "Not yet published by the university", "Check the conditions on the university site", and the optional fields named "Entry year and fee status".
+
+### Fixed
+- Stop showing first-pass master's and doctoral research notes (such as a master's IELTS rule) as history on NU undergraduate paths.
 
 ### Tests
+- Check that NU's shared undergraduate paths read without a program and without graduate history, that the Foundation Year is offered beside them, and that a single requirement cycle is used only for its own path.
 - Check that every catalog university has all three languages, that no name belongs to two universities, that map labels are listed abbreviations or alternatives, and that search ranks each university first for its map labels and finds it by alternate full names.
 
 ## 10.6.7 (2026-11-21) - Cite reviewed study formats

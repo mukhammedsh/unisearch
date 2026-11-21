@@ -279,7 +279,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext")).toContainText("Choose the published path for your situation");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose the path that matches your situation");
   await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
   await expect(page.locator('#tab-admission [data-admissions-fact]')).toHaveCount(0);
 

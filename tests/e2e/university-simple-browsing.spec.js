@@ -748,7 +748,7 @@ test("Kazakh browsing keeps all three reviewed catalogs usable and searches a tr
     await expect(page.locator("#admissionsContext h2")).toHaveText("Қалай өтініш беруге болады");
     await chooseRoute(page, item);
     await openAdmissionSelectionEditor(page);
-    await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Контексті нақтылау (міндетті емес)");
+    await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Түсу жылы және ақы төлеу мәртебесі");
     await expect(page.locator("#admissionsContextApply")).toHaveText("Сүзгілерді қолдану");
     await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open", "");
   }

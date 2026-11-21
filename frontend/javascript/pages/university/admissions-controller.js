@@ -71,6 +71,15 @@ export function isRecognizedAdmissionCycle(value) {
   return /^(?:20\d{2}(?:[/-](?:\d{2}|20\d{2}))?(?: entry)?|(?:Fall|Autumn|Spring) 20\d{2}(?: entry)?|20\d{2} (?:Fall|Autumn|Spring))$/i.test(normalizeAdmissionCycle(value));
 }
 
+// The only entry cycle the path's requirements publish, so the minimums check can run without asking for a year; "" when
+// there are several or none. Fee and date records name their own academic years and do not choose the intake.
+export function singlePublishedCycle(resolved) {
+  const requirementIds = new Set(resolved?.fact_groups?.requirements || []);
+  const cycles = new Set((resolved?.facts || []).filter(row => requirementIds.has(row.id)).map(row => row.scope?.cycle)
+    .filter(value => typeof value === "string" && isRecognizedAdmissionCycle(value)).map(normalizeAdmissionCycle));
+  return cycles.size === 1 ? [...cycles][0] : "";
+}
+
 export function getApplicationLink(resolved) {
   const route = resolved?.selected_route;
   if (!route) return "";
@@ -234,6 +243,10 @@ export function mountAdmissionsCatalog(institutionId) {
   let total = 0;
   let items = [];
   let sharedRoutes = [];
+  // Preparatory years applied for through the shared undergraduate application (NU's Foundation Year).
+  let preparationEntries = [];
+  // The entry cycle this page filled in itself, and for which path; a reader's own cycle is never cleared.
+  let autoCycle = null;
   const limit = 8;
   const currentPage = () => !disposed && root.isConnected && document.body.dataset.page === "university";
   const setUrl = () => window.history.pushState({}, "", admissionContextUrl(window.location.href, context));
@@ -296,8 +309,11 @@ export function mountAdmissionsCatalog(institutionId) {
     contextSelectDisposers.forEach((dispose) => dispose());
     contextSelectDisposers = [];
     const option = resolved?.selected_option;
-    const routes = option ? resolved?.available_routes || [] : sharedRoutes;
-    const sharedEntries = option ? sharedRoutes.filter(item => option.levels?.includes("undergraduate") && !option.route_ids?.includes(item.id)) : sharedRoutes;
+    // A funding application follows an offer: the key facts name it as the next step, but it is not a way to apply.
+    const routes = (option ? resolved?.available_routes || [] : sharedRoutes)
+      .filter(item => item.classification !== "financial_support_application" || item.id === context.application_route_id);
+    const sharedEntries = (option ? sharedRoutes.filter(item => option.levels?.includes("undergraduate") && !option.route_ids?.includes(item.id)) : sharedRoutes)
+      .filter(item => item.classification !== "financial_support_application");
     const readable = hasReadableAdmissionContext(resolved);
     const route = status === "loading"
       ? routes.find((row) => row.id === context.application_route_id) || null
@@ -330,16 +346,22 @@ export function mountAdmissionsCatalog(institutionId) {
     root.dataset.state = status;
     // Without a program, a shared undergraduate application comes first and program browsing follows it.
     const chooseProgramAction = `<div class="admissions-context__actions"><button type="button" id="admissionsChooseProgram">${escapeHtml(label(option ? "change_program" : "browse_programs"))}</button></div>`;
+    // Without a program the university's shared paths lead, its preparatory year right after the main one; with a program
+    // they follow that program's own paths as alternatives.
+    const sharedOptions = sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`);
+    const preparationOptions = option ? [] : preparationEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-preparation-entry="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(admissionsProgramLabel(item).title)}</button></div><p class="admissions-context__note">${escapeHtml(t("university.admissions.entry.preparation_help"))}</p></div>`);
+    const sharedBlock = sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${sharedOptions.toSpliced(1, 0, ...preparationOptions).join("")}</div>` : "";
     const destination = status === "ready" && !contextDirty ? getApplicationLink(resolved) : "";
-    root.innerHTML = `<div class="admissions-context__heading"><div><h2>${escapeHtml(label("simple_title"))}</h2>${route || noRoute ? "" : `<p>${escapeHtml(label("route_intro"))}</p>`}</div></div>
+    root.innerHTML = `<div class="admissions-context__heading"><div><h2>${escapeHtml(label("simple_title"))}</h2>${route || noRoute || (!option && sharedEntries.length) ? "" : `<p>${escapeHtml(label("route_intro"))}</p>`}</div></div>
       ${legacyPending ? `<p class="admissions-context__note">${escapeHtml(label("legacy_pending"))}</p>` : ""}
       ${resetPending ? `<p class="admissions-context__note" data-admission-reset-notice>${escapeHtml(label("reset_notice"))}</p>` : ""}
       ${route && routeHelp(route, true) ? `<p class="admissions-context__note" data-route-audience>${escapeHtml(routeHelp(route, true))}</p>` : ""}${route ? renderTermsFor(routeWording(route)) : ""}
       <div id="admissionsSelectionEditor" class="admissions-selection-editor" ${route ? "hidden" : ""}><div class="admissions-selection-editor__body">
       ${option || !sharedEntries.length ? chooseProgramAction : ""}
-      ${sharedEntries.length ? `<div class="admissions-entry" data-shared-admission><p>${escapeHtml(t(`university.admissions.entry.${option ? "shared_path_alternative" : "institution_wide"}`))}</p>${sharedEntries.map(item => `<div class="admissions-route-option"><div class="admissions-context__actions"><button type="button" data-shared-route="${escapeHtmlAttr(item.id)}" ${status === "loading" ? "disabled" : ""}>${escapeHtml(routeName(item))}</button></div><p class="admissions-context__note">${escapeHtml(routeHelp(item))}</p>${renderTermsFor(routeWording(item))}</div>`).join("")}</div>` : ""}
+      ${option ? "" : sharedBlock}
       ${!option && sharedEntries.length ? chooseProgramAction : ""}
       ${option && !route && routes.length > 1 ? `<div class="admissions-entry" data-route-options><p>${escapeHtml(t("university.admissions.entry.route_situations"))}</p>${routes.filter(item => !specialRoutes.includes(item)).map(routeOption).join("")}${specialRoutes.length ? `<details class="admissions-special-routes"><summary>${escapeHtml(tFormat("university.admissions.reading.special_routes", { count: specialRoutes.length }))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-entry">${specialRoutes.map(routeOption).join("")}</div></details>` : ""}</div>` : ""}
+      ${option ? sharedBlock : ""}
       <form id="admissionsContextForm" class="admissions-context__form" ${((option && !noRoute) || readable) && (route || routes.length <= 1) ? "" : "hidden"}>
         <div class="admissions-context__primary" ${(!route && routes.length > 1) || (route && routes.length <= 1) ? "hidden" : ""}>
         ${selectHtml("admissionsRoute", label("route_label"), [["", label("choose_route")], ...routes.map((row) => [row.id, routeName(row)])], context.application_route_id, (!option && !readable) || status === "loading")}
@@ -365,6 +387,18 @@ export function mountAdmissionsCatalog(institutionId) {
         context.study_option_id = "";
         context.application_route_id = button.dataset.sharedRoute;
         context.study_level = "undergraduate";
+        contextDirty = false;
+        saveStatus = "";
+        setUrl();
+        void refreshContext({ revealSelection: true });
+      };
+    });
+    root.querySelectorAll("[data-preparation-entry]").forEach(button => {
+      button.onclick = () => {
+        const entry = preparationEntries.find(item => item.id === button.dataset.preparationEntry);
+        context.study_option_id = entry.id;
+        context.application_route_id = (entry.route_ids || []).find(id => sharedRoutes.some(route => route.id === id)) || "";
+        context.study_level = "preparation";
         contextDirty = false;
         saveStatus = "";
         setUrl();
@@ -446,6 +480,15 @@ export function mountAdmissionsCatalog(institutionId) {
     const apiProfile = loadProfileForApi();
     const bindKeyFacts = host => {
       host.querySelectorAll("[data-open-tab]").forEach(button => { button.onclick = () => openTab(button.dataset.openTab); });
+      host.querySelectorAll("[data-key-facts-route]").forEach(button => {
+        button.onclick = () => {
+          context.application_route_id = button.dataset.keyFactsRoute;
+          contextDirty = false;
+          saveStatus = "";
+          setUrl();
+          void refreshContext({ revealSelection: true });
+        };
+      });
       host.querySelector("[data-key-facts-cycle]")?.addEventListener("click", () => {
         // The entry cycle is chosen for this university: open the selection editor at the entry-cycle field.
         root.querySelector("#admissionsSelectionEditor").hidden = false;
@@ -544,6 +587,10 @@ export function mountAdmissionsCatalog(institutionId) {
   }
 
   async function refreshContext({ revealSelection = false } = {}) {
+    // A cycle filled in for one path is not the reader's choice for another path.
+    if (autoCycle && context.intended_entry_cycle === autoCycle.cycle
+      && (context.application_route_id !== autoCycle.route || context.study_option_id !== autoCycle.option)) context.intended_entry_cycle = "";
+    if (autoCycle && context.intended_entry_cycle !== autoCycle.cycle) autoCycle = null;
     calendarState = {};
     contextAbort?.abort();
     const request = contextAbort = new AbortController();
@@ -558,10 +605,20 @@ export function mountAdmissionsCatalog(institutionId) {
       const data = await response.json();
       if (request !== contextAbort || !currentPage()) return;
       // A program with exactly one application route reads that route directly, the same as a manual choice, without saving it.
-      const onlyRoute = !context.application_route_id && data.selected_option && !data.selected_route && data.available_routes?.length === 1
-        && !Object.values(data.context_applicability || {}).includes("mismatched") ? data.available_routes[0] : null;
+      // A post-offer funding application is not a way in, so it does not make a second choice here.
+      const waysIn = (data.available_routes || []).filter(row => row.classification !== "financial_support_application");
+      const onlyRoute = !context.application_route_id && data.selected_option && !data.selected_route && waysIn.length === 1
+        && !Object.values(data.context_applicability || {}).includes("mismatched") ? waysIn[0] : null;
       if (onlyRoute) {
         context.application_route_id = onlyRoute.id;
+        window.history.replaceState(window.history.state, "", admissionContextUrl(window.location.href, context));
+        return refreshContext({ revealSelection });
+      }
+      // A path that publishes a single entry cycle is read for that cycle; the selection summary shows it and it can be changed.
+      const onlyCycle = !context.intended_entry_cycle && data.assessment?.reason === "entry_cycle_required" ? singlePublishedCycle(data) : "";
+      if (onlyCycle) {
+        context.intended_entry_cycle = onlyCycle;
+        autoCycle = { cycle: onlyCycle, route: context.application_route_id, option: context.study_option_id };
         window.history.replaceState(window.history.state, "", admissionContextUrl(window.location.href, context));
         return refreshContext({ revealSelection });
       }
@@ -857,9 +914,11 @@ export function mountAdmissionsCatalog(institutionId) {
       if (request !== catalogAbort || !currentPage()) return;
       items = data.items;
       total = data.total;
-      const previousSharedIds = sharedRoutes.map(route => route.id).join(",");
+      const entryIds = () => [...sharedRoutes, ...preparationEntries].map(row => row.id).join(",");
+      const previousSharedIds = entryIds();
       sharedRoutes = data.shared_routes || [];
-      if (!resolved?.selected_option && previousSharedIds !== sharedRoutes.map(route => route.id).join(",")) {
+      preparationEntries = data.preparation_entries || [];
+      if (!resolved?.selected_option && previousSharedIds !== entryIds()) {
         renderControls(root.dataset.state);
         if (root.dataset.state === "ready") renderContextContent("ready");
       }

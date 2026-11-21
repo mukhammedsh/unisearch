@@ -32,8 +32,9 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   await foundation.locator(`[data-select-study-option='${FOUNDATION}']`).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await showTab(page, "admission");
-  await page.locator(`[data-read-route='${REGULAR}']`).click();
+  // Foundation has one way in (the funding application follows an offer), so that path opens directly.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(REGULAR);
   await expect(page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first()).toBeVisible();
   await showTab(page, "finance");
   const tuition = page.locator("#detailFinance [data-course-tuition]");
@@ -267,7 +268,7 @@ test("NU Foundation exposes a failed NUET section while regular UG does not borr
 test("NU total-only reports keep missing sections unassessed on a Russian phone", async ({ page }, testInfo) => {
   await seed(page, { languages: [english], exams: [{ id: "NUET", exam: "NUET", score: 120 }] }, { language: "rus", theme: "dark", mobile: true });
   const { result } = await openContext(page, FOUNDATION, REGULAR, "preparation");
-  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Обычное поступление");
+  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Обычный приём");
   expect(result.assessment.chancePercent).toBeNull();
   const missing = page.locator("#detailRequirements [data-minimum-exam='NUET_MATH'][data-minimum-status='missing']");
   await reveal(missing);

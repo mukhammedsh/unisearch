@@ -99,9 +99,10 @@ test("Imperial reads a course with one application route directly, on selection 
 
 test("mobile route selection reveals the updated context below the navigation", async ({ page }) => {
   const foundationRoute = "nu-a-route-regular-foundation-undergraduate";
+  // A bachelor's program has several ways in (Foundation has one and opens it directly), so the reader chooses here.
   await openUniversity(page, "nazarbayev-university-kaz-astana", {
     language: "kaz", width: 390,
-    query: "&admission_option=nu-a-study-nu-foundation-year-program&admission_level=preparation&admission_application_route=#tab-admission",
+    query: "&admission_option=nu-a-study-bachelor-of-science-in-computer-science&admission_level=undergraduate&admission_application_route=#tab-admission",
   });
   await page.setViewportSize({ width: 390, height: 700 });
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);

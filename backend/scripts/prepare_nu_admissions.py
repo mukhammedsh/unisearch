@@ -165,7 +165,23 @@ def _applicant_text(options, routes, facts):
 def _resolve_scopes(options, routes, facts, unknowns):
     option_index = {row["id"]: row for row in options}
     route_index = {row["id"]: row for row in routes}
-    route_index["nu-a-route-midyear-2026-27"]["attributes"]["admission_scope"] = "institution_wide_undergraduate"
+    # One NU undergraduate application and one set of minimums serve all bachelor programs (Nursing and the joint BBA keep
+    # their own routes), so these paths are read without choosing a program first, like MIT's and Stanford's.
+    # The post-offer funding application covers the same programs; it is opened from the key facts, not offered as a way in.
+    for ident in ("nu-a-route-regular-foundation-undergraduate", "nu-a-route-financial-support", "nu-a-route-transfer", "nu-a-route-midyear-2026-27"):
+        route_index[ident]["attributes"]["admission_scope"] = "institution_wide_undergraduate"
+    # First-pass graduate research notes kept only for provenance lost their level; without one they would read as
+    # history of every NU path, including undergraduate ones.
+    graduate_levels = {"nu-b-fact-master-": "masters", "nu-b-fact-mscf-": "masters", "nu-b-fact-mba-": "masters",
+                       "nu-b-fact-mpa-": "masters", "nu-b-fact-emba-": "masters", "nu-b-fact-doctoral-": "doctoral",
+                       "nu-b-fact-phd-": "doctoral", "nu-b-fact-dba-": "doctoral", "nu-b-fact-dpm-": "doctoral",
+                       "nu-b-fact-md-": "professional"}
+    for row in facts:
+        if row["id"] in {"nu-b-fact-living", "nu-b-fact-international-additional-support"} and not row["scope"]["levels"]:
+            row["scope"]["levels"] = ["masters", "doctoral"]
+        level = next((value for prefix, value in graduate_levels.items() if row["id"].startswith(prefix)), None)
+        if level and not row["scope"]["levels"] and not row["scope"]["route_ids"] and not row["scope"]["option_ids"]:
+            row["scope"]["levels"] = [level]
     extra_options = {"nu-a-fact-nds-study": "nu-a-study-non-degree-study", "nu-a-fact-nds-entry": "nu-a-study-non-degree-study",
                      "nu-a-fact-nuzyp-current-status": "nu-a-study-nuzyp", "nu-a-fact-nuzyp-funding-history": "nu-a-study-nuzyp",
                      "nu-a-fact-microcredential-study": "nu-a-study-mining-microcredential",
@@ -208,6 +224,20 @@ def _resolve_scopes(options, routes, facts, unknowns):
     for row in facts:
         if row["id"] in {"nu-a-fact-transfer-route-details", "nu-a-fact-joint-bba-admissions"}:
             row["topics"].append("admission_requirements")
+    # A record listing every program of a shared path at its levels describes the path itself; the explicit list would
+    # hide it when the path is read without a program. Narrower lists, such as Foundation-only rules, stay program-scoped.
+    shared = {ident for ident, route in route_index.items() if route["attributes"].get("admission_scope") == "institution_wide_undergraduate"}
+    for row in [*facts, *unknowns]:
+        scope = row["scope"]
+        if not scope["option_ids"] or not scope["route_ids"] or not set(scope["route_ids"]).issubset(shared):
+            continue
+        levels = set(scope["levels"])
+        covers = all(set(scope["option_ids"]) >= {ident for ident in route_index[route]["option_ids"]
+                                                  if not levels or levels.intersection(option_index[ident]["levels"])}
+                     for route in scope["route_ids"])
+        if covers and set(scope["route_ids"]) & shared:
+            row["attributes"]["listed_option_ids"] = scope["option_ids"]
+            scope["option_ids"] = []
 
 
 def _unknown_scopes(options, routes, unknowns):
@@ -293,7 +323,9 @@ def _cost_projections(facts, options):
             entry["option_ids"] = option_ids
         row["attributes"].setdefault("catalog_costs", {"quotes": []})["quotes"].append(entry)
 
-    common_ug = index["nu-a-fact-ug-english"]["scope"]["option_ids"]
+    english = index["nu-a-fact-ug-english"]
+    # The shared-path record keeps its reviewed program list in attributes once its scope is the whole path.
+    common_ug = english["attributes"].get("listed_option_ids") or english["scope"]["option_ids"]
     foundation = ["nu-a-study-nu-foundation-year-program"]
     quote("nu-a-fact-admission-fees", 12000, year="2026-2027", option_ids=foundation)
     quote("nu-a-fact-admission-fees", 15000, year="2026-2027", option_ids=common_ug)

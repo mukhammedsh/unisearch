@@ -227,7 +227,7 @@ export function fundingFact(resolved) {
   // A separate support application is a different route of the same institution, not a second admission chance.
   const support = (resolved?.available_routes || []).find(route => route.classification === "financial_support_application"
     && route.id !== resolved.selected_route?.id);
-  if (support) return { terms, notes: policy ? [tFormat("university.admissions.key_facts.funding_policy", { policy })] : [],
+  if (support) return { terms, notes: policy ? [tFormat("university.admissions.key_facts.funding_policy", { policy })] : [], supportRouteId: support.id,
     text: tFormat("university.admissions.key_facts.funding_route", { route: admissionsRouteName(support, { presentation: "simple" }) }) };
   const count = (resolved?.fact_groups?.funding || []).length;
   if (policy && count) return { terms, text: tFormat("university.admissions.key_facts.funding_policy", { policy }),
@@ -277,7 +277,12 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
       ${requirementsRow(resolved, cycleAction, shownTerms)}
       ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
-      ${row("funding", fundingFact(resolved), "", shownTerms)}
+      ${(() => {
+        // The funding application is not a way in, so it is opened from here rather than offered among the paths.
+        const funding = fundingFact(resolved);
+        const action = funding.supportRouteId ? `<button type="button" class="admissions-key-facts__link" data-key-facts-route="${escapeHtmlAttr(funding.supportRouteId)}">${escapeHtml(label("open_funding_route"))}</button>` : "";
+        return row("funding", funding, action, shownTerms);
+      })()}
     </dl>
     <p class="admissions-reading__note">${escapeHtml(label("note"))}</p>
   </section>`;

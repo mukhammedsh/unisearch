@@ -316,7 +316,8 @@ test("program search resolves its sole route from applicant context without chan
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
-  await expect(page.locator("#admissionsCycle")).toHaveValue("");
+  // Without a chosen cycle the course is read for its only published entry cycle; the saved profile is untouched.
+  await expect(page.locator("#admissionsCycle")).toHaveValue("2027 entry");
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBe(originalProfile);
 });
 

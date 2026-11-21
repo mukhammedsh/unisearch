@@ -703,29 +703,10 @@
       "id": "nu-a-fact-ug-english-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-ug-english",
-      "fact_sha256": "bbc974a3b1ad90d0acfab28d711afe57fd2c42af4887084cef82f35d777717fb",
+      "fact_sha256": "2f65b637918c4d4dcd5755c457b78aafe0b9a935b7b5f91b081895459eeb2811",
       "source_publication_status": "published_for_2027_28_regular_admission",
       "scope": {
-        "option_ids": [
-          "nu-a-study-bachelor-of-science-in-geology",
-          "nu-a-study-bachelor-of-science-in-mathematics",
-          "nu-a-study-bachelor-of-science-in-physics",
-          "nu-a-study-bachelor-of-science-in-chemistry",
-          "nu-a-study-bachelor-of-arts-in-sociology",
-          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
-          "nu-a-study-bachelor-of-science-in-computer-science",
-          "nu-a-study-6-year-undergraduate-medical-program",
-          "nu-a-study-bachelor-of-science-in-biological-sciences",
-          "nu-a-study-bachelor-of-business-administration",
-          "nu-a-study-bachelor-of-arts-in-economics",
-          "nu-a-study-bachelor-of-science-in-robotics-engineering",
-          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
-          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
-          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
-          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
-          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
-          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-regular-foundation-undergraduate"
         ],
@@ -787,12 +768,10 @@
       "id": "nu-a-fact-fyp-english-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-fyp-english",
-      "fact_sha256": "cbfcdcc6bc3ec675f0f601c18fdfadb482806895377126401fe32c25896f256c",
+      "fact_sha256": "fbbb6848f329b18a0dacd4a5ee058ce1af9202900fd9d7a64c2be31cfd4ddf38",
       "source_publication_status": "published_for_2027_28_regular_admission",
       "scope": {
-        "option_ids": [
-          "nu-a-study-nu-foundation-year-program"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-regular-foundation-undergraduate"
         ],
@@ -853,29 +832,10 @@
       "id": "nu-a-fact-ug-academic-alternatives-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-ug-academic-alternatives",
-      "fact_sha256": "8b7aa756f4d88aecf901a75c689ce796e6b98c0ef0a0355cd6025edca46def27",
+      "fact_sha256": "8b43186a3088618a115dbeb072a6edb132de3faffec0aba3341b295dfc60046f",
       "source_publication_status": "published_for_2027_28_regular_admission",
       "scope": {
-        "option_ids": [
-          "nu-a-study-bachelor-of-science-in-geology",
-          "nu-a-study-bachelor-of-science-in-mathematics",
-          "nu-a-study-bachelor-of-science-in-physics",
-          "nu-a-study-bachelor-of-science-in-chemistry",
-          "nu-a-study-bachelor-of-arts-in-sociology",
-          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
-          "nu-a-study-bachelor-of-science-in-computer-science",
-          "nu-a-study-6-year-undergraduate-medical-program",
-          "nu-a-study-bachelor-of-science-in-biological-sciences",
-          "nu-a-study-bachelor-of-business-administration",
-          "nu-a-study-bachelor-of-arts-in-economics",
-          "nu-a-study-bachelor-of-science-in-robotics-engineering",
-          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
-          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
-          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
-          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
-          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
-          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-regular-foundation-undergraduate"
         ],
@@ -965,12 +925,10 @@
       "id": "nu-a-fact-fyp-academic-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-fyp-academic",
-      "fact_sha256": "a02efd74aad8e5e3ff00581a6c7ac2693219b47fe09fc474b5327a624c06c25d",
+      "fact_sha256": "4ec8cb17fe4bda017391912c5482b519ca206cc32da059a954712f65d4b0ed05",
       "source_publication_status": "published_policy_appendix",
       "scope": {
-        "option_ids": [
-          "nu-a-study-nu-foundation-year-program"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-regular-foundation-undergraduate"
         ],
@@ -1085,30 +1043,10 @@
       "id": "nu-a-fact-nuet-support-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-nuet-support",
-      "fact_sha256": "557ae158dffcbec1f88b5ced93f2ee19ab48e66bf762c0574c3c6826240070e2",
+      "fact_sha256": "25bf6c0820270976890dbaf70470adff5d18d9dc2150114954f8b214c0c24a0d",
       "source_publication_status": "published_minimum",
       "scope": {
-        "option_ids": [
-          "nu-a-study-bachelor-of-science-in-geology",
-          "nu-a-study-bachelor-of-science-in-mathematics",
-          "nu-a-study-bachelor-of-science-in-physics",
-          "nu-a-study-bachelor-of-science-in-chemistry",
-          "nu-a-study-bachelor-of-arts-in-sociology",
-          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
-          "nu-a-study-bachelor-of-science-in-computer-science",
-          "nu-a-study-6-year-undergraduate-medical-program",
-          "nu-a-study-bachelor-of-science-in-biological-sciences",
-          "nu-a-study-bachelor-of-business-administration",
-          "nu-a-study-bachelor-of-arts-in-economics",
-          "nu-a-study-bachelor-of-science-in-robotics-engineering",
-          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
-          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
-          "nu-a-study-nu-foundation-year-program",
-          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
-          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
-          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
-          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-financial-support"
         ],
@@ -1150,30 +1088,10 @@
       "id": "nu-a-fact-financial-support-eligibility-2027-28-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-financial-support-eligibility-2027-28",
-      "fact_sha256": "77f28f46b7d379829c908b0687cd0c1237d5adeecd9e4c64735564b0687875ae",
+      "fact_sha256": "9ad0ba1b3c00e99d5a56885cfde90873a50ed895d9055acd6cb7805ec2f7811d",
       "source_publication_status": "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA",
       "scope": {
-        "option_ids": [
-          "nu-a-study-bachelor-of-science-in-geology",
-          "nu-a-study-bachelor-of-science-in-mathematics",
-          "nu-a-study-bachelor-of-science-in-physics",
-          "nu-a-study-bachelor-of-science-in-chemistry",
-          "nu-a-study-bachelor-of-arts-in-sociology",
-          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
-          "nu-a-study-bachelor-of-science-in-computer-science",
-          "nu-a-study-6-year-undergraduate-medical-program",
-          "nu-a-study-bachelor-of-science-in-biological-sciences",
-          "nu-a-study-bachelor-of-business-administration",
-          "nu-a-study-bachelor-of-arts-in-economics",
-          "nu-a-study-bachelor-of-science-in-robotics-engineering",
-          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
-          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
-          "nu-a-study-nu-foundation-year-program",
-          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
-          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
-          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
-          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-financial-support"
         ],
@@ -1494,29 +1412,10 @@
       "id": "nu-a-fact-transfer-route-details-assessment",
       "institution_id": "nazarbayev-university-kaz-astana",
       "fact_id": "nu-a-fact-transfer-route-details",
-      "fact_sha256": "f401a4f7cdf8e0eecc5a8b6a16bafbe61fd058db426fdfd6a77ac3c8a196f33b",
+      "fact_sha256": "2b7f8fb1ac185316e5101dfbcead7e4e84a8b52a89ec35f7baca834554691e94",
       "source_publication_status": "published_policy_and_2026_announcement",
       "scope": {
-        "option_ids": [
-          "nu-a-study-bachelor-of-science-in-geology",
-          "nu-a-study-bachelor-of-science-in-mathematics",
-          "nu-a-study-bachelor-of-science-in-physics",
-          "nu-a-study-bachelor-of-science-in-chemistry",
-          "nu-a-study-bachelor-of-arts-in-sociology",
-          "nu-a-study-bachelor-of-arts-in-political-science-and-international-relations",
-          "nu-a-study-bachelor-of-science-in-computer-science",
-          "nu-a-study-6-year-undergraduate-medical-program",
-          "nu-a-study-bachelor-of-science-in-biological-sciences",
-          "nu-a-study-bachelor-of-business-administration",
-          "nu-a-study-bachelor-of-arts-in-economics",
-          "nu-a-study-bachelor-of-science-in-robotics-engineering",
-          "nu-a-study-bachelor-of-science-in-mining-and-minerals-engineering",
-          "nu-a-study-bachelor-of-science-in-petroleum-engineering",
-          "nu-a-study-bachelor-of-engineering-in-chemical-and-materials-engineering",
-          "nu-a-study-bachelor-of-engineering-in-electrical-and-computer-engineering",
-          "nu-a-study-bachelor-of-engineering-in-civil-and-environmental-engineering",
-          "nu-a-study-bachelor-of-engineering-in-mechanical-and-aerospace-engineering"
-        ],
+        "option_ids": [],
         "route_ids": [
           "nu-a-route-transfer"
         ],

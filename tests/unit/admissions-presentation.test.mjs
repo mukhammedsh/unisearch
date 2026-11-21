@@ -188,7 +188,7 @@ test("all source records, additional references and unresolved information sit b
   const html = renderApplicantSection(resolved, ["requirements"]);
   const disclosures = html.split('<details class="admissions-reading__references" data-all-records');
   assert.equal(disclosures.length, 2);
-  assert.match(disclosures[1], /^ ><summary>Full source records and conditions \(3\)<\/summary>/);
+  assert.match(disclosures[1], /^ ><summary>Details and sources \(3\)<\/summary>/);
   for (const part of ['data-admissions-fact="tests"', "data-general-references", "Interview policy is not published.", "admissions-catalog__unknowns"]) assert.ok(disclosures[1].includes(part), part);
   assert.equal(html.split(t("university.admissions.reading.reference_scope_note")).length - 1, 1);
 });
