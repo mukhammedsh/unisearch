@@ -8,7 +8,7 @@ import urllib.parse
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import RequiredDataUnavailable, file_mtime
-from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
+from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH, UNIVERSITY_NAME_VARIANTS_PATH
 from app.core.utils import (
     to_float as _num_or_none,
     safe_lower as _safe_lower,
@@ -86,92 +86,70 @@ COLLEGE_SCORECARD_PUBLIC_API_KEY = "DEMO_KEY"
 COLLEGE_SCORECARD_HOST = "api.data.gov"
 COLLEGE_SCORECARD_PATH_PREFIX = "/ed/collegescorecard/"
 
-_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
-    "mit-usa-cambridge": ["MIT", "МИТ"],
-    "imperial-college-london-uk": ["Imperial", "ICL", "Империал", "ИКЛ"],
-    "stanford-university-usa-ca": ["Stanford", "Стэнфорд", "Стенфорд"],
-    "harvard-usa-cambridge": ["Harvard", "Гарвард"],
-    "eth-zurich-ch-zurich": ["ETH", "ETH Zurich", "ЕТН", "ЕТХ", "ЕТН Цюрих"],
-    "national-university-of-singapore-sg-singapore": ["NUS", "НУС"],
-    "epfl-ch-lausanne": ["EPFL", "ЕПФЛ"],
-    "technical-university-of-munich-de-munich": ["TUM", "ТУМ"],
-    "university-of-toronto-ca-toronto": [
-        "U of T",
-        "UofT",
-        "Toronto",
-        "Торонто",
-        "Ю оф Т",
-    ],
-    "cuhk-hk-shatin": ["CUHK", "КУХК"],
-    "university-of-tokyo-jp-tokyo": ["UTokyo", "Todai", "Тодай", "УТокио"],
-    "seoul-national-university-kr-seoul": ["SNU", "СНУ"],
-    "delft-university-of-technology-nl-delft": [
-        "TU Delft",
-        "Delft Tech",
-        "ТУ Делфт",
-        "Делфт Тех",
-    ],
-    "kaist-kr-daejeon": ["KAIST", "КАИСТ", "КАЙСТ"],
-    "tsinghua-university-cn-beijing": ["Tsinghua", "THU", "Цинхуа", "ТХУ"],
-    "nazarbayev-university-kaz-astana": ["NU", "НУ"],
-    "kyoto-university-jp-kyoto": ["KyotoU", "Kyodai", "Киото", "Кёто", "Кёодай"],
-    "university-of-melbourne-au-melbourne": [
-        "UniMelb",
-        "Melbourne",
-        "Мельбурн",
-        "ЮниМелб",
-    ],
-    "suleyman-demirel-university-kaz-kaskelen": ["SDU", "СДУ"],
-    "astana-it-university-kaz-astana": ["AITU", "АИТУ"],
-    "astana-medical-university-kaz-astana": ["MUA", "AMU", "МУА"],
-    "international-information-technology-university-kaz-almaty": ["IITU", "MUIT", "МУИТ"],
-    "satbayev-university-kaz-almaty": ["Satbayev", "KazNRTU", "KazNTU", "КазНИТУ", "Политех"],
-    "kazakhstan-british-technical-university-kaz-almaty": ["KBTU", "КБТУ"],
-    "al-farabi-kazakh-national-university-kaz-almaty": ["KazNU", "КазНУ"],
-    "l-n-gumilyov-eurasian-national-university-kaz-astana": ["ENU", "ЕНУ"],
-    "narxoz-university-kaz-almaty": ["Narxoz", "Нархоз"],
-    "kimep-university-kaz-almaty": ["KIMEP", "КИМЭП"],
-    "asfendiyarov-kazakh-national-medical-university-kaz-almaty": ["KazNMU", "КазНМУ"],
-    "abai-kazakh-national-pedagogical-university-kaz-almaty": ["KazNPU", "КазНПУ"],
-    "university-of-oxford-uk-oxford": ["Oxford", "Оксфорд"],
-    "university-of-cambridge-uk-cambridge": ["Cambridge", "Кембридж"],
-    "ucl-uk-london": ["UCL", "University College London", "ЮКЛ"],
-    "kings-college-london-uk-london": ["KCL", "King's College London", "Кингс"],
-    "university-of-edinburgh-uk-edinburgh": ["Edinburgh", "Эдинбург"],
-    "university-of-manchester-uk-manchester": ["Manchester", "Манчестер"],
-    "caltech-usa-pasadena": ["Caltech", "Калтех"],
-    "uc-berkeley-usa-berkeley": ["Berkeley", "UC Berkeley", "Беркли"],
-    "princeton-university-usa-princeton": ["Princeton", "Принстон"],
-    "yale-university-usa-new-haven": ["Yale", "Йель"],
-    "university-of-chicago-usa-chicago": ["UChicago", "Chicago", "Чикаго"],
-    "university-of-pennsylvania-usa-philadelphia": ["Penn", "UPenn", "Пенн"],
-    "cornell-university-usa-ithaca": ["Cornell", "Корнелл"],
-    "columbia-university-usa-new-york": ["Columbia", "Колумбия"],
-    "johns-hopkins-university-usa-baltimore": ["JHU", "Johns Hopkins", "Хопкинс"],
-    "ucla-usa-los-angeles": ["UCLA", "ЮКЛА"],
-    "mcgill-university-ca-montreal": ["McGill", "Макгилл"],
-    "university-of-british-columbia-ca-vancouver": ["UBC", "British Columbia", "ЮБиСи"],
-    "university-of-waterloo-ca-waterloo": ["Waterloo", "UWaterloo", "Ватерлоо"],
-    "unsw-sydney-au-sydney": [
-        "UNSW",
-        "University of New South Wales",
-        "New South Wales",
-        "ЮНСВ",
-    ],
-    "university-of-sydney-au-sydney": ["USyd", "Sydney", "Сидней"],
-    "australian-national-university-au-canberra": [
-        "ANU",
-        "Australian National University",
-        "АНУ",
-    ],
-    "university-of-hong-kong-hk-hong-kong": ["HKU", "Hong Kong University", "ХКУ"],
-    "hkust-hk-hong-kong": [
-        "HKUST",
-        "Hong Kong University of Science and Technology",
-        "ХКУСТ",
-    ],
-    "nanyang-technological-university-sg-singapore": ["NTU", "Nanyang", "НТУ"],
+_NAME_VARIANTS_CACHE: Dict[str, Any] = {"mtime": None, "data": {}}
+
+
+def _load_university_name_variants() -> Dict[str, Dict[str, Any]]:
+    """Per university id: eng/rus/kaz name lists and map labels (backend/data/university_name_variants.json)."""
+    mtime = file_mtime(UNIVERSITY_NAME_VARIANTS_PATH)
+    if mtime != _NAME_VARIANTS_CACHE.get("mtime") or mtime is None:
+        data: Dict[str, Dict[str, Any]] = {}
+        if mtime is None:
+            _LOGGER.warning("University name variants file is missing: %s", UNIVERSITY_NAME_VARIANTS_PATH)
+        else:
+            try:
+                with open(UNIVERSITY_NAME_VARIANTS_PATH, "r", encoding="utf-8") as f:
+                    loaded = json.load(f).get("universities")
+                if isinstance(loaded, dict):
+                    data = {str(key): value for key, value in loaded.items() if isinstance(value, dict)}
+            except (OSError, ValueError, AttributeError):
+                _LOGGER.warning("University name variants file is unreadable: %s", UNIVERSITY_NAME_VARIANTS_PATH, exc_info=True)
+        _NAME_VARIANTS_CACHE["mtime"] = mtime
+        _NAME_VARIANTS_CACHE["data"] = data
+    return _NAME_VARIANTS_CACHE["data"]
+
+
+def _names_in_language(uid: str, lang: str) -> Dict[str, Any]:
+    """One university's names in one language.
+
+    official: the full name; main_abbreviation: the one abbreviation the map shows ("" when there is none);
+    short_name: what the map shows instead when there is no main abbreviation; abbreviations and
+    alternatives: every other name, searched in every language.
+    """
+    names = _load_university_name_variants().get(uid, {}).get(lang)
+    if not isinstance(names, dict):
+        return {"official": "", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+
+    def clean(values: Any) -> List[str]:
+        return [str(value).strip() for value in values or [] if str(value or "").strip()]
+
+    return {
+        "official": str(names.get("official") or "").strip(),
+        "main_abbreviation": str(names.get("main_abbreviation") or "").strip(),
+        "short_name": str(names.get("short_name") or "").strip(),
+        "abbreviations": clean(names.get("abbreviations")),
+        "alternatives": clean(names.get("alternatives")),
+    }
+
+
+_MAP_LABEL_FALLBACK_ORDER = {
+    SEARCH_LANG_ENG: (SEARCH_LANG_ENG,),
+    SEARCH_LANG_RUS: (SEARCH_LANG_RUS, SEARCH_LANG_ENG),
+    SEARCH_LANG_KAZ: (SEARCH_LANG_KAZ, SEARCH_LANG_RUS, SEARCH_LANG_ENG),
 }
+
+
+def _map_label_for_university(uid: str, lang: str) -> Optional[str]:
+    """Marker text for the locale: the main abbreviation, else the short name.
+
+    A language with nothing to show falls back to Russian for Kazakh and to English for Russian.
+    """
+    for key in _MAP_LABEL_FALLBACK_ORDER.get(lang, (SEARCH_LANG_ENG,)):
+        names = _names_in_language(uid, key)
+        label = names["main_abbreviation"] or names["short_name"]
+        if label:
+            return label
+    return None
 
 
 def _normalize_search_lang(value: Any) -> str:
@@ -183,11 +161,38 @@ def _normalize_search_lang(value: Any) -> str:
     return SEARCH_LANG_ENG
 
 
+_NAME_LANGS = (SEARCH_LANG_ENG, SEARCH_LANG_RUS, SEARCH_LANG_KAZ)
+
+
 def _hidden_search_aliases_for_university(u: Dict[str, Any]) -> List[str]:
+    """Every name a university goes by in any language: official names, abbreviations and alternatives.
+
+    Search matches all of them whatever the interface language is, so a Cyrillic abbreviation
+    finds a university from the English interface and the other way round.
+    """
     uid = str((u or {}).get("id") or "").strip()
     if not uid:
         return []
-    return _uniq_non_empty(_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID.get(uid, []))
+    values: List[Any] = []
+    for lang in _NAME_LANGS:
+        names = _names_in_language(uid, lang)
+        values.extend([names["official"], *names["abbreviations"], *names["alternatives"]])
+    return _uniq_non_empty(values)
+
+
+def _abbreviations_for_university(u: Dict[str, Any]) -> List[str]:
+    """Abbreviations only, in every language (what the search box may show as a badge)."""
+    uid = str((u or {}).get("id") or "").strip()
+    if not uid:
+        return []
+    return _uniq_non_empty(
+        [value for lang in _NAME_LANGS for value in _names_in_language(uid, lang)["abbreviations"]]
+    )
+
+
+def _full_name_from_variants(uid: str, lang: str, fallback: str) -> str:
+    """The searchable official full name in a language, from the name variants file when the university has one."""
+    return _names_in_language(uid, lang)["official"] or fallback
 
 
 _UNI_TRANSLATIONS_CACHE: Dict[str, Any] = {"mtime": None, "data": {}}
@@ -1310,10 +1315,10 @@ def _build_university_meta(
             if x
         ]
     )
-    name_raw = _safe_lower(u.get("name"))
+    name_raw = _safe_lower(_full_name_from_variants(uni_id, SEARCH_LANG_ENG, str(u.get("name") or "")))
     city_raw = _safe_lower(_get_nested(u, ["location", "city"]))
     country_raw = _safe_lower(_get_nested(u, ["location", "country"]))
-    name_rus = _safe_lower(rus_names.get(uni_id, ""))
+    name_rus = _safe_lower(_full_name_from_variants(uni_id, SEARCH_LANG_RUS, rus_names.get(uni_id, "")))
     city_rus = _safe_lower(_CITY_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(city_key, ""))
     country_rus = _safe_lower(
         _COUNTRY_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(country_key, "")
@@ -1321,7 +1326,7 @@ def _build_university_meta(
     description_rus = _norm_space(
         f"{name_rus or name_raw} {city_rus or city_raw} {country_rus or country_raw} {' '.join(tags_rus)}"
     )
-    name_kaz = _safe_lower(kaz_names.get(uni_id, ""))
+    name_kaz = _safe_lower(_full_name_from_variants(uni_id, SEARCH_LANG_KAZ, kaz_names.get(uni_id, "")))
     city_kaz = _safe_lower(_translate_group_value("city", city_key, SEARCH_LANG_KAZ))
     country_kaz = _safe_lower(
         _translate_group_value("country", country_key, SEARCH_LANG_KAZ)
@@ -1608,6 +1613,7 @@ def to_university_card(
         "search_aliases": [
             _safe_lower(x) for x in _hidden_search_aliases_for_university(u)
         ],
+        "abbreviations": [_safe_lower(x) for x in _abbreviations_for_university(u)],
         "aid_any": _has_any_aid(u),
         "catalog_costs": _catalog_costs(u, mode),
     }
@@ -1669,6 +1675,9 @@ def to_university_map_point(
         },
         "coordinates": {"lat": lat, "lon": lon},
     }
+    map_label = _map_label_for_university(uid, lang)
+    if map_label:
+        out["map_label"] = map_label
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
     if isinstance(u.get("catalog_costs"), dict):

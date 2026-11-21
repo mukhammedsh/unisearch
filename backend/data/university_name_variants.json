@@ -1,0 +1,289 @@
+{
+  "schema_version": 4,
+  "description": "Names used to find and label universities, one entry per university id. eng/rus/kaz each hold, for that language: official (the full name, kept equal to the stored full name by a test; cards still display the stored name), main_abbreviation (the one abbreviation the map shows, empty when the university has no established abbreviation), short_name (the short form the map shows when there is no main abbreviation, e.g. Harvard), abbreviations (every abbreviation, the main one included) and alternatives (other full names, short names, transliterations; short_name included). Search matches every name in every language. When a language has nothing to show the map uses the next one (kaz, then rus, then eng). source records the official page a Kazakh-script form was checked on.",
+  "universities": {
+    "mit-usa-cambridge": {
+      "eng": {"official": "Massachusetts Institute of Technology", "main_abbreviation": "MIT", "short_name": "", "abbreviations": ["MIT"], "alternatives": []},
+      "rus": {"official": "Массачусетский технологический институт", "main_abbreviation": "", "short_name": "", "abbreviations": ["МИТ"], "alternatives": ["Массачусетский институт технологий"]},
+      "kaz": {"official": "Массачусетс технологиялық институты", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "imperial-college-london-uk": {
+      "eng": {"official": "Imperial College London", "main_abbreviation": "", "short_name": "Imperial", "abbreviations": ["ICL"], "alternatives": ["Imperial College", "Imperial"]},
+      "rus": {"official": "Имперский колледж Лондона", "main_abbreviation": "", "short_name": "Империал", "abbreviations": ["ИКЛ"], "alternatives": ["Империал колледж Лондон", "Имперский колледж", "Империал"]},
+      "kaz": {"official": "Лондон Империал колледжі", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "stanford-university-usa-ca": {
+      "eng": {"official": "Stanford University", "main_abbreviation": "", "short_name": "Stanford", "abbreviations": [], "alternatives": ["Stanford"]},
+      "rus": {"official": "Стэнфордский университет", "main_abbreviation": "", "short_name": "Стэнфорд", "abbreviations": [], "alternatives": ["Стэнфорд", "Стенфорд"]},
+      "kaz": {"official": "Стэнфорд университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "harvard-usa-cambridge": {
+      "eng": {"official": "Harvard University", "main_abbreviation": "", "short_name": "Harvard", "abbreviations": [], "alternatives": ["Harvard"]},
+      "rus": {"official": "Гарвардский университет", "main_abbreviation": "", "short_name": "Гарвард", "abbreviations": [], "alternatives": ["Гарвард"]},
+      "kaz": {"official": "Гарвард университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-oxford-uk-oxford": {
+      "eng": {"official": "University of Oxford", "main_abbreviation": "", "short_name": "Oxford", "abbreviations": [], "alternatives": ["Oxford University", "Oxford"]},
+      "rus": {"official": "Оксфордский университет", "main_abbreviation": "", "short_name": "Оксфорд", "abbreviations": [], "alternatives": ["Оксфорд"]},
+      "kaz": {"official": "Оксфорд университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "eth-zurich-ch-zurich": {
+      "eng": {"official": "Swiss Federal Institute of Technology Zurich", "main_abbreviation": "ETH", "short_name": "", "abbreviations": ["ETH", "ETHZ"], "alternatives": ["Swiss Federal Institute of Technology in Zurich", "Eidgenössische Technische Hochschule Zürich", "ETH Zurich"]},
+      "rus": {"official": "Швейцарская высшая техническая школа Цюриха", "main_abbreviation": "", "short_name": "", "abbreviations": ["ЕТН", "ЕТХ"], "alternatives": ["ЕТН Цюрих"]},
+      "kaz": {"official": "Цюрихтегі Швейцария федералдық технология институты", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "national-university-of-singapore-sg-singapore": {
+      "eng": {"official": "National University of Singapore", "main_abbreviation": "NUS", "short_name": "", "abbreviations": ["NUS"], "alternatives": []},
+      "rus": {"official": "Национальный университет Сингапура", "main_abbreviation": "", "short_name": "", "abbreviations": ["НУС"], "alternatives": []},
+      "kaz": {"official": "Сингапур ұлттық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-cambridge-uk-cambridge": {
+      "eng": {"official": "University of Cambridge", "main_abbreviation": "", "short_name": "Cambridge", "abbreviations": [], "alternatives": ["Cambridge University", "Cambridge"]},
+      "rus": {"official": "Кембриджский университет", "main_abbreviation": "", "short_name": "Кембридж", "abbreviations": [], "alternatives": ["Кембридж"]},
+      "kaz": {"official": "Кембридж университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "tsinghua-university-cn-beijing": {
+      "eng": {"official": "Tsinghua University", "main_abbreviation": "", "short_name": "Tsinghua", "abbreviations": ["THU"], "alternatives": ["Tsinghua"]},
+      "rus": {"official": "Университет Цинхуа", "main_abbreviation": "", "short_name": "Цинхуа", "abbreviations": ["ТХУ"], "alternatives": ["Цинхуа"]},
+      "kaz": {"official": "Цинхуа университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-melbourne-au-melbourne": {
+      "eng": {"official": "University of Melbourne", "main_abbreviation": "", "short_name": "Melbourne", "abbreviations": ["UniMelb"], "alternatives": ["The University of Melbourne", "Melbourne"]},
+      "rus": {"official": "Мельбурнский университет", "main_abbreviation": "", "short_name": "Мельбурн", "abbreviations": [], "alternatives": ["Мельбурн", "ЮниМелб"]},
+      "kaz": {"official": "Мельбурн университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "technical-university-of-munich-de-munich": {
+      "eng": {"official": "Technical University of Munich", "main_abbreviation": "TUM", "short_name": "", "abbreviations": ["TUM"], "alternatives": ["Technische Universität München", "TU Munich"]},
+      "rus": {"official": "Технический университет Мюнхена", "main_abbreviation": "", "short_name": "", "abbreviations": ["ТУМ"], "alternatives": ["Мюнхенский технический университет"]},
+      "kaz": {"official": "Мюнхен техникалық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "epfl-ch-lausanne": {
+      "eng": {"official": "Swiss Federal Institute of Technology Lausanne", "main_abbreviation": "EPFL", "short_name": "", "abbreviations": ["EPFL"], "alternatives": ["École Polytechnique Fédérale de Lausanne", "Swiss Federal Institute of Technology in Lausanne"]},
+      "rus": {"official": "Федеральная политехническая школа Лозанны", "main_abbreviation": "", "short_name": "", "abbreviations": ["ЕПФЛ"], "alternatives": ["Политехническая школа Лозанны"]},
+      "kaz": {"official": "Лозанна федералдық политехникалық мектебі", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "caltech-usa-pasadena": {
+      "eng": {"official": "California Institute of Technology", "main_abbreviation": "Caltech", "short_name": "", "abbreviations": ["Caltech"], "alternatives": []},
+      "rus": {"official": "Калифорнийский технологический институт", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": ["Калтех"]},
+      "kaz": {"official": "Калифорния технологиялық институты", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-toronto-ca-toronto": {
+      "eng": {"official": "University of Toronto", "main_abbreviation": "", "short_name": "Toronto", "abbreviations": ["UofT", "U of T"], "alternatives": ["The University of Toronto", "Toronto"]},
+      "rus": {"official": "Университет Торонто", "main_abbreviation": "", "short_name": "Торонто", "abbreviations": [], "alternatives": ["Торонто", "Ю оф Т"]},
+      "kaz": {"official": "Торонто университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "cuhk-hk-shatin": {
+      "eng": {"official": "The Chinese University of Hong Kong", "main_abbreviation": "CUHK", "short_name": "", "abbreviations": ["CUHK"], "alternatives": ["Chinese University of Hong Kong"]},
+      "rus": {"official": "Китайский университет Гонконга", "main_abbreviation": "", "short_name": "", "abbreviations": ["КУХК"], "alternatives": ["Гонконгский китайский университет"]},
+      "kaz": {"official": "Гонконг қытай университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-tokyo-jp-tokyo": {
+      "eng": {"official": "University of Tokyo", "main_abbreviation": "", "short_name": "Tokyo", "abbreviations": ["UTokyo"], "alternatives": ["The University of Tokyo", "Tokyo University", "Tokyo", "Todai"]},
+      "rus": {"official": "Токийский университет", "main_abbreviation": "", "short_name": "Токио", "abbreviations": ["УТокио"], "alternatives": ["Токио", "Тодай"]},
+      "kaz": {"official": "Токио университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-chicago-usa-chicago": {
+      "eng": {"official": "University of Chicago", "main_abbreviation": "", "short_name": "Chicago", "abbreviations": ["UChicago"], "alternatives": ["Chicago"]},
+      "rus": {"official": "Чикагский университет", "main_abbreviation": "", "short_name": "Чикаго", "abbreviations": [], "alternatives": ["Чикаго"]},
+      "kaz": {"official": "Чикаго университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "seoul-national-university-kr-seoul": {
+      "eng": {"official": "Seoul National University", "main_abbreviation": "SNU", "short_name": "", "abbreviations": ["SNU"], "alternatives": []},
+      "rus": {"official": "Сеульский национальный университет", "main_abbreviation": "", "short_name": "", "abbreviations": ["СНУ"], "alternatives": []},
+      "kaz": {"official": "Сеул ұлттық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "delft-university-of-technology-nl-delft": {
+      "eng": {"official": "Delft University of Technology", "main_abbreviation": "TU Delft", "short_name": "", "abbreviations": ["TU Delft"], "alternatives": ["Technische Universiteit Delft", "Delft Tech"]},
+      "rus": {"official": "Делфтский технический университет", "main_abbreviation": "", "short_name": "", "abbreviations": ["ТУ Делфт"], "alternatives": ["Делфт Тех"]},
+      "kaz": {"official": "Дельфт технологиялық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-pennsylvania-usa-philadelphia": {
+      "eng": {"official": "University of Pennsylvania", "main_abbreviation": "", "short_name": "Penn", "abbreviations": ["UPenn"], "alternatives": ["Penn"]},
+      "rus": {"official": "Пенсильванский университет", "main_abbreviation": "", "short_name": "Пенн", "abbreviations": [], "alternatives": ["Пенн"]},
+      "kaz": {"official": "Пенсильвания университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "kyoto-university-jp-kyoto": {
+      "eng": {"official": "Kyoto University", "main_abbreviation": "", "short_name": "Kyoto", "abbreviations": ["KyotoU"], "alternatives": ["Kyoto", "Kyodai"]},
+      "rus": {"official": "Киотский университет", "main_abbreviation": "", "short_name": "Киото", "abbreviations": [], "alternatives": ["Киото", "Кёто", "Кёодай"]},
+      "kaz": {"official": "Киото университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "cornell-university-usa-ithaca": {
+      "eng": {"official": "Cornell University", "main_abbreviation": "", "short_name": "Cornell", "abbreviations": [], "alternatives": ["Cornell"]},
+      "rus": {"official": "Корнеллский университет", "main_abbreviation": "", "short_name": "Корнелл", "abbreviations": [], "alternatives": ["Корнелл"]},
+      "kaz": {"official": "Корнелл университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "uc-berkeley-usa-berkeley": {
+      "eng": {"official": "University of California (Berkeley)", "main_abbreviation": "", "short_name": "Berkeley", "abbreviations": [], "alternatives": ["University of California, Berkeley", "Berkeley", "UC Berkeley"]},
+      "rus": {"official": "Калифорнийский университет (Беркли)", "main_abbreviation": "", "short_name": "Беркли", "abbreviations": [], "alternatives": ["Калифорнийский университет в Беркли", "Беркли"]},
+      "kaz": {"official": "Калифорния университеті (Беркли)", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "unsw-sydney-au-sydney": {
+      "eng": {"official": "University of New South Wales", "main_abbreviation": "UNSW", "short_name": "", "abbreviations": ["UNSW"], "alternatives": ["UNSW Sydney", "New South Wales"]},
+      "rus": {"official": "Университет Нового Южного Уэльса в Сиднее", "main_abbreviation": "", "short_name": "", "abbreviations": ["ЮНСВ"], "alternatives": ["Университет Нового Южного Уэльса"]},
+      "kaz": {"official": "Жаңа Оңтүстік Уэльс университеті, Сидней", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "yale-university-usa-new-haven": {
+      "eng": {"official": "Yale University", "main_abbreviation": "", "short_name": "Yale", "abbreviations": [], "alternatives": ["Yale"]},
+      "rus": {"official": "Йельский университет", "main_abbreviation": "", "short_name": "Йель", "abbreviations": [], "alternatives": ["Йель"]},
+      "kaz": {"official": "Йель университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "princeton-university-usa-princeton": {
+      "eng": {"official": "Princeton University", "main_abbreviation": "", "short_name": "Princeton", "abbreviations": [], "alternatives": ["Princeton"]},
+      "rus": {"official": "Принстонский университет", "main_abbreviation": "", "short_name": "Принстон", "abbreviations": [], "alternatives": ["Принстон"]},
+      "kaz": {"official": "Принстон университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-sydney-au-sydney": {
+      "eng": {"official": "University of Sydney", "main_abbreviation": "", "short_name": "Sydney", "abbreviations": ["USyd"], "alternatives": ["The University of Sydney", "Sydney"]},
+      "rus": {"official": "Сиднейский университет", "main_abbreviation": "", "short_name": "Сидней", "abbreviations": [], "alternatives": ["Сидней"]},
+      "kaz": {"official": "Сидней университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "mcgill-university-ca-montreal": {
+      "eng": {"official": "McGill University", "main_abbreviation": "", "short_name": "McGill", "abbreviations": [], "alternatives": ["McGill"]},
+      "rus": {"official": "Университет Макгилла", "main_abbreviation": "", "short_name": "Макгилл", "abbreviations": [], "alternatives": ["Макгилл"]},
+      "kaz": {"official": "МакГилл университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "johns-hopkins-university-usa-baltimore": {
+      "eng": {"official": "Johns Hopkins University", "main_abbreviation": "JHU", "short_name": "", "abbreviations": ["JHU"], "alternatives": ["Johns Hopkins"]},
+      "rus": {"official": "Университет Джонса Хопкинса", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": ["Хопкинс"]},
+      "kaz": {"official": "Джонс Хопкинс университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "australian-national-university-au-canberra": {
+      "eng": {"official": "Australian National University", "main_abbreviation": "ANU", "short_name": "", "abbreviations": ["ANU"], "alternatives": []},
+      "rus": {"official": "Австралийский национальный университет", "main_abbreviation": "", "short_name": "", "abbreviations": ["АНУ"], "alternatives": []},
+      "kaz": {"official": "Австралия ұлттық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-edinburgh-uk-edinburgh": {
+      "eng": {"official": "University of Edinburgh", "main_abbreviation": "", "short_name": "Edinburgh", "abbreviations": [], "alternatives": ["Edinburgh"]},
+      "rus": {"official": "Эдинбургский университет", "main_abbreviation": "", "short_name": "Эдинбург", "abbreviations": [], "alternatives": ["Эдинбург"]},
+      "kaz": {"official": "Эдинбург университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-manchester-uk-manchester": {
+      "eng": {"official": "University of Manchester", "main_abbreviation": "", "short_name": "Manchester", "abbreviations": [], "alternatives": ["The University of Manchester", "Manchester"]},
+      "rus": {"official": "Манчестерский университет", "main_abbreviation": "", "short_name": "Манчестер", "abbreviations": [], "alternatives": ["Манчестер"]},
+      "kaz": {"official": "Манчестер университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "columbia-university-usa-new-york": {
+      "eng": {"official": "Columbia University", "main_abbreviation": "", "short_name": "Columbia", "abbreviations": [], "alternatives": ["Columbia University in the City of New York", "Columbia"]},
+      "rus": {"official": "Колумбийский университет", "main_abbreviation": "", "short_name": "Колумбия", "abbreviations": [], "alternatives": ["Колумбия"]},
+      "kaz": {"official": "Колумбия университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-british-columbia-ca-vancouver": {
+      "eng": {"official": "University of British Columbia", "main_abbreviation": "UBC", "short_name": "", "abbreviations": ["UBC"], "alternatives": ["The University of British Columbia", "British Columbia"]},
+      "rus": {"official": "Университет Британской Колумбии", "main_abbreviation": "", "short_name": "", "abbreviations": ["ЮБиСи"], "alternatives": []},
+      "kaz": {"official": "Британдық Колумбия университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "ucla-usa-los-angeles": {
+      "eng": {"official": "University of California (Los Angeles)", "main_abbreviation": "UCLA", "short_name": "", "abbreviations": ["UCLA"], "alternatives": ["University of California, Los Angeles"]},
+      "rus": {"official": "Калифорнийский университет (Лос-Анджелес)", "main_abbreviation": "", "short_name": "", "abbreviations": ["ЮКЛА"], "alternatives": ["Калифорнийский университет в Лос-Анджелесе"]},
+      "kaz": {"official": "Калифорния университеті (Лос-Анджелес)", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-waterloo-ca-waterloo": {
+      "eng": {"official": "University of Waterloo", "main_abbreviation": "", "short_name": "Waterloo", "abbreviations": ["UWaterloo"], "alternatives": ["Waterloo"]},
+      "rus": {"official": "Университет Ватерлоо", "main_abbreviation": "", "short_name": "Ватерлоо", "abbreviations": [], "alternatives": ["Ватерлоо"]},
+      "kaz": {"official": "Ватерлоо университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "kaist-kr-daejeon": {
+      "eng": {"official": "Korea Advanced Institute of Science and Technology", "main_abbreviation": "KAIST", "short_name": "", "abbreviations": ["KAIST"], "alternatives": []},
+      "rus": {"official": "Корейский передовой институт науки и технологий", "main_abbreviation": "", "short_name": "", "abbreviations": ["КАИСТ", "КАЙСТ"], "alternatives": []},
+      "kaz": {"official": "Кореяның озық ғылым және технология институты", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "nazarbayev-university-kaz-astana": {
+      "eng": {"official": "Nazarbayev University", "main_abbreviation": "NU", "short_name": "", "abbreviations": ["NU"], "alternatives": []},
+      "rus": {"official": "Назарбаев Университет", "main_abbreviation": "НУ", "short_name": "", "abbreviations": ["НУ"], "alternatives": ["Университет Назарбаева"]},
+      "kaz": {"official": "Назарбаев университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "suleyman-demirel-university-kaz-kaskelen": {
+      "eng": {"official": "Suleyman Demirel University", "main_abbreviation": "SDU", "short_name": "", "abbreviations": ["SDU"], "alternatives": ["SDU University"]},
+      "rus": {"official": "Университет имени Сулеймана Демиреля", "main_abbreviation": "СДУ", "short_name": "", "abbreviations": ["СДУ"], "alternatives": ["Университет Сулеймана Демиреля", "Университет СДУ"]},
+      "kaz": {"official": "Сүлеймен Демирел университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "astana-it-university-kaz-astana": {
+      "eng": {"official": "Astana IT University", "main_abbreviation": "AITU", "short_name": "", "abbreviations": ["AITU"], "alternatives": []},
+      "rus": {"official": "Астана IT университет", "main_abbreviation": "АИТУ", "short_name": "", "abbreviations": ["АИТУ"], "alternatives": ["Астана ИТ Университет"]},
+      "kaz": {"official": "Астана ақпараттық технологиялар университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "astana-medical-university-kaz-astana": {
+      "eng": {"official": "Astana Medical University", "main_abbreviation": "MUA", "short_name": "", "abbreviations": ["MUA", "AMU"], "alternatives": ["Medical University Astana", "Medical University of Astana"]},
+      "rus": {"official": "Медицинский университет Астана", "main_abbreviation": "МУА", "short_name": "", "abbreviations": ["МУА"], "alternatives": ["Медицинский университет Астаны"]},
+      "kaz": {"official": "Астана медициналық университеті", "main_abbreviation": "АМУ", "short_name": "", "abbreviations": ["АМУ"], "alternatives": ["Астана медицина университеті", "Төрегелді Шарманов атындағы Ұлттық медицина университеті", "Шарманов"]},
+      "source": {"url": "https://amu.edu.kz/about-university/", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "international-information-technology-university-kaz-almaty": {
+      "eng": {"official": "International Information Technology University", "main_abbreviation": "IITU", "short_name": "", "abbreviations": ["IITU", "MUIT"], "alternatives": []},
+      "rus": {"official": "Международный университет информационных технологий", "main_abbreviation": "МУИТ", "short_name": "", "abbreviations": ["МУИТ"], "alternatives": []},
+      "kaz": {"official": "Халықаралық ақпараттық технологиялар университеті", "main_abbreviation": "ХАТУ", "short_name": "", "abbreviations": ["ХАТУ"], "alternatives": []},
+      "source": {"url": "https://iitu.edu.kz/kk/articles/ob-universitete-kk/missia-i-strategia-kk/", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "satbayev-university-kaz-almaty": {
+      "eng": {"official": "Satbayev University", "main_abbreviation": "", "short_name": "Satbayev", "abbreviations": ["KazNRTU", "KazNTU"], "alternatives": ["Kazakh National Research Technical University named after K.I. Satbayev", "K.I. Satbayev Kazakh National Research Technical University", "Satbayev"]},
+      "rus": {"official": "Университет Сатпаева", "main_abbreviation": "", "short_name": "Сатпаев", "abbreviations": ["КазНИТУ"], "alternatives": ["Казахский национальный исследовательский технический университет имени К.И. Сатпаева", "Сатпаев", "Политех"]},
+      "kaz": {"official": "Сәтбаев университеті", "main_abbreviation": "", "short_name": "Сәтбаев", "abbreviations": ["ҚазҰТЗУ"], "alternatives": ["Қ.И. Сәтбаев атындағы Қазақ ұлттық техникалық зерттеу университеті", "Сәтбаев"]},
+      "source": {"url": "https://satbayev.university/kk/news/kazutzu-dyn-zhana-atauy-satbaev-universiteti", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "kazakhstan-british-technical-university-kaz-almaty": {
+      "eng": {"official": "Kazakhstan-British Technical University", "main_abbreviation": "KBTU", "short_name": "", "abbreviations": ["KBTU"], "alternatives": ["Kazakh-British Technical University"]},
+      "rus": {"official": "Казахстанско-Британский технический университет", "main_abbreviation": "КБТУ", "short_name": "", "abbreviations": ["КБТУ"], "alternatives": ["Казахско-Британский технический университет"]},
+      "kaz": {"official": "Қазақ-Британ техникалық университеті", "main_abbreviation": "ҚБТУ", "short_name": "", "abbreviations": ["ҚБТУ"], "alternatives": []},
+      "source": {"url": "https://kbtu.edu.kz/kz/universitet-turaly/tarikhy", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "al-farabi-kazakh-national-university-kaz-almaty": {
+      "eng": {"official": "Al-Farabi Kazakh National University", "main_abbreviation": "KazNU", "short_name": "", "abbreviations": ["KazNU"], "alternatives": ["Kazakh National University named after al-Farabi"]},
+      "rus": {"official": "Казахский национальный университет имени аль-Фараби", "main_abbreviation": "КазНУ", "short_name": "", "abbreviations": ["КазНУ"], "alternatives": ["КазНУ имени аль-Фараби", "Казахский национальный университет", "Аль-Фараби"]},
+      "kaz": {"official": "Әл-Фараби атындағы Қазақ ұлттық университеті", "main_abbreviation": "ҚазҰУ", "short_name": "", "abbreviations": ["ҚазҰУ"], "alternatives": []},
+      "source": {"url": "https://www.kaznu.kz/kz/17718/page", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "l-n-gumilyov-eurasian-national-university-kaz-astana": {
+      "eng": {"official": "L.N. Gumilyov Eurasian National University", "main_abbreviation": "ENU", "short_name": "", "abbreviations": ["ENU"], "alternatives": ["Gumilyov Eurasian National University", "Eurasian National University"]},
+      "rus": {"official": "Евразийский национальный университет имени Л.Н. Гумилева", "main_abbreviation": "ЕНУ", "short_name": "", "abbreviations": ["ЕНУ"], "alternatives": ["Евразийский национальный университет", "ЕНУ имени Гумилева"]},
+      "kaz": {"official": "Л.Н. Гумилев атындағы Еуразия ұлттық университеті", "main_abbreviation": "ЕҰУ", "short_name": "", "abbreviations": ["ЕҰУ"], "alternatives": []},
+      "source": {"url": "https://enu.kz/kz/page/university/about-us", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "narxoz-university-kaz-almaty": {
+      "eng": {"official": "Narxoz University", "main_abbreviation": "", "short_name": "Narxoz", "abbreviations": [], "alternatives": ["Narxoz"]},
+      "rus": {"official": "Университет Нархоз", "main_abbreviation": "", "short_name": "Нархоз", "abbreviations": [], "alternatives": ["Нархоз"]},
+      "kaz": {"official": "Нархоз университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "kimep-university-kaz-almaty": {
+      "eng": {"official": "KIMEP University", "main_abbreviation": "KIMEP", "short_name": "", "abbreviations": ["KIMEP"], "alternatives": []},
+      "rus": {"official": "Университет КИМЭП", "main_abbreviation": "КИМЭП", "short_name": "", "abbreviations": ["КИМЭП"], "alternatives": []},
+      "kaz": {"official": "КИМЭП университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "asfendiyarov-kazakh-national-medical-university-kaz-almaty": {
+      "eng": {"official": "Asfendiyarov Kazakh National Medical University", "main_abbreviation": "KazNMU", "short_name": "", "abbreviations": ["KazNMU"], "alternatives": ["S.D. Asfendiyarov Kazakh National Medical University", "Kazakh National Medical University"]},
+      "rus": {"official": "Казахский национальный медицинский университет имени С.Д. Асфендиярова", "main_abbreviation": "КазНМУ", "short_name": "", "abbreviations": ["КазНМУ"], "alternatives": ["Казахский национальный медицинский университет", "КазНМУ имени Асфендиярова"]},
+      "kaz": {"official": "С.Д. Асфендияров атындағы Қазақ ұлттық медициналық университеті", "main_abbreviation": "ҚазҰМУ", "short_name": "", "abbreviations": ["ҚазҰМУ"], "alternatives": ["С.Ж. Асфендияров атындағы Қазақ ұлттық медицина университеті"]},
+      "source": {"url": "https://do.kaznmu.edu.kz/", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "abai-kazakh-national-pedagogical-university-kaz-almaty": {
+      "eng": {"official": "Abai Kazakh National Pedagogical University", "main_abbreviation": "KazNPU", "short_name": "", "abbreviations": ["KazNPU"], "alternatives": ["Abai University", "Kazakh National Pedagogical University named after Abai"]},
+      "rus": {"official": "Казахский национальный педагогический университет имени Абая", "main_abbreviation": "КазНПУ", "short_name": "", "abbreviations": ["КазНПУ"], "alternatives": ["Университет Абая", "КазНПУ имени Абая", "Казахский национальный педагогический университет"]},
+      "kaz": {"official": "Абай атындағы Қазақ ұлттық педагогикалық университеті", "main_abbreviation": "ҚазҰПУ", "short_name": "", "abbreviations": ["ҚазҰПУ"], "alternatives": []},
+      "source": {"url": "https://abaiuniversity.edu.kz/kz/3/page/", "checked": "2026-11-21", "note": "Kazakh-script abbreviation as used on the official Kazakh pages"}
+    },
+    "ucl-uk-london": {
+      "eng": {"official": "University College London", "main_abbreviation": "UCL", "short_name": "", "abbreviations": ["UCL"], "alternatives": []},
+      "rus": {"official": "Университетский колледж Лондона", "main_abbreviation": "", "short_name": "", "abbreviations": ["ЮКЛ"], "alternatives": []},
+      "kaz": {"official": "Лондон университеттік колледжі", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "kings-college-london-uk-london": {
+      "eng": {"official": "King's College London", "main_abbreviation": "KCL", "short_name": "", "abbreviations": ["KCL"], "alternatives": []},
+      "rus": {"official": "Королевский колледж Лондона", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": ["Кингс"]},
+      "kaz": {"official": "Лондон Корольдік колледжі", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "university-of-hong-kong-hk-hong-kong": {
+      "eng": {"official": "The University of Hong Kong", "main_abbreviation": "HKU", "short_name": "", "abbreviations": ["HKU"], "alternatives": ["Hong Kong University"]},
+      "rus": {"official": "Гонконгский университет", "main_abbreviation": "", "short_name": "", "abbreviations": ["ХКУ"], "alternatives": []},
+      "kaz": {"official": "Гонконг университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "hkust-hk-hong-kong": {
+      "eng": {"official": "The Hong Kong University of Science and Technology", "main_abbreviation": "HKUST", "short_name": "", "abbreviations": ["HKUST"], "alternatives": ["Hong Kong University of Science and Technology"]},
+      "rus": {"official": "Гонконгский университет науки и технологий", "main_abbreviation": "", "short_name": "", "abbreviations": ["ХКУСТ"], "alternatives": []},
+      "kaz": {"official": "Гонконг ғылым және технология университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    },
+    "nanyang-technological-university-sg-singapore": {
+      "eng": {"official": "Nanyang Technological University", "main_abbreviation": "NTU", "short_name": "", "abbreviations": ["NTU"], "alternatives": ["Nanyang"]},
+      "rus": {"official": "Наньянский технологический университет", "main_abbreviation": "", "short_name": "", "abbreviations": ["НТУ"], "alternatives": []},
+      "kaz": {"official": "Наньян технологиялық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+    }
+  }
+}

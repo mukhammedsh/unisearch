@@ -2707,16 +2707,22 @@ export function initUniversitiesPage() {
                 zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
             }).addTo(mapInstance);
 
+            // The cluster radius (px between marker centres) is kept wider than a
+            // label pill, so clustering also keeps unclustered labels from overlapping.
             markersLayer = L.markerClusterGroup({
                 showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
+                maxClusterRadius: 100,
                 chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
                 iconCreateFunction: function(cluster) {
-                    const count = cluster.getChildCount();
+                    const label = mapClusterLabel(cluster);
                     return L.divIcon({
-                        html: `<span class="map-cluster-count">${count}</span>`,
+                        html: label
+                            ? `<span class="map-cluster-pill" aria-hidden="true"><span class="map-cluster-pill__place">${escapeHtml(label.text)}</span><span class="map-cluster-pill__count">${escapeHtml(label.count)}</span></span>`
+                            : `<span class="map-cluster-count" aria-hidden="true">${cluster.getChildCount()}</span>`,
                         className: "cluster-icon-container",
-                        iconSize: [44, 44],
-                        iconAnchor: [22, 22],
+                        // No fixed size: the pill is as wide as its label and is
+                        // centred on the point with CSS.
+                        iconSize: null,
                     });
                 }
             });
@@ -2771,6 +2777,28 @@ export function initUniversitiesPage() {
         } else {
             window.setTimeout(startWarmup, 0);
         }
+    }
+
+    // Where each university stands in the results list the user is looking at
+    // (the selected sort, UniFit included). The list holds every matching
+    // university, so this is the order a group is labelled by.
+    let mapResultsOrder = new Map();
+
+    function syncMapResultsOrder() {
+        mapResultsOrder = new Map(mapResultsItems.map((item, index) => [String(item?.id || "").trim(), index]));
+        if (markersLayer && typeof markersLayer.refreshClusters === "function") markersLayer.refreshClusters();
+    }
+
+    // A group is named like a single marker: by the university that comes
+    // first in the selected sort, plus how many others it holds ("КазНУ +3").
+    // Without any label to show it is just the count.
+    function mapClusterLabel(cluster) {
+        const markers = cluster.getAllChildMarkers();
+        const orderOf = (marker) => mapResultsOrder.get(marker.options.uniId) ?? Number.MAX_SAFE_INTEGER;
+        const top = markers
+            .filter((marker) => marker.options.mapLabel)
+            .sort((a, b) => (orderOf(a) - orderOf(b)) || (a.options.mapRank - b.options.mapRank))[0];
+        return top ? { text: top.options.mapLabel, count: `+${markers.length - 1}` } : null;
     }
 
     function updateMapResultsSelection(uniId) {
@@ -3066,6 +3094,7 @@ export function initUniversitiesPage() {
             mapResultsTotal = 0;
             mapResultsHasMore = true;
             mapResultsLoadFailed = false;
+            syncMapResultsOrder();
         }
 
         mapResultsLoadingMore = true;
@@ -3087,6 +3116,7 @@ export function initUniversitiesPage() {
             });
 
             mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
+            syncMapResultsOrder();
             mapResultsPage = nextPage;
             mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
             mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
@@ -3283,22 +3313,31 @@ export function initUniversitiesPage() {
             autoPanPaddingBottomRight: L.point(20, 20)
         };
         const newMarkers = [];
-        items.forEach(u => {
+        items.forEach((u, index) => {
             const latitude = Number(u?.coordinates?.lat);
             const longitude = Number(u?.coordinates?.lon);
             if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
                 const uniId = String(u.id || "");
+                // The short label (abbreviation or distinctive name) comes from the
+                // API; without one the marker stays icon-only rather than guessing.
+                const mapLabel = String(u.map_label || "").trim();
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
-                    html: '<span class="map-university-dot" aria-hidden="true"></span>',
-                    iconSize: [44, 44],
-                    iconAnchor: [22, 22],
+                    html: `<span class="map-university-marker" aria-hidden="true">${heroIcon("academic-cap", "map-university-marker__icon", { "stroke-width": 2 })}${mapLabel ? `<span class="map-university-marker__label">${escapeHtml(mapLabel)}</span>` : ""}</span>`,
+                    iconSize: null,
                     popupAnchor: [0, -24],
                 });
                 const marker = L.marker([latitude, longitude], {
                     icon: customIcon,
                     title: trUniversityName(u),
-                    uniId: uniId
+                    uniId: uniId,
+                    mapLabel,
+                    mapRank: index,
+                });
+                marker.bindTooltip(escapeHtml(trUniversityName(u)), {
+                    direction: "top",
+                    offset: [0, -18],
+                    className: "map-university-tooltip",
                 });
                 const loadedCard = findLoadedMapCard(uniId);
                 const cardHTML = loadedCard ? renderFullMapPopup(loadedCard) : renderMapPointPopup(u, "loading");
@@ -3915,6 +3954,7 @@ export function initUniversitiesPage() {
             if (mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
             if (state.only_saved && savedUniversityIds.size === 0) {
                 mapResultsItems = [];
+                syncMapResultsOrder();
                 mapResultsPage = 0;
                 mapResultsTotal = 0;
                 mapResultsHasMore = false;
@@ -4231,6 +4271,9 @@ ${rankInnerHtml}
                     <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
                 </div>
             </div>`;
+        const backdropHtml = hideMedia && mapVariant
+            ? `<div class="uni-card-backdrop" aria-hidden="true"><img src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 360px, 100vw" alt="" loading="${loadingAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1"></div>`
+            : "";
         const headHtml = hideMedia
             ? `<div class="uni-head"><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
             : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
@@ -4242,7 +4285,7 @@ ${rankInnerHtml}
             : `<a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
         return `
         <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
-            ${mediaHtml}
+            ${mediaHtml}${backdropHtml}
             ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
             <div class="uni-body">
             ${headHtml}
