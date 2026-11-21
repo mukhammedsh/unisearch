@@ -63,8 +63,8 @@
       "kaz": {"official": "Лозанна федералдық политехникалық мектебі", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
     },
     "caltech-usa-pasadena": {
-      "eng": {"official": "California Institute of Technology", "main_abbreviation": "", "short_name": "Caltech", "abbreviations": [], "alternatives": ["Caltech"]},
-      "rus": {"official": "Калифорнийский технологический институт", "main_abbreviation": "", "short_name": "Калтех", "abbreviations": [], "alternatives": ["Калтех"]},
+      "eng": {"official": "California Institute of Technology", "main_abbreviation": "Caltech", "short_name": "", "abbreviations": ["Caltech"], "alternatives": []},
+      "rus": {"official": "Калифорнийский технологический институт", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": ["Калтех"]},
       "kaz": {"official": "Калифорния технологиялық институты", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
     },
     "university-of-toronto-ca-toronto": {
@@ -94,7 +94,7 @@
     },
     "delft-university-of-technology-nl-delft": {
       "eng": {"official": "Delft University of Technology", "main_abbreviation": "TU Delft", "short_name": "", "abbreviations": ["TU Delft"], "alternatives": ["Technische Universiteit Delft", "Delft Tech"]},
-      "rus": {"official": "Делфтский технический университет", "main_abbreviation": "ТУ Делфт", "short_name": "", "abbreviations": ["ТУ Делфт"], "alternatives": ["Делфт Тех"]},
+      "rus": {"official": "Делфтский технический университет", "main_abbreviation": "", "short_name": "", "abbreviations": ["ТУ Делфт"], "alternatives": ["Делфт Тех"]},
       "kaz": {"official": "Дельфт технологиялық университеті", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
     },
     "university-of-pennsylvania-usa-philadelphia": {
