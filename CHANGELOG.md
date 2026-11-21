@@ -12,6 +12,7 @@ Minor release: map markers now say which university they mark, and search matche
 - Keep every name a university goes by in one file, `backend/data/university_name_variants.json`: per university id, three languages (English, Russian, Kazakh), each holding the official full name, the main abbreviation (the one shown on the map), a short name (shown instead when the university has no abbreviation, for example Harvard), all abbreviations, and alternatives (other full names, short names, transliterations). Kazakh-script forms cite the official pages they were checked on.
 
 ### Improved
+- Introduce `--accent-text` (separating accent fills from accessible dark-mode text/icon colors) and context-scoped `--control-bg` / `--control-shadow` tokens in `shared/01-foundation.css` so nested controls automatically adapt between `--surface-solid` and `--surface-soft` parents without per-container CSS overrides, guarded by a new `color-role-mismatch` rule in `check:design-lint`.
 - Search matches the official name, abbreviations and alternative names in all three languages whatever the interface language is, so an abbreviation, an alternate full name or a renamed university is found from any language. The official name must equal the stored full name that cards display; a university missing from the file keeps its stored name.
 - List abbreviations separately in the card payload (`abbreviations`), so the search box shows the abbreviation badge only for real abbreviations rather than for other names.
 - Show the university campus photo as a backdrop in the map-mode result cards, fading smoothly into the card surface the same way as in university comparison.
@@ -30,9 +31,18 @@ Minor release: map markers now say which university they mark, and search matche
 - Rewrite remaining jargon in the key facts: what to add instead of "Required applicant evidence is missing", conditions to check yourself, requirements that cannot be checked automatically, and funding options without record counts.
 - Use plain wording in admission details: no record-count badges, "Details and sources", "Not yet published by the university", "Check the conditions on the university site", and the optional fields named "Entry year and fee status".
 
+- Open the Dates and Costs tabs with plain answers in the key-facts wording: the next deadline or application period, the yearly cost with its parts, and what funding exists with the action that opens a separate funding application. Drop the research notes that led these tabs ("Costs keep their published scope", "No comparable budget is confirmed", the empty calendar-export note) and rewrite the tab introductions.
+- Keep each tab's official pages, full source records and unresolved items behind one closed "Sources" disclosure instead of an open "Details and sources" block with a record count.
+- Show the entry-year field only when a path publishes several intakes, needs one, or the reader chose another, and the fee-status field only where the university publishes fee classes (UK Home/Overseas), so MIT, Stanford and NU no longer ask about a UK fee status.
+- Explain saving a path in plain words ("Remember this path": the catalog and comparison then check your results against its minimums; nothing is sent to the university) instead of "saved for UniFit".
+- Rename the Programs tab's "Select program" to "See admission for this program", so choosing a program does not read as a required application step.
 ### Fixed
+- Keep NU's shared undergraduate path when a bachelor's program is chosen in Programs instead of asking for the path again.
+- Stop offering NU's post-offer funding selection as a way to apply in the Dates and Costs prompts.
 - Keep NU's state-grant work obligation on master's, doctoral and residency paths instead of every path: source level labels such as "PhD" are now recognized rather than dropped.
 - Stop showing first-pass master's and doctoral research notes (such as a master's IELTS rule) as history on NU undergraduate paths.
+- Style admissions prompt and retry buttons (`.admissions-state button`) with `--surface-soft` on card surfaces and `--surface-solid` inside `.program-card` so controls stay distinct in both themes.
+- Fix same-surface blending and low-contrast dark-theme colors across CSS stylesheets: nested controls and cards in admissions, finance, comparison, map results, tour modal, profile breakdowns, search suggestions, and empty/error states now step cleanly between `--bg`/`--bg-soft`, `--surface-solid`, and `--surface-soft`, while dark-mode links, badges, tooltips, danger hover actions, and milestone steps use readable semantic text/status tokens instead of dark `--accent` or pale `--color-danger` backgrounds with white text.
 
 ### Tests
 - Check that NU's shared undergraduate paths read without a program and without graduate history, that the Foundation Year is offered beside them, and that a single requirement cycle is used only for its own path.

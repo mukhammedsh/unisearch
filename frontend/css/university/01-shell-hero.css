@@ -621,7 +621,7 @@ a.d-cover-credit:hover {
 }
 
 .d-tooltip a {
-  color: var(--accent);
+  color: var(--tooltip-text);
   font-weight: var(--font-weight-medium);
   text-decoration: underline;
 }
@@ -834,14 +834,14 @@ body[data-page="university"],
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
   :is(.d-site-link, .d-info):hover {
-    background: var(--accent-panel);
-    color: var(--accent);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .d-site-link.is-saved:hover {
@@ -856,7 +856,7 @@ body[data-page="university"],
   }
 
   .d-tooltip a:hover {
-    color: var(--interaction-hover-text);
+    color: var(--tooltip-text);
   }
 }
 

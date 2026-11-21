@@ -427,7 +427,7 @@
 
 .uni-loc-icon {
   flex: 0 0 auto;
-  color: var(--accent);
+  color: var(--accent-text);
   align-self: center;
 }
 
@@ -601,7 +601,7 @@
   padding: 0 var(--space-2);
   border-radius: var(--radius-md);
   background: var(--surface-solid);
-  color: var(--accent);
+  color: var(--interaction-active-text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1139,16 +1139,16 @@
   }
 
   .uni-metric--rank:hover .uni-metric-value {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .u-recent__clear:hover {
-    background: var(--accent-panel);
-    color: var(--accent);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .u-recent__chip:hover {
-    background: var(--surface-solid);
+    background: var(--interaction-hover-surface);
     box-shadow: var(--shadow-xs);
   }
 
@@ -1166,8 +1166,8 @@
   }
 
   .page-btn:not(.page-btn--active):hover {
-    color: var(--accent);
-    background: var(--accent-faint);
+    color: var(--interaction-hover-text);
+    background: var(--interaction-hover-surface);
   }
 
   .uni-status-trigger:hover {
@@ -1176,7 +1176,7 @@
 
   .uni-details:hover,
   :root .uni-card:hover .uni-details {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   :root .uni-card:not(.uni-card--compare-selected):hover {
@@ -1194,7 +1194,7 @@
 
   :root .uni-card:hover .uni-details span {
     transform: translateX(4px);
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 }
 

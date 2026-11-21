@@ -824,16 +824,11 @@ details[open] > summary > .admissions-disclosure-icon {
 :is(
   .admissions-context__heading button,
   .admissions-context__actions button:not([type="submit"]),
-  .admissions-programs__pagination button
+  .admissions-programs__pagination button,
+  .admissions-state button
 ) {
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-micro);
-  color: var(--text);
-}
-
-.admissions-state button {
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-micro);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
 }
 
@@ -1111,7 +1106,7 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-catalog__record-link {
   padding: 0;
   background: none;
-  color: var(--accent);
+  color: var(--text);
   font: inherit;
   text-align: start;
   text-decoration: underline;
@@ -1221,7 +1216,7 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-state .center-loading-spinner {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .university--reviewed .d-page {
@@ -1400,8 +1395,8 @@ details[open] > summary > .admissions-disclosure-icon {
   min-height: 44px;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-base);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-micro);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
   cursor: pointer;
   font: inherit;
@@ -1598,9 +1593,11 @@ details[open] > summary > .admissions-disclosure-icon {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  color: var(--accent-strong);
+  color: var(--text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .admissions-reading h4,

@@ -16,7 +16,7 @@
   padding: 0;
   overflow: hidden;
   border-radius: var(--radius-xl);
-  background: var(--surface-solid);
+  background: var(--bg-soft);
 }
 
 .u-map-container {
@@ -63,8 +63,8 @@
 
 .u-map-container .leaflet-control-zoom a:hover,
 .u-map-container .leaflet-control-zoom a:focus {
-  background: var(--surface-soft);
-  color: var(--accent);
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
 }
 
 .u-map-container .leaflet-control-zoom a.leaflet-disabled {
@@ -313,7 +313,7 @@
   gap: var(--space-2);
   padding: 0 var(--space-4);
   border-radius: var(--radius-base);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   color: var(--text);
   font: inherit;
   font-weight: var(--font-weight-medium);
@@ -322,7 +322,8 @@
 }
 
 .u-map-results-more:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--surface-soft) 92%, var(--text) 8%);
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
 }
 
 .u-map-results-more:disabled {
@@ -349,6 +350,7 @@
   min-width: 240px;
   padding: var(--space-3);
   background: var(--surface-solid);
+  color: var(--text);
 }
 
 .map-point-popup__head {
@@ -389,6 +391,7 @@
 .custom-map-popup .leaflet-popup-content-wrapper,
 .custom-map-popup .leaflet-popup-tip {
   background: var(--surface-solid);
+  color: var(--text);
 }
 
 .custom-map-popup .leaflet-popup-content-wrapper {
@@ -430,8 +433,10 @@
 }
 
 .leaflet-container .custom-map-popup a.leaflet-popup-close-button {
-  color: var(--text-inverse);
-  text-shadow: 0 1px 2px var(--backdrop);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-circle);
+  box-shadow: var(--shadow-xs);
   font-size: var(--text-2xl);
   top: var(--space-2);
   right: var(--space-2);
@@ -480,7 +485,7 @@
   flex: none;
   width: var(--space-4);
   height: var(--space-4);
-  color: var(--accent-strong);
+  color: var(--interaction-hover-text);
 }
 
 .map-university-marker__label,
@@ -517,7 +522,7 @@
   width: var(--space-8);
   height: var(--space-8);
   border-radius: var(--radius-circle);
-  color: var(--accent-strong);
+  color: var(--interaction-hover-text);
 }
 
 .map-university-tooltip {
@@ -562,7 +567,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .leaflet-container .custom-map-popup a.leaflet-popup-close-button:hover {
-    color: var(--text-muted);
+    background: var(--surface-solid);
+    color: var(--interaction-hover-text);
   }
 
   :root .u-map-results-list .uni-card:hover,

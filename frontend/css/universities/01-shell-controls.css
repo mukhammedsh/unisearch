@@ -123,7 +123,7 @@ body[data-page="universities"] {
 
 .u-compare-mode-btn.is-active {
   background: var(--accent-active-surface);
-  color: var(--accent);
+  color: var(--interaction-active-text);
   box-shadow: var(--shadow-xs);
 }
 
@@ -248,7 +248,7 @@ body[data-page="universities"] {
 .u-filter-icon {
   width: 22px;
   height: 22px;
-  color: var(--accent);
+  color: var(--interaction-hover-text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -424,8 +424,8 @@ body[data-page="universities"] {
 }
 
 .u-info:focus-visible {
-  background: var(--accent-panel);
-  color: var(--accent);
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .u-tooltip {
@@ -876,7 +876,8 @@ body[data-page="universities"] {
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-5);
   border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-card);
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: 1.4;
@@ -1011,8 +1012,8 @@ body[data-page="universities"] {
   }
 
   :is(.u-filter-close, .u-info):hover {
-    background: var(--accent-panel);
-    color: var(--accent);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .u-saved-filter__btn:not(.is-active):hover {
@@ -1020,7 +1021,8 @@ body[data-page="universities"] {
   }
 
   .u-unifit-warning__link:hover {
-    background: var(--surface-solid);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .u-unifit-warning__dismiss:hover {

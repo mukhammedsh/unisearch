@@ -125,7 +125,7 @@
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
   background: var(--accent-panel);
   box-shadow: var(--shadow-sm);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 .settings-trigger-btn {
@@ -154,7 +154,7 @@
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
   opacity: 1;
-  background-color: var(--accent);
+  background-color: currentColor;
   transform: rotate(180deg);
 }
 
@@ -255,7 +255,7 @@
 
 .icon-btn{
   background: var(--surface-soft);
-  color: var(--accent);
+  color: var(--text-muted);
   width: 36px;
   height: 36px;
   border-radius: var(--radius-md);
@@ -929,7 +929,7 @@
 }
 
 .toast.info .toast-icon {
-  color: var(--accent);
+  color: var(--color-info);
 }
 
 .toast-close {
@@ -1383,14 +1383,14 @@ select:not(.u-select-hidden) {
   .navbar-search-toggle:hover,
   .lang-switch:hover,
   .navbar-right .lang-control .custom-select-trigger:hover {
-    background: var(--accent-panel);
+    background: var(--interaction-hover-surface);
     box-shadow: var(--shadow-sm);
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .navbar-right .lang-control .custom-select-trigger:hover::after {
     opacity: 1;
-    background-color: var(--accent);
+    background-color: currentColor;
   }
 
   .icon-btn:hover {
@@ -1418,7 +1418,7 @@ select:not(.u-select-hidden) {
   }
 
   .settings-attribution a:hover {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .toast-close:hover {
@@ -1436,7 +1436,7 @@ select:not(.u-select-hidden) {
   }
 
   .footer-legal-links a:hover {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .social-links a:hover {

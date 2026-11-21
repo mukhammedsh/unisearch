@@ -94,7 +94,7 @@ body[data-page="terms"] {
 }
 
 .legal-doc a {
-  color: var(--accent);
+  color: var(--text);
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: var(--font-weight-medium);

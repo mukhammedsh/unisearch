@@ -1,6 +1,7 @@
 /* ===== Shared Admission & Funding Option Cards ===== */
 .track-select-btn {
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-4);
@@ -17,7 +18,7 @@
 .track-select-btn:disabled,
 .track-select-btn.is-active {
   cursor: default;
-  background: var(--surface-soft);
+  background: var(--control-bg);
   color: var(--interaction-active-text);
 }
 
@@ -192,7 +193,8 @@
 .admission-applicable-programs .tag,
 .admission-option-meta .tag {
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
@@ -371,6 +373,7 @@
   line-height: 1.2;
 }
 
+.admission-chance-badge,
 .track-factor-chip {
   display: inline-flex;
   align-items: flex-start; /* Fix for multi-line text alignment */
@@ -541,7 +544,7 @@ button.track-factor-chip {
 /* ===== Track Exam Groups (Global) ===== */
 .track-exam-group {
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   padding: var(--space-3);
 }
 
@@ -565,7 +568,7 @@ button.track-factor-chip {
 }
 
 .track-exam-group--neutral {
-  background: var(--surface-soft);
+  background: var(--surface-solid);
 }
 
 .track-exam-group--info {
@@ -590,7 +593,8 @@ button.track-factor-chip {
   align-items: center;
   gap: var(--space-2);
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);

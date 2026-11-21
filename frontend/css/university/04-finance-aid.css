@@ -27,7 +27,8 @@
   min-width: 0;
   padding: var(--space-3);
   border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
 }
 
 .finance-award-head {
@@ -52,7 +53,7 @@
   flex: 0 0 auto;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   color: var(--text-muted);
   font-size: var(--text-xs);
   line-height: var(--leading-tight);
@@ -677,7 +678,7 @@
   height: var(--space-2);
   border-radius: var(--radius-full);
   overflow: hidden;
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   gap: 0;
 }
 
@@ -929,7 +930,7 @@
 
 .finance-threshold-value {
   font-size: var(--text-sm);
-  color: var(--accent);
+  color: var(--text);
   font-weight: var(--font-weight-semibold);
 }
 

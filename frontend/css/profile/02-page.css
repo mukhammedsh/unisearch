@@ -632,7 +632,7 @@ body[data-page="profile"] {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--accent);
+  color: var(--interaction-active-text);
   min-width: 0;
 }
 
@@ -965,7 +965,7 @@ textarea.profile-input,
   padding: 0 var(--space-4);
   border-radius: var(--radius-base);
   color: var(--text-muted);
-  background: var(--bg-soft);
+  background: var(--surface-soft);
 }
 
 .profile-exam-form .profile-add {
@@ -1467,13 +1467,13 @@ textarea.profile-input,
   }
 
   .profile-delete.profile-delete--danger-soft:hover {
-    background: color-mix(in srgb, var(--color-danger) 18%, var(--surface-solid));
+    background: var(--color-danger-bg);
     color: var(--color-danger);
   }
 
   .profile-delete--danger:hover {
-    background: var(--color-danger);
-    color: var(--text-inverse);
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
     box-shadow: var(--shadow-xs);
   }
 }

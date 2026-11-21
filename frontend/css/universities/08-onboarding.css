@@ -72,7 +72,7 @@
 
 .u-tour-overline,
 .u-tour-kicker {
-  color: var(--accent);
+  color: var(--interaction-hover-text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
 }
@@ -222,8 +222,8 @@
 .u-tour-inline-btn {
   align-self: flex-start;
   margin-top: var(--space-1-5);
-  background: var(--surface-solid);
-  color: var(--accent);
+  background: var(--surface-soft);
+  color: var(--text);
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 

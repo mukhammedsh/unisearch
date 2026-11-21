@@ -79,10 +79,6 @@ body .has-sliding-indicator .active::after {
   box-shadow: var(--shadow-xs);
 }
 
-.navbar-search-field:focus-within {
-  background: var(--surface-solid);
-}
-
 /* Mobile search overlay trigger (YouTube-style): sizing and visuals come from
    the shared navbar button group below, so the loupe always matches them. */
 .navbar-search-toggle[hidden] {
@@ -305,7 +301,7 @@ body .has-sliding-indicator .active::after {
 
 .navbar-search-highlight {
   background: transparent;
-  color: var(--accent);
+  color: var(--interaction-hover-text);
   font-weight: var(--font-weight-medium);
   text-decoration: underline;
   text-decoration-thickness: 1.5px;
@@ -318,8 +314,8 @@ body .has-sliding-indicator .active::after {
   margin-left: var(--space-2);
   padding: var(--space-0-25) var(--space-1);
   border-radius: var(--radius-xs);
-  background: var(--surface-soft);
-  color: var(--accent);
+  background: var(--accent-panel);
+  color: var(--interaction-hover-text);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   vertical-align: middle;

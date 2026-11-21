@@ -30,7 +30,7 @@
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--accent) 12%, var(--surface-solid));
-  color: var(--accent);
+  color: var(--interaction-active-text);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   line-height: 1.2;
@@ -440,7 +440,7 @@
 }
 
 .compare-cell--best span {
-  color: var(--accent);
+  color: var(--interaction-hover-text);
 }
 
 .compare-results {
@@ -865,6 +865,11 @@
   margin: 0;
 }
 
+.compare-config-options .admission-empty-state {
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-micro);
+}
+
 .compare-config-options .admission-category-card {
   padding: var(--space-6);
   display: flex;
@@ -974,7 +979,7 @@
   gap: var(--space-3);
   padding: var(--space-4);
   border-radius: var(--radius-base);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   box-shadow: var(--shadow-micro);
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
@@ -982,7 +987,7 @@
 }
 
 .compare-config-options .admission-funding-option.is-active {
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   box-shadow: var(--shadow-xs);
 }
 
@@ -1067,6 +1072,7 @@
 .compare-config-column .track-funding-badge--paid {
   color: var(--text-muted);
   background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
 }
 
 .compare-config-column .track-exam-entry-group-list {
@@ -1174,7 +1180,7 @@
 }
 
 .compare-decision-status--incomparable {
-  color: var(--accent);
+  color: var(--interaction-active-text);
   background: var(--accent-panel);
 }
 
@@ -1386,11 +1392,12 @@
   }
 
   .compare-results-action--ghost:hover {
-    background: var(--surface-soft);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .compare-config-options .admission-funding-option:hover {
-    background: var(--surface-solid);
+    background: var(--surface-soft);
     box-shadow: var(--shadow-xs);
   }
 }
