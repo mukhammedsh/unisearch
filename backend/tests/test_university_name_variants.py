@@ -77,6 +77,16 @@ class UniversityNameVariantsDataTests(unittest.TestCase):
                 if names["short_name"]:
                     self.assertIn(names["short_name"], names["alternatives"], f"{uid}/{lang}: short name is not in alternatives")
 
+    def test_short_names_are_written_in_cyrillic_for_russian_and_kazakh(self):
+        # Words are transliterated (Гарвард, Колумбия); abbreviations stay as they are (MIT, KAIST).
+        not_cyrillic = []
+        for uid, entry in _entries().items():
+            for lang in ("rus", "kaz"):
+                short_name = entry[lang]["short_name"]
+                if short_name and not any("Ѐ" <= char <= "ӿ" for char in short_name):
+                    not_cyrillic.append((uid, lang, short_name))
+        self.assertEqual(not_cyrillic, [])
+
     def test_every_catalog_university_has_something_to_show_on_the_map(self):
         for university in universities_service.load_universities():
             for lang in LANGS:
