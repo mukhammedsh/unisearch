@@ -67,7 +67,7 @@ npm run dev:frontend
 - Use official university pages, official admissions pages, or official university-hosted PDFs/reports only.
 - Do not use aggregators, marketing summaries, or inferred facts for verified fields.
 - Prefer empty fields over invented data.
-- Keep display names as full university names; put abbreviations only in hidden search aliases.
+- Keep display names as full university names; put abbreviations, short names and other acceptable names only in `backend/data/university_name_variants.json`, per language as official name, abbreviations and alternatives (they feed search and map marker labels; the official name must equal the stored full name).
 - During draft collection, validate draft structure, relationships, coverage, and affected official sources directly. The runtime audit does not prove completeness or validate drafts it does not read. Do not apply drafts through the runtime synchronization scripts before Stage 2 integration.
 - For common institution facts and the retained admissions contract of the other 46, the synchronization commands are:
   ```bash
