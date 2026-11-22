@@ -1,4 +1,6 @@
 // setup.mjs
+// The default currency follows the device time zone, so tests run in UTC with an en-US browser (USD) on any machine.
+process.env.TZ = "UTC";
 const mockWindow = {
   location: { protocol: 'http:', hostname: 'localhost', pathname: '/' },
   API_BASE_URL: 'http://localhost:8000',

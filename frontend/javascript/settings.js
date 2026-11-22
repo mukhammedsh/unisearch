@@ -1,3 +1,5 @@
+import { COUNTRY_CURRENCY, TIME_ZONE_COUNTRY } from "./data/region-currency.js";
+
 export const SETTINGS_CACHE_KEY = "unisearch_settings_cache_v1";
 export const SETTING_DISABLE_RECENT_UNIVERSITIES = "disable_recent_universities";
 export const SETTING_STORE_RECENT_UNIVERSITIES = SETTING_DISABLE_RECENT_UNIVERSITIES;
@@ -23,7 +25,8 @@ export const SETTINGS_DEFINITIONS = [
   {
     key: SETTING_PREFERRED_CURRENCY,
     type: "select",
-    defaultValue: "USD",
+    // Until the reader chooses, prices follow the currency of the country this device is set to (see regionDefaultCurrency).
+    get defaultValue() { return regionDefaultCurrency(); },
     titleKey: "settings.option.preferred_currency.title",
     descriptionKey: "settings.option.preferred_currency.desc",
         options: [
@@ -198,7 +201,8 @@ export const SETTINGS_DEFINITIONS = [
   {
     key: SETTING_CURRENCY_DISPLAY,
     type: "select",
-    defaultValue: "preferred",
+    // A local currency is an approximation, so the university's own price stays beside it by default.
+    get defaultValue() { return regionDefaultCurrency() === "USD" ? "preferred" : "both"; },
     titleKey: "settings.option.currency_display.title",
     descriptionKey: "settings.option.currency_display.desc",
     options: [
@@ -267,6 +271,44 @@ export function writeSettingsArray(settings) {
   } catch {
     return readSettingsArray();
   }
+}
+
+/**
+ * The default currency for a device: the currency of the country its time zone belongs to, else the country in its
+ * browser language (en-GB, ar-SA), else US dollars. Only currencies with an exchange rate are used. The time zone leads
+ * because many browsers keep an "en-US" language wherever they are.
+ * @param {{timeZone?: string, languages?: string[], supported?: Set<string>}} signals
+ * @returns {string} An ISO 4217 code.
+ */
+export function detectRegionCurrency({ timeZone = "", languages = [], supported = new Set() } = {}) {
+  const fromCountry = (country) => {
+    const code = COUNTRY_CURRENCY[String(country || "").toUpperCase()];
+    return code && supported.has(code) ? code : "";
+  };
+  const languageCountries = languages.map((tag) => {
+    try {
+      return new Intl.Locale(tag).region || "";
+    } catch (error) {
+      if (error instanceof RangeError) return "";
+      throw error;
+    }
+  });
+  for (const country of [TIME_ZONE_COUNTRY[timeZone], ...languageCountries]) {
+    const code = fromCountry(country);
+    if (code) return code;
+  }
+  return "USD";
+}
+
+let regionCurrency = "";
+function regionDefaultCurrency() {
+  if (regionCurrency) return regionCurrency;
+  const definition = SETTINGS_DEFINITIONS.find((item) => item.key === SETTING_PREFERRED_CURRENCY);
+  const supported = new Set(definition.options.map((option) => option.value));
+  const timeZone = typeof Intl?.DateTimeFormat === "function" ? Intl.DateTimeFormat().resolvedOptions().timeZone || "" : "";
+  const languages = typeof navigator === "object" ? [...(navigator.languages || []), navigator.language].filter(Boolean) : [];
+  regionCurrency = detectRegionCurrency({ timeZone, languages, supported });
+  return regionCurrency;
 }
 
 export function getSettingValue(key) {
