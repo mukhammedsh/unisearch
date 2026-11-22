@@ -206,7 +206,12 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
       await page.goto("/index.html");
       await waitForUniversitiesReady(page);
 
-      await expect(page.locator("#catalogLevelFilter .custom-select-trigger")).toBeVisible();
+      if (viewport.name === "phone") {
+        await page.locator("#mobileFilterToggle").click();
+        await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
+      }
+
+      await expect(page.locator("#uSidebar #catalogLevelFilter .custom-select-trigger")).toBeVisible();
       const colors = await page.evaluate(() => {
         const valueForToken = (token) => {
           const probe = document.createElement("div");
@@ -219,7 +224,7 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
         return {
           theme: document.documentElement.dataset.theme,
           control: getComputedStyle(document.querySelector("#catalogLevelFilter .custom-select-trigger")).backgroundColor,
-          controlSurface: valueForToken("--surface-solid"),
+          controlSurface: valueForToken("--surface-soft"),
         };
       });
 

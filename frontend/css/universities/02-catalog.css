@@ -613,18 +613,28 @@
   display: none;
 }
 
+.u-mobile-recent-slot {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+/* With no recent history the slot is empty; hide it so its margin does not open a phantom gap above the cards. */
+.u-mobile-recent-slot:not(:has(.u-recent:not([hidden]))) {
+  display: none;
+}
+
 .u-recent {
   width: 100%;
   box-sizing: border-box;
-  padding: var(--space-4);
-  border-radius: var(--radius-xl);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
   gap: var(--space-3);
   transform-origin: top center;
-  flex-shrink: 0;
 }
 
 .u-recent[hidden],
@@ -632,26 +642,19 @@
   display: none;
 }
 
-.u-filter-footer,
-.u-mobile-recent-slot {
+.u-filter-footer {
   display: none;
 }
 
-.u-recent__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  width: 100%;
-  min-width: 0;
-}
-
 .u-recent__label {
-  flex: 1 1 auto;
   min-width: 0;
-  color: var(--text);
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--text-muted);
   font-family: var(--font-display);
-  font-size: var(--text-md);
+  font-size: var(--text-sm);
   line-height: 1.2;
   font-weight: var(--font-weight-medium);
 }
@@ -659,18 +662,19 @@
 .u-recent__clear {
   flex: 0 0 auto;
   border-radius: var(--radius-sm);
-  background: var(--surface-soft);
+  background: transparent;
   color: var(--text-muted);
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  min-height: 24px;
+  min-height: 36px;
   padding: var(--space-1) var(--space-2);
   font-size: var(--text-xs);
   line-height: 1.1;
   font-weight: var(--font-weight-medium);
+  white-space: nowrap;
   cursor: pointer;
-  box-shadow: var(--shadow-xs);
+  box-shadow: none;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard);
@@ -680,26 +684,75 @@
   width: 100%;
   min-width: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: var(--space-2);
-  overflow: visible;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 0 var(--space-1-5);
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--space-8);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Horizontal edge fades for the recently-viewed chip strip; visible only while
+   more chips lie in that direction. Falls back cleanly to native horizontal scroll. */
+@supports (animation-timeline: scroll()) {
+  @property --u-recent-fade-start {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+  }
+
+  @property --u-recent-fade-end {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+  }
+
+  .u-recent__items {
+    mask:
+      linear-gradient(var(--surface-solid), var(--surface-solid)) no-clip subtract,
+      linear-gradient(to right, var(--surface-solid), transparent) 0 0 / var(--u-recent-fade-start) 100% no-repeat no-clip,
+      linear-gradient(to right, transparent, var(--surface-solid)) 100% 0 / var(--u-recent-fade-end) 100% no-repeat no-clip;
+    animation-name: u-recent-fade-start, u-recent-fade-end;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--space-8), calc(100% - var(--space-8)) 100%;
+  }
+
+  @keyframes u-recent-fade-start {
+    to {
+      --u-recent-fade-start: var(--space-8);
+    }
+  }
+
+  @keyframes u-recent-fade-end {
+    from {
+      --u-recent-fade-end: var(--space-8);
+    }
+  }
 }
 
 .u-recent__chip {
   position: relative;
   box-sizing: border-box;
-  width: 100%;
-  max-width: 100%;
-  min-height: 38px;
-  padding: var(--space-2) var(--space-3);
-  box-shadow: var(--shadow-micro);
+  flex: 0 0 auto;
+  width: auto;
+  max-width: min(240px, 68vw);
+  min-height: 36px;
+  padding: var(--space-1-5) var(--space-3);
+  box-shadow: var(--shadow-xs);
   border-radius: var(--radius-base);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   color: var(--text);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
+  scroll-snap-align: start;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard);
@@ -710,12 +763,12 @@
   min-width: 0;
   color: var(--text);
   text-decoration: none;
-  display: inline-block;
+  display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: var(--text-sm);
-  line-height: 1.3;
+  line-height: var(--leading-normal);
   font-weight: var(--font-weight-medium);
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }

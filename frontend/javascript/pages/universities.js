@@ -289,7 +289,6 @@ let __universitiesBeforeunloadHandler = null;
 let __universitiesCurrencyChangedHandler = null;
 let __universitiesRatesUpdatedHandler = null;
 let __universitiesMobileFilterKeydownHandler = null;
-let __universitiesRecentRelocationHandler = null;
 let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
@@ -353,10 +352,6 @@ export function disposeUniversitiesPage() {
     if (__universitiesMobileFilterKeydownHandler) {
         document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
         __universitiesMobileFilterKeydownHandler = null;
-    }
-    if (__universitiesRecentRelocationHandler) {
-        window.removeEventListener("resize", __universitiesRecentRelocationHandler);
-        __universitiesRecentRelocationHandler = null;
     }
     if (__universitiesResizeHandler) {
         window.removeEventListener("resize", __universitiesResizeHandler);
@@ -1259,13 +1254,7 @@ export function initUniversitiesPage() {
         }
         el.recentlyViewedBar.hidden = false;
         el.recentlyViewedBar.innerHTML = `
-            <div class="u-recent__head">
-                <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
-                <button class="u-recent__clear" type="button" data-action="clear-recent">
-                    ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-                    <span>${escapeHtml(t("universities.recent.clear_all", "Clear all"))}</span>
-                </button>
-            </div>
+            <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
             <div class="u-recent__items">
                 ${rows.map((row) => {
                     const removeLabel = tFormat(
@@ -1288,6 +1277,10 @@ export function initUniversitiesPage() {
                     `;
                 }).join("")}
             </div>
+            <button class="u-recent__clear" type="button" data-action="clear-recent">
+                ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
+                <span>${escapeHtml(t("universities.recent.clear_all", "Clear all"))}</span>
+            </button>
         `;
         lockRecentChipWidths(el.recentlyViewedBar);
         scheduleSyncWorkspaceDepth();
@@ -1356,16 +1349,10 @@ export function initUniversitiesPage() {
         if (!sidebar || !content) return;
 
         const filterCard = el.filterCard || sidebar.querySelector(".u-filter-card");
-        const recentBar = el.recentlyViewedBar;
 
         let leftColHeight = 0;
         if (filterCard) {
             leftColHeight += filterCard.offsetHeight;
-        }
-        if (recentBar && !recentBar.hidden && recentBar.offsetHeight > 0) {
-            const cs = window.getComputedStyle(sidebar);
-            const gap = Number.parseFloat(cs.rowGap || cs.gap) || 24;
-            leftColHeight += gap + recentBar.offsetHeight;
         }
         leftColHeight = Math.max(leftColHeight, sidebar.scrollHeight || 0);
 
@@ -2046,20 +2033,6 @@ export function initUniversitiesPage() {
         };
     };
     const mobileFilters = setupMobileFilters();
-
-    const recentDesktopAnchor = document.createComment("recently viewed desktop position");
-    el.recentlyViewedBar?.parentNode?.insertBefore(recentDesktopAnchor, el.recentlyViewedBar);
-    const relocateRecentlyViewedBar = () => {
-        if (!el.recentlyViewedBar || !recentDesktopAnchor.parentNode) return;
-        if (window.innerWidth <= 1024 && el.mobileRecentSlot) {
-            el.mobileRecentSlot.append(el.recentlyViewedBar);
-            return;
-        }
-        recentDesktopAnchor.parentNode.insertBefore(el.recentlyViewedBar, recentDesktopAnchor.nextSibling);
-    };
-    relocateRecentlyViewedBar();
-    __universitiesRecentRelocationHandler = relocateRecentlyViewedBar;
-    window.addEventListener("resize", __universitiesRecentRelocationHandler);
 
     function handleSortChange(nextSort) {
         if (el.sortSelect) el.sortSelect.value = nextSort;

@@ -23,6 +23,7 @@
     overscroll-behavior-y: contain;
     /* The shared scrollbar (8px thumb) stays visible so the panel reads as scrollable. */
     padding: 0 var(--space-2) var(--space-4) 0;
+    scroll-padding-block: var(--space-10);
   }
 
   /* Edge fades: hint at more filters above and below. Each fades out once its end
@@ -42,38 +43,26 @@
     }
 
     .u-sidebar {
-      mask-image: linear-gradient(
-        to bottom,
-        transparent,
-        var(--surface-solid) var(--u-sidebar-fade-top),
-        var(--surface-solid) calc(100% - var(--u-sidebar-fade-bottom)),
-        transparent
-      );
+      mask:
+        linear-gradient(var(--surface-solid), var(--surface-solid)) no-clip subtract,
+        linear-gradient(to bottom, var(--surface-solid), transparent) 0 0 / 100% var(--u-sidebar-fade-top) no-repeat no-clip,
+        linear-gradient(to bottom, transparent, var(--surface-solid)) 0 100% / 100% var(--u-sidebar-fade-bottom) no-repeat no-clip;
       animation-name: u-sidebar-fade-top, u-sidebar-fade-bottom;
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: scroll(self block);
+      animation-range: 0 var(--space-10), calc(100% - var(--space-10)) 100%;
     }
 
     @keyframes u-sidebar-fade-top {
-      0% {
-        --u-sidebar-fade-top: 0px; /* spacing-exception: registered length must carry a unit */
-      }
-
-      8%,
-      100% {
+      to {
         --u-sidebar-fade-top: var(--space-10);
       }
     }
 
     @keyframes u-sidebar-fade-bottom {
-      0%,
-      92% {
+      from {
         --u-sidebar-fade-bottom: var(--space-10);
-      }
-
-      100% {
-        --u-sidebar-fade-bottom: 0px; /* spacing-exception: registered length must carry a unit */
       }
     }
   }
@@ -85,11 +74,6 @@
     z-index: 2;
     transform: none;
     transition: none;
-  }
-
-  .u-recent {
-    position: relative;
-    z-index: 1;
   }
 }
 
@@ -120,12 +104,8 @@
     padding: var(--space-4);
   }
 
-  .u-filter-title,
-  .u-recent__label {
-    font-size: var(--text-md);
-  }
-
   .u-filter-title {
+    font-size: var(--text-md);
     margin-bottom: var(--space-2);
   }
 
@@ -340,41 +320,31 @@
     color: var(--text-inverse);
   }
 
-  .u-mobile-recent-slot {
-    display: block;
-    margin-bottom: var(--space-4);
-  }
-
-  /* With no recent history the slot is empty; hide it so its margin does not open a phantom gap above the cards. */
-  .u-mobile-recent-slot:not(:has(.u-recent:not([hidden]))) {
-    display: none;
-  }
-
   .u-mobile-recent-slot .u-recent {
-    padding: 0;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-2);
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
   }
 
-  .u-mobile-recent-slot .u-recent__head {
-    padding: 0;
-    align-items: center;
+  .u-mobile-recent-slot .u-recent__label {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: var(--text-md);
+    color: var(--text);
+  }
+
+  .u-mobile-recent-slot .u-recent__clear {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    min-width: 0;
+    padding: var(--space-1) 0;
+    border-radius: 0;
   }
 
   .u-mobile-recent-slot .u-recent__items {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: var(--space-2);
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: var(--space-0-5) 0;
-    scroll-snap-type: x proximity;
+    grid-column: 1 / -1;
+    grid-row: 2;
     scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
   }
 
   .u-mobile-recent-slot .u-recent__items::-webkit-scrollbar {
@@ -382,37 +352,13 @@
   }
 
   .u-mobile-recent-slot .u-recent__chip {
-    flex: 0 0 auto;
-    width: auto;
-    max-width: min(240px, 68vw);
     min-height: 38px;
     padding: var(--space-2) var(--space-3);
-    align-items: center;
-    border-radius: var(--radius-base);
-    background: var(--surface-solid);
-    box-shadow: var(--shadow-xs);
-    scroll-snap-align: start;
-    gap: var(--space-2);
-    transition:
-      background-color var(--motion-fast) var(--motion-ease-standard),
-      box-shadow var(--motion-fast) var(--motion-ease-standard);
   }
 
   .u-mobile-recent-slot .u-recent__chip:active {
     background: var(--interaction-active-surface);
     box-shadow: var(--shadow-xs);
-  }
-
-  .u-mobile-recent-slot .u-recent__link {
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--leading-normal);
-    color: var(--text);
-    text-decoration: none;
   }
 
   .u-mobile-recent-slot .u-recent__remove {
@@ -421,18 +367,7 @@
     height: 22px;
     min-width: 22px;
     min-height: 22px;
-    padding: 0;
-    border-radius: var(--radius-xs);
-    background: transparent;
-    color: var(--text-muted);
     opacity: 0.7;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      opacity var(--motion-fast) var(--motion-ease-standard),
-      background-color var(--motion-fast) var(--motion-ease-standard),
-      color var(--motion-fast) var(--motion-ease-standard);
   }
 
   .u-mobile-recent-slot .u-recent__remove:active {
@@ -445,15 +380,6 @@
     content: "";
     position: absolute;
     inset: -10px;
-  }
-
-  .u-mobile-recent-slot .u-recent__clear {
-    min-width: 0;
-    min-height: 32px;
-    padding: var(--space-1) 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
   }
 
   .compare-tray {
@@ -572,27 +498,7 @@
     width: 100%;
     justify-content: space-between;
     padding-bottom: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-2);
-  }
-
-  .u-section-meta .u-found {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .u-section-actions {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .catalog-level-filter {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-self: stretch;
-    width: 100%;
-    min-width: 0;
   }
 }
 
@@ -716,10 +622,6 @@
   .u-recent {
     margin-left: 0;
     margin-right: 0;
-  }
-
-  .u-recent__head {
-    align-items: flex-start;
   }
 
   .u-recent__clear {

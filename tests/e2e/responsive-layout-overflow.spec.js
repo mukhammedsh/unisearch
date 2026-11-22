@@ -10,6 +10,9 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     // On desktop, the filter sidebar must be visible
     const sidebar = page.locator("#uSidebar");
     await expect(sidebar).toBeVisible();
+    await expect(sidebar.locator("#catalogLevelFilter")).toBeVisible();
+    await expect(sidebar.locator("#recentlyViewedBar")).toHaveCount(0);
+    await expect(page.locator("#mobileRecentSlot #recentlyViewedBar")).toHaveCount(1);
 
     // The mobile filter toggle button must be hidden
     const mobileFilterToggle = page.locator("#mobileFilterToggle");
@@ -26,6 +29,9 @@ test.describe("Responsive Layout and Overflow Verification", () => {
 
     const sidebar = page.locator("#uSidebar");
     await expect(sidebar).toBeVisible();
+    await expect(sidebar.locator("#catalogLevelFilter")).toBeVisible();
+    await expect(sidebar.locator("#recentlyViewedBar")).toHaveCount(0);
+    await expect(page.locator("#mobileRecentSlot #recentlyViewedBar")).toHaveCount(1);
 
     const initialScrollY = await page.evaluate(() => window.scrollY);
     expect(initialScrollY).toBe(0);
@@ -194,6 +200,9 @@ test.describe("Responsive Layout and Overflow Verification", () => {
 
     const sidebar = page.locator("#uSidebar");
     await expect(sidebar).toBeVisible();
+    await expect(sidebar.locator("#catalogLevelFilter")).toBeVisible();
+    await expect(sidebar.locator("#recentlyViewedBar")).toHaveCount(0);
+    await expect(page.locator("#mobileRecentSlot #recentlyViewedBar")).toHaveCount(1);
 
     // Expand the filter column so it always overflows its clamped height.
     await page.evaluate(() => {
