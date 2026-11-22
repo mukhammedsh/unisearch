@@ -68,25 +68,26 @@ body[data-page="universities"] {
   align-items: center;
 }
 
-/* Result count sits on the left; view and compare actions sit on the right. */
+/* Result count aligns over the filter column, recently viewed sits over the catalog,
+   and view/compare actions stay pinned on the right. */
 .u-section-meta {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-4);
+  display: grid;
+  grid-template-columns: minmax(296px, 328px) minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-6);
   width: 100%;
   margin-left: 0;
   padding-bottom: 0;
-  align-self: flex-end;
 }
 
 .u-section-actions {
+  grid-column: 3;
+  justify-self: end;
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-2);
   min-width: 0;
-  margin-left: auto;
 }
 
 .u-compare-mode-btn {
@@ -132,12 +133,14 @@ body[data-page="universities"] {
 }
 
 .u-section-meta .u-found {
+  grid-column: 1;
+  min-height: 36px;
   white-space: nowrap;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-1);
 }
 
@@ -145,6 +148,13 @@ body[data-page="universities"] {
   font-weight: var(--font-weight-medium);
   color: var(--text);
   font-size: var(--text-md);
+}
+
+@media (max-width: 1279px) {
+  .u-section-meta {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--space-4);
+  }
 }
 
 @media (max-width: 1024px) {
@@ -157,9 +167,18 @@ body[data-page="universities"] {
 
   .u-section-meta {
     width: 100%;
-    justify-content: space-between;
+    grid-template-columns: minmax(0, 1fr) auto;
     margin-left: 0;
-    gap: var(--space-4);
+    gap: var(--space-3) var(--space-4);
+  }
+
+  .u-section-meta .u-found {
+    grid-row: 1;
+  }
+
+  .u-section-actions {
+    grid-column: 2;
+    grid-row: 1;
   }
 }
 

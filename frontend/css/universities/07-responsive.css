@@ -320,7 +320,13 @@
     color: var(--text-inverse);
   }
 
+  .u-mobile-recent-slot {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
   .u-mobile-recent-slot .u-recent {
+    display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-2);
   }
@@ -328,6 +334,7 @@
   .u-mobile-recent-slot .u-recent__label {
     grid-column: 1;
     grid-row: 1;
+    min-height: 0;
     font-size: var(--text-md);
     color: var(--text);
   }
@@ -337,6 +344,7 @@
     grid-row: 1;
     justify-self: end;
     min-width: 0;
+    min-height: 32px;
     padding: var(--space-1) 0;
     border-radius: 0;
   }
@@ -344,6 +352,8 @@
   .u-mobile-recent-slot .u-recent__items {
     grid-column: 1 / -1;
     grid-row: 2;
+    width: 100%;
+    padding: var(--space-0-5) 0;
     scrollbar-width: none;
   }
 

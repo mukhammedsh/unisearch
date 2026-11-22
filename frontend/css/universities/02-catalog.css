@@ -614,25 +614,27 @@
 }
 
 .u-mobile-recent-slot {
+  grid-column: 2;
+  min-width: 0;
   display: block;
-  margin-bottom: var(--space-4);
 }
 
-/* With no recent history the slot is empty; hide it so its margin does not open a phantom gap above the cards. */
+/* With no recent history the slot is empty; hide it so its row does not open a phantom gap. */
 .u-mobile-recent-slot:not(:has(.u-recent:not([hidden]))) {
   display: none;
 }
 
 .u-recent {
   width: 100%;
+  min-width: 0;
   box-sizing: border-box;
   padding: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   gap: var(--space-3);
   transform-origin: top center;
 }
@@ -647,6 +649,7 @@
 }
 
 .u-recent__label {
+  flex: 0 0 auto;
   min-width: 0;
   min-height: 36px;
   display: inline-flex;
@@ -681,7 +684,7 @@
 }
 
 .u-recent__items {
-  width: 100%;
+  flex: 0 1 auto;
   min-width: 0;
   display: flex;
   flex-direction: row;
