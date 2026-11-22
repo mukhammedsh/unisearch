@@ -42,7 +42,7 @@ body[data-page="about"] {
 .about-contact {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 .about-team h2,
@@ -71,13 +71,21 @@ body[data-page="about"] {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: var(--space-8);
-  padding: var(--space-6) 0;
-  border-bottom: 1px solid var(--line-faint);
 }
 
-.about-team-member:first-child,
-.about-contact-item:first-child {
-  border-top: 1px solid var(--line-faint);
+.about-contact-item {
+  align-items: center;
+}
+
+.about-team-member:not(:first-child),
+.about-contact-item:not(:first-child) {
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--line-faint);
+}
+
+.about-team-member:not(:last-child),
+.about-contact-item:not(:last-child) {
+  padding-block-end: var(--space-4);
 }
 
 .about-team-identity {
@@ -89,8 +97,8 @@ body[data-page="about"] {
 .about-team-identity h3 {
   margin: 0;
   color: var(--text);
-  font-size: var(--text-lg);
-  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
 }
 
@@ -164,10 +172,25 @@ body[data-page="about"] {
     border-radius: var(--radius-lg);
   }
 
+  .about-team,
+  .about-contact {
+    gap: var(--space-4);
+  }
+
   .about-team-member,
   .about-contact-item {
     grid-template-columns: 1fr;
-    gap: var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .about-team-member:not(:first-child),
+  .about-contact-item:not(:first-child) {
+    padding-block-start: var(--space-3);
+  }
+
+  .about-team-member:not(:last-child),
+  .about-contact-item:not(:last-child) {
+    padding-block-end: var(--space-3);
   }
 }
 
