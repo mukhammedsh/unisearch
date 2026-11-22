@@ -1045,10 +1045,10 @@
 }
 
 .uni-status-tooltip__content {
+  --tooltip-display: flex;
   z-index: var(--z-card-tooltip);
   width: max-content;
   max-width: min(260px, calc(100vw - 48px));
-  display: flex;
   flex-direction: column;
   gap: var(--space-1);
 }

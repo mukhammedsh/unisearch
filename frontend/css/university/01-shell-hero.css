@@ -1140,7 +1140,6 @@ body[data-page="university"],
   .d-container {
     padding-left: var(--space-2);
     padding-right: var(--space-2);
-    overflow-x: clip;
   }
 
   .d-gallery-viewer-credit {

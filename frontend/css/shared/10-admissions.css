@@ -341,10 +341,22 @@
 @media (max-width: 768px) {
   .admission-category-head,
   .requirement-profile-head,
-  .admission-funding-option,
   .admission-funding-option-side {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .admission-funding-option {
+    align-items: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .admission-funding-option-main,
+  .admission-funding-diff,
+  .admission-funding-diff-note {
+    flex: 0 0 auto;
+    min-width: 0;
   }
 
   .admission-requirement-grid {

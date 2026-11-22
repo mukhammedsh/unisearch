@@ -803,11 +803,11 @@ body[data-page="profile"] {
 }
 
 .profile-tooltip {
+  --tooltip-display: flex;
   width: min(280px, calc(100vw - 48px));
   max-width: min(280px, calc(100vw - 48px));
   padding: var(--space-3);
   font-size: var(--text-sm);
-  display: flex;
   flex-direction: column;
   gap: var(--space-1);
 }

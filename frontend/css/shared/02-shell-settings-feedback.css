@@ -344,6 +344,7 @@
 }
 
 :where(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  display: none;
   position: absolute;
   top: calc(100% + var(--space-2));
   left: 0;
@@ -357,6 +358,7 @@
   z-index: var(--z-dropdown);
   opacity: 0;
   visibility: hidden;
+  translate: var(--tooltip-shift-x, 0px) 0;
   transform: translateY(-4px);
   pointer-events: none;
   transition:
@@ -375,6 +377,7 @@
 
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):focus-within > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content),
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip).is-open > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  display: var(--tooltip-display, block);
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -382,6 +385,7 @@
 }
 
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip).is-closed > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  display: none;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
@@ -1396,6 +1400,7 @@ select:not(.u-select-hidden) {
   }
 
   :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+    display: var(--tooltip-display, block);
     opacity: 1;
     visibility: visible;
     transform: translateY(0);

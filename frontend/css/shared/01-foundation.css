@@ -197,6 +197,8 @@
   --sidebar-max-height: calc(100vh - 105px);
   --u-mobile-filter-footer-clearance: 0px;
   --photo-fit-height: 100%;
+  --tooltip-display: block;
+  --tooltip-shift-x: 0px;
   color-scheme: light;
 }
 
