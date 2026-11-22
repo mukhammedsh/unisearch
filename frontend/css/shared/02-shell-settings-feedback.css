@@ -1085,14 +1085,13 @@ select:not(.u-select-hidden) {
 }
 
 .custom-options {
+  display: none;
   position: absolute;
   inset-block-start: 100%;
   inset-inline: 0;
   border-radius: var(--dropdown-radius);
   box-shadow: var(--shadow-md);
   background: var(--dropdown-surface);
-  visibility: hidden;
-  pointer-events: none;
   z-index: var(--z-dropdown);
   max-block-size: min(220px, var(--dropdown-available-height, 220px));
   overflow-x: hidden;
@@ -1102,8 +1101,7 @@ select:not(.u-select-hidden) {
 }
 
 .custom-select-wrapper.open .custom-options {
-  visibility: visible;
-  pointer-events: auto;
+  display: block;
 }
 
 .custom-select-wrapper.open-up .custom-options {

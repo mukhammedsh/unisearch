@@ -284,6 +284,66 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     expect(afterSidebarWheel.pageY).toBe(pageYBeforeSidebarWheel);
   });
 
+  test("closed filter dropdowns do not leave empty scroll space below the filter card", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    });
+
+    // On a tall viewport where all default filters fit, the sidebar should not scroll at all.
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto("/index.html");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    const tallMetrics = await page.evaluate(() => {
+      const sb = document.getElementById("uSidebar");
+      const card = sb.querySelector(".u-filter-card");
+      const padBottom = parseFloat(getComputedStyle(sb).paddingBottom) || 0;
+      return {
+        scrollHeight: sb.scrollHeight,
+        clientHeight: sb.clientHeight,
+        expectedHeight: card.offsetHeight + padBottom,
+      };
+    });
+    expect(tallMetrics.scrollHeight).toBeLessThanOrEqual(tallMetrics.expectedHeight + 2);
+    expect(tallMetrics.scrollHeight).toBeLessThanOrEqual(tallMetrics.clientHeight + 1);
+
+    // On a compact desktop viewport, scrolling to the bottom should stop at the card with no void below it,
+    // and opening the bottom Sort dropdown should flip upward inside the sidebar.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/index.html");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    const compactMetrics = await page.evaluate(() => {
+      const sb = document.getElementById("uSidebar");
+      const card = sb.querySelector(".u-filter-card");
+      const padBottom = parseFloat(getComputedStyle(sb).paddingBottom) || 0;
+      sb.scrollTop = sb.scrollHeight;
+      const sbRect = sb.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      return {
+        scrollHeight: sb.scrollHeight,
+        expectedHeight: card.offsetHeight + padBottom,
+        gapBelowCard: sbRect.bottom - cardRect.bottom,
+        padBottom,
+      };
+    });
+    expect(compactMetrics.scrollHeight).toBeLessThanOrEqual(compactMetrics.expectedHeight + 2);
+    expect(compactMetrics.gapBelowCard).toBeLessThanOrEqual(compactMetrics.padBottom + 2);
+
+    const sortWrapper = page.locator(".custom-select-wrapper", { has: page.locator("#sortSelect") });
+    await sortWrapper.locator(".custom-select-trigger").click();
+    await expect(sortWrapper).toHaveClass(/\bopen\b/);
+    await expect(sortWrapper).toHaveClass(/\bopen-up\b/);
+    const panelInBounds = await page.evaluate(() => {
+      const sb = document.getElementById("uSidebar");
+      const opts = document.getElementById("custom-options-sortSelect");
+      const sbRect = sb.getBoundingClientRect();
+      const optsRect = opts.getBoundingClientRect();
+      return optsRect.top >= sbRect.top - 1 && optsRect.bottom <= sbRect.bottom + 1;
+    });
+    expect(panelInBounds).toBe(true);
+  });
+
   test("keeps navbar logo left-aligned under 560px viewport", async ({ page }) => {
     for (const width of [500, 420, 375]) {
       await page.setViewportSize({ width, height: 750 });

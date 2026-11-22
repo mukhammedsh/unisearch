@@ -94,8 +94,23 @@ function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) 
   return { trigger, customOptions, optionList, searchInput, listboxId };
 }
 
-function positionSelectPanel(trigger, wrapper, panel) {
-  if (typeof trigger.getBoundingClientRect !== "function") return false;
+/**
+ * Reveal and place a custom-select dropdown panel within clipping ancestors and
+ * the visual viewport. Ancestor bounds are measured while the panel is still
+ * `display: none` so an unpositioned menu cannot distort scroll geometry; then
+ * `.open` is applied to read the panel's true rendered height before deciding
+ * whether to flip upward (`open-up`).
+ *
+ * @param {HTMLElement} trigger
+ * @param {HTMLElement} wrapper
+ * @param {HTMLElement} panel
+ * @returns {boolean} True when the panel should open upward.
+ */
+function openAndPositionSelectPanel(trigger, wrapper, panel) {
+  if (typeof trigger.getBoundingClientRect !== "function") {
+    wrapper.classList.add("open");
+    return false;
+  }
 
   const triggerRect = trigger.getBoundingClientRect();
   const viewport = window.visualViewport;
@@ -109,6 +124,7 @@ function positionSelectPanel(trigger, wrapper, panel) {
   }
 
   panel.style.removeProperty("--dropdown-available-height");
+  wrapper.classList.add("open");
   const gap = Number.parseFloat(window.getComputedStyle(panel).marginBlockStart) || 0;
   const spaceBelow = bottom - triggerRect.bottom - gap;
   const spaceAbove = triggerRect.top - top - gap;
@@ -416,8 +432,7 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
       customOptions.querySelectorAll(".custom-option[hidden]").forEach((option) => { option.hidden = false; });
     }
 
-    wrapper.classList.toggle("open-up", positionSelectPanel(trigger, wrapper, customOptions));
-    wrapper.classList.add("open");
+    wrapper.classList.toggle("open-up", openAndPositionSelectPanel(trigger, wrapper, customOptions));
     trigger.setAttribute("aria-expanded", "true");
 
     const enabled = getEnabledOptions();

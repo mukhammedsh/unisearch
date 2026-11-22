@@ -64,6 +64,7 @@ Minor release: map markers now say which university they mark, and search matche
 - Drop the redundant "Type: Official ranking" label from university card rank tooltips so ranked cards show the ranking source and check date, and unranked cards state clearly that no position is published in that ranking.
 - Pick the default price currency from the device, as booking and store sites do, until the reader chooses one: the country of the device time zone (Asia/Almaty: tenge, Asia/Riyadh: riyal, Europe/London: pounds), else the country in the browser language (ar-AE), else US dollars, and only currencies with an exchange rate. A local default shows the university's own price beside it ("≈ 42 M ₸ ($92,760) a year"). The country and time-zone tables are generated from Unicode CLDR and the IANA tz database (`scripts/generate-region-currency.py`); nothing leaves the device.
 ### Fixed
+- Hide closed custom-select dropdown menus with `display: none` instead of `visibility: hidden` (measuring container bounds before revealing `.open` to read panel height), eliminating the ~150px phantom empty scroll space below the catalog filter card and keeping bottom dropdowns flipping upward cleanly.
 - Stop offering "Remember this path" on NU's separate grant application, which saved the grant as the applicant's way in.
 - Name the applicant's GPA beside a met GPA alternative ("You have: GPA 4.6 of 5").
 - Translate approximate published dates such as "early April" (Stanford's Regular Decision notification) like "mid-December".
