@@ -734,6 +734,55 @@ body[data-page="profile"] {
   border-radius: 0;
 }
 
+/* The GPA scale is an explicit choice: a value alone cannot tell 3.6 out of 4 from 3.6 out of 5. */
+.profile-gpa-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* A rendered legend sits outside the flex gap, so its spacing is padding rather than a stacked margin. */
+.profile-gpa-scale legend {
+  width: 100%;
+  padding: 0 0 var(--space-1);
+  margin: 0;
+}
+
+.profile-gpa-scale__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-8);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--control-bg);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.profile-gpa-scale__option:has(input:checked) {
+  background: var(--accent-soft);
+  color: var(--interaction-active-text);
+}
+
+.profile-gpa-scale__option input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.profile-gpa-scale__option:has(input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .profile-field--gpa .profile-hint-row {
   display: flex;
   align-items: center;

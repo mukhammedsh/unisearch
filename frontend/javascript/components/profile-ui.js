@@ -144,6 +144,10 @@ export const populateMajors = (select) => {
     });
 };
 
+// English tests offered in the exam list as shortcuts to the Languages editor, which holds their section scores.
+const ENGLISH_TEST_SHORTCUTS = ["IELTS", "TOEFL_iBT_0_120", "DET", "PTE"];
+const LANGUAGE_EXAM_PREFIX = "language:";
+
 export const populateExamSelect = (els, state) => {
     if (!els.examNameSelect) return;
     const selectedExam = els.examNameSelect.value;
@@ -162,6 +166,13 @@ export const populateExamSelect = (els, state) => {
         const opt = document.createElement("option");
         opt.value = normalized || examKey;
         opt.textContent = getExamDisplayName(normalized || examKey, { locale: getCurrentLanguage() });
+        els.examNameSelect.appendChild(opt);
+    });
+    // English tests are entered under Languages, but applicants look for them here: these entries open that editor.
+    ENGLISH_TEST_SHORTCUTS.forEach((examId) => {
+        const opt = document.createElement("option");
+        opt.value = `${LANGUAGE_EXAM_PREFIX}${examId}`;
+        opt.textContent = tFormat("profile.exam_option.language", { exam: getExamDisplayName(examId, { langCode: "en", locale: getCurrentLanguage() }) });
         els.examNameSelect.appendChild(opt);
     });
 
@@ -619,6 +630,9 @@ export const updateGpaScaleUI = (els, state, scale) => {
         els.gpaUnit.setAttribute("aria-label", toggleLabel);
         els.gpaUnit.title = toggleLabel;
     }
+    document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
+        radio.checked = Number(radio.value) === s;
+    });
     renderGpaHint(els, state);
 };
 
@@ -633,6 +647,7 @@ export const renderGpaHint = (els, state) => {
     els.gpaHint.classList.toggle("is-warning", overScale);
     els.gpaHint.textContent = overScale
         ? tFormat("profile.ux2.gpa.over_scale", { value: String(value) }, `${value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.`)
+        : scale === 5 && state.gpaScaleAutoSwitched ? t("profile.ux2.gpa.auto_switched")
         : tFormat("profile.ux2.gpa.scale_hint", {
             scale: scale === 5 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)") : t("profile.scale.gpa_4", "4.0 (US / International)"),
             unit: scale === 5 ? "/ 5.0" : "/ 4.0",
@@ -734,6 +749,7 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
 };
 
 export const resetFields = (els, state) => {
+    state.gpaScaleAutoSwitched = false;
     const savedProfile = ensureProfileShape(loadProfile());
     setProfileDraft(state, els, savedProfile, { markAsSaved: true });
     applyDraftToInputs(els, state);
@@ -1316,6 +1332,14 @@ export const bindProfileEvents = (els, state) => {
 
     if (els.examNameSelect) {
         els.examNameSelect.addEventListener("change", () => {
+            const value = String(els.examNameSelect.value || "");
+            if (value.startsWith(LANGUAGE_EXAM_PREFIX)) {
+                els.examNameSelect.value = "";
+                initCommonSelects(["examNameSelect"]);
+                goToProfileSection(els, state, "languages");
+                window.dispatchEvent(new CustomEvent("unisearch:open-language-exam", { detail: { exam: value.slice(LANGUAGE_EXAM_PREFIX.length) } }));
+                return;
+            }
             syncExamScoreInputState(els, state);
             // Values restored from an already added report are not an unfinished draft.
             state.examEditorDirty = !!els.examNameSelect.value
@@ -1423,6 +1447,12 @@ export const bindProfileEvents = (els, state) => {
             enforceGpaMaxLength(els.gpaInput);
             setFieldInvalid(els.gpaInput, false);
             state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
+            // A grade above 4 cannot be on the 4.0 scale; a 4–5 grade is a Kazakhstan/CIS five-point grade, so the scale follows it.
+            const value = Number(state.profile.gpa);
+            if (Number(state.profile.gpaScale) !== 5 && Number.isFinite(value) && value > 4 && value <= 5) {
+                state.gpaScaleAutoSwitched = true;
+                setGpaScale(els, state, 5);
+            }
             renderGpaHint(els, state);
             refreshSaveState(els, state);
         });
@@ -1431,7 +1461,16 @@ export const bindProfileEvents = (els, state) => {
 
     els.gpaUnit?.addEventListener("click", () => {
         motionPress(els.gpaUnit);
+        state.gpaScaleAutoSwitched = false;
         setGpaScale(els, state, Number(state.profile.gpaScale) === 5 ? 4 : 5);
+    });
+    // The visible scale choice; the suffix button above stays as a shortcut to the same setting.
+    document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
+        radio.addEventListener("change", () => {
+            if (!radio.checked) return;
+            state.gpaScaleAutoSwitched = false;
+            setGpaScale(els, state, Number(radio.value) === 5 ? 5 : 4);
+        });
     });
 
     els.profileBudgetUnit?.addEventListener("click", () => document.getElementById("settingsBtn")?.click());

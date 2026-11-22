@@ -210,6 +210,17 @@
                       data-i18n="profile.unit.gpa"
                     >/ 4.0</button>
                   </div>
+                  <fieldset class="profile-gpa-scale" id="gpaScaleChoice">
+                    <legend class="profile-form-label" data-i18n="profile.gpa_scale.legend">Your GPA is out of</legend>
+                    <label class="profile-gpa-scale__option">
+                      <input type="radio" name="gpaScale" value="4" checked />
+                      <span data-i18n="profile.gpa_scale.option_4">4.0 — US and international schools</span>
+                    </label>
+                    <label class="profile-gpa-scale__option">
+                      <input type="radio" name="gpaScale" value="5" />
+                      <span data-i18n="profile.gpa_scale.option_5">5.0 — schools in Kazakhstan and the CIS</span>
+                    </label>
+                  </fieldset>
                   <div class="profile-hint-row">
                     <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
                       Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).

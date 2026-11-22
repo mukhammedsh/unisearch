@@ -320,6 +320,16 @@ export function mountAdmissionsCatalog(institutionId) {
   const prompt = (message, actions) => `<div class="admissions-state admissions-state--prompt"><p>${escapeHtml(message)}</p><div class="admissions-state__actions">${actions}</div></div>`;
   // A post-offer funding application is not a way in, so tab prompts list only the ways to apply.
   const sharedRouteButtons = () => sharedRoutes.filter(item => item.classification !== "financial_support_application").map(item => `<button type="button" data-prompt-shared-route="${escapeHtmlAttr(item.id)}">${escapeHtml(routeName(item))}</button>`).join("");
+  // Without a shared path a program must be chosen (Imperial). The programs that match the profile's subject are offered
+  // as one-click choices; the profile never chooses one by itself.
+  const profileProgramButtons = () => suggestedMajor && !search
+    ? items.slice(0, 3).map(item => `<button type="button" data-prompt-program="${escapeHtmlAttr(item.id)}">${escapeHtml(stabilizeNumericRanges(admissionsProgramLabel(item, { includeAward: true }).title))}</button>`).join("") : "";
+  const bindProfileProgramButtons = host => host.querySelectorAll("[data-prompt-program]").forEach(button => {
+    button.onclick = () => {
+      const option = items.find(item => item.id === button.dataset.promptProgram);
+      if (option) selectStudyOption(option, { expand: false });
+    };
+  });
   // Reading a shared undergraduate route needs no program; the reader stays on the tab they opened.
   const bindSharedRoutePrompt = host => host.querySelectorAll("[data-prompt-shared-route]").forEach(button => {
     button.onclick = () => {
@@ -600,9 +610,12 @@ export function mountAdmissionsCatalog(institutionId) {
     }
     else {
       const canChooseRoute = option ? Boolean(resolved?.available_routes?.length) : Boolean(sharedRoutes.length);
-      const message = option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(canChooseRoute ? "assessment_no_route" : "choose_program_hint");
-      assessmentHost.innerHTML = `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match><h2>${escapeHtml(label("assessment"))}</h2>${prompt(message, `<button type="button">${escapeHtml(label(canChooseRoute ? "choose_route" : "browse_programs"))}</button>`)}</section>`;
-      assessmentHost.querySelector("button").onclick = () => {
+      const suggested = !option && !canChooseRoute ? profileProgramButtons() : "";
+      const message = option && !canChooseRoute ? t("university.admissions.reading.no_application_route")
+        : label(canChooseRoute ? "assessment_no_route" : suggested ? "choose_program_profile" : "choose_program_hint");
+      assessmentHost.innerHTML = `<section class="admissions-catalog__section admissions-catalog__assessment" data-requirements-match><h2>${escapeHtml(label("assessment"))}</h2>${prompt(message, `${suggested}<button type="button" data-prompt-browse>${escapeHtml(label(canChooseRoute ? "choose_route" : "browse_programs"))}</button>`)}</section>`;
+      bindProfileProgramButtons(assessmentHost);
+      assessmentHost.querySelector("[data-prompt-browse]").onclick = () => {
         if (!canChooseRoute) {
           root.querySelector("#admissionsChooseProgram").click();
           return;
@@ -638,9 +651,11 @@ export function mountAdmissionsCatalog(institutionId) {
           target.querySelector("[data-prompt-programs]").onclick = () => { openTab("tab-programs"); programs.scrollIntoView({ block: "start" }); };
           continue;
         }
-        target.innerHTML = prompt(option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(option ? "route_required" : "choose_program_hint"),
-          `<button type="button">${escapeHtml(label(canChooseRoute ? "choose_route" : "browse_programs"))}</button>`);
-        target.querySelector("button").onclick = () => {
+        const suggested = !option ? profileProgramButtons() : "";
+        target.innerHTML = prompt(option && !canChooseRoute ? t("university.admissions.reading.no_application_route") : label(option ? "route_required" : suggested ? "choose_program_profile" : "choose_program_hint"),
+          `${suggested}<button type="button" data-prompt-browse>${escapeHtml(label(canChooseRoute ? "choose_route" : "browse_programs"))}</button>`);
+        bindProfileProgramButtons(target);
+        target.querySelector("[data-prompt-browse]").onclick = () => {
           openTab(`tab-${canChooseRoute ? "admission" : "programs"}`);
           (canChooseRoute ? root : programs).scrollIntoView({ block: "start" });
         };
@@ -1023,10 +1038,9 @@ export function mountAdmissionsCatalog(institutionId) {
       const previousSharedIds = entryIds();
       sharedRoutes = data.shared_routes || [];
       preparationEntries = data.preparation_entries || [];
-      // Like the Overview, the tabs open on the shared first-year path when nothing is chosen yet, so every tab answers
-      // at once; the "You are viewing" line changes it. A saved or linked choice is never replaced.
       if (applyDefaultRoute()) void refreshContext();
-      else if (!resolved?.selected_option && previousSharedIds !== entryIds()) {
+      // The tab prompts offer the profile-matched programs, so they are drawn again once that list arrives.
+      else if (!resolved?.selected_option && (previousSharedIds !== entryIds() || (suggestedMajor && !search && !sharedRoutes.length))) {
         renderControls(root.dataset.state);
         if (root.dataset.state === "ready") renderContextContent("ready");
       }

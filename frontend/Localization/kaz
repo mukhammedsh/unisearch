@@ -240,6 +240,7 @@ profile.budget_saved: Бюджет сақталды!
 profile.cefr: CEFR
 profile.delete: Жою
 profile.exam: Емтихан
+profile.exam_option.language: {exam} — «Тілдер» бөлімі ашылады
 profile.exam_added: {exam} қосылды
 profile.exam_ielts_step: IELTS балы .0 немесе .5 санымен аяқталуы керек
 profile.exam_integer_required: {exam} балы бүтін сан болуы керек (мысалы, 1400)
@@ -2403,6 +2404,7 @@ university.admissions.catalog.simple_title: Қалай өтініш беруге
 university.admissions.catalog.browse_note: Бағыт немесе бағдарлама бойынша іздеңіз. Оқу және қабылдау туралы білу үшін нәтижені ашыңыз.
 university.admissions.catalog.advanced_note: Университет түсу жылына немесе төлем мәртебесіне қарай әртүрлі шарттар жарияласа ғана қажет.
 university.admissions.catalog.choose_program_hint: Жарияланған қабылдау жолдарын көру үшін «Бағдарламалар» бөлімінен бағдарламаны таңдаңыз.
+university.admissions.catalog.choose_program_profile: Мұнда түсу шарттары әр бағдарламада өзінше. Профиліңіздегі бағытқа сәйкес бағдарламалар:
 university.admissions.catalog.select_program: Осы бағдарламаға түсуді көру
 university.admissions.catalog.requirements_tab_hint: Қабылдау талаптары — «Қабылдау» қойындысында.
 university.admissions.catalog.study_info: Бағдарлама туралы
@@ -3509,8 +3511,12 @@ profile.ux2.hint.budget: Жылдық құны осы сомадан жоғар�
 profile.ux2.hint.funding: Мұндай нұсқасы жоқ екені анық университеттерді жасырады; қаржыландыруы белгісіздері қалады.
 profile.ux2.hint.gpa: Университеттер жариялаған ең төменгі GPA-мен салыстырылады.
 profile.ux2.hint.exams: Жарияланған емтихан минимумдарымен салыстырылады; сұралған емтихандар талаптарға сәйкестікті есептеуге мүмкіндік береді.
-profile.ux2.gpa.scale_hint: Шкала: {scale}. Басқа шкала ма? Өрістің жанындағы «{unit}» түймесін басыңыз.
-profile.ux2.gpa.over_scale: {value} мәні 4.0-ден жоғары. Мектебіңізде бес балдық шкала болса, 5.0-ге ауыстыру үшін өрістің жанындағы «/ 4.0» түймесін басыңыз.
+profile.ux2.gpa.scale_hint: Балыңыз неше балдық шкалада екенін таңдаңыз: Қазақстан мен ТМД мектептерінде әдетте 5.0.
+profile.ux2.gpa.over_scale: {value} мәні 4.0-ден жоғары. Жоғарыдағы шкаланы тексеріңіз: Қазақстан мен ТМД мектептерінде балл 5.0-ден.
+profile.ux2.gpa.auto_switched: 5.0 шкаласы қойылды: 4-тен жоғары балл тек бес балдық жүйеде болады. Жоғарыдағы таңдауды тексеріңіз.
+profile.gpa_scale.legend: Балыңыз неше балдан
+profile.gpa_scale.option_4: 4.0 — АҚШ және халықаралық мектептер
+profile.gpa_scale.option_5: 5.0 — Қазақстан мен ТМД мектептері
 profile.ux2.hint.exams_language: IELTS, TOEFL сияқты тіл тесттері «Тілдер» бөлімінде қосылады.
 profile.ux2.nav.filled: жауаптар бар
 profile.ux2.nav.empty: жауап әлі жоқ

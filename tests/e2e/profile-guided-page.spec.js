@@ -70,24 +70,37 @@ test("Save and show matches stays on the page when validation fails", async ({ p
   await page.setViewportSize({ width: 1440, height: 900 });
   await openProfile(page);
 
-  await page.fill(selectors.gpaInput, "4.9");
+  // Above 5 is invalid on either scale (4.9 now selects the five-point scale).
+  await page.fill(selectors.gpaInput, "5.6");
   await page.locator("#profileShowMatchesBtn").click();
   await expect(page).toHaveURL(/profile/);
   await expect(page.locator("#gpaInput")).toHaveAttribute("aria-invalid", "true");
   expect(await page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBeNull();
 });
 
-test("a 5-point GPA on the 4.0 scale is flagged while typing and the summary echoes the scale", async ({ page }) => {
+test("a 5-point GPA typed on the 4.0 scale switches the scale to 5.0, says so, and can be switched back", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openProfile(page);
 
+  await expect(page.locator("#gpaUnit")).toHaveText("/ 4.0");
   await page.fill(selectors.gpaInput, "4.6");
-  await expect(page.locator("#gpaHint")).toHaveClass(/is-warning/);
-  await expect(page.locator("#gpaHint")).toContainText("4.6");
-
-  await page.locator("#gpaUnit").click();
+  await expect(page.locator("#gpaUnit")).toHaveText("/ 5.0");
   await expect(page.locator("#gpaHint")).not.toHaveClass(/is-warning/);
+  await expect(page.locator("#gpaHint")).toContainText("five-point scale");
   await expect(page.locator('[data-summary-row="requirements"]')).toContainText("4.6 / 5");
+
+  await expect(page.locator('#gpaScaleChoice input[value="5"]')).toBeChecked();
+
+  // Switching back is the reader's choice: the over-scale warning returns instead of switching again.
+  await page.locator('#gpaScaleChoice input[value="4"]').check();
+  await expect(page.locator("#gpaUnit")).toHaveText("/ 4.0");
+  await expect(page.locator("#gpaHint")).toHaveClass(/is-warning/);
+
+  // A grade that fits both scales keeps the chosen scale: 3.6 out of 5 is entered by choosing 5.0.
+  await page.locator('#gpaScaleChoice input[value="5"]').check();
+  await page.fill(selectors.gpaInput, "3.6");
+  await expect(page.locator("#gpaUnit")).toHaveText("/ 5.0");
+  await expect(page.locator('[data-summary-row="requirements"]')).toContainText("3.6 / 5");
 });
 
 test("the exams field points language tests to the Languages section", async ({ page }) => {

@@ -240,6 +240,7 @@ profile.budget_saved: Budget saved!
 profile.cefr: CEFR
 profile.delete: Delete
 profile.exam: Exam
+profile.exam_option.language: {exam} — opens Languages
 profile.exam_added: Added {exam}
 profile.exam_ielts_step: IELTS score must end with .0 or .5
 profile.exam_integer_required: {exam} score must be an integer (e.g. 1400)
@@ -2403,6 +2404,7 @@ university.admissions.catalog.simple_title: How to apply
 university.admissions.catalog.browse_note: Search by subject or program. Open a result for study and admission details.
 university.admissions.catalog.advanced_note: Needed only when the university publishes different terms for different entry years or fee statuses.
 university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
+university.admissions.catalog.choose_program_profile: Admission is published for each program. Programs that match the subject in your profile:
 university.admissions.catalog.select_program: See admission for this program
 university.admissions.catalog.requirements_tab_hint: Admission requirements: see the Admission tab.
 university.admissions.catalog.study_info: About the program
@@ -3509,8 +3511,12 @@ profile.ux2.hint.budget: Known yearly costs above this rank lower; unknown price
 profile.ux2.hint.funding: Hides universities known to lack this option; those with unknown funding stay visible.
 profile.ux2.hint.gpa: Compared with the GPA minimums that universities publish.
 profile.ux2.hint.exams: Compared with published exam minimums; exams a university asks for can produce a minimum requirements match.
-profile.ux2.gpa.scale_hint: Scale: {scale}. Different scale? Press "{unit}" next to the field.
-profile.ux2.gpa.over_scale: {value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.
+profile.ux2.gpa.scale_hint: Choose what your GPA is out of: school grades in Kazakhstan and the CIS are usually out of 5.0.
+profile.ux2.gpa.over_scale: {value} is above 4.0. Check the scale above: school grades in Kazakhstan and the CIS are out of 5.0.
+profile.ux2.gpa.auto_switched: Set to out of 5.0: a grade above 4 only exists on a five-point scale. Check the choice above.
+profile.gpa_scale.legend: Your GPA is out of
+profile.gpa_scale.option_4: 4.0 — US and international schools
+profile.gpa_scale.option_5: 5.0 — schools in Kazakhstan and the CIS
 profile.ux2.hint.exams_language: Language tests such as IELTS and TOEFL go in the Languages section.
 profile.ux2.nav.filled: has answers
 profile.ux2.nav.empty: no answers yet

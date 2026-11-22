@@ -48,6 +48,9 @@ Minor release: map markers now say which university they mark, and search matche
 - Answer Kazakhstan documents at the top of the Admission key facts when the university publishes no ruling on them (Imperial, Stanford): no decision is published, it is not a rejection, ask the admissions office, with a link to the official guidance.
 - Rewrite the visible Russian MIT and Stanford application, test, document, transfer and aid summaries in plain Russian, keeping the official term in brackets (first-year, transfer, superscore, School Report, eligible noncitizens).
 - Say under the Overview admission rate that it is the share of all applicants, not a personal chance; rename the card "Competition and students" and drop research wording ("Source scope", "Full records retain the official source language").
+- Ask what the profile GPA is out of with two visible options ("4.0 — US and international schools", "5.0 — schools in Kazakhstan and the CIS") instead of only a "/ 4.0" suffix button, because a value such as 3.6 cannot tell the scale by itself. A grade between 4 and 5 typed on the 4.0 scale selects 5.0 and says why, instead of an error; switching back stays the reader's choice.
+- List IELTS, TOEFL iBT, Duolingo and PTE in the profile's exam list as shortcuts that open the Languages editor at that test, where English tests and their section scores are entered.
+- Offer up to three programs that match the profile's subject as one-click choices on Imperial's Admission, Dates and Costs tabs, where admission is published per program, instead of only pointing to the Programs tab. The profile still never chooses a program by itself.
 ### Fixed
 - Translate approximate published dates such as "early April" (Stanford's Regular Decision notification) like "mid-December".
 - Show a single "≈" in a converted calculated yearly cost and its living part (Imperial showed "≈ ≈ $35,000 – $85,000").
@@ -62,6 +65,7 @@ Minor release: map markers now say which university they mark, and search matche
 - Fix same-surface blending and low-contrast dark-theme colors across CSS stylesheets: nested controls and cards in admissions, finance, comparison, map results, tour modal, profile breakdowns, search suggestions, and empty/error states now step cleanly between `--bg`/`--bg-soft`, `--surface-solid`, and `--surface-soft`, while dark-mode links, badges, tooltips, danger hover actions, and milestone steps use readable semantic text/status tokens instead of dark `--accent` or pale `--color-danger` backgrounds with white text.
 
 ### Tests
+- Check the GPA scale switch on a five-point grade and switching back.
 - Check the Kazakhstan-document answer (shown only without a published ruling), the plain round names, the admission-rate note and "early April".
 - Check a single "≈" in converted calculated costs, the entered result beside what a minimums check still needs, and that editing a language test replaces the opened entry.
 - Update the admissions E2E specs for the default first-year path (no path prompt on MIT, Stanford and NU tabs, nothing saved until "Remember this path", a program's own path chosen again) and check the way back from NU's grant application.

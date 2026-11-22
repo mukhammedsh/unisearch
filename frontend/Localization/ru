@@ -243,6 +243,7 @@ profile.budget_saved: Бюджет сохранен!
 profile.cefr: CEFR
 profile.delete: Удалить
 profile.exam: Экзамен
+profile.exam_option.language: {exam} — откроется раздел «Языки»
 profile.exam_added: Добавлен {exam}
 profile.exam_ielts_step: Балл IELTS должен оканчиваться на .0 или .5
 profile.exam_integer_required: Баллы {exam} должны быть целыми (например, 1400)
@@ -2401,6 +2402,7 @@ university.admissions.catalog.simple_title: Как поступить
 university.admissions.catalog.browse_note: Ищите по направлению или программе. Откройте результат, чтобы узнать об учёбе и поступлении.
 university.admissions.catalog.advanced_note: Нужно, только если университет публикует разные условия для разных лет поступления или статусов оплаты.
 university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
+university.admissions.catalog.choose_program_profile: Условия поступления здесь свои у каждой программы. Подходят по направлению из вашего профиля:
 university.admissions.catalog.select_program: Смотреть поступление на программу
 university.admissions.catalog.requirements_tab_hint: Условия поступления — во вкладке «Поступление».
 university.admissions.catalog.study_info: О программе
@@ -3507,8 +3509,12 @@ profile.ux2.hint.budget: Известная годовая стоимость в
 profile.ux2.hint.funding: Скрывает университеты, где такого варианта точно нет; с неизвестным финансированием остаются.
 profile.ux2.hint.gpa: Сравнивается с минимальным GPA, который публикуют университеты.
 profile.ux2.hint.exams: Сравниваются с опубликованными минимумами; нужные университету экзамены дают соответствие минимальным требованиям.
-profile.ux2.gpa.scale_hint: Шкала: {scale}. Другая шкала? Нажмите «{unit}» рядом с полем.
-profile.ux2.gpa.over_scale: {value} больше 4.0. Если у вас пятибалльная шкала, нажмите «/ 4.0» рядом с полем, чтобы переключить на 5.0.
+profile.ux2.gpa.scale_hint: Выберите, из скольки ваш балл: в школах Казахстана и СНГ обычно из 5.0.
+profile.ux2.gpa.over_scale: {value} больше 4.0. Проверьте шкалу выше: в школах Казахстана и СНГ балл из 5.0.
+profile.ux2.gpa.auto_switched: Поставили шкалу из 5.0: балл выше 4 бывает только в пятибалльной системе. Проверьте выбор выше.
+profile.gpa_scale.legend: Ваш балл из
+profile.gpa_scale.option_4: 4.0 — США и международные школы
+profile.gpa_scale.option_5: 5.0 — школы Казахстана и СНГ
 profile.ux2.hint.exams_language: Языковые тесты, например IELTS и TOEFL, добавляются в разделе «Языки».
 profile.ux2.nav.filled: есть ответы
 profile.ux2.nav.empty: ответов пока нет
