@@ -1131,10 +1131,17 @@ export function initUniversitiesPage() {
         });
     };
 
-    const renderRecentlyViewedBar = () => {
+    const renderRecentlyViewedBar = ({ keepOpen = false } = {}) => {
         if (!el.recentlyViewedBar) return;
+        const existingPopover = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
+        const wasOpen = Boolean(
+            keepOpen
+            || existingPopover?.matches?.(":popover-open")
+            || existingPopover?.classList.contains("is-open")
+        );
         const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
         if (!recentIds.length) {
+            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
@@ -1144,50 +1151,109 @@ export function initUniversitiesPage() {
             .map((id) => ({ id, label: getUniversityDisplayNameById(id) }))
             .filter((row) => row.label);
         if (!rows.length) {
+            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
             return;
         }
+        const titleText = t("universities.recent.title", "Recently viewed");
+        const clearAllText = t("universities.recent.clear_all", "Clear all");
         el.recentlyViewedBar.hidden = false;
         el.recentlyViewedBar.innerHTML = `
-            <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
-            <div class="u-recent__items">
-                ${rows.map((row) => {
-                    const removeLabel = tFormat(
-                        "universities.recent.remove",
-                        { university: row.label },
-                        `Remove ${row.label} from recently viewed`
-                    );
-                    return `
-                        <span class="u-recent__chip">
-                            <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
-                            <button
-                                class="u-recent__remove"
-                                type="button"
-                                data-action="remove-recent"
-                                data-uni-id="${escapeHtmlAttr(row.id)}"
-                                aria-label="${escapeHtmlAttr(removeLabel)}"
-                                title="${escapeHtmlAttr(removeLabel)}"
-                            >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
-                        </span>
-                    `;
-                }).join("")}
-            </div>
-            <button class="u-recent__clear" type="button" data-action="clear-recent">
-                ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-                <span>${escapeHtml(t("universities.recent.clear_all", "Clear all"))}</span>
+            <button
+                id="recentlyViewedBtn"
+                class="u-recent-trigger"
+                type="button"
+                popovertarget="recentlyViewedPopover"
+                aria-controls="recentlyViewedPopover"
+                aria-expanded="false"
+                title="${escapeHtmlAttr(titleText)}"
+                aria-label="${escapeHtmlAttr(`${titleText} (${rows.length})`)}"
+            >
+                ${renderInlineIcon("clock", 16, "u-recent-trigger__icon")}
+                <span class="u-recent-trigger__label">${escapeHtml(titleText)}</span>
+                <span class="u-recent-trigger__count" aria-hidden="true">${rows.length}</span>
+                ${renderInlineIcon("chevron-down", 14, "u-recent-trigger__chevron")}
             </button>
+            <div
+                id="recentlyViewedPopover"
+                class="u-recent-popover"
+                popover="auto"
+                aria-labelledby="recentlyViewedTitle"
+            >
+                <div class="u-recent__head">
+                    <span id="recentlyViewedTitle" class="u-recent__label">${escapeHtml(titleText)}</span>
+                    <button class="u-recent__clear" type="button" data-action="clear-recent">
+                        ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
+                        <span>${escapeHtml(clearAllText)}</span>
+                    </button>
+                </div>
+                <div class="u-recent__items">
+                    ${rows.map((row) => {
+                        const removeLabel = tFormat(
+                            "universities.recent.remove",
+                            { university: row.label },
+                            `Remove ${row.label} from recently viewed`
+                        );
+                        return `
+                            <span class="u-recent__chip">
+                                <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
+                                <button
+                                    class="u-recent__remove"
+                                    type="button"
+                                    data-action="remove-recent"
+                                    data-uni-id="${escapeHtmlAttr(row.id)}"
+                                    aria-label="${escapeHtmlAttr(removeLabel)}"
+                                    title="${escapeHtmlAttr(removeLabel)}"
+                                >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
+                            </span>
+                        `;
+                    }).join("")}
+                </div>
+            </div>
         `;
         lockRecentChipWidths(el.recentlyViewedBar);
         scheduleSyncWorkspaceDepth();
+
+        const triggerBtn = el.recentlyViewedBar.querySelector("#recentlyViewedBtn");
+        const popoverEl = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
+        const supportsNativePopover = Boolean(popoverEl && typeof popoverEl.showPopover === "function");
+        const syncTriggerExpanded = (isOpen) => {
+            triggerBtn?.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            triggerBtn?.classList.toggle("is-active", isOpen);
+        };
+
+        if (supportsNativePopover) {
+            popoverEl.addEventListener("toggle", (event) => {
+                syncTriggerExpanded(event.newState === "open");
+            });
+            if (wasOpen) {
+                try {
+                    popoverEl.showPopover();
+                } catch (err) {
+                    console.warn("Unable to reopen recently viewed popover", err);
+                }
+            }
+        } else if (triggerBtn && popoverEl) {
+            triggerBtn.addEventListener("click", () => {
+                const nextOpen = !popoverEl.classList.contains("is-open");
+                popoverEl.classList.toggle("is-open", nextOpen);
+                syncTriggerExpanded(nextOpen);
+            });
+            if (wasOpen) {
+                popoverEl.classList.add("is-open");
+                syncTriggerExpanded(true);
+            }
+        }
+
         el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
             const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
             motionPress(clearBtn);
             replayMotion(clearBtn?.querySelector(".u-recent__clear-icon") || clearBtn, "motion-icon-clear", { timeoutMs: 240 });
-            animateElementOut(el.recentlyViewedBar, () => {
+            animateElementOut(popoverEl || el.recentlyViewedBar, () => {
                 writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
-                renderRecentlyViewedBar();
+                renderRecentlyViewedBar({ keepOpen: false });
             }, { className: "motion-row-exit", timeoutMs: 280 });
         });
         el.recentlyViewedBar.querySelectorAll('[data-action="remove-recent"]').forEach((button) => {
@@ -1202,7 +1268,7 @@ export function initUniversitiesPage() {
                 animateElementOut(chip, () => {
                     const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
                     writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
-                    renderRecentlyViewedBar();
+                    renderRecentlyViewedBar({ keepOpen: nextIds.length > 0 });
                 }, { className: "motion-chip-remove", timeoutMs: 260 });
             });
         });

@@ -90,8 +90,8 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
 
   const refreshedFirstCard = page.locator(".uni-card:not(.is-skeleton)").first();
   await expect(refreshedFirstCard).toBeVisible();
-  const recentChip = page.locator("#recentlyViewedBar .u-recent__chip").filter({ hasText: firstUniversityName }).first();
-  await expect(recentChip).toBeVisible();
+  const recentTrigger = page.locator("#recentlyViewedBtn");
+  await expect(recentTrigger).toBeVisible();
   await installMotionRecorder(page);
 
   await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
@@ -104,13 +104,17 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
   await expect(compareModeCard).toHaveClass(/uni-card--compare-selected/);
   await expect(compareModeCard).toHaveAttribute("aria-selected", "true");
   await expect(page.locator("#compareTray")).toBeVisible();
-  await expect(recentChip).toBeVisible();
+  await expect(recentTrigger).toBeVisible();
 
+  await recentTrigger.click();
+  const recentChip = page.locator("#recentlyViewedPopover .u-recent__chip").filter({ hasText: firstUniversityName }).first();
+  await expect(recentChip).toBeVisible();
   await recentChip.hover();
   await recentChip.locator("[data-action='remove-recent']").click();
   await expectMotionSeen(page, "motion-chip-remove");
   await expectMotionSeen(page, "motion-icon-remove");
   await expect(recentChip).toHaveCount(0);
+  await expect(recentTrigger).toHaveCount(0);
 
   await expectNoLingeringMotionClasses(page);
 });
