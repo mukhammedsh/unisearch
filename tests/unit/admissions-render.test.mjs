@@ -584,7 +584,7 @@ test("simple source details retain independent statuses, limits, periods and sou
   assert.doesNotMatch(summary, />Published</);
   assert.equal((html.match(/Scope varies/g) || []).length, 1);
   assert.match(html, /<details class="admissions-catalog__evidence">/);
-  for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Source scope", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
+  for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Applies to", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
   assert.match(html, /2026[‑-]10-12/);
   assert.match(html, /<dd>0<\/dd>/);
 });

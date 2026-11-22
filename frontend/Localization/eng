@@ -2518,7 +2518,7 @@ university.admissions.catalog.needs_review: Needs review
 university.admissions.catalog.historical: Historical source record
 university.admissions.catalog.checked: Official page checked
 university.admissions.catalog.period: Published period
-university.admissions.catalog.scope: Source scope
+university.admissions.catalog.scope: Applies to
 university.admissions.catalog.conditions: Conditions and exceptions
 university.admissions.catalog.exceptions: Exceptions
 university.admissions.catalog.source: Official source
@@ -2703,6 +2703,7 @@ university.admissions.catalog.route_name.mit-transfer: Transfer from another uni
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: First-year admission after school
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Transfer from another university
 university.admissions.reading.mid_month: Mid-{month}
+university.admissions.reading.early_month: Early {month}
 university.admissions.reading.month.1: January
 university.admissions.reading.month.2: February
 university.admissions.reading.month.3: March
@@ -2715,10 +2716,10 @@ university.admissions.reading.month.9: September
 university.admissions.reading.month.10: October
 university.admissions.reading.month.11: November
 university.admissions.reading.month.12: December
-university.admissions.reading.early_action: Early Action · early application
-university.admissions.reading.regular_action: Regular Action · regular application
-university.admissions.reading.restrictive_early_action: Restrictive Early Action · early, non-binding application
-university.admissions.reading.regular_decision: Regular Decision · regular application
+university.admissions.reading.early_action: Early application (Early Action)
+university.admissions.reading.regular_action: Regular application (Regular Action)
+university.admissions.reading.restrictive_early_action: Early application with limits (Restrictive Early Action)
+university.admissions.reading.regular_decision: Regular application (Regular Decision)
 university.admissions.reading.transfer_application: Transfer application
 university.admissions.reading.priority_deadline: Priority deadline
 university.admissions.reading.application_deadline: Application deadline
@@ -2895,7 +2896,7 @@ university.admissions.reading.summary_translation_missing: A summary translation
 university.admissions.reading.source_and_date: Source and date
 university.admissions.reading.official_sources_count: Official sources ({count})
 university.admissions.reading.source_marker: Source {number}: {title}
-university.admissions.reading.reference_scope_note: Full records retain the official source language. Each record includes its conditions, period and applicability.
+university.admissions.reading.reference_scope_note: Details are shown in the language of the university.
 university.admissions.reading.current_policy: Published policy; entry year not specified
 university.admissions.reading.yearless_period: Recurring dates; entry year not specified
 university.admissions.reading.source_period: Source period and wording
@@ -2932,8 +2933,8 @@ university.admissions.reading.living_twelve_months: 12 months · private accommo
 university.admissions.reading.different_cost_periods: This living estimate is from a different period than 2027 tuition. The figures are separate references and are not added into a confirmed annual total.
 university.admissions.reading.scholarship_rounds: President’s PhD scholarship rounds
 university.admissions.reading.scholarship_dates_separate: These are scholarship consideration dates. A department may require an earlier PhD application; admission and a scholarship award are separate decisions.
-university.admissions.reading.ucas_medicine: UCAS · Medicine deadline
-university.admissions.reading.ucas_equal_consideration: UCAS · equal consideration deadline
+university.admissions.reading.ucas_medicine: UCAS deadline for Medicine
+university.admissions.reading.ucas_equal_consideration: Main UCAS deadline
 university.admissions.reading.submission_opens: Application submission opens
 university.admissions.reading.date: Date
 university.admissions.reading.local_time: Published local time
@@ -3439,7 +3440,7 @@ university.admissions.glossary.ucas.title: UCAS
 university.admissions.glossary.ucas.text: UCAS is the UK's central online service for undergraduate applications, so you apply through it instead of applying to each university separately.
 university.admissions.glossary.tmua.title: TMUA
 university.admissions.glossary.tmua.text: TMUA is the Test of Mathematics for University Admission, a maths test that some UK universities require; it is taken separately from your school exams.
-university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.title: Foundation year (Foundation)
 university.admissions.glossary.foundation.text: A foundation year is a preparatory year before a bachelor's degree, and NUFYP is Nazarbayev University's Foundation Year Program; check the university's rules on whether completing it leads to a degree place.
 university.admissions.glossary.css_profile.title: CSS Profile
 university.admissions.glossary.css_profile.text: The CSS Profile is an online College Board form that some US universities use to assess a family's financial need; it is submitted in addition to the admission application.
@@ -3466,6 +3467,9 @@ university.admissions.key_facts.requirements_add_gpa: GPA
 university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Regular Foundation admission
 university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Regular first-year admission
 university.admissions.key_facts.apply: Where to apply
+university.admissions.key_facts.credential: Kazakhstan documents
+university.admissions.key_facts.credential_unlisted: The university publishes no decision on school or degree documents from Kazakhstan. This is not a rejection: ask the admissions office whether your document is accepted.
+university.admissions.key_facts.credential_source: Official guidance
 university.admissions.key_facts.apply_text: Applications are made on the university's official site.
 university.admissions.key_facts.minimum_add: Add: {items}
 university.admissions.key_facts.minimum_any: {requirement}, one of: {items}
@@ -3596,7 +3600,7 @@ university.ux2.or: or
 university.ux2.card.deadline: When to apply
 university.ux2.card.cost: What it costs
 university.ux2.card.needs: What you'll need
-university.ux2.card.people: Who studies here
+university.ux2.card.people: Competition and students
 university.ux2.card.program: Dates, costs and requirements
 university.ux2.link.deadlines: All dates
 university.ux2.link.cost: Costs and funding
@@ -3605,7 +3609,7 @@ university.ux2.link.choose: Choose a program
 university.ux2.choose.headline: Depends on the program
 university.ux2.deadline.headline: By {date} · in {days} days
 university.ux2.deadline.headline_today: Deadline today · {date}
-university.ux2.deadline.closed: {name} ({date}) has already closed.
+university.ux2.deadline.closed: {name}, {date}: this deadline has passed.
 university.ux2.deadline.annual: The university repeats this date every year without naming the year. Confirm it on the official page.
 university.ux2.deadline.legacy: Application dates are in the Dates tab.
 university.ux2.cost.headline: {amount} a year
@@ -3659,6 +3663,7 @@ university.ux2.people.selectivity_first_year: About {rate}% of first-year applic
 university.ux2.people.selectivity_undergraduate: About {rate}% of undergraduate applicants are admitted
 university.ux2.people.selectivity_offers: About {rate}% of undergraduate applications receive an offer
 university.ux2.people.selectivity_counts_admitted: {admitted} admitted out of {applicants} applicants
+university.ux2.people.selectivity_not_chance: This is the share of all applicants, not your personal chance.
 university.ux2.people.selectivity_counts_offers: {admitted} offers for {applicants} applications
 university.ux2.people.selectivity_international: International applicants: {admitted} of {applicants} admitted (about {rate}%)
 university.ux2.people.selectivity_preparation: Another {rate}% were admitted to the {name} foundation year from the same application

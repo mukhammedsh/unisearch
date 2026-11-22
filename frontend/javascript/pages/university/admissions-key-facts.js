@@ -408,6 +408,30 @@ function requirementsRow(resolved, cycleAction, shownTerms, profile) {
 export const requirementsCheckDetails = resolved => renderAssessmentChecks(resolved, { recordDomains: ASSESSMENT_RECORD_DOMAINS });
 
 // Where the application is made, as one link to the university's own application page.
+// Kazakhstan school and degree documents are this site's main audience, so a reviewed note that the university publishes
+// no ruling on them is answered at the top in plain words. A published ruling stays in the requirements detail.
+const CREDENTIAL_TOPICS = new Set(["qualification_recognition", "country_specific_qualification_equivalency"]);
+const KAZAKHSTAN = /\bKazakhstan\b/;
+
+/**
+ * The applicant-facing answer for a Kazakhstan document when the university publishes no ruling on it.
+ * @param {object|null} resolved The admissions-context response.
+ * @returns {{text: string, links: Array<{url: string, label: string}>}|null}
+ */
+export function kazakhstanCredentialFact(resolved) {
+  const fact = (resolved?.facts || []).find(row => CREDENTIAL_TOPICS.has(row.topic) && row.applicability?.status !== "mismatched"
+    && ["verified", "carried_forward"].includes(row.normalized_status?.review) && row.normalized_status?.publication !== "published"
+    && KAZAKHSTAN.test([JSON.stringify(row.value ?? ""), ...(row.scope?.applicant_categories || [])].join(" ")));
+  if (!fact) return null;
+  const source = (resolved?.sources || []).find(item => fact.source_ids?.includes(item.id) && safeUrl(item.url));
+  return { text: label("credential_unlisted"), links: source ? [{ url: safeUrl(source.url), label: label("credential_source") }] : [] };
+}
+
+function credentialRow(resolved) {
+  const fact = kazakhstanCredentialFact(resolved);
+  return fact ? row("credential", fact) : "";
+}
+
 function applyRow(applicationUrl) {
   if (!applicationUrl) return "";
   const action = `<a class="admissions-application-link" href="${escapeHtmlAttr(applicationUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_application"))}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>`;
@@ -462,6 +486,7 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
     <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>${supportNotice}
     <dl class="admissions-key-facts__list">
       ${requirementsRow(resolved, cycleAction, shownTerms, profile)}
+      ${credentialRow(resolved)}
       ${applyRow(applicationUrl)}
       ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}

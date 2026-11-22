@@ -2516,7 +2516,7 @@ university.admissions.catalog.needs_review: Требует проверки
 university.admissions.catalog.historical: Исторические сведения
 university.admissions.catalog.checked: Официальная страница проверена
 university.admissions.catalog.period: Период публикации
-university.admissions.catalog.scope: Область применения источника
+university.admissions.catalog.scope: К чему относится
 university.admissions.catalog.conditions: Условия и исключения
 university.admissions.catalog.exceptions: Исключения
 university.admissions.catalog.source: Официальный источник
@@ -2701,6 +2701,7 @@ university.admissions.catalog.route_name.mit-transfer: Перевод из др�
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Первый курс после школы
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Перевод из другого вуза
 university.admissions.reading.mid_month: Середина {month}
+university.admissions.reading.early_month: Начало {month}
 university.admissions.reading.month.1: января
 university.admissions.reading.month.2: февраля
 university.admissions.reading.month.3: марта
@@ -2713,10 +2714,10 @@ university.admissions.reading.month.9: сентября
 university.admissions.reading.month.10: октября
 university.admissions.reading.month.11: ноября
 university.admissions.reading.month.12: декабря
-university.admissions.reading.early_action: Early Action · ранняя подача
-university.admissions.reading.regular_action: Regular Action · обычная подача
-university.admissions.reading.restrictive_early_action: Restrictive Early Action · ранняя необязывающая подача
-university.admissions.reading.regular_decision: Regular Decision · обычная подача
+university.admissions.reading.early_action: Ранняя подача (Early Action)
+university.admissions.reading.regular_action: Обычная подача (Regular Action)
+university.admissions.reading.restrictive_early_action: Ранняя подача с ограничением (Restrictive Early Action)
+university.admissions.reading.regular_decision: Обычная подача (Regular Decision)
 university.admissions.reading.transfer_application: Подача на перевод
 university.admissions.reading.priority_deadline: Приоритетный срок
 university.admissions.reading.application_deadline: Срок подачи заявления
@@ -2893,7 +2894,7 @@ university.admissions.reading.summary_translation_missing: Краткий пер
 university.admissions.reading.source_and_date: Источник и дата
 university.admissions.reading.official_sources_count: Официальные источники ({count})
 university.admissions.reading.source_marker: Источник {number}: {title}
-university.admissions.reading.reference_scope_note: Подробные записи приведены на языке источника. В каждой записи доступны условия, период и область действия.
+university.admissions.reading.reference_scope_note: Подробности приведены на языке университета.
 university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
 university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан
 university.admissions.reading.source_period: Период и формулировка источника
@@ -2930,8 +2931,8 @@ university.admissions.reading.living_twelve_months: 12 месяцев · ори�
 university.admissions.reading.different_cost_periods: Этот ориентир проживания относится к другому периоду, чем обучение 2027 года. Суммы показаны отдельно и не складываются в подтверждённый годовой бюджет.
 university.admissions.reading.scholarship_rounds: Раунды President’s PhD Scholarships
 university.admissions.reading.scholarship_dates_separate: Это сроки рассмотрения стипендии. Кафедра может требовать более ранней заявки PhD; поступление и назначение стипендии — отдельные решения.
-university.admissions.reading.ucas_medicine: UCAS · срок для Medicine
-university.admissions.reading.ucas_equal_consideration: UCAS · равное рассмотрение заявок
+university.admissions.reading.ucas_medicine: Срок UCAS для медицины
+university.admissions.reading.ucas_equal_consideration: Основной срок UCAS
 university.admissions.reading.submission_opens: Начало подачи заявок
 university.admissions.reading.date: Дата
 university.admissions.reading.local_time: Опубликованное местное время
@@ -3425,19 +3426,19 @@ universities.match.budget_within: В пределах бюджета
 universities.match.budget_uncertain: Уточните стоимость
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Для подходящих студентов выпускного курса: подайте заявку сейчас и начните MBA после двух–пяти лет работы. Это поступление с отложенным началом, а не ранний раунд обычной подачи на MBA.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — поступление с отложенным началом
-university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.title: Ранняя подача с ограничением (REA)
 university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — ранний раунд без обязательства поступить, но с ограничениями на ранние заявки в другие вузы; прочитайте правила вуза до выбора.
-university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.title: Ранняя подача (Early Action)
 university.admissions.glossary.early_action.text: Early Action — ранний раунд подачи: срок и ответ раньше, а обязательства поступить обычно нет, поэтому после зачисления вы не обязаны принимать место.
-university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.title: Обычная подача (Regular Action)
 university.admissions.glossary.regular_action.text: Regular Action — основной, более поздний раунд подачи: срок и ответ позже, чем в раннем раунде.
-university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.title: Обычная подача (RD)
 university.admissions.glossary.regular_decision.text: Regular Decision — основной раунд подачи: срок и ответ позже, чем в ранних раундах.
 university.admissions.glossary.ucas.title: UCAS
 university.admissions.glossary.ucas.text: UCAS — единая онлайн-служба подачи заявок в бакалавриат вузов Великобритании: заявку подают через неё, а не в каждый вуз отдельно.
 university.admissions.glossary.tmua.title: TMUA
 university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — вступительный тест по математике, который требуют некоторые британские вузы; он сдаётся отдельно от школьных экзаменов.
-university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.title: Подготовительный год (Foundation)
 university.admissions.glossary.foundation.text: Foundation — подготовительный год перед бакалавриатом, а NUFYP — Foundation Year Program Назарбаев Университета; узнайте в правилах вуза, ведёт ли его завершение к месту на программе.
 university.admissions.glossary.css_profile.title: CSS Profile
 university.admissions.glossary.css_profile.text: CSS Profile — онлайн-анкета College Board, по которой некоторые американские вузы оценивают финансовую нуждаемость семьи; её подают дополнительно к заявке на поступление.
@@ -3464,6 +3465,9 @@ university.admissions.key_facts.requirements_add_gpa: средний балл (G
 university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Обычный приём на Foundation
 university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Обычный приём на первый курс
 university.admissions.key_facts.apply: Где подать
+university.admissions.key_facts.credential: Документы из Казахстана
+university.admissions.key_facts.credential_unlisted: Университет не публикует решения по аттестату или диплому из Казахстана. Это не отказ: спросите в приёмной комиссии, подходит ли ваш документ.
+university.admissions.key_facts.credential_source: Официальные условия
 university.admissions.key_facts.apply_text: Заявка подаётся на официальном сайте университета.
 university.admissions.key_facts.minimum_add: Добавьте: {items}
 university.admissions.key_facts.minimum_any: {requirement}, одно из: {items}
@@ -3594,7 +3598,7 @@ university.ux2.or: или
 university.ux2.card.deadline: Когда подавать
 university.ux2.card.cost: Сколько это стоит
 university.ux2.card.needs: Что понадобится
-university.ux2.card.people: Кто здесь учится
+university.ux2.card.people: Конкурс и студенты
 university.ux2.card.program: Сроки, стоимость и требования
 university.ux2.link.deadlines: Все сроки
 university.ux2.link.cost: Стоимость и финансирование
@@ -3603,7 +3607,7 @@ university.ux2.link.choose: Выбрать программу
 university.ux2.choose.headline: Зависит от программы
 university.ux2.deadline.headline: До {date} · через {days} дн.
 university.ux2.deadline.headline_today: Крайний срок сегодня · {date}
-university.ux2.deadline.closed: Приём «{name}» ({date}) уже закрыт.
+university.ux2.deadline.closed: {name}, {date}: срок уже прошёл.
 university.ux2.deadline.annual: Университет повторяет эту дату каждый год, не называя год. Сверьте её на официальной странице.
 university.ux2.deadline.legacy: Сроки подачи — во вкладке «Даты и сроки».
 university.ux2.cost.headline: {amount} в год
@@ -3657,6 +3661,7 @@ university.ux2.people.selectivity_first_year: Зачисляют около {rat
 university.ux2.people.selectivity_undergraduate: Зачисляют около {rate}% подавших заявку на бакалавриат
 university.ux2.people.selectivity_offers: Предложение места получают около {rate}% заявок на бакалавриат
 university.ux2.people.selectivity_counts_admitted: Зачислено: {admitted} · подали заявку: {applicants}
+university.ux2.people.selectivity_not_chance: Это доля всех подавших, а не ваш личный шанс.
 university.ux2.people.selectivity_counts_offers: Предложений места: {admitted} · заявок: {applicants}
 university.ux2.people.selectivity_international: Иностранцы: зачислено {admitted} · подали заявку {applicants} (около {rate}%)
 university.ux2.people.selectivity_preparation: Ещё {rate}% по той же заявке приняли на подготовительный год {name}

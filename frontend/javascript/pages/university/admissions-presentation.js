@@ -20,10 +20,11 @@ export function formatPublishedDate(value) {
     const month = label(`month.${Number(iso[2])}`);
     return getCurrentLanguage() === "eng" ? `${month} ${Number(iso[3])}, ${iso[1]}` : `${Number(iso[3])} ${month} ${iso[1]}`;
   }
-  const middle = text.match(/^mid-(January|February|March|April|May|June|July|August|September|October|November|December)$/i);
+  // "mid-April" and "early April" are published as approximate dates; both read in the interface language.
+  const middle = text.match(/^(mid-|early )(January|February|March|April|May|June|July|August|September|October|November|December)$/i);
   if (middle) {
-    const month = formatPublishedDate(`${middle[1][0].toUpperCase()}${middle[1].slice(1).toLowerCase()} 1`).replace(/\b1\b/, "").trim();
-    return label("mid_month").replace("{month}", month);
+    const month = formatPublishedDate(`${middle[2][0].toUpperCase()}${middle[2].slice(1).toLowerCase()} 1`).replace(/\b1\b/, "").trim();
+    return label(/^mid/i.test(middle[1]) ? "mid_month" : "early_month").replace("{month}", month);
   }
   const match = text.match(/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})$/);
   if (!match) return text === "January test dates accepted" ? label("january_tests") : text;

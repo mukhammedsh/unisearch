@@ -298,6 +298,12 @@ test("yearless deadlines are localized without inventing a year and keep their s
     assert.doesNotMatch(formatPublishedDate("November 1"), /2000|2027/);
     assert.equal(formatPublishedDate("February 31"), "February 31");
   }
+  // Approximate published dates read in the interface language.
+  setLanguage("rus", { emit: false });
+  assert.equal(formatPublishedDate("early April"), "Начало апреля");
+  assert.equal(formatPublishedDate("mid-December"), "Середина декабря");
+  setLanguage("eng", { emit: false });
+  assert.equal(formatPublishedDate("early April"), "Early April");
 });
 
 test("a selected route without deadline records explains the empty section", () => {

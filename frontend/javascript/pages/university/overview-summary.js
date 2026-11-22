@@ -116,6 +116,8 @@ export function selectivityItem(statistics, source) {
     details.push(tFormat("university.ux2.people.selectivity_preparation", { name: preparation.name, rate: percentText(preparation.rate_percent) }));
   }
   if (measure === "offers") details.push(label("people.selectivity_offers_note"));
+  // A share of all applicants reads like a personal chance to a first-time reader, so the card says it is not one.
+  details.push(label("people.selectivity_not_chance"));
   const year = toFiniteNumber(statistics.entry_year);
   return { kind: "selectivity", text: tFormat(`university.ux2.people.selectivity_${measure}`, { rate: percentText(rate) }), details,
     source: source(statistics.source, statistics.source_url, year ? tFormat("university.ux2.people.intake", { year }) : "", statistics.checked_at) };

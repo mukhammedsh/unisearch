@@ -43,7 +43,12 @@ Minor release: map markers now say which university they mark, and search matche
 - Open the Admission, Dates and Costs tabs on the same default path as the Overview (shared first-year admission) when nothing is chosen yet, instead of asking "Choose how you apply" on each tab; the path can still be changed, and a saved or linked choice is kept. Universities without a shared path (Imperial) still ask for a program first.
 - Keep an entered result visible when a minimums check still needs a date or section scores ("You have: IELTS Academic 6.5, the overall score meets the minimum. To check it fully, add: …"), and introduce the checklist instead of asking to "add your results" that are already in the profile.
 - Name the separate grant application as such when it is opened from the key facts ("Open the grant application"), and offer one button back to the admission path it was opened from.
+- Name application rounds in the interface language first, with the official term in brackets ("Early application (Early Action)", "Regular application (Regular Decision)", "Main UCAS deadline"), and write a passed round as "Early application (Early Action), November 1: this deadline has passed." instead of nesting brackets.
+- Answer Kazakhstan documents at the top of the Admission key facts when the university publishes no ruling on them (Imperial, Stanford): no decision is published, it is not a rejection, ask the admissions office, with a link to the official guidance.
+- Rewrite the visible Russian MIT and Stanford application, test, document, transfer and aid summaries in plain Russian, keeping the official term in brackets (first-year, transfer, superscore, School Report, eligible noncitizens).
+- Say under the Overview admission rate that it is the share of all applicants, not a personal chance; rename the card "Competition and students" and drop research wording ("Source scope", "Full records retain the official source language").
 ### Fixed
+- Translate approximate published dates such as "early April" (Stanford's Regular Decision notification) like "mid-December".
 - Show a single "≈" in a converted calculated yearly cost and its living part (Imperial showed "≈ ≈ $35,000 – $85,000").
 - Head MIT's English-score column "Minimum if you take it" instead of "Minimum", because the test is recommended, not required.
 - Replace a language test opened with "Edit" in the profile when its date changes, instead of adding a second row for the same test.
@@ -56,6 +61,7 @@ Minor release: map markers now say which university they mark, and search matche
 - Fix same-surface blending and low-contrast dark-theme colors across CSS stylesheets: nested controls and cards in admissions, finance, comparison, map results, tour modal, profile breakdowns, search suggestions, and empty/error states now step cleanly between `--bg`/`--bg-soft`, `--surface-solid`, and `--surface-soft`, while dark-mode links, badges, tooltips, danger hover actions, and milestone steps use readable semantic text/status tokens instead of dark `--accent` or pale `--color-danger` backgrounds with white text.
 
 ### Tests
+- Check the Kazakhstan-document answer (shown only without a published ruling), the plain round names, the admission-rate note and "early April".
 - Check a single "≈" in converted calculated costs, the entered result beside what a minimums check still needs, and that editing a language test replaces the opened entry.
 - Update the admissions E2E specs for the default first-year path (no path prompt on MIT, Stanford and NU tabs, nothing saved until "Remember this path", a program's own path chosen again) and check the way back from NU's grant application.
 - Check the English-test recommendation for native, non-native and unstated English, the profile link from a checklist note to the test's section scores, and that the check details sit behind the Sources disclosure.

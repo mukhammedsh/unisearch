@@ -59,7 +59,7 @@ test("yearless rounds and application periods are shown as published without a c
     { name: "Regular Action", application_due: "January 4" }] } };
   const yearless = deadlineFact(withRows([rounds]), NOW);
   assert.equal(yearless.status, "yearless");
-  assert.match(yearless.text, /without a year: Early Action[^:]*: November 1; Regular Action[^:]*: January 4/);
+  assert.match(yearless.text, /without a year: Early application \(Early Action\): November 1; Regular application \(Regular Action\): January 4/);
   assert.equal(yearless.days, undefined);
   const period = { ...events([]), id: "window", attributes: {}, normalized_status: { publication: "partially_published", review: "verified" },
     value: { application_period: "October 2026–August 2027", submission: "rolling basis" } };
@@ -75,14 +75,14 @@ test("yearless dates the record describes as recurring get their next calendar o
   const fact = deadlineFact(withRows([recurringRounds()]), today);
   assert.equal(fact.status, "recurring");
   assert.equal(fact.days, 55);
-  assert.match(fact.text, /^Early Action[^:]*: November 1 has passed\. Next: Regular Action[^—]*— January 4, 2027, in 55 days \(annual date; confirm the year on the official page\)$/);
+  assert.match(fact.text, /^Early application \(Early Action\): November 1 has passed\. Next: Regular application \(Regular Action\) — January 4, 2027, in 55 days \(annual date; confirm the year on the official page\)$/);
   assert.deepEqual(fact.terms, ["early_action", "regular_action"]);
   // Before the first round nothing has passed; after the last one the next occurrence is the following year's first round.
   const beforeEarly = deadlineFact(withRows([recurringRounds()]), new Date(2026, 9, 1, 12, 0));
-  assert.match(beforeEarly.text, /^Next: Early Action[^—]*— November 1, 2026, in 31 days/);
+  assert.match(beforeEarly.text, /^Next: Early application \(Early Action\) — November 1, 2026, in 31 days/);
   const afterRegular = deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 10, 12, 0));
-  assert.match(afterRegular.text, /^Next: Early Action[^—]*— November 1, 2027, in 295 days/);
-  assert.match(deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 4, 12, 0)).text, /^Next: Regular Action[^—]*— January 4, 2027, today /);
+  assert.match(afterRegular.text, /^Next: Early application \(Early Action\) — November 1, 2027, in 295 days/);
+  assert.match(deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 4, 12, 0)).text, /^Next: Regular application \(Regular Action\) — January 4, 2027, today /);
   setLanguage("rus", { emit: false });
   assert.match(deadlineFact(withRows([recurringRounds()]), today).text, /ежегодная дата; год уточните на официальной странице/);
   setLanguage("eng", { emit: false });
@@ -123,17 +123,17 @@ test("Stanford's recurring first-year and transfer windows get the next calendar
   const firstYear = deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today);
   assert.equal(firstYear.status, "recurring");
   assert.equal(firstYear.days, 56);
-  assert.match(firstYear.text, /^Restrictive Early Action[^:]*: November 1 has passed\. Next: Regular Decision[^—]*— January 5, 2027, in 56 days \(annual date; confirm the year on the official page\)$/);
+  assert.match(firstYear.text, /^Early application with limits \(Restrictive Early Action\): November 1 has passed\. Next: Regular application \(Regular Decision\) — January 5, 2027, in 56 days \(annual date; confirm the year on the official page\)$/);
   assert.deepEqual(firstYear.terms, ["restrictive_early_action", "regular_decision"]);
   // After Regular Decision the following year's Restrictive Early Action date leads.
-  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), new Date(2027, 0, 10, 12, 0)).text, /^Next: Restrictive Early Action[^—]*— November 1, 2027, in 295 days/);
+  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), new Date(2027, 0, 10, 12, 0)).text, /^Next: Early application with limits \(Restrictive Early Action\) — November 1, 2027, in 295 days/);
   const transfer = deadlineFact(withRows([stanfordProse, stanfordTransfer]), today);
   assert.equal(transfer.status, "recurring");
   assert.equal(transfer.days, 125);
   assert.match(transfer.text, /^Next: Transfer application — March 15, 2027, in 125 days \(annual date; confirm the year on the official page\)$/);
   // The window names follow the interface language.
   setLanguage("rus", { emit: false });
-  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today).text, /^Restrictive Early Action · .*: 1 ноября — срок прошёл\. Следующий: Regular Decision · .* — 5 января 2027/);
+  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today).text, /^Ранняя подача с ограничением \(Restrictive Early Action\): 1 ноября — срок прошёл\. Следующий: Обычная подача \(Regular Decision\) — 5 января 2027/);
   assert.match(deadlineFact(withRows([stanfordTransfer]), today).text, /^Следующий: Подача на перевод — 15 марта 2027/);
   setLanguage("eng", { emit: false });
 });
@@ -427,4 +427,17 @@ test("an English-test recommendation for non-native speakers is a recommendation
   setLanguage("rus", { emit: false });
   assert.equal(englishRecommendationItem(resolved, { languages: [ielts] }).text, "Рекомендуемый тест по английскому: IELTS (академический модуль) 7,0 (лучше 7,5)");
   setLanguage("eng", { emit: false });
+});
+
+test("a Kazakhstan document without a published ruling is answered at the top, a published one is not", async () => {
+  const { kazakhstanCredentialFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+  const note = { id: "kz", topic: "qualification_recognition", value: "Kazakhstan school-leaving qualifications are not listed.", source_ids: ["official"],
+    normalized_status: { publication: "unknown", review: "verified" }, scope: { applicant_categories: [] } };
+  const unlisted = kazakhstanCredentialFact(context({ facts: [note] }));
+  assert.match(unlisted.text, /no decision on school or degree documents from Kazakhstan/);
+  assert.deepEqual(unlisted.links, [{ url: "https://example.edu/apply", label: "Official guidance" }]);
+  assert.match(renderAdmissionsKeyFacts(context({ facts: [note] }), { now: NOW }), /data-key-fact="credential"/);
+  assert.equal(kazakhstanCredentialFact(context({ facts: [{ ...note, normalized_status: { publication: "published", review: "verified" } }] })), null);
+  assert.equal(kazakhstanCredentialFact(context({ facts: [{ ...note, value: "Albania qualifications" }] })), null);
+  assert.equal(kazakhstanCredentialFact(context({ facts: [{ ...note, applicability: { status: "mismatched" } }] })), null);
 });

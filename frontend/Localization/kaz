@@ -2518,7 +2518,7 @@ university.admissions.catalog.needs_review: Қарау қажет
 university.admissions.catalog.historical: Тарихи дереккөз жазбасы
 university.admissions.catalog.checked: Ресми бет тексерілген
 university.admissions.catalog.period: Жарияланған кезең
-university.admissions.catalog.scope: Дереккөз аясы
+university.admissions.catalog.scope: Неге қатысты
 university.admissions.catalog.conditions: Шарттар мен ерекшеліктер
 university.admissions.catalog.exceptions: Ерекшеліктер
 university.admissions.catalog.source: Ресми дереккөз
@@ -2703,6 +2703,7 @@ university.admissions.catalog.route_name.mit-transfer: Басқа универс
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Мектептен кейінгі бірінші курс
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Басқа университеттен ауысу
 university.admissions.reading.mid_month: {month} айының ортасы
+university.admissions.reading.early_month: {month} айының басы
 university.admissions.reading.month.1: қаңтар
 university.admissions.reading.month.2: ақпан
 university.admissions.reading.month.3: наурыз
@@ -2715,10 +2716,10 @@ university.admissions.reading.month.9: қыркүйек
 university.admissions.reading.month.10: қазан
 university.admissions.reading.month.11: қараша
 university.admissions.reading.month.12: желтоқсан
-university.admissions.reading.early_action: Early Action · ерте өтініш
-university.admissions.reading.regular_action: Regular Action · негізгі өтініш
-university.admissions.reading.restrictive_early_action: Restrictive Early Action · ерте міндеттемесіз өтініш
-university.admissions.reading.regular_decision: Regular Decision · негізгі өтініш
+university.admissions.reading.early_action: Ерте өтініш (Early Action)
+university.admissions.reading.regular_action: Негізгі өтініш (Regular Action)
+university.admissions.reading.restrictive_early_action: Шектеулі ерте өтініш (Restrictive Early Action)
+university.admissions.reading.regular_decision: Негізгі өтініш (Regular Decision)
 university.admissions.reading.transfer_application: Ауысуға өтініш
 university.admissions.reading.priority_deadline: Басым мерзім
 university.admissions.reading.application_deadline: Өтініш беру мерзімі
@@ -2895,7 +2896,7 @@ university.admissions.reading.summary_translation_missing: Қысқаша ауд
 university.admissions.reading.source_and_date: Дереккөз және күні
 university.admissions.reading.official_sources_count: Ресми дереккөздер ({count})
 university.admissions.reading.source_marker: Дереккөз {number}: {title}
-university.admissions.reading.reference_scope_note: Толық жазбалар дереккөз тілінде берілген. Әр жазбада шарттар, кезең және қолданылу аясы бар.
+university.admissions.reading.reference_scope_note: Толығырақ мәліметтер университет тілінде берілген.
 university.admissions.reading.current_policy: Жарияланған ережелер; қабылдау жылы көрсетілмеген
 university.admissions.reading.yearless_period: Жыл сайынғы мерзімдер; қабылдау жылы көрсетілмеген
 university.admissions.reading.source_period: Дереккөздегі кезең мен тұжырым
@@ -2932,8 +2933,8 @@ university.admissions.reading.living_twelve_months: 12 ай · жеке басп
 university.admissions.reading.different_cost_periods: Бұл тұру бағдары 2027 жылғы оқу ақысынан басқа кезеңге қатысты. Сомалар бөлек көрсетіліп, расталған жылдық бюджетке қосылмайды.
 university.admissions.reading.scholarship_rounds: President’s PhD стипендиясының раундтары
 university.admissions.reading.scholarship_dates_separate: Бұлар стипендияны қарау мерзімдері. Кафедра PhD өтінішін ертерек талап етуі мүмкін; қабылдау мен стипендия тағайындау — бөлек шешімдер.
-university.admissions.reading.ucas_medicine: UCAS · Medicine мерзімі
-university.admissions.reading.ucas_equal_consideration: UCAS · өтініштерді тең қарау мерзімі
+university.admissions.reading.ucas_medicine: Медицинаға UCAS мерзімі
+university.admissions.reading.ucas_equal_consideration: UCAS негізгі мерзімі
 university.admissions.reading.submission_opens: Өтініш қабылдаудың басталуы
 university.admissions.reading.date: Күні
 university.admissions.reading.local_time: Жарияланған жергілікті уақыт
@@ -3427,19 +3428,19 @@ universities.match.budget_within: Бюджетіңізге сай
 universities.match.budget_uncertain: Құнын нақтылаңыз
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Талаптарға сай бітіруші курс студенттеріне: қазір өтініш беріп, екі–бес жыл жұмыс істегеннен кейін MBA оқуын бастауға болады. Бұл MBA-ға әдеттегі қабылдаудың ерте кезеңі емес, оқуды кейін бастау жолы.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — оқуды кейін бастау жолы
-university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.title: Шектеулі ерте өтініш (REA)
 university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — оқуға түсуге міндеттемейтін, бірақ басқа университеттерге ерте өтініш беруге шектеу қоятын ерте раунд; таңдамас бұрын университет ережесін оқыңыз.
-university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.title: Ерте өтініш (Early Action)
 university.admissions.glossary.early_action.text: Early Action — мерзімі мен жауабы ертерек келетін ерте өтініш раунды; әдетте оқуға түсуге міндеттемейді, сондықтан қабылданса да орынды алуға міндетті емессіз.
-university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.title: Негізгі өтініш (Regular Action)
 university.admissions.glossary.regular_action.text: Regular Action — негізгі, кешірек өтетін раунд: мерзімі мен жауабы ерте раундтан кеш болады.
-university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.title: Негізгі өтініш (RD)
 university.admissions.glossary.regular_decision.text: Regular Decision — негізгі өтініш раунды: мерзімі мен жауабы ерте раундтардан кеш болады.
 university.admissions.glossary.ucas.title: UCAS
 university.admissions.glossary.ucas.text: UCAS — Ұлыбритания университеттерінің бакалавриатына өтініш беретін бірыңғай онлайн қызмет: өтінішті әр университетке жеке емес, осы арқылы жібересіз.
 university.admissions.glossary.tmua.title: TMUA
 university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — кейбір британ университеттері талап ететін математикадан түсу тесті; ол мектеп емтихандарынан бөлек тапсырылады.
-university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.title: Дайындық жылы (Foundation)
 university.admissions.glossary.foundation.text: Foundation — бакалавриат алдындағы дайындық жылы, ал NUFYP — Назарбаев Университетінің Foundation Year Program бағдарламасы; жылды аяқтау бағдарламада орын беретінін университет ережесінен тексеріңіз.
 university.admissions.glossary.css_profile.title: CSS Profile
 university.admissions.glossary.css_profile.text: CSS Profile — кейбір АҚШ университеттері отбасының қаржылық қажеттілігін бағалайтын College Board онлайн сауалнамасы; ол оқуға түсу өтінішіне қосымша тапсырылады.
@@ -3466,6 +3467,9 @@ university.admissions.key_facts.requirements_add_gpa: орташа балды (G
 university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Foundation бағдарламасына жалпы қабылдау
 university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Бірінші курсқа жалпы қабылдау
 university.admissions.key_facts.apply: Қайда тапсыру керек
+university.admissions.key_facts.credential: Қазақстан құжаттары
+university.admissions.key_facts.credential_unlisted: Университет Қазақстан аттестаты немесе дипломы бойынша шешім жарияламайды. Бұл бас тарту емес: құжатыңыз жарай ма, қабылдау комиссиясынан сұраңыз.
+university.admissions.key_facts.credential_source: Ресми талаптар
 university.admissions.key_facts.apply_text: Өтініш университеттің ресми сайтында беріледі.
 university.admissions.key_facts.minimum_add: Қосыңыз: {items}
 university.admissions.key_facts.minimum_any: {requirement}, біреуі: {items}
@@ -3596,7 +3600,7 @@ university.ux2.or: немесе
 university.ux2.card.deadline: Қашан өтініш беру керек
 university.ux2.card.cost: Құны қанша
 university.ux2.card.needs: Не қажет болады
-university.ux2.card.people: Мұнда кімдер оқиды
+university.ux2.card.people: Конкурс және студенттер
 university.ux2.card.program: Мерзімдер, құн және талаптар
 university.ux2.link.deadlines: Барлық мерзімдер
 university.ux2.link.cost: Құны және қаржыландыру
@@ -3605,7 +3609,7 @@ university.ux2.link.choose: Бағдарлама таңдау
 university.ux2.choose.headline: Бағдарламаға байланысты
 university.ux2.deadline.headline: {date} дейін · {days} күннен кейін
 university.ux2.deadline.headline_today: Соңғы мерзім бүгін · {date}
-university.ux2.deadline.closed: «{name}» ({date}) қабылдауы жабылған.
+university.ux2.deadline.closed: {name}, {date}: мерзім өтіп кетті.
 university.ux2.deadline.annual: Университет бұл күнді жыл сайын жылын көрсетпей қайталайды. Ресми беттен тексеріңіз.
 university.ux2.deadline.legacy: Өтініш мерзімдері «Күндер мен мерзімдер» қойындысында.
 university.ux2.cost.headline: Жылына {amount}
@@ -3659,6 +3663,7 @@ university.ux2.people.selectivity_first_year: Бірінші курсқа өті
 university.ux2.people.selectivity_undergraduate: Бакалавриатқа өтініш бергендердің шамамен {rate}%-ы қабылданады
 university.ux2.people.selectivity_offers: Бакалавриатқа берілген өтініштердің шамамен {rate}%-ы орын ұсынысын алады
 university.ux2.people.selectivity_counts_admitted: Қабылданғаны: {admitted} · өтініш бергені: {applicants}
+university.ux2.people.selectivity_not_chance: Бұл — барлық өтініш берушілердің үлесі, сіздің жеке мүмкіндігіңіз емес.
 university.ux2.people.selectivity_counts_offers: Орын ұсыныстары: {admitted} · өтініштер: {applicants}
 university.ux2.people.selectivity_international: Шетелдіктер: қабылданғаны {admitted} · өтініш бергені {applicants} (шамамен {rate}%)
 university.ux2.people.selectivity_preparation: Сол өтініш бойынша тағы {rate}% {name} дайындық жылына қабылданды
