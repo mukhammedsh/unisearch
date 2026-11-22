@@ -1401,12 +1401,18 @@ export function initUniversitiesPage() {
         }
 
         // Independent panels invariant: sidebar geometry must never depend on
-        // the live scroll position. Derive the height from the sticky `top`
-        // offset only (stable across scrolls), so scrolling the catalog can
-        // neither resize nor shift the filter column.
+        // the live scroll position. Derive the height from offsets that do not
+        // change while scrolling: the sticky `top` and the layout's document
+        // offset (where the unscrolled sidebar starts). Using the larger of the
+        // two keeps the panel's bottom inside the viewport before the page is
+        // scrolled, so the end of the filters is never hidden below the fold.
         const computedTop = Number.parseFloat(window.getComputedStyle(sidebar).top) || 90;
+        const layoutTop = el.workspaceLayout
+            ? el.workspaceLayout.getBoundingClientRect().top + window.scrollY
+            : 0;
+        const startTop = Math.max(computedTop, layoutTop);
         const bottomGap = 16;
-        const availableHeight = Math.max(200, Math.floor(window.innerHeight - computedTop - bottomGap));
+        const availableHeight = Math.max(200, Math.floor(window.innerHeight - startTop - bottomGap));
         if (lastAppliedSidebarMaxHeight !== availableHeight) {
             lastAppliedSidebarMaxHeight = availableHeight;
             sidebar.style.setProperty("--sidebar-max-height", `${availableHeight}px`);

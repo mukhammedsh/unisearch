@@ -219,6 +219,11 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     });
     expect(before.pageY).toBe(0);
 
+    // The unscrolled filter column must end inside the viewport, so a scrolled-to-the-end
+    // panel is visibly at its end before the page itself is scrolled.
+    const viewportHeight = page.viewportSize().height;
+    expect(before.y + before.height).toBeLessThanOrEqual(viewportHeight);
+
     // 1. Scrolling the catalog (page) must not resize or inner-scroll the filters.
     await page.evaluate(() => window.scrollTo(0, 400));
     await page.waitForTimeout(200);
