@@ -23,7 +23,6 @@ nav {
   position: relative;
   justify-content: center;
   gap: var(--space-2);
-  padding: 0 var(--space-3);
 }
 
 /* Sliding Indicator */
@@ -473,7 +472,6 @@ body .has-sliding-indicator .active::after {
     width: 82px;
     min-width: 40px;
     min-height: 40px;
-    padding: 0 var(--space-5) 0 var(--space-2);
     border-radius: var(--radius-base);
     font-size: var(--text-xs);
   }
@@ -603,10 +601,6 @@ body .has-sliding-indicator .active::after {
     min-height: 36px;
   }
 
-  .navbar-right .lang-control .custom-select-trigger--language {
-    padding: 0 var(--space-2);
-  }
-
   .navbar-right .lang-control .custom-select-trigger--language::after {
     display: none;
   }
@@ -668,12 +662,6 @@ body .has-sliding-indicator .active::after {
   .navbar-right .lang-control .custom-select-trigger--language img {
     width: 18px;
     height: 14px;
-  }
-}
-
-@media (max-width: 380px) {
-  .navbar-right .lang-control .custom-select-trigger {
-    padding: 0 var(--space-2);
   }
 }
 

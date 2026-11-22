@@ -358,4 +358,82 @@ test.describe("Responsive Layout and Overflow Verification", () => {
       expect(logoBox.x - navBox.x).toBeLessThanOrEqual(20);
     }
   });
+
+  test("fills single-column cards, keeps language trigger padding symmetric, and anchors filter overlays", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/index.html?lang=rus");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    for (const width of [607, 640]) {
+      await page.setViewportSize({ width, height: 911 });
+      const cardMetrics = await page.evaluate(() => {
+        const grid = document.getElementById("universitiesList");
+        const card = grid?.querySelector(".uni-card:not(.is-skeleton)");
+        const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").map(Number.parseFloat);
+        return { trackWidth: cols[0], cardWidth: card.getBoundingClientRect().width };
+      });
+      expect(cardMetrics.trackWidth - cardMetrics.cardWidth, `single-column card fill at ${width}px`).toBeLessThanOrEqual(2);
+    }
+
+    for (const vp of [
+      { width: 1280, height: 900 },
+      { width: 1001, height: 941 },
+      { width: 768, height: 900 },
+      { width: 640, height: 911 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(vp);
+      const pad = await page.evaluate(() => {
+        const trigger = document.querySelector(".navbar-right .lang-control .custom-select-trigger");
+        const cs = getComputedStyle(trigger);
+        return { left: Number.parseFloat(cs.paddingLeft), right: Number.parseFloat(cs.paddingRight) };
+      });
+      expect(Math.abs(pad.left - pad.right), `symmetric lang padding at ${vp.width}px`).toBeLessThanOrEqual(1);
+    }
+
+    for (const vp of [
+      { width: 1001, height: 941, mode: "drawer" },
+      { width: 768, height: 900, mode: "drawer" },
+      { width: 607, height: 911, mode: "sheet" },
+      { width: 375, height: 812, mode: "sheet" },
+    ]) {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await page.locator("#mobileFilterToggle").click();
+      await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
+
+      const overlay = await page.evaluate(() => {
+        const sidebar = document.getElementById("uSidebar");
+        const card = sidebar.querySelector(".u-filter-card");
+        const sr = sidebar.getBoundingClientRect();
+        const cr = card.getBoundingClientRect();
+        const ccs = getComputedStyle(card);
+        return {
+          innerHeight: window.innerHeight,
+          sidebarBottom: sr.bottom,
+          cardLeft: cr.left,
+          cardBottom: cr.bottom,
+          borderRadius: ccs.borderRadius,
+          bottomLeftRadius: ccs.borderBottomLeftRadius,
+          bottomRightRadius: ccs.borderBottomRightRadius,
+        };
+      });
+
+      expect(Math.abs(overlay.sidebarBottom - overlay.innerHeight), `${vp.width}px backdrop reaches viewport bottom`).toBeLessThanOrEqual(1);
+      expect(Math.abs(overlay.cardBottom - overlay.innerHeight), `${vp.width}px filter card reaches viewport bottom`).toBeLessThanOrEqual(1);
+      if (vp.mode === "drawer") {
+        expect(Math.abs(overlay.cardLeft), `${vp.width}px drawer flush to left edge`).toBeLessThanOrEqual(1);
+        expect(overlay.borderRadius, `${vp.width}px drawer has no rounded corners`).toBe("0px");
+      } else {
+        expect(overlay.bottomLeftRadius, `${vp.width}px sheet bottom-left radius`).toBe("0px");
+        expect(overlay.bottomRightRadius, `${vp.width}px sheet bottom-right radius`).toBe("0px");
+      }
+
+      await page.locator("#closeMobileFilters").click();
+      await expect(page.locator("#uSidebar")).not.toHaveClass(/is-open/);
+    }
+  });
 });

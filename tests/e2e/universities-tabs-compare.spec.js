@@ -788,6 +788,8 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
     { name: "desktop", width: 1440, height: 900, expectSingleRow: true },
     { name: "tablet", width: 1024, height: 800, expectSingleRow: true },
     { name: "tablet-portrait", width: 768, height: 800, expectSingleRow: true },
+    { name: "wide-phone", width: 607, height: 911, expectSingleRow: true },
+    { name: "mid-phone", width: 503, height: 918, expectSingleRow: true },
     { name: "phone", width: 390, height: 844, expectSingleRow: true },
     { name: "narrow", width: 320, height: 568, expectSingleRow: false },
   ]) {

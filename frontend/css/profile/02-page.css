@@ -1380,7 +1380,7 @@ textarea.profile-input,
 .profile-confirm-modal {
   position: fixed;
   inset: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
   max-width: none;
@@ -1784,7 +1784,8 @@ textarea.profile-input,
 
   .profile-exam-form--with-special,
   .profile-exam-form--with-special.profile-exam-form--grades,
-  .profile-exam-form--with-special.profile-exam-form--breakdown {
+  .profile-exam-form--with-special.profile-exam-form--breakdown,
+  .profile-applicant-context-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1796,12 +1797,6 @@ textarea.profile-input,
 
   .profile-confirm-modal.is-closing .profile-confirm-card {
     animation-name: motion-sheet-out;
-  }
-}
-
-@media (max-width: 600px) {
-  .profile-applicant-context-grid {
-    grid-template-columns: 1fr;
   }
 }
 

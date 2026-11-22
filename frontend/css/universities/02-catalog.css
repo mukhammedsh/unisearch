@@ -84,7 +84,6 @@
   min-height: 0;
   overflow: hidden;
   width: 100%;
-  max-width: 550px;
 }
 
 .u-skeleton-card .uni-price {
@@ -270,7 +269,6 @@
   height: auto;
   min-height: 0;
   width: 100%;
-  max-width: 550px;
 }
 
 .universities-compare-mode .uni-card {
