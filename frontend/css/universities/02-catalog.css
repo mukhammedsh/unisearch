@@ -641,11 +641,11 @@
 }
 
 .u-recent-trigger {
-  min-block-size: var(--u-toolbar-height, var(--space-10));
+  min-block-size: var(--u-toolbar-height, 36px);
   box-sizing: border-box;
-  border-radius: var(--u-toolbar-radius, var(--radius-base));
+  border-radius: var(--u-toolbar-radius, var(--radius-md));
   font: inherit;
-  font-size: var(--text-md);
+  font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   line-height: 1;
   cursor: pointer;
@@ -682,13 +682,13 @@
 }
 
 .u-recent-trigger__count {
-  min-width: 22px;
-  height: 22px;
+  min-width: var(--space-5);
+  height: var(--space-5);
   padding: 0 var(--space-1-5);
   border-radius: var(--radius-full);
   background: var(--surface-soft);
   color: var(--text);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -704,8 +704,8 @@
 }
 
 .u-recent-trigger__chevron {
-  width: var(--space-4);
-  height: var(--space-4);
+  width: 14px;
+  height: 14px;
   flex: 0 0 auto;
   opacity: 0.72;
   transition:

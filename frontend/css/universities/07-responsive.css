@@ -396,16 +396,6 @@
     padding: var(--space-3);
   }
 
-  .u-found {
-    font-size: var(--text-base);
-    gap: var(--space-1);
-  }
-
-  .u-compare-mode-btn,
-  .u-recent-trigger {
-    font-size: var(--text-base);
-  }
-
   .u-content {
     --u-loading-top: 150px;
   }
@@ -429,26 +419,13 @@
   }
 
   .u-section-bar {
-    --u-toolbar-height: 36px;
-    --u-toolbar-radius: var(--radius-md);
     margin-bottom: var(--space-3);
     padding-left: var(--space-3);
     padding-right: var(--space-3);
   }
 
-  .view-toggles {
-    padding: var(--space-0-5);
-    gap: var(--space-0-5);
-  }
-
   .u-recent-trigger {
     padding: 0 var(--space-2);
-  }
-
-  .u-recent-trigger__count {
-    min-width: var(--space-5);
-    height: var(--space-5);
-    font-size: var(--text-xs);
   }
 
   .u-layout {
@@ -636,16 +613,20 @@
 
   .u-section-actions {
     flex-shrink: 0;
-    gap: var(--space-1-5);
+    gap: var(--space-1);
   }
 
   .view-btn {
-    min-inline-size: 30px;
+    min-inline-size: 34px;
     min-block-size: 30px;
   }
 
   .view-btn .ui-icon,
-  .view-btn [data-heroicon],
+  .view-btn [data-heroicon] {
+    width: 18px;
+    height: 18px;
+  }
+
   .u-compare-mode-btn [data-heroicon],
   .u-compare-mode-btn .ui-icon,
   .u-recent-trigger__icon {
