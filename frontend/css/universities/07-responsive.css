@@ -21,15 +21,36 @@
        page scroll (or vice versa). Keep `contain` here; `auto` re-links
        the sidebar and catalog scroll positions on wheel/touch. */
     overscroll-behavior-y: contain;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 0 0 var(--space-4) 0;
+    /* The shared scrollbar (8px thumb) stays visible so the panel reads as scrollable. */
+    padding: 0 var(--space-2) var(--space-4) 0;
   }
 
-  .u-sidebar::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
+  /* Bottom fade: hints at more filters below and disappears at the end of the scroll.
+     Needs scroll-driven animations and registered properties; without them the
+     visible scrollbar is the hint. */
+  @supports (animation-timeline: scroll()) {
+    @property --u-sidebar-fade {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+    }
+
+    .u-sidebar {
+      mask-image: linear-gradient(to bottom, var(--surface-solid) calc(100% - var(--u-sidebar-fade)), transparent);
+      animation: u-sidebar-fade linear both;
+      animation-timeline: scroll(self block);
+    }
+
+    @keyframes u-sidebar-fade {
+      0%,
+      92% {
+        --u-sidebar-fade: var(--space-10);
+      }
+
+      100% {
+        --u-sidebar-fade: 0px; /* spacing-exception: registered length must carry a unit */
+      }
+    }
   }
 
   .u-filter-card {
