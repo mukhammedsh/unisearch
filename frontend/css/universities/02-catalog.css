@@ -645,7 +645,7 @@
   box-sizing: border-box;
   border-radius: var(--u-toolbar-radius, var(--radius-base));
   font: inherit;
-  font-size: var(--text-base);
+  font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   line-height: 1;
   cursor: pointer;
@@ -665,8 +665,8 @@
 }
 
 .u-recent-trigger__icon {
-  width: var(--space-4);
-  height: var(--space-4);
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
 }
 
@@ -682,13 +682,13 @@
 }
 
 .u-recent-trigger__count {
-  min-width: var(--space-5);
-  height: var(--space-5);
+  min-width: 22px;
+  height: 22px;
   padding: 0 var(--space-1-5);
   border-radius: var(--radius-full);
   background: var(--surface-soft);
   color: var(--text);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -704,6 +704,8 @@
 }
 
 .u-recent-trigger__chevron {
+  width: var(--space-4);
+  height: var(--space-4);
   flex: 0 0 auto;
   opacity: 0.72;
   transition:

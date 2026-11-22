@@ -94,13 +94,13 @@ body[data-page="universities"] {
 .u-found {
   white-space: nowrap;
   min-width: 0;
-  font-size: var(--text-base);
-  font-weight: var(--font-weight-regular);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
   color: var(--text-muted);
   line-height: var(--leading-tight);
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
+  gap: var(--space-1-5);
 }
 
 .u-found > span {
@@ -118,7 +118,7 @@ body[data-page="universities"] {
   box-sizing: border-box;
   border-radius: var(--u-toolbar-radius);
   font: inherit;
-  font-size: var(--text-base);
+  font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   line-height: 1;
   cursor: pointer;
@@ -140,8 +140,8 @@ body[data-page="universities"] {
 
 .u-compare-mode-btn [data-heroicon],
 .u-compare-mode-btn .ui-icon {
-  width: var(--space-4);
-  height: var(--space-4);
+  width: 18px;
+  height: 18px;
   flex: 0 0 auto;
 }
 
@@ -745,8 +745,8 @@ body[data-page="universities"] {
 
 .view-btn .ui-icon,
 .view-btn [data-heroicon] {
-  width: var(--space-4);
-  height: var(--space-4);
+  width: 18px;
+  height: 18px;
 }
 
 .view-btn.active,

@@ -841,11 +841,12 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
       };
     });
 
+    const expectedIcon = viewport.width > 480 ? 18 : 16;
     expect(metrics.heights[0], `${viewport.name}: recent height`).toBe(metrics.heights[1]);
     expect(metrics.heights[1], `${viewport.name}: compare height`).toBe(metrics.heights[2]);
     expect(metrics.radii[0], `${viewport.name}: radii`).toBe(metrics.radii[1]);
     expect(metrics.radii[1], `${viewport.name}: radii`).toBe(metrics.radii[2]);
-    expect(metrics.iconSizes, `${viewport.name}: icon sizes`).toEqual([16, 16, 16]);
+    expect(metrics.iconSizes, `${viewport.name}: icon sizes`).toEqual([expectedIcon, expectedIcon, expectedIcon]);
     expect(metrics.viewBtnSizes[0], `${viewport.name}: square view buttons`).toEqual(metrics.viewBtnSizes[1]);
     expect(metrics.viewBtnSizes[0][0], `${viewport.name}: view button square`).toBe(metrics.viewBtnSizes[0][1]);
     expect(Math.abs(metrics.topGap - metrics.bottomGap), `${viewport.name}: vertical rhythm`).toBeLessThanOrEqual(1);
