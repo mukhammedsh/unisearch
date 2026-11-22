@@ -3343,6 +3343,7 @@ university.admissions.key_facts.open_deadlines: Все сроки
 university.admissions.key_facts.cost: Стоимость в год
 university.admissions.key_facts.cost_total: Годовой бюджет по данным вуза: {amount}
 university.admissions.key_facts.cost_breakdown: Обучение {tuition} + проживание ≈ {living} за 9 месяцев учёбы
+university.admissions.key_facts.cost_tuition_share: Из них обучение — {tuition}, остальное — жильё, питание и другие расходы.
 university.admissions.key_facts.cost_estimate: Обучение и проживание: ≈ {amount} в год
 university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
 university.admissions.key_facts.cost_period: Цены: {period}
@@ -3356,8 +3357,8 @@ university.admissions.key_facts.budget_tuition_within: Обучение укла
 university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
 university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
 university.admissions.key_facts.open_finance: Стоимость и финансирование
-university.admissions.key_facts.open_funding_route: Открыть заявку на грант
-university.admissions.key_facts.funding_route_viewing: Это отдельная заявка на грант, а не путь поступления.
+university.admissions.key_facts.open_funding_route: Как получить грант
+university.admissions.key_facts.funding_route_viewing: Это условия гранта: на грант подают отдельно, после предложения о зачислении. Это не путь поступления.
 university.admissions.key_facts.back_to_route: Вернуться к вашему пути: {route}
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
@@ -3450,7 +3451,7 @@ university.admissions.glossary.what_is: Что такое {term}?
 university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
 university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
 university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили.
-university.admissions.key_facts.deadline_earlier: Раньше: {text}
+university.admissions.key_facts.deadline_earlier: Но сначала, раньше этого срока: {text}
 university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date}, через {days} дн. (ежегодная дата; год уточните на официальной странице)
 university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date}, сегодня (ежегодная дата; год уточните на официальной странице)
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
@@ -3471,6 +3472,7 @@ university.admissions.key_facts.credential: Документы из Казахс
 university.admissions.key_facts.credential_unlisted: Университет не публикует решения по аттестату или диплому из Казахстана. Это не отказ: спросите в приёмной комиссии, подходит ли ваш документ.
 university.admissions.key_facts.credential_source: Официальные условия
 university.admissions.key_facts.apply_text: Заявка подаётся на официальном сайте университета.
+university.admissions.key_facts.apply_text_ucas: Заявку подают через UCAS — общую систему подачи в вузы Великобритании, а не на сайте университета. Шаги описаны в официальной инструкции.
 university.admissions.key_facts.minimum_add: Добавьте: {items}
 university.admissions.key_facts.minimum_any: {requirement}, одно из: {items}
 university.admissions.key_facts.minimum_gpa: GPA {minimum}
@@ -3512,6 +3514,7 @@ profile.ux2.hint.exams: Сравниваются с опубликованным
 profile.ux2.gpa.scale_hint: Выберите, из скольки ваш балл: в школах Казахстана и СНГ обычно из 5.0.
 profile.ux2.gpa.over_scale: {value} больше 4.0. Проверьте шкалу выше: в школах Казахстана и СНГ балл из 5.0.
 profile.ux2.gpa.auto_switched: Поставили шкалу из 5.0: балл выше 4 бывает только в пятибалльной системе. Проверьте выбор выше.
+profile.ux2.gpa.scale_chosen_5: Балл считается из 5.0, как в школах Казахстана и СНГ.
 profile.gpa_scale.legend: Ваш балл из
 profile.gpa_scale.option_4: 4.0 — США и международные школы
 profile.gpa_scale.option_5: 5.0 — школы Казахстана и СНГ

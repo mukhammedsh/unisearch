@@ -90,6 +90,12 @@ function providedText(provided) {
   if (!provided || typeof provided !== "object") return "";
   if (provided.exam && Number.isFinite(provided.score)) return `${examName(provided.exam)} ${minimumNumber(provided.exam, provided.score)}`;
   if (provided.field === "gpa" && Number.isFinite(provided.value)) return `GPA ${minimumNumber("", provided.value)}`;
+  // A met GPA alternative reports the profile GPA with its scale ({gpa, gpa_scale}).
+  if (Number.isFinite(provided.gpa)) {
+    return Number.isFinite(provided.gpa_scale)
+      ? tFormat("university.admissions.key_facts.minimum_gpa_scale", { minimum: minimumNumber("", provided.gpa), scale: provided.gpa_scale })
+      : `GPA ${minimumNumber("", provided.gpa)}`;
+  }
   return "";
 }
 
@@ -304,12 +310,16 @@ export function costFact(resolved, budgetUsd) {
   const breakdown = calculated ? tFormat("university.admissions.key_facts.cost_breakdown", {
     tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()),
     living: withoutApprox(formatPriceRange(quote.living_min, quote.living_max, quote.currency, summary())) }) : "";
+  // A published yearly budget names the tuition it includes, so the reader sees what the rest pays for.
+  const tuitionShare = !calculated && basis === "annual_total" && costs.tuition && costs.tuition.currency === quote.currency
+    && Number.isFinite(costs.tuition.max) && costs.tuition.max < quote.min
+    ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
   const parts = { amount, basis, period: quote.period || "" };
-  const notes = [breakdown, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
+  const notes = [breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
-  const referenceNote = breakdown || (quote.calculation === "tuition_plus_living_range"
+  const referenceNote = breakdown || tuitionShare || (quote.calculation === "tuition_plus_living_range"
     ? t("university.admissions.key_facts.cost_calculated_reference") : "");
   // The explanation is general: the university, not the applicant's nationality or residence, sets the classification.
   const feeStatusDepends = quote.fee_status_match === "unknown" && quote.fee_statuses?.length > 1;
@@ -432,10 +442,12 @@ function credentialRow(resolved) {
   return fact ? row("credential", fact) : "";
 }
 
-function applyRow(applicationUrl) {
+function applyRow(resolved, applicationUrl) {
   if (!applicationUrl) return "";
   const action = `<a class="admissions-application-link" href="${escapeHtmlAttr(applicationUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_application"))}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>`;
-  return row("apply", { text: label("apply_text") }, action);
+  // A path applied for through UCAS is not applied for on the university site, so the answer names the service.
+  const viaUcas = glossaryTerms(routeWording(resolved?.selected_route)).includes("ucas");
+  return row("apply", { text: label(viaUcas ? "apply_text_ucas" : "apply_text") }, action);
 }
 
 // The funding row: what the university offers for this path and, when it is a separate application, the action that opens it.
@@ -487,7 +499,7 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
     <dl class="admissions-key-facts__list">
       ${requirementsRow(resolved, cycleAction, shownTerms, profile)}
       ${credentialRow(resolved)}
-      ${applyRow(applicationUrl)}
+      ${applyRow(resolved, applicationUrl)}
       ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
       ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
       ${fundingRow(resolved, shownTerms)}

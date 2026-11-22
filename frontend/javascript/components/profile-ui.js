@@ -648,6 +648,7 @@ export const renderGpaHint = (els, state) => {
     els.gpaHint.textContent = overScale
         ? tFormat("profile.ux2.gpa.over_scale", { value: String(value) }, `${value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.`)
         : scale === 5 && state.gpaScaleAutoSwitched ? t("profile.ux2.gpa.auto_switched")
+        : scale === 5 ? t("profile.ux2.gpa.scale_chosen_5")
         : tFormat("profile.ux2.gpa.scale_hint", {
             scale: scale === 5 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)") : t("profile.scale.gpa_4", "4.0 (US / International)"),
             unit: scale === 5 ? "/ 5.0" : "/ 4.0",

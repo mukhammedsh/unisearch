@@ -53,7 +53,13 @@ Minor release: map markers now say which university they mark, and search matche
 - Ask what the profile GPA is out of with two visible options ("4.0 — US and international schools", "5.0 — schools in Kazakhstan and the CIS") instead of only a "/ 4.0" suffix button, because a value such as 3.6 cannot tell the scale by itself. A grade between 4 and 5 typed on the 4.0 scale selects 5.0 and says why, instead of an error; switching back stays the reader's choice.
 - List IELTS, TOEFL iBT, Duolingo and PTE in the profile's exam list as shortcuts that open the Languages editor at that test, where English tests and their section scores are entered.
 - Offer up to three programs that match the profile's subject as one-click choices on Imperial's Admission, Dates and Costs tabs, where admission is published per program, instead of only pointing to the Programs tab. The profile still never chooses a program by itself.
+- Say "Apply through UCAS" in Imperial's "Where to apply" row instead of "on the university's official site", and introduce a test date that comes before the application deadline as "Before that, first:".
+- Show an English test recommendation on the Overview checklist with the applicant's own result (MIT: IELTS 7.0, better 7.5; you have IELTS 6.5) instead of "still to prepare".
+- Write a test with section scores as its total followed by the sections ("SAT 1310 (Math 690, Reading and Writing 620)") instead of repeating the test name before each section without the total.
+- Name the grant link "How to get the grant" and describe the screen as the grant conditions, applied for separately after an offer.
 ### Fixed
+- Stop offering "Remember this path" on NU's separate grant application, which saved the grant as the applicant's way in.
+- Name the applicant's GPA beside a met GPA alternative ("You have: GPA 4.6 of 5").
 - Translate approximate published dates such as "early April" (Stanford's Regular Decision notification) like "mid-December".
 - Show a single "≈" in a converted calculated yearly cost and its living part (Imperial showed "≈ ≈ $35,000 – $85,000").
 - Head MIT's English-score column "Minimum if you take it" instead of "Minimum", because the test is recommended, not required.

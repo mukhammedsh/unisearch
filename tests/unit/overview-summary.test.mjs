@@ -50,6 +50,17 @@ test("the checklist names tests, the English test and documents, and drops a doc
   assert.ok(items.every(item => item.mark === "todo"));
 });
 
+test("a recommended English test shows the applicant's own result instead of a test still to prepare", () => {
+  const english = fact("english", "language_tests", { presence: "strongly_recommended", minima_and_recommendations: [{ exam: "IELTS Academic", minimum: 7, recommended: 7.5 }] },
+    { conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)" }] });
+  const profile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] };
+  const item = checklistItems(resolvedWith([english]), profile).find(row => row.factId === "english");
+  assert.equal(item.mark, "recommended");
+  assert.match(item.text, /IELTS Academic 7\.0.*You have: IELTS Academic 6\.5/);
+  // Without a profile the published wording stays.
+  assert.equal(checklistItems(resolvedWith([english]))[0].mark, "todo");
+});
+
 test("checklist marks follow the applicant's evidence: met, to add, or below a published minimum", () => {
   const checks = [{ factId: "tests", status: "met" }, { factId: "english", status: "unmet" }, { factId: "documents", status: "unassessed" }];
   const marks = Object.fromEntries(checklistItems(resolvedWith(mitFacts(), checks)).map(item => [item.factId, item.mark]));

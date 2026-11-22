@@ -147,7 +147,7 @@ test("the application deadline is the headline and a nearer test or booking date
   assert.equal(fact.days, 64);
   assert.match(fact.text, /^Application deadline: January 13, 2027, in 64 days$/);
   assert.equal(fact.notes.length, 1);
-  assert.match(fact.notes[0], /^Earlier: .*TMUA.*December 21, 2026, in 41 days$/);
+  assert.match(fact.notes[0], /^Before that, first: .*TMUA.*December 21, 2026, in 41 days$/);
   // Once the application deadline is behind, the nearest remaining date leads and nothing precedes it.
   const late = deadlineFact(withDates(list), new Date(2027, 0, 20, 12, 0));
   assert.match(late.text, /February 5, 2027/);
@@ -182,6 +182,8 @@ test("tuition-only prices never look like a full budget", () => {
   const over = costFact(context({ selected_costs: { annual_total: quote({ min: 92760, max: 92760, usd: { min: 92760, max: 92760 } }), tuition: quote() } }), 10000);
   assert.equal(over.status, "over");
   assert.match(over.text, /Yearly budget published by the university: \$92,760/);
+  // A published budget names the tuition it includes.
+  assert.match(over.referenceNote, /Of this, tuition is \$15,000; the rest is housing, meals and other costs\./);
   assert.equal(over.flag.tone, "danger");
   assert.match(over.flag.text, /Above your budget of \$10,000/);
 });
@@ -255,6 +257,9 @@ test("missing requirement evidence names what to add and which overall scores al
     { mark: "below", text: "English: IELTS Academic 6.0", note: "You have: IELTS Academic 5.5, below the minimum" },
     { mark: "met", text: "Academic result, one of: GPA 4 of 5, SAT 1240", note: "You have: SAT 1300" },
   ]);
+  // A met GPA alternative names the profile GPA and its scale.
+  const gpa = { kind: "academic_requirement", status: "met", rule: { alternatives: [{ profile_field: "gpa", minimum: 4, scale: 5 }] }, provided: { gpa: 4.6, gpa_scale: 5 } };
+  assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [gpa] } } } }))[0].note, "You have: GPA 4.6 of 5");
   // A result the check could not count is named without being presented as met.
   const uncounted = { ...sat, status: "missing", missingInputs: [] };
   assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [uncounted] } } } }))[0].note,

@@ -13,7 +13,7 @@ import { withoutBracketedText } from "../../utils/text.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
 import { admissionsRequest, firstYearSharedRoute, singlePublishedCycle } from "./admissions-controller.js";
 import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
-import { costFact, deadlineFact, fundingPolicyStatement, minimumChecklist } from "./admissions-key-facts.js";
+import { costFact, deadlineFact, englishRecommendationItem, fundingPolicyStatement, minimumChecklist } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
 import { extractUniversityDeadlines, getUndergraduateCategories } from "./render-sections.js";
 
@@ -55,7 +55,8 @@ const presenceLabel = presence => t(`university.ux2.needs.presence_${presence}`)
 
 // A short checklist of the tests, language test and documents the route publishes. Marks come from the applicant's
 // own profile evidence: met, to add, or below a published minimum. Nothing here is a probability.
-export function checklistItems(resolved) {
+// `profile` (the API profile, optional) lets a recommended English test show the applicant's own result, as on the Admission tab.
+export function checklistItems(resolved, profile = null) {
   const checks = new Map((resolved?.assessment?.activeChoice?.details?.checks || []).map(check => [check.factId, check]));
   const rows = routeFacts(resolved, ["requirements", "application"]);
   const item = (kind, row, text, extra = {}) => ({ kind, factId: row.id, mark: markFor(checks.get(row.id)), text, ...extra });
@@ -89,8 +90,12 @@ export function checklistItems(resolved) {
   // A kind of requirement without a checkable minimum keeps its published wording (MIT's recommended English test).
   const minimums = minimumChecklist(resolved).map(({ kind, factId, mark, text }) => ({ kind, factId, mark, text }));
   const kinds = new Set(minimums.map(entry => entry.kind));
+  const recommendation = profile ? englishRecommendationItem(resolved, profile) : null;
+  const language = recommendation
+    ? [{ kind: "language", factId: recommendation.factId, mark: "recommended", text: [recommendation.text, recommendation.have].filter(Boolean).join(". ") }]
+    : structured.language.slice(0, 1);
   const testsAndLanguage = [...minimums, ...(kinds.has("exam") || kinds.has("academic") ? [] : tests),
-    ...(kinds.has("language") ? [] : structured.language.slice(0, 1))];
+    ...(kinds.has("language") ? [] : language)];
   return [...testsAndLanguage, ...documents].slice(0, MAX_CHECKLIST_ITEMS);
 }
 
@@ -226,7 +231,7 @@ function checklistCard(items, { hasEvidence }) {
 }
 
 // Every card for a reviewed university; without a shared first-year route the first three cards depend on the program.
-export function reviewedCards({ resolved, university, budgetUsd, profileExamIds = [], now = new Date() }) {
+export function reviewedCards({ resolved, university, budgetUsd, profileExamIds = [], profile = null, now = new Date() }) {
   const people = peopleItems(university);
   const peopleCard = people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [];
   if (!resolved) {
@@ -235,7 +240,7 @@ export function reviewedCards({ resolved, university, budgetUsd, profileExamIds 
   return [
     deadlineCard(deadlineFact(resolved, now, { profileExamIds })),
     costCard(costFact(resolved, budgetUsd), fundingPolicyStatement(resolved)),
-    checklistCard(checklistItems(resolved), { hasEvidence: profileExamIds.length > 0 }),
+    checklistCard(checklistItems(resolved, profile), { hasEvidence: profileExamIds.length > 0 }),
     ...peopleCard,
   ];
 }
@@ -293,7 +298,7 @@ export function legacyCards({ university, minPrice, acceptanceRate, acceptanceMe
   return [legacyDeadline, legacyCostCard(university, minPrice), needsCard, ...(people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [])];
 }
 
-const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
+const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle", recommended: "information-circle" };
 
 function renderSource(source) {
   if (!source) return "";
@@ -449,7 +454,7 @@ export function mountOverviewSummary({ container, university, universityId, revi
         if (current !== version) return;
         if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
       }
-      const cards = reviewedCards({ resolved, university, budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
+      const cards = reviewedCards({ resolved, university, budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id), profile: apiProfile });
       show(renderSummary(cards, resolved ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: "undergraduate" }) }) : ""));
     } catch (error) {
       if (request.signal.aborted || current !== version) return;

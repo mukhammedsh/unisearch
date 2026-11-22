@@ -3345,6 +3345,7 @@ university.admissions.key_facts.open_deadlines: All dates
 university.admissions.key_facts.cost: Cost per year
 university.admissions.key_facts.cost_total: Yearly budget published by the university: {amount}
 university.admissions.key_facts.cost_breakdown: Tuition {tuition} + living ≈ {living} for the 9-month academic year
+university.admissions.key_facts.cost_tuition_share: Of this, tuition is {tuition}; the rest is housing, meals and other costs.
 university.admissions.key_facts.cost_estimate: Tuition and living: ≈ {amount} a year
 university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
 university.admissions.key_facts.cost_period: Prices: {period}
@@ -3358,8 +3359,8 @@ university.admissions.key_facts.budget_tuition_within: Tuition fits your budget 
 university.admissions.key_facts.budget_partial: Part of the range is above your budget of {budget}
 university.admissions.key_facts.budget_missing: Add a yearly budget to your profile to compare
 university.admissions.key_facts.open_finance: Costs and funding
-university.admissions.key_facts.open_funding_route: Open the grant application
-university.admissions.key_facts.funding_route_viewing: This is the separate grant application, not a way to be admitted.
+university.admissions.key_facts.open_funding_route: How to get the grant
+university.admissions.key_facts.funding_route_viewing: These are the grant conditions: the grant is applied for separately, after an offer of admission. This is not a way to be admitted.
 university.admissions.key_facts.back_to_route: Back to your path: {route}
 university.admissions.key_facts.funding: Funding
 university.admissions.key_facts.funding_route: Applied for separately: {route}
@@ -3452,7 +3453,7 @@ university.admissions.glossary.what_is: What is {term}?
 university.admissions.key_facts.cost_fee_status_source: Official fee-status page
 university.admissions.key_facts.funding_policy: Published policy: {policy}
 university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you.
-university.admissions.key_facts.deadline_earlier: Earlier: {text}
+university.admissions.key_facts.deadline_earlier: Before that, first: {text}
 university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date}, in {days} days (annual date; confirm the year on the official page)
 university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date}, today (annual date; confirm the year on the official page)
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} has passed.
@@ -3473,6 +3474,7 @@ university.admissions.key_facts.credential: Kazakhstan documents
 university.admissions.key_facts.credential_unlisted: The university publishes no decision on school or degree documents from Kazakhstan. This is not a rejection: ask the admissions office whether your document is accepted.
 university.admissions.key_facts.credential_source: Official guidance
 university.admissions.key_facts.apply_text: Applications are made on the university's official site.
+university.admissions.key_facts.apply_text_ucas: Apply through UCAS, the UK's shared application service, not on the university site. The official instructions explain the steps.
 university.admissions.key_facts.minimum_add: Add: {items}
 university.admissions.key_facts.minimum_any: {requirement}, one of: {items}
 university.admissions.key_facts.minimum_gpa: GPA {minimum}
@@ -3514,6 +3516,7 @@ profile.ux2.hint.exams: Compared with published exam minimums; exams a universit
 profile.ux2.gpa.scale_hint: Choose what your GPA is out of: school grades in Kazakhstan and the CIS are usually out of 5.0.
 profile.ux2.gpa.over_scale: {value} is above 4.0. Check the scale above: school grades in Kazakhstan and the CIS are out of 5.0.
 profile.ux2.gpa.auto_switched: Set to out of 5.0: a grade above 4 only exists on a five-point scale. Check the choice above.
+profile.ux2.gpa.scale_chosen_5: Your GPA is read out of 5.0, as in schools in Kazakhstan and the CIS.
 profile.gpa_scale.legend: Your GPA is out of
 profile.gpa_scale.option_4: 4.0 — US and international schools
 profile.gpa_scale.option_5: 5.0 — schools in Kazakhstan and the CIS

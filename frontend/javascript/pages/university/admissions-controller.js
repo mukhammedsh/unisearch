@@ -395,7 +395,9 @@ export function mountAdmissionsCatalog(institutionId) {
     const programSource = noRoute && resolved.sources?.find(source => option.source_ids?.includes(source.id) && safeUrl(source.url));
     const resetPending = loadProfile()?.admissionChoiceResetNotices?.includes(institutionId);
     const legacyPending = !context.study_option_id && new URL(window.location.href).searchParams.has("admission_program");
-    const canSave = status === "ready" && readable && (option ? ["option", "route", "level"] : ["route", "level"]).every((key) => resolved.context_applicability[key] === "matched");
+    // A separate grant application is read, never remembered as the way in.
+    const onSupportRoute = resolved?.selected_route?.classification === "financial_support_application";
+    const canSave = status === "ready" && readable && !onSupportRoute && (option ? ["option", "route", "level"] : ["route", "level"]).every((key) => resolved.context_applicability[key] === "matched");
     const cycles = [...new Set((resolved?.facts || []).map(row => row.scope?.cycle).filter(value => typeof value === "string" && value.length <= 40))];
     const fields = admissionContextFields(resolved, context);
     const profile = loadProfileForApi();
@@ -454,7 +456,7 @@ export function mountAdmissionsCatalog(institutionId) {
         </div><p class="admissions-context__note">${escapeHtml(label("advanced_note"))}</p><p class="admissions-context__note" id="admissionsCycleHelp" ${fields.cycle ? "" : "hidden"}>${escapeHtml(t("university.admissions.reading.cycle_help"))}</p><p class="admissions-context__note" id="admissionsCycleNotice" role="status" hidden>${escapeHtml(t("university.admissions.reading.cycle_invalid"))}</p></details>
         <div class="admissions-context__actions" ${fields.cycle || fields.fee ? "" : "hidden"}><button type="submit" id="admissionsContextApply" class="${route ? "is-applied" : ""}" ${status === "loading" || (!option && !readable) ? "disabled" : ""}>${escapeHtml(label("apply_context"))}</button></div>
       </form></div></div>
-      <div class="admissions-context__actions" ${(option && !noRoute) || readable ? "" : "hidden"}><button type="button" id="admissionsSaveChoice" ${canSave && !contextDirty && !isSaved ? "" : "disabled"}>${escapeHtml(label(isSaved ? "saved" : "save_choice"))}</button><span id="admissionsSaveStatus" class="admissions-context__note" role="status">${saveStatus ? escapeHtml(label(saveStatus)) : ""}</span></div>
+      <div class="admissions-context__actions" ${((option && !noRoute) || readable) && !onSupportRoute ? "" : "hidden"}><button type="button" id="admissionsSaveChoice" ${canSave && !contextDirty && !isSaved ? "" : "disabled"}>${escapeHtml(label(isSaved ? "saved" : "save_choice"))}</button><span id="admissionsSaveStatus" class="admissions-context__note" role="status">${saveStatus ? escapeHtml(label(saveStatus)) : ""}</span></div>
       ${readable ? `<p class="admissions-context__note" data-saved-context>${escapeHtml(t(`university.admissions.entry.${isSaved ? "saved_context" : "browsing_not_saved"}`))}${savedDetails ? ` ${escapeHtml(tFormat("university.admissions.entry.saved_other", { details: savedDetails }))}` : ""}</p>` : ""}
       <div class="admissions-context__status" aria-live="polite">${status === "error" ? failure("context") : status !== "ready" ? "" : incompatible ? empty(label("incompatible_context")) : readable ? "" : !option ? (sharedEntries.length ? "" : empty(label("choose_program_hint"))) : noRoute ? `<p data-no-application-route>${escapeHtml(t("university.admissions.reading.no_application_route"))}</p>${programSource ? `<a href="${escapeHtmlAttr(safeUrl(programSource.url))}" target="_blank" rel="noopener noreferrer">${escapeHtml(label("official_course_page"))}</a>` : ""}` : ""}</div>`;
     const contextRetry = root.querySelector(".admissions-context__status [data-admissions-retry='context']");

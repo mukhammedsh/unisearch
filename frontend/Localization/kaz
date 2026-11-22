@@ -3345,6 +3345,7 @@ university.admissions.key_facts.open_deadlines: Барлық мерзімдер
 university.admissions.key_facts.cost: Жылдық құны
 university.admissions.key_facts.cost_total: Университет жариялаған жылдық бюджет: {amount}
 university.admissions.key_facts.cost_breakdown: Оқу {tuition} + 9 айлық оқу кезеңінде тұру ≈ {living}
+university.admissions.key_facts.cost_tuition_share: Оның ішінде оқу — {tuition}, қалғаны — тұрғын үй, тамақ және басқа шығындар.
 university.admissions.key_facts.cost_estimate: Оқу және тұру: жылына ≈ {amount}
 university.admissions.key_facts.cost_tuition: Оқу ақысы: {amount}. Тұру шығыны кірмейді
 university.admissions.key_facts.cost_period: Бағалар: {period}
@@ -3358,8 +3359,8 @@ university.admissions.key_facts.budget_tuition_within: Оқу ақысы {budget
 university.admissions.key_facts.budget_partial: Ауқымның бір бөлігі {budget} бюджетіңізден жоғары
 university.admissions.key_facts.budget_missing: Салыстыру үшін профильде жылдық бюджетті көрсетіңіз
 university.admissions.key_facts.open_finance: Құны мен қаржыландыру
-university.admissions.key_facts.open_funding_route: Грантқа өтінішті ашу
-university.admissions.key_facts.funding_route_viewing: Бұл — грантқа бөлек өтініш, түсу жолы емес.
+university.admissions.key_facts.open_funding_route: Грантты қалай алуға болады
+university.admissions.key_facts.funding_route_viewing: Бұл — грант шарттары: грантқа оқуға қабылдау туралы ұсыныстан кейін бөлек өтініш беріледі. Бұл түсу жолы емес.
 university.admissions.key_facts.back_to_route: Өз жолыңызға оралу: {route}
 university.admissions.key_facts.funding: Қаржыландыру
 university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
@@ -3452,7 +3453,7 @@ university.admissions.glossary.what_is: {term} дегеніміз не?
 university.admissions.key_facts.cost_fee_status_source: Төлем мәртебесі туралы ресми бет
 university.admissions.key_facts.funding_policy: Университеттің жарияланған саясаты: {policy}
 university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес.
-university.admissions.key_facts.deadline_earlier: Бұрынырақ: {text}
+university.admissions.key_facts.deadline_earlier: Алдымен, бұл мерзімнен бұрын: {text}
 university.admissions.key_facts.deadline_recurring_next: Келесі: {name} — {date}, {days} күннен кейін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
 university.admissions.key_facts.deadline_recurring_today: Келесі: {name} — {date}, бүгін (жыл сайынғы күн; жылын ресми беттен нақтылаңыз)
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — мерзімі өтті.
@@ -3473,6 +3474,7 @@ university.admissions.key_facts.credential: Қазақстан құжаттар�
 university.admissions.key_facts.credential_unlisted: Университет Қазақстан аттестаты немесе дипломы бойынша шешім жарияламайды. Бұл бас тарту емес: құжатыңыз жарай ма, қабылдау комиссиясынан сұраңыз.
 university.admissions.key_facts.credential_source: Ресми талаптар
 university.admissions.key_facts.apply_text: Өтініш университеттің ресми сайтында беріледі.
+university.admissions.key_facts.apply_text_ucas: Өтінішті университет сайтында емес, UCAS — Ұлыбритания ЖОО-ларына ортақ өтініш жүйесі арқылы береді. Қадамдар ресми нұсқаулықта сипатталған.
 university.admissions.key_facts.minimum_add: Қосыңыз: {items}
 university.admissions.key_facts.minimum_any: {requirement}, біреуі: {items}
 university.admissions.key_facts.minimum_gpa: GPA {minimum}
@@ -3514,6 +3516,7 @@ profile.ux2.hint.exams: Жарияланған емтихан минимумда
 profile.ux2.gpa.scale_hint: Балыңыз неше балдық шкалада екенін таңдаңыз: Қазақстан мен ТМД мектептерінде әдетте 5.0.
 profile.ux2.gpa.over_scale: {value} мәні 4.0-ден жоғары. Жоғарыдағы шкаланы тексеріңіз: Қазақстан мен ТМД мектептерінде балл 5.0-ден.
 profile.ux2.gpa.auto_switched: 5.0 шкаласы қойылды: 4-тен жоғары балл тек бес балдық жүйеде болады. Жоғарыдағы таңдауды тексеріңіз.
+profile.ux2.gpa.scale_chosen_5: Балл 5.0 шкаласы бойынша есептеледі, Қазақстан мен ТМД мектептеріндегідей.
 profile.gpa_scale.legend: Балыңыз неше балдан
 profile.gpa_scale.option_4: 4.0 — АҚШ және халықаралық мектептер
 profile.gpa_scale.option_5: 5.0 — Қазақстан мен ТМД мектептері

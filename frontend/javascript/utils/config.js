@@ -515,10 +515,12 @@ function formatCompositeExamValue(examId, entry, words, options = {}) {
     ? (words.total || "Total")
     : (totalLabelRaw || words.total || "Total");
   const parts = [];
-
-  if (totalStrategy === "use_parent_score" && Number.isFinite(Number(entry?.score))) {
-    parts.push(`${totalLabel} ${entry.score}`);
-  }
+  // A section name repeats its test ("SAT: Math") only where the test is not named right before it.
+  const parentName = getExamDisplayName(examId, options);
+  const sectionName = (childExam) => {
+    const name = getExamDisplayName(childExam, options);
+    return parentName && name.startsWith(`${parentName}: `) ? name.slice(parentName.length + 2) : name;
+  };
 
   [...components, ...extraScores].forEach((item) => {
     if (!item || typeof item !== "object") return;
@@ -526,10 +528,14 @@ function formatCompositeExamValue(examId, entry, words, options = {}) {
     if (!childExam) return;
     const value = formatExamValue(childExam, item, { ...options, includeLevelPrefix: false });
     if (!value) return;
-    parts.push(`${getExamDisplayName(childExam, options)} ${value}`);
+    parts.push(`${sectionName(childExam)} ${value}`);
   });
 
-  return parts.join(", ");
+  // The total leads (an entered overall score, or a summed one such as SAT 1310), with its sections in brackets.
+  const total = Number(entry?.score);
+  if (!Number.isFinite(total)) return parts.join(", ");
+  const totalText = totalStrategy === "use_parent_score" ? `${totalLabel} ${entry.score}` : String(entry.score);
+  return parts.length ? `${totalText} (${parts.join(", ")})` : totalText;
 }
 
 export function formatExamValue(examId, valueOrEntry, options = {}) {
