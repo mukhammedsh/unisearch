@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { universityCardPriceInfo, renderUniversityCardCosts, reviewedCardIndicators } = await import("../../frontend/javascript/pages/universities.js");
+const { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip, reviewedCardIndicators } = await import("../../frontend/javascript/pages/universities.js");
 await initI18n();
 
 test("reviewed admissions cards do not reuse legacy finance or match prices", () => {
@@ -280,14 +280,20 @@ test("annual total displays min-max range without profile and narrows when speci
   };
   const broadHtml = renderUniversityCardCosts(broad, "annual_total");
   assert.match(broadHtml, /\$26,442 – \$69,342/);
-  assert.match(broadHtml, /This reference range combines published tuition with living-cost estimates/);
+  assert.match(broadHtml, /Tuition plus living-cost estimate, before aid/);
   assert.match(broadHtml, /Living-cost estimate: 2026/);
-  assert.match(broadHtml, /Published reference, before aid/);
+  assert.match(broadHtml, /Home\/Overseas category is set by the university/);
+  assert.doesNotMatch(broadHtml, /aria-describedby=/);
+  assert.doesNotMatch(broadHtml, /price filter/i);
+
+  const filteredHtml = renderUniversityCardCosts(broad, "annual_total", "catalog", { priceFilterActive: true });
+  assert.match(filteredHtml, /price filter/i);
 
   setLanguage("rus", { emit: false });
   const broadRu = renderUniversityCardCosts(broad, "annual_total");
-  assert.match(broadRu, /Это справочный диапазон: опубликованная стоимость обучения/);
+  assert.match(broadRu, /Обучение плюс оценка проживания, до финпомощи/);
   assert.match(broadRu, /Оценка проживания: 2026 год/);
+  assert.match(broadRu, /тариф Home \(местный\), тариф Overseas \(международный\)/);
 
   const exact = {
     admissions_catalog: { availability: "reviewed" },
@@ -301,4 +307,54 @@ test("annual total displays min-max range without profile and narrows when speci
   const exactRu = renderUniversityCardCosts(exact, "annual_total");
   assert.match(exactRu, /\$64,192/);
   assert.doesNotMatch(exactRu, /–/);
+});
+
+test("card price tooltip collapses broad level lists, translates resident fee tiers and hides redundant cycle/filter noise", () => {
+  setLanguage("rus", { emit: false });
+  const nu = {
+    id: "nazarbayev-university-kaz-astana",
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: {
+      annual_total: {
+        min: 9600, max: 33600, currency: "USD", period: "2026-2027",
+        calculation: "tuition_plus_living_range", billing_period: "academic_year",
+        cycle_status: "unspecified", fee_status_match: "unknown",
+        levels: ["doctorate", "masters", "preparatory", "professional", "residency", "undergraduate"],
+        fee_statuses: ["non-resident", "resident"],
+        exclusions: ["travel"],
+      },
+    },
+  };
+  const html = renderUniversityCardCosts(nu, "annual_total");
+  assert.match(html, /Все уровни/);
+  assert.doesNotMatch(html, /Докторантура, Магистратура/);
+  assert.match(html, /нерезидент, резидент/);
+  assert.doesNotMatch(html, /non-resident|Home — местный|Home\/Overseas|Цикл не указан|Категория оплаты не подтверждена|Фильтр проверяет/);
+  assert.match(html, /Проезд отдельно/);
+});
+
+test("card rank tooltip names the ranking source and check date without a redundant Official ranking type", () => {
+  setLanguage("eng", { emit: false });
+  const ranked = buildRankSourceTooltip({
+    rank: 1,
+    rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" },
+  });
+  assert.match(ranked, /^QS World University Rankings 2026 · Checked: 2026[‑-]04-09$/);
+  assert.doesNotMatch(ranked, /Official ranking|Type:/i);
+
+  const unranked = buildRankSourceTooltip({
+    rank: null,
+    rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" },
+  });
+  assert.match(unranked, /^No position in QS World University Rankings 2026 · Checked: 2026[‑-]04-09$/);
+
+  setLanguage("rus", { emit: false });
+  assert.match(
+    buildRankSourceTooltip({ rank: 1, rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" } }),
+    /^QS World University Rankings 2026 · Проверено: 2026[‑-]04-09$/,
+  );
+  assert.match(
+    buildRankSourceTooltip({ rank: null, rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" } }),
+    /^Нет позиции \(QS World University Rankings 2026\) · Проверено: 2026[‑-]04-09$/,
+  );
 });

@@ -739,7 +739,8 @@ test("global rank sort reorders catalog by rank and displays rank tooltip with v
   await expect(rankTooltip).toBeVisible();
   const tooltipText = await rankTooltip.innerText();
   expect(tooltipText).toContain("QS World University Rankings 2026");
-  expect(tooltipText).toContain("Official ranking");
+  expect(tooltipText).toContain("Checked:");
+  expect(tooltipText).not.toContain("Official ranking");
 
   await rankMetric.click();
   await expect(rankTooltip).not.toBeVisible();

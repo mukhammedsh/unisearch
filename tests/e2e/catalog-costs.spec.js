@@ -64,7 +64,7 @@ test("Imperial card shows the applicable tuition and living-cost range", async (
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/26[\s,]?442/);
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/64[\s,]?842/);
   await card.locator(".uni-cost-tooltip .uni-price").click();
-  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("This reference range combines published tuition with living-cost estimates");
+  await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Tuition plus living-cost estimate, before aid");
   await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Living-cost estimate: 2026.");
   await page.goto("/index.html?q=Imperial&study_level=undergraduate&max_tuition=90000&cost_basis=annual_total");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
@@ -204,4 +204,40 @@ test.describe("mobile price filter help", () => {
     await page.keyboard.press("Enter");
     await expect(fullHelp).toBeVisible();
   });
+});
+
+test("broad multi-level card price tooltip stays compact and unranked tooltip drops redundant type", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "rus");
+    localStorage.setItem("unisearch_theme", "dark");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    localStorage.setItem("unisearch_settings_cache_v1", JSON.stringify([
+      { key: "preferred_currency", value: "KZT" }, { key: "currency_display_mode", value: "both" },
+    ]));
+  });
+  await page.goto("/index.html?q=Nazarbayev");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  const card = page.locator('#universitiesList .uni-card[data-uni-id="nazarbayev-university-kaz-astana"]');
+  await expect(card).toBeVisible();
+
+  await card.locator(".uni-cost-tooltip .uni-price").click();
+  const costTooltip = card.locator(".uni-cost-tooltip__content");
+  await expect(costTooltip).toBeVisible();
+  const costText = await costTooltip.innerText();
+  expect(costText).toContain("Все уровни");
+  expect(costText).toContain("нерезидент, резидент");
+  expect(costText).not.toContain("Home — местный");
+  expect(costText).not.toContain("Цикл не указан");
+  expect(costText).not.toContain("Фильтр проверяет");
+  const costBounds = await costTooltip.boundingBox();
+  expect(costBounds.height).toBeLessThanOrEqual(220);
+  await page.keyboard.press("Escape");
+
+  await card.locator(".uni-metric--rank").click();
+  const rankTooltip = card.locator(".uni-metric-tooltip__content");
+  await expect(rankTooltip).toBeVisible();
+  const rankText = await rankTooltip.innerText();
+  expect(rankText).toContain("Нет позиции (");
+  expect(rankText).toContain("QS 2026");
+  expect(rankText).not.toContain("Тип:");
 });

@@ -365,7 +365,8 @@ ranking.source_status.not_published: Дерек жоқ
 ranking.source_status.curated: Қолмен тексерілген
 ranking.source_status.derived: Модель бағалауы
 ranking.source_status.derived_prestige_order: Модель бағалауы
-ranking.source_tooltip: Дереккөз: {source} | Түрі: {status} | Соңғы тексеру: {verified_at}
+ranking.source_tooltip: {source} · Тексерілген күні: {verified_at}
+ranking.source_tooltip_unranked: Орын жоқ ({source}) · Тексерілген күні: {verified_at}
 title.about: Біз туралы | UniSearch
 title.profile: Талапкер профилі | UniSearch
 title.guide: Нұсқаулық | UniSearch
@@ -428,7 +429,16 @@ universities.cost.full_budget_unavailable: Салыстыруға келетін
 universities.cost.reference: Қаржылай көмекке дейінгі анықтамалық баға.
 universities.cost.legacy_server_warning: API әлі ескі нұсқада жұмыс істеп тұр. Қайта іске қосылғанша анықтамалық бағалар көрсетіледі.
 universities.cost.before_aid: Стипендия мен қаржылай көмекке дейін.
-universities.cost.fee_scope: Ауқым бағдарлама мен тарифке байланысты: Home — жергілікті, Overseas — халықаралық. Санатты университет анықтайды.
+universities.cost.fee_scope: Home/Overseas санатын университет анықтайды.
+universities.cost.all_levels: Барлық деңгейлер
+universities.cost.fee_status.home: Home тарифі (жергілікті)
+universities.cost.fee_status.overseas: Overseas тарифі (халықаралық)
+universities.cost.fee_status.resident: резидент
+universities.cost.fee_status.non_resident: резидент емес
+universities.cost.fee_status.company_payer: компания төлемі
+universities.cost.fee_status.individual_payer: жеке төлем
+universities.cost.fee_status.full_tuition: толық төлем
+universities.cost.fee_status.self_paying: ақылы оқу
 universities.cost.exclusion.insurance: Сақтандыру бөлек төленеді.
 universities.cost.exclusion.travel: Жол ақысы бөлек төленеді.
 universities.cost.exclusion.one_time_fees: Бір реттік алымдар бөлек төленеді.
@@ -441,11 +451,11 @@ universities.cost.fee_status_unknown: Төлем санаты расталмағ
 universities.cost.filter_partial: Баға бойынша ішінара сәйкестік
 universities.cost.tooltip_open: Баға туралы түсіндірме
 universities.cost.tooltip_title: Баға ауқымы туралы
-universities.cost.tooltip_range: Бұл белгілі ең төменгі және ең жоғары бағалар ауқымы. Профильді толтыру (оқу деңгейі, төлем санаты, бағдарлама) ауқымды нақтырақ нұсқаға дейін тарылтуы мүмкін.
-universities.cost.tooltip_living_range: Бұл анықтамалық ауқым жарияланған оқу ақысы мен тұру шығындарының бағасын біріктіреді; тұру шығындары басқа жылға қатысты болуы мүмкін. Профильді толтыру (оқу деңгейі, төлем санаты, бағдарлама) ауқымды тарылтуы мүмкін, бірақ жалпы сомаға кепілдік берілмейді.
-universities.cost.tooltip_single: Бұл ағымдағы таңдауға сай белгілі бір баға. Бағдарламаны, төлем санатын және жылды нақтылаңыз.
-universities.cost.tooltip_filter_variants: Баға сүзгісі әрбір белгілі нұсқаны жеке тексереді. Кемінде бір нұсқа сіз таңдаған шектерге сай келсе, көрсетілген ауқым сол шектерден кең болса да, ЖОО көрсетіледі. Шеткі бағалардың арасындағы барлық сомалар ұсыныла бермейді.
-universities.cost.tooltip_filter_reference: Жалпы анықтамалық ауқым сіз таңдаған шектермен қиылысуы мүмкін, бірақ сәйкес бағдарлама анықталмауы мүмкін. Оның бағасын университеттен нақтылаңыз.
+universities.cost.tooltip_range: Белгілі ең төменгі мен ең жоғары баға ауқымы, қаржылай көмекке дейін. Нақты соманы ЖОО бетіндегі бағдарламадан қараңыз.
+universities.cost.tooltip_living_range: Оқу ақысы мен тұру шығындарының бағасы, қаржылай көмекке дейін. Нақты сома бағдарлама мен тарифке байланысты.
+universities.cost.tooltip_single: Ағымдағы таңдау үшін қаржылай көмекке дейінгі белгілі баға. Бағдарлама мен жылды ЖОО бетінде нақтылаңыз.
+universities.cost.tooltip_filter_variants: Кемінде бір нұсқа баға сүзгісіне сәйкес келгендіктен көрсетілді.
+universities.cost.tooltip_filter_reference: Ауқым баға сүзгісімен қиылысады — өз бағдарламаңыздың бағасын нақтылаңыз.
 universities.cost.tooltip_living_year: Тұру шығындарының бағасы: {year} жыл.
 universities.country: Ел
 universities.filter: Фильтр

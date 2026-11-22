@@ -368,7 +368,8 @@ ranking.source_status.not_published: Недоступно
 ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
-ranking.source_tooltip: Источник: {source} | Тип: {status} | Последняя проверка: {verified_at}
+ranking.source_tooltip: {source} · Проверено: {verified_at}
+ranking.source_tooltip_unranked: Нет позиции ({source}) · Проверено: {verified_at}
 title.about: О нас | UniSearch
 title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
@@ -431,7 +432,16 @@ universities.cost.full_budget_unavailable: Нет сопоставимого п�
 universities.cost.reference: Справочная цена, до финансовой помощи.
 universities.cost.legacy_server_warning: API ещё работает на старой версии. До его перезапуска показаны справочные цены.
 universities.cost.before_aid: До стипендий и финансовой помощи.
-universities.cost.fee_scope: Диапазон зависит от программы и тарифа: Home — местный, Overseas — международный. Категорию определяет вуз.
+universities.cost.fee_scope: Категорию Home/Overseas определяет вуз.
+universities.cost.all_levels: Все уровни
+universities.cost.fee_status.home: тариф Home (местный)
+universities.cost.fee_status.overseas: тариф Overseas (международный)
+universities.cost.fee_status.resident: резидент
+universities.cost.fee_status.non_resident: нерезидент
+universities.cost.fee_status.company_payer: оплата от компании
+universities.cost.fee_status.individual_payer: личная оплата
+universities.cost.fee_status.full_tuition: полная оплата
+universities.cost.fee_status.self_paying: платное обучение
 universities.cost.exclusion.insurance: Страховка отдельно.
 universities.cost.exclusion.travel: Проезд отдельно.
 universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
@@ -444,11 +454,11 @@ universities.cost.fee_status_unknown: Категория оплаты не по�
 universities.cost.filter_partial: Частичное совпадение по цене
 universities.cost.tooltip_open: Как рассчитана цена
 universities.cost.tooltip_title: О диапазоне цен
-universities.cost.tooltip_range: Это диапазон от минимальной до максимальной известной цены. Заполненный профиль (уровень, категория оплаты, программа) может сузить его до более конкретного варианта.
-universities.cost.tooltip_living_range: Это справочный диапазон: опубликованная стоимость обучения плюс оценка расходов на проживание. Оценка проживания может относиться к другому году. Заполненный профиль (уровень, категория оплаты, программа) может сузить диапазон, но итоговая сумма не гарантирована.
-universities.cost.tooltip_single: Это одна известная цена для текущего выбора. Уточните программу, категорию оплаты и год.
-universities.cost.tooltip_filter_variants: Фильтр проверяет каждый известный вариант. Вуз показывается, если хотя бы один вариант пересекает ваши границы, даже когда весь диапазон шире их. Цены между крайними значениями могут отсутствовать.
-universities.cost.tooltip_filter_reference: Общий справочный диапазон может пересекать ваши границы без подтверждённой подходящей программы. Уточните её цену в вузе.
+universities.cost.tooltip_range: От минимальной до максимальной известной цены, до финпомощи. Точную сумму смотрите по программе на странице вуза.
+universities.cost.tooltip_living_range: Обучение плюс оценка проживания, до финпомощи. Точная сумма зависит от программы и тарифа.
+universities.cost.tooltip_single: Известная цена до финпомощи для текущего выбора. Уточните программу и год на странице вуза.
+universities.cost.tooltip_filter_variants: Показано, так как хотя бы один вариант попадает в фильтр цены.
+universities.cost.tooltip_filter_reference: Диапазон пересекается с фильтром цены — уточните цену своей программы.
 universities.cost.tooltip_living_year: Оценка проживания: {year} год.
 universities.country: Страна
 universities.filter: Фильтр

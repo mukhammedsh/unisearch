@@ -55,7 +55,6 @@ import {
 import {
   translateUniversityName,
   translateWord,
-  translateFactSource,
   translateProgramName,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
@@ -70,8 +69,6 @@ import {
   trUniversityName,
   unknownFieldText,
   textOrUnknown,
-  moneyOrUnknown,
-  splitPriceDisplay,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
@@ -90,11 +87,13 @@ import {
   fetchUniversityDetailCached,
   getDetailCacheEntry,
   toFiniteNumber,
-  resolveUniversityCardPrice,
-  rankingStatusLabel,
 } from './_shared.js';
 
-import { billingPeriodLabel } from "./university/admissions-presentation.js";
+import {
+  universityCardPriceInfo,
+  renderUniversityCardCosts,
+  buildRankSourceTooltip,
+} from "./universities/card-tooltips.js";
 import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
   budgetTooltip,
@@ -173,109 +172,7 @@ export function reviewedCardIndicators(match, budget) {
     return indicators.sort((a, b) => a.priority - b.priority);
 }
 
-export function universityCardPriceInfo(university, basis = "annual_total") {
-    const quote = university?.catalog_costs?.[basis];
-    const minimum = toFiniteNumber(quote?.min);
-    const maximum = toFiniteNumber(quote?.max);
-    const currency = String(quote?.currency || "").trim().toUpperCase();
-    if (minimum !== null && maximum !== null && minimum >= 0 && maximum >= minimum && currency) {
-        return { ...quote, amount: minimum, currency, amountUSD: convert(minimum, currency, "USD"), min: minimum, max: maximum, basis };
-    }
-    if (basis === "tuition" || university?.admissions_catalog?.availability === "reviewed") {
-        return { amount: null, currency: "", amountUSD: null };
-    }
-    return resolveUniversityCardPrice(university);
-}
-
-export function renderUniversityCardCosts(university, basis = "annual_total", scope = "catalog") {
-    let price = universityCardPriceInfo(university, basis);
-    if (basis === "annual_total" && price.amount === null && university?.admissions_catalog?.availability === "reviewed") {
-        const tuition = universityCardPriceInfo(university, "tuition");
-        if (tuition.amount !== null) price = tuition;
-    }
-    const known = price.amount !== null && Number.isFinite(price.amount);
-    const range = known && price.max > price.min;
-    const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference"
-        || price.calculation === "tuition_plus_living_range");
-    const money = value => splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, {
-        presentation: "summary", locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
-    }));
-    const minimum = known ? money(range ? price.min : price.amount) : { primary: t("universities.cost.price_unavailable"), secondary: "" };
-    const maximum = range ? money(price.max) : minimum;
-    const primary = range ? `${minimum.primary} – ${maximum.primary.replace(/^≈ /, "")}` : minimum.primary;
-    const secondary = minimum.secondary
-        ? range ? `(${minimum.secondary.slice(1, -1)} – ${maximum.secondary.slice(1, -1)})` : minimum.secondary
-        : "";
-    const priceBasis = price.basis || basis;
-    const title = t(`universities.cost.${priceBasis}`);
-    const showsTuitionReference = basis === "annual_total" && priceBasis === "tuition";
-    const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
-    const period = entry ? tFormat("universities.cost.entry", { year: entry[1] })
-        : price.period === "Whole program" ? billingPeriodLabel("whole_program") : price.period === "Year not stated" ? t("universities.cost.cycle_unspecified") : price.period;
-    const levels = Array.isArray(price.levels) ? price.levels : price.study_level ? [price.study_level] : [];
-    const feeStatuses = Array.isArray(price.fee_statuses) ? price.fee_statuses : [];
-    const cycleStatus = price.cycle_status === "dated_reference"
-        ? t(university?.catalog_costs?.reference ? "universities.cost.cycle_unconfirmed" : "universities.cost.dated_reference")
-        : price.cycle_status === "unspecified" ? t("universities.cost.cycle_unspecified") : "";
-    const context = [
-        levels.map(level => t(`university.admissions.catalog.level.${level}`)).join(", "),
-        period,
-        feeStatuses.join(", "),
-        (price.campuses || []).join(", "),
-        cycleStatus,
-        price.fee_status_match === "unknown" ? t("universities.cost.fee_status_unknown") : "",
-        price.filter_match === "partial" ? t("universities.cost.filter_partial") : "",
-    ].filter(Boolean).join(" · ");
-    const tooltipText = price.calculation === "tuition_plus_living_range"
-        ? t("universities.cost.tooltip_living_range")
-        : range ? t("universities.cost.tooltip_range") : t("universities.cost.tooltip_single");
-    const filterText = Array.isArray(price.amounts) || Array.isArray(price.intervals)
-        ? t("universities.cost.tooltip_filter_variants")
-        : t("universities.cost.tooltip_filter_reference");
-    const livingYear = String(price.living_reference || "").match(/\b20\d{2}\b/)?.[0];
-    const exclusions = priceBasis === "annual_total" ? university?.catalog_costs?.annual_total?.exclusions || [] : [];
-    const note = [
-        reference ? t("universities.cost.reference") : known ? t("universities.cost.before_aid") : "",
-        showsTuitionReference ? t("universities.cost.full_budget_unavailable") : "",
-        priceBasis === "tuition" ? t("universities.cost.tuition_scope_note") : "",
-        feeStatuses.length > 1 ? t("universities.cost.fee_scope") : "",
-        ...exclusions.map(key => t(`universities.cost.exclusion.${key}`)),
-    ].filter(Boolean).join(" · ");
-    const assessment = university?.matchData?.budgetAssessment;
-    const budgetKey = { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment?.status];
-    const budgetNote = budgetKey
-        ? [
-            t(budgetKey === "uncertain" ? "universities.cost.budget_uncertain_range"
-                : `universities.cost.budget_${budgetKey}_${assessment.evidence === "applicable" ? "applicable" : "reference"}`),
-            assessment.basis === "tuition" ? t("universities.cost.budget_tuition_only") : "",
-        ].filter(Boolean).join(" · ")
-        : "";
-    if (!known) {
-        return `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(note || t("universities.cost.unavailable"))}</span>${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}</div>`;
-    }
-    const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
-    const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
-    const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
-    // Qualifiers of the price (what it covers, the second currency) form one quiet line below it,
-    // so every card shows its price on the same first line.
-    const metaHtml = showsTuitionReference || secondary
-        ? `<span class="uni-cost-meta">${showsTuitionReference ? `<span class="uni-cost-meta__label">${escapeHtml(title)}</span>` : ""}${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}</span>`
-        : "";
-    return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
-            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>&nbsp;<span class="uni-price-tail"><span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span></span>
-        </button>
-        <span id="${escapeHtmlAttr(tooltipId)}" class="ui-tooltip-bubble uni-cost-tooltip__content" role="tooltip">
-            <strong class="ui-tooltip-title">${escapeHtml(t("universities.cost.tooltip_title"))} · ${escapeHtml(title)}${reference ? ` · ${escapeHtml(t("universities.cost.reference_short"))}` : ""}</strong>
-            ${context ? `<span class="uni-cost-context" data-cost-context>${escapeHtml(context)}</span>` : ""}
-            <span class="ui-tooltip-text">${escapeHtml(tooltipText)}</span>
-            <span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(filterText)}</span>
-            ${note ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(note)}</span>` : ""}
-            ${livingYear ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(tFormat("universities.cost.tooltip_living_year", { year: livingYear }))}</span>` : ""}
-            ${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}
-        </span>
-    </span>${metaHtml}`;
-}
+export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip };
 
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
@@ -4200,18 +4097,7 @@ export function initUniversitiesPage() {
         const detailLabel = escapeHtml(isCompareSelectionMode()
             ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
             : t("universities.card.view_details", "View details"));
-        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-        const rankSourceValue = String(rankMeta.source || "").trim();
-        const rankSource = rankSourceValue ? translateFactSource(rankSourceValue, rankSourceValue) : "";
-        const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
-        const statusLabel = rankStatusRaw
-            ? rankingStatusLabel(rankStatusRaw)
-            : translateWord("global_rank", "Global Rank");
-        const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
-            || t("university.admissions.check_date_unrecorded", "Check date not recorded");
-        const sourceTooltip = rankSource
-            ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Last checked: ${rankVerifiedAt}`)
-            : "";
+        const sourceTooltip = buildRankSourceTooltip(u);
         const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
         const rankAriaLabel = sourceTooltip
             ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
@@ -4241,7 +4127,8 @@ ${rankInnerHtml}
             </div>
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"));
+        const priceFilterActive = Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max;
+        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), { priceFilterActive });
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
                 <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">

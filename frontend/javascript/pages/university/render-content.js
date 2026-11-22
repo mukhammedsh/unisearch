@@ -129,7 +129,7 @@ export function renderOverviewSection({
       <span class="d-tooltip" role="tooltip">
         <strong>${rankInfoTitle}</strong>
         <span>${escapeHtml(rankSource)}</span>
-        ${rankStatus ? `<span>${escapeHtml(rankingStatusLabel(rankStatus))}</span>` : ""}
+        ${!officialRank && rankStatus ? `<span>${escapeHtml(rankingStatusLabel(rankStatus))}</span>` : ""}
         ${rankVerifiedAt ? `<span>${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(rankVerifiedAt)}</span>` : ""}
       </span>
     </span>

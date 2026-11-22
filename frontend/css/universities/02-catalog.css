@@ -1116,6 +1116,26 @@
   color: var(--text-muted);
 }
 
+.uni-cost-tooltip__content {
+  max-width: min(320px, calc(100vw - var(--space-16)));
+}
+
+.uni-cost-tooltip__content .uni-cost-context {
+  display: block;
+  font-weight: var(--font-weight-regular);
+  opacity: 0.85;
+  margin-top: var(--space-1);
+}
+
+.uni-cost-tooltip__content .uni-cost-context[data-cost-context] {
+  margin-top: 0;
+  margin-bottom: var(--space-1);
+}
+
+.uni-cost-tooltip__content .uni-cost-context:last-child {
+  margin-bottom: 0;
+}
+
 .uni-price-line {
   display: block;
   min-width: 0;
