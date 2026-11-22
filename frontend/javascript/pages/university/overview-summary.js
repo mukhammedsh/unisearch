@@ -12,7 +12,7 @@ import { getExamDisplayName } from "../../utils/config.js";
 import { withoutBracketedText } from "../../utils/text.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
 import { admissionsRequest, firstYearSharedRoute, singlePublishedCycle } from "./admissions-controller.js";
-import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
+import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName } from "./admissions-render.js";
 import { costFact, deadlineFact, englishRecommendationItem, fundingPolicyStatement, minimumChecklist } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
 import { extractUniversityDeadlines, getUndergraduateCategories } from "./render-sections.js";
@@ -402,6 +402,8 @@ export function mountOverviewSummary({ container, university, universityId, revi
   let disposed = false;
   let routeLoaded = false;
   let route = null;
+  // Without a shared path, the program the Admission tab reads (Imperial) gives the Overview its answers.
+  let programContext = null;
   const hasContent = () => Boolean(container.querySelector(".overview-summary__grid"));
 
   const show = html => { if (!disposed) container.innerHTML = html; };
@@ -440,8 +442,10 @@ export function mountOverviewSummary({ container, university, universityId, revi
       }
       const apiProfile = loadProfileForApi();
       let resolved = null;
-      if (route) {
-        const context = { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" };
+      if (route || programContext) {
+        const context = route
+          ? { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" }
+          : { ...programContext };
         const read = () => fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" }, signal: request.signal,
           body: JSON.stringify(admissionsRequest(apiProfile, context, universityId)) });
         resolved = await read();
@@ -455,7 +459,10 @@ export function mountOverviewSummary({ container, university, universityId, revi
         if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
       }
       const cards = reviewedCards({ resolved, university, budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id), profile: apiProfile });
-      show(renderSummary(cards, resolved ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: "undergraduate" }) }) : ""));
+      const intro = !resolved ? "" : route
+        ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: "undergraduate" }) })
+        : tFormat("university.ux2.intro_selected_program", { program: admissionsProgramLabel(resolved.selected_option, { includeAward: true }).title });
+      show(renderSummary(cards, intro));
     } catch (error) {
       if (request.signal.aborted || current !== version) return;
       console.error(error);
@@ -465,6 +472,14 @@ export function mountOverviewSummary({ container, university, universityId, revi
 
   const onProfileUpdated = () => { if (reviewed) void loadReviewed(); else renderLegacy(); };
   window.addEventListener("profileUpdated", onProfileUpdated);
+  const onAdmissionContext = event => {
+    if (!reviewed || route || event.detail?.institutionId !== universityId || !event.detail?.context?.application_route_id) return;
+    const next = { ...event.detail.context };
+    if (JSON.stringify(next) === JSON.stringify(programContext)) return;
+    programContext = next;
+    void loadReviewed();
+  };
+  window.addEventListener("unisearch:admission-context", onAdmissionContext);
   if (reviewed) void loadReviewed(); else renderLegacy();
 
   return {
@@ -474,6 +489,7 @@ export function mountOverviewSummary({ container, university, universityId, revi
       controller?.abort();
       container.removeEventListener("click", onClick);
       window.removeEventListener("profileUpdated", onProfileUpdated);
+      window.removeEventListener("unisearch:admission-context", onAdmissionContext);
     },
   };
 }

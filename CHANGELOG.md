@@ -57,6 +57,9 @@ Minor release: map markers now say which university they mark, and search matche
 - Show an English test recommendation on the Overview checklist with the applicant's own result (MIT: IELTS 7.0, better 7.5; you have IELTS 6.5) instead of "still to prepare".
 - Write a test with section scores as its total followed by the sections ("SAT 1310 (Math 690, Reading and Writing 620)") instead of repeating the test name before each section without the total.
 - Name the grant link "How to get the grant" and describe the screen as the grant conditions, applied for separately after an offer.
+- Confirm a chosen 5.0 GPA scale in the hint, and name the tuition inside a published yearly budget ("Of this, tuition is $67,731; the rest is housing, meals and other costs").
+- Replace "path" wording in the Russian admission interface with plain words ("How you apply", "Change", "Remember this choice", "Key facts for applying", "Your choice"), and drop "for this path" from the Dates and Costs introductions.
+- Let the Overview of a university without a shared path (Imperial) answer for the program chosen on the Admission tab ("Shown for the program you chose") instead of asking to choose a program again.
 ### Fixed
 - Stop offering "Remember this path" on NU's separate grant application, which saved the grant as the applicant's way in.
 - Name the applicant's GPA beside a met GPA alternative ("You have: GPA 4.6 of 5").

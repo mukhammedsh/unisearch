@@ -2472,7 +2472,7 @@ university.admissions.catalog.finance_intro: Бір оқу жылының құн
 university.admissions.catalog.deadlines_title: Күндер мен мерзімдер
 university.admissions.catalog.deadlines_intro: Өтінімді қашан беру керек және таңдалған жолдың басқа мерзімдері.
 university.admissions.catalog.route_intro: Жарияланған жолды таңдаңыз — талаптар мен өтініш тәртібі бірден ашылады. Профиль қажет емес.
-university.admissions.catalog.reference_scope: Сіз қарап отырсыз
+university.admissions.catalog.reference_scope: Қалай түсесіз
 university.admissions.catalog.route_not_selected: Қалай түсетініңізді таңдаңыз
 university.admissions.catalog.browse_programs: Бағдарламаларды шолу
 university.admissions.catalog.change_program: Бағдарламаны өзгерту
@@ -2699,7 +2699,7 @@ university.admissions.reading.sources_disclosure_count: Дереккөздер (
 university.admissions.reading.sources_disclosure: Дереккөздер
 university.admissions.reading.general_references: Қосымша анықтамалық мәліметтер
 university.admissions.reading.general_reference_note: Бұл жазбалар жалпы немесе ерекше жағдайларға арналған. Олардың осы таңдауға қолданылуы анықталмаған; талап деп қабылдамас бұрын әр жазбаның аясын тексеріңіз.
-university.admissions.reading.update_selection: Таңдауды жаңарту
+university.admissions.reading.update_selection: Өзгерту
 university.admissions.catalog.route_name.mit-first-year: Мектептен кейінгі бірінші курс
 university.admissions.catalog.route_name.mit-transfer: Басқа университеттен ауысу
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Мектептен кейінгі бірінші курс
@@ -2883,7 +2883,7 @@ university.admissions.catalog.enum.to_be_announced: Жарияланады
 university.admissions.catalog.enum.per_option_key_facts: бағдарлама нұсқасына арналған негізгі деректер
 university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесттер, балдар, іріктеу, сұхбат және портфолио
 university.admissions.catalog.reset_notice: Бұрынғы қабылдау таңдауыңыз ескі каталогты пайдаланғандықтан тазартылды. Оқу нұсқасы мен өтініш беру бағытын қайта таңдаңыз. Профильдегі басқа мәліметтер сақталған.
-university.admissions.catalog.save_choice: Осы жолды есте сақтау
+university.admissions.catalog.save_choice: Бұл таңдауды есте сақтау
 university.admissions.catalog.choice_saved: Жол осы құрылғыда сақталды.
 university.admissions.catalog.choice_session_only: Бұл таңдау тек осы сеансқа қолжетімді. Оны осы құрылғыда сақтау мүмкін болмады.
 university.admissions.catalog.apply_before_save: Таңдауды сақтамас бұрын өзгертілген контексті қолданыңыз.
@@ -3327,7 +3327,7 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: Бакал�
 university.admissions.entry.route_help.nu-residency-unconditional: Резидентураға түсудің қалыпты талаптары, соның ішінде клиникалық емтихандар мен алдыңғы медициналық білім туралы мәліметтер.
 university.admissions.entry.route_help.nu-residency-conditional-umc: UMC ұсынған үміткерлерге арналған жеке шартты жол. Ұсыным мен оқуға тіркелу шарттарын тексеріңіз: бұл емтихандардан жалпы босату емес.
 university.admissions.reading.structured_study: Оқу туралы жарияланған мәліметтер төменде берілген. Қысқаша мәтіндік шолу жоқ.
-university.admissions.key_facts.title: Осы жол бойынша негізгісі
+university.admissions.key_facts.title: Түсу үшін негізгісі
 university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
@@ -3597,7 +3597,8 @@ profile.ux2.evidence.language_title: Ағылшын тілін қолдану т
 profile.ux2.evidence.language_fixed: Тек ағылшын тіліндегі тәжірибе жазылады: ағылшын тілі талаптары дәл соны сұрайды.
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
 university.ux2.title: Қабылдаудың негізгі деректері
-university.ux2.intro_route: Көрсетілген жол: {route}. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.
+university.ux2.intro_route: «{route}» нұсқасы үшін көрсетілген. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.
+university.ux2.intro_selected_program: Таңдалған «{program}» бағдарламасы үшін көрсетілген.
 university.ux2.intro_program: Әр бағдарламаның өзіндік мерзімі, құны мен талаптары бар. Көру үшін бағдарламаны таңдаңыз.
 university.ux2.intro_legacy: Университеттің бакалавриат туралы жариялаған деректері.
 university.ux2.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім емес. Дереккөздер мен толық ақпарат — қойындыларда.

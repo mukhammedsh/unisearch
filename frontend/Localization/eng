@@ -2472,7 +2472,7 @@ university.admissions.catalog.finance_intro: What a year of study costs and what
 university.admissions.catalog.deadlines_title: Dates and deadlines
 university.admissions.catalog.deadlines_intro: When to apply and the other dates of the selected path.
 university.admissions.catalog.route_intro: Choose a published path to open its requirements and process. No profile is needed.
-university.admissions.catalog.reference_scope: Browsing
+university.admissions.catalog.reference_scope: How you apply
 university.admissions.catalog.route_not_selected: Choose a published application path
 university.admissions.catalog.browse_programs: Browse programs
 university.admissions.catalog.change_program: Change program
@@ -2699,7 +2699,7 @@ university.admissions.reading.sources_disclosure_count: Sources ({count})
 university.admissions.reading.sources_disclosure: Sources
 university.admissions.reading.general_references: Additional reference information
 university.admissions.reading.general_reference_note: These records cover broader or special situations. Their applicability to this selection is unresolved; check each record's scope before treating it as a requirement.
-university.admissions.reading.update_selection: Update selection
+university.admissions.reading.update_selection: Change
 university.admissions.catalog.route_name.mit-first-year: First-year admission after school
 university.admissions.catalog.route_name.mit-transfer: Transfer from another university
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: First-year admission after school
@@ -2883,7 +2883,7 @@ university.admissions.catalog.enum.to_be_announced: To be announced
 university.admissions.catalog.enum.per_option_key_facts: option-specific key facts
 university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: tests, scores, selection, interview and portfolio
 university.admissions.catalog.reset_notice: Your previous admission choice used the earlier catalog and has been cleared. Choose a study option and route again. Your other profile information is preserved.
-university.admissions.catalog.save_choice: Remember this path
+university.admissions.catalog.save_choice: Remember this choice
 university.admissions.catalog.choice_saved: Path remembered on this device.
 university.admissions.catalog.choice_session_only: This choice is available for this session only. It could not be saved on this device.
 university.admissions.catalog.apply_before_save: Apply the changed context before saving this choice.
@@ -3327,7 +3327,7 @@ university.admissions.entry.route_help.nu-a-route-nufyp-progression: For current
 university.admissions.entry.route_help.nu-residency-unconditional: Read the standard residency entry conditions, including the required clinical test evidence and prior medical qualification.
 university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
 university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
-university.admissions.key_facts.title: Key facts for this path
+university.admissions.key_facts.title: Key facts for applying
 university.admissions.key_facts.note: A summary of published facts, not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
@@ -3597,7 +3597,8 @@ profile.ux2.evidence.language_title: English language background
 profile.ux2.evidence.language_fixed: Records your background in English only, which is what English requirements ask about.
 profile.ux2.evidence.entirely: Entirely in English?
 university.ux2.title: Key admission facts
-university.ux2.intro_route: Shown for: {route}. One application covers all undergraduate programs.
+university.ux2.intro_route: Shown for "{route}". One application covers all undergraduate programs.
+university.ux2.intro_selected_program: Shown for the program "{program}" you chose.
 university.ux2.intro_program: Each program sets its own. Choose a program to see them.
 university.ux2.intro_legacy: Published undergraduate information from this university.
 university.ux2.note: A summary of official facts, not an admission decision. Sources and full details are in the tabs.

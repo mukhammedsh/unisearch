@@ -740,6 +740,10 @@ export function mountAdmissionsCatalog(institutionId) {
       resolved = data;
       renderControls();
       renderContextContent("ready");
+      // The Overview of a university without a shared path (Imperial) answers for the program read here.
+      if (data?.selected_option && data?.selected_route) {
+        window.dispatchEvent(new CustomEvent("unisearch:admission-context", { detail: { institutionId, context: { ...context } } }));
+      }
       if (revealSelection && hasReadableAdmissionContext(data)) selectionSummary?.scrollIntoView({ block: "start" });
     } catch (error) {
       if (request.signal.aborted || request !== contextAbort || !currentPage()) return;

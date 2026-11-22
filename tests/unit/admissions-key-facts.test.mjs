@@ -297,7 +297,7 @@ test("the block appears only for a selected route and links to the dates and cos
   assert.match(html, /data-open-tab="tab-deadlines"/);
   assert.match(html, /data-open-tab="tab-finance"/);
   setLanguage("rus", { emit: false });
-  assert.match(renderAdmissionsKeyFacts(withDates([]), { now: NOW }), /Главное по этому пути/);
+  assert.match(renderAdmissionsKeyFacts(withDates([]), { now: NOW }), /Главное для поступления/);
   setLanguage("eng", { emit: false });
 });
 
