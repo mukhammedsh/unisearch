@@ -753,10 +753,17 @@ export function initUniversitiesPage() {
     };
 
     const syncViewModeControls = () => {
-        [el.btnList, el.btnMap].forEach((button) => {
-            if (!button) return;
-            button.disabled = !viewModesReady;
-        });
+        const isMap = state.viewMode === "map";
+        if (el.btnList) {
+            el.btnList.disabled = !viewModesReady;
+            el.btnList.classList.toggle("active", !isMap);
+            el.btnList.setAttribute("aria-pressed", !isMap ? "true" : "false");
+        }
+        if (el.btnMap) {
+            el.btnMap.disabled = !viewModesReady;
+            el.btnMap.classList.toggle("active", isMap);
+            el.btnMap.setAttribute("aria-pressed", isMap ? "true" : "false");
+        }
     };
 
     syncViewModeControls();
@@ -2592,8 +2599,7 @@ export function initUniversitiesPage() {
     async function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
         saveFilters(state);
-        el.btnList?.classList.toggle("active", mode === "list");
-        el.btnMap?.classList.toggle("active", mode === "map");
+        syncViewModeControls();
 
         if (mode === "map" && Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) {
             renderMapResultsPanel(lastRenderedItems);

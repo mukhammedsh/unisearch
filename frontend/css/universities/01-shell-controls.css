@@ -713,8 +713,8 @@ body[data-page="universities"] {
   background: var(--surface-solid);
   color: var(--text);
   border-radius: var(--u-toolbar-radius);
-  padding: var(--space-0-5);
-  gap: var(--space-0-5);
+  padding: 0;
+  gap: 0;
   box-shadow: var(--shadow-xs);
   flex-shrink: 0;
   min-block-size: var(--u-toolbar-height);
@@ -727,9 +727,9 @@ body[data-page="universities"] {
 
 .view-btn {
   background: transparent;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   min-inline-size: var(--space-10);
-  min-block-size: var(--space-8);
+  min-block-size: var(--u-toolbar-height);
   padding: 0;
   cursor: pointer;
   color: var(--text-muted);
@@ -741,6 +741,21 @@ body[data-page="universities"] {
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.view-btn:first-child {
+  border-start-start-radius: var(--u-toolbar-radius);
+  border-end-start-radius: var(--u-toolbar-radius);
+}
+
+.view-btn:last-child {
+  border-start-end-radius: var(--u-toolbar-radius);
+  border-end-end-radius: var(--u-toolbar-radius);
+}
+
+.view-btn:focus-visible {
+  position: relative;
+  z-index: 1;
 }
 
 .view-btn .ui-icon,

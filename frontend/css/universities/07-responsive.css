@@ -617,8 +617,7 @@
   }
 
   .view-btn {
-    min-inline-size: 34px;
-    min-block-size: 30px;
+    min-inline-size: 36px;
   }
 
   .view-btn .ui-icon,

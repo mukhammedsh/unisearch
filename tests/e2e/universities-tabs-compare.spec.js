@@ -848,6 +848,7 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
     expect(metrics.radii[1], `${viewport.name}: radii`).toBe(metrics.radii[2]);
     expect(metrics.iconSizes, `${viewport.name}: icon sizes`).toEqual(expectedIcons);
     expect(metrics.viewBtnSizes[0], `${viewport.name}: matching view buttons`).toEqual(metrics.viewBtnSizes[1]);
+    expect(metrics.viewBtnSizes[0][1], `${viewport.name}: view button fills full toggle height`).toBe(metrics.heights[1]);
     expect(metrics.viewBtnSizes[0][0], `${viewport.name}: view button fills segment width`).toBeGreaterThanOrEqual(metrics.viewBtnSizes[0][1]);
     expect(Math.abs(metrics.topGap - metrics.bottomGap), `${viewport.name}: vertical rhythm`).toBeLessThanOrEqual(1);
     expect(Math.abs(metrics.foundLeft - metrics.contentLeft), `${viewport.name}: left grid edge`).toBeLessThanOrEqual(1);
@@ -860,6 +861,28 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
       expect(metrics.recentPadX, `${viewport.name}: equal button padding`).toEqual(metrics.comparePadX);
     }
   }
+
+  // Switching between List and Map keeps aria-pressed and .active exclusive (never both highlighted).
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/index.html?lang=rus");
+  await waitForUniversitiesReady(page);
+  const listBtn = page.locator("#viewListBtn");
+  const mapBtn = page.locator("#viewMapBtn");
+  await expect(mapBtn).toBeEnabled();
+  await expect(listBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "false");
+
+  await mapBtn.click();
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(mapBtn).toHaveClass(/active/);
+  await expect(listBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(listBtn).not.toHaveClass(/active/);
+
+  await listBtn.click();
+  await expect(listBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(listBtn).toHaveClass(/active/);
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(mapBtn).not.toHaveClass(/active/);
 });
 
 
