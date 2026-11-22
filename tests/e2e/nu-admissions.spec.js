@@ -427,13 +427,17 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
     sessionStorage.setItem("nu-cache-seeded", "1");
     localStorage.setItem("unisearch_detail_cache_v4", JSON.stringify({ [`${id}::eng`]: { data: { id, name: "STALE NU LEGACY DETAIL" }, etag: "legacy", ts: Date.now() } }));
   }, NU);
-  await page.route(`**/universities/${NU}/admissions-context`, route => route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Temporarily unavailable"}' }), { times: 1 });
+  // The outage lasts until Retry: the tab reads its default path in a second request, which must fail too.
+  let outage = true;
+  await page.route(`**/universities/${NU}/admissions-context`, route => outage
+    ? route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Temporarily unavailable"}' }) : route.fallback());
   await page.goto(`/university.html?id=${NU}`);
   await expect(page.locator("#detailName")).toHaveText("Nazarbayev University");
   await showTab(page, "admission");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
   await expect(page.locator("#detailRequirements").getByRole("alert")).toHaveCount(1);
   await expect(page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true })).toHaveCount(1);
+  outage = false;
   await page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true }).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("[data-admission-reset-notice]")).toBeVisible();
@@ -443,8 +447,8 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
   expect(profile.budget).toBe(24000);
   expect(profile.selectedAdmissionChoices[NU]).toBeUndefined();
   expect(profile.selectedAdmissionChoices[other].programId).toBe("preserve-oxford-choice");
-  await page.locator("#admissionsChooseProgram").click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  // The tab reads the default first-year path, so programs are browsed from their own tab.
+  await showTab(page, "programs");
   for (const level of ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]) {
     const selected = page.locator(".custom-select-wrapper:has(#admissionsStudyLevel)");
     await selected.locator(".custom-select-trigger").click();

@@ -2657,6 +2657,7 @@ university.admissions.reading.english_condition: This strong recommendation appl
 university.admissions.reading.language_scores: Published English-test scores
 university.admissions.reading.exam: Exam
 university.admissions.reading.minimum: Minimum
+university.admissions.reading.minimum_if_taken: Minimum if you take it
 university.admissions.reading.recommended: Recommended
 university.admissions.reading.test_before: Taken before
 university.admissions.reading.test_from: Taken on or after
@@ -3354,7 +3355,9 @@ university.admissions.key_facts.budget_tuition_within: Tuition fits your budget 
 university.admissions.key_facts.budget_partial: Part of the range is above your budget of {budget}
 university.admissions.key_facts.budget_missing: Add a yearly budget to your profile to compare
 university.admissions.key_facts.open_finance: Costs and funding
-university.admissions.key_facts.open_funding_route: Grant conditions
+university.admissions.key_facts.open_funding_route: Open the grant application
+university.admissions.key_facts.funding_route_viewing: This is the separate grant application, not a way to be admitted.
+university.admissions.key_facts.back_to_route: Back to your path: {route}
 university.admissions.key_facts.funding: Funding
 university.admissions.key_facts.funding_route: Applied for separately: {route}
 university.admissions.key_facts.funding_records: Funding options are described under Costs and funding. An award is not guaranteed.
@@ -3469,6 +3472,8 @@ university.admissions.key_facts.minimum_any: {requirement}, one of: {items}
 university.admissions.key_facts.minimum_gpa: GPA {minimum}
 university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} of {scale}
 university.admissions.key_facts.minimum_have: You have: {result}
+university.admissions.key_facts.minimum_have_add: You have: {result}. To check it fully, add: {items}
+university.admissions.key_facts.minimum_have_overall_add: You have: {result}, the overall score meets the minimum. To check it fully, add: {items}
 university.admissions.key_facts.minimum_have_below: You have: {result}, below the minimum
 university.admissions.key_facts.minimum_have_unconfirmed: You have: {result}; whether it counts depends on the conditions below
 university.admissions.key_facts.minimum_one: {requirement}: {items}

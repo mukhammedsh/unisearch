@@ -2655,6 +2655,7 @@ university.admissions.reading.english_condition: Настоятельная ре
 university.admissions.reading.language_scores: Опубликованные баллы по английскому
 university.admissions.reading.exam: Экзамен
 university.admissions.reading.minimum: Минимум
+university.admissions.reading.minimum_if_taken: Минимум, если сдаёте
 university.admissions.reading.recommended: Рекомендовано
 university.admissions.reading.test_before: Сдан до
 university.admissions.reading.test_from: Сдан начиная с
@@ -3352,7 +3353,9 @@ university.admissions.key_facts.budget_tuition_within: Обучение укла
 university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
 university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
 university.admissions.key_facts.open_finance: Стоимость и финансирование
-university.admissions.key_facts.open_funding_route: Условия гранта
+university.admissions.key_facts.open_funding_route: Открыть заявку на грант
+university.admissions.key_facts.funding_route_viewing: Это отдельная заявка на грант, а не путь поступления.
+university.admissions.key_facts.back_to_route: Вернуться к вашему пути: {route}
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
 university.admissions.key_facts.funding_records: Варианты финансирования описаны во вкладке «Стоимость и финансирование». Грант не гарантирован.
@@ -3467,6 +3470,8 @@ university.admissions.key_facts.minimum_any: {requirement}, одно из: {item
 university.admissions.key_facts.minimum_gpa: GPA {minimum}
 university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} из {scale}
 university.admissions.key_facts.minimum_have: У вас: {result}
+university.admissions.key_facts.minimum_have_add: У вас: {result}. Чтобы проверить полностью, добавьте: {items}
+university.admissions.key_facts.minimum_have_overall_add: У вас: {result}, общий балл подходит. Чтобы проверить полностью, добавьте: {items}
 university.admissions.key_facts.minimum_have_below: У вас: {result}, ниже минимума
 university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; засчитывается ли он, зависит от условий ниже
 university.admissions.key_facts.minimum_one: {requirement}: {items}

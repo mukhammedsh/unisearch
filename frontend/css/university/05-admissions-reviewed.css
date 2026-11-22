@@ -230,6 +230,13 @@
   display: grid;
 }
 
+/* The separate grant application names itself and the way back to the admission path. */
+.admissions-key-facts__notice {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
 .admissions-key-facts__row {
   display: grid;
   grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);

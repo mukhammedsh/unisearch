@@ -237,7 +237,9 @@ function requirements(rows, resolved) {
         renderAdmissionsValue(exam.minimum), renderAdmissionsValue(exam.recommended),
       ]);
       const condition = row.conditions?.find(item => item.when === "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)");
-      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("language"))}</h3><p>${renderAdmissionsValue(value.presence)}</p>${condition ? `<p>${escapeHtml(label("english_condition"))}</p>` : ""}${table(label("language_scores"), [label("exam"), label("minimum"), label("recommended")], entries)}${sourceNote(row, resolved)}</section>`;
+      // A score floor for an optional test applies only to applicants who take it; a bare "Minimum" would read as a requirement.
+      const minimumHeading = label(value.presence === "required" ? "minimum" : "minimum_if_taken");
+      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("language"))}</h3><p>${renderAdmissionsValue(value.presence)}</p>${condition ? `<p>${escapeHtml(label("english_condition"))}</p>` : ""}${table(label("language_scores"), [label("exam"), minimumHeading, label("recommended")], entries)}${sourceNote(row, resolved)}</section>`;
     }
     if (Array.isArray(value.required) && value.required.every(item => typeof item === "string") && ["documents", "application_process"].includes(row.topic)) {
       const documentLabels = {

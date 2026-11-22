@@ -163,7 +163,10 @@ export function minimumChecklist(resolved) {
     const text = tFormat(`university.admissions.key_facts.minimum_${items.length > 1 ? "any" : "one"}`, { requirement, items: items.join(", ") });
     const have = providedText(check.provided);
     const adds = check.status === "missing" ? [...new Set((check.missingInputs || []).map(missingInputItem))] : [];
-    const note = adds.length ? tFormat("university.admissions.key_facts.minimum_add", { items: adds.join(", ") })
+    // A result already entered stays visible beside what is still missing, with whether its overall score meets the minimum.
+    const overallMet = (check.provided?.minimum_checks || []).some(item => item.exam === check.provided?.exam && item.status === "met");
+    const note = adds.length && have ? tFormat(`university.admissions.key_facts.minimum_have_${overallMet ? "overall_" : ""}add`, { result: have, items: adds.join(", ") })
+      : adds.length ? tFormat("university.admissions.key_facts.minimum_add", { items: adds.join(", ") })
       // A result the check could not count (NU accepts SAT for Foundation only from international applicants) is not a pass.
       : have ? tFormat(`university.admissions.key_facts.minimum_have${{ below: "_below", todo: "_unconfirmed" }[mark] || ""}`, { result: have }) : "";
     const languageExam = check.kind === "language_requirement" && adds.length ? (check.missingInputs || []).find(input => input.exam)?.exam : "";
@@ -294,10 +297,13 @@ export function costFact(resolved, budgetUsd) {
   // A total this site adds up (published tuition plus a living estimate) says so and shows both parts,
   // so it is never mistaken for a published figure or contradicted by the tuition shown elsewhere.
   const calculated = quote.calculation === "tuition_plus_living_range" && costs.tuition && Number.isFinite(quote.living_min);
-  const text = tFormat(`university.admissions.key_facts.${calculated ? "cost_estimate" : basis === "annual_total" ? "cost_total" : "cost_tuition"}`, { amount });
+  // The estimate templates carry their own "≈", so a converted figure must not add a second one.
+  const withoutApprox = (value) => String(value).replace(/^≈\s*/, "");
+  const text = tFormat(`university.admissions.key_facts.${calculated ? "cost_estimate" : basis === "annual_total" ? "cost_total" : "cost_tuition"}`,
+    { amount: calculated ? withoutApprox(amount) : amount });
   const breakdown = calculated ? tFormat("university.admissions.key_facts.cost_breakdown", {
     tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()),
-    living: formatPriceRange(quote.living_min, quote.living_max, quote.currency, summary()) }) : "";
+    living: withoutApprox(formatPriceRange(quote.living_min, quote.living_max, quote.currency, summary())) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
   const parts = { amount, basis, period: quote.period || "" };
   const notes = [breakdown, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
@@ -380,7 +386,8 @@ function requirementsRow(resolved, cycleAction, shownTerms, profile) {
   const recommendation = englishRecommendationItem(resolved, profile);
   const checklist = [...minimumChecklist(resolved), ...(recommendation ? [recommendation] : [])];
   // Without a measured share the checklist itself is the answer, so the row introduces it instead of describing the check.
-  const text = !available && checklist.length && assessment.reason === "unassessed_minimums" ? label("requirements_checklist_lead") : fact.text;
+  // A checklist already says what to add, so a missing result never replaces it with a generic "add your results".
+  const text = !available && checklist.length && ["unassessed_minimums", "missing_evidence"].includes(assessment.reason) ? label("requirements_checklist_lead") : fact.text;
   const notes = [
     ...(available && evaluated.some(check => check.status === "unmet") ? [t("university.admissions.catalog.reason.requirements_not_met")] : []),
     ...(fact.notes || []),
@@ -438,8 +445,13 @@ export function renderTabAnswers(resolved, tab, { budgetUsd, profileExamIds = []
  *   profile?: {languages?: Array<object>}}} [options] `profile` is the API profile, read for the native language and English tests.
  * @returns {string} The key-facts block as HTML, or "".
  */
-export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date(), applicationUrl = "", profile = {} } = {}) {
+export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds = [], now = new Date(), applicationUrl = "", profile = {}, returnRoute = null } = {}) {
   if (!resolved?.selected_route) return "";
+  // A separate grant application is read on its own, so the block says so and offers the admission path it was opened from.
+  const supportNotice = resolved.selected_route.classification === "financial_support_application"
+    ? `<p class="admissions-key-facts__notice" data-funding-route-notice>${escapeHtml(label("funding_route_viewing"))}${returnRoute
+      ? ` <button type="button" class="admissions-key-facts__link" data-key-facts-route="${escapeHtmlAttr(returnRoute.id)}">${escapeHtml(tFormat("university.admissions.key_facts.back_to_route",
+        { route: admissionsRouteName(returnRoute, { presentation: "simple" }) }))}</button>` : ""}</p>` : "";
   // The entry cycle belongs to this university's selection, so the action opens the entry-year field.
   const cycleAction = `<button type="button" class="admissions-key-facts__link" data-key-facts-cycle="edit">${escapeHtml(label("set_cycle"))}</button>`;
   const open = (tab, key) => `<button type="button" class="admissions-key-facts__link" data-open-tab="${tab}">${escapeHtml(label(key))}</button>`;
@@ -447,7 +459,7 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
   // year does not need the Foundation term its shared route name carries.
   const shownTerms = new Set(resolved.context?.study_level === "undergraduate" ? ["foundation"] : []);
   return `<section class="admissions-key-facts" data-admissions-key-facts aria-labelledby="admissionsKeyFactsTitle">
-    <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>
+    <h3 id="admissionsKeyFactsTitle">${escapeHtml(label("title"))}</h3>${supportNotice}
     <dl class="admissions-key-facts__list">
       ${requirementsRow(resolved, cycleAction, shownTerms, profile)}
       ${applyRow(applicationUrl)}

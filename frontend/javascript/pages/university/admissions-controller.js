@@ -24,6 +24,20 @@ const label = (key) => t(`university.admissions.catalog.${key}`);
 const routeName = (route) => admissionsRouteName(route, { presentation: "simple" });
 const browsingByInstitution = new Map();
 
+/**
+ * The first undergraduate first-year application shared by every major, or null when the university has none
+ * (a route without programs, such as a mid-year intake, cannot describe all majors).
+ * @param {Array<{applicant_route?: string, classification?: string, levels?: string[], option_ids?: string[]}>} sharedRoutes
+ * @returns {object|null}
+ */
+export function firstYearSharedRoute(sharedRoutes) {
+  // A post-offer funding application shares the programs but is not how one applies.
+  return (Array.isArray(sharedRoutes) ? sharedRoutes : []).find(route => route?.applicant_route === "first_year"
+    && route.classification !== "financial_support_application"
+    && Array.isArray(route.levels) && route.levels.includes("undergraduate")
+    && Array.isArray(route.option_ids) && route.option_ids.length > 0) || null;
+}
+
 export function hasReadableAdmissionContext(resolved) {
   return Boolean(resolved?.selected_route && (resolved.selected_option || resolved.reading_scope === "institution_route"));
 }
@@ -262,6 +276,8 @@ export function mountAdmissionsCatalog(institutionId) {
   let contextSelectDisposers = [];
   let saveStatus = "";
   let contextDirty = false;
+  // The admission path the applicant left to read the separate grant application, so the key facts can offer the way back.
+  let fundingReturnRouteId = "";
   let advancedOpen = false;
   const browsing = browsingByInstitution.get(institutionId) || {};
   const profileSuggestions = programProfileSuggestions(loadProfileForApi());
@@ -281,6 +297,16 @@ export function mountAdmissionsCatalog(institutionId) {
   const limit = 8;
   const currentPage = () => !disposed && root.isConnected && document.body.dataset.page === "university";
   const setUrl = () => window.history.pushState({}, "", admissionContextUrl(window.location.href, context));
+  // Like the Overview, the tabs open on the shared first-year path when nothing is chosen yet, so every tab answers at
+  // once and the "You are viewing" line changes it. A saved or linked choice is never replaced; the URL stays as it was.
+  let defaultRouteId = "";
+  const applyDefaultRoute = () => {
+    const route = !context.study_option_id && !context.application_route_id ? firstYearSharedRoute(sharedRoutes) : null;
+    if (!route) return false;
+    context.application_route_id = defaultRouteId = route.id;
+    context.study_level = "undergraduate";
+    return true;
+  };
   const openTab = (id) => {
     const nextUrl = new URL(window.location.href);
     if (nextUrl.hash !== `#${id}`) {
@@ -526,7 +552,10 @@ export function mountAdmissionsCatalog(institutionId) {
       host.querySelectorAll("[data-open-tab]").forEach(button => { button.onclick = () => openTab(button.dataset.openTab); });
       host.querySelectorAll("[data-key-facts-route]").forEach(button => {
         button.onclick = () => {
-          context.application_route_id = button.dataset.keyFactsRoute;
+          const target = button.dataset.keyFactsRoute;
+          const isSupport = (resolved?.available_routes || []).some(route => route.id === target && route.classification === "financial_support_application");
+          fundingReturnRouteId = isSupport ? context.application_route_id || "" : "";
+          context.application_route_id = target;
           contextDirty = false;
           saveStatus = "";
           setUrl();
@@ -547,8 +576,10 @@ export function mountAdmissionsCatalog(institutionId) {
       assessmentHost.replaceChildren();
     } else if (readable) {
       // Key facts open the tab and carry its single requirements-match summary with the checks beneath it.
+      const onSupportRoute = resolved.selected_route?.classification === "financial_support_application";
+      const returnRoute = onSupportRoute ? (resolved.available_routes || []).find(route => route.id === fundingReturnRouteId) || null : null;
       assessmentHost.innerHTML = renderAdmissionsKeyFacts(resolved, { budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id),
-        applicationUrl: getApplicationLink(resolved), profile: apiProfile });
+        applicationUrl: getApplicationLink(resolved), profile: apiProfile, returnRoute });
       bindKeyFacts(assessmentHost);
     }
     // Without a program the shared paths are listed right below, so this block checks the main one at once instead of
@@ -884,6 +915,9 @@ export function mountAdmissionsCatalog(institutionId) {
     else openProgramIds.delete(option.id);
     // A shared path the program is also applied through stays chosen (NU's one undergraduate application); any other path is
     // chosen again for the program.
+    // The default first-year path was never the reader's choice, so a program's own path is chosen again.
+    if (defaultRouteId && context.application_route_id === defaultRouteId) context.application_route_id = "";
+    defaultRouteId = "";
     if (!option.route_ids?.includes(context.application_route_id)) context.application_route_id = "";
     contextDirty = false;
     advancedOpen = false;
@@ -989,7 +1023,10 @@ export function mountAdmissionsCatalog(institutionId) {
       const previousSharedIds = entryIds();
       sharedRoutes = data.shared_routes || [];
       preparationEntries = data.preparation_entries || [];
-      if (!resolved?.selected_option && previousSharedIds !== entryIds()) {
+      // Like the Overview, the tabs open on the shared first-year path when nothing is chosen yet, so every tab answers
+      // at once; the "You are viewing" line changes it. A saved or linked choice is never replaced.
+      if (applyDefaultRoute()) void refreshContext();
+      else if (!resolved?.selected_option && previousSharedIds !== entryIds()) {
         renderControls(root.dataset.state);
         if (root.dataset.state === "ready") renderContextContent("ready");
       }
@@ -1044,6 +1081,7 @@ export function mountAdmissionsCatalog(institutionId) {
     previews.clear();
     studyDetails.getAnimations().forEach(animation => animation.cancel());
     context = readAdmissionContext(new URL(window.location.href), loadProfileForApi(), institutionId);
+    applyDefaultRoute();
     contextDirty = false;
     saveStatus = "";
     openProgramIds.clear();

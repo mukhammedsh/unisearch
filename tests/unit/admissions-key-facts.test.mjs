@@ -199,6 +199,12 @@ test("fee-status ranges, missing budgets, non-annual prices and missing prices s
   });
   assert.match(range.notes.join(" "), /Depends on fee status/);
   assert.match(range.notes.join(" "), /Add a yearly budget/);
+  // A converted calculated total carries a single "≈", in the total and in the living part.
+  const estimate = costFact(context({ selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", usd: { min: 13429, max: 63872 } }),
+    annual_total: quote({ min: 26050, max: 64300, currency: "GBP", calculation: "tuition_plus_living_range", living_min: 16000, living_max: 16500,
+      usd: { min: 34800, max: 85900 } }) } }), 0);
+  assert.doesNotMatch(`${estimate.text} ${estimate.notes.join(" ")}`, /≈\s*≈/);
+  assert.match(estimate.text, /≈ \$/);
   const program = costFact(context({ selected_costs: { tuition: quote({ billing_period: "whole_program", annual_comparable: false, usd: null }) } }), 20000);
   assert.equal(program.status, "not_annual");
   assert.equal(costFact(context({ selected_costs: { annual_total: null, tuition: null } }), 20000).status, "unknown");
@@ -253,6 +259,15 @@ test("missing requirement evidence names what to add and which overall scores al
   const uncounted = { ...sat, status: "missing", missingInputs: [] };
   assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [uncounted] } } } }))[0].note,
     "You have: SAT 1300; whether it counts depends on the conditions below");
+  // An entered result stays visible beside what is still missing, and an overall score that meets the minimum says so.
+  const partial = { kind: "language_requirement", status: "missing", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6 }] },
+    missingInputs: [{ exam: "IELTS", needs: ["components", "taken_on"] }],
+    provided: { exam: "IELTS", score: 6.5, minimum_checks: [{ exam: "IELTS", minimum: 6, provided: 6.5, status: "met" }] } };
+  const partialResolved = context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [partial] } } } });
+  assert.equal(minimumChecklist(partialResolved)[0].note,
+    "You have: IELTS Academic 6.5, the overall score meets the minimum. To check it fully, add: IELTS Academic test date and section scores");
+  // With a checklist, the requirements row introduces it instead of asking to add results that are already there.
+  assert.doesNotMatch(renderAdmissionsKeyFacts(partialResolved, { now: NOW }), /Add your results to your profile/);
   // A check without nameable inputs adds no instruction, and a resolved assessment adds none either.
   const unnamed = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [{ kind: "scoped_gpa", status: "missing" }] } } } }));

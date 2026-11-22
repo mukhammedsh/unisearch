@@ -246,7 +246,8 @@ test("MIT Business Analytics profile interest keeps source title readable withou
   const option = page.locator('[data-study-option="mit-bs-15-2"]');
   await expect(option).toContainText(/Business Analytics \(Course 15[-\u2011]2\)/);
   await expect(option).toContainText("Бакалавриат");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  // A profile interest never chooses a program; the Admission tab keeps reading the default first-year path.
+  expect(new URL(page.url()).searchParams.get("admission_option") || "").toBe("");
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(option).toBeVisible();
   await fitsViewport(page, 390);
@@ -298,7 +299,8 @@ test("MIT program requires an explicit admission route and keeps funding separat
   await openAdmission(page);
   // Without a program the shared application explains itself once, above its paths.
   await expect(page.locator("#admissionsContext")).toContainText("One shared undergraduate application, with the same requirements for every program.");
-  await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeVisible();
+  // The first-year path is read by default; the shared paths stay one "change" away.
+  await expect(page.locator('[data-shared-route="mit-first-year"]')).toHaveCount(1);
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
   await expect(page.locator("#admissionsContext")).toContainText("Choose a published path to open its requirements and process. No profile is needed.");
@@ -567,13 +569,14 @@ test("profile major remains available through explicit catalogue search without 
   await openAdmission(page);
   await searchOptions(page, "Computer Science and Engineering", "undergraduate");
   await expect(page.locator('[data-study-option="mit-course-6-3-bachelor"]')).toBeVisible();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  // The default first-year path is read, not chosen: no program is selected and nothing is saved to the profile.
+  expect(new URL(page.url()).searchParams.get("admission_option") || "").toBe("");
   await openAdmission(page);
-  await expect(page.locator('#admissionsContext [data-shared-route="mit-first-year"]')).toBeVisible();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
+  await expect(page.locator('#admissionsContext [data-shared-route="mit-first-year"]')).toHaveCount(1);
+  await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.major).toBe(personas.ruStemGrant.profile.major);
+  expect(saved.selectedAdmissionChoices?.["mit-usa-cambridge"]).toBeUndefined();
 });
 
 test("admission categories show applicable programs", async ({ page }) => {
@@ -642,6 +645,12 @@ test("nazarbayev university keeps regular admission separate from financial supp
   await expect(page.locator("#detailRequirements")).toContainText("Funding selection is separate from admission");
   await expect(page.locator("#detailRequirements [data-requirements-match]")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
+  // The grant application says it is not a way in and leads back to the path it was opened from.
+  const back = page.locator(`#detailRequirements [data-funding-route-notice] [data-key-facts-route='${regularRoute}']`);
+  await expect(back).toBeVisible();
+  await back.click();
+  await expect(page.locator("#admissionsRoute")).toHaveValue(regularRoute);
+  await expect(page.locator("#detailRequirements [data-funding-route-notice]")).toHaveCount(0);
 });
 
 test("tsinghua admission tab keeps paid and grant options visible when profile prefers grant", async ({ page }) => {

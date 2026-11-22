@@ -11,7 +11,7 @@ import { translateAdmissionText } from "../../university-translations.js";
 import { getExamDisplayName } from "../../utils/config.js";
 import { withoutBracketedText } from "../../utils/text.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
-import { admissionsRequest, singlePublishedCycle } from "./admissions-controller.js";
+import { admissionsRequest, firstYearSharedRoute, singlePublishedCycle } from "./admissions-controller.js";
 import { admissionsCycleLabel, admissionsRouteName } from "./admissions-render.js";
 import { costFact, deadlineFact, fundingPolicyStatement, minimumChecklist } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
@@ -40,15 +40,8 @@ const listOr = names => names.join(` ${label("or")} `);
 // Published outcome figures are in dollars and follow the reader's currency setting.
 const usd = amount => formatPrice(amount, "USD");
 
-// The first undergraduate first-year application shared by every major, or null when the university has none
-// (a route without programs, such as a mid-year intake, cannot describe all majors).
-export function firstYearSharedRoute(sharedRoutes) {
-  // A post-offer funding application shares the programs but is not how one applies.
-  return (Array.isArray(sharedRoutes) ? sharedRoutes : []).find(route => route?.applicant_route === "first_year"
-    && route.classification !== "financial_support_application"
-    && Array.isArray(route.levels) && route.levels.includes("undergraduate")
-    && Array.isArray(route.option_ids) && route.option_ids.length > 0) || null;
-}
+// The Overview and the Admission tabs read the same default path.
+export { firstYearSharedRoute };
 
 const markFor = check => ({ met: "met", unmet: "below" })[check?.status] || "todo";
 

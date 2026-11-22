@@ -213,6 +213,8 @@ for (const item of [journeys[0], journeys[3], {
       bottom: element.getBoundingClientRect().bottom - element.querySelector(".program-card__admission-action").getBoundingClientRect().bottom,
     }));
     const url = page.url();
+    // A preview leaves the path selection as it was (MIT reads its default first-year path; Imperial has none yet).
+    const selectionBefore = { form: await page.locator("#admissionsContextForm").isVisible(), summary: await page.locator("#admissionsReferenceSummary").isVisible() };
     const startsHeightAnimation = await card.evaluate(element => {
       element.querySelector("[data-study-option]").click();
       return element.querySelector(".program-card__body")?.getAnimations().some(animation =>
@@ -224,8 +226,7 @@ for (const item of [journeys[0], journeys[3], {
     await expect(card.locator(".program-card__body")).not.toHaveAttribute("aria-busy", "true");
     await expect.poll(() => card.locator(".program-card__body").evaluate(element => element.getAnimations().length)).toBe(0);
     expect(page.url()).toBe(url);
-    await expect(page.locator("#admissionsContextForm")).toBeHidden();
-    await expect(page.locator("#admissionsReferenceSummary")).toBeHidden();
+    expect({ form: await page.locator("#admissionsContextForm").isVisible(), summary: await page.locator("#admissionsReferenceSummary").isVisible() }).toEqual(selectionBefore);
     await expect(card.locator("[data-select-study-option]")).toBeVisible();
     const after = await card.evaluate(element => ({
       titleTop: element.querySelector(".program-card__title").getBoundingClientRect().top - element.getBoundingClientRect().top,
@@ -566,10 +567,10 @@ test("dates and costs guide guests to the missing program or application path", 
   await openGuestUniversity(page, item);
   await page.locator('[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
-  // MIT's shared undergraduate application is offered directly; program browsing stays one of the choices.
-  const deadlinesPrompt = page.locator("#detailDeadlines .admissions-state");
-  await expect(deadlinesPrompt.locator("[data-prompt-shared-route]")).toHaveCount(2);
-  await deadlinesPrompt.locator("[data-prompt-programs]").click();
+  // MIT's shared first-year application is read at once, as on the Overview, instead of asking which path to read.
+  await expect(page.locator("#detailDeadlines [data-tab-answers='deadlines']")).toBeVisible();
+  await expect(page.locator("#detailDeadlines [data-prompt-shared-route]")).toHaveCount(0);
+  await page.locator('[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   const option = page.locator(`[data-study-option="${item.option}"]`);
   await expect(option).toBeVisible();
@@ -590,13 +591,12 @@ test("a guest reads MIT's first-year dates from the Dates tab without choosing a
   await openGuestUniversity(page, item);
   await page.locator('[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
-  await page.locator('#detailDeadlines [data-prompt-shared-route="mit-first-year"]').click();
+  // The shared first-year path is the default, so no choice is needed and the address keeps no path of its own.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
   await expect(page.locator("#detailDeadlines .admissions-reading__table").first()).toBeVisible();
-  const url = new URL(page.url());
-  expect(url.searchParams.get("admission_application_route")).toBe("mit-first-year");
-  expect(url.searchParams.get("admission_option")).toBe("");
+  await expect(page.locator("#detailDeadlines [data-prompt-shared-route]")).toHaveCount(0);
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBeNull();
 });
 
 for (const theme of ["light", "dark"]) {

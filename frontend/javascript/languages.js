@@ -353,6 +353,20 @@ function findExistingExamEntry(profile, code, examId, takenOn = "") {
   return rows.find((row) => row.code === code && row.kind === KIND_EXAM && row.exam === examId && String(row.taken_on || "") === takenOn) || null;
 }
 
+/**
+ * The position of the entry being edited, when the submitted entry is still the same language, kind and test.
+ * @param {Array<{code: string, kind: string, exam?: string}>} rows Saved, normalized language entries.
+ * @param {object|null} edited The saved entry that was opened with "Edit", or null for a new entry.
+ * @param {{code: string, kind: string, exam?: string}} submitted The validated entry about to be saved.
+ * @returns {number} The index to replace, or -1 to add or match by date instead.
+ */
+export function findEditedLanguageIndex(rows, edited, submitted) {
+  if (!edited || edited.code !== submitted.code || edited.kind !== submitted.kind
+    || (submitted.kind === KIND_EXAM && edited.exam !== submitted.exam)) return -1;
+  const key = JSON.stringify(edited);
+  return rows.findIndex(row => JSON.stringify(row) === key);
+}
+
 export function initLanguagesPanel() {
   let disposed = false;
   let booted = false;
@@ -400,6 +414,8 @@ export function initLanguagesPanel() {
     let isSubmitting = false;
     let draftRevision = 0;
     let editorResetRevision = 0;
+    // The saved entry opened with "Edit": submitting replaces it even when its date changed, instead of adding a second row.
+    let editingEntry = null;
 
     function setEditorDirty(dirty) {
       getProfileDraftBridge()?.setLanguageEditorDirty?.(dirty);
@@ -691,6 +707,7 @@ export function initLanguagesPanel() {
     }
 
     function resetExamInputs() {
+      editingEntry = null;
       langExam.value = "";
       langExamScore.value = "";
       if (langExamTakenOn) langExamTakenOn.value = "";
@@ -857,6 +874,7 @@ export function initLanguagesPanel() {
       if (isSubmitting) return;
       const submittedDraftRevision = draftRevision;
       const submittedResetRevision = editorResetRevision;
+      const submittedEditingEntry = editingEntry;
       isSubmitting = true;
       if (langAddBtn) langAddBtn.disabled = true;
       if (clearLanguageDraftBtn) clearLanguageDraftBtn.disabled = true;
@@ -980,8 +998,15 @@ export function initLanguagesPanel() {
           && (entry.kind !== KIND_EXAM || (row.exam === entry.exam && String(row.taken_on || "") === String(entry.taken_on || "")))
         );
 
-        const isUpdate = existsIdx >= 0;
-        if (isUpdate) prof.languages[existsIdx] = entry;
+        // The edited entry is replaced in place when the language, kind and test stay the same; a row the new date
+        // now duplicates is merged into it.
+        // Saved rows are compared in the same normalized form as the entry opened in the editor; the mapping keeps positions.
+        const editedIdx = findEditedLanguageIndex((prof.languages || []).map(normalizeLangEntry), submittedEditingEntry, entry);
+        const isUpdate = editedIdx >= 0 || existsIdx >= 0;
+        if (editedIdx >= 0) {
+          prof.languages[editedIdx] = entry;
+          if (existsIdx >= 0 && existsIdx !== editedIdx) prof.languages.splice(existsIdx, 1);
+        } else if (existsIdx >= 0) prof.languages[existsIdx] = entry;
         else prof.languages.push(entry);
 
         saveEditableProfile(prof);
@@ -1037,6 +1062,7 @@ export function initLanguagesPanel() {
         const entry = (Array.isArray(prof.languages) ? prof.languages : []).map(normalizeLangEntry).filter(Boolean)[idx];
         if (!entry) return;
         loadIntoEditor(entry);
+        editingEntry = entry;
         (entry.kind === KIND_EXAM ? langExamTakenOn : langCefr)?.focus();
         return;
       }

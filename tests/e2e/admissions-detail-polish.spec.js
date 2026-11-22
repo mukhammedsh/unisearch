@@ -51,7 +51,7 @@ for (const { width, theme } of [{ width: 1280, theme: "light" }, { width: 390, t
 test("shared MIT route is compact, editable by keyboard, saved and exports its own calendar", async ({ page }, testInfo) => {
   await openUniversity(page, "mit-usa-cambridge");
   await tab(page, "admission");
-  await page.locator('[data-shared-route="mit-first-year"]').click();
+  // The first-year path is read by default, so the compact summary shows it without a choice.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsReferenceSummary")).toContainText("Первый курс после школы");
   await expect(page.locator("#admissionsReferenceSummary")).not.toContainText("Сменить программу");

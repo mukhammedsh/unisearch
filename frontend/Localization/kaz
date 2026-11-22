@@ -2657,6 +2657,7 @@ university.admissions.reading.english_condition: Бұл ұсыныс ағылш�
 university.admissions.reading.language_scores: Ағылшын тілі бойынша жарияланған балдар
 university.admissions.reading.exam: Емтихан
 university.admissions.reading.minimum: Ең төменгі балл
+university.admissions.reading.minimum_if_taken: Тапсырсаңыз, ең төменгі балл
 university.admissions.reading.recommended: Ұсынылатын балл
 university.admissions.reading.test_before: Дейін тапсырылған
 university.admissions.reading.test_from: Бастап тапсырылған
@@ -3354,7 +3355,9 @@ university.admissions.key_facts.budget_tuition_within: Оқу ақысы {budget
 university.admissions.key_facts.budget_partial: Ауқымның бір бөлігі {budget} бюджетіңізден жоғары
 university.admissions.key_facts.budget_missing: Салыстыру үшін профильде жылдық бюджетті көрсетіңіз
 university.admissions.key_facts.open_finance: Құны мен қаржыландыру
-university.admissions.key_facts.open_funding_route: Грант шарттары
+university.admissions.key_facts.open_funding_route: Грантқа өтінішті ашу
+university.admissions.key_facts.funding_route_viewing: Бұл — грантқа бөлек өтініш, түсу жолы емес.
+university.admissions.key_facts.back_to_route: Өз жолыңызға оралу: {route}
 university.admissions.key_facts.funding: Қаржыландыру
 university.admissions.key_facts.funding_route: Бөлек өтінішпен ресімделеді: {route}
 university.admissions.key_facts.funding_records: Қаржыландыру нұсқалары «Құны және қаржыландыру» қойындысында сипатталған. Грант кепілдендірілмейді.
@@ -3469,6 +3472,8 @@ university.admissions.key_facts.minimum_any: {requirement}, біреуі: {items
 university.admissions.key_facts.minimum_gpa: GPA {minimum}
 university.admissions.key_facts.minimum_gpa_scale: GPA {minimum}, {scale} шкаласы бойынша
 university.admissions.key_facts.minimum_have: Сізде: {result}
+university.admissions.key_facts.minimum_have_add: Сізде: {result}. Толық тексеру үшін қосыңыз: {items}
+university.admissions.key_facts.minimum_have_overall_add: Сізде: {result}, жалпы балл жеткілікті. Толық тексеру үшін қосыңыз: {items}
 university.admissions.key_facts.minimum_have_below: Сізде: {result}, минимумнан төмен
 university.admissions.key_facts.minimum_have_unconfirmed: Сізде: {result}; оның есепке алынуы төмендегі шарттарға байланысты
 university.admissions.key_facts.minimum_one: {requirement}: {items}
