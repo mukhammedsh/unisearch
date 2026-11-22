@@ -1150,8 +1150,9 @@
       "id": "undergraduate-shared-evidence:stanford-ug-international",
       "url": "https://admission.stanford.edu/apply/international/",
       "title": "International Applicants | Stanford Undergraduate Admission",
-      "checked_at": "2026-10-02",
+      "checked_at": "2026-11-22",
       "content_review_status": "reviewed_for_linked_facts",
+      "content_reviewed_at": "2026-11-22",
       "original_id": "stanford-ug-international",
       "evidence_file": "undergraduate-shared-evidence.json"
     },

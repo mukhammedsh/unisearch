@@ -179,45 +179,6 @@ function selectHtml(id, caption, values, selected, disabled = false, help = "") 
 
 export function mountAdmissionsCatalog(institutionId) {
   const card = document.getElementById("detailCard");
-  const tabs = card.querySelector(".d-tabs");
-  let tabNavigation = document.getElementById("admissionsTabNavigation");
-  if (!tabNavigation) {
-    tabNavigation = document.createElement("div");
-    tabNavigation.id = "admissionsTabNavigation";
-    tabNavigation.className = "admissions-tabs-navigation";
-    tabs.before(tabNavigation);
-    tabNavigation.append(tabs);
-    tabNavigation.insertAdjacentHTML("afterbegin", '<button type="button" data-tabs-previous></button>');
-    tabNavigation.insertAdjacentHTML("beforeend", '<button type="button" data-tabs-next></button>');
-  }
-  const previousTabs = tabNavigation.querySelector("[data-tabs-previous]");
-  const nextTabs = tabNavigation.querySelector("[data-tabs-next]");
-  for (const [button, key, icon] of [[previousTabs, "previous_tabs", "chevron-left"], [nextTabs, "next_tabs", "chevron-right"]]) {
-    button.setAttribute("aria-label", t(`university.admissions.reading.${key}`));
-    button.innerHTML = heroIcon(icon, "ui-icon ui-icon--16");
-  }
-  const updateTabArrows = () => {
-    previousTabs.disabled = tabs.scrollLeft <= 1;
-    nextTabs.disabled = tabs.scrollLeft + tabs.clientWidth >= tabs.scrollWidth - 1;
-  };
-  previousTabs.onclick = () => tabs.scrollBy({ left: -tabs.clientWidth * 0.7, behavior: "smooth" });
-  nextTabs.onclick = () => tabs.scrollBy({ left: tabs.clientWidth * 0.7, behavior: "smooth" });
-  const onTabClick = event => {
-    const button = event.target.closest("[data-tab]");
-    if (!button) return;
-    if (tabs.scrollWidth > tabs.clientWidth) {
-      tabs.scrollTo({ left: Math.max(0, button.offsetLeft - tabs.clientWidth / 2 + button.offsetWidth / 2), behavior: "smooth" });
-    }
-    if (event.isTrusted) {
-      const nextUrl = new URL(window.location.href);
-      nextUrl.hash = `#${button.dataset.tab}`;
-      window.history.replaceState(window.history.state, "", nextUrl);
-      if (window.matchMedia("(max-width: 768px)").matches) tabNavigation.scrollIntoView({ block: "start" });
-    }
-  };
-  tabs.addEventListener("scroll", updateTabArrows, { passive: true });
-  tabs.addEventListener("click", onTabClick);
-  window.addEventListener("resize", updateTabArrows);
   let root = document.getElementById("admissionsContext");
   if (!root) {
     root = document.createElement("section");
@@ -1128,7 +1089,6 @@ export function mountAdmissionsCatalog(institutionId) {
   window.addEventListener("profileUpdated", onProfileUpdated);
   window.addEventListener("popstate", onPopState);
   void Promise.all([refreshPrograms(), refreshContext()])
-    .then(updateTabArrows)
     .catch((error) => console.error(error));
   const dispose = () => {
     browsingByInstitution.set(institutionId, { search, language: searchLanguage, level: filterLevel, page, major: suggestedMajor, suggestedLevel });
@@ -1139,9 +1099,6 @@ export function mountAdmissionsCatalog(institutionId) {
     contextSelectDisposers.forEach((dispose) => dispose());
     disposeProgramSelect();
     programs.removeEventListener("click", onProgramClick);
-    tabs.removeEventListener("scroll", updateTabArrows);
-    tabs.removeEventListener("click", onTabClick);
-    window.removeEventListener("resize", updateTabArrows);
     window.removeEventListener("profileUpdated", onProfileUpdated);
     window.removeEventListener("popstate", onPopState);
   };

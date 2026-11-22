@@ -164,7 +164,7 @@ test("NU program readers can discover the separate institution-wide mid-year pat
   expect(new URL(page.url()).searchParams.get("admission_cycle")).toBe("Spring 2027");
   await showTab(page, "deadlines");
   // The Dates tab answers first with the path's own application period.
-  await expect(page.locator('#detailDeadlines [data-tab-answers="deadlines"]')).toContainText(/2026[-‑]11[-‑]28/);
+  await expect(page.locator('#detailDeadlines [data-tab-answers="deadlines"]')).toContainText(/2026[-‑–]11[-‑]28/);
 });
 
 test("comparison language changes keep its stage and the two independent saved contexts", async ({ page }) => {

@@ -129,7 +129,7 @@ test("catalog price cards respect the declared fee category and label a dated re
   const mit = page.locator('#universitiesList .uni-card[data-uni-id="mit-usa-cambridge"]');
   await expect(mit).toBeVisible();
   await expect(mit).toContainText("Cycle unconfirmed");
-  await expect(mit).toContainText(/2026[‑-]2027/);
+  await expect(mit).toContainText(/2026[-‑–]2027/);
   await expect(mit).toContainText("Undergraduate");
 });
 
@@ -161,7 +161,7 @@ test.describe("compact dual-currency price", () => {
     await page.screenshot({ path: testInfo.outputPath('compact-two-currencies-mobile.png') });
     await trigger.tap();
     await expect(tooltip).toBeVisible();
-    await expect(tooltip).toContainText(/2026[‑-]2027/);
+    await expect(tooltip).toContainText(/2026[-‑–]2027/);
     await expect(tooltip).toContainText('Проживание и другие расходы');
     const bounds = await tooltip.boundingBox();
     expect(bounds.x).toBeGreaterThanOrEqual(0);

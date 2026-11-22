@@ -40,7 +40,7 @@ test("card uses the selected published reference price", () => {
   assert.doesNotMatch(tuition, /92,760/);
   assert.match(tuition, /data-cost-basis="tuition"/);
   assert.match(tuition, /role="tooltip"/);
-  assert.match(tuition, /2026[‑-]2027/);
+  assert.match(tuition, /2026[-‑–]2027/);
   const annual = renderUniversityCardCosts(university);
   assert.match(annual, /92,760/);
   assert.doesNotMatch(annual, /66,720/);
@@ -77,11 +77,11 @@ test("catalog price quotes keep level, source period and unresolved fee or cycle
       fee_statuses: ["Overseas fee"], cycle_status: "dated_reference", fee_status_match: "unknown", filter_match: "partial" },
   } };
   const html = renderUniversityCardCosts(university, "tuition");
-  assert.match(html, /2026[‑-]27/);
+  assert.match(html, /2026[-‑–]27/);
   assert.match(html, /Undergraduate, Master/);
   const context = html.match(/<span class="uni-cost-context" data-cost-context>([^<]+)<\/span>/)?.[1] || "";
   assert.equal((html.match(/data-cost-context/g) || []).length, 1);
-  assert.match(context, /Undergraduate, Master&#039;s · 2026[‑-]27 · Overseas fee · Dated reference; cycle unconfirmed · Fee category unconfirmed · Partial price match/);
+  assert.match(context, /Undergraduate, Master&#039;s · 2026[-‑–]27 · Overseas fee · Dated reference; cycle unconfirmed · Fee category unconfirmed · Partial price match/);
   assert.doesNotMatch(html, /self-reported fee category|Only part of this published range/);
 });
 
@@ -339,22 +339,22 @@ test("card rank tooltip names the ranking source and check date without a redund
     rank: 1,
     rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" },
   });
-  assert.match(ranked, /^QS World University Rankings 2026 · Checked: 2026[‑-]04-09$/);
+  assert.match(ranked, /^QS World University Rankings 2026 · Checked: 2026[-‑–]04-09$/);
   assert.doesNotMatch(ranked, /Official ranking|Type:/i);
 
   const unranked = buildRankSourceTooltip({
     rank: null,
     rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" },
   });
-  assert.match(unranked, /^No position in QS World University Rankings 2026 · Checked: 2026[‑-]04-09$/);
+  assert.match(unranked, /^No position in QS World University Rankings 2026 · Checked: 2026[-‑–]04-09$/);
 
   setLanguage("rus", { emit: false });
   assert.match(
     buildRankSourceTooltip({ rank: 1, rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" } }),
-    /^QS World University Rankings 2026 · Проверено: 2026[‑-]04-09$/,
+    /^QS World University Rankings 2026 · Проверено: 2026[-‑–]04-09$/,
   );
   assert.match(
     buildRankSourceTooltip({ rank: null, rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" } }),
-    /^Нет позиции \(QS World University Rankings 2026\) · Проверено: 2026[‑-]04-09$/,
+    /^Нет позиции \(QS World University Rankings 2026\) · Проверено: 2026[-‑–]04-09$/,
   );
 });

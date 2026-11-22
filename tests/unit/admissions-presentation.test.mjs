@@ -25,7 +25,7 @@ test("readable route labels retain the official source title for references", ()
   const route = { id: "undergraduate-shared-evidence:stanford-first-year", title: "University-wide first-year undergraduate admission" };
   assert.equal(admissionsRouteName(route, { presentation: "simple" }), "Первый курс после школы");
   assert.equal(admissionsRouteName(route), route.title);
-  assert.match(admissionsCycleLabel("2027-28 entry"), /^Набор 2027[-‑]28$/);
+  assert.match(admissionsCycleLabel("2027-28 entry"), /^Набор 2027[-‑–]28$/);
 });
 
 test("Stanford internal and external route labels explain their access without rewriting official titles", () => {
@@ -108,14 +108,14 @@ test("excerpts cite numbered sources that match one de-duplicated list with real
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);
   assert.equal((html.match(/data-reading-sources/g) || []).length, 1);
   const list = html.split("data-reading-sources")[1];
-  assert.match(list, /<li value="1" data-source-number="1"><a href="https:\/\/example.edu\/tests"[^>]*>Testing policy<\/a><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑]10-01/);
+  assert.match(list, /<li value="1" data-source-number="1"><a href="https:\/\/example.edu\/tests"[^>]*>Testing policy<\/a><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑–]10-01/);
   assert.match(list, /<li value="2" data-source-number="2"><a href="https:\/\/example.edu\/apply"[^>]*>Application · Application copy<\/a>/);
   assert.doesNotMatch(html, /user:pass|private/);
   // A check date shared by every listed source is stated once for the list, not on each line.
   const sameDate = { ...resolved, sources: resolved.sources.map(source => ({ ...source, checked_at: "2026-10-01" })) };
   const sharedList = renderApplicantSection(sameDate, ["requirements"]).split('<details class="admissions-reading__references"')[0].split("data-reading-sources")[1];
   assert.equal((sharedList.match(/data-source-checked/g) || []).length, 1);
-  assert.match(sharedList, /<\/h3><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑]10-01<\/span><ol/);
+  assert.match(sharedList, /<\/h3><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑–]10-01<\/span><ol/);
   setLanguage("eng", { emit: false });
 });
 
@@ -127,7 +127,7 @@ test("source lists fall back to a fact check date and identify an unrecorded dat
     resolved.sources = [{ id: "sat-policy", title: "SAT policy", url: "https://example.edu/tests" }];
     return renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
   };
-  assert.match(render("2026-10-01"), /Last checked: 2026[-‑]10-01/);
+  assert.match(render("2026-10-01"), /Last checked: 2026[-‑–]10-01/);
   assert.match(render(undefined), /Check date not recorded/);
 });
 
@@ -328,7 +328,7 @@ test("a known NU dates announcement replaces the generic empty state and retains
     unknowns: [unknown], sources: [{ id: "nu-b-src-master-regular", url: "https://nu.edu.kz/admissions/masters" }, { id: "nu-b-src-doctoral-regular", url: "https://nu.edu.kz/admissions/phd" }] };
   const html = renderApplicantSection(resolved, ["deadlines"]);
   assert.match(html, /data-dates-tba/);
-  assert.match(html, /2027[-‑]2028/);
+  assert.match(html, /2027[-‑–]2028/);
   assert.ok(html.includes('href="https://nu.edu.kz/admissions/masters"'));
   assert.doesNotMatch(html, /No source records are catalogued|admissions\/phd/);
   assert.doesNotMatch(renderApplicantSection({ ...resolved, selected_route: null }, ["deadlines"]), /data-dates-tba/);
@@ -381,8 +381,8 @@ test("identical source versions share a summary without losing scope, conditions
   assert.match(html, /data-admissions-fact="condition"/);
   assert.match(html, /data-admissions-fact="one"/);
   assert.match(html, /data-admissions-fact="two"/);
-  assert.match(html, /2026[-‑]01-01/);
-  assert.match(html, /2026[-‑]02-01/);
+  assert.match(html, /2026[-‑–]01-01/);
+  assert.match(html, /2026[-‑–]02-01/);
   assert.match(html, /Special applicant/);
 });
 
@@ -473,7 +473,7 @@ test("reference budgets keep zero, period and currency and funding is summarized
     fact("act-aid", { funding_type: "grant", funding_program: "Need-based Aid", description: "ACT source record" }, { topic: "funding" })];
   const html = renderApplicantSection(context(rows, { costs: ["budget"], funding: ["sat-aid", "act-aid"] }), ["costs", "funding"]);
   assert.match(html, /<dd>\$0<\/dd>/);
-  assert.match(html, /2026[‑-]27/);
+  assert.match(html, /2026[-‑–]27/);
   assert.match(html, /not a confirmed price for another entry cycle/);
   assert.equal((html.match(/<h3>Need-based financial aid<\/h3>/g) || []).length, 1);
   assert.match(html, /SAT source record/);
@@ -490,7 +490,7 @@ test("structured catalog cost references retain original prose and expose their 
   const resolved = context([row], { costs: [row.id] });
   const html = renderApplicantSection(resolved, ["costs"]);
   assert.match(html, /\$97,545/);
-  assert.match(html, /2026[‑-]2027/);
+  assert.match(html, /2026[-‑–]2027/);
   assert.match(html, /Insurance is additional/);
   assert.match(html, /Official source prose and conditional fees remain available/);
   assert.match(html, /Tuition is one part of the budget/);

@@ -484,6 +484,31 @@ class AdmissionsCatalogTests(unittest.TestCase):
             self.assertIn("full-time professional or educational experience", english["value"])
             self.assertIn("cs-checklist", [sid.split(":")[-1] for sid in english["source_ids"]])
 
+    def test_stanford_first_year_international_need_policy_is_one_scoped_official_statement(self):
+        fact_id = "undergraduate-shared-evidence:stanford-ug-firstyear-international-need-policy"
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            contexts = {route: {"study_option_id": "stanford-option-cs-bs", "study_level": "undergraduate", "intended_entry_cycle": "2027-2028",
+                                "application_route_id": "undergraduate-shared-evidence:" + route} for route in ("stanford-first-year", "stanford-transfer")}
+            first_year = service.resolve_context("stanford-university-usa-ca", context=contexts["stanford-first-year"])
+            policy = next(row for row in first_year["facts"] if row["id"] == fact_id)
+            # The key-facts funding row reads the `international_need` field of a matched funding fact (the field MIT's record uses).
+            self.assertIn(fact_id, first_year["fact_groups"]["funding"])
+            self.assertEqual(policy["applicability"]["route"], "matched")
+            self.assertEqual((policy["publication_status"], policy["normalized_status"]["review"]), ("published", "verified"))
+            statement = policy["value"]["international_need"]
+            self.assertIn("need-aware", statement)
+            self.assertIn("full demonstrated need of every admitted student who asked for aid", statement)
+            # Only what the official page says: no loan, grant-only or merit claims in the one-line statement.
+            self.assertNotRegex(statement.lower(), r"loan|grant|scholarship|100%")
+            self.assertEqual(policy["scope"]["applicant_categories"], ["international"])
+            self.assertEqual(policy["scope"]["route_ids"], ["undergraduate-shared-evidence:stanford-first-year"])
+            source = next(row for row in first_year["sources"] if row["id"] in policy["source_ids"])
+            self.assertEqual((source["url"], source["checked_at"]), ("https://admission.stanford.edu/apply/international/", "2026-11-22"))
+            # The statement belongs to the first-year route and is not borrowed by the transfer route.
+            transfer = service.resolve_context("stanford-university-usa-ca", context=contexts["stanford-transfer"])
+            self.assertNotIn(fact_id, [row["id"] for row in transfer["facts"]])
+
     def test_stanford_standing_deadlines_keep_their_prose_and_add_recurring_windows(self):
         def windows(context):
             result = service.resolve_context("stanford-university-usa-ca", context=context)

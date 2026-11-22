@@ -122,8 +122,9 @@
       "id": "stanford-ug-international",
       "url": "https://admission.stanford.edu/apply/international/",
       "title": "International Applicants | Stanford Undergraduate Admission",
-      "checked_at": "2026-10-02",
-      "content_review_status": "reviewed_for_linked_facts"
+      "checked_at": "2026-11-22",
+      "content_review_status": "reviewed_for_linked_facts",
+      "content_reviewed_at": "2026-11-22"
     },
     {
       "id": "stanford-ug-budget",
@@ -1053,6 +1054,37 @@
       "exceptions": [
         "The page describes an exception if an enrolled international student's citizenship status changes and they become eligible for federal student aid; aid may then be considered starting the quarter they become eligible. Confirm case specifics with Stanford Financial Aid."
       ]
+    },
+    {
+      "id": "stanford-ug-firstyear-international-need-policy",
+      "topic": "funding",
+      "value": {
+        "international_need": "Stanford considers financial need when admitting international students (need-aware): asking for aid makes admission more selective, but Stanford says it meets the full demonstrated need of every admitted student who asked for aid, whatever their citizenship."
+      },
+      "scope": {
+        "option_ids": [],
+        "procedure_ids": [
+          "stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_categories": [
+          "international"
+        ],
+        "cycle": null,
+        "fee_status": []
+      },
+      "source_ids": [
+        "stanford-ug-international"
+      ],
+      "checked_at": "2026-11-22",
+      "publication_status": "published",
+      "review_status": "reviewed",
+      "conditions": [
+        "International citizens must say on the admission application that they will apply for financial aid; one who applies without aid and is admitted is not eligible to apply for aid later, except when a change of citizenship status makes them eligible for federal student aid."
+      ],
+      "exceptions": []
     },
     {
       "id": "stanford-transfer-eligibility-route",

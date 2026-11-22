@@ -18,7 +18,7 @@ const cases = [
       { id: "ug-sat-act-presence", text: /SAT.*ACT|ACT.*SAT/i },
     ],
     excludedFacts: ["reviewed-mit_eecs_doctoral_admissions-tests"],
-    finance: { note: /Published reference budget.*2026[‑-]2027/i },
+    finance: { note: /Published reference budget.*2026[-‑–]2027/i },
   },
   {
     name: "MIT EECS doctoral Computer Science",
@@ -463,7 +463,7 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   const isDetails = await table.evaluate((node) => node.tagName === "DETAILS");
   if (isDetails && !(await table.evaluate((node) => node.open))) await table.locator(":scope > summary").click();
   await expect(table).toContainText("Computer Science (MS)");
-  await expect(table).toContainText(/2026[-‑]12-08/);
+  await expect(table).toContainText(/2026[-‑–]12-08/);
   await expect(table).toContainText("Aeronautics and Astronautics (MS)");
   await expect(table).not.toContainText(/stanford-aa-ms|stanford-cs-ms|source-[a-f0-9]+/i);
 

@@ -404,15 +404,6 @@ a.admissions-key-facts__link {
   padding-top: var(--space-3);
 }
 
-.admissions-tabs-navigation {
-  position: relative;
-  min-width: 0;
-}
-
-.admissions-tabs-navigation > button {
-  display: none;
-}
-
 /* Top-level admissions sections are separated like Overview sections, clearly wider than heading-to-body spacing. */
 .university--reviewed .d-box-text:has(> .admissions-context) {
   display: grid;
@@ -1718,36 +1709,6 @@ details[open] > summary > .admissions-disclosure-icon {
   .d-head-links > .d-site-link {
     min-width: 0;
     padding-inline: var(--space-2);
-  }
-
-  .admissions-tabs-navigation {
-    display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) 32px;
-    align-items: center;
-    scroll-margin-top: var(--space-20);
-  }
-
-  .admissions-tabs-navigation > button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0;
-    border-radius: var(--radius-sm);
-    background: var(--surface-soft);
-    color: var(--text);
-    cursor: pointer;
-  }
-
-  .admissions-tabs-navigation > button:disabled {
-    opacity: var(--interaction-disabled-opacity);
-    cursor: default;
-  }
-
-  .admissions-tabs-navigation > .d-tabs {
-    min-width: 0;
-    padding-inline: 0;
-    scroll-behavior: smooth;
   }
 
   .admissions-selection {
