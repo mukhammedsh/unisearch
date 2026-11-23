@@ -620,6 +620,7 @@ function openPicker({ column, trigger, onApply }) {
   dialog.addEventListener("input", (event) => {
     if (event.target.id !== "comparePickerSearch") return;
     picker.search = event.target.value.trim();
+    picker.request?.abort();
     searchLater();
   });
   dialog.addEventListener("submit", (event) => {
