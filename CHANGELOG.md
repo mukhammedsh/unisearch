@@ -12,6 +12,7 @@ Patch release: add frontend JavaScript static analysis tooling, remove dead code
 - Decompose `frontend/javascript/pages/universities.js` into focused modules under `frontend/javascript/pages/universities/`: `map-assets.js`, `api-client.js`, `card-renderer.js`, `recently-viewed.js`, and `map-controller.js`.
 - Decompose `frontend/javascript/pages/university/render-sections.js` and `frontend/javascript/pages/university/render-content.js` into focused acyclic modules (`section-context.js`, `funding-awards.js`, `deadlines-section.js`, `admission-section.js`, `program-coverage.js`, `programs-section.js`, `qualification-guidance.js`).
 - Decompose `frontend/javascript/components/profile-ui.js` (`profile-dialogs.js`, `profile-form-fields.js`, `profile-exam-editor.js`) and `frontend/javascript/languages.js` (`language-helpers.js`), simplify dead global checks in `compare-helpers.js`, and enable the `no-undef` rule in `.oxlintrc.json`.
+- Remove 387 retired unused localization keys symmetrically across `frontend/Localization/eng`, `ru`, and `kaz`, and refresh `I18N_PACK_REVISION` in `frontend/javascript/i18n.js`.
 
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 

@@ -69,7 +69,6 @@ guide.ml.p4: Целые предложения добавляют шум, а о�
 guide.ml.p5: Интересы только меняют порядок списка и не отменяют требования к поступлению или соответствие опубликованным минимумам. Если модель недоступна, интересы ничего не меняют: поиск по ключевым словам не включается, и страница сообщает об этом.
 guide.ml.title: Как учитываются ваши интересы
 guide.nav.interests: Интересы
-guide.nav.roi: ROI
 guide.nav.comparison: Сравнение
 guide.nav.academic_exams: Академические экзамены
 guide.nav.admission: Поступление
@@ -100,13 +99,6 @@ guide.tags.ai.top_match: Хорошее совпадение — его боле
 guide.tags.ai.requirements_met: Требования выполнены означает, что по данным профиля пройдены все проверяемые опубликованные академические и языковые минимумы. Могут быть и другие условия поступления.
 guide.tags.ai.below_requirements: Ниже требований означает, что не выполнен как минимум один проверяемый опубликованный минимум; подробнее — в разделе соответствия требованиям.
 guide.title: Гайд
-guide.roi.title: ROI (окупаемость обучения)
-guide.roi.p1: ROI отвечает на один узкий вопрос: как возвращающиеся деньги соотносятся с вложенными. Он делит ориентировочную зарплату выпускника на старте карьеры на стоимость одного года учёбы, так что значение 2 означает, что годовая зарплата примерно окупает два года учёбы:
-guide.roi.formula: roi = salary / yearCost\nyearCost = минимальная доступная годовая стоимость для выбранного формата, в USD\nsalary = ваше направление при совпадении, иначе среднее по направлениям\n> 2.0 отличный, > 1.0 положительный, иначе дорогая инвестиция
-guide.roi.p2: Для этой оценки UniSearch берёт минимальную доступную годовую стоимость для выбранного формата обучения и переводит её в доллары США. Зарплата берётся только из проверенных данных выпускников: выбранное направление, если вуз публикует по нему цифры, иначе среднее по его опубликованным направлениям.
-guide.roi.p3: Если вуз не публикует пригодных данных о зарплате, блок ROI просто исчезает вместо догадок. Недостающее никогда не рисуется нулём, потому что ноль притворялся бы, что отдача заведомо ужасна.
-guide.roi.p4: Относитесь к числу как к коэффициенту для планирования, а не как к обещанию: программа, страна, навыки и право на работу определяют реальный исход куда сильнее любого среднего, а подписи стоят на фиксированных порогах — выше 2,0 отличный возврат, выше 1,0 положительный, всё ниже дорогая инвестиция.
-guide.roi.p5: ROI не показывает, соответствуете ли вы условиям поступления. Смотрите его вместе с показателем «{chance}», официальной статистикой приёма и полной годовой стоимостью.
 guide.comparison.title: Сравнение университетов
 guide.comparison.p1: Сравнение живёт на странице университетов. Нажмите «Сравнить» на карточке или метке карты, чтобы добавить вуз в пару: в лоток помещаются два университета, а повторный клик по выбранной карточке убирает её. В паре могут быть либо вузы с проверенными данными о поступлении, либо вузы на прежнем формате. Смешивать две группы нельзя.
 guide.comparison.p2: В каждой колонке видны выбранный вариант обучения и контекст заявителя. Сравнение отмечает различия в программе, периоде поступления, категории оплаты или охвате и помечает несопоставимые либо отсутствующие данные, не выдавая разные показатели за равнозначные. Общего победителя нет. Для пар прежнего формата строки могут показывать преимущество одной стороны, компромисс, паритет, несопоставимые данные или их отсутствие.
@@ -127,15 +119,12 @@ guide.unifit.p5: Если в профиле не хватает экзамена
 guide.unifit.p6: На странице профиля видно, какие ответы UniFit использует, а какие нет, а при сортировке UniFit баннер каталога перечисляет ответы, на которых построен текущий список.
 guide.unifit.title: {fit} (умная сортировка)
 nav.about: О нас
-nav.close_menu: Закрыть меню
 nav.guide: Гайд
 nav.lang.eng: Английский (США)
 nav.lang.rus: Русский
 nav.lang.kaz: Қазақша
 nav.language: Язык
-nav.open_menu: Открыть меню
 nav.profile: Профиль
-nav.rankings: Рейтинг
 nav.settings: Настройки
 settings.section.appearance: Оформление
 settings.section.regional: Язык и регион
@@ -145,15 +134,11 @@ theme.opt.system: Системная
 theme.opt.light: Светлая
 theme.opt.dark: Тёмная
 settings.title: Настройки
-settings.subtitle: Управляйте тем, как UniSearch хранит локальные данные интерфейса на этом устройстве.
-settings.saved: Настройки сохранены
-settings.type.bool: Выкл. / вкл.
 
 settings.option.store_recent.title: Сохранять недавно открытые
 settings.option.store_recent.desc: Если включено, UniSearch добавляет открытые университеты в локальный список недавно открытых на этом устройстве.
 settings.option.open_universities_new_tab.title: Открывать университеты в новой вкладке
 settings.option.open_universities_new_tab.desc: Если включено, карточки университетов и ссылки из недавно открытых будут открывать страницу университета в отдельной вкладке, сохраняя текущий список на месте.
-settings.section.pricing: Цены
 settings.option.preferred_currency.title: Предпочитаемая валюта
 settings.option.preferred_currency.desc: Выберите основную валюту для отображения стоимости обучения и расходов.
 settings.option.currency_display.title: Отображение цен
@@ -235,11 +220,9 @@ currency.opt.try: Турецкая лира (TRY, ₺)
 currency.opt.zar: Южноафриканский рэнд (ZAR, R)
 profile.add: Добавить
 profile.edit: Изменить
-profile.budget_cleared: Бюджет очищен
 profile.budget_integers_only: Только целые числа (без точек и запятых)
 profile.budget_limit: Лимит: 0‑{max}
 profile.budget_must_number: Бюджет должен быть числом
-profile.budget_saved: Бюджет сохранен!
 profile.cefr: CEFR
 profile.delete: Удалить
 profile.exam: Экзамен
@@ -249,8 +232,6 @@ profile.exam_ielts_step: Балл IELTS должен оканчиваться н
 profile.exam_integer_required: Баллы {exam} должны быть целыми (например, 1400)
 profile.exam_invalid_score: Неверный формат балла
 profile.exam_removed: Экзамен удален
-profile.exam_score_label: Балл: {score}
-profile.exam_status_added: Добавлено
 profile.exam_band_label: Уровень
 profile.exam_band_placeholder: Выберите уровень
 profile.exam_band_required: Выберите уровень
@@ -263,31 +244,21 @@ profile.exam_score_min: Минимальный балл для {exam}: {min}
 profile.exam_score_max: Максимальный балл для {exam}: {max}
 profile.exam_score_step: Для {exam} требуется шаг {step}
 profile.exam_select_required: Выберите экзамен
-profile.exam_validate_failed: Не удалось проверить балл экзамена (код: {code})
 profile.exam_updated: Обновлено: {exam}, балл {score}
-profile.exam_updated_simple: Обновлено: {exam}
-profile.gpa_cleared: GPA очищен
 profile.gpa_must_number: GPA должен быть числом
 profile.gpa_range: GPA должен быть от {min} до {max}
-profile.gpa_saved: GPA сохранен
-profile.gpa_step: Шаг GPA должен быть {step}
 profile.hint.low_budget_grant: Бюджет меньше {amount}. Возможно, вам лучше выбрать «Только грант».
 profile.hint.low_budget_grant_action: Выбрать «Только грант»
 profile.hint.dismiss: Скрыть подсказку
 profile.hint.gpa: Выберите шкалу 4.0 (США / Международная) или 5.0 (Казахстан / СНГ).
 profile.gpa_info_title: Как GPA работает здесь
 profile.gpa_info_tooltip: Выберите шкалу оценок: 4.0 или 5.0. Исходный балл и шкала сохраняются. Минимумы GPA проверяются в соответствующей шкале; отдельные академические требования программы могут нуждаться в дополнительных данных.
-profile.hint.interests: Короткие темы о том, что вам интересно, могут помочь упорядочить университеты в UniFit. Они не выбирают программу и не подтверждают право на поступление.
-profile.interests_saved: Интересы сохранены
-profile.saved_all: Профиль сохранен
 profile.label.budget: Годовой бюджет
 profile.label.exams: Результаты экзаменов
 profile.label.funding_type: Какое финансирование вы ищете
 profile.label.gpa: GPA (средний балл)
 profile.scale.gpa_4: 4.0 (США / Международный)
 profile.scale.gpa_5: 5.0 (KZ / СНГ)
-profile.scale.gpa_4_short: 4.0
-profile.scale.gpa_5_short: 5.0
 profile.scale.toggle: Сменить шкалу GPA на {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
@@ -309,7 +280,6 @@ profile.placeholder.gpa: например, 3.80
 profile.placeholder.interests: Например: информатика, искусственный интеллект, робототехника, разработка игр, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
-profile.preference_saved: Предпочтение сохранено
 profile.state.saved: Сохранено
 profile.state.saved_local: Сохранено
 profile.state.saved_session: Сохранено до закрытия вкладки
@@ -319,7 +289,6 @@ profile.unsaved.message: В профиле есть несохраненные �
 profile.unsaved.discard: Не сохранять изменения
 profile.unsaved.cancel: Продолжить редактирование
 profile.unsaved.save_close: Сохранить и закрыть
-profile.reset.title: Сбросить данные профиля
 profile.reset.note: Очищает бюджет, GPA, экзамены, языки, интересы и другие сохраненные поля профиля на этом устройстве.
 profile.reset.cta: Сбросить данные
 profile.reset.confirm_title: Сбросить все данные профиля?
@@ -330,34 +299,13 @@ profile.reset.done: Данные профиля сброшены
 profile.score: Балл
 profile.type: Чем вы это подтверждаете
 profile.unit.gpa: / 4.0
-profile.unit.usd_year: USD / год
-profile.unit.currency_year: {currency} / год
 profile.sections.aria: Разделы профиля
 profile.title: Профиль
-profile.section.basics: Общее
-profile.section.scores: Академ. данные
-profile.section.languages: Языки
-profile.section.preferences: Предпочтения
-profile.kicker: Кабинет абитуриента
-profile.page_subtitle: Настройте академические данные, бюджет и экзамены для сортировки UniFit и оценки соответствия требованиям.
 profile.action.back: Назад
 profile.action.back_desc: Вернуться на предыдущую страницу
-profile.empty_exams: Экзамены еще не добавлены. Выберите экзамен выше, чтобы добавить баллы.
-profile.empty_languages: Языки еще не добавлены. Укажите родной язык или сертификат тестирования.
-profile.field.budget.desc: Ваш планируемый годовой бюджет на обучение и проживание в {currency}.
-profile.field.study_mode.desc: Фильтрация программ по предпочтительному формату обучения.
-profile.field.funding.desc: Выберите, интересуют ли вас только гранты или также платное обучение.
-profile.field.gpa.desc: Выберите систему оценивания и укажите среднюю оценку с аттестата.
-profile.field.major.desc: Выберите желаемое направление для точного подбора подходящих программ.
-profile.field.interests.desc: Работает как умные теги: перечислите темы и направления через запятую (технологии, специальности, карьерные цели).
-profile.field.exams.desc: Введите результат и нажмите «Добавить» или Enter, чтобы включить отчёт в черновик. Сохраните профиль, чтобы оставить его на этом устройстве.
-profile.field.languages.desc: Добавьте язык или сертификат, затем сохраните профиль. Родной язык и CEFR не заменяют требуемый университетом экзамен автоматически.
 profile.aria.applicant_profile: Профиль абитуриента
 ranking.acceptance: Процент зачисления
 ranking.acceptance_undergraduate: Доля зачисленных на бакалавриат
-ranking.source_label: Источник: {source}
-ranking.source_status_label: Тип: {status}
-ranking.source_verified_label: Проверено: {date}
 ranking.source_status.estimated: Оценка модели
 ranking.source_status.inferred: Оценка модели
 ranking.source_status.mixed: Смешанный источник
@@ -375,14 +323,9 @@ title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
 title.universities: Университеты | UniSearch
 title.university: Университет | UniSearch
-universities.tabs.aria: Разделы университетов
 universities.page_heading: Университеты
-universities.tabs.catalog: Каталог
-universities.tabs.comparing: Сравнение
 universities.all_cities: Все города
 universities.any_state: Любой штат
-universities.badge.acceptance: Процент зачисления: {value}%
-universities.badge.acceptance_na: Процент зачисления: неизвестно
 universities.badge.conditional_exam_needed: Нужен результат экзамена
 universities.badge.no_matching_program: Нет выбранной программы
 universities.why.no_matching_program: В этом университете нет программы обучения, выбранной в вашем профиле.
@@ -396,26 +339,20 @@ universities.why.top_match: Этот университет хорошо сов�
 universities.why.your_vibe: Этот университет хорошо совпадает с выбранными вами предпочтениями.
 universities.badge.aid_available: Доступна финансовая помощь
 no_grants_available: Нет доступных грантов
-universities.badge.aid_likely: Финансирование указано отдельно (без изменения бюджета)
 universities.badge.below_requirements: Ниже требований
 universities.badge.over_budget: Выше бюджета
 universities.badge.over_budget_aid: Выше бюджета • Есть помощь по нуждаемости
 universities.badge.requirements_met: Требования выполнены
-universities.card.est_cost_year: Примерная цена/год
-universities.card.in_ranking: в рейтинге
 universities.card.view_details: Открыть детали
 universities.card.metrics: Ключевые метрики
 universities.card.photo_unavailable: Фото кампуса недоступно
 universities.card.statuses: Статусы университета
-universities.card.cost_short: Цена
 universities.card.per_year: в год
-universities.card.save: Добавить в избранное
 universities.card.compare: Добавить к сравнению
 universities.card.compare_short: Сравнить
 universities.card.compare_selected: Выбрано для сравнения
 universities.card.compare_selected_short: Выбрано
 universities.city: Город
-universities.cost_per_year: Стоимость / год
 universities.cost_min: Мин. стоимость
 universities.cost_max: Макс. стоимость
 universities.cost.filter_basis: Цена за учебный год
@@ -468,14 +405,11 @@ universities.filter.close: Закрыть фильтры
 universities.filter.actions: Действия с фильтрами
 universities.filter.apply: Применить фильтры
 universities.filter.favorites: Сохраненные
-universities.filter.none_active: Нет активных фильтров
 universities.filter.saved_scope: Область списка университетов
-universities.filter.saved_only: Только сохраненные
 universities.found_prefix: Найдено
 universities.found_suffix: университетов
 universities.global: Глобально
 universities.loading: Загрузка университетов
-universities.map_panel.empty: По текущим фильтрам не найдено университетов с координатами на карте.
 universities.map_panel.title: Результаты на карте
 universities.map_panel.showing: Показано {count} из {total}
 universities.map_panel.load_more: Загрузить ещё
@@ -495,74 +429,44 @@ universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
 universities.search_clear: Очистить поиск
 universities.no_matches: Университеты не найдены
-universities.compare.search_placeholder: Добавить университет к сравнению...
 universities.select_country_first: Сначала выберите страну
-universities.suggestions.university: Университет
-universities.suggestions.city: Город
-universities.suggestions.country: Страна
-universities.compare.selected: Выбрано: {count}/{total}
 universities.compare.enter: Режим сравнения
 universities.compare.selection: Выбранные университеты
-universities.compare.need_more: Выберите второй университет
-universities.compare.pair_label: Пара для сравнения
 universities.compare.pair_slot: Университет {number}
-universities.compare.pair_empty: Пустой слот
-universities.compare.pair_ready: Можно сравнивать
 universities.compare.clear: Очистить
 universities.compare.open: Сравнить
 universities.compare.continue: Продолжить
-universities.compare.title: Сравнение университетов
 universities.compare.row.metric: Метрика
 universities.compare.row.location: Локация
 universities.compare.row.aid: Финансовая помощь
-universities.compare.aid_both: Стипендии за достижения + помощь по финансовой нуждаемости
-universities.compare.aid_merit: Гранты и стипендии
-universities.compare.aid_need: Помощь по финансовой нуждаемости
 universities.compare.native_ok: родной язык принимается
 universities.compare.verified_count: {sources} источников / {facts} фактов
 universities.compare.remove: Убрать из сравнения
 universities.compare.diff_only: Только различия
-universities.compare.all_rows: Все параметры
 universities.compare.change_track: Сменить трек
-universities.compare.badge.best_rank: Выше рейтинг
-universities.compare.badge.lowest_cost: Ниже стоимость
-universities.compare.badge.more_accessible: Выше шанс
-universities.compare.badge.aid: Финансовая помощь
 universities.compare.section.overview: Обзор
 universities.compare.section.programs: Программы
 universities.compare.section.admissions: Поступление
 universities.compare.section.finance: Финансы
 universities.compare.section.context: Контекст
 universities.compare.row.student_count: Студенты
-universities.compare.row.website: Сайт
 universities.compare.row.programs: Программы
 universities.compare.row.study_mode: Формат обучения
 universities.compare.row.language: Язык программ
-universities.compare.row.tracks: Варианты поступления
-universities.compare.row.main_track: Основная категория
-universities.compare.row.selected_track: Профиль требований
 universities.compare.row.selected_route: Выбранный маршрут
 universities.compare.row.funding_choice: Выбранное финансирование
-universities.compare.row.requirements: Минимальные требования
 universities.compare.row.academic_minimums: Академические минимумы
 universities.compare.row.avg_scores: Баллы поступивших
 universities.compare.row.funding_requirements: Требования финансирования
 universities.compare.row.language_proof: Подтверждение языка
-universities.compare.row.extra_requirements: Доп. требования
 universities.compare.row.application_materials: Документы / интервью / портфолио
 universities.compare.row.total_cost: Итого в год
 universities.compare.row.tuition_fees: Обучение + сборы
 universities.compare.row.living_costs: Жизненные расходы
 universities.compare.row.salary: Зарплата в начале карьеры
 universities.compare.row.data_quality: Проверенные данные
-universities.compare.available: Доступно
-universities.compare.intro: Сравните практичные сигналы для решения рядом: рейтинг, стоимость, процент зачисления, программы, требования, помощь, результаты и качество данных. Подсвеченные ячейки показывают самое сильное значение среди выбранных университетов.
-universities.compare.status_title: Сравнение
-universities.compare.status_empty: Пара для сравнения
-universities.compare.status_selected: Выбрано: {count}/{total}
 universities.compare.results.kicker: Итоги сравнения
 universities.compare.results.title: Сравнение университетов
-universities.compare.results.back_to_selection: К выбору треков
 universities.compare.back_to_catalog: В каталог
 universities.compare.back_to_tracks: К выбору треков
 universities.compare.results.empty_title: Сравнение ещё не собрано
@@ -572,65 +476,17 @@ universities.compare.configure.title: Выберите варианты пост
 universities.compare.configure.subtitle: Выберите категорию поступления, профиль требований и вариант финансирования для каждого университета. Сравнение возьмет требования, языковой экзамен, стоимость и финансирование из этого выбора.
 universities.compare.configure.selected: Вариант поступления выбран
 universities.compare.configure.required: Выберите один вариант перед сравнением
-universities.compare.configure.academic_minimums: Академические минимумы
-universities.compare.configure.admitted_context: Баллы поступивших
-universities.compare.configure.language_proof: Подтверждение языка
-universities.compare.configure.extra_requirements: Доп. требования
-universities.compare.configure.funding_requirements: Требования финансирования
-universities.compare.configure.no_academic_minimums: Опубликованных академических минимумов нет
-universities.compare.configure.no_admitted_scores: Опубликованных баллов поступивших нет
-universities.compare.configure.no_language_proof: Отдельное подтверждение языка не указано
 universities.compare.configure.no_funding_delta: Отдельный порог для финансирования в данных не указан
-universities.compare.configure.language_any: Достаточно одного
-universities.compare.configure.language_all: Нужны все
 universities.compare.configure.funding_delta_from: {value} (обычно {base})
-universities.compare.insight.budget_title: Бюджет
-universities.compare.insight.budget: Среди выбранных университетов {name} лучший по бюджету: {cost} в год.
-universities.compare.insight.budget_with_delta: {name} даёт самый сильный бюджетный сигнал: {cost} в год, примерно на {percent} ниже среднего по остальным выбранным университетам.
-universities.compare.insight.budget_empty: Сопоставимой опубликованной годовой стоимости для выбранных университетов не хватает.
-universities.compare.insight.acceptance_title: Доступность поступления
-universities.compare.insight.acceptance: У {name} самый высокий опубликованный процент зачисления: {rate}.
-universities.compare.insight.acceptance_with_delta: У {name} процент зачисления на {percent} выше среднего по остальным выбранным университетам, поэтому поступление выглядит доступнее.
-universities.compare.insight.acceptance_empty: Опубликованных данных по проценту зачисления не хватает, поэтому доступность нельзя сравнить надёжно.
-universities.compare.insight.prestige_title: Престижность
-universities.compare.insight.prestige: {name} лидирует по престижности: лучший опубликованный рейтинг среди выбранных — {rank}.
-universities.compare.insight.prestige_empty: Для этого сравнения не хватает опубликованных данных рейтинга.
 universities.compare.section.outcomes: Результаты
 universities.compare.section.data: Надёжность данных
 universities.compare.row.program_count: Бакалаврские программы
 universities.compare.row.major_tags: Академические направления
 universities.compare.row.study_formats: Форматы обучения
-universities.compare.row.funding_options: Варианты финансирования
-universities.compare.row.extra_requirements_count: Нагрузка доп. требований
-universities.compare.row.verified_sources: Проверенные источники
-universities.compare.row.verified_facts: Проверенные факты
 universities.compare.row.campus_area: Площадь кампуса
 universities.compare.row.exam_requirement: Минимум {exam}
 universities.compare.row.exam_average: Средний балл поступивших: {exam}
 universities.compare.row.language_exam_requirement: Языковой минимум {exam}
-universities.compare.category.prestige.title: Престижность
-universities.compare.category.prestige.subtitle: Рейтинг и селективность
-universities.compare.category.admissions.title: Поступление
-universities.compare.category.admissions.subtitle: Доступность, профиль требований и финансирование
-universities.compare.category.finance.title: Финансы
-universities.compare.category.finance.subtitle: Стоимость и гибкость помощи
-universities.compare.category.academics.title: Академика
-universities.compare.category.academics.subtitle: Ширина программ и форматов
-universities.compare.category.outcomes.title: Результаты
-universities.compare.category.outcomes.subtitle: Опубликованные карьерные сигналы
-universities.compare.category.data.title: Надёжность данных
-universities.compare.category.data.subtitle: Проверенные факты и источники
-universities.compare.category.context.title: Контекст
-universities.compare.category.context.subtitle: Масштаб и кампусная среда
-universities.compare.exams_required: Требуемые экзамены
-universities.compare.funding.grant: Грант
-universities.compare.funding.paid: Платно
-universities.compare.quality.basic: Базовое
-universities.compare.quality.high: Высокое
-universities.compare.quality.medium: Среднее
-universities.compare.slot_label: Университет {index}
-universities.compare.source_note: Источник: {source}
-universities.compare.standard_requirements: Стандартные
 universities.compare.row.undergraduate_structure: Модель бакалавриата
 universities.compare.row.published_selectivity: Опубликованный процент зачисления
 universities.compare.decision.title: Что важно для вашего выбора
@@ -640,11 +496,6 @@ universities.compare.status.tradeoff: Компромисс
 universities.compare.status.parity: Явного лидера нет
 universities.compare.status.incomparable: Нельзя сравнить напрямую
 universities.compare.status.missing: Не хватает данных
-universities.compare.confidence.high: высокая уверенность
-universities.compare.confidence.medium: средняя уверенность
-universities.compare.confidence.low: низкая уверенность
-universities.compare.confidence.estimated: ориентировочная оценка
-universities.compare.profile_missing: Добавьте необходимые данные профиля
 universities.compare.scope.program: по выбранной программе
 universities.compare.scope.institution: по университету в целом
 universities.compare.scope.undergraduate: бакалавриат
@@ -661,7 +512,6 @@ universities.compare.admissions.title: Поступление и соответ�
 universities.compare.admissions.missing: Опубликованные данные о поступлении неполны, поэтому селективность не сравнивается.
 universities.compare.admissions.comparable: Опубликованные проценты приёма — статистика вуза или программы; они отличаются от показателя соответствия требованиям.
 universities.compare.admissions.incomparable: Проценты опубликованы для разных программ или университетов, аудиторий либо циклов поступления.
-universities.compare.requirements_fit_score: Соответствие требованиям
 universities.compare.published_rate: Опубликованная селективность
 universities.compare.requirements_fit: Требования
 universities.compare.finance.title: Стоимость и финансовая помощь
@@ -690,35 +540,8 @@ universities.compare.outcomes.missing: Сопоставимых проверен
 universities.compare.verified_salary: Проверенная зарплата в начале карьеры
 universities.compare.median_earnings_10yr: Медианный доход через 10 лет после поступления (Scorecard)
 universities.compare.table_scroll_hint: Проведите по таблице в сторону, чтобы увидеть оба университета.
-universities.compare.differences.title: Ключевые отличия
-universities.compare.differences.subtitle: Показываем самые заметные опубликованные плюсы каждого выбранного университета.
-universities.compare.differences.reasons_for: {name}
-universities.compare.differences.no_clear_advantage: Явного опубликованного преимущества по сопоставимым метрикам не найдено.
-universities.compare.overview.title: Обзор
-universities.compare.overview.subtitle: Сравнение сильных сторон: показывает, у какого университета преимущество в каждой категории на основе официальных данных.
-universities.compare.overview.advantage_label: Преимущество: {name}
-universities.compare.overview.advantage_desc: {name} имеет более сильные показатели в категории «{category}».
-universities.compare.overview.parity: Паритет
-universities.compare.overview.parity_desc: Одинаковые опубликованные показатели в этой категории.
-universities.compare.overview.lead_status: Преимущество
-universities.compare.overview.baseline_status: Базовый уровень
-universities.compare.overview.parity_status: Равные условия
-universities.compare.score_value: {score}/100
 universities.compare.tests.title: Тесты и характеристики
 universities.compare.tests.subtitle: Детальные опубликованные значения. Цвет используется только для сопоставимой и существенной разницы.
-universities.compare.conclusion.title: Итоги
-universities.compare.conclusion.body: Лучшие относительные совпадения по категориям: {summary}. Финальное решение лучше принимать по подсвеченным строкам таблицы и официальным источникам.
-universities.compare.conclusion.empty: Выбранные университеты близки по опубликованным сопоставимым метрикам. Проверьте подсвеченные строки таблицы и официальные источники перед финальным решением.
-universities.compare.reason.rank: Лучший опубликованный рейтинг: {value}.
-universities.compare.reason.rank_vs: Лучший опубликованный рейтинг: {value} (на {diff} {positions} лучше, чем {baseline} — {baseline_value}).
-universities.compare.reason.position_one: позицию
-universities.compare.reason.position_few: позиции
-universities.compare.reason.position_many: позиций
-universities.compare.reason.higher_percent: {metric}: {value} вместо {baseline}.
-universities.compare.reason.lower_percent: {metric}: {value} вместо {baseline}.
-universities.compare.reason.highest: Самый высокий показатель: {metric} — {value}.
-universities.compare.reason.lowest: Самый низкий показатель: {metric} — {value}.
-universities.compare.reason.best: {metric}: {value}.
 facts.status.official: Официальный источник
 facts.status.official_aggregated: Официальные сводные данные
 facts.status.official_derived: Официальные расчетные данные
@@ -729,8 +552,6 @@ facts.status.not_published: Не опубликовано
 universities.recent.title: Недавно открытые
 universities.recent.clear_all: Очистить все
 universities.recent.remove: Убрать {university} из недавно открытых
-universities.shortlist.title: Избранное
-universities.shortlist.remove: Убрать из избранного
 universities.tradeoff.focus: Фокус
 universities.tradeoff.focus.left: Карьера и практика
 universities.tradeoff.focus.right: Наука и исследования
@@ -745,10 +566,6 @@ universities.tradeoff.location.left: Город
 universities.tradeoff.location.right: За городом
 universities.tradeoff.balanced: Не важно
 universities.help.open: Показать объяснение
-universities.help.country: Фильтрует университеты по стране. Работает вместе с выбором региона и города.
-universities.help.state_region: Сужает результаты внутри выбранной страны. Полезно для больших стран с множеством городов.
-universities.help.city: Показывает университеты в конкретном городе после выбора страны. Штат или регион сужает список городов.
-universities.help.cost_per_year: Задает минимальную и максимальную стоимость за год. В выдаче остаются только университеты в этом диапазоне.
 universities.help.sort_strategy: {fit} подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Слева — меньше научных публикаций на студента, справа — исследовательские университеты. По центру не учитывается.
 universities.help.tradeoff.atmosphere: Слева поступает большая доля подавших, справа больше заявлений на место — по официальному проценту зачисления на первый курс. По центру не учитывается.
@@ -763,7 +580,6 @@ universities.sort_rank_asc: По мировому рейтингу
 universities.sort_strategy: Сортировка
 universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
 accessibility.skip_to_main: Перейти к основному содержимому
-accessibility.back_to_top: Наверх
 universities.state.warning_title: Интересы недоступны
 universities.state.empty_title: Нет результатов для текущих фильтров
 universities.state.empty: Университеты не найдены.
@@ -780,12 +596,7 @@ university.action.map: Карта
 university.action.save: Сохранить в избранное
 university.action.save_label: Сохранить
 university.action.saved: Сохранено
-university.action.compare: Добавить к сравнению
-university.action.compare_label: Сравнить
-university.action.compare_active: В сравнении
-university.ask_placeholder: Спросите про поступление, стипендии, жилье, дедлайны...
 university.available_majors: Доступные специальности
-university.summary_aria: Краткая информация об университете
 university.programs_scope_note: Официальные программы и степени, опубликованные учебным заведением.
 university.official_admissions_data: Официальные данные о поступлении
 university.official_admissions_note: UniSearch показывает только официально опубликованные метрики поступления. Если университет не публикует процент зачисления, мы оставляем поле пустым, а не угадываем.
@@ -852,24 +663,12 @@ university.gallery.position: Фото {current} из {total}
 university.gallery.unavailable: Фото недоступно
 university.gallery.zoom_in: Увеличить масштаб
 university.gallery.zoom_out: Уменьшить масштаб
-university.chat_assistant: Чат-ассистент
-university.clear: Очистить
-university.discounts_scholarships: Скидки и стипендии
 university.entry_requirements: Категории поступления
-university.error_loading: Ошибка загрузки данных.
 university.error_no_id: Ошибка: ID не указан.
 university.loading: Загрузка данных университета
 university.loading_scholarships: Загрузка стипендий
-university.mode_auto: Режим: Авто
-university.model.auto: Авто
-university.model.fallback: Резервная модель
-university.model.gemini: Gemini
-university.model.local: Локальная резервная модель
-university.model_label: Модель:
-university.overview: Обзор
 university.per_year: в год
 university.price_from: от {price} / год
-university.send: Отправить
 university.show_on_map: Показать на карте
 university.tab.admission: Поступление
 university.tab.costs: Стоимость и финансирование
@@ -877,20 +676,13 @@ university.tab.general: Обзор
 university.tab.programs: Программы
 university.tabs.aria: Разделы университета
 universities.filter.drawer_aria: Фильтры каталога
-university.total_cost_calculator: Калькулятор общей стоимости
-university.total_estimated_cost: Ориентировочная общая стоимость
 university.finance.title: Стоимость и финансирование
 university.finance.intro: Изучите опубликованную годовую стоимость и возможности финансирования.
 university.finance.lowest_annual_estimate: Минимальная оценка за год
 university.finance.estimate_context: Среди опубликованных вариантов финансирования
 university.finance.available_support: Доступные гранты и стипендии
 university.finance.cost_breakdown: Состав расходов
-university.finance.mit_budget: Опубликованный годовой бюджет бакалавриата
-university.finance.mit_aid_policy: Финансовая помощь для бакалавриата
-university.finance.mit_aid_details: Подробнее о финансовой помощи
-university.finance.mit_select_program: Показан бюджет бакалавриата MIT. Выберите программу, чтобы увидеть применимые расходы и финансирование.
 university.finance.cost_before_aid: Оценка до учета гранта
-university.finance.aid_not_deducted: Сумма гранта не вычтена, потому что официальный размер финансирования не опубликован.
 university.finance.one_time.title: Разовые платежи
 university.finance.one_time.timing.enrollment: Уплачивается один раз при зачислении
 university.finance.one_time.applies_to_grant_holders: Обязателен и для получателей гранта
@@ -958,7 +750,6 @@ guide.glossary.fit: {fit} — режим сортировки, выстраив�
 guide.glossary.intro: Рабочий словарь сайта — те же значения, на которые опираются вычисления, по одной строке на термин.
 guide.glossary.language_requirements: Подтверждения языка, которые принимает маршрут: родной язык, уровень CEFR или балл экзамена.
 guide.glossary.match_score: Внутреннее число {fit}, упорядочивающее список.
-guide.glossary.roi: Зарплата на старте, делённая на стоимость года: коэффициент для планирования, а не обещание.
 guide.glossary.comparison: Таблица, где видны контекст каждого вуза и различия в охвате; отсутствующие данные помечаются, общего победителя нет.
 guide.glossary.mode_all: Требуется каждое подтверждение из языкового списка.
 guide.glossary.mode_any: Хватает одного подтверждения из языкового списка.
@@ -967,7 +758,6 @@ guide.glossary.stats_avg: Средние баллы ранее зачислен�
 guide.glossary.term.admission_track: Вариант обучения и маршрут подачи заявки
 guide.glossary.term.language_requirements: Языковые требования
 guide.glossary.term.match_score: Оценка соответствия
-guide.glossary.term.roi: ROI
 guide.glossary.term.comparison: Сравнение
 guide.glossary.term.mode_all: Режим: все подтверждения
 guide.glossary.term.mode_any: Режим: любой из вариантов
@@ -992,11 +782,8 @@ languages.error.choose_cefr: Выберите уровень CEFR
 languages.error.choose_exam: Выберите экзамен
 languages.error.choose_language_type: Выберите язык и тип
 languages.error.enter_score: Введите балл
-languages.error.save_failed: Не удалось сохранить язык
-languages.error.save_failed_code: Не удалось сохранить язык (код: {code})
 languages.no_exams: Экзаменов нет
 languages.removed: Удалено
-languages.saved: Язык сохранен
 languages.added: Язык добавлен
 languages.updated: Язык обновлен
 languages.kind.native: Родной
@@ -1014,32 +801,9 @@ languages.name.es: Испанский
 languages.name.it: Итальянский
 languages.select_exam: Выберите экзамен
 languages.select_type: Выберите тип
-languages.error.score_range: Балл должен быть в диапазоне {min} - {max}
-languages.error.step_hint: Шаг {step} (например, {first}, {second}, ...)
 languages.error.integer_required: Для {exam} требуется целый балл
 profile.action.close: Закрыть
-profile.action.save_budget: Сохранить бюджет
-profile.action.save_gpa: Сохранить GPA
 profile.action.save_all: Сохранить
-roi.avg_hint_all_graduates: Показано среднее по всем выпускникам.
-roi.avg_hint_all_majors: Показано вычисленное среднее по всем специальностям.
-roi.context.default: ROI рассчитан на основе доступных данных о выпускниках университета.
-roi.context.fallback_major: Специальных данных по направлению {major} нет.
-roi.context.matched_major: Расчет основан на данных выпускников {major} этого университета.
-roi.context.missing_major: Выберите специальность в профиле, чтобы увидеть точный ROI для вашего направления.
-roi.estimated_salary: Оценочная зарплата выпускника
-roi.explain: Показывает, во сколько раз ваша первая годовая зарплата покрывает стоимость одного года обучения.
-roi.formula: Простая логика: сравниваем среднюю зарплату выпускника со стоимостью одного года обучения.
-roi.label.excellent_return: Отличная отдача
-roi.label.positive_return: Положительная отдача
-roi.label.high_investment: Большие вложения
-roi.label.no_data: Недостаточно данных
-roi.no_salary_data: Недостаточно данных о зарплатах выпускников для расчёта.
-roi.per_year_early: в год (ранний этап карьеры)
-roi.score: Оценка ROI
-roi.tip: Совет:
-roi.title: Расчетный ROI (окупаемость инвестиций)
-roi.what_is: Что такое ROI?
 cost_item_tuition: Обучение
 cost_item_housing: Проживание
 cost_item_books_course_materials_supplies_equipment: Учебники и материалы
@@ -1120,7 +884,6 @@ tour.step6.point1: Используйте «Сравнить», чтобы по�
 tour.step6.point2: Соберите сбалансированный список: амбициозные, реалистичные и более безопасные варианты.
 tour.step6.point3: Возвращайтесь к профилю и фильтрам, если ваши приоритеты изменились.
 average_admitted_unavailable: Нет подтвержденных данных о средних баллах зачисленных.
-roi.context.no_salary_data: Для этого университета нет подтвержденных данных о зарплатах выпускников.
 admission.track.select: Выбрать
 admission.track.selected: Выбрано
 admission.track.recommended: Рекомендовано
@@ -1129,40 +892,16 @@ admission.track.funding_program_short: Программа
 admission.track.funding_source: Источник финансирования
 admission.track.funding_source_short: Источник
 admission.track.select_tooltip: Выберите профиль требований, чтобы видеть соответствие опубликованным требованиям и учитывать его в сортировке UniFit.
-admission.requirements_fit.title: Соответствие минимальным требованиям
-admission.requirements_fit.short: Соответствие требованиям
-admission.requirements_fit.description: Доля выполненных проверяемых опубликованных числовых академических и языковых минимумов. Их выполнение не подтверждает все условия поступления или право на подачу; это не вероятность зачисления и не прогноз финансирования.
 admission.requirements_fit.unavailable_method: Балл соответствия требованиям недоступен: смысл этого показателя не подтверждён.
 admission.requirements_fit.insufficient_data: Недостаточно подходящих требований или данных профиля, чтобы рассчитать это соответствие.
 admission.requirements_fit.no_published_requirements: Для этого маршрута нет опубликованных измеримых минимумов, поэтому процент соответствия рассчитать нельзя. Проверьте официальные требования к заявке.
 admission.requirements_fit.unassessed_minimums: Для части опубликованных минимумов нужны данные или шкала оценок, которые текущий профиль не подтверждает. По неподдерживаемым проверкам процент соответствия не рассчитывается.
 admission.requirements_fit.requirements_not_reviewed: Опубликованные академические и языковые минимумы для этого маршрута ещё не проверены. Перед подачей заявления изучите официальную страницу программы.
 admission.funding_before_award: Годовая стоимость до получения поддержки
-admission.score_range.title: Опубликованный диапазон баллов первокурсников
-admission.score_range.percentiles: 25–75-й процентиль
-admission.score_range.cohort.enrolled: Первокурсники, зачисленные осенью 2024 года
-admission.score_range.cohort.admitted: Принятые первокурсники набора 2029 года; весь набор, не только Early Action
-admission.score_range.note: Исторический ориентир, а не обязательный минимум или порог.
-admission.score_range.source: Официальный источник
-admission.requirements_fit.strong: Высокое соответствие
-admission.requirements_fit.good: Хорошее соответствие
-admission.requirements_fit.partial: Частичное соответствие
-admission.requirements_fit.low: Низкое соответствие
 title.404: Страница не найдена | UniSearch
 error404.kicker: Ошибка
 error404.title: Такой страницы не существует
-error404.lead: Возможно, страница была перемещена, ссылка устарела или в адресе есть ошибка.
 error404.primary: Вернуться на главную
-error404.secondary: Открыть университеты
-error404.panel.kicker: Быстрая помощь
-error404.panel.title: Что можно сделать дальше
-error404.tip.1: Проверьте адресную строку на опечатку и обновите страницу.
-error404.tip.2: Вернитесь к основным разделам сайта и продолжите оттуда.
-error404.tip.3: Если это старая закладка, обновите её на актуальную ссылку.
-error404.quick_title: Популярные разделы
-error404.link.rankings: Посмотреть топ университетов
-error404.link.guide: Узнать, как работает UniSearch
-error404.link.about: О проекте и контактах
 profile.exam_status_placeholder: Выберите статус
 profile.exam_status_pass: Сдано
 profile.exam_status_fail: Не сдано
@@ -1188,7 +927,6 @@ profile.exam_added_value: Добавлен {exam}: {value}
 profile.exam_updated_value: Обновлён {exam}: {value}
 languages.exam_total_overall: Общий балл
 languages.exam_total_total: Общий балл
-languages.exam_total_placeholder: Балл за {label}
 languages.exam_breakdown_optional_hint: Баллы по секциям необязательны: введите общий балл или заполните все секции, и он рассчитается автоматически. Секции позволяют проверить требования точнее.
 languages.exam_breakdown_required: Введите балл по каждой секции.
 languages.error.range: {exam} должен быть в диапазоне от {min} до {max}
@@ -1216,7 +954,6 @@ placeholder.field.admission_categories: Категории поступлени�
 placeholder.field.admission_category: Категория поступления
 placeholder.field.requirement_profile: Профиль требований
 placeholder.field.best_choice: Лучший вариант
-best_choice: Лучший вариант
 admission.category: Категория поступления
 admission.profile: Профиль требований
 admission.profile.general: Общее
@@ -1225,17 +962,6 @@ admission.profile.tabs_label: Профили требований
 admission.scope.general: Общее
 admission.scope.program_specific: По программе
 admission.scope.university_wide: Для всего университета
-admission.mit.aid_separate: В MIT финансовая помощь студентам бакалавриата рассматривается отдельно от поступления и не требует выбирать другой способ подачи.
-admission.mit.choose_program: Сначала выберите программу MIT
-admission.mit.choose_program_note: Откройте программу, чтобы увидеть подходящие способы поступления и требования.
-admission.mit.browse_programs: Посмотреть программы
-admission.mit.selected_program: Выбранная программа
-admission.mit.undergraduate_target: На первый курс MIT поступают в университет в целом, а специальность выбирают после первого курса. Эта программа — интересующее направление обучения, а не отдельная заявка.
-admission.mit.route_unverified: Условия поступления на эту программу пока не проверены. Перед подачей заявки изучите её официальную страницу.
-admission.mit.program_options_note: Ниже показаны способы поступления, связанные с этой программой. Проверьте актуальные условия на официальном сайте.
-admission.mit.change_program: Сменить программу
-admission.mit.no_matching_chance: Для этой программы и профиля показатель соответствия требованиям недоступен.
-admission.mit.context_mismatch: Для выбранного маршрута и цикла нет проверенных вариантов поступления. Измените контекст или проверьте официальную страницу программы.
 admission.mit.analysis: Соответствие требованиям и историческая статистика
 admission.program.selector_label: Выбор программы
 admission.program.general_requirements: Общие требования
@@ -1251,76 +977,22 @@ admission.funding_no_specific_requirements: Отдельные требован�
 admission.funding_competitive_grant_note: Требования выше — минимумы для допуска по выбранному профилю. Грант присуждается отдельно по конкурсу или рейтингу; отдельный проходной балл гранта в данных не указан.
 admission.choice.select: Выбрать
 admission.choice.selected: Выбрано
-admission.choice.recommended: Рекомендовано
-admission.chance.factors_label: Проверки соответствия требованиям
-admission.chance.factor_hint: Это сигналы по списку требований, а не прогноз поступления.
-admission.chance.badge.foundation_required: Может потребоваться подготовительная программа
-admission.chance.badge.foundation_required_note: Для прямого поступления на бакалавриат могут потребоваться A-Levels, IB, AP, SAT или подготовительный маршрут.
-admission.chance.badge.need_aware: Финансовая нуждаемость учитывается
-admission.chance.badge.need_aware_note: Запрос значительной финансовой помощи может влиять на рассмотрение в этом вузе.
-admission.chance.badge.need_blind: Финансовая нуждаемость не учитывается
-admission.chance.badge.need_blind_note: Университет указывает, что финансовая нуждаемость не учитывается при рассмотрении этой заявки.
-admission.chance.factor.missing_evidence.label: Не хватает обязательных данных
-admission.chance.factor.missing_evidence.message: Добавьте данные, необходимые для проверки этого маршрута.
-admission.chance.factor.applicability_unknown.label: Применимость не подтверждена
-admission.chance.factor.applicability_unknown.message: Маршрут не подтверждён для выбранного абитуриента, программы или цикла поступления.
-admission.chance.factor.conditional_requirements.label: Условные требования
-admission.chance.factor.conditional_requirements.message: По части требований не найдено подходящее подтверждение в профиле.
-admission.chance.factor.requirements_gap.label: Разрыв по требованиям
-admission.chance.factor.requirements_gap.message: Часть измеряемых опубликованных минимумов не выполнена.
-admission.chance.factor.academic_strength.label: Сильный академический профиль
-admission.chance.factor.academic_strength.message: Академические баллы хорошо подходят для этого профиля требований.
-admission.chance.factor.academic_gap.label: Слабый академический профиль
-admission.chance.factor.academic_gap.message: Академические баллы выглядят слабо для этого профиля требований.
-admission.chance.factor.language_strength.label: Сильное языковое подтверждение
-admission.chance.factor.language_strength.message: Языковые данные хорошо соответствуют опубликованным требованиям.
-admission.chance.factor.language_gap.label: Недостаточно языковых данных
-admission.chance.factor.language_gap.message: Языковые данные слабые или неполные для этого маршрута.
-admission.chance.factor.affordability_fit.label: Подходит по бюджету
-admission.chance.factor.affordability_fit.message: Ориентировочная годовая стоимость укладывается в бюджетный контекст профиля.
-admission.chance.factor.affordability_gap.label: Высокая стоимость
-admission.chance.factor.affordability_gap.message: Ориентировочная годовая стоимость высока относительно бюджета в профиле.
-admission.chance.factor.scholarship_support.label: Есть поддержка финансирования
-admission.chance.factor.scholarship_support.message: Стипендия или грант улучшает финансовую сторону оценки.
-admission.chance.factor.holistic_review_selectivity.label: Комплексное рассмотрение
-admission.chance.factor.holistic_review_selectivity.message: В вузах с приемом <10% баллы тестов — лишь базовый фильтр. Решающую роль играют олимпиады, эссе и внеучебные достижения.
-admission.chance.factor.high_selectivity.label: Высокая селективность
-admission.chance.factor.high_selectivity.message: Опубликованные данные указывают на более конкурсный маршрут.
-admission.chance.factor.accessibility_signal.label: Более доступный маршрут
-admission.chance.factor.accessibility_signal.message: Опубликованные данные указывают на более доступный маршрут поступления.
-admission.chance.factor.insufficient_data.label: Недостаточно данных
-admission.chance.factor.insufficient_data.message: Недостаточно подходящих требований или данных профиля, чтобы рассчитать соответствие.
-admission.chance.factor.requirements_met.label: Требования выполнены
-admission.chance.factor.requirements_met.message: Все измеряемые опубликованные минимумы выполнены.
 title.privacy: Политика конфиденциальности | UniSearch
 title.terms: Условия использования | UniSearch
 footer.privacy: Политика конфиденциальности
 footer.terms: Условия использования
 footer.legal_nav_aria: Юридическая информация
 footer.product_nav_aria: Навигация по продукту
-privacy.hero.badge: Конфиденциальность & Данные
 privacy.hero.title: Политика конфиденциальности
 privacy.hero.revision: Последнее обновление: 15 ноября 2026 года
-privacy.hero.subtitle: Как UniSearch обрабатывает информацию, хранит данные локально на вашем устройстве и обеспечивает безопасность.
-privacy.nav.intro: 1. Общие принципы
-privacy.nav.local_storage: 2. Локальное хранилище
-privacy.nav.google_auth: 3. Аккаунты и вход
-privacy.nav.processing: 4. Обработка на сервере
-privacy.nav.logs: 5. Сетевые логи
-privacy.nav.trackers: 6. Cookies и реклама
-privacy.nav.rights: 7. Ваши права и удаление
-privacy.nav.contacts: 8. Контакты
-privacy.intro.title: 1. Общие принципы и минимализм данных
 privacy.intro.p1: UniSearch разработан по принципу уважения к приватности. Мы не требуем обязательной регистрации для просмотра каталога, не запрашиваем паспортные данные, номера телефонов или платежные реквизиты.
 privacy.intro.p2: Текущая версия сайта работает только в гостевом режиме. Вход в аккаунт и синхронизация профиля между устройствами недоступны.
-privacy.local_storage.title: 2. Гостевой режим и локальное хранилище (Local Storage)
 privacy.local_storage.p1: В гостевом режиме UniSearch хранит профиль и состояние интерфейса в хранилище браузера на вашем устройстве (localStorage и sessionStorage). При запросе персонализированного расчёта выбранные данные профиля также передаются в API UniSearch, как описано ниже. В локальном хранилище находятся:
 privacy.local_storage.li1: Академические баллы (GPA, результаты тестов SAT, ACT, IELTS, TOEFL и других экзаменов).
 privacy.local_storage.li2: Текстовое описание ваших интересов для подбора рекомендаций.
 privacy.local_storage.li3: Сохраненный шортлист университетов и история недавно просмотренных вузов.
 privacy.local_storage.li4: Пользовательские настройки интерфейса (светлая или темная тема, язык).
 privacy.local_storage.p2: Данные профиля можно удалить кнопкой сброса профиля. Чтобы удалить все данные UniSearch в браузере, очистите хранилище или данные сайта для UniSearch в настройках браузера.
-privacy.google_auth.title: 3. Аккаунты и вход
 privacy.google_auth.status_notice: UniSearch сейчас не предоставляет регистрацию, вход в аккаунт или синхронизацию данных между устройствами.
 privacy.google_auth.p1: Google Sign-In / OAuth 2.0 не активен в текущей версии сайта.
 privacy.google_auth.p2: Соответственно, UniSearch сейчас не получает данные аккаунта Google.
@@ -1328,43 +1000,25 @@ privacy.google_auth.li1: Адрес электронной почты Google н�
 privacy.google_auth.li2: Имя и аватар профиля Google не собираются.
 privacy.google_auth.li3: Идентификатор аккаунта Google не собирается.
 privacy.google_auth.callout: UniSearch не запрашивает и не хранит пароли от аккаунтов Google. Если вход появится в будущей версии, политика будет обновлена до запуска этой функции.
-privacy.processing.title: 4. Обработка данных при расчете рекомендаций (UniFit)
 privacy.processing.p1: При использовании UniFit, показателя соответствия минимальным требованиям, ROI, сравнения профилей или проверки экзаменов и языковых данных браузер передаёт необходимые для запроса данные в API UniSearch по HTTPS. В зависимости от функции это могут быть GPA, баллы экзаменов и языковых тестов, бюджет, планируемая специальность, интересы, предпочтения формата и финансирования, а также выбранные варианты поступления.
 privacy.processing.p2: UniSearch не ведёт аккаунты пользователей и постоянную базу гостевых профилей. API может временно хранить данные в технических кэшах в памяти или Redis для повторных расчётов, а также обрабатывать их в логах или системах мониторинга ошибок, описанных ниже.
-privacy.logs.title: 5. Технические серверные логи и безопасность
 privacy.logs.p1: API записывает метаданные запросов: метод, путь, статус, время, длительность и созданный идентификатор запроса. Хостинг- или прокси-провайдеры также могут обрабатывать IP-адрес и User-Agent. IP-адреса могут использоваться в краткосрочных записях для rate limiting.
 privacy.logs.p2: Эта техническая информация используется для работы сервиса, безопасности, диагностики и предотвращения злоупотреблений. Срок хранения зависит от конфигурации и политик используемых хостинг- и мониторинговых провайдеров; фиксированный срок в этой политике не обещается.
 privacy.logs.osm_notice: Внешние сервисы: карта загружает тайлы OpenStreetMap, а ресурсы Leaflet — с unpkg, поэтому эти сервисы получают технические данные запроса, например IP-адрес, чтобы отдать ресурс. Если включён перевод текста интересов, введённый вами текст поля «интересы» отправляется настроенному сервису LibreTranslate; его расположение зависит от развертывания. При настройке мониторинга ошибок может использоваться Sentry. Backend также получает публичные курсы валют от ExchangeRate-API; этот провайдер не получает данные вашего профиля.
 privacy.logs.providers: Хостинг: сайт размещён на Firebase Hosting (Google LLC), а API работает на Render (Render Services, Inc.). Эти провайдеры, Sentry (если он настроен) и внешние сервисы, перечисленные выше, могут обрабатывать технические данные запросов на серверах за пределами Республики Казахстан.
-privacy.trackers.title: 6. Cookies и реклама
 privacy.trackers.p1: UniSearch не использует коммерческие рекламные трекеры, межсайтовые пиксели отслеживания или маркетинговые шпионские скрипты.
 privacy.trackers.p2: Хранилище браузера используется для функционального состояния: профиля, сохранённых и недавно просмотренных университетов, фильтров, вариантов сравнения, настроек, языка, темы, валюты и состояния обучения. Это хранилище не используется для рекламного профилирования.
-privacy.rights.title: 7. Ваши права и удаление информации
 privacy.rights.p1: Вы управляете гостевым профилем в своём браузере и можете удалить его в любой момент. Эта политика не создаёт сервис синхронизации или удаления через аккаунт, потому что в текущей версии нет пользовательских аккаунтов.
 privacy.rights.p2: Используйте кнопку сброса профиля, чтобы удалить профиль, или очистите данные сайта UniSearch в браузере, чтобы удалить всё локальное хранилище. Это не удаляет задним числом краткосрочные технические кэши, логи или записи сторонних сервисов, созданные до удаления; по вопросам обработки данных свяжитесь с нами.
-privacy.contacts.title: 8. Операторы проекта, контакты и обновление политики
 privacy.contacts.operators: Оператор проекта: UniSearch — независимый некоммерческий образовательный проект небольшой команды учащихся из Республики Казахстан. Вопросы об обработке данных направляйте на адрес электронной почты, указанный ниже.
 privacy.contacts.p1: Мы можем периодически обновлять настоящую Политику конфиденциальности при расширении функционала платформы. Актуальная дата редакции всегда указывается в верхней части страницы.
 privacy.contacts.p2: Если у вас возникли вопросы или предложения относительно обработки данных, свяжитесь с нами по электронной почте: unisearch.sup@gmail.com
-terms.hero.badge: Правовая информация
 terms.hero.title: Условия использования
 terms.hero.revision: Последнее обновление: 15 ноября 2026 года
-terms.hero.subtitle: Правила использования платформы UniSearch, справочный статус информации и условия взаимодействия.
-terms.nav.acceptance: 1. Принятие условий
-terms.nav.purpose: 2. Назначение сервиса
-terms.nav.disclaimer: 3. Отказ от ответственности
-terms.nav.accounts: 4. Учетные записи
-terms.nav.ip: 5. Интеллектуальная собственность
-terms.nav.acceptable_use: 6. Правила использования
-terms.nav.third_party: 7. Внешние ресурсы
-terms.nav.updates: 8. Изменения и контакты
-terms.acceptance.title: 1. Принятие условий
 terms.acceptance.p1: Используя веб-сайт UniSearch и связанные с ним интерфейсы, вы подтверждаете свое согласие с настоящими Условиями использования. Если вы не согласны с какими-либо положениями, пожалуйста, воздержитесь от использования сайта.
 terms.acceptance.minors: Если вам меньше 18 лет, пользуйтесь UniSearch с ведома родителя или законного представителя.
-terms.purpose.title: 2. Назначение сервиса и охват
 terms.purpose.p1: UniSearch представляет собой независимый академический поисково-аналитический инструмент, созданный для помощи абитуриентам в выборе программ разных уровней обучения, анализе требований к поступлению, стоимости учебы и вариантов стипендий.
 terms.purpose.p2: Каталог агрегирует официально опубликованную информацию университетов. Полнота сведений зависит от университета и программы.
-terms.disclaimer.title: 3. Справочный характер и отказ от ответственности (Disclaimer)
 terms.disclaimer.callout: Внимание: UniSearch не является приемной комиссией и не аффилирован с упомянутыми университетами. Оценки алгоритмов носят исключительно ориентировочный характер и не гарантируют зачисление.
 terms.disclaimer.educational_status: UniSearch является некоммерческим исследовательским проектом, разрабатываемым школьниками в качестве прикладного и образовательного опыта. Сервис не является официальной приёмной комиссией, государственным органом или профессиональным консалтинговым агентством.
 terms.disclaimer.as_is: Все материалы, алгоритмические оценки и данные каталога предоставляются на условиях «КАК ЕСТЬ» («AS IS») и «ПО МЕРЕ ДОСТУПНОСТИ» («AS AVAILABLE»). Мы стараемся поддерживать актуальность данных, но не гарантируем абсолютную точность или полноту. Пользователь обязан перепроверять критерии приёма и сроки на официальных сайтах вузов.
@@ -1372,22 +1026,17 @@ terms.disclaimer.p1: Все материалы, представленные н�
 terms.disclaimer.p2: UniFit (умная сортировка) и показатель соответствия минимальным требованиям помогают планировать поиск, но не предсказывают решения о зачислении, визе или финансировании.
 terms.disclaimer.p3: Университеты могут изменять правила приема, стоимость и дедлайны без уведомления. Пользователь несет личную ответственность за проверку актуальных условий на официальных порталах вузов перед подачей документов.
 terms.disclaimer.p4: Команда UniSearch не несет ответственности за любые решения приемных комиссий, упущенные дедлайны или финансовые расходы, понесенные пользователем.
-terms.accounts.title: 4. Учетные записи и безопасность
 terms.accounts.p1: В текущей версии нет пользовательских аккаунтов, входа в систему и синхронизации профиля между устройствами.
 terms.accounts.p2: Вы отвечаете за безопасность доступа к своему браузеру и устройству, поскольку гостевой профиль хранится в этом браузере.
-terms.ip.title: 5. Интеллектуальная собственность и добросовестное использование
 terms.ip.non_affiliation: UniSearch — независимый каталог. Упомянутые в нём вузы не управляют им, не спонсируют и не поддерживают его.
 terms.ip.p1: Названия вузов помогают определить, о каком учебном заведении идёт речь. Фотографии кампусов используются на условиях их источников с указанием авторства.
 terms.ip.p2: Исходный код UniSearch, документация и оригинальные материалы проекта доступны по лицензии MIT. Названия университетов, логотипы, эмблемы и фотографии кампусов исключены из этой лицензии согласно уведомлению в репозитории.
 terms.ip.takedown: Процедура Notice & Takedown: если вы являетесь официальным представителем университета, автором фотографии или правообладателем интеллектуальной собственности и желаете запросить указание авторства, корректировку или удаление логотипа, снимка либо информации о вузе, напишите на unisearch.sup@gmail.com. Мы рассмотрим обращение и ответим по электронной почте.
-terms.acceptable_use.title: 6. Правила использования платформы
 terms.acceptable_use.p1: При использовании сайта запрещаются любые действия, нарушающие нормальную работу сервиса:
 terms.acceptable_use.li1: Попытки несанкционированного доступа к серверной инфраструктуре или обхода защитных механизмов.
 terms.acceptable_use.li2: DDoS-атаки, чрезмерная генерация сетевых запросов и агрессивный автоматический скрейпинг в обход rate limits.
 terms.acceptable_use.li3: Использование сервиса для распространения вредоносных программ или спама.
-terms.third_party.title: 7. Ссылки на внешние ресурсы
 terms.third_party.p1: UniSearch содержит прямые гиперссылки на официальные сайты университетов, системы подачи документов и сторонние ресурсы. Мы не контролируем содержание и политику безопасности этих ресурсов и не несем ответственности за их работу.
-terms.updates.title: 8. Операторы проекта, изменения условий и контакты
 terms.updates.operators: Оператор проекта: UniSearch — независимый некоммерческий образовательный проект небольшой команды учащихся из Республики Казахстан.
 terms.updates.p1: Мы оставляем за собой право вносить изменения в настоящие Условия. Актуальная редакция публикуется на данной странице с указанием даты последнего обновления.
 terms.updates.law: Настоящие Условия регулируются законодательством Республики Казахстан. Обязательные нормы о защите прав потребителей в стране вашего проживания продолжают действовать.
@@ -1404,15 +1053,10 @@ common.no: Нет
 
 university.programs.expand: Показать детали
 university.programs.collapse: Скрыть детали
-university.programs.view_admission: Как поступить
 university.programs.official_page: Официальная страница программы
 university.programs.official_catalog: Официальный каталог степеней
-university.programs.summary_incomplete: Подробное описание пока не добавлено в UniSearch. Учебный план доступен на официальной странице программы.
 university.programs.search_placeholder: Поиск программ...
-university.programs.search_label: Поиск по программам
-university.programs.clear_search: Очистить поиск
 university.programs.no_results: По этому запросу программы не найдены.
-university.programs.major_badge: Ваше направление
 university.programs.field.degree_titles: Присваиваемая степень
 university.programs.field.degree_type: Тип степени
 university.programs.field.subjects: Направления
@@ -1484,7 +1128,6 @@ university.deadlines.applicant_restriction: Ограничение для зая
 university.deadlines.applicability: Применяется к
 university.deadlines.us_citizen_permanent_resident_only: Только для граждан США и постоянных резидентов США
 university.deadlines.spring_entry_only: Только для поступающих весной
-admission.mit.transfer_target: Для поступающих переводом действует отдельная процедура MIT. Убедитесь, что выбранные маршрут и срок поступления подходят вам.
 university.admissions.route.first_year: На первый курс
 university.admissions.route.transfer: Перевод
 university.admissions.route.graduate: В магистратуру или докторантуру
@@ -1501,11 +1144,8 @@ university.finance.policy_title: Статус оплаты и политика �
 university.finance.fee_status_label: Ваш статус оплаты обучения
 university.finance.aid_policy_label: Политика финансовой помощи
 university.finance.thresholds_title: Правила помощи для бакалавриата в зависимости от дохода
-university.finance.phd_funding_title: Гарантированное финансирование докторантуры (PhD)
-university.finance.scholarships_title: Престижные стипендии и гранты
 university.finance.need_blind_universal: Универсальный Need-Blind (для всех)
 university.finance.need_blind_domestic: Need-Blind (для резидентов)
-university.finance.need_aware_international: Need-Aware (для иностранных)
 university.finance.zero_loans: Пакеты помощи без кредитов
 university.finance.zero_loans_value: Без кредитов
 university.finance.published_range_title: Опубликованный диапазон расходов за год
@@ -1517,7 +1157,6 @@ university.finance.range_applicants.overseas: Иностранные абиту�
 university.finance.range_applicants.international: Иностранные абитуриенты
 university.finance.full_ride_threshold: Порог 100% полного гранта
 university.finance.free_tuition_threshold: Порог бесплатного обучения
-university.finance.overseas_us_desc: Оценка условий финансирования по правилам для иностранных заявителей.
 university.finance.need_blind_universal_desc: Согласно опубликованной политике, при поступлении на программы бакалавриата финансовая нуждаемость не учитывается для местных и иностранных абитуриентов.
 university.finance.need_blind_domestic_desc: Согласно опубликованной политике, при поступлении на программы бакалавриата финансовая нуждаемость не учитывается для местных абитуриентов.
 university.finance.need_blind_international: Need-Blind (для иностранных абитуриентов)
@@ -1528,17 +1167,12 @@ university.finance.aid_not_catalogued: В каталоге нет вариант
 university.finance.full_demonstrated_need: Полное покрытие подтверждённой финансовой потребности
 university.finance.full_demonstrated_need_note: Университет указывает, что покрывает 100% подтверждённой финансовой потребности абитуриентов, на которых распространяется эта политика бакалавриата.
 university.finance.zero_loans_note: Согласно опубликованной политике бакалавриата, подходящие пакеты помощи не включают кредиты.
-university.finance.need_aware_intl_desc: Отбор Need-Aware для иностранных студентов: запрос помощи учитывается при отборе, но при зачислении потребность покрывается на 100%.
-university.finance.merit_and_need: Государственные и академические стипендии
-university.finance.uk_aid_home_desc: Доступ к государственным кредитам Великобритании, Crankstart Scholarships и стипендиям Oxford/Imperial.
-university.finance.uk_aid_intl_desc: Доступны престижные университетские стипендии (Reach Oxford, President's Undergraduate Scholarships).
 university.finance.zero_parent_contrib: Правило устанавливает нулевой ожидаемый вклад родителей; это не определяет полную итоговую стоимость.
 university.finance.zero_parent_contribution_threshold: Порог нулевого вклада родителей
 university.finance.income_thresholds_note.stanford: Оценки Stanford предполагают типичные активы и уровень стоимости жизни в США; они могут не подходить для семей, живущих за пределами США.
 university.finance.full_ride_threshold_note: Право на полный пакет финансирования зависит от правил университета и обстоятельств абитуриента.
 university.finance.free_tuition_note: 100% покрытие стоимости обучения для семей, проходящих по доходу
 admission.collapsible.additional_details: Дополнительные требования и инструкции
-universities.level_segmented.aria: Фильтр по уровню обучения
 universities.level.all: Все уровни
 universities.level.bachelor: Бакалавриат
 universities.level.doctorate: PhD
@@ -1581,15 +1215,11 @@ university.deadlines.reply_desc: Срок ответа абитуриента д
 university.deadlines.reply_title: Согласие на зачисление и депозит
 university.deadlines.timeline_title: График приёмной кампании
 university.deadlines.title: Сроки подачи заявок и календарь
-university.finance.aid_eligible_badge: Финансовая помощь
-university.finance.free_tuition_badge: Бесплатное обучение
 university.finance.doctoral_funding_title: Финансирование докторантуры
 university.finance.status_unconfirmed: Статус оплаты требует проверки
 university.finance.status_unconfirmed_desc: Одного гражданства недостаточно, чтобы определить домашний, внутренний или зарубежный тариф. Также могут учитываться история проживания и правила университета.
 university.finance.domestic_and_international_policy: Разные правила помощи для категорий абитуриентов
 university.finance.domestic_and_international_policy_desc: Университет публикует разные правила финансовой помощи для местных и иностранных абитуриентов. Вашу категорию и право на помощь нужно проверить по официальным правилам.
-university.finance.uk_aid_general_desc: Право на стипендию и студенческое финансирование зависит от программы и обстоятельств абитуриента. Проверьте официальные правила университета.
-university.finance.zero_parent_contrib_badge: Без взноса родителей
 university.tab.deadlines: Даты и сроки
 university.deadlines.export_ics: Добавить в календарь (.ics)
 university.deadlines.official_source: Официальный источник
@@ -2313,20 +1943,7 @@ university.admissions.next_official_step: Открыть официальные 
 
 admission.requirements_fit.no_applicable_path: Для этого контекста нет оценённого маршрута. Проверьте выбранный маршрут и цикл по официальным требованиям.
 admission.requirements_fit.applicability_unknown: Не удалось сопоставить опубликованные требования с выбранной программой, маршрутом поступления и циклом. Уточните подходящий маршрут на официальной странице.
-admission.requirements_fit.checks_title: Проверки опубликованных требований
-admission.requirements_fit.check.minimum: Минимум
-admission.requirements_fit.check.required_evidence: Требуется подтверждение
-admission.requirements_fit.check.required_exam: Требуется один из экзаменов
-admission.requirements_fit.check.language_any_note: Если для языкового требования указаны варианты, достаточно выполнить один из них.
-admission.requirements_fit.check.profile: В профиле
 admission.requirements_fit.check.not_provided: Не указано
-admission.requirements_fit.check.met: Выполнено
-admission.requirements_fit.check.evidence_recorded: Подтверждение указано
-admission.requirements_fit.check.unmet: Ниже минимума
-admission.requirements_fit.check.missing: Добавьте подтверждение
-admission.requirements_fit.check.unassessed: Нельзя оценить
-
-admission.requirements_fit.unscored_conditions: Процент учитывает только числовые минимумы. Требования к предметам, оценкам, документам и праву на подачу нужно проверить отдельно.
 
 university.deadlines.event.equal_consideration: Равное рассмотрение заявок
 cost_item_new_student_orientation_fee: Сбор за ориентацию новых студентов
@@ -2335,10 +1952,6 @@ cost_item_housing_and_food: Проживание и питание
 cost_item_student_fees_allowance: Расходы на студенческие сборы
 cost_item_books_and_supplies_allowance: Расходы на книги и материалы
 cost_item_personal_expenses_allowance: Личные расходы
-admission.mit.after_initial_admission: Совместную степень получают после первоначального поступления на одну из магистерских программ MIT. Порядок оформления второй степени проверьте на официальной странице.
-admission.mit.program_condition: Условия для этой программы:
-admission.requirements_fit.check.profile_unassessed: Профиль не позволяет подтвердить нужные сведения или право на освобождение.
-admission.requirements_fit.missing_evidence_note: Добавьте указанные ниже подтверждения для проверки маршрута. Процент доступен только при наличии применимых числовых минимумов, которые можно оценить.
 profile.evidence.title: Добавить сведения для отдельных университетов
 profile.evidence.description: Добавляйте, только если просит страница университета. Со слов пользователя; записи не проверяются.
 profile.evidence.test_date: Дата (необязательно)
@@ -3391,7 +3004,6 @@ university.admissions.catalog.field.time: Время
 university.admissions.catalog.field.timezone: Часовой пояс
 university.admissions.catalog.field.scope: Относится к
 university.admissions.catalog.record_link: Показать полную запись источника
-profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})
 university.admissions.entry.browsing_not_saved: Если запомнить этот вариант, каталог и сравнение будут сверять ваши результаты с его минимумами. В университет ничего не отправляется.
 university.admissions.entry.saved_context: Вариант запомнен: каталог и сравнение сверяют ваши результаты с его минимумами. В университет ничего не отправляется.
 university.admissions.entry.saved_other: Запомнен другой вариант: {details}.
