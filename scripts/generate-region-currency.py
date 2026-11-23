@@ -7,6 +7,7 @@ Usage: download into one folder under the current working directory Unicode CLDR
 """
 import json
 import pathlib
+import re
 import sys
 
 REPO_ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -56,14 +57,17 @@ def main() -> None:
         parts = line.split()
         if len(parts) >= 3 and parts[0] == "Link" and parts[1] in zones and parts[2] not in zones:
             zones[parts[2]] = zones[parts[1]]
-    version = cldr["supplemental"]["version"]["_cldrVersion"]
+    raw_version = str(cldr["supplemental"]["version"]["_cldrVersion"]).strip()
+    if not re.fullmatch(r"\d+(?:\.\d+)*", raw_version):
+        raise SystemExit(f"Unexpected CLDR version: {raw_version!r}")
     body = (
-        "// Generated from Unicode CLDR " + version + " supplemental currencyData (each region's current tender currency) and the\n"
+        "// Generated from Unicode CLDR " + raw_version + " supplemental currencyData (each region's current tender currency) and the\n"
         "// IANA tz database zone.tab and backward links (each time zone's country). Regenerate from those sources; do not edit by hand.\n"
         "export const COUNTRY_CURRENCY = " + json.dumps(dict(sorted(countries.items())), separators=(",", ":")) + ";\n"
         "export const TIME_ZONE_COUNTRY = " + json.dumps(dict(sorted(zones.items())), separators=(",", ":")) + ";\n"
     )
-    OUT_FILE.write_text(body, encoding="utf-8", newline="\n")
+    with open(OUT_FILE, "w", encoding="utf-8", newline="\n") as handle:
+        handle.write(body)
     print(
         len(countries),
         len(zones),
