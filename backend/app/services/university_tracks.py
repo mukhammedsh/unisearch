@@ -1,35 +1,41 @@
-"""
-University tracks, majors, score profile derivations, and admission choices.
-"""
+"""University tracks, product-scope filtering, and admission choice expansion."""
+
 from __future__ import annotations
 
 import copy
-import re
-from functools import lru_cache
 from typing import Any
 
-from app.core.utils import (
-    safe_lower as _safe_lower,
-)
-from app.core.utils import (
-    to_float as _num_or_none,
-)
+from app.core.utils import safe_lower as _safe_lower
 from app.services import exams as exams_service
+from app.services.university_majors import (
+    _CANONICAL_MAJORS,
+    _MAJOR_PHRASES,
+    _canonical_major,
+    _contains_phrase,
+    _major_tags_from_text,
+    _normalize_major_text,
+)
+from app.services.university_track_scores import (
+    _derive_track_score_profile,
+    _has_explicit_empty_program_mapping,
+    _uniq_non_empty,
+)
 
-
-def _uniq_non_empty(items: list[Any]) -> list[str]:
-    out: list[str] = []
-    seen = set()
-    for it in items:
-        s = str(it).strip()
-        if not s:
-            continue
-        k = s.lower()
-        if k in seen:
-            continue
-        seen.add(k)
-        out.append(s)
-    return out
+__all__ = [
+    "_CANONICAL_MAJORS",
+    "_MAJOR_PHRASES",
+    "_canonical_major",
+    "_derive_track_applicable_majors",
+    "_derive_track_score_profile",
+    "_filter_academics_for_product_scope",
+    "_has_explicit_empty_program_mapping",
+    "_iter_programs",
+    "_major_tags_from_text",
+    "_normalize_major_text",
+    "_safe_lower",
+    "_should_keep_track_for_product_scope",
+    "expand_admission_choices",
+]
 
 
 def _get_nested(u: dict[str, Any], path: list[str], default: Any = None) -> Any:
@@ -42,157 +48,6 @@ def _get_nested(u: dict[str, Any], path: list[str], default: Any = None) -> Any:
             return default
     return cur
 
-_CANONICAL_MAJORS = [
-    "computer science",
-    "engineering",
-    "business",
-    "medicine",
-    "natural sciences",
-    "economics",
-    "physics",
-    "mathematics",
-    "law",
-    "social sciences",
-    "architecture",
-    "psychology",
-    "humanities",
-    "design",
-    "life sciences",
-    "education",
-    "agriculture",
-]
-
-_MAJOR_PHRASES: dict[str, list[str]] = {
-    "computer science": [
-        "computer science",
-        "computing",
-        "informatics",
-        "software engineering",
-        "information systems",
-        "computer engineering",
-        "computer science and engineering",
-        "computer science and technology",
-        "cs",
-        "eecs",
-    ],
-    "engineering": [
-        "engineering",
-        "aerospace",
-        "mechanical",
-        "electrical",
-        "civil",
-        "chemical",
-        "industrial",
-        "mechatronics",
-        "robotics",
-    ],
-    "business": ["business", "management", "finance", "marketing", "accounting", "mba"],
-    "medicine": ["medicine", "medical", "clinical", "nursing", "pharmacy", "dentistry"],
-    "natural sciences": [
-        "natural sciences",
-        "natural science",
-        "chemistry",
-        "earth science",
-        "environmental science",
-    ],
-    "economics": ["economics", "economy", "econometrics"],
-    "physics": ["physics", "astrophysics"],
-    "mathematics": ["mathematics", "math", "statistics", "actuarial"],
-    "law": ["law", "legal", "jurisprudence", "llb", "jd"],
-    "social sciences": [
-        "social sciences",
-        "social science",
-        "sociology",
-        "political science",
-        "anthropology",
-    ],
-    "architecture": ["architecture", "urban planning", "built environment"],
-    "psychology": ["psychology", "psychological"],
-    "humanities": [
-        "humanities",
-        "history",
-        "philosophy",
-        "linguistics",
-        "literature",
-        "classics",
-    ],
-    "design": [
-        "design",
-        "graphic design",
-        "industrial design",
-        "interaction design",
-        "ux",
-        "ui",
-        "product design",
-    ],
-    "life sciences": [
-        "life sciences",
-        "life science",
-        "biology",
-        "biotechnology",
-        "biomedical",
-        "genetics",
-        "neuroscience",
-    ],
-    "education": ["education", "teaching", "pedagogy", "curriculum", "teacher"],
-    "agriculture": ["agriculture", "agricultural", "agronomy", "horticulture"],
-}
-
-
-_NON_ALNUM_RE = re.compile(r"[^a-z0-9]+")
-_WHITESPACE_RE = re.compile(r"\s+")
-
-
-@lru_cache(maxsize=16384)
-def _normalize_lowered_major_text(lowered: str) -> str:
-    text = _NON_ALNUM_RE.sub(" ", lowered.replace("&", " and "))
-    return _WHITESPACE_RE.sub(" ", text).strip()
-
-
-def _normalize_major_text(value: Any) -> str:
-    return _normalize_lowered_major_text(_safe_lower(value))
-
-
-@lru_cache(maxsize=4096)
-def _phrase_pattern(phrase: str) -> re.Pattern[str]:
-    return re.compile(r"\b" + re.escape(phrase).replace(r"\ ", r"\s+") + r"\b")
-
-
-def _contains_phrase(text: str, phrase: str) -> bool:
-    if not text or not phrase:
-        return False
-    return _phrase_pattern(phrase).search(text) is not None
-
-
-# Normalised taxonomy phrases, computed once: loading the catalogue tags every program title against all of them.
-_MAJOR_PHRASE_TABLE: tuple[tuple[str, tuple[str, ...]], ...] = tuple(
-    (canonical, tuple(_normalize_major_text(p) for p in _MAJOR_PHRASES.get(canonical, [canonical])))
-    for canonical in _CANONICAL_MAJORS
-)
-
-
-@lru_cache(maxsize=16384)
-def _normalized_major_tags(text: str) -> tuple[str, ...]:
-    return tuple(canonical for canonical, phrases in _MAJOR_PHRASE_TABLE
-                 if any(_contains_phrase(text, phrase) for phrase in phrases))
-
-
-def _major_tags_from_text(value: Any) -> list[str]:
-    text = _normalize_major_text(value)
-    return list(_normalized_major_tags(text)) if text else []
-
-
-def _canonical_major(value: Any) -> str:
-    text = _normalize_major_text(value)
-    if not text:
-        return ""
-    if text in _CANONICAL_MAJORS:
-        return text
-    tags = _major_tags_from_text(text)
-    if len(tags) == 1:
-        return tags[0]
-    return ""
-
 
 def _iter_programs(u: dict[str, Any]) -> list[dict[str, Any]]:
     raw = _get_nested(u, ["academics", "programs"], [])
@@ -204,7 +59,7 @@ def _iter_programs(u: dict[str, Any]) -> list[dict[str, Any]]:
 def _track_program_names(u: dict[str, Any]) -> list[str]:
     academics = u.get("academics")
     academics_obj = academics if isinstance(academics, dict) else {}
-    names = [p.get("name") for p in _iter_programs(u)]
+    names: list[Any] = [p.get("name") for p in _iter_programs(u)]
     majors = academics_obj.get("majors")
     if isinstance(majors, list):
         names.extend(majors)
@@ -281,20 +136,21 @@ def _is_language_exam_key_for_track_merge(exam_id: Any) -> bool:
 
 
 def _filter_variant_stats_avg_for_requirements(
-    stats_avg: Any, requirements: Any
+    stats_avg: Any,
+    requirements: Any,
 ) -> Any:
     if not isinstance(stats_avg, dict):
         return copy.deepcopy(stats_avg)
     if not isinstance(requirements, dict) or not requirements:
         return copy.deepcopy(stats_avg)
 
-    allowed_keys = {
+    raw_allowed = {
         exams_service.resolve_exam_key(key)
         for key in requirements
         if not _is_language_exam_key_for_track_merge(key)
     }
     allowed_keys = {
-        str(key or "").strip().upper() for key in allowed_keys if str(key or "").strip()
+        str(key or "").strip().upper() for key in raw_allowed if str(key or "").strip()
     }
     if not allowed_keys:
         return copy.deepcopy(stats_avg)
@@ -316,7 +172,10 @@ def _choice_key(category_id: Any, profile_id: Any, funding_id: Any = "") -> str:
     return "::".join(part for part in parts if part)
 
 
-def _funding_options_from_profile_or_category(category: dict[str, Any], profile: dict[str, Any]) -> list[dict[str, Any]]:
+def _funding_options_from_profile_or_category(
+    category: dict[str, Any],
+    profile: dict[str, Any],
+) -> list[dict[str, Any]]:
     profile_options = profile.get("funding_options")
     if isinstance(profile_options, list) and profile_options:
         return [copy.deepcopy(row) for row in profile_options if isinstance(row, dict)]
@@ -352,7 +211,8 @@ def _admission_choice_from_parts(
         funding.get("finance_override"),
     )
     merged_published_admission = _merge_track_variant_dict(
-        category.get("published_admission"), profile.get("published_admission")
+        category.get("published_admission"),
+        profile.get("published_admission"),
     )
 
     choice: dict[str, Any] = {
@@ -366,10 +226,19 @@ def _admission_choice_from_parts(
         "label": profile.get("label") or category.get("label"),
         "description": profile.get("description") or category.get("description"),
         "study_mode": profile.get("study_mode", category.get("study_mode")),
-        "language_requirements": copy.deepcopy(profile.get("language_requirements", category.get("language_requirements"))),
-        "language_requirements_mode": profile.get("language_requirements_mode", category.get("language_requirements_mode")),
-        "required_exam_alternatives": copy.deepcopy(profile.get("required_exam_alternatives", category.get("required_exam_alternatives", []))),
-        "extra_requirements": copy.deepcopy(profile.get("extra_requirements", category.get("extra_requirements"))),
+        "language_requirements": copy.deepcopy(
+            profile.get("language_requirements", category.get("language_requirements"))
+        ),
+        "language_requirements_mode": profile.get(
+            "language_requirements_mode",
+            category.get("language_requirements_mode"),
+        ),
+        "required_exam_alternatives": copy.deepcopy(
+            profile.get("required_exam_alternatives", category.get("required_exam_alternatives", []))
+        ),
+        "extra_requirements": copy.deepcopy(
+            profile.get("extra_requirements", category.get("extra_requirements"))
+        ),
         "scholarships": copy.deepcopy(profile.get("scholarships", category.get("scholarships", []))),
         "scope": copy.deepcopy(profile.get("scope", category.get("scope"))),
         "study_levels": copy.deepcopy(profile.get("study_levels", category.get("study_levels", []))),
@@ -435,34 +304,37 @@ def expand_admission_choices(categories: Any, *, include_funding: bool = True) -
 
 
 def _derive_track_applicable_majors(
-    u: dict[str, Any], track: dict[str, Any]
+    u: dict[str, Any],
+    track: dict[str, Any],
 ) -> list[str]:
     explicit = track.get("applicable_majors")
     if isinstance(explicit, list) and explicit:
         return _uniq_non_empty(explicit)
 
-    linked_names = track.get("program_names")
-    if isinstance(linked_names, str):
-        linked_names = [linked_names]
-    linked_names = _uniq_non_empty(linked_names if isinstance(linked_names, list) else [])
+    raw_linked_names = track.get("program_names")
+    if isinstance(raw_linked_names, str):
+        raw_linked_names = [raw_linked_names]
+    linked_names = _uniq_non_empty(raw_linked_names if isinstance(raw_linked_names, list) else [])
 
-    linked_ids = track.get("program_ids")
-    if isinstance(linked_ids, str):
-        linked_ids = [linked_ids]
-    if not isinstance(linked_ids, list):
-        linked_ids = []
-    linked_ids = {
-        str(program_id or "").strip().lower()
-        for program_id in linked_ids
-    }
-    linked_ids.discard("")
+    raw_linked_ids = track.get("program_ids")
+    if isinstance(raw_linked_ids, str):
+        raw_linked_ids = [raw_linked_ids]
+    linked_id_set = (
+        {
+            str(program_id or "").strip().lower()
+            for program_id in raw_linked_ids
+        }
+        if isinstance(raw_linked_ids, list)
+        else set()
+    )
+    linked_id_set.discard("")
 
-    if linked_names or linked_ids:
-        linked_program_names = [*linked_names]
-        if linked_ids:
+    if linked_names or linked_id_set:
+        linked_program_names: list[Any] = [*linked_names]
+        if linked_id_set:
             for program in _iter_programs(u):
                 program_id = str(program.get("id") or "").strip().lower()
-                if program_id in linked_ids:
+                if program_id in linked_id_set:
                     linked_program_names.append(program.get("name") or program.get("program_name"))
         return _uniq_non_empty(linked_program_names)
 
@@ -511,24 +383,9 @@ def _derive_track_applicable_majors(
     return program_names
 
 
-def _has_explicit_empty_program_mapping(track: dict[str, Any]) -> bool:
-    """Whether route scope is specifically program-bound but has no mapped programs."""
-    mapping_keys = ("program_ids", "program_names")
-    if any(
-        isinstance(track.get(key), (list, str))
-        and _uniq_non_empty(track.get(key) if isinstance(track.get(key), list) else [track.get(key)])
-        for key in mapping_keys
-    ):
-        return False
-    has_empty_mapping = any(isinstance(track.get(key), (list, str)) for key in mapping_keys)
-    scope = str(track.get("application_scope") or "").strip().lower().replace("-", "_")
-    return has_empty_mapping and scope in {
-        "program_specific", "course_specific", "department_or_program_specific",
-    }
-
-
 def _should_keep_track_for_product_scope(
-    u: dict[str, Any], track: dict[str, Any]
+    u: dict[str, Any],
+    track: dict[str, Any],
 ) -> bool:
     majors = track.get("applicable_majors")
     if not isinstance(majors, list) or not majors:
@@ -545,329 +402,6 @@ def _should_keep_track_for_product_scope(
         return True
 
     return not all(_is_foundation_program_name(name) for name in major_names)
-
-
-def _track_requirement_exam_candidates(track: dict[str, Any]) -> list[str]:
-    ordered: list[str] = []
-    seen = set()
-
-    def collect(source: Any) -> None:
-        if not isinstance(source, dict):
-            return
-        primary = []
-        fallback = []
-        for raw_key in source:
-            exam_id = str(raw_key or "").strip().upper()
-            if not exam_id or exam_id in seen:
-                continue
-            if exam_id == "GPA":
-                fallback.append(exam_id)
-            else:
-                primary.append(exam_id)
-        for exam_id in primary + fallback:
-            if exam_id in seen:
-                continue
-            seen.add(exam_id)
-            ordered.append(exam_id)
-
-    collect(track.get("requirements"))
-    collect(track.get("stats_avg"))
-    return ordered
-
-
-def _track_primary_exam_id(track: dict[str, Any]) -> str:
-    candidates = _track_requirement_exam_candidates(track)
-    return candidates[0] if candidates else ""
-
-
-def _score_profile_program_matches_track(
-    track: dict[str, Any], program: dict[str, Any]
-) -> bool:
-    if not isinstance(track, dict) or not isinstance(program, dict):
-        return False
-    program_name = str(program.get("program_name") or program.get("name") or "").strip()
-    if not program_name:
-        return False
-
-    if _has_explicit_empty_program_mapping(track):
-        return False
-
-    applicable = track.get("applicable_majors")
-    if isinstance(applicable, list):
-        for major in applicable:
-            major_text = str(major or "").strip()
-            if not major_text:
-                continue
-            major_norm = _normalize_major_text(major_text)
-            program_norm = _normalize_major_text(program_name)
-            if (
-                major_norm == program_norm
-                or _contains_phrase(program_norm, major_norm)
-                or _contains_phrase(major_norm, program_norm)
-            ):
-                return True
-            major_canonical = _canonical_major(major_text)
-            program_canonical = _canonical_major(program_name)
-            if (
-                major_canonical
-                and program_canonical
-                and major_canonical == program_canonical
-            ):
-                return True
-
-    label_norm = _normalize_major_text(track.get("label"))
-    return bool(
-        label_norm and _contains_phrase(label_norm, _normalize_major_text(program_name))
-    )
-
-
-def _score_profile_route_matches_track(
-    track: dict[str, Any], program: dict[str, Any]
-) -> bool:
-    track_blob = _normalize_major_text(
-        " ".join(
-            str(part or "")
-            for part in (
-                track.get("id"),
-                track.get("label"),
-                track.get("description"),
-                " ".join(_track_requirement_exam_candidates(track)),
-            )
-        )
-    )
-    program_blob = _normalize_major_text(
-        " ".join(
-            str(part or "")
-            for part in (
-                program.get("source_scope"),
-                program.get("data_type"),
-                program.get("metric_unit"),
-                program.get("semantics"),
-                program.get("notes"),
-            )
-        )
-    )
-    route_tokens = [
-        "jupas",
-        "hkdse",
-        "a level",
-        "polytechnic",
-        "ossd",
-        "sat",
-        "act",
-        "ib",
-        "unt",
-        "nuet",
-    ]
-    program_tokens = [token for token in route_tokens if token in program_blob]
-    if not program_tokens:
-        return True
-    return any(token in track_blob for token in program_tokens)
-
-
-def _parse_numeric_multiplier(value: Any) -> float | None:
-    match = re.search(r"([0-9]+(?:\.[0-9]+)?)", str(value or ""))
-    if not match:
-        return None
-    return _num_or_none(match.group(1))
-
-
-def _weighted_total_scale_max(counts: dict[str, Any]) -> float | None:
-    if not isinstance(counts, dict):
-        return None
-    best_of = 5
-    selection_principle = str(counts.get("selection_principle") or "").strip().lower()
-    match = re.search(r"best\s*(\d+)", selection_principle)
-    if match:
-        best_of = max(1, int(match.group(1)))
-
-    subject_weighting = counts.get("subject_weighting")
-    weights: list[float] = []
-    if isinstance(subject_weighting, dict):
-        for raw_value in subject_weighting.values():
-            multiplier = _parse_numeric_multiplier(raw_value)
-            if multiplier is not None and multiplier > 0:
-                weights.append(float(multiplier))
-
-    best_of = max(best_of, len(weights))
-    total_weight = sum(weights) + max(0, best_of - len(weights))
-    if total_weight <= 0:
-        return None
-    return round(total_weight * 7.0, 4)
-
-
-def _score_scale(
-    metric_id: str, counts: dict[str, Any]
-) -> tuple[float, float, str] | None:
-    resolved = exams_service.resolve_exam_key(metric_id)
-    cfg = exams_service.EXAMS_CONFIG.get(resolved) if resolved else None
-    if isinstance(cfg, dict) and str(cfg.get("type") or "").strip().lower() != "bool":
-        mn = _num_or_none(cfg.get("min"))
-        mx = _num_or_none(cfg.get("max"))
-        if mn is not None and mx is not None and mx > mn:
-            return float(mn), float(mx), resolved
-
-    metric_key = _safe_lower(metric_id)
-    if metric_key == "weighted_total":
-        upper = _weighted_total_scale_max(counts)
-        if upper is not None and upper > 0:
-            return 0.0, float(upper), ""
-    return None
-
-
-def _normalize_score_value(raw_value: float, scale: tuple[float, float, str]) -> float:
-    _, _, metric_exam_id = scale
-    if metric_exam_id:
-        normalized = exams_service.normalize_exam_score(metric_exam_id, raw_value)
-        if normalized is not None:
-            return float(normalized)
-    mn, mx, _ = scale
-    return max(0.0, min(100.0, ((float(raw_value) - mn) / max(mx - mn, 1e-9)) * 100.0))
-
-
-def _extract_track_score_percentiles(
-    counts: dict[str, Any],
-) -> dict[str, float] | None:
-    if not isinstance(counts, dict):
-        return None
-
-    for raw_key in counts:
-        key = str(raw_key or "")
-        if not key.startswith("lower_quartile_"):
-            continue
-        metric_id = key[len("lower_quartile_") :]
-        p25 = _num_or_none(counts.get(key))
-        median = _num_or_none(counts.get(f"median_{metric_id}"))
-        p75 = _num_or_none(counts.get(f"upper_quartile_{metric_id}"))
-        if p25 is None or median is None or p75 is None:
-            continue
-        return {
-            "metric_id": metric_id,
-            "p25_raw": float(p25),
-            "median_raw": float(median),
-            "p75_raw": float(p75),
-        }
-
-    for raw_key in counts:
-        key = str(raw_key or "")
-        match = re.match(r"(.+)_25th_percentile$", key)
-        if not match:
-            continue
-        metric_id = str(match.group(1) or "")
-        p25 = _num_or_none(counts.get(key))
-        median = _num_or_none(counts.get(f"{metric_id}_50th_percentile"))
-        p75 = _num_or_none(counts.get(f"{metric_id}_75th_percentile"))
-        if p25 is None or median is None or p75 is None:
-            continue
-        return {
-            "metric_id": metric_id,
-            "p25_raw": float(p25),
-            "median_raw": float(median),
-            "p75_raw": float(p75),
-        }
-
-    return None
-
-
-def _derive_track_score_profile(
-    u: dict[str, Any], track: dict[str, Any]
-) -> dict[str, Any] | None:
-    explicit = track.get("score_profile")
-    if isinstance(explicit, dict) and explicit:
-        return explicit
-    if _has_explicit_empty_program_mapping(track):
-        return None
-
-    academics = u.get("academics")
-    academics = academics if isinstance(academics, dict) else {}
-    admissions = academics.get("admissions")
-    admissions = admissions if isinstance(admissions, dict) else {}
-    programs = admissions.get("programs")
-    if not isinstance(programs, list) or not programs:
-        return None
-
-    primary_exam_id = _track_primary_exam_id(track)
-    matched_programs = [
-        row
-        for row in programs
-        if isinstance(row, dict)
-        and _score_profile_program_matches_track(track, row)
-        and _score_profile_route_matches_track(track, row)
-    ]
-    candidates = matched_programs or [
-        row
-        for row in programs
-        if isinstance(row, dict) and _score_profile_route_matches_track(track, row)
-    ]
-    university_acceptance = _num_or_none(academics.get("acceptance_rate_percent"))
-
-    for program in candidates:
-        counts = program.get("counts")
-        if not isinstance(counts, dict):
-            continue
-        extracted = _extract_track_score_percentiles(counts)
-        if not isinstance(extracted, dict):
-            continue
-        scale = _score_scale(str(extracted.get("metric_id") or ""), counts)
-        if scale is None:
-            continue
-
-        metric_exam_id = str(scale[2] or "").strip().upper()
-        resolved_primary_exam_id = (
-            str(exams_service.resolve_exam_key(primary_exam_id) or "").strip().upper()
-        )
-        compatible_exam_ids = []
-        if metric_exam_id:
-            compatible_exam_ids.append(metric_exam_id)
-            if (
-                resolved_primary_exam_id
-                and resolved_primary_exam_id == metric_exam_id
-                and resolved_primary_exam_id not in compatible_exam_ids
-            ):
-                compatible_exam_ids.append(resolved_primary_exam_id)
-
-        provenance = program.get("provenance")
-        provenance = provenance if isinstance(provenance, dict) else {}
-        uses_exam_anchor = bool(
-            metric_exam_id
-        ) and exams_service.exam_supports_percentile_normalization(metric_exam_id)
-        profile = {
-            "metric_id": str(extracted.get("metric_id") or ""),
-            "metric_unit": str(program.get("metric_unit") or ""),
-            "p25_raw": round(float(extracted["p25_raw"]), 2),
-            "median_raw": round(float(extracted["median_raw"]), 2),
-            "p75_raw": round(float(extracted["p75_raw"]), 2),
-            "p25_normalized": round(
-                _normalize_score_value(float(extracted["p25_raw"]), scale), 2
-            ),
-            "median_normalized": round(
-                _normalize_score_value(float(extracted["median_raw"]), scale), 2
-            ),
-            "p75_normalized": round(
-                _normalize_score_value(float(extracted["p75_raw"]), scale), 2
-            ),
-            "confidence": str(provenance.get("confidence") or "estimated"),
-            "source_program_name": str(
-                program.get("program_name") or program.get("name") or ""
-            ),
-            "source_scope": str(
-                program.get("source_scope") or program.get("scope") or ""
-            ),
-            "source_url": str(provenance.get("source_url") or ""),
-            "normalization_method": (
-                "exam_anchor_percentile"
-                if uses_exam_anchor
-                else ("exam_min_max_scale" if metric_exam_id else "scale_fallback")
-            ),
-        }
-        if compatible_exam_ids:
-            profile["exam_id"] = compatible_exam_ids[0]
-            profile["compatible_exam_ids"] = compatible_exam_ids
-        if university_acceptance is not None:
-            profile["acceptance_rate_percent"] = round(float(university_acceptance), 2)
-        return profile
-
-    return None
 
 
 def _is_foundation_study_level(value: Any) -> bool:
@@ -925,5 +459,3 @@ def _filter_academics_for_product_scope(academics: dict[str, Any]) -> None:
                     row.get("program_name") or row.get("name")
                 )
             ]
-
-
