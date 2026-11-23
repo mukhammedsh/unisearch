@@ -319,7 +319,7 @@ function bindProgramCardEvents({
     if (prefersReducedMotion() || !body.animate) return;
     const to = isOpen ? body.scrollHeight : 0;
     if (from === to) return;
-    const duration = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-medium")) || 240;
+    const duration = Number.parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-medium")) || 240;
     const animation = body.animate([
       { height: `${from}px`, opacity: isOpen ? 0 : 1 },
       { height: `${to}px`, opacity: isOpen ? 1 : 0 },

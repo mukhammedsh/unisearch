@@ -404,7 +404,7 @@ export function createFilterControls({
         updateCityDropdown([]);
         updateSliderVisibility();
         updateMobileFilterUi();
-        if (persistAndFetch) fetchAndRender();
+        if (persistAndFetch) void fetchAndRender();
     };
 
     const handleResetAllFilters = ({ keepSaved = false } = {}) => {
@@ -418,7 +418,7 @@ export function createFilterControls({
         Object.assign(state, { min_tuition: limits.min, max_tuition: limits.max, page: 1 });
         saveFilters(state);
         applyToForm();
-        fetchAndRender();
+        void fetchAndRender();
     };
 
     const handleCurrencyChanged = (e) => {
@@ -553,7 +553,7 @@ export function createFilterControls({
             clearSavedScrollPosition();
             setOpen(false, { apply: true });
             saveFilters(state);
-            fetchAndRender();
+            void fetchAndRender();
         });
 
         // Close sidebar when clicking outside on mobile backdrop

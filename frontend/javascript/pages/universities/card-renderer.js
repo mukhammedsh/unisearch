@@ -76,7 +76,7 @@ export function reviewedCardIndicators(match, budget) {
       : count ? tFormat("universities.tip.subject_options", { count }) : t("universities.match.subject_matched_detail");
     add("academic-cap", "match", t("universities.match.subject_matched"), detail, 2, "", "subject_matched");
   }
-  const mismatch = match.preferenceMismatch == null ? NaN : Number(match.preferenceMismatch);
+  const mismatch = match.preferenceMismatch == null ? Number.NaN : Number(match.preferenceMismatch);
   if (Number.isFinite(mismatch) && mismatch <= 0.22) {
     add(
       "heart",

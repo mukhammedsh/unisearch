@@ -77,7 +77,7 @@ function isSuspiciousJsText(raw) {
   if (isAllowedText(s)) return false;
   const withoutEntities = s.replace(/&[a-zA-Z0-9#]+;/g, " ").trim();
   // Technical tokens: snake_case identifiers, kebab-case selectors/IDs, dotted i18n keys, MIME types/routes
-  if (/^[a-z0-9_-]+(?:_[a-z0-9_-]+)+$/i.test(withoutEntities)) return false;
+  if (withoutEntities.includes("_") && /^[a-z0-9_-]+$/i.test(withoutEntities)) return false;
   if (/^[a-z0-9]+(?:-[a-z0-9]+)+$/i.test(withoutEntities)) return false;
   if (/^[a-z0-9_-]+(?:\.[a-z0-9_-]+)+$/i.test(withoutEntities)) return false;
   if (/^[a-z0-9_-]+\/[a-z0-9_.+-]+$/i.test(withoutEntities)) return false;
@@ -315,7 +315,7 @@ function collectJsFiles(dir, out = []) {
     if (entry.isDirectory()) collectJsFiles(absPath, out);
     else if (entry.name.endsWith(".js")) out.push(absPath);
   }
-  return out.sort();
+  return out.sort((a, b) => a.localeCompare(b));
 }
 
 function run() {
@@ -328,7 +328,7 @@ function run() {
     .readdirSync(frontendDir)
     .filter((f) => f.endsWith(".html"))
     .map((f) => path.join(frontendDir, f))
-    .sort();
+    .sort((a, b) => a.localeCompare(b));
   const jsFiles = collectJsFiles(jsDir);
 
   let totalViolations = 0;
