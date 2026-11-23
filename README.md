@@ -165,6 +165,7 @@ Run the quick repository checks from the root. Activate backend/.venv before run
     npm run check:tokens
     npm run check:i18n
     npm run lint:backend
+    npm run typecheck:backend
     npm run audit:data
 
 For tests, install the development dependencies and the required Playwright browser:

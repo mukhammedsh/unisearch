@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 from app.core.settings import (
     METRICS_ENABLED,
@@ -9,15 +10,18 @@ from app.core.settings import (
 )
 from fastapi import FastAPI
 
+Instrumentator: Any
+sentry_sdk: Any
+
 try:
     from prometheus_fastapi_instrumentator import Instrumentator
 except ImportError:  # pragma: no cover - optional dependency
-    Instrumentator = None  # type: ignore[assignment]
+    Instrumentator = None
 
 try:
     import sentry_sdk
 except ImportError:  # pragma: no cover - optional dependency
-    sentry_sdk = None  # type: ignore[assignment]
+    sentry_sdk = None
 
 
 logger = logging.getLogger("unisearch.observability")
@@ -43,7 +47,7 @@ _SENSITIVE_KEYS = {
 
 def _scrub_sensitive(value: object) -> object:
     if isinstance(value, dict):
-        out = {}
+        out: dict[object, object] = {}
         for key, item in value.items():
             key_text = str(key or "").strip().lower()
             if key_text in _SENSITIVE_KEYS or key_text == OPS_ADMIN_HEADER.lower() or any(
@@ -73,7 +77,7 @@ def _scrub_sensitive(value: object) -> object:
     return value
 
 
-def _before_send(event: object, hint: object) -> object:
+def _before_send(event: Any, hint: Any = None) -> Any:
     return _scrub_sensitive(event)
 
 

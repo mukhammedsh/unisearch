@@ -137,8 +137,13 @@ backend/app/
     ├── scoring_requirements.py   # Published minimum-requirements fit estimation (`estimate_uni_chance`)
     ├── universities.py           # Catalog loading, filtering, search, and sorting orchestrator
     ├── university_costs.py       # University cost quotes, financial aid, acceptance rate, and size bands
+    ├── university_coverage.py    # Program-scoped catalog coverage summaries
+    ├── university_level_coverage.py # Level-scoped catalog coverage helpers
     ├── university_localization.py # Localized names, translation packs, and multilingual search aliases
+    ├── university_majors.py      # Canonical major taxonomy and phrase matching
     ├── university_projection.py  # Schema normalization, public source URL sanitization, card and map projections
+    ├── university_track_scores.py # Track program-mapping guards and score-profile percentile derivation
+    ├── university_tracks.py      # Admission track normalization, product-scope filtering, and choice expansion
     ├── ml_scoring.py             # Multilingual neural embeddings & semantic vector search
     ├── search.py                 # Multi-criteria filtering, fuzzy normalization & sorting
     └── background_tasks.py       # Async startup sync, currency warmup, ML model initialization

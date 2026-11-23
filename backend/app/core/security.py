@@ -136,8 +136,15 @@ return {1, math.max(0, limit - count_after), 0}
                 self.window_seconds,
                 member,
             )
-            allowed, remaining, retry_after = result or [0, 0, self.window_seconds]
-            return bool(int(allowed)), int(remaining or 0), float(retry_after or 0.0)
+            if isinstance(result, (list, tuple)) and len(result) == 3:
+                allowed, remaining, retry_after = result
+            else:
+                allowed, remaining, retry_after = 0, 0, self.window_seconds
+            return (
+                bool(int(allowed) if isinstance(allowed, (int, float, str)) else 0),
+                int(remaining or 0) if isinstance(remaining, (int, float, str)) else 0,
+                float(retry_after or 0.0) if isinstance(retry_after, (int, float, str)) else 0.0,
+            )
         except REDIS_ERRORS as exc:
             _LOGGER.warning("redis_rate_limit_fallback error=%s", exc)
             return self._fallback.check(key, now=current)

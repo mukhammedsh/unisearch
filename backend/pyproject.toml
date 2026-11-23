@@ -8,3 +8,11 @@ select = ["E", "F", "I", "B", "UP", "C4", "SIM", "ERA"]
 ignore = [
     "E501",  # Line length formatting deferred
 ]
+
+[tool.mypy]
+python_version = "3.12"
+explicit_package_bases = true
+follow_imports = "silent"
+cache_dir = "/dev/null"
+warn_unused_ignores = true
+warn_redundant_casts = true

@@ -21,8 +21,9 @@ Patch release: harden API rate-limiting and error-response security headers, and
 - Update backend Python dependencies in `backend/requirements.txt` and `backend/requirements-dev.txt` (PR #191).
 - Update GitHub Actions workflow dependencies across `.github/workflows/` (PR #210).
 - Configure backend linting with Ruff (`backend/pyproject.toml`), `npm run lint:backend` in `package.json`, and CI lint enforcement in `.github/workflows/tests.yml`.
+- Configure backend static type checking with `mypy` (`backend/pyproject.toml`, `scripts/typecheck-backend.mjs`, `npm run typecheck:backend`, and `.github/workflows/tests.yml`) and resolve type-narrowing and Redis/Sentry typing issues in `backend/app/core/` and `backend/app/routers/`.
 - Deduplicate backend router parameters (`UniversityFilterDep` in `backend/app/routers/_params.py` using FastAPI `Annotated` dependencies) and HTTP cache helpers (`backend/app/core/http_cache.py`), standardize Python 3.12+ syntax, reduce `Any` annotations, and narrow broad `except Exception` catches.
-- Decompose `backend/app/services/ai_scoring.py` into `scoring_profile.py`, `scoring_costs.py`, and `scoring_requirements.py`, and decompose `backend/app/services/universities.py` into `university_costs.py`, `university_localization.py`, and `university_projection.py`.
+- Decompose `backend/app/services/ai_scoring.py` into `scoring_profile.py`, `scoring_costs.py`, and `scoring_requirements.py`; decompose `backend/app/services/universities.py` into `university_costs.py`, `university_localization.py`, and `university_projection.py`; decompose `backend/app/services/university_coverage.py` (`university_level_coverage.py`) and `backend/app/services/university_tracks.py` (`university_majors.py`, `university_track_scores.py`).
 - Synchronize `README.md`, `docs/architecture.md`, `docs/admissions-runtime-contract.md`, and `docs/admissions-product-model.md` with the cleaned backend endpoints and modular service structure.
 
 ## 10.7.0 (2026-11-21) - Name universities on the map and search every name

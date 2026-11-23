@@ -269,13 +269,15 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
         if fmt:
             effective_profile["studyMode"] = fmt
 
+        raw_study_level = effective_profile.get("study_level")
+        resolved_study_level = raw_study_level if isinstance(raw_study_level, str) else None
         base = uni_service.list_universities(
             q=q,
             country=country,
             city=city,
             region=region,
             major=None,
-            study_level=effective_profile.get("study_level"),
+            study_level=resolved_study_level,
             profile=effective_profile,
             funding_type=funding_type,
             format=fmt,
@@ -308,7 +310,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     page_items = (sorted_items or [])[start:end] if start < total else []
     probe_items = page_items if page_items else ((sorted_items or [])[:1] if sorted_items else [])
     ml_unavailable = any(
-        bool((row.get("matchData") or {}).get("mlUnavailable"))
+        isinstance((match_data := row.get("matchData")), dict) and bool(match_data.get("mlUnavailable"))
         for row in probe_items
         if isinstance(row, dict)
     )

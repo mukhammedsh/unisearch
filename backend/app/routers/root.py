@@ -18,7 +18,7 @@ def root():
 
 @router.get("/health", summary="Health check", description="Lightweight liveness probe. Pass ?warmup=true to trigger a synchronous warmup and include its result.")
 def health(warmup: Annotated[bool, Query()] = False):
-    payload = {"status": "ok", "version": APP_VERSION}
+    payload: dict[str, object] = {"status": "ok", "version": APP_VERSION}
     if warmup:
         payload["warmup"] = warmup_runtime(trigger="health")
     return payload
