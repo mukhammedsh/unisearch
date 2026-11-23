@@ -1,24 +1,19 @@
 /* frontend/javascript/pages/universities.js */
 
 import {
-  API_BASE,
   $,
   debounce,
   loadFilters,
   saveFilters,
   setUrlParams,
-  nested,
   escapeHtml,
   escapeHtmlAttr,
   loadProfile,
   loadProfileForApi,
-  formatExamValue,
   getExamDisplayName,
-  getFlagImg,
   initCustomSelect,
   CITY_OPTIONS_BY_COUNTRY,
   aiName,
-  animateElementOut,
   markMotionEnter,
   motionPress,
   replayMotion,
@@ -28,14 +23,8 @@ import {
   showToast,
 } from "../utils.js";
 
-import {
-  getGrantsFromCategories,
-  chanceNoDataHelpNote,
-} from "../university-detail-helpers.js";
-
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
-import { heroIcon } from "../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import {
   getPreferredCurrency,
@@ -57,7 +46,6 @@ import { describeActiveFilters, buildEmptyStateModel, renderEmptyStateCard } fro
 import { buildFilterResetPatch } from "./universities/filter-reset.js";
 import {
   translateUniversityName,
-  translateWord,
   translateProgramName,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
@@ -65,18 +53,14 @@ import { bindInfoTooltips } from "../tooltip.js";
 import {
   cleanDecoratedText,
   renderInlineIcon,
-  renderLocationMarkup,
   trCountry,
   trCity,
   trState,
   trUniversityName,
-  textOrUnknown,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
-  uniThumbnailSrc,
   SAVED_UNIVERSITIES_KEY,
   COMPARE_UNIVERSITIES_KEY,
-  RECENT_UNIVERSITIES_KEY,
   MAX_COMPARE_UNIVERSITIES,
   hasSeenUniversitiesTour,
   clearUniversitiesTourResumeStep,
@@ -86,97 +70,31 @@ import {
   writeIdListStorage,
   shouldOpenUniversitiesInNewTab,
   rememberRecentUniversity,
-  fetchUniversityDetailCached,
   getDetailCacheEntry,
-  toFiniteNumber,
 } from './_shared.js';
 
-import {
-  universityCardPriceInfo,
-  renderUniversityCardCosts,
-  buildRankSourceTooltip,
-} from "./universities/card-tooltips.js";
 import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
-  budgetTooltip,
-  closePreferenceLabels,
-  exactBudgetMoney,
   describeRankingProfile,
   legendEntries,
-  missingExamNames,
-  reviewedMissingInputs,
-  unmetMinimums,
 } from "./universities/unifit-explanation.js";
+import {
+  abortUniversitiesApiRequests,
+  createUniversitiesApiState,
+  fetchUniversitiesAiSort,
+  fetchUniversitiesList,
+  initTranslationDebugLogger,
+} from "./universities/api-client.js";
+import {
+  renderCatalogPagination,
+  renderUniversityCard,
+  reviewedCardIndicators,
+} from "./universities/card-renderer.js";
+import { createRecentlyViewedController } from "./universities/recently-viewed.js";
+import { createUniversitiesMapController } from "./universities/map-controller.js";
 
-// Card tooltip helpers: a USD amount in the reader's currency, and the preference sliders a university is close to.
-const tooltipMoney = (usd) => {
-    const code = getPreferredCurrency();
-    const amount = convert(Number(usd), "USD", code);
-    return Number.isFinite(amount) ? formatMoney(amount, code) : formatMoney(Number(usd), "USD");
-};
-const tooltipBudgetMoney = (usd) => exactBudgetMoney(usd, loadProfile(), { convert, formatMoney, fallback: tooltipMoney });
-const tooltipHelpers = { money: tooltipMoney, budgetMoney: tooltipBudgetMoney, tr: t, trf: tFormat };
-const cardExamLabel = (id) => getExamDisplayName(id, { locale: getCurrentLanguage() });
-const preferenceTooltip = (match, fallbackKey) => {
-    const labels = closePreferenceLabels(match).map((label) => t(`universities.tradeoff.${label}`).toLocaleLowerCase());
-    return labels.length ? tFormat("universities.tip.preferences_close", { dimensions: labels.join(", ") }) : t(fallbackKey);
-};
-
-export function reviewedCardIndicators(match, budget) {
-    if (!match || match.finalScore == null || !Number.isFinite(Number(match.finalScore))) return [];
-    const indicators = [];
-    // `legend` names the meaning of the icon for the UniFit banner legend (see LEGEND_LABEL_KEYS).
-    const add = (icon, tone, label, detail, priority = 2, value = "", legend = "") => indicators.push({ icon, tone, label, detail, priority, value, legend });
-    const programSelected = Boolean(match.admissionsContext?.study_option_id);
-    if (match.subjectMatch?.status === "missing") {
-        add("academic-cap", "warning", t(programSelected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
-            t(programSelected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0, "",
-            "subject_missing");
-    } else if (match.subjectMatch?.status === "matched") {
-        // Name how many programs match and what choosing one unlocks, instead of restating the label.
-        const count = Array.isArray(match.subjectMatch.option_ids) ? match.subjectMatch.option_ids.length : 0;
-        const detail = programSelected ? t("universities.tip.subject_selected")
-            : count ? tFormat("universities.tip.subject_options", { count }) : t("universities.match.subject_matched_detail");
-        add("academic-cap", "match", t("universities.match.subject_matched"), detail, 2, "", "subject_matched");
-    }
-    const mismatch = match.preferenceMismatch == null ? NaN : Number(match.preferenceMismatch);
-    if (Number.isFinite(mismatch) && mismatch <= 0.22) {
-        add("heart", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
-            preferenceTooltip(match, "universities.match.preference_detail"), 3, "", "vibe");
-    }
-    // A published check of the selected route that the profile cannot answer yet: say what to add.
-    const missingInputs = reviewedMissingInputs(match.requirementChecks, {
-        examLabel: cardExamLabel, joiner: t("admission.requirements_fit.check.or", "or"),
-    }).slice(0, 3);
-    if (missingInputs.length) {
-        add("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed"),
-            tFormat("universities.tip.add_to_profile", { exams: missingInputs.join(", ") }), 1, "", "exam_needed");
-    }
-    const checks = Array.isArray(match.requirementChecks) ? match.requirementChecks.filter(check => check.measurable) : [];
-    if (typeof match.requirementsFitPercent === "number" && Number.isFinite(match.requirementsFitPercent) && checks.length) {
-        const met = checks.filter(check => check.status === "met").length;
-        const percent = new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US", { maximumFractionDigits: 1 }).format(match.requirementsFitPercent);
-        add("clipboard-document-list", met < checks.length ? "warning" : "finance",
-            tFormat("universities.match.score", { percent }),
-            tFormat("universities.match.checks_detail", { met, total: checks.length }), met < checks.length ? 0 : 2, `${percent}%`,
-            met < checks.length ? "requirements_below" : "requirements_met");
-    }
-    const assessment = match.budgetAssessment || {};
-    // Prices that differ by fee status (Home / Overseas) cannot be compared until the reader sets one.
-    const feeStatusUnknown = assessment.status === "unknown_cost" && assessment.evidence === "fee_status_unknown";
-    if (Number(budget) > 0 && match.costQuote && (feeStatusUnknown || ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status))) {
-        const state = feeStatusUnknown ? "uncertain" : { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
-        const detail = budgetTooltip({
-            status: feeStatusUnknown ? "fee_status" : { within: "within", over: "over", uncertain: "range" }[state],
-            costMin: match.costQuote.minUSD, costMax: match.costQuote.maxUSD, budget, tuitionOnly: assessment.basis === "tuition",
-        }, tooltipHelpers);
-        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`), detail, state === "over" ? 1 : 2, "",
-            { over: "over_budget", within: "within_budget", uncertain: "budget_check" }[state]);
-    }
-    return indicators.sort((a, b) => a.priority - b.priority);
-}
-
-export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip };
+export { reviewedCardIndicators };
+export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip } from "./universities/card-tooltips.js";
 
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
@@ -193,15 +111,22 @@ let __universitiesMobileFilterKeydownHandler = null;
 let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
-let __universitiesMapResizeTimer = 0;
 let __universitiesOverflowClickHandler = null;
 let __universitiesOverflowKeydownHandler = null;
-let __universitiesMapResultsObserver = null;
 let __universitiesSearchCleanup = null;
+let __universitiesMapController = null;
+let __universitiesRecentController = null;
+let __universitiesApiState = null;
 
 export function disposeUniversitiesPage() {
     __universitiesSearchCleanup?.();
     __universitiesSearchCleanup = null;
+    __universitiesMapController?.dispose();
+    __universitiesMapController = null;
+    __universitiesRecentController?.dispose();
+    __universitiesRecentController = null;
+    abortUniversitiesApiRequests(__universitiesApiState);
+    __universitiesApiState = null;
     if (__universitiesProfileUpdatedHandler) {
         window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
         __universitiesProfileUpdatedHandler = null;
@@ -258,10 +183,6 @@ export function disposeUniversitiesPage() {
         window.removeEventListener("resize", __universitiesResizeHandler);
         __universitiesResizeHandler = null;
     }
-    if (__universitiesMapResizeTimer) {
-        window.clearTimeout(__universitiesMapResizeTimer);
-        __universitiesMapResizeTimer = 0;
-    }
     if (__universitiesResizeObserver) {
         __universitiesResizeObserver.disconnect();
         __universitiesResizeObserver = null;
@@ -273,10 +194,6 @@ export function disposeUniversitiesPage() {
     if (__universitiesOverflowKeydownHandler) {
         document.removeEventListener("keydown", __universitiesOverflowKeydownHandler);
         __universitiesOverflowKeydownHandler = null;
-    }
-    if (__universitiesMapResultsObserver) {
-        __universitiesMapResultsObserver.disconnect();
-        __universitiesMapResultsObserver = null;
     }
     document.documentElement.classList.remove("sidebar-filters-open");
     document.body.classList.remove("sidebar-filters-open");
@@ -337,32 +254,6 @@ function collectUniversitiesElements() {
         el.compareTray = tray;
     }
     return el;
-}
-
-function initTranslationDebugLogger() {
-    const isTranslationDebugEnabled = (() => {
-        const raw = window.APP_DEBUG;
-        if (typeof raw === "boolean") return raw;
-        const text = String(raw ?? "").trim().toLowerCase();
-        return ["1", "true", "yes", "on"].includes(text);
-    })();
-    const logTranslationDebug = (stage, details = {}) => {
-        if (!isTranslationDebugEnabled) return;
-        try {
-            // oxlint-disable no-console -- guarded by APP_DEBUG runtime flag
-            console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
-            Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
-            console.groupEnd();
-            // oxlint-enable no-console
-        } catch {
-            // ignore logging errors
-        }
-    };
-    logTranslationDebug("debug mode enabled", {
-        enabled: true,
-        note: "ML + translation debug is enabled by APP_DEBUG runtime flag.",
-    });
-    return logTranslationDebug;
 }
 
 function getProfileFundingQueryValue() {
@@ -677,22 +568,14 @@ export function initUniversitiesPage() {
     let focusUniDone = false;
 
     const CACHE_TTL_MS = 30000;
-    const MAP_RESULTS_PAGE_SIZE = 100;
     const AI_FAST_FALLBACK_MS = 450;
     const SKELETON_SHOW_DELAY_MS = 120;
     const SKELETON_FADE_MS = 160;
     let skeletonShowTimer = 0;
     let skeletonFadeTimer = 0;
     let isSkeletonCurrentlyVisible = false;
-    const universitiesFetchCache = new Map();
-    let profiledEndpointUnavailableUntil = 0;
-    let legacyPricesWarningShown = false;
-    let lastAiFetchKey = "";
-    let lastAiFetchPayload = null;
-    let lastAiFetchAt = 0;
-    let listFetchController = null;
-    let aiFetchController = null;
-    let mapPointsFetchController = null;
+    const apiState = createUniversitiesApiState({ cacheTtlMs: CACHE_TTL_MS });
+    __universitiesApiState = apiState;
     let fetchRunSeq = 0;
     let firstVisitTourPending = !hasSeenUniversitiesTour();
     if (consumeUniversitiesTourSkipOnce()) {
@@ -703,16 +586,6 @@ export function initUniversitiesPage() {
     let hasInitialListPaint = false;
     let hasRestoredInitialScroll = false;
     let lastRenderedItems = [];
-    let mapResultsItems = [];
-    let mapResultsPage = 0;
-    let mapResultsTotal = 0;
-    let mapResultsHasMore = false;
-    let mapResultsLoadingMore = false;
-    let mapResultsLoadFailed = false;
-    let mapResultsRunSeq = 0;
-    let mapPointsRunSeq = 0;
-    let lastMapPointsBounds = null;
-    let pendingMapFocusId = "";
     let viewModesReady = false;
     const savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
     let compareUniversityIds = new Set(
@@ -1133,155 +1006,14 @@ export function initUniversitiesPage() {
         navigateToAppRoute(href);
     };
 
-    const lockRecentChipWidths = (root) => {
-        if (!root) return;
-        root.querySelectorAll(".u-recent__chip").forEach((chip) => {
-            chip.style.removeProperty("--recent-chip-width");
-        });
-    };
-
-    const renderRecentlyViewedBar = ({ keepOpen = false } = {}) => {
-        if (!el.recentlyViewedBar) return;
-        const existingPopover = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
-        const wasOpen = Boolean(
-            keepOpen
-            || existingPopover?.matches?.(":popover-open")
-            || existingPopover?.classList.contains("is-open")
-        );
-        const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
-        if (!recentIds.length) {
-            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
-            el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.replaceChildren();
-            scheduleSyncWorkspaceDepth();
-            return;
-        }
-        const rows = recentIds
-            .map((id) => ({ id, label: getUniversityDisplayNameById(id) }))
-            .filter((row) => row.label);
-        if (!rows.length) {
-            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
-            el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.replaceChildren();
-            scheduleSyncWorkspaceDepth();
-            return;
-        }
-        const titleText = t("universities.recent.title", "Recently viewed");
-        const clearAllText = t("universities.recent.clear_all", "Clear all");
-        el.recentlyViewedBar.hidden = false;
-        el.recentlyViewedBar.innerHTML = `
-            <button
-                id="recentlyViewedBtn"
-                class="u-recent-trigger"
-                type="button"
-                popovertarget="recentlyViewedPopover"
-                aria-controls="recentlyViewedPopover"
-                aria-expanded="false"
-                title="${escapeHtmlAttr(titleText)}"
-                aria-label="${escapeHtmlAttr(`${titleText} (${rows.length})`)}"
-            >
-                ${renderInlineIcon("clock", 16, "u-recent-trigger__icon")}
-                <span class="u-recent-trigger__label">${escapeHtml(titleText)}</span>
-                <span class="u-recent-trigger__count" aria-hidden="true">${rows.length}</span>
-                ${renderInlineIcon("chevron-down", 14, "u-recent-trigger__chevron")}
-            </button>
-            <div
-                id="recentlyViewedPopover"
-                class="u-recent-popover"
-                popover="auto"
-                aria-labelledby="recentlyViewedTitle"
-            >
-                <div class="u-recent__head">
-                    <span id="recentlyViewedTitle" class="u-recent__label">${escapeHtml(titleText)}</span>
-                    <button class="u-recent__clear" type="button" data-action="clear-recent">
-                        ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-                        <span>${escapeHtml(clearAllText)}</span>
-                    </button>
-                </div>
-                <div class="u-recent__items">
-                    ${rows.map((row) => {
-                        const removeLabel = tFormat(
-                            "universities.recent.remove",
-                            { university: row.label },
-                            `Remove ${row.label} from recently viewed`
-                        );
-                        return `
-                            <span class="u-recent__chip">
-                                <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
-                                <button
-                                    class="u-recent__remove"
-                                    type="button"
-                                    data-action="remove-recent"
-                                    data-uni-id="${escapeHtmlAttr(row.id)}"
-                                    aria-label="${escapeHtmlAttr(removeLabel)}"
-                                    title="${escapeHtmlAttr(removeLabel)}"
-                                >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
-                            </span>
-                        `;
-                    }).join("")}
-                </div>
-            </div>
-        `;
-        lockRecentChipWidths(el.recentlyViewedBar);
-        scheduleSyncWorkspaceDepth();
-
-        const triggerBtn = el.recentlyViewedBar.querySelector("#recentlyViewedBtn");
-        const popoverEl = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
-        const supportsNativePopover = Boolean(popoverEl && typeof popoverEl.showPopover === "function");
-        const syncTriggerExpanded = (isOpen) => {
-            triggerBtn?.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            triggerBtn?.classList.toggle("is-active", isOpen);
-        };
-
-        if (supportsNativePopover) {
-            popoverEl.addEventListener("toggle", (event) => {
-                syncTriggerExpanded(event.newState === "open");
-            });
-            if (wasOpen) {
-                try {
-                    popoverEl.showPopover();
-                } catch (err) {
-                    console.warn("Unable to reopen recently viewed popover", err);
-                }
-            }
-        } else if (triggerBtn && popoverEl) {
-            triggerBtn.addEventListener("click", () => {
-                const nextOpen = !popoverEl.classList.contains("is-open");
-                popoverEl.classList.toggle("is-open", nextOpen);
-                syncTriggerExpanded(nextOpen);
-            });
-            if (wasOpen) {
-                popoverEl.classList.add("is-open");
-                syncTriggerExpanded(true);
-            }
-        }
-
-        el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
-            const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
-            motionPress(clearBtn);
-            replayMotion(clearBtn?.querySelector(".u-recent__clear-icon") || clearBtn, "motion-icon-clear", { timeoutMs: 240 });
-            animateElementOut(popoverEl || el.recentlyViewedBar, () => {
-                writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
-                renderRecentlyViewedBar({ keepOpen: false });
-            }, { className: "motion-row-exit", timeoutMs: 280 });
-        });
-        el.recentlyViewedBar.querySelectorAll('[data-action="remove-recent"]').forEach((button) => {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                const uniId = String(button.getAttribute("data-uni-id") || "").trim();
-                if (!uniId) return;
-                const chip = button.closest(".u-recent__chip");
-                motionPress(button);
-                replayMotion(button.querySelector(".u-recent__remove-icon") || button, "motion-icon-remove", { timeoutMs: 240 });
-                animateElementOut(chip, () => {
-                    const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
-                    writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
-                    renderRecentlyViewedBar({ keepOpen: nextIds.length > 0 });
-                }, { className: "motion-chip-remove", timeoutMs: 260 });
-            });
-        });
-    };
+    const recentController = createRecentlyViewedController({
+        container: el.recentlyViewedBar,
+        getUniversityDisplayNameById,
+        universityLinkAttrs,
+        scheduleSyncWorkspaceDepth: () => scheduleSyncWorkspaceDepth(),
+    });
+    __universitiesRecentController = recentController;
+    const renderRecentlyViewedBar = (options) => recentController.render(options);
 
     let lastAppliedLayoutDepth = "";
     let depthSyncRafId = 0;
@@ -1747,121 +1479,56 @@ export function initUniversitiesPage() {
         updateSliderLabels();
     }
 
-    // --- Map ---
-    let mapInstance = null;
-    let markersLayer = null;
-    let markersByUniId = new Map();
-    const mapPopupLoads = new Map();
-    let activeMapUniId = String(focusUniId || "").trim();
-    // Serializes programmatic "fly, then open the card" flights so concurrent
-    // clicks cannot reopen a stale popup after a newer flight has started.
-    let mapFocusSeq = 0;
-    // Counts opened map popups. A repeat marker click makes Leaflet toggle the
-    // focused card closed right before our handler runs, so the focus must
-    // only be cleared when no reopen follows the close (checked below).
-    let mapPopupOpenCount = 0;
-    // Guards our own programmatic closePopup (flight start) so it never wipes
-    // the focus the flight has just selected. Genuine closes always arrive as
-    // separate tasks and are unaffected.
-    let suppressMapCloseClear = false;
-    let mapLibrariesPromise = null;
-    let mapInitPromise = null;
-    let mapWarmupScheduled = false;
-    const MAP_OVERVIEW_CENTER = [25, 0];
-    const MAP_MIN_ZOOM = 2;
-    const MAP_MAX_LATITUDE = 85.0511287798;
-    // Give worldCopyJump enough horizontal room to normalize a wrapped view,
-    // while preventing panning beyond the finite north/south extent of Web Mercator.
-    const MAP_WORLD_WRAP_BOUNDS = [
-        [-MAP_MAX_LATITUDE, -540],
-        [MAP_MAX_LATITUDE, 540],
-    ];
-    const MAP_MAX_ZOOM = 18;
-    const scheduleMapPointsRefresh = debounce(() => {
-        if (state.viewMode !== "map" || !mapInstance) return;
-        const visibleBounds = mapInstance.getBounds();
-        if (lastMapPointsBounds && lastMapPointsBounds.contains(visibleBounds)) return;
-        refreshMapPoints().catch((error) => console.warn("Map points refresh failed", error));
-    }, 250);
+    const renderCard = (u, myBudget, idx = 99, options = {}) => renderUniversityCard(u, myBudget, idx, options, {
+        costBasis: state.cost_basis,
+        priceFilterActive: Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max,
+        studyLevel: state.study_level,
+        isCompareMode: isCompareSelectionMode(),
+        compareUniversityIds,
+        linkAttrs: universityLinkAttrs(),
+    });
+    const fetchUniversities = (apiParams) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug });
+    const fetchAiSort = (payload) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug });
 
-    const MAP_ASSETS = {
-        leafletCss: {
-            href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-            integrity: "sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H",
-        },
-        markerClusterCss: {
-            href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css",
-            integrity: "sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr",
-        },
-        markerClusterDefaultCss: {
-            href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
-            integrity: "sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k",
-        },
-        leafletJs: {
-            src: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
-            integrity: "sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH",
-        },
-        markerClusterJs: {
-            src: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js",
-            integrity: "sha384-RLIyj5q1b5XJTn0tqUhucRZe40nFTocRP91R/NkRJHwAe4XxnTV77FXy/vGLiec2",
-        },
-    };
-
-    function loadStylesheetOnce(id, asset) {
-        if (document.getElementById(id)) return Promise.resolve();
-        return new Promise((resolve, reject) => {
-            const href = String(typeof asset === "string" ? asset : asset?.href || "").trim();
-            const link = document.createElement("link");
-            link.id = id;
-            link.rel = "stylesheet";
-            link.href = href;
-            link.crossOrigin = "anonymous";
-            if (typeof asset !== "string" && asset?.integrity) link.integrity = asset.integrity;
-            link.onload = () => resolve();
-            link.onerror = () => reject(new Error(`Failed to load ${href}`));
-            document.head.appendChild(link);
-        });
-    }
-
-        function loadScriptOnce(id, asset) {
-        if (document.getElementById(id)) return Promise.resolve();
-        return new Promise((resolve, reject) => {
-            const src = String(typeof asset === "string" ? asset : asset?.src || "").trim();
-            const script = document.createElement("script");
-            script.id = id;
-            script.src = src;
-            script.async = true;
-            script.crossOrigin = "anonymous";
-            if (typeof asset !== "string" && asset?.integrity) script.integrity = asset.integrity;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Failed to load ${src}`));
-            document.head.appendChild(script);
-        });
-    }
-
-    function ensureMapLibraries() {
-        if (window.L && typeof window.L.markerClusterGroup === "function") {
-            return Promise.resolve(window.L);
-        }
-        if (!mapLibrariesPromise) {
-            mapLibrariesPromise = Promise.all([
-                loadStylesheetOnce("leafletCss", MAP_ASSETS.leafletCss),
-                loadStylesheetOnce("leafletMarkerClusterCss", MAP_ASSETS.markerClusterCss),
-                loadStylesheetOnce("leafletMarkerClusterDefaultCss", MAP_ASSETS.markerClusterDefaultCss),
-                loadScriptOnce("leafletJs", MAP_ASSETS.leafletJs)
-                    .then(() => loadScriptOnce("leafletMarkerClusterJs", MAP_ASSETS.markerClusterJs)),
-            ]).then(() => {
-                if (!window.L || typeof window.L.markerClusterGroup !== "function") {
-                    throw new Error("Leaflet marker cluster is unavailable");
-                }
-                return window.L;
-            }).catch((error) => {
-                mapLibrariesPromise = null;
-                throw error;
-            });
-        }
-        return mapLibrariesPromise;
-    }
+    const mapController = createUniversitiesMapController({
+        el,
+        state,
+        apiState,
+        savedUniversityIds,
+        getFocusUniId: () => focusUniId,
+        isFocusUniDone: () => focusUniDone,
+        setFocusUniDone: (done) => { focusUniDone = done; },
+        getLastRenderedItems: () => lastRenderedItems,
+        setLastRenderedItems: (items) => { lastRenderedItems = items; },
+        setViewModesReady: (ready) => { viewModesReady = ready; },
+        syncViewModeControls,
+        scheduleSyncWorkspaceDepth,
+        refreshUnifitLegend,
+        updateUnifitWarningBanner,
+        renderCompareTray,
+        syncCardActionState,
+        renderRecentlyViewedBar,
+        updateMobileFilterUi,
+        isCompareSelectionMode,
+        toggleCompareUniversity,
+        openUniversityDetail,
+        universityLinkAttrs,
+        renderCard,
+        buildParams: (forApi) => buildParams(forApi),
+        buildAiSortPayload: () => buildAiSortPayload(),
+        fetchUniversities,
+        fetchUniversitiesAiSort: fetchAiSort,
+        fetchAndRender: (options) => fetchAndRender(options),
+    });
+    __universitiesMapController = mapController;
+    const {
+        switchView,
+        initMap,
+        warmMapMode,
+        loadNextMapResults,
+        refreshMapPoints,
+        updateMapMarkers,
+    } = mapController;
 
     readFromUrl(); 
     
@@ -2574,13 +2241,7 @@ export function initUniversitiesPage() {
         scheduleSyncSidebarMaxHeight();
         syncMobileFilterFooterClearance();
         // Map stage height follows the viewport, so tell Leaflet to re-fit tiles.
-        if (state.viewMode === "map" && mapInstance) {
-            if (__universitiesMapResizeTimer) window.clearTimeout(__universitiesMapResizeTimer);
-            __universitiesMapResizeTimer = window.setTimeout(() => {
-                __universitiesMapResizeTimer = 0;
-                if (mapInstance) mapInstance.invalidateSize();
-            }, 150);
-        }
+        mapController.scheduleInvalidateSize(150);
     };
     window.addEventListener("resize", __universitiesResizeHandler, { passive: true });
     syncMobileFilterFooterClearance();
@@ -2597,762 +2258,6 @@ export function initUniversitiesPage() {
         if (el.recentlyViewedBar) __universitiesResizeObserver.observe(el.recentlyViewedBar);
         const filterCardNode = el.filterCard || sidebarNode?.querySelector(".u-filter-card");
         if (filterCardNode) __universitiesResizeObserver.observe(filterCardNode);
-    }
-
-    function applyViewVisibility(mode) {
-        if (el.list) el.list.style.display = mode === "list" ? "grid" : "none";
-        if (el.pagination) el.pagination.style.display = mode === "list" ? "flex" : "none";
-        if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
-        if (mode !== "map" && __universitiesMapResultsObserver) {
-            __universitiesMapResultsObserver.disconnect();
-        }
-    }
-
-    async function switchView(mode, shouldFetch = false) {
-        state.viewMode = mode;
-        saveFilters(state);
-        syncViewModeControls();
-
-        if (mode === "map" && Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) {
-            renderMapResultsPanel(lastRenderedItems);
-        }
-
-        applyViewVisibility(mode);
-        scheduleSyncWorkspaceDepth();
-
-        if (mode === "map") {
-            await initMap();
-            if (state.viewMode !== "map") return;
-            if (lastRenderedItems.length > 0) {
-                updateMapMarkers(lastRenderedItems, { renderResults: false });
-            }
-            window.setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 100);
-        }
-
-        if (shouldFetch) {
-            fetchAndRender({ preserveVisibleResults: true, animateResults: false });
-        }
-    }
-
-    async function initMap() {
-        if (mapInstance) return mapInstance;
-        if (mapInitPromise) return mapInitPromise;
-        mapInitPromise = (async () => {
-            const L = await ensureMapLibraries();
-            if (mapInstance) return mapInstance;
-            mapInstance = L.map('mapContainer', {
-                worldCopyJump: true,
-                maxBounds: MAP_WORLD_WRAP_BOUNDS,
-                maxBoundsViscosity: 1.0,
-                minZoom: MAP_MIN_ZOOM,
-                maxZoom: MAP_MAX_ZOOM,
-                zoomControl: false,
-                zoomAnimation: true,
-                zoomAnimationThreshold: 4,
-                fadeAnimation: true,
-                markerZoomAnimation: true,
-                zoomSnap: 1,
-                zoomDelta: 1,
-                wheelDebounceTime: 30,
-                wheelPxPerZoomLevel: 60,
-                keyboard: true,
-            }).setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                noWrap: false,
-                attribution: `&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">${escapeHtml(t("universities.map_controls.osm_contributors", "OpenStreetMap contributors"))}</a>`,
-            }).addTo(mapInstance);
-            L.control.zoom({
-                position: "topleft",
-                zoomInTitle: t("universities.map_controls.zoom_in", "Zoom in"),
-                zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
-            }).addTo(mapInstance);
-
-            // The cluster radius (px between marker centres) is kept wider than a
-            // label pill, so clustering also keeps unclustered labels from overlapping.
-            markersLayer = L.markerClusterGroup({
-                showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
-                maxClusterRadius: 100,
-                chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
-                iconCreateFunction: function(cluster) {
-                    const label = mapClusterLabel(cluster);
-                    return L.divIcon({
-                        html: label
-                            ? `<span class="map-cluster-pill" aria-hidden="true"><span class="map-cluster-pill__place">${escapeHtml(label.text)}</span><span class="map-cluster-pill__count">${escapeHtml(label.count)}</span></span>`
-                            : `<span class="map-cluster-count" aria-hidden="true">${cluster.getChildCount()}</span>`,
-                        className: "cluster-icon-container",
-                        // No fixed size: the pill is as wide as its label and is
-                        // centred on the point with CSS.
-                        iconSize: null,
-                    });
-                }
-            });
-            markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
-            mapInstance.on('popupopen', () => {
-                mapPopupOpenCount += 1;
-            });
-            mapInstance.on('popupclose', (e) => {
-                if (suppressMapCloseClear || markersByUniId.size === 0) return;
-                const source = e.popup && typeof e.popup.getSource === "function" ? e.popup.getSource() : e.popup?._source;
-                const closedUniId = source?.options?.uniId;
-                if (closedUniId && closedUniId === activeMapUniId) {
-                    const closeCount = mapPopupOpenCount;
-                    window.setTimeout(() => {
-                        // A repeat click on the focused marker makes Leaflet
-                        // toggle its card closed and our handler reopens it in
-                        // the same task: keep the focus then, clear it only on
-                        // a real close.
-                        if (mapPopupOpenCount !== closeCount) return;
-                        if (closedUniId === activeMapUniId) updateMapResultsSelection("");
-                    }, 0);
-                }
-            });
-            mapInstance.on('moveend', scheduleMapPointsRefresh);
-            mapInstance.addLayer(markersLayer);
-            return mapInstance;
-        })().catch((error) => {
-            mapInitPromise = null;
-            throw error;
-        });
-        return mapInitPromise;
-    }
-
-    function warmMapMode() {
-        if (mapInstance || mapWarmupScheduled) return;
-        mapWarmupScheduled = true;
-
-        // Loading the map libraries after the first catalog paint keeps the
-        // first view switch from racing a cold Leaflet setup. The visible map
-        // still invalidates its size when it is opened for the first time.
-        const startWarmup = () => {
-            initMap()
-                .then(() => {
-                    updateMapMarkers(lastRenderedItems, { renderResults: false });
-                    viewModesReady = true;
-                    syncViewModeControls();
-                })
-                .catch((error) => console.warn("Map warmup failed", error));
-        };
-        if (typeof window.requestIdleCallback === "function") {
-            window.requestIdleCallback(startWarmup, { timeout: 1000 });
-        } else {
-            window.setTimeout(startWarmup, 0);
-        }
-    }
-
-    // Where each university stands in the results list the user is looking at
-    // (the selected sort, UniFit included). The list holds every matching
-    // university, so this is the order a group is labelled by.
-    let mapResultsOrder = new Map();
-
-    function syncMapResultsOrder() {
-        mapResultsOrder = new Map(mapResultsItems.map((item, index) => [String(item?.id || "").trim(), index]));
-        if (markersLayer && typeof markersLayer.refreshClusters === "function") markersLayer.refreshClusters();
-    }
-
-    // A group is named like a single marker: by the university that comes
-    // first in the selected sort, plus how many others it holds ("КазНУ +3").
-    // Without any label to show it is just the count.
-    function mapClusterLabel(cluster) {
-        const markers = cluster.getAllChildMarkers();
-        const orderOf = (marker) => mapResultsOrder.get(marker.options.uniId) ?? Number.MAX_SAFE_INTEGER;
-        const top = markers
-            .filter((marker) => marker.options.mapLabel)
-            .sort((a, b) => (orderOf(a) - orderOf(b)) || (a.options.mapRank - b.options.mapRank))[0];
-        return top ? { text: top.options.mapLabel, count: `+${markers.length - 1}` } : null;
-    }
-
-    function updateMapResultsSelection(uniId) {
-        activeMapUniId = String(uniId || "").trim();
-        if (!el.mapResults) return;
-        el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]").forEach((card) => {
-            const isActive = card.getAttribute("data-uni-id") === activeMapUniId;
-            card.classList.toggle("is-active", isActive);
-        });
-    }
-
-    // Settles the map before a programmatic flight: closes any open card (its
-    // autoPan/keepInView would fight the flight) and stops an in-progress pan
-    // animation. The stop is required: starting flyTo over a running panBy
-    // leaves Leaflet 1.9.4 with a stale `leaflet-pan-anim` pane transform, so
-    // the map renders offset from its true view until something resyncs it.
-    function settleMapForFlight() {
-        suppressMapCloseClear = true;
-        try {
-            mapInstance.closePopup();
-        } finally {
-            suppressMapCloseClear = false;
-        }
-        try {
-            if (mapInstance._panAnim) mapInstance._panAnim.stop();
-        } catch {
-            // Pan-animation internals are version-specific; the flight below
-            // still works, it just cannot reuse the cleanup.
-        }
-    }
-
-    // Flies to the marker with no popup on the map: an open popup would fight
-    // the flight with its own autoPan/keepInView panning. The card opens once,
-    // after the flight has actually arrived (a stale moveend from the
-    // cancelled pan is ignored via the arrival check below).
-    function flyMapToUniversity(targetId, latLng, { openPopup = true, zoom = 14 } = {}) {
-        updateMapResultsSelection(targetId);
-        const focusSeq = ++mapFocusSeq;
-        const flightStartedAt = Date.now();
-        const awaitArrival = () => {
-            if (!mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
-                if (mapInstance) mapInstance.off("moveend", awaitArrival);
-                return;
-            }
-            // The flight lasts 1s; an arrival much later means the user took
-            // over the map, so never surprise-open the card afterwards.
-            if (Date.now() - flightStartedAt > 2500) {
-                mapInstance.off("moveend", awaitArrival);
-                return;
-            }
-            let arrived = false;
-            try {
-                arrived = mapInstance.distance(mapInstance.getCenter(), latLng) < 20;
-            } catch {
-                arrived = false;
-            }
-            if (!arrived) return;
-            mapInstance.off("moveend", awaitArrival);
-            const current = markersByUniId.get(targetId);
-            if (current) {
-                current.setZIndexOffset(1200);
-                if (openPopup) {
-                    try {
-                        if (!current.getPopup()?.isOpen()) current.openPopup();
-                    } catch {
-                        current.openPopup();
-                    }
-                }
-            }
-            // Heal any pan animation left hanging by the flight: a starved
-            // rAF (background/headless page) can leave Leaflet with a stale
-            // `leaflet-pan-anim` pane transform, so the map renders offset
-            // from its true view until something resyncs it. Fast-forwarding
-            // renders the same end state the pan was heading to, so this is
-            // visually a no-op when animations run normally.
-            window.setTimeout(() => {
-                if (focusSeq !== mapFocusSeq || !mapInstance || state.viewMode !== "map") return;
-                try {
-                    if (mapInstance._panAnim) mapInstance._panAnim.stop();
-                } catch {
-                    // Pan-animation internals are version-specific.
-                }
-            }, 400);
-        };
-        mapInstance.on("moveend", awaitArrival);
-        // Closes the just auto-opened popup (Leaflet opens it synchronously on
-        // marker click, before our handler runs) and any previous card, so the
-        // flight owns the viewport until arrival. Same-tick close: no flicker.
-        settleMapForFlight();
-        mapInstance.flyTo(latLng, zoom, {
-            animate: true,
-            duration: 1.0,
-            easeLinearity: 0.2
-        });
-    }
-
-    function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
-        const targetId = String(uniId || "").trim();
-        if (!targetId || !mapInstance) return;
-        if (targetId === activeMapUniId) {
-            const current = markersByUniId.get(targetId);
-            let popupOpen = false;
-            try {
-                popupOpen = Boolean(current && typeof current.getPopup === "function" && current.getPopup()?.isOpen());
-            } catch {
-                popupOpen = false;
-            }
-            if (popupOpen) return;
-        }
-        const marker = markersByUniId.get(targetId);
-        if (!marker) {
-            const item = mapResultsItems.find((row) => String(row?.id || "") === targetId);
-            const lat = Number(item?.coordinates?.lat);
-            const lon = Number(item?.coordinates?.lon);
-            if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-            pendingMapFocusId = targetId;
-            updateMapResultsSelection(targetId);
-            settleMapForFlight();
-            mapInstance.flyTo([lat, lon], zoom, {
-                animate: true,
-                duration: 1.0,
-                easeLinearity: 0.2,
-            });
-            return;
-        }
-
-        const latLng = marker.getLatLng();
-        if (fly) {
-            flyMapToUniversity(targetId, latLng, { openPopup, zoom });
-            return;
-        }
-
-        updateMapResultsSelection(targetId);
-        mapInstance.panTo(latLng);
-        const current = markersByUniId.get(targetId);
-        if (!current) return;
-        current.setZIndexOffset(1200);
-        if (openPopup) current.openPopup();
-    }
-
-    function mapResultsFooterHtml() {
-        const shown = mapResultsItems.length;
-        const total = Math.max(shown, mapResultsTotal);
-        const summary = tFormat(
-            "universities.map_panel.showing",
-            { count: String(shown), total: String(total) },
-            `Showing ${shown} of ${total}`
-        );
-        const buttonLabel = mapResultsLoadFailed
-            ? t("error.retry", "Retry")
-            : t("universities.map_panel.load_more", "Load more");
-        const loadingText = t("universities.map_panel.loading_more", "Loading more universities");
-        return `
-            <div class="u-map-results-footer" data-map-results-footer>
-                <span class="u-map-results-count" role="status" aria-live="polite">${escapeHtml(summary)}</span>
-                ${mapResultsHasMore ? `
-                    <button type="button" class="u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
-                        ${mapResultsLoadingMore ? `<span class="u-map-results-spinner" aria-hidden="true"></span>${escapeHtml(loadingText)}` : escapeHtml(buttonLabel)}
-                    </button>
-                ` : `<span class="u-map-results-complete">${escapeHtml(t("universities.map_panel.all_loaded", "All matching universities are loaded"))}</span>`}
-            </div>
-        `;
-    }
-
-    function bindMapResultCards(cards) {
-        cards.forEach((card) => {
-            card.addEventListener("click", (event) => {
-                const target = event.target instanceof Element ? event.target : null;
-                if (!target) return;
-                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble, .uni-status-overflow")) return;
-                const uniId = String(card.getAttribute("data-uni-id") || "").trim();
-                if (!uniId) return;
-                const detailsLink = target.closest("a.uni-details");
-                if (detailsLink) {
-                    event.preventDefault();
-                    if (isCompareSelectionMode()) {
-                        toggleCompareUniversity(uniId);
-                        return;
-                    }
-                    rememberRecentUniversity(uniId);
-                    openUniversityDetail(uniId);
-                    return;
-                }
-                if (isCompareSelectionMode()) {
-                    toggleCompareUniversity(uniId);
-                    return;
-                }
-                focusMapUniversity(uniId, { openPopup: true, fly: true, zoom: 14 });
-            });
-        });
-    }
-
-    function syncMapResultsObserver() {
-        if (__universitiesMapResultsObserver) {
-            __universitiesMapResultsObserver.disconnect();
-            __universitiesMapResultsObserver = null;
-        }
-        if (!mapResultsHasMore || mapResultsLoadingMore || state.viewMode !== "map") return;
-        const list = el.mapResults?.querySelector(".u-map-results-list");
-        const loadMoreButton = list?.querySelector('[data-action="load-more-map-results"]');
-        if (!list || !loadMoreButton || typeof IntersectionObserver === "undefined") return;
-        __universitiesMapResultsObserver = new IntersectionObserver((entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
-            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
-        }, { root: list, rootMargin: "0px 0px 320px 0px", threshold: 0.01 });
-        __universitiesMapResultsObserver.observe(loadMoreButton);
-    }
-
-    function bindMapResultsFooter() {
-        const loadMoreButton = el.mapResults?.querySelector('[data-action="load-more-map-results"]');
-        loadMoreButton?.addEventListener("click", () => {
-            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
-        });
-        syncMapResultsObserver();
-    }
-
-    function renderMapResultsPanel(items, options = {}) {
-        if (!el.mapResults) return;
-        const append = options.append === true;
-        const nextItems = Array.isArray(items) ? items : [];
-
-        if (!append && !nextItems.length) {
-            el.mapResults.innerHTML = `
-                <div class="u-map-results-empty">${escapeHtml(t("universities.state.empty", "No universities found."))}</div>
-            `;
-            return;
-        }
-
-        const preferredId = mapResultsItems.some((u) => String(u.id || "") === activeMapUniId)
-            ? activeMapUniId
-            : (mapResultsItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
-        activeMapUniId = preferredId;
-
-        const profile = loadProfileForApi();
-        const userBudget = Number.parseFloat(profile.budget);
-        const cardsHtml = nextItems.map((u, idx) => {
-            const uniId = String(u?.id || "");
-            return renderCard(u, userBudget, (mapResultsItems.length - nextItems.length) + idx, {
-                hideMedia: true,
-                mapVariant: true,
-                isActive: uniId !== "" && uniId === preferredId,
-            });
-        }).join("");
-
-        if (!append) {
-            el.mapResults.innerHTML = `<div class="u-map-results-list">${cardsHtml}${mapResultsFooterHtml()}</div>`;
-            bindMapResultCards(Array.from(el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]")));
-        } else {
-            const list = el.mapResults.querySelector(".u-map-results-list");
-            const footer = list?.querySelector("[data-map-results-footer]");
-            if (!list || !footer) {
-                renderMapResultsPanel(mapResultsItems);
-                return;
-            }
-            footer.insertAdjacentHTML("beforebegin", cardsHtml);
-            footer.outerHTML = mapResultsFooterHtml();
-            const appendedIds = new Set(nextItems.map((item) => String(item?.id || "")));
-            bindMapResultCards(Array.from(list.querySelectorAll(".uni-card[data-uni-id]")).filter((card) => appendedIds.has(String(card.getAttribute("data-uni-id") || ""))));
-        }
-
-        refreshUnifitLegend();
-        bindMapResultsFooter();
-    }
-
-    function refreshMapResultsFooter() {
-        const footer = el.mapResults?.querySelector("[data-map-results-footer]");
-        if (!footer) return;
-        footer.outerHTML = mapResultsFooterHtml();
-        bindMapResultsFooter();
-    }
-
-    async function fetchMapResultsPage(page) {
-        if (state.sort === "uni_ai") {
-            const payload = buildAiSortPayload();
-            payload.page = state.only_saved ? 1 : page;
-            payload.limit = state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE;
-            return fetchUniversitiesAiSort(payload);
-        }
-
-        const params = buildParams(true);
-        params.set("page", String(state.only_saved ? 1 : page));
-        params.set("limit", String(state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE));
-        return fetchUniversities(params);
-    }
-
-    async function loadNextMapResults({ reset = false, animateResults = true } = {}) {
-        if (mapResultsLoadingMore || (!reset && !mapResultsHasMore)) return;
-        const runSeq = reset ? ++mapResultsRunSeq : mapResultsRunSeq;
-        const nextPage = reset ? 1 : mapResultsPage + 1;
-        if (reset) {
-            mapResultsItems = [];
-            mapResultsPage = 0;
-            mapResultsTotal = 0;
-            mapResultsHasMore = true;
-            mapResultsLoadFailed = false;
-            syncMapResultsOrder();
-        }
-
-        mapResultsLoadingMore = true;
-        mapResultsLoadFailed = false;
-        refreshMapResultsFooter();
-
-        try {
-            const data = await fetchMapResultsPage(nextPage);
-            if (data?.__aborted || runSeq !== mapResultsRunSeq || state.viewMode !== "map") return;
-
-            const rawItems = Array.isArray(data.items) ? data.items : [];
-            const pageItems = state.only_saved
-                ? rawItems.filter((item) => savedUniversityIds.has(String(item?.id || "").trim()))
-                : rawItems;
-            const existingIds = new Set(mapResultsItems.map((item) => String(item?.id || "")));
-            const uniqueItems = pageItems.filter((item) => {
-                const id = String(item?.id || "");
-                return id && !existingIds.has(id);
-            });
-
-            mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
-            syncMapResultsOrder();
-            mapResultsPage = nextPage;
-            mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
-            mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
-            lastRenderedItems = mapResultsItems;
-            state.lastCatalogTotal = mapResultsTotal;
-            if (el.total) el.total.textContent = String(mapResultsTotal);
-            updateUnifitWarningBanner();
-
-            renderMapResultsPanel(uniqueItems, { append: !reset });
-            if (animateResults && uniqueItems.length) {
-                const cards = Array.from(el.mapResults?.querySelectorAll(".u-map-results-list .uni-card") || []).slice(-uniqueItems.length);
-                cards.forEach((card, index) => markMotionEnter(card, null, { limit: 1, staggerMs: Math.min(index * 12, 120) }));
-            }
-            renderCompareTray();
-            syncCardActionState();
-            renderRecentlyViewedBar();
-            updateMobileFilterUi();
-            scheduleSyncWorkspaceDepth();
-        } catch (error) {
-            if (runSeq !== mapResultsRunSeq || error?.name === "AbortError") return;
-            mapResultsLoadFailed = true;
-            mapResultsHasMore = true;
-            if (!mapResultsItems.length) {
-                el.mapResults.innerHTML = `
-                    <div class="u-map-results-list">
-                        <div class="u-map-results-empty" role="alert">${escapeHtml(t("universities.map_panel.load_failed", "Could not load map results."))}</div>
-                        ${mapResultsFooterHtml()}
-                    </div>
-                `;
-            }
-            console.error(error);
-        } finally {
-            if (runSeq === mapResultsRunSeq) {
-                mapResultsLoadingMore = false;
-                refreshMapResultsFooter();
-            }
-        }
-    }
-
-    function buildMapPointsParams(bounds) {
-        const params = buildParams(true);
-        ["fields", "page", "limit", "sort", "view", "practice_vs_science", "social_vs_hardcore", "budget_vs_prestige", "city_vs_campus"].forEach((key) => params.delete(key));
-        if (state.sort === "uni_ai") params.delete("major");
-        params.set("west", String(Math.max(-180, bounds.getWest())));
-        params.set("south", String(Math.max(-90, bounds.getSouth())));
-        params.set("east", String(Math.min(180, bounds.getEast())));
-        params.set("north", String(Math.min(90, bounds.getNorth())));
-        return params;
-    }
-
-    async function refreshMapPoints({ force = false } = {}) {
-        if (!mapInstance || state.viewMode !== "map") return;
-        const visibleBounds = mapInstance.getBounds();
-        if (!force && lastMapPointsBounds && lastMapPointsBounds.contains(visibleBounds)) return;
-
-        const requestBounds = visibleBounds.pad(0.35);
-        const params = buildMapPointsParams(requestBounds);
-        const requestSeq = ++mapPointsRunSeq;
-        if (mapPointsFetchController) mapPointsFetchController.abort();
-        const controller = new AbortController();
-        mapPointsFetchController = controller;
-
-        try {
-            let response;
-            let profiled = Date.now() >= profiledEndpointUnavailableUntil;
-            if (profiled) {
-                const payload = { ...Object.fromEntries(params), profile: loadProfileForApi(),
-                    fields: "map", sort: "rank_asc", page: 1, limit: 2000 };
-                ["west", "south", "east", "north"].forEach((key) => delete payload[key]);
-                response = await fetch(`${API_BASE}/universities/profiled`, {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload), signal: controller.signal,
-                });
-                if (response.status === 404 || response.status === 405) {
-                    profiledEndpointUnavailableUntil = Date.now() + CACHE_TTL_MS;
-                    profiled = false;
-                }
-            }
-            if (!profiled) response = await fetch(`${API_BASE}/universities/map-points?${params.toString()}`, { signal: controller.signal });
-            if (!response.ok) throw new Error("Map points API error");
-            const data = await response.json();
-            if (requestSeq !== mapPointsRunSeq || state.viewMode !== "map") return;
-            const west = Number(params.get("west"));
-            const east = Number(params.get("east"));
-            const south = Number(params.get("south"));
-            const north = Number(params.get("north"));
-            const points = (Array.isArray(data.items) ? data.items : []).filter((item) => (
-                (!state.only_saved || savedUniversityIds.has(String(item?.id || "").trim()))
-                && (!profiled || (
-                    Number(item?.coordinates?.lat) >= south && Number(item?.coordinates?.lat) <= north
-                    && (west <= east
-                        ? Number(item?.coordinates?.lon) >= west && Number(item?.coordinates?.lon) <= east
-                        : Number(item?.coordinates?.lon) >= west || Number(item?.coordinates?.lon) <= east)
-                ))
-            ));
-            lastMapPointsBounds = requestBounds;
-            updateMapMarkers(points, { renderResults: false });
-        } catch (error) {
-            if (error?.name !== "AbortError") throw error;
-        } finally {
-            if (mapPointsFetchController === controller) mapPointsFetchController = null;
-        }
-    }
-
-    function renderMapPointPopup(item, stateName = "loading") {
-        const id = String(item?.id || "").trim();
-        const name = textOrUnknown(trUniversityName(item), "placeholder.field.university_name", "University name");
-        const country = trCountry(nested(item, ["location", "country"], ""));
-        const city = trCity(nested(item, ["location", "city"], ""));
-        const locationText = [city, country].filter(Boolean).join(", ");
-        const isFailed = stateName === "failed";
-        const statusText = isFailed
-            ? t("universities.map_popup.failed", "Could not load the university card.")
-            : t("universities.map_popup.loading", "Loading university card");
-        return `
-            <div class="map-card-wrapper map-point-popup" data-uni-id="${escapeHtmlAttr(id)}">
-                <div class="map-point-popup__head">
-                    <span class="map-point-popup__copy">
-                        <strong>${escapeHtml(name)}</strong>
-                        ${locationText ? `<span>${escapeHtml(locationText)}</span>` : ""}
-                    </span>
-                </div>
-                <span class="map-point-popup__status" role="status">
-                    ${isFailed ? "" : '<span class="u-map-results-spinner" aria-hidden="true"></span>'}
-                    ${escapeHtml(statusText)}
-                </span>
-                <a class="uni-details" href="${routeUniversityDetail(id)}"${universityLinkAttrs()}>${escapeHtml(t("universities.card.view_details", "View details"))}<span aria-hidden="true">→</span></a>
-            </div>
-        `;
-    }
-
-    function renderFullMapPopup(item) {
-        const profile = loadProfileForApi();
-        const userBudget = Number.parseFloat(profile.budget);
-        return `<div class="map-card-wrapper">${renderCard(item, userBudget, 0, { costTooltipScope: "map-popup" })}</div>`;
-    }
-
-    function findLoadedMapCard(uniId) {
-        return mapResultsItems.find((item) => String(item?.id || "").trim() === uniId) || null;
-    }
-
-    async function hydrateMapMarkerPopup(marker, point) {
-        const uniId = String(point?.id || "").trim();
-        if (!uniId || !marker) return;
-
-        const loadedCard = findLoadedMapCard(uniId);
-        if (loadedCard) {
-            marker.setPopupContent(renderFullMapPopup(loadedCard));
-            marker.getPopup()?.update();
-            syncCardActionState();
-            return;
-        }
-
-        marker.setPopupContent(renderMapPointPopup(point, "loading"));
-        marker.getPopup()?.update();
-        const cacheKey = `${getCurrentLanguage() || "eng"}:${uniId}`;
-        if (!mapPopupLoads.has(cacheKey)) {
-            const request = fetchUniversityDetailCached(uniId).catch((error) => {
-                mapPopupLoads.delete(cacheKey);
-                throw error;
-            });
-            mapPopupLoads.set(cacheKey, request);
-        }
-
-        try {
-            const detail = await mapPopupLoads.get(cacheKey);
-            if (markersByUniId.get(uniId) !== marker) return;
-            marker.setPopupContent(renderFullMapPopup({ ...detail, catalog_costs: point.catalog_costs || detail.catalog_costs }));
-            marker.getPopup()?.update();
-            syncCardActionState();
-        } catch (error) {
-            if (markersByUniId.get(uniId) !== marker) return;
-            marker.setPopupContent(renderMapPointPopup(point, "failed"));
-            marker.getPopup()?.update();
-            console.warn("Map university card failed to load", error);
-        }
-    }
-
-    function updateMapMarkers(items, options = {}) {
-        if (!mapInstance || !markersLayer) return;
-        const L = window.L;
-        if (!L) return;
-        markersLayer.clearLayers();
-        markersByUniId = new Map();
-        if (options.renderResults !== false) renderMapResultsPanel(items);
-        const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
-        const popupOptions = {
-            minWidth: isCompactViewport ? 220 : 320,
-            maxWidth: isCompactViewport ? 280 : 380,
-            className: "custom-map-popup",
-            autoPan: true,
-            keepInView: true,
-            autoPanPaddingTopLeft: L.point(20, 20),
-            autoPanPaddingBottomRight: L.point(20, 20)
-        };
-        const newMarkers = [];
-        items.forEach((u, index) => {
-            const latitude = Number(u?.coordinates?.lat);
-            const longitude = Number(u?.coordinates?.lon);
-            if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-                const uniId = String(u.id || "");
-                // The short label (abbreviation or distinctive name) comes from the
-                // API; without one the marker stays icon-only rather than guessing.
-                const mapLabel = String(u.map_label || "").trim();
-                const customIcon = L.divIcon({
-                    className: "custom-div-icon",
-                    html: `<span class="map-university-marker" aria-hidden="true">${heroIcon("academic-cap", "map-university-marker__icon", { "stroke-width": 2 })}${mapLabel ? `<span class="map-university-marker__label">${escapeHtml(mapLabel)}</span>` : ""}</span>`,
-                    iconSize: null,
-                    popupAnchor: [0, -24],
-                });
-                const marker = L.marker([latitude, longitude], {
-                    icon: customIcon,
-                    title: trUniversityName(u),
-                    uniId: uniId,
-                    mapLabel,
-                    mapRank: index,
-                });
-                marker.bindTooltip(escapeHtml(trUniversityName(u)), {
-                    direction: "top",
-                    offset: [0, -18],
-                    className: "map-university-tooltip",
-                });
-                const loadedCard = findLoadedMapCard(uniId);
-                const cardHTML = loadedCard ? renderFullMapPopup(loadedCard) : renderMapPointPopup(u, "loading");
-                marker.bindPopup(cardHTML, popupOptions);
-                marker.on("popupopen", () => {
-                    hydrateMapMarkerPopup(marker, u).catch((error) => console.warn("Map university card failed to load", error));
-                });
-                marker.on('click', function() {
-                    const clickedMarker = this;
-                    if (uniId === activeMapUniId) {
-                        // Repeat click on the focused marker: Leaflet toggles
-                        // its card closed right before this handler runs, so
-                        // reopen it in place and never re-fly to the logo.
-                        let popupOpen = false;
-                        try {
-                            popupOpen = Boolean(clickedMarker.getPopup()?.isOpen());
-                        } catch {
-                            popupOpen = false;
-                        }
-                        if (!popupOpen) clickedMarker.openPopup();
-                        return;
-                    }
-                    clickedMarker.setZIndexOffset(1000);
-                    flyMapToUniversity(uniId, clickedMarker.getLatLng(), { openPopup: true, zoom: 16 });
-                });
-                newMarkers.push(marker);
-                markersByUniId.set(uniId, marker);
-            }
-        });
-        markersLayer.addLayers(newMarkers);
-        if (pendingMapFocusId && markersByUniId.has(pendingMapFocusId)) {
-            const pendingId = pendingMapFocusId;
-            pendingMapFocusId = "";
-            const pendingMarker = markersByUniId.get(pendingId);
-            updateMapResultsSelection(pendingId);
-            pendingMarker.setZIndexOffset(1200);
-            pendingMarker.openPopup();
-        }
-        if (state.viewMode === "map" && focusUniId && !focusUniDone) {
-            const target = markersByUniId.get(focusUniId);
-            if (target) {
-                updateMapResultsSelection(focusUniId);
-                focusUniDone = true;
-                const latLng = target.getLatLng();
-                mapInstance.once('moveend', () => {
-                    target.setZIndexOffset(1200);
-                    target.openPopup();
-                });
-                mapInstance.flyTo(latLng, 14, { animate: true, duration: 1.2 });
-            }
-        }
-
-        if (!focusUniDone) {
-            if (activeMapUniId) updateMapResultsSelection(activeMapUniId);
-        }
     }
 
     function updateSliderVisibility() {
@@ -3663,143 +2568,6 @@ export function initUniversitiesPage() {
         }
     }
 
-    async function fetchUniversities(apiParams) {
-        const profile = loadProfileForApi();
-        const requestPayload = { ...Object.fromEntries(apiParams), profile };
-        const key = JSON.stringify(requestPayload);
-        const now = Date.now();
-        logTranslationDebug("non-ai request start", {
-            query: apiParams.toString(),
-            reason: "sort is not uni_ai or AI fallback path",
-        });
-        const cached = universitiesFetchCache.get(key);
-        if (cached && (now - cached.timestamp) < CACHE_TTL_MS) {
-            logTranslationDebug("non-ai request cache hit (frontend memory)", {
-                ageMs: now - cached.timestamp,
-            });
-            return cached.payload;
-        }
-
-        if (listFetchController) {
-            listFetchController.abort();
-        }
-        const controller = new AbortController();
-        listFetchController = controller;
-
-        let res;
-        try {
-            if (Date.now() < profiledEndpointUnavailableUntil) {
-                res = await fetch(`${API_BASE}/universities?${apiParams}`, { signal: controller.signal });
-            } else {
-                res = await fetch(`${API_BASE}/universities/profiled`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: key,
-                    signal: controller.signal,
-                });
-                if (res.status === 404 || res.status === 405) {
-                    profiledEndpointUnavailableUntil = Date.now() + CACHE_TTL_MS;
-                    if (!legacyPricesWarningShown) {
-                        legacyPricesWarningShown = true;
-                        showToast(t("universities.cost.legacy_server_warning"), "warning");
-                    }
-                    res = await fetch(`${API_BASE}/universities?${apiParams}`, { signal: controller.signal });
-                }
-            }
-        } catch (err) {
-            if (err?.name === "AbortError") {
-                return { items: [], total: 0, __aborted: true };
-            }
-            throw err;
-        } finally {
-            if (listFetchController === controller) {
-                listFetchController = null;
-            }
-        }
-
-        if (!res.ok) throw new Error("API Error");
-        const data = await res.json();
-        const payload = {
-            items: data.items || [],
-            total: data.total || 0,
-        };
-        logTranslationDebug("non-ai response received", {
-            httpStatus: res.status,
-            apiItems: payload.items.length,
-            total: payload.total,
-        });
-        if (universitiesFetchCache.size >= 50) {
-            const oldestKey = universitiesFetchCache.keys().next().value;
-            if (oldestKey !== undefined) universitiesFetchCache.delete(oldestKey);
-        }
-        universitiesFetchCache.set(key, { payload, timestamp: now });
-        return payload;
-    }
-
-    async function fetchUniversitiesAiSort(payload) {
-        const key = JSON.stringify(payload);
-        const now = Date.now();
-        const payloadInterests = String(payload?.profile?.interests || "").trim();
-        logTranslationDebug("request start", {
-            cacheCandidateKeyLength: key.length,
-            interestsRawLength: payloadInterests.length,
-        });
-        if (lastAiFetchKey === key && lastAiFetchPayload && (now - lastAiFetchAt) < CACHE_TTL_MS) {
-            logTranslationDebug("request cache hit (frontend memory)", {
-                ageMs: now - lastAiFetchAt,
-            });
-            return lastAiFetchPayload;
-        }
-
-        if (aiFetchController) {
-            aiFetchController.abort();
-        }
-        const controller = new AbortController();
-        aiFetchController = controller;
-
-        let res;
-        try {
-            res = await fetch(`${API_BASE}/universities/ai-sort`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-                signal: controller.signal,
-            });
-        } catch (err) {
-            if (err?.name === "AbortError") {
-                return { items: [], total: 0, __aborted: true };
-            }
-            throw err;
-        } finally {
-            if (aiFetchController === controller) {
-                aiFetchController = null;
-            }
-        }
-
-        if (!res.ok) throw new Error("AI sort API Error");
-        const data = await res.json();
-        const parsed = {
-            items: data.items || [],
-            total: data.total || 0,
-            warnings: Array.isArray(data.warnings) ? data.warnings : [],
-        };
-        const probe = parsed.items[0] || {};
-        const match = (probe && typeof probe === "object") ? (probe.matchData || {}) : {};
-        logTranslationDebug("response received", {
-            httpStatus: res.status,
-            apiItems: parsed.items.length,
-            apiWarnings: parsed.warnings,
-            mlApplied: Boolean(match.mlApplied),
-            mlAvailable: Boolean(match.mlAvailable),
-            mlUnavailable: Boolean(match.mlUnavailable),
-            mlWarning: String(match.mlWarning || ""),
-        });
-        lastAiFetchKey = key;
-        lastAiFetchPayload = parsed;
-        lastAiFetchAt = now;
-        return parsed;
-    }
-
     function renderFetchedData(data, options = {}) {
         const animateResults = options.animateResults !== false;
         const rawItems = Array.isArray(data.items) ? data.items : [];
@@ -3898,7 +2666,7 @@ export function initUniversitiesPage() {
             if (state.viewMode === 'list') el.list.replaceChildren();
             if (el.pagination) el.pagination.replaceChildren();
         }
-        if (state.viewMode === "map" && !mapInstance) await initMap();
+        if (state.viewMode === "map" && !mapController.hasMapInstance()) await initMap();
         if (!isCurrentCatalog()) return;
 
         const urlParams = sectionUrlParams();
@@ -3907,22 +2675,13 @@ export function initUniversitiesPage() {
 
         try {
         if (state.viewMode === "map") {
-            if (mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
+            mapController.invalidateSize({ pan: false, animate: false });
             if (state.only_saved && savedUniversityIds.size === 0) {
-                mapResultsItems = [];
-                syncMapResultsOrder();
-                mapResultsPage = 0;
-                mapResultsTotal = 0;
-                mapResultsHasMore = false;
-                lastRenderedItems = [];
-                state.lastCatalogTotal = 0;
-                if (el.total) el.total.textContent = "0";
-                renderMapResultsPanel([]);
-                updateMapMarkers([], { renderResults: false });
+                mapController.resetForEmptySaved();
                 return;
             }
 
-            lastMapPointsBounds = null;
+            mapController.clearBoundsCache();
             await Promise.all([
                 loadNextMapResults({ reset: true, animateResults }),
                 refreshMapPoints({ force: true }).catch((error) => {
@@ -3933,7 +2692,7 @@ export function initUniversitiesPage() {
             viewModesReady = true;
             syncViewModeControls();
             renderUniversitiesState({
-                emptyHtml: mapResultsItems.length ? "" : buildCatalogEmptyState(),
+                emptyHtml: mapController.getMapResultsCount() ? "" : buildCatalogEmptyState(),
             });
             return;
         }
@@ -3947,7 +2706,7 @@ export function initUniversitiesPage() {
             await resolveAiSortResult({
                 canUseFastFallback: state.viewMode === "list" && !hasInitialListPaint && state.page === 1,
                 fastFallbackMs: AI_FAST_FALLBACK_MS,
-                fetchAi: () => fetchUniversitiesAiSort(buildAiSortPayload()),
+                fetchAi: () => fetchAiSort(buildAiSortPayload()),
                 fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams)),
                 isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
                 renderData: (data) => renderFetchedData(data, { animateResults }),
@@ -4005,297 +2764,17 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- Render University Catalog Card ---
-    function renderCard(u, myBudget, idx = 99, options = {}) {
-        const hideMedia = Boolean(options && options.hideMedia);
-        const mapVariant = Boolean(options && options.mapVariant);
-        const cardIsActive = Boolean(options && options.isActive);
-        const id = u.id;
-        const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
-        const countryRaw = nested(u, ["location", "country"], "");
-        const cityRaw = nested(u, ["location", "city"], "");
-        const locHtml = renderLocationMarkup({
-            city: trCity(cityRaw),
-            country: trCountry(countryRaw),
-            flagHtml: countryRaw ? getFlagImg(countryRaw) : "",
-            wrapperClass: "uni-loc",
-            iconClass: "uni-loc-icon",
-            showIcon: false,
-            cityClass: "uni-loc-city",
-            countryClass: "uni-loc-country",
-            fallbackClass: "uni-loc-line",
-        });
-        const reviewedAdmissions = u?.admissions_catalog?.availability === "reviewed";
-        const match = u.matchData || {};
-        const priceInfo = universityCardPriceInfo(u, state.cost_basis);
-        const cost = priceInfo.amount;
-        const uniCurrency = priceInfo.currency;
-
-        const statusIndicators = [];
-        // `legend` is the meaning key the UniFit banner legend lists for this icon (LEGEND_LABEL_KEYS).
-        const addStatusIndicator = (iconName, tone, label, detail = "", value = "", legend = "") => {
-            const cleanLabel = String(label || "").trim();
-            const cleanDetail = String(detail || "").trim();
-            const ariaText = cleanDetail ? `${cleanLabel}: ${cleanDetail}` : cleanLabel;
-            const tooltipHtml = cleanDetail
-                ? `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong><span class="uni-status-tooltip__text">${escapeHtml(cleanDetail)}</span>`
-                : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
-            statusIndicators.push(`
-                <span class="uni-status-tooltip">
-                    <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}" data-legend-icon="${escapeHtmlAttr(iconName)}" data-legend-tone="${escapeHtmlAttr(tone)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
-                        <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
-                    </button>
-                    <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
-                </span>
-            `);
-        };
-        const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
-        const preferenceMismatch = Number(match.preferenceMismatch);
-        const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
-        const hintedRequirements = reviewedAdmissions ? "" : String(badgeHints.requirements || "").toLowerCase();
-        const hintedBudgetAid = reviewedAdmissions ? "" : String(badgeHints.budgetAid || "").toLowerCase();
-        const conditionalCount = Number(match.conditionalRequirements || 0);
-        const hasConditionalExamWarning = !reviewedAdmissions && ((badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0));
-        const hasVeryHighVibeMatch = hintedVibe === "your_vibe" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch <= 0.14);
-        const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
-        const meetsMinRequirements = !reviewedAdmissions && (hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning));
-        const hasRequirementsScore = !reviewedAdmissions && match.requirementsFitPercent !== null && match.requirementsFitPercent !== undefined;
-        const belowRequirements = !reviewedAdmissions && (hintedRequirements === "below_requirements" || (!hintedRequirements && hasRequirementsScore && match.meetMinRequirements === false));
-        const hasGrant = !reviewedAdmissions && getGrantsFromCategories(u?.admission_categories).length > 0;
-        const aidAny = !reviewedAdmissions && (Object.hasOwn(match, "aidAny") ? match.aidAny === true : hasGrant);
-        const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
-        const compareCostUSD = priceInfo.amountUSD ?? (cost !== null && uniCurrency ? (uniCurrency === "USD" ? cost : convert(cost, uniCurrency, "USD")) : cost);
-        const overBudget = !reviewedAdmissions && state.cost_basis === "annual_total" && hasUserBudget && compareCostUSD !== null && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
-        const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
-        const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
-        const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
-        const hasMissingProgram = !reviewedAdmissions && Boolean(badgeHints.missingProgram || match.missingProgram);
-        // Earlier-format tooltips: one or two plain sentences (what to add, what falls short, price against budget).
-        // The per-check breakdown stays on the university page.
-        const requirementChecks = !reviewedAdmissions && Array.isArray(match.requirementChecks) ? match.requirementChecks : [];
-        const orJoiner = t("admission.requirements_fit.check.or", "or");
-        const missingExams = missingExamNames(requirementChecks, {
-            examLabel: cardExamLabel, languageTest: t("universities.ux2.tip.language_test"), joiner: orJoiner,
-        }).slice(0, 3);
-        const examNeededDetail = missingExams.length
-            ? tFormat("universities.tip.add_to_profile", { exams: missingExams.join(", ") })
-            : t("universities.why.conditional_exam_needed");
-        const unmet = unmetMinimums(requirementChecks, {
-            examLabel: cardExamLabel, joiner: orJoiner,
-            formatValue: (exam, value, context) => formatExamValue(exam, value, { context }),
-        }).slice(0, 2);
-        const belowDetail = unmet.length
-            ? tFormat("universities.tip.below_minimum", { items: unmet.map((item) => tFormat("universities.tip.minimum_gap", item)).join("; ") })
-            : t("admission.chance.requirements_not_met");
-        const overBudgetDetail = budgetTooltip({ status: "over", costMin: compareCostUSD, budget: myBudget }, tooltipHelpers);
-
-        if (reviewedAdmissions) {
-            reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value, legend }) => addStatusIndicator(icon, tone, label, detail, value, legend));
-        } else {
-        // Priority 0: warning on missing profile major program
-        if (hasMissingProgram) {
-            addStatusIndicator(
-                "academic-cap",
-                "warning",
-                t("universities.badge.no_matching_program", "Program Not Offered"),
-                t("universities.why.no_matching_program", "This university does not offer the study program selected in your profile."),
-                "", "subject_missing"
-            );
-        }
-
-        // Priority 1: warning on missing exam evidence (conditional, not fail)
-        if (hasConditionalExamWarning) {
-            addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Exam result needed"), examNeededDetail, "", "exam_needed");
-        }
-
-        // Priority 2: preference-match group. Only one vibe tag may be shown.
-        if (hasVeryHighVibeMatch) {
-            addStatusIndicator("heart", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceTooltip(match, "universities.why.your_vibe"), "", "vibe");
-        } else if (hasHighVibeMatch) {
-            addStatusIndicator("heart", "match", t("universities.badge.top_match", "Good Match"), preferenceTooltip(match, "universities.why.top_match"), "", "vibe");
-        }
-
-        // Status tags: requirements + budget + aid.
-        if (belowRequirements) {
-            addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), belowDetail, "", "requirements_below");
-        } else if (meetsMinRequirements) {
-            addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), t("universities.tip.requirements_met"), "", "requirements_met");
-        } else if (!reviewedAdmissions && match.requirementsReason && !hasConditionalExamWarning) {
-            addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning }), "", "no_data");
-        }
-
-        if (showOverBudgetAid) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"), overBudgetDetail, "", "over_budget_aid");
-        } else if (showOverBudgetStrict) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"), overBudgetDetail, "", "over_budget");
-        } else if (showAidAvailable) {
-            addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"), "", "", "aid");
-        }
-
-        }
-
-        const MAX_VISIBLE_BADGES = reviewedAdmissions ? 3 : 4;
-        let statusHtml = "";
-        if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
-            statusHtml = statusIndicators.join("");
-        } else {
-            const visible = statusIndicators.slice(0, MAX_VISIBLE_BADGES - 1);
-            const hidden = statusIndicators.slice(MAX_VISIBLE_BADGES - 1);
-            const hiddenCount = hidden.length;
-            const overflowLabel = tFormat("universities.badge.overflow_more", { count: String(hiddenCount) }, `+${hiddenCount} more badges`);
-            const overflowAria = t("universities.badge.overflow_label", "Additional status indicators");
-            const overflowHtml = `
-                <span class="uni-status-overflow">
-                    <button type="button" class="uni-status-overflow-trigger" aria-label="${escapeHtmlAttr(overflowLabel)}" aria-expanded="false" title="${escapeHtmlAttr(overflowLabel)}">
-                        <span aria-hidden="true">+${hiddenCount}</span>
-                    </button>
-                    <span class="uni-status-overflow-popover" role="region" aria-label="${escapeHtmlAttr(overflowAria)}" hidden>
-                        ${hidden.join("")}
-                    </span>
-                </span>
-            `;
-            statusHtml = `${visible.join("")}${overflowHtml}`;
-        }
-
-        // ROI intentionally removed from university cards.
-
-        const thumbSrc = uniThumbnailSrc(id);
-        const thumbSrcMedium = uniThumbnailSrc(id, { size: "medium" });
-        const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
-        const thumbSrcFullFallback = uniThumbnailSrc(id, { forceFull: true, format: "jpg" });
-        const thumbSrcset = `${thumbSrc} 640w, ${thumbSrcMedium} 960w, ${thumbSrcFull} 1600w`;
-        const loadingAttr = idx < 4 ? "eager" : "lazy";
-        const fetchPriorityAttr = idx < 2 ? "high" : "auto";
-        const detailHref = routeUniversityDetail(id);
-        const safeName = escapeHtml(name);
-        const overlayTitle = String(name || "");
-        const rankValue = toFiniteNumber(u?.rank);
-        const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
-        const isCompared = isCompareSelectionMode() && compareUniversityIds.has(String(id));
-        const detailLabel = escapeHtml(isCompareSelectionMode()
-            ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
-            : t("universities.card.view_details", "View details"));
-        const sourceTooltip = buildRankSourceTooltip(u);
-        const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
-        const rankAriaLabel = sourceTooltip
-            ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
-            : `${rankLabel}: ${rankValueText}`;
-        const rankInnerHtml = `
-                    <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
-                    <span class="uni-metric-label">${rankLabel}:</span>
-                    <span class="uni-metric-value">${rankValueText}</span>
-        `;
-        const metricsHtml = `
-            <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
-                ${sourceTooltip ? `
-                <span class="ui-tooltip-wrap uni-metric-tooltip">
-                    <button type="button" class="ui-tooltip-trigger uni-metric uni-metric--rank uni-metric-trigger${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}" aria-label="${escapeHtmlAttr(rankAriaLabel)}" aria-expanded="false">
-${rankInnerHtml}
-                    </button>
-                    <span class="ui-tooltip-bubble uni-metric-tooltip__content" role="tooltip">
-                        <strong class="ui-tooltip-title">${rankLabel}</strong>
-                        <span class="ui-tooltip-text">${escapeHtml(sourceTooltip)}</span>
-                    </span>
-                </span>
-                ` : `
-                <span class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}">
-${rankInnerHtml}
-                </span>
-                `}
-            </div>
-        `;
-        const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const priceFilterActive = Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max;
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), { priceFilterActive, studyLevel: state.study_level });
-        // The catalog API flags universities that have no campus photo; those cards show the placeholder
-        // without requesting an image that does not exist (older API responses omit the flag).
-        const hasCover = u?.cover_available !== false;
-        const mediaHtml = hideMedia ? "" : `
-            <div class="uni-media">
-                ${hasCover ? `<img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">` : ""}
-                <div class="uni-media-empty">
-                    ${renderInlineIcon("building-office-2", 24)}
-                    <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
-                </div>
-            </div>`;
-        const backdropHtml = hideMedia && mapVariant && hasCover
-            ? `<div class="uni-card-backdrop" aria-hidden="true"><img src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 360px, 100vw" alt="" loading="${loadingAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1"></div>`
-            : "";
-        const headHtml = hideMedia
-            ? `<div class="uni-head"><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
-            : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
-        const detailsHtml = mapVariant
-            ? `<a class="uni-details" href="${detailHref}"${universityLinkAttrs()}>${detailLabel}<span aria-hidden="true">→</span></a>`
-            : `<span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>`;
-        const overlayHtml = mapVariant
-            ? ""
-            : `<a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
-        return `
-        <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
-            ${mediaHtml}${backdropHtml}
-            ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
-            <div class="uni-body">
-            ${headHtml}
-            ${metricsHtml}
-            <div class="uni-footer">
-                ${priceHtml}
-                ${detailsHtml}
-            </div>
-            </div>
-            ${overlayHtml}
-        </article>
-        `;
-    }
-
     function renderPagination(total) {
-        if (!el.pagination) return;
-        const totalPages = Math.ceil(total / state.limit);
-        if (totalPages <= 1) { el.pagination.replaceChildren(); return; }
-        let html = ""; const p = state.page; const maxVisible = 5;
-        const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
-            const activeClass = isActive ? "page-btn--active" : "";
-            const disabledClass = isDisabled ? "page-btn--disabled" : "";
-            const classes = ["page-btn", activeClass, disabledClass, extraClass].filter(Boolean).join(" ");
-            return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ''}${isDisabled ? ' disabled' : ''}>${content}</button>`;
-        };
-        html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first", p <= 1);
-        html += createBtn(Math.max(1, p - 1), `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`, false, "page-btn--nav page-btn--prev", p <= 1);
-        let startPage, endPage;
-        if (totalPages <= maxVisible) {
-            startPage = 1;
-            endPage = totalPages;
-        } else {
-            const maxPagesBefore = Math.floor(maxVisible / 2);
-            const maxPagesAfter = Math.ceil(maxVisible / 2) - 1;
-            if (p <= maxPagesBefore + 1) {
-                startPage = 1;
-                endPage = maxVisible;
-            } else if (p + maxPagesAfter >= totalPages) {
-                startPage = totalPages - maxVisible + 1;
-                endPage = totalPages;
-            } else {
-                startPage = p - maxPagesBefore;
-                endPage = p + maxPagesAfter;
-            }
-        }
-        if (startPage > 1) html += `<span class="page-dots">...</span>`;
-        for (let i = startPage; i <= endPage; i++) {
-            html += createBtn(i, `<span class="page-btn__text">${i}</span>`, i === p, "page-btn--num");
-        }
-        if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        html += createBtn(Math.min(totalPages, p + 1), `<span class="page-btn__text">${escapeHtml(t("universities.pagination.next", "Next"))}</span>${heroIcon("chevron-right", "page-btn__icon", { "stroke-width": 2 })}`, false, "page-btn--nav page-btn--next", p >= totalPages);
-        html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last", p >= totalPages);
-        el.pagination.innerHTML = html;
-        el.pagination.querySelectorAll("button").forEach(b => {
-            b.onclick = () => {
-                const newPage = Number(b.dataset.page);
-                if (newPage && newPage !== state.page) {
-                    state.page = newPage;
-                    clearSavedScrollPosition();
-                    void fetchAndRender();
-                    window.scrollTo({top: 0, behavior: 'smooth'});
-                }
-            };
+        renderCatalogPagination(el.pagination, {
+            total,
+            currentPage: state.page,
+            pageSize: state.limit,
+            onPageChange: (newPage) => {
+                state.page = newPage;
+                clearSavedScrollPosition();
+                void fetchAndRender();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            },
         });
     }
 
