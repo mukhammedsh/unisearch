@@ -91,10 +91,10 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
         self.assertTrue(result["fact_groups"]["requirements"])
         self.assertTrue(result["facts"])
         self.assertTrue(result["sources"])
-        checks = result["assessment"]["choices"][0]["details"]["checks"]
+        checks = result["assessment"]["activeChoice"]["details"]["checks"]
         self.assertTrue(checks)
         self.assertTrue(all(check["factId"] in {fact["id"] for fact in result["facts"]} for check in checks))
-        self.assertEqual(result["assessment"]["choices"][0]["cycle"], "Fall 2027")
+        self.assertEqual(result["assessment"]["activeChoice"]["cycle"], "Fall 2027")
 
     def test_discovery_budget_uses_dated_reference_without_claiming_future_price(self):
         for institution_id in (MIT, STANFORD):

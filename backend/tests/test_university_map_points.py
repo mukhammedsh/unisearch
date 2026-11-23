@@ -69,8 +69,29 @@ class UniversityMapPointsTests(unittest.TestCase):
                 "rank": 12,
                 "location": {"country": "USA", "city": "Boston"},
                 "coordinates": {"lat": 42.36, "lon": -71.06},
+                "cover_available": False,
             },
         )
+
+    def test_map_point_label_follows_locale(self):
+        kbtu = {"id": "kazakhstan-british-technical-university-kaz-almaty", "name": "KBTU", "coordinates": {"lat": 43.2, "lon": 76.9}}
+        label = lambda item, lang: universities_service.to_university_map_point(item, search_lang=lang)["map_label"]
+        self.assertEqual(label(kbtu, "eng"), "KBTU")
+        self.assertEqual(label(kbtu, "rus"), "КБТУ")
+        self.assertEqual(label(kbtu, "kaz"), "ҚБТУ")
+        # Only a Latin label: Russian and Kazakh fall back to it.
+        mit = {**kbtu, "id": "mit-usa-cambridge"}
+        self.assertEqual(label(mit, "rus"), "MIT")
+        self.assertEqual(label(mit, "kaz"), "MIT")
+        # Kazakh falls back to the Russian form when there is no Kazakh-specific one.
+        nu = {**kbtu, "id": "nazarbayev-university-kaz-astana"}
+        self.assertEqual(label(nu, "kaz"), "НУ")
+
+    def test_university_without_abbreviation_entry_has_no_map_label(self):
+        projected = universities_service.to_university_map_point(
+            {"id": "unknown-university", "name": "Unknown", "coordinates": {"lat": 1, "lon": 2}}
+        )
+        self.assertNotIn("map_label", projected)
 
 
 if __name__ == "__main__":

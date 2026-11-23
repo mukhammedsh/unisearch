@@ -81,7 +81,8 @@ test("reviewed university replaces a fresh detail cache entry without the catalo
 async function openAdvanced(page) {
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
+  // Paths with one intake and no fee classes offer no entry-year or fee-status fields.
+  if (await advanced.isVisible() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
 }
 
 async function selectCustomOption(page, select, value) {
@@ -142,8 +143,8 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   expect(migrated.languages[0]).toMatchObject({ code: "en", exam: "IELTS", taken_on: "2026-03-01" });
   expect(migrated.languageEvidence[0]).toMatchObject({ language: "en", country: "Canada" });
   expect(migrated.studyLevel).toBe("masters");
-  expect(migrated.applicantRoute).toBe("graduate");
-  expect(migrated.intendedEntryCycle).toBe("2029 entry");
+  expect(migrated.applicantRoute).toBeUndefined();
+  expect(migrated.intendedEntryCycle).toBeUndefined();
   expect(await page.evaluate(() => localStorage.getItem("unisearch_detail_cache_v3"))).toBeNull();
   await expect(page.locator("#detailCard")).not.toContainText("STALE V3 DETAIL CACHE");
 
@@ -152,22 +153,20 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await selectCustomOption(page, "#admissionsRoute", "mit-first-year");
-  await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "first_year");
-  await page.locator("#admissionsCycle").fill("Fall 2027 entry");
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  await page.locator("#admissionsContextApply").click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // MIT first-year publishes one set of yearless dates and no fee classes, so it asks for neither.
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+  await expect(page.locator("#admissionsContextApply")).toBeHidden();
+  await expect(page.locator("#admissionsContext [data-saved-context]")).toContainText("Nothing is sent to the university");
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
+  await expect(page.locator("#admissionsSaveChoice")).toHaveText("Remember this choice");
   await page.locator("#admissionsSaveChoice").click();
-  await expect(page.locator("#admissionsSaveStatus")).toHaveText("Application context saved for this university.");
+  await expect(page.locator("#admissionsSaveStatus")).toHaveText("Path remembered on this device.");
   const immediateSave = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}"));
   expect(immediateSave.selectedAdmissionChoices[MIT]).toMatchObject({
     studyOptionId: "mit-course-6-3-bachelor",
     applicationRouteId: "mit-first-year",
     studyLevel: "undergraduate",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027 entry",
+    intendedEntryCycle: "",
     feeStatusContext: "unknown",
   });
 
@@ -175,23 +174,21 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expectUniversityReady(page);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
-  await expect(page.locator("#admissionsApplicant")).toHaveValue("first_year");
-  await expect(page.locator("#admissionsCycle")).toHaveValue("Fall 2027 entry");
+  await expect(page.locator("#admissionsCycle")).toHaveValue("");
   await expect(page.locator("#admissionsFee")).toHaveValue("unknown");
   migrated = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(migrated.selectedAdmissionChoices[MIT]).toMatchObject({
     studyOptionId: "mit-course-6-3-bachelor",
     applicationRouteId: "mit-first-year",
     studyLevel: "undergraduate",
-    applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027 entry",
+    intendedEntryCycle: "",
     feeStatusContext: "unknown",
   });
   expect(migrated.admissionChoiceResetNotices).not.toContain(MIT);
   expect(migrated.studyLevel).toBe("masters");
-  expect(migrated.applicantRoute).toBe("graduate");
-  expect(migrated.intendedEntryCycle).toBe("2029 entry");
-  expect(migrated.feeStatusContext).toBe("self_reported_home_domestic");
+  expect(migrated.applicantRoute).toBeUndefined();
+  expect(migrated.intendedEntryCycle).toBeUndefined();
+  expect(migrated.feeStatusContext).toBeUndefined();
   expect(migrated.budget).toBe(savedProfile.budget);
   expect(migrated.exams[0]).toMatchObject({ id: "ACT", score: 34, taken_on: "2026-09-10" });
   expect(migrated.selectedAdmissionChoices[ASTANA].choiceKey).toBe("astana_standard");
@@ -231,61 +228,45 @@ test("comparison purges only old reviewed pointers, keeps an unreviewed choice, 
   await seedApp(page, { language: "rus", theme: "dark", profile: savedProfile, compareChoices: oldCompareChoices });
   await page.goto(`/compare.html?ids=${STANFORD},${ASTANA}&stage=configure`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
-  await expect(page.locator(".compare-config-panel")).toBeVisible();
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
-
-  const stanfordColumn = page.locator(`.compare-config-column[data-uni-id="${STANFORD}"]`);
-  const astanaColumn = page.locator(`.compare-config-column[data-uni-id="${ASTANA}"]`);
-  await expect(stanfordColumn.locator(`[data-admission-reset-notice="${STANFORD}"]`)).toBeVisible();
-  await expect(astanaColumn.locator("[data-admission-reset-notice]")).toHaveCount(0);
+  // A rechecked and an earlier-format university are not compared side by side.
+  await expect(page.locator("[data-compare-mixed]")).toBeVisible();
   let profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(Object.keys(profile.selectedAdmissionChoices).sort()).toEqual([ASTANA, OXFORD]);
   const retainedCompareChoices = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) || "{}"), COMPARE_CHOICES_KEY);
   expect(Object.keys(retainedCompareChoices)).toEqual([ASTANA]);
   expect(retainedCompareChoices[ASTANA].choiceKey).toBe("aitu_paid::aitu_paid::aitu_paid");
 
-  const chooser = page.locator(`#compare-options-${STANFORD}`);
-  await openDisclosureParents(chooser.locator("[data-compare-context-form]"));
-  await expect(chooser.locator("[data-compare-context-form]")).toBeVisible();
-  await chooser.locator("[data-compare-search-form] input[type=search]").fill("Computer Science");
-  await setNativeSelect(page, `compare-filter_level-${STANFORD}`, "masters");
-  await chooser.locator("[data-compare-search-form]").locator("button[type=submit]").click();
-  const csOption = chooser.locator('[data-compare-programs] [data-study-option="stanford-option-cs-ms"]');
-  await expect(csOption).toBeVisible();
+  // NU had no pointer in the earlier comparison storage, so only Stanford carries the reset notice.
+  await page.goto(`/compare.html?ids=${STANFORD},${NU}`);
+  const stanfordHead = page.locator(`.compare-reviewed__head[data-uni-id="${STANFORD}"]`);
+  await expect(stanfordHead.locator(`[data-admission-reset-notice="${STANFORD}"]`)).toBeVisible();
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"] [data-admission-reset-notice]`)).toHaveCount(0);
+
+  await page.locator(`[data-compare-pick="${STANFORD}"]`).click();
+  const dialog = page.locator("dialog.compare-picker[open]");
+  await dialog.locator('[data-picker-level="masters"]').click();
+  await dialog.locator("#comparePickerSearch").fill("Computer Science");
+  const csOption = dialog.locator('[data-picker-option="stanford-option-cs-ms"]');
+  await expect(csOption).toContainText("Компьютерные науки (MS)");
   await csOption.click();
-  await expect(chooser.locator(".compare-context-current__value")).toContainText("Компьютерные науки (MS)");
-  const route = chooser.locator('select[data-context-field="application_route_id"]');
-  await expect(route).toHaveValue("");
-  const routeWrapper = route.locator("xpath=..");
-  await routeWrapper.locator(".custom-select-trigger").click();
-  await routeWrapper.locator('.custom-option[data-value="directory-evidence:stanford-graduate-cs-ms"]').click();
-  await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
-  await setNativeSelect(page, `compare-study_level-${STANFORD}`, "masters");
-  await setNativeSelect(page, `compare-applicant_route-${STANFORD}`, "graduate");
-  await chooser.locator(`#compare-cycle-${STANFORD}`).fill("2027-28 entry");
-  await setNativeSelect(page, `compare-fee_status_context-${STANFORD}`, "unknown");
-  await chooser.locator("[data-compare-context-form]").locator("button[type=submit]").click();
+  await dialog.locator('[data-picker-route="directory-evidence:stanford-graduate-cs-ms"]').click();
+  await expect(page.locator("dialog.compare-picker")).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.["stanford-university-usa-ca"])).toMatchObject({
     studyOptionId: "stanford-option-cs-ms",
     applicationRouteId: "directory-evidence:stanford-graduate-cs-ms",
     studyLevel: "masters",
-    applicantRoute: "graduate",
-    intendedEntryCycle: "2027-28 entry",
     feeStatusContext: "unknown",
   });
   profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(profile.studyLevel).toBe("masters");
-  expect(profile.applicantRoute).toBe("graduate");
-  expect(profile.intendedEntryCycle).toBe("2029 entry");
-  expect(profile.feeStatusContext).toBe("self_reported_home_domestic");
+  expect(profile.applicantRoute).toBeUndefined();
+  expect(profile.intendedEntryCycle).toBeUndefined();
+  expect(profile.feeStatusContext).toBeUndefined();
   expect(profile.selectedAdmissionChoices[ASTANA].choiceKey).toBe("astana_standard");
+  await expect(stanfordHead).toContainText("Компьютерные науки (MS)");
+  await expect(stanfordHead.locator("[data-admission-reset-notice]")).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("admissions-cutover-compare-mobile.png"), fullPage: false });
-
-  await page.locator('[data-action="build-compare-results"]').click();
-  const reviewed = page.locator(`.compare-analysis-block[data-reviewed-context="${STANFORD}"]`);
-  await expect(reviewed).toBeVisible();
-  await expect(reviewed).toContainText("Компьютерные науки (MS)");
-  await expect(reviewed).not.toContainText(/stanford_standard|stanford-bs-computer-science/);
+  await expect(page.locator("[data-reviewed-comparison]")).not.toContainText(/stanford_standard|stanford-bs-computer-science/);
 });
 
 test("runtime availability covers 50 universities and Stanford routes stay explicit and scoped", async ({ page }) => {
@@ -299,7 +280,7 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsContext")).toContainText("Choose the published path for your situation");
+  await expect(page.locator("#admissionsContext")).toContainText("Choose the path that matches your situation");
   await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
   await expect(page.locator('#tab-admission [data-admissions-fact]')).toHaveCount(0);
 
@@ -316,23 +297,20 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   expect(catalog.body.items.filter((item) => item.admissions_catalog?.availability === "legacy_unreviewed")).toHaveLength(46);
 
   await selectCustomOption(page, "#admissionsRoute", "directory-evidence:stanford-graduate-cs-ms");
-  await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "graduate");
-  await page.locator("#admissionsCycle").fill("2027-28 entry");
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  await page.locator("#admissionsContextApply").click();
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
   await expectUniversityReady(page);
   await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
   const greDeadlineFact = page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]');
-  await page.locator("#tab-deadlines .admissions-reading__references > summary").first().click();
+  await openDisclosureParents(greDeadlineFact);
   await expect(greDeadlineFact).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#detailRequirements")).toContainText("0%");
   await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
   await expect(page.locator("#tab-finance")).toHaveClass(/active/);
-  await expect(page.locator("#detailFinance")).toContainText("No comparable budget is confirmed for this selection");
+  await expect(page.locator('#detailFinance [data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
+  await expect(page.locator("#detailFinance")).not.toContainText("No comparable budget is confirmed");
   await expect(page.locator(".finance-summary-container")).toBeHidden();
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
   let currentProfile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
@@ -341,10 +319,6 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await selectCustomOption(page, "#admissionsRoute", "engineering-doerr-evidence:cs-coterm");
-  await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "");
-  await page.locator("#admissionsCycle").fill("2026-27 to 2027-28 entries");
-  await page.locator("#admissionsContextApply").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("engineering-doerr-evidence:cs-coterm");
   await expectUniversityReady(page);
@@ -358,5 +332,5 @@ test("runtime availability covers 50 universities and Stanford routes stay expli
   await expect(page.locator('#tab-deadlines [data-admissions-fact="engineering-doerr-evidence:program-deadline-gre-2027"]')).toHaveCount(0);
   currentProfile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(currentProfile.selectedAdmissionChoices[STANFORD]).toBeUndefined();
-  expect(currentProfile.intendedEntryCycle).toBe("2029 entry");
+  expect(currentProfile.intendedEntryCycle).toBeUndefined();
 });

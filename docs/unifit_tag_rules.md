@@ -26,7 +26,7 @@ Show at most one positive preference indicator:
 | `your_vibe` | At most 0.14 |
 | `top_match` | Above 0.14 and at most 0.22 |
 
-These compare the profile's study preferences with university-level indicators. They do not establish that a particular course suits the applicant or that its admission conditions are met. A larger mismatch does not produce a positive preference indicator.
+These compare the sliders the applicant moved away from the centre with university-level indicators; centred sliders mean "doesn't matter" and produce no preference indicator. They do not establish that a particular course suits the applicant or that its admission conditions are met. A larger mismatch does not produce a positive preference indicator.
 
 ### Minimum requirements match
 

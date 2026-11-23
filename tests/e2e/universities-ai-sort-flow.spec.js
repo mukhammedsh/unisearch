@@ -83,7 +83,7 @@ test("universities page uses AI sort with realistic search/filter interactions",
   await expect(page.locator(selectors.locationLabel)).not.toHaveText("");
 });
 
-test("profile discovery context stays soft while explicit level and price context reach the catalog", async ({ page }) => {
+test("profile discovery context stays soft and removed general entry cycle and fee status never reach the catalog", async ({ page }) => {
   await seedProfile(page, {
     ...personas.ruStemGrant.profile,
     studyLevel: "masters",
@@ -119,8 +119,9 @@ test("profile discovery context stays soft while explicit level and price contex
   expect(catalogPayload.major || null).toBeNull();
   expect(catalogPayload.format || null).toBeNull();
   expect(catalogPayload.study_level).toBe("undergraduate");
-  expect(catalogPayload.fee_status_context).toBe("self_reported_international_overseas");
-  expect(catalogPayload.intended_entry_cycle).toBe("2027 entry");
+  // The general profile no longer carries entry cycle or fee status; they are per-university choices.
+  expect(catalogPayload.fee_status_context || null).toBeNull();
+  expect(catalogPayload.intended_entry_cycle || null).toBeNull();
 });
 
 test("unifit tradeoff tooltips are hidden by default and toggle on interaction", async ({ page }) => {

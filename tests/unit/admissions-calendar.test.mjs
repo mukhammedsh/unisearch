@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import { createDeadlineIcs, getReviewedDeadlineEvents } from "../../frontend/javascript/pages/university/deadline-calendar.js";
 
 const fact = (id, value, extra = {}) => ({ id, value, publication_status: "published", review_status: "reviewed",
-  topic: "deadlines", source_ids: ["official"], scope: { option_ids: ["computing"], route_ids: [], levels: ["undergraduate"], applicant_categories: [] }, ...extra });
+  normalized_status: { publication: "published", review: "verified" }, topic: "deadlines", source_ids: ["official"], scope: { option_ids: ["computing"], route_ids: [], levels: ["undergraduate"], applicant_categories: [] }, ...extra });
 const context = facts => ({ institution_id: "university", context: { intended_entry_cycle: "2027 entry" },
   selected_option: { id: "computing", title: "Computing", awards: ["MEng"], levels: ["undergraduate"] },
   selected_route: { id: "ucas", title: "UCAS", shared_policy_context_ids: [] },
@@ -69,8 +69,8 @@ test("reviewed calendar keeps Medicine and other UCAS dates separate and preserv
 test("calendar does not manufacture years or accept mismatched, historical or conflicted evidence", () => {
   const rows = [fact("yearless", { windows: [{ name: "Early Action", application_due: "November 1" }] }),
     fact("mismatch", { deadline: "2027-01-13" }, { applicability: { status: "mismatched" } }),
-    fact("history", { deadline: "2026-01-13" }, { publication_status: "historical" }),
-    fact("conflict", { deadline: "2027-02-01" }, { review_status: "reviewed_with_source_conflict" })];
+    fact("history", { deadline: "2026-01-13" }, { publication_status: "historical", normalized_status: { publication: "historical", review: "verified" } }),
+    fact("conflict", { deadline: "2027-02-01" }, { review_status: "reviewed_with_source_conflict", normalized_status: { publication: "published", review: "needs_resolution" } })];
   assert.deepEqual(getReviewedDeadlineEvents(context(rows)), []);
   assert.deepEqual(getReviewedDeadlineEvents({ ...context(rows), selected_route: null }), []);
 });
@@ -128,7 +128,7 @@ test("funding consideration dates do not become scholarship-form deadlines or le
 });
 
 test("source-bound projections keep support test dates separate from applications and preserve dated references", () => {
-  const rows = [fact("support", { original_source_text: "Application deadline remains TBA." }, { publication_status: "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA", attributes: { deadline_events: [
+  const rows = [fact("support", { original_source_text: "Application deadline remains TBA." }, { publication_status: "published_aid_categories_benefits_and_requirements_2027_28_deadlines_TBA", normalized_status: { publication: "published_with_limits", review: "verified" }, attributes: { deadline_events: [
     { date: "2026-12-05", deadline_type: "test_date", label: "Last SAT test date for financial support", exam_id: "SAT", application_category: "financial_support", cycle: "2027/28", publication_status: "published" },
     { date: "2026-11-28", deadline_type: "test_submission", time: "23:59", timezone: "Asia/Almaty", cycle: "2026/27", publication_status: "published_dated_reference" },
     { date: "2027-01-01", deadline_type: "application", publication_status: "conflicting" },

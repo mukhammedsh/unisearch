@@ -7,7 +7,6 @@ global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../fro
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { publishedTuitionQuotes, renderApplicantSection } = await import("../../frontend/javascript/pages/university/admissions-presentation.js");
 const { admissionDeadlineTitle, admissionsCycleLabel, renderAdmissionsContext, renderAdmissionsValue, renderStudyOptionOverview } = await import("../../frontend/javascript/pages/university/admissions-render.js");
-const { renderReviewedComparison } = await import("../../frontend/javascript/pages/universities/compare-summary.js");
 const { translateFactSource } = await import("../../frontend/javascript/university-translations.js");
 await initI18n();
 window.location.href = "http://127.0.0.1/compare.html";
@@ -16,7 +15,10 @@ const nu = catalog.institutions.find(row => row.institution.id === "nazarbayev-u
 
 function context(optionId, routeId, domains) {
   const option = nu.study_options.find(row => row.id === optionId);
-  const facts = nu.facts.filter(row => row.scope.option_ids.includes(optionId) && (!row.scope.route_ids.length || row.scope.route_ids.includes(routeId)))
+  // As on the server: a record of a whole shared path lists no programs and is scoped by its path and level instead.
+  const forOption = row => row.scope.option_ids.length ? row.scope.option_ids.includes(optionId)
+    : row.scope.route_ids.includes(routeId) && (!row.scope.levels.length || row.scope.levels.some(level => option.levels.includes(level)));
+  const facts = nu.facts.filter(row => forOption(row) && (!row.scope.route_ids.length || row.scope.route_ids.includes(routeId)))
     .map(row => ({ ...row, applicability: { status: "conditional" } }));
   return { selected_option: { ...option, format: option.attributes.format, overviews: [{ text: option.attributes.study_detail || "", source_ids: option.source_ids }] },
     selected_route: nu.application_routes.find(row => row.id === routeId), sources: nu.sources, facts,
@@ -28,15 +30,12 @@ test("NU Foundation and undergraduate tuition keep their own quote in primary re
   const row = nu.facts.find(row => row.id === "nu-a-fact-admission-fees");
   const foundation = "nu-a-study-nu-foundation-year-program";
   const cs = "nu-a-study-bachelor-of-science-in-computer-science";
-  assert.deepEqual(publishedTuitionQuotes(row, foundation).map(quote => quote.amounts[0]), ["12,000 / year"]);
-  assert.deepEqual(publishedTuitionQuotes(row, cs).map(quote => quote.amounts[0]), ["15,000 / year"]);
+  assert.deepEqual(publishedTuitionQuotes(row, foundation).map(quote => quote.amounts[0]), ["$12,000 / year"]);
+  assert.deepEqual(publishedTuitionQuotes(row, cs).map(quote => quote.amounts[0]), ["$15,000 / year"]);
   const resolved = context(foundation, "nu-a-route-regular-foundation-undergraduate", { costs: [row.id] });
   const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
   assert.match(primary, /12,000/);
   assert.doesNotMatch(primary, /15,000/);
-  const comparison = renderReviewedComparison([{ id: "nu", name: "Nazarbayev University" }], new Map([["nu", { status: "ready", resolved, context: {} }]]));
-  assert.match(comparison, /12,000/);
-  assert.doesNotMatch(comparison, /15,000/);
 });
 
 test("a reviewed untranslated NU study description remains visible with its official source", () => {
@@ -89,13 +88,13 @@ test("NU unknown records show translated reason and next step while preserving E
   resolved.unknowns = [nu.unknowns.find(row => row.id === "nu-a-gap-nuzyp-activity"), { reason: "<untranslated>", scope: { option_ids: ["nu-a-study-nuzyp"], route_ids: [] }, source_ids: [] }];
   setLanguage("rus", { emit: false });
   const html = renderAdmissionsContext(resolved, { domains: [], programOnly: true, includeAssessment: false });
-  assert.match(html, /Текущий набор, требования, длительность, стоимость и финансирование/);
-  assert.match(html, /Найдите объявление о текущем наборе NUZYP/);
-  assert.match(html, /Подготовительная программа NU Zero Year Program/);
+  assert.match(html, /не указаны текущий цикл набора, общие требования к поступлению, стоимость обучения или условия финансирования/);
+  assert.match(html, /Проверьте актуальную страницу приёма в магистратуру выбранной школы/);
+  assert.match(html, /Подготовительная программа нулевого года для магистратуры и докторантуры \(ZYGP\)/);
   assert.match(html, /Уточнение области применения/);
   assert.match(html, /&lt;untranslated&gt;/);
   setLanguage("eng", { emit: false });
-  assert.match(renderAdmissionsContext(resolved, { domains: [], programOnly: true }), /None establishes a current intake/);
+  assert.match(renderAdmissionsContext(resolved, { domains: [], programOnly: true }), /They do not list a current intake cycle/);
 });
 
 test("source-specific field labels translate without changing values or English", () => {

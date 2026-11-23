@@ -12,6 +12,9 @@ export const DETAIL_CACHE_MAX_ITEMS = 24;
 const DETAIL_FETCH_RETRY_DELAY_MS = 120;
 export const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
 export const UNIVERSITIES_TOUR_RESUME_STEP_KEY = "unisearch_universities_tour_resume_step_v1";
+// One-shot hand-off from the profile page: the visitor just filled in the profile and asked for matches,
+// so the first-visit catalog tour must not open over the results. Session-scoped and consumed once.
+export const UNIVERSITIES_TOUR_SKIP_ONCE_KEY = "unisearch_universities_tour_skip_once_v1";
 export const SAVED_UNIVERSITIES_KEY = "unisearch_saved_university_ids_v1";
 export const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
 export const COMPARE_ADMISSION_CHOICES_KEY = "unisearch_compare_admission_choices_v1";
@@ -19,9 +22,6 @@ export const RECENT_UNIVERSITIES_KEY = "unisearch_recent_university_ids_v1";
 export const MAX_COMPARE_UNIVERSITIES = 2;
 export const MAX_RECENT_UNIVERSITIES = 12;
 
-let __universitiesProfileUpdatedHandler = null;
-let __universitiesLanguageChangedHandler = null;
-let __universitiesMapCardActionHandler = null;
 let __guideExternalUpdateHandler = null;
 let __guideHashChangeHandler = null;
 
@@ -72,6 +72,16 @@ export function hasUniversitiesTourResumeStep() {
 
 export function clearUniversitiesTourResumeStep() {
   safeSessionStorage.remove(UNIVERSITIES_TOUR_RESUME_STEP_KEY);
+}
+
+export function requestUniversitiesTourSkipOnce() {
+  safeSessionStorage.set(UNIVERSITIES_TOUR_SKIP_ONCE_KEY, "1");
+}
+
+export function consumeUniversitiesTourSkipOnce() {
+  const requested = safeSessionStorage.get(UNIVERSITIES_TOUR_SKIP_ONCE_KEY, null) === "1";
+  safeSessionStorage.remove(UNIVERSITIES_TOUR_SKIP_ONCE_KEY);
+  return requested;
 }
 
 export function readIdListStorage(key) {

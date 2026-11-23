@@ -38,8 +38,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       const p = normalizeProfileData(null);
       assert.ok(!('name' in p), 'nickname field must not exist');
       assert.strictEqual(p.budget, '');
-      assert.strictEqual(p.familyIncomeAmount, '');
-      assert.strictEqual(p.familyIncomeCurrency, 'USD');
       assert.strictEqual(p.gpa, '');
       assert.deepStrictEqual(p.exams, []);
       assert.deepStrictEqual(p.languages, []);
@@ -47,10 +45,8 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(p.interests, '');
       assert.strictEqual(p.studyMode, 'Any');
       assert.strictEqual(p.fundingType, 'any');
-      assert.strictEqual(p.citizenship, '');
-      assert.strictEqual(p.countryOfEducation, '');
-      assert.strictEqual(p.applicantRoute, '');
-      assert.strictEqual(p.feeStatusContext, 'unknown');
+      assert.ok(!('countryOfEducation' in p) && !('educationCredential' in p) && !('applicantRoute' in p));
+      assert.ok(!('feeStatusContext' in p) && !('intendedEntryCycle' in p), 'entry cycle and fee status are per-university choices');
       assert.strictEqual(p.studyLevel, 'Any');
       assert.deepStrictEqual(p.selectedAdmissionChoices, {});
     });
@@ -67,35 +63,50 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(normalizeProfileData({ fundingType: 'scholarship' }).fundingType, 'any');
     });
 
-    test('keeps optional family income amount and currency local and preserves legacy income buckets opaquely', () => {
-      const normalized = normalizeProfileData({
-        familyIncomeAmount: '85000',
-        familyIncomeCurrency: 'eur',
-        familyIncome: 'under_85k',
+    test('loads a saved profile that still has removed applicant inputs and never sends them to the API', () => {
+      const removedInputs = {
+        citizenship: 'KZ',
+        citizenships: ['KZ', 'US'],
+        currentResidenceCountry: 'US',
+        currentResidenceOther: '',
+        current_residence_country: 'US',
+        familyIncomeAmount: 85000,
+        familyIncomeCurrency: 'EUR',
+        countryOfEducation: 'KZ',
+        countryOfEducationOther: '',
+        country_of_education: 'KZ',
+        educationCredential: 'other',
+        educationCredentialOther: 'NIS Grade 12 certificate',
+        education_credential: 'other',
+        education_credential_other: 'NIS Grade 12 certificate',
+        applicantRoute: 'first_year',
+        applicant_route: 'first_year',
+      };
+      mockStore.unisearch_profile = JSON.stringify({
+        _v: 2,
+        budget: 15000,
+        studyLevel: 'Master',
+        selectedAdmissionChoices: { 'mit-usa-cambridge': { studyOptionId: 'mit-option', applicationRouteId: 'mit-route', applicantRoute: 'transfer' } },
+        ...removedInputs,
       });
 
-      const normalizedAmount = normalized.familyIncomeAmount;
-      assert.strictEqual(typeof normalizedAmount, 'number');
-      assert.strictEqual(Number(normalizedAmount), 85000);
-      assert.strictEqual(normalized.familyIncomeCurrency, 'EUR');
-      assert.strictEqual(normalized.familyIncome, 'under_85k');
-      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: -1 }).familyIncomeAmount, '');
-      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: false }).familyIncomeAmount, '');
-      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: true }).familyIncomeAmount, '');
-      assert.strictEqual(normalizeProfileData({ familyIncomeAmount: {} }).familyIncomeAmount, '');
-      assert.strictEqual(normalizeProfileData({ familyIncomeCurrency: 'ZZZ' }).familyIncomeCurrency, 'USD');
-
-      saveProfile(normalized);
       const loaded = loadProfile();
-      const loadedAmount = loaded.familyIncomeAmount;
-      assert.strictEqual(typeof loadedAmount, 'number');
-      assert.strictEqual(Number(loadedAmount), 85000);
-      assert.strictEqual(loaded.familyIncomeCurrency, 'EUR');
-      assert.strictEqual(loaded.familyIncome, 'under_85k');
-      const apiPayload = loadProfileForApi();
-      assert.strictEqual(apiPayload.familyIncomeAmount, undefined);
-      assert.strictEqual(apiPayload.familyIncomeCurrency, undefined);
-      assert.strictEqual(apiPayload.familyIncome, undefined);
+      assert.strictEqual(loaded.budget, 15000);
+      assert.strictEqual(loaded.studyLevel, 'Master');
+      assert.strictEqual(loaded.selectedAdmissionChoices['mit-usa-cambridge'].applicantRoute, 'transfer');
+      const payload = loadProfileForApi();
+      assert.strictEqual(payload.study_level, 'Master');
+      assert.strictEqual(payload.selectedAdmissionChoices['mit-usa-cambridge'].applicantRoute, 'transfer');
+      const stored = JSON.parse(mockStore.unisearch_profile);
+      for (const key of Object.keys(removedInputs)) {
+        assert.ok(!(key in loaded), `${key} must not survive loading`);
+        assert.ok(!(key in normalizeProfileData(loaded)), `${key} must not survive normalization`);
+        assert.ok(!(key in stored), `${key} must be removed from the stored profile`);
+      }
+      for (const key of ['citizenship', 'citizenships', 'current_residence_country', 'current_residence_other', 'familyIncomeAmount', 'familyIncomeCurrency',
+        'country_of_education', 'country_of_education_other', 'education_credential', 'education_credential_other', 'applicant_route']) {
+        assert.ok(!(key in payload), `${key} must not be sent to the API`);
+      }
     });
 
     test('truncates interests to 1200 characters', () => {
@@ -299,62 +310,47 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(apiPayload.budget, undefined);
       assert.strictEqual(apiPayload.major, undefined);
       assert.strictEqual(apiPayload.interests, undefined);
-      assert.strictEqual(apiPayload.citizenship, undefined);
       assert.strictEqual(apiPayload.study_level, undefined);
     });
 
-    test('includes citizenship and study_level in API payload when configured', () => {
+    test('includes study_level in API payload when configured', () => {
       saveProfile({
-        citizenship: 'KZ',
         studyLevel: 'Master',
       });
       const apiPayload = loadProfileForApi();
-      assert.strictEqual(apiPayload.citizenship, 'KZ');
-      assert.deepStrictEqual(apiPayload.citizenships, ['KZ']);
       assert.strictEqual(apiPayload.study_level, 'Master');
     });
 
-    test('preserves optional applicant context and maps it to the API contract', () => {
-      const context = {
-        countryOfEducation: 'KZ',
-        educationCredential: 'other',
-        educationCredentialOther: 'NIS Grade 12 certificate',
-        applicantRoute: 'first_year',
+    test('strips general-profile entry cycle and fee status on load and never sends them', () => {
+      mockStore.unisearch_profile = JSON.stringify({
+        _v: 2,
+        budget: 5000,
         intendedEntryCycle: '2027 Fall',
-        currentResidenceCountry: 'US',
         feeStatusContext: 'self_reported_international_overseas',
-      };
-      saveProfile(context);
-
-      assert.deepStrictEqual(
-        Object.fromEntries(Object.keys(context).map((key) => [key, loadProfile()[key]])),
-        context,
-      );
-      assert.deepStrictEqual(
-        Object.fromEntries(Object.keys(context).map((key) => [
-          key.replace(/[A-Z]/g, (ch) => `_${ch.toLowerCase()}`),
-          loadProfileForApi()[key.replace(/[A-Z]/g, (ch) => `_${ch.toLowerCase()}`)],
-        ])),
-        {
-          country_of_education: 'KZ',
-          education_credential: 'other',
-          education_credential_other: 'NIS Grade 12 certificate',
-          applicant_route: 'first_year',
-          intended_entry_cycle: '2027 Fall',
-          current_residence_country: 'US',
-          fee_status_context: 'self_reported_international_overseas',
-        },
-      );
+        intended_entry_cycle: '2027 Fall',
+        fee_status_context: 'other',
+      });
+      const loaded = loadProfile();
+      for (const key of ['intendedEntryCycle', 'feeStatusContext', 'intended_entry_cycle', 'fee_status_context']) {
+        assert.ok(!(key in loaded), `${key} must be stripped from the loaded profile`);
+      }
+      assert.strictEqual(loaded.budget, 5000);
+      const payload = loadProfileForApi();
+      assert.ok(!('intended_entry_cycle' in payload) && !('fee_status_context' in payload));
+      saveProfile(loaded);
+      const stored = JSON.parse(mockStore.unisearch_profile);
+      assert.ok(!('intendedEntryCycle' in stored) && !('feeStatusContext' in stored));
     });
 
-    test('keeps fee context unconfirmed by default and accepts Other country labels', () => {
-      saveProfile({ countryOfEducation: 'OTHER', countryOfEducationOther: 'Kosovo' });
-      const profile = loadProfile();
-      const payload = loadProfileForApi();
-      assert.strictEqual(profile.feeStatusContext, 'unknown');
-      assert.strictEqual(payload.fee_status_context, 'unknown');
-      assert.strictEqual(payload.country_of_education, 'OTHER');
-      assert.strictEqual(payload.country_of_education_other, 'Kosovo');
+    test('keeps the per-university entry cycle and fee status of a saved choice', () => {
+      saveProfile({
+        selectedAdmissionChoices: {
+          'mit-usa-cambridge': { studyOptionId: 'o', applicationRouteId: 'r', intendedEntryCycle: '2027 Fall', feeStatusContext: 'other' },
+        },
+      });
+      const choice = loadProfile().selectedAdmissionChoices['mit-usa-cambridge'];
+      assert.strictEqual(choice.intendedEntryCycle, '2027 Fall');
+      assert.strictEqual(choice.feeStatusContext, 'other');
     });
 
     test('bridges each supported study level to the API', () => {
@@ -365,50 +361,6 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
         assert.strictEqual(loadProfile().studyLevel, studyLevel);
         assert.strictEqual(payload.study_level, studyLevel === 'Any' ? undefined : studyLevel);
       }
-    });
-
-    test('normalizes legacy citizenship values and drops non-string entries', () => {
-      const normalized = normalizeProfileData({
-        citizenship: 'gb',
-        citizenships: ['KZ', ' us ', 'kz', '', null, 42, {}],
-      });
-
-      assert.deepStrictEqual(normalized.citizenships, ['KZ', 'us']);
-      assert.strictEqual(normalized.citizenship, 'KZ');
-      saveProfile(normalized);
-      const payload = loadProfileForApi();
-      assert.strictEqual(payload.citizenship, 'KZ');
-      assert.deepStrictEqual(payload.citizenships, ['KZ', 'us']);
-    });
-
-    test('caps legacy citizenship lists at the backend limit', () => {
-      const citizenships = ['US', 'CA', 'GB', 'KZ', 'RU', 'CN', 'IN', 'JP', 'FR', 'DE', 'BR'];
-      const profile = normalizeProfileData({ citizenships });
-      assert.deepStrictEqual(profile.citizenships, citizenships.slice(0, 10));
-      saveProfile({ citizenships });
-      assert.deepStrictEqual(loadProfileForApi().citizenships, citizenships.slice(0, 10));
-    });
-
-    test('normalizes multiple citizenships array and syncs primary', () => {
-      saveProfile({
-        citizenships: ['KZ', 'US', 'kz'],
-      });
-      const profile = loadProfile();
-      assert.deepStrictEqual(profile.citizenships, ['KZ', 'US']);
-      assert.strictEqual(profile.citizenship, 'KZ');
-
-      const apiPayload = loadProfileForApi();
-      assert.strictEqual(apiPayload.citizenship, 'KZ');
-      assert.deepStrictEqual(apiPayload.citizenships, ['KZ', 'US']);
-    });
-
-    test('normalizes comma-separated string to citizenships array', () => {
-      saveProfile({
-        citizenships: 'KZ, GB, US',
-      });
-      const profile = loadProfile();
-      assert.deepStrictEqual(profile.citizenships, ['KZ', 'GB', 'US']);
-      assert.strictEqual(profile.citizenship, 'KZ');
     });
 
     test('converts profile budget from budgetCurrency to USD for API payload', () => {

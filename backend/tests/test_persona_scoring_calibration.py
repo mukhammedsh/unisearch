@@ -56,11 +56,13 @@ class TestPersonaScoringCalibration(unittest.TestCase):
             self.assertAlmostEqual(expected_gap, match["affordabilityGap"])
             self.assertEqual("over_budget" if reference_cost > profile["budget"] else "within_budget",
                              match["budgetAssessment"]["status"])
-            self.assertAlmostEqual((0.60 * match["preferenceMismatch"] + 0.20 * expected_gap) / 0.80,
-                                   match["finalScore"])
+            # Centred sliders leave the preference component out, so only affordability is left.
+            self.assertIsNone(match["preferenceMismatch"])
+            self.assertAlmostEqual(expected_gap, match["finalScore"])
         else:
             self.assertIsNone(match["affordabilityGap"])
-            self.assertAlmostEqual(match["finalScore"], match["preferenceMismatch"])
+            self.assertIsNone(match["preferenceMismatch"])
+            self.assertEqual(match["finalScore"], 0.0)
 
     def test_alexey_german_budget_persona(self):
         """

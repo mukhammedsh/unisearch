@@ -4,7 +4,7 @@ Verifies:
 1. Dataset contains only canonical `city_vs_campus` and no `city_vs_outside_city`.
 2. Backend _extract_university_factors reads `city_vs_campus`.
 3. Legacy `city_vs_outside_city` is not read as fallback.
-4. Missing value falls back to population metadata per contract.
+4. Missing value falls back to population metadata per contract, and stays unknown without it.
 5. Numeric factor normalization clamping [0, 1] preserved.
 6. Other factors remain unchanged and correct.
 7. AI sort correctly utilizes `city_vs_campus` slider.
@@ -16,9 +16,9 @@ import unittest
 
 from app.services.ai_scoring import (
     _extract_university_factors,
-    _fallback_city_vs_outside_city,
     sort_universities_ai,
 )
+from app.services import preference_factors
 
 
 class LocationFactorsConsolidationTests(unittest.TestCase):
@@ -71,9 +71,8 @@ class LocationFactorsConsolidationTests(unittest.TestCase):
             },
         }
         res = _extract_university_factors(uni)
-        # Without metadata, fallback defaults to 0.5, NOT the legacy value 0.85
-        self.assertAlmostEqual(res["city_vs_campus"], 0.5)
-        self.assertNotEqual(res["city_vs_campus"], 0.85)
+        # Without population metadata the location is unknown, not the legacy value 0.85 or an invented 0.5.
+        self.assertIsNone(res["city_vs_campus"])
 
     def test_missing_location_factor_falls_back_to_population_metadata(self):
         """4: Missing location factor falls back to population metadata calculation."""
@@ -89,8 +88,9 @@ class LocationFactorsConsolidationTests(unittest.TestCase):
             },
         }
         res = _extract_university_factors(uni)
-        expected = _fallback_city_vs_outside_city(uni)
-        self.assertAlmostEqual(res["city_vs_campus"], expected)
+        # 5 million people is above the OECD large-metropolitan threshold, so the city end of the scale.
+        self.assertAlmostEqual(res["city_vs_campus"], preference_factors.location(uni))
+        self.assertAlmostEqual(res["city_vs_campus"], 0.0)
 
     def test_numeric_factor_normalization_preserved(self):
         """5: Factor clamping to [0, 1] and percentage conversion remain intact."""
@@ -162,7 +162,7 @@ class LocationFactorsConsolidationTests(unittest.TestCase):
         script_path = Path(__file__).resolve().parents[1] / "scripts" / "refresh_university_factors.py"
         source = script_path.read_text(encoding="utf-8")
         self.assertNotIn("city_vs_outside_city", source)
-        self.assertIn('"city_vs_campus": location_factor', source)
+        self.assertIn('"city_vs_campus": preference_factors.location(university)', source)
 
 
 if __name__ == "__main__":

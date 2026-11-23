@@ -3378,22 +3378,23 @@
       "id": "nu-a-fact-nuzyp-current-status",
       "kind": "preparatory_program_status",
       "value": {
-        "official_acronym": "Nazarbayev University Zero Year Program",
+        "official_acronym": "ZYGP (formerly NUZYP)",
         "historical_activity": "Official NU report says launched 2017-11-20; 58 enrolled from over 120 applicants in initial cohort. Academic English 16 hours/week; second-semester additional quantitative course (Linear Algebra for STEM or Social Science Research Methods for non-STEM).",
-        "current_official_instruction": "CPS instructions page is accessible and directs candidates through application, with selected NU school recommending NUZYP."
+        "current_official_instruction": "Applicants follow the process of their chosen Nazarbayev University School because requirements differ by program; the School makes the recommendation for ZYGP."
       },
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
-        "nu-a-src-nuzyp-history"
+        "nu-a-src-nuzyp-history",
+        "nu-a-src-zygp-registrar"
       ],
-      "checked_date": "2026-10-23",
+      "checked_date": "2026-11-19",
       "publication_status": "official_instructions_accessible_current_intake_not_confirmed",
       "scope": {
-        "program": "NUZYP; graduate preparatory"
+        "program": "Zero Year of Graduate Programs (ZYGP; formerly NUZYP)"
       },
       "conditions": [
-        "Current page exposes no cycle dates, detailed requirements, duration, tuition or admission/funding results. Historical 2017 course details must not be presented as current structure."
+        "The public CPS instructions explain the selected-School recommendation process but do not publish a current intake cycle, general entry criteria, tuition or funding terms. Confirm program-specific requirements and ZYGP availability with the chosen School. The 2017 curriculum and archived scholarship reference are historical, not current terms."
       ],
       "review_status": "verified"
     },
@@ -5441,13 +5442,13 @@
     },
     {
       "id": "nu-a-src-nuzyp-instructions",
-      "title": "NUZYP application instructions/EN",
+      "title": "Zero Year of Graduate Programs application instructions",
       "url": "https://cps.nu.edu.kz/nuzyp_instructions",
-      "access_checked": "2026-10-23",
-      "content_reviewed": "2026-10-23",
+      "access_checked": "2026-11-19",
+      "content_reviewed": "2026-11-19",
       "access_status": "accessible",
       "publication_status": "official_instructions_page_no_cycle_dates_or_minima",
-      "scope": "Zero Year of Graduate Programs (NUZYP); page says applicants follow application process because programs differ and the selected NU school recommends candidates.",
+      "scope": "Public CPS instructions say applicants follow the selected School's application process because requirements differ by program, and the School recommends candidates for the Zero Year of Graduate Programs.",
       "content_review_status": "reviewed"
     },
     {
@@ -5966,6 +5967,17 @@
       "publication_status": "indexed_2026_27_content_with_deadline_2026_11_28",
       "scope": "Official NU admissions portal indexed page; exact current portal body could not be directly loaded.",
       "content_review_status": "reviewed_indexed_content"
+    },
+    {
+      "id": "nu-a-src-zygp-registrar",
+      "title": "NUFYP and ZYGP | Registrar",
+      "url": "https://registrar.nu.edu.kz/quick-links/nufyp-and-zygp",
+      "access_checked": "2026-11-19",
+      "content_reviewed": "2026-11-19",
+      "access_status": "accessible",
+      "publication_status": "current_official_name_and_former_acronym",
+      "scope": "The Registrar identifies the Zero Year of Graduate Programs as ZYGP, formerly NUZYP; the page does not announce a current applicant cycle.",
+      "content_review_status": "reviewed"
     }
   ],
   "gaps": [
@@ -5998,18 +6010,19 @@
     },
     {
       "id": "nu-a-gap-nuzyp-activity",
-      "scope": "NUZYP",
-      "reason": "Official CPS instructions page is accessible and says an applicant applies through the process because program requirements differ, after which the selected NU school recommends them. Official glossary expands NUZYP, and the archived official news page confirms a 2017 launch and describes the initial cohort. None establishes a current intake or current requirements, duration, fee or funding terms.",
-      "official_next_step": "Find a current NUZYP cycle notice or current School/Graduate admissions requirements; preserve the 2017 curriculum/funding detail as historical only.",
+      "scope": "ZYGP (formerly NUZYP)",
+      "reason": "The CPS instructions say applicants apply through their chosen School and that the School recommends candidates for ZYGP. They do not list a current intake cycle, general entry requirements, tuition or funding terms; requirements may vary by School.",
+      "official_next_step": "Check the chosen School's current graduate-admissions page for ZYGP recommendation in the intended cycle. Ask the School for any current entry requirements, dates, tuition and funding terms not published there.",
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
         "nu-a-src-nuzyp-history",
-        "nu-a-src-nuzyp-funding-history"
+        "nu-a-src-nuzyp-funding-history",
+        "nu-a-src-zygp-registrar"
       ],
       "publication_status": "current_intake_and_terms_not_established_historical_activity_only",
       "review_status": "verified",
-      "checked_date": "2026-10-23"
+      "checked_date": "2026-11-19"
     },
     {
       "id": "nu-a-gap-nufyp-progression",
@@ -6227,19 +6240,26 @@
     {
       "study_option_id": "nu-a-study-nuzyp",
       "inventory_card_id": null,
-      "official_name": "NU Zero Year Program (NUZYP)",
+      "official_name": "Zero Year of Graduate Programs (ZYGP)",
       "study_type": "graduate_preparatory",
       "inventory_status": "additional_offering_not_in_93_degree_cards",
       "source_ids": [
         "nu-a-src-nuzyp-instructions",
         "nu-a-src-nuzyp-glossary",
-        "nu-a-src-nuzyp-history"
+        "nu-a-src-nuzyp-history",
+        "nu-a-src-zygp-registrar"
       ],
-      "route_status": "official instructions page accessible; current cycle/details not established",
+      "route_status": "Public instructions describe School recommendation; current intake and general terms are not established.",
       "related_fact_ids": [
         "nu-a-fact-nuzyp-current-status",
         "nu-a-fact-nuzyp-funding-history"
-      ]
+      ],
+      "search_aliases": [
+        "NUZYP",
+        "NU Zero Year Program",
+        "Zero Year Program"
+      ],
+      "description": "The Zero Year of Graduate Programs (ZYGP) is a graduate-preparatory option. Applicants follow the application process of their chosen Nazarbayev University School because requirements differ by program; the School makes the recommendation for ZYGP."
     },
     {
       "study_option_id": "nu-a-study-mining-microcredential",

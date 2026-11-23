@@ -151,4 +151,70 @@ describe('theme.js', () => {
     assert.strictEqual(docAttributes['data-theme'], 'dark');
     assert.strictEqual(mockLocalStorage['unisearch_theme'], 'dark');
   });
+
+  test('interactive applyTheme toggles data-theme-switching without injecting style elements', () => {
+    const frames = [];
+    const origRaf = global.window.requestAnimationFrame;
+    const origCreateElement = global.document.createElement;
+    global.document.documentElement.removeAttribute = (name) => {
+      delete docAttributes[name];
+    };
+    global.window.requestAnimationFrame = (cb) => {
+      frames.push(cb);
+      return frames.length;
+    };
+    global.document.createElement = () => {
+      throw new Error('Unexpected element creation during theme switch');
+    };
+
+    try {
+      applyTheme('dark', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], '1');
+      assert.strictEqual(frames.length, 1);
+      frames.shift()();
+      assert.strictEqual(frames.length, 1);
+      frames.shift()();
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+
+      // Initial hydration with animate: false does not toggle transition suppression.
+      initTheme();
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+      assert.strictEqual(frames.length, 0);
+    } finally {
+      global.window.requestAnimationFrame = origRaf;
+      global.document.createElement = origCreateElement;
+    }
+  });
+
+  test('theme switching cancels a pending frame and clears itself without requestAnimationFrame', () => {
+    const origRaf = global.window.requestAnimationFrame;
+    const origCancel = global.window.cancelAnimationFrame;
+    const cancelled = [];
+    let nextFrame = 0;
+    global.window.requestAnimationFrame = () => ++nextFrame;
+    global.window.cancelAnimationFrame = (id) => cancelled.push(id);
+    global.document.documentElement.removeAttribute = (name) => {
+      delete docAttributes[name];
+    };
+
+    try {
+      applyTheme('dark', { persist: true });
+      applyTheme('light', { persist: true });
+      assert.deepStrictEqual(cancelled, [1]);
+      assert.strictEqual(docAttributes['data-theme-switching'], '1');
+
+      global.window.requestAnimationFrame = undefined;
+      applyTheme('dark', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+
+      const bare = global.document.documentElement.removeAttribute;
+      global.document.documentElement.removeAttribute = undefined;
+      applyTheme('light', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+      global.document.documentElement.removeAttribute = bare;
+    } finally {
+      global.window.requestAnimationFrame = origRaf;
+      global.window.cancelAnimationFrame = origCancel;
+    }
+  });
 });

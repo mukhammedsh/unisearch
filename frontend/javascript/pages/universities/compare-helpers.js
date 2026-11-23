@@ -1,3 +1,20 @@
+import { escapeHtmlAttr } from "../../utils/format.js";
+import { uniThumbnailSrc } from "../_shared.js";
+import { coverCreditHtml } from "../university/cover-credit.js";
+
+export function compareCampusHtml(id, photos) {
+  const credit = photos?.[id];
+  if (!credit) return "";
+  const src = uniThumbnailSrc(id);
+  const fallback = uniThumbnailSrc(id, { forceFull: true, format: "jpg" });
+  return `<figure class="compare-campus">
+    <div class="compare-campus__photo">
+      <img src="${escapeHtmlAttr(src)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(fallback)}" data-remove-on-error="1">
+    </div>
+    <figcaption class="compare-campus__credit">${coverCreditHtml({ ...credit, modified: true })}</figcaption>
+  </figure>`;
+}
+
 export async function loadCompareUniversities(ids, options = {}) {
   const cleanIds = Array.isArray(ids)
     ? ids.map((id) => String(id || "").trim()).filter(Boolean)
@@ -15,7 +32,7 @@ export async function loadCompareUniversities(ids, options = {}) {
     try {
       const detail = await fetchUniversityDetailCached(id);
       return detail || fallbackById.get(id);
-    } catch (error) {
+    } catch {
       return fallbackById.get(id);
     }
   }));
@@ -63,7 +80,7 @@ export async function fetchCompareProfiles(ids, options = {}) {
     });
 
     return { chances, rois };
-  } catch (error) {
+  } catch {
     return fetchCompareProfilesIndividually(cleanIds.filter(id => !REVIEWED_ADMISSIONS_IDS.has(id)), { apiBase, fetchImpl, profile });
   }
 }
@@ -77,7 +94,7 @@ async function fetchJsonOrNull(fetchImpl, url, profile) {
     });
     if (!response.ok) return null;
     return await response.json();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -182,7 +199,7 @@ export async function resolveAiSortResult(options = {}) {
 }
 
 import { t, tFormat, getCurrentLanguage } from "../../i18n.js";
-import { formatPrice } from "../../currency.js";
+import { formatPrice, formatPriceRange } from "../../currency.js";
 import { 
   nested, 
   loadProfile, 
@@ -205,10 +222,10 @@ import {
   normalizeStudyModeForCost,
   trTrackDescription,
   COMPARE_ADMISSION_CHOICES_KEY,
-  formatCampusSizeValue,
   trProgramName,
   trFactSource,
   trFactStatus,
+  campusAreaFact,
 } from "../_shared.js";
 import { 
   translateDataValue, 
@@ -245,6 +262,17 @@ export async function fetchCompareAdmissionContext(id, context, profile, options
   });
   if (!response.ok) throw new Error(`Admissions context HTTP ${response.status}`);
   return response.json();
+}
+
+// After a deliberate program choice, the only route linked to that option can be applied.
+// A saved choice, URL or association alone never supplies a missing route, and several routes stay a choice.
+export function soleCompatibleRoute(resolved, context = {}) {
+  const routes = resolved?.available_routes;
+  if (!resolved?.selected_option || resolved.selected_route || !Array.isArray(routes) || routes.length !== 1) return null;
+  if (Object.values(resolved.context_applicability || {}).includes("mismatched")) return null;
+  const [route] = routes;
+  if (Array.isArray(route.levels) && route.levels.length && context.study_level && !route.levels.includes(context.study_level)) return null;
+  return route;
 }
 
 export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
@@ -498,14 +526,14 @@ export function readCompareAdmissionChoices() {
     const resetIds = Object.keys(raw).filter(id => REVIEWED_ADMISSIONS_IDS.has(id));
     if (resetIds.length) {
       try { localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(retained)); }
-      catch (error) { console.warn("Failed to persist the comparison selection reset; obsolete choices are ignored for this session."); }
+      catch { console.warn("Failed to persist the comparison selection reset; obsolete choices are ignored for this session."); }
       const profile = loadProfile();
       saveProfile({ ...profile, admissionChoiceResetNotices: Array.from(new Set([...(profile.admissionChoiceResetNotices || []), ...resetIds])) });
     }
     return new Map(Object.entries(retained)
       .map(([id, selection]) => [String(id || "").trim(), normalizeCompareAdmissionSelection(selection)])
       .filter(([id, selection]) => id && selection));
-  } catch (e) {
+  } catch {
     return new Map();
   }
 }
@@ -522,7 +550,7 @@ export function writeCompareAdmissionChoices(choicesMap, activeIds = []) {
   }
   try {
     localStorage.setItem(COMPARE_ADMISSION_CHOICES_KEY, JSON.stringify(data));
-  } catch (e) {
+  } catch {
     // Ignore storage failures
   }
 }
@@ -585,7 +613,7 @@ export function formatCompareCostRange(context) {
   const currency = String(context?.currency || "USD");
   if (min === null) return t("common.na", "N/A");
   if (max === null || Math.abs(max - min) <= 0.000001) return formatCompareCost(min, "placeholder.field.cost", "Cost", currency);
-  return `${formatCompareCost(min, "placeholder.field.cost", "Cost", currency)}–${formatCompareCost(max, "placeholder.field.cost", "Cost", currency)}`;
+  return formatPriceRange(min, max, currency.trim().toUpperCase());
 }
 
 export function compareCostContextText(context) {
@@ -747,6 +775,7 @@ export function compareSourceMeta(u, factKey) {
     text: compareSourceText(u, factKey),
     url: String(fact?.source_url || "").trim(),
     verifiedAt: String(fact?.verified_at || "").trim(),
+    scope: String(fact?.basis?.scope || "").trim(),
   };
 }
 
@@ -777,9 +806,10 @@ export function compareScoreText(value) {
   return n !== null ? formatUiNumber(n, { maximumFractionDigits: 2 }) : t("common.na", "N/A");
 }
 
-export function compareCampusAreaText(value) {
-  const n = toFiniteNumber(value);
-  return n !== null ? formatCampusSizeValue(n) : t("common.na", "N/A");
+// The official area in hectares, as on the university page; the raw square-metre figure is not shown.
+export function compareCampusAreaText(value, university) {
+  const fact = campusAreaFact({ campus_area_m2: value, size_is_approximate: university?.student_life?.size_is_approximate });
+  return fact ? fact.text : t("common.na", "N/A");
 }
 
 export function compareBachelorProgramCount(u) {
@@ -801,7 +831,17 @@ export function compareLanguageCount(u) {
   return langs.size;
 }
 
+export function compareStudyFormatSource(u) {
+  const sources = (Array.isArray(u?.verified_sources) ? u.verified_sources : [])
+    .filter((source) => source?.topic === "formats" && String(source.url || "").trim());
+  if (!sources.length) return null;
+  const join = (key) => [...new Set(sources.map((source) => String(source[key] || "").trim()).filter(Boolean))].join("; ");
+  return { source: join("title"), sourceUrl: String(sources[0].url).trim(), verifiedAt: join("checked_at"), scope: join("scope") };
+}
+
 export function compareStudyFormatCount(u) {
+  // Formats without a linked official source are not a verified fact, so they stay out of the comparison.
+  if (!compareStudyFormatSource(u)) return null;
   const formats = Array.isArray(u?.academics?.formats) ? u.academics.formats : [];
   const fromPrograms = compareBachelorPrograms(u).map((program) => String(program?.study_mode || "").trim()).filter(Boolean);
   return new Set([...formats, ...fromPrograms].map((item) => String(item || "").trim().toLowerCase()).filter(Boolean)).size;
@@ -851,9 +891,7 @@ export function compareCostBreakdownText(u, mode, compareAdmissionChoices) {
   if (hasExplicitRange && values.length > 1) {
     const minimum = Math.min(...values);
     const maximum = Math.max(...values);
-    return minimum === maximum
-      ? formatCompareCost(minimum, "placeholder.field.cost", "Cost", currency)
-      : `${formatCompareCost(minimum, "placeholder.field.cost", "Cost", currency)}–${formatCompareCost(maximum, "placeholder.field.cost", "Cost", currency)}`;
+    return formatPriceRange(minimum, maximum, currency);
   }
   const total = values.reduce((sum, value) => sum + value, 0);
   return formatCompareCost(total, "placeholder.field.cost", "Cost", currency);

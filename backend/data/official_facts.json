@@ -4,13 +4,18 @@
   "universities": {
     "mit-usa-cambridge": {
       "student_count": {
-        "value": 11920,
-        "source": "MIT Facts",
-        "source_url": "https://facts.mit.edu/",
-        "verified_at": "2026-03-12",
+        "value": 11816,
+        "source": "MIT Facts — Enrollment Statistics",
+        "source_url": "https://facts.mit.edu/enrollment-statistics/",
+        "verified_at": "2026-11-20",
         "status": "official",
         "confidence": "high",
-        "method": "Direct student headcount published on MIT Facts."
+        "method": "MIT Facts reports 11,816 all students in October 2025 for academic year 2025–2026.",
+        "basis": {
+          "scope": "All students; headcount in October 2025 for academic year 2025–2026",
+          "census_date": "October 2025",
+          "academic_year": "2025–2026"
+        }
       },
       "acceptance_rate_percent": {
         "value": 4.56,
@@ -52,6 +57,33 @@
         {
           "topic": "outcomes",
           "url": "https://ir.mit.edu/wp-content/uploads/2024/05/GSS-2019-Overall.pdf"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://facts.mit.edu/enrollment-statistics/",
+          "title": "MIT Facts — Enrollment Statistics",
+          "scope": "All students; headcount in October 2025 for academic year 2025–2026",
+          "checked_at": "2026-11-20"
+        },
+        {
+          "topic": "formats",
+          "url": "https://catalog.mit.edu/mit/undergraduate-education/academic-programs/",
+          "title": "MIT Course Catalog — Academic Programs",
+          "scope": "Undergraduate degree study; MIT describes a four-year residential college with a full-time academic program.",
+          "checked_at": "2026-11-20",
+          "format_modes": [
+            "On-campus"
+          ]
+        },
+        {
+          "topic": "formats",
+          "url": "https://oge.mit.edu/faqs/",
+          "title": "MIT Office of Graduate Education — FAQs",
+          "scope": "Graduate degree programs; the FAQ says degree-granting programs must be completed on campus.",
+          "checked_at": "2026-11-20",
+          "format_modes": [
+            "On-campus"
+          ]
         }
       ],
       "tags": {
@@ -122,7 +154,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from the official About page describing Imperial's science, engineering, medicine, and business faculties and public research mission."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "stanford-university-usa-ca": {
       "student_count": {
@@ -169,7 +204,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from the official Stanford University overview of schools (Humanities and Sciences, Engineering, Medicine, Law, Education, Business) and private research university status."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "harvard-usa-cambridge": {
       "student_count": {
@@ -215,7 +253,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from Harvard's official Schools and Faculty of Arts and Sciences academic structure."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "eth-zurich-ch-zurich": {
       "student_count": {
@@ -231,6 +272,16 @@
         {
           "topic": "local_exam_requirements",
           "url": "https://ethz.ch/en/studies/bachelor/application/swiss-matriculation-certificate.html"
+        },
+        {
+          "topic": "formats",
+          "url": "https://inf.ethz.ch/studies/bachelor.html",
+          "title": "ETH Zurich — Computer Science Bachelor",
+          "scope": "Bachelor's degree in Computer Science",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -338,7 +389,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from NUS faculties and schools (Computing, Engineering, Science, Business, Law, Medicine), autonomous public university status under the National University of Singapore Act, and Kent Ridge campus."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "epfl-ch-lausanne": {
       "student_count": {
@@ -377,7 +431,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from EPFL official schools (Basic Sciences, Engineering, Computer and Communication Sciences, Life Sciences, Architecture and Civil Engineering, Management of Technology) and Swiss federal public institute status."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "technical-university-of-munich-de-munich": {
       "student_count": {
@@ -418,7 +475,19 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from TUM Schools structure (Computation, Information and Technology; Engineering and Design; Natural Sciences; Life Sciences; Medicine and Health; Management; Social Sciences and Technology) and public research status."
-      }
+      },
+      "verified_sources": [
+        {
+          "topic": "formats",
+          "url": "https://www.tum.de/en/studies/degree-programs/detail/informatics-bachelor-of-science-bsc",
+          "title": "TUM — Informatics BSc",
+          "scope": "BSc Informatics, Garching",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
+        }
+      ]
     },
     "university-of-toronto-ca-toronto": {
       "student_count": {
@@ -466,7 +535,30 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from U of T faculties, collegiate structure, and public research university profile."
-      }
+      },
+      "verified_sources": [
+        {
+          "topic": "formats",
+          "url": "https://kpe.utoronto.ca/sites/default/files/2026-02/ug_academic_tt_2025-26_-_feb_23.pdf",
+          "title": "University of Toronto — Undergraduate Teaching Modes 2025–26",
+          "scope": "University-wide undergraduate teaching modes, 2025–26",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
+        },
+        {
+          "topic": "formats",
+          "url": "https://onlinelearning.utoronto.ca/online-courses/",
+          "title": "University of Toronto — Online Courses",
+          "scope": "Online and hybrid courses across selected divisions; not every degree",
+          "format_modes": [
+            "Online",
+            "Hybrid"
+          ],
+          "checked_at": "2026-11-20"
+        }
+      ]
     },
     "cuhk-hk-shatin": {
       "student_count": {
@@ -544,7 +636,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from CUHK faculties, bilingual collegiate university charter, and public research institution status."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "university-of-tokyo-jp-tokyo": {
       "student_count": {
@@ -598,7 +693,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from the official About UTokyo page describing national university status, broad academic faculties, and comprehensive research mission."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "seoul-national-university-kr-seoul": {
       "student_count": {
@@ -649,7 +747,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "delft-university-of-technology-nl-delft": {
       "student_count": {
@@ -694,6 +795,16 @@
         {
           "topic": "extra_requirements",
           "url": "https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.tudelft.nl/onderwijs/opleidingen/bachelors/cse/bsc-computer-science-and-engineering",
+          "title": "TU Delft — BSc Computer Science and Engineering",
+          "scope": "Bachelor's degree in Computer Science and Engineering",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -751,7 +862,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "tsinghua-university-cn-beijing": {
       "student_count": {
@@ -805,7 +919,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "nazarbayev-university-kaz-astana": {
       "student_count": {
@@ -845,7 +962,10 @@
         "status": "official_derived",
         "confidence": "medium",
         "method": "Derived from Nazarbayev University schools (SEDS, SSH, SOM, GSPP, GSB), English-medium instruction, residential campus, and autonomous research university status (Law of RK 'On the status of Nazarbayev University...')."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "kyoto-university-jp-kyoto": {
       "student_count": {
@@ -895,7 +1015,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "university-of-melbourne-au-melbourne": {
       "student_count": {
@@ -944,7 +1067,20 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "verified_sources": [
+        {
+          "topic": "formats",
+          "url": "https://students.unimelb.edu.au/course-admin/planning-your-course-and-subjects/subjects",
+          "title": "University of Melbourne — Course and Subject Delivery",
+          "scope": "On-campus undergraduate and selected online graduate subjects",
+          "format_modes": [
+            "On-campus",
+            "Online"
+          ],
+          "checked_at": "2026-11-20"
+        }
+      ]
     },
     "suleyman-demirel-university-kaz-kaskelen": {
       "student_count": {
@@ -996,7 +1132,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "astana-it-university-kaz-astana": {
       "student_count": {
@@ -1051,14 +1190,11 @@
         {
           "topic": "programs",
           "url": "https://astanait.edu.kz/en/bachelor/"
-        },
-        {
-          "topic": "formats",
-          "url": "https://astanait.edu.kz/en/bachelor/"
         }
       ],
       "clear_verified_topics": [
-        "english_language_policy"
+        "english_language_policy",
+        "formats"
       ],
       "acceptance_rate_percent": {
         "value": 30.0,
@@ -1131,10 +1267,6 @@
           "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/engineering-science"
         },
         {
-          "topic": "formats",
-          "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing/computer-science"
-        },
-        {
           "topic": "description",
           "url": "https://www.ox.ac.uk/about"
         },
@@ -1151,10 +1283,6 @@
           "url": "https://www.ox.ac.uk/admissions/undergraduate/applying-to-oxford"
         },
         {
-          "topic": "student_count",
-          "url": "https://www.ox.ac.uk/about/facts-and-figures"
-        },
-        {
           "topic": "acceptance_rate",
           "url": "https://www.ox.ac.uk/about/facts-and-figures/admissions-statistics/undergraduate-students/current/overall-numbers"
         },
@@ -1165,16 +1293,38 @@
         {
           "topic": "finance",
           "url": "https://www.ox.ac.uk/admissions/undergraduate/fees-and-funding/living-costs"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/about-your-studies",
+          "title": "Oxford — About Your Studies",
+          "scope": "Ordinary undergraduate degree study",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
+        },
+        {
+          "topic": "student_count",
+          "url": "https://www.ox.ac.uk/about/the-university/facts-and-figures/student-numbers",
+          "title": "Oxford Student Numbers",
+          "scope": "Fully enrolled students across all study levels; figures as of 2025-12-01, rounded to the nearest five",
+          "checked_at": "2026-11-20"
         }
       ],
       "student_count": {
-        "value": 26760,
-        "source": "University of Oxford facts and figures",
-        "source_url": "https://www.ox.ac.uk/about/facts-and-figures",
-        "verified_at": "2026-04-04",
-        "status": "reviewed",
-        "confidence": "medium",
-        "method": "Curated from the university's published facts / quick-facts materials."
+        "value": 26800,
+        "source": "Oxford Student Numbers",
+        "source_url": "https://www.ox.ac.uk/about/the-university/facts-and-figures/student-numbers",
+        "verified_at": "2026-11-20",
+        "status": "official",
+        "confidence": "high",
+        "method": "Oxford Student Numbers reports 26,800 fully enrolled students as of 1 December 2025.",
+        "basis": {
+          "scope": "Fully enrolled students across all study levels; figures as of 2025-12-01, rounded to the nearest five",
+          "data_as_of": "2025-12-01",
+          "rounded_to_nearest": 5
+        }
       }
     },
     "university-of-cambridge-uk-cambridge": {
@@ -1239,10 +1389,6 @@
           "url": "https://www.undergraduate.study.cam.ac.uk/courses/engineering"
         },
         {
-          "topic": "formats",
-          "url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science"
-        },
-        {
           "topic": "description",
           "url": "https://www.cam.ac.uk/about-the-university"
         },
@@ -1283,7 +1429,10 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "university-of-edinburgh-uk-edinburgh": {
       "description": {
@@ -1331,10 +1480,6 @@
         {
           "topic": "programs",
           "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=H651"
-        },
-        {
-          "topic": "formats",
-          "url": "https://www.ed.ac.uk/studying/undergraduate/degrees/index.php?action=view&code=G400"
         },
         {
           "topic": "description",
@@ -1386,7 +1531,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "university-of-manchester-uk-manchester": {
       "description": {
@@ -1433,10 +1581,6 @@
         {
           "topic": "programs",
           "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00367/beng-mechanical-engineering/"
-        },
-        {
-          "topic": "formats",
-          "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/00560/bsc-computer-science/"
         },
         {
           "topic": "description",
@@ -1488,7 +1632,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "caltech-usa-pasadena": {
       "description": {
@@ -1532,10 +1679,6 @@
         {
           "topic": "programs",
           "url": "https://www.ee.caltech.edu/"
-        },
-        {
-          "topic": "formats",
-          "url": "https://www.cms.caltech.edu/academics/computer-science"
         },
         {
           "topic": "description",
@@ -1593,7 +1736,10 @@
           "institution_name": "California Institute of Technology",
           "data_source": "U.S. Department of Education College Scorecard API"
         }
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "uc-berkeley-usa-berkeley": {
       "description": {
@@ -1642,10 +1788,6 @@
           "url": "https://me.berkeley.edu/academics/undergraduate/"
         },
         {
-          "topic": "formats",
-          "url": "https://eecs.berkeley.edu/academics/undergraduate/"
-        },
-        {
           "topic": "description",
           "url": "https://www.berkeley.edu/about/"
         },
@@ -1672,6 +1814,26 @@
         {
           "topic": "outcomes",
           "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=110635&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "formats",
+          "url": "https://undergraduate.catalog.berkeley.edu/programs/A5201U",
+          "title": "UC Berkeley Catalog — Computer Science BA",
+          "scope": "Computer Science BA",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
+        },
+        {
+          "topic": "formats",
+          "url": "https://undergraduate.catalog.berkeley.edu/programs/16306U",
+          "title": "UC Berkeley Catalog — Electrical Engineering and Computer Sciences BS",
+          "scope": "Electrical Engineering and Computer Sciences BS",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -1750,10 +1912,6 @@
           "url": "https://ece.princeton.edu/academics/undergraduate-program"
         },
         {
-          "topic": "formats",
-          "url": "https://www.cs.princeton.edu/academics/undergraduate"
-        },
-        {
           "topic": "description",
           "url": "https://www.princeton.edu/about"
         },
@@ -1780,6 +1938,16 @@
         {
           "topic": "outcomes",
           "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=186131&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "formats",
+          "url": "https://ua.princeton.edu/policies-resources/academic-regulations/academic-year",
+          "title": "Princeton — Academic Regulations",
+          "scope": "Undergraduate academic year; residential, in-person study",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -1859,10 +2027,6 @@
           "url": "https://seas.yale.edu/biomedical-engineering"
         },
         {
-          "topic": "formats",
-          "url": "https://cpsc.yale.edu/undergraduate-program"
-        },
-        {
           "topic": "description",
           "url": "https://www.yale.edu/about-yale"
         },
@@ -1918,7 +2082,10 @@
           "institution_name": "Yale University",
           "data_source": "U.S. Department of Education College Scorecard API"
         }
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "university-of-chicago-usa-chicago": {
       "description": {
@@ -1969,10 +2136,6 @@
           "url": "https://college.uchicago.edu/academics/economics"
         },
         {
-          "topic": "formats",
-          "url": "https://cs.uchicago.edu/education/undergraduate-programs/"
-        },
-        {
           "topic": "description",
           "url": "https://www.uchicago.edu/who-we-are"
         },
@@ -1999,6 +2162,16 @@
         {
           "topic": "outcomes",
           "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=144050&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "formats",
+          "url": "https://college.uchicago.edu/advising/enrollment-policies",
+          "title": "UChicago College — Enrollment Policies",
+          "scope": "College during Autumn, Winter, and Spring; some remote courses are available in Summer",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -2079,10 +2252,6 @@
           "url": "https://economics.sas.upenn.edu/undergraduate"
         },
         {
-          "topic": "formats",
-          "url": "https://www.cis.upenn.edu/undergraduate/"
-        },
-        {
           "topic": "description",
           "url": "https://www.upenn.edu/about"
         },
@@ -2138,7 +2307,10 @@
           "institution_name": "University of Pennsylvania",
           "data_source": "U.S. Department of Education College Scorecard API"
         }
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "cornell-university-usa-ithaca": {
       "description": {
@@ -2187,10 +2359,6 @@
         {
           "topic": "programs",
           "url": "https://www.mae.cornell.edu/mae/programs/undergraduate-programs"
-        },
-        {
-          "topic": "formats",
-          "url": "https://www.cs.cornell.edu/undergrad"
         },
         {
           "topic": "description",
@@ -2248,7 +2416,10 @@
           "institution_name": "Cornell University",
           "data_source": "U.S. Department of Education College Scorecard API"
         }
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "columbia-university-usa-new-york": {
       "description": {
@@ -2297,10 +2468,6 @@
         {
           "topic": "programs",
           "url": "https://www.bme.columbia.edu/academics/undergraduate"
-        },
-        {
-          "topic": "formats",
-          "url": "https://www.cs.columbia.edu/education/undergraduate/"
         },
         {
           "topic": "description",
@@ -2358,7 +2525,10 @@
           "institution_name": "Columbia University in the City of New York",
           "data_source": "U.S. Department of Education College Scorecard API"
         }
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "johns-hopkins-university-usa-baltimore": {
       "description": {
@@ -2409,10 +2579,6 @@
           "url": "https://engineering.jhu.edu/biomedical-engineering/academics/undergraduate/"
         },
         {
-          "topic": "formats",
-          "url": "https://engineering.jhu.edu/computer-science/academics/undergraduate-studies/"
-        },
-        {
           "topic": "description",
           "url": "https://www.jhu.edu/about/"
         },
@@ -2439,6 +2605,16 @@
         {
           "topic": "outcomes",
           "url": "https://api.data.gov/ed/collegescorecard/v1/schools?api_key=DEMO_KEY&id=162928&fields=id%2Cschool.name%2Clocation.lat%2Clocation.lon%2Clatest.student.size%2Clatest.admissions.admission_rate.overall%2Clatest.admissions.sat_scores.average.overall%2Clatest.admissions.act_scores.midpoint.cumulative%2Clatest.cost.tuition.out_of_state%2Clatest.cost.attendance.academic_year%2Clatest.cost.booksupply%2Clatest.cost.roomboard.oncampus%2Clatest.cost.otherexpense.oncampus%2Clatest.earnings.10_yrs_after_entry.median"
+        },
+        {
+          "topic": "formats",
+          "url": "https://engineering.jhu.edu/resource-finder/?degree_level=bachelors-degree&learning_mode=&query=",
+          "title": "Johns Hopkins — Whiting Resource Finder",
+          "scope": "Computer Science BA and BS, undergraduate",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -2519,10 +2695,6 @@
           "url": "https://www.ee.ucla.edu/academics/undergraduate/"
         },
         {
-          "topic": "formats",
-          "url": "https://www.cs.ucla.edu/undergraduate-study/"
-        },
-        {
           "topic": "description",
           "url": "https://www.ucla.edu/about"
         },
@@ -2578,7 +2750,10 @@
           "institution_name": "University of California-Los Angeles",
           "data_source": "U.S. Department of Education College Scorecard API"
         }
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "mcgill-university-ca-montreal": {
       "description": {
@@ -2643,10 +2818,6 @@
           "url": "https://www.mcgill.ca/undergraduate-admissions/program/software-engineering"
         },
         {
-          "topic": "formats",
-          "url": "https://www.cs.mcgill.ca/academic/undergrad/"
-        },
-        {
           "topic": "description",
           "url": "https://www.mcgill.ca/about/"
         },
@@ -2687,7 +2858,10 @@
         "status": "reviewed",
         "confidence": "medium",
         "method": "Curated from the university's published facts / quick-facts materials."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "university-of-british-columbia-ca-vancouver": {
       "description": {
@@ -2751,10 +2925,6 @@
           "url": "https://apsc.ubc.ca/"
         },
         {
-          "topic": "formats",
-          "url": "https://www.cs.ubc.ca/students/undergrad"
-        },
-        {
           "topic": "description",
           "url": "https://www.ubc.ca/about/"
         },
@@ -2785,6 +2955,16 @@
         {
           "topic": "finance",
           "url": "https://students.ubc.ca/ubclife/cost-living"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.cs.ubc.ca/category/audience/undergrads/bcs?page=2",
+          "title": "UBC — BCS (ICS) Undergraduate FAQ",
+          "scope": "Bachelor of Computer Science (Integrated Computer Science)",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "student_count": {
@@ -2861,10 +3041,6 @@
           "url": "https://uwaterloo.ca/future-students/programs/software-engineering"
         },
         {
-          "topic": "formats",
-          "url": "https://uwaterloo.ca/future-students/programs/computer-science"
-        },
-        {
           "topic": "description",
           "url": "https://uwaterloo.ca/about/"
         },
@@ -2895,6 +3071,16 @@
         {
           "topic": "finance",
           "url": "https://uwaterloo.ca/future-students/life-residence/costs"
+        },
+        {
+          "topic": "formats",
+          "url": "https://uwaterloo.ca/new-math-students/faq",
+          "title": "University of Waterloo — Math and CS FAQ",
+          "scope": "Computer Science courses in Fall 2026; some courses may include online components",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "student_count": {
@@ -2955,10 +3141,6 @@
           "url": "https://www.unsw.edu.au/study/undergraduate/engineering-honours"
         },
         {
-          "topic": "formats",
-          "url": "https://www.unsw.edu.au/study/undergraduate/computer-science"
-        },
-        {
           "topic": "description",
           "url": "https://www.unsw.edu.au/about-us"
         },
@@ -2989,6 +3171,17 @@
         {
           "topic": "finance",
           "url": "https://www.unsw.edu.au/study/international-students/costs-scholarships"
+        },
+        {
+          "topic": "formats",
+          "url": "https://www.unsw.edu.au/study/undergraduate/bachelor-of-computer-science",
+          "title": "UNSW — Bachelor of Computer Science",
+          "scope": "Bachelor of Computer Science at Kensington; face-to-face includes blended",
+          "format_modes": [
+            "On-campus",
+            "Hybrid"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "student_count": {
@@ -3060,10 +3253,6 @@
           "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-engineering-honours-software-engineering.html"
         },
         {
-          "topic": "formats",
-          "url": "https://www.sydney.edu.au/courses/courses/uc/bachelor-of-advanced-computing.html"
-        },
-        {
           "topic": "description",
           "url": "https://www.sydney.edu.au/about-us.html"
         },
@@ -3113,7 +3302,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "australian-national-university-au-canberra": {
       "description": {
@@ -3164,10 +3356,6 @@
           "url": "https://programsandcourses.anu.edu.au/program/bengh"
         },
         {
-          "topic": "formats",
-          "url": "https://programsandcourses.anu.edu.au/program/bcomp"
-        },
-        {
           "topic": "description",
           "url": "https://www.anu.edu.au/about"
         },
@@ -3198,6 +3386,16 @@
         {
           "topic": "finance",
           "url": "https://study.anu.edu.au/student-life/living-canberra/cost-living"
+        },
+        {
+          "topic": "formats",
+          "url": "https://programsandcourses.anu.edu.au/program/bcomp",
+          "title": "ANU — Bachelor of Computing",
+          "scope": "Bachelor of Computing",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "student_count": {
@@ -3261,6 +3459,16 @@
         {
           "topic": "tags",
           "url": "https://amu.edu.kz/en/postupayushchim/obrazovatelnye-programmy/bakalavriat/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://amu.edu.kz/upload/iblock/8a3/8a38087eececc5dcf34e60ab3cba8f40.pdf",
+          "title": "AMU — Nursing Applied Bachelor's Entrance Exam Program 2026",
+          "scope": "10-month applied bachelor's program 6B10101 Nursing",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -3331,7 +3539,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "satbayev-university-kaz-almaty": {
       "description": {
@@ -3380,6 +3591,16 @@
         {
           "topic": "tags",
           "url": "https://satbayev.university/en/undergraduate"
+        },
+        {
+          "topic": "formats",
+          "url": "https://official.satbayev.university/download/document/52850/%D0%A4%D0%B8%D0%BD%D0%B0%D0%BD%D1%81%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%B0%D0%BD%D0%B0%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0%206B06107%202025-2026.pdf",
+          "title": "Satbayev — Financial Analytics 6B06107, 2025–2026",
+          "scope": "Bachelor's program 6B06107, 2025–2026",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -3451,7 +3672,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "al-farabi-kazakh-national-university-kaz-almaty": {
       "description": {
@@ -3504,6 +3728,16 @@
         {
           "topic": "tags",
           "url": "https://www.kaznu.kz/en/3360"
+        },
+        {
+          "topic": "formats",
+          "url": "https://welcome.kaznu.kz/ru/17998/page",
+          "title": "Al-Farabi KazNU — Applicant Programs 2026",
+          "scope": "Full-time undergraduate programs across faculties; MBA modes vary and are not covered",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -3578,7 +3812,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "narxoz-university-kaz-almaty": {
       "description": {
@@ -3636,7 +3873,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "kimep-university-kaz-almaty": {
       "description": {
@@ -3695,7 +3935,10 @@
         "status": "official_aggregated",
         "confidence": "medium",
         "method": "Calculated or aggregated from official admissions data and authorized educational profiles."
-      }
+      },
+      "clear_verified_topics": [
+        "formats"
+      ]
     },
     "asfendiyarov-kazakh-national-medical-university-kaz-almaty": {
       "description": {
@@ -3744,6 +3987,16 @@
         {
           "topic": "tags",
           "url": "https://kaznmu.edu.kz/en/for-applicants/bachelors-degree/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://kaznmu.edu.kz/wp-content/uploads/2026/01/%D0%9B%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D1%8F-%D0%BD%D0%B0-%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D1%83%D1%8E-%D0%B4%D0%B5%D1%8F%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D1%8C-%D0%9D%D0%90%D0%9E-%D0%9A%D0%B0%D0%B7%D0%9D%D0%9C%D1%83.pdf",
+          "title": "KazNMU — License Appendix: Healthcare 6B101",
+          "scope": "Bachelor of Healthcare 6B101",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {
@@ -3805,6 +4058,16 @@
         {
           "topic": "tags",
           "url": "https://abaiuniversity.edu.kz/en/"
+        },
+        {
+          "topic": "formats",
+          "url": "https://abaiuniversity.edu.kz/docs/docs/xudgraphkorkebilim/KorkembilimIr.pdf",
+          "title": "Abai University — Art Education 6B01416",
+          "scope": "Bachelor's program 6B01416 Art Education; other university formats not covered",
+          "format_modes": [
+            "On-campus"
+          ],
+          "checked_at": "2026-11-20"
         }
       ],
       "acceptance_rate_percent": {

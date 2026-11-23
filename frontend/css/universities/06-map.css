@@ -8,11 +8,30 @@
   min-height: 560px;
 }
 
-.u-map-results,
+.u-map-results {
+  position: relative;
+  align-self: stretch;
+  min-height: 0;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--bg-soft);
+}
+
 .u-map-container {
-  border: none;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  aspect-ratio: auto;
+  overflow: hidden;
+  isolation: isolate;
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
+  box-shadow: none;
 }
 
 .u-map-container .leaflet-control-zoom {
@@ -44,28 +63,14 @@
 
 .u-map-container .leaflet-control-zoom a:hover,
 .u-map-container .leaflet-control-zoom a:focus {
-  background: var(--surface-soft);
-  color: var(--accent);
-}
-
-.u-map-container .leaflet-control-zoom a:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
 }
 
 .u-map-container .leaflet-control-zoom a.leaflet-disabled {
   background: var(--surface-solid);
   color: var(--text-muted);
   opacity: 0.48;
-}
-
-.u-map-results {
-  position: relative;
-  align-self: stretch;
-  min-height: 0;
-  min-width: 0;
-  padding: 0;
-  overflow: hidden;
 }
 
 .u-map-results-list,
@@ -99,21 +104,6 @@
   pointer-events: none;
 }
 
-.u-map-results-list .is-skeleton .uni-logo--inline {
-  position: static;
-  background-color: var(--skeleton-base);
-  background-image: linear-gradient(
-  100deg,
-  transparent 0%,
-  transparent 34%,
-  var(--skeleton-highlight) 46%,
-  transparent 58%,
-  transparent 100%
-  );
-  background-size: 220% 100%;
-  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
-}
-
 .u-map-results-list .is-skeleton .uni-head-copy {
   flex: 1 1 auto;
   min-width: 0;
@@ -124,8 +114,7 @@
 .u-map-results-empty {
   margin: var(--space-3);
   padding: var(--space-4);
-  border: none;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   color: var(--text-muted);
   line-height: 1.6;
 }
@@ -156,7 +145,6 @@
 
 .u-map-results-list::-webkit-scrollbar-thumb {
   min-height: 48px;
-  border: none;
   border-radius: var(--radius-full);
   background: var(--scrollbar-thumb);
 }
@@ -176,22 +164,58 @@
   background: transparent;
 }
 
-/* Map rail reuses the list-mode .uni-card without the cover photo. */
+/* Map rail reuses the list-mode .uni-card; the campus photo is a faded backdrop, as in comparison. */
 .u-map-results-list .uni-card {
+  --uni-card-bg: var(--surface-solid);
   flex: none;
   width: 100%;
   max-width: none;
   min-height: 148px;
   cursor: pointer;
+  background: var(--uni-card-bg);
+}
+
+.u-map-results-list .uni-card:is(.is-active, .uni-card--compare-selected) {
+  --uni-card-bg: var(--accent-panel);
 }
 
 .u-map-results-list .uni-card.is-active {
-  background: var(--accent-panel);
   outline: 2px solid var(--focus-ring);
   outline-offset: -2px;
 }
 
+.uni-card-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.uni-card-backdrop img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  filter: brightness(0.85);
+}
+
+.uni-card-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom in oklab,
+    color-mix(in oklab, var(--uni-card-bg) 55%, transparent),
+    var(--uni-card-bg) 80%
+  );
+}
+
 .u-map-results-list .uni-card .uni-body {
+  position: relative;
+  z-index: 1;
   padding: var(--space-3);
   gap: var(--space-2);
 }
@@ -223,6 +247,10 @@
   gap: var(--space-1);
   width: auto;
   max-width: none;
+}
+
+.u-map-results-list .uni-card-statuses > .uni-status-tooltip {
+  position: relative;
 }
 
 .u-map-results-list .uni-status-trigger {
@@ -267,20 +295,6 @@
   padding-right: var(--space-8);
 }
 
-.u-map-results-list .uni-logo--inline {
-  position: relative;
-  left: auto;
-  bottom: auto;
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-}
-
-.u-map-results-list .uni-logo--inline img {
-  padding: var(--space-1);
-}
-
 .u-map-results-footer {
   display: grid;
   justify-items: center;
@@ -298,9 +312,8 @@
   justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--space-4);
-  border: none;
   border-radius: var(--radius-base);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   color: var(--text);
   font: inherit;
   font-weight: var(--font-weight-medium);
@@ -309,12 +322,8 @@
 }
 
 .u-map-results-more:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--surface-soft) 92%, var(--text) 8%);
-}
-
-.u-map-results-more:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
 }
 
 .u-map-results-more:disabled {
@@ -341,28 +350,13 @@
   min-width: 240px;
   padding: var(--space-3);
   background: var(--surface-solid);
+  color: var(--text);
 }
 
 .map-point-popup__head {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-}
-
-.map-point-popup__logo {
-  flex: 0 0 44px;
-  width: 44px;
-  height: 44px;
-  overflow: hidden;
-  border-radius: var(--radius-base);
-  background: var(--surface-soft);
-}
-
-.map-point-popup__logo img {
-  width: 100%;
-  height: 100%;
-  padding: var(--space-1);
-  object-fit: contain;
 }
 
 .map-point-popup__copy {
@@ -397,10 +391,174 @@
 .custom-map-popup .leaflet-popup-content-wrapper,
 .custom-map-popup .leaflet-popup-tip {
   background: var(--surface-solid);
+  color: var(--text);
+}
+
+.custom-map-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.leaflet-container .custom-map-popup .leaflet-popup-content {
+  margin: 0;
+  width: min(360px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  max-height: none;
+  overflow: visible;
+}
+
+.leaflet-container .custom-map-popup .leaflet-popup-scrolled {
+  border: 0;
+  margin: 0;
+  max-height: none;
+  overflow: visible;
+}
+
+.map-card-wrapper .uni-card {
+  box-shadow: none;
+  border-radius: 0;
+  height: auto;
+  min-height: 0;
+}
+
+.map-card-wrapper .uni-media {
+  flex-basis: 140px;
+  height: 140px;
+}
+
+.map-card-wrapper .uni-title {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.leaflet-container .custom-map-popup a.leaflet-popup-close-button {
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-circle);
+  box-shadow: var(--shadow-xs);
+  font-size: var(--text-2xl);
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 2;
+}
+
+/* Map markers share one look: a raised surface pill, no border. A university is
+   an icon and its label; a group is the label of its first university and a
+   "+N" count chip. Boxes have no fixed size: each pill is as wide as its label,
+   and its marker element is centred on the map point so that the clickable box
+   is the pill itself. */
+.custom-div-icon,
+.cluster-icon-container {
+  translate: -50% -50%;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.map-university-marker,
+.map-cluster-pill,
+.map-cluster-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  min-height: var(--space-8);
+  white-space: nowrap;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  background: var(--surface-solid);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-xs), var(--shadow-sm), var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.map-university-marker {
+  width: max-content;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+}
+
+.map-university-marker__icon {
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  color: var(--interaction-hover-text);
+}
+
+.map-university-marker__label,
+.map-cluster-pill__place {
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Without a label the marker is just the icon. */
+.map-university-marker:not(:has(.map-university-marker__label)) {
+  padding: var(--space-1) var(--space-2);
+}
+
+.map-cluster-pill {
+  width: max-content;
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+}
+
+.map-cluster-pill__count {
+  display: grid;
+  place-items: center;
+  min-width: var(--space-6);
+  height: var(--space-6);
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+/* A group with no label to show: a plain count. */
+.map-cluster-count {
+  justify-content: center;
+  width: var(--space-8);
+  height: var(--space-8);
+  border-radius: var(--radius-circle);
+  color: var(--interaction-hover-text);
+}
+
+.map-university-tooltip {
+  max-width: 240px;
+  white-space: normal;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text);
+  background: var(--surface-solid);
+  border: none;
+  box-shadow: var(--shadow-xs);
+}
+
+.map-university-tooltip::before {
+  border-top-color: var(--surface-solid);
+}
+
+.custom-div-icon:hover .map-university-marker,
+.cluster-icon-container:hover :is(.map-cluster-pill, .map-cluster-count) {
+  box-shadow: var(--shadow-xs), var(--shadow-md);
+}
+
+.custom-div-icon:focus-visible .map-university-marker,
+.cluster-icon-container:focus-visible :is(.map-cluster-pill, .map-cluster-count) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.leaflet-cluster-spiderleg {
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: 0.5;
 }
 
 .uni-card--map .uni-title {
-  font-size: 14px;
+  font-size: var(--text-base);
 }
 
 .uni-card--map a.uni-details {
@@ -408,38 +566,27 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :root .u-map-results-list .uni-card:not(.uni-card--compare-selected):hover,
-  .u-map-results-list .uni-card.uni-card--compare-selected:hover {
+  .leaflet-container .custom-map-popup a.leaflet-popup-close-button:hover {
+    background: var(--surface-solid);
+    color: var(--interaction-hover-text);
+  }
+
+  :root .u-map-results-list .uni-card:hover,
+  :root .custom-map-popup .map-card-wrapper .uni-card:hover {
     transform: none;
   }
 
-  :root .custom-map-popup .map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover,
-  .custom-map-popup .map-card-wrapper .uni-card.uni-card--compare-selected:hover {
-    transform: none;
-  }
-
-  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) .leaflet-popup-content-wrapper,
-  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) .leaflet-popup-tip {
+  :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
     background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
   }
 
-  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) .leaflet-popup-content-wrapper,
-  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) .leaflet-popup-tip {
+  .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
     background: var(--accent-soft);
   }
 
   .u-map-results-list .uni-card.is-active:hover {
     background: var(--accent-panel);
   }
-}
-
-.u-map-container {
-  width: 100%;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-  aspect-ratio: auto;
-  isolation: isolate;
 }
 
 @media (max-width: 1180px) {
@@ -494,14 +641,8 @@
     display: none;
   }
 
-  .u-map-results-list .uni-logo--inline {
-    flex-basis: 36px;
-    width: 36px;
-    height: 36px;
-  }
-
   .uni-card--map .uni-title {
-    font-size: 13px;
+    font-size: var(--text-sm);
   }
 
   .u-map-container {

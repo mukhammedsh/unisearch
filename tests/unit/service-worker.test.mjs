@@ -83,12 +83,22 @@ function loadWorker(fetchImpl = async () => new TestResponse("network")) {
 }
 
 function request(pathname, options = {}) {
-  return { url: new URL(pathname, origin).href, method: options.method || "GET", destination: options.destination || "" };
+  const headerEntries = Object.entries(options.headers || {}).reduce((acc, [key, value]) => {
+    acc[String(key).toLowerCase()] = value;
+    return acc;
+  }, {});
+  return {
+    url: new URL(pathname, origin).href,
+    method: options.method || "GET",
+    mode: options.mode || "cors",
+    destination: options.destination || "",
+    headers: { get: (name) => headerEntries[String(name).toLowerCase()] || null },
+  };
 }
 
 test("activating the worker removes old UniSearch caches and claims clients", async () => {
   const worker = loadWorker();
-  const currentCache = "unisearch-api-2026-05-05-1";
+  const currentCache = "unisearch-api-2026-11-19-1";
   await worker.seedCache("unisearch-api-old");
   await worker.seedCache(currentCache);
   await worker.seedCache("unrelated-cache");
@@ -99,13 +109,13 @@ test("activating the worker removes old UniSearch caches and claims clients", as
   assert.deepEqual(await worker.cacheNames(), [currentCache, "unrelated-cache"]);
 });
 
-test("API GETs serve a cached copy offline while other requests pass through", async () => {
+test("API GETs serve a cached copy offline while HTML navigations and other requests pass through", async () => {
   let online = true;
   const worker = loadWorker(async () => {
     if (!online) throw new Error("offline");
-    return new TestResponse("latest university data");
+    return new TestResponse("latest university data", { headers: { "content-type": "application/json" } });
   });
-  const apiRequest = request("/universities/mit-usa-cambridge");
+  const apiRequest = request("/universities/mit-usa-cambridge", { headers: { Accept: "application/json" } });
 
   const onlineResult = await worker.dispatchFetch(apiRequest);
   assert.equal(await onlineResult.response.text(), "latest university data");
@@ -114,22 +124,34 @@ test("API GETs serve a cached copy offline while other requests pass through", a
   assert.equal(await offlineResult.response.text(), "latest university data");
   await offlineResult.settled();
 
+  assert.equal((await worker.dispatchFetch(request("/universities/mit-usa-cambridge", { mode: "navigate", destination: "document" }))).response, undefined);
+  assert.equal((await worker.dispatchFetch(request("/universities/mit-usa-cambridge", { destination: "document" }))).response, undefined);
+  assert.equal((await worker.dispatchFetch(request("/universities/mit-usa-cambridge", { headers: { Accept: "text/html" } }))).response, undefined);
   assert.equal((await worker.dispatchFetch(request("/unknown"))).response, undefined);
   assert.equal((await worker.dispatchFetch(request("/universities", { method: "POST" }))).response, undefined);
   assert.equal((await worker.dispatchFetch({ ...apiRequest, url: "https://other.test/universities" })).response, undefined);
+});
+
+test("API cache never stores unexpected text/html responses", async () => {
+  const worker = loadWorker(async () => new TestResponse("<!DOCTYPE html>", { headers: { "content-type": "text/html; charset=utf-8" } }));
+  const htmlFallbackRequest = request("/universities/mit-usa-cambridge");
+
+  const result = await worker.dispatchFetch(htmlFallbackRequest);
+  assert.equal(await result.response.text(), "<!DOCTYPE html>");
+  assert.equal(worker.cached("unisearch-api-2026-11-19-1", htmlFallbackRequest.url), undefined);
 });
 
 test("university assets try the network first and fall back to their cached copy", async () => {
   let online = true;
   const worker = loadWorker(async () => {
     if (!online) throw new Error("offline");
-    return new TestResponse("university logo");
+    return new TestResponse("campus thumbnail");
   });
-  const logo = request("/universities/assets/logos/mit.png");
+  const thumbnail = request("/universities/assets/thumbnails/mit-usa-cambridge.webp");
 
-  assert.equal(await (await worker.dispatchFetch(logo)).response.text(), "university logo");
+  assert.equal(await (await worker.dispatchFetch(thumbnail)).response.text(), "campus thumbnail");
   online = false;
-  assert.equal(await (await worker.dispatchFetch(logo)).response.text(), "university logo");
+  assert.equal(await (await worker.dispatchFetch(thumbnail)).response.text(), "campus thumbnail");
 });
 
 test("localization cache ignores failed and no-store responses", async () => {
@@ -138,26 +160,26 @@ test("localization cache ignores failed and no-store responses", async () => {
   const failedRequest = request("/Localization/eng");
 
   assert.equal((await worker.dispatchFetch(failedRequest)).response.status, 503);
-  assert.equal(worker.cached("unisearch-static-2026-05-05-1", failedRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-19-1", failedRequest.url), undefined);
 
   response = new TestResponse("private", { headers: { "cache-control": "no-store" } });
   const privateRequest = request("/Localization/ru");
   await worker.dispatchFetch(privateRequest);
-  assert.equal(worker.cached("unisearch-static-2026-05-05-1", privateRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-19-1", privateRequest.url), undefined);
 });
 
 test("image cache evicts the oldest entry when it exceeds its configured limit", async () => {
   const worker = loadWorker();
-  const firstUrl = request("/universities/assets/logos/0.png").url;
+  const firstUrl = request("/universities/assets/thumbnails/0.jpg").url;
   let lastUrl;
   for (let index = 0; index <= 260; index += 1) {
-    const image = request(`/universities/assets/logos/${index}.png`);
+    const image = request(`/universities/assets/thumbnails/${index}.jpg`);
     lastUrl = image.url;
     await worker.dispatchFetch(image);
   }
 
   const keys = await worker.cacheNames();
-  const imageCache = "unisearch-images-2026-05-05-1";
+  const imageCache = "unisearch-images-2026-11-19-1";
   assert.equal(keys.includes(imageCache), true);
   assert.equal(worker.cached(imageCache, firstUrl), undefined);
   assert.equal(worker.cached(imageCache, lastUrl).body, "network");

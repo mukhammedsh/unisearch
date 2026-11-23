@@ -52,7 +52,7 @@ describe('Global Navbar Search Component', () => {
     }
   });
 
-  it('generateSuggestionsHtml generates university logo, name and location', () => {
+  it('generateSuggestionsHtml renders names and locations without university logos', () => {
     const items = [
       { id: 'mit-usa-cambridge', name: 'Massachusetts Institute of Technology', location: { city: 'Cambridge', country: 'USA' } },
       { id: 'nu-kaz-astana', name: 'Nazarbayev University', location: { city: 'Astana', country: 'Kazakhstan' } },
@@ -64,11 +64,8 @@ describe('Global Navbar Search Component', () => {
     assert.ok(html.includes('data-uni-id="mit-usa-cambridge"'));
     assert.ok(html.includes('data-uni-id="nu-kaz-astana"'));
 
-    // Verify logo and fallback initials
-    assert.ok(html.includes('navbar-search-suggestion__logo'));
-    assert.ok(html.includes('mit-usa-cambridge.png'));
-    assert.ok(html.includes('data-fallback-text="MI"'));
-    assert.ok(html.includes('data-fallback-text="NU"'));
+    assert.doesNotMatch(html, /<img\b/);
+    assert.doesNotMatch(html, /data-fallback-text/);
 
     // Verify names
     assert.ok(html.includes('navbar-search-suggestion__name">Massachusetts Institute of Technology</span>'));
@@ -123,7 +120,7 @@ describe('Global Navbar Search Component', () => {
       {
         id: 'mit-usa-cambridge',
         name: 'Massachusetts Institute of Technology',
-        search_aliases: ['mit', 'мит'],
+        abbreviations: ['mit', 'мит'],
         location: { city: 'Cambridge', country: 'USA' },
       },
     ];
@@ -131,6 +128,21 @@ describe('Global Navbar Search Component', () => {
     const html = generateSuggestionsHtml(items, 0, 'MIT');
     assert.ok(html.includes('navbar-search-suggestion__badge'));
     assert.ok(html.includes('MIT</span>'));
+  });
+
+  it('generateSuggestionsHtml shows no alias badge for an alternate full name', () => {
+    const items = [
+      {
+        id: 'epfl-ch-lausanne',
+        name: 'Swiss Federal Institute of Technology Lausanne',
+        abbreviations: ['epfl'],
+        search_aliases: ['epfl', 'swiss federal institute of technology in lausanne'],
+        location: { city: 'Lausanne', country: 'Switzerland' },
+      },
+    ];
+
+    const html = generateSuggestionsHtml(items, 0, 'Swiss Federal Institute of Technology in Lausanne');
+    assert.ok(!html.includes('navbar-search-suggestion__badge'));
   });
 
   it('isMobileSearchViewport checks window.matchMedia', () => {
@@ -173,6 +185,7 @@ describe('Global Navbar Search Component', () => {
     const container = {
       className: 'navbar-search-suggestions',
       innerHTML: '',
+      replaceChildren: () => { container.innerHTML = ''; },
       classList: {
         add: (cls) => classes.add(cls),
         remove: (cls) => classes.delete(cls),

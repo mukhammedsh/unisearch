@@ -269,6 +269,14 @@ def _build_breakdown_display_value(
     return ", ".join(part for part in display_parts if part)
 
 
+def _has_breakdown_entries(details: Any) -> bool:
+    if not details:
+        return False
+    if not isinstance(details, dict):
+        return True
+    return bool(details.get("components") or details.get("extra_scores"))
+
+
 def _coerce_subject_breakdown_submission(
     exam_key: str,
     cfg: Dict[str, Any],
@@ -277,6 +285,10 @@ def _coerce_subject_breakdown_submission(
     details: Any = None,
 ) -> Dict[str, Any]:
     scheme = _breakdown_scheme(cfg)
+    total_score_raw = score_raw if score_raw not in (None, "") else raw_value
+    if scheme.get("allow_total_only") and total_score_raw not in (None, "") and not _has_breakdown_entries(details):
+        # Applicants may know only the overall result; section checks then stay unassessed.
+        return {"exam": exam_key, "score": _validate_numeric_score(exam_key, cfg, total_score_raw)}
     fixed_defs = _breakdown_item_definitions(scheme.get("fixed_components"), default_required=True)
     selectable_defs = _breakdown_item_definitions(scheme.get("selectable_components"), default_required=False)
     extra_defs = _breakdown_item_definitions(scheme.get("extra_scores"), default_required=False)
@@ -344,7 +356,6 @@ def coerce_exam_submission(
     raw_value: Any = None,
     details: Any = None,
     taken_on: Any = None,
-    allow_total_only_sat: bool = False,
 ) -> Dict[str, Any]:
     """
     Coerce a raw exam submission into a canonical payload that scoring can use.
@@ -385,11 +396,7 @@ def coerce_exam_submission(
     elif mode == "band_select":
         result = _coerce_band_select_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
     elif mode == "subject_breakdown":
-        # Saved SAT totals can prove reported presence without reconstructing section scores.
-        if key == "SAT" and allow_total_only_sat and (details is None or details == {}):
-            result = {"exam": key, "score": _validate_numeric_score(key, cfg, score_raw if score_raw not in (None, "") else raw_value)}
-        else:
-            result = _coerce_subject_breakdown_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
+        result = _coerce_subject_breakdown_submission(key, cfg, score_raw=score_raw, raw_value=raw_value, details=details)
     elif mode == "flag" or str(cfg.get("type", "")).strip().lower() == "bool":
         result = {"exam": key, "score": _coerce_flag_score(key, score_raw if score_raw not in (None, "") else raw_value)}
     else:

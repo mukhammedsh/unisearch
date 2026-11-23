@@ -11,10 +11,10 @@ test.describe("Profile page icons and navigation", () => {
     expect(await page.locator("#profileCloseBtn svg").count()).toBe(0);
     expect(await page.locator("#saveProfileBtn svg").count()).toBe(0);
 
-    // Verify progress badge icon
-    const progressIcon = page.locator(".profile-progress-badge svg");
-    await expect(progressIcon).toBeVisible();
-    expect(await progressIcon.count()).toBe(1);
+    // Verify every summary row carries one state icon
+    const summaryIcons = page.locator(".profile-summary__row .profile-summary__icon svg");
+    await expect(summaryIcons.first()).toBeVisible();
+    expect(await summaryIcons.count()).toBe(5);
 
     // Switch to scores tab to verify compact GPA block (tooltip sits by the hint, not the title)
     await page.click('[data-profile-tab="scores"]');

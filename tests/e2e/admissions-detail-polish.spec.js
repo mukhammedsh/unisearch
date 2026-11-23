@@ -1,5 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const fs = require("node:fs/promises");
+const { openDisclosureParents } = require("./helpers/selectors");
 
 async function openUniversity(page, id, { language = "rus", theme = "dark", width = 390, query = "" } = {}) {
   await page.setViewportSize({ width, height: 900 });
@@ -24,24 +25,56 @@ async function noOverflow(page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 }
 
+for (const { width, theme } of [{ width: 1280, theme: "light" }, { width: 390, theme: "dark" }]) {
+  test(`Stanford removes the page skeleton while admissions load at ${width}px in ${theme} mode`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.addInitScript((theme) => localStorage.setItem("unisearch_theme", theme), theme);
+    let releaseContext;
+    const contextGate = new Promise((resolve) => { releaseContext = resolve; });
+    await page.route("**/universities/stanford-university-usa-ca/admissions-context", async (route) => {
+      await contextGate;
+      await route.continue();
+    });
+
+    try {
+      await page.goto("/university.html?id=stanford-university-usa-ca#tab-admission");
+      await expect(page.locator("#detailName")).toBeVisible();
+      await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "loading");
+      await expect(page.locator("#detailLoading")).toBeHidden();
+    } finally {
+      releaseContext();
+    }
+    await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  });
+}
+
 test("shared MIT route is compact, editable by keyboard, saved and exports its own calendar", async ({ page }, testInfo) => {
   await openUniversity(page, "mit-usa-cambridge");
   await tab(page, "admission");
-  await page.locator('[data-shared-route="mit-first-year"]').click();
+  // The first-year path is read by default, so the compact summary shows it without a choice.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsReferenceSummary")).toContainText("Первый курс после школы");
   await expect(page.locator("#admissionsReferenceSummary")).not.toContainText("Сменить программу");
   await expect(page.locator("#admissionsSelectionEditor")).toBeHidden();
   await expect(page.locator("[data-shared-admission]")).toBeHidden();
   await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open");
-  await expect(page.locator("#detailRequirements [data-admissions-fact]").first()).toBeVisible();
+  await expect(page.locator("#detailRequirements [data-admissions-key-facts]")).toBeVisible();
+  await expect(page.locator("#detailRequirements [data-all-records] [data-admissions-fact]").first()).toBeAttached();
   await page.locator("#admissionsReferenceSummary").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("mit-compact-mobile-dark-ru.png") });
   const edit = page.locator("#admissionsReferenceSummary button");
   await edit.focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("#admissionsSelectionEditor")).toBeVisible();
+  // First-year publishes one set of yearless dates, so it asks for no entry year; transfer has Fall and Spring windows.
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+  await page.locator('[data-shared-route="mit-transfer"]').click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("mit-transfer");
+  await page.locator("#admissionsReferenceSummary button").click();
+  await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Год поступления");
   await page.locator("#admissionsAdvanced > summary").click();
+  await expect(page.locator("#admissionsFee")).toBeHidden();
   await page.locator("#admissionsCycle").fill("not a cycle");
   await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
   await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
@@ -51,10 +84,6 @@ test("shared MIT route is compact, editable by keyboard, saved and exports its o
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsCycle")).toHaveValue("Fall 2027");
   await expect(page.locator("#admissionsSelectionEditor")).toBeHidden();
-  await page.locator("#admissionsReferenceSummary button").click();
-  await page.locator('[data-shared-route="mit-transfer"]').click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("mit-transfer");
   await page.locator("#admissionsSaveChoice").click();
   await page.reload();
   await expect(page.locator("#admissionsRoute")).toHaveValue("mit-transfer");
@@ -99,9 +128,7 @@ test(`Imperial course titles distinguish BEng and MEng and retain duration and f
   await expect(page.locator("#admissionsStudyOverview")).toContainText(appearance.language === "kaz" ? "біріктірілген бакалавриат бағдарламасы" : "интегрированная программа бакалавриата");
   await expect(page.locator("#admissionsStudyOverview")).toContainText("4");
   await tab(page, "admission");
-  await page.locator(".custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger").click();
-  await page.locator('.custom-select-wrapper:has(#admissionsRoute) .custom-option[data-value="procedure-computing-meng"]').click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // The course has one application route, which is read directly.
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   await expect(page.locator("#admissionsSelectionEditor")).toBeHidden();
   await tab(page, "finance");
@@ -156,11 +183,14 @@ test("English desktop MIT finance retains breakdown, dated period, exclusions, a
   await expect(finance).toContainText("not a confirmed price for another entry cycle");
   await expect(finance.locator(".admissions-reading__costs")).toContainText("Housing");
   await expect(finance).toContainText("not awarded aid");
-  const records = finance.locator(".admissions-reading__references").first();
-  await records.locator(":scope > summary").click();
+  // The cost answer leads; the official pages and full records sit behind one closed Sources disclosure.
+  await expect(finance.locator('[data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
+  const records = finance.locator("[data-all-records]");
+  await expect(records).not.toHaveAttribute("open", "");
+  await openDisclosureParents(records.locator("[data-admissions-fact]").first());
   await expect(records.locator("[data-admissions-fact]").first()).toBeVisible();
-  await expect(records.locator("a").first()).toHaveAttribute("href", /^https:\/\//);
-  await finance.locator("[data-finance-scope]").scrollIntoViewIfNeeded();
+  await expect(records.locator("[data-reading-sources] a").first()).toHaveAttribute("href", /^https:\/\//);
+  await finance.scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("mit-finance-desktop-light-en.png") });
   await noOverflow(page);
 });

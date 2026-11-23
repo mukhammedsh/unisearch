@@ -24,6 +24,8 @@ import {
   isProfilePath,
   getUniversityIdFromPath,
   extractUniversityIdFromLocation,
+  resolveAppBasePath,
+  resolveAppBaseUrl,
 } from "../../frontend/javascript/routes.js";
 
 describe("routes.js", () => {
@@ -177,6 +179,36 @@ describe("routes.js", () => {
       assert.equal(
         extractUniversityIdFromLocation({ pathname: "/universities.html", search: "" }),
         ""
+      );
+    });
+  });
+
+  describe("App asset base resolution", () => {
+    it("resolves nested pretty routes back to the app root path", () => {
+      assert.equal(resolveAppBasePath("/"), "/");
+      assert.equal(resolveAppBasePath("/index.html"), "/");
+      assert.equal(resolveAppBasePath("/universities/johns-hopkins-university-usa-baltimore"), "/");
+      assert.equal(resolveAppBasePath("/universities/johns-hopkins-university-usa-baltimore/"), "/");
+      assert.equal(resolveAppBasePath("/compare/"), "/");
+      assert.equal(resolveAppBasePath("/frontend"), "/frontend/");
+      assert.equal(resolveAppBasePath("/frontend/universities/mit-usa-cambridge"), "/frontend/");
+      assert.equal(resolveAppBasePath("/frontend/guide/"), "/frontend/");
+      assert.equal(resolveAppBasePath("/subpath/universities/mit-usa-cambridge"), "/subpath/");
+    });
+
+    it("resolves relative university stylesheets against the app root instead of /universities/", () => {
+      const base = resolveAppBaseUrl("https://unisearch.web.app/universities/johns-hopkins-university-usa-baltimore");
+      assert.equal(base, "https://unisearch.web.app/");
+      assert.equal(
+        new URL("css/university/01-shell-hero.css", base).href,
+        "https://unisearch.web.app/css/university/01-shell-hero.css"
+      );
+
+      const frontendMountBase = resolveAppBaseUrl("http://127.0.0.1:5510/frontend/universities/mit-usa-cambridge/");
+      assert.equal(frontendMountBase, "http://127.0.0.1:5510/frontend/");
+      assert.equal(
+        new URL("css/university/01-shell-hero.css", frontendMountBase).href,
+        "http://127.0.0.1:5510/frontend/css/university/01-shell-hero.css"
       );
     });
   });

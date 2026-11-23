@@ -5843,6 +5843,52 @@
       "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
     },
     {
+      "id": "recheck-degree-neurs-ms-internal-process-windows",
+      "topic": "application_windows",
+      "value": {
+        "windows": [
+          {
+            "name": "Application deadline",
+            "application_due": "February 1"
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-neurs-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-enroute-neurs-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-neurs-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Recurring internal process; no application year stated"
+      },
+      "conditions": [
+        "The deadline falls before the autumn quarter in which the student wishes to begin the MS."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "related_fact_ids": [
+        "medicine-graduate-evidence:recheck-degree-neurs-ms-internal-process"
+      ]
+    },
+    {
       "id": "recheck-degree-chpr-ms-internal-process",
       "topic": "internal_application_process_and_required_documents",
       "value": "Admission for Current Students in Other Stanford Graduate Programs and Professional Schools Prospective Dual Degree applicants must be graduate students including masterʼs, doctoral, and medical students currently enrolled in a graduate degree program at Stanford. Current Stanford postdoctoral scholars must apply as external applicants. The priority deadline for applications is May 1 for the upcoming autumn quarter start. Applications received after this date will be considered on a case-by-case basis. Required Application Materials: Instructions on how to submit these application materials can be found on the CHPR website . Completed Current Graduate Student Online Application Form Resume/CV Transcript (unofficial transcripts are acceptable) Optional: GRE, MCAT, or GMAT scores (i.e., the test scores students submitted to their original graduate program at Stanford) Statement of Purpose The Statement of Purpose should describe succinctly the reasons for applying to the proposed program at Stanford, preparation for this field of study, research interests, future career plans, and other aspects of the applicant’s background and interests which may aid the admissions committee in evaluating aptitude and motivation for graduate study. Two letters of recommendation from Stanford professors $125 application fee (assessed by the Registrar’s Office only if accepted and enrolled into the program).",
@@ -5875,6 +5921,52 @@
       "exceptions": [],
       "content_reviewed_at": "2026-10-03",
       "review_origin": "Preserved official catalog capture dated 2026-10-02; first review of the retained degree-specific fields on 2026-10-03."
+    },
+    {
+      "id": "recheck-degree-chpr-ms-internal-process-windows",
+      "topic": "application_windows",
+      "value": {
+        "windows": [
+          {
+            "name": "Priority deadline",
+            "application_due": "May 1"
+          }
+        ]
+      },
+      "scope": {
+        "option_ids": [
+          "stanford-option-chpr-ms"
+        ],
+        "procedure_ids": [
+          "stanford-route-internal-chpr-ms"
+        ],
+        "levels": [
+          "masters"
+        ],
+        "applicant_categories": [
+          "current_stanford_graduate_student"
+        ],
+        "cycle": "published recurring internal process; no application year stated",
+        "fee_status": []
+      },
+      "source_ids": [
+        "recheck-degree-chpr-ms"
+      ],
+      "checked_at": "2026-10-02",
+      "publication_status": "published",
+      "review_status": "degree_specific_source_content_rechecked_2026_10_03",
+      "period": {
+        "kind": "yearless_policy",
+        "label": "Recurring internal process; no application year stated"
+      },
+      "conditions": [
+        "The priority deadline is for the upcoming autumn quarter start; applications received after it are considered case by case."
+      ],
+      "exceptions": [],
+      "content_reviewed_at": "2026-10-03",
+      "related_fact_ids": [
+        "medicine-graduate-evidence:recheck-degree-chpr-ms-internal-process"
+      ]
     },
     {
       "id": "recheck-degree-csb-ms-internal-process",

@@ -29,7 +29,7 @@ const ALLOWED_LITERALS = new Set([
   "RUB",
   "UZS",
   "github.com/mukhammedsh/unisearch",
-  "unisearch@inbox.ru",
+  "unisearch.sup@gmail.com",
   "&bull;",
   "&ndash;",
   "&mdash;",

@@ -22,7 +22,7 @@ flowchart TD
 
     subgraph Backend ["Application Layer (FastAPI)"]
         MW["Security Middleware\n(Rate Limiter, Body Limit, CSP, Trusted Proxy Resolution)"]
-        Routers["API Routers\n(/universities, /ai-sort, /compare, /exams)"]
+        Routers["API Routers\n(catalog, reviewed admissions, exams, languages, currency, health, operations)"]
         UniFit["UniFit Composite Engine\n(Personalized Ranking, Sliders)"]
         RequirementsMatch["Minimum requirements match\n(Published Requirements Fit)"]
         ML["ML Semantic Service\n(multilingual-e5 Embeddings, Vector Cosine)"]
@@ -31,7 +31,7 @@ flowchart TD
     subgraph Persistence ["Data & Cache Layer"]
         Redis[("Optional Redis Cache\n(Query and rate cache)")]
         Disk[("Source-Controlled JSON Catalog\n(Coverage varies by institution)")]
-        Media[("Media Assets\n(1:1 PNG Logos, 16:9 WebP Thumbnails)")]
+        Media["Media Assets\n(Credited Campus Photos, 16:9 Variants)"]
     end
 
     subgraph External ["External Interfaces"]
@@ -93,7 +93,7 @@ The frontend uses **Vanilla JavaScript (ES Modules)**, HTML5, and CSS without a 
   Dynamic client-side internationalization supporting English, Russian, and Kazakh without full page reloads. Strings are loaded from `frontend/Localization/` with a fallback key mechanism.
 * **State Persistence (`frontend/javascript/utils/persistence.js` & `safe-storage.js`):**
   Safely syncs applicant preferences (GPA, exam scores, budget, currency choices, comparison trays) to browser `localStorage` with migration versioning and corrupted JSON recovery.
-* **Design System & Styling (`frontend/css/style.css`):**
+* **Design System & Styling (`frontend/css/shared/*`):**
   Adheres strictly to the **Calm Academic Workspace** specification (`docs/design-system.md`):
   - **Borderless by default:** Components use semantic surface shifts (`--bg` → `--surface-solid` → `--surface-soft`) and micro-elevation (`--shadow-xs`) rather than box borders.
   - **4/8-px spacing scale:** Strict layout rhythm without arbitrary margin/padding offsets.
@@ -105,6 +105,8 @@ The frontend uses **Vanilla JavaScript (ES Modules)**, HTML5, and CSS without a 
 
 The backend is built with **Python 3.12+ and FastAPI**, using ASGI and Pydantic V2 request and response models.
 
+The following tree lists the main request, admissions, and scoring modules; it is not a complete directory listing.
+
 ```
 backend/app/
 ├── core/
@@ -113,13 +115,20 @@ backend/app/
 │   ├── settings.py       # Environment variable settings and parsing
 │   └── observability.py   # Metrics collection, request duration tracking, structured logging
 ├── routers/
-│   ├── universities.py   # Core catalog, search, AI sort, ROI, and comparisons
+│   ├── universities.py   # Catalog, search, UniFit, requirements match, ROI, and comparisons
+│   ├── admissions.py     # Reviewed study-option and selected-context APIs
 │   ├── exams.py          # Standardized exam validation & scoring bounds
 │   ├── languages.py      # Language proficiency framework mappings
+│   ├── currency.py       # Exchange-rate API
 │   └── root.py           # Health probes (/health, /ready), ops admin endpoints
 ├── schemas/
-│   └── payloads.py       # Pydantic V2 request & response contracts
+│   ├── payloads.py       # General Pydantic V2 request & response contracts
+│   ├── admissions.py     # Selected admissions-context contract
+│   └── admission_evidence.py # Applicant evidence schemas
 └── services/
+    ├── admissions_catalog.py     # Reviewed catalog, study options, and context resolution
+    ├── admissions_assessment.py  # Source-backed requirements assessment
+    ├── admissions_editorial.py   # Applicant-facing admissions copy and localization
     ├── ai_scoring.py     # UniFit composite personalized ranking & Minimum requirements match algorithms
     ├── ml_scoring.py     # Multilingual neural embeddings & semantic vector search
     ├── search.py         # Multi-criteria filtering, fuzzy normalization & sorting
@@ -155,7 +164,7 @@ sequenceDiagram
     participant ML as ML Embeddings (e5)
     participant Engine as UniFit
 
-    User->>Client: Sets preferences for study focus, atmosphere, location and finance
+    User->>Client: Sets preferences for study focus, selectivity, location and finance
     Client->>API: POST /universities/ai-sort (Profile, Weights)
     API->>Cache: Check Query Cache Key (Hash of Profile + Weights)
     alt Cache Hit
@@ -179,7 +188,7 @@ Implemented in `backend/app/services/ai_scoring.py`, UniFit ranks catalog option
 
 Minimum requirements match reports the percentage of evaluable, published academic and language minimum checks met for the applicable admission choice. Its denominator excludes evidence-presence checks, funding conditions, and nonnumeric or holistic requirements. It is a requirements-fit measure, not a probability of admission, overall eligibility decision, or funding prediction.
 
-The user-facing name has changed; existing API and saved-state identifiers remain supported. The API calculates this value separately through `POST /universities/{university_id}/uni-chance`. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
+The user-facing name has changed; existing API and saved-state identifiers remain supported. For reviewed institutions, `POST /universities/{university_id}/admissions-context` returns a source-backed assessment for the selected study option, application route, and applicant context. The existing `POST /universities/{university_id}/uni-chance` identifier remains available for compatibility. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
 
 ### C. ML Semantic Matching (`multilingual-e5`)
 Implemented in `backend/app/services/ml_scoring.py`:
@@ -193,9 +202,8 @@ Implemented in `backend/app/services/ml_scoring.py`:
 
 ### Data Storage Model
 * **Catalog (`backend/data/`):**
-  Stored as structured JSON files under source control. Coverage varies by institution and program; missing facts remain unknown rather than being inferred. Admission facts are scoped to their source, program, applicant route, and cycle where published.
+  Stored as structured JSON files under source control. The active `backend/data/admissions/catalog.json` snapshot contains four reviewed institutions; the other 46 retain their earlier admissions presentation until their own dataset is accepted. Coverage varies by institution and program; missing facts remain unknown rather than being inferred. Admission facts are scoped to their source, program, applicant route, and cycle where published. Research drafts stay outside runtime.
 * **Asset Directory (`backend/data/university_assets/`):**
-  - Institutional logos: 1:1 square PNG format with responsive fallbacks.
   - Campus thumbnails: 16:9 WebP and JPEG images generated in multiple responsive resolutions.
 * **Data Auditing (`npm run audit:data`):**
   Checks local data structure, required fields and asset references. It does not visit official pages. Run affected HTTP source checks separately and review the source content when its facts or scope change.

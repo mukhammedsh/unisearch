@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 import sys
+import threading
+import time
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -54,14 +56,69 @@ class CurrencyServiceTests(unittest.TestCase):
             self.assertEqual(cached_data["rates"]["KZT"], 480.0)
             self.assertEqual(mock_urlopen.call_count, 1)
 
+    def test_expired_rates_are_served_at_once_and_refreshed_once_in_the_background(self):
+        started, release = threading.Event(), threading.Event()
+        calls = []
+
+        def slow_fetch(base="USD"):
+            calls.append(base)
+            started.set()
+            release.wait(5)
+            return {"rates": {"USD": 1.0, "KZT": 500.0}, "date": "2026-11-13"}
+
+        expired = time.time() - currency_service.CURRENCY_RATES_CACHE_TTL_SEC - 10
+        currency_service._MEMORY_CACHE["USD"] = {"rates": {"USD": 1.0, "KZT": 470.0}, "date": "old", "ts": expired}
+        try:
+            with patch("app.services.currency.fetch_rates", side_effect=slow_fetch), \
+                    patch("app.services.currency.cache_get_json", return_value=None), \
+                    patch("app.services.currency.cache_set_json"):
+                first = currency_service.get_rates()
+                # The expired entry answers immediately; the request does not wait for the provider.
+                self.assertEqual(470.0, first["rates"]["KZT"])
+                self.assertTrue(started.wait(2))
+                self.assertEqual(470.0, currency_service.get_rates()["rates"]["KZT"])
+                release.set()
+                deadline = time.time() + 5
+                while time.time() < deadline and currency_service.get_rates()["rates"]["KZT"] != 500.0:
+                    time.sleep(0.02)
+                self.assertEqual(500.0, currency_service.get_rates()["rates"]["KZT"])
+                self.assertEqual(1, len(calls))
+        finally:
+            release.set()
+
     def test_api_failure_falls_back_to_static(self):
         with patch("app.services.currency.fetch_rates", side_effect=RuntimeError("API down")):
             rates_data = currency_service.get_rates(force_refresh=True)
             self.assertEqual(rates_data["source"], "fallback")
+            self.assertEqual(rates_data["date"], currency_service.FALLBACK_RATES_DATE)
+            self.assertRegex(rates_data["date"], r"^\d{4}-\d{2}-\d{2}$")
             self.assertIn("USD", rates_data["rates"])
             self.assertIn("KZT", rates_data["rates"])
             self.assertEqual(rates_data["rates"]["USD"], 1.0)
-            self.assertEqual(rates_data["rates"]["KZT"], 450.0)
+            self.assertEqual(rates_data["rates"]["KZT"], currency_service.FALLBACK_RATES["KZT"])
+
+    def test_fallback_rates_parity_with_frontend(self):
+        import re
+
+        frontend_path = Path(__file__).resolve().parents[2] / "frontend" / "javascript" / "currency.js"
+        source = frontend_path.read_text(encoding="utf-8")
+
+        date_match = re.search(r'export\s+const\s+FALLBACK_RATES_DATE\s*=\s*["\']([^"\']+)["\']\s*;', source)
+        block_match = re.search(r'export\s+const\s+FALLBACK_RATES\s*=\s*\{([\s\S]*?)\n\}\s*;', source)
+        self.assertIsNotNone(date_match, "FALLBACK_RATES_DATE missing in frontend/javascript/currency.js")
+        self.assertIsNotNone(block_match, "FALLBACK_RATES missing in frontend/javascript/currency.js")
+
+        self.assertEqual(currency_service.FALLBACK_RATES_DATE, date_match.group(1))
+
+        frontend_rates = {}
+        for line in block_match.group(1).splitlines():
+            m = re.match(r"^\s*([A-Z]{3,5})\s*:\s*([0-9]+(?:\.[0-9]+)?)\s*,?\s*$", line)
+            if m:
+                frontend_rates[m.group(1)] = float(m.group(2))
+
+        self.assertEqual(set(currency_service.FALLBACK_RATES.keys()), set(frontend_rates.keys()))
+        for code, backend_rate in currency_service.FALLBACK_RATES.items():
+            self.assertEqual(backend_rate, frontend_rates[code], f"Mismatch for {code}")
 
     def test_api_failure_does_not_log_configured_url_credentials(self):
         configured_url = "https://rates.example.invalid/v1/UpperCaseTestKey?api_key=lowercase-test-key"
@@ -331,6 +388,14 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
         self.assertIsInstance(data["filter_limits"], dict)
         self.assertIn("default", data["filter_limits"])
         self.assertEqual(data["filter_limits"]["default"]["max"], 100000)
+
+    def test_get_currency_rates_endpoint_fallback_returns_snapshot_date(self):
+        with patch("app.services.currency.fetch_rates", side_effect=RuntimeError("API down")):
+            resp = self.client.get("/currency/rates")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertEqual(data["source"], "fallback")
+        self.assertEqual(data["date"], currency_service.FALLBACK_RATES_DATE)
 
     def test_get_currency_status_endpoint(self):
         with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):

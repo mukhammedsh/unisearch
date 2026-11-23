@@ -1,45 +1,58 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors, setNativeSelect } = require("./helpers/selectors");
+const { selectors } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
-test.describe("World applicant profile context", () => {
-  test("saves country of education, credential, route, cycle, and residence independently of citizenship", async ({ page }) => {
+const REMOVED_CONTROLS = ["countryOfEducationSelect", "countryOfEducationOtherInput", "educationCredentialSelect", "educationCredentialOtherInput", "applicantRouteSelect"];
+const REMOVED_KEYS = [
+  "countryOfEducation", "countryOfEducationOther", "educationCredential", "educationCredentialOther", "applicantRoute",
+  "country_of_education", "country_of_education_other", "education_credential", "education_credential_other", "applicant_route",
+];
+
+test.describe("Applicant profile application details", () => {
+  test("offers neither the removed education and route inputs nor the per-university entry cycle and fee status", async ({ page }) => {
     await mockAllExpensiveEndpoints(page);
     await markTourAsSeen(page);
     await page.goto("/profile.html");
     await expect(page.locator(selectors.profileModal)).toBeVisible();
-    await page.waitForFunction(() => document.querySelectorAll("#countryOfEducationSelect option[data-country-code]").length > 100);
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
-    await setNativeSelect(page, "citizenshipCountrySelect", "OTHER");
-    await expect(page.locator("#citizenshipOtherInput")).toHaveAccessibleName("Enter country name...");
-    await setNativeSelect(page, "citizenshipCountrySelect", "");
-    await setNativeSelect(page, "countryOfEducationSelect", "OTHER");
-    await expect(page.locator("#countryOfEducationOtherInput")).toHaveAccessibleName("Enter country");
-    await setNativeSelect(page, "countryOfEducationSelect", "KZ");
-    await setNativeSelect(page, "educationCredentialSelect", "other");
-    await expect(page.locator("#educationCredentialOtherInput")).toHaveAccessibleName("Describe your credential or curriculum");
-    await page.fill("#educationCredentialOtherInput", "NIS Grade 12 certificate");
-    await setNativeSelect(page, "applicantRouteSelect", "first_year");
-    await page.fill("#intendedEntryCycleInput", "2027 Fall");
-    await setNativeSelect(page, "currentResidenceCountrySelect", "OTHER");
-    await expect(page.locator("#currentResidenceOtherInput")).toHaveAccessibleName("Enter country");
-    await setNativeSelect(page, "currentResidenceCountrySelect", "US");
-    await setNativeSelect(page, "feeStatusContextSelect", "self_reported_international_overseas");
-
+    for (const id of [...REMOVED_CONTROLS, "intendedEntryCycleInput", "feeStatusContextSelect"]) await expect(page.locator(`#${id}`)).toHaveCount(0);
+    await page.fill("#budgetInput", "12000");
     await page.click(selectors.saveProfileBtn);
     await expect.poll(async () => page.evaluate(() => {
       const profile = JSON.parse(localStorage.getItem("unisearch_profile") || "{}");
-      return [
-        profile.countryOfEducation,
-        profile.educationCredential,
-        profile.educationCredentialOther,
-        profile.applicantRoute,
-        profile.intendedEntryCycle,
-        profile.currentResidenceCountry,
-        profile.feeStatusContext,
-        profile.citizenship,
-      ];
-    })).toEqual(["KZ", "other", "NIS Grade 12 certificate", "first_year", "2027 Fall", "US", "self_reported_international_overseas", ""]);
+      return [profile.budget, "intendedEntryCycle" in profile, "feeStatusContext" in profile];
+    })).toEqual([12000, false, false]);
+  });
+
+  test("a saved profile that still has the removed inputs loads, drops them, and never sends them to the API", async ({ page }) => {
+    await mockAllExpensiveEndpoints(page);
+    await markTourAsSeen(page);
+    await page.addInitScript((removed) => {
+      if (sessionStorage.getItem("removed-inputs-seeded")) return;
+      sessionStorage.setItem("removed-inputs-seeded", "1");
+      const profile = { _v: 2, intendedEntryCycle: "2028 Fall", feeStatusContext: "self_reported_home_domestic", intended_entry_cycle: "2028 Fall", fee_status_context: "other" };
+      for (const key of removed) profile[key] = key.endsWith("Route") || key.endsWith("_route") ? "transfer" : "KZ";
+      profile.selectedAdmissionChoices = { "mit-usa-cambridge": { studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year", applicantRoute: "first_year", intendedEntryCycle: "2029 entry", feeStatusContext: "self_reported_home_domestic" } };
+      localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+    }, REMOVED_KEYS);
+    await page.goto("/profile.html");
+    await expect(page.locator(selectors.profileModal)).toBeVisible();
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+
+    const { stored, payload } = await page.evaluate(async () => {
+      const { loadProfileForApi } = await import("/javascript/utils/persistence.js");
+      return { stored: JSON.parse(localStorage.getItem("unisearch_profile") || "{}"), payload: loadProfileForApi() };
+    });
+    for (const key of [...REMOVED_KEYS, "intendedEntryCycle", "feeStatusContext", "intended_entry_cycle", "fee_status_context"]) {
+      expect(stored, `${key} must be removed from the stored profile`).not.toHaveProperty(key);
+      expect(payload, `${key} must not be sent to the API`).not.toHaveProperty(key);
+    }
+    expect(stored.selectedAdmissionChoices["mit-usa-cambridge"].applicantRoute).toBe("first_year");
+    expect(payload.selectedAdmissionChoices["mit-usa-cambridge"].applicantRoute).toBe("first_year");
+    // The per-university choice keeps its own cycle and fee status.
+    expect(stored.selectedAdmissionChoices["mit-usa-cambridge"].intendedEntryCycle).toBe("2029 entry");
+    expect(payload.selectedAdmissionChoices["mit-usa-cambridge"].feeStatusContext).toBe("self_reported_home_domestic");
   });
 });

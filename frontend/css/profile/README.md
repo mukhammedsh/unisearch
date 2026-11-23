@@ -1,11 +1,9 @@
 # Profile CSS modules
 
-`../profile.css` is the applicant profile stylesheet entry point.
+`profile.html` links one profile-specific stylesheet:
 
 | Order | Module | Responsibility |
 | --- | --- | --- |
-| 1 | `01-shared-foundation.css` | Profile controls and responsive rules extracted from the global stylesheet |
-| 2 | `02-page.css` | Profile page layout and later visual refinements |
+| 1 | `02-page.css` | Guided single-page layout (outline, sections, summary, sticky action bar), profile controls, confirmation modals, and responsive rules |
 
-Keep profile-only selectors here instead of adding them to the global
-`../style.css` chain.
+Keep profile-only selectors here instead of adding them to `shared/*`.

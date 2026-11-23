@@ -1,8 +1,0 @@
-/**
- * Applicant profile stylesheet entry point.
- *
- * The foundation contains profile-only rules extracted from the global
- * stylesheet. Page refinements remain later in the cascade.
- */
-@import url("./profile/01-shared-foundation.css");
-@import url("./profile/02-page.css");

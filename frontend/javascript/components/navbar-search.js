@@ -5,7 +5,6 @@ import {
   debounce,
   escapeHtml,
   escapeHtmlAttr,
-  initials,
 } from "../utils.js";
 import { getCurrentLanguage, t } from "../i18n.js";
 import {
@@ -20,12 +19,6 @@ const searchCache = new Map();
 let activeAbortController = null;
 let highlightedIndex = -1;
 let globalClickBound = false;
-
-function buildLogoUrl(universityId, forceFull = false) {
-  const safeId = encodeURIComponent(String(universityId || "").trim());
-  const folder = forceFull ? "logos" : "logos-small";
-  return `${API_BASE}/universities/assets/${folder}/${safeId}.png`;
-}
 
 export function isGlobalSearchDisabledWorkspace() {
   if (typeof document === "undefined") return false;
@@ -57,12 +50,12 @@ export function hideGlobalSearchSuggestions() {
   const container = document.querySelector(".navbar-search-suggestions");
   if (container) {
     container.classList.remove("is-open");
-    container.innerHTML = "";
+    container.replaceChildren();
   }
   highlightedIndex = -1;
 }
 
-function updateHighlightedItem(items) {
+function updateHighlightedItem() {
   const container = document.querySelector(".navbar-search-suggestions");
   if (!container) return;
   const nodes = Array.from(container.querySelectorAll(".navbar-search-suggestion"));
@@ -134,20 +127,17 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1, query = "") 
     const city = String(item?.location?.city || "").trim();
     const country = String(item?.location?.country || "").trim();
     const locationText = [city, country].filter(Boolean).join(", ");
-    const logoSrc = buildLogoUrl(id, false);
-    const logoSrcFull = buildLogoUrl(id, true);
-    const initialsText = initials(name);
     const href = routeUniversityDetail(id);
     const isHigh = idx === highlightedIdx;
 
     const nameHtml = trimmedQ ? highlightMatchText(name, trimmedQ) : escapeHtml(name);
     const locationHtml = trimmedQ ? highlightMatchText(locationText, trimmedQ) : escapeHtml(locationText);
 
-    const aliases = Array.isArray(item?.search_aliases) ? item.search_aliases : [];
+    const abbreviations = Array.isArray(item?.abbreviations) ? item.abbreviations : [];
     let matchedAliasBadge = "";
-    if (trimmedQ && aliases.length > 0) {
+    if (trimmedQ && abbreviations.length > 0) {
       const lowerQ = trimmedQ.toLowerCase();
-      const foundAlias = aliases.find((a) => String(a || "").toLowerCase() === lowerQ);
+      const foundAlias = abbreviations.find((a) => String(a || "").toLowerCase() === lowerQ);
       if (foundAlias) {
         matchedAliasBadge = ` <span class="navbar-search-suggestion__badge">${escapeHtml(foundAlias.toUpperCase())}</span>`;
       }
@@ -155,9 +145,6 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1, query = "") 
 
     return `
       <a href="${escapeHtmlAttr(href)}" class="navbar-search-suggestion${isHigh ? " is-highlighted" : ""}" role="option" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isHigh ? "true" : "false"}"${targetAttrs}>
-        <span class="navbar-search-suggestion__logo">
-          <img src="${escapeHtmlAttr(logoSrc)}" alt="" loading="lazy" decoding="async" data-fallback-src="${escapeHtmlAttr(logoSrcFull)}" data-fallback-text="${escapeHtmlAttr(initialsText)}" />
-        </span>
         <span class="navbar-search-suggestion__body">
           <span class="navbar-search-suggestion__name">${nameHtml}${matchedAliasBadge}</span>
           ${locationText ? `<span class="navbar-search-suggestion__location">${locationHtml}</span>` : ""}
@@ -209,7 +196,7 @@ export function isMobileSearchViewport() {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
   try {
     return window.matchMedia(MOBILE_SEARCH_MEDIA).matches;
-  } catch (err) {
+  } catch {
     return false;
   }
 }
@@ -458,7 +445,7 @@ export function initGlobalNavbarSearch() {
       event.preventDefault();
       if (!isOpen || !suggestions.length) return;
       highlightedIndex = (highlightedIndex + 1) % suggestions.length;
-      updateHighlightedItem(suggestions);
+      updateHighlightedItem();
       return;
     }
 
@@ -466,11 +453,12 @@ export function initGlobalNavbarSearch() {
       event.preventDefault();
       if (!isOpen || !suggestions.length) return;
       highlightedIndex = (highlightedIndex - 1 + suggestions.length) % suggestions.length;
-      updateHighlightedItem(suggestions);
+      updateHighlightedItem();
       return;
     }
 
     if (event.key === "Enter") {
+      if (event.isComposing || event.keyCode === 229) return;
       if (isOpen && suggestions.length > 0 && highlightedIndex >= 0) {
         event.preventDefault();
         const target = suggestions[highlightedIndex];

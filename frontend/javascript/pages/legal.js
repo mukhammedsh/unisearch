@@ -126,7 +126,7 @@ export function initLegalPage() {
         if (currentHash !== nextId) {
           try {
             history.replaceState(null, "", `${window.location.pathname}${window.location.search}#${nextId}`);
-          } catch (e) {
+          } catch {
             // ignore
           }
         }

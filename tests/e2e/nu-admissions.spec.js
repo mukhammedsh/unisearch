@@ -32,9 +32,12 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   await foundation.locator(`[data-select-study-option='${FOUNDATION}']`).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await showTab(page, "admission");
-  await page.locator(`[data-read-route='${REGULAR}']`).click();
+  // Foundation has one way in (the funding application follows an offer), so that path opens directly.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first()).toBeVisible();
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(REGULAR);
+  const languageGroup = page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first();
+  await openDisclosureParents(languageGroup);
+  await expect(languageGroup).toBeVisible();
   await showTab(page, "finance");
   const tuition = page.locator("#detailFinance [data-course-tuition]");
   await expect(tuition).toContainText("12,000");
@@ -71,10 +74,10 @@ for (const { theme, mobile } of [{ theme: "light", mobile: false }, { theme: "da
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   const unknowns = page.locator("#admissionsStudyInfo .admissions-catalog__unknowns");
   await unknowns.locator(":scope > summary").click();
-  await expect(unknowns).toContainText("Текущий набор, требования, длительность, стоимость и финансирование эти источники не подтверждают");
-  await expect(unknowns).toContainText("Найдите объявление о текущем наборе NUZYP");
+  await expect(unknowns).toContainText("В ней не указаны текущий цикл набора, общие требования к поступлению, стоимость обучения или условия финансирования");
+  await expect(unknowns).toContainText("Проверьте актуальную страницу приёма в магистратуру выбранной школы");
   await expect(unknowns).toContainText("Уточнение области применения");
-  await expect(unknowns).toContainText("Подготовительная программа NU Zero Year Program");
+  await expect(unknowns).toContainText("Подготовительная программа нулевого года для магистратуры и докторантуры (ZYGP)");
   await expect(unknowns.locator("a[href*='nuzyp_instructions']")).toBeVisible();
 });
 
@@ -125,16 +128,21 @@ test("NUZYP exposes its source uncertainty without an invented application route
   await seed(page);
   await page.goto(`/university.html?id=${NU}&admission_option=nu-a-study-nuzyp&admission_level=preparation`);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsStudyOverview")).toContainText("published study details below");
+  await expect(page.locator("#admissionsStudyOverview")).toContainText("The Zero Year of Graduate Programs (ZYGP) is a graduate-preparatory option.");
   await expect(page.locator("#admissionsStudyOverview")).not.toContainText("has not been collected");
   await page.locator("#admissionsStudySources .admissions-programs__references > summary").click();
   await page.locator("#admissionsStudyInfo .admissions-catalog__unknowns > summary").click();
-  await expect(page.locator("#admissionsStudyInfo")).toContainText("None establishes a current intake");
+  await expect(page.locator("#admissionsStudyInfo")).toContainText("They do not list a current intake cycle");
   await expect(page.locator("#admissionsStudyInfo .admissions-catalog__unknowns a[href*='nuzyp_instructions']")).toBeVisible();
   await showTab(page, "general");
-  await page.locator("[data-admissions-fact='nu-a-fact-nuzyp-funding-history'] > summary").click();
-  await expect(page.locator("[data-admissions-fact='nu-a-fact-nuzyp-funding-history']")).toContainText("Historical source record");
-  await expect(page.locator("[data-admissions-fact='nu-a-fact-nuzyp-funding-history']")).toContainText("Do not display as current scholarship");
+  // The legacy funding page is a historical source record, so it stays in the collapsed history list.
+  const general = page.locator("#admissionsUniversityInfo");
+  const historyFact = general.locator("[data-admissions-fact='nu-a-fact-nuzyp-funding-history']");
+  await general.locator("details.admissions-catalog__fact > summary", { hasText: "Historical records" }).click();
+  await historyFact.locator("> summary").click();
+  await expect(historyFact).toContainText("Historical source record");
+  await expect(historyFact).toContainText("Abay Kunanbayev");
+  await expect(historyFact).not.toContainText("Do not display as current scholarship");
   await showTab(page, "admission");
   await expect(page.locator("#admissionsContext")).toContainText("does not mean that admission is closed");
 });
@@ -150,14 +158,13 @@ test("NU program readers can discover the separate institution-wide mid-year pat
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe("");
   await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
   await expect(page.locator("#detailRequirements")).toContainText("130");
+  // The mid-year path is read for its single published intake without asking for a year.
   await openAdmissionSelectionEditor(page);
-  await page.locator("#admissionsAdvanced > summary").click();
-  await page.locator("#admissionsCycle").fill("2027/28");
-  await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-  await page.locator("#admissionsContextApply").click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+  expect(new URL(page.url()).searchParams.get("admission_cycle")).toBe("Spring 2027");
   await showTab(page, "deadlines");
-  await expect(page.locator("#detailDeadlines")).not.toContainText(/2026[-‑]11[-‑]28/);
+  // The Dates tab answers first with the path's own application period.
+  await expect(page.locator('#detailDeadlines [data-tab-answers="deadlines"]')).toContainText(/2026[-‑–]11[-‑]28/);
 });
 
 test("comparison language changes keep its stage and the two independent saved contexts", async ({ page }) => {
@@ -168,19 +175,18 @@ test("comparison language changes keep its stage and the two independent saved c
   await seed(page, { selectedAdmissionChoices: choices }, { mobile: true });
   await page.goto(`/compare.html?ids=${NU},mit-usa-cambridge`);
   const comparison = page.locator("[data-reviewed-comparison]");
-  await expect(comparison).toContainText("for the whole program");
+  const nuCost = comparison.locator('[data-compare-row="cost"] dd').first();
+  await expect(nuCost).toContainText("for the whole program");
   await expect(page.locator("#siteInitialLoader")).toBeHidden();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices);
   await setNativeSelect(page, "languageSelect", "rus");
-  await expect(comparison).toContainText("за всю программу");
-  await expect(comparison).toContainText("Опубликованная стоимость обучения");
+  await expect(nuCost).toContainText("за всю программу");
+  await expect(comparison).toContainText("Стоимость и помощь");
   await setNativeSelect(page, "languageSelect", "kaz");
-  await expect(comparison).toContainText("толық бағдарлама үшін");
-  await expect(page.locator("[data-action='build-compare-results']")).toHaveCount(0);
-  await page.locator("[data-action='back-to-tracks']").click();
-  await expect(page.locator("[data-action='build-compare-results']")).toBeVisible();
+  await expect(nuCost).toContainText("толық бағдарлама үшін");
+  await expect(page.locator("[data-action='build-compare-results'], [data-action='back-to-tracks']")).toHaveCount(0);
   await setNativeSelect(page, "languageSelect", "eng");
-  await expect(page.locator(`#compare-options-${NU} .compare-context-current__value`)).toHaveText("Master of Science in Finance · Master's · 2027/28");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"] .compare-reviewed__scope-title`)).toHaveText("Master of Science in Finance");
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices)).toEqual(saved);
 });
 
@@ -199,7 +205,9 @@ async function seed(page, profile = {}, { language = "eng", theme = "light", mob
 async function openContext(page, option, route, level, { cycle = "2027/28", applicant = "first_year" } = {}) {
   const params = new URLSearchParams({ id: NU, admission_option: option || "", admission_application_route: route,
     admission_level: level, admission_route: applicant, admission_cycle: cycle, admission_fee: "unknown" });
-  const response = page.waitForResponse(item => item.url().includes(`/universities/${NU}/admissions-context`) && item.request().method() === "POST");
+  // The Overview reads NU's shared first-year path too, so wait for this selection's own request.
+  const response = page.waitForResponse(item => item.url().includes(`/universities/${NU}/admissions-context`) && item.request().method() === "POST"
+    && item.request().postDataJSON()?.context?.application_route_id === route && (item.request().postDataJSON()?.context?.study_option_id || "") === (option || ""));
   await page.goto(`/university.html?${params}`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).toHaveText(/^(Nazarbayev University|Назарбаев [Уу]ниверситет(?:і)?)$/);
@@ -263,7 +271,7 @@ test("NU Foundation exposes a failed NUET section while regular UG does not borr
 test("NU total-only reports keep missing sections unassessed on a Russian phone", async ({ page }, testInfo) => {
   await seed(page, { languages: [english], exams: [{ id: "NUET", exam: "NUET", score: 120 }] }, { language: "rus", theme: "dark", mobile: true });
   const { result } = await openContext(page, FOUNDATION, REGULAR, "preparation");
-  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Обычное поступление");
+  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Обычный приём");
   expect(result.assessment.chancePercent).toBeNull();
   const missing = page.locator("#detailRequirements [data-minimum-exam='NUET_MATH'][data-minimum-status='missing']");
   await reveal(missing);
@@ -312,7 +320,7 @@ test("NU Finance keeps ALEKS presence separate from the whole-program fee and mi
   await expect(tuition).toContainText(/35[\s,.]*000/);
   await expect(tuition).toContainText(/14[\s,.]*000/);
   await expect(tuition).toContainText("толық бағдарлама үшін");
-  await expect(tuition).toContainText("USD");
+  await expect(tuition).toContainText("$35,000"); // the amount names its currency in the reader's display setting
   await expect(tuition).not.toContainText("2027");
   await expect(tuition).not.toContainText("Imperial");
   await tuition.scrollIntoViewIfNeeded();
@@ -348,7 +356,7 @@ test("NU residency keeps unconditional reports distinct from UMC conditional adm
   await expect(page.locator("#detailRequirements")).toContainText(/first.*year|first enrollment year/i);
   await openAdmissionSelectionEditor(page);
   await page.locator("#admissionsSaveChoice").click();
-  await expect(page.locator("#admissionsSaveStatus")).toContainText("saved");
+  await expect(page.locator("#admissionsSaveStatus")).toContainText("remembered");
   await page.reload();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(conditional);
@@ -419,13 +427,17 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
     sessionStorage.setItem("nu-cache-seeded", "1");
     localStorage.setItem("unisearch_detail_cache_v4", JSON.stringify({ [`${id}::eng`]: { data: { id, name: "STALE NU LEGACY DETAIL" }, etag: "legacy", ts: Date.now() } }));
   }, NU);
-  await page.route(`**/universities/${NU}/admissions-context`, route => route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Temporarily unavailable"}' }), { times: 1 });
+  // The outage lasts until Retry: the tab reads its default path in a second request, which must fail too.
+  let outage = true;
+  await page.route(`**/universities/${NU}/admissions-context`, route => outage
+    ? route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Temporarily unavailable"}' }) : route.fallback());
   await page.goto(`/university.html?id=${NU}`);
   await expect(page.locator("#detailName")).toHaveText("Nazarbayev University");
   await showTab(page, "admission");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
   await expect(page.locator("#detailRequirements").getByRole("alert")).toHaveCount(1);
   await expect(page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true })).toHaveCount(1);
+  outage = false;
   await page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true }).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("[data-admission-reset-notice]")).toBeVisible();
@@ -435,8 +447,8 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
   expect(profile.budget).toBe(24000);
   expect(profile.selectedAdmissionChoices[NU]).toBeUndefined();
   expect(profile.selectedAdmissionChoices[other].programId).toBe("preserve-oxford-choice");
-  await page.locator("#admissionsChooseProgram").click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  // The tab reads the default first-year path, so programs are browsed from their own tab.
+  await showTab(page, "programs");
   for (const level of ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]) {
     const selected = page.locator(".custom-select-wrapper:has(#admissionsStudyLevel)");
     await selected.locator(".custom-select-trigger").click();
@@ -469,14 +481,15 @@ test("NU Finance and MIT comparison retain independent saved program, route and 
   await page.goto(`/compare.html?stage=configure&ids=${NU},${mit}`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
   await expect(page.locator("#siteInitialLoader")).toBeHidden();
-  await expect(page.locator(`#compare-options-${NU} .compare-context-current__value`)).toContainText("Finance");
-  await expect(page.locator(`#compare-options-${mit} .compare-context-current__value`)).toContainText("Computer Science");
-  await page.locator('[data-action="build-compare-results"]').click();
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${NU}"] .compare-reviewed__scope-title`)).toContainText("Finance");
+  await expect(page.locator(`.compare-reviewed__head[data-uni-id="${mit}"] .compare-reviewed__scope-title`)).toContainText("Computer Science");
   const comparison = page.locator("[data-reviewed-comparison]");
   await expect(comparison).toBeVisible();
-  await expect(comparison).toContainText("for the whole program");
-  await expect(comparison).toContainText("14,000");
-  await expect(comparison).toContainText("66,720");
+  const cost = comparison.locator('[data-compare-row="cost"] dd');
+  await expect(cost.first()).toContainText("for the whole program");
+  await expect(cost.first()).toContainText("14,000");
+  await expect(cost.nth(1)).toContainText(/66,720|92,760/);
+  await expect(cost.first().locator("[data-compare-fee]")).toHaveCount(0);
   const current = await page.evaluate(id => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices[id], NU);
   expect(current).toEqual(expect.objectContaining(finance));
   const financeLink = comparison.locator(`a[href*='id=${NU}'][href$='#tab-finance']`).first();
@@ -490,7 +503,7 @@ test("NU Finance and MIT comparison retain independent saved program, route and 
   await page.goBack();
   await expect(page.locator("[data-reviewed-comparison]")).toBeVisible();
   await page.reload();
-  await expect(page.locator("[data-reviewed-comparison]")).toContainText("for the whole program");
+  await expect(page.locator('[data-reviewed-comparison] [data-compare-row="cost"] dd').first()).toContainText("for the whole program");
   await expect(page.locator("#siteInitialLoader")).toBeHidden();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBe(true);
   await page.locator("[data-reviewed-comparison]").scrollIntoViewIfNeeded();

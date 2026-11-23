@@ -27,6 +27,12 @@ export const breakdownSchemeFor = (examId) => {
     return scheme && typeof scheme === "object" && !Array.isArray(scheme) ? scheme : {};
 };
 
+export const breakdownAllowsTotalOnly = (examId) => breakdownSchemeFor(examId).allow_total_only === true;
+
+const hasBreakdownInput = (container) => Array.from(
+    container.querySelectorAll("[data-breakdown-value], [data-breakdown-subject-select]")
+).some((control) => String(control.value || "").trim());
+
 export const normalizeBreakdownDefinitions = (items, { defaultRequired = false } = {}) => {
     if (!Array.isArray(items)) return [];
     return items
@@ -57,7 +63,7 @@ export const normalizeBreakdownRows = (rows) => {
             if (!exam) return null;
             const rawValue = String(row.raw_value || row.rawValue || row.display_value || row.displayValue || "").trim();
             const details = row.details && typeof row.details === "object" && !Array.isArray(row.details)
-                ? JSON.parse(JSON.stringify(row.details))
+                ? structuredClone(row.details)
                 : null;
             const score = row?.score === null || row?.score === undefined || row?.score === ""
                 ? null
@@ -95,7 +101,7 @@ export const gradeOptionsForExam = (examId) => {
         : ["A*", "A", "B", "C", "D", "E", "U"];
 };
 
-export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, valueState, isExtra = false }) => {
+export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, valueState }) => {
     const cfg = getExamConfig(examId);
     const mode = getExamInputMode(examId);
     const rawValue = String(valueState?.raw_value || "").trim();
@@ -212,6 +218,9 @@ export function readSubjectBreakdownDraft(examId, container, options = {}) {
         components: [],
         extraScores: [],
     };
+
+    // An untouched breakdown is a total-only report, not a set of missing required sections.
+    if (breakdownAllowsTotalOnly(selected) && !hasBreakdownInput(container)) return state;
 
     const fixedRows = Array.from(container.querySelectorAll("[data-breakdown-fixed-row]"));
     for (const row of fixedRows) {
@@ -438,12 +447,15 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                         </div>
                         <div class="profile-exam-breakdown-score">
                             <span class="mini-label">${escapeHtml(t("profile.placeholder.score", "Score"))}</span>
-                            ${renderBreakdownValueControl({ parentExamId: examId, examId: item.exam, slotKey: `extra-${item.exam}`, valueState: item.row, isExtra: true })}
+                          ${renderBreakdownValueControl({ parentExamId: examId, examId: item.exam, slotKey: `extra-${item.exam}`, valueState: item.row })}
                         </div>
                     </div>
                 `).join("")}
                 <div class="profile-exam-special-hint">${escapeHtml(
-                    selectableMax ? tFormat(
+                    breakdownAllowsTotalOnly(examId) ? t(
+                        "profile.exam_total_only_hint",
+                        "If you do not know the section scores, enter only the overall score. Section scores allow a more precise check; if you fill every section, the total is calculated automatically."
+                    ) : selectableMax ? tFormat(
                         "profile.exam_breakdown_hint",
                         { min: selectableMin, max: selectableMax || 0 },
                         `Enter scores by subject. Required subjects stay fixed, and you can choose ${selectableMin}-${selectableMax} extra subjects where needed.`
@@ -456,6 +468,6 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
         return true;
     }
 
-    container.innerHTML = "";
+    container.replaceChildren();
     return false;
 }

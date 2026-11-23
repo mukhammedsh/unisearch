@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors, setNativeSelect, openDisclosureParents } = require("./helpers/selectors");
+const { selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test.describe("Profile Budget Multi-Currency", () => {
@@ -17,8 +17,8 @@ test.describe("Profile Budget Multi-Currency", () => {
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-    const budgetUnit = page.locator("#profileBudgetUnit");
-    await expect(budgetUnit).toContainText("USD / year");
+    const budgetCurrency = page.locator("#profileBudgetCurrency");
+    await expect(budgetCurrency).toHaveValue("USD");
 
     const budgetInput = page.locator(selectors.budgetInput);
     await expect(budgetInput).toBeVisible();
@@ -43,9 +43,6 @@ test.describe("Profile Budget Multi-Currency", () => {
     await budgetInput.fill("20000");
     await budgetInput.dispatchEvent("input");
     await expect(grantHint).toBeHidden();
-    await openDisclosureParents(page.locator("#familyIncomeInput"));
-    await page.fill("#familyIncomeInput", "85000");
-    await setNativeSelect(page, "familyIncomeCurrencySelect", "EUR");
 
     // Save profile
     await page.click(selectors.saveProfileBtn);
@@ -62,9 +59,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-    await expect(budgetUnit).toContainText("KZT / year");
-    await expect(page.locator("#familyIncomeInput")).toHaveValue("85000");
-    await expect(page.locator("#familyIncomeCurrencySelect")).toHaveValue("EUR");
+    await expect(budgetCurrency).toHaveValue("KZT");
 
     // Stored 20,000 USD converted to KZT (~9,000,000 - 10,000,000 KZT)
     const convertedBudgetVal = await budgetInput.inputValue();
@@ -72,11 +67,16 @@ test.describe("Profile Budget Multi-Currency", () => {
     expect(numBudget).toBeGreaterThan(5000000);
     expect(numBudget).toBeLessThan(20000000);
 
-    // Check hint range contains converted max
+    // The hint states the budget's effect; the converted maximum appears only in the validation message.
     const budgetHint = page.locator('.profile-field:has(#budgetInput) .profile-hint');
     await expect(budgetHint).toBeVisible();
-    const hintText = await budgetHint.textContent();
-    expect(hintText).toMatch(/0[‑\-](\d{1,3}(,\d{3})+)/);
+    expect(await budgetHint.textContent()).not.toMatch(/\d{1,3}(,\d{3}){2,}/);
+    const keptBudget = await budgetInput.inputValue();
+    await budgetInput.fill("99999999999");
+    await page.click(selectors.saveProfileBtn);
+    await expect(page.locator("#budgetInputError")).toContainText(/KZT/);
+    expect(await page.locator("#budgetInputError").textContent()).toMatch(/\d{1,3}(,\d{3})+/);
+    await budgetInput.fill(keptBudget);
 
     // Check API payload returns USD
     const apiBudget = await page.evaluate(() => {
@@ -98,5 +98,22 @@ test.describe("Profile Budget Multi-Currency", () => {
     await budgetInput.dispatchEvent("input");
     await page.click(selectors.saveProfileBtn);
     await expect(budgetError).not.toBeVisible();
+  });
+
+  test("choosing the budget currency after typing the amount keeps the number", async ({ page }) => {
+    await page.goto("/index.html");
+    await page.click(selectors.profileBtn);
+    await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+    const budgetInput = page.locator(selectors.budgetInput);
+    await budgetInput.fill("45000");
+    await budgetInput.dispatchEvent("input");
+    await setNativeSelect(page, "profileBudgetCurrency", "GBP");
+    await expect(page.locator("#profileBudgetCurrency")).toHaveValue("GBP");
+    await expect(budgetInput).toHaveValue("45000");
+    await page.click(selectors.saveProfileBtn);
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
+    expect(saved.budgetCurrency).toBe("GBP");
+    expect(Number(saved.budget)).toBe(45000);
+    await expect(page.locator("#settingPreferredCurrency")).toHaveValue("GBP");
   });
 });

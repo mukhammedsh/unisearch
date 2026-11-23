@@ -7,7 +7,7 @@ import {
 } from "./config.js";
 import { API_LANG_DEFAULT, API_LANG_SUPPORTED, getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { safeLocalStorage } from "./safe-storage.js";
-import { CURRENCY_FORMAT_MAP, convert } from "../currency.js";
+import { convert } from "../currency.js";
 
 const PROFILE_STORAGE_KEY = "unisearch_profile";
 const FILTERS_KEY = "unisearch_filters";
@@ -23,14 +23,38 @@ let profileMemoryUnpersisted = false;
 let filtersMemoryFallback = {};
 
 export const PROFILE_VERSION = 2;
-export const MAX_PROFILE_CITIZENSHIPS = 10;
+
+// Removed applicant inputs. Saved profiles may still carry them: they are stripped on load and never sent to the API.
+const REMOVED_PROFILE_KEYS = [
+  "citizenship",
+  "citizenships",
+  "familyIncomeAmount",
+  "familyIncomeCurrency",
+  "currentResidenceCountry",
+  "current_residence_country",
+  "currentResidenceOther",
+  "current_residence_other",
+  "countryOfEducation",
+  "country_of_education",
+  "countryOfEducationOther",
+  "country_of_education_other",
+  "educationCredential",
+  "education_credential",
+  "educationCredentialOther",
+  "education_credential_other",
+  "applicantRoute",
+  "applicant_route",
+  // Entry cycle and fee status are chosen per university (selectedAdmissionChoices), not in the general profile.
+  "intendedEntryCycle",
+  "intended_entry_cycle",
+  "feeStatusContext",
+  "fee_status_context",
+];
 
 const PROFILE_DEFAULTS = {
   _v: PROFILE_VERSION,
   budget: "",
   budgetCurrency: "USD",
-  familyIncomeAmount: "",
-  familyIncomeCurrency: "USD",
   languageEvidence: [],
   institutionalEvidence: [],
   gpa: "",
@@ -41,17 +65,6 @@ const PROFILE_DEFAULTS = {
   interests: "",
   studyMode: "Any",
   fundingType: "any",
-  citizenship: "",
-  citizenships: [],
-  countryOfEducation: "",
-  countryOfEducationOther: "",
-  educationCredential: "",
-  educationCredentialOther: "",
-  applicantRoute: "",
-  intendedEntryCycle: "",
-  currentResidenceCountry: "",
-  currentResidenceOther: "",
-  feeStatusContext: "unknown",
   studyLevel: "Any",
   selectedAdmissionChoices: {},
 };
@@ -119,7 +132,7 @@ function normalizeLanguageEvidence(rows) {
 
 function normalizeInstitutionalEvidence(rows) {
   if (!Array.isArray(rows)) return [];
-  const institutions = new Set(["mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca"]);
+  const institutions = new Set(["mit-usa-cambridge"]);
   return rows.slice(0, 20).map((row) => {
     if (!row || typeof row !== "object" || Array.isArray(row) || !institutions.has(row.university_id)) return null;
     const kind = String(row.kind || "").trim();
@@ -142,7 +155,7 @@ function normalizeInstitutionalEvidence(rows) {
       const metric = String(row.metric || "");
       const value = Number(row.value);
       const scale = Number(row.scale);
-      if (!["overall", "technical", "major"].includes(metric)
+      if (!["overall", "technical"].includes(metric)
         || row.value === null || row.value === undefined || String(row.value).trim() === ""
         || row.scale === null || row.scale === undefined || String(row.scale).trim() === ""
         || typeof row.value === "boolean" || typeof row.scale === "boolean"
@@ -247,19 +260,10 @@ export function isLegacyProfile(raw) {
     || "user_gpa_scale" in raw
     || "study_level" in raw
     || "selected_admission_choices" in raw
-    || "country_of_education" in raw
-    || "country_of_education_other" in raw
-    || "education_credential" in raw
-    || "education_credential_other" in raw
-    || "applicant_route" in raw
-    || "intended_entry_cycle" in raw
-    || "current_residence_country" in raw
-    || "current_residence_other" in raw
-    || "fee_status_context" in raw
+    || REMOVED_PROFILE_KEYS.some((key) => key in raw)
   ) {
     return true;
   }
-  if (typeof raw.citizenships === "string") return true;
   if (Array.isArray(raw.exams)) {
     for (const e of raw.exams) {
       if (e && typeof e === "object" && !Array.isArray(e)) {
@@ -335,22 +339,17 @@ export function normalizeProfileData(profile) {
   const raw = profile && typeof profile === "object" && !Array.isArray(profile) ? profile : {};
 
   // Preserve unknown/future fields from raw
-  // "name" is a removed nickname field kept here so legacy values are stripped, not preserved.
+  // "name" and REMOVED_PROFILE_KEYS are removed fields kept here so legacy values are stripped, not preserved.
   const knownRootKeys = new Set([
     "_v", "name", "budget", "budgetCurrency", "budget_currency",
     "gpa", "gpaScale", "gpa_scale", "gpa_raw", "user_gpa_scale",
     "exams", "languages", "major", "interests",
     "studyMode", "fundingType", "funding_type",
-    "citizenship", "citizenships", "studyLevel", "study_level",
-    "countryOfEducation", "country_of_education", "countryOfEducationOther", "country_of_education_other",
-    "educationCredential", "education_credential", "educationCredentialOther", "education_credential_other",
-    "applicantRoute", "applicant_route", "intendedEntryCycle", "intended_entry_cycle",
-    "currentResidenceCountry", "current_residence_country", "currentResidenceOther", "current_residence_other",
-    "feeStatusContext", "fee_status_context",
+    "studyLevel", "study_level",
     "languageEvidence", "language_evidence", "institutionalEvidence", "institutional_evidence",
     "selectedAdmissionChoices", "selected_admission_choices",
     "admissionChoiceResetNotices",
-    "familyIncomeAmount", "familyIncomeCurrency",
+    ...REMOVED_PROFILE_KEYS,
   ]);
   const extraFields = {};
   for (const [k, v] of Object.entries(raw)) {
@@ -366,22 +365,6 @@ export function normalizeProfileData(profile) {
   const budget = raw.budget === null || raw.budget === undefined || raw.budget === "" ? "" : raw.budget;
   const budgetCurrencyRaw = String(raw.budgetCurrency || raw.budget_currency || "").trim().toUpperCase();
   const budgetCurrency = budgetCurrencyRaw || PROFILE_DEFAULTS.budgetCurrency;
-  const incomeAmountRaw = raw.familyIncomeAmount;
-  let incomeAmountValue = "";
-  if (typeof incomeAmountRaw === "number") {
-    incomeAmountValue = incomeAmountRaw;
-  } else if (typeof incomeAmountRaw === "string" && incomeAmountRaw.trim()) {
-    incomeAmountValue = Number(incomeAmountRaw.trim());
-  } else if (incomeAmountRaw !== "" && incomeAmountRaw !== null && incomeAmountRaw !== undefined) {
-    incomeAmountValue = Number.NaN;
-  }
-  const familyIncomeAmount = Number.isFinite(incomeAmountValue) && incomeAmountValue >= 0 && incomeAmountValue <= 1_000_000_000_000
-    ? incomeAmountValue
-    : "";
-  const incomeCurrencyRaw = typeof raw.familyIncomeCurrency === "string" ? raw.familyIncomeCurrency.trim().toUpperCase() : "";
-  const familyIncomeCurrency = Object.prototype.hasOwnProperty.call(CURRENCY_FORMAT_MAP, incomeCurrencyRaw)
-    ? incomeCurrencyRaw
-    : PROFILE_DEFAULTS.familyIncomeCurrency;
   const major = String(raw.major ?? "").trim();
   const studyMode = String(raw.studyMode || PROFILE_DEFAULTS.studyMode).trim() || PROFILE_DEFAULTS.studyMode;
   const parseFundingType = (val) => {
@@ -390,47 +373,10 @@ export function normalizeProfileData(profile) {
   };
   const fundingType = parseFundingType(raw.fundingType) || parseFundingType(raw.funding_type) || PROFILE_DEFAULTS.fundingType;
 
-  let citizenshipsList = [];
-  if (Array.isArray(raw.citizenships)) {
-    citizenshipsList = raw.citizenships
-      .filter((c) => typeof c === "string")
-      .map((c) => c.trim())
-      .filter(Boolean);
-  } else if (typeof raw.citizenships === "string") {
-    citizenshipsList = raw.citizenships.split(",").map((c) => c.trim()).filter(Boolean);
-  }
-  if (!citizenshipsList.length && typeof raw.citizenship === "string" && raw.citizenship.trim()) {
-    citizenshipsList = [raw.citizenship.trim()];
-  }
-  const seenCountries = new Set();
-  const dedupedCitizenships = [];
-  for (const c of citizenshipsList) {
-    const key = c.toUpperCase();
-    if (!seenCountries.has(key)) {
-      seenCountries.add(key);
-      dedupedCitizenships.push(c);
-    }
-    if (dedupedCitizenships.length >= MAX_PROFILE_CITIZENSHIPS) break;
-  }
-  const citizenship = dedupedCitizenships.length > 0 ? dedupedCitizenships[0] : "";
-
   const studyLevel = typeof raw.studyLevel === "string"
     ? raw.studyLevel.trim()
     : (typeof raw.study_level === "string" ? raw.study_level.trim() : PROFILE_DEFAULTS.studyLevel);
 
-  const readOptionalString = (camelKey, snakeKey, maxLength = 120) => {
-    const value = typeof raw[camelKey] === "string" ? raw[camelKey] : raw[snakeKey];
-    return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
-  };
-  const countryOfEducation = readOptionalString("countryOfEducation", "country_of_education", 80);
-  const countryOfEducationOther = readOptionalString("countryOfEducationOther", "country_of_education_other", 80);
-  const educationCredential = readOptionalString("educationCredential", "education_credential", 80);
-  const educationCredentialOther = readOptionalString("educationCredentialOther", "education_credential_other", 120);
-  const applicantRoute = readOptionalString("applicantRoute", "applicant_route", 40);
-  const intendedEntryCycle = readOptionalString("intendedEntryCycle", "intended_entry_cycle", 40);
-  const currentResidenceCountry = readOptionalString("currentResidenceCountry", "current_residence_country", 80);
-  const currentResidenceOther = readOptionalString("currentResidenceOther", "current_residence_other", 80);
-  const feeStatusContext = readOptionalString("feeStatusContext", "fee_status_context", 40) || "unknown";
   const languageEvidence = normalizeLanguageEvidence(raw.languageEvidence ?? raw.language_evidence);
   const institutionalEvidence = normalizeInstitutionalEvidence(raw.institutionalEvidence ?? raw.institutional_evidence);
 
@@ -508,7 +454,7 @@ export function normalizeProfileData(profile) {
     let details = null;
     if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
       try {
-        details = JSON.parse(JSON.stringify(row.details));
+        details = structuredClone(row.details);
       } catch {
         details = null;
       }
@@ -585,7 +531,7 @@ export function normalizeProfileData(profile) {
       let details = null;
       if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
         try {
-          details = JSON.parse(JSON.stringify(row.details));
+          details = structuredClone(row.details);
         } catch {
           details = null;
         }
@@ -610,8 +556,6 @@ export function normalizeProfileData(profile) {
     _v: version,
     budget,
     budgetCurrency,
-    familyIncomeAmount,
-    familyIncomeCurrency,
     gpa: normalizedGpa === null ? "" : normalizedGpa,
     gpaScale,
     exams,
@@ -620,17 +564,6 @@ export function normalizeProfileData(profile) {
     interests,
     studyMode,
     fundingType,
-    citizenship,
-    citizenships: dedupedCitizenships,
-    countryOfEducation,
-    countryOfEducationOther,
-    educationCredential,
-    educationCredentialOther,
-    applicantRoute,
-    intendedEntryCycle,
-    currentResidenceCountry,
-    currentResidenceOther,
-    feeStatusContext,
     studyLevel: studyLevel || PROFILE_DEFAULTS.studyLevel,
     selectedAdmissionChoices,
     admissionChoiceResetNotices: [...resetNotices],
@@ -719,7 +652,7 @@ export function loadProfileForApi() {
       let details = null;
       if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
         try {
-          details = JSON.parse(JSON.stringify(row.details));
+          details = structuredClone(row.details);
         } catch {
           details = null;
         }
@@ -755,7 +688,7 @@ export function loadProfileForApi() {
       let details = null;
       if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
         try {
-          details = JSON.parse(JSON.stringify(row.details));
+          details = structuredClone(row.details);
         } catch {
           details = null;
         }
@@ -788,27 +721,6 @@ export function loadProfileForApi() {
     }
   }
 
-  if (String(profile?.citizenship || "").trim()) {
-    payload.citizenship = String(profile.citizenship).trim();
-  }
-  if (Array.isArray(profile?.citizenships) && profile.citizenships.length > 0) {
-    payload.citizenships = profile.citizenships.map((c) => String(c || "").trim()).filter(Boolean);
-  }
-  for (const [profileKey, payloadKey] of [
-    ["countryOfEducation", "country_of_education"],
-    ["countryOfEducationOther", "country_of_education_other"],
-    ["educationCredential", "education_credential"],
-    ["educationCredentialOther", "education_credential_other"],
-    ["applicantRoute", "applicant_route"],
-    ["intendedEntryCycle", "intended_entry_cycle"],
-    ["currentResidenceCountry", "current_residence_country"],
-    ["currentResidenceOther", "current_residence_other"],
-    ["feeStatusContext", "fee_status_context"],
-  ]) {
-    const value = String(profile?.[profileKey] || "").trim();
-    if (value) payload[payloadKey] = value;
-  }
-  payload.fee_status_context = String(profile?.feeStatusContext || "unknown").trim() || "unknown";
   if (String(profile?.studyLevel || "").trim() && String(profile.studyLevel).trim() !== "Any") {
     payload.study_level = String(profile.studyLevel).trim();
   }

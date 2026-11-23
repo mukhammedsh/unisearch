@@ -2149,10 +2149,21 @@
       "id": "source-e55bc14954a55368",
       "url": "https://sfs.mit.edu/undergraduate-students/apply-for-aid/international/",
       "title": "International students | MIT Student Financial Services",
-      "checked_at": "2026-09-30",
+      "checked_at": "2026-11-23",
       "access": {
         "http_status": 200,
         "final_url": "https://sfs.mit.edu/undergraduate-students/apply-for-aid/international/"
+      },
+      "content_review": "not_implied_by_http_check"
+    },
+    {
+      "id": "source-85ac2f1717b14d39",
+      "url": "https://mitadmissions.org/afford/cost-aid-basics/access-affordability/",
+      "title": "Access and affordability | MIT Admissions",
+      "checked_at": "2026-11-23",
+      "access": {
+        "http_status": 200,
+        "final_url": "https://mitadmissions.org/afford/cost-aid-basics/access-affordability/"
       },
       "content_review": "not_implied_by_http_check"
     },
@@ -57967,10 +57978,10 @@
     {
       "id": "undergraduate-aid-category-and-documents",
       "group": "funding",
-      "summary": "MIT aid international classification depends on FAFSA federal eligibility, not current residence.",
+      "summary": "MIT is need-blind and meets full demonstrated need for international applicants; aid international classification depends on FAFSA federal eligibility, not current residence.",
       "value": {
         "international_category": "Not eligible for federal student aid under FAFSA criteria; includes special eligible categories beyond citizenship/permanent residency",
-        "international_need": "MIT meets full demonstrated need using same consideration process",
+        "international_need": "MIT does not consider your ability to pay when it decides on admission (need-blind), and this applies to international applicants too. It commits to meet 100% of the demonstrated financial need of admitted students who apply for aid, international students included.",
         "css_code": "3514",
         "parent_finances": [
           "Two-years-prior tax/wage records",
@@ -58000,11 +58011,12 @@
       },
       "publication_status": "published",
       "review_status": "verified",
-      "checked_at": "2026-09-30",
+      "checked_at": "2026-11-23",
       "source_ids": [
-        "source-e55bc14954a55368"
+        "source-e55bc14954a55368",
+        "source-85ac2f1717b14d39"
       ],
-      "origin": "live_official_review_2026-09-30",
+      "origin": "live_official_review_2026-11-23",
       "conditions": [],
       "related_fact_ids": [],
       "topics": [

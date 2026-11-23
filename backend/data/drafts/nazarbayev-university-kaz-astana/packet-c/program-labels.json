@@ -193,7 +193,8 @@
     "ph_d_in_civil_engineering": "Докторантура PhD: Строительная инженерия",
     "non_degree_study_nds": "Обучение без получения степени (NDS)",
     "nu_zero_year_program_nuzyp": "Подготовительная программа NU Zero Year Program (NUZYP)",
-    "micro_credential_in_fundamentals_of_mining_engineering_for_industry_professionals": "Микропрограмма «Основы горной инженерии для специалистов отрасли»"
+    "micro_credential_in_fundamentals_of_mining_engineering_for_industry_professionals": "Микропрограмма «Основы горной инженерии для специалистов отрасли»",
+    "zero_year_of_graduate_programs_zygp": "Подготовительная программа нулевого года для магистратуры и докторантуры (ZYGP)"
   },
   "kaz": {
     "bachelor_of_business_administration_in_eurasian_business_joint_degree_with_hkust": "Еуразиялық бизнес бакалавриаты — HKUST-пен бірлескен дәреже",
@@ -291,6 +292,7 @@
     "ph_d_in_civil_engineering": "Құрылыс инженериясы бойынша PhD докторантурасы",
     "non_degree_study_nds": "Дәреже берілмейтін оқу (NDS)",
     "nu_zero_year_program_nuzyp": "NU Zero Year Program дайындық бағдарламасы (NUZYP)",
-    "micro_credential_in_fundamentals_of_mining_engineering_for_industry_professionals": "Сала мамандарына арналған тау-кен инженериясы негіздері бойынша микробіліктілік"
+    "micro_credential_in_fundamentals_of_mining_engineering_for_industry_professionals": "Сала мамандарына арналған тау-кен инженериясы негіздері бойынша микробіліктілік",
+    "zero_year_of_graduate_programs_zygp": "Магистратура мен докторантураға арналған «нөлдік жыл» бағдарламасы (ZYGP)"
   }
 }

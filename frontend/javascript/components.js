@@ -1,5 +1,6 @@
 /* frontend/javascript/components.js - Interface shell and layout components */
 import {
+  escapeHtml,
   initCustomSelect,
   replayMotion,
   setupSlidingIndicator,
@@ -67,22 +68,22 @@ const LAYOUT_HTML = `
         data-logo-light="${NAV_LOGO_LIGHT}"
         data-logo-dark="${NAV_LOGO_DARK}"
         data-fallback-src="${NAV_LOGO_FALLBACK}"
-        alt="Logo"
+        alt="UniSearch"
         class="logo"
       />
     </a>
   </div>
 
-  <div class="navbar-search" id="universitySearch" role="search" hidden>
+  <search class="navbar-search" id="universitySearch" hidden>
     <button id="navbarSearchBack" class="navbar-search-back" type="button" aria-label="Back to navigation" data-i18n-aria-label="navbar.search.back" title="Back to navigation" data-i18n-title="navbar.search.back" hidden>${heroIcon("arrow-left", "ui-icon ui-icon--18")}</button>
     <div class="navbar-search-field ui-input-composite">
       <span class="navbar-search-icon" aria-hidden="true">${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</span>
-      <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" spellcheck="false" />
+      <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" />
       <button id="searchClearBtn" class="navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
         ${heroIcon("x-mark", "ui-icon ui-icon--16")}
       </button>
     </div>
-  </div>
+  </search>
 
   <div class="navbar-right">
     <button class="navbar-search-toggle" id="navbarSearchToggle" type="button" title="Open search" aria-label="Open search" data-i18n-title="navbar.search.open" data-i18n-aria-label="navbar.search.open" aria-expanded="false" aria-controls="universitySearch" hidden>${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</button>
@@ -118,12 +119,11 @@ const LAYOUT_HTML = `
 
 <div id="navbarSearchScrim" class="navbar-search-scrim" hidden aria-hidden="true"></div>
 
-<div class="settings-modal" id="settingsModal" aria-hidden="true">
-  <div class="settings-backdrop" data-close="settings"></div>
-  <section class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+<dialog class="settings-modal" id="settingsModal" closedby="any" aria-labelledby="settingsTitle">
+  <section class="settings-card">
     <div class="settings-header">
       <h2 id="settingsTitle" data-i18n="settings.title">Settings</h2>
-      <button class="icon-btn settings-close" id="settingsCloseBtn" type="button" title="Close" aria-label="Close" data-i18n-title="profile.action.close" data-i18n-aria-label="profile.action.close">
+      <button class="icon-btn settings-close" id="settingsCloseBtn" type="button" autofocus title="Close" aria-label="Close" data-i18n-title="profile.action.close" data-i18n-aria-label="profile.action.close">
         ${heroIcon("x-mark", "ui-icon ui-icon--18")}
       </button>
     </div>
@@ -367,14 +367,17 @@ const LAYOUT_HTML = `
         </select>
       </article>
       <div class="settings-attribution">
-        <span data-i18n="currency.attribution">Rates provided by</span>
-        <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
+        <p class="settings-attribution-provider">
+          <span data-i18n="currency.attribution">Rates provided by</span>
+          <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
+        </p>
+        <p class="settings-attribution-status" id="currencyRatesStatus" aria-live="polite" hidden></p>
       </div>
     </div>
   </section>
-</div>
+</dialog>
 
-<div id="toast-container" class="toast-container"></div>
+<div id="toast-container" class="toast-container" role="region" aria-label="Notifications" data-i18n-aria-label="common.notifications"></div>
 `;
 
 function bindProfileNavAction() {
@@ -497,7 +500,7 @@ function initLanguageSwitcher() {
             if (pageNeedsUniversityTranslations()) {
                 try {
                     await loadUniversityTranslationsForLanguage(nextLang);
-                } catch (e) {
+                } catch {
                     // keep fallback localization when translation endpoint is unavailable
                 }
             }
@@ -591,22 +594,62 @@ export function setupTabs() {
 
   const buttons = Array.from(tabsRoot.querySelectorAll(".d-tab-btn"));
   const panes = Array.from(document.querySelectorAll(".d-tab-pane"));
+  let updateIndicator = null;
+
+  const activateTab = (btn, { animate = true } = {}) => {
+    if (!btn) return;
+    const targetId = btn.getAttribute("data-tab");
+    buttons.forEach((b) => {
+      const isSelected = b === btn;
+      b.classList.toggle("active", isSelected);
+      b.setAttribute("aria-selected", isSelected ? "true" : "false");
+      b.setAttribute("tabindex", isSelected ? "0" : "-1");
+    });
+    panes.forEach((p) => {
+      const isActive = Boolean(targetId && p.id === targetId);
+      p.classList.toggle("active", isActive);
+      p.hidden = !isActive;
+    });
+    const targetPane = targetId ? document.getElementById(targetId) : null;
+    if (animate) {
+      if (targetPane) {
+        replayMotion(targetPane, "motion-panel-enter", { timeoutMs: 420 });
+      }
+      btn.scrollIntoView?.({ block: "nearest", inline: "nearest" });
+    }
+    updateIndicator?.();
+  };
+
+  const initialBtn = buttons.find((b) => b.classList.contains("active")) || buttons[0];
+  if (initialBtn) activateTab(initialBtn, { animate: false });
 
   tabsRoot.addEventListener("click", (e) => {
     const btn = e.target instanceof Element ? e.target.closest(".d-tab-btn") : null;
     if (!btn || !tabsRoot.contains(btn)) return;
-    buttons.forEach((b) => b.classList.remove("active"));
-    panes.forEach((p) => p.classList.remove("active"));
-    btn.classList.add("active");
-    const tabId = btn.getAttribute("data-tab");
-    const targetPane = tabId ? document.getElementById(tabId) : null;
-    if (targetPane) {
-      targetPane.classList.add("active");
-      replayMotion(targetPane, "motion-panel-enter", { timeoutMs: 420 });
-    }
+    activateTab(btn);
   });
-  
-  setupSlidingIndicator(".d-tabs", ".d-tab-btn", "active");
+
+  tabsRoot.addEventListener("keydown", (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const btn = e.target instanceof Element ? e.target.closest(".d-tab-btn") : null;
+    if (!btn || !tabsRoot.contains(btn) || buttons.length === 0) return;
+
+    const currentIdx = buttons.indexOf(btn);
+    let nextIdx = -1;
+    if (e.key === "ArrowRight") nextIdx = (currentIdx + 1) % buttons.length;
+    else if (e.key === "ArrowLeft") nextIdx = (currentIdx - 1 + buttons.length) % buttons.length;
+    else if (e.key === "Home") nextIdx = 0;
+    else if (e.key === "End") nextIdx = buttons.length - 1;
+    if (nextIdx === -1) return;
+
+    e.preventDefault();
+    const nextBtn = buttons[nextIdx];
+    nextBtn.focus();
+    activateTab(nextBtn);
+    if (typeof nextBtn.click === "function") nextBtn.click();
+  });
+
+  updateIndicator = setupSlidingIndicator(".d-tabs", ".d-tab-btn", "active");
 }
 /**
  * Renders an error screen based on classified error type (offline, server, generic, not_found).
@@ -674,8 +717,8 @@ export function renderErrorScreen(options = {}) {
       <div class="error-icon-wrap" aria-hidden="true">
         ${heroIcon(iconName, "ui-icon ui-icon--32") || heroIcon("exclamation-triangle", "ui-icon ui-icon--32")}
       </div>
-      <h2 class="error-title" ${titleAttr}>${resolvedTitle}</h2>
-      <p class="error-desc" ${descAttr}>${resolvedDesc}</p>
+      <h2 class="error-title" ${titleAttr}>${escapeHtml(resolvedTitle)}</h2>
+      <p class="error-desc" ${descAttr}>${escapeHtml(resolvedDesc)}</p>
       ${
         onRetry
           ? `

@@ -177,17 +177,32 @@ test("client-side navigation with Russian language renders destination page dire
       const layout = await page.locator(".about-page").evaluate((element) => {
         const box = element.getBoundingClientRect();
         const canvas = document.body.getBoundingClientRect();
+        const inspectListBorders = (selector) => Array.from(element.querySelectorAll(selector)).map((item) => {
+          const style = getComputedStyle(item);
+          return {
+            topWidth: Number.parseFloat(style.borderTopWidth) || 0,
+            bottomWidth: Number.parseFloat(style.borderBottomWidth) || 0,
+          };
+        });
         return {
           left: box.left - canvas.left,
           right: canvas.right - box.right,
           panelColor: getComputedStyle(element).backgroundColor,
           canvasColor: getComputedStyle(document.body).backgroundColor,
           hasHorizontalOverflow: element.scrollWidth > element.clientWidth + 1,
+          teamBorders: inspectListBorders(".about-team-member"),
+          contactBorders: inspectListBorders(".about-contact-item"),
         };
       });
       expect(Math.abs(layout.left - layout.right)).toBeLessThanOrEqual(1);
       expect(layout.panelColor).not.toBe(layout.canvasColor);
       expect(layout.hasHorizontalOverflow).toBe(false);
+      for (const borders of [layout.teamBorders, layout.contactBorders]) {
+        expect(borders[0]).toEqual({ topWidth: 0, bottomWidth: 0 });
+        for (const item of borders.slice(1)) {
+          expect(item).toEqual({ topWidth: 1, bottomWidth: 0 });
+        }
+      }
     }
   }
 });

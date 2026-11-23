@@ -312,6 +312,25 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(95134, cost_range.get("min_usd"))
         self.assertEqual(100134, cost_range.get("max_usd"))
 
+    def test_size_filter_uses_student_count_bands(self):
+        from app.services.universities import student_size_band
+
+        self.assertEqual("small", student_size_band({"student_count": 9999}))
+        self.assertEqual("medium", student_size_band({"student_count": 10000}))
+        self.assertEqual("medium", student_size_band({"student_count": 30000}))
+        self.assertEqual("large", student_size_band({"student_count": 30001}))
+        self.assertEqual("", student_size_band({"student_count": None}))
+        listed = self.client.get("/universities", params={"limit": 100}).json().get("items") or []
+        counts = {item["id"]: self.client.get(f"/universities/{item['id']}").json().get("student_count") for item in listed}
+        for band in ("small", "medium", "large"):
+            response = self.client.get("/universities", params={"size": band, "limit": 100})
+            self.assertEqual(response.status_code, 200)
+            ids = [item.get("id") for item in response.json().get("items") or []]
+            # A university without a published student count is unknown, not excluded.
+            expected = sorted(uid for uid, count in counts.items() if student_size_band({"student_count": count}) in ("", band))
+            self.assertTrue(expected, band)
+            self.assertEqual(expected, sorted(ids), band)
+
     def test_university_detail_localizes_campus_size_group_by_lang(self):
         response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
         self.assertEqual(response.status_code, 200)
@@ -331,6 +350,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             "budget_vs_prestige",
             "city_vs_campus",
         }
+        known = {key: 0 for key in expected_keys}
         for item in items:
             university_id = str((item or {}).get("id") or "")
             self.assertTrue(university_id)
@@ -340,10 +360,16 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
             self.assertTrue(expected_keys.issubset(factors.keys()), f"{university_id} missing UniFit factor keys")
             for key in expected_keys:
                 value = factors.get(key)
-                self.assertIsNotNone(value, f"{university_id}:{key} is null")
+                # Null means the source data is missing; the slider then leaves this university out.
+                if value is None:
+                    continue
+                known[key] += 1
                 numeric = float(value)
                 self.assertGreaterEqual(numeric, 0.0, f"{university_id}:{key} below 0")
                 self.assertLessEqual(numeric, 1.0, f"{university_id}:{key} above 1")
+        # Every slider still has data for most of the catalog.
+        for key, count in known.items():
+            self.assertGreater(count, len(items) // 2, key)
 
     def test_all_universities_expose_cost_breakdown_status(self):
         response = self.client.get("/universities?limit=100&fields=card&sort=name_asc")
@@ -396,9 +422,10 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         university_id = self._first_university_id()
         self.assertTrue(university_id)
 
-        logo_small = self.client.get(f"/universities/assets/logos-small/{university_id}.png")
-        self.assertEqual(logo_small.status_code, 200)
-        self.assertIn("image/", str(logo_small.headers.get("content-type") or ""))
+        for directory in ("logos", "logos-small"):
+            with self.subTest(directory=directory):
+                legacy_path = f"/universities/assets/{directory}/{university_id}.png"
+                self.assertEqual(self.client.get(legacy_path).status_code, 404)
 
         thumb_full = self.client.get(f"/universities/assets/thumbnails/{university_id}.jpg")
         self.assertEqual(thumb_full.status_code, 200)

@@ -40,6 +40,50 @@ class AdmissionsAssessmentTests(unittest.TestCase):
         self.assertEqual("met", check["status"])
         self.assertIn("source-600fe783c80073e0", check["sourceIds"])
 
+    def test_real_stanford_undergraduate_sat_act_presence_is_assessed_for_first_year_and_transfer(self):
+        for route, fact_suffix in (("stanford-first-year", "firstyear"), ("stanford-transfer", "transfer")):
+            fact_id = f"undergraduate-shared-evidence:stanford-{fact_suffix}-standardized-tests"
+            resolved = self.resolve(
+                "stanford-university-usa-ca", study_option_id="stanford-option-cs-bs", study_level="undergraduate",
+                application_route_id="undergraduate-shared-evidence:" + route, intended_entry_cycle="2027-2028")
+            self.assertIn(fact_id, resolved["fact_groups"]["requirements"])
+            by_exam = {}
+            for exam, profile in (("SAT", {"exams": [{"id": "SAT", "score": 1500}]}), ("ACT", {"exams": [{"id": "ACT", "score": 34}]}), (None, {})):
+                result = self.assessment(resolved, profile)
+                check = next(row for row in self.checks(result) if row["factId"] == fact_id)
+                self.assertNotEqual("stale_annotation", check["kind"])
+                by_exam[exam] = check["status"]
+                # Presence is never a score or a threshold: Stanford publishes no minimum.
+                self.assertIsNone(result["overallChance"])
+                self.assertIsNone(check["minimum"])
+            self.assertEqual({"SAT": "met", "ACT": "met", None: "missing"}, by_exam)
+
+    def test_stanford_sat_act_presence_annotation_stays_inside_its_own_route(self):
+        resolved = self.resolve(
+            "stanford-university-usa-ca", study_option_id="stanford-option-cs-bs", study_level="undergraduate",
+            application_route_id="undergraduate-shared-evidence:stanford-first-year", intended_entry_cycle="2027-2028")
+        transfer_fact = "undergraduate-shared-evidence:stanford-transfer-standardized-tests"
+        result = self.assessment(resolved, {"exams": [{"id": "SAT", "score": 1500}]})
+        self.assertNotIn(transfer_fact, {row["factId"] for row in self.checks(result)})
+
+    def test_source_rule_keeps_rule_content_without_research_provenance(self):
+        resolved = self.resolve(
+            "mit-usa-cambridge", study_option_id="mit-course-6-3-bachelor", application_route_id="mit-first-year",
+            study_level="undergraduate", applicant_route="first_year", intended_entry_cycle="Fall 2027 entry")
+        self.assertIn("provenance", resolved["facts"][0])
+        before = copy.deepcopy(resolved)
+        checks = self.checks(self.assessment(resolved))
+        self.assertEqual(before, resolved)
+        self.assertTrue(checks)
+        for check in checks:
+            rule = check["sourceRule"]
+            self.assertFalse({"provenance", "index_attributes", "content_reviewed_at"} & set(rule))
+            fact = next(row for row in resolved["facts"] if row["id"] == check["factId"])
+            self.assertEqual(fact["value"], rule["value"])
+            self.assertEqual(fact["scope"], rule["scope"])
+        # Hashes still cover the complete fact, so every shipped mapping matches its fact.
+        self.assertNotIn("stale_annotation", {check["kind"] for check in checks})
+
     def test_real_imperial_computing_meng_preserves_unassessable_academic_rule(self):
         resolved = self.resolve(
             "imperial-college-london-uk",
@@ -92,8 +136,10 @@ class AdmissionsAssessmentTests(unittest.TestCase):
 
         self.assertIn("requirements", resolved["fact_groups"])
         check = next(row for row in self.checks(result) if row["factId"].endswith(":stanford-firstyear-standardized-tests"))
-        self.assertEqual("unassessed", check["status"])
-        self.assertNotIn("minimum", check)
+        # The presence of SAT or ACT is checked; Stanford publishes no score, so none is invented.
+        self.assertEqual("met", check["status"])
+        self.assertIsNone(check["minimum"])
+        self.assertFalse(check["numericMinimum"])
         self.assertIsNone(result["overallChance"])
         self.assertEqual("unassessed_minimums", result["reason"])
 
@@ -155,6 +201,7 @@ class AdmissionsAssessmentTests(unittest.TestCase):
                                 application_route_id="mit_bcs_meng_admissions", study_level="masters")
         unknown_floor = {
             "id": "unsupported-floor", "topic": "language_tests", "review_status": "verified", "publication_status": "published",
+            "normalized_status": {"publication": "published", "review": "verified"},
             "source_ids": [resolved["sources"][0]["id"]], "applicability": {"status": "conditional"},
             "value": {"unassessed_published_minimums": [{"minimum": 5, "label": "Unsupported test scale"}]},
         }
@@ -255,6 +302,97 @@ class AdmissionsAssessmentTests(unittest.TestCase):
             self.assertIsNone(stale["overallChance"])
             self.assertEqual(self.checks(stale)[0]["kind"], "stale_annotation")
 
+    def nu_regular_undergraduate(self):
+        return self.resolve(
+            "nazarbayev-university-kaz-astana",
+            study_option_id="nu-a-study-bachelor-of-science-in-computer-science",
+            application_route_id="nu-a-route-regular-foundation-undergraduate",
+            study_level="undergraduate", applicant_route="first_year", intended_entry_cycle="2027/28",
+        )
+
+    def test_real_nu_total_only_sat_meets_the_sat_alternative(self):
+        result = self.assessment(self.nu_regular_undergraduate(), {"exams": [{"id": "SAT", "score": 1380, "taken_on": "2026-05-01"}]})
+        academic = next(row for row in self.checks(result) if row.get("checkId") == "academic")
+        self.assertEqual("met", academic["status"])
+        self.assertEqual([("SAT", "met")], [(item["exam"], item["status"]) for item in academic["provided"]["minimum_checks"]])
+        below = self.assessment(self.nu_regular_undergraduate(), {"exams": [{"id": "SAT", "score": 1200, "taken_on": "2026-05-01"}]})
+        self.assertEqual("unmet", next(row for row in self.checks(below) if row.get("checkId") == "academic")["status"])
+
+    def test_real_nu_total_only_unt_and_ielts_leave_section_minimums_unassessed(self):
+        profile = {"exams": [{"id": "UNT", "score": 115}],
+                   "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5, "taken_on": "2026-05-01"}]}
+        result = self.assessment(self.nu_regular_undergraduate(), profile)
+        for check_id, exam, total_met in (("academic", "UNT", True), ("english", "IELTS", True)):
+            check = next(row for row in self.checks(result) if row.get("checkId") == check_id)
+            atoms = {item["exam"]: item for item in check["provided"]["minimum_checks"]}
+            self.assertEqual("missing", check["status"], check_id)
+            self.assertTrue(check["blocksNumericScore"], check_id)
+            self.assertEqual("met", atoms[exam]["status"], check_id)
+            sections = [item for key, item in atoms.items() if key != exam]
+            self.assertTrue(sections)
+            for item in sections:
+                self.assertEqual("missing", item["status"], item)
+                self.assertIsNone(item["provided"], item)
+                self.assertEqual("component_not_reported", item["reason"], item)
+        self.assertEqual("missing_evidence", result["reason"])
+        self.assertIsNone(result["overallChance"])
+        self.assertEqual({"academic", "english"}, {row["checkId"] for row in result["missingEvidenceItems"]})
+
+    def test_real_nu_missing_checks_name_what_the_applicant_can_add(self):
+        profile = {"exams": [{"id": "SAT", "score": 1380}, {"id": "UNT", "score": 115}],
+                   "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5}]}
+        result = self.assessment(self.nu_regular_undergraduate(), profile)
+        inputs = {row["checkId"]: row["missingInputs"] for row in self.checks(result) if row.get("missingInputs")}
+        self.assertEqual({"academic", "english"}, set(inputs))
+        self.assertIn({"exam": "SAT", "needs": ["taken_on"]}, inputs["academic"])
+        self.assertIn({"exam": "UNT", "needs": ["components"]}, inputs["academic"])
+        self.assertEqual([{"exam": "IELTS", "needs": ["components", "taken_on"]}], inputs["english"])
+        # Giving the dates and section scores makes the checks assessable, so nothing is reported as missing any more.
+        sections = [{"exam": name, "score": 7} for name in ("IELTS_LISTENING", "IELTS_READING", "IELTS_WRITING", "IELTS_SPEAKING")]
+        complete = {"exams": [{"id": "SAT", "score": 1380, "taken_on": "2026-05-01"}],
+                    "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7, "details": {"components": sections}, "taken_on": "2026-05-01"}]}
+        self.assertFalse(any(row.get("missingInputs") for row in self.checks(self.assessment(self.nu_regular_undergraduate(), complete))))
+
+    def test_missing_required_exam_is_listed_as_a_result_to_add_and_other_missing_checks_stay_unlisted(self):
+        resolved = self.resolve("imperial-college-london-uk", study_option_id="imperial-option-computing-meng",
+                                application_route_id="procedure-computing-meng", study_level="undergraduate",
+                                applicant_route="first_year", intended_entry_cycle="2027 entry")
+        tmua = next(row for row in self.checks(self.assessment(resolved)) if row.get("checkId") == "required-tmua")
+        self.assertEqual("missing", tmua["status"])
+        self.assertEqual([{"exam": "TMUA", "needs": ["result"]}], tmua["missingInputs"])
+
+    def test_real_nu_ielts_sections_replace_missing_evidence_with_a_real_verdict(self):
+        sections = [{"exam": "IELTS_LISTENING", "score": 6}, {"exam": "IELTS_READING", "score": 6},
+                    {"exam": "IELTS_WRITING", "score": 6}, {"exam": "IELTS_SPEAKING", "score": 6.5}]
+        profile = {"languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "details": {"components": sections}, "taken_on": "2026-05-01"}]}
+        english = next(row for row in self.checks(self.assessment(self.nu_regular_undergraduate(), profile)) if row.get("checkId") == "english")
+        self.assertEqual("met", english["status"])
+
+    def test_real_nu_ielts_section_below_its_minimum_is_unmet_even_without_a_test_date(self):
+        sections = [{"exam": "IELTS_LISTENING", "score": 6.5}, {"exam": "IELTS_READING", "score": 6},
+                    {"exam": "IELTS_WRITING", "score": 5.5}, {"exam": "IELTS_SPEAKING", "score": 6}]
+        for taken_on in (None, "2026-05-01"):
+            row = {"code": "en", "kind": "exam", "exam": "IELTS", "score": 6, "details": {"components": sections}}
+            profile = {"languages": [{**row, **({"taken_on": taken_on} if taken_on else {})}]}
+            english = next(row for row in self.checks(self.assessment(self.nu_regular_undergraduate(), profile)) if row.get("checkId") == "english")
+            self.assertEqual("unmet", english["status"], taken_on)
+            below = [item["exam"] for item in english["provided"]["minimum_checks"] if item["status"] == "unmet"]
+            self.assertEqual(["IELTS_WRITING"], below)
+            # The score already fails, so the missing date is not asked for as if it could change the verdict.
+            self.assertNotIn("missingInputs", english)
+        # A known low section also wins over sections that are not reported yet; the date alone never makes it met.
+        partial = {"languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6,
+                                  "details": {"components": [{"exam": "IELTS_WRITING", "score": 5.5}]}}]}
+        english = next(row for row in self.checks(self.assessment(self.nu_regular_undergraduate(), partial)) if row.get("checkId") == "english")
+        self.assertEqual("unmet", english["status"])
+        # With every section at its minimum and no date the check stays missing, never met.
+        enough = [{"exam": "IELTS_LISTENING", "score": 6}, {"exam": "IELTS_READING", "score": 6},
+                  {"exam": "IELTS_WRITING", "score": 6}, {"exam": "IELTS_SPEAKING", "score": 6}]
+        undated = {"languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6, "details": {"components": enough}}]}
+        english = next(row for row in self.checks(self.assessment(self.nu_regular_undergraduate(), undated)) if row.get("checkId") == "english")
+        self.assertEqual("missing", english["status"])
+        self.assertEqual([{"exam": "IELTS", "needs": ["taken_on"]}], english["missingInputs"])
+
     def test_annotations_missing_or_corrupt_fail_explicitly(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "assessments.json"
@@ -269,6 +407,7 @@ class AdmissionsAssessmentTests(unittest.TestCase):
         resolved = self.resolve("mit-usa-cambridge", study_option_id="mit-course-6-9p-meng", application_route_id="mit_bcs_meng_admissions", study_level="masters")
         source = next(row for row in resolved["facts"] if row["id"] == "bcs-meng-entry-conditions")
         source["publication_status"] = "conflicting"
+        source["normalized_status"] = {**source["normalized_status"], "publication": "conflicting"}
         annotations, revision = assessment_service._annotations()
         record = copy.deepcopy(annotations[("mit-usa-cambridge", source["id"])])
         record["fact_sha256"] = assessment_service._fact_hash(source)

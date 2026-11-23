@@ -37,8 +37,8 @@ from app.core.settings import (
     REQUEST_BODY_MAX_BYTES,
 )
 from app.routers import root, universities, exams, languages, currency, admissions
-from app.services.background_tasks import warmup_runtime
 from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
+from app.services.background_tasks import warmup_runtime
 
 
 logging.basicConfig(
@@ -185,8 +185,10 @@ def _security_headers() -> dict[str, str]:
             "default-src 'self'; "
             "connect-src 'self' http://127.0.0.1:* http://localhost:*; "
             "script-src 'self' https://unpkg.com; "
-            "img-src 'self' data: https://unpkg.com https://*.tile.openstreetmap.org; "
+            "img-src 'self' data: https://unpkg.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org; "
             "style-src 'self' 'unsafe-inline' https://unpkg.com; "
+            "font-src 'self'; "
+            "form-action 'self'; "
             "base-uri 'self'; "
             "frame-ancestors 'none'; "
             "object-src 'none'"
@@ -315,6 +317,7 @@ def _finalize_request_response(
         duration_ms,
     )
     return response
+
 
 app.mount(
     "/universities/assets",

@@ -4,8 +4,9 @@ import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensu
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, routeGuide } from "./routes.js";
+import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, resolveAppBasePath, resolveAppBaseUrl, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
+import { startRatesLoading } from "./currency.js";
 import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
@@ -81,7 +82,7 @@ function maybeWakeBackend() {
     const last = Number(lastRaw || 0);
     if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
     sessionStorage.setItem(BACKEND_WAKE_PING_KEY, String(now));
-  } catch (e) {}
+  } catch {}
 
   const pingUrl = `${API_BASE}/health?t=${now}`;
   fetch(pingUrl, {
@@ -165,7 +166,6 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
       skeletonEl.innerHTML = Array.from({ length: skeletonCount }, () => `
         <article class="uni-card u-skeleton-card is-skeleton" aria-hidden="true">
           <div class="uni-media">
-            <div class="uni-logo" aria-hidden="true"></div>
           </div>
           <div class="uni-body">
             <div class="skeleton-line u-skeleton-title"></div>
@@ -340,7 +340,7 @@ async function initializeCurrentRoute() {
   const compareTray = document.getElementById("compareTray");
   if (compareTray && !ctx.isUniversitiesPage) {
     compareTray.hidden = true;
-    compareTray.innerHTML = "";
+    compareTray.replaceChildren();
   }
 
   const mobileFilterToggle = document.getElementById("mobileFilterToggle");
@@ -350,14 +350,29 @@ async function initializeCurrentRoute() {
   }
 
   if (!ctx.isUniversitiesPage) {
-    document.documentElement.classList.remove("sidebar-filters-open");
-    document.body.classList.remove("sidebar-filters-open");
-    if (document.body.style.overflow === "hidden") {
-      document.body.style.overflow = "";
-    }
+    clearSidebarFiltersState();
   }
 
   await initRoutePage(ctx);
+}
+
+function clearSidebarFiltersState() {
+  document.documentElement.classList.remove("sidebar-filters-open");
+  document.body.classList.remove("sidebar-filters-open");
+  document.querySelectorAll("[data-sidebar-inert=\"1\"]").forEach((node) => {
+    node.inert = false;
+    delete node.dataset.sidebarInert;
+  });
+}
+
+function syncDocumentBase(pathname = window.location.pathname) {
+  if (!/^https?:$/i.test(String(window.location?.protocol || ""))) return;
+  const baseEl = document.querySelector("base");
+  if (!baseEl) return;
+  const nextHref = resolveAppBasePath(pathname);
+  if (baseEl.getAttribute("href") !== nextHref) {
+    baseEl.setAttribute("href", nextHref);
+  }
 }
 
 function stylesheetKeyFrom(link, baseUrl) {
@@ -365,12 +380,18 @@ function stylesheetKeyFrom(link, baseUrl) {
   if (!href) return "";
   try {
     return new URL(href, baseUrl).href;
-  } catch (e) {
+  } catch {
     return href;
   }
 }
 
 async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
+  const resolvedRouteUrl = routeUrl instanceof URL
+    ? routeUrl
+    : new URL(String(routeUrl || window.location.href), window.location.href);
+  const assetBaseUrl = resolveAppBaseUrl(resolvedRouteUrl);
+  syncDocumentBase(resolvedRouteUrl.pathname);
+
   const nextTitle = nextDoc.querySelector("title");
   if (nextTitle) {
     const currentTitle = document.querySelector("title");
@@ -381,13 +402,13 @@ async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
 
   const existingStyles = new Set(
     Array.from(document.querySelectorAll('link[rel~="stylesheet"][href]'))
-      .map((link) => stylesheetKeyFrom(link, document.baseURI))
+      .map((link) => stylesheetKeyFrom(link, assetBaseUrl))
       .filter(Boolean)
   );
 
   const stylePromises = [];
   nextDoc.querySelectorAll('link[rel~="stylesheet"][href]').forEach((link) => {
-    const key = stylesheetKeyFrom(link, routeUrl);
+    const key = stylesheetKeyFrom(link, assetBaseUrl);
     if (!key || existingStyles.has(key)) return;
     const clone = document.importNode(link, true);
     clone.setAttribute("href", key);
@@ -402,7 +423,7 @@ async function syncDocumentHeadFromRoute(nextDoc, routeUrl) {
       };
       clone.addEventListener("load", done, { once: true });
       clone.addEventListener("error", done, { once: true });
-      window.setTimeout(done, 150);
+      window.setTimeout(done, 1500);
     });
     stylePromises.push(waitPromise);
 
@@ -482,7 +503,7 @@ export function prefetchRoute(href) {
     if (!isAppRouteUrl(url)) return;
     if (getCachedRouteHtml(url.href)) return;
     fetchRouteHtml(url.href).catch(() => {});
-  } catch (e) {}
+  } catch {}
 }
 
 function shouldPrefetchLink(link) {
@@ -496,8 +517,35 @@ function shouldPrefetchLink(link) {
   try {
     const url = new URL(link.getAttribute("href") || "", window.location.href);
     return isAppRouteUrl(url);
-  } catch (e) {
+  } catch {
     return false;
+  }
+}
+
+function focusRouteDestination(hash = "") {
+  if (hash && hash.length > 1) {
+    try {
+      const hashTarget = document.querySelector(hash);
+      if (hashTarget instanceof HTMLElement) {
+        hashTarget.scrollIntoView({ block: "start" });
+        if (!hashTarget.hasAttribute("tabindex") && !hashTarget.matches("a[href], button, input, select, textarea, summary")) {
+          hashTarget.setAttribute("tabindex", "-1");
+        }
+        hashTarget.focus({ preventScroll: true });
+        return;
+      }
+    } catch {
+      // Ignore invalid hash selectors and fall back to the main destination heading.
+    }
+  }
+  const target =
+    document.querySelector("main h1:not([hidden]), #mainContent h1:not([hidden])") ||
+    document.querySelector("main, #mainContent");
+  if (target instanceof HTMLElement) {
+    if (!target.hasAttribute("tabindex") && !target.matches("a[href], button, input, select, textarea, summary")) {
+      target.setAttribute("tabindex", "-1");
+    }
+    target.focus({ preventScroll: true });
   }
 }
 
@@ -552,7 +600,7 @@ async function loadAppRoute(rawHref, options = {}) {
   if (appRouteNavigationInFlight) {
     try {
       appRouteNavigationInFlight.abort();
-    } catch (e) {}
+    } catch {}
   }
 
   const controller = new AbortController();
@@ -592,11 +640,7 @@ async function loadAppRoute(rawHref, options = {}) {
     const updateDomAndState = () => {
       replaceRouteDom(nextDoc);
 
-      document.documentElement.classList.remove("sidebar-filters-open");
-      document.body.classList.remove("sidebar-filters-open");
-      if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = "";
-      }
+      clearSidebarFiltersState();
 
       if (options.history !== false) {
         const method = options.replace ? "replaceState" : "pushState";
@@ -632,11 +676,9 @@ async function loadAppRoute(rawHref, options = {}) {
     }
 
     await initializeCurrentRoute();
-    if (url.hash) {
-      window.requestAnimationFrame(() => {
-        document.querySelector(url.hash)?.scrollIntoView({ block: "start" });
-      });
-    }
+    window.requestAnimationFrame(() => {
+      focusRouteDestination(url.hash);
+    });
     return true;
   } catch (error) {
     if (error?.name === "AbortError") return false;
@@ -764,8 +806,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     initGlobalApiLoadingIndicator();
     initNetworkStatusMonitor();
     registerServiceWorker();
+    // Every page converts prices, so live rates load with the interface text rather than only in the catalog.
+    const ratesPromise = startRatesLoading();
 
-    await i18nInitPromise;
+    await Promise.all([i18nInitPromise, ratesPromise]);
+    syncDocumentBase(window.location.pathname);
     await loadGlobalLayout();
     installClientRouter();
     syncBodyPageFromRoute();

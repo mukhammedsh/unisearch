@@ -65,8 +65,7 @@ async function revealRestrictedProgram(locator) {
 async function openAdmissionSelectionEditor(page) {
   const editor = page.locator("#admissionsSelectionEditor");
   if (!(await editor.isVisible())) {
-    const edit = page.locator("#admissionsReferenceSummary button");
-    if (await edit.isVisible()) await edit.click();
+    await page.locator("#admissionsReferenceSummary button").click();
   }
   await editor.waitFor({ state: "visible" });
 }
@@ -111,9 +110,12 @@ async function setRangeValue(page, elementId, value) {
   );
 }
 
+// The profile outline scrolls to a section; every section is always visible.
 async function openProfileTab(page, tabName) {
   const tab = page.locator(`[data-profile-tab="${tabName}"]`);
-  await tab.click();
+  // Phones have no outline: scroll to the section instead of using its jump link.
+  if (await tab.isVisible()) await tab.click();
+  else await page.locator(`[data-profile-section="${tabName}"]`).scrollIntoViewIfNeeded();
   await expectProfileTabVisible(page, tabName);
 }
 
@@ -121,8 +123,10 @@ async function expectProfileTabVisible(page, tabName) {
   await page.waitForFunction((name) => {
     const tab = document.querySelector(`[data-profile-tab="${name}"]`);
     const panel = document.querySelector(`[data-profile-section="${name}"]`);
-    if (!tab || !panel) return false;
-    return tab.classList.contains("is-active") && !panel.classList.contains("is-section-hidden");
+    if (!panel || panel.getClientRects().length === 0) return false;
+    // Phones have no outline: the section is simply on the page.
+    if (!tab || tab.getClientRects().length === 0) return true;
+    return tab.getAttribute("aria-current") === "location";
   }, tabName);
 }
 

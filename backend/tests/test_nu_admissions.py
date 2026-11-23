@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.prepare_nu_admissions import NU_ID, convert_research_catalog, prepare_nu_institution, build_nu_assessments
+from scripts.prepare_admissions_catalog import load_vocabulary, normalize_institution
 from app.services import admissions_catalog, admissions_assessment, universities
 
 
@@ -19,20 +20,52 @@ class NuAdmissionsTests(unittest.TestCase):
     def setUpClass(cls):
         cls.raw = json.loads((FOLDER / "research-catalog.json").read_text(encoding="utf-8"))
         cls.nu = convert_research_catalog(cls.raw)
+        normalize_institution(cls.nu, load_vocabulary())
         cls.index = {key: {row["id"]: row for row in cls.nu[key]} for key in ("study_options", "application_routes", "facts", "sources", "unknowns")}
         cls.records = build_nu_assessments(cls.nu)
 
     def resolve(self, option, route, level, profile=None, cycle=None):
         with patch.object(admissions_catalog, "_institution", return_value=({"revision": "nu-test"}, self.nu, self.index)):
             resolved = admissions_catalog.resolve_context(NU_ID, profile, {"study_option_id": option, "application_route_id": route,
-                "study_level": level, "applicant_route": "graduate" if level in {"masters", "doctoral", "professional", "residency"} else "first_year",
-                "intended_entry_cycle": cycle})
+                "study_level": level, "intended_entry_cycle": cycle})
         return resolved
 
     def assess(self, resolved, profile):
         annotations = {(NU_ID, row["fact_id"]): row for row in self.records}
         with patch.object(admissions_assessment, "_annotations", return_value=(annotations, "nu-test")):
             return admissions_assessment.assess_resolved_context(resolved, profile)
+
+    def test_plain_seasonal_entry_cycle_unlocks_cycle_scoped_minimums(self):
+        components = lambda pairs: {"components": [{"exam": exam, "score": score} for exam, score in pairs]}
+        profile = {"exams": [{"exam": "SAT", "score": 1380, "taken_on": "2026-10-04",
+                              "details": components([("SAT_MATH", 700), ("SAT_EBRW", 680)])}],
+                   "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 6.5, "taken_on": "2026-09-20",
+                                  "details": components([(f"IELTS_{part}", 6.5) for part in ("WRITING", "READING", "LISTENING", "SPEAKING")])}]}
+        args = ("nu-a-study-bachelor-of-science-in-computer-science", "nu-a-route-regular-foundation-undergraduate", "undergraduate")
+        missing = self.assess(self.resolve(*args, profile=profile), profile)
+        self.assertIsNone(missing["chancePercent"])
+        self.assertEqual("entry_cycle_required", missing["reason"])
+        for cycle in ("осень 2027", "2027 күз", "Fall 2027"):
+            result = self.assess(self.resolve(*args, profile=profile, cycle=cycle), profile)
+            self.assertEqual(100.0, result["chancePercent"], cycle)
+
+    def test_shared_undergraduate_paths_read_without_a_program(self):
+        shared = {row["id"] for row in self.nu["application_routes"]
+                  if row["attributes"].get("admission_scope") == "institution_wide_undergraduate"}
+        self.assertEqual({"nu-a-route-regular-foundation-undergraduate", "nu-a-route-financial-support", "nu-a-route-transfer",
+                          "nu-a-route-midyear-2026-27"}, shared)
+        resolved = self.resolve("", "nu-a-route-regular-foundation-undergraduate", "undergraduate")
+        self.assertEqual("institution_route", resolved["reading_scope"])
+        self.assertIn("nu-a-fact-ug-english", {row["id"] for row in resolved["facts"]})
+        # First-pass graduate research notes are not history of an undergraduate path.
+        history = {row["id"] for row in resolved["history"]["facts"]}
+        self.assertFalse({ident for ident in history if ident.startswith("nu-b-fact-")})
+        # The Foundation Year is applied for through the shared application, so it is offered beside the shared paths.
+        with patch.object(admissions_catalog, "_institution", return_value=({"revision": "nu-test"}, self.nu, {**self.index, "search": {}})):
+            listing = admissions_catalog.list_study_options(NU_ID)
+            graduate = admissions_catalog.list_study_options(NU_ID, study_level="masters")
+        self.assertEqual(["nu-a-study-nu-foundation-year-program"], [row["id"] for row in listing["preparation_entries"]])
+        self.assertEqual([], graduate["preparation_entries"])
 
     def test_program_summary_exposes_its_reviewed_official_page(self):
         resolved = self.resolve("nu-a-study-bachelor-in-nursing", "nu-a-route-nursing", "undergraduate")
@@ -58,7 +91,8 @@ class NuAdmissionsTests(unittest.TestCase):
                 self.assertNotEqual(original["conditions"], fact["conditions"], original["id"])
             else:
                 self.assertEqual(original["conditions"], fact["conditions"], original["id"])
-            self.assertEqual(original["provenance"]["original_scope"], fact["provenance"]["original_scope"])
+            self.assertEqual({key: value for key, value in original["provenance"].items() if not key.startswith("original_s")},
+                             fact["provenance"], original["id"])
         self.assertEqual(96, len(self.nu["study_options"]))
         self.assertEqual({"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"},
                          {level for row in self.nu["study_options"] for level in row["levels"]})
@@ -101,6 +135,7 @@ class NuAdmissionsTests(unittest.TestCase):
             acceptance = {"status": "accepted", "catalog_sha256": hashlib.sha256(original).hexdigest()}
             (folder / "packet-b/data-acceptance.json").write_text(json.dumps(acceptance), encoding="utf-8")
             converted = prepare_nu_institution(folder)
+            normalize_institution(converted, load_vocabulary())
             self.assertEqual(self.nu["facts"], converted["facts"])
             handoff = folder / "packet-c/handoff.md"
             handoff.write_bytes(handoff.read_bytes() + b"Changed reviewed content\n")
@@ -150,6 +185,10 @@ class NuAdmissionsTests(unittest.TestCase):
         result = self.assess(context, {})
         self.assertIsNone(result["overallChance"])
         self.assertEqual("funding_selection_separate", result["reason"])
+        # A funding route is not a second admission chance: one choice, on the regular and the support route alike.
+        self.assertEqual(1, len(result["choices"]))
+        regular = self.resolve("nu-a-study-bachelor-of-science-in-computer-science", "nu-a-route-regular-foundation-undergraduate", "undergraduate", cycle="2027/28")
+        self.assertEqual(1, len(self.assess(regular, {})["choices"]))
 
     def test_prices_remain_scoped_and_finance_is_not_annual(self):
         with patch.object(admissions_catalog, "get_institution", return_value=self.nu):
@@ -223,7 +262,9 @@ class NuAdmissionsTests(unittest.TestCase):
         for unknown in self.nu["unknowns"]:
             if unknown["index_attributes"]["owner_packet"] in {"a", "b"}:
                 self.assertTrue(unknown["scope"]["option_ids"] or unknown["scope"]["route_ids"], unknown["id"])
-                self.assertTrue(unknown["provenance"]["original_scope"], unknown["id"])
+                research = next(row for row in self.raw["unknowns"] if row["id"] == unknown["id"])
+                self.assertTrue(research["provenance"]["original_scope"], unknown["id"])
+                self.assertEqual("original_scope" in unknown["provenance"], False, unknown["id"])
 
     def test_mba_filter_recognizes_native_awards_without_a_research_doctorate(self):
         rows = universities.list_universities(study_level="MBA", paginate=False)["items"]

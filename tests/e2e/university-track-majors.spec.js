@@ -35,9 +35,12 @@ async function openAdvanced(page) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements");
 }
 
 async function openTab(page, name) {
@@ -76,21 +79,27 @@ async function chooseOption(page, id, query, level) {
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe(id);
 }
 
-async function applyContext(page, route, applicant = "", cycle = "", fee = "unknown") {
+async function applyContext(page, route, cycle = "", fee = "unknown") {
   await openAdmission(page);
   await setNativeSelect(page, "admissionsRoute", route);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", applicant);
-  await setNativeSelect(page, "admissionsFee", fee);
-  await page.locator("#admissionsCycle").fill(cycle);
-  const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
-  await page.locator("#admissionsContextApply").click();
-  expect((await response).ok()).toBe(true);
+  await openAdmissionSelectionEditor(page);
+  if (await page.locator("#admissionsAdvanced").isVisible()) {
+    await openAdvanced(page);
+    if (await page.locator("select#admissionsFee").count()) await setNativeSelect(page, "admissionsFee", fee);
+    if (await page.locator("#admissionsCycle").isVisible()) await page.locator("#admissionsCycle").fill(cycle);
+    // A single published intake is read on its own (possibly filled in by the page), not typed.
+    else cycle = null;
+    const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+    await page.locator("#admissionsContextApply").click();
+    expect((await response).ok()).toBe(true);
+  } else {
+    // A path with one intake and no fee classes asks for neither, so the requested year is not part of its reading.
+    cycle = null;
+  }
   await openAdmission(page);
   await expect(page.locator("#admissionsRoute")).toHaveValue(route);
-  await expect(page.locator("#admissionsApplicant")).toHaveValue(applicant);
-  await expect(page.locator("#admissionsCycle")).toHaveValue(cycle);
+  if (cycle !== null) await expect(page.locator("#admissionsCycle")).toHaveValue(cycle);
   expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(route);
 }
 
@@ -116,7 +125,7 @@ async function noFitPercentage(page) {
   await openAdmission(page);
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
-  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:[.,]\d+)?\s*%/);
   await expect(assessment).toContainText(/not.*probability|не вероятность (?:поступления|зачисления)/i);
 }
 
@@ -136,7 +145,7 @@ for (const [id, width, query, description] of [
     await openAdmission(page);
     await expect(page.locator('#admissionsRoute option[value="mit-first-year"]')).toHaveCount(1);
     await expect(page.locator('#admissionsRoute option[value="mit-transfer"]')).toHaveCount(1);
-    await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+    await applyContext(page, "mit-first-year", "Fall 2027");
     const fact = await openFact(page, "programs", `${id}-description`);
     await expect(fact).toContainText(description);
     await expect(fact.locator('a[href*="catalog.mit.edu/degree-charts/"]')).toBeVisible();
@@ -177,7 +186,7 @@ for (const [width, language, theme] of [[1280, "eng", "light"], [390, "rus", "da
     await expect(fact).toContainText("102");
     await expect(page.locator("#admissionsRoute option[value='mit_eecs_meng_admissions']")).toHaveCount(0);
     await noFitPercentage(page);
-    await expect(page.locator("#detailRequirements .admissions-catalog__assessment")).toContainText(/Evidence missing|Сведений нет|Не хватает необходимых/i);
+    await expect(page.locator("#detailRequirements [data-requirements-match]")).toContainText(/Evidence missing|Сведений нет|Не хватает необходимых|Добавьте свои результаты|Add your results/i);
     await fitsViewport(page, width);
   });
 }
@@ -185,7 +194,7 @@ for (const [width, language, theme] of [[1280, "eng", "light"], [390, "rus", "da
 test("MIT Sloan MSMS keeps partner-school eligibility and its own deadline", async ({ page }) => {
   await openCatalog(page, MIT, { width: 390, language: "rus" });
   await chooseOption(page, "mit-sloan-msms", "Management Studies", "masters");
-  await applyContext(page, "mit_sloan_msms_admissions", "graduate", "Fall 2027 entry");
+  await applyContext(page, "mit_sloan_msms_admissions", "Fall 2027 entry");
   const eligibility = await openFact(page, "admission", "mit_sloan_msms_admissions-extra-requirements");
   await expect(eligibility).toContainText(/partner or affiliate|списка партнёров MIT Sloan/i);
   await expect(eligibility).toContainText(/Only current students or graduates|действующие студенты или выпускники/i);
@@ -237,7 +246,8 @@ test("MIT Business Analytics profile interest keeps source title readable withou
   const option = page.locator('[data-study-option="mit-bs-15-2"]');
   await expect(option).toContainText(/Business Analytics \(Course 15[-\u2011]2\)/);
   await expect(option).toContainText("Бакалавриат");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  // A profile interest never chooses a program; the Admission tab keeps reading the default first-year path.
+  expect(new URL(page.url()).searchParams.get("admission_option") || "").toBe("");
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(option).toBeVisible();
   await fitsViewport(page, 390);
@@ -248,7 +258,7 @@ for (const width of [1280, 390]) {
     test(`MIT Business Analytics curriculum and admission journey at ${width}px in ${theme}`, async ({ page }) => {
       await openCatalog(page, MIT, { width, language: "rus", theme });
       await chooseOption(page, "mit-bs-15-2", "Business Analytics", "undergraduate");
-      await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+      await applyContext(page, "mit-first-year", "Fall 2027");
       const curriculum = await openFact(page, "programs", "mit-bs-15-2-description");
       await expect(curriculum).toContainText(/data modeling|моделирование данных/i);
       await expect(curriculum).toContainText(/degree requirements, not admission prerequisites|требования для получения степени, а не условия поступления/i);
@@ -260,16 +270,16 @@ for (const width of [1280, 390]) {
       await expect(page.locator("#detailRequirements [data-admissions-fact='mit-transfer-description']")).toHaveCount(0);
       await noFitPercentage(page);
       await page.locator("#admissionsSaveChoice").click();
-      await expect(page.locator("#admissionsSaveStatus")).toContainText("сохранён");
+      await expect(page.locator("#admissionsSaveStatus")).toContainText("запомнен");
       const saved = await page.evaluate((uid) => JSON.parse(localStorage.getItem("unisearch_profile")).selectedAdmissionChoices[uid], MIT);
       expect(saved.studyOptionId).toBe("mit-bs-15-2");
       expect(saved.applicationRouteId).toBe("mit-first-year");
-      expect(saved.intendedEntryCycle).toBe("Fall 2027");
+      // First-year asks for no entry year, so none is saved with the path.
+      expect(saved.intendedEntryCycle).toBe("");
       await page.reload();
       await openAdmission(page);
       await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
-      await expect(page.locator("#admissionsApplicant")).toHaveValue("first_year");
-      await expect(page.locator("#admissionsCycle")).toHaveValue("Fall 2027");
+      await expect(page.locator("#admissionsCycle")).toHaveValue("");
       await fitsViewport(page, width);
     });
   }
@@ -287,23 +297,25 @@ test("reviewed MIT program levels use Russian labels while source names remain d
 test("MIT program requires an explicit admission route and keeps funding separate", async ({ page }) => {
   await openCatalog(page);
   await openAdmission(page);
-  await expect(page.locator("#admissionsContext")).toContainText("Choose a published path to open its requirements and process. No profile is needed.");
-  await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeVisible();
+  // Without a program the shared application explains itself once, above its paths.
+  await expect(page.locator("#admissionsContext")).toContainText("One shared undergraduate application, with the same requirements for every program.");
+  // The first-year path is read by default; the shared paths stay one "change" away.
+  await expect(page.locator('[data-shared-route="mit-first-year"]')).toHaveCount(1);
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
   await openAdmission(page);
   await expect(page.locator("#admissionsContext")).toContainText("Choose a published path to open its requirements and process. No profile is needed.");
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option")).toHaveCount(3);
-  await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await applyContext(page, "mit-first-year", "Fall 2027");
   await noFitPercentage(page);
   const tests = await openFact(page, "deadlines", "first-year-test-windows");
   await expect(tests).toContainText("December 31");
   await expect(tests).not.toContainText("Application fee");
   await openTab(page, "finance");
-  await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
+  await expect(page.locator('#detailFinance [data-tab-answers="finance"] [data-key-fact="funding"]')).toBeVisible();
   await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");
-  await applyContext(page, "mit_physics_phd_admissions", "graduate");
+  await applyContext(page, "mit_physics_phd_admissions");
   await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(0);
 });
@@ -311,10 +323,9 @@ test("MIT program requires an explicit admission route and keeps funding separat
 test("MIT transfer deadlines preserve Spring-cycle applicant restrictions after reload", async ({ page }) => {
   await openCatalog(page);
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
-  await applyContext(page, "mit-transfer", "transfer", "Spring 2027 entry");
+  await applyContext(page, "mit-transfer", "Spring 2027 entry");
   await page.reload();
   await openAdmission(page);
-  await expect(page.locator("#admissionsApplicant")).toHaveValue("transfer");
   await expect(page.locator("#admissionsCycle")).toHaveValue("Spring 2027 entry");
   const deadlines = await openFact(page, "deadlines", "transfer-2027-windows");
   await expect(deadlines).toContainText(/2026[-\u2011]10[-\u2011]15/);
@@ -326,12 +337,12 @@ test("MIT transfer deadlines preserve Spring-cycle applicant restrictions after 
 
 test("MIT Course 6-3 first-year publishes no invented minimum or fit percentage and separates history", async ({ page }) => {
   await seedProfile(page, {
-    studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027",
+    studyLevel: "Bachelor", intendedEntryCycle: "Fall 2027",
     exams: [{ exam: "SAT", score: 1500 }],
   });
   await openCatalog(page, MIT, { width: 390, language: "rus", theme: "dark" });
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
-  await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await applyContext(page, "mit-first-year", "Fall 2027");
   await noFitPercentage(page);
   const exam = await openFact(page, "admission", "ug-sat-act-presence");
   await expect(exam).toContainText(/Cutoff|порог/i);
@@ -349,7 +360,7 @@ test("MIT Course 6-3 first-year publishes no invented minimum or fit percentage 
 });
 
 test("MIT graduate override is request-local and ignores the delayed prior program response", async ({ page }) => {
-  await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027", gpa: 3.82, gpaScale: 4 });
+  await seedProfile(page, { studyLevel: "Bachelor", intendedEntryCycle: "Fall 2027", gpa: 3.82, gpaScale: 4 });
   let releaseDelayed;
   let signalFetched;
   const gate = new Promise((resolve) => { releaseDelayed = resolve; });
@@ -380,23 +391,23 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
   await fetched;
   try {
     await chooseOption(page, "mit-physics-phd-course-8", "Physics", "doctoral");
-    await applyContext(page, "mit_physics_phd_admissions", "graduate", "Fall 2027");
+    await applyContext(page, "mit_physics_phd_admissions");
     const matching = requests.filter((request) => request.context.application_route_id === "mit_physics_phd_admissions");
     const current = matching[matching.length - 1];
     expect(current.context.study_level).toBe("doctoral");
-    expect(current.context.applicant_route).toBe("graduate");
-    expect(current.context.intended_entry_cycle).toBe("Fall 2027");
+    expect(current.context).not.toHaveProperty("applicant_route");
+    expect(current.context.intended_entry_cycle).toBe("");
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
     expect(saved.studyLevel).toBe("Bachelor");
-    expect(saved.applicantRoute).toBe("first_year");
-    expect(saved.intendedEntryCycle).toBe("Fall 2027");
+    expect(saved.applicantRoute).toBeUndefined();
+    expect(saved.intendedEntryCycle).toBeUndefined();
     releaseDelayed();
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit_physics_phd_admissions");
     await expect(page.locator("#detailRequirements [data-admissions-fact='ug-sat-act-presence']")).toHaveCount(0);
     await page.goBack();
     await openAdmission(page);
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit_physics_phd_admissions");
-    await page.goBack();
+    // Back from the physics program (its only route is read in place) returns to the first-year reading.
     await page.goBack();
     await openAdmission(page);
     await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
@@ -407,25 +418,25 @@ test("MIT graduate override is request-local and ignores the delayed prior progr
 });
 
 test("Stanford Computer Science opens its institutional first-year context without JD facts", async ({ page }) => {
-  await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "Fall 2027", gpa: 3.78, exams: [{ exam: "SAT", score: 1510 }] });
+  await seedProfile(page, { studyLevel: "Bachelor", intendedEntryCycle: "Fall 2027", gpa: 3.78, exams: [{ exam: "SAT", score: 1510 }] });
   await openCatalog(page, STANFORD);
   await chooseOption(page, "stanford-option-cs-bs", "Computer Science", "undergraduate");
-  await applyContext(page, "undergraduate-shared-evidence:stanford-first-year", "first_year", "Fall 2027");
+  await applyContext(page, "undergraduate-shared-evidence:stanford-first-year", "Fall 2027");
   const exam = await openFact(page, "admission", "undergraduate-shared-evidence:stanford-firstyear-standardized-tests");
   await expect(exam).toContainText(/SAT|ACT/);
   await expect(page.locator("#detailRequirements [data-admissions-fact='undergraduate-shared-evidence:stanford-transfer-standardized-tests']")).toHaveCount(0);
   await noFitPercentage(page);
   await openTab(page, "finance");
   await expect(page.locator("#detailFinance")).not.toContainText(/Stanford Law School|Juris Doctor|JD Admission/);
-  await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
+  await expect(page.locator('#detailFinance [data-tab-answers="finance"] [data-key-fact="funding"]')).toBeVisible();
 });
 
 for (const [id, award] of [["imperial-option-computing-beng", "BEng"], ["imperial-option-computing-meng", "MEng"]]) {
   test(`Imperial Computing ${award} keeps its 2027 undergraduate course rules and source fee scope`, async ({ page }) => {
-    await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "first_year", intendedEntryCycle: "2027 entry", gpa: 3.8, gpaScale: 4 });
+    await seedProfile(page, { studyLevel: "Bachelor", intendedEntryCycle: "2027 entry", gpa: 3.8, gpaScale: 4 });
     await openCatalog(page, IMPERIAL);
     await chooseOption(page, id, "Computing", "undergraduate");
-    await applyContext(page, `procedure-computing-${award.toLowerCase()}`, "first_year", "2027 entry");
+    await applyContext(page, `procedure-computing-${award.toLowerCase()}`, "2027 entry");
     const rule = await openFact(page, "admission", `imperial-computing-${award.toLowerCase()}-admission`);
     await expect(rule).toContainText("TMUA");
     await expect(rule).toContainText(/A\*A\*A|A\*AAA/);
@@ -439,17 +450,17 @@ for (const [id, award] of [["imperial-option-computing-beng", "BEng"], ["imperia
     await expect(profile).toContainText("Home fee");
     await expect(profile).toContainText("Overseas fee");
     await expect(profile).toContainText("£10,050 per year");
-    await expect(page.locator("#detailFinance")).toContainText("No comparable budget is confirmed for this selection");
+    await expect(page.locator('#detailFinance [data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
     await expect(page.locator("#detailFinance")).not.toContainText(/\$0\b/);
     await noFitPercentage(page);
   });
 }
 
 test("Stanford CS transfer keeps its Common Application route separate from first-year and JD", async ({ page }) => {
-  await seedProfile(page, { studyLevel: "Bachelor", applicantRoute: "transfer", intendedEntryCycle: "Fall 2027", major: "Computer Science" });
+  await seedProfile(page, { studyLevel: "Bachelor", intendedEntryCycle: "Fall 2027", major: "Computer Science" });
   await openCatalog(page, STANFORD);
   await chooseOption(page, "stanford-option-cs-bs", "Computer Science", "undergraduate");
-  await applyContext(page, "undergraduate-shared-evidence:stanford-transfer", "transfer", "Fall 2027");
+  await applyContext(page, "undergraduate-shared-evidence:stanford-transfer", "Fall 2027");
   const route = await openFact(page, "admission", "undergraduate-shared-evidence:stanford-transfer-eligibility-route");
   await expect(route).toContainText("transfer route");
   const testRule = await openFact(page, "admission", "undergraduate-shared-evidence:stanford-transfer-standardized-tests");
@@ -469,7 +480,7 @@ test("MIT catalog Architecture shares institutional first-year and transfer rout
   await openAdmission(page);
   await expect(page.locator("#admissionsRoute option[value='mit-first-year']")).toHaveCount(1);
   await expect(page.locator("#admissionsRoute option[value='mit-transfer']")).toHaveCount(1);
-  await applyContext(page, "mit-transfer", "transfer", "Fall 2027");
+  await applyContext(page, "mit-transfer", "Fall 2027");
   const description = await openFact(page, "admission", "mit-transfer-description");
   await expect(description).toContainText("apply to MIT as a whole");
 });
@@ -486,8 +497,8 @@ test("MIT Architecture retains official course number with localized study level
 test("MIT transfer context localizes interface and preserves the scoped original source rule", async ({ page }) => {
   await openCatalog(page, MIT, { language: "rus" });
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
-  await applyContext(page, "mit-transfer", "transfer", "Fall 2027");
-  await expect(page.locator("#admissionsApplicant option:checked")).toHaveText("Перевод из другого вуза");
+  await applyContext(page, "mit-transfer", "Fall 2027");
+  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Перевод из другого вуза");
   const fact = await openFact(page, "admission", "transfer-eligibility");
   await expect(fact).toContainText("At least two full-time terms");
   await expect(fact).toContainText("committee review required");
@@ -498,7 +509,7 @@ test("MIT transfer context localizes interface and preserves the scoped original
 test("MIT MFin hides raw identifiers and first-year statistics while retaining its own study rules", async ({ page }) => {
   await openCatalog(page, MIT, { language: "rus" });
   await chooseOption(page, "mit-sloan-mfin", "Master of Finance", "masters");
-  await applyContext(page, "mit_sloan_mfin_admissions", "graduate", "2027 entry");
+  await applyContext(page, "mit_sloan_mfin_admissions", "2027 entry");
   const description = await openFact(page, "programs", "mit-sloan-mfin-description");
   await expect(description).toContainText(/12- or 18-month|12 или 18 месяцев/i);
   await expect(description).not.toContainText("[object Object]");
@@ -511,9 +522,10 @@ test("MIT MFin hides raw identifiers and first-year statistics while retaining i
 test("MIT admission context and source finance fit a narrow dark-theme screen", async ({ page }) => {
   await openCatalog(page, MIT, { width: 390, theme: "dark" });
   await chooseOption(page, "mit-course-6-3-bachelor", "Computer Science and Engineering", "undergraduate");
-  await applyContext(page, "mit-first-year", "first_year", "Fall 2027");
+  await applyContext(page, "mit-first-year");
   await openAdmissionSelectionEditor(page);
-  await expect(page.locator("#admissionsContextApply")).toBeVisible();
+  // First-year asks for no entry year or fee status, so there is nothing to apply.
+  await expect(page.locator("#admissionsContextApply")).toBeHidden();
   const bounds = await page.locator("#admissionsContext").boundingBox();
   expect(bounds.x).toBeGreaterThanOrEqual(0);
   expect(bounds.x + bounds.width).toBeLessThanOrEqual(390);
@@ -526,7 +538,7 @@ test("MIT admission context and source finance fit a narrow dark-theme screen", 
     await openDisclosureParents(section);
     await expect(section).toBeVisible();
   }
-  await expect(page.locator("#detailFinance")).toContainText("not awarded aid");
+  await expect(page.locator('#detailFinance [data-tab-answers="finance"] [data-key-fact="funding"]')).toBeVisible();
   await fitsViewport(page, 390);
 });
 
@@ -557,13 +569,14 @@ test("profile major remains available through explicit catalogue search without 
   await openAdmission(page);
   await searchOptions(page, "Computer Science and Engineering", "undergraduate");
   await expect(page.locator('[data-study-option="mit-course-6-3-bachelor"]')).toBeVisible();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  // The default first-year path is read, not chosen: no program is selected and nothing is saved to the profile.
+  expect(new URL(page.url()).searchParams.get("admission_option") || "").toBe("");
   await openAdmission(page);
-  await expect(page.locator('#admissionsContext [data-shared-route="mit-first-year"]')).toBeVisible();
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsSaveChoice")).toBeDisabled();
+  await expect(page.locator('#admissionsContext [data-shared-route="mit-first-year"]')).toHaveCount(1);
+  await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.major).toBe(personas.ruStemGrant.profile.major);
+  expect(saved.selectedAdmissionChoices?.["mit-usa-cambridge"]).toBeUndefined();
 });
 
 test("admission categories show applicable programs", async ({ page }) => {
@@ -606,28 +619,38 @@ test("nazarbayev university keeps regular admission separate from financial supp
   const regular = await (await regularResponse).json();
   await expect(page.locator("#admissionsRoute")).toHaveValue(regularRoute);
   await expect(page.locator(".admission-category-card, .requirement-profile-tab, .admission-funding-option")).toHaveCount(0);
-  expect(regular.assessment.choices).toHaveLength(1);
+  expect(regular.assessment.activeChoice).toBeTruthy();
+  expect(regular.assessment.choices).toBeUndefined();
   const academic = regular.facts.find(row => row.id === "nu-a-fact-ug-academic-alternatives");
   expect(academic.value.routes.find(row => row.id === "sat_act").minimum).toEqual({ digital_sat: 1240, act: 26 });
   expect(regular.facts.some(row => row.id === "nu-a-fact-nuet-support")).toBe(false);
   await openAssessment(page);
-  await expect(page.locator("#detailRequirements .admissions-catalog__assessment")).toHaveCount(1);
+  await expect(page.locator("#detailRequirements [data-requirements-match]")).toHaveCount(1);
 
   const supportResponse = page.waitForResponse(response => response.url().endsWith("/admissions-context")
     && response.request().method() === "POST" && response.request().postDataJSON().context.application_route_id === supportRoute);
-  await applyContext(page, supportRoute, "first_year", "2027/28");
+  // The funding application is opened from the key facts; it is not offered among the ways to apply.
+  await expect(page.locator(`#admissionsRoute option[value='${supportRoute}']`)).toHaveCount(0);
+  await page.locator(`#detailRequirements [data-key-facts-route='${supportRoute}']`).click();
   const support = await (await supportResponse).json();
   expect(support.selected_option.id).toBe(regular.selected_option.id);
   expect(support.selected_route.id).toBe(supportRoute);
-  expect(support.assessment.choices).toHaveLength(1);
+  expect(support.assessment.activeChoice).toBeTruthy();
+  expect(support.assessment.choices).toBeUndefined();
   expect(support.assessment.chancePercent).toBeNull();
   expect(support.assessment.reason).toBe("funding_selection_separate");
   expect(support.facts.find(row => row.id === "nu-a-fact-nuet-support").value.NUET_total).toBe(120);
   expect(support.facts.some(row => row.id === "nu-a-fact-financial-sequence")).toBe(true);
   await openAssessment(page);
   await expect(page.locator("#detailRequirements")).toContainText("Funding selection is separate from admission");
-  await expect(page.locator("#detailRequirements .admissions-catalog__assessment")).toHaveCount(1);
+  await expect(page.locator("#detailRequirements [data-requirements-match]")).toHaveCount(1);
   await expect(page.locator(".admission-funding-option .admission-requirement-grid")).toHaveCount(0);
+  // The grant application says it is not a way in and leads back to the path it was opened from.
+  const back = page.locator(`#detailRequirements [data-funding-route-notice] [data-key-facts-route='${regularRoute}']`);
+  await expect(back).toBeVisible();
+  await back.click();
+  await expect(page.locator("#admissionsRoute")).toHaveValue(regularRoute);
+  await expect(page.locator("#detailRequirements [data-funding-route-notice]")).toHaveCount(0);
 });
 
 test("tsinghua admission tab keeps paid and grant options visible when profile prefers grant", async ({ page }) => {
@@ -716,16 +739,19 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   const generalTab = page.locator("#tab-general");
   await expect(generalTab).toBeVisible();
 
+  // Key admission facts, key figures, then the description: three borderless boxes with one shared rhythm.
   const boxes = generalTab.locator(".d-box");
-  await expect(boxes).toHaveCount(2);
+  await expect(boxes).toHaveCount(3);
+  await expect(boxes.nth(0)).toHaveAttribute("data-overview-summary", "");
+  await expect(boxes.nth(1).locator("#detailRecommendations")).toHaveCount(1);
+  await expect(boxes.nth(2).locator("#detailExtra")).toHaveCount(1);
 
-  const secondBoxBorderTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
-  expect(secondBoxBorderTop).toBe("0px");
-
-  const firstBoxPaddingBottom = await boxes.nth(0).evaluate((el) => window.getComputedStyle(el).paddingBottom);
-  expect(firstBoxPaddingBottom).toBe("8px");
-
-  const secondBoxPaddingTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).paddingTop);
-  expect(secondBoxPaddingTop).toBe("20px");
+  for (const index of [1, 2]) {
+    const borderTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
+    expect(borderTop).toBe("0px");
+    // The previous box already pads its bottom by 24px, so the next one adds 8px: 32px between sections.
+    const paddingTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).paddingTop);
+    expect(paddingTop).toBe("8px");
+  }
 
 });

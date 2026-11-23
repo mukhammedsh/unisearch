@@ -1,13 +1,13 @@
 # Consolidated NU evidence review
 
-Status: accepted. Updated2026-10-25. B independently reviewed the regenerated canonical snapshot and recorded its exact hash in `data-acceptance.json`.
+Status: accepted. Base review by B: 2026-10-26. Scoped ZYGP name and source review by Codex: 2026-11-19, checked against current Registrar and CPS pages. Applicant-facing reason and next-step wording was rephrased on 2026-11-20 without changing facts, scope or publication status; no current intake or fee claims were added. The refreshed snapshot hash is recorded in `data-acceptance.json`.
 
 ## Content fidelity checked
 
 - `nu-a-fact-admission-source-conflict`, `nu-a-fact-nuet-policy-route` and `nu-a-fact-financial-support-eligibility-2027-28` retain distinct scopes: regularFYP120/50/50, policy-definedUGNUET category versus omission in currentUGtable, post-offer financial support and fee-paying2026/27mid-year130/60/60. No universalUG120 score is accepted from these records.
 - Current regularIB27/HL4/4/4 andBBB versus policy/aidIB30/HL4/4/5 andABB stay separate; the original source/cycle conflict remains explicit.
 - B master's policy scopes include A's actual10master IDs and explicitly excludeMD/MSN/SOAS/EMBA/residency. Master waitlist paid-acceptance/grant continuation is distinct from currentUGoffer/support sequencing.
-- B's full-program Finance/MBA/jointMA fees, programme-specificMSN, nativeMD/DBA/DPM awards, source-conflictingSOMPhDGPA, conditionalNUZYP reference and yearlessSOAScycle are preserved in source-bound facts and reviewed gaps.
+- B's full-program Finance/MBA/jointMA fees, programme-specificMSN, nativeMD/DBA/DPM awards, source-conflictingSOMPhDGPA, conditional ZYGP (formerly NUZYP) reference and yearlessSOAScycle are preserved in source-bound facts and reviewed gaps.
 - C retains residency priorMD, conditionalUMC and IFOM/USMLE/report-later distinction; old policy specialities and English/conflicting funding scopes must remain visible.
 
 ## Corrections resolved and runtime normalization
@@ -16,7 +16,7 @@ All81 A facts now have explicit owner review state; regular route target/portal 
 
 Offline contrast tests exposed two consumer defects and now cover their fixes: aid-only NUET/qualification checks are restricted to the separate financial-support route, and residency branches index their actual requirements. The converter resolves source level labels using known option IDs and preserves original scope/labels. The future policy-review gap keeps its original next step in attributes and exposes a scheduled refresh without a false activation prerequisite. No threshold or effective cycle is invented.
 
-Acceptance covers93 assigned options,3 additional offerings,333 original facts,161 sources and29 evidenced unknowns. Runtime additionally has66 source-linked C section facets,96 options and46 routes, including two residency statuses under one application family. Original fact values, conditions, source IDs and checked dates survive conversion. Existing MIT/Imperial/Stanford JSON records are unchanged.
+Acceptance covers93 assigned options,3 additional offerings,333 original facts,162 sources and29 evidenced unknowns. Runtime additionally has66 source-linked C section facets,96 options and46 routes, including two residency statuses under one application family. Original fact values, conditions, source IDs and checked dates survive conversion. Existing MIT/Imperial/Stanford JSON records are unchanged.
 
 Source access and content review remain separate. Independently checked current FYP, UG regular/aid, School-specific PhD and residency contrasts; B's program research was reviewed in seven checkpoints. TBA/conflicting/past/yearless dates, unconfirmed recruitment, native fee periods, degree recognition, licensing, waivers and funding remain explicit limitations. Acceptance is not an applicant eligibility or funding decision.
 

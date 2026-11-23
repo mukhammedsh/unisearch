@@ -30,7 +30,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(self.batch["schema_version"], "admissions-storage-1.0")
         self.assertIs(self.batch["runtime_active"], False)
         self.assertEqual([(len(row["study_options"]), len(row["application_routes"]), len(row["facts"]), len(row["unknowns"]))
-                          for row in self.batch["institutions"]], [(191, 74, 919, 0), (360, 311, 1340, 73), (254, 465, 1414, 95), (96, 46, 399, 29)])
+                          for row in self.batch["institutions"]], [(191, 74, 919, 0), (360, 311, 1340, 73), (254, 465, 1419, 95), (96, 46, 399, 29)])
         self.assertEqual({frozenset(row) for row in self.batch["institutions"]}, {frozenset(self.batch["institutions"][0])})
 
     def test_imperial_reassembly_preserves_history_without_retired_runtime_programs(self):
@@ -139,10 +139,19 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         snapshot = read(REPO / "backend/data/admissions/catalog.json")
         self.assertEqual(snapshot["schema_version"], self.batch["schema_version"])
         self.assertIs(snapshot["runtime_active"], True)
-        for original, stored in zip(self.batch["institutions"], snapshot["institutions"]):
-            for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources", "collection_tasks", "organization", "dossier_metadata"):
+        research = read(REPO / "backend/data/admissions/research.json")
+        self.assertEqual(research["schema_version"], preparation.RESEARCH_VERSION)
+        for original, stored, notes in zip(self.batch["institutions"], snapshot["institutions"], research["institutions"]):
+            for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources"):
                 self.assertEqual(stored[key], original[key], key)
             self.assertEqual([row["path"] for row in stored["inputs"]], [row["path"] for row in original["inputs"]])
+            self.assertTrue(set(preparation.MAINTAINER_KEYS).isdisjoint(stored), "maintainer records stay out of the runtime snapshot")
+            self.assertEqual(notes["id"], original["institution"]["id"])
+            for key in ("collection_tasks", "organization", "dossier_metadata"):
+                self.assertEqual(notes[key], original[key], key)
+            # Input hashes depend on the checkout's line endings, so file lists are compared by path.
+            for key in ("supporting_records", "historical_provenance"):
+                self.assertEqual([row["path"] for row in notes[key]], [row["path"] for row in original[key]], key)
 
     def test_every_resolved_fact_preserves_significant_evidence(self):
         cache = {}
@@ -155,8 +164,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
                     cache[path] = {row["id"]: row for row in read(path)["facts"]}
                 raw = cache[path][origin["original_id"]]
                 self.assertEqual(fact["value"], raw["value"], fact["id"])
-                self.assertEqual(origin["original_scope"], raw["scope"], fact["id"])
-                self.assertEqual(origin["original_source_ids"], raw["source_ids"], fact["id"])
+                self.assertEqual(origin, {"evidence_file": origin["evidence_file"], "original_id": origin["original_id"]}, fact["id"])
                 for key in ("conditions", "conditions_and_exceptions", "exceptions", "publication_status", "review_status", "checked_at", "period"):
                     self.assertEqual(fact[key], raw.get(key), (fact["id"], key))
                 for key, value in raw.items():
@@ -324,13 +332,99 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             destination = repo / ".tmp_test" / "prepared"
             prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": []}
             path = preparation.write_output(prepared, destination, repo)
-            self.assertEqual(read(path), prepared)
+            runtime, research = preparation.split_maintainer_records(prepared)
+            self.assertEqual(read(path), runtime)
+            self.assertEqual(read(destination / "admissions-research.json"), research)
             with self.assertRaisesRegex(preparation.PreparationError, "already exists"):
                 preparation.write_output(prepared, destination, repo)
             for invalid in (repo / "backend/data", repo / ".tmp_test", repo / "outside"):
                 with self.assertRaisesRegex(preparation.PreparationError, "below repository"):
                     preparation.write_output(prepared, invalid, repo)
             self.assertFalse((repo / "backend").exists())
+
+    def test_snapshot_serialization_is_lossless_with_one_line_per_record(self):
+        prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": [
+            {"institution": {"id": "a"}, "facts": [{"id": "f1", "value": "Кафедра, \"quoted\"\nline"}, {"id": "f2", "value": []}], "unknowns": []},
+        ]}
+        text = preparation.dump_records(prepared)
+        self.assertEqual(json.loads(text), prepared)
+        self.assertIn("Кафедра", text)
+        lines = text.splitlines()
+        self.assertEqual(sum(1 for line in lines if '"id":"f1"' in line), 1)
+        self.assertEqual(sum(1 for line in lines if '"id":"f2"' in line), 1)
+        self.assertIn(' "runtime_active":false,', lines)
+
+    def test_every_record_has_one_closed_status_and_entry_value(self):
+        vocabulary = read(preparation.VOCABULARY_PATH)
+        publication, review = set(vocabulary["publication"]), {*vocabulary["review"], "not_recorded"}
+        for institution in self.batch["institutions"]:
+            for row in [*institution["facts"], *institution["unknowns"]]:
+                self.assertIn(row["normalized_status"]["publication"], publication, row["id"])
+                self.assertIn(row["normalized_status"]["review"], review, row["id"])
+            for row in [*institution["application_routes"], *institution["study_options"]]:
+                self.assertIn(row["entry"], preparation.ENTRY_VALUES, row["id"])
+
+    def test_normalized_values_keep_research_labels_and_fix_known_contrasts(self):
+        stanford, nu = self.by_id["stanford-university-usa-ca"], self.by_id["nazarbayev-university-kaz-astana"]
+        options = {row["id"]: row for row in stanford["study_options"]}
+        # Internal-only and PhD en-route awards are not open to new external applicants.
+        self.assertEqual(options["stanford-option-aa-eng"]["entry"], "internal")
+        self.assertEqual(options["stanford-option-bioc-ms"]["entry"], "no_admission")
+        routes = {row["id"]: row for row in stanford["application_routes"]}
+        self.assertIsNone(routes["undergraduate-shared-evidence:stanford-first-year"]["classification"])
+        self.assertEqual(routes["undergraduate-shared-evidence:stanford-first-year"]["entry"], "external")
+        facts = {row["id"]: row for row in nu["facts"]}
+        history = facts["nu-a-fact-ump-dates-fees-historical"]
+        self.assertEqual(history["publication_status"], "historical_2025_26_page")
+        self.assertEqual(history["normalized_status"], {"publication": "historical", "review": "verified"})
+        self.assertEqual(facts["nu-a-fact-overview"]["normalized_status"]["publication"], "published")
+        mit = {row["id"]: row for row in self.by_id["mit-usa-cambridge"]["facts"]}
+        self.assertTrue(any(row["review_status"] == "carried_forward_review" and row["normalized_status"]["review"] == "carried_forward"
+                            for row in mit.values()))
+
+    def test_unmapped_research_labels_fail_instead_of_guessing(self):
+        vocabulary = preparation.load_vocabulary()
+        institution = copy.deepcopy(self.by_id["mit-usa-cambridge"])
+        institution["facts"][0]["publication_status"] = "published_but_new_unreviewed_label"
+        with self.assertRaisesRegex(preparation.PreparationError, "Unmapped publication label"):
+            preparation.normalize_institution(institution, vocabulary)
+        institution = copy.deepcopy(self.by_id["mit-usa-cambridge"])
+        institution["application_routes"][0]["classification"] = None
+        with self.assertRaisesRegex(preparation.PreparationError, "needs an entry override"):
+            preparation.normalize_institution(institution, vocabulary)
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "vocabulary.json"
+            data = read(preparation.VOCABULARY_PATH)
+            data["review"]["verified"].append("superseded")
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(preparation.PreparationError, "appears twice"):
+                preparation.load_vocabulary(path)
+
+    def test_applicant_route_is_derived_from_reviewed_route_data_and_never_invented(self):
+        vocabulary = preparation.load_vocabulary()
+        imperial = {row["id"]: row for row in self.by_id["imperial-college-london-uk"]["application_routes"]}
+        self.assertEqual(imperial["procedure-computing-meng"]["applicant_route"], "first_year")
+        self.assertEqual(imperial["procedure-advanced-aeronautical-engineering"]["applicant_route"], "graduate")
+        self.assertIsNone(imperial["procedure-medicine-graduate-entry"]["applicant_route"])
+        self.assertIsNone(imperial["procedure-medicine-phd"]["applicant_route"])
+        stanford = {row["id"]: row for row in self.by_id["stanford-university-usa-ca"]["application_routes"]}
+        self.assertEqual(stanford["undergraduate-shared-evidence:stanford-transfer"]["applicant_route"], "transfer")
+        self.assertEqual(stanford["undergraduate-shared-evidence:stanford-knight-hennessy"]["applicant_route"], "graduate")
+        # A school-leaver label on a route whose options are not all undergraduate fails instead of guessing.
+        institution = copy.deepcopy(self.by_id["imperial-college-london-uk"])
+        route = next(row for row in institution["application_routes"] if row["id"] == "procedure-advanced-aeronautical-engineering")
+        route["classification"] = "ucas_course_choice"
+        with self.assertRaisesRegex(preparation.PreparationError, "non-undergraduate route"):
+            preparation.normalize_institution(institution, vocabulary)
+        # A declared category that the closed vocabulary does not know fails.
+        institution = copy.deepcopy(self.by_id["mit-usa-cambridge"])
+        institution["application_routes"][0]["attributes"]["applicant_route"] = "returning"
+        with self.assertRaisesRegex(preparation.PreparationError, "Unknown applicant category"):
+            preparation.normalize_institution(institution, vocabulary)
+        # An override that names no route is stale.
+        stale = {**vocabulary, "applicant_route_by_id": {**vocabulary["applicant_route_by_id"], "no-such-route": "graduate"}}
+        with patch.object(preparation, "load_vocabulary", return_value=stale), self.assertRaisesRegex(preparation.PreparationError, "Applicant category overrides name unknown routes"):
+            preparation.prepare_batch()
 
     def test_cli_defaults_to_check_only_and_failure_is_explicit(self):
         with patch.object(preparation, "prepare_batch", return_value=self.batch), patch.object(preparation, "write_output") as writer, patch("builtins.print"):

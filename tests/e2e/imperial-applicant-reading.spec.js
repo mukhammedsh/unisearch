@@ -71,6 +71,11 @@ async function program(page, id, search = "Computing", level = "") {
 
 async function route(page, value) {
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  // A course with exactly one application route is read through it directly; otherwise the route is chosen here.
+  if (await page.locator("#admissionsRoute").inputValue() === value) {
+    expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(value);
+    return;
+  }
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
   await select(page, "admissionsRoute", value);
   await ready(page);
@@ -165,7 +170,7 @@ for (const item of presentations) {
       { id: "imperial-option-data-science", search: "Biomedical Research Data Science", text: /not compulsory|не являются обязательными|міндетті модульдер/ },
       { id: "imperial_genomic_medicine_msc_pgcert", search: "Genomic Medicine", text: /four taught modules|четырёх модулей|төрт модуль/ },
       { id: "imperial-brain-sciences-phd", search: "Brain Sciences", text: /neurology|неврологию|Неврология/ },
-      { id: "imperial_experimental_biomolecular_sciences_mres_msc", search: "Experimental Biomolecular Sciences", text: /not established|не подтверждён|расталмаған/ },
+      { id: "imperial_experimental_biomolecular_sciences_mres_msc", search: "Experimental Biomolecular Sciences", text: /not confirmed|не подтверждён|расталмаған/ },
     ]) {
       await program(page, entry.id, entry.search);
       const overview = page.locator("#admissionsStudyOverview");
@@ -234,10 +239,10 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
   });
 }
 
-test("Imperial language changes, invalid cycles and saving preserve a synthetic general profile", async ({ page }) => {
+test("Imperial language changes, fee status and saving preserve a synthetic general profile", async ({ page }) => {
   await prepare(page, presentations[0]);
   await page.addInitScript(() => {
-    if (!localStorage.getItem("unisearch_profile")) localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, gpa: 3.8, budget: 30000, applicantRoute: "graduate", intendedEntryCycle: "2028 entry" }));
+    if (!localStorage.getItem("unisearch_profile")) localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, gpa: 3.8, budget: 30000, intendedEntryCycle: "2028 entry" }));
   });
   await page.goto(`/university.html?id=${university}&admission_cycle=`);
   await ready(page);
@@ -256,20 +261,21 @@ test("Imperial language changes, invalid cycles and saving preserve a synthetic 
     await expect(page.locator("#admissionsReferenceSummary")).toContainText("MEng");
   }
   await openAdvanced(page);
-  await page.locator("#admissionsCycle").fill("undecided cycle");
-  await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
-  await page.locator("#admissionsCycle").fill("2027 entry");
-  await select(page, "admissionsApplicant", "first_year");
+  // The course publishes one intake, so only the UK fee status is asked.
+  await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Fee status");
+  await expect(page.locator("#admissionsCycle")).toBeHidden();
+  await select(page, "admissionsFee", "self_reported_international_overseas");
   await page.locator("#admissionsContextApply").click();
   await ready(page);
+  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Overseas");
   await page.locator("#admissionsSaveChoice").click();
   await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
   const profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(profile.gpa).toBe(3.8);
   expect(profile.budget).toBe(30000);
-  expect(profile.applicantRoute).toBe("graduate");
-  expect(profile.intendedEntryCycle).toBe("2028 entry");
-  expect(profile.selectedAdmissionChoices[university].applicantRoute).toBe("first_year");
+  expect(profile.applicantRoute).toBeUndefined();
+  expect(profile.intendedEntryCycle).toBeUndefined();
+  expect(profile.selectedAdmissionChoices[university].applicantRoute).toBeUndefined();
 });
 
 test("Imperial retries a context failure and keeps the selected program through empty search and history", async ({ page }) => {

@@ -54,7 +54,9 @@ async function openReviewedUniversity(page, university) {
   await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
   const programCards = page.locator("#admissionsProgramList .program-card:has([data-study-option])");
   expect(await programCards.count()).toBeGreaterThan(0);
-  await expect(page.locator("#detailPrograms .program-card:visible")).toHaveCount(await programCards.count());
+  // Options restricted to current students or a special group sit in a collapsed group until the applicant opens it.
+  const restrictedCards = page.locator("#admissionsProgramList details.admissions-programs__restricted .program-card:has([data-study-option])");
+  await expect(page.locator("#detailPrograms .program-card:visible")).toHaveCount(await programCards.count() - await restrictedCards.count());
   await expect(page.locator("#admissionsStudyLevel")).toHaveValue("");
   return detail;
 }
@@ -140,7 +142,10 @@ test("MBA study options use canonical levels for reviewed universities and retai
     await result.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue(item.level);
-    await expect(page.locator("#admissionsRoute")).toHaveValue("");
+    await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    // A single published application route is read directly; several routes leave the choice to the applicant.
+    const routes = await page.locator("#admissionsRoute option").evaluateAll(options => options.map(option => option.value).filter(Boolean));
+    await expect(page.locator("#admissionsRoute")).toHaveValue(routes.length === 1 ? routes[0] : "");
   }
 
   await openUniversity(page, "university-of-oxford-uk-oxford");

@@ -1,30 +1,19 @@
 # Global CSS modules
 
-`../style.css` is the public global stylesheet entry point. It imports these
-modules in their historical cascade order so existing pages keep the same
-specificity and responsive overrides.
+HTML pages link these shared stylesheet modules directly in the cascade order below (avoiding CSS `@import` request chains) so pages keep the same specificity and responsive overrides.
 
 | Order | Module | Responsibility |
 | --- | --- | --- |
-| 1 | `01-foundation.css` | Design tokens, resets, base elements, scrollbars, loaders, and global component baselines |
-| 2 | `02-shell-tooltips.css` | Navigation shell and shared tooltips |
-| 3 | `03-settings.css` | Settings dialog and controls |
-| 4 | `04-feedback-footer.css` | Toasts, custom selects, and the footer |
-| 5 | `05-base-responsive.css` | Earlier shared responsive overrides |
-| 6 | `06-motion-accessibility.css` | Motion tokens, transitions, reduced-motion rules, and accessibility refinements |
-| 7 | `07-runtime-states.css` | Initial loading, error, offline, and connectivity states |
-| 8 | `08-device-responsive.css` | Narrow viewport and device-specific hardening |
-| 9 | `09-component-polish.css` | Shared surface and control alignment refinements |
-| 10 | `10-admissions.css` | Admission and funding components reused across catalog, detail, and comparison views |
-| 11 | `11-navbar-search.css` | Global university search in the navigation shell |
+| 1 | `01-foundation.css` | Design tokens, resets, base elements, scrollbars, loaders, modal scroll containment, Forced Colors Mode overrides, and global component baselines |
+| 2 | `02-shell-settings-feedback.css` | Navigation shell, shared tooltips, settings dialog and controls, toast notifications, custom selects, and the footer |
+| 3 | `06-motion-accessibility.css` | Shared responsive adjustments, motion tokens, transitions, reduced-motion rules, accessibility refinements, and initial/error/offline/connectivity runtime states |
+| 4 | `08-device-responsive.css` | Narrow viewport hardening, surface alignment refinements, and global university search in the navigation shell |
+| 5 | `10-admissions.css` | Admission and funding components included only on catalog, comparison, university detail, and profile pages |
 
 ## Ownership rules
 
 - Keep semantic color and elevation tokens in `01-foundation.css`.
-- Keep page-only rules in that page's stylesheet. The university catalog entry
-  point remains `../universities.css`.
-- Profile-only rules belong to `../profile.css`; catalog-only rules belong to
-  `../universities.css`.
+- Keep page-only rules in that page's stylesheets (`css/universities/*` for catalog/compare, `css/profile/*` for profile).
 - Put a reusable component in the narrowest shared module that owns it.
 - Do not reorder imports to fix specificity. Resolve the selector ownership
   instead.
