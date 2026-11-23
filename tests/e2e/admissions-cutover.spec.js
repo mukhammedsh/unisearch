@@ -78,13 +78,6 @@ test("reviewed university replaces a fresh detail cache entry without the catalo
   expect(cached.admissions_catalog.availability).toBe("reviewed");
 });
 
-async function openAdvanced(page) {
-  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
-  const advanced = page.locator("#admissionsAdvanced");
-  // Paths with one intake and no fee classes offer no entry-year or fee-status fields.
-  if (await advanced.isVisible() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-}
-
 async function selectCustomOption(page, select, value) {
   const control = page.locator(select);
   if (select === "#admissionsRoute") {
