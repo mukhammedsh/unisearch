@@ -110,8 +110,14 @@ export function admissionContextFields(resolved, context = {}) {
   const cycles = publishedEntryCycles(resolved);
   // Application windows published for several intakes (MIT's Fall and Spring transfer) also make the year a choice.
   const deadlineIds = new Set(resolved?.fact_groups?.deadlines || []);
+  const stripTrailingParens = text => {
+    const trimmed = String(text || "").trimEnd();
+    if (!trimmed.endsWith(")")) return trimmed;
+    const open = trimmed.lastIndexOf("(");
+    return open >= 0 ? trimmed.slice(0, open).trimEnd() : trimmed;
+  };
   const windowEntries = new Set((resolved?.facts || []).filter(row => deadlineIds.has(row.id))
-    .flatMap(row => Array.isArray(row.value?.windows) ? row.value.windows.map(window => String(window?.entry || "").replace(/\s*\([^)]*\)$/, "")) : [])
+    .flatMap(row => Array.isArray(row.value?.windows) ? row.value.windows.map(window => stripTrailingParens(window?.entry)) : [])
     .filter(value => typeof value === "string" && isRecognizedAdmissionCycle(value)).map(normalizeAdmissionCycle));
   const cycle = normalizeAdmissionCycle(context.intended_entry_cycle);
   const costs = resolved?.selected_costs || {};

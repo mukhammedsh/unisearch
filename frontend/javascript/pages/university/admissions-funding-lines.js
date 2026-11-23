@@ -19,8 +19,9 @@ function awardLines(value) {
   if (isText(value.value)) lines.push(`${value.funding_program}: ${published(value.value)}`);
   const due = value.deadline;
   if (isText(due?.date)) {
-    lines.push(tFormat("university.admissions.key_facts.funding_apply_by", {
-      date: formatPublishedDate(due.date), time: [due.time, due.timezone].filter(isText).join(" ") }).replace(/\s*,\s*$/, ""));
+    const dueText = tFormat("university.admissions.key_facts.funding_apply_by", {
+      date: formatPublishedDate(due.date), time: [due.time, due.timezone].filter(isText).join(" ") }).trimEnd();
+    lines.push(dueText.endsWith(",") ? dueText.slice(0, -1).trimEnd() : dueText);
   }
   if (isText(value.outcome)) lines.push(published(value.outcome));
   return lines;

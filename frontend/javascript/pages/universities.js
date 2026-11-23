@@ -4294,7 +4294,7 @@ ${rankInnerHtml}
                 if (newPage && newPage !== state.page) {
                     state.page = newPage;
                     clearSavedScrollPosition();
-                    fetchAndRender();
+                    void fetchAndRender();
                     window.scrollTo({top: 0, behavior: 'smooth'});
                 }
             };
