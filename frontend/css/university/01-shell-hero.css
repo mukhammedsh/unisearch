@@ -339,6 +339,13 @@
   pointer-events: none;
 }
 
+.d-gallery-cover-credit {
+  inset-inline-start: var(--space-16);
+  inset-inline-end: var(--space-3);
+  justify-content: flex-end;
+  text-align: right;
+}
+
 .d-gallery-viewer-credit {
   top: calc(var(--photo-vertical-inset) + var(--space-3));
   inset-inline: calc(var(--space-24) + var(--space-4));
@@ -346,8 +353,11 @@
 
 /* Photo credit: the photo license requires a visible author and license next to the photograph. */
 .d-cover-credit {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   min-width: 0;
+  min-height: 24px;
+  max-width: 100%;
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--media-caption-bg);
@@ -355,7 +365,9 @@
   font-size: var(--text-xs);
   line-height: var(--leading-tight);
   text-decoration: none;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   pointer-events: auto;
 }
 
@@ -435,16 +447,23 @@ a.d-cover-credit:hover {
   width: 62%;
 }
 
+.d-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .d-title {
   margin: 0;
   color: var(--text);
   line-height: 1.2;
   max-width: min(100%, 760px);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   word-break: break-word;
   font-size: clamp(22px, 5vw, 38px);
   font-weight: var(--font-weight-regular);
-  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -455,7 +474,6 @@ a.d-cover-credit:hover {
   align-items: center;
   gap: var(--space-2);
   flex-wrap: wrap;
-  margin-top: var(--space-1-5);
   font-size: var(--text-base);
   color: var(--text-muted);
 }
@@ -494,7 +512,7 @@ a.d-cover-credit:hover {
   font-size: var(--text-sm);
   line-height: 1.45;
   color: var(--muted);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .d-box-text {
@@ -521,7 +539,7 @@ a.d-cover-credit:hover {
   font-weight: var(--font-weight-regular);
   flex: 1 1 55%;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .d-kv > span:last-child {
@@ -530,7 +548,7 @@ a.d-cover-credit:hover {
   text-align: right;
   flex: 1 1 45%;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .d-kv-value {
@@ -554,6 +572,7 @@ a.d-cover-credit:hover {
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
+  overflow-wrap: anywhere;
 }
 
 /* The source scope stays collapsed so a row shows only the link and check date until the reader asks for it. */
@@ -599,8 +618,8 @@ a.d-cover-credit:hover {
 }
 
 .d-info {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: var(--radius-md);
 }
 
@@ -775,11 +794,13 @@ a.d-cover-credit:hover {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Tabs that do not fit scroll sideways. The previous/next buttons sit over the bar edges, so they take no width. */
+/* Tabs that do not fit scroll sideways; previous/next buttons occupy their own grid columns so they never overlap tabs. */
 .d-tabs-nav {
   position: relative;
   min-width: 0;
   scroll-margin-top: var(--space-20);
+  background: var(--card);
+  border-bottom: 1px solid var(--line-faint);
 }
 
 .d-tabs-nav > button {
@@ -788,34 +809,41 @@ a.d-cover-credit:hover {
 
 .d-tabs-nav > .d-tabs {
   min-width: 0;
-  scroll-padding-inline: var(--space-12);
+  scroll-padding-inline: var(--space-4);
+}
+
+.d-tabs-nav[data-scrollable] {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+}
+
+.d-tabs-nav[data-scrollable] > [data-tabs-previous] {
+  grid-column: 1;
+}
+
+.d-tabs-nav[data-scrollable] > .d-tabs {
+  grid-column: 2;
+}
+
+.d-tabs-nav[data-scrollable] > [data-tabs-next] {
+  grid-column: 3;
 }
 
 .d-tabs-nav[data-scrollable] > button {
-  position: absolute;
-  inset-block: 0;
-  z-index: 2;
+  position: static;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-12);
+  width: var(--space-10);
+  min-height: 44px;
   padding: 0;
   border-radius: 0;
   box-shadow: none;
+  background: var(--card);
   color: var(--text);
   cursor: pointer;
   transition: opacity var(--motion-fast) var(--motion-ease-standard);
-}
-
-/* The bar's own colour fills the button and fades into the labels, so an arrow never sits on top of readable text. */
-.d-tabs-nav > [data-tabs-previous] {
-  inset-inline-start: 0;
-  background: linear-gradient(to right, var(--card) 60%, transparent);
-}
-
-.d-tabs-nav > [data-tabs-next] {
-  inset-inline-end: 0;
-  background: linear-gradient(to left, var(--card) 60%, transparent);
 }
 
 /* An edge with nothing more to reveal drops its button; it stays in the tree so the edges never shift. */
@@ -875,7 +903,7 @@ a.d-cover-credit:hover {
   min-width: 0;
   width: 100%;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: nowrap;
   gap: var(--space-3);
@@ -1014,6 +1042,10 @@ body[data-page="university"],
     padding: 0 var(--space-3);
   }
 
+  .d-cover-credit {
+    min-height: 36px;
+  }
+
   .d-loading-cover {
     height: 210px;
   }
@@ -1024,6 +1056,21 @@ body[data-page="university"],
 
   .d-cover {
     aspect-ratio: 16 / 9;
+  }
+
+  .d-info {
+    width: 36px;
+    height: 36px;
+  }
+
+  .d-fact-scope > summary {
+    min-height: 38px;
+  }
+
+  .d-fact-source a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
   }
 
   .d-head {

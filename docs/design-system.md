@@ -60,9 +60,9 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 | `--accent` | `#4F46E5` | `#5850EC` | Primary action button fill, active indicator, focus ring |
 | `--accent-text` | `#4338CA` | `#A5B4FC` | Accent foreground text and icons on light or dark surfaces |
 | `--accent-soft` | `color-mix(in oklab, var(--accent) 12%, transparent)` | `color-mix(in oklab, var(--accent) 22%, transparent)` | Active row highlight, soft badge background |
-| `--color-success` | `#15803d` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA 5.02:1) |
+| `--color-success` | `#166534` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA >= 6.1:1 on light soft/subtle surfaces) |
 | `--color-success-bg` | `#f0fdf4` | `rgba(16, 185, 129, 0.14)` | Success badge/banner background |
-| `--color-warning` | `#b45309` | `#fde68a` | Alert note, partial match, impending deadline |
+| `--color-warning` | `#92400e` | `#fde68a` | Alert note, partial match, impending deadline (WCAG AA >= 6.1:1 on light soft/subtle surfaces) |
 | `--color-warning-bg` | `#fff7ed` | `rgba(245, 158, 11, 0.12)` | Warning badge/banner background |
 | `--color-danger` | `#B91C1C` | `#fca5a5` | Critical error, missing requirement, closed (WCAG AA >= 5.6:1 on light soft/danger surfaces) |
 | `--color-danger-bg` | `#fef2f2` | `rgba(239, 68, 68, 0.14)` | Error badge/banner background |

@@ -337,6 +337,20 @@
 }
 
 @media (max-width: 768px) {
+  :where(.programs-level-tab, .admissions-level-tab) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
+  :where(.admission-program-option, .requirement-profile-tab) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 44px;
+  }
+
   .admission-category-head,
   .requirement-profile-head,
   .admission-funding-option-side {

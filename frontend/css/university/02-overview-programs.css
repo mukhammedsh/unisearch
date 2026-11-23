@@ -97,7 +97,7 @@
   padding: var(--space-1) var(--space-2);
   line-height: 1.15;
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .program-card__select-actions {
@@ -239,7 +239,7 @@
 }
 
 .program-card-value {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   color: var(--text);
   font-size: var(--text-base);
   font-weight: var(--font-weight-regular);
@@ -350,7 +350,7 @@
   font-weight: var(--font-weight-semibold);
   line-height: 1.35;
   color: var(--text);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .program-card__summary {
@@ -690,7 +690,7 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .overview-summary__grid {
@@ -733,7 +733,7 @@
   font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   line-height: var(--leading-tight);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .overview-summary__answer[data-kind="text"] {
@@ -747,7 +747,7 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: var(--leading-normal);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 :is(.overview-summary__answer, .overview-summary__detail)[data-tone="success"] {
@@ -812,7 +812,7 @@
 
 .overview-summary__item-text {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .overview-summary__item-text[data-prose] {
@@ -830,7 +830,7 @@
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .overview-summary__fact-detail {
@@ -851,6 +851,7 @@
   color: var(--text);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
+  overflow-wrap: anywhere;
 }
 
 .overview-summary__levels {
@@ -963,6 +964,18 @@ a.d-campus-area__note {
 }
 
 @media (max-width: 768px) {
+  .university-coverage-section > summary {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
+  .overview-summary__card a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+  }
+
   .program-card__toggle {
     padding: var(--space-3) var(--space-4) 0;
   }
@@ -983,7 +996,7 @@ a.d-campus-area__note {
   }
 
   .program-card__body-inner > .program-card-rows .program-card-row dd {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .overview-summary__grid {
