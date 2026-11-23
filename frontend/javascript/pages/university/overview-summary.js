@@ -11,9 +11,11 @@ import { translateAdmissionText } from "../../university-translations.js";
 import { getExamDisplayName } from "../../utils/config.js";
 import { withoutBracketedText } from "../../utils/text.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
-import { admissionsRequest, firstYearSharedRoute, singlePublishedCycle } from "./admissions-controller.js";
+import { admissionsRequest, firstYearSharedRoute } from "./admissions-controller.js";
+import { readForSinglePublishedCycle } from "./admissions-cycle.js";
+import { englishRequirementItems } from "./admissions-english.js";
 import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName } from "./admissions-render.js";
-import { costFact, deadlineFact, englishRecommendationItem, fundingPolicyStatement, minimumChecklist } from "./admissions-key-facts.js";
+import { costFact, deadlineFact, englishRecommendationItem, fundingPolicyStatement, MARK_ICONS, minimumChecklist, NON_NATIVE_ENGLISH } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
 import { extractUniversityDeadlines, getUndergraduateCategories } from "./render-sections.js";
 
@@ -43,7 +45,9 @@ const usd = amount => formatPrice(amount, "USD");
 // The Overview and the Admission tabs read the same default path.
 export { firstYearSharedRoute };
 
-const markFor = check => ({ met: "met", unmet: "below" })[check?.status] || "todo";
+// A recommendation that is not checked against a minimum is shown as one, never as something still to prepare.
+const markFor = (check, soft = false) => ({ met: "met", unmet: "below" })[check?.status] || (soft ? "recommended" : "todo");
+const isSoft = presence => isString(presence) && presence !== "required";
 
 // Published facts that apply to the read route, limited to reviewed and published records.
 function routeFacts(resolved, groups) {
@@ -59,7 +63,7 @@ const presenceLabel = presence => t(`university.ux2.needs.presence_${presence}`)
 export function checklistItems(resolved, profile = null) {
   const checks = new Map((resolved?.assessment?.activeChoice?.details?.checks || []).map(check => [check.factId, check]));
   const rows = routeFacts(resolved, ["requirements", "application"]);
-  const item = (kind, row, text, extra = {}) => ({ kind, factId: row.id, mark: markFor(checks.get(row.id)), text, ...extra });
+  const item = (kind, row, text, extra = {}) => ({ kind, factId: row.id, mark: markFor(checks.get(row.id), isSoft(row.value?.presence)), text, ...extra });
   const structured = { tests: [], language: [], documents: [] };
   const plain = { tests: [], documents: [] };
   for (const row of rows) {
@@ -71,7 +75,10 @@ export function checklistItems(resolved, profile = null) {
           ? tFormat("university.ux2.needs.test", { exams })
           : tFormat("university.ux2.needs.test_other", { exams, presence: presenceLabel(value.presence) })));
       } else if (Array.isArray(value.minima_and_recommendations) && value.presence) {
-        structured.language.push(item("language", row, tFormat("university.ux2.needs.english", { presence: presenceLabel(value.presence) })));
+        const english = tFormat("university.ux2.needs.english", { presence: presenceLabel(value.presence) });
+        // A recommendation that applies only when English is not the first language says so beside the test.
+        const condition = isSoft(value.presence) && (row.conditions || []).some(entry => NON_NATIVE_ENGLISH.test(entry?.when || "")) ? `, ${label("needs.if_not_native")}` : "";
+        structured.language.push(item("language", row, `${english}${condition}`));
       } else if (Array.isArray(value.required) && value.required.every(isString) && DOCUMENT_TOPICS.has(row.topic)) {
         for (const document of value.required.filter(entry => !TEST_ONLY_DOCUMENT.test(entry))) {
           const key = DOCUMENT_LABEL_KEYS[document];
@@ -92,10 +99,13 @@ export function checklistItems(resolved, profile = null) {
   const kinds = new Set(minimums.map(entry => entry.kind));
   const recommendation = profile ? englishRecommendationItem(resolved, profile) : null;
   const language = recommendation
-    ? [{ kind: "language", factId: recommendation.factId, mark: "recommended", text: [recommendation.text, recommendation.have].filter(Boolean).join(". ") }]
+    ? [{ kind: "language", factId: recommendation.factId, mark: "recommended",
+      text: [recommendation.condition ? `${recommendation.text}, ${recommendation.condition}` : recommendation.text, recommendation.have].filter(Boolean).join(". ") }]
     : structured.language.slice(0, 1);
+  // An English requirement the checks do not measure (a test that is not required, the course's IELTS level) leads the language line.
+  const englishLines = kinds.has("language") ? [] : englishRequirementItems(resolved).map(({ kind, factId, mark, text }) => ({ kind, factId, mark, text }));
   const testsAndLanguage = [...minimums, ...(kinds.has("exam") || kinds.has("academic") ? [] : tests),
-    ...(kinds.has("language") ? [] : language)];
+    ...(kinds.has("language") ? [] : englishLines.length ? englishLines : language)];
   return [...testsAndLanguage, ...documents].slice(0, MAX_CHECKLIST_ITEMS);
 }
 
@@ -198,11 +208,13 @@ export function deadlineCard(fact) {
   if (["upcoming", "recurring"].includes(fact.status) && fact.next) {
     const closed = (fact.passedWindows || []).map(entry => tFormat("university.ux2.deadline.closed", entry));
     const caution = fact.status === "recurring" ? [label("deadline.annual")] : [];
-    return { ...base, tone: fact.tone, headline: fact.days ? tFormat("university.ux2.deadline.headline", { date: fact.next.date, days: fact.days })
+    // A date the university repeats without naming a year is shown without one, and its countdown is approximate.
+    const headlineKey = fact.status === "recurring" ? "headline_yearless" : "headline";
+    return { ...base, tone: fact.tone, headline: fact.days ? tFormat(`university.ux2.deadline.${headlineKey}`, { date: fact.next.date, days: fact.days })
       : tFormat("university.ux2.deadline.headline_today", { date: fact.next.date }),
     lines: [fact.next.title, [...closed, ...caution].join(" "), fact.status === "upcoming" ? fact.notes?.[0] : ""].filter(Boolean) };
   }
-  return { ...base, tone: fact.tone, answerKind: "text", headline: fact.text, lines: [] };
+  return { ...base, tone: fact.tone, answerKind: "text", headline: fact.text, lines: fact.status === "period" ? fact.notes || [] : [] };
 }
 
 // The published price, stated before aid, with the university's aid policy and the budget comparison beneath it.
@@ -297,8 +309,6 @@ export function legacyCards({ university, minPrice, acceptanceRate, acceptanceMe
     : checklistCard(needs, { hasEvidence: true });
   return [legacyDeadline, legacyCostCard(university, minPrice), needsCard, ...(people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [])];
 }
-
-const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle", recommended: "information-circle" };
 
 function renderSource(source) {
   if (!source) return "";
@@ -446,15 +456,9 @@ export function mountOverviewSummary({ container, university, universityId, revi
         const context = route
           ? { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" }
           : { ...programContext };
-        const read = () => fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" }, signal: request.signal,
-          body: JSON.stringify(admissionsRequest(apiProfile, context, universityId)) });
-        resolved = await read();
-        // As in the Admission tab, a route publishing one entry cycle is read for it, so its minimums can be checked.
-        const onlyCycle = resolved?.assessment?.reason === "entry_cycle_required" ? singlePublishedCycle(resolved) : "";
-        if (onlyCycle && current === version) {
-          context.intended_entry_cycle = onlyCycle;
-          resolved = await read();
-        }
+        // As in the Admission tab and the comparison, a route publishing one entry cycle is read for it, so its minimums can be checked.
+        ({ resolved } = await readForSinglePublishedCycle(next => fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" },
+          signal: request.signal, body: JSON.stringify(admissionsRequest(apiProfile, next, universityId)) }), context));
         if (current !== version) return;
         if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
       }

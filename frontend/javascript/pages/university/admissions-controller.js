@@ -535,6 +535,15 @@ export function mountAdmissionsCatalog(institutionId) {
           void refreshContext({ revealSelection: true });
         };
       });
+      host.querySelector("[data-key-facts-fee-status]")?.addEventListener("click", () => {
+        // The fee status is set beside the selection, in the closed "Change" block: open it, expand the fee-status field and focus it.
+        openTab("tab-admission");
+        root.querySelector("#admissionsSelectionEditor").hidden = false;
+        root.querySelector("#admissionsAdvanced").open = true;
+        root.scrollIntoView({ block: "start" });
+        const field = root.querySelector("#admissionsFee")?.closest(".admissions-context__field");
+        (field?.querySelector(".custom-select-trigger, select") || root.querySelector("#admissionsFee"))?.focus?.();
+      });
       host.querySelector("[data-key-facts-cycle]")?.addEventListener("click", () => {
         // The entry cycle is chosen for this university: open the selection editor at the entry-cycle field.
         root.querySelector("#admissionsSelectionEditor").hidden = false;
@@ -900,6 +909,9 @@ export function mountAdmissionsCatalog(institutionId) {
     // The default first-year path was never the reader's choice, so a program's own path is chosen again.
     if (defaultRouteId && context.application_route_id === defaultRouteId) context.application_route_id = "";
     defaultRouteId = "";
+    // A grant application is read only on request and is not a way in: choosing a program returns to the regular path.
+    if (sharedRoutes.some(route => route.id === context.application_route_id && route.classification === "financial_support_application")) context.application_route_id = "";
+    fundingReturnRouteId = "";
     if (!option.route_ids?.includes(context.application_route_id)) context.application_route_id = "";
     contextDirty = false;
     advancedOpen = false;

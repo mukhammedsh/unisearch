@@ -333,6 +333,17 @@ a.admissions-key-facts__checklist-note:hover {
   color: var(--text-muted);
 }
 
+/* Short funding lines: award type, coverage and deadline, as the university publishes them. */
+.admissions-key-facts__lines {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  overflow-wrap: anywhere;
+}
+
 .admissions-key-facts__flag {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);

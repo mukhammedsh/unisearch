@@ -137,17 +137,20 @@
                 <div class="profile-field">
                   <label class="profile-field-label" for="budgetInput" data-i18n="profile.label.budget">Yearly budget</label>
                   <p class="profile-hint" id="budgetHint" data-i18n="profile.ux2.hint.budget">Universities whose known yearly cost is above this rank lower in UniFit. None are hidden. Grants are not subtracted, and an unknown price is not penalised.</p>
-                  <div class="profile-budget profile-budget--with-unit ui-input-composite">
-                    <input
-                      id="budgetInput"
-                      class="profile-input"
-                      type="text"
-                      inputmode="numeric"
-                      aria-describedby="budgetHint"
-                      placeholder="e.g. 20000"
-                      data-i18n-placeholder="profile.placeholder.budget"
-                    />
-                    <button class="profile-unit profile-unit--toggle profile-unit--currency" id="profileBudgetUnit" type="button" data-i18n="profile.unit.currency_year">{currency} / year</button>
+                  <div class="profile-budget-row">
+                    <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                      <input
+                        id="budgetInput"
+                        class="profile-input"
+                        type="text"
+                        inputmode="numeric"
+                        aria-describedby="budgetHint"
+                        placeholder="e.g. 20000"
+                        data-i18n-placeholder="profile.placeholder.budget"
+                      />
+                      <span class="profile-unit" id="profileBudgetUnit" data-i18n="profile.unit.per_year">/ year</span>
+                    </div>
+                    <select id="profileBudgetCurrency" class="profile-input profile-input--select profile-budget-currency" data-flags="off" aria-label="Budget currency" data-i18n-aria-label="profile.budget_currency_label"></select>
                   </div>
                 </div>
 

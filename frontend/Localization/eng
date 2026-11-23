@@ -3341,7 +3341,7 @@ university.admissions.key_facts.title: Key facts for applying
 university.admissions.key_facts.note: A summary of published facts, not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: Documents and other conditions are not checked here; they are described below.
+university.admissions.key_facts.requirements_manual: Documents and other conditions are not checked here; the university's published records are under “Sources”.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -3360,7 +3360,7 @@ university.admissions.key_facts.cost_estimate: Tuition and living: ≈ {amount} 
 university.admissions.key_facts.cost_tuition: Tuition: {amount}. Living costs are not included
 university.admissions.key_facts.cost_period: Prices: {period}
 university.admissions.key_facts.cost_calculated_reference: Calculated reference: tuition plus a living-cost estimate.
-university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas); you can set it in the details above
+university.admissions.key_facts.cost_fee_status: Depends on fee status (Home or Overseas)
 university.admissions.key_facts.cost_not_annual: The published price is not per year; see the cost tab
 university.admissions.key_facts.cost_unknown: No price is published for this selection
 university.admissions.key_facts.budget_over: Above your budget of {budget}
@@ -3369,13 +3369,13 @@ university.admissions.key_facts.budget_tuition_within: Tuition fits your budget 
 university.admissions.key_facts.budget_partial: Part of the range is above your budget of {budget}
 university.admissions.key_facts.budget_missing: Add a yearly budget to your profile to compare
 university.admissions.key_facts.open_finance: Costs and funding
-university.admissions.key_facts.open_funding_route: How to get the grant
+university.admissions.key_facts.open_funding_route: Grant conditions (a separate section)
 university.admissions.key_facts.funding_route_viewing: These are the grant conditions: the grant is applied for separately, after an offer of admission. This is not a way to be admitted.
 university.admissions.key_facts.back_to_route: Back to your path: {route}
 university.admissions.key_facts.funding: Funding
 university.admissions.key_facts.funding_route: Applied for separately: {route}
-university.admissions.key_facts.funding_records: Funding options are described under Costs and funding. An award is not guaranteed.
-university.admissions.key_facts.funding_records_here: Funding terms for this path are described below and under Sources. Funding is not guaranteed and is not subtracted from the cost.
+university.admissions.key_facts.funding_records: Funding records are in the official sources on the Costs and funding tab. An award is not guaranteed.
+university.admissions.key_facts.funding_records_here: Funding records for this path are in the official sources under “Sources” below. Funding is not guaranteed and is not subtracted from the cost.
 university.admissions.key_facts.funding_none: No funding is catalogued for this path; check the official funding page
 university.admissions.catalog.domain.reference: Related source comparisons
 university.admissions.entry.shared_path_alternative: Other university-wide entry paths can be read separately. Opening one will clear the program selection; it does not establish that this program is available through that path.
@@ -3464,8 +3464,8 @@ university.admissions.key_facts.cost_fee_status_source: Official fee-status page
 university.admissions.key_facts.funding_policy: Published policy: {policy}
 university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you.
 university.admissions.key_facts.deadline_earlier: Before that, first: {text}
-university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date}, in {days} days (annual date; confirm the year on the official page)
-university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date}, today (annual date; confirm the year on the official page)
+university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date} (the university does not state the year), in about {days} days; confirm it on the official page
+university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date} (the university does not state the year), today; confirm it on the official page
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} has passed.
 university.admissions.key_facts.requirements_kind_academic: Academic result
 university.admissions.key_facts.requirements_kind_language: English
@@ -3491,8 +3491,10 @@ university.admissions.key_facts.minimum_gpa: GPA {minimum}
 university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} of {scale}
 university.admissions.key_facts.minimum_have: You have: {result}
 university.admissions.key_facts.minimum_have_add: You have: {result}. To check it fully, add: {items}
-university.admissions.key_facts.minimum_have_overall_add: You have: {result}, the overall score meets the minimum. To check it fully, add: {items}
+university.admissions.key_facts.minimum_have_overall_add: Partly checked. You have: {result}; the overall score meets the minimum. To finish the check, add: {items}
 university.admissions.key_facts.minimum_have_below: You have: {result}, below the minimum
+university.admissions.key_facts.minimum_have_below_sections: You have: {result}. Below the minimum: {sections}
+university.admissions.key_facts.minimum_below_section: {name} {score} (at least {minimum} needed)
 university.admissions.key_facts.minimum_have_unconfirmed: You have: {result}; whether it counts depends on the conditions below
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
@@ -3555,7 +3557,7 @@ profile.ux2.summary.subject.unused: No subject yet. Choose a subject or add topi
 profile.ux2.summary.budget.title: Yearly budget
 profile.ux2.summary.budget.value: {amount} per year
 profile.ux2.summary.budget.used: Known yearly costs above this rank lower. Grants are not subtracted.
-profile.ux2.summary.budget.zero: A budget of 0 is ignored. Enter an amount to compare prices.
+profile.ux2.summary.budget.zero: A budget of 0 is ignored. Leave the field empty if your budget does not limit you; enter an amount to compare prices.
 profile.ux2.summary.budget.unused: Prices are not compared with a budget. Enter an amount to compare them.
 profile.ux2.summary.format.title: Funding and study format
 profile.ux2.summary.format.mode: The study format decides whether your budget is compared with the on-campus or the online price.
@@ -3701,3 +3703,59 @@ university.ux2.overview.numbers_title: Key facts
 university.ux2.prompt.shared_routes: Undergraduates submit one application for all programmes. Choose how you are applying:
 university.ux2.sources.one: Source
 university.ux2.sources.many: Sources
+university.admissions.key_facts.minimum_with_sections: {minimum} ({sections})
+university.admissions.key_facts.minimum_sections_all: every section at least {value}
+university.admissions.key_facts.minimum_sections_other: other sections at least {value}
+university.admissions.key_facts.minimum_sections_named: {names} at least {value}
+university.admissions.key_facts.section_writing: Writing
+university.admissions.key_facts.section_reading: Reading
+university.admissions.key_facts.section_listening: Listening
+university.admissions.key_facts.section_speaking: Speaking
+university.admissions.key_facts.section_mathematical_literacy: mathematical literacy
+university.admissions.key_facts.section_reading_literacy: reading literacy
+university.admissions.key_facts.requirements_add_sections_named: {exam}: scores for {sections}
+university.admissions.key_facts.requirements_add_date_sections_named: {exam}: test date and scores for {sections}
+university.admissions.key_facts.recommended_english_if_not_native: if English is not your first language
+university.ux2.needs.if_not_native: if English is not your first language
+university.ux2.needs.mark_partial: Checked in part: add the missing items
+university.ux2.needs.mark_note: Good to know
+university.admissions.key_facts.english_not_required: English test: not required. The university expects fluent English; you may report a score if you wish.
+university.admissions.key_facts.english_bands: IELTS {overall}, at least {section} in every section
+university.admissions.key_facts.english_overall: IELTS {overall}
+university.admissions.key_facts.english_level: English, {level} level for this course: {bands}
+university.admissions.key_facts.english_levels: English by course level: Standard — {standard}; Higher — {higher}. The course page says which level applies.
+university.admissions.key_facts.english_level_standard: Standard
+university.admissions.key_facts.english_level_higher: Higher
+university.admissions.key_facts.english_other_tests: Other accepted tests (TOEFL, PTE, Duolingo and more) are in the university's official table under “Sources”.
+university.admissions.key_facts.funding_lines_lead: What the university publishes for this path. Funding is not guaranteed and is not subtracted from the cost:
+university.admissions.key_facts.funding_apply_by: Apply by {date}, {time}
+university.admissions.key_facts.funding_coverage: {percent}% of tuition: {group}
+university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: socially vulnerable categories of Kazakhstan citizens
+university.admissions.key_facts.coverage_second_and_later_fee_paying_sibling: second and later siblings who study for a fee
+university.admissions.key_facts.coverage_kazakhstan_government_institution_or_enterprise_employee: employees of Kazakhstan government institutions and enterprises
+university.admissions.key_facts.coverage_full_annual_tuition_single_payment: the whole year's tuition paid in one payment (a payment discount, not a grant)
+university.admissions.key_facts.application_fee: Application fee
+university.admissions.key_facts.application_fee_amount: {amount}
+university.admissions.key_facts.application_fee_late: Late fee: {amount}.
+university.admissions.key_facts.application_fee_late_window: Late fee: {amount}, if you apply in the last two weeks before the deadline.
+university.admissions.key_facts.set_fee_status: Set your fee status
+university.ux2.deadline.headline_yearless: By {date} (the university does not state the year) · in about {days} days
+university.admissions.key_facts.deadline_rolling: Applications are accepted on a rolling basis, as they arrive.
+university.admissions.key_facts.deadline_international_tba: Dates for some other international applicants are not published yet.
+university.admissions.key_facts.requirements_published_lead: Published by the university:
+tour.close: Close tutorial
+universities.empty.filters_intro: Hidden by your filters: {filters}
+universities.empty.filter.search: search “{value}”
+universities.empty.filter.country: country: {value}
+universities.empty.filter.region: state / region: {value}
+universities.empty.filter.city: city: {value}
+universities.empty.filter.study_level: study level: {value}
+universities.empty.filter.funding: funding in your profile: {value}
+universities.empty.filter.price_max: price up to {amount}
+universities.empty.filter.price_min: price from {amount}
+universities.empty.filter.price_range: price from {min} to {max}
+universities.empty.show_above_budget: Show universities above my budget
+universities.empty.clear_price: Remove the price filter
+universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
+profile.unit.per_year: / year
+profile.budget_currency_label: Budget currency

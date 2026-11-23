@@ -4,7 +4,6 @@ import { heroIcon } from "../../icons.js";
 /** Sub-pixel slack so a tab bar resting at an edge does not count as scrollable in that direction. */
 const EDGE_TOLERANCE = 1;
 const PHONE_QUERY = "(max-width: 768px)";
-const SCROLL_STEP = 0.7;
 
 function scrollBehavior() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
@@ -61,8 +60,22 @@ export function mountTabsNavigation(card) {
     if (window.matchMedia(PHONE_QUERY).matches) nav.scrollIntoView({ block: "start" });
   };
 
-  previous.onclick = () => tabs.scrollBy({ left: -tabs.clientWidth * SCROLL_STEP, behavior: scrollBehavior() });
-  next.onclick = () => tabs.scrollBy({ left: tabs.clientWidth * SCROLL_STEP, behavior: scrollBehavior() });
+  // The buttons overlay the bar edges, so a step scrolls to the first tab hidden under a button and puts it
+  // right beside that button: no label stays half-covered by an arrow after a step.
+  const allTabs = () => [...tabs.querySelectorAll("[data-tab]")];
+  const stepBy = (direction) => {
+    const zone = (direction > 0 ? next : previous).offsetWidth;
+    const visibleStart = tabs.scrollLeft + zone;
+    const visibleEnd = tabs.scrollLeft + tabs.clientWidth - zone;
+    const target = direction > 0
+      ? allTabs().find((tab) => tab.offsetLeft + tab.offsetWidth > visibleEnd + EDGE_TOLERANCE)
+      : allTabs().reverse().find((tab) => tab.offsetLeft < visibleStart - EDGE_TOLERANCE);
+    const left = !target ? tabs.scrollLeft + direction * tabs.clientWidth / 2
+      : direction > 0 ? target.offsetLeft - zone : target.offsetLeft + target.offsetWidth - (tabs.clientWidth - zone);
+    tabs.scrollTo({ left: Math.max(0, left), behavior: scrollBehavior() });
+  };
+  previous.onclick = () => stepBy(-1);
+  next.onclick = () => stepBy(1);
   tabs.addEventListener("scroll", update, { passive: true });
   tabs.addEventListener("click", onTabClick);
   // The tab widths change with the interface language and with the card becoming visible.
@@ -70,7 +83,15 @@ export function mountTabsNavigation(card) {
   resizeObserver.observe(tabs);
   for (const tab of tabs.querySelectorAll("[data-tab]")) resizeObserver.observe(tab);
 
-  const activeTab = tabs.querySelector('[role="tab"][aria-selected="true"]');
+  // A tab chosen by a link, the keyboard or a changed route comes into view too, not only one the user clicks.
+  const selectedTab = () => tabs.querySelector('[role="tab"][aria-selected="true"]');
+  const selectionObserver = new MutationObserver(() => {
+    const tab = selectedTab();
+    if (tab) centerTab(tab, scrollBehavior());
+  });
+  selectionObserver.observe(tabs, { attributes: true, attributeFilter: ["aria-selected"], subtree: true });
+
+  const activeTab = selectedTab();
   if (activeTab) centerTab(activeTab, "auto");
   update();
 
@@ -78,6 +99,7 @@ export function mountTabsNavigation(card) {
     tabs.removeEventListener("scroll", update);
     tabs.removeEventListener("click", onTabClick);
     resizeObserver.disconnect();
+    selectionObserver.disconnect();
     previous.onclick = null;
     next.onclick = null;
   };

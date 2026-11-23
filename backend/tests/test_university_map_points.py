@@ -69,6 +69,7 @@ class UniversityMapPointsTests(unittest.TestCase):
                 "rank": 12,
                 "location": {"country": "USA", "city": "Boston"},
                 "coordinates": {"lat": 42.36, "lon": -71.06},
+                "cover_available": False,
             },
         )
 

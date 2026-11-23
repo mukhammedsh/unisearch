@@ -117,5 +117,32 @@ class UniversityTranslationBundleTests(unittest.TestCase):
             }, bundle)
 
 
+class UniversityTranslationNumberFormatTests(unittest.TestCase):
+    def test_money_in_translations_keeps_the_source_decimal_point(self):
+        import json
+        import re
+        from app.core.paths import UNIVERSITIES_TRANSLATIONS_PATH
+
+        with open(UNIVERSITIES_TRANSLATIONS_PATH, encoding="utf-8") as handle:
+            languages = json.load(handle)["languages"]
+        # "£34,50" beside "£10,050" reads as a different number; amounts with a currency sign keep the source's "34.50".
+        comma_cents = re.compile(r"[£$€]\d{1,3},\d{2}(?![\d]|$)")  # not at the end: some source keys are cut mid-number
+        offenders = []
+
+        def walk(node, path):
+            if isinstance(node, dict):
+                for key, value in node.items():
+                    walk(value, path + [key])
+            elif isinstance(node, list):
+                for index, value in enumerate(node):
+                    walk(value, path + [index])
+            elif isinstance(node, str) and comma_cents.search(node):
+                offenders.append((path[:3], comma_cents.search(node).group()))
+
+        for language in ("rus", "kaz"):
+            walk(languages[language], [language])
+        self.assertEqual([], offenders)
+
+
 if __name__ == "__main__":
     unittest.main()

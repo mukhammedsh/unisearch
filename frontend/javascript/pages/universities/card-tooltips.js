@@ -62,6 +62,21 @@ function formatCatalogLevels(levels) {
 }
 
 /**
+ * Short visible label saying which study levels the card price covers. The selected catalog
+ * level filter wins; otherwise a price spanning several levels names them ("All levels").
+ * The level is never guessed from the applicant profile.
+ * @param {string[]} levels
+ * @param {string} [studyLevelFilter=""]
+ * @returns {string}
+ */
+export function costScopeLabel(levels, studyLevelFilter = "") {
+  const filter = String(studyLevelFilter || "").trim();
+  if (filter) return t(`universities.level.${filter}`, "");
+  const unique = [...new Set((levels || []).filter(Boolean))];
+  return unique.length >= 2 ? formatCatalogLevels(unique) : "";
+}
+
+/**
  * Resolve the card price summary for a university on the requested cost basis.
  * @param {object} university
  * @param {string} [basis="annual_total"]
@@ -94,7 +109,7 @@ export function universityCardPriceInfo(university, basis = "annual_total") {
  * @param {object} university
  * @param {string} [basis="annual_total"]
  * @param {string} [scope="catalog"]
- * @param {{ priceFilterActive?: boolean }} [options={}]
+ * @param {{ priceFilterActive?: boolean, studyLevel?: string }} [options={}]
  * @returns {string}
  */
 export function renderUniversityCardCosts(university, basis = "annual_total", scope = "catalog", options = {}) {
@@ -186,8 +201,10 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
   const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
   // Qualifiers of the price (what it covers, the second currency) form one quiet line below it,
   // so every card shows its price on the same first line.
-  const metaHtml = showsTuitionReference || secondary
-    ? `<span class="uni-cost-meta">${showsTuitionReference ? `<span class="uni-cost-meta__label">${escapeHtml(title)}</span>` : ""}${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}</span>`
+  const scopeLabel = costScopeLabel(levels, options?.studyLevel);
+  const metaLabel = [showsTuitionReference ? title : "", scopeLabel].filter(Boolean).join(" · ");
+  const metaHtml = metaLabel || secondary
+    ? `<span class="uni-cost-meta">${metaLabel ? `<span class="uni-cost-meta__label">${escapeHtml(metaLabel)}</span>` : ""}${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}</span>`
     : "";
   return `<span class="ui-tooltip-wrap uni-cost-tooltip">
         <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-expanded="false">

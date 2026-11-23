@@ -896,7 +896,8 @@ export function initLanguagesPanel() {
         return;
       }
       const takenOn = kind === KIND_EXAM ? String(langExamTakenOn?.value || "").trim() : "";
-      if (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn))) {
+      const partialDate = kind === KIND_EXAM && Boolean(langExamTakenOn?.validity?.badInput);
+      if (partialDate || (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn)))) {
         langExamTakenOn?.focus();
         showToast(t("profile.evidence.error.dates", "Check the dates for this evidence."), "error");
         return;

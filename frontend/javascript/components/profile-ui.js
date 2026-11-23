@@ -21,7 +21,7 @@ import {
   showToast,
   trapFocus,
 } from "../utils.js";
-import { applyTokenSubstitutions, applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
+import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { formatMoney } from "../currency.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
@@ -36,6 +36,7 @@ import {
   renderSpecialExamInput as renderSpecialExamInputFromModule,
 } from "./profile/exam-breakdowns.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
+import { applyBudgetCurrencyChoice, fillBudgetCurrencyOptions, reinterpretBudgetCurrency, syncBudgetCurrencySelect } from "./profile/budget-currency.js";
 import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile/profile-summary.js";
 import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
@@ -49,6 +50,7 @@ import {
   getBudgetPlaceholderValue,
   getLowBudgetGrantThreshold,
   getMaxBudgetForCurrency,
+  hasPartialDateInput,
   normalizeFundingType,
   normalizeAmountRaw,
   normalizeGpaRaw,
@@ -85,6 +87,7 @@ export const queryProfileElements = (modal) => {
         backdrop: modal.querySelector(".profile-backdrop"),
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
+        profileBudgetCurrency: document.getElementById("profileBudgetCurrency"),
         gpaInput: document.getElementById("gpaInput"),
         gpaUnit: document.getElementById("gpaUnit"),
         gpaHint: document.getElementById("gpaHint"),
@@ -244,11 +247,13 @@ export const renderLowBudgetGrantHint = (els, state) => {
 export const updateBudgetUI = (els, state) => {
     const currency = getBudgetCurrency();
     const maxBudget = getMaxBudgetForCurrency(currency);
-    if (els.profileBudgetUnit) {
-        els.profileBudgetUnit.removeAttribute("data-i18n");
-        const caption = applyTokenSubstitutions(t("profile.unit.currency_year", "{currency} / year"));
-        els.profileBudgetUnit.innerHTML = `${escapeHtml(caption)}${heroIcon("chevron-down", "ui-icon ui-icon--16")}`;
-        els.profileBudgetUnit.setAttribute("aria-label", tFormat("profile.change_budget_currency", { currency }));
+    if (els.profileBudgetUnit) els.profileBudgetUnit.textContent = t("profile.unit.per_year", "/ year");
+    if (els.profileBudgetCurrency) {
+        const select = els.profileBudgetCurrency;
+        if (fillBudgetCurrencyOptions(select)) applyTranslations(select);
+        syncBudgetCurrencySelect(select, currency);
+        select.setAttribute("aria-label", t("profile.budget_currency_label", "Budget currency"));
+        initCommonSelects(["profileBudgetCurrency"]);
     }
     if (els.budgetInput) {
         els.budgetInput.removeAttribute("data-i18n-placeholder");
@@ -1097,7 +1102,8 @@ export const handleAddExam = async (els, state) => {
         showToast(t("profile.exam_select_required", "Please select an exam"), "error");
         return;
     }
-    if (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn))) {
+    if (hasPartialDateInput(els.examTakenOnInput)
+        || (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn)))) {
         reportInvalidDate(els.examTakenOnInput);
         return;
     }
@@ -1474,7 +1480,15 @@ export const bindProfileEvents = (els, state) => {
         });
     });
 
-    els.profileBudgetUnit?.addEventListener("click", () => document.getElementById("settingsBtn")?.click());
+    els.profileBudgetCurrency?.addEventListener("change", () => {
+        // The select is the unit of the typed number: keep the number and read it in the chosen currency.
+        const code = String(els.profileBudgetCurrency.value || "").trim().toUpperCase();
+        if (els.budgetInput && code) {
+            state.profile = reinterpretBudgetCurrency(state.profile, els.budgetInput.value, code);
+            state.budgetInputCurrency = code;
+        }
+        applyBudgetCurrencyChoice(els.profileBudgetCurrency);
+    });
     els.clearExamDraftBtn?.addEventListener("click", () => {
         if (state.examValidationPending) return;
         els.examNameSelect.value = "";

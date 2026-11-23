@@ -806,6 +806,43 @@ body[data-page="universities"] {
   line-height: 1.5;
 }
 
+.u-state-card__filters {
+  margin-top: var(--space-2);
+  color: var(--text);
+}
+
+.u-state-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.u-state-card__action {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.u-state-card__action:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+@media (hover: hover) {
+  .u-state-card__action:hover {
+    background: var(--accent-panel);
+  }
+}
+
 .u-unifit-warning {
   display: flex;
   flex-wrap: wrap;

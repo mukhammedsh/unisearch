@@ -110,9 +110,22 @@ export const unmetMinimums = (checks, { examLabel, formatValue, joiner }) => (Ar
     };
   });
 
+// The budget as the applicant typed it ("5 200 000 ₸"), not a round trip through rounded dollars
+// ("5 200 030 ₸"). `usd` is the whole-dollar budget sent to the API; the typed amount is used only while it
+// still rounds to that same dollar figure, otherwise `fallback(usd)` formats the converted value.
+export const exactBudgetMoney = (usd, profile, { convert, formatMoney, fallback }) => {
+  const typed = Number(profile?.budget);
+  const currency = text(profile?.budgetCurrency).toUpperCase() || "USD";
+  if (text(profile?.budget) && Number.isFinite(typed) && typed > 0
+    && Math.round(convert(typed, currency, "USD")) === Math.round(Number(usd))) {
+    return formatMoney(typed, currency);
+  }
+  return fallback(usd);
+};
+
 // Plain budget sentence for a card tooltip. `costMin`/`costMax`/`budget` are USD; `money` formats a USD amount
 // for display and `tr`/`trf` are the i18n helpers. Returns "" when there is nothing to compare.
-export const budgetTooltip = ({ status, costMin, costMax = costMin, budget, tuitionOnly = false }, { money, tr, trf }) => {
+export const budgetTooltip = ({ status, costMin, costMax = costMin, budget, tuitionOnly = false }, { money, budgetMoney = money, tr, trf }) => {
   const min = Number(costMin);
   const max = Number.isFinite(Number(costMax)) ? Number(costMax) : min;
   const limit = Number(budget);
@@ -122,7 +135,7 @@ export const budgetTooltip = ({ status, costMin, costMax = costMin, budget, tuit
   if (status === "over") {
     notes.push(trf("universities.tip.budget_over", { cost, gap: money(min - limit) }), tr("universities.tip.before_aid"));
   } else if (status === "within") {
-    notes.push(trf("universities.tip.budget_within", { cost, budget: money(limit) }));
+    notes.push(trf("universities.tip.budget_within", { cost, budget: budgetMoney(limit) }));
   } else if (status === "range") {
     notes.push(trf("universities.tip.budget_range", { min: money(min), max: money(max) }));
   } else if (status === "fee_status") {

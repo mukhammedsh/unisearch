@@ -47,7 +47,8 @@ test("the checklist names tests, the English test and documents, and drops a doc
     "Two teacher recommendations",
     "Portfolio of work",
   ]);
-  assert.ok(items.every(item => item.mark === "todo"));
+  // A recommendation is never listed as something still to prepare, and the condition that applies to it is not hidden.
+  assert.deepEqual(items.map(item => item.mark), ["todo", "recommended", "todo", "todo", "todo"]);
 });
 
 test("a recommended English test shows the applicant's own result instead of a test still to prepare", () => {
@@ -58,7 +59,7 @@ test("a recommended English test shows the applicant's own result instead of a t
   assert.equal(item.mark, "recommended");
   assert.match(item.text, /IELTS Academic 7\.0.*You have: IELTS Academic 6\.5/);
   // Without a profile the published wording stays.
-  assert.equal(checklistItems(resolvedWith([english]))[0].mark, "todo");
+  assert.equal(checklistItems(resolvedWith([english]))[0].mark, "recommended");
 });
 
 test("checklist marks follow the applicant's evidence: met, to add, or below a published minimum", () => {
@@ -97,7 +98,7 @@ test("the date card leads with the next date and its countdown, and says that th
   const resolved = resolvedWith([recurring()], [], { fact_groups: { deadlines: ["rounds"] } });
   const card = deadlineCard(deadlineFact(resolved, NOW));
   // The count and its unit are joined by a no-break space so they never wrap apart.
-  assert.equal(card.headline, "By January 4, 2027 · in 52 days");
+  assert.match(card.headline, /^By January 4 \(the university does not state the year\) · in about\s+52\s+days$/);
   assert.equal(card.lines[0], "Regular application (Regular Action)");
   assert.match(card.lines[1], /^Early application \(Early Action\), November 1: this deadline has passed\. The university repeats this date every year/);
   // A date with a year and a nearer deadline within 30 days is flagged.

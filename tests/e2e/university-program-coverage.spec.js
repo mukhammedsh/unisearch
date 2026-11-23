@@ -95,7 +95,7 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   const mdCost = page.locator('#tab-finance [data-admissions-fact="professional-evidence:med_md_award_cost"]');
   await openDisclosureParents(mdCost);
   await expect(mdCost).toBeVisible();
-  await expect(mdCost).toContainText(/2026[-\u2011]27/);
+  await expect(mdCost).toContainText(/2026[-\u2011\u2013]27/);
   await expect(mdCost).toContainText("USD 24,034 per quarter");
 
   const cs = await openContext(page, {
@@ -122,10 +122,10 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   const csCost = page.locator('#tab-finance [data-admissions-fact="engineering-doerr-evidence:engineering-2026-27-historical-tuition"]');
   await openDisclosureParents(csCost);
   await expect(csCost).toBeVisible();
-  await expect(csCost).toContainText(/2026[-\u2011]27/);
+  await expect(csCost).toContainText(/2026[-\u2011\u2013]27/);
   await expect(csCost).toContainText(/15,?100/);
   await expect(csCost).toContainText(/23,?239/);
-  await expect(csCost).toContainText(/historical context only, not published 2027[-\u2011]28 tuition/);
+  await expect(csCost).toContainText(/historical context only, not published 2027[-\u2011\u2013]28 tuition/);
   await openTab(page, "admission");
   const unknowns = page.locator("#detailRequirements details.admissions-catalog__unknowns");
   // Unresolved information is grouped with the full records behind the tab's single records disclosure.
@@ -134,11 +134,11 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   await page.locator("#detailRequirements [data-all-records] [data-full-records] > summary").click();
   await expect(unknowns).toBeVisible();
   await unknowns.locator(":scope > summary").click();
-  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011]28 Engineering prices are not published/ })).toHaveCount(1);
+  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011\u2013]28 Engineering prices are not published/ })).toHaveCount(1);
   // The old tuition-and-funding gap is superseded: its 2027-28 caveat now lives in the current unknowns, not in history.
   await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /individual electronic admission\/aid offer/ })).toHaveCount(1);
   await openTab(page, "general");
-  await expect(page.locator("#admissionsUniversityInfo")).not.toContainText(/2027[-\u2011]28 tuition and individual future offer amounts remain unavailable/);
+  await expect(page.locator("#admissionsUniversityInfo")).not.toContainText(/2027[-\u2011\u2013]28 tuition and individual future offer amounts remain unavailable/);
 });
 
 test("MIT application dates and Imperial award deadlines stay in their own source scopes", async ({ page }) => {
@@ -182,7 +182,7 @@ test("MIT application dates and Imperial award deadlines stay in their own sourc
   const funding = page.locator('#tab-finance [data-admissions-fact="imperial-civil-scholarship-scheme-conditions"]');
   await openDisclosureParents(funding);
   await expect(funding).toBeVisible();
-  await expect(funding).toContainText(/2026[-\u2011]11[-\u2011]02/);
+  await expect(funding).toContainText(/2026[-\u2011\u2013]11[-\u2011\u2013]02/);
 });
 
 test("Harvard saved program names resolve unique concentrations but leave split legacy routes unselected", async ({ page }) => {

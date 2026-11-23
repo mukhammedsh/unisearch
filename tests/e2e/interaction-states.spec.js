@@ -196,13 +196,12 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectColor(secondaryAction, hoverColor);
     await expectFocusRing(secondaryAction, focusColor);
 
-    const currencyToggle = page.locator("#profileBudgetUnit");
-    await expectColor(currencyToggle, mutedColor);
-    await currencyToggle.hover();
+    // The budget unit is a plain "/ year" caption now; the currency choice is a separate select.
+    const budgetUnit = page.locator("#profileBudgetUnit");
+    await expectColor(budgetUnit, mutedColor);
+    // The caption ignores pointer events, so the hover lands on the field beneath it.
+    await budgetUnit.hover({ force: true });
     await expectBackground(fieldComposite, hoverSurface);
-    await expectBackground(currencyToggle, await resolvedBackgroundToken(page, "--interaction-active-surface"));
-    await expectColor(currencyToggle, hoverColor);
-    await expectFocusRing(currencyToggle, await resolvedToken(page, "--accent"));
 
     await page.locator('[data-profile-tab="scores"]').click();
     const unitToggle = page.locator("#gpaUnit");

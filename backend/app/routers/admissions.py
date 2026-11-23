@@ -53,7 +53,7 @@ def list_study_options(
         major = (major or "").strip() or None
         result = admissions_catalog.list_study_options(
             university_id,
-            search_candidates=university_service._search_query_candidates(search.strip(), search_lang=language),
+            search_candidates=university_service._search_query_candidates(search.strip(), search_lang=language, match_name_words=True),
             study_level=study_level, page=page, limit=limit, major=major,
         )
         revision = result["revision"]

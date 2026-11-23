@@ -500,6 +500,30 @@ export async function ensureCityDatabase() {
   return cityDbPromise;
 }
 
+// Letter grade of a single-subject exam whose grade points are known ("A*" for A_LEVEL_MATHEMATICS 6).
+function singleSubjectGradeLabel(examId, score) {
+  const scheme = getExamConfig(examId)?.grade_scheme || {};
+  const points = scheme?.grade_points;
+  if (!points || typeof points !== "object") return "";
+  return Object.entries(points).find(([, value]) => Number(value) === Number(score))?.[0] || "";
+}
+
+// "A*A*A" for a "best N grades" total (A-Level): the applicant's own grades, not the internal points sum.
+// Empty when any component has no letter grade or the grades do not add up to the stored total.
+function bestOfGradesLabel(scheme, components, total) {
+  if (String(scheme?.total_strategy || "").trim().toLowerCase() !== "best_of_sum") return "";
+  const count = Number(scheme?.best_of);
+  if (!Number.isInteger(count) || count < 1 || components.length < count) return "";
+  const graded = components.map((item) => ({
+    score: Number(item?.score),
+    grade: singleSubjectGradeLabel(String(item?.exam || item?.id || "").trim(), item?.score),
+  }));
+  if (graded.some((item) => !Number.isFinite(item.score) || !item.grade)) return "";
+  const best = graded.sort((a, b) => b.score - a.score).slice(0, count);
+  if (best.reduce((sum, item) => sum + item.score, 0) !== Number(total)) return "";
+  return best.map((item) => item.grade).join("");
+}
+
 function formatCompositeExamValue(examId, entry, words, options = {}) {
   if (!entry || typeof entry !== "object") return "";
   const scheme = getExamConfig(examId)?.breakdown_scheme;
@@ -534,7 +558,8 @@ function formatCompositeExamValue(examId, entry, words, options = {}) {
   // The total leads (an entered overall score, or a summed one such as SAT 1310), with its sections in brackets.
   const total = Number(entry?.score);
   if (!Number.isFinite(total)) return parts.join(", ");
-  const totalText = totalStrategy === "use_parent_score" ? `${totalLabel} ${entry.score}` : String(entry.score);
+  const grades = bestOfGradesLabel(scheme, components, total);
+  const totalText = grades || (totalStrategy === "use_parent_score" ? `${totalLabel} ${entry.score}` : String(entry.score));
   return parts.length ? `${totalText} (${parts.join(", ")})` : totalText;
 }
 

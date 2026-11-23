@@ -7,7 +7,7 @@ const NU = "nazarbayev-university-kaz-astana";
 async function openProfileEditor(page, section) {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
-  await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
+  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await page.locator(`[data-profile-tab='${section}']`).click();
 }
 
@@ -36,7 +36,7 @@ test("pending catalog search cannot replace the university destination during SP
 test("an empty profile keeps advanced evidence fields hidden until their type is selected", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
-  await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
+  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
   await page.locator(".profile-admission-evidence > summary").click();
   await expect(page.locator("#institutionEvidenceKind")).toHaveValue("");
@@ -53,7 +53,7 @@ test("an empty profile keeps advanced evidence fields hidden until their type is
 test("profile budget entry accepts group spaces and saves on Enter", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
-  await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
+  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await expect(page.locator(".profile-page-intro")).toContainText("Nothing here is required");
   await page.locator("#budgetInput").fill("1 000 000");
   await expect(page.locator("#budgetInput")).toHaveValue("1 000 000");
@@ -67,26 +67,31 @@ test("profile budget entry accepts group spaces and saves on Enter", async ({ pa
 test("currency settings do not silently save unrelated profile drafts", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
-  await expect(page.locator("#profileBudgetUnit")).toHaveAttribute("aria-label", /Change budget currency/);
+  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await page.locator("#budgetInput").fill("20000");
   await page.locator("#budgetInput").press("Enter");
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
   await page.locator("#profileInterestsInput").fill("robotics and campus research");
   await expect(page.locator("#saveProfileBtn")).toBeEnabled();
   await page.locator("#budgetInput").fill("30000");
-  await page.locator("#profileBudgetUnit").click();
-  await setNativeSelect(page, "settingPreferredCurrency", "KZT");
+  // The currency is chosen right next to the amount, without opening Settings.
+  await setNativeSelect(page, "profileBudgetCurrency", "KZT");
   await expect(page.locator("#settingPreferredCurrency")).toHaveValue("KZT");
-  await page.locator("#settingsCloseBtn").click();
-  await expect(page.locator("#profileBudgetUnit")).toContainText("KZT");
-  await expect.poll(async () => Number(await page.locator("#budgetInput").inputValue())).toBeGreaterThan(1000000);
+  await expect(page.locator("#profileBudgetCurrency")).toHaveValue("KZT");
+  // The currency select is the unit of the typed number: the number stays and is read in the chosen currency.
+  await expect(page.locator("#budgetInput")).toHaveValue("30000");
   await expect(page.locator("#saveProfileBtn")).toBeEnabled();
-  await expect(page.locator("#profileBudgetUnit")).toBeFocused();
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(saved.interests || "").toBe("");
-  // The saved budget keeps the amount and currency it was entered in; the field only shows a conversion.
+  // Choosing a currency alone does not save the draft: the stored budget is still the earlier entry.
   expect(saved.budgetCurrency).toBe("USD");
   expect(saved.budget).toBe(20000);
+  await page.locator("#saveProfileBtn").click();
+  await expect(page.locator("#saveProfileBtn")).toBeDisabled();
+  const afterSave = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
+  expect(afterSave.budgetCurrency).toBe("KZT");
+  expect(Number(afterSave.budget)).toBe(30000);
+  await expect(page.locator("#budgetInput")).toHaveValue("30000");
 });
 
 test("saving a profile keeps university choices saved by another tab", async ({ page, context }) => {
@@ -95,7 +100,7 @@ test("saving a profile keeps university choices saved by another tab", async ({ 
   await page.locator("#saveProfileBtn").click();
   const university = await context.newPage();
   try {
-    await university.goto(`/university.html?id=${NU}&admission_option=nu-a-study-nu-foundation-year-program&admission_application_route=nu-a-route-financial-support&admission_level=preparation`);
+    await university.goto(`/university.html?id=${NU}&admission_option=nu-a-study-nu-foundation-year-program&admission_application_route=nu-a-route-regular-foundation-undergraduate&admission_level=preparation`);
     await expect(university.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     await university.locator(".d-tab-btn[data-tab='tab-admission']").click();
     await university.locator("#admissionsSaveChoice").click();
@@ -105,7 +110,7 @@ test("saving a profile keeps university choices saved by another tab", async ({ 
     await expect(page.locator("#saveProfileBtn")).toBeDisabled();
     await university.goto(`/university.html?id=${NU}`);
     await expect(university.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-    await expect(university.locator("#admissionsReferenceSummary")).toContainText("Post-offer financial-support consideration");
+    await expect(university.locator("#admissionsReferenceSummary")).toContainText("Regular Foundation admission");
     await page.reload();
     await expect(page.locator("#budgetInput")).toHaveValue("25000");
   } finally {
@@ -167,7 +172,7 @@ test("an unadded academic report survives translation, blocks false saving, and 
   await page.locator("#saveProfileBtn").click();
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
   await page.reload();
-  await expect(page.locator("#profileBudgetUnit[aria-label]")).toBeAttached();
+  await expect(page.locator("#profileBudgetCurrency[aria-label]")).toBeAttached();
   await page.locator("[data-profile-tab='scores']").click();
   await page.locator("#examList [data-edit-idx='0']").click();
   await expect(page.locator("#examTakenOnInput")).toHaveValue("2026-03-15");

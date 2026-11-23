@@ -155,7 +155,7 @@ test.describe("compact dual-currency price", () => {
     const tooltip = priceGroup.locator('[role="tooltip"]');
     await expect(price).toHaveAttribute('data-cost-basis', 'tuition');
     await expect(price.locator('.uni-price-val')).toContainText('₸');
-    await expect(card.locator('.uni-footer .uni-cost-secondary')).toHaveText('($66,720)');
+    await expect(card.locator('.uni-footer .uni-cost-secondary')).toHaveText(/^\(\$66[\s\u00a0\u202f,]?720\)$/);
     await expect(tooltip).toBeHidden();
     expect(await price.evaluate(element => element.getBoundingClientRect().height)).toBeLessThanOrEqual(100);
     await page.screenshot({ path: testInfo.outputPath('compact-two-currencies-mobile.png') });

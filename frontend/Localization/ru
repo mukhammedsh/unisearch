@@ -24,7 +24,7 @@ about.role.planning: Сооснователь и ведущий разработ
 about.team_kicker: Наша команда
 about.title: UniSearch – сервис, созданный абитуриентами для абитуриентов.
 footer.copyright: © 2026 UniSearch
-footer.qs_attribution: Глобальный рейтинг: Source: QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). With permission from QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
+footer.qs_attribution: Глобальный рейтинг: источник — QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). С разрешения QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
 filter_any: Любой
 filter_grant: Грант
 filter_paid: Платно
@@ -3339,7 +3339,7 @@ university.admissions.key_facts.title: Главное для поступлен�
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Документы и другие условия здесь не проверяются — они описаны ниже.
+university.admissions.key_facts.requirements_manual: Документы и другие условия здесь не проверяются; опубликованные университетом записи — в разделе «Источники».
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -3358,22 +3358,22 @@ university.admissions.key_facts.cost_estimate: Обучение и прожив�
 university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
 university.admissions.key_facts.cost_period: Цены: {period}
 university.admissions.key_facts.cost_calculated_reference: Расчётный ориентир: обучение плюс оценка расходов на проживание.
-university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas); его можно указать в дополнительных параметрах выше
+university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas)
 university.admissions.key_facts.cost_not_annual: Цена опубликована не за год; подробности на вкладке «Стоимость»
 university.admissions.key_facts.cost_unknown: Для этого выбора цена не опубликована
-university.admissions.key_facts.budget_over: Выше вашего бюджета {budget}
-university.admissions.key_facts.budget_within: В пределах вашего бюджета {budget}
-university.admissions.key_facts.budget_tuition_within: Обучение укладывается в бюджет {budget}, но проживание оплачивается отдельно
-university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
+university.admissions.key_facts.budget_over: Дороже вашего бюджета ({budget})
+university.admissions.key_facts.budget_within: В пределах вашего бюджета ({budget})
+university.admissions.key_facts.budget_tuition_within: Обучение укладывается в ваш бюджет ({budget}), но проживание оплачивается отдельно
+university.admissions.key_facts.budget_partial: Часть диапазона дороже вашего бюджета ({budget})
 university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
 university.admissions.key_facts.open_finance: Стоимость и финансирование
-university.admissions.key_facts.open_funding_route: Как получить грант
+university.admissions.key_facts.open_funding_route: Условия гранта (отдельный раздел)
 university.admissions.key_facts.funding_route_viewing: Это условия гранта: на грант подают отдельно, после предложения о зачислении. Это не путь поступления.
 university.admissions.key_facts.back_to_route: Вернуться к вашему варианту: {route}
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
-university.admissions.key_facts.funding_records: Варианты финансирования описаны во вкладке «Стоимость и финансирование». Грант не гарантирован.
-university.admissions.key_facts.funding_records_here: Условия финансирования описаны ниже и в разделе «Источники». Грант не гарантирован и из стоимости не вычитается.
+university.admissions.key_facts.funding_records: Записи о финансировании — в официальных источниках на вкладке «Стоимость и финансирование». Грант не гарантирован.
+university.admissions.key_facts.funding_records_here: Записи о финансировании по этому пути — в официальных источниках ниже, в разделе «Источники». Финансирование не гарантировано и из стоимости не вычитается.
 university.admissions.key_facts.funding_none: Финансирование для этого варианта в каталоге не указано; проверьте официальную страницу о финансировании
 university.admissions.catalog.domain.reference: Связанные сопоставления источников
 university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
@@ -3462,8 +3462,8 @@ university.admissions.key_facts.cost_fee_status_source: Официальная �
 university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
 university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили.
 university.admissions.key_facts.deadline_earlier: Но сначала, раньше этого срока: {text}
-university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date}, через {days} дн. (ежегодная дата; год уточните на официальной странице)
-university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date}, сегодня (ежегодная дата; год уточните на официальной странице)
+university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date} (год университет не указывает), примерно через {days} дн.; уточните на официальной странице
+university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date} (год университет не указывает), сегодня; уточните на официальной странице
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
 university.admissions.key_facts.requirements_kind_academic: Академический результат
 university.admissions.key_facts.requirements_kind_language: Английский язык
@@ -3489,8 +3489,10 @@ university.admissions.key_facts.minimum_gpa: GPA {minimum}
 university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} из {scale}
 university.admissions.key_facts.minimum_have: У вас: {result}
 university.admissions.key_facts.minimum_have_add: У вас: {result}. Чтобы проверить полностью, добавьте: {items}
-university.admissions.key_facts.minimum_have_overall_add: У вас: {result}, общий балл подходит. Чтобы проверить полностью, добавьте: {items}
+university.admissions.key_facts.minimum_have_overall_add: Проверено частично. У вас: {result}; общий балл подходит. Чтобы завершить проверку, добавьте: {items}
 university.admissions.key_facts.minimum_have_below: У вас: {result}, ниже минимума
+university.admissions.key_facts.minimum_have_below_sections: У вас: {result}. Ниже минимума: {sections}
+university.admissions.key_facts.minimum_below_section: {name} {score} (нужно не ниже {minimum})
 university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; засчитывается ли он, зависит от условий ниже
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
@@ -3553,7 +3555,7 @@ profile.ux2.summary.subject.unused: Специальность не выбран
 profile.ux2.summary.budget.title: Годовой бюджет
 profile.ux2.summary.budget.value: {amount} в год
 profile.ux2.summary.budget.used: Известная годовая стоимость выше этой суммы понижает позицию. Гранты не вычитаются.
-profile.ux2.summary.budget.zero: Бюджет 0 игнорируется. Укажите сумму, чтобы сравнить цены.
+profile.ux2.summary.budget.zero: Нулевой бюджет не учитывается. Оставьте поле пустым, если бюджет вас не ограничивает, или укажите сумму, чтобы сравнить цены.
 profile.ux2.summary.budget.unused: Цены не сравниваются с бюджетом. Укажите сумму, чтобы сравнить их.
 profile.ux2.summary.format.title: Финансирование и формат обучения
 profile.ux2.summary.format.mode: Формат определяет, с какой ценой сравнивается бюджет: очной или онлайн.
@@ -3699,3 +3701,59 @@ university.ux2.overview.numbers_title: Ключевые факты
 university.ux2.prompt.shared_routes: На бакалавриат подают одну заявку для всех программ. Выберите, как вы поступаете:
 university.ux2.sources.one: Источник
 university.ux2.sources.many: Источники
+university.admissions.key_facts.minimum_with_sections: {minimum} ({sections})
+university.admissions.key_facts.minimum_sections_all: каждая часть — не ниже {value}
+university.admissions.key_facts.minimum_sections_other: остальные части — не ниже {value}
+university.admissions.key_facts.minimum_sections_named: {names} — не ниже {value}
+university.admissions.key_facts.section_writing: письмо
+university.admissions.key_facts.section_reading: чтение
+university.admissions.key_facts.section_listening: аудирование
+university.admissions.key_facts.section_speaking: говорение
+university.admissions.key_facts.section_mathematical_literacy: математическая грамотность
+university.admissions.key_facts.section_reading_literacy: грамотность чтения
+university.admissions.key_facts.requirements_add_sections_named: {exam}: баллы за части — {sections}
+university.admissions.key_facts.requirements_add_date_sections_named: {exam}: дата экзамена и баллы за части — {sections}
+university.admissions.key_facts.recommended_english_if_not_native: если английский — не родной язык
+university.ux2.needs.if_not_native: если английский — не родной язык
+university.ux2.needs.mark_partial: Проверено частично: добавьте недостающее
+university.ux2.needs.mark_note: К сведению
+university.admissions.key_facts.english_not_required: Тест по английскому: не требуется. Университет ожидает свободного владения английским; результат можно указать по желанию.
+university.admissions.key_facts.english_bands: IELTS {overall}, не ниже {section} в каждой части
+university.admissions.key_facts.english_overall: IELTS {overall}
+university.admissions.key_facts.english_level: Английский, уровень {level} для этого курса: {bands}
+university.admissions.key_facts.english_levels: Английский по уровням курса: Standard — {standard}; Higher — {higher}. Какой уровень нужен, указано на странице курса.
+university.admissions.key_facts.english_level_standard: Standard
+university.admissions.key_facts.english_level_higher: Higher
+university.admissions.key_facts.english_other_tests: Другие принимаемые экзамены (TOEFL, PTE, Duolingo и др.) — в официальной таблице университета, в разделе «Источники».
+university.admissions.key_facts.funding_lines_lead: Что публикует университет по этому пути. Финансирование не гарантировано и из стоимости не вычитается:
+university.admissions.key_facts.funding_apply_by: Подать заявку до {date}, {time}
+university.admissions.key_facts.funding_coverage: {percent}% оплаты обучения: {group}
+university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: социально уязвимые категории граждан Казахстана
+university.admissions.key_facts.coverage_second_and_later_fee_paying_sibling: второй и последующие братья и сёстры на платном обучении
+university.admissions.key_facts.coverage_kazakhstan_government_institution_or_enterprise_employee: сотрудники государственных учреждений и предприятий Казахстана
+university.admissions.key_facts.coverage_full_annual_tuition_single_payment: оплата обучения за весь год одним платежом (скидка за оплату, не грант)
+university.admissions.key_facts.application_fee: Сбор за подачу заявки
+university.admissions.key_facts.application_fee_amount: {amount}
+university.admissions.key_facts.application_fee_late: Поздний сбор: {amount}.
+university.admissions.key_facts.application_fee_late_window: Поздний сбор: {amount}, если подаёте заявку в последние две недели до срока.
+university.admissions.key_facts.set_fee_status: Указать статус оплаты
+university.ux2.deadline.headline_yearless: До {date} (год университет не указывает) · примерно через {days} дн.
+university.admissions.key_facts.deadline_rolling: Заявки принимают по мере поступления.
+university.admissions.key_facts.deadline_international_tba: Сроки для части иностранных абитуриентов пока не опубликованы.
+university.admissions.key_facts.requirements_published_lead: Что публикует университет:
+tour.close: Закрыть обучение
+universities.empty.filters_intro: Ничего не найдено из-за фильтров: {filters}
+universities.empty.filter.search: поиск «{value}»
+universities.empty.filter.country: страна: {value}
+universities.empty.filter.region: штат / регион: {value}
+universities.empty.filter.city: город: {value}
+universities.empty.filter.study_level: уровень обучения: {value}
+universities.empty.filter.funding: финансирование в профиле: {value}
+universities.empty.filter.price_max: цена до {amount}
+universities.empty.filter.price_min: цена от {amount}
+universities.empty.filter.price_range: цена от {min} до {max}
+universities.empty.show_above_budget: Показать вузы дороже моего бюджета
+universities.empty.clear_price: Убрать фильтр цены
+universities.state.empty_saved_none: Вы пока ничего не сохранили. Сохраните вуз на его карточке, и он появится здесь.
+profile.unit.per_year: / год
+profile.budget_currency_label: Валюта бюджета

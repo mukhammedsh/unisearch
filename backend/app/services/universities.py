@@ -23,6 +23,8 @@ from app.services.finance_modes import (
 )
 from app.services import search as search_service
 from app.services import admissions_catalog, admissions_editorial
+from app.services.query_aliases import word_alias_candidates
+from app.services.university_covers import cover_available
 from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program, _MBA_RE
 
 
@@ -739,7 +741,7 @@ def _load_localized_university_names(search_lang: str) -> Dict[str, str]:
 
 
 def _search_query_candidates(
-    query: Any, search_lang: str = SEARCH_LANG_ENG
+    query: Any, search_lang: str = SEARCH_LANG_ENG, match_name_words: bool = False
 ) -> List[str]:
     raw = str(query or "").strip()
     if not raw:
@@ -810,6 +812,9 @@ def _search_query_candidates(
     full_alias = alias_map.get(norm_query)
     if full_alias:
         candidates.append(full_alias)
+    elif match_name_words:
+        # Program search only: one word of a translated program name finds that program.
+        candidates.extend(word_alias_candidates(norm_query, alias_map))
 
     tokens = [part for part in norm_query.split(" ") if part]
     if tokens:
@@ -1124,6 +1129,7 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
         return {}
 
     uid = str(u.get("id") or "")
+    u["cover_available"] = cover_available(uid)
     u["admissions_catalog"] = admissions_catalog.get_public_contract(uid)
     if uid in admissions_catalog.INSTITUTION_IDS:
         institution = admissions_catalog.get_institution(uid)
@@ -1616,6 +1622,7 @@ def to_university_card(
         "abbreviations": [_safe_lower(x) for x in _abbreviations_for_university(u)],
         "aid_any": _has_any_aid(u),
         "catalog_costs": _catalog_costs(u, mode),
+        "cover_available": bool(u.get("cover_available")),
     }
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
@@ -1674,6 +1681,7 @@ def to_university_map_point(
             "city": city_value,
         },
         "coordinates": {"lat": lat, "lon": lon},
+        "cover_available": bool(u.get("cover_available")),
     }
     map_label = _map_label_for_university(uid, lang)
     if map_label:

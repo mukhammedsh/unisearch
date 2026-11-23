@@ -69,7 +69,7 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await openDisclosureParents(feeConflict);
   await expect(feeConflict).toBeVisible();
   await feeConflict.locator(":scope > summary").click();
-  await expect(feeConflict).toContainText(/2026[-\u2011]2027/);
+  await expect(feeConflict).toContainText(/2026[-\u2011\u2013]2027/);
   await expect(feeConflict).toContainText(/91,?892/);
   await expect(feeConflict).toContainText("Confirm current billed tuition");
   await expect(finance).not.toContainText(/\$\s?0(?:\.00)?\b/);

@@ -158,7 +158,7 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expect(page.locator("#admissionsContextApply")).toBeHidden();
   await expect(page.locator("#admissionsContext [data-saved-context]")).toContainText("Nothing is sent to the university");
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
-  await expect(page.locator("#admissionsSaveChoice")).toHaveText("Remember this path");
+  await expect(page.locator("#admissionsSaveChoice")).toHaveText("Remember this choice");
   await page.locator("#admissionsSaveChoice").click();
   await expect(page.locator("#admissionsSaveStatus")).toHaveText("Path remembered on this device.");
   const immediateSave = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}"));

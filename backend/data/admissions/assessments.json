@@ -571,6 +571,86 @@
       "mapping_reviewed_at": "2026-10-12"
     },
     {
+      "id": "stanford-firstyear-standardized-tests-assessment",
+      "institution_id": "stanford-university-usa-ca",
+      "fact_id": "undergraduate-shared-evidence:stanford-firstyear-standardized-tests",
+      "fact_sha256": "c872631f1e67668f2a7befd53b8ba55255a6af840462ff767297f06e61a973ea",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "undergraduate-shared-evidence:stanford-first-year"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "first_year"
+        ],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-sat-act",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "SAT"
+            },
+            {
+              "exam_id": "ACT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [],
+      "mapping_reviewed_at": "2026-11-23"
+    },
+    {
+      "id": "stanford-transfer-standardized-tests-assessment",
+      "institution_id": "stanford-university-usa-ca",
+      "fact_id": "undergraduate-shared-evidence:stanford-transfer-standardized-tests",
+      "fact_sha256": "2b8d463798ef7a79d5c7a5b2d689fe77841eafc990cd7adcddf2a22f944e0774",
+      "scope": {
+        "option_ids": [],
+        "route_ids": [
+          "undergraduate-shared-evidence:stanford-transfer"
+        ],
+        "levels": [
+          "undergraduate"
+        ],
+        "applicant_routes": [
+          "transfer"
+        ],
+        "cycles": []
+      },
+      "addressed_conditions": [
+        "/scope/option_ids",
+        "/scope/route_ids",
+        "/scope/levels"
+      ],
+      "checks": [
+        {
+          "id": "required-sat-act",
+          "kind": "exam_alternatives",
+          "alternatives": [
+            {
+              "exam_id": "SAT"
+            },
+            {
+              "exam_id": "ACT"
+            }
+          ]
+        }
+      ],
+      "remaining_conditions": [],
+      "mapping_reviewed_at": "2026-11-23"
+    },
+    {
       "id": "bcs-profile-duplicate-minima",
       "institution_id": "mit-usa-cambridge",
       "fact_id": "mit_bcs_meng_admissions-profile-0",

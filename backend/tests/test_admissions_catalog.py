@@ -509,6 +509,25 @@ class AdmissionsCatalogTests(unittest.TestCase):
             transfer = service.resolve_context("stanford-university-usa-ca", context=contexts["stanford-transfer"])
             self.assertNotIn(fact_id, [row["id"] for row in transfer["facts"]])
 
+    def test_mit_international_need_policy_is_one_plain_sourced_statement(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            for route in ("mit-first-year", "mit-transfer"):
+                resolved = service.resolve_context("mit-usa-cambridge", context={
+                    "study_option_id": "mit-course-6-3-bachelor", "study_level": "undergraduate",
+                    "application_route_id": route, "intended_entry_cycle": "Fall 2027 entry"})
+                policy = next(row for row in resolved["facts"] if row["id"] == "undergraduate-aid-category-and-documents")
+                self.assertIn(policy["id"], resolved["fact_groups"]["funding"])
+                statement = policy["value"]["international_need"]
+                # Both parts of the answer are present: asking for aid does not affect admission, and full need is met.
+                self.assertIn("need-blind", statement)
+                self.assertIn("international applicants", statement)
+                self.assertIn("100% of the demonstrated financial need", statement)
+                self.assertNotRegex(statement.lower(), r"loan|scholarship|merit")
+                urls = {row["url"]: row["checked_at"] for row in resolved["sources"] if row["id"] in policy["source_ids"]}
+                self.assertEqual("2026-11-23", urls["https://mitadmissions.org/afford/cost-aid-basics/access-affordability/"])
+                self.assertEqual("2026-11-23", urls["https://sfs.mit.edu/undergraduate-students/apply-for-aid/international/"])
+
     def test_stanford_standing_deadlines_keep_their_prose_and_add_recurring_windows(self):
         def windows(context):
             result = service.resolve_context("stanford-university-usa-ca", context=context)

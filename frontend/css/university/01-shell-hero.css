@@ -797,19 +797,21 @@ a.d-cover-credit:hover {
   width: var(--space-12);
   padding: 0;
   border-radius: 0;
-  background: transparent;
   box-shadow: none;
   color: var(--text);
   cursor: pointer;
   transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
+/* The bar's own colour fills the button and fades into the labels, so an arrow never sits on top of readable text. */
 .d-tabs-nav > [data-tabs-previous] {
   inset-inline-start: 0;
+  background: linear-gradient(to right, var(--card) 60%, transparent);
 }
 
 .d-tabs-nav > [data-tabs-next] {
   inset-inline-end: 0;
+  background: linear-gradient(to left, var(--card) 60%, transparent);
 }
 
 /* An edge with nothing more to reveal drops its button; it stays in the tree so the edges never shift. */

@@ -52,6 +52,8 @@ import {
 import {
   showUniversitiesTour,
 } from "./universities/tour-modals.js";
+import { describeActiveFilters, buildEmptyStateModel, renderEmptyStateCard } from "./universities/empty-state.js";
+import { buildFilterResetPatch } from "./universities/filter-reset.js";
 import {
   translateUniversityName,
   translateWord,
@@ -98,6 +100,7 @@ import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
   budgetTooltip,
   closePreferenceLabels,
+  exactBudgetMoney,
   describeRankingProfile,
   legendEntries,
   missingExamNames,
@@ -111,7 +114,8 @@ const tooltipMoney = (usd) => {
     const amount = convert(Number(usd), "USD", code);
     return Number.isFinite(amount) ? formatMoney(amount, code) : formatMoney(Number(usd), "USD");
 };
-const tooltipHelpers = { money: tooltipMoney, tr: t, trf: tFormat };
+const tooltipBudgetMoney = (usd) => exactBudgetMoney(usd, loadProfile(), { convert, formatMoney, fallback: tooltipMoney });
+const tooltipHelpers = { money: tooltipMoney, budgetMoney: tooltipBudgetMoney, tr: t, trf: tFormat };
 const cardExamLabel = (id) => getExamDisplayName(id, { locale: getCurrentLanguage() });
 const preferenceTooltip = (match, fallbackKey) => {
     const labels = closePreferenceLabels(match).map((label) => t(`universities.tradeoff.${label}`).toLocaleLowerCase());
@@ -1438,10 +1442,28 @@ export function initUniversitiesPage() {
         }
     };
 
+    /** Visible text of the selected option of a filter dropdown, or the raw value when it is not listed. */
+    function selectedFilterOptionLabel(field, value) {
+        const selectId = { country: "countrySelect", region: "stateSelect", city: "citySelect", study_level: "studyLevelSelect" }[field];
+        const option = Array.from($(selectId)?.options || []).find((item) => item.value === value);
+        return String(option?.textContent || value || "").trim();
+    }
+
+    /** Empty-result card that names the filters hiding results and offers a way out. */
+    function buildCatalogEmptyState() {
+        const summary = describeActiveFilters(state, currentLimits, {
+            currency: currentCurrency || getPreferredCurrency(),
+            formatMoney,
+            optionLabel: selectedFilterOptionLabel,
+        });
+        return renderEmptyStateCard(buildEmptyStateModel({ onlySaved: state.only_saved, summary }), { keepSaved: state.only_saved });
+    }
+
     function renderUniversitiesState(options = {}) {
         if (!el.state) return;
         const warningText = String(options.warningText || "").trim();
         const emptyText = String(options.emptyText || "").trim();
+        const emptyHtml = String(options.emptyHtml || "").trim();
         const blocks = [];
 
         if (warningText) {
@@ -1453,7 +1475,9 @@ export function initUniversitiesPage() {
             `.trim());
         }
 
-        if (emptyText) {
+        if (emptyHtml) {
+            blocks.push(emptyHtml);
+        } else if (emptyText) {
             blocks.push(`
                 <div class="u-state-card u-state-card--empty" role="status">
                     <div class="u-state-card__title">${escapeHtml(t("universities.state.empty_title", "No results for current filters"))}</div>
@@ -1886,24 +1910,11 @@ export function initUniversitiesPage() {
 
         const resetDraft = () => {
             clearSavedScrollPosition();
-            Object.assign(state, {
-                q: "",
-                country: "",
-                region: "",
-                city: "",
-                study_level: "",
-                cost_basis: "annual_total",
-                funding_type: getProfileFundingQueryValue(),
-                min_tuition: currentLimits.min,
-                max_tuition: currentLimits.max,
-                sort: "name_asc",
-                practice_vs_science: 50,
-                social_vs_hardcore: 50,
-                budget_vs_prestige: 50,
-                city_vs_campus: 50,
-                only_saved: false,
-                page: 1,
-            });
+            Object.assign(state, buildFilterResetPatch(state, {
+                fundingType: getProfileFundingQueryValue(),
+                limits: currentLimits,
+                onlySaved: false,
+            }));
             applyToForm();
             if (el.stateDiv) el.stateDiv.style.display = "none";
             updateCityDropdown([]);
@@ -2165,26 +2176,13 @@ export function initUniversitiesPage() {
         el.locationLabel
     );
 
-    function handleResetAllFilters() {
+    function handleResetAllFilters({ keepSaved = false } = {}) {
         clearSavedScrollPosition();
-        Object.assign(state, {
-            q: "",
-            country: "",
-            region: "",
-            city: "",
-            study_level: "",
-            cost_basis: "annual_total",
-            funding_type: getProfileFundingQueryValue(),
-            min_tuition: currentLimits.min,
-            max_tuition: currentLimits.max,
-            sort: "name_asc",
-            practice_vs_science: 50,
-            social_vs_hardcore: 50,
-            budget_vs_prestige: 50,
-            city_vs_campus: 50,
-            only_saved: false,
-            page: 1
-        });
+        Object.assign(state, buildFilterResetPatch(state, {
+            fundingType: getProfileFundingQueryValue(),
+            limits: currentLimits,
+            onlySaved: keepSaved ? state.only_saved : false,
+        }));
         saveFilters(state);
         applyToForm();
         if (el.stateDiv) el.stateDiv.style.display = "none"; 
@@ -2195,16 +2193,32 @@ export function initUniversitiesPage() {
         fetchAndRender();
     }
 
+    /** Drop only the price range; every other filter stays as the visitor set it. */
+    function handleClearPriceFilter() {
+        clearSavedScrollPosition();
+        Object.assign(state, { min_tuition: currentLimits.min, max_tuition: currentLimits.max, page: 1 });
+        saveFilters(state);
+        applyToForm();
+        fetchAndRender();
+    }
+
     el.resetBtn?.addEventListener("click", () => {
         motionPress(el.resetBtn);
         handleResetAllFilters();
     });
 
     el.state?.addEventListener("click", (e) => {
-        const btn = e.target instanceof Element ? e.target.closest('[data-action="reset-filters"]') : null;
+        const target = e.target instanceof Element ? e.target : null;
+        const clearPriceBtn = target?.closest('[data-action="clear-price-filter"]');
+        if (clearPriceBtn) {
+            motionPress(clearPriceBtn);
+            handleClearPriceFilter();
+            return;
+        }
+        const btn = target?.closest('[data-action="reset-filters"]');
         if (!btn) return;
         motionPress(btn);
-        handleResetAllFilters();
+        handleResetAllFilters({ keepSaved: btn.hasAttribute("data-keep-saved") });
     });
 
     el.list.addEventListener("click", (e) => {
@@ -3821,9 +3835,7 @@ export function initUniversitiesPage() {
                 warmMapMode();
                 renderUniversitiesState({
                     warningText,
-                    emptyText: state.only_saved
-                        ? t("universities.state.empty_saved", "No favorite universities match these filters.")
-                        : t("universities.state.empty", "No universities found."),
+                    emptyHtml: buildCatalogEmptyState(),
                 });
                 renderCompareTray();
                 renderRecentlyViewedBar();
@@ -3860,9 +3872,7 @@ export function initUniversitiesPage() {
             if (animateResults) markMotionEnter(el.mapResults, ".u-map-results-list .uni-card", { limit: 12, staggerMs: 18 });
             renderUniversitiesState({
                 warningText,
-                emptyText: items.length
-                    ? ""
-                    : (state.only_saved ? t("universities.state.empty_saved", "No favorite universities match these filters.") : t("universities.state.empty", "No universities found.")),
+                emptyHtml: items.length ? "" : buildCatalogEmptyState(),
             });
             renderCompareTray();
             syncCardActionState();
@@ -3925,9 +3935,7 @@ export function initUniversitiesPage() {
             viewModesReady = true;
             syncViewModeControls();
             renderUniversitiesState({
-                emptyText: mapResultsItems.length
-                    ? ""
-                    : (state.only_saved ? t("universities.state.empty_saved", "No favorite universities match these filters.") : t("universities.state.empty", "No universities found.")),
+                emptyHtml: mapResultsItems.length ? "" : buildCatalogEmptyState(),
             });
             return;
         }
@@ -4200,16 +4208,19 @@ ${rankInnerHtml}
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
         const priceFilterActive = Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max;
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), { priceFilterActive });
+        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), { priceFilterActive, studyLevel: state.study_level });
+        // The catalog API flags universities that have no campus photo; those cards show the placeholder
+        // without requesting an image that does not exist (older API responses omit the flag).
+        const hasCover = u?.cover_available !== false;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
-                <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">
+                ${hasCover ? `<img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">` : ""}
                 <div class="uni-media-empty">
                     ${renderInlineIcon("building-office-2", 24)}
                     <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
                 </div>
             </div>`;
-        const backdropHtml = hideMedia && mapVariant
+        const backdropHtml = hideMedia && mapVariant && hasCover
             ? `<div class="uni-card-backdrop" aria-hidden="true"><img src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 360px, 100vw" alt="" loading="${loadingAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1"></div>`
             : "";
         const headHtml = hideMedia

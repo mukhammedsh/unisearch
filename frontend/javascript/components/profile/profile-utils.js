@@ -105,6 +105,10 @@ export const setFieldInvalid = (el, isInvalid = true, message = "") => {
     }
 };
 
+// A date field holding a partly typed date (only the year, say) reports an empty value but a bad input;
+// it must be treated as an invalid date, never as "no date".
+export const hasPartialDateInput = (input) => Boolean(input?.validity?.badInput);
+
 export const reportInvalidDate = (input) => {
     input?.focus();
     showToast(t("profile.evidence.error.dates", "Check the dates for this evidence."), "error");
