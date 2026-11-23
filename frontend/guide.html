@@ -89,7 +89,7 @@
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from minimum requirements match, which is only the requirements fit component:</p>
-            <pre class="guide-formula" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
+            <pre class="guide-formula" tabindex="0" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
 with semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35
 affordability_gap × 0.20 is added when annual cost and profile budget are known; available components are normalized by their total weight</pre>
             <p data-i18n="guide.unifit.p2">Change anything in the profile — an exam score, the budget, a slider — and the list is recomputed from scratch, so what you see always reflects your current data. Each ingredient is scaled from 0 to 1.</p>
@@ -104,7 +104,7 @@ affordability_gap × 0.20 is added when annual cost and profile budget are known
           <h2 data-i18n="guide.ml.title">How your interests are used</h2>
           <div class="guide-doc">
             <p data-i18n="guide.ml.p1">Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors and compares their cosine similarity, rescaled into a 0–1 score:</p>
-            <pre class="guide-formula" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
+            <pre class="guide-formula" tabindex="0" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
 mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
             <p data-i18n="guide.ml.p2">That similarity becomes the semantic third of the UniFit score. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching.</p>
             <p data-i18n="guide.ml.p3">The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off, while every extra filler word dilutes the signal.</p>
@@ -117,7 +117,7 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
           <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">minimum requirements match</span> (fit to published requirements, 0–100)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">minimum requirements match</span> is a 0–100 score for the share of evaluable published academic and language minimums met in the applicable admissions context. On reviewed pages, it uses the selected study option and application route within the applicant context. It is not an admission probability or funding prediction.</p>
-            <pre class="guide-formula" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
+            <pre class="guide-formula" tabindex="0" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
             <p data-i18n="guide.unichance.p2">The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.</p>
             <p data-i18n="guide.unichance.p3">The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.</p>
             <p data-i18n="guide.unichance.p4">If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, minimum requirements match shows no score and explains what is missing. Missing evidence is not treated as zero.</p>

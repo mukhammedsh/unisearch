@@ -172,6 +172,12 @@ body[data-page="about"] {
     border-radius: var(--radius-lg);
   }
 
+  .about-contact-item a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
   .about-team,
   .about-contact {
     gap: var(--space-4);

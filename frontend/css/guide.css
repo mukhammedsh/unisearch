@@ -192,7 +192,7 @@
 }
 
 .guide-section-navigation__title {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
@@ -283,6 +283,11 @@
   line-height: 1.6;
   overflow-x: auto;
   white-space: pre;
+}
+
+.guide-formula:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: var(--space-0-5);
 }
 
 /* Lists (tight rhythm without giant gaps between bullets) */
@@ -476,6 +481,13 @@ body[data-page="guide"] {
 
   .guide-hero h1 {
     font-size: clamp(26px, 6vw, 34px);
+  }
+}
+
+@media (max-width: 768px) {
+  .guide-back {
+    min-height: 40px;
+    padding-block: var(--space-2);
   }
 }
 
