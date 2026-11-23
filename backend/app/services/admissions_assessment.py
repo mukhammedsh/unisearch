@@ -10,8 +10,9 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from app.services import exams as exams_service, languages as languages_service
 from app.core.paths import DATA_DIR
+from app.services import exams as exams_service
+from app.services import languages as languages_service
 from app.services.admissions_catalog import AdmissionsCatalogError, _cycle_axis
 
 ASSESSMENTS_PATH = DATA_DIR / "admissions" / "assessments.json"

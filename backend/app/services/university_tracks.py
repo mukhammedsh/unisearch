@@ -4,19 +4,21 @@ University tracks, majors, score profile derivations, and admission choices.
 from __future__ import annotations
 
 import copy
-from functools import lru_cache
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from functools import lru_cache
+from typing import Any
 
 from app.core.utils import (
     safe_lower as _safe_lower,
+)
+from app.core.utils import (
     to_float as _num_or_none,
 )
 from app.services import exams as exams_service
 
 
-def _uniq_non_empty(items: List[Any]) -> List[str]:
-    out: List[str] = []
+def _uniq_non_empty(items: list[Any]) -> list[str]:
+    out: list[str] = []
     seen = set()
     for it in items:
         s = str(it).strip()
@@ -30,7 +32,7 @@ def _uniq_non_empty(items: List[Any]) -> List[str]:
     return out
 
 
-def _get_nested(u: Dict[str, Any], path: List[str], default: Any = None) -> Any:
+def _get_nested(u: dict[str, Any], path: list[str], default: Any = None) -> Any:
     cur: Any = u
     for key in path:
         if not isinstance(cur, dict):
@@ -60,7 +62,7 @@ _CANONICAL_MAJORS = [
     "agriculture",
 ]
 
-_MAJOR_PHRASES: Dict[str, List[str]] = {
+_MAJOR_PHRASES: dict[str, list[str]] = {
     "computer science": [
         "computer science",
         "computing",
@@ -152,7 +154,7 @@ def _normalize_major_text(value: Any) -> str:
 
 
 @lru_cache(maxsize=4096)
-def _phrase_pattern(phrase: str) -> "re.Pattern[str]":
+def _phrase_pattern(phrase: str) -> re.Pattern[str]:
     return re.compile(r"\b" + re.escape(phrase).replace(r"\ ", r"\s+") + r"\b")
 
 
@@ -163,19 +165,19 @@ def _contains_phrase(text: str, phrase: str) -> bool:
 
 
 # Normalised taxonomy phrases, computed once: loading the catalogue tags every program title against all of them.
-_MAJOR_PHRASE_TABLE: Tuple[Tuple[str, Tuple[str, ...]], ...] = tuple(
+_MAJOR_PHRASE_TABLE: tuple[tuple[str, tuple[str, ...]], ...] = tuple(
     (canonical, tuple(_normalize_major_text(p) for p in _MAJOR_PHRASES.get(canonical, [canonical])))
     for canonical in _CANONICAL_MAJORS
 )
 
 
 @lru_cache(maxsize=16384)
-def _normalized_major_tags(text: str) -> Tuple[str, ...]:
+def _normalized_major_tags(text: str) -> tuple[str, ...]:
     return tuple(canonical for canonical, phrases in _MAJOR_PHRASE_TABLE
                  if any(_contains_phrase(text, phrase) for phrase in phrases))
 
 
-def _major_tags_from_text(value: Any) -> List[str]:
+def _major_tags_from_text(value: Any) -> list[str]:
     text = _normalize_major_text(value)
     return list(_normalized_major_tags(text)) if text else []
 
@@ -192,14 +194,14 @@ def _canonical_major(value: Any) -> str:
     return ""
 
 
-def _iter_programs(u: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _iter_programs(u: dict[str, Any]) -> list[dict[str, Any]]:
     raw = _get_nested(u, ["academics", "programs"], [])
     if not isinstance(raw, list):
         return []
     return [p for p in raw if isinstance(p, dict)]
 
 
-def _track_program_names(u: Dict[str, Any]) -> List[str]:
+def _track_program_names(u: dict[str, Any]) -> list[str]:
     academics = u.get("academics")
     academics_obj = academics if isinstance(academics, dict) else {}
     names = [p.get("name") for p in _iter_programs(u)]
@@ -288,7 +290,7 @@ def _filter_variant_stats_avg_for_requirements(
 
     allowed_keys = {
         exams_service.resolve_exam_key(key)
-        for key in requirements.keys()
+        for key in requirements
         if not _is_language_exam_key_for_track_merge(key)
     }
     allowed_keys = {
@@ -297,7 +299,7 @@ def _filter_variant_stats_avg_for_requirements(
     if not allowed_keys:
         return copy.deepcopy(stats_avg)
 
-    filtered: Dict[str, Any] = {}
+    filtered: dict[str, Any] = {}
     for raw_key, value in stats_avg.items():
         resolved = str(exams_service.resolve_exam_key(raw_key) or "").strip().upper()
         if resolved and resolved in allowed_keys:
@@ -314,7 +316,7 @@ def _choice_key(category_id: Any, profile_id: Any, funding_id: Any = "") -> str:
     return "::".join(part for part in parts if part)
 
 
-def _funding_options_from_profile_or_category(category: Dict[str, Any], profile: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _funding_options_from_profile_or_category(category: dict[str, Any], profile: dict[str, Any]) -> list[dict[str, Any]]:
     profile_options = profile.get("funding_options")
     if isinstance(profile_options, list) and profile_options:
         return [copy.deepcopy(row) for row in profile_options if isinstance(row, dict)]
@@ -325,11 +327,11 @@ def _funding_options_from_profile_or_category(category: Dict[str, Any], profile:
 
 
 def _admission_choice_from_parts(
-    category: Dict[str, Any],
-    profile: Dict[str, Any],
-    funding: Optional[Dict[str, Any]] = None,
+    category: dict[str, Any],
+    profile: dict[str, Any],
+    funding: dict[str, Any] | None = None,
     funding_idx: int = 0,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     funding = funding if isinstance(funding, dict) else {}
     category_id = str(category.get("id") or "").strip()
     profile_id = str(profile.get("id") or "").strip()
@@ -353,7 +355,7 @@ def _admission_choice_from_parts(
         category.get("published_admission"), profile.get("published_admission")
     )
 
-    choice: Dict[str, Any] = {
+    choice: dict[str, Any] = {
         "id": choice_key or profile_id or category_id or f"choice:{funding_idx}",
         "choice_key": choice_key,
         "category_id": category_id,
@@ -407,11 +409,11 @@ def _admission_choice_from_parts(
     return choice
 
 
-def expand_admission_choices(categories: Any, *, include_funding: bool = True) -> List[Dict[str, Any]]:
+def expand_admission_choices(categories: Any, *, include_funding: bool = True) -> list[dict[str, Any]]:
     if not isinstance(categories, list):
         return []
 
-    expanded: List[Dict[str, Any]] = []
+    expanded: list[dict[str, Any]] = []
     for category in categories:
         if not isinstance(category, dict):
             continue
@@ -433,8 +435,8 @@ def expand_admission_choices(categories: Any, *, include_funding: bool = True) -
 
 
 def _derive_track_applicable_majors(
-    u: Dict[str, Any], track: Dict[str, Any]
-) -> List[str]:
+    u: dict[str, Any], track: dict[str, Any]
+) -> list[str]:
     explicit = track.get("applicable_majors")
     if isinstance(explicit, list) and explicit:
         return _uniq_non_empty(explicit)
@@ -471,7 +473,7 @@ def _derive_track_applicable_majors(
     if not program_names:
         return []
 
-    blob_parts: List[Any] = [
+    blob_parts: list[Any] = [
         track.get("id"),
         track.get("label"),
         track.get("description"),
@@ -509,7 +511,7 @@ def _derive_track_applicable_majors(
     return program_names
 
 
-def _has_explicit_empty_program_mapping(track: Dict[str, Any]) -> bool:
+def _has_explicit_empty_program_mapping(track: dict[str, Any]) -> bool:
     """Whether route scope is specifically program-bound but has no mapped programs."""
     mapping_keys = ("program_ids", "program_names")
     if any(
@@ -526,7 +528,7 @@ def _has_explicit_empty_program_mapping(track: Dict[str, Any]) -> bool:
 
 
 def _should_keep_track_for_product_scope(
-    u: Dict[str, Any], track: Dict[str, Any]
+    u: dict[str, Any], track: dict[str, Any]
 ) -> bool:
     majors = track.get("applicable_majors")
     if not isinstance(majors, list) or not majors:
@@ -545,8 +547,8 @@ def _should_keep_track_for_product_scope(
     return not all(_is_foundation_program_name(name) for name in major_names)
 
 
-def _track_requirement_exam_candidates(track: Dict[str, Any]) -> List[str]:
-    ordered: List[str] = []
+def _track_requirement_exam_candidates(track: dict[str, Any]) -> list[str]:
+    ordered: list[str] = []
     seen = set()
 
     def collect(source: Any) -> None:
@@ -554,7 +556,7 @@ def _track_requirement_exam_candidates(track: Dict[str, Any]) -> List[str]:
             return
         primary = []
         fallback = []
-        for raw_key in source.keys():
+        for raw_key in source:
             exam_id = str(raw_key or "").strip().upper()
             if not exam_id or exam_id in seen:
                 continue
@@ -573,13 +575,13 @@ def _track_requirement_exam_candidates(track: Dict[str, Any]) -> List[str]:
     return ordered
 
 
-def _track_primary_exam_id(track: Dict[str, Any]) -> str:
+def _track_primary_exam_id(track: dict[str, Any]) -> str:
     candidates = _track_requirement_exam_candidates(track)
     return candidates[0] if candidates else ""
 
 
 def _score_profile_program_matches_track(
-    track: Dict[str, Any], program: Dict[str, Any]
+    track: dict[str, Any], program: dict[str, Any]
 ) -> bool:
     if not isinstance(track, dict) or not isinstance(program, dict):
         return False
@@ -620,7 +622,7 @@ def _score_profile_program_matches_track(
 
 
 def _score_profile_route_matches_track(
-    track: Dict[str, Any], program: Dict[str, Any]
+    track: dict[str, Any], program: dict[str, Any]
 ) -> bool:
     track_blob = _normalize_major_text(
         " ".join(
@@ -663,14 +665,14 @@ def _score_profile_route_matches_track(
     return any(token in track_blob for token in program_tokens)
 
 
-def _parse_numeric_multiplier(value: Any) -> Optional[float]:
+def _parse_numeric_multiplier(value: Any) -> float | None:
     match = re.search(r"([0-9]+(?:\.[0-9]+)?)", str(value or ""))
     if not match:
         return None
     return _num_or_none(match.group(1))
 
 
-def _weighted_total_scale_max(counts: Dict[str, Any]) -> Optional[float]:
+def _weighted_total_scale_max(counts: dict[str, Any]) -> float | None:
     if not isinstance(counts, dict):
         return None
     best_of = 5
@@ -680,7 +682,7 @@ def _weighted_total_scale_max(counts: Dict[str, Any]) -> Optional[float]:
         best_of = max(1, int(match.group(1)))
 
     subject_weighting = counts.get("subject_weighting")
-    weights: List[float] = []
+    weights: list[float] = []
     if isinstance(subject_weighting, dict):
         for raw_value in subject_weighting.values():
             multiplier = _parse_numeric_multiplier(raw_value)
@@ -695,8 +697,8 @@ def _weighted_total_scale_max(counts: Dict[str, Any]) -> Optional[float]:
 
 
 def _score_scale(
-    metric_id: str, counts: Dict[str, Any]
-) -> Optional[Tuple[float, float, str]]:
+    metric_id: str, counts: dict[str, Any]
+) -> tuple[float, float, str] | None:
     resolved = exams_service.resolve_exam_key(metric_id)
     cfg = exams_service.EXAMS_CONFIG.get(resolved) if resolved else None
     if isinstance(cfg, dict) and str(cfg.get("type") or "").strip().lower() != "bool":
@@ -713,7 +715,7 @@ def _score_scale(
     return None
 
 
-def _normalize_score_value(raw_value: float, scale: Tuple[float, float, str]) -> float:
+def _normalize_score_value(raw_value: float, scale: tuple[float, float, str]) -> float:
     _, _, metric_exam_id = scale
     if metric_exam_id:
         normalized = exams_service.normalize_exam_score(metric_exam_id, raw_value)
@@ -724,12 +726,12 @@ def _normalize_score_value(raw_value: float, scale: Tuple[float, float, str]) ->
 
 
 def _extract_track_score_percentiles(
-    counts: Dict[str, Any],
-) -> Optional[Dict[str, float]]:
+    counts: dict[str, Any],
+) -> dict[str, float] | None:
     if not isinstance(counts, dict):
         return None
 
-    for raw_key in counts.keys():
+    for raw_key in counts:
         key = str(raw_key or "")
         if not key.startswith("lower_quartile_"):
             continue
@@ -746,7 +748,7 @@ def _extract_track_score_percentiles(
             "p75_raw": float(p75),
         }
 
-    for raw_key in counts.keys():
+    for raw_key in counts:
         key = str(raw_key or "")
         match = re.match(r"(.+)_25th_percentile$", key)
         if not match:
@@ -768,8 +770,8 @@ def _extract_track_score_percentiles(
 
 
 def _derive_track_score_profile(
-    u: Dict[str, Any], track: Dict[str, Any]
-) -> Optional[Dict[str, Any]]:
+    u: dict[str, Any], track: dict[str, Any]
+) -> dict[str, Any] | None:
     explicit = track.get("score_profile")
     if isinstance(explicit, dict) and explicit:
         return explicit
@@ -872,7 +874,7 @@ def _is_foundation_study_level(value: Any) -> bool:
     return _contains_phrase(_normalize_major_text(value), "foundation")
 
 
-def _is_foundation_program_row(program: Dict[str, Any]) -> bool:
+def _is_foundation_program_row(program: dict[str, Any]) -> bool:
     if not isinstance(program, dict):
         return False
 
@@ -884,13 +886,10 @@ def _is_foundation_program_row(program: Dict[str, Any]) -> bool:
         _is_foundation_study_level(level) for level in levels
     ):
         return True
-    if levels is not None and _is_foundation_study_level(levels):
-        return True
-
-    return False
+    return bool(levels is not None and _is_foundation_study_level(levels))
 
 
-def _filter_academics_for_product_scope(academics: Dict[str, Any]) -> None:
+def _filter_academics_for_product_scope(academics: dict[str, Any]) -> None:
     if not isinstance(academics, dict):
         return
 

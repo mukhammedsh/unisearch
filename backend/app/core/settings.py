@@ -1,6 +1,6 @@
 import os
-from app.core.env import load_local_env
 
+from app.core.env import load_local_env
 
 load_local_env()
 
@@ -19,10 +19,7 @@ def _normalize_origin(value: str) -> str:
 def _parse_frontend_origins() -> list[str]:
     raw_multi = os.getenv("FRONTEND_ORIGINS", "").strip()
 
-    if raw_multi:
-        candidates = [part for part in raw_multi.split(",")]
-    else:
-        candidates = list(_LOCAL_FRONTEND_ORIGINS)
+    candidates = raw_multi.split(",") if raw_multi else list(_LOCAL_FRONTEND_ORIGINS)
 
     normalized_candidates = {_normalize_origin(str(value)) for value in candidates if str(value).strip()}
     if normalized_candidates & {"http://127.0.0.1:5501", "http://localhost:5501"}:

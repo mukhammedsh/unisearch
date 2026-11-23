@@ -2,14 +2,13 @@
 
 import hashlib
 import json
-from typing import Literal, Optional
+from typing import Literal
 
-from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
-
-from app.schemas.admissions import AdmissionsContextRequest
-from app.services import admissions_catalog, admissions_assessment, admissions_editorial, universities as university_service
 from app.routers.universities import _resolve_search_lang
-
+from app.schemas.admissions import AdmissionsContextRequest
+from app.services import admissions_assessment, admissions_catalog, admissions_editorial
+from app.services import universities as university_service
+from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
 
 router = APIRouter()
 
@@ -40,11 +39,11 @@ def _catalog_error(error: Exception) -> HTTPException:
 def list_study_options(
     university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
     search: str = Query("", max_length=200),
-    major: Optional[str] = Query(None, max_length=120),
-    study_level: Optional[Literal["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]] = Query(None),
+    major: str | None = Query(None, max_length=120),
+    study_level: Literal["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"] | None = Query(None),
     page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(30, ge=1, le=100),
-    lang: Optional[str] = Query(None, max_length=16),
+    lang: str | None = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
 ):

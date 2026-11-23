@@ -1,7 +1,7 @@
 import json
 import threading
 import time
-from typing import Any, Dict, Optional
+from typing import Any
 
 from app.core.settings import (
     REDIS_CONNECT_TIMEOUT_SEC,
@@ -64,7 +64,7 @@ def get_redis_client():
     return _REDIS_CLIENT
 
 
-def redis_runtime_status(force_check: bool = False) -> Dict[str, Any]:
+def redis_runtime_status(force_check: bool = False) -> dict[str, Any]:
     if not REDIS_URL:
         return {"configured": False, "available": False, "reason": "not_configured"}
     if redis is None:
@@ -98,7 +98,7 @@ def redis_runtime_status(force_check: bool = False) -> Dict[str, Any]:
     return {"configured": True, "available": ok, "reason": _REDIS_PING_STATE["reason"]}
 
 
-def cache_get_json(key: str) -> Optional[Dict[str, Any]]:
+def cache_get_json(key: str) -> dict[str, Any] | None:
     client = get_redis_client()
     if client is None:
         return None
@@ -114,7 +114,7 @@ def cache_get_json(key: str) -> Optional[Dict[str, Any]]:
         return None
 
 
-def cache_set_json(key: str, value: Dict[str, Any], ttl_seconds: int) -> bool:
+def cache_set_json(key: str, value: dict[str, Any], ttl_seconds: int) -> bool:
     client = get_redis_client()
     if client is None:
         return False

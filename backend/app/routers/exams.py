@@ -1,8 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
-
-from app.services import exams as exams_service
 from app.schemas import ExamValidateRequest
-
+from app.services import exams as exams_service
+from fastapi import APIRouter, HTTPException, Response
 
 router = APIRouter()
 
@@ -37,8 +35,8 @@ def validate_exam(payload: ExamValidateRequest):
             taken_on=payload.taken_on,
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid score format")
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Invalid score format") from exc
 
     return {"ok": True, **result}

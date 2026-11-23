@@ -2,9 +2,9 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Iterable
 from datetime import date
-from typing import Any, Dict, Iterable, List, Set
-
+from typing import Any
 
 AVAILABLE = "available"
 NOT_CATALOGUED = "not_catalogued"
@@ -32,11 +32,11 @@ def _non_empty_text(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def _program_name(program: Dict[str, Any]) -> str:
+def _program_name(program: dict[str, Any]) -> str:
     return str(program.get("name") or program.get("title") or "").strip()
 
 
-def _levels_for_record(record: Dict[str, Any], *, program: bool = False) -> Set[str]:
+def _levels_for_record(record: dict[str, Any], *, program: bool = False) -> set[str]:
     """Return levels stated by this record; do not infer a degree from a generic label."""
     raw_levels = record.get("study_levels")
     if isinstance(raw_levels, (str, int)):
@@ -45,7 +45,7 @@ def _levels_for_record(record: Dict[str, Any], *, program: bool = False) -> Set[
     if isinstance(raw_scope, dict) and raw_scope.get("level"):
         raw_levels = list(raw_levels) if isinstance(raw_levels, list) else []
         raw_levels.append(raw_scope["level"])
-    levels: Set[str] = set()
+    levels: set[str] = set()
     for raw_level in raw_levels if isinstance(raw_levels, list) else []:
         value = re.sub(r"[^a-z]+", " ", str(raw_level or "").lower()).strip()
         if value in {"bachelor", "bachelors", "undergraduate", "undergrad", "bachelor degree"}:
@@ -95,7 +95,7 @@ def _non_empty_requirement(value: Any) -> bool:
     return _non_empty_text(value) or (isinstance(value, (int, float)) and value > 0)
 
 
-def _has_requirements(category: Dict[str, Any]) -> bool:
+def _has_requirements(category: dict[str, Any]) -> bool:
     requirement_fields = (
         "requirements",
         "exam_requirements",
@@ -118,7 +118,7 @@ def _has_requirements(category: Dict[str, Any]) -> bool:
     )
 
 
-def _has_funding_data(record: Dict[str, Any]) -> bool:
+def _has_funding_data(record: dict[str, Any]) -> bool:
     for key in ("scholarships", "funding_programs", "aid_options"):
         value = record.get(key)
         if isinstance(value, list) and value:
@@ -186,12 +186,7 @@ def _deadline_values(
             elif parent_key in {"deadlines", "admission_rounds", "mba_rounds", "mba_deadlines"} and key_text in {
                 "date", "application_deadline", "financial_aid_deadline", "portfolio_deadline",
                 "reply_deadline", "deadline",
-            }:
-                yield from _deadline_values(
-                    child, key_text, exclude_mba_rounds=exclude_mba_rounds,
-                    mba_rounds_only=mba_rounds_only, in_mba_rounds=child_in_mba_rounds,
-                )
-            elif key_text in {"deadlines", "admission_rounds", "mba_rounds", "mba_deadlines"}:
+            } or key_text in {"deadlines", "admission_rounds", "mba_rounds", "mba_deadlines"}:
                 yield from _deadline_values(
                     child, key_text, exclude_mba_rounds=exclude_mba_rounds,
                     mba_rounds_only=mba_rounds_only, in_mba_rounds=child_in_mba_rounds,
@@ -217,8 +212,8 @@ def _has_exact_dated_deadline(value: str) -> bool:
 
 
 def _deadline_status(
-    categories: List[Dict[str, Any]], root_deadlines: Iterable[str] = ()
-) -> Dict[str, str]:
+    categories: list[dict[str, Any]], root_deadlines: Iterable[str] = ()
+) -> dict[str, str]:
     values = [value for category in categories for value in _deadline_values(category)]
     values.extend(root_deadlines)
     exact = any(_has_exact_dated_deadline(value) for value in values)
@@ -229,7 +224,7 @@ def _deadline_status(
     }
 
 
-def _has_program_cost(program: Dict[str, Any]) -> bool:
+def _has_program_cost(program: dict[str, Any]) -> bool:
     price_facts = program.get("price_facts")
     if isinstance(price_facts, list) and any(
         isinstance(fact, dict)
@@ -257,7 +252,7 @@ def _has_program_cost(program: Dict[str, Any]) -> bool:
     return visit(program)
 
 
-def _has_category_cost(category: Dict[str, Any]) -> bool:
+def _has_category_cost(category: dict[str, Any]) -> bool:
     profiles = category.get("requirement_profiles")
     sources = [category]
     if isinstance(profiles, list):
@@ -297,11 +292,11 @@ def _has_level_scoped_root_funding(finance: Any, level: str) -> bool:
     )
 
 
-def _root_deadline_values(university: Dict[str, Any], level: str) -> List[str]:
+def _root_deadline_values(university: dict[str, Any], level: str) -> list[str]:
     deadlines = university.get("deadlines")
     if not isinstance(deadlines, dict):
         return []
-    values: List[str] = []
+    values: list[str] = []
     for scope_name, scope_value in deadlines.items():
         key = str(scope_name).lower()
         if "undergraduate" in key or "bachelor" in key:
@@ -321,14 +316,14 @@ def _root_deadline_values(university: Dict[str, Any], level: str) -> List[str]:
     return values
 
 
-def build_coverage_by_level(university: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+def build_coverage_by_level(university: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Summarize only levels supported by an actual program or scoped admission category."""
     if not isinstance(university, dict):
         return {}
     academics = university.get("academics")
     programs = academics.get("programs") if isinstance(academics, dict) else []
     programs = [row for row in programs if isinstance(row, dict)] if isinstance(programs, list) else []
-    program_levels: Dict[str, Set[str]] = {}
+    program_levels: dict[str, set[str]] = {}
     for program in programs:
         levels = _levels_for_record(program, program=True)
         program_id = str(program.get("id") or "").strip().lower()
@@ -340,8 +335,8 @@ def build_coverage_by_level(university: Dict[str, Any]) -> Dict[str, Dict[str, A
     categories = university.get("admission_categories")
     categories = [row for row in categories if isinstance(row, dict)] if isinstance(categories, list) else []
 
-    programs_by_level: Dict[str, List[Dict[str, Any]]] = {}
-    categories_by_level: Dict[str, List[Dict[str, Any]]] = {}
+    programs_by_level: dict[str, list[dict[str, Any]]] = {}
+    categories_by_level: dict[str, list[dict[str, Any]]] = {}
     for program in programs:
         for level in _levels_for_record(program, program=True):
             programs_by_level.setdefault(level, []).append(program)
@@ -368,7 +363,7 @@ def build_coverage_by_level(university: Dict[str, Any]) -> Dict[str, Dict[str, A
     if "mba" in levels_present:
         ordered_levels.append("mba")
 
-    output: Dict[str, Dict[str, Any]] = {}
+    output: dict[str, dict[str, Any]] = {}
     for level in ordered_levels:
         level_programs = programs_by_level.get(level, [])
         level_categories = categories_by_level.get(level, [])
@@ -411,7 +406,7 @@ _NON_COURSE_DEADLINE = re.compile(
 )
 
 
-def _fact_status(status: str, scope: str = "not_catalogued", **metadata: Any) -> Dict[str, Any]:
+def _fact_status(status: str, scope: str = "not_catalogued", **metadata: Any) -> dict[str, Any]:
     return {
         "status": status,
         "scope": scope if status != NOT_CATALOGUED else "not_catalogued",
@@ -421,7 +416,7 @@ def _fact_status(status: str, scope: str = "not_catalogued", **metadata: Any) ->
     }
 
 
-def _metadata_value(records: Iterable[Dict[str, Any]], keys: Iterable[str]) -> Any:
+def _metadata_value(records: Iterable[dict[str, Any]], keys: Iterable[str]) -> Any:
     for record in records:
         if not isinstance(record, dict):
             continue
@@ -432,20 +427,20 @@ def _metadata_value(records: Iterable[Dict[str, Any]], keys: Iterable[str]) -> A
     return None
 
 
-def _source_url(records: Iterable[Dict[str, Any]]) -> Any:
+def _source_url(records: Iterable[dict[str, Any]]) -> Any:
     return _metadata_value(records, ("source_url", "url"))
 
 
-def _cycle(records: Iterable[Dict[str, Any]]) -> Any:
+def _cycle(records: Iterable[dict[str, Any]]) -> Any:
     return _metadata_value(records, ("cycle", "academic_year"))
 
 
-def _verified_at(records: Iterable[Dict[str, Any]]) -> Any:
+def _verified_at(records: Iterable[dict[str, Any]]) -> Any:
     return _metadata_value(records, ("verified_at",))
 
 
-def _program_refs(category: Dict[str, Any]) -> Set[str]:
-    refs: Set[str] = set()
+def _program_refs(category: dict[str, Any]) -> set[str]:
+    refs: set[str] = set()
     for key in ("program_ids", "applicable_program_ids", "program_names", "applicable_programs"):
         value = category.get(key)
         if isinstance(value, str):
@@ -455,7 +450,7 @@ def _program_refs(category: Dict[str, Any]) -> Set[str]:
     return refs
 
 
-def _single_program_route(category: Dict[str, Any]) -> bool:
+def _single_program_route(category: dict[str, Any]) -> bool:
     ids = category.get("program_ids") or category.get("applicable_program_ids") or []
     names = category.get("program_names") or category.get("applicable_programs") or []
     if isinstance(ids, str):
@@ -465,7 +460,7 @@ def _single_program_route(category: Dict[str, Any]) -> bool:
     return (len(ids) == 1 and len(names) <= 1) or (not ids and len(names) == 1)
 
 
-def _matches_program(category: Dict[str, Any], program: Dict[str, Any]) -> bool:
+def _matches_program(category: dict[str, Any], program: dict[str, Any]) -> bool:
     refs = _program_refs(category)
     if refs:
         names = {str(program.get("id") or "").strip().lower(), _program_name(program).lower()}
@@ -482,12 +477,12 @@ def _matches_program(category: Dict[str, Any], program: Dict[str, Any]) -> bool:
     return scope in {"undergraduate_general", "institution_wide_undergraduate"} and "bachelor" in levels and "bachelor" in program_levels
 
 
-def _has_program_requirements(program: Dict[str, Any]) -> bool:
+def _has_program_requirements(program: dict[str, Any]) -> bool:
     return any(_non_empty_requirement(program.get(key)) for key in _PROGRAM_REQUIREMENT_FIELDS)
 
 
-def _course_deadline_rows(value: Any) -> List[Any]:
-    rows: List[Any] = []
+def _course_deadline_rows(value: Any) -> list[Any]:
+    rows: list[Any] = []
     if isinstance(value, list):
         for item in value:
             rows.extend(_course_deadline_rows(item))
@@ -506,28 +501,27 @@ def _course_deadline_rows(value: Any) -> List[Any]:
             for key, child in value.items():
                 if key in _COURSE_DEADLINE_KEYS:
                     rows.extend(_course_deadline_rows(child))
-    elif _non_empty_text(value):
-        if not _NON_COURSE_DEADLINE.search(value):
-            rows.append(value.strip())
+    elif _non_empty_text(value) and not _NON_COURSE_DEADLINE.search(value):
+        rows.append(value.strip())
     return rows
 
 
-def _deadline_values_for_record(record: Dict[str, Any]) -> List[Any]:
-    rows: List[Any] = []
+def _deadline_values_for_record(record: dict[str, Any]) -> list[Any]:
+    rows: list[Any] = []
     for key in _COURSE_DEADLINE_KEYS:
         if key in record:
             rows.extend(_course_deadline_rows(record.get(key)))
     return rows
 
 
-def _row_program_ids(row: Dict[str, Any]) -> Set[str]:
+def _row_program_ids(row: dict[str, Any]) -> set[str]:
     value = row.get("program_ids") or row.get("applicable_program_ids")
     if isinstance(value, str):
         value = [value]
     return {str(item or "").strip().lower() for item in value if str(item or "").strip()} if isinstance(value, list) else set()
 
 
-def _scoped_fact_matches_program(row: Any, program: Dict[str, Any]) -> bool:
+def _scoped_fact_matches_program(row: Any, program: dict[str, Any]) -> bool:
     """Filter additive fact rows without changing legacy row interpretation."""
     if not isinstance(row, dict) or "publication_status" not in row:
         return True
@@ -553,11 +547,11 @@ def _scoped_fact_matches_program(row: Any, program: Dict[str, Any]) -> bool:
     return True
 
 
-def _deadline_rows_for_program(record: Dict[str, Any], program: Dict[str, Any]) -> List[Any]:
+def _deadline_rows_for_program(record: dict[str, Any], program: dict[str, Any]) -> list[Any]:
     return [row for row in _deadline_values_for_record(record) if _scoped_fact_matches_program(row, program)]
 
 
-def _published_deadline_rows(rows: List[Any]) -> List[Any]:
+def _published_deadline_rows(rows: list[Any]) -> list[Any]:
     return [
         row for row in rows
         if (
@@ -581,8 +575,8 @@ def _legacy_deadline_publication_status(row: Any) -> str | None:
     return None
 
 
-def _deadline_strings(rows: Iterable[Any]) -> List[str]:
-    strings: List[str] = []
+def _deadline_strings(rows: Iterable[Any]) -> list[str]:
+    strings: list[str] = []
 
     def visit(value: Any, key: str = "") -> None:
         if isinstance(value, dict):
@@ -602,13 +596,13 @@ def _deadline_strings(rows: Iterable[Any]) -> List[str]:
     return strings
 
 
-def _deadline_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], university: Dict[str, Any]) -> Dict[str, Any]:
+def _deadline_fact(program: dict[str, Any], routes: list[dict[str, Any]], university: dict[str, Any]) -> dict[str, Any]:
     program_rows = _deadline_rows_for_program(program, program)
     rows = _published_deadline_rows(program_rows)
-    sources: List[Dict[str, Any]] = [program]
+    sources: list[dict[str, Any]] = [program]
     scope = "program_specific"
     if not rows:
-        route_rows: List[Any] = []
+        route_rows: list[Any] = []
         matching = [route for route in routes if _matches_program(route, program)]
         for route in matching:
             route_rows.extend(_deadline_rows_for_program(route, program))
@@ -700,8 +694,8 @@ def _deadline_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], univer
     return result
 
 
-def _program_cost_values(record: Dict[str, Any]) -> Dict[str, Any]:
-    result: Dict[str, Any] = {}
+def _program_cost_values(record: dict[str, Any]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
 
     def visit(value: Any, prefix: str = "") -> None:
         if isinstance(value, dict):
@@ -723,7 +717,7 @@ def _program_cost_values(record: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
-def _all_structured_price_facts(record: Any, program: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _all_structured_price_facts(record: Any, program: dict[str, Any]) -> list[dict[str, Any]]:
     if not isinstance(record, dict):
         return []
     facts = record.get("price_facts")
@@ -732,15 +726,15 @@ def _all_structured_price_facts(record: Any, program: Dict[str, Any]) -> List[Di
     return [fact for fact in facts if isinstance(fact, dict) and _scoped_fact_matches_program(fact, program)]
 
 
-def _structured_price_facts(record: Any, program: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _structured_price_facts(record: Any, program: dict[str, Any]) -> list[dict[str, Any]]:
     return [
         fact for fact in _all_structured_price_facts(record, program)
         if str(fact.get("publication_status") or "").strip().lower() == "published"
     ]
 
 
-def _price_fact_values(facts: List[Dict[str, Any]]) -> Dict[str, Any]:
-    values: Dict[str, Any] = {}
+def _price_fact_values(facts: list[dict[str, Any]]) -> dict[str, Any]:
+    values: dict[str, Any] = {}
     for fact in facts:
         amount = fact.get("amount")
         if not isinstance(amount, (int, float)) or isinstance(amount, bool) or amount <= 0:
@@ -754,7 +748,7 @@ def _price_fact_values(facts: List[Dict[str, Any]]) -> Dict[str, Any]:
     return values
 
 
-def _legacy_historical_values(record: Dict[str, Any], excluded_cycles: Set[str]) -> Optional[Dict[str, Any]]:
+def _legacy_historical_values(record: dict[str, Any], excluded_cycles: set[str]) -> dict[str, Any] | None:
     cycle = str(record.get("tuition_cycle") or record.get("cycle") or record.get("academic_year") or "").strip()
     if not cycle or cycle in excluded_cycles:
         return None
@@ -771,7 +765,7 @@ def _legacy_historical_values(record: Dict[str, Any], excluded_cycles: Set[str])
     }
 
 
-def _root_costs(finance: Any) -> Dict[str, Any]:
+def _root_costs(finance: Any) -> dict[str, Any]:
     if not isinstance(finance, dict):
         return {}
     result = _program_cost_values(finance)
@@ -789,7 +783,7 @@ def _root_costs(finance: Any) -> Dict[str, Any]:
     return result
 
 
-def _cost_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], university: Dict[str, Any]) -> Dict[str, Any]:
+def _cost_fact(program: dict[str, Any], routes: list[dict[str, Any]], university: dict[str, Any]) -> dict[str, Any]:
     entries = [(fact, program) for fact in _all_structured_price_facts(program, program)]
     if not entries:
         for route in routes:
@@ -908,8 +902,8 @@ def _cost_fact(program: Dict[str, Any], routes: List[Dict[str, Any]], university
     return {**_fact_status(NOT_CATALOGUED), "values": {}}
 
 
-def _award_level_set(award: Dict[str, Any]) -> Set[str]:
-    levels: Set[str] = set()
+def _award_level_set(award: dict[str, Any]) -> set[str]:
+    levels: set[str] = set()
     raw = award.get("study_levels")
     if isinstance(raw, str):
         raw = [raw]
@@ -926,7 +920,7 @@ def _award_level_set(award: Dict[str, Any]) -> Set[str]:
     return levels
 
 
-def _award_matches_program(award: Dict[str, Any], program: Dict[str, Any]) -> bool:
+def _award_matches_program(award: dict[str, Any], program: dict[str, Any]) -> bool:
     award_levels = _award_level_set(award)
     program_levels = _levels_for_record(program, program=True)
     if not award_levels or not program_levels or not award_levels.intersection(program_levels):
@@ -947,13 +941,13 @@ def _award_matches_program(award: Dict[str, Any], program: Dict[str, Any]) -> bo
     return not focus_terms or any(re.search(rf"\b{re.escape(term)}\b", program_text) for term in focus_terms)
 
 
-def _awards_for_program(finance: Any, program: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _awards_for_program(finance: Any, program: dict[str, Any]) -> list[dict[str, Any]]:
     if not isinstance(finance, dict):
         return []
     awards = finance.get("scholarships_and_funding")
     if not isinstance(awards, list):
         return []
-    output: List[Dict[str, Any]] = []
+    output: list[dict[str, Any]] = []
     for award in awards:
         if not isinstance(award, dict) or not _award_matches_program(award, program):
             continue
@@ -980,7 +974,7 @@ def _awards_for_program(finance: Any, program: Dict[str, Any]) -> List[Dict[str,
     return output
 
 
-def _requirements_fact(program: Dict[str, Any], routes: List[Dict[str, Any]]) -> Dict[str, Any]:
+def _requirements_fact(program: dict[str, Any], routes: list[dict[str, Any]]) -> dict[str, Any]:
     if _has_program_requirements(program):
         return _fact_status(AVAILABLE, "program_specific", source_url=_source_url([program]), cycle=_cycle([program]), verified_at=_verified_at([program]))
     matching = [route for route in routes if _matches_program(route, program) and _has_requirements(route)]
@@ -991,7 +985,7 @@ def _requirements_fact(program: Dict[str, Any], routes: List[Dict[str, Any]]) ->
     return _fact_status(NOT_CATALOGUED)
 
 
-def build_coverage_by_program(university: Dict[str, Any]) -> List[Dict[str, Any]]:
+def build_coverage_by_program(university: dict[str, Any]) -> list[dict[str, Any]]:
     """Report catalogued coverage per named program without inheriting broad graduate facts."""
     if not isinstance(university, dict):
         return []
@@ -1003,7 +997,7 @@ def build_coverage_by_program(university: Dict[str, Any]) -> List[Dict[str, Any]
     routes = university.get("admission_categories")
     routes = [route for route in routes if isinstance(route, dict)] if isinstance(routes, list) else []
     finance = university.get("finance")
-    result: List[Dict[str, Any]] = []
+    result: list[dict[str, Any]] = []
     for program in programs:
         program_id = str(program.get("id") or program.get("course_number") or "").strip() or None
         program_levels = sorted(_levels_for_record(program, program=True))

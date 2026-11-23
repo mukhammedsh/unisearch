@@ -1,11 +1,10 @@
-from fastapi import APIRouter, HTTPException, Query
-
 from app.core.redis_store import redis_runtime_status
 from app.core.version import APP_VERSION
 from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services import universities as universities_service
 from app.services.background_tasks import warmup_runtime
+from fastapi import APIRouter, HTTPException, Query
 
 router = APIRouter()
 

@@ -1,8 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
-
-from app.services import languages as lang_service
 from app.schemas import LanguageValidateRequest
-
+from app.services import languages as lang_service
+from fastapi import APIRouter, HTTPException, Response
 
 router = APIRouter()
 
@@ -22,6 +20,6 @@ def validate_language(payload: LanguageValidateRequest):
             result["language"]["taken_on"] = payload.taken_on
         return result
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid language payload")
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Invalid language payload") from exc

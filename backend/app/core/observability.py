@@ -1,8 +1,6 @@
 import logging
 from typing import Any
 
-from fastapi import FastAPI
-
 from app.core.settings import (
     METRICS_ENABLED,
     METRICS_PATH,
@@ -10,6 +8,7 @@ from app.core.settings import (
     SENTRY_DSN,
     SENTRY_TRACES_SAMPLE_RATE,
 )
+from fastapi import FastAPI
 
 try:
     from prometheus_fastapi_instrumentator import Instrumentator

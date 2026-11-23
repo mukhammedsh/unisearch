@@ -3,33 +3,35 @@ import json
 import threading
 import time
 from collections import OrderedDict
-from typing import Any, Dict, List, Literal, Optional
-
-from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
+from typing import Any, Literal
 
 from app.core.redis_store import cache_get_json, cache_set_json
-from app.core.security import request_client_ip
 from app.core.settings import (
     AI_SORT_CACHE_TTL_SEC,
     COMPARE_PROFILES_CACHE_TTL_SEC,
     REDIS_CACHE_TTL_SEC,
 )
-from app.schemas import CompareProfilesRequest, ProfileOnlyRequest, ProfiledUniversitiesRequest, UniversitiesAiSortRequest
+from app.schemas import (
+    CompareProfilesRequest,
+    ProfiledUniversitiesRequest,
+    ProfileOnlyRequest,
+    UniversitiesAiSortRequest,
+)
 from app.schemas.payloads import to_profile_dict
-from app.services import universities as uni_service
+from app.services import admissions_assessment, admissions_catalog
 from app.services import ai_scoring as ai_scoring_service
-from app.services import admissions_catalog, admissions_assessment
-
+from app.services import universities as uni_service
+from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
 
 router = APIRouter()
 _AI_SORT_CACHE_TTL_SEC = max(15.0, float(AI_SORT_CACHE_TTL_SEC))
 _AI_SORT_CACHE_MAX_ITEMS = 512
-_AI_SORT_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
+_AI_SORT_CACHE: OrderedDict[str, dict[str, Any]] = OrderedDict()
 _AI_SORT_CACHE_LOCK = threading.Lock()
 
 _COMPARE_PROFILES_CACHE_TTL_SEC = max(15.0, float(COMPARE_PROFILES_CACHE_TTL_SEC))
 _COMPARE_PROFILES_CACHE_MAX_ITEMS = 512
-_COMPARE_PROFILES_CACHE: OrderedDict[str, Dict[str, Any]] = OrderedDict()
+_COMPARE_PROFILES_CACHE: OrderedDict[str, dict[str, Any]] = OrderedDict()
 _COMPARE_PROFILES_CACHE_LOCK = threading.Lock()
 
 
@@ -45,11 +47,7 @@ def _etag_matches(if_none_match: str, etag: str) -> bool:
     return target in candidates or target_weak in candidates
 
 
-def _request_client_key(request: Optional[Request]) -> str:
-    return request_client_ip(request)
-
-
-def _request_locale_hint(request: Optional[Request]) -> str:
+def _request_locale_hint(request: Request | None) -> str:
     if request is None:
         return ""
     raw = str(request.headers.get("accept-language", "")).strip()
@@ -67,13 +65,13 @@ def _normalize_search_lang(value: Any) -> str:
     return "eng"
 
 
-def _resolve_search_lang(explicit_lang: Any, request: Optional[Request]) -> str:
+def _resolve_search_lang(explicit_lang: Any, request: Request | None) -> str:
     if str(explicit_lang or "").strip():
         return _normalize_search_lang(explicit_lang)
     return _normalize_search_lang(_request_locale_hint(request))
 
 
-def _quantize_slider_value(val: Any) -> Optional[int]:
+def _quantize_slider_value(val: Any) -> int | None:
     if val is None:
         return None
     try:
@@ -84,7 +82,7 @@ def _quantize_slider_value(val: Any) -> Optional[int]:
 
 def _ai_sort_cache_key(
     payload: UniversitiesAiSortRequest,
-    search_lang: Optional[str] = None,
+    search_lang: str | None = None,
 ) -> str:
     raw = payload.model_dump(exclude_none=True)
     raw["admissions_revision"] = admissions_catalog.get_revision()
@@ -111,7 +109,7 @@ def _ai_sort_cache_key(
     return json.dumps(raw, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
 
 
-def _ai_sort_cache_get(key: str) -> Optional[List[Dict[str, Any]]]:
+def _ai_sort_cache_get(key: str) -> list[dict[str, Any]] | None:
     now = time.time()
     with _AI_SORT_CACHE_LOCK:
         row = _AI_SORT_CACHE.get(key)
@@ -124,7 +122,7 @@ def _ai_sort_cache_get(key: str) -> Optional[List[Dict[str, Any]]]:
         return row.get("items")
 
 
-def _ai_sort_cache_set(key: str, items: List[Dict[str, Any]]) -> None:
+def _ai_sort_cache_set(key: str, items: list[dict[str, Any]]) -> None:
     now = time.time()
     with _AI_SORT_CACHE_LOCK:
         _AI_SORT_CACHE[key] = {
@@ -136,7 +134,7 @@ def _ai_sort_cache_set(key: str, items: List[Dict[str, Any]]) -> None:
             _AI_SORT_CACHE.popitem(last=False)
 
 
-def _compare_profiles_cache_get(key: str) -> Optional[Dict[str, Any]]:
+def _compare_profiles_cache_get(key: str) -> dict[str, Any] | None:
     now = time.time()
     with _COMPARE_PROFILES_CACHE_LOCK:
         row = _COMPARE_PROFILES_CACHE.get(key)
@@ -149,7 +147,7 @@ def _compare_profiles_cache_get(key: str) -> Optional[Dict[str, Any]]:
         return row.get("results")
 
 
-def _compare_profiles_cache_set(key: str, results: Dict[str, Any]) -> None:
+def _compare_profiles_cache_set(key: str, results: dict[str, Any]) -> None:
     now = time.time()
     with _COMPARE_PROFILES_CACHE_LOCK:
         _COMPARE_PROFILES_CACHE[key] = {
@@ -161,7 +159,7 @@ def _compare_profiles_cache_set(key: str, results: Dict[str, Any]) -> None:
             _COMPARE_PROFILES_CACHE.popitem(last=False)
 
 
-def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
+def _cache_key(namespace: str, payload: dict[str, Any]) -> str:
     raw = json.dumps(payload, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
     digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
     return f"{namespace}:{digest}"
@@ -169,28 +167,28 @@ def _cache_key(namespace: str, payload: Dict[str, Any]) -> str:
 
 @router.get("/universities", summary="List universities", description="Returns a paginated, filterable list of universities. Supports search, country/city/region filters, budget range, acceptance rate range, study level, funding type, format, and size filters.")
 def list_universities(
-    q: Optional[str] = Query(None, max_length=200),
-    country: Optional[str] = Query(None, max_length=80),
-    city: Optional[str] = Query(None, max_length=80),
-    region: Optional[str] = Query(None, max_length=80),
-    major: Optional[str] = Query(None, max_length=120),
-    study_level: Optional[str] = Query(None, max_length=40),
-    funding_type: Optional[str] = Query(None, max_length=20),
-    format: Optional[str] = Query(None, max_length=32),
-    user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
-    min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
-    max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    q: str | None = Query(None, max_length=200),
+    country: str | None = Query(None, max_length=80),
+    city: str | None = Query(None, max_length=80),
+    region: str | None = Query(None, max_length=80),
+    major: str | None = Query(None, max_length=120),
+    study_level: str | None = Query(None, max_length=40),
+    funding_type: str | None = Query(None, max_length=20),
+    format: str | None = Query(None, max_length=32),
+    user_budget: float | None = Query(None, ge=0, le=1_000_000),
+    min_tuition: float | None = Query(None, ge=0, le=1_000_000),
+    max_tuition: float | None = Query(None, ge=0, le=1_000_000),
     cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
-    fee_status_context: Optional[Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"]] = Query(None),
-    intended_entry_cycle: Optional[str] = Query(None, max_length=40),
-    min_acceptance: Optional[float] = Query(None, ge=0, le=100),
-    max_acceptance: Optional[float] = Query(None, ge=0, le=100),
-    size: Optional[str] = Query(None, max_length=40),
+    fee_status_context: Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"] | None = Query(None),
+    intended_entry_cycle: str | None = Query(None, max_length=40),
+    min_acceptance: float | None = Query(None, ge=0, le=100),
+    max_acceptance: float | None = Query(None, ge=0, le=100),
+    size: str | None = Query(None, max_length=40),
     sort: str = Query("name_asc", pattern="^(name_asc|tuition_asc|tuition_desc|acceptance_asc|acceptance_desc|rank_asc|rank_desc|gpa_desc|relevance)$"),
     page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(200, ge=1, le=2000),
     fields: str = Query("card", pattern="^(card|full)$"),
-    lang: Optional[str] = Query(None, max_length=16),
+    lang: str | None = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
 ):
@@ -272,24 +270,24 @@ def list_university_map_points(
     south: float = Query(..., ge=-90, le=90),
     east: float = Query(..., ge=-180, le=180),
     north: float = Query(..., ge=-90, le=90),
-    q: Optional[str] = Query(None, max_length=200),
-    country: Optional[str] = Query(None, max_length=80),
-    city: Optional[str] = Query(None, max_length=80),
-    region: Optional[str] = Query(None, max_length=80),
-    major: Optional[str] = Query(None, max_length=120),
-    study_level: Optional[str] = Query(None, max_length=40),
-    funding_type: Optional[str] = Query(None, max_length=20),
-    format: Optional[str] = Query(None, max_length=32),
-    user_budget: Optional[float] = Query(None, ge=0, le=1_000_000),
-    min_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
-    max_tuition: Optional[float] = Query(None, ge=0, le=1_000_000),
+    q: str | None = Query(None, max_length=200),
+    country: str | None = Query(None, max_length=80),
+    city: str | None = Query(None, max_length=80),
+    region: str | None = Query(None, max_length=80),
+    major: str | None = Query(None, max_length=120),
+    study_level: str | None = Query(None, max_length=40),
+    funding_type: str | None = Query(None, max_length=20),
+    format: str | None = Query(None, max_length=32),
+    user_budget: float | None = Query(None, ge=0, le=1_000_000),
+    min_tuition: float | None = Query(None, ge=0, le=1_000_000),
+    max_tuition: float | None = Query(None, ge=0, le=1_000_000),
     cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
-    fee_status_context: Optional[Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"]] = Query(None),
-    intended_entry_cycle: Optional[str] = Query(None, max_length=40),
-    min_acceptance: Optional[float] = Query(None, ge=0, le=100),
-    max_acceptance: Optional[float] = Query(None, ge=0, le=100),
-    size: Optional[str] = Query(None, max_length=40),
-    lang: Optional[str] = Query(None, max_length=16),
+    fee_status_context: Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"] | None = Query(None),
+    intended_entry_cycle: str | None = Query(None, max_length=40),
+    min_acceptance: float | None = Query(None, ge=0, le=100),
+    max_acceptance: float | None = Query(None, ge=0, le=100),
+    size: str | None = Query(None, max_length=40),
+    lang: str | None = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
 ):
@@ -356,7 +354,7 @@ def list_university_map_points(
         search_lang=search_lang,
     )
 
-    def is_in_bounds(item: Dict[str, Any]) -> bool:
+    def is_in_bounds(item: dict[str, Any]) -> bool:
         coordinates = item.get("coordinates") if isinstance(item, dict) else None
         if not isinstance(coordinates, dict):
             return False
@@ -482,7 +480,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     page_items = (sorted_items or [])[start:end] if start < total else []
     probe_items = page_items if page_items else ((sorted_items or [])[:1] if sorted_items else [])
     ml_unavailable = any(
-        bool(((row.get("matchData") or {}).get("mlUnavailable")))
+        bool((row.get("matchData") or {}).get("mlUnavailable"))
         for row in probe_items
         if isinstance(row, dict)
     )
@@ -512,7 +510,7 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
 
 @router.get("/universities/translations", summary="University translation bundle", description="Returns localized university names, descriptions, tags, and program labels for the requested language.")
 def get_universities_translations(
-    lang: Optional[str] = Query(None, max_length=16),
+    lang: str | None = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
 ):
@@ -525,7 +523,7 @@ def get_universities_translations(
 @router.get("/universities/{university_id}", summary="University detail", description="Returns full details for a single university, including admission categories, finance, programs, and student life. Supports ETag caching and language localization.")
 def get_university(
     university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
-    lang: Optional[str] = Query(None, max_length=16),
+    lang: str | None = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
 ):

@@ -1,7 +1,5 @@
-from fastapi import APIRouter, Response
-
 from app.services import currency as currency_service
-
+from fastapi import APIRouter, Response
 
 router = APIRouter(tags=["currency"])
 

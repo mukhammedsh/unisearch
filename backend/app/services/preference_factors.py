@@ -21,18 +21,18 @@ leave that slider out for the university instead of substituting a neutral value
 from __future__ import annotations
 
 import math
-from typing import Any, Dict, Optional, Tuple
+from typing import Any
 
-RESEARCH_INTENSITY_ANCHORS: Tuple[float, float] = (0.1, 30.0)
-APPLICANTS_PER_PLACE_ANCHORS: Tuple[float, float] = (1.0, 40.0)
-URBAN_AREA_POPULATION_ANCHORS: Tuple[float, float] = (50_000.0, 1_500_000.0)
-ANNUAL_COST_USD_ANCHORS: Tuple[float, float] = (1_000.0, 100_000.0)
-RANK_ANCHORS: Tuple[float, float] = (1.0, 1_000.0)
+RESEARCH_INTENSITY_ANCHORS: tuple[float, float] = (0.1, 30.0)
+APPLICANTS_PER_PLACE_ANCHORS: tuple[float, float] = (1.0, 40.0)
+URBAN_AREA_POPULATION_ANCHORS: tuple[float, float] = (50_000.0, 1_500_000.0)
+ANNUAL_COST_USD_ANCHORS: tuple[float, float] = (1_000.0, 100_000.0)
+RANK_ANCHORS: tuple[float, float] = (1.0, 1_000.0)
 
 GRADUATE_LEVELS = {"master", "mba", "doctorate"}
 
 
-def _number(value: Any) -> Optional[float]:
+def _number(value: Any) -> float | None:
     if isinstance(value, bool) or value is None:
         return None
     try:
@@ -48,13 +48,13 @@ def log_position(value: float, low: float, high: float) -> float:
     return max(0.0, min(1.0, position))
 
 
-def _raw_metrics(university: Dict[str, Any]) -> Dict[str, Any]:
+def _raw_metrics(university: dict[str, Any]) -> dict[str, Any]:
     meta = university.get("factors_meta")
     metrics = meta.get("raw_metrics") if isinstance(meta, dict) else None
     return metrics if isinstance(metrics, dict) else {}
 
 
-def research_intensity(university: Dict[str, Any]) -> Optional[float]:
+def research_intensity(university: dict[str, Any]) -> float | None:
     openalex = _raw_metrics(university).get("openalex")
     works = _number(openalex.get("works_count")) if isinstance(openalex, dict) else None
     students = _number(university.get("student_count"))
@@ -64,7 +64,7 @@ def research_intensity(university: Dict[str, Any]) -> Optional[float]:
     return round(log_position(works / students, *RESEARCH_INTENSITY_ANCHORS), 4)
 
 
-def admission_rate_percent(university: Dict[str, Any]) -> Optional[float]:
+def admission_rate_percent(university: dict[str, Any]) -> float | None:
     """Published first-year admission (or offer) rate: the reviewed statistics first, then the earlier field."""
     stats = university.get("admission_statistics")
     rate = _number(stats.get("rate_percent")) if isinstance(stats, dict) else None
@@ -74,7 +74,7 @@ def admission_rate_percent(university: Dict[str, Any]) -> Optional[float]:
     return rate if rate is not None and 0 < rate <= 100 else None
 
 
-def selectivity(university: Dict[str, Any], study_level: str = "any") -> Optional[float]:
+def selectivity(university: dict[str, Any], study_level: str = "any") -> float | None:
     if study_level in GRADUATE_LEVELS:
         return None
     rate = admission_rate_percent(university)
@@ -83,7 +83,7 @@ def selectivity(university: Dict[str, Any], study_level: str = "any") -> Optiona
     return round(log_position(100.0 / rate, *APPLICANTS_PER_PLACE_ANCHORS), 4)
 
 
-def location(university: Dict[str, Any]) -> Optional[float]:
+def location(university: dict[str, Any]) -> float | None:
     metrics = _raw_metrics(university)
     urban_area = metrics.get("urban_area")
     population = _number(urban_area.get("population")) if isinstance(urban_area, dict) else None
@@ -100,7 +100,7 @@ def location(university: Dict[str, Any]) -> Optional[float]:
     return round(1.0 - log_position(population, *URBAN_AREA_POPULATION_ANCHORS), 4)
 
 
-def official_rank(university: Dict[str, Any]) -> Optional[float]:
+def official_rank(university: dict[str, Any]) -> float | None:
     meta = university.get("rank_meta")
     if not isinstance(meta, dict) or str(meta.get("status") or "").strip().lower() != "official":
         return None
@@ -108,7 +108,7 @@ def official_rank(university: Dict[str, Any]) -> Optional[float]:
     return rank if rank is not None and rank >= 1 else None
 
 
-def cost_vs_prestige(university: Dict[str, Any], annual_cost_usd: Optional[float] = None) -> Optional[float]:
+def cost_vs_prestige(university: dict[str, Any], annual_cost_usd: float | None = None) -> float | None:
     """Mean of the known cost and rank positions; ``annual_cost_usd`` overrides the earlier finance field."""
     if annual_cost_usd is None:
         finance = university.get("finance")

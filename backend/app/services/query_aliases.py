@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Dict, List
-
 MIN_WORD_LENGTH = 4
 MAX_WORD_MATCHES = 8
 # Words this long keep their stem when the ending differs ("вычислительные" finds "вычислительная").
@@ -19,7 +17,7 @@ def _word_matches(token: str, word: str) -> bool:
     return word.startswith(_stem(token))
 
 
-def word_alias_candidates(norm_query: str, alias_map: Dict[str, str]) -> List[str]:
+def word_alias_candidates(norm_query: str, alias_map: dict[str, str]) -> list[str]:
     """Return canonical names whose translated name contains every typed word.
 
     `alias_map` maps a translated phrase to its source-language name. A query
@@ -30,7 +28,7 @@ def word_alias_candidates(norm_query: str, alias_map: Dict[str, str]) -> List[st
     tokens = [token for token in norm_query.split(" ") if token]
     if not tokens or any(len(token) < MIN_WORD_LENGTH for token in tokens):
         return []
-    matches: List[str] = []
+    matches: list[str] = []
     for phrase, canonical in alias_map.items():
         if phrase == norm_query or canonical in matches:
             continue

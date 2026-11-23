@@ -1,5 +1,5 @@
 from datetime import date
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from app.services import exam_support
 
@@ -30,11 +30,11 @@ _band_value_for_label = exam_support.band_value_for_label
 
 def _coerce_grade_combo_submission(
     exam_key: str,
-    cfg: Dict[str, Any],
+    cfg: dict[str, Any],
     score_raw: Any = None,
     raw_value: Any = None,
     details: Any = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     scheme = _grade_scheme(cfg)
     allowed = {
         _normalize_grade_token(k): int(v)
@@ -93,10 +93,10 @@ def _coerce_grade_combo_submission(
 def _parse_breakdown_item(
     exam_key: str,
     row: Any,
-    defs_map: Dict[str, Dict[str, Any]],
+    defs_map: dict[str, dict[str, Any]],
     item_type_label: str,
     allow_self: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     if not isinstance(row, dict):
         raise ValueError(f"{exam_key} {item_type_label} must be objects")
     raw_exam = row.get("exam") or row.get("id")
@@ -138,10 +138,10 @@ def _parse_breakdown_item(
 def _parse_breakdown_components(
     exam_key: str,
     raw_components: Any,
-    fixed_defs: List[Dict[str, Any]],
-    selectable_defs: List[Dict[str, Any]],
-    scheme: Dict[str, Any],
-) -> List[Dict[str, Any]]:
+    fixed_defs: list[dict[str, Any]],
+    selectable_defs: list[dict[str, Any]],
+    scheme: dict[str, Any],
+) -> list[dict[str, Any]]:
     if raw_components is None:
         raw_components = []
     if not isinstance(raw_components, list):
@@ -151,8 +151,8 @@ def _parse_breakdown_components(
     selectable_ids = {row["exam"] for row in selectable_defs}
     distinct_components = bool(scheme.get("distinct_components", True))
 
-    parsed_components: List[Dict[str, Any]] = []
-    component_counts: Dict[str, int] = {}
+    parsed_components: list[dict[str, Any]] = []
+    component_counts: dict[str, int] = {}
     for row in raw_components:
         parsed_item = _parse_breakdown_item(exam_key, row, component_defs, "components", allow_self=False)
         resolved = parsed_item["exam"]
@@ -180,16 +180,16 @@ def _parse_breakdown_components(
 def _parse_breakdown_extra_scores(
     exam_key: str,
     raw_extra_scores: Any,
-    extra_defs: List[Dict[str, Any]],
-) -> List[Dict[str, Any]]:
+    extra_defs: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
     if raw_extra_scores is None:
         raw_extra_scores = []
     if not isinstance(raw_extra_scores, list):
         raise ValueError(f"{exam_key} extra scores must be a list")
 
     extra_defs_map = {row["exam"]: row for row in extra_defs}
-    parsed_extra_scores: List[Dict[str, Any]] = []
-    extra_counts: Dict[str, int] = {}
+    parsed_extra_scores: list[dict[str, Any]] = []
+    extra_counts: dict[str, int] = {}
     for row in raw_extra_scores:
         parsed_item = _parse_breakdown_item(exam_key, row, extra_defs_map, "extra scores", allow_self=True)
         resolved = parsed_item["exam"]
@@ -203,12 +203,12 @@ def _parse_breakdown_extra_scores(
 
 def _calculate_breakdown_total_score(
     exam_key: str,
-    cfg: Dict[str, Any],
-    scheme: Dict[str, Any],
-    parsed_components: List[Dict[str, Any]],
+    cfg: dict[str, Any],
+    scheme: dict[str, Any],
+    parsed_components: list[dict[str, Any]],
     score_raw: Any,
     raw_value: Any,
-) -> Optional[Union[int, float]]:
+) -> int | float | None:
     total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()
     component_scores = [_to_float(row.get("score")) for row in parsed_components]
     numeric_component_scores = [float(row) for row in component_scores if row is not None]
@@ -243,12 +243,12 @@ def _calculate_breakdown_total_score(
 
 
 def _build_breakdown_display_value(
-    scheme: Dict[str, Any],
-    parsed_components: List[Dict[str, Any]],
-    parsed_extra_scores: List[Dict[str, Any]],
+    scheme: dict[str, Any],
+    parsed_components: list[dict[str, Any]],
+    parsed_extra_scores: list[dict[str, Any]],
     total_score: Any,
 ) -> str:
-    display_parts: List[str] = []
+    display_parts: list[str] = []
     total_strategy = str(scheme.get("total_strategy") or "sum").strip().lower()
     if total_strategy == "use_parent_score":
         parent_label = _strip_text(scheme.get("parent_score_label")) or "Total"
@@ -279,11 +279,11 @@ def _has_breakdown_entries(details: Any) -> bool:
 
 def _coerce_subject_breakdown_submission(
     exam_key: str,
-    cfg: Dict[str, Any],
+    cfg: dict[str, Any],
     score_raw: Any = None,
     raw_value: Any = None,
     details: Any = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     scheme = _breakdown_scheme(cfg)
     total_score_raw = score_raw if score_raw not in (None, "") else raw_value
     if scheme.get("allow_total_only") and total_score_raw not in (None, "") and not _has_breakdown_entries(details):
@@ -303,7 +303,7 @@ def _coerce_subject_breakdown_submission(
     total_score = _calculate_breakdown_total_score(exam_key, cfg, scheme, parsed_components, score_raw, raw_value)
     display_value = _build_breakdown_display_value(scheme, parsed_components, parsed_extra_scores, total_score)
 
-    result: Dict[str, Any] = {
+    result: dict[str, Any] = {
         "exam": exam_key,
         "details": {
             "components": parsed_components,
@@ -322,11 +322,11 @@ def _coerce_subject_breakdown_submission(
     return result
 def _coerce_band_select_submission(
     exam_key: str,
-    cfg: Dict[str, Any],
+    cfg: dict[str, Any],
     score_raw: Any = None,
     raw_value: Any = None,
     details: Any = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     band_raw = raw_value
     if band_raw in (None, "") and isinstance(details, dict):
         band_raw = details.get("band") or details.get("label") or details.get("raw_value")
@@ -336,10 +336,7 @@ def _coerce_band_select_submission(
             band_raw = score_raw
 
     band_value = _band_value_for_label(cfg, band_raw)
-    if band_value is None:
-        score = _validate_numeric_score(exam_key, cfg, score_raw)
-    else:
-        score = band_value
+    score = _validate_numeric_score(exam_key, cfg, score_raw) if band_value is None else band_value
 
     short_label = _band_label_for_value(cfg, score)
     result = {"exam": exam_key, "score": int(score)}
@@ -356,7 +353,7 @@ def coerce_exam_submission(
     raw_value: Any = None,
     details: Any = None,
     taken_on: Any = None,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Coerce a raw exam submission into a canonical payload that scoring can use.
 
@@ -406,7 +403,7 @@ def coerce_exam_submission(
     return result
 
 
-def normalize_exam_score(exam_key: Any, score_raw: Any) -> Optional[float]:
+def normalize_exam_score(exam_key: Any, score_raw: Any) -> float | None:
     """
     Normalize a raw exam score to a 0-100 percentile-like scale.
 
@@ -471,19 +468,3 @@ def normalize_exam_score(exam_key: Any, score_raw: Any) -> Optional[float]:
             )
 
     return _clamp(((score - mn) / max(mx - mn, 1e-9)) * 100.0, 0.0, 100.0)
-
-
-def validate_exam_value(exam_key: str, score_raw: Any) -> Union[int, float]:
-    """
-    Validate and normalize a single exam input into the numeric score used
-    by scoring. This compatibility wrapper keeps older callers working.
-    """
-    result = coerce_exam_submission(exam_key, score_raw=score_raw)
-    score = result.get("score")
-    numeric = _to_float(score)
-    if numeric is None:
-        raise ValueError("Invalid score format")
-    cfg = _config_entry(exam_key)
-    if str(cfg.get("type", "float")).lower() == "int":
-        return int(round(numeric))
-    return float(numeric)

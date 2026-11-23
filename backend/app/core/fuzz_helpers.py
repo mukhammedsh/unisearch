@@ -28,10 +28,7 @@ class SimpleFuzzedDataProvider:
         if min_val >= max_val:
             return min_val
         raw = self.ConsumeBytes(4)
-        if len(raw) < 4:
-            val = 0
-        else:
-            val = struct.unpack(">I", raw)[0]
+        val = 0 if len(raw) < 4 else struct.unpack(">I", raw)[0]
         span = (max_val - min_val) + 1
         return min_val + (val % span)
 

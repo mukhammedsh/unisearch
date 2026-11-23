@@ -13,7 +13,6 @@ from app.core.paths import DATA_DIR
 from app.services import search as search_service
 from app.services.university_tracks import _canonical_major, _major_tags_from_text, _normalize_major_text
 
-
 CATALOG_PATH = DATA_DIR / "admissions" / "catalog.json"
 INSTITUTION_IDS = {"mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana"}
 LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"}

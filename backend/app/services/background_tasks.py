@@ -1,5 +1,5 @@
 import time
-from typing import Any, Dict
+from typing import Any
 
 from app.core.settings import WARMUP_ML_ON_STARTUP
 from app.services import currency as currency_service
@@ -9,9 +9,9 @@ from app.services import universities as universities_service
 from app.services.ml_scoring import get_ml_recommender
 
 
-def warmup_runtime(trigger: str = "manual") -> Dict[str, Any]:
+def warmup_runtime(trigger: str = "manual") -> dict[str, Any]:
     started = time.perf_counter()
-    result: Dict[str, Any] = {
+    result: dict[str, Any] = {
         "trigger": str(trigger or "manual"),
         "ok": True,
     }

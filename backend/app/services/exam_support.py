@@ -1,13 +1,13 @@
 import json
 import re
 from decimal import Decimal, InvalidOperation
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from app.core.files import RequiredDataUnavailable, file_mtime
 from app.core.paths import EXAMS_PATH
 
-EXAMS_CONFIG: Dict[str, Dict[str, Any]] = {}
-EXAM_WHITELIST: Dict[str, Any] = {}
+EXAMS_CONFIG: dict[str, dict[str, Any]] = {}
+EXAM_WHITELIST: dict[str, Any] = {}
 _EXAMS_CACHE = {"mtime": None}
 EXAM_KEY_ALIASES = {
     "ENT": ["UNT"],
@@ -20,11 +20,11 @@ EXAM_KEY_ALIASES = {
 }
 
 
-def load_exams_config() -> Dict[str, Dict[str, Any]]:
+def load_exams_config() -> dict[str, dict[str, Any]]:
     if not EXAMS_PATH:
         raise RequiredDataUnavailable("Exam data is unavailable")
     try:
-        with open(EXAMS_PATH, "r", encoding="utf-8") as file:
+        with open(EXAMS_PATH, encoding="utf-8") as file:
             raw = json.load(file)
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise RequiredDataUnavailable("Exam data is unavailable") from exc
@@ -32,7 +32,7 @@ def load_exams_config() -> Dict[str, Dict[str, Any]]:
     if not isinstance(raw, dict) or not raw:
         raise RequiredDataUnavailable("Exam data is unavailable")
 
-    config: Dict[str, Dict[str, Any]] = {}
+    config: dict[str, dict[str, Any]] = {}
     for key, value in raw.items():
         if isinstance(value, dict):
             config[str(key).strip().upper()] = value
@@ -72,7 +72,7 @@ def resolve_exam_key(exam_id: Any) -> str:
         return raw
 
     target = canonical_exam_key(raw)
-    for key in EXAMS_CONFIG.keys():
+    for key in EXAMS_CONFIG:
         if canonical_exam_key(key) == target:
             return key
 
@@ -81,7 +81,7 @@ def resolve_exam_key(exam_id: Any) -> str:
         if alias in EXAMS_CONFIG:
             return alias
         alias_target = canonical_exam_key(alias)
-        for key in EXAMS_CONFIG.keys():
+        for key in EXAMS_CONFIG:
             if canonical_exam_key(key) == alias_target:
                 return key
 
@@ -96,7 +96,7 @@ def to_decimal(value: Any) -> Decimal:
     return Decimal(str(value).strip())
 
 
-def to_float(value: Any) -> Optional[float]:
+def to_float(value: Any) -> float | None:
     try:
         if value is None or value == "":
             return None
@@ -109,14 +109,14 @@ def clamp(value: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, value))
 
 
-def config_entry(exam_key: Any) -> Dict[str, Any]:
+def config_entry(exam_key: Any) -> dict[str, Any]:
     ensure_exams_cache()
     resolved = resolve_exam_key(exam_key)
     cfg = EXAMS_CONFIG.get(resolved) if resolved else None
     return cfg if isinstance(cfg, dict) else {}
 
 
-def input_mode(cfg: Dict[str, Any]) -> str:
+def input_mode(cfg: dict[str, Any]) -> str:
     raw = str(cfg.get("input_mode") or "").strip().lower()
     if raw:
         return raw
@@ -125,7 +125,7 @@ def input_mode(cfg: Dict[str, Any]) -> str:
     return "number"
 
 
-def normalization_config(exam_key: Any) -> Dict[str, Any]:
+def normalization_config(exam_key: Any) -> dict[str, Any]:
     normalization = config_entry(exam_key).get("normalization")
     return normalization if isinstance(normalization, dict) else {}
 
@@ -139,14 +139,14 @@ def exam_supports_percentile_normalization(exam_key: Any) -> bool:
     return bool(normalization.get("supports_user_scoring", True))
 
 
-def validate_numeric_score(exam_key: str, cfg: Dict[str, Any], score_raw: Any) -> Union[int, float]:
+def validate_numeric_score(exam_key: str, cfg: dict[str, Any], score_raw: Any) -> int | float:
     score_type = str(cfg.get("type", "float")).lower()
     if score_raw is None or str(score_raw).strip() == "":
         raise ValueError(f"{exam_key} score is required")
     try:
         value = to_decimal(score_raw)
-    except (InvalidOperation, ValueError):
-        raise ValueError("Invalid score format")
+    except (InvalidOperation, ValueError) as exc:
+        raise ValueError("Invalid score format") from exc
 
     if value.is_nan() or value.is_infinite():
         raise ValueError("Invalid score format")
@@ -186,7 +186,7 @@ def coerce_flag_score(exam_key: str, score_raw: Any) -> int:
     raise ValueError(f"{exam_key} must be 0 or 1")
 
 
-def grade_scheme(cfg: Dict[str, Any]) -> Dict[str, Any]:
+def grade_scheme(cfg: dict[str, Any]) -> dict[str, Any]:
     raw = cfg.get("grade_scheme")
     return raw if isinstance(raw, dict) else {}
 
@@ -198,7 +198,7 @@ def normalize_grade_token(value: Any) -> str:
     return raw.replace("★", "*").replace("A STAR", "A*").replace("A-STAR", "A*").replace("ASTAR", "A*").replace(" ", "")
 
 
-def parse_grade_combo_from_details(details: Any) -> List[str]:
+def parse_grade_combo_from_details(details: Any) -> list[str]:
     if not isinstance(details, dict):
         return []
     grades = details.get("grades")
@@ -207,7 +207,7 @@ def parse_grade_combo_from_details(details: Any) -> List[str]:
     return [token for item in grades if (token := normalize_grade_token(item))]
 
 
-def parse_grade_combo_from_text(raw_value: Any, allowed: Dict[str, int]) -> List[str]:
+def parse_grade_combo_from_text(raw_value: Any, allowed: dict[str, int]) -> list[str]:
     text = strip_text(raw_value)
     if not text:
         return []
@@ -221,20 +221,20 @@ def parse_grade_combo_from_text(raw_value: Any, allowed: Dict[str, int]) -> List
     return tokens
 
 
-def level_scheme(cfg: Dict[str, Any]) -> Dict[str, Any]:
+def level_scheme(cfg: dict[str, Any]) -> dict[str, Any]:
     raw = cfg.get("level_scheme")
     return raw if isinstance(raw, dict) else {}
 
 
-def breakdown_scheme(cfg: Dict[str, Any]) -> Dict[str, Any]:
+def breakdown_scheme(cfg: dict[str, Any]) -> dict[str, Any]:
     raw = cfg.get("breakdown_scheme")
     return raw if isinstance(raw, dict) else {}
 
 
-def breakdown_item_definitions(items: Any, *, default_required: bool) -> List[Dict[str, Any]]:
+def breakdown_item_definitions(items: Any, *, default_required: bool) -> list[dict[str, Any]]:
     if not isinstance(items, list):
         return []
-    out: List[Dict[str, Any]] = []
+    out: list[dict[str, Any]] = []
     for item in items:
         if isinstance(item, str):
             resolved = resolve_exam_key(item)
@@ -254,7 +254,7 @@ def breakdown_item_definitions(items: Any, *, default_required: bool) -> List[Di
     return out
 
 
-def display_value_from_submission(parsed: Dict[str, Any]) -> str:
+def display_value_from_submission(parsed: dict[str, Any]) -> str:
     for item in (parsed.get("display_value"), parsed.get("raw_value"), parsed.get("score")):
         text = strip_text(item)
         if text:
@@ -262,7 +262,7 @@ def display_value_from_submission(parsed: Dict[str, Any]) -> str:
     return ""
 
 
-def level_bands(cfg: Dict[str, Any]) -> List[Dict[str, Any]]:
+def level_bands(cfg: dict[str, Any]) -> list[dict[str, Any]]:
     bands = level_scheme(cfg).get("bands")
     return [row for row in bands if isinstance(row, dict)] if isinstance(bands, list) else []
 
@@ -272,14 +272,14 @@ def normalize_level_label(value: Any) -> str:
     return text.replace("LEVEL", "").replace(" ", "") if text else ""
 
 
-def to_num_int(value: Any) -> Optional[int]:
+def to_num_int(value: Any) -> int | None:
     numeric = to_float(value)
     if numeric is None or abs(numeric - round(numeric)) > 1e-9:
         return None
     return int(round(numeric))
 
 
-def band_label_for_value(cfg: Dict[str, Any], score: Any) -> str:
+def band_label_for_value(cfg: dict[str, Any], score: Any) -> str:
     numeric = to_num_int(score)
     if numeric is None:
         return ""
@@ -289,7 +289,7 @@ def band_label_for_value(cfg: Dict[str, Any], score: Any) -> str:
     return ""
 
 
-def band_value_for_label(cfg: Dict[str, Any], raw_value: Any) -> Optional[int]:
+def band_value_for_label(cfg: dict[str, Any], raw_value: Any) -> int | None:
     label = normalize_level_label(raw_value)
     if not label:
         return None

@@ -7,10 +7,9 @@ from __future__ import annotations
 
 import math
 import re
-from typing import Optional
 
 
-def to_float(x: object) -> Optional[float]:
+def to_float(x: object) -> float | None:
     """Convert a value to float, returning None if not possible or not finite."""
     try:
         if x is None or x == "":

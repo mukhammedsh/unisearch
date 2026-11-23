@@ -1,12 +1,11 @@
 import os
-from typing import Optional
 
 
 class RequiredDataUnavailable(RuntimeError):
     pass
 
 
-def file_mtime(path: str) -> Optional[float]:
+def file_mtime(path: str) -> float | None:
     try:
         return os.path.getmtime(path)
     except Exception:

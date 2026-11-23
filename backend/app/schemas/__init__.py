@@ -2,8 +2,8 @@ from app.schemas.payloads import (
     CompareProfilesRequest,
     ExamValidateRequest,
     LanguageValidateRequest,
-    ProfileOnlyRequest,
     ProfiledUniversitiesRequest,
+    ProfileOnlyRequest,
     ProfilePayload,
     UniversitiesAiSortRequest,
 )

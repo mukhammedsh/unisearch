@@ -4,11 +4,12 @@ import math
 import re
 import threading
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from functools import lru_cache
-from typing import Any, Dict, Optional
+from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.request import Request as UrlRequest, urlopen
+from urllib.request import Request as UrlRequest
+from urllib.request import urlopen
 
 from app.core.paths import CURRENCY_FILTER_LIMITS_PATH
 from app.core.redis_store import cache_get_json, cache_set_json
@@ -26,7 +27,7 @@ _CURRENCY_CODE_RE = re.compile(r"^[A-Z]{3,5}$")
 # Static fallback rates for supported world currencies relative to base USD (1 USD = X currency)
 # Used when both API and caches (Redis, in-memory) are unavailable
 FALLBACK_RATES_DATE: str = "2026-11-18"  # ExchangeRate-API time_last_update_utc: Wed, 18 Nov 2026 00:02:31 +0000
-FALLBACK_RATES: Dict[str, float] = {
+FALLBACK_RATES: dict[str, float] = {
     "USD": 1.0,
     "AED": 3.6725,
     "AFN": 65.569445,
@@ -201,10 +202,10 @@ _CONSECUTIVE_FAILURES = 0
 _BACKOFF_UNTIL = 0.0
 _CIRCUIT_LOCK = threading.Lock()
 
-_MEMORY_CACHE: Dict[str, Any] = {}
+_MEMORY_CACHE: dict[str, Any] = {}
 _CACHE_LOCK = threading.Lock()
 
-_LAST_FETCH_TIME: Optional[float] = None
+_LAST_FETCH_TIME: float | None = None
 
 
 def _record_success() -> None:
@@ -215,7 +216,7 @@ def _record_success() -> None:
         _BACKOFF_UNTIL = 0.0
 
 
-def _record_failure(error_msg: str = "") -> None:
+def _record_failure() -> None:
     global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
     with _CIRCUIT_LOCK:
         _CONSECUTIVE_FAILURES += 1
@@ -255,7 +256,7 @@ def _clear_cache_for_testing() -> None:
     _LAST_FETCH_TIME = None
 
 
-def fetch_rates(base: str = "USD") -> Dict[str, Any]:
+def fetch_rates(base: str = "USD") -> dict[str, Any]:
     """Fetches real-time exchange rates from the configured API provider using urllib.request."""
     base_code = (base or "USD").strip().upper()
     if not _CURRENCY_CODE_RE.match(base_code):
@@ -292,7 +293,7 @@ def fetch_rates(base: str = "USD") -> Dict[str, Any]:
         if not isinstance(raw_rates, dict) or not raw_rates:
             raise RuntimeError("Currency API returned empty rates")
 
-        rates: Dict[str, float] = {}
+        rates: dict[str, float] = {}
         for code, rate in raw_rates.items():
             if not isinstance(code, str):
                 continue
@@ -310,7 +311,7 @@ def fetch_rates(base: str = "USD") -> Dict[str, Any]:
 
         date_str = str(data.get("time_last_update_utc") or "")
         if not date_str:
-            date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+            date_str = datetime.now(UTC).strftime("%Y-%m-%d")
 
         return {
             "rates": rates,
@@ -342,7 +343,7 @@ def _refresh_in_background(base_code: str) -> None:
     threading.Thread(target=refresh, name="currency-refresh", daemon=True).start()
 
 
-def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
+def get_rates(base: str = "USD", force_refresh: bool = False) -> dict[str, Any]:
     """
     Returns currency exchange rates using two-tier cache (memory + Redis),
     with fallback to API and static FALLBACK_RATES.
@@ -427,8 +428,8 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> Dict[str, Any]:
                 "date": date_str,
                 "source": "api",
             }
-        except Exception as e:
-            _record_failure(str(e))
+        except Exception:
+            _record_failure()
             _LOGGER.warning("Failed to fetch currency rates from the configured API")
 
     # Fallback to in-memory cache even if slightly stale, before falling back to static
@@ -530,17 +531,17 @@ def _nice_max(raw_max: float, step: int) -> int:
 
 
 @lru_cache(maxsize=1)
-def _load_filter_limits_config_cached() -> Dict[str, Dict[str, int]]:
+def _load_filter_limits_config_cached() -> dict[str, dict[str, int]]:
     try:
-        with open(CURRENCY_FILTER_LIMITS_PATH, "r", encoding="utf-8") as f:
+        with open(CURRENCY_FILTER_LIMITS_PATH, encoding="utf-8") as f:
             raw = json.load(f)
         if isinstance(raw, dict):
-            cleaned: Dict[str, Dict[str, int]] = {}
+            cleaned: dict[str, dict[str, int]] = {}
             for k, v in raw.items():
                 if k.startswith("_") or not isinstance(v, dict):
                     continue
                 key = "default" if k.lower() == "default" else k.upper()
-                entry: Dict[str, int] = {}
+                entry: dict[str, int] = {}
                 if "min" in v:
                     entry["min"] = max(0, int(v["min"]))
                 if "max" in v:
@@ -560,12 +561,12 @@ def _load_filter_limits_config_cached() -> Dict[str, Dict[str, int]]:
     }
 
 
-def load_filter_limits_config() -> Dict[str, Dict[str, int]]:
+def load_filter_limits_config() -> dict[str, dict[str, int]]:
     """Loads and caches currency slider bounds from currency_filter_limits.json."""
     return dict(_load_filter_limits_config_cached())
 
 
-def get_filter_limits(currency_code: str) -> Dict[str, int]:
+def get_filter_limits(currency_code: str) -> dict[str, int]:
     """
     Returns slider bounds for a currency.
     If the currency is configured in currency_filter_limits.json, uses its explicit fields.
@@ -588,15 +589,8 @@ def get_filter_limits(currency_code: str) -> Dict[str, int]:
     conv_max = convert(default_max, "USD", code)
     conv_step = convert(default_step, "USD", code)
 
-    if "step" in override:
-        step_val = max(1, int(override["step"]))
-    else:
-        step_val = _nice_step(conv_step)
-
-    if "min" in override:
-        min_val = max(0, int(override["min"]))
-    else:
-        min_val = max(0, int(round(conv_min)))
+    step_val = max(1, int(override["step"])) if "step" in override else _nice_step(conv_step)
+    min_val = max(0, int(override["min"])) if "min" in override else max(0, int(round(conv_min)))
 
     if "max" in override:
         max_val = max(min_val + step_val, int(override["max"]))
@@ -612,7 +606,7 @@ def get_filter_limits(currency_code: str) -> Dict[str, int]:
     }
 
 
-def get_rates_status() -> Dict[str, Any]:
+def get_rates_status() -> dict[str, Any]:
     """Runtime health and diagnostic probe for currency service."""
     rates_info = get_rates()
     now = time.time()

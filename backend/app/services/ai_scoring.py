@@ -1,25 +1,34 @@
 import math
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
-from app.core.utils import to_float as _to_num, to_float_default as _to_num_default, clamp as _clamp, clamp01 as _clamp01
+from app.core.utils import clamp as _clamp
+from app.core.utils import clamp01 as _clamp01
+from app.core.utils import to_float as _to_num
+from app.core.utils import to_float_default as _to_num_default
+from app.services import admissions_assessment, admissions_catalog, preference_factors
 from app.services import exams as exams_service
-from app.services.finance_modes import (
-    extract_tuition_cost as _extract_tuition_cost,
-    mode_breakdown_from_finance as _mode_breakdown_from_finance,
-    mode_total_from_finance as _mode_total_from_finance,
-    normalize_study_mode as _normalize_study_mode,
-)
 from app.services import languages as languages_service
 from app.services import universities as universities_service
-from app.services import admissions_catalog, admissions_assessment, preference_factors
+from app.services.finance_modes import (
+    extract_tuition_cost as _extract_tuition_cost,
+)
+from app.services.finance_modes import (
+    mode_breakdown_from_finance as _mode_breakdown_from_finance,
+)
+from app.services.finance_modes import (
+    mode_total_from_finance as _mode_total_from_finance,
+)
+from app.services.finance_modes import (
+    normalize_study_mode as _normalize_study_mode,
+)
+from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 from app.services.university_tracks import (
     _canonical_major,
     _has_explicit_empty_program_mapping,
-    _normalize_major_text,
     _iter_programs,
+    _normalize_major_text,
 )
-from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
 
 _UI_BADGE_THRESHOLDS = {
     "your_vibe_max_mismatch": 0.14,
@@ -27,13 +36,13 @@ _UI_BADGE_THRESHOLDS = {
 }
 
 
-def has_admissions_selection(profile: Dict[str, Any], university_id: str = "") -> bool:
+def has_admissions_selection(profile: dict[str, Any], university_id: str = "") -> bool:
     selections = profile.get("selectedAdmissionChoices") or {}
     rows = [selections.get(university_id, {})] if university_id else selections.values()
     return any(isinstance(row, dict) and (row.get("studyOptionId") or row.get("applicationRouteId")) for row in rows)
 
 
-def _assess_admissions_selection(university_id: str, profile: Dict[str, Any]) -> Dict[str, Any]:
+def _assess_admissions_selection(university_id: str, profile: dict[str, Any]) -> dict[str, Any]:
     resolved = admissions_catalog.resolve_context(university_id, profile=profile)
     result = admissions_assessment.assess_resolved_context(resolved, profile)
     choice = result["choices"][0]
@@ -47,15 +56,6 @@ def _assess_admissions_selection(university_id: str, profile: Dict[str, Any]) ->
         "catalogRevision": resolved["revision"],
     })
     return result
-
-
-def _preview_text(value: Any, max_len: int = 180) -> str:
-    raw = str(value or "").replace("\n", " ").strip()
-    if len(raw) <= max_len:
-        return raw
-    return f"{raw[:max_len]}..."
-
-
 
 
 def _canonical_exam_key(key: Any) -> str:
@@ -113,7 +113,7 @@ def _normalize_funding_preference(value: Any) -> str:
     return "any"
 
 
-def _get_track_funding_type(track: Dict[str, Any]) -> str:
+def _get_track_funding_type(track: dict[str, Any]) -> str:
     raw_type = str(track.get("funding_type", "")).strip().lower()
     if raw_type in ("grant", "paid"):
         return raw_type
@@ -121,7 +121,7 @@ def _get_track_funding_type(track: Dict[str, Any]) -> str:
     return "grant" if re.search(r"grant|scholar", badge) else "paid"
 
 
-def _track_study_mode(university: Dict[str, Any], track: Dict[str, Any]) -> str:
+def _track_study_mode(university: dict[str, Any], track: dict[str, Any]) -> str:
     mode = track.get("study_mode")
     if isinstance(mode, list):
         mode = next((x for x in mode if x), "")
@@ -137,7 +137,7 @@ def _track_study_mode(university: Dict[str, Any], track: Dict[str, Any]) -> str:
     return "any"
 
 
-def _cost_to_usd(amount: Optional[float], currency_code: str) -> float:
+def _cost_to_usd(amount: float | None, currency_code: str) -> float:
     if amount is None or amount <= 0:
         return 0.0
     code = str(currency_code or "USD").strip().upper()
@@ -150,7 +150,7 @@ def _cost_to_usd(amount: Optional[float], currency_code: str) -> float:
         return max(0.0, float(amount))
 
 
-def _university_matches_major(university: Dict[str, Any], major: str) -> bool:
+def _university_matches_major(university: dict[str, Any], major: str) -> bool:
     target_major = str(major or "").strip()
     if not target_major or not isinstance(university, dict):
         return True
@@ -195,7 +195,7 @@ def _university_matches_major(university: Dict[str, Any], major: str) -> bool:
     return False
 
 
-def _finance_cost_range(finance: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def _finance_cost_range(finance: dict[str, Any]) -> dict[str, Any] | None:
     minimum = _to_num(finance.get("total_cost_year_min"))
     maximum = _to_num(finance.get("total_cost_year_max"))
     if minimum is None or maximum is None or minimum < 0 or maximum < minimum:
@@ -213,7 +213,7 @@ def _finance_cost_range(finance: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     }
 
 
-def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict[str, Any]:
+def _finance_for_cost(university: dict[str, Any], track: dict[str, Any]) -> dict[str, Any]:
     track_fin = track.get("finance_override") if isinstance(track.get("finance_override"), dict) else {}
     uni_fin = university.get("finance") if isinstance(university.get("finance"), dict) else {}
     levels = track.get("study_levels") if isinstance(track.get("study_levels"), list) else []
@@ -272,7 +272,7 @@ def _finance_for_cost(university: Dict[str, Any], track: Dict[str, Any]) -> Dict
     }
 
 
-def _track_cost_range_payload(university: Dict[str, Any], track: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def _track_cost_range_payload(university: dict[str, Any], track: dict[str, Any]) -> dict[str, Any] | None:
     finance = _finance_for_cost(university, track)
     cost_range = finance.get("cost_range")
     if not isinstance(cost_range, dict):
@@ -314,11 +314,11 @@ def _effective_cost_mode(preferred_mode: Any, track_mode: Any) -> str:
 
 
 def _effective_track_cost_details(
-    university: Dict[str, Any],
-    track: Dict[str, Any],
+    university: dict[str, Any],
+    track: dict[str, Any],
     preferred_mode: Any = "any",
     intended_entry_cycle: Any = None,
-) -> Tuple[float, float, str, str]:
+) -> tuple[float, float, str, str]:
     """
     Returns (cost_usd, cost_native, currency, cost_mode)
     """
@@ -365,26 +365,26 @@ def _effective_track_cost_details(
 
 
 def _effective_track_cost_with_mode(
-    university: Dict[str, Any],
-    track: Dict[str, Any],
+    university: dict[str, Any],
+    track: dict[str, Any],
     preferred_mode: Any = "any",
-) -> Tuple[float, str]:
+) -> tuple[float, str]:
     cost_usd, _cost_native, _currency, cost_mode = _effective_track_cost_details(
         university, track, preferred_mode=preferred_mode
     )
     return cost_usd, cost_mode
 
 
-def _effective_track_cost(university: Dict[str, Any], track: Dict[str, Any], preferred_mode: Any = "any") -> float:
+def _effective_track_cost(university: dict[str, Any], track: dict[str, Any], preferred_mode: Any = "any") -> float:
     return _effective_track_cost_with_mode(university, track, preferred_mode=preferred_mode)[0]
 
 
-def _language_config() -> Dict[str, Any]:
+def _language_config() -> dict[str, Any]:
     cfg = languages_service.get_languages_config()
     return cfg if isinstance(cfg, dict) else {}
 
 
-def _normalize_lang_code(value: Any, lang_cfg: Dict[str, Any]) -> str:
+def _normalize_lang_code(value: Any, lang_cfg: dict[str, Any]) -> str:
     raw = str(value or "").strip().lower()
     if not raw:
         return ""
@@ -434,7 +434,7 @@ def _is_higher_better(exam_id: Any) -> bool:
     return "JLPT" not in str(exam_id or "").upper()
 
 
-def _set_best_score(dst: Dict[str, float], exam_id: Any, score: Any) -> None:
+def _set_best_score(dst: dict[str, float], exam_id: Any, score: Any) -> None:
     raw = str(exam_id or "").strip()
     val = _to_num(score)
     if not raw or val is None:
@@ -450,7 +450,7 @@ def _set_best_score(dst: Dict[str, float], exam_id: Any, score: Any) -> None:
             dst[key] = max(prev, val) if higher_is_better else min(prev, val)
 
 
-def _normalize_gpa_score(val: Any, scale: Any = None) -> Optional[float]:
+def _normalize_gpa_score(val: Any, scale: Any = None) -> float | None:
     num = _to_num(val)
     if num is None or num < 0.0 or num > 5.0:
         return None
@@ -462,10 +462,10 @@ def _normalize_gpa_score(val: Any, scale: Any = None) -> Optional[float]:
     return round((num / 5.0) * 4.0, 2)
 
 
-def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Dict[str, Any]:
-    user_scores: Dict[str, float] = {}
+def _build_user_context(profile: dict[str, Any], lang_cfg: dict[str, Any]) -> dict[str, Any]:
+    user_scores: dict[str, float] = {}
     valid_exam_ids: set[str] = set()
-    user_languages: Dict[str, Dict[str, Any]] = {}
+    user_languages: dict[str, dict[str, Any]] = {}
 
     scale = profile.get("gpa_scale")
     normalized_gpa = _normalize_gpa_score(profile.get("gpa"), scale=scale)
@@ -578,7 +578,7 @@ def _build_user_context(profile: Dict[str, Any], lang_cfg: Dict[str, Any]) -> Di
     }
 
 
-def _get_user_score(user_scores: Dict[str, Any], exam_id: Any, user_languages: Optional[Dict[str, Any]] = None) -> Optional[float]:
+def _get_user_score(user_scores: dict[str, Any], exam_id: Any, user_languages: dict[str, Any] | None = None) -> float | None:
     raw = str(exam_id or "").strip()
     if not raw:
         return None
@@ -602,7 +602,7 @@ def _get_user_score(user_scores: Dict[str, Any], exam_id: Any, user_languages: O
     return None
 
 
-def _score_requirement(user: Any, min_val: Any, avg_val: Any, higher_is_better: bool = True, mode: str = "sort") -> Dict[str, Any]:
+def _score_requirement(user: Any, min_val: Any, avg_val: Any, higher_is_better: bool = True, mode: str = "sort") -> dict[str, Any]:
     u = _to_num(user)
     mn = _to_num(min_val)
     av = _to_num(avg_val)
@@ -634,7 +634,7 @@ def _score_requirement(user: Any, min_val: Any, avg_val: Any, higher_is_better: 
     return {"score": (0.75 + 0.25 * t) if mode == "sort" else (0.80 + 0.20 * t), "pass": True, "gap": 0.0, "conditional": False}
 
 
-def _collect_language_requirements(track: Dict[str, Any]) -> Dict[str, Any]:
+def _collect_language_requirements(track: dict[str, Any]) -> dict[str, Any]:
     raw = track.get("language_requirements")
     mode_raw = str(track.get("language_requirements_mode", track.get("language_mode", "all"))).strip().lower()
     mode = "any" if mode_raw == "any" else "all"
@@ -665,7 +665,7 @@ def _collect_language_requirements(track: Dict[str, Any]) -> Dict[str, Any]:
     return {"mode": mode, "items": []}
 
 
-def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[str, Any], lang_cfg: Dict[str, Any], mode: str = "sort") -> Dict[str, Any]:
+def _score_single_language_rule(lang_rule: dict[str, Any], user_languages: dict[str, Any], lang_cfg: dict[str, Any], mode: str = "sort") -> dict[str, Any]:
     code = _normalize_lang_code(lang_rule.get("code"), lang_cfg)
     state = user_languages.get(code) if code else None
     if not isinstance(state, dict):
@@ -674,7 +674,7 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
     if bool(lang_rule.get("accept_native")) and bool(state.get("native")):
         return {"score": 1.0, "pass": True, "gap": 0.0, "conditional": False}
 
-    candidates: List[Dict[str, Any]] = []
+    candidates: list[dict[str, Any]] = []
 
     min_cefr = _to_num(lang_rule.get("min_cefr"))
     avg_cefr = _to_num(lang_rule.get("recommended_cefr", lang_rule.get("avg_cefr", lang_rule.get("stats_avg_cefr"))))
@@ -699,7 +699,7 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
         scheme = exam.get("breakdown_scheme", {})
         for component in scheme.get("fixed_components", []):
             parent_exams[component["exam"]] = exam["id"]
-    exam_groups: Dict[str, List[Tuple[Any, Dict[str, Any]]]] = {}
+    exam_groups: dict[str, list[tuple[Any, dict[str, Any]]]] = {}
     for exam_id, min_val in req.items():
         # Do not infer exam-equivalent score from CEFR/native evidence.
         # Language exam thresholds (IELTS/TestDaF/DSH/etc.) must be met by
@@ -750,12 +750,12 @@ def _score_single_language_rule(lang_rule: Dict[str, Any], user_languages: Dict[
 
 
 def _language_rule_assessments(
-    rule: Dict[str, Any], user_languages: Dict[str, Any], lang_cfg: Dict[str, Any], mode: str
-) -> List[Dict[str, Any]]:
+    rule: dict[str, Any], user_languages: dict[str, Any], lang_cfg: dict[str, Any], mode: str
+) -> list[dict[str, Any]]:
     code = _normalize_lang_code(rule.get("code"), lang_cfg)
     state = user_languages.get(code) if code else None
     state = state if isinstance(state, dict) else {}
-    rows: List[Dict[str, Any]] = []
+    rows: list[dict[str, Any]] = []
 
     def add(exam: str, minimum: Any, provided: Any) -> None:
         passed = bool(_score_requirement(provided, minimum, None, higher_is_better=_is_higher_better(exam), mode="chance").get("pass")) if provided is not None else False
@@ -794,7 +794,7 @@ def _language_rule_assessments(
     return rows
 
 
-def _admission_choice_key(choice: Dict[str, Any], idx: int) -> str:
+def _admission_choice_key(choice: dict[str, Any], idx: int) -> str:
     explicit = str(choice.get("choice_key", "")).strip()
     if explicit:
         return explicit
@@ -813,13 +813,13 @@ def _admission_choice_key(choice: Dict[str, Any], idx: int) -> str:
     return f"choice:{idx}"
 
 
-def _normalize_selected_admission_choices(profile: Dict[str, Any]) -> Dict[str, Dict[str, str]]:
+def _normalize_selected_admission_choices(profile: dict[str, Any]) -> dict[str, dict[str, str]]:
     if not isinstance(profile, dict):
         return {}
     raw = profile.get("selectedAdmissionChoices")
     if not isinstance(raw, dict):
         return {}
-    out: Dict[str, Dict[str, str]] = {}
+    out: dict[str, dict[str, str]] = {}
     for uni_id, selection in raw.items():
         uni = str(uni_id or "").strip()
         if not isinstance(selection, dict):
@@ -834,7 +834,7 @@ def _normalize_selected_admission_choices(profile: Dict[str, Any]) -> Dict[str, 
     return out
 
 
-def _selected_choice_key_for_university(profile: Dict[str, Any], university: Dict[str, Any]) -> str:
+def _selected_choice_key_for_university(profile: dict[str, Any], university: dict[str, Any]) -> str:
     selections = _normalize_selected_admission_choices(profile)
     uni_id = str((university or {}).get("id") or "").strip()
     if not uni_id:
@@ -842,19 +842,19 @@ def _selected_choice_key_for_university(profile: Dict[str, Any], university: Dic
     return str(selections.get(uni_id, {}).get("choiceKey") or "").strip()
 
 
-def _selected_program_id_for_university(profile: Dict[str, Any], university: Dict[str, Any]) -> str:
+def _selected_program_id_for_university(profile: dict[str, Any], university: dict[str, Any]) -> str:
     selections = _normalize_selected_admission_choices(profile)
     uni_id = str((university or {}).get("id") or "").strip()
     return str(selections.get(uni_id, {}).get("programId") or "").strip() if uni_id else ""
 
 
-def _choice_matches_applicant_route(choice: Dict[str, Any], target_route: Any) -> bool:
+def _choice_matches_applicant_route(choice: dict[str, Any], target_route: Any) -> bool:
     expected = str(target_route or "").strip().lower()
     actual = str(choice.get("applicant_route") or "").strip().lower()
     return not expected or not actual or actual == expected
 
 
-def _choice_matches_program(choice: Dict[str, Any], program_id: str) -> bool:
+def _choice_matches_program(choice: dict[str, Any], program_id: str) -> bool:
     if not program_id:
         return True
     if _has_explicit_empty_program_mapping(choice):
@@ -865,7 +865,7 @@ def _choice_matches_program(choice: Dict[str, Any], program_id: str) -> bool:
     return not ids or program_id.casefold() in ids
 
 
-def _choice_matches_entry_cycle(choice: Dict[str, Any], target_cycle: Any) -> bool:
+def _choice_matches_entry_cycle(choice: dict[str, Any], target_cycle: Any) -> bool:
     expected = _entry_cycle_parts(target_cycle)
     actual = _entry_cycle_parts(choice.get("cycle"))
     if not expected or not actual:
@@ -878,8 +878,8 @@ def _choice_matches_entry_cycle(choice: Dict[str, Any], target_cycle: Any) -> bo
 
 
 def _choice_applicability(
-    choice: Dict[str, Any], target_route: Any, target_cycle: Any, program_id: str, program_is_known: bool = True
-) -> Dict[str, str]:
+    choice: dict[str, Any], target_route: Any, target_cycle: Any, program_id: str, program_is_known: bool = True
+) -> dict[str, str]:
     """Describe whether the selected applicant context is supported by route metadata."""
     actual_route = str(choice.get("applicant_route") or "").strip().lower()
     expected_route = str(target_route or "").strip().lower()
@@ -909,11 +909,11 @@ def _choice_applicability(
     }
 
 
-def _applicability_unknown_reason(applicability: Dict[str, str]) -> str:
+def _applicability_unknown_reason(applicability: dict[str, str]) -> str:
     return "applicability_unknown" if "unknown" in applicability.values() else ""
 
 
-def _entry_cycle_parts(value: Any) -> Optional[Tuple[Optional[int], Optional[str]]]:
+def _entry_cycle_parts(value: Any) -> tuple[int | None, str | None] | None:
     text = " ".join(str(value or "").strip().casefold().replace("–", "-").replace("—", "-").split())
     if not text:
         return None
@@ -970,7 +970,7 @@ def _cost_cycle_mismatch(cost_source: Any, intended_entry_cycle: Any) -> bool:
     return len(set(years)) == 1 and int(years[0]) != target[0]
 
 
-def _known_program_ids(university: Dict[str, Any], choices: List[Dict[str, Any]]) -> set[str]:
+def _known_program_ids(university: dict[str, Any], choices: list[dict[str, Any]]) -> set[str]:
     ids = {
         str(value or "").strip().casefold()
         for choice in choices
@@ -987,7 +987,7 @@ def _known_program_ids(university: Dict[str, Any], choices: List[Dict[str, Any]]
     return ids
 
 
-def _choice_result_by_key(rows: List[Dict[str, Any]], choice_key: Any) -> Optional[Dict[str, Any]]:
+def _choice_result_by_key(rows: list[dict[str, Any]], choice_key: Any) -> dict[str, Any] | None:
     wanted = str(choice_key or "").strip()
     if not wanted:
         return None
@@ -999,7 +999,7 @@ def _choice_result_by_key(rows: List[Dict[str, Any]], choice_key: Any) -> Option
     return None
 
 
-def _chance_level(chance_pct: float) -> Dict[str, str]:
+def _chance_level(chance_pct: float) -> dict[str, str]:
     if chance_pct >= 100:
         return {"id": "all_met", "label": "All published requirements met"}
     if chance_pct >= 80:
@@ -1009,14 +1009,14 @@ def _chance_level(chance_pct: float) -> Dict[str, str]:
     return {"id": "none_met", "label": "No published requirements met"}
 
 
-def _chance_locale(profile: Dict[str, Any]) -> str:
+def _chance_locale(profile: dict[str, Any]) -> str:
     raw = str((profile or {}).get("locale") or "").strip().lower()
     if raw.startswith("kk") or raw == "kaz":
         return "kaz"
     return "rus" if raw.startswith("ru") else "eng"
 
 
-def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
+def _chance_no_data_label(reason: str, profile: dict[str, Any]) -> str:
     labels = {
         "eng": {
             "missing_evidence": "Add exam scores or language evidence",
@@ -1060,7 +1060,7 @@ def _chance_no_data_label(reason: str, profile: Dict[str, Any]) -> str:
     return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
 
 
-def _no_data_chance_level(profile: Dict[str, Any]) -> Dict[str, str]:
+def _no_data_chance_level(profile: dict[str, Any]) -> dict[str, str]:
     return {
         "id": "no_data",
         "label": {"rus": "Нет данных", "kaz": "Дерек жоқ"}.get(_chance_locale(profile), "No data"),
@@ -1068,8 +1068,8 @@ def _no_data_chance_level(profile: Dict[str, Any]) -> Dict[str, str]:
 
 
 def _published_requirements_for_choice(
-    university: Dict[str, Any], choice: Dict[str, Any]
-) -> Tuple[Dict[str, Any], List[Dict[str, Any]], str]:
+    university: dict[str, Any], choice: dict[str, Any]
+) -> tuple[dict[str, Any], list[dict[str, Any]], str]:
     """Return scored requirements and published minimums the profile cannot assess."""
     categories = university.get("admission_categories")
     if not isinstance(categories, list):
@@ -1086,7 +1086,7 @@ def _published_requirements_for_choice(
         for profile_row in profile_rows:
             if str(profile_row.get("id") or "") != profile_id:
                 continue
-            requirements: Dict[str, Any] = {}
+            requirements: dict[str, Any] = {}
             for source in (category, profile_row):
                 raw = source.get("requirements")
                 if isinstance(raw, dict):
@@ -1098,15 +1098,15 @@ def _published_requirements_for_choice(
 
 
 def _assess_academic_requirements(
-    requirements: Dict[str, Any],
+    requirements: dict[str, Any],
     has_language_rules: bool,
-    user_scores: Dict[str, Any],
-    user_languages: Dict[str, Any],
-) -> Tuple[List[bool], int, List[Dict[str, Any]], List[Dict[str, Any]]]:
-    checks: List[bool] = []
+    user_scores: dict[str, Any],
+    user_languages: dict[str, Any],
+) -> tuple[list[bool], int, list[dict[str, Any]], list[dict[str, Any]]]:
+    checks: list[bool] = []
     measurable_checks = 0
-    assessments: List[Dict[str, Any]] = []
-    missing_evidence: List[Dict[str, Any]] = []
+    assessments: list[dict[str, Any]] = []
+    missing_evidence: list[dict[str, Any]] = []
 
     for exam_id, raw_minimum in requirements.items():
         if has_language_rules and _is_language_exam_key(exam_id):
@@ -1148,12 +1148,12 @@ def _assess_academic_requirements(
 
 
 def _assess_required_exam_alternatives(
-    choice: Dict[str, Any],
-    user_scores: Dict[str, Any],
+    choice: dict[str, Any],
+    user_scores: dict[str, Any],
     valid_exam_ids: set[str],
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    assessments: List[Dict[str, Any]] = []
-    missing_evidence: List[Dict[str, Any]] = []
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    assessments: list[dict[str, Any]] = []
+    missing_evidence: list[dict[str, Any]] = []
 
     raw_exam_alternatives = choice.get("required_exam_alternatives")
     if isinstance(raw_exam_alternatives, list):
@@ -1183,14 +1183,14 @@ def _assess_required_exam_alternatives(
 
 
 def _assess_language_rules(
-    choice: Dict[str, Any],
-    user_languages: Dict[str, Any],
-    lang_cfg: Dict[str, Any],
-) -> Tuple[List[bool], int, List[Dict[str, Any]], List[Dict[str, Any]]]:
-    checks: List[bool] = []
+    choice: dict[str, Any],
+    user_languages: dict[str, Any],
+    lang_cfg: dict[str, Any],
+) -> tuple[list[bool], int, list[dict[str, Any]], list[dict[str, Any]]]:
+    checks: list[bool] = []
     measurable_checks = 0
-    assessments: List[Dict[str, Any]] = []
-    missing_evidence: List[Dict[str, Any]] = []
+    assessments: list[dict[str, Any]] = []
+    missing_evidence: list[dict[str, Any]] = []
 
     language_rules = _collect_language_requirements(choice)
     measurable_language_rules = []
@@ -1224,7 +1224,7 @@ def _assess_language_rules(
         elif any(bool(result.get("conditional")) for result in results):
             missing_evidence.extend(
                 {"type": "language_requirement", "code": str(rule.get("code") or ""), "exam": row.get("exam"), "minimum": row.get("minimum")}
-                for rule, result, rows in zip(measurable_language_rules, results, rule_assessments)
+                for rule, result, rows in zip(measurable_language_rules, results, rule_assessments, strict=True)
                 if bool(result.get("conditional"))
                 for row in rows if row.get("status") == "missing"
             )
@@ -1252,10 +1252,10 @@ def _assess_language_rules(
 
 
 def _assess_unassessed_minimums(
-    unassessed_minimums: List[Dict[str, Any]],
-    user_scores: Dict[str, Any],
-) -> List[Dict[str, Any]]:
-    assessments: List[Dict[str, Any]] = []
+    unassessed_minimums: list[dict[str, Any]],
+    user_scores: dict[str, Any],
+) -> list[dict[str, Any]]:
+    assessments: list[dict[str, Any]] = []
     for row in unassessed_minimums:
         source_exam_id = str(row.get("exam_id") or "").strip()
         configured_exam_id = _configured_language_exam_id_any(source_exam_id) if source_exam_id else ""
@@ -1275,13 +1275,13 @@ def _assess_unassessed_minimums(
 
 def _published_requirements_fit(
     *,
-    university: Dict[str, Any],
-    choice: Dict[str, Any],
-    user_scores: Dict[str, Any],
+    university: dict[str, Any],
+    choice: dict[str, Any],
+    user_scores: dict[str, Any],
     valid_exam_ids: set[str],
-    user_languages: Dict[str, Any],
-    lang_cfg: Dict[str, Any],
-) -> Tuple[Optional[int], str, int, List[Dict[str, Any]], List[Dict[str, Any]]]:
+    user_languages: dict[str, Any],
+    lang_cfg: dict[str, Any],
+) -> tuple[int | None, str, int, list[dict[str, Any]], list[dict[str, Any]]]:
     """Score the share of measurable published minimum checks that are met."""
     requirements, unassessed_minimums, review_status = _published_requirements_for_choice(university, choice)
     if review_status == "not_reviewed":
@@ -1326,7 +1326,7 @@ def _published_requirements_fit(
     return int(round(100 * sum(checks) / len(checks))), "", measurable_checks, assessments, missing_evidence
 
 
-def _chance_percent_value(value: Any) -> Optional[float]:
+def _chance_percent_value(value: Any) -> float | None:
     parsed = _to_num(value)
     if parsed is None:
         return None
@@ -1346,11 +1346,11 @@ def _factor01(value: Any, fallback: float = 0.5) -> float:
     return _clamp01(float(parsed))
 
 
-_FACTORS_CACHE: Dict[str, Dict[str, float]] = {}
-_CHOICES_CACHE: Dict[str, List[Dict[str, Any]]] = {}
+_FACTORS_CACHE: dict[str, dict[str, float]] = {}
+_CHOICES_CACHE: dict[str, list[dict[str, Any]]] = {}
 
 
-def _extract_university_factors(university: Dict[str, Any], study_level: Any = "any") -> Dict[str, Optional[float]]:
+def _extract_university_factors(university: dict[str, Any], study_level: Any = "any") -> dict[str, float | None]:
     """University indicators for the preference sliders (see `preference_factors`); None means unknown.
 
     An explicit value in `factors` wins, including an explicit null. Selectivity describes first-year entry, so it
@@ -1366,7 +1366,7 @@ def _extract_university_factors(university: Dict[str, Any], study_level: Any = "
     raw = university.get("factors")
     raw = raw if isinstance(raw, dict) else {}
 
-    def stored_or(key: str, compute) -> Optional[float]:
+    def stored_or(key: str, compute) -> float | None:
         if key in raw:
             return None if raw[key] is None else _factor01(raw[key])
         return compute()
@@ -1383,14 +1383,14 @@ def _extract_university_factors(university: Dict[str, Any], study_level: Any = "
     return res
 
 
-def _preference_weights(user_pref: Dict[str, float]) -> Dict[str, float]:
+def _preference_weights(user_pref: dict[str, float]) -> dict[str, float]:
     """A centred slider expresses no preference; its distance from the centre is how much the axis matters."""
     return {key: _clamp01(abs(float(value) - 0.5) * 2.0) for key, value in user_pref.items()}
 
 
 def _preference_mismatch(
-    user_pref: Dict[str, float], uni_factors: Dict[str, Optional[float]]
-) -> Tuple[Optional[float], Dict[str, Optional[float]]]:
+    user_pref: dict[str, float], uni_factors: dict[str, float | None]
+) -> tuple[float | None, dict[str, float | None]]:
     """Weighted mean distance over the sliders the user moved.
 
     A moved slider without university data counts as the expected distance to a university placed uniformly on the
@@ -1398,7 +1398,7 @@ def _preference_mismatch(
     distances, None where unknown); the mismatch is None when no moved slider has university data at all.
     """
     weights = _preference_weights(user_pref)
-    deltas: Dict[str, Optional[float]] = {}
+    deltas: dict[str, float | None] = {}
     weighted, total, known = 0.0, 0.0, False
     for key, requested in user_pref.items():
         observed = uni_factors.get(key)
@@ -1424,7 +1424,7 @@ def _build_ui_badge_hints(
     budget_status: str = "not_set",
     aid_any: bool = False,
     missing_program: bool = False,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     mismatch01 = _clamp01(_to_num_default(preference_mismatch, 1.0))
     conditional_count = max(0, int(_to_num_default(conditional_requirements, 0.0)))
     show_conditional = bool(conditional) and conditional_count > 0
@@ -1485,8 +1485,8 @@ def _build_ui_badge_hints(
 
 
 def sort_universities_ai(
-    items: List[Dict[str, Any]],
-    profile: Optional[Dict[str, Any]] = None,
+    items: list[dict[str, Any]],
+    profile: dict[str, Any] | None = None,
     practice_vs_science: Any = None,
     social_vs_hardcore: Any = None,
     budget_vs_prestige: Any = None,
@@ -1494,7 +1494,7 @@ def sort_universities_ai(
     ai_balance: Any = 50,
     admission_bias: Any = 50,
     funding_type: Any = "any",
-) -> List[Dict[str, Any]]:
+) -> list[dict[str, Any]]:
     profile = profile if isinstance(profile, dict) else {}
     lang_cfg = _language_config()
     ctx = _build_user_context(profile, lang_cfg)
@@ -1523,7 +1523,7 @@ def sort_universities_ai(
     interest_text = str(profile.get("interests") or "").strip()
     profile_major = str(profile.get("major") or "").strip()
 
-    ml_scores_by_id: Dict[str, float] = {}
+    ml_scores_by_id: dict[str, float] = {}
     ml_status = (
         get_ml_runtime_status()
         if interest_text
@@ -1545,7 +1545,7 @@ def sort_universities_ai(
             ml_unavailable_warning = bool(interest_text)
             ml_warning_message = "Machine Learning unavailable"
 
-    enriched: List[Dict[str, Any]] = []
+    enriched: list[dict[str, Any]] = []
     for row in items:
         if not isinstance(row, dict):
             continue
@@ -1624,7 +1624,7 @@ def sort_universities_ai(
             str(active_chance_bundle.get("bestChoiceKey") or recommended_choice_key)
         )
 
-        active_raw_choice: Dict[str, Any] = {}
+        active_raw_choice: dict[str, Any] = {}
         if eligible_choices:
             for idx, c in eligible_choices:
                 if _admission_choice_key(c, idx) == active_choice_key:
@@ -1893,10 +1893,10 @@ def sort_universities_ai(
             float(u.get("__ai_score", 1.0)),
             str((u.get("matchData") or {}).get("budgetStatus") or "") in {"unknown_cost", "uncertain_range"},
             float(u.get("__distance", 1.0)),
-            -float(_to_num(((u.get("matchData") or {}).get("selectedChance"))) or 0.0),
+            -float(_to_num((u.get("matchData") or {}).get("selectedChance")) or 0.0),
             float(_to_num(u.get("rank")) or 999999.0),
-            -float(_to_num(((u.get("matchData") or {}).get("admitChance"))) or 0.0),
-            float(_to_num(((u.get("matchData") or {}).get("finalPriceUSD") or ((u.get("matchData") or {}).get("finalPrice")))) or 1e18),
+            -float(_to_num((u.get("matchData") or {}).get("admitChance")) or 0.0),
+            float(_to_num((u.get("matchData") or {}).get("finalPriceUSD") or ((u.get("matchData") or {}).get("finalPrice"))) or 1e18),
         )
     )
 
@@ -1910,8 +1910,8 @@ def sort_universities_ai(
     return out
 
 
-def _choice_text_blob(choice: Dict[str, Any]) -> str:
-    parts: List[str] = []
+def _choice_text_blob(choice: dict[str, Any]) -> str:
+    parts: list[str] = []
     for key in (
         "id",
         "choice_key",
@@ -1929,9 +1929,9 @@ def _choice_text_blob(choice: Dict[str, Any]) -> str:
     return " ".join(parts).lower()
 
 
-def _track_verified_badges(choice: Dict[str, Any]) -> List[str]:
+def _track_verified_badges(choice: dict[str, Any]) -> list[str]:
     blob = _choice_text_blob(choice)
-    badges: List[str] = []
+    badges: list[str] = []
     if "need-blind" in blob or "need blind" in blob:
         badges.append("need_blind")
     return badges
@@ -1943,7 +1943,7 @@ def _chance_factor(
     label: str,
     message: str,
     severity: str = "medium",
-) -> Dict[str, str]:
+) -> dict[str, str]:
     return {
         "key": key,
         "status": status,
@@ -1955,9 +1955,9 @@ def _chance_factor(
 
 def _build_chance_factors(
     *,
-    score_percent: Optional[int],
+    score_percent: int | None,
     reason: str,
-) -> List[Dict[str, str]]:
+) -> list[dict[str, str]]:
     if score_percent is None:
         if reason in {"unassessed_minimums", "requirements_not_reviewed"}:
             return []
@@ -2000,7 +2000,7 @@ def _normalize_study_level_str(val: Any) -> str:
     return s
 
 
-def _choice_matches_study_level(choice: Dict[str, Any], target_level: str) -> bool:
+def _choice_matches_study_level(choice: dict[str, Any], target_level: str) -> bool:
     if not target_level or target_level == "any":
         return True
     raw_levels = choice.get("study_levels")
@@ -2044,9 +2044,7 @@ def _choice_matches_study_level(choice: Dict[str, Any], target_level: str) -> bo
     if scope_level != "any":
         if target_level == "master" and scope_level == "mba":
             return True
-        if scope_level != target_level:
-            return False
-        return True
+        return scope_level == target_level
 
     if target_level == "bachelor":
         if any(value.strip().lower() in {"general", "program", "program_group"} for value in scope_values):
@@ -2062,7 +2060,7 @@ def _choice_matches_study_level(choice: Dict[str, Any], target_level: str) -> bo
     return bool(scope and _normalize_study_level_str(scope) == target_level)
 
 
-def _load_university_admission_choices(university: Dict[str, Any]) -> List[Dict[str, Any]]:
+def _load_university_admission_choices(university: dict[str, Any]) -> list[dict[str, Any]]:
     uid = str(university.get("id") or "").strip()
     choices = _CHOICES_CACHE.get(uid) if uid else None
     if choices is None:
@@ -2076,10 +2074,10 @@ def _load_university_admission_choices(university: Dict[str, Any]) -> List[Dict[
 
 
 def _filter_admission_entries(
-    choices: List[Dict[str, Any]],
-    university: Dict[str, Any],
-    profile: Dict[str, Any],
-) -> List[Dict[str, Any]]:
+    choices: list[dict[str, Any]],
+    university: dict[str, Any],
+    profile: dict[str, Any],
+) -> list[dict[str, Any]]:
     entries = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
     target_level = _normalize_study_level_str(
         profile.get("studyLevel") or profile.get("study_level") or ""
@@ -2101,7 +2099,7 @@ def _filter_admission_entries(
     ]
 
 
-def _has_profile_evidence(ctx: Dict[str, Any]) -> bool:
+def _has_profile_evidence(ctx: dict[str, Any]) -> bool:
     return bool(ctx["userScores"]) or any(
         isinstance(v, dict) and (bool(v.get("native")) or _to_num(v.get("cefr")) is not None or bool(v.get("exams")))
         for v in (ctx.get("userLanguages") or {}).values()
@@ -2109,10 +2107,10 @@ def _has_profile_evidence(ctx: Dict[str, Any]) -> bool:
 
 
 def _build_no_choices_chance_response(
-    profile: Dict[str, Any],
+    profile: dict[str, Any],
     funding_type: str,
     has_evidence: bool,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     return {
         "overallChance": None,
         "scoreMeaning": "published_requirements_met_percent",
@@ -2141,13 +2139,13 @@ def _build_no_choices_chance_response(
 
 
 def _evaluate_per_choice_chance(
-    university: Dict[str, Any],
-    profile: Dict[str, Any],
-    entries: List[Dict[str, Any]],
-    choices: List[Dict[str, Any]],
-    ctx: Dict[str, Any],
-    lang_cfg: Dict[str, Any],
-) -> List[Dict[str, Any]]:
+    university: dict[str, Any],
+    profile: dict[str, Any],
+    entries: list[dict[str, Any]],
+    choices: list[dict[str, Any]],
+    ctx: dict[str, Any],
+    lang_cfg: dict[str, Any],
+) -> list[dict[str, Any]]:
     target_route = profile.get("applicant_route")
     target_cycle = profile.get("intended_entry_cycle")
     selected_program_id = _selected_program_id_for_university(profile, university)
@@ -2227,12 +2225,12 @@ def _evaluate_per_choice_chance(
 
 
 def estimate_uni_chance(
-    university: Dict[str, Any],
-    profile: Optional[Dict[str, Any]] = None,
+    university: dict[str, Any],
+    profile: dict[str, Any] | None = None,
     *,
-    user_context: Optional[Dict[str, Any]] = None,
-    lang_cfg: Optional[Dict[str, Any]] = None,
-) -> Dict[str, Any]:
+    user_context: dict[str, Any] | None = None,
+    lang_cfg: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
     if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
         return _assess_admissions_selection(str(university.get("id") or ""), profile)
@@ -2295,7 +2293,7 @@ def estimate_uni_chance(
     }
 
 
-def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def estimate_university_roi(university: dict[str, Any], profile: dict[str, Any] | None = None) -> dict[str, Any]:
     profile = profile if isinstance(profile, dict) else {}
     if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
         resolved = admissions_catalog.resolve_context(str(university.get("id") or ""), profile=profile)
@@ -2360,7 +2358,7 @@ def estimate_university_roi(university: Dict[str, Any], profile: Optional[Dict[s
     def normalize_major_key(value: Any) -> str:
         return re.sub(r"[^a-z0-9]+", " ", str(value or "").strip().lower()).strip()
 
-    salary_entries: List[Tuple[str, float]] = []
+    salary_entries: list[tuple[str, float]] = []
     for major_name, salary in salaries_by_major_raw.items():
         major = str(major_name or "").strip()
         sal = _to_num(salary)

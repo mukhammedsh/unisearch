@@ -1,14 +1,14 @@
 import re
-from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
+from typing import Any
 
-TEXT_FIELD_WEIGHTS: Tuple[Tuple[str, float], ...] = (
+TEXT_FIELD_WEIGHTS: tuple[tuple[str, float], ...] = (
     ("name", 8.0),
     ("city", 4.5),
     ("country", 4.0),
     ("state", 3.5),
     ("description", 1.5),
 )
-LIST_FIELD_WEIGHTS: Tuple[Tuple[str, float], ...] = (
+LIST_FIELD_WEIGHTS: tuple[tuple[str, float], ...] = (
     ("search_aliases", 8.0),
     ("major_exact", 4.5),
     ("majors", 4.0),
@@ -16,36 +16,35 @@ LIST_FIELD_WEIGHTS: Tuple[Tuple[str, float], ...] = (
     ("tags", 3.0),
     ("study_levels", 2.0),
 )
-TOKEN_FUZZY_MIN_LEN = 4
 FULL_TEXT_MATCH_BONUS = 40.0
 NAME_MATCH_BONUS = 80.0
 TOKEN_MATCH_MULTIPLIER = 10.0
 ALL_TOKENS_MATCH_BONUS = 25.0
 
-STOP_WORDS: Set[str] = {
+STOP_WORDS: set[str] = {
     "in", "at", "the", "of", "for", "a", "an", "and", "or", "on", "by", "with", "to", "best", "top",
     "в", "во", "на", "и", "или", "с", "со", "из", "по", "для", "о", "об", "топ", "лучший", "лучшие", "топовые",
 }
 
-DOMAIN_SYNONYMS: Dict[str, str] = {
+DOMAIN_SYNONYMS: dict[str, str] = {
     "вуз": "университет",
     "вузы": "университет",
     "универ": "университет",
     "универы": "университет",
 }
 
-QWERTY_TO_JCUKEN: Dict[str, str] = {
+QWERTY_TO_JCUKEN: dict[str, str] = {
     "q": "й", "w": "ц", "e": "у", "r": "к", "t": "е", "y": "н", "u": "г",
     "i": "ш", "o": "щ", "p": "з", "[": "х", "]": "ъ", "a": "ф", "s": "ы",
     "d": "в", "f": "а", "g": "п", "h": "р", "j": "о", "k": "л", "l": "д",
     ";": "ж", "'": "э", "z": "я", "x": "ч", "c": "с", "v": "м", "b": "и",
     "n": "т", "m": "ь", ",": "б", ".": "ю", "`": "ё",
 }
-JCUKEN_TO_QWERTY: Dict[str, str] = {v: k for k, v in QWERTY_TO_JCUKEN.items()}
+JCUKEN_TO_QWERTY: dict[str, str] = {v: k for k, v in QWERTY_TO_JCUKEN.items()}
 
 
 def flip_keyboard_layout(text: str) -> str:
-    res: List[str] = []
+    res: list[str] = []
     for ch in str(text or "").lower():
         if ch in QWERTY_TO_JCUKEN:
             res.append(QWERTY_TO_JCUKEN[ch])
@@ -131,9 +130,7 @@ def stem_ru(word: str) -> str:
     elif rv.endswith("ейш"):
         rv = rv[:-3]
 
-    if rv.endswith("нн"):
-        rv = rv[:-1]
-    elif rv.endswith("ь"):
+    if rv.endswith("нн") or rv.endswith("ь"):
         rv = rv[:-1]
 
     return pre + rv
@@ -209,7 +206,7 @@ def damerau_levenshtein_distance(s1: str, s2: str) -> int:
     len2 = len(s2)
     if abs(len1 - len2) > 2:
         return 999
-    d: Dict[Tuple[int, int], int] = {}
+    d: dict[tuple[int, int], int] = {}
     for i in range(-1, len1 + 1):
         d[(i, -1)] = i + 1
     for j in range(-1, len2 + 1):
@@ -233,10 +230,6 @@ def _normalize(value: Any) -> str:
     text = str(value or "").strip().lower()
     text = re.sub(r"[^\w]+", " ", text, flags=re.UNICODE)
     return re.sub(r"\s+", " ", text).strip()
-
-
-def _tokens(value: Any) -> List[str]:
-    return _normalize(value).split()
 
 
 def _edit_distance_leq_one(a: str, b: str) -> bool:
@@ -264,34 +257,7 @@ def _edit_distance_leq_one(a: str, b: str) -> bool:
     return True
 
 
-def _token_matches(query_token: str, candidate_tokens: Sequence[str]) -> bool:
-    q_len = len(query_token)
-    q_st = stem(query_token)
-    for cand in candidate_tokens:
-        if not cand:
-            continue
-        if query_token == cand:
-            return True
-        c_len = len(cand)
-        # Prefix match (min 3 chars)
-        if q_len >= 3 and c_len > q_len and cand.startswith(query_token):
-            return True
-        # Stem match
-        if q_len >= 3 and c_len >= 3:
-            c_st = stem(cand)
-            if q_st == c_st or (len(q_st) >= 4 and len(c_st) >= 4 and (q_st.startswith(c_st) or c_st.startswith(q_st))):
-                return True
-        # Typo match
-        if q_len >= TOKEN_FUZZY_MIN_LEN and c_len >= TOKEN_FUZZY_MIN_LEN:
-            if damerau_levenshtein_distance(query_token, cand) <= 1:
-                return True
-        # Substring ONLY for long tokens
-        if q_len >= 5 and query_token in cand:
-            return True
-    return False
-
-
-def prepare_query(query: Any) -> Optional[Dict[str, Any]]:
+def prepare_query(query: Any) -> dict[str, Any] | None:
     if not (q_norm := _normalize(query)):
         return None
     raw_tokens = q_norm.split()
@@ -311,8 +277,8 @@ def prepare_query(query: Any) -> Optional[Dict[str, Any]]:
 
 
 def _append_text_bucket(
-    weighted_token_sets: List[Tuple[str, float, List[str]]],
-    full_chunks: List[str],
+    weighted_token_sets: list[tuple[str, float, list[str]]],
+    full_chunks: list[str],
     field: str,
     value: Any,
     weight: float,
@@ -324,9 +290,9 @@ def _append_text_bucket(
 
 
 def _append_list_bucket(
-    weighted_token_sets: List[Tuple[str, float, List[str]]],
-    full_chunks: List[str],
-    exact_aliases: Set[str],
+    weighted_token_sets: list[tuple[str, float, list[str]]],
+    full_chunks: list[str],
+    exact_aliases: set[str],
     field: str,
     values: Any,
     weight: float,
@@ -334,7 +300,7 @@ def _append_list_bucket(
     if not isinstance(values, list):
         return
 
-    token_bucket: List[str] = []
+    token_bucket: list[str] = []
     for value in values:
         if not (norm := _normalize(value)):
             continue
@@ -347,10 +313,10 @@ def _append_list_bucket(
         weighted_token_sets.append((field, weight, token_bucket))
 
 
-def prepare_search_meta(meta_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    weighted_token_sets: List[Tuple[str, float, List[str]]] = []
-    full_chunks: List[str] = []
-    exact_aliases: Set[str] = set()
+def prepare_search_meta(meta_row: dict[str, Any]) -> dict[str, Any] | None:
+    weighted_token_sets: list[tuple[str, float, list[str]]] = []
+    full_chunks: list[str] = []
+    exact_aliases: set[str] = set()
 
     for field, weight in TEXT_FIELD_WEIGHTS:
         _append_text_bucket(weighted_token_sets, full_chunks, field, meta_row.get(field, ""), weight)
@@ -360,8 +326,8 @@ def prepare_search_meta(meta_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     if not full_chunks:
         return None
 
-    token_weights_exact: Dict[str, float] = {}
-    token_stems_exact: Dict[str, float] = {}
+    token_weights_exact: dict[str, float] = {}
+    token_stems_exact: dict[str, float] = {}
     for _, weight, tokens in weighted_token_sets:
         for t in tokens:
             if t not in token_weights_exact or weight > token_weights_exact[t]:
@@ -383,8 +349,8 @@ def prepare_search_meta(meta_row: Dict[str, Any]) -> Optional[Dict[str, Any]]:
 
 def _best_token_score(
     token: str,
-    prepared_meta: Dict[str, Any],
-) -> Tuple[float, float]:
+    prepared_meta: dict[str, Any],
+) -> tuple[float, float]:
     """Returns (best_weight, match_multiplier)"""
     exact_map = prepared_meta.get("token_weights_exact") or {}
     if token in exact_map:
@@ -409,20 +375,18 @@ def _best_token_score(
             # Prefix match:
             # - For short 2-char tokens, ONLY allow prefix if cand is in search_aliases
             # - For 3+ char tokens, standard prefix match
-            if c_len > q_len and cand.startswith(token):
-                if q_len >= 3 or (q_len >= 2 and is_alias):
-                    mult = 0.85
-                    if weight * mult > best_weight * best_mult:
-                        best_weight, best_mult = weight, mult
+            if c_len > q_len and cand.startswith(token) and (q_len >= 3 or (q_len >= 2 and is_alias)):
+                mult = 0.85
+                if weight * mult > best_weight * best_mult:
+                    best_weight, best_mult = weight, mult
 
             # Stem prefix match for inflected Russian/English forms
             if q_len >= 4 and c_len >= 4:
                 cand_st = stem(cand)
-                if len(st) >= 4 and len(cand_st) >= 4:
-                    if cand_st.startswith(st) or st.startswith(cand_st):
-                        mult = 0.75
-                        if weight * mult > best_weight * best_mult:
-                            best_weight, best_mult = weight, mult
+                if len(st) >= 4 and len(cand_st) >= 4 and (cand_st.startswith(st) or st.startswith(cand_st)):
+                    mult = 0.75
+                    if weight * mult > best_weight * best_mult:
+                        best_weight, best_mult = weight, mult
 
             # Typo match (Damerau-Levenshtein)
             if q_len >= 4 and c_len >= 4:
@@ -442,7 +406,7 @@ def _best_token_score(
     return best_weight, best_mult
 
 
-def score_prepared(prepared_meta: Dict[str, Any], prepared_query: Dict[str, Any], *, require_all_terms: bool = False) -> Optional[float]:
+def score_prepared(prepared_meta: dict[str, Any], prepared_query: dict[str, Any], *, require_all_terms: bool = False) -> float | None:
     q_norm = prepared_query["q_norm"]
     q_tokens = prepared_query["q_tokens"]
     core_tokens = prepared_query.get("core_tokens", q_tokens)

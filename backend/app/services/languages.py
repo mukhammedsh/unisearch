@@ -1,6 +1,7 @@
+import contextlib
 import json
 from decimal import Decimal
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from app.core.files import RequiredDataUnavailable, file_mtime
 from app.core.paths import LANGUAGES_PATH
@@ -16,27 +17,25 @@ def _strip_text(value: Any) -> str:
     return str(value).strip()
 
 
-def _build_languages_index(cfg: Dict[str, Any]) -> Dict[str, Any]:
-    # languages: [{code,name,...}]
+def _build_languages_index(cfg: dict[str, Any]) -> dict[str, Any]:
+    # List of supported language entries containing code and display metadata.
     langs_list = cfg.get("languages", [])
     codes = set()
-    for l in langs_list:
-        c = str(l.get("code", "")).strip().lower()
+    for lang_entry in langs_list:
+        c = str(lang_entry.get("code", "")).strip().lower()
         if c:
             codes.add(c)
 
-    # cefr: [{id, code, label}]
+    # CEFR levels list containing id, code, and label fields.
     cefr_list = cfg.get("cefr", [])
     cefr_map = {}
     for c in cefr_list:
         label = str(c.get("code", "")).strip().upper()  # A1..C2
         cid = c.get("id", None)
         if label and cid is not None:
-            try:
+            # Ignore CEFR definitions with missing or non-numeric identifiers
+            with contextlib.suppress(ValueError, TypeError):
                 cefr_map[label] = int(cid)
-            except (ValueError, TypeError):
-                # Ignore CEFR definitions with missing or non-numeric identifiers
-                pass
 
     # language_exams: { "en": [ {id,label,min,max,type,step,...}, ... ], ... }
     exams_by_lang = cfg.get("language_exams", {})
@@ -50,7 +49,7 @@ def _build_languages_index(cfg: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _get_language_exam_cfg(idx: Dict[str, Any], code: str, exam_id: Any) -> Optional[Dict[str, Any]]:
+def _get_language_exam_cfg(idx: dict[str, Any], code: str, exam_id: Any) -> dict[str, Any] | None:
     target = _strip_text(exam_id)
     if not target:
         return None
@@ -63,15 +62,15 @@ def _get_language_exam_cfg(idx: Dict[str, Any], code: str, exam_id: Any) -> Opti
     return None
 
 
-def _language_exam_input_mode(exam_cfg: Dict[str, Any]) -> str:
+def _language_exam_input_mode(exam_cfg: dict[str, Any]) -> str:
     raw = _strip_text(exam_cfg.get("input_mode")).lower()
     return raw or "number"
 
 
-def _normalize_breakdown_defs(items: Any) -> List[Dict[str, Any]]:
+def _normalize_breakdown_defs(items: Any) -> list[dict[str, Any]]:
     if not isinstance(items, list):
         return []
-    out: List[Dict[str, Any]] = []
+    out: list[dict[str, Any]] = []
     for row in items:
         if isinstance(row, str):
             exam_id = _strip_text(row)
@@ -94,7 +93,7 @@ def _normalize_breakdown_defs(items: Any) -> List[Dict[str, Any]]:
     return out
 
 
-def _display_value_from_language_submission(parsed: Dict[str, Any]) -> str:
+def _display_value_from_language_submission(parsed: dict[str, Any]) -> str:
     for value in (parsed.get("display_value"), parsed.get("raw_value"), parsed.get("score")):
         text = _strip_text(value)
         if text:
@@ -109,8 +108,8 @@ def _coerce_language_exam_submission(
     score_raw: Any = None,
     raw_value: Any = None,
     details: Any = None,
-    idx: Optional[Dict[str, Any]] = None,
-) -> Dict[str, Any]:
+    idx: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     index = idx or get_languages_index()
     exam_key = _strip_text(exam_id)
     exam_cfg = _get_language_exam_cfg(index, code, exam_key)
@@ -132,8 +131,8 @@ def _coerce_language_exam_submission(
         raise ValueError(f"{exam_key} components must be a list")
 
     allowed_ids = {row["exam"] for row in component_defs}
-    parsed_components: List[Dict[str, Any]] = []
-    seen: Dict[str, int] = {}
+    parsed_components: list[dict[str, Any]] = []
+    seen: dict[str, int] = {}
     for row in raw_components:
         if not isinstance(row, dict):
             raise ValueError(f"{exam_key} components must be objects")
@@ -218,7 +217,7 @@ def _coerce_language_exam_submission(
     }
 
 
-def validate_language_exam_from_cfg(lang_cfg: Dict[str, Any], score_raw: Any) -> Union[int, float]:
+def validate_language_exam_from_cfg(lang_cfg: dict[str, Any], score_raw: Any) -> int | float:
     """
     Validate score against the exam configuration in languages.json:
     - min/max bounds
@@ -235,7 +234,7 @@ def validate_language_exam_from_cfg(lang_cfg: Dict[str, Any], score_raw: Any) ->
     if dv < mn or dv > mx:
         raise ValueError(f"Score must be between {mn} and {mx}")
 
-    step = lang_cfg.get("step", None)
+    step = lang_cfg.get("step")
     if step is not None:
         st = _to_decimal(step)
         q = (dv - mn) / st
@@ -243,7 +242,7 @@ def validate_language_exam_from_cfg(lang_cfg: Dict[str, Any], score_raw: Any) ->
             raise ValueError(f"Score must follow step={st}")
 
     if "decimals_allowed" in lang_cfg:
-        allowed = set(int(x) for x in (lang_cfg.get("decimals_allowed") or []))
+        allowed = {int(x) for x in (lang_cfg.get("decimals_allowed") or [])}
         tenth = int((dv * 10) % 10)
         if tenth not in allowed:
             raise ValueError("Decimals not allowed for this exam")
@@ -256,13 +255,13 @@ def validate_language_exam_from_cfg(lang_cfg: Dict[str, Any], score_raw: Any) ->
 _LANG_CACHE = {"mtime": None, "data": {}, "index": None}
 
 
-def load_languages() -> Dict[str, Any]:
+def load_languages() -> dict[str, Any]:
     mtime = file_mtime(LANGUAGES_PATH)
     if mtime is None:
         raise RequiredDataUnavailable("Language data is unavailable")
     if mtime != _LANG_CACHE["mtime"]:
         try:
-            with open(LANGUAGES_PATH, "r", encoding="utf-8") as f:
+            with open(LANGUAGES_PATH, encoding="utf-8") as f:
                 data = json.load(f)
             if not isinstance(data, dict) or not isinstance(data.get("languages"), list) or not data["languages"]:
                 raise ValueError("languages.json has no language entries")
@@ -274,18 +273,18 @@ def load_languages() -> Dict[str, Any]:
     return _LANG_CACHE["data"]
 
 
-def get_languages_index() -> Dict[str, Any]:
+def get_languages_index() -> dict[str, Any]:
     load_languages()
     if not _LANG_CACHE["index"]:
         _LANG_CACHE["index"] = _build_languages_index(_LANG_CACHE["data"] or {})
     return _LANG_CACHE["index"]
 
 
-def get_languages_config() -> Dict[str, Any]:
+def get_languages_config() -> dict[str, Any]:
     return load_languages()
 
 
-def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:
+def validate_language(payload: dict[str, Any]) -> dict[str, Any]:
     idx = get_languages_index()
 
     code = str(payload.get("code", "")).strip().lower()
@@ -301,7 +300,7 @@ def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:
         return {"ok": True, "language": {"code": code, "kind": "native"}}
 
     if kind == "cefr":
-        level = payload.get("level", None)
+        level = payload.get("level")
         label = str(payload.get("label", "")).strip().upper()
 
         if (level is None or str(level).strip() == "") and label:
@@ -315,8 +314,8 @@ def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:
 
         try:
             level_i = int(level_str)
-        except Exception:
-            raise ValueError("CEFR level must be integer 1..6")
+        except Exception as exc:
+            raise ValueError("CEFR level must be integer 1..6") from exc
 
         if level_i < 1 or level_i > 6:
             raise ValueError("CEFR level must be 1..6")
@@ -329,7 +328,7 @@ def validate_language(payload: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError(f"{code} does not support kind=exam")
 
     exam_id = str(payload.get("exam", "")).strip()
-    score_raw = payload.get("score", None)
+    score_raw = payload.get("score")
     raw_value = payload.get("raw_value")
     details = payload.get("details")
 

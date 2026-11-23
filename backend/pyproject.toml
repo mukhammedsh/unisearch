@@ -1,0 +1,11 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+src = ["app"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "C4", "SIM", "ERA"]
+ignore = [
+    "E501",  # Line length formatting deferred
+    "B008",  # FastAPI Query/Path defaults — will be removed after Annotated migration in Stage 3
+]

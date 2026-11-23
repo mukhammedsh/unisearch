@@ -1,8 +1,8 @@
 import re
-from typing import Any, Dict, Optional
+from typing import Any
 
 
-def to_float(value: Any) -> Optional[float]:
+def to_float(value: Any) -> float | None:
     try:
         if value is None or value == "":
             return None
@@ -36,7 +36,7 @@ def mode_value_from_map(mode_map: Any, mode: str) -> Any:
     return None
 
 
-def mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[Dict[str, Any]]:
+def mode_breakdown_from_finance(finance: dict[str, Any], mode: str) -> dict[str, Any] | None:
     if not isinstance(finance, dict):
         return None
     value = mode_value_from_map(finance.get("costs_breakdown_year_usd_by_mode"), mode)
@@ -45,7 +45,7 @@ def mode_breakdown_from_finance(finance: Dict[str, Any], mode: str) -> Optional[
     return None
 
 
-def mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[float]:
+def mode_total_from_finance(finance: dict[str, Any], mode: str) -> float | None:
     if not isinstance(finance, dict):
         return None
     amount = to_float(mode_value_from_map(finance.get("total_cost_year_usd_by_mode"), mode))
@@ -54,7 +54,7 @@ def mode_total_from_finance(finance: Dict[str, Any], mode: str) -> Optional[floa
     return None
 
 
-def extract_tuition_cost(breakdown: Dict[str, Any]) -> Optional[float]:
+def extract_tuition_cost(breakdown: dict[str, Any]) -> float | None:
     if not isinstance(breakdown, dict):
         return None
     for key, value in breakdown.items():
