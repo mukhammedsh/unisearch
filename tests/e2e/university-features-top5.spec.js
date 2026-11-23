@@ -63,7 +63,8 @@ test("reviewed Imperial shows fee-scoped course tuition and leaves Oxford legacy
   await expect(imperialFinance).toContainText("£25,850");
   await expect(imperialFinance).toContainText("Overseas fee");
   await expect(imperialFinance).toContainText("£48,300");
-  await expect(imperialFinance).toContainText(/No comparable budget is confirmed for this selection/i);
+  await expect(imperialFinance.locator('[data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
+  await expect(imperialFinance).not.toContainText(/No comparable budget is confirmed/i);
 
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
   await expect(page.locator("#detailCard")).toBeVisible();
@@ -278,6 +279,7 @@ test("MIT requirement groups collapse and expand in the selected first-year cont
   const records = page.locator("#detailRequirements [data-all-records]");
   await expect(records).not.toHaveAttribute("open");
   await records.locator(":scope > summary").click();
+  await records.locator("[data-full-records] > summary").click();
   await expect(collapsible).toBeVisible();
   await expect(collapsible).not.toHaveAttribute("open");
   await expect(fact).not.toBeVisible();

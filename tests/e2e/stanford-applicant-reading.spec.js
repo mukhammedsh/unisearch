@@ -263,12 +263,9 @@ test("Stanford preserves search, route and general profile across language chang
     await expect(page.locator("#admissionsSearch")).toHaveValue("Computer Science");
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
   }
-  await openAdvanced(page);
-  await page.locator("#admissionsCycle").fill("undecided cycle");
-  await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
-  await page.locator("#admissionsCycle").fill("");
-  await page.locator("#admissionsContextApply").click();
-  await ready(page);
+  // The transfer path publishes one intake and no fee classes: no entry-year or fee-status field to fill.
+  await openAdmissionSelectionEditor(page);
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
   await page.locator("#admissionsSaveChoice").click();
   await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
   const profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));

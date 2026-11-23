@@ -4,6 +4,7 @@
   }
 
   .u-sidebar {
+    align-self: start;
     position: sticky;
     top: 90px;
     display: flex;
@@ -21,15 +22,50 @@
        page scroll (or vice versa). Keep `contain` here; `auto` re-links
        the sidebar and catalog scroll positions on wheel/touch. */
     overscroll-behavior-y: contain;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 0 0 var(--space-4) 0;
+    /* The shared scrollbar (8px thumb) stays visible so the panel reads as scrollable. */
+    padding: 0 var(--space-2) var(--space-4) 0;
+    scroll-padding-block: var(--space-10);
   }
 
-  .u-sidebar::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
+  /* Edge fades: hint at more filters above and below. Each fades out once its end
+     of the scroll is reached. Needs scroll-driven animations and registered
+     properties; without them the visible scrollbar is the hint. */
+  @supports (animation-timeline: scroll()) {
+    @property --u-sidebar-fade-top {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+    }
+
+    @property --u-sidebar-fade-bottom {
+      syntax: "<length>";
+      inherits: false;
+      initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+    }
+
+    .u-sidebar {
+      mask:
+        linear-gradient(var(--surface-solid), var(--surface-solid)) no-clip subtract,
+        linear-gradient(to bottom, var(--surface-solid), transparent) 0 0 / 100% var(--u-sidebar-fade-top) no-repeat no-clip,
+        linear-gradient(to bottom, transparent, var(--surface-solid)) 0 100% / 100% var(--u-sidebar-fade-bottom) no-repeat no-clip;
+      animation-name: u-sidebar-fade-top, u-sidebar-fade-bottom;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(self block);
+      animation-range: 0 var(--space-10), calc(100% - var(--space-10)) 100%;
+    }
+
+    @keyframes u-sidebar-fade-top {
+      to {
+        --u-sidebar-fade-top: var(--space-10);
+      }
+    }
+
+    @keyframes u-sidebar-fade-bottom {
+      from {
+        --u-sidebar-fade-bottom: var(--space-10);
+      }
+    }
   }
 
   .u-filter-card {
@@ -40,32 +76,48 @@
     transform: none;
     transition: none;
   }
+}
 
-  .u-recent {
-    position: relative;
-    z-index: 1;
+@container catalog-toolbar (max-width: 720px) {
+  .u-section-meta {
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .u-recent-trigger {
+    gap: var(--space-1-5);
+  }
+
+  .u-recent-trigger__label {
+    display: none;
   }
 }
 
-@media (max-width: 1280px) {
-  .u-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+@container catalog-toolbar (max-width: 580px) {
+  .u-compare-mode-btn #compareModeLabel {
+    display: none;
+  }
+
+  .u-compare-mode-btn {
+    min-inline-size: var(--u-toolbar-height);
+    padding: 0;
+  }
+}
+
+@container catalog-toolbar (max-width: 354px) {
+  .u-section-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
   }
 }
 
 @media (max-width: 1180px) {
-  .u-section-bar,
   .compare-results {
     padding-left: var(--space-4);
     padding-right: var(--space-4);
   }
 
-  .u-section-bar {
-    margin-bottom: var(--space-3);
-  }
-
   .u-layout {
-    padding: 0 var(--space-4);
     gap: var(--space-4);
   }
 
@@ -74,12 +126,8 @@
     padding: var(--space-4);
   }
 
-  .u-filter-title,
-  .u-recent__label {
-    font-size: var(--text-md);
-  }
-
   .u-filter-title {
+    font-size: var(--text-md);
     margin-bottom: var(--space-2);
   }
 
@@ -104,6 +152,12 @@
     padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom));
   }
 
+  .u-section-bar {
+    margin-bottom: var(--space-4);
+    padding-left: var(--mobile-safe-gutter, var(--space-4));
+    padding-right: var(--mobile-safe-gutter, var(--space-4));
+  }
+
   .u-layout {
     grid-template-columns: 1fr;
     padding-top: 0;
@@ -114,15 +168,15 @@
 
   .u-sidebar {
     position: fixed;
-    top: var(--nav-height, 72px);
-    right: 0;
-    bottom: 0;
-    left: 0;
+    inset: var(--nav-height, 72px) 0 0 0;
     z-index: var(--z-drawer);
     background: var(--backdrop);
     backdrop-filter: blur(6px);
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    align-items: stretch;
+    align-self: stretch;
+    justify-content: flex-start;
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
@@ -141,17 +195,42 @@
   .u-filter-card {
     top: 0;
     width: min(420px, 92vw);
-    height: calc(100dvh - var(--nav-height, 72px));
-    max-height: calc(100dvh - var(--nav-height, 72px));
+    height: 100%;
+    max-height: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-radius: 0;
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
     background: var(--card);
-    transform: translateX(100%);
+    transform: translateX(-100%);
     transition: transform var(--motion-medium) var(--motion-ease-enter);
     box-shadow: var(--shadow-md);
+  }
+
+  .u-filter-card > *:not(.u-filter-title):not(.u-filter-footer) {
+    flex-shrink: 0;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .u-filter-card #aiSliderContainer,
+  .u-filter-card .tradeoff-field:last-of-type {
+    padding-bottom: var(--space-4);
+  }
+
+  .u-filter-title {
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin: 0 0 var(--space-3);
+    padding: var(--space-4) var(--space-4) var(--space-3);
+    background: var(--card);
   }
 
   .u-sidebar.is-open .u-filter-card {
@@ -162,10 +241,6 @@
     padding-top: 0;
   }
 
-  .u-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-
   .u-grid,
   .u-skeleton-grid {
     gap: var(--space-4);
@@ -174,24 +249,6 @@
   .uni-card {
     min-height: 0;
     height: auto;
-  }
-
-  .view-toggles {
-    height: 32px;
-  }
-
-  .view-btn {
-    width: 34px;
-    min-width: 34px;
-    height: 100%;
-    min-height: 0;
-    padding: 0;
-  }
-
-  .u-section-meta .u-found,
-  .u-found {
-    white-space: nowrap;
-    min-width: 0;
   }
 
   .u-mobile-filter-btn {
@@ -237,6 +294,8 @@
   }
 
   .u-filter-footer {
+    flex-shrink: 0;
+    margin-top: auto;
     position: sticky;
     bottom: 0;
     z-index: 2;
@@ -292,122 +351,6 @@
   .u-filter-footer__apply {
     background: var(--accent);
     color: var(--text-inverse);
-  }
-
-  .u-mobile-recent-slot {
-    display: block;
-    margin-bottom: var(--space-4);
-  }
-
-  /* With no recent history the slot is empty; hide it so its margin does not open a phantom gap above the cards. */
-  .u-mobile-recent-slot:not(:has(.u-recent:not([hidden]))) {
-    display: none;
-  }
-
-  .u-mobile-recent-slot .u-recent {
-    padding: 0;
-    gap: var(--space-2);
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .u-mobile-recent-slot .u-recent__head {
-    padding: 0;
-    align-items: center;
-  }
-
-  .u-mobile-recent-slot .u-recent__items {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: var(--space-2);
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: var(--space-0-5) 0;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .u-mobile-recent-slot .u-recent__items::-webkit-scrollbar {
-    display: none;
-  }
-
-  .u-mobile-recent-slot .u-recent__chip {
-    flex: 0 0 auto;
-    width: auto;
-    max-width: min(240px, 68vw);
-    min-height: 38px;
-    padding: var(--space-2) var(--space-3);
-    align-items: center;
-    border-radius: var(--radius-base);
-    background: var(--surface-soft);
-    box-shadow: var(--shadow-micro);
-    scroll-snap-align: start;
-    gap: var(--space-2);
-    transition:
-      background-color var(--motion-fast) var(--motion-ease-standard),
-      box-shadow var(--motion-fast) var(--motion-ease-standard);
-  }
-
-  .u-mobile-recent-slot .u-recent__chip:active {
-    background: var(--surface-solid);
-    box-shadow: var(--shadow-xs);
-  }
-
-  .u-mobile-recent-slot .u-recent__link {
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: var(--text-sm);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--leading-normal);
-    color: var(--text);
-    text-decoration: none;
-  }
-
-  .u-mobile-recent-slot .u-recent__remove {
-    position: relative;
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
-    min-height: 22px;
-    padding: 0;
-    border-radius: var(--radius-xs);
-    background: transparent;
-    color: var(--text-muted);
-    opacity: 0.7;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition:
-      opacity var(--motion-fast) var(--motion-ease-standard),
-      background-color var(--motion-fast) var(--motion-ease-standard),
-      color var(--motion-fast) var(--motion-ease-standard);
-  }
-
-  .u-mobile-recent-slot .u-recent__remove:active {
-    background: color-mix(in srgb, var(--color-danger) 14%, transparent);
-    color: var(--color-danger);
-    opacity: 1;
-  }
-
-  .u-mobile-recent-slot .u-recent__remove::after {
-    content: "";
-    position: absolute;
-    inset: -10px;
-  }
-
-  .u-mobile-recent-slot .u-recent__clear {
-    min-width: 0;
-    min-height: 32px;
-    padding: var(--space-1) 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
   }
 
   .compare-tray {
@@ -495,64 +438,29 @@
 }
 
 @media (max-width: 768px) {
-  .u-section-bar,
-  .u-layout,
   .compare-results {
     padding-left: var(--space-3);
     padding-right: var(--space-3);
   }
 
-  .u-filter-card {
-    padding: var(--space-3);
-  }
-
-  .u-found {
-    white-space: normal;
-    line-height: 1.25;
-    overflow-wrap: anywhere;
-    min-width: 0;
-    font-size: var(--text-sm);
-  }
-
-  .view-toggles {
-    justify-self: end;
-  }
-
   .u-content {
     --u-loading-top: 150px;
-  }
-
-  .u-section-meta {
-    width: 100%;
-    justify-content: space-between;
-    padding-bottom: 0;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-2);
-  }
-
-  .u-section-meta .u-found {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .u-section-actions {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .catalog-level-filter {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-self: stretch;
-    width: 100%;
-    min-width: 0;
   }
 }
 
 @media (max-width: 640px) {
   .u-page {
     padding-top: var(--space-3);
+  }
+
+  .u-section-bar {
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  .u-recent-trigger {
+    padding: 0 var(--space-2);
   }
 
   .u-layout {
@@ -626,26 +534,10 @@
 
   .u-filter-card {
     width: 100%;
-    height: min(88dvh, calc(100dvh - var(--nav-height, 72px)));
-    max-height: min(88dvh, calc(100dvh - var(--nav-height, 72px)));
+    height: min(88dvh, 100%);
+    max-height: min(88dvh, 100%);
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    padding: 0;
     transform: translateY(100%);
-    box-shadow: var(--shadow-md);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: contain;
-  }
-
-  .u-filter-card > *:not(.u-filter-title):not(.u-filter-footer) {
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
-  }
-
-  .u-filter-card #aiSliderContainer,
-  .u-filter-card .tradeoff-field:last-of-type {
-    padding-bottom: var(--space-4);
   }
 
   .u-sidebar.is-open .u-filter-card {
@@ -653,27 +545,13 @@
   }
 
   .u-filter-title {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    margin: 0 0 var(--space-3);
-    padding: var(--space-4) var(--space-4) var(--space-3);
-    background: var(--card);
     border-top-left-radius: var(--radius-xl);
     border-top-right-radius: var(--radius-xl);
-  }
-
-  .u-filter-close {
-    margin-left: auto;
   }
 
   .u-recent {
     margin-left: 0;
     margin-right: 0;
-  }
-
-  .u-recent__head {
-    align-items: flex-start;
   }
 
   .u-recent__clear {
@@ -691,11 +569,6 @@
 }
 
 @media (max-width: 480px) {
-  .u-found {
-    text-align: left;
-    font-size: var(--text-sm);
-  }
-
   .u-content {
     --u-loading-top: 196px;
   }
@@ -735,37 +608,54 @@
     height: var(--space-3);
   }
 
-  .u-compare-mode-btn #compareModeLabel {
-    display: none;
+  .u-section-bar {
+    --u-toolbar-height: 34px;
   }
 
-  .u-compare-mode-btn {
-    width: 32px;
-    min-width: 32px;
-    padding: 0;
+  .u-found {
+    font-size: var(--text-sm);
   }
 
   .u-section-meta {
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    gap: var(--space-2);
   }
 
-  .view-toggles {
-    justify-self: end;
+  .u-section-actions {
     flex-shrink: 0;
-    width: auto;
-    display: inline-flex;
-    grid-template-columns: none;
-    height: 32px;
+    gap: var(--space-1);
   }
 
   .view-btn {
-    width: 34px;
-    min-width: 34px;
-    height: 100%;
-    min-height: 0;
-    padding: 0;
+    min-inline-size: 36px;
+  }
+
+  .view-btn .ui-icon,
+  .view-btn [data-heroicon] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .u-compare-mode-btn [data-heroicon],
+  .u-compare-mode-btn .ui-icon,
+  .u-recent-trigger__icon {
+    width: var(--space-4);
+    height: var(--space-4);
+  }
+
+  .u-recent-trigger {
+    gap: var(--space-1);
+  }
+
+  .u-recent-trigger__chevron {
+    display: none;
+  }
+
+  @supports (position-area: block-end) {
+    .u-recent-popover {
+      position-area: block-end span-all;
+      justify-self: center;
+      position-try-fallbacks: flip-block;
+    }
   }
 
   .u-mobile-filter-btn {
@@ -774,42 +664,17 @@
 }
 
 @media (max-width: 380px) {
-  .u-filter-card,
-  .u-map-results,
-  .u-map-container {
-    border-radius: var(--radius-xl);
-  }
-
-  .view-toggles {
-    min-width: 0;
-  }
-
-  .uni-card,
-  .u-skeleton-card {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .u-map-results {
-    padding: var(--space-3);
-  }
-
-  .u-map-container {
-    min-height: 280px;
-  }
-
   .leaflet-container .custom-map-popup .leaflet-popup-content {
     width: min(260px, calc(100vw - 24px));
     max-width: calc(100vw - 24px);
-  }
-
-  .u-section-meta .u-found {
-    font-size: var(--text-xs);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .view-btn,
+  .u-compare-mode-btn,
+  .u-recent-trigger,
+  .u-recent-trigger__chevron,
   .uni-card,
   .u-recent,
   .u-recent__chip,

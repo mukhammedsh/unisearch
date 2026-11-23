@@ -206,7 +206,12 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
       await page.goto("/index.html");
       await waitForUniversitiesReady(page);
 
-      await expect(page.locator("#catalogLevelFilter .custom-select-trigger")).toBeVisible();
+      if (viewport.name === "phone") {
+        await page.locator("#mobileFilterToggle").click();
+        await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
+      }
+
+      await expect(page.locator("#uSidebar #catalogLevelFilter .custom-select-trigger")).toBeVisible();
       const colors = await page.evaluate(() => {
         const valueForToken = (token) => {
           const probe = document.createElement("div");
@@ -219,7 +224,7 @@ test("catalog level selector stays clear across themes and desktop/phone layouts
         return {
           theme: document.documentElement.dataset.theme,
           control: getComputedStyle(document.querySelector("#catalogLevelFilter .custom-select-trigger")).backgroundColor,
-          controlSurface: valueForToken("--surface-solid"),
+          controlSurface: valueForToken("--surface-soft"),
         };
       });
 
@@ -559,8 +564,8 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
   await waitForReviewedComparison(page);
   const needs = page.locator('[data-compare-row="needs"] dd');
-  await expect(needs.nth(0)).toContainText(/SAT or ACT|ACT or SAT/);
-  await expect(needs.nth(1)).not.toContainText(/SAT or ACT/);
+  await expect(needs.nth(0)).toContainText(/SAT, ACT|SAT or ACT|ACT or SAT/);
+  await expect(needs.nth(1)).not.toContainText(/SAT, ACT|SAT or ACT/);
   await expect(needs.nth(1).locator("a")).toHaveAttribute("href", /admission_option=imperial-option-computing-meng.*#tab-admission/);
   await expect(page.locator("[data-reviewed-comparison]")).not.toContainText(/1,450|1,550/);
 });
@@ -734,7 +739,8 @@ test("global rank sort reorders catalog by rank and displays rank tooltip with v
   await expect(rankTooltip).toBeVisible();
   const tooltipText = await rankTooltip.innerText();
   expect(tooltipText).toContain("QS World University Rankings 2026");
-  expect(tooltipText).toContain("Official ranking");
+  expect(tooltipText).toContain("Checked:");
+  expect(tooltipText).not.toContain("Official ranking");
 
   await rankMetric.click();
   await expect(rankTooltip).not.toBeVisible();
@@ -770,4 +776,115 @@ test("toggling compare selection mode does not trigger additional network fetche
 
   expect(universityFetchCount).toBe(0);
 });
+
+test("catalog toolbar keeps uniform control geometry, symmetric spacing, and grid alignment across viewports", async ({ page }) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page, "rus");
+  await page.addInitScript(({ ids }) => {
+    localStorage.setItem("unisearch_recent_university_ids_v1", JSON.stringify(ids));
+  }, { ids: [MIT_ID, IMPERIAL_ID, STANFORD_ID, OXFORD_ID, HARVARD_ID] });
+
+  for (const viewport of [
+    { name: "desktop", width: 1440, height: 900, expectSingleRow: true },
+    { name: "tablet", width: 1024, height: 800, expectSingleRow: true },
+    { name: "tablet-portrait", width: 768, height: 800, expectSingleRow: true },
+    { name: "wide-phone", width: 607, height: 911, expectSingleRow: true },
+    { name: "mid-phone", width: 503, height: 918, expectSingleRow: true },
+    { name: "phone", width: 390, height: 844, expectSingleRow: true },
+    { name: "narrow", width: 320, height: 568, expectSingleRow: false },
+  ]) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await page.goto("/index.html?lang=rus");
+    await waitForUniversitiesReady(page);
+    await expect(page.locator("#recentlyViewedBtn")).toBeVisible();
+
+    await expectNoStackedGapMargins(page, ".u-section-bar");
+
+    const metrics = await page.evaluate(() => {
+      const rect = (sel) => document.querySelector(sel).getBoundingClientRect();
+      const style = (sel) => getComputedStyle(document.querySelector(sel));
+      const navbar = rect(".navbar");
+      const bar = rect(".u-section-bar");
+      const found = rect("#uFoundSummary");
+      const actions = rect(".u-section-actions");
+      const recent = rect("#recentlyViewedBtn");
+      const toggles = rect("#viewToggles");
+      const listBtn = rect("#viewListBtn");
+      const mapBtn = rect("#viewMapBtn");
+      const compare = rect("#compareModeBtn");
+      const layout = rect(".u-layout");
+      const content = document.querySelector("#uSidebar").offsetParent
+        ? rect("#uSidebar")
+        : rect("#universitiesCatalogPane");
+      const compareStyle = style("#compareModeBtn");
+      const recentStyle = style("#recentlyViewedBtn");
+      const togglesStyle = style("#viewToggles");
+      const recentIcon = rect("#recentlyViewedBtn .u-recent-trigger__icon");
+      const listIcon = rect("#viewListBtn [data-heroicon], #viewListBtn .ui-icon");
+      const compareIcon = rect("#compareModeBtn [data-heroicon], #compareModeBtn .ui-icon");
+      return {
+        topGap: Math.round(bar.top - navbar.bottom),
+        bottomGap: Math.round(layout.top - bar.bottom),
+        foundLeft: Math.round(found.left),
+        contentLeft: Math.round(content.left),
+        compareRight: Math.round(compare.right),
+        layoutRight: Math.round(layout.right - Number.parseFloat(style(".u-layout").paddingRight)),
+        heights: [Math.round(recent.height), Math.round(toggles.height), Math.round(compare.height)],
+        radii: [recentStyle.borderTopLeftRadius, togglesStyle.borderTopLeftRadius, compareStyle.borderTopLeftRadius],
+        recentPadX: [recentStyle.paddingLeft, recentStyle.paddingRight],
+        comparePadX: [compareStyle.paddingLeft, compareStyle.paddingRight],
+        iconSizes: [Math.round(recentIcon.width), Math.round(listIcon.width), Math.round(compareIcon.width)],
+        viewBtnSizes: [
+          [Math.round(listBtn.width), Math.round(listBtn.height)],
+          [Math.round(mapBtn.width), Math.round(mapBtn.height)],
+        ],
+        overlaps: !(found.right <= actions.left + 0.5 || found.bottom <= actions.top + 0.5),
+        singleRow: Math.abs(found.top + found.height / 2 - (actions.top + actions.height / 2)) <= 2,
+      };
+    });
+
+    const expectedIcons = viewport.width > 480 ? [18, 20, 18] : [16, 18, 16];
+    expect(metrics.heights[0], `${viewport.name}: recent height`).toBe(metrics.heights[1]);
+    expect(metrics.heights[1], `${viewport.name}: compare height`).toBe(metrics.heights[2]);
+    expect(metrics.radii[0], `${viewport.name}: radii`).toBe(metrics.radii[1]);
+    expect(metrics.radii[1], `${viewport.name}: radii`).toBe(metrics.radii[2]);
+    expect(metrics.iconSizes, `${viewport.name}: icon sizes`).toEqual(expectedIcons);
+    expect(metrics.viewBtnSizes[0], `${viewport.name}: matching view buttons`).toEqual(metrics.viewBtnSizes[1]);
+    expect(metrics.viewBtnSizes[0][1], `${viewport.name}: view button fills full toggle height`).toBe(metrics.heights[1]);
+    expect(metrics.viewBtnSizes[0][0], `${viewport.name}: view button fills segment width`).toBeGreaterThanOrEqual(metrics.viewBtnSizes[0][1]);
+    expect(Math.abs(metrics.topGap - metrics.bottomGap), `${viewport.name}: vertical rhythm`).toBeLessThanOrEqual(1);
+    expect(Math.abs(metrics.foundLeft - metrics.contentLeft), `${viewport.name}: left grid edge`).toBeLessThanOrEqual(1);
+    expect(Math.abs(metrics.compareRight - metrics.layoutRight), `${viewport.name}: right grid edge`).toBeLessThanOrEqual(1);
+    expect(metrics.overlaps, `${viewport.name}: no found/actions overlap`).toBe(false);
+    if (viewport.expectSingleRow) {
+      expect(metrics.singleRow, `${viewport.name}: single row`).toBe(true);
+    }
+    if (viewport.width >= 1024) {
+      expect(metrics.recentPadX, `${viewport.name}: equal button padding`).toEqual(metrics.comparePadX);
+    }
+  }
+
+  // Switching between List and Map keeps aria-pressed and .active exclusive (never both highlighted).
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/index.html?lang=rus");
+  await waitForUniversitiesReady(page);
+  const listBtn = page.locator("#viewListBtn");
+  const mapBtn = page.locator("#viewMapBtn");
+  await expect(mapBtn).toBeEnabled();
+  await expect(listBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "false");
+
+  await mapBtn.click();
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(mapBtn).toHaveClass(/active/);
+  await expect(listBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(listBtn).not.toHaveClass(/active/);
+
+  await listBtn.click();
+  await expect(listBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(listBtn).toHaveClass(/active/);
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(mapBtn).not.toHaveClass(/active/);
+});
+
 

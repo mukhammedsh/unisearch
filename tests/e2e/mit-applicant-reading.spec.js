@@ -37,8 +37,12 @@ for (const item of cases) {
       await expect.poll(() => page.locator(".d-tabs").evaluate(node => node.scrollLeft)).toBeGreaterThan(before);
     }
     await tab(page, "admission");
+    // The Admission tab opens on MIT's shared first-year path by default, so requirements are readable at once.
     await expect(page.locator("#admissionsContextForm")).toBeHidden();
-    await expect(page.locator("#detailRequirements .admissions-reading__section")).toHaveCount(0);
+    await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
+    await expect(page.locator("#detailRequirements [data-admissions-key-facts]")).toBeVisible();
+    await expect(page.locator("#detailRequirements .admissions-reading__section").first()).toBeVisible();
+    await openAdmissionSelectionEditor(page);
     await page.locator("#admissionsChooseProgram").click();
     await expect(page.locator("#tab-programs")).toHaveClass(/active/);
     await setNativeSelect(page, "admissionsStudyLevel", "undergraduate");
@@ -86,7 +90,7 @@ for (const item of cases) {
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText("IELTS Academic");
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText(/7[.,]5/);
     await expect(page.locator('#detailRequirements [data-source-summary="requirements"]')).toContainText({ eng: "recommended preparation", rus: "рекомендуемую подготовку", kaz: "ұсынылатын даярлықты" }[item.language]);
-    await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText({ eng: "MIT as a whole", rus: "MIT в целом", kaz: "тұтас MIT" }[item.language]);
+    await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText({ eng: "MIT as a whole", rus: "MIT целиком", kaz: "MIT-ке тұтас" }[item.language]);
     const special = page.locator('#detailRequirements [data-admissions-fact="simultaneous-sb-master-status"]');
     await expect(special).toBeHidden();
     await expect(special.locator('xpath=ancestor::*[@data-general-references]')).toHaveCount(1);
@@ -94,19 +98,10 @@ for (const item of cases) {
     expect(await page.locator("#detailRequirements").innerText()).not.toMatch(/Scope varies|Область применения зависит от условий|Қолданылу аясы шарттарға байланысты|Current published policy/);
     await expectNoStackedGapMargins(page, "#tab-admission");
 
+    // First-year publishes one set of yearless dates and no fee classes, so the page asks for neither.
     await openAdmissionSelectionEditor(page);
-    await page.locator("#admissionsAdvanced > summary").click();
-    await page.locator("#admissionsCycle").fill("Not decided yet");
-    await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
-    await page.locator("#admissionsCycle").fill("2027 entry");
-    await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-    await page.locator("#admissionsCycle").fill(item.cycle);
-    await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-    const response = page.waitForResponse(response => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
-    await page.locator("#admissionsContextApply").click();
-    const resolved = await (await response).json();
-    expect(resolved.context.intended_entry_cycle).toBe("Fall 2027");
-    expect(resolved.facts.some(row => row.applicability.cycle === "matched")).toBe(true);
+    await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+    await expect(page.locator("#admissionsContextApply")).toBeHidden();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     await page.locator("#admissionsSaveChoice").click();
     await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
@@ -127,8 +122,8 @@ for (const item of cases) {
     await dates.evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-dates.png`) });
     await tab(page, "finance");
-    await expect(page.locator(".admissions-reading__total")).toContainText("$92,760");
-    await expect(page.locator("#detailFinance > .admissions-reading > .admissions-reading__section").first()).toContainText(/2026[‑-]2027/);
+    await expect(page.locator(".admissions-reading__total")).toContainText(/\$92[,\u00a0 ]760/);
+    await expect(page.locator("#detailFinance > .admissions-reading > .admissions-reading__section").first()).toContainText(/2026[-‑–]2027/);
     const aid = page.locator("[data-aid-summary]");
     await expect(aid).toHaveCount(1);
     await expect(aid.locator("h3")).toHaveText({ eng: "Need-based financial aid", rus: "Помощь по финансовой потребности", kaz: "Қаржылық қажеттілікке негізделген көмек" }[item.language]);
@@ -180,4 +175,70 @@ test("changing language preserves program search, browsing level and admission s
     await expect(page.locator("#admissionsProgramList")).not.toContainText("Political Science");
     expect(page.url()).toBe(url);
   }
+});
+
+test("MIT's English-test recommendation sits beside the applicant's IELTS and links to the profile", async ({ page }) => {
+  // Aruzhan: IELTS 6.5 without section scores, SAT 1300, no native language stated yet.
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    // Seeded once, so later steps can change the stored profile across reloads.
+    if (!localStorage.getItem("unisearch_profile")) localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2,
+      exams: [{ id: "SAT", exam: "SAT", score: 1300 }], languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] }));
+  });
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-first-year&admission_level=undergraduate#tab-admission");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  const recommendation = page.locator("[data-key-fact='requirements'] li[data-recommendation]");
+  await expect(recommendation).toContainText("Recommended English test: IELTS Academic 7.0 (better 7.5)");
+  await expect(recommendation).toContainText("Not required");
+  await expect(recommendation).toContainText("You have: IELTS Academic 6.5");
+  await expect(recommendation).not.toContainText("below the minimum");
+  // The check records stay behind the closed Sources disclosure.
+  await expect(page.locator("[data-admissions-key-facts] .admissions-catalog__assessment-detail")).toHaveCount(0);
+  await expect(page.locator("#detailRequirements details[data-all-records]")).not.toHaveAttribute("open", "");
+  await recommendation.getByRole("link", { name: /Is English your native language/ }).click();
+  await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  // A new "native" entry opens without choosing the language for the applicant.
+  await expect(page.locator("#langKind")).toHaveValue("native");
+  await expect(page.locator("#languagesBlock")).toBeInViewport();
+
+  // Saying another language is native keeps the row without the hint; saying English is native removes it.
+  // The profile is changed from the university page, so the profile page does not save its own copy over it.
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-first-year&admission_level=undergraduate#tab-admission");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.evaluate(() => {
+    const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
+    profile.languages.push({ code: "ru", kind: "native" });
+    localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+  });
+  await page.reload();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(recommendation).toContainText("You have: IELTS Academic 6.5");
+  await expect(recommendation.getByRole("link")).toHaveCount(0);
+  await page.evaluate(() => {
+    const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
+    profile.languages.push({ code: "en", kind: "native" });
+    localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+  });
+  await page.reload();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("[data-key-fact='requirements'] li[data-mark]").first()).toBeVisible();
+  await expect(recommendation).toHaveCount(0);
+});
+
+test("a profile link to an English test opens it with the section scores right below the overall score", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] }));
+  });
+  await page.goto("/profile.html?language_exam=IELTS");
+  await expect(page.locator("#langExam")).toHaveValue("IELTS");
+  await expect(page.locator("#langExamScore")).toHaveValue("6.5");
+  const listening = page.locator('[data-lang-breakdown-input="IELTS_LISTENING"]');
+  await expect(listening).toBeFocused();
+  await expect(page.locator(".profile-lang-sections legend")).toHaveText("Section scores (if your report shows them)");
+  const score = await page.locator("#langExamScore").boundingBox();
+  const sections = await page.locator("#langExamSpecialContainer").boundingBox();
+  const date = await page.locator("#langExamTakenOn").boundingBox();
+  expect(sections.y).toBeGreaterThan(score.y);
+  expect(date.y).toBeGreaterThan(sections.y);
 });

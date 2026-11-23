@@ -137,17 +137,20 @@
                 <div class="profile-field">
                   <label class="profile-field-label" for="budgetInput" data-i18n="profile.label.budget">Yearly budget</label>
                   <p class="profile-hint" id="budgetHint" data-i18n="profile.ux2.hint.budget">Universities whose known yearly cost is above this rank lower in UniFit. None are hidden. Grants are not subtracted, and an unknown price is not penalised.</p>
-                  <div class="profile-budget profile-budget--with-unit ui-input-composite">
-                    <input
-                      id="budgetInput"
-                      class="profile-input"
-                      type="text"
-                      inputmode="numeric"
-                      aria-describedby="budgetHint"
-                      placeholder="e.g. 20000"
-                      data-i18n-placeholder="profile.placeholder.budget"
-                    />
-                    <button class="profile-unit profile-unit--toggle profile-unit--currency" id="profileBudgetUnit" type="button" data-i18n="profile.unit.currency_year">{currency} / year</button>
+                  <div class="profile-budget-row">
+                    <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                      <input
+                        id="budgetInput"
+                        class="profile-input"
+                        type="text"
+                        inputmode="numeric"
+                        aria-describedby="budgetHint"
+                        placeholder="e.g. 20000"
+                        data-i18n-placeholder="profile.placeholder.budget"
+                      />
+                      <span class="profile-unit" id="profileBudgetUnit" data-i18n="profile.unit.per_year">/ year</span>
+                    </div>
+                    <select id="profileBudgetCurrency" class="profile-input profile-input--select profile-budget-currency" data-flags="off" aria-label="Budget currency" data-i18n-aria-label="profile.budget_currency_label"></select>
                   </div>
                 </div>
 
@@ -210,6 +213,17 @@
                       data-i18n="profile.unit.gpa"
                     >/ 4.0</button>
                   </div>
+                  <fieldset class="profile-gpa-scale" id="gpaScaleChoice">
+                    <legend class="profile-form-label" data-i18n="profile.gpa_scale.legend">Your GPA is out of</legend>
+                    <label class="profile-gpa-scale__option">
+                      <input type="radio" name="gpaScale" value="4" checked />
+                      <span data-i18n="profile.gpa_scale.option_4">4.0 — US and international schools</span>
+                    </label>
+                    <label class="profile-gpa-scale__option">
+                      <input type="radio" name="gpaScale" value="5" />
+                      <span data-i18n="profile.gpa_scale.option_5">5.0 — schools in Kazakhstan and the CIS</span>
+                    </label>
+                  </fieldset>
                   <div class="profile-hint-row">
                     <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
                       Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
@@ -333,12 +347,13 @@
                     />
                   </div>
 
+                  <!-- Section scores sit right below the overall score they add up to. -->
+                  <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
+
                   <div id="langExamTakenOnContainer" class="profile-lang-conditional lang-control-item" hidden>
                     <label class="profile-form-label" for="langExamTakenOn" data-i18n="profile.evidence.test_date">Test date (optional)</label>
                     <input id="langExamTakenOn" class="profile-input" type="date" />
                   </div>
-
-                  <div id="langExamSpecialContainer" class="profile-exam-special profile-lang-conditional" hidden></div>
 
                   <div class="lang-control-btn-wrap">
                     <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>

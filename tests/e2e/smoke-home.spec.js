@@ -57,7 +57,7 @@ test("browser theme color and slider follow the shared accent token", async ({ p
   await expect(themeColor).toHaveAttribute("content", "#123456");
 });
 
-test("first-visit tutorial requires completion or an explicit skip", async ({ page }) => {
+test("first-visit tutorial is skipped by its skip button", async ({ page }) => {
   await page.goto("/index.html");
 
   const tour = page.locator("#uTourModal");
@@ -79,9 +79,6 @@ test("first-visit tutorial requires completion or an explicit skip", async ({ pa
   await expect(tour.locator("[data-action='next']")).toBeFocused();
   await page.keyboard.press("Shift+Tab");
   await expect(tour.locator("[data-action='skip']")).toBeFocused();
-  await page.keyboard.press("Escape");
-  await expect(tour).toBeVisible();
-  await expect(tour.locator("[data-action='close']")).toHaveCount(0);
   await tour.locator("[data-action='skip']").click();
   await expect(tour).toBeHidden();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
@@ -89,6 +86,25 @@ test("first-visit tutorial requires completion or an explicit skip", async ({ pa
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
   await expect(page.locator("#uTourModal")).toHaveCount(0);
+});
+
+test("first-visit tutorial closes with Escape or its close button and is not shown again", async ({ page }) => {
+  await page.goto("/index.html");
+  const tour = page.locator("#uTourModal");
+  await expect(tour).toHaveClass(/is-open/);
+  await page.keyboard.press("Escape");
+  await expect(tour).toBeHidden();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
+
+  await page.evaluate(() => localStorage.removeItem("unisearch_universities_tour_seen_v1"));
+  await page.reload();
+  await expect(page.locator("#uTourModal")).toHaveClass(/is-open/);
+  const close = page.locator("#uTourModal [data-action='close']");
+  await expect(close).toBeVisible();
+  await expect(close).toHaveAccessibleName("Close tutorial");
+  await close.click();
+  await expect(page.locator("#uTourModal")).toBeHidden();
+  await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
 });
 
 test("tutorial opens the profile and resumes after saving it", async ({ page }) => {

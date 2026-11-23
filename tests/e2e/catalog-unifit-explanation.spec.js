@@ -151,3 +151,28 @@ test("a visitor who opens the catalog directly still gets the first-visit tour",
   await page.goto("/index.html");
   await expect(page.locator("#uTourModal")).toBeVisible();
 });
+
+test("the first-visit tour closes with Escape or its close button and then counts as skipped", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await seed(page, { tourSeen: false });
+  await page.goto("/index.html");
+  await expect(page.locator("#uTourModal")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#uTourModal")).toBeHidden();
+  expect(await page.evaluate((key) => localStorage.getItem(key), TOUR_SEEN_KEY)).toBe("1");
+
+  await page.evaluate((key) => localStorage.removeItem(key), TOUR_SEEN_KEY);
+  await page.reload();
+  await expect(page.locator("#uTourModal")).toBeVisible();
+  await page.locator("#uTourModal [data-action='close']").click();
+  await expect(page.locator("#uTourModal")).toBeHidden();
+  await expect(page.locator("#languageSelect")).toBeVisible();
+});
+
+test("an empty catalog names the price filter that hides results and offers a way out", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await seed(page, {});
+  await page.goto("/index.html?q=MIT&max_tuition=1000");
+  await expect(page.locator("#listState [data-empty-filters]")).toBeVisible();
+  await expect(page.locator("#listState [data-action='reset-filters']")).toBeVisible();
+});

@@ -538,7 +538,7 @@ def _reference_labels(indexed):
 RECORD_INTERNAL_KEYS = frozenset({"provenance", "index_attributes", "related_fact_ids", "content_reviewed_at"})
 PUBLIC_RECORD_ATTRIBUTES = ("catalog_costs", "deadline_events")
 ASSESSMENT_DUPLICATE_KEYS = frozenset({"choices", "selectedContext", "unknowns", "sources"})
-RESPONSE_SHAPE = "public-1"
+RESPONSE_SHAPE = "public-2"
 
 
 def _public_record(row):
@@ -570,8 +570,9 @@ def _public_summary(summary):
 def public_study_options(result):
     """The study-options page as sent over HTTP."""
     public = {**result, "items": [_public_summary(row) for row in result["items"]]}
-    if "shared_routes" in result:
-        public["shared_routes"] = [_public_summary(row) for row in result["shared_routes"]]
+    for key in ("shared_routes", "preparation_entries"):
+        if key in result:
+            public[key] = [_public_summary(row) for row in result[key]]
     return public
 
 
@@ -610,11 +611,18 @@ def list_study_options(institution_id, search_candidates=(), study_level=None, p
     if queries:
         items.sort(key=lambda row: (-row[0], row[1]["title"].casefold(), row[1]["id"]))
     start = (page - 1) * limit
+    # The path serving the most programs (the regular application) comes first; one-off intakes follow.
+    shared = sorted((route for route in institution["application_routes"]
+                     if _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate"),
+                    key=lambda route: -len(route["option_ids"]))
+    shared_ids = {route["id"] for route in shared}
     return {"institution_id": institution_id, "revision": cached["revision"], "total": len(items), "page": page, "limit": limit,
             "shared_routes": [{**_route_summary(route), "levels": ["undergraduate"]}
-                              for route in institution["application_routes"]
-                              if _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate"
-                              and study_level in (None, "undergraduate")],
+                              for route in shared if study_level in (None, "undergraduate")],
+            # A preparatory year applied for through the shared undergraduate application, e.g. NU's Foundation Year.
+            "preparation_entries": [_option_summary(option) for option in institution["study_options"]
+                                    if option["levels"] == ["preparation"] and shared_ids.intersection(option["route_ids"])
+                                    and study_level in (None, "undergraduate", "preparation")],
             "items": [_option_summary(option) for _, option in items[start:start + limit]]}
 
 
@@ -837,6 +845,10 @@ def resolve_context(institution_id, profile=None, context=None):
                     groups.setdefault(domain, []).append(row["id"])
     available_routes = [_route_summary(indexed["application_routes"][route_id]) for route_id in option["route_ids"]
                         if route_id == effective["application_route_id"] or not set(_route_metadata(indexed["application_routes"][route_id]).get("policy_for_route_ids", [])).intersection(option["route_ids"])] if option else []
+    if shared_reading:
+        # Without a program, the university's other shared paths (such as a post-offer funding application) stay reachable.
+        available_routes = [_route_summary(row) for row in institution["application_routes"]
+                            if _route_metadata(row).get("admission_scope") == "institution_wide_undergraduate"]
     selected_option = _option_summary(option) if option else None
     if selected_option is not None:
         selected_option["overviews"] = []

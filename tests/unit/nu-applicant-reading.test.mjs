@@ -15,7 +15,10 @@ const nu = catalog.institutions.find(row => row.institution.id === "nazarbayev-u
 
 function context(optionId, routeId, domains) {
   const option = nu.study_options.find(row => row.id === optionId);
-  const facts = nu.facts.filter(row => row.scope.option_ids.includes(optionId) && (!row.scope.route_ids.length || row.scope.route_ids.includes(routeId)))
+  // As on the server: a record of a whole shared path lists no programs and is scoped by its path and level instead.
+  const forOption = row => row.scope.option_ids.length ? row.scope.option_ids.includes(optionId)
+    : row.scope.route_ids.includes(routeId) && (!row.scope.levels.length || row.scope.levels.some(level => option.levels.includes(level)));
+  const facts = nu.facts.filter(row => forOption(row) && (!row.scope.route_ids.length || row.scope.route_ids.includes(routeId)))
     .map(row => ({ ...row, applicability: { status: "conditional" } }));
   return { selected_option: { ...option, format: option.attributes.format, overviews: [{ text: option.attributes.study_detail || "", source_ids: option.source_ids }] },
     selected_route: nu.application_routes.find(row => row.id === routeId), sources: nu.sources, facts,

@@ -14,7 +14,7 @@ async function openUniversity(page, id, { language = "eng", theme = "light", wid
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
 }
 
-test("requirements match appears before route selection and shows the selected route's score", async ({ page }) => {
+test("requirements match reads the default first-year path at once and shows its score", async ({ page }) => {
   await page.route("**/admissions-context", async route => {
     const response = await route.fetch();
     const data = await response.json();
@@ -25,15 +25,11 @@ test("requirements match appears before route selection and shows the selected r
   await page.locator('[data-tab="tab-admission"]').click();
   const assessment = page.locator("#detailRequirements [data-requirements-match]");
   await expect(assessment).toBeVisible();
-  await expect(assessment).toContainText("Minimum requirements match");
-  await expect(assessment).toContainText("Choose an application path");
+  // The tab reads the same default path as the Overview, without asking which path to check first.
+  await expect(assessment).not.toContainText("Choose an application path");
   await expect(assessment).not.toContainText("Choose a program");
-  await expect(assessment).not.toContainText("%");
-  expect(await assessment.evaluate(node => Boolean(node.compareDocumentPosition(document.querySelector("#admissionsContext")) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
-  await assessment.getByRole("button").click();
-  await expect(page.locator('[data-shared-route="mit-first-year"]')).toBeFocused();
-  await page.locator('[data-shared-route="mit-first-year"]').click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsRoute")).toHaveValue("mit-first-year");
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBeNull();
   await expect(assessment).toContainText("100%");
   await expect(assessment).toContainText("1 of 1");
   await expect(assessment).toContainText("not an admission probability");
@@ -48,12 +44,12 @@ for (const item of [
     await openUniversity(page, item.id, item);
     await page.locator('[data-tab="tab-admission"]').click();
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-    await page.locator(`[data-shared-route="${item.route}"]`).click();
+    // The shared first-year path is read by default, so it can be remembered without choosing it first.
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
     await expect(page.locator("#detailRequirements [data-admissions-fact]").first()).toBeAttached();
     await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
-    expect(new URL(page.url()).searchParams.get("admission_option")).toBe("");
+    expect(new URL(page.url()).searchParams.get("admission_option") || "").toBe("");
     await page.locator("#admissionsSaveChoice").click();
     await page.reload();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
@@ -99,9 +95,10 @@ test("Imperial reads a course with one application route directly, on selection 
 
 test("mobile route selection reveals the updated context below the navigation", async ({ page }) => {
   const foundationRoute = "nu-a-route-regular-foundation-undergraduate";
+  // A bachelor's program has several ways in (Foundation has one and opens it directly), so the reader chooses here.
   await openUniversity(page, "nazarbayev-university-kaz-astana", {
     language: "kaz", width: 390,
-    query: "&admission_option=nu-a-study-nu-foundation-year-program&admission_level=preparation&admission_application_route=#tab-admission",
+    query: "&admission_option=nu-a-study-bachelor-of-science-in-computer-science&admission_level=undergraduate&admission_application_route=#tab-admission",
   });
   await page.setViewportSize({ width: 390, height: 700 });
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
@@ -202,9 +199,8 @@ test("an old link or saved choice naming a different applicant category does not
     expect(body.profile.selectedAdmissionChoices?.["imperial-college-london-uk"]).toBeUndefined();
   }
   await page.locator("#admissionsReferenceSummary button").click();
-  await page.locator("#admissionsAdvanced > summary").click();
-  await page.locator("#admissionsCycle").fill("2027 entry");
-  await page.locator("#admissionsContextApply").click();
+  // The UK course asks for a fee status; its single published intake is read without an entry-year field.
+  await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Fee status");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   expect(new URL(page.url()).searchParams.has("admission_route")).toBe(false);
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();

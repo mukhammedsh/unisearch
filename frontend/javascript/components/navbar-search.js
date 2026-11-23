@@ -133,11 +133,11 @@ export function generateSuggestionsHtml(items, highlightedIdx = -1, query = "") 
     const nameHtml = trimmedQ ? highlightMatchText(name, trimmedQ) : escapeHtml(name);
     const locationHtml = trimmedQ ? highlightMatchText(locationText, trimmedQ) : escapeHtml(locationText);
 
-    const aliases = Array.isArray(item?.search_aliases) ? item.search_aliases : [];
+    const abbreviations = Array.isArray(item?.abbreviations) ? item.abbreviations : [];
     let matchedAliasBadge = "";
-    if (trimmedQ && aliases.length > 0) {
+    if (trimmedQ && abbreviations.length > 0) {
       const lowerQ = trimmedQ.toLowerCase();
-      const foundAlias = aliases.find((a) => String(a || "").toLowerCase() === lowerQ);
+      const foundAlias = abbreviations.find((a) => String(a || "").toLowerCase() === lowerQ);
       if (foundAlias) {
         matchedAliasBadge = ` <span class="navbar-search-suggestion__badge">${escapeHtml(foundAlias.toUpperCase())}</span>`;
       }

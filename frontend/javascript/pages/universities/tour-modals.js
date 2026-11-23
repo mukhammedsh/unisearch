@@ -3,6 +3,7 @@
 import { escapeHtml, closeMotionLayer, aiName } from "../../utils.js";
 import { t, tFormat } from "../../i18n.js";
 import { saveUniversitiesTourResumeStep } from "../shared/cache.js";
+import { heroIcon } from "../../icons.js";
 
 let universitiesTourModal = null;
 
@@ -17,7 +18,6 @@ export function ensureUniversitiesTourModal() {
     const modal = document.createElement("dialog");
     modal.id = "uTourModal";
     modal.className = "u-tour-modal";
-    modal.setAttribute("closedby", "none");
     modal.setAttribute("aria-labelledby", "uTourTitle");
     modal.innerHTML = `
         <div class="u-tour-card">
@@ -26,7 +26,10 @@ export function ensureUniversitiesTourModal() {
                     <p class="u-tour-overline">${escapeHtml(t("tour.overline", "Getting started"))}</p>
                     <h2 id="uTourTitle" class="u-tour-heading">${escapeHtml(t("tour.heading", "Your university search, step by step"))}</h2>
                 </div>
-                <p id="uTourProgressLabel" class="u-tour-progress" aria-live="polite"></p>
+                <div class="u-tour-header-end">
+                    <p id="uTourProgressLabel" class="u-tour-progress" aria-live="polite"></p>
+                    <button class="icon-btn u-tour-close" type="button" data-action="close" title="${escapeHtml(t("tour.close", "Close tutorial"))}" aria-label="${escapeHtml(t("tour.close", "Close tutorial"))}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
+                </div>
             </div>
             <div class="u-tour-layout">
                 <ol id="uTourSteps" class="u-tour-steps" aria-label="${escapeHtml(t("tour.steps_label", "Tutorial steps"))}"></ol>
@@ -57,6 +60,7 @@ export function showUniversitiesTour(options = {}) {
         const prevBtn = modal.querySelector("[data-action='prev']");
         const nextBtn = modal.querySelector("[data-action='next']");
         const skipBtn = modal.querySelector("[data-action='skip']");
+        const closeBtn = modal.querySelector("[data-action='close']");
         const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
         const steps = [
@@ -167,6 +171,11 @@ export function showUniversitiesTour(options = {}) {
             const isLast = idx === steps.length - 1;
             nextBtn.textContent = isLast ? t("tour.finish", "Finish tutorial") : t("tour.next", "Next");
             skipBtn.textContent = t("tour.skip_all", "Skip tutorial");
+            if (closeBtn) {
+                const closeLabel = t("tour.close", "Close tutorial");
+                closeBtn.title = closeLabel;
+                closeBtn.setAttribute("aria-label", closeLabel);
+            }
 
             const inlineProfileBtn = slideEl.querySelector("[data-action='open-profile']");
             if (inlineProfileBtn) {
@@ -189,6 +198,7 @@ export function showUniversitiesTour(options = {}) {
             prevBtn?.removeEventListener("click", onPrev);
             nextBtn?.removeEventListener("click", onNext);
             skipBtn?.removeEventListener("click", onSkip);
+            closeBtn?.removeEventListener("click", onSkip);
             closeMotionLayer(modal, () => {
                 modal.classList.remove("is-open", "is-closing");
                 if (typeof modal.close === "function") {
@@ -201,8 +211,9 @@ export function showUniversitiesTour(options = {}) {
         };
 
         const onCancel = (event) => {
-            // The first-visit tutorial requires completion or an explicit skip instead of Escape dismissal.
+            // Escape counts as "skip tutorial"; keep the dialog open until the exit animation has finished.
             event.preventDefault();
+            cleanup();
         };
 
         const onPrev = () => {
@@ -236,6 +247,7 @@ export function showUniversitiesTour(options = {}) {
         prevBtn?.addEventListener("click", onPrev);
         nextBtn?.addEventListener("click", onNext);
         skipBtn?.addEventListener("click", onSkip);
+        closeBtn?.addEventListener("click", onSkip);
         modal.addEventListener("cancel", onCancel);
         window.addEventListener("profileModalClosed", onProfileClosed);
 

@@ -1,4 +1,4 @@
-/* First-visit onboarding is a focused workspace, not a dismissible tooltip. */
+/* First-visit onboarding is a focused workspace; Escape or the close button skips it. */
 .u-tour-modal {
   position: fixed;
   inset: 0;
@@ -72,7 +72,7 @@
 
 .u-tour-overline,
 .u-tour-kicker {
-  color: var(--accent);
+  color: var(--interaction-hover-text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
 }
@@ -93,6 +93,19 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+}
+
+.u-tour-header-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 0 0 auto;
+}
+
+.u-tour-close {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
 }
 
 .u-tour-layout {
@@ -222,8 +235,8 @@
 .u-tour-inline-btn {
   align-self: flex-start;
   margin-top: var(--space-1-5);
-  background: var(--surface-solid);
-  color: var(--accent);
+  background: var(--surface-soft);
+  color: var(--text);
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
