@@ -10,3 +10,19 @@ if [ $? -ne 0 ]; then
   echo "Encoding check failed. Please run 'npm run fix:encoding' to fix the issues."
   exit 1
 fi
+
+echo "Running frontend lint..."
+npm run lint:frontend
+
+if [ $? -ne 0 ]; then
+  echo "Frontend lint failed. Fix Oxlint errors before committing."
+  exit 1
+fi
+
+echo "Running localization check..."
+npm run check:i18n
+
+if [ $? -ne 0 ]; then
+  echo "Localization check failed. Run 'npm run check:i18n' or 'npm run fix:i18n'."
+  exit 1
+fi

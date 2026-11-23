@@ -1,5 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc", "import"],
   "env": {
     "browser": true,
     "es2022": true
@@ -30,6 +31,7 @@
     "prefer-const": "error",
     "no-unreachable": "error",
     "no-duplicate-imports": "error",
+    "import/no-cycle": "error",
     "no-undef": "error",
     "no-underscore-dangle": "off",
     "no-shadow": "off",

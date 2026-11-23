@@ -1,5 +1,3 @@
-import { t } from "../i18n.js";
-
 const inferredApiBase = `${window.location?.protocol || "http:"}//${window.location?.hostname || "127.0.0.1"}:8000`;
 
 export const API_BASE = window.API_BASE_URL || inferredApiBase;
@@ -9,6 +7,12 @@ const AI_FUNCTIONS = {
   ...(window.AI_FUNCTIONS && typeof window.AI_FUNCTIONS === "object" ? window.AI_FUNCTIONS : null),
 };
 export const $ = (id) => document.getElementById(id);
+
+let runtimeTranslator = null;
+
+export function registerRuntimeTranslator(translator) {
+  runtimeTranslator = typeof translator === "function" ? translator : null;
+}
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
@@ -24,7 +28,11 @@ let globalVisibleAt = 0;
 
 export function aiName(key) {
   const normalized = String(key || "").trim().toLowerCase();
-  if (normalized === "chance") return t("ai.chance", "Minimum requirements match");
+  if (normalized === "chance") {
+    return runtimeTranslator
+      ? runtimeTranslator("ai.chance", "Minimum requirements match")
+      : "Minimum requirements match";
+  }
   return AI_FUNCTIONS[normalized] || AI_DEFAULTS[normalized] || "AI Function";
 }
 

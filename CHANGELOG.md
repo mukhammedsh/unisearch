@@ -13,6 +13,7 @@ Patch release: add frontend JavaScript static analysis tooling, remove dead code
 - Decompose `frontend/javascript/pages/university/render-sections.js` and `frontend/javascript/pages/university/render-content.js` into focused acyclic modules (`section-context.js`, `funding-awards.js`, `deadlines-section.js`, `admission-section.js`, `program-coverage.js`, `programs-section.js`, `qualification-guidance.js`).
 - Decompose `frontend/javascript/components/profile-ui.js` (`profile-dialogs.js`, `profile-form-fields.js`, `profile-exam-editor.js`) and `frontend/javascript/languages.js` (`language-helpers.js`), simplify dead global checks in `compare-helpers.js`, and enable the `no-undef` rule in `.oxlintrc.json`.
 - Remove 387 retired unused localization keys symmetrically across `frontend/Localization/eng`, `ru`, and `kaz`, and refresh `I18N_PACK_REVISION` in `frontend/javascript/i18n.js`.
+- Break the core `utils/runtime.js` <-> `i18n.js` import cycle via `registerRuntimeTranslator` and enforce `import/no-cycle` in `.oxlintrc.json`; extend `scripts/check-hardcoded-text.mjs` to scan frontend JavaScript via `oxc-parser` (fixing unlocalized navbar `<option>` tags in `frontend/javascript/components.js`), add unused i18n key detection to `scripts/i18n-check.mjs` while removing 9 remaining unused keys, and wire `lint:frontend`, `check:i18n`, `audit:css`, `check:hardcoded-text`, and `audit:duplicates` across `.githooks/pre-commit`, `test:all`, and `.github/workflows/repository-hygiene.yml`.
 
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 

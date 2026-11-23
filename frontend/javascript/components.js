@@ -89,8 +89,8 @@ const LAYOUT_HTML = `
     <button class="navbar-search-toggle" id="navbarSearchToggle" type="button" title="Open search" aria-label="Open search" data-i18n-title="navbar.search.open" data-i18n-aria-label="navbar.search.open" aria-expanded="false" aria-controls="universitySearch" hidden>${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</button>
     <div class="lang-control">
       <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
-        <option value="eng">English (US)</option>
-        <option value="rus">Русский</option>
+        <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
+        <option value="rus" data-i18n="nav.lang.rus">Русский</option>
         <option value="kaz" data-i18n="nav.lang.kaz">Қазақша</option>
       </select>
     </div>

@@ -9,15 +9,11 @@ university.admissions.reading.check_source_conditions: Check the published appli
 academic_requirements: Academic requirements
 academic_average: Academic average
 language_average: Language average
-filter_any: Any
 filter_grant: Grant
 filter_paid: Paid
 general_tuition: General tuition
 minimum_to_apply: Minimum to apply
 total_per_year: Total / year
-est_cost: Est. Cost
-est_net_cost: Est. Net Cost
-base_cost_before_grant: Base Cost (before grant)
 admission.track.funding_options: Funding options
 admission.track.options_count: {count} funding options
 extra_requirements: Extra requirements
@@ -263,7 +259,6 @@ profile.label.interests: Topics you are interested in
 profile.label.major: Subject
 profile.label.study_mode: Study format
 profile.language: Language
-profile.languages: Languages
 profile.option.funding_any: Any (Grant + Paid)
 profile.option.funding_grant: Grant only
 profile.option.funding_paid: Paid only
@@ -277,7 +272,6 @@ profile.placeholder.gpa: e.g. 3.80
 profile.placeholder.interests: Example: computer science, artificial intelligence, robotics, game development, internships
 profile.placeholder.lang_score: Score (e.g. 7.5)
 profile.placeholder.score: Score
-profile.state.saved: Saved
 profile.state.saved_local: Saved on this device
 profile.state.saved_session: Saved until this tab is closed
 profile.state.unsaved: Unsaved changes
@@ -662,7 +656,6 @@ university.gallery.zoom_in: Zoom in
 university.gallery.zoom_out: Zoom out
 university.entry_requirements: Admission Categories
 university.error_no_id: Error: No ID provided.
-university.loading: Loading university details
 university.loading_scholarships: Loading scholarships
 university.per_year: per year
 university.price_from: from {price} / year
@@ -832,7 +825,6 @@ tour.back: Back
 tour.finish: Finish
 tour.next: Next
 tour.open_profile: Open Profile
-tour.skip: Skip
 tour.heading: Your university search, step by step
 tour.overline: Getting started
 tour.progress: Step {current} of {total}
@@ -1041,7 +1033,6 @@ terms.updates.operators: Project operator: UniSearch is an independent, non-comm
 terms.updates.p1: We reserve the right to revise these Terms at any time. The current version will always be published on this page with an updated timestamp.
 terms.updates.law: These Terms are governed by the laws of the Republic of Kazakhstan. Mandatory consumer protection rules of your country of residence continue to apply.
 terms.updates.p2: For any questions or feedback concerning these terms, please contact us at: unisearch.sup@gmail.com
-fields_of_study: Fields of study
 exam.component.overall: Overall
 exam.component.total: Total
 exam.component.listening: Listening

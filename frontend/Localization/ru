@@ -25,15 +25,11 @@ about.team_kicker: Наша команда
 about.title: UniSearch – сервис, созданный абитуриентами для абитуриентов.
 footer.copyright: © 2026 UniSearch
 footer.qs_attribution: Глобальный рейтинг: источник — QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). С разрешения QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
-filter_any: Любой
 filter_grant: Грант
 filter_paid: Платно
 general_tuition: Общая стоимость обучения
 minimum_to_apply: Минимум для подачи
 total_per_year: Итого за год
-est_cost: Ориентировочная стоимость
-est_net_cost: Ориентировочная стоимость после гранта
-base_cost_before_grant: Базовая стоимость (до гранта)
 admission.track.funding_options: Варианты финансирования
 admission.track.options_count: {count} вариантов финансирования
 admission.chance.need_exam_data_track: Добавьте результаты нужных экзаменов, чтобы увидеть соответствие этому профилю требований.
@@ -266,7 +262,6 @@ profile.label.interests: Темы, которые вас интересуют
 profile.label.major: Специальность
 profile.label.study_mode: Формат обучения
 profile.language: Язык
-profile.languages: Языки
 profile.option.funding_any: Любой (грант + платно)
 profile.option.funding_grant: Только грант
 profile.option.funding_paid: Только платно
@@ -280,7 +275,6 @@ profile.placeholder.gpa: например, 3.80
 profile.placeholder.interests: Например: информатика, искусственный интеллект, робототехника, разработка игр, стажировки
 profile.placeholder.lang_score: Балл (например, 7.5)
 profile.placeholder.score: Балл
-profile.state.saved: Сохранено
 profile.state.saved_local: Сохранено
 profile.state.saved_session: Сохранено до закрытия вкладки
 profile.state.unsaved: Есть несохраненные изменения
@@ -665,7 +659,6 @@ university.gallery.zoom_in: Увеличить масштаб
 university.gallery.zoom_out: Уменьшить масштаб
 university.entry_requirements: Категории поступления
 university.error_no_id: Ошибка: ID не указан.
-university.loading: Загрузка данных университета
 university.loading_scholarships: Загрузка стипендий
 university.per_year: в год
 university.price_from: от {price} / год
@@ -835,7 +828,6 @@ tour.back: Назад
 tour.finish: Завершить
 tour.next: Далее
 tour.open_profile: Открыть профиль
-tour.skip: Пропустить
 tour.heading: Поиск университета — шаг за шагом
 tour.overline: Начало работы
 tour.progress: Шаг {current} из {total}
@@ -1041,7 +1033,6 @@ terms.updates.operators: Оператор проекта: UniSearch — неза
 terms.updates.p1: Мы оставляем за собой право вносить изменения в настоящие Условия. Актуальная редакция публикуется на данной странице с указанием даты последнего обновления.
 terms.updates.law: Настоящие Условия регулируются законодательством Республики Казахстан. Обязательные нормы о защите прав потребителей в стране вашего проживания продолжают действовать.
 terms.updates.p2: По всем вопросам, связанным с условиями использования платформы, обращайтесь по адресу: unisearch.sup@gmail.com
-fields_of_study: Направления
 exam.component.overall: Общий балл
 exam.component.total: Общий балл
 exam.component.listening: Аудирование (Listening)
