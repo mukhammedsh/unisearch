@@ -10,6 +10,7 @@ Patch release: add frontend JavaScript static analysis tooling, remove dead code
 - Configure frontend JavaScript static analysis with Oxlint (`.oxlintrc.json`), Knip (`knip.json`), and jscpd (`.jscpd.json`) alongside `npm run lint:frontend`, `npm run audit:dead-code`, and `npm run audit:duplicates` scripts in `package.json`.
 - Resolve all frontend Oxlint errors, empty `catch` blocks, unused imports/variables, Knip-detected dead code and unused exports (plus the duplicate recent-universities setting constant in `frontend/javascript/settings.js`), and cross-file helper/validation/persistence duplicates (`jscpd` clones reduced to zero); remove the stale `#profileBudgetUnit:focus-visible` allowlist entry from `scripts/audit-css.mjs`, and enforce `lint:frontend` and `audit:dead-code` in `test:all` and `.github/workflows/repository-hygiene.yml`.
 - Decompose `frontend/javascript/pages/universities.js` into focused modules under `frontend/javascript/pages/universities/`: `map-assets.js`, `api-client.js`, `card-renderer.js`, `recently-viewed.js`, and `map-controller.js`.
+- Decompose `frontend/javascript/pages/university/render-sections.js` and `frontend/javascript/pages/university/render-content.js` into focused acyclic modules (`section-context.js`, `funding-awards.js`, `deadlines-section.js`, `admission-section.js`, `program-coverage.js`, `programs-section.js`, `qualification-guidance.js`).
 
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 
