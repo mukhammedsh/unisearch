@@ -874,7 +874,7 @@
   line-height: 1.15;
   font-weight: var(--font-weight-medium);
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .compare-config-column .track-funding-badge--grant {
@@ -1076,6 +1076,16 @@
 }
 
 @media (max-width: 768px) {
+  .compare-campus__credit a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+  }
+
+  .compare-results-action {
+    min-height: 44px;
+  }
+
   .compare-config-column {
     padding: var(--space-4);
   }
