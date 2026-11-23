@@ -112,7 +112,8 @@
         { "exam": "SAT_MATH", "label": "Math" },
         { "exam": "SAT_EBRW", "label": "EBRW" }
       ],
-      "total_strategy": "sum"
+      "total_strategy": "sum",
+      "allow_total_only": true
     },
     "normalization": {
       "kind": "anchor_percentile",
@@ -214,7 +215,8 @@
       ],
       "selectable_count_min": 2,
       "selectable_count_max": 2,
-      "total_strategy": "sum"
+      "total_strategy": "sum",
+      "allow_total_only": true
     },
     "normalization": {
       "kind": "anchor_percentile",

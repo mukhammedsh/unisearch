@@ -15,7 +15,7 @@ for (const [name, route, root] of [
     await expect(page.locator("#detailName")).not.toHaveText("University Name");
     expect(await page.evaluate(() => new URL(document.baseURI).pathname)).toBe(root);
     expect(loadedAssets).toEqual(expect.arrayContaining([
-      `${root}javascript/main.js`, `${root}css/style.css`, `${root}css/university.css`,
+      `${root}javascript/main.js`, `${root}css/shared/01-foundation.css`, `${root}css/university/01-shell-hero.css`,
     ]));
   });
 }
@@ -33,9 +33,50 @@ test("university detail loads its page resources under the /frontend mount", asy
 
   expect(frontendRequests).toEqual(expect.arrayContaining([
     "/frontend/javascript/main.js",
-    "/frontend/css/style.css",
-    "/frontend/css/university.css",
+    "/frontend/css/shared/01-foundation.css",
+    "/frontend/css/university/01-shell-hero.css",
   ]));
   await expect.poll(() => page.evaluate(() => document.querySelector("base")?.href))
     .toContain("/frontend/");
+});
+
+test("client-side SPA navigation to pretty /universities/<id> loads university stylesheets from root", async ({ page }) => {
+  const failedCss = [];
+  const loadedCss = [];
+  page.on("response", (response) => {
+    const pathname = new URL(response.url()).pathname;
+    if (!pathname.endsWith(".css")) return;
+    if (response.ok()) loadedCss.push(pathname);
+    else failedCss.push(`${response.status()} ${pathname}`);
+  });
+
+  await page.goto("/");
+  await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();
+
+  await page.evaluate(() => {
+    window.dispatchEvent(new CustomEvent("app:navigate", {
+      detail: { href: "/universities/mit-usa-cambridge" },
+    }));
+  });
+
+  await expect(page).toHaveURL(/\/universities\/mit-usa-cambridge$/);
+  await expect(page.locator("body")).toHaveAttribute("data-page", "university");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  await expect(page.locator("#detailName")).not.toHaveText("University Name");
+
+  expect(failedCss).toEqual([]);
+  expect(loadedCss).toEqual(expect.arrayContaining([
+    "/css/university/01-shell-hero.css",
+    "/css/university/02-overview-programs.css",
+    "/css/university/03-admissions.css",
+    "/css/university/04-finance-aid.css",
+    "/css/university/05-admissions-reviewed.css",
+    "/css/university/06-qualification-guidance.css",
+  ]));
+  expect(await page.evaluate(() => new URL(document.baseURI).pathname)).toBe("/");
+  const saveReserveHidden = await page.locator("#detailSaveBtn .d-site-link-label-reserve").evaluate((el) => {
+    const styles = getComputedStyle(el);
+    return styles.visibility === "hidden" || styles.opacity === "0" || styles.display === "none";
+  });
+  expect(saveReserveHidden).toBe(true);
 });

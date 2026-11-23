@@ -6,6 +6,7 @@ import {
   checkConnectivity,
   classifyError,
   isOnline,
+  showNetworkStatusBanner,
 } from "../../frontend/javascript/components/network-status.js";
 
 import {
@@ -177,6 +178,73 @@ describe("network-status.js", () => {
       });
       assert.ok(html.includes("Custom Server Down"));
       assert.ok(html.includes("id=\"errorRetryBtn\""));
+    });
+
+    it("escapes HTML in custom error titles and descriptions", () => {
+      const html = renderErrorScreen({
+        type: "generic",
+        title: "<img src=x onerror=alert(1)>",
+        desc: "<script>alert(2)</script>",
+      });
+      assert.ok(!html.includes("<img "));
+      assert.ok(!html.includes("<script>"));
+      assert.ok(html.includes("&lt;img src=x onerror=alert(1)&gt;"));
+      assert.ok(html.includes("&lt;script&gt;alert(2)&lt;/script&gt;"));
+    });
+
+    it("renders offline and online network status banner using DOM replaceChildren", () => {
+      const origDoc = global.document;
+      const origTimeout = global.window.setTimeout;
+      const origClearTimeout = global.window.clearTimeout;
+      const elements = new Map();
+      const createNode = () => {
+        const attrs = {};
+        const classes = new Set();
+        const node = {
+          id: "",
+          className: "",
+          children: [],
+          innerHTML: "",
+          textContent: "",
+          attrs,
+          classList: {
+            add: (...names) => names.forEach((n) => classes.add(n)),
+            remove: (...names) => names.forEach((n) => classes.delete(n)),
+            contains: (name) => classes.has(name),
+          },
+          setAttribute: (k, v) => { attrs[k] = String(v); },
+          appendChild: (child) => {
+            if (child.id) elements.set(child.id, child);
+            node.children.push(child);
+          },
+          replaceChildren: (...nodes) => { node.children = nodes; },
+        };
+        return node;
+      };
+      global.window.setTimeout = (cb) => { cb(); return 1; };
+      global.window.clearTimeout = () => {};
+      global.document = {
+        ...origDoc,
+        body: createNode(),
+        getElementById: (id) => elements.get(id) || null,
+        createElement: () => createNode(),
+      };
+      try {
+        showNetworkStatusBanner("offline");
+        const banner = elements.get("networkStatusBanner");
+        assert.ok(banner);
+        assert.equal(banner.children.length, 2);
+        assert.equal(banner.children[1].className, "network-status-banner__text");
+        assert.ok(banner.classList.contains("network-status-banner--offline"));
+
+        showNetworkStatusBanner("online");
+        assert.ok(banner.classList.contains("network-status-banner--online"));
+        assert.equal(banner.classList.contains("is-visible"), false);
+      } finally {
+        global.document = origDoc;
+        global.window.setTimeout = origTimeout;
+        global.window.clearTimeout = origClearTimeout;
+      }
     });
   });
 });

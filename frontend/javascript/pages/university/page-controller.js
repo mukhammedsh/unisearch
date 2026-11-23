@@ -1,7 +1,6 @@
 import {
   API_BASE,
   escapeHtml,
-  escapeHtmlAttr,
   getFlagImg,
   loadProfile,
   loadProfileForApi,
@@ -18,6 +17,10 @@ import { initUniversityTranslations } from "../../university-translations.js";
 import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
+import { mountTabsNavigation } from "./tabs-navigation.js";
+import { mountOverviewSummary } from "./overview-summary.js";
+import { mountUniversityGallery } from "./gallery.js";
+import { heroIcon } from "../../icons.js";
 import {
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
@@ -32,8 +35,6 @@ import {
   trCity,
   trCountry,
   trUniversityName,
-  uniLogoSrc,
-  uniThumbnailSrc,
   unknownFieldText,
   writeIdListStorage,
 } from "../_shared.js";
@@ -46,6 +47,9 @@ let detailCurrencyChangedHandler = null;
 let detailOnlineReconnectHandler = null;
 let detailPopStateHandler = null;
 let detailAdmissionsCleanup = null;
+let detailOverviewSummaryCleanup = null;
+let detailGalleryCleanup = null;
+let detailTabsCleanup = null;
 let detailPageVersion = 0;
 
 function clearDetailLanguageSkeletons() {
@@ -92,19 +96,15 @@ function bindDetailLanguageLifecycle() {
   window.addEventListener("languageChangeFinished", detailLanguageFinishedHandler);
 }
 
-function cssString(value) {
-  return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
-}
-
-function thumbnailBackgroundImage(universityId) {
-  const webp = cssString(uniThumbnailSrc(universityId, { forceFull: true }));
-  const jpg = cssString(uniThumbnailSrc(universityId, { forceFull: true, format: "jpg" }));
-  return `image-set(url("${webp}") type("image/webp"), url("${jpg}") type("image/jpeg"))`;
-}
-
 function cleanupDetailListeners() {
+  detailGalleryCleanup?.();
+  detailGalleryCleanup = null;
+  detailTabsCleanup?.();
+  detailTabsCleanup = null;
   detailAdmissionsCleanup?.();
   detailAdmissionsCleanup = null;
+  detailOverviewSummaryCleanup?.();
+  detailOverviewSummaryCleanup = null;
   if (detailProfileUpdatedHandler) {
     window.removeEventListener("profileUpdated", detailProfileUpdatedHandler);
     detailProfileUpdatedHandler = null;
@@ -161,7 +161,7 @@ function renderDetailLocation(university, translatedCity, translatedCountry) {
   locationEl.innerHTML = `${cityHtml}${countryHtml}`;
 }
 
-function bindDetailActions({ id, minPrice, translatedName, university, universityId }) {
+function bindDetailActions({ id, minPrice, university, universityId }) {
   const setTxt = (elementId, value) => {
     const element = document.getElementById(elementId);
     if (!element) return;
@@ -177,16 +177,8 @@ function bindDetailActions({ id, minPrice, translatedName, university, universit
       ? tFormat("university.price_from", { price: formattedPrice }, `from ${formattedPrice} / year`)
       : unknownFieldText("placeholder.field.cost", "Cost"),
   );
-  setTxt("detailLogo", (translatedName || "U").substring(0, 2).toUpperCase());
 
-  const coverEl = document.getElementById("detailCover");
-  if (coverEl) coverEl.style.backgroundImage = thumbnailBackgroundImage(universityId);
-
-  const logoEl = document.getElementById("detailLogo");
-  if (logoEl) {
-    const initialsText = (translatedName || "U").substring(0, 2).toUpperCase();
-    logoEl.innerHTML = `<img class="d-logo-img" src="${uniLogoSrc(universityId, { forceFull: true })}" alt="Logo" data-fallback-src="${escapeHtmlAttr(uniLogoSrc(universityId))}" data-fallback-text="${escapeHtmlAttr(initialsText)}">`;
-  }
+  detailGalleryCleanup = mountUniversityGallery(document.getElementById("detailCover"), universityId);
 
   const websiteBtn = document.getElementById("detailWebsite");
   if (websiteBtn) {
@@ -304,7 +296,13 @@ async function fetchUniversityProfileMetric(id, endpoint, profile) {
   return data || null;
 }
 
-async function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
+function mountOverviewSummaryBlock(options) {
+  const container = document.getElementById("detailOverviewSummary");
+  if (container) container.hidden = false;
+  return mountOverviewSummary({ container, ...options });
+}
+
+function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
   if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
   const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
   const nameEl = document.getElementById("detailName");
@@ -313,7 +311,7 @@ async function renderReviewedUniversityPage({ id, preserveVisibleContent, univer
     nameEl.textContent = translatedName;
   }
   renderDetailLocation(university, trCity(university?.location?.city), trCountry(university?.location?.country));
-  bindDetailActions({ id, minPrice: undefined, translatedName, university, universityId });
+  bindDetailActions({ id, minPrice: undefined, university, universityId });
   renderExtraSection({ container: document.getElementById("detailExtra"), university });
   const rankStatus = String(university.rank_meta?.status || "").trim().toLowerCase();
   const rankValue = toFiniteNumber(university.rank);
@@ -323,18 +321,19 @@ async function renderReviewedUniversityPage({ id, preserveVisibleContent, univer
   });
   const mounted = mountAdmissionsCatalog(universityId);
   detailAdmissionsCleanup = mounted.dispose;
+  detailOverviewSummaryCleanup = mountOverviewSummaryBlock({ university, universityId, reviewed: true }).dispose;
   if (cardEl) {
     cardEl.style.display = "block";
     cardEl.classList.add("is-mounted");
   }
   setupTabs();
+  detailTabsCleanup = mountTabsNavigation(cardEl);
   const initialUrl = new URL(window.location.href);
   const requestedTab = initialUrl.hash.match(/^#tab-(general|programs|admission|deadlines|finance)$/)?.[1];
   const initialTab = requestedTab || (initialUrl.searchParams.get("admission_application_route") ? "admission"
     : initialUrl.searchParams.get("admission_option") ? "programs" : "general");
   if (!preserveVisibleContent) document.querySelector(`[data-tab="tab-${initialTab}"]`)?.click();
   bindDetailRefreshLifecycle();
-  await mounted.ready;
 }
 
 async function renderLegacyUniversityPage({ id, university, universityId, cardEl, stateEl }) {
@@ -345,7 +344,10 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     reviewNotice.className = "d-head";
     cardEl?.querySelector(".d-tabs")?.before(reviewNotice);
   }
-  reviewNotice.innerHTML = `<p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>`;
+  // Earlier-format data was collected before the current review standard; the reader is told so before any figure.
+  reviewNotice.innerHTML = `<div class="legacy-data-notice" role="note">${heroIcon("exclamation-circle", "ui-icon ui-icon--18 legacy-data-notice__icon")}
+    <div class="legacy-data-notice__body"><p class="legacy-data-notice__title">${escapeHtml(t("university.ux2.legacy.title"))}</p>
+    <p class="legacy-data-notice__text">${escapeHtml(t("university.ux2.legacy.text"))}</p></div></div>`;
 
   const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
     ? university.academics.admissions
@@ -374,7 +376,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   }
 
   renderDetailLocation(university, translatedCity, translatedCountry);
-  bindDetailActions({ id, minPrice, translatedName, university, universityId });
+  bindDetailActions({ id, minPrice, university, universityId });
 
   let uniChance = null;
   let uniChanceByChoiceKey = new Map();
@@ -421,6 +423,15 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       : {});
 
   renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, rankStatus, university });
+  detailOverviewSummaryCleanup = mountOverviewSummaryBlock({
+    university, universityId, reviewed: false,
+    legacy: {
+      acceptanceMeta, acceptanceRate,
+      // Read the profile again on every refresh, so the figure follows the same level and study mode as the page header.
+      getMinPrice: () => computeMinPrice(university, loadProfile()?.studyLevel || loadProfile()?.study_level,
+        normalizeStudyModeForCost(loadProfile()?.studyMode || "Any"), annualCostForTrack),
+    },
+  }).dispose;
   renderCoverageSection({
     container: document.getElementById("detailCoverage"),
     coverageByLevel: university?.coverage_by_level,
@@ -447,7 +458,6 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     });
     renderQualificationGuidance({
       container: document.getElementById("detailQualificationGuidance"),
-      profile,
       university,
       program: selectedProgram,
     });
@@ -487,7 +497,6 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       profileStudyMode,
       scholarshipContainer: scholarshipEl,
       uniRoi,
-      uniChance,
       university,
     });
   };
@@ -514,6 +523,10 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     cardEl.classList.add("is-mounted");
   }
   setupTabs();
+  detailTabsCleanup = mountTabsNavigation(cardEl);
+  // A link to a tab (for example from the overview or another page) opens that tab, as on reviewed pages.
+  const requestedTab = window.location.hash.match(/^#tab-(general|programs|admission|deadlines|finance)$/)?.[1];
+  if (requestedTab && requestedTab !== "general") document.querySelector(`[data-tab="tab-${requestedTab}"]`)?.click();
 
   bindDetailRefreshLifecycle();
 }
@@ -547,7 +560,7 @@ export async function initUniversityPage(options = {}) {
   }
 
   try {
-    setDetailLoading(true);
+    setDetailLoading(!cardEl?.classList.contains("is-mounted"));
     if (stateEl) stateEl.textContent = "";
 
     const [university] = await Promise.all([
@@ -560,7 +573,7 @@ export async function initUniversityPage(options = {}) {
     rememberRecentUniversity(universityId);
 
     if (REVIEWED_ADMISSIONS_IDS.has(universityId)) {
-      await renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl });
+      renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl });
       return;
     }
 
@@ -590,7 +603,7 @@ function bindDetailRefreshLifecycle() {
     const refreshPromise = (async () => {
       try {
         await initUniversityTranslations();
-      } catch (error) {
+      } catch {
         // keep local fallback copy when translation pack refresh fails
       }
       await initUniversityPage({ preserveVisibleContent: true });

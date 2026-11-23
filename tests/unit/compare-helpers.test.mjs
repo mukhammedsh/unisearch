@@ -39,6 +39,8 @@ const {
   fetchCompareAdmissionContext,
   compareAdmissionOptionEntries,
   readCompareAdmissionChoices,
+  compareStudyFormatCount,
+  compareStudyFormatSource,
 } = await import("../../frontend/javascript/pages/universities/compare-helpers.js");
 
 const {
@@ -182,7 +184,7 @@ test("comparison study options use search, canonical level and pagination withou
 });
 
 test("comparison context keeps explicit empty overrides and reports HTTP failures", async () => {
-  const context = { study_option_id: "cs", application_route_id: "route", study_level: "undergraduate", applicant_route: "", intended_entry_cycle: "", fee_status_context: "unknown" };
+  const context = { study_option_id: "cs", application_route_id: "route", study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" };
   const profile = { study_level: "masters", intended_entry_cycle: "2027", selectedAdmissionChoices: { reviewed: { studyOptionId: "old", applicationRouteId: "old-route" } }, exams: [{ exam: "SAT", score: 1400 }] };
   const before = structuredClone(profile);
   const result = await fetchCompareAdmissionContext("reviewed", context, profile, { apiBase: "/api", fetchImpl: async (url, options) => {
@@ -192,7 +194,7 @@ test("comparison context keeps explicit empty overrides and reports HTTP failure
     assert.equal(body.profile.intended_entry_cycle, undefined);
     assert.equal(body.profile.selectedAdmissionChoices.reviewed, undefined);
     assert.equal(body.context.intended_entry_cycle, "");
-    assert.equal(body.context.applicant_route, null);
+    assert.ok(!("applicant_route" in body.context), "comparison never sends an applicant category");
     assert.deepEqual(body.profile.exams, profile.exams);
     return response({ assessment: { chancePercent: 0 } });
   } });
@@ -207,7 +209,7 @@ test("comparison storage removes old accepted choices including strings while re
   const originalDispatch = window.dispatchEvent;
   const stored = new Map([["unisearch_compare_admission_choices_v1", JSON.stringify({ "mit-usa-cambridge": "old-key", "stanford-university-usa-ca": { choiceKey: "old-key" }, legacy: { choiceKey: "legacy-key" } })]]);
   globalThis.localStorage = window.localStorage = { getItem: key => stored.get(key) || null, setItem: (key, value) => stored.set(key, value) };
-  const profile = normalizeProfileData({ budget: 31000, gpa: 3.6, citizenships: ["Kazakhstan"], applicantRoute: "transfer", intendedEntryCycle: "Fall 2028", feeStatusContext: "self_reported_international_overseas", selectedAdmissionChoices: { legacy: { choiceKey: "legacy-key", programId: "legacy-program" } } });
+  const profile = normalizeProfileData({ budget: 31000, gpa: 3.6, applicantRoute: "transfer", intendedEntryCycle: "Fall 2028", feeStatusContext: "self_reported_international_overseas", selectedAdmissionChoices: { legacy: { choiceKey: "legacy-key", programId: "legacy-program" } } });
   stored.set("unisearch_profile", JSON.stringify(profile));
   window.dispatchEvent = () => { assert.deepEqual(JSON.parse(stored.get("unisearch_compare_admission_choices_v1")), { legacy: { choiceKey: "legacy-key" } }); };
   try {
@@ -710,6 +712,7 @@ test("compare specs produce complete rows, metrics, sources, and accessible tabl
   assert.match(compareCell("Value", { subHtml: "<small>Safe</small>" }), /<small>Safe<\/small>/);
   assert.match(compareSectionRow("Finance", "finance", universities), /colspan="3"/);
   assert.match(compareDataRow("Same", universities, () => "Equal", "context"), /compare-row--identical/);
+  assert.match(compareDataRow("Same", universities, () => "Equal", "context"), /<th scope="row">Same<\/th>/);
 });
 
 test("spec comparison rejects unsafe, tied, immaterial, and incomparable winners", () => {
@@ -808,4 +811,16 @@ test("graduate comparison costs do not borrow the undergraduate university budge
   assert.equal(compareSelectedAnnualCost(university), null);
   university.admission_categories[0].finance_override = { total_cost_year_usd: 0 };
   assert.equal(compareSelectedAnnualCost(university), 0);
+});
+
+test("study formats are compared only when an official formats source is linked", () => {
+  const formats = ["On-campus", "Hybrid"];
+  assert.equal(compareStudyFormatCount({ academics: { formats } }), null);
+  assert.equal(compareStudyFormatCount({ academics: { formats }, verified_sources: [{ topic: "requirements", url: "https://example.edu/r" }] }), null);
+  const university = { academics: { formats }, verified_sources: [
+    { topic: "formats", url: "https://example.edu/f", title: "Programmes", scope: "Undergraduate", checked_at: "2026-11-20" },
+  ] };
+  assert.equal(compareStudyFormatCount(university), 2);
+  assert.deepEqual(compareStudyFormatSource(university),
+    { source: "Programmes", sourceUrl: "https://example.edu/f", verifiedAt: "2026-11-20", scope: "Undergraduate" });
 });

@@ -133,7 +133,7 @@ The project runs these checks as part of pull-request review and release prepara
 
 1. **Automated Static Analysis (SAST):**
    * GitHub CodeQL scans both Python and JavaScript codebases on every pull request and on a weekly scheduled cadence.
-   * `npm audit` and `pip-audit` scan the locked JavaScript and Python dependencies for known advisories; the required dependency-audit status must pass before merge.
+   * `npm audit --omit=dev` and `pip-audit` scan locked runtime JavaScript and Python dependencies for known advisories; the required dependency-audit status must pass before merge.
    * `Trivy` scans repository files for exposed secrets and configuration misconfigurations; findings are uploaded to GitHub code scanning. This workflow does not currently scan the built container image for package vulnerabilities.
    * The main-branch ruleset requires both CodeQL language analyses, dependency auditing, Trivy, repository guards, SonarCloud, DCO, backend tests, browser tests, and repository hygiene. Scorecard and fuzzing use their configured non-PR or path-specific triggers.
 2. **Automated Coverage-Guided Fuzzing:**

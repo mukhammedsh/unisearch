@@ -56,6 +56,7 @@ import {
   compareBachelorProgramCount,
   compareLanguageCount,
   compareStudyFormatCount,
+  compareStudyFormatSource,
   compareMajorTagCount,
   compareAidScore,
   compareCostBreakdownText,
@@ -322,6 +323,7 @@ const getBaseCompareSpecs = () => [
             direction: "neutral",
             getter: compareStudyFormatCount,
             formatter: compareCountText,
+            sourceGetter: compareStudyFormatSource,
             reason: false,
         },
         {
@@ -547,6 +549,12 @@ const getBaseCompareSpecs = () => [
             direction: "neutral",
             getter: (u) => toFiniteNumber(u?.student_life?.campus_area_m2),
             formatter: compareCampusAreaText,
+            sourceGetter: (u) => ({
+                source: u?.student_life?.size_source_title || "",
+                sourceUrl: u?.student_life?.size_source_url || "",
+                verifiedAt: u?.student_life?.size_checked_at || "",
+                scope: u?.student_life?.size_scope || "",
+            }),
             score: false,
             reason: false,
         },
@@ -621,7 +629,7 @@ export const compareSpecRawValue = (spec, u) => {
         if (spec.type === "number") return toFiniteNumber(value);
         if (spec.type === "boolean") return !!value;
         return value;
-    } catch (e) {
+    } catch {
         return spec.type === "number" ? null : "";
     }
 };
@@ -640,7 +648,7 @@ export const compareBestIdsForSpec = (universities, spec) => {
     const rows = compareSpecRows(universities, spec);
     if (rows.length < 2) return new Set();
     if (typeof spec.comparable === "function" && !spec.comparable(rows)) return new Set();
-    const sorted = rows.slice().sort((a, b) => spec.direction === "higher" ? b.value - a.value : a.value - b.value);
+    const sorted = rows.toSorted((a, b) => spec.direction === "higher" ? b.value - a.value : a.value - b.value);
     const best = sorted[0]?.value;
     if (!Number.isFinite(best)) return new Set();
     const bestRows = sorted.filter((row) => Math.abs(row.value - best) <= 0.000001);
@@ -675,7 +683,7 @@ export const compareCell = (text, opts = {}) => {
     return `<td class="compare-cell${tone}"${titleAttr}><span>${escapeHtml(text || t("common.na", "N/A"))}</span>${sub}</td>`;
 };
 
-export const compareSectionRow = (label, kind, universities, renderValue) => `
+export const compareSectionRow = (label, kind, universities) => `
     <tr class="compare-table__section-row" data-section="${escapeHtmlAttr(kind)}">
         <td colspan="${universities.length + 1}">${escapeHtml(label)}</td>
     </tr>
@@ -694,7 +702,7 @@ export const compareDataRow = (label, universities, renderValue, section = "") =
     const sectionAttr = section ? ` data-row-section="${escapeHtmlAttr(section)}"` : "";
     return `
         <tr class="compare-table__row${identicalClass}"${sectionAttr}>
-            <td>${escapeHtml(label)}</td>
+            <th scope="row">${escapeHtml(label)}</th>
             ${renderedCells.map((c) => compareCell(c.text, c)).join("")}
         </tr>
     `;
@@ -712,7 +720,9 @@ export const compareSpecValue = (spec, u, metrics) => {
     const sourceLabel = String(sourceMeta?.source || sourceMeta?.text || "").trim();
     const sourceUrl = String(sourceMeta?.sourceUrl || sourceMeta?.url || "").trim();
     const verifiedAt = String(sourceMeta?.verifiedAt || "").trim();
-    const sourceParts = [sourceLabel, verifiedAt].filter(Boolean);
+    const sourceScope = String(sourceMeta?.scope || "").trim();
+    const checkedLabel = verifiedAt ? `${t("university.admissions.checked", "Checked")}: ${verifiedAt}` : "";
+    const sourceParts = [sourceLabel, sourceScope, checkedLabel].filter(Boolean);
     const sourceText = sourceParts.join(" · ");
     const sourceHtml = sourceText
         ? `<small>${sourceUrl
@@ -731,7 +741,7 @@ export const compareSpecValue = (spec, u, metrics) => {
 export const compareRowsHtml = (universities, metrics) => {
     const sections = compareSpecSections();
     const sectionOrder = ["overview", "programs", "admissions", "finance", "outcomes", "data", "context"];
-    const orderedSpecs = (metrics.specs || []).slice().sort((a, b) => {
+    const orderedSpecs = (metrics.specs || []).toSorted((a, b) => {
         const left = sectionOrder.includes(a.section) ? sectionOrder.indexOf(a.section) : sectionOrder.length;
         const right = sectionOrder.includes(b.section) ? sectionOrder.indexOf(b.section) : sectionOrder.length;
         if (left !== right) return left - right;
@@ -1041,8 +1051,7 @@ const compareDecisionSourceHtml = (source) => {
 };
 
 export const buildCompareDecisionSupportHtml = (universities, context = {}) => {
-    const themes = buildCompareDecisionSignals(universities, context).filter(theme =>
-        !universities.some(hasReviewedAdmissions) || !["admissions", "finance", "outcomes"].includes(theme.key));
+    const themes = buildCompareDecisionSignals(universities, context);
     return `
         <section class="compare-analysis-block compare-decision-support" aria-labelledby="compareDecisionTitle">
             <div class="compare-block-head">

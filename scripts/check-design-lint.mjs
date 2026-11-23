@@ -14,8 +14,8 @@ const updateBaseline = args.has("--update-baseline");
 const verbose = args.has("--verbose") || args.has("-v");
 const targetFile = process.argv.find((a) => a.startsWith("--file="))?.split("=")[1];
 
-// Allowed font sizes in px: 0, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64
-const ALLOWED_FONT_SIZES = new Set([0, 11, 12, 13, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64]);
+// Allowed font sizes in px: the --text-* type scale (11, 13, 14, 16, 18, 20, 24, 28) and 0.
+const ALLOWED_FONT_SIZES = new Set([0, 11, 13, 14, 16, 18, 20, 24, 28]);
 // Allowed border-radii in px: 0, 1, 2, 4, 8, 10, 12, 16, 20
 const ALLOWED_RADII = new Set([0, 1, 2, 4, 8, 10, 12, 16, 20]);
 // Allowed raw z-indices (local pseudo/stacking context only): -1, 0, 1, 2
@@ -153,7 +153,6 @@ function listCssFiles(dir) {
 export function scanCssFile(filePath) {
   const content = fs.readFileSync(filePath, "utf8");
   const relPath = path.relative(rootDir, filePath).replace(/\\/g, "/");
-  const isStyleCss = path.basename(filePath) === "style.css";
 
   // Mask multiline comments while preserving exact line positions
   const maskedContent = content.replace(/\/\*[\s\S]*?\*\//g, (match) =>
@@ -164,7 +163,6 @@ export function scanCssFile(filePath) {
   const rawLines = content.split("\n");
   const violations = [];
 
-  let inRootBlock = false;
   let currentSelector = "";
   let selectorBuffer = "";
 
@@ -186,12 +184,6 @@ export function scanCssFile(filePath) {
       selectorBuffer = "";
     } else if (!trimmed.includes(":") && !trimmed.includes(";")) {
       selectorBuffer += " " + trimmed;
-    }
-
-    if (isStyleCss) {
-      if (trimmed.startsWith(":root")) inRootBlock = true;
-      if (inRootBlock && trimmed.endsWith("}") && !trimmed.includes("{")) inRootBlock = false;
-      if (inRootBlock && trimmed.startsWith("--")) continue;
     }
 
     // Ignore lines that are fully commented out or empty
@@ -437,6 +429,28 @@ export function scanCssFile(filePath) {
             suggestion: "Remove border; use surface hierarchy (var(--bg) -> var(--surface-solid) -> var(--surface-soft)) or border: none",
           });
         }
+      }
+    }
+
+    // 12. Guard against fill/surface tokens used directly as text or icon foreground colors.
+    const colorValue = declarationValue(line, (property) => property === "color");
+    if (colorValue && currentSelector && !isSliderThumb && !currentSelector.includes("-slider-thumb")) {
+      if (/\bvar\(\s*--accent\s*\)/i.test(colorValue)) {
+        violations.push({
+          line: i + 1,
+          type: "color-role-mismatch",
+          message: `Fill token "${colorValue}" used as foreground color in "${currentSelector}" fails contrast on dark surfaces`,
+          code: rawLine.trim(),
+          suggestion: "Use var(--accent-text), var(--interaction-hover-text), or var(--interaction-active-text)",
+        });
+      } else if (/\bvar\(\s*--(?:surface-solid|card)\s*\)/i.test(colorValue)) {
+        violations.push({
+          line: i + 1,
+          type: "color-role-mismatch",
+          message: `Surface token "${colorValue}" used as foreground color in "${currentSelector}" turns dark on dark themes`,
+          code: rawLine.trim(),
+          suggestion: "Use var(--text-inverse) on accent/dark fills or var(--text)",
+        });
       }
     }
   }

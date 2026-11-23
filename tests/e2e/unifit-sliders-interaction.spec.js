@@ -36,9 +36,9 @@ test.describe("UniFit Tradeoff Sliders Interaction", () => {
     // 6. Ensure slider container becomes visible
     await expect(aiSliderContainer).toBeVisible();
 
-    // 7. Verify balanced default state for Focus slider (50/50)
+    // 7. A centred Focus slider means the factor does not matter
     const focusLabel = page.locator("#focusLabel");
-    await expect(focusLabel).toContainText("50/50");
+    await expect(focusLabel).toContainText("Doesn't matter");
 
     // 8. Shift Focus slider toward Science & Research (value 80)
     await setRangeValue(page, "focusSlider", 80);

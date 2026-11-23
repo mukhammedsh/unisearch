@@ -60,14 +60,16 @@ test("profile category motion keeps tab state and reduced-motion final states st
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
+  // All sections stay visible; the outline only marks the one that was jumped to.
   await page.click("[data-profile-tab='scores']");
-  await expect(page.locator("[data-profile-tab='scores']")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator("[data-profile-section='scores']").first()).not.toHaveClass(/is-section-hidden/);
-  await expect(page.locator("[data-profile-section='basics']").first()).toHaveClass(/is-section-hidden/);
+  await expect(page.locator("[data-profile-tab='scores']")).toHaveAttribute("aria-current", "location");
+  await expect(page.locator("[data-profile-section='scores']").first()).toBeVisible();
+  await expect(page.locator("[data-profile-section='basics']").first()).toBeVisible();
 
   await page.click("[data-profile-tab='preferences']");
-  await expect(page.locator("[data-profile-tab='preferences']")).toHaveAttribute("aria-selected", "true");
-  await expect(page.locator("[data-profile-section='preferences']").first()).not.toHaveClass(/is-section-hidden/);
+  await expect(page.locator("[data-profile-tab='preferences']")).toHaveAttribute("aria-current", "location");
+  await expect(page.locator("[data-profile-tab='scores']")).not.toHaveAttribute("aria-current", "location");
+  await expect(page.locator("[data-profile-section='preferences']").first()).toBeVisible();
   await expect(page.locator(".is-motion-active")).toHaveCount(0);
 });
 
@@ -88,8 +90,8 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
 
   const refreshedFirstCard = page.locator(".uni-card:not(.is-skeleton)").first();
   await expect(refreshedFirstCard).toBeVisible();
-  const recentChip = page.locator("#recentlyViewedBar .u-recent__chip").filter({ hasText: firstUniversityName }).first();
-  await expect(recentChip).toBeVisible();
+  const recentTrigger = page.locator("#recentlyViewedBtn");
+  await expect(recentTrigger).toBeVisible();
   await installMotionRecorder(page);
 
   await expect(page.locator("#savedShortlistBar")).toHaveCount(0);
@@ -102,13 +104,17 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
   await expect(compareModeCard).toHaveClass(/uni-card--compare-selected/);
   await expect(compareModeCard).toHaveAttribute("aria-selected", "true");
   await expect(page.locator("#compareTray")).toBeVisible();
-  await expect(recentChip).toBeVisible();
+  await expect(recentTrigger).toBeVisible();
 
+  await recentTrigger.click();
+  const recentChip = page.locator("#recentlyViewedPopover .u-recent__chip").filter({ hasText: firstUniversityName }).first();
+  await expect(recentChip).toBeVisible();
   await recentChip.hover();
   await recentChip.locator("[data-action='remove-recent']").click();
   await expectMotionSeen(page, "motion-chip-remove");
   await expectMotionSeen(page, "motion-icon-remove");
   await expect(recentChip).toHaveCount(0);
+  await expect(recentTrigger).toHaveCount(0);
 
   await expectNoLingeringMotionClasses(page);
 });
@@ -124,7 +130,7 @@ test("floating motion layers close cleanly and stay above docked controls", asyn
   await expect.poll(async () =>
     page.locator("#settingsModal.is-open, #settingsModal.is-closing").count()
   ).toBe(0);
-  await expect(page.locator("#settingsModal")).toHaveAttribute("aria-hidden", "true");
+  await expect(page.locator("#settingsModal")).not.toHaveAttribute("open", "");
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click("#mobileFilterToggle");

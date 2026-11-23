@@ -1,13 +1,14 @@
 import copy
 import hashlib
 import json
+import logging
 import math
 import re
 import urllib.parse
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.files import RequiredDataUnavailable, file_mtime
-from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH
+from app.core.paths import DATA_PATH, CITIES_PATH, UNIVERSITIES_TRANSLATIONS_PATH, UNIVERSITY_NAME_VARIANTS_PATH
 from app.core.utils import (
     to_float as _num_or_none,
     safe_lower as _safe_lower,
@@ -21,7 +22,9 @@ from app.services.finance_modes import (
     normalize_study_mode as _normalize_study_mode,
 )
 from app.services import search as search_service
-from app.services import admissions_catalog
+from app.services import admissions_catalog, admissions_editorial
+from app.services.query_aliases import word_alias_candidates
+from app.services.university_covers import cover_available
 from app.services.university_coverage import build_coverage_by_level, build_coverage_by_program, _MBA_RE
 
 
@@ -85,92 +88,70 @@ COLLEGE_SCORECARD_PUBLIC_API_KEY = "DEMO_KEY"
 COLLEGE_SCORECARD_HOST = "api.data.gov"
 COLLEGE_SCORECARD_PATH_PREFIX = "/ed/collegescorecard/"
 
-_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID: Dict[str, List[str]] = {
-    "mit-usa-cambridge": ["MIT", "МИТ"],
-    "imperial-college-london-uk": ["Imperial", "ICL", "Империал", "ИКЛ"],
-    "stanford-university-usa-ca": ["Stanford", "Стэнфорд", "Стенфорд"],
-    "harvard-usa-cambridge": ["Harvard", "Гарвард"],
-    "eth-zurich-ch-zurich": ["ETH", "ETH Zurich", "ЕТН", "ЕТХ", "ЕТН Цюрих"],
-    "national-university-of-singapore-sg-singapore": ["NUS", "НУС"],
-    "epfl-ch-lausanne": ["EPFL", "ЕПФЛ"],
-    "technical-university-of-munich-de-munich": ["TUM", "ТУМ"],
-    "university-of-toronto-ca-toronto": [
-        "U of T",
-        "UofT",
-        "Toronto",
-        "Торонто",
-        "Ю оф Т",
-    ],
-    "cuhk-hk-shatin": ["CUHK", "КУХК"],
-    "university-of-tokyo-jp-tokyo": ["UTokyo", "Todai", "Тодай", "УТокио"],
-    "seoul-national-university-kr-seoul": ["SNU", "СНУ"],
-    "delft-university-of-technology-nl-delft": [
-        "TU Delft",
-        "Delft Tech",
-        "ТУ Делфт",
-        "Делфт Тех",
-    ],
-    "kaist-kr-daejeon": ["KAIST", "КАИСТ", "КАЙСТ"],
-    "tsinghua-university-cn-beijing": ["Tsinghua", "THU", "Цинхуа", "ТХУ"],
-    "nazarbayev-university-kaz-astana": ["NU", "НУ"],
-    "kyoto-university-jp-kyoto": ["KyotoU", "Kyodai", "Киото", "Кёто", "Кёодай"],
-    "university-of-melbourne-au-melbourne": [
-        "UniMelb",
-        "Melbourne",
-        "Мельбурн",
-        "ЮниМелб",
-    ],
-    "suleyman-demirel-university-kaz-kaskelen": ["SDU", "СДУ"],
-    "astana-it-university-kaz-astana": ["AITU", "АИТУ"],
-    "astana-medical-university-kaz-astana": ["MUA", "AMU", "МУА"],
-    "international-information-technology-university-kaz-almaty": ["IITU", "MUIT", "МУИТ"],
-    "satbayev-university-kaz-almaty": ["Satbayev", "KazNRTU", "KazNTU", "КазНИТУ", "Политех"],
-    "kazakhstan-british-technical-university-kaz-almaty": ["KBTU", "КБТУ"],
-    "al-farabi-kazakh-national-university-kaz-almaty": ["KazNU", "КазНУ"],
-    "l-n-gumilyov-eurasian-national-university-kaz-astana": ["ENU", "ЕНУ"],
-    "narxoz-university-kaz-almaty": ["Narxoz", "Нархоз"],
-    "kimep-university-kaz-almaty": ["KIMEP", "КИМЭП"],
-    "asfendiyarov-kazakh-national-medical-university-kaz-almaty": ["KazNMU", "КазНМУ"],
-    "abai-kazakh-national-pedagogical-university-kaz-almaty": ["KazNPU", "КазНПУ"],
-    "university-of-oxford-uk-oxford": ["Oxford", "Оксфорд"],
-    "university-of-cambridge-uk-cambridge": ["Cambridge", "Кембридж"],
-    "ucl-uk-london": ["UCL", "University College London", "ЮКЛ"],
-    "kings-college-london-uk-london": ["KCL", "King's College London", "Кингс"],
-    "university-of-edinburgh-uk-edinburgh": ["Edinburgh", "Эдинбург"],
-    "university-of-manchester-uk-manchester": ["Manchester", "Манчестер"],
-    "caltech-usa-pasadena": ["Caltech", "Калтех"],
-    "uc-berkeley-usa-berkeley": ["Berkeley", "UC Berkeley", "Беркли"],
-    "princeton-university-usa-princeton": ["Princeton", "Принстон"],
-    "yale-university-usa-new-haven": ["Yale", "Йель"],
-    "university-of-chicago-usa-chicago": ["UChicago", "Chicago", "Чикаго"],
-    "university-of-pennsylvania-usa-philadelphia": ["Penn", "UPenn", "Пенн"],
-    "cornell-university-usa-ithaca": ["Cornell", "Корнелл"],
-    "columbia-university-usa-new-york": ["Columbia", "Колумбия"],
-    "johns-hopkins-university-usa-baltimore": ["JHU", "Johns Hopkins", "Хопкинс"],
-    "ucla-usa-los-angeles": ["UCLA", "ЮКЛА"],
-    "mcgill-university-ca-montreal": ["McGill", "Макгилл"],
-    "university-of-british-columbia-ca-vancouver": ["UBC", "British Columbia", "ЮБиСи"],
-    "university-of-waterloo-ca-waterloo": ["Waterloo", "UWaterloo", "Ватерлоо"],
-    "unsw-sydney-au-sydney": [
-        "UNSW",
-        "University of New South Wales",
-        "New South Wales",
-        "ЮНСВ",
-    ],
-    "university-of-sydney-au-sydney": ["USyd", "Sydney", "Сидней"],
-    "australian-national-university-au-canberra": [
-        "ANU",
-        "Australian National University",
-        "АНУ",
-    ],
-    "university-of-hong-kong-hk-hong-kong": ["HKU", "Hong Kong University", "ХКУ"],
-    "hkust-hk-hong-kong": [
-        "HKUST",
-        "Hong Kong University of Science and Technology",
-        "ХКУСТ",
-    ],
-    "nanyang-technological-university-sg-singapore": ["NTU", "Nanyang", "НТУ"],
+_NAME_VARIANTS_CACHE: Dict[str, Any] = {"mtime": None, "data": {}}
+
+
+def _load_university_name_variants() -> Dict[str, Dict[str, Any]]:
+    """Per university id: eng/rus/kaz name lists and map labels (backend/data/university_name_variants.json)."""
+    mtime = file_mtime(UNIVERSITY_NAME_VARIANTS_PATH)
+    if mtime != _NAME_VARIANTS_CACHE.get("mtime") or mtime is None:
+        data: Dict[str, Dict[str, Any]] = {}
+        if mtime is None:
+            _LOGGER.warning("University name variants file is missing: %s", UNIVERSITY_NAME_VARIANTS_PATH)
+        else:
+            try:
+                with open(UNIVERSITY_NAME_VARIANTS_PATH, "r", encoding="utf-8") as f:
+                    loaded = json.load(f).get("universities")
+                if isinstance(loaded, dict):
+                    data = {str(key): value for key, value in loaded.items() if isinstance(value, dict)}
+            except (OSError, ValueError, AttributeError):
+                _LOGGER.warning("University name variants file is unreadable: %s", UNIVERSITY_NAME_VARIANTS_PATH, exc_info=True)
+        _NAME_VARIANTS_CACHE["mtime"] = mtime
+        _NAME_VARIANTS_CACHE["data"] = data
+    return _NAME_VARIANTS_CACHE["data"]
+
+
+def _names_in_language(uid: str, lang: str) -> Dict[str, Any]:
+    """One university's names in one language.
+
+    official: the full name; main_abbreviation: the one abbreviation the map shows ("" when there is none);
+    short_name: what the map shows instead when there is no main abbreviation; abbreviations and
+    alternatives: every other name, searched in every language.
+    """
+    names = _load_university_name_variants().get(uid, {}).get(lang)
+    if not isinstance(names, dict):
+        return {"official": "", "main_abbreviation": "", "short_name": "", "abbreviations": [], "alternatives": []}
+
+    def clean(values: Any) -> List[str]:
+        return [str(value).strip() for value in values or [] if str(value or "").strip()]
+
+    return {
+        "official": str(names.get("official") or "").strip(),
+        "main_abbreviation": str(names.get("main_abbreviation") or "").strip(),
+        "short_name": str(names.get("short_name") or "").strip(),
+        "abbreviations": clean(names.get("abbreviations")),
+        "alternatives": clean(names.get("alternatives")),
+    }
+
+
+_MAP_LABEL_FALLBACK_ORDER = {
+    SEARCH_LANG_ENG: (SEARCH_LANG_ENG,),
+    SEARCH_LANG_RUS: (SEARCH_LANG_RUS, SEARCH_LANG_ENG),
+    SEARCH_LANG_KAZ: (SEARCH_LANG_KAZ, SEARCH_LANG_RUS, SEARCH_LANG_ENG),
 }
+
+
+def _map_label_for_university(uid: str, lang: str) -> Optional[str]:
+    """Marker text for the locale: the main abbreviation, else the short name.
+
+    A language with nothing to show falls back to Russian for Kazakh and to English for Russian.
+    """
+    for key in _MAP_LABEL_FALLBACK_ORDER.get(lang, (SEARCH_LANG_ENG,)):
+        names = _names_in_language(uid, key)
+        label = names["main_abbreviation"] or names["short_name"]
+        if label:
+            return label
+    return None
 
 
 def _normalize_search_lang(value: Any) -> str:
@@ -182,11 +163,38 @@ def _normalize_search_lang(value: Any) -> str:
     return SEARCH_LANG_ENG
 
 
+_NAME_LANGS = (SEARCH_LANG_ENG, SEARCH_LANG_RUS, SEARCH_LANG_KAZ)
+
+
 def _hidden_search_aliases_for_university(u: Dict[str, Any]) -> List[str]:
+    """Every name a university goes by in any language: official names, abbreviations and alternatives.
+
+    Search matches all of them whatever the interface language is, so a Cyrillic abbreviation
+    finds a university from the English interface and the other way round.
+    """
     uid = str((u or {}).get("id") or "").strip()
     if not uid:
         return []
-    return _uniq_non_empty(_HIDDEN_SEARCH_ALIASES_BY_UNIVERSITY_ID.get(uid, []))
+    values: List[Any] = []
+    for lang in _NAME_LANGS:
+        names = _names_in_language(uid, lang)
+        values.extend([names["official"], *names["abbreviations"], *names["alternatives"]])
+    return _uniq_non_empty(values)
+
+
+def _abbreviations_for_university(u: Dict[str, Any]) -> List[str]:
+    """Abbreviations only, in every language (what the search box may show as a badge)."""
+    uid = str((u or {}).get("id") or "").strip()
+    if not uid:
+        return []
+    return _uniq_non_empty(
+        [value for lang in _NAME_LANGS for value in _names_in_language(uid, lang)["abbreviations"]]
+    )
+
+
+def _full_name_from_variants(uid: str, lang: str, fallback: str) -> str:
+    """The searchable official full name in a language, from the name variants file when the university has one."""
+    return _names_in_language(uid, lang)["official"] or fallback
 
 
 _UNI_TRANSLATIONS_CACHE: Dict[str, Any] = {"mtime": None, "data": {}}
@@ -414,7 +422,7 @@ def _localize_university_payload(
     student_life = u.get("student_life")
     if isinstance(student_life, dict):
         student_life["size"] = _translate_group_value(
-            "campus_size", student_life.get("size"), lang
+            "campus_size", student_size_band(u) or student_life.get("size"), lang
         )
 
     academics = u.get("academics")
@@ -733,7 +741,7 @@ def _load_localized_university_names(search_lang: str) -> Dict[str, str]:
 
 
 def _search_query_candidates(
-    query: Any, search_lang: str = SEARCH_LANG_ENG
+    query: Any, search_lang: str = SEARCH_LANG_ENG, match_name_words: bool = False
 ) -> List[str]:
     raw = str(query or "").strip()
     if not raw:
@@ -804,6 +812,9 @@ def _search_query_candidates(
     full_alias = alias_map.get(norm_query)
     if full_alias:
         candidates.append(full_alias)
+    elif match_name_words:
+        # Program search only: one word of a translated program name finds that program.
+        candidates.extend(word_alias_candidates(norm_query, alias_map))
 
     tokens = [part for part in norm_query.split(" ") if part]
     if tokens:
@@ -813,6 +824,22 @@ def _search_query_candidates(
             candidates.append(candidate)
 
     return _uniq_non_empty(candidates)
+
+
+# Size bands by total student count. The stored campus-size bucket mixed land area for some universities
+# with student numbers for others; the published student count is known for every catalog university.
+SMALL_STUDENT_LIMIT = 10000
+LARGE_STUDENT_LIMIT = 30000
+
+
+def student_size_band(u: Dict[str, Any]) -> str:
+    """Return small (under 10,000), medium (10,000-30,000) or large (over 30,000), or "" without a count."""
+    count = _num_or_none(u.get("student_count")) if isinstance(u, dict) else None
+    if count is None or count <= 0:
+        return ""
+    if count < SMALL_STUDENT_LIMIT:
+        return "small"
+    return "medium" if count <= LARGE_STUDENT_LIMIT else "large"
 
 
 def _get_nested(u: Dict[str, Any], path: List[str], default: Any = None) -> Any:
@@ -1045,13 +1072,24 @@ def _profiled_legacy_costs(u, format_preference="any", profile=None):
     return published
 
 
-def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any"):
+def _catalog_cost_range_usd(u, basis="annual_total", format_preference="any", *, published_only=False):
     quote = _catalog_costs(u, format_preference).get(basis)
     if not isinstance(quote, dict):
         return None
     if quote.get("annual_comparable") is False:
         return None
-    low, high = _to_float(quote.get("min")), _to_float(quote.get("max"))
+    if published_only and "published_intervals" in quote:
+        intervals = quote["published_intervals"]
+        if not intervals:
+            return None
+        bounds = [(_to_float(interval.get("min")), _to_float(interval.get("max"))) for interval in intervals]
+        if any(low is None or high is None for low, high in bounds):
+            return None
+        low, high = min(bound[0] for bound in bounds), max(bound[1] for bound in bounds)
+    elif published_only and quote.get("calculation") == "tuition_plus_living_range":
+        return None
+    else:
+        low, high = _to_float(quote.get("min")), _to_float(quote.get("max"))
     if low is None or high is None or not math.isfinite(low) or not math.isfinite(high) or low < 0 or high < low:
         return None
     currency = quote.get("currency")
@@ -1091,6 +1129,7 @@ def _normalize_university_schema(u: Dict[str, Any]) -> Dict[str, Any]:
         return {}
 
     uid = str(u.get("id") or "")
+    u["cover_available"] = cover_available(uid)
     u["admissions_catalog"] = admissions_catalog.get_public_contract(uid)
     if uid in admissions_catalog.INSTITUTION_IDS:
         institution = admissions_catalog.get_institution(uid)
@@ -1282,10 +1321,10 @@ def _build_university_meta(
             if x
         ]
     )
-    name_raw = _safe_lower(u.get("name"))
+    name_raw = _safe_lower(_full_name_from_variants(uni_id, SEARCH_LANG_ENG, str(u.get("name") or "")))
     city_raw = _safe_lower(_get_nested(u, ["location", "city"]))
     country_raw = _safe_lower(_get_nested(u, ["location", "country"]))
-    name_rus = _safe_lower(rus_names.get(uni_id, ""))
+    name_rus = _safe_lower(_full_name_from_variants(uni_id, SEARCH_LANG_RUS, rus_names.get(uni_id, "")))
     city_rus = _safe_lower(_CITY_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(city_key, ""))
     country_rus = _safe_lower(
         _COUNTRY_LOCALIZED_BY_LANG[SEARCH_LANG_RUS].get(country_key, "")
@@ -1293,7 +1332,7 @@ def _build_university_meta(
     description_rus = _norm_space(
         f"{name_rus or name_raw} {city_rus or city_raw} {country_rus or country_raw} {' '.join(tags_rus)}"
     )
-    name_kaz = _safe_lower(kaz_names.get(uni_id, ""))
+    name_kaz = _safe_lower(_full_name_from_variants(uni_id, SEARCH_LANG_KAZ, kaz_names.get(uni_id, "")))
     city_kaz = _safe_lower(_translate_group_value("city", city_key, SEARCH_LANG_KAZ))
     country_kaz = _safe_lower(
         _translate_group_value("country", country_key, SEARCH_LANG_KAZ)
@@ -1320,14 +1359,16 @@ def _build_university_meta(
     )
 
     choices = expand_admission_choices(u.get("admission_categories"))
-    has_grant = any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
-    has_paid = any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
+    # Reviewed institutions keep funding facts in the admissions catalog, not in legacy
+    # admission choices, so these flags are unknown (None) rather than False for them.
+    has_grant = None if reviewed else any(_safe_lower(c.get("funding_type")) == "grant" for c in choices if isinstance(c, dict))
+    has_paid = None if reviewed else any(_safe_lower(c.get("funding_type")) == "paid" for c in choices if isinstance(c, dict))
     acceptance_rate = _get_university_acceptance_rate(u)
     cost_usd_any = _effective_university_cost_usd(u, "any")
     cost_usd_online = _effective_university_cost_usd(u, "online")
     cost_usd_oncampus = _effective_university_cost_usd(u, "on-campus")
     rank_num = _to_float(u.get("rank")) or 999999.0
-    has_aid = _has_any_aid(u)
+    has_aid = None if reviewed else _has_any_aid(u)
 
     return {
         "name": name_raw,
@@ -1351,7 +1392,7 @@ def _build_university_meta(
         "tags": [_safe_lower(x) for x in raw_tags if x],
         "tags_rus": [_safe_lower(x) for x in tags_rus if x],
         "tags_kaz": tags_kaz,
-        "size": _safe_lower(_get_nested(u, ["student_life", "size"])),
+        "size": student_size_band(u),
         "majors": [_safe_lower(x) for x in majors if x],
         "program_names": [_safe_lower(x) for x in program_names if x],
         "major_exact": [_safe_lower(x) for x in major_exact if x],
@@ -1578,8 +1619,10 @@ def to_university_card(
         "search_aliases": [
             _safe_lower(x) for x in _hidden_search_aliases_for_university(u)
         ],
+        "abbreviations": [_safe_lower(x) for x in _abbreviations_for_university(u)],
         "aid_any": _has_any_aid(u),
         "catalog_costs": _catalog_costs(u, mode),
+        "cover_available": bool(u.get("cover_available")),
     }
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
@@ -1638,7 +1681,11 @@ def to_university_map_point(
             "city": city_value,
         },
         "coordinates": {"lat": lat, "lon": lon},
+        "cover_available": bool(u.get("cover_available")),
     }
+    map_label = _map_label_for_university(uid, lang)
+    if map_label:
+        out["map_label"] = map_label
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
     if isinstance(u.get("catalog_costs"), dict):
@@ -1833,6 +1880,11 @@ def get_university_etag(
     return f'"{digest}"'
 
 
+_LOGGER = logging.getLogger("unisearch.translations")
+# language -> (source pack, editorial clauses, cleaned pack); identity checks follow the loaders' own caches.
+_CLEAN_TRANSLATION_CACHE: Dict[str, Tuple[Any, Any, Dict[str, Any]]] = {}
+
+
 def get_university_translation_bundle(
     search_lang: Optional[str] = None,
 ) -> Dict[str, Any]:
@@ -1840,6 +1892,16 @@ def get_university_translation_bundle(
     raw = _load_university_translations_raw()
     langs = raw.get("languages") if isinstance(raw.get("languages"), dict) else {}
     pack = langs.get(lang) if isinstance(langs.get(lang), dict) else {}
+    try:
+        clauses = admissions_editorial.load_clauses()
+        cached = _CLEAN_TRANSLATION_CACHE.get(lang)
+        if not cached or cached[0] is not pack or cached[1] is not clauses:
+            cached = (pack, clauses, admissions_editorial.clean_translation_pack(pack, lang))
+            _CLEAN_TRANSLATION_CACHE[lang] = cached
+        pack = cached[2]
+    except admissions_catalog.AdmissionsCatalogError:
+        # The admissions endpoints fail explicitly in this state; general translations stay available.
+        _LOGGER.warning("Admissions editorial notes are unavailable; translations are served unfiltered")
     return {
         "lang": lang,
         "schema_version": raw.get("schema_version", 1),
@@ -2022,32 +2084,45 @@ def _filter_university_pairs(
             )
         ]
 
+    # Reviewed institutions keep these facts in the admissions catalog, so an empty legacy value means
+    # unknown, not "no": only a known mismatch excludes them, like the funding filter below.
+    def reviewed_unknown(u, value):
+        return value is None and u.get("id") in admissions_catalog.INSTITUTION_IDS
+
     if format:
         fm = _safe_lower(format)
         pairs = [
             (u, meta_row)
             for (u, meta_row) in pairs
             if any(x == fm for x in meta_row.get("formats", []))
+            or reviewed_unknown(u, meta_row.get("formats") or None)
         ]
 
     if funding_type:
         ft = _safe_lower(funding_type)
+        # Only a known "no" excludes; unknown (None) funding availability stays visible.
         if ft == "grant":
-            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant")]
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_grant", False) is not False]
         elif ft == "paid":
-            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid")]
+            pairs = [(u, m) for (u, m) in pairs if m.get("has_paid", False) is not False]
 
     if user_budget is not None:
         pairs = [(u, m) for u, m in pairs
-                 if (cost := _catalog_cost_range_usd(u, "annual_total", mode_pref)) is not None and cost[0] <= user_budget]
+                 if (cost := _catalog_cost_range_usd(u, "annual_total", mode_pref, published_only=True)) is not None
+                 and cost[0] <= user_budget]
 
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
-            cost = _catalog_cost_range_usd(u, cost_basis, mode_pref)
+            basis = cost_basis
+            cost = _catalog_cost_range_usd(u, basis, mode_pref)
+            # A reviewed card without a published total shows its tuition, so the filter reads the same price.
+            if cost is None and basis == "annual_total" and u.get("id") in admissions_catalog.INSTITUTION_IDS:
+                basis = "tuition"
+                cost = _catalog_cost_range_usd(u, basis, mode_pref)
             if cost is None:
                 continue
-            quote = _catalog_costs(u, mode_pref).get(cost_basis) or {}
+            quote = _catalog_costs(u, mode_pref).get(basis) or {}
             if quote.get("intervals") or quote.get("amounts"):
                 from app.services.currency import convert
                 try:
@@ -2067,37 +2142,32 @@ def _filter_university_pairs(
                 if (min_tuition is not None and cost[1] < min_tuition) or (max_tuition is not None and cost[0] > max_tuition):
                     continue
                 quote["filter_match"] = "full" if (min_tuition is None or cost[0] >= min_tuition) and (max_tuition is None or cost[1] <= max_tuition) else "partial"
-            if quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
+            # Tuition alone cannot confirm that a full yearly budget fits the range.
+            if basis != cost_basis or quote.get("priced_option_count", 0) < quote.get("candidate_option_count", 0):
                 quote["filter_match"] = "partial"
             filtered.append((u, m))
         pairs = filtered
+
+    def acceptance_rate_of(u, m):
+        return m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u)
 
     if min_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_gte(
-                m.get("acceptance_rate")
-                if "acceptance_rate" in m
-                else _get_university_acceptance_rate(u),
-                min_acceptance,
-            )
+            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_gte(acceptance_rate_of(u, m), min_acceptance)
         ]
     if max_acceptance is not None:
         pairs = [
             (u, m)
             for (u, m) in pairs
-            if _safe_compare_lte(
-                m.get("acceptance_rate")
-                if "acceptance_rate" in m
-                else _get_university_acceptance_rate(u),
-                max_acceptance,
-            )
+            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_lte(acceptance_rate_of(u, m), max_acceptance)
         ]
 
     if size:
         ss = _safe_lower(size)
-        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") == ss]
+        # Size is a student-count band; a university without a published count stays visible, as in other filters.
+        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") in ("", ss)]
 
     return pairs
 

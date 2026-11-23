@@ -60,12 +60,15 @@ export function markMotionEnter(root, selector = "", options = {}) {
   const staggerMs = Math.max(0, Number(options.staggerMs || 22));
   const limit = Math.max(0, Number(options.limit || 16));
   const nodes = selector ? Array.from(root.querySelectorAll(selector)) : [root];
+  const targets = nodes.slice(0, limit || nodes.length).filter((node) => node instanceof HTMLElement);
+  if (!targets.length) return;
 
-  nodes.slice(0, limit || nodes.length).forEach((node, index) => {
-    if (!(node instanceof HTMLElement)) return;
-    node.classList.remove(className);
+  const needsReflow = targets.some((node) => node.classList.contains(className));
+  targets.forEach((node) => node.classList.remove(className));
+  if (needsReflow) void targets[0].offsetWidth;
+
+  targets.forEach((node, index) => {
     node.style.animationDelay = `${Math.min(index * staggerMs, 180)}ms`;
-    void node.offsetWidth;
     node.classList.add(className);
     const cleanup = () => {
       node.classList.remove(className);
@@ -194,7 +197,7 @@ function isBackendApiRequest(input) {
     const apiPath = String(apiUrl.pathname || "/");
     const apiPrefix = apiPath.endsWith("/") ? apiPath : `${apiPath}/`;
     return requestUrl.pathname === apiPath || requestUrl.pathname.startsWith(apiPrefix) || apiPrefix === "/";
-  } catch (error) {
+  } catch {
     return raw.startsWith(API_BASE);
   }
 }

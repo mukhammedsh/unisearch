@@ -2,6 +2,86 @@ const __boundTooltipKeys = new Set();
 
 export const DEFAULT_TOOLTIP_WRAP_SELECTOR = ".ui-tooltip-wrap, .u-info-wrap, .uni-status-tooltip, .d-info-wrap, .profile-info-wrap, .uni-metric-tooltip";
 export const DEFAULT_TOOLTIP_BUTTON_SELECTOR = ".ui-tooltip-trigger, .u-info, .uni-status-trigger, .d-info, .profile-info, .uni-metric-trigger";
+export const DEFAULT_TOOLTIP_BUBBLE_SELECTOR = ".ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content";
+
+/**
+ * Compute horizontal pixel translation needed to keep a tooltip bubble inside the viewport.
+ *
+ * @param {{ left?: number, right?: number, width?: number } | null | undefined} rect
+ * @param {number} viewportWidth
+ * @param {number} [gutter=12]
+ * @returns {number}
+ */
+export function computeViewportHorizontalShift(rect, viewportWidth, gutter = 12) {
+  if (!rect || !Number.isFinite(viewportWidth) || viewportWidth <= 0) return 0;
+  const left = Number(rect.left);
+  const right = Number(rect.right);
+  const width = Number.isFinite(Number(rect.width)) ? Number(rect.width) : right - left;
+  if (!Number.isFinite(left) || !Number.isFinite(right) || !Number.isFinite(width) || width <= 0) {
+    return 0;
+  }
+  const safeGutter = Number.isFinite(gutter) && gutter >= 0 ? gutter : 0;
+  const maxRight = Math.max(safeGutter, viewportWidth - safeGutter);
+  let shift = 0;
+  if (right > maxRight) {
+    shift = maxRight - right;
+  }
+  if (left + shift < safeGutter) {
+    shift = safeGutter - left;
+  }
+  return Math.round(shift * 100) / 100 || 0;
+}
+
+/**
+ * Find the direct tooltip bubble child belonging to a tooltip wrapper element.
+ *
+ * @param {Element | null | undefined} wrap
+ * @param {string} [bubbleSelector=DEFAULT_TOOLTIP_BUBBLE_SELECTOR]
+ * @returns {HTMLElement | null}
+ */
+export function findTooltipBubble(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
+  if (!(wrap instanceof Element)) return null;
+  for (const child of wrap.children) {
+    if (child.matches(bubbleSelector) && child instanceof HTMLElement) {
+      return child;
+    }
+  }
+  return null;
+}
+
+/**
+ * Clear runtime horizontal shift clamping on a tooltip wrapper's bubble.
+ *
+ * @param {Element | null | undefined} wrap
+ * @param {string} [bubbleSelector=DEFAULT_TOOLTIP_BUBBLE_SELECTOR]
+ * @returns {void}
+ */
+export function resetTooltipShift(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
+  const bubble = findTooltipBubble(wrap, bubbleSelector);
+  if (bubble) {
+    bubble.style.removeProperty("--tooltip-shift-x");
+  }
+}
+
+/**
+ * Measure an opened or hovered tooltip bubble and shift it horizontally if it overflows the viewport.
+ *
+ * @param {Element | null | undefined} wrap
+ * @param {string} [bubbleSelector=DEFAULT_TOOLTIP_BUBBLE_SELECTOR]
+ * @returns {number}
+ */
+export function clampTooltipToViewport(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
+  const bubble = findTooltipBubble(wrap, bubbleSelector);
+  if (!bubble || typeof window === "undefined") return 0;
+  const viewportWidth = document.documentElement?.clientWidth || window.innerWidth || 0;
+  bubble.style.removeProperty("--tooltip-shift-x");
+  const rect = bubble.getBoundingClientRect();
+  const shift = computeViewportHorizontalShift(rect, viewportWidth);
+  if (shift !== 0) {
+    bubble.style.setProperty("--tooltip-shift-x", `${shift}px`);
+  }
+  return shift;
+}
 
 function buildStateSelector(selectorList, stateClass) {
   return selectorList
@@ -20,6 +100,7 @@ export function bindInfoTooltips(options = {}) {
     : document;
   const wrapSelector = String(options.wrapSelector || DEFAULT_TOOLTIP_WRAP_SELECTOR).trim() || DEFAULT_TOOLTIP_WRAP_SELECTOR;
   const buttonSelector = String(options.buttonSelector || DEFAULT_TOOLTIP_BUTTON_SELECTOR).trim() || DEFAULT_TOOLTIP_BUTTON_SELECTOR;
+  const bubbleSelector = String(options.bubbleSelector || DEFAULT_TOOLTIP_BUBBLE_SELECTOR).trim() || DEFAULT_TOOLTIP_BUBBLE_SELECTOR;
   const openClass = String(options.openClass || "is-open").trim() || "is-open";
   const closedClass = String(options.closedClass || "is-closed").trim() || "is-closed";
   const holdDelayMs = Number.isFinite(Number(options.holdDelayMs)) ? Number(options.holdDelayMs) : 420;
@@ -36,6 +117,7 @@ export function bindInfoTooltips(options = {}) {
     root.querySelectorAll(allStateWrapsSelector).forEach((wrap) => {
       wrap.classList.remove(openClass);
       wrap.classList.remove(closedClass);
+      resetTooltipShift(wrap, bubbleSelector);
       const btn = wrap.querySelector(buttonSelector);
       if (btn) btn.setAttribute("aria-expanded", "false");
     });
@@ -60,11 +142,13 @@ export function bindInfoTooltips(options = {}) {
         wrap.classList.remove(closedClass);
         wrap.classList.add(openClass);
         btn.setAttribute("aria-expanded", "true");
+        clampTooltipToViewport(wrap, bubbleSelector);
       } else {
         wrap.classList.remove(openClass);
         wrap.classList.add(closedClass);
+        resetTooltipShift(wrap, bubbleSelector);
         btn.setAttribute("aria-expanded", "false");
-        try { btn.blur(); } catch (e) {}
+        try { btn.blur(); } catch {}
       }
       return;
     }
@@ -82,10 +166,42 @@ export function bindInfoTooltips(options = {}) {
     const related = evt.relatedTarget;
     if (!related || !(related instanceof Node) || !wrap.contains(related)) {
       wrap.classList.remove(closedClass);
+      if (!wrap.classList.contains(openClass)) {
+        resetTooltipShift(wrap, bubbleSelector);
+      }
     }
   };
 
+  root.addEventListener("pointerover", (evt) => {
+    const target = evt.target;
+    if (!(target instanceof Element)) return;
+    const wrap = target.closest(wrapSelector);
+    if (!wrap || wrap.classList.contains(closedClass)) return;
+    clampTooltipToViewport(wrap, bubbleSelector);
+  });
+
   root.addEventListener("pointerout", clearClosed);
+
+  root.addEventListener("focusin", (evt) => {
+    const target = evt.target;
+    if (!(target instanceof Element)) return;
+    const wrap = target.closest(wrapSelector);
+    if (!wrap || wrap.classList.contains(closedClass)) return;
+    clampTooltipToViewport(wrap, bubbleSelector);
+  });
+
+  root.addEventListener("focusout", (evt) => {
+    const target = evt.target;
+    if (!(target instanceof Element)) return;
+    const wrap = target.closest(wrapSelector);
+    if (!wrap) return;
+    const related = evt.relatedTarget;
+    if (!related || !(related instanceof Node) || !wrap.contains(related)) {
+      if (!wrap.classList.contains(openClass)) {
+        resetTooltipShift(wrap, bubbleSelector);
+      }
+    }
+  });
 
   root.addEventListener("keydown", (evt) => {
     if (evt.key === "Escape") {
@@ -96,7 +212,7 @@ export function bindInfoTooltips(options = {}) {
       closeAll();
       lastOpen.classList.add(closedClass);
       if (btn) {
-        try { btn.focus(); } catch (e) {}
+        try { btn.focus(); } catch {}
       }
     }
   });
@@ -113,6 +229,7 @@ export function bindInfoTooltips(options = {}) {
       wrap.classList.remove(closedClass);
       wrap.classList.add(openClass);
       btn.setAttribute("aria-expanded", "true");
+      clampTooltipToViewport(wrap, bubbleSelector);
       holdTimers.delete(btn);
     }, holdDelayMs);
     holdTimers.set(btn, timer);

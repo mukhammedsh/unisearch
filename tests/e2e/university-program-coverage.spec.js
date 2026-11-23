@@ -22,7 +22,9 @@ async function openContext(page, context) {
   });
   const responsePromise = page.waitForResponse((response) => {
     const url = new URL(response.url());
-    return url.pathname === `/universities/${context.university}/admissions-context` && response.request().method() === "POST";
+    // The Overview also resolves the shared first-year route on the same endpoint; wait for this selection's answer.
+    return url.pathname === `/universities/${context.university}/admissions-context` && response.request().method() === "POST"
+      && (response.request().postDataJSON()?.context?.study_option_id || "") === (context.option || "");
   });
   await page.goto(contextUrl(context));
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
@@ -93,7 +95,7 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   const mdCost = page.locator('#tab-finance [data-admissions-fact="professional-evidence:med_md_award_cost"]');
   await openDisclosureParents(mdCost);
   await expect(mdCost).toBeVisible();
-  await expect(mdCost).toContainText(/2026[-\u2011]27/);
+  await expect(mdCost).toContainText(/2026[-\u2011\u2013]27/);
   await expect(mdCost).toContainText("USD 24,034 per quarter");
 
   const cs = await openContext(page, {
@@ -113,27 +115,30 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   expect(publishedTuition.value.graduate_engineering_quarterly_tuition).toEqual({ "8-10_units": 15100, "11-18_units": 23239 });
   const currentCostUnknown = cs.unknowns.find((fact) => fact.id === "engineering-doerr-evidence:engineering-2027-cost-unpublished");
   expect(currentCostUnknown.reason).toContain("2027-28 Engineering prices are not published");
-  expect(cs.history.unknown_ids).toContain("engineering-doerr-evidence:tuition-and-funding-details");
+  // The old tuition-and-funding gap is superseded by the recorded 2026-27 schedules above, so it is no longer listed as history.
+  expect(cs.history.unknown_ids).not.toContain("engineering-doerr-evidence:tuition-and-funding-details");
 
   await openTab(page, "finance");
   const csCost = page.locator('#tab-finance [data-admissions-fact="engineering-doerr-evidence:engineering-2026-27-historical-tuition"]');
   await openDisclosureParents(csCost);
   await expect(csCost).toBeVisible();
-  await expect(csCost).toContainText(/2026[-\u2011]27/);
+  await expect(csCost).toContainText(/2026[-\u2011\u2013]27/);
   await expect(csCost).toContainText(/15,?100/);
   await expect(csCost).toContainText(/23,?239/);
-  await expect(csCost).toContainText(/historical context only, not published 2027[-\u2011]28 tuition/);
+  await expect(csCost).toContainText(/historical context only, not published 2027[-\u2011\u2013]28 tuition/);
   await openTab(page, "admission");
   const unknowns = page.locator("#detailRequirements details.admissions-catalog__unknowns");
+  // Unresolved information is grouped with the full records behind the tab's single records disclosure.
+  await expect(page.locator("#detailRequirements [data-all-records] [data-full-records] > details.admissions-catalog__unknowns")).toHaveCount(1);
+  await page.locator("#detailRequirements [data-all-records] > summary").click();
+  await page.locator("#detailRequirements [data-all-records] [data-full-records] > summary").click();
   await expect(unknowns).toBeVisible();
   await unknowns.locator(":scope > summary").click();
-  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011]28 Engineering prices are not published/ })).toHaveCount(1);
+  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /2027[-\u2011\u2013]28 Engineering prices are not published/ })).toHaveCount(1);
+  // The old tuition-and-funding gap is superseded: its 2027-28 caveat now lives in the current unknowns, not in history.
+  await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /individual electronic admission\/aid offer/ })).toHaveCount(1);
   await openTab(page, "general");
-  const history = page.locator("#admissionsUniversityInfo .admissions-catalog > details").filter({ hasText: /Historical records/ });
-  await expect(history).toBeVisible();
-  await history.locator(":scope > summary").click();
-  await expect(history.locator(".admissions-catalog__unknown")).not.toHaveCount(0);
-  await expect(history).toContainText(/2027[-\u2011]28 tuition and individual future offer amounts remain unavailable/);
+  await expect(page.locator("#admissionsUniversityInfo")).not.toContainText(/2027[-\u2011\u2013]28 tuition and individual future offer amounts remain unavailable/);
 });
 
 test("MIT application dates and Imperial award deadlines stay in their own source scopes", async ({ page }) => {
@@ -177,7 +182,7 @@ test("MIT application dates and Imperial award deadlines stay in their own sourc
   const funding = page.locator('#tab-finance [data-admissions-fact="imperial-civil-scholarship-scheme-conditions"]');
   await openDisclosureParents(funding);
   await expect(funding).toBeVisible();
-  await expect(funding).toContainText(/2026[-\u2011]11[-\u2011]02/);
+  await expect(funding).toContainText(/2026[-\u2011\u2013]11[-\u2011\u2013]02/);
 });
 
 test("Harvard saved program names resolve unique concentrations but leave split legacy routes unselected", async ({ page }) => {
@@ -206,28 +211,22 @@ test("Harvard saved program names resolve unique concentrations but leave split 
   }
 });
 
-test("Oxford qualification guidance flags Kazakhstan Attestat in English and Russian on mobile", async ({ page }) => {
+test("Oxford qualification guidance lists every published rule without a saved profile, in English and Russian on mobile", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.addInitScript(() => {
-    localStorage.setItem("unisearch_profile", JSON.stringify({
-      studyLevel: "Bachelor",
-      applicantRoute: "first_year",
-      countryOfEducation: "KZ",
-      educationCredential: "other",
-      educationCredentialOther: "Attestat/Svidetel' stvo o Srednem Obrazovanii (Certificate of Secondary Education)",
-      intendedEntryCycle: "2027 Fall",
-    }));
-  });
   await page.goto("/university.html?id=university-of-oxford-uk-oxford");
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
 
-  const guidance = page.locator("#detailQualificationGuidance .qualification-guidance__result");
-  await expect(guidance.locator(".qualification-guidance__status")).toContainText("Explicitly not accepted");
-  await expect(guidance).toContainText("Kazakhstan's Attestat");
-  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
+  const entries = page.locator("#detailQualificationGuidance [data-qualification-entry]");
+  await expect(entries).toHaveCount(4);
+  const attestat = entries.filter({ hasText: "Kazakhstan's Attestat" });
+  await expect(attestat).toHaveCount(1);
+  await expect(attestat.locator(".qualification-guidance__status")).toContainText("Explicitly not accepted");
+  await expect(attestat.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
+  await expect(entries.filter({ hasText: "International Baccalaureate" }).locator(".qualification-guidance__status")).toContainText("Accepted qualification");
+  await expect(page.locator("#detailQualificationGuidance")).not.toContainText(/profile|Intended entry cycle/i);
 
   await page.evaluate(() => {
     const language = document.getElementById("languageSelect");
@@ -238,7 +237,9 @@ test("Oxford qualification guidance flags Kazakhstan Attestat in English and Rus
     const language = document.getElementById("languageSelect");
     return language?.value === "rus" && language.dataset.loading !== "1" && !language.disabled;
   });
-  await expect(guidance.locator(".qualification-guidance__status")).toContainText("Официально указана как не принимаемая");
-  await expect(guidance).toContainText("аттестат Казахстана");
-  await expect(guidance.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
+  await expect(entries).toHaveCount(4);
+  const russianAttestat = entries.filter({ hasText: "аттестат Казахстана" });
+  await expect(russianAttestat).toHaveCount(1);
+  await expect(russianAttestat.locator(".qualification-guidance__status")).toContainText("Официально указана как не принимаемая");
+  await expect(russianAttestat.locator(".qualification-guidance__source")).toHaveAttribute("href", /^https:\/\/www\.ox\.ac\.uk\//);
 });

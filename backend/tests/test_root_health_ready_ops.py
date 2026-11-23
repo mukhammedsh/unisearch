@@ -71,6 +71,9 @@ class RootAndOpsApiTests(unittest.TestCase):
         csp = response.headers.get("content-security-policy", "")
         self.assertIn("frame-ancestors", csp)
         self.assertIn("script-src 'self' https://unpkg.com", csp)
+        self.assertIn("https://tile.openstreetmap.org", csp)
+        self.assertIn("font-src 'self'", csp)
+        self.assertIn("form-action 'self'", csp)
         self.assertNotIn("content-security-policy-report-only", response.headers)
 
     def test_cors_allows_local_frontend_ports(self):

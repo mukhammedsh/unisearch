@@ -25,7 +25,7 @@ import urllib.parse
 import urllib.request
 from difflib import SequenceMatcher
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from atomic_json import write_json_atomic
 
@@ -37,6 +37,7 @@ if not (UNIVERSITIES_PATH == ROOT or ROOT in UNIVERSITIES_PATH.parents):
 sys.path.insert(0, str(ROOT / "backend"))
 
 from app.services.currency import convert as convert_currency  # noqa: E402
+from app.services import preference_factors  # noqa: E402
 
 OPENALEX_BASE = "https://api.openalex.org/institutions"
 OPEN_METEO_BASE = "https://geocoding-api.open-meteo.com/v1/search"
@@ -81,6 +82,44 @@ OPENALEX_NAME_OVERRIDES = {
     "L.N. Gumilyov Eurasian National University": "L. N. Gumilyov Eurasian National University",
 }
 
+# Population of the urban area each university belongs to, from official statistics. OECD functional urban areas
+# (FUAs) are used where OECD publishes one; otherwise the national statistics figure for the city. The location
+# slider prefers this to the city's own population (see app/services/preference_factors.py).
+OFFICIAL_URBAN_AREA_POPULATION: Dict[str, Dict[str, Any]] = {}
+for _ids, _name, _population, _year, _source, _url in (
+    (['mit-usa-cambridge', 'harvard-usa-cambridge'], 'Boston functional urban area (OECD USA11F)', 4568882, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/USA11F.A.POP.PS._T._T..FUA.'),
+    (['stanford-university-usa-ca', 'uc-berkeley-usa-berkeley'], 'San Francisco (Greater) functional urban area (OECD USA05F)', 6643970, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/USA05F.A.POP.PS._T._T..FUA.'),
+    (['caltech-usa-pasadena'], 'Los Angeles (Greater) functional urban area (OECD USA02F)', 17671828, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/USA02F.A.POP.PS._T._T..FUA.'),
+    (['yale-university-usa-new-haven'], 'New Haven functional urban area (OECD USA27F)', 2011617, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/USA27F.A.POP.PS._T._T..FUA.'),
+    (['johns-hopkins-university-usa-baltimore'], 'Washington (Greater) functional urban area, which OECD assigns Baltimore to (OECD USA04F)', 9453207, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/USA04F.A.POP.PS._T._T..FUA.'),
+    (['princeton-university-usa-princeton'], 'Philadelphia (Greater) functional urban area, which OECD assigns Mercer County to (OECD USA06F)', 6722560, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/USA06F.A.POP.PS._T._T..FUA.'),
+    (['university-of-oxford-uk-oxford'], 'Oxford functional urban area (OECD UK560F)', 606748, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/UK560F.A.POP.PS._T._T..FUA.'),
+    (['university-of-cambridge-uk-cambridge'], 'Cambridge functional urban area (OECD UK017F)', 414802, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/UK017F.A.POP.PS._T._T..FUA.'),
+    (['university-of-edinburgh-uk-edinburgh'], 'Edinburgh functional urban area (OECD UK007F)', 932180, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/UK007F.A.POP.PS._T._T..FUA.'),
+    (['university-of-manchester-uk-manchester'], 'Manchester functional urban area (OECD UK008F)', 3595966, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/UK008F.A.POP.PS._T._T..FUA.'),
+    (['eth-zurich-ch-zurich'], 'Zurich functional urban area (OECD CH002F)', 2130572, 2023, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/CH002F.A.POP.PS._T._T..FUA.'),
+    (['epfl-ch-lausanne'], 'Lausanne functional urban area (OECD CH005F)', 681698, 2023, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/CH005F.A.POP.PS._T._T..FUA.'),
+    (['technical-university-of-munich-de-munich'], 'Munich functional urban area (OECD DE003F)', 3002043, 2025, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/DE003F.A.POP.PS._T._T..FUA.'),
+    (['delft-university-of-technology-nl-delft'], "'s-Gravenhage (The Hague) functional urban area (OECD NL017F)", 1236069, 2025, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/NL017F.A.POP.PS._T._T..FUA.'),
+    (['university-of-british-columbia-ca-vancouver'], 'Vancouver functional urban area (OECD CAN03F)', 2635715, 2021, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/CAN03F.A.POP.PS._T._T..FUA.'),
+    (['university-of-waterloo-ca-waterloo'], 'Kitchener functional urban area (OECD CAN11F)', 613415, 2021, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/CAN11F.A.POP.PS._T._T..FUA.'),
+    (['kaist-kr-daejeon'], 'Daejeon functional urban area (OECD KOR05F)', 1442216, 2023, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/KOR05F.A.POP.PS._T._T..FUA.'),
+    (['australian-national-university-au-canberra'], 'Canberra functional urban area (OECD AUS07F)', 473855, 2024, 'OECD Cities and FUAs database, Population by age and sex (DSD_FUA_DEMO@DF_AGE_SEX)', 'https://sdmx.oecd.org/public/rest/data/OECD.CFE.EDS,DSD_FUA_DEMO@DF_AGE_SEX,/AUS07F.A.POP.PS._T._T..FUA.'),
+    (['cuhk-hk-shatin'], 'Hong Kong (provisional mid-2026 population, Census and Statistics Department)', 7518300, 2026, 'Hong Kong Government press release on the mid-2026 population', 'https://www.info.gov.hk/gia/general/202608/18/P2026081800255.htm'),
+    (['nazarbayev-university-kaz-astana', 'astana-it-university-kaz-astana', 'astana-medical-university-kaz-astana', 'l-n-gumilyov-eurasian-national-university-kaz-astana'], 'Astana (city population on 1 October 2025)', 1612500, 2025, 'Astana city development document, Government of Kazakhstan (gov.kz)', 'https://www.gov.kz/uploads/2025/12/22/0e5576cce1dd20a81765250458ab7dc1_original.610816.doc'),
+):
+    for _uid in _ids:
+        OFFICIAL_URBAN_AREA_POPULATION[_uid] = {
+            "name": _name, "population": float(_population), "year": _year, "source": _source, "source_url": _url,
+        }
+
+# OpenAlex records that the name search does not find reliably (it matched a 1,053-work record for UNSW and no
+# record for Oxford).
+OPENALEX_ID_OVERRIDES = {
+    "unsw-sydney-au-sydney": "I31746571",
+    "university-of-oxford-uk-oxford": "I40120149",
+}
+
 OFFICIAL_CITY_POPULATION_FALLBACKS = {
     "Kaskelen": {
         "population": 79482.0,
@@ -88,6 +127,40 @@ OFFICIAL_CITY_POPULATION_FALLBACKS = {
         "source_url": "https://stat.gov.kz/upload/medialibrary/75f/z2gxd3z3s8gsf7em4x4q5ahd87mgoc5m/%D0%9D%D0%B0%D1%81%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%201%20%D1%82%D0%BE%D0%BC.pdf",
     },
 }
+
+
+FACTORS_VERSION = "internet_v2"
+FACTORS_METHOD = (
+    "Fixed scales from app/services/preference_factors.py: research focus is OpenAlex works per enrolled student "
+    "(log scale, 0.1 to 30); selectivity (social_vs_hardcore) is applicants per place from the published "
+    "first-year admission rate (log scale, 1 to 40); location is city population on the OECD functional-urban-area "
+    "size classes (log scale, 50,000 = outside a city to 1.5 million = large metropolitan). Null means the source "
+    "data is missing. Location prefers the official urban-area population (OECD functional urban areas or national "
+    "statistics). Cost vs prestige averages annual cost in USD (log scale, $1,000 to $100,000) and the official rank "
+    "(log scale, 1 to 1,000)."
+)
+
+
+def annual_cost_usd_for_factors(university: Dict[str, Any], finance_usd: Optional[float] = None) -> Optional[float]:
+    """Lowest published annual cost in USD: the earlier finance field (already converted by the caller, or converted
+    here), else the reviewed catalog's annual total or tuition for first-year study."""
+    if finance_usd is None:
+        finance_usd = _tuition_usd(university.get("finance") if isinstance(university.get("finance"), dict) else {})
+    if finance_usd is not None:
+        return finance_usd
+    from app.services import admissions_catalog  # noqa: E402  (reviewed institutions only)
+
+    if university.get("id") not in admissions_catalog.INSTITUTION_IDS:
+        return None
+    costs = admissions_catalog.catalog_costs(university["id"], "bachelor") or {}
+    for basis in ("annual_total", "tuition"):
+        quote = costs.get(basis)
+        if isinstance(quote, dict) and _safe_num(quote.get("min")) is not None:
+            try:
+                return _safe_num(convert_currency(float(quote["min"]), str(quote.get("currency") or "USD"), "USD"))
+            except ValueError:
+                return None
+    return None
 
 
 def _request_delay_sec() -> float:
@@ -140,8 +213,6 @@ def _tuition_usd(finance: Dict[str, Any]) -> Optional[float]:
         return None
 
 
-def _clamp01(value: float) -> float:
-    return max(0.0, min(1.0, float(value)))
 
 
 def _norm_name(value: str) -> str:
@@ -175,21 +246,6 @@ def _haversine_km(
     return 6371.0 * (2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a)))
 
 
-def _minmax(values: Iterable[Optional[float]], default: float = 0.5) -> List[float]:
-    vals = [v for v in values if v is not None]
-    if not vals:
-        return [default for _ in values]
-    lo = min(vals)
-    hi = max(vals)
-    if hi - lo < 1e-9:
-        return [default if v is None else 0.5 for v in values]
-    out: List[float] = []
-    for v in values:
-        if v is None:
-            out.append(default)
-            continue
-        out.append((float(v) - lo) / (hi - lo))
-    return out
 
 
 def _openalex_candidate_score(
@@ -222,6 +278,10 @@ def _openalex_candidate_score(
 def _fetch_openalex_institution(
     university: Dict[str, Any],
 ) -> Tuple[Optional[Dict[str, Any]], str]:
+    override_id = OPENALEX_ID_OVERRIDES.get(str(university.get("id") or ""))
+    if override_id:
+        url = f"{OPENALEX_BASE}/{override_id}"
+        return _http_get_json(url), url
     name = str(university.get("name") or "").strip()
     query_name_base = OPENALEX_NAME_OVERRIDES.get(name, name)
     location = university.get("location")
@@ -415,14 +475,6 @@ def _official_rank_position(university: Dict[str, Any]) -> Optional[float]:
     return float(rank)
 
 
-def _median(values: Iterable[Optional[float]], default: float = 0.5) -> float:
-    vals = sorted(float(v) for v in values if v is not None)
-    if not vals:
-        return default
-    mid = len(vals) // 2
-    if len(vals) % 2 == 1:
-        return vals[mid]
-    return (vals[mid - 1] + vals[mid]) / 2.0
 
 
 def main() -> None:
@@ -503,63 +555,18 @@ def main() -> None:
             }
         )
 
-    research_default = _median((row.get("research") for row in staged), default=0.5)
-    population_default = _median((row.get("population") for row in staged), default=500_000.0)
-    tuition_default = _median((row.get("tuition") for row in staged), default=0.0)
-    hardcore_default = 0.5
-
-    research_values = [row.get("research", research_default) for row in staged]
-    population_values = [row.get("population", population_default) for row in staged]
-    tuition_values = [row.get("tuition", tuition_default) for row in staged]
-    official_rank_values = [row.get("official_rank") for row in staged]
-
-    research_norm = _minmax(
-        [v if v is not None else research_default for v in research_values],
-        default=0.5,
-    )
-    population_norm = _minmax(
-        [v if v is not None else population_default for v in population_values],
-        default=0.5,
-    )
-    tuition_norm = _minmax(
-        [v if v is not None else tuition_default for v in tuition_values],
-        default=0.5,
-    )
-    rank_norm = _minmax(official_rank_values, default=hardcore_default)
-    hardcore_values = []
-    for idx, row in enumerate(staged):
-        rank_signal = 1.0 - rank_norm[idx] if row.get("official_rank") is not None else hardcore_default
-        hardcore_values.append(_clamp01((0.55 * rank_signal) + (0.45 * research_norm[idx])))
-
-    for idx, row in enumerate(staged):
+    for row in staged:
         university = row["university"]
-        focus = _clamp01(research_norm[idx])
-        atmosphere = _clamp01(hardcore_values[idx])
-        finance = _clamp01((0.60 * tuition_norm[idx]) + (0.40 * research_norm[idx]))
-        location = _clamp01(1.0 - population_norm[idx])
 
         openalex = row.get("openalex")
         openalex = openalex if isinstance(openalex, dict) else {}
         geocode = row.get("geocode")
         geocode = geocode if isinstance(geocode, dict) else {}
 
-        location_factor = round(location, 4)
-        university["factors"] = {
-            "practice_vs_science": round(focus, 4),
-            "social_vs_hardcore": round(atmosphere, 4),
-            "budget_vs_prestige": round(finance, 4),
-            "city_vs_campus": location_factor,
-        }
         university["factors_meta"] = {
-            "version": "internet_v1",
+            "version": FACTORS_VERSION,
             "computed_at": now_iso,
-            "method": (
-                "Deterministic mapping from OpenAlex (research metrics), "
-                "Open-Meteo geocoding/Wikidata and documented official fallbacks (city population), "
-                "official QS rank metadata where available, "
-                "and tuition. Social/academic intensity is a UniSearch proxy signal, not an official university metric. "
-                "Location axis is computed as city-life(0.0) <-> outside-major-city(1.0)."
-            ),
+            "method": FACTORS_METHOD,
             "source_urls": {
                 "openalex_query": row.get("openalex_url", ""),
                 "open_meteo_query": row.get("geocode_url", ""),
@@ -586,6 +593,7 @@ def main() -> None:
                     "population_official_fallback": row.get("official_population_fallback"),
                     "population_official_fallback_year": row.get("official_population_fallback_year"),
                 },
+                "urban_area": OFFICIAL_URBAN_AREA_POPULATION.get(str(university.get("id") or "")),
                 "rank": {
                     "position": row.get("official_rank"),
                     "status": (
@@ -597,13 +605,17 @@ def main() -> None:
                 "total_cost_year_usd": row.get("tuition"),
                 "derived_signals": {
                     "research_signal_raw": row.get("research"),
-                    "hardcore_signal_0_1": round(hardcore_values[idx], 6),
-                    "research_norm_0_1": round(research_norm[idx], 6),
-                    "official_rank_norm_0_1": round(rank_norm[idx], 6) if row.get("official_rank") is not None else None,
-                    "tuition_norm_0_1": round(tuition_norm[idx], 6),
-                    "city_population_norm_0_1": round(population_norm[idx], 6),
                 },
             },
+        }
+
+        # Research focus, selectivity and location use the fixed scales shared with the API (preference_factors);
+        # null means the source data is missing.
+        university["factors"] = {
+            "practice_vs_science": preference_factors.research_intensity(university),
+            "social_vs_hardcore": preference_factors.selectivity(university),
+            "budget_vs_prestige": preference_factors.cost_vs_prestige(university, annual_cost_usd_for_factors(university, row.get("tuition"))),
+            "city_vs_campus": preference_factors.location(university),
         }
 
     write_json_atomic(UNIVERSITIES_PATH, universities)

@@ -114,6 +114,25 @@ for (const item of presentations) {
     await expect(page.locator('[data-source-summary="application"]')).toContainText("Common Application");
     await expect(page.locator(".admissions-application-link")).toHaveAttribute("href", "https://admission.stanford.edu/apply/first-year/apply.html");
     await expectNoStackedGapMargins(page, "#tab-admission");
+    // Key facts open the tab with the only requirements-match summary; excerpts cite numbered sources listed once with real titles.
+    await expect(page.locator("#detailRequirements [data-requirements-match]")).toHaveCount(1);
+    expect(await page.locator("#detailRequirements > :first-child [data-admissions-key-facts]").count()).toBe(1);
+    const sourceList = page.locator("#detailRequirements [data-reading-sources]");
+    await expect(sourceList).toHaveCount(1);
+    const listed = await sourceList.locator("li").evaluateAll(items => items.map(item => [item.dataset.sourceNumber, item.querySelector("a").href, item.querySelector("a").textContent.trim()]));
+    expect(listed.length).toBeGreaterThan(0);
+    expect(new Set(listed.map(([, href]) => href)).size).toBe(listed.length);
+    for (const [, , title] of listed) expect(title).not.toMatch(/^(Official source|Официальный источник|Ресми дереккөз)$/);
+    const markers = await page.locator("#detailRequirements .admissions-reading__ref").evaluateAll(links => links.map(link => [link.textContent, link.href, link.target, link.rel, link.getAttribute("aria-label")]));
+    expect(markers.length).toBeGreaterThan(0);
+    for (const [number, href, target, rel, name] of markers) {
+      expect(listed.find(([listedNumber]) => listedNumber === number)?.[1]).toBe(href);
+      expect(target).toBe("_blank");
+      expect(rel).toContain("noopener");
+      expect(name).toContain(listed.find(([listedNumber]) => listedNumber === number)[2]);
+    }
+    await expect(page.locator("#detailRequirements .admissions-reading__section details")).toHaveCount(0);
+    await expect(page.locator("#detailRequirements [data-all-records]")).toHaveCount(1);
     await screenshot(page, `${item.language}-${item.width}-${item.theme}-requirements`, '[data-source-summary="requirements"] h3');
     await tab(page, "deadlines");
     const dates = page.locator('[data-source-summary="deadlines"]');
@@ -228,7 +247,7 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
 
 test("Stanford preserves search, route and general profile across language changes, save and history", async ({ page }) => {
   await prepare(page, presentations[0]);
-  await page.addInitScript(() => localStorage.setItem("unisearch_profile", JSON.stringify({ version: 2, gpa: 3.8, budget: 30000, applicantRoute: "graduate", intendedEntryCycle: "2028 entry", citizenships: ["Kazakhstan"] })));
+  await page.addInitScript(() => localStorage.setItem("unisearch_profile", JSON.stringify({ version: 2, gpa: 3.8, budget: 30000, intendedEntryCycle: "2028 entry" })));
   await page.goto(`/university.html?id=${university}`);
   await ready(page);
   await program(page, "stanford-option-cs-bs");
@@ -244,27 +263,22 @@ test("Stanford preserves search, route and general profile across language chang
     await expect(page.locator("#admissionsSearch")).toHaveValue("Computer Science");
     await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
   }
-  await openAdvanced(page);
-  await page.locator("#admissionsCycle").fill("undecided cycle");
-  await expect(page.locator("#admissionsCycleNotice")).toBeVisible();
-  await page.locator("#admissionsCycle").fill("");
-  await select(page, "admissionsApplicant", "transfer");
-  await page.locator("#admissionsContextApply").click();
-  await ready(page);
+  // The transfer path publishes one intake and no fee classes: no entry-year or fee-status field to fill.
+  await openAdmissionSelectionEditor(page);
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
   await page.locator("#admissionsSaveChoice").click();
   await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
   const profile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
   expect(profile.gpa).toBe(3.8);
   expect(profile.budget).toBe(30000);
-  expect(profile.applicantRoute).toBe("graduate");
-  expect(profile.intendedEntryCycle).toBe("2028 entry");
-  expect(profile.selectedAdmissionChoices[university].applicantRoute).toBe("transfer");
+  expect(profile.applicantRoute).toBeUndefined();
+  expect(profile.intendedEntryCycle).toBeUndefined();
+  expect(profile.selectedAdmissionChoices[university].applicantRoute).toBeUndefined();
   await page.goBack();
   await ready(page);
   await page.goForward();
   await ready(page);
   await openAdmissionSelectionEditor(page);
-  await expect(page.locator("#admissionsApplicant")).toHaveValue("transfer");
 });
 
 test("Stanford retries failures and keeps selection through an empty search", async ({ page }) => {
@@ -331,9 +345,9 @@ test("Stanford ignores an older response after Back and retains keyboard focus",
 });
 
 for (const [index, entry] of [
-  { option: "stanford-option-econ-ba", search: "Economics" },
-  { option: "stanford-option-arths-ma", search: "Art History" },
-  { option: "stanford-option-ed-ma-cte", search: "Curriculum and Teacher Education" },
+  { option: "stanford-option-econ-ba", search: "Economics", route: "" },
+  { option: "stanford-option-arths-ma", search: "Art History", route: "humanities-education-medicine-evidence:arths-ma-en-route" },
+  { option: "stanford-option-ed-ma-cte", search: "Curriculum and Teacher Education", route: "humanities-education-medicine-evidence:ed-ma-cte-admission" },
 ].entries()) {
   test(`Stanford sourced overview preserves the distinct ${entry.option} scope`, async ({ page }) => {
     await prepare(page, presentations[index]);
@@ -345,7 +359,13 @@ for (const [index, entry] of [
     await programSources.locator(":scope > summary").click();
     await expect(programSources.locator("a")).not.toHaveCount(0);
     await expect(programSources.locator("[data-program-overview-sources] p")).toHaveCount(0);
-    await expect(page.locator("#admissionsRoute")).toHaveValue("");
+    // A program with one application route reads it directly; it is reflected in the URL but not saved as a choice.
+    await expect(page.locator("#admissionsRoute")).toHaveValue(entry.route);
+    if (entry.route) {
+      expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(entry.route);
+      await expect(page.locator("[data-route-options]")).toHaveCount(0);
+      expect(await page.evaluate(id => JSON.parse(localStorage.getItem("unisearch_profile") || "{}").selectedAdmissionChoices?.[id], university)).toBeUndefined();
+    }
     await expect(page.locator("#admissionsStudyOverview")).not.toContainText(/Bulletin flags|externalAdmissions/);
     await screenshot(page, `overview-${entry.option}-${presentations[index].language}`, "#admissionsStudyOverview");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(presentations[index].width);
@@ -367,7 +387,8 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   await expect(card).toBeVisible();
   await select(page, "studyLevelSelect", "master");
   await expect(page.locator("#studyLevelSelect")).toHaveValue("master");
-  await expect(card).toHaveCount(0);
+  // Stanford publishes master's programs, so it remains a match at this level.
+  await expect(card).toBeVisible();
   await select(page, "studyLevelSelect", "bachelor");
   await expect(card).toBeVisible();
   await page.locator("#settingsBtn").click();

@@ -9,7 +9,7 @@ function read(store, key, fallback = "") {
     if (!api) return fallback;
     const value = api.getItem(key);
     return value === null ? fallback : value;
-  } catch (error) {
+  } catch {
     return fallback;
   }
 }
@@ -20,7 +20,7 @@ function write(store, key, value) {
     if (!api) return false;
     api.setItem(key, value);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -29,7 +29,7 @@ function drop(store, key) {
   try {
     storageApi(store)?.removeItem(key);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -39,7 +39,7 @@ function readJson(store, key, fallback = null) {
   if (!raw) return fallback;
   try {
     return JSON.parse(raw);
-  } catch (error) {
+  } catch {
     return fallback;
   }
 }
@@ -47,7 +47,7 @@ function readJson(store, key, fallback = null) {
 function writeJson(store, key, value) {
   try {
     return write(store, key, JSON.stringify(value));
-  } catch (error) {
+  } catch {
     return false;
   }
 }

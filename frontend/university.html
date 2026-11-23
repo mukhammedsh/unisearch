@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <base href="./" />
-  <script>
-    if (/\/universities\/[^/]+\/?$/.test(window.location.pathname)) {
-      document.querySelector("base").setAttribute("href", window.location.pathname.replace(/universities\/[^/]+\/?$/, ""));
-    }
-  </script>
+  <script>if (/\/universities\/[^/]+\/?$/.test(window.location.pathname)) document.querySelector("base").setAttribute("href", window.location.pathname.replace(/universities\/[^/]+\/?$/, ""));</script>
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.university">University | UniSearch</title>
   <meta name="description" content="Explore university programs, admission requirements, deadlines, costs, and funding across study levels." />
@@ -35,11 +32,19 @@
   <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/inter/inter-latin-wght-normal.woff2" crossorigin />
 
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/university.css" />
-  <link rel="stylesheet" href="css/university-admissions.css" />
-  <link rel="stylesheet" href="css/university-qualification-guidance.css" />
+  <link rel="stylesheet" href="css/shared/01-foundation.css" />
+  <link rel="stylesheet" href="css/shared/02-shell-settings-feedback.css" />
+  <link rel="stylesheet" href="css/shared/06-motion-accessibility.css" />
+  <link rel="stylesheet" href="css/shared/08-device-responsive.css" />
+  <link rel="stylesheet" href="css/shared/10-admissions.css" />
+  <link rel="stylesheet" href="css/university/01-shell-hero.css" />
+  <link rel="stylesheet" href="css/university/02-overview-programs.css" />
+  <link rel="stylesheet" href="css/university/03-admissions.css" />
+  <link rel="stylesheet" href="css/university/04-finance-aid.css" />
+  <link rel="stylesheet" href="css/university/05-admissions-reviewed.css" />
+  <link rel="stylesheet" href="css/university/06-qualification-guidance.css" />
 
 </head>
 
@@ -67,12 +72,12 @@
 
       <section id="detailCard" class="d-card" style="display:none;">
         
-        <div class="d-cover" id="detailCover">
-          <div class="d-cover-overlay"></div>
-          <a id="detailBackBtn" class="d-cover-back" href="index.html" data-route="universities" title="Back" data-i18n-title="university.back_to_list" aria-label="Back" data-i18n-aria-label="university.back_to_list">
-            <span data-heroicon="arrow-left" data-icon-size="20"></span>
-          </a>
-          <div class="d-cover-logo" id="detailLogo">U</div>
+        <div class="d-gallery" role="group" data-i18n-aria-label="university.gallery.label">
+          <div class="d-cover" id="detailCover">
+            <a id="detailBackBtn" class="d-cover-back" href="index.html" data-route="universities" title="Back" data-i18n-title="university.back_to_list" aria-label="Back" data-i18n-aria-label="university.back_to_list">
+              <span data-heroicon="arrow-left" data-icon-size="20"></span>
+            </a>
+          </div>
         </div>
 
         <div class="d-head">
@@ -88,9 +93,10 @@
                   <span data-heroicon="map-pin" data-icon-size="20"></span>
                   <span class="d-site-link-label" data-i18n="university.action.map">Map</span>
                 </a>
-                <button id="detailSaveBtn" class="d-site-link" title="Save" data-i18n-title="university.action.save" aria-label="Save" data-i18n-aria-label="university.action.save_label" aria-pressed="false">
+                <button id="detailSaveBtn" class="d-site-link" type="button" title="Save" data-i18n-title="university.action.save" aria-label="Save" data-i18n-aria-label="university.action.save_label" aria-pressed="false">
                   <span data-heroicon="star" data-icon-size="20" class="uni-action-icon"></span>
                   <span class="d-site-link-label" data-i18n="university.action.save_label">Save</span>
+                  <span class="d-site-link-label-reserve" data-i18n="university.action.saved" aria-hidden="true">Saved</span>
                 </button>
               </div>
             </div>
@@ -98,21 +104,21 @@
           </div>
         </div>
 
-        <div class="d-tabs">
-          <button class="d-tab-btn active" data-tab="tab-general">
-            <span class="icon" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">Overview</span>
+        <div class="d-tabs" role="tablist" aria-label="University sections" data-i18n-aria-label="university.tabs.aria">
+          <button id="tab-btn-general" class="d-tab-btn active" type="button" role="tab" aria-selected="true" tabindex="0" data-tab="tab-general">
+            <span class="icon" aria-hidden="true" data-heroicon="document-text" data-icon-size="18"></span> <span data-i18n="university.tab.general">Overview</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-programs">
-            <span class="icon" data-heroicon="academic-cap" data-icon-size="18"></span> <span data-i18n="university.tab.programs">Programs</span>
+          <button id="tab-btn-programs" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-programs">
+            <span class="icon" aria-hidden="true" data-heroicon="academic-cap" data-icon-size="18"></span> <span data-i18n="university.tab.programs">Programs</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-admission">
-            <span class="icon" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
+          <button id="tab-btn-admission" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-admission">
+            <span class="icon" aria-hidden="true" data-heroicon="clipboard-document-list" data-icon-size="18"></span> <span data-i18n="university.tab.admission">Admission</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-deadlines">
-            <span class="icon" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Dates</span>
+          <button id="tab-btn-deadlines" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-deadlines">
+            <span class="icon" aria-hidden="true" data-heroicon="calendar" data-icon-size="18"></span> <span data-i18n="university.tab.deadlines">Dates</span>
           </button>
-          <button class="d-tab-btn" data-tab="tab-finance">
-            <span class="icon" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs &amp; funding</span>
+          <button id="tab-btn-finance" class="d-tab-btn" type="button" role="tab" aria-selected="false" tabindex="-1" data-tab="tab-finance">
+            <span class="icon" aria-hidden="true" data-heroicon="banknotes" data-icon-size="18"></span> <span data-i18n="university.tab.costs">Costs &amp; funding</span>
           </button>
         </div>
 
@@ -120,13 +126,10 @@
 
         <div class="d-tab-content">
           
-          <div id="tab-general" class="d-tab-pane active">
+          <div id="tab-general" class="d-tab-pane active" role="tabpanel" aria-labelledby="tab-btn-general">
+            <div id="detailOverviewSummary" class="d-box overview-summary" data-overview-summary hidden></div>
             <div class="d-box">
-              <div class="d-box-title" data-i18n="university.about_campus">About &amp; Campus</div>
-              <div id="detailExtra" class="d-box-text"></div>
-            </div>
-            <div class="d-box">
-               <div class="d-box-title" data-i18n="university.overview">Overview</div>
+               <div class="d-box-title" data-i18n="university.ux2.overview.numbers_title">Key facts</div>
                <div id="detailRecommendations" class="d-box-text"></div>
                <details class="university-coverage-section">
                  <summary id="universityCoverageTitle" class="university-coverage-section__title" data-i18n="university.coverage.title">Data coverage in UniSearch</summary>
@@ -136,9 +139,13 @@
                  </div>
                </details>
             </div>
+            <div class="d-box">
+              <div class="d-box-title" data-i18n="university.about_campus">About &amp; Campus</div>
+              <div id="detailExtra" class="d-box-text"></div>
+            </div>
           </div>
 
-          <div id="tab-programs" class="d-tab-pane">
+          <div id="tab-programs" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-programs" hidden>
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.available_majors">Available Majors</div>
               <p class="d-box-note" data-i18n="university.programs_scope_note">Official programs and degree routes published by the institution.</p>
@@ -150,14 +157,14 @@
             </div>
           </div>
 
-          <div id="tab-admission" class="d-tab-pane">
+          <div id="tab-admission" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-admission" hidden>
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.entry_requirements">Published admission routes</div>
               <div id="detailRequirements" class="d-box-text"></div>
             </div>
           </div>
 
-          <div id="tab-deadlines" class="d-tab-pane">
+          <div id="tab-deadlines" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-deadlines" hidden>
             <div class="d-box">
               <div class="d-box-title" data-i18n="university.deadlines.title">Dates and deadlines</div>
               <p class="d-box-note" data-i18n="university.deadlines.intro">Published application deadlines, decision dates, and fees. Check the university's official admissions page for the current cycle.</p>
@@ -165,7 +172,7 @@
             </div>
           </div>
 
-          <div id="tab-finance" class="d-tab-pane">
+          <div id="tab-finance" class="d-tab-pane" role="tabpanel" aria-labelledby="tab-btn-finance" hidden>
              <div class="d-box finance-box">
               <header class="finance-section-header">
                 <h2 class="d-box-title" data-i18n="university.finance.title">Costs and funding</h2>
@@ -226,6 +233,7 @@
           <span class="footer-social-label">GitHub</span>
         </a>
       </div>
+      <p class="footer-attribution" data-i18n-html="footer.qs_attribution">Global ranks: Source: QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). With permission from QS Quacquarelli Symonds. Copyright &copy; QS Quacquarelli Symonds Ltd.</p>
     </div>
   </footer>
 </body>

@@ -32,11 +32,9 @@ const {
   admissionChoiceKey,
   applyPercentWidths,
   chanceTone,
-  clusterMarkerLogoHtml,
   getAdmissionChoicesFromCategories,
   getGrantsFromCategories,
   getTrackFundingType,
-  mapMarkerLogoHtml,
   renderExamGroup,
   renderGroupedExamPairRows,
   renderRequirementChecks,
@@ -91,11 +89,11 @@ test("finance choices follow the selected degree level", () => {
 });
 
 test("manual program context overrides a stale camel-case profile choice without changing saved profile or requested cycle", () => {
-  window.location.search = "?admission_program=graduate-physics&admission_level=bachelor&admission_route=first_year";
+  // The general profile holds no entry cycle; the requested cycle comes from this university's context in the URL.
+  window.location.search = "?admission_program=graduate-physics&admission_level=bachelor&admission_route=first_year&admission_cycle=Fall%202027";
   const savedProfile = {
     studyLevel: "Bachelor",
     applicantRoute: "first_year",
-    intendedEntryCycle: "Fall 2027",
     selectedAdmissionChoices: { test_university: { programId: "undergraduate-cs", choiceKey: "old-choice" } },
   };
   const university = {
@@ -122,7 +120,7 @@ test("manual program context overrides a stale camel-case profile choice without
   assert.deepEqual(requestProfile.selectedAdmissionChoices.test_university, { programId: "graduate-physics" });
   assert.equal(savedProfile.studyLevel, "Bachelor");
   assert.equal(savedProfile.applicantRoute, "first_year");
-  assert.equal(savedProfile.intendedEntryCycle, "Fall 2027");
+  assert.equal(savedProfile.intendedEntryCycle, undefined);
   assert.equal(savedProfile.selectedAdmissionChoices.test_university.programId, "undergraduate-cs");
   window.location.search = "";
 });
@@ -403,14 +401,23 @@ test("reviewed overview shows institution facts without a university-wide admiss
   assert.doesNotMatch(container.innerHTML, /Acceptance Rate|Undergraduate acceptance rate|4\.56%|NaN/);
 });
 
-test("an institution with many delivery formats keeps them in one readable disclosure", () => {
+test("an institution with many delivery formats names the formats rather than each program's schedule", () => {
   setLanguage("eng", { persist: false, emit: false });
   const container = { innerHTML: "" };
-  renderOverviewSection({ container, includeAdmissionRate: false, university: { academics: {
+  renderOverviewSection({ container, includeAdmissionRate: false, university: { verified_sources: [{ topic: "formats", url: "https://example.edu/formats" }], academics: {
     formats: ["Full-time", "Full-time", "Hybrid", "Low-residency campus intensives", "Part-time online"],
   } } });
+  assert.match(container.innerHTML, /Hybrid \(campus and online\), Online/);
+  assert.doesNotMatch(container.innerHTML, /Full-time|Low-residency/);
+});
+
+test("unrecognised format wording is still shown, in one disclosure when long", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "" };
+  renderOverviewSection({ container, includeAdmissionRate: false, university: { verified_sources: [{ topic: "formats", url: "https://example.edu/formats" }], academics: {
+    formats: ["Full-time", "Full-time", "Part-time", "Evening", "Weekend"],
+  } } });
   assert.match(container.innerHTML, /<summary>Varies by program/);
-  assert.match(container.innerHTML, /<li>Low-residency campus intensives<\/li>/);
   assert.equal((container.innerHTML.match(/<li>Full-time<\/li>/g) || []).length, 1);
 });
 
@@ -506,16 +513,8 @@ test("legacy deadlines follow the selected program", () => {
   window.location.search = "";
 });
 
-test("archived legacy finance fixture compares profile income without implying eligibility", () => {
+test("archived legacy finance fixture shows published income thresholds without comparing profile data", () => {
   setLanguage("eng", { persist: false, emit: false });
-  const previousProfile = loadProfile();
-  const previousWindowStorage = window.localStorage;
-  const profileStorage = new Map();
-  window.localStorage = {
-    getItem: (key) => profileStorage.get(key) ?? null,
-    setItem: (key, value) => profileStorage.set(key, String(value)),
-    removeItem: (key) => profileStorage.delete(key),
-  };
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const university = {
     id: "sample-legacy-finance",
@@ -529,50 +528,38 @@ test("archived legacy finance fixture compares profile income without implying e
     },
     admission_categories: [{ id: "sample-undergraduate", label: "Undergraduate", study_level: "Bachelor", funding_options: [{ id: "paid", funding_type: "paid" }] }],
   };
-  const render = () => renderFinanceSection({ annualCostForTrack: () => null, container, university });
 
-  try {
-    saveProfile({
-      studyLevel: "Bachelor",
-      familyIncomeAmount: 120000,
-      familyIncomeCurrency: "EUR",
-    });
-    render();
-    assert.equal((container.innerHTML.match(/Entered income is at or above this published threshold/g) || []).length, 1, container.innerHTML);
-    assert.equal((container.innerHTML.match(/Entered income is below this published threshold/g) || []).length, 1);
-    assert.match(container.innerHTML, /This comparison is context only\. It does not determine aid eligibility, award amount, or net price\./);
+  // A stale saved profile that still carries the removed income input must not change the thresholds.
+  const policy = resolveFeeStatusAndAid({
+    university,
+    profile: { studyLevel: "Bachelor", familyIncomeAmount: 120000, familyIncomeCurrency: "EUR" },
+  });
+  assert.deepEqual(
+    policy.thresholds.map((threshold) => [threshold.label, threshold.value]),
+    [
+      ["Zero Parent Contribution Threshold", "< $100,000 / year"],
+      ["Free Tuition Threshold", "< $200,000 / year"],
+    ],
+  );
+  assert.ok(policy.thresholds.every((threshold) => !("comparison" in threshold)));
 
-    saveProfile({ studyLevel: "Bachelor", familyIncomeAmount: "", familyIncomeCurrency: "USD" });
-    container.innerHTML = "";
-    render();
-    assert.doesNotMatch(container.innerHTML, /Income comparison unavailable|Entered income is/);
-    assert.doesNotMatch(container.innerHTML, /This comparison is context only/);
-    const nullIncomePolicy = resolveFeeStatusAndAid({
-      university,
-      profile: { studyLevel: "Bachelor", familyIncomeAmount: null, familyIncomeCurrency: "USD" },
-    });
-    assert.ok(nullIncomePolicy.thresholds.every((threshold) => !threshold.comparison));
+  renderFinanceSection({ annualCostForTrack: () => null, container, university });
+  assert.match(container.innerHTML, /Zero Parent Contribution Threshold/);
+  assert.match(container.innerHTML, /Free Tuition Threshold/);
+  assert.doesNotMatch(container.innerHTML, /Entered income is|Income comparison unavailable|This comparison is context only/);
+});
 
-    const invalidIncomePolicy = resolveFeeStatusAndAid({
-      university,
-      profile: { studyLevel: "Bachelor", familyIncomeAmount: "not-a-number", familyIncomeCurrency: "USD" },
+test("UK and US universities always show the fee status as unconfirmed", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  for (const country of ["United Kingdom", "United States"]) {
+    const policy = resolveFeeStatusAndAid({
+      university: { location: { country }, finance: {} },
+      profile: { studyLevel: "Bachelor", citizenshipStatus: { status: "verified", fee_category: "home" } },
     });
-    assert.ok(invalidIncomePolicy.thresholds.every((threshold) => threshold.comparison === "Income comparison unavailable"));
-    const unsupportedCurrencyPolicy = resolveFeeStatusAndAid({
-      university,
-      profile: { studyLevel: "Bachelor", familyIncomeAmount: 50000, familyIncomeCurrency: "ZZZ" },
-    });
-    assert.ok(unsupportedCurrencyPolicy.thresholds.every((threshold) => threshold.comparison === "Income comparison unavailable"));
-
-    saveProfile({ studyLevel: "Master", familyIncomeAmount: 50000, familyIncomeCurrency: "USD" });
-    container.innerHTML = "";
-    render();
-    assert.doesNotMatch(container.innerHTML, /finance-threshold-comparison|Income comparison unavailable|Entered income is/);
-  } finally {
-    saveProfile(previousProfile);
-    window.localStorage = previousWindowStorage;
-    setLanguage("eng", { persist: false, emit: false });
+    assert.equal(policy.feeStatusBadge, "Fee status requires an eligibility check");
+    assert.match(policy.feeStatusSummary, /Citizenship alone does not establish home, domestic, or overseas fee status/);
   }
+  assert.equal(resolveFeeStatusAndAid({ university: { location: { country: "Kazakhstan" }, finance: {} }, profile: {} }).feeStatusBadge, "");
 });
 
 test("accepted Stanford aid source remains scoped to its shared route and does not promise an award", async () => {
@@ -751,14 +738,6 @@ test("Harvard Law JD shows its published tuition without presenting it as total 
     saveProfile(previousProfile);
     window.location.search = previousSearch;
   }
-});
-
-test("map marker markup escapes URLs and cluster counts are normalized", () => {
-  const marker = mapMarkerLogoHtml('logo.png" onerror="alert(1)');
-  assert.match(marker, /logo\.png&quot; onerror=&quot;alert\(1\)/);
-  assert.match(marker, /data-remove-on-error="1"/);
-  assert.match(clusterMarkerLogoHtml("logo.png", "3"), /cluster-badge">\+3</);
-  assert.match(clusterMarkerLogoHtml("logo.png", "invalid"), /cluster-badge">\+0</);
 });
 
 test("applyPercentWidths clamps invalid and out-of-range values", () => {

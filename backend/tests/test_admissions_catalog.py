@@ -22,6 +22,8 @@ def fact(record_id="minimum", **changes):
            "content_reviewed_at": None, "period": None, "related_fact_ids": [], "attributes": {}, "index_attributes": {},
            "provenance": {"evidence_file": "synthetic.json", "original_id": record_id, "original_scope": None, "original_source_ids": ["official"]}}
     row.update(changes)
+    # Synthetic fixtures use canonical labels, so the normalized status mirrors them unless a test sets it.
+    row.setdefault("normalized_status", {"publication": row["publication_status"] or "unknown", "review": row["review_status"] or "not_recorded"})
     return row
 
 
@@ -34,12 +36,13 @@ def snapshot():
     mit["sources"] = [{"id": "official", "url": "https://mit.edu/", "title": "Official evidence", "checked_at": "2026-10-01", "attributes": {}}]
     mit["study_options"] = [
         {"id": "computing", "title": "Computing", "levels": ["undergraduate"], "awards": ["SB"], "parent_option_id": None,
-         "route_ids": ["first-year", "transfer"], "fact_ids": ["minimum"], "source_ids": ["official"], "attributes": {}, "evidence_profiles": []},
+         "route_ids": ["first-year", "transfer"], "fact_ids": ["minimum"], "source_ids": ["official"], "attributes": {}, "evidence_profiles": [],
+         "entry": "external"},
         {"id": "physics", "title": "Physics", "levels": ["masters"], "awards": ["SM"], "parent_option_id": None,
-         "route_ids": [], "fact_ids": [], "source_ids": ["official"], "attributes": {}, "evidence_profiles": []},
+         "route_ids": [], "fact_ids": [], "source_ids": ["official"], "attributes": {}, "evidence_profiles": [], "entry": "unresolved"},
     ]
     for route_id in ("first-year", "transfer", "shared"):
-        mit["application_routes"].append({"id": route_id, "title": route_id, "classification": "institution_wide",
+        mit["application_routes"].append({"id": route_id, "title": route_id, "classification": "institution_wide", "entry": "external",
             "target": "University undergraduate admission", "destination": "Official application", "shared_form_family": None,
             "option_ids": ["computing"] if route_id != "shared" else [], "fact_ids": [], "source_ids": ["official"],
             "shared_policy_context_ids": ["shared"] if route_id == "first-year" else [], "attributes": {}, "index_attributes": {}})
@@ -84,6 +87,17 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertEqual(result["selected_route"]["id"], "first-year")
         self.assertEqual(result["fact_groups"]["requirements"], ["minimum"])
         self.assertEqual(result["sources"], self.mit()["sources"])
+
+    def test_subject_matching_computes_each_option_title_tags_once(self):
+        service._title_major_tags.cache_clear()
+        with patch.object(service, "_major_tags_from_text", wraps=service._major_tags_from_text) as tags:
+            first = service.matching_study_options(MIT, "Computer Science", "undergraduate")
+            calls = tags.call_count
+            second = service.matching_study_options(MIT, "Computer Science", "undergraduate")
+        self.assertTrue(first)
+        self.assertEqual(first, second)
+        self.assertGreater(calls, 0)
+        self.assertEqual(calls, tags.call_count)
 
     def test_explicit_context_overrides_profile_without_mutation(self):
         profile = {"study_level": "master", "applicant_route": "graduate", "intended_entry_cycle": "2028",
@@ -162,6 +176,7 @@ class AdmissionsCatalogTests(unittest.TestCase):
         historical = copy.deepcopy(self.mit()["facts"][0])
         historical["id"] = "program-history"
         historical["publication_status"] = "historical"
+        historical["normalized_status"] = {"publication": "historical", "review": "verified"}
         self.mit()["facts"].append(historical)
         self.write()
         result = self.resolve(study_option_id=None)
@@ -238,7 +253,8 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.mit()["facts"].append(fact("old", review_status="superseded"))
         self.mit()["facts"].append(fact("compound", topic="cost_and_funding", value={"amount": None}))
         unknown = fact("gap")
-        unknown.update(reason="Future cost not published", official_next_step="Ask the official admissions office", publication_status=None, review_status=None)
+        unknown.update(reason="Future cost not published", official_next_step="Ask the official admissions office", publication_status=None, review_status=None,
+                       normalized_status={"publication": "unknown", "review": "not_recorded"})
         self.mit()["unknowns"].append(unknown)
         self.write()
         result = self.resolve()
@@ -248,6 +264,18 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.assertIn("compound", result["fact_groups"]["costs"])
         self.assertIn("compound", result["fact_groups"]["funding"])
         self.assertEqual({row["id"] for row in result["facts"]}, {record_id for group in result["fact_groups"].values() for record_id in group})
+
+    def test_public_conflict_projection_exposes_resolution_without_research_attributes(self):
+        conflict = fact("conflict", publication_status="conflicting", review_status="conflicting",
+                        normalized_status={"publication": "conflicting", "review": "conflicting"},
+                        value={"amounts": [100, 120], "next_official_step": "Ask the Registrar for the current bill."},
+                        attributes={"group": "costs", "resolution": {"reason": "The official pages publish different amounts.",
+                                                                           "internal_note": "Do not expose this research note."}})
+        public = service.public_context({"facts": [conflict], "unknowns": []})["facts"][0]
+        self.assertEqual(public["reason"], "The official pages publish different amounts.")
+        self.assertEqual(public["official_next_step"], "Ask the Registrar for the current bill.")
+        self.assertNotIn("attributes", public)
+        self.assertNotIn("internal_note", public)
 
     def test_controlled_topics_group_requirements_without_scoring_completion_rules(self):
         for topic in ("standardized_tests", "academic_prerequisites_and_placement", "english_proficiency_waiver",
@@ -336,6 +364,26 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.write()
         with self.assertRaisesRegex(service.AdmissionsCatalogError, "contract"):
             service.get_revision()
+
+    def test_invalid_normalized_vocabulary_is_rejected(self):
+        self.mit()["facts"][0]["normalized_status"] = {"publication": "published_somewhere", "review": "verified"}
+        self.write()
+        with self.assertRaisesRegex(service.AdmissionsCatalogError, "status"):
+            service.get_revision()
+        self.mit()["facts"][0]["normalized_status"] = {"publication": "published", "review": "verified"}
+        self.mit()["application_routes"][0]["entry"] = "open"
+        self.write()
+        service.clear_cache()
+        with self.assertRaisesRegex(service.AdmissionsCatalogError, "entry"):
+            service.get_revision()
+
+    def test_real_historical_research_labels_leave_current_facts(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            resolved = service.resolve_context("nazarbayev-university-kaz-astana", context={
+                "study_option_id": "nu-a-study-6-year-undergraduate-medical-program", "study_level": "undergraduate"})
+            self.assertIn("nu-a-fact-ump-dates-fees-historical", resolved["history"]["fact_ids"])
+            self.assertNotIn("nu-a-fact-ump-dates-fees-historical", [row["id"] for row in resolved["facts"]])
 
     def test_mit_completed_overviews_resolve_before_route_selection(self):
         with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
@@ -436,6 +484,98 @@ class AdmissionsCatalogTests(unittest.TestCase):
             self.assertIn("full-time professional or educational experience", english["value"])
             self.assertIn("cs-checklist", [sid.split(":")[-1] for sid in english["source_ids"]])
 
+    def test_stanford_first_year_international_need_policy_is_one_scoped_official_statement(self):
+        fact_id = "undergraduate-shared-evidence:stanford-ug-firstyear-international-need-policy"
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            contexts = {route: {"study_option_id": "stanford-option-cs-bs", "study_level": "undergraduate", "intended_entry_cycle": "2027-2028",
+                                "application_route_id": "undergraduate-shared-evidence:" + route} for route in ("stanford-first-year", "stanford-transfer")}
+            first_year = service.resolve_context("stanford-university-usa-ca", context=contexts["stanford-first-year"])
+            policy = next(row for row in first_year["facts"] if row["id"] == fact_id)
+            # The key-facts funding row reads the `international_need` field of a matched funding fact (the field MIT's record uses).
+            self.assertIn(fact_id, first_year["fact_groups"]["funding"])
+            self.assertEqual(policy["applicability"]["route"], "matched")
+            self.assertEqual((policy["publication_status"], policy["normalized_status"]["review"]), ("published", "verified"))
+            statement = policy["value"]["international_need"]
+            self.assertIn("need-aware", statement)
+            self.assertIn("full demonstrated need of every admitted student who asked for aid", statement)
+            # Only what the official page says: no loan, grant-only or merit claims in the one-line statement.
+            self.assertNotRegex(statement.lower(), r"loan|grant|scholarship|100%")
+            self.assertEqual(policy["scope"]["applicant_categories"], ["international"])
+            self.assertEqual(policy["scope"]["route_ids"], ["undergraduate-shared-evidence:stanford-first-year"])
+            source = next(row for row in first_year["sources"] if row["id"] in policy["source_ids"])
+            self.assertEqual((source["url"], source["checked_at"]), ("https://admission.stanford.edu/apply/international/", "2026-11-22"))
+            # The statement belongs to the first-year route and is not borrowed by the transfer route.
+            transfer = service.resolve_context("stanford-university-usa-ca", context=contexts["stanford-transfer"])
+            self.assertNotIn(fact_id, [row["id"] for row in transfer["facts"]])
+
+    def test_mit_international_need_policy_is_one_plain_sourced_statement(self):
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            for route in ("mit-first-year", "mit-transfer"):
+                resolved = service.resolve_context("mit-usa-cambridge", context={
+                    "study_option_id": "mit-course-6-3-bachelor", "study_level": "undergraduate",
+                    "application_route_id": route, "intended_entry_cycle": "Fall 2027 entry"})
+                policy = next(row for row in resolved["facts"] if row["id"] == "undergraduate-aid-category-and-documents")
+                self.assertIn(policy["id"], resolved["fact_groups"]["funding"])
+                statement = policy["value"]["international_need"]
+                # Both parts of the answer are present: asking for aid does not affect admission, and full need is met.
+                self.assertIn("need-blind", statement)
+                self.assertIn("international applicants", statement)
+                self.assertIn("100% of the demonstrated financial need", statement)
+                self.assertNotRegex(statement.lower(), r"loan|scholarship|merit")
+                urls = {row["url"]: row["checked_at"] for row in resolved["sources"] if row["id"] in policy["source_ids"]}
+                self.assertEqual("2026-11-23", urls["https://mitadmissions.org/afford/cost-aid-basics/access-affordability/"])
+                self.assertEqual("2026-11-23", urls["https://sfs.mit.edu/undergraduate-students/apply-for-aid/international/"])
+
+    def test_stanford_standing_deadlines_keep_their_prose_and_add_recurring_windows(self):
+        def windows(context):
+            result = service.resolve_context("stanford-university-usa-ca", context=context)
+            by_id = {row["id"].split(":")[-1]: row for row in result["facts"]}
+            deadlines = set(result["fact_groups"]["deadlines"])
+            return by_id, {row["id"].split(":")[-1]: row["value"]["windows"] for row in result["facts"]
+                           if row["id"] in deadlines and isinstance(row["value"], dict) and "windows" in row["value"]}, result
+
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            first_year, first_windows, _ = windows({"study_option_id": "stanford-option-cs-bs", "study_level": "undergraduate",
+                                                    "application_route_id": "undergraduate-shared-evidence:stanford-first-year"})
+            self.assertEqual(first_windows, {"stanford-firstyear-decision-rounds-windows": [
+                {"name": "Restrictive Early Action", "application_due": "November 1", "aid_due": "November 15", "decision": "mid-December"},
+                {"name": "Regular Decision", "application_due": "January 5", "aid_due": "February 15", "decision": "early April"}]})
+            rounds = first_year["stanford-firstyear-decision-rounds-windows"]
+            # The frontend computes the next occurrence only for reviewed, published records that describe their dates as recurring.
+            self.assertEqual(rounds["period"]["kind"], "yearless_policy")
+            self.assertRegex(rounds["period"]["label"], r"\bRecurring\b")
+            self.assertEqual((rounds["publication_status"], rounds["normalized_status"]["review"]), ("published", "verified"))
+            self.assertIsNone(rounds["scope"]["cycle"])
+            self.assertEqual(rounds["scope"]["route_ids"], ["undergraduate-shared-evidence:stanford-first-year"])
+            self.assertIn("undergraduate-shared-evidence:stanford-firstyear-decision-rounds-deadlines", rounds["related_fact_ids"])
+            # The arts-portfolio dates stay in the original prose, which is unchanged.
+            prose = first_year["stanford-firstyear-decision-rounds-deadlines"]
+            self.assertTrue(prose["value"].startswith("REA Common Application deadline is November 1, with decisions by mid-December;"))
+            self.assertIn("October 15 REA and December 5 RD", prose["value"])
+            self.assertNotIn("Optional Arts Portfolio", json.dumps(rounds["value"]))
+            transfer, transfer_windows, _ = windows({"study_option_id": "stanford-option-cs-bs", "study_level": "undergraduate",
+                                                     "application_route_id": "undergraduate-shared-evidence:stanford-transfer"})
+            self.assertEqual(transfer_windows, {"stanford-transfer-deadline-windows": [
+                {"name": "Transfer application", "application_due": "March 15", "aid_due": "March 15", "decision": "mid-May"}]})
+            self.assertRegex(transfer["stanford-transfer-deadline-windows"]["period"]["label"], r"\bRecurring\b")
+            self.assertNotIn("stanford-firstyear-decision-rounds-windows", transfer)
+            # A cycle-specific external graduate date keeps its year and gets no recurring window.
+            _, ms_windows, ms = windows({"study_option_id": "stanford-option-cs-ms", "application_route_id": "directory-evidence:stanford-graduate-cs-ms"})
+            self.assertEqual(ms_windows, {})
+            dated = next(row for row in ms["facts"] if row["id"].endswith("program-deadline-gre-2027"))
+            self.assertEqual(dated["value"]["deadlines"]["stanford-cs-ms"], "2026-12-08")
+            # Current-student internal routes whose official text calls the process recurring.
+            for option, route, name, date in [
+                ("stanford-option-chpr-ms", "medicine-graduate-evidence:stanford-route-internal-chpr-ms", "Priority deadline", "May 1"),
+                ("stanford-option-neurs-ms", "medicine-graduate-evidence:stanford-route-enroute-neurs-ms", "Application deadline", "February 1"),
+            ]:
+                internal, internal_windows, _ = windows({"study_option_id": option, "application_route_id": route})
+                self.assertEqual(list(internal_windows.values()), [[{"name": name, "application_due": date}]], option)
+                self.assertRegex(next(row["period"]["label"] for row in internal.values() if row["id"].endswith("-windows")), r"\bRecurring\b")
+
     def test_every_stanford_program_and_linked_route_resolves_with_scoped_sources(self):
         with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
             service.clear_cache()
@@ -503,6 +643,29 @@ class SharedRouteProductionTests(unittest.TestCase):
                 self.assertTrue(all(not fact["scope"]["option_ids"] for fact in result["unknowns"]))
                 self.assertTrue(all(not fact["scope"]["option_ids"] for fact in result["history"]["facts"]))
         self.assertEqual([], service.list_study_options("imperial-college-london-uk")["shared_routes"])
+
+    def test_superseded_research_notes_never_reach_applicant_history(self):
+        institution_id = "stanford-university-usa-ca"
+        with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):
+            service.clear_cache()
+            research_ids = {row["id"] for row in service.get_institution(institution_id)["unknowns"]
+                            if row["review_status"] == "superseded_by_completed_research"}
+            self.assertEqual(7, len(research_ids))
+            contexts = [{"application_route_id": route["id"]} for route in service.get_institution(institution_id)["application_routes"]]
+            page = 1
+            while True:
+                listing = service.list_study_options(institution_id, page=page, limit=100)
+                contexts.extend({"study_option_id": option["id"]} for option in listing["items"])
+                if len(listing["items"]) < 100:
+                    break
+                page += 1
+            history_unknowns = set()
+            for context in contexts:
+                result = service.resolve_context(institution_id, context=context)
+                history_unknowns.update(row["id"] for row in result["history"]["unknowns"])
+        self.assertFalse(research_ids & history_unknowns)
+        # Superseded records with a published source update stay visible as dated history.
+        self.assertIn("undergraduate-shared-evidence:stanford-transfer-application-fee-conflict", history_unknowns)
 
     def test_cs_policy_layers_attach_to_real_routes_and_special_paths_survive(self):
         institution_id = "stanford-university-usa-ca"

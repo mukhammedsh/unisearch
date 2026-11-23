@@ -65,23 +65,46 @@ async function chooseOption(page, optionId, search, level) {
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
   await expect(page.locator("#admissionsViewRequirements")).toHaveCount(0);
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // A program with exactly one application route is read through it directly; otherwise no route is preselected.
+  const routes = await page.locator("#admissionsRoute option").evaluateAll(options => options.map(option => option.value).filter(Boolean));
+  await expect(page.locator("#admissionsRoute")).toHaveValue(routes.length === 1 ? routes[0] : "");
 }
 
-async function applyContext(page, route, applicant, cycle) {
+function waitForAdmissionsContext(page, routeId) {
+  return page
+    .waitForResponse((item) => {
+      if (!item.url().includes("/admissions-context") || item.request().method() !== "POST") return false;
+      try {
+        return item.request().postDataJSON()?.context?.application_route_id === routeId;
+      } catch {
+        return false;
+      }
+    })
+    .then(async (item) => ({ status: item.status(), body: await item.json() }));
+}
+
+async function applyContext(page, route, cycle) {
   await selectRoute(page, route);
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await setNativeSelect(page, "admissionsApplicant", applicant);
-  await page.locator("#admissionsCycle").fill(cycle);
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
-  await page.locator("#admissionsContextApply").click();
+  let response;
+  if (!(await advanced.isVisible())) {
+    // A path with one intake and no fee classes asks for neither; it is read as linked.
+    expect(cycle, `${route} offers no entry-year field`).toBe("");
+    response = waitForAdmissionsContext(page, route);
+    await page.reload();
+  } else {
+    if (!(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
+    await page.locator("#admissionsCycle").fill(cycle);
+    if (await page.locator("select#admissionsFee").count()) await setNativeSelect(page, "admissionsFee", "unknown");
+    response = waitForAdmissionsContext(page, route);
+    await page.locator("#admissionsContextApply").click();
+  }
   const result = await response;
-  expect(result.status()).toBe(200);
+  expect(result.status).toBe(200);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  return result.json();
+  return result.body;
 }
 
 async function openFact(page, tab, id) {
@@ -102,23 +125,25 @@ async function openFact(page, tab, id) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements");
 }
 
 test("Kazakhstan secondary-school guest and applicant can distinguish university-wide MIT and Stanford first-year and transfer routes", async ({ page }, testInfo) => {
   const kazakhstanApplicant = {
     languageEvidence: [{ kind: "education", language: "en", country: "Kazakhstan", qualification_level: "secondary", status: "completed", entirely_in_language: false }],
-    citizenships: ["KZ"],
   };
   await preparePage(page);
 
   const journeys = [
-    { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-first-year", applicant: "first_year", cycle: "Fall 2027 entry", guest: true },
+    { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-first-year", applicant: "first_year", cycle: "", guest: true },
     { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-transfer", applicant: "transfer", cycle: "Fall 2027 entry" },
-    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-first-year", applicant: "first_year", cycle: "2027 entry" },
-    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-transfer", applicant: "transfer", cycle: "2027 entry", guest: true },
+    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-first-year", applicant: "first_year", cycle: "" },
+    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-transfer", applicant: "transfer", cycle: "", guest: true },
   ];
 
   for (const journey of journeys) {
@@ -135,7 +160,7 @@ test("Kazakhstan secondary-school guest and applicant can distinguish university
       if (Object.keys(profile).length) localStorage.setItem("unisearch_profile", JSON.stringify(profile));
       else localStorage.removeItem("unisearch_profile");
     }, savedProfile);
-    const result = await applyContext(page, journey.route, journey.applicant, journey.cycle);
+    const result = await applyContext(page, journey.route, journey.cycle);
     expect(result.selected_option.id).toBe(journey.option);
     expect(result.selected_route.id).toBe(journey.route);
     expect(result.selected_route.target).toMatch(/university|MIT undergraduate (?:transfer )?admission/i);
@@ -227,7 +252,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await chooseOption(page, "mit-course-6-9p-meng", "Course 6-9P", "masters");
   await openAdmission(page);
   await expect(page.locator('#admissionsRoute option[value="mit_bcs_meng_admissions"]')).toContainText(/MIT Brain and Cognitive Sciences Course 6[\u2011-]9P internal MEng application/);
-  const result = await applyContext(page, "mit_bcs_meng_admissions", "graduate", "");
+  const result = await applyContext(page, "mit_bcs_meng_admissions", "");
   expect(result.assessment.chancePercent).toBe(100);
   const checks = Object.fromEntries(result.assessment.activeChoice.details.checks.filter((check) => check.checkId).map((check) => [check.checkId, check]));
   expect(["current-course-6-9", "technical-gpa", "overall-gpa", "major-subject-units"].map((id) => checks[id].status)).toEqual(["met", "met", "met", "met"]);
@@ -236,7 +261,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   expect(checks["overall-gpa"].sourceRule.id).toBe("bcs-meng-entry-conditions");
   const bcsContextUrl = page.url();
   const assessment = await openAssessment(page);
-  await expect(assessment.locator(":scope > p > strong")).toHaveText("100%");
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).toContainText("(100%)");
   const scopedAverages = assessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" });
   await expect(scopedAverages).toHaveCount(2);
   await expect(scopedAverages.nth(0).locator(":scope > summary")).toContainText(/Met/i);
@@ -246,9 +271,9 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   const unknowns = overallCheck.locator("details.admissions-catalog__unknowns");
   if (await unknowns.count() && !(await unknowns.evaluate((node) => node.open))) await unknowns.locator(":scope > summary").click();
   await expect(overallCheck).toContainText(/overall/i);
-  await expect(overallCheck).toContainText(/Value\s*4(?:\.0)?Original scale\s*5/);
+  await expect(overallCheck).toContainText(/Overall GPA:\s*4\/5/);
   await expect(overallCheck).toContainText("4");
-  await expect(overallCheck).toContainText(/published/i);
+  await expect(overallCheck).toContainText(/full source record/i);
   await expect(overallCheck.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
   await expect(page.locator("#detailRequirements")).toContainText(/supervisor|UROP/i);
 
@@ -264,9 +289,11 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
 
   await page.goto(bcsContextUrl);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  const incompleteResponse = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
+  // Let overview-summary's background POST settle too so reload() cannot drop an in-flight response from the previous document.
+  await expect(page.locator('#detailOverviewSummary [data-summary-card], #detailOverviewSummary .overview-summary__state[role="alert"]').first()).toBeAttached();
+  const incompleteResponse = waitForAdmissionsContext(page, "mit_bcs_meng_admissions");
   await page.reload();
-  const updated = await (await incompleteResponse).json();
+  const { body: updated } = await incompleteResponse;
   expect(updated.assessment.chancePercent).toBeNull();
   const overallMissing = updated.assessment.activeChoice.details.checks.find((check) => check.checkId === "overall-gpa");
   expect(overallMissing.status).toBe("missing");
@@ -275,12 +302,12 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const updatedAssessment = await openAssessment(page);
-  await expect(updatedAssessment).toContainText("Required applicant evidence is missing");
-  await expect(updatedAssessment.locator(":scope > p > strong")).toHaveCount(0);
+  await expect(updatedAssessment).toContainText("Add your results to your profile");
+  await expect(updatedAssessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
   await missingOverall.locator(":scope > summary").click();
-  await expect(missingOverall).toContainText("Original published rule");
+  await expect(missingOverall).toContainText(/full source record/i);
   await expect(missingOverall).toContainText(/overall/i);
   await expect(missingOverall).toContainText("4");
   await expect(missingOverall.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
@@ -292,19 +319,10 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy", "Data, Economics, and Design of Policy", "masters");
-  await selectRoute(page, "mit_grad_dedp_admissions");
-  if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
-  const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await setNativeSelect(page, "admissionsApplicant", "graduate");
-  await page.locator("#admissionsCycle").fill("Spring 2028");
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = page.waitForResponse((item) => item.url().includes("/admissions-context") && item.request().method() === "POST");
-  await page.locator("#admissionsContextApply").click();
-  const result = await (await response).json();
+  // DEDP publishes one Spring 2028 intake, read with its dates without an entry-year field.
+  const result = await applyContext(page, "mit_grad_dedp_admissions", "");
   expect(result.selected_route.id).toBe("mit_grad_dedp_admissions");
   expect(result.selected_route.target).toMatch(/Data, Economics, and Design of Policy/i);
-  await expect(page.locator("#admissionsCycle")).toHaveValue("Spring 2028");
   await expect(page.locator("#admissionsContext")).toContainText("Data, Economics, and Design of Policy");
   await page.locator("#admissionsContext").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("mit-dedp-context-mobile.png") });
@@ -333,6 +351,6 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(funding.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
 
   await openAdmission(page);
-  await expect(page.locator('#admissionsContext a[href^="https://apply.mit.edu/"]')).toBeVisible();
+  await expect(page.locator('#detailRequirements .admissions-application-link[href^="https://apply.mit.edu/"]')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

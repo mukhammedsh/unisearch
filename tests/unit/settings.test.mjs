@@ -140,3 +140,19 @@ describe('settings.js', () => {
     assert.strictEqual(getSettingValue(SETTING_DISABLE_RECENT_UNIVERSITIES), true);
   });
 });
+
+test("the default currency follows the device's country: time zone first, then browser language, else USD", async () => {
+  const { detectRegionCurrency } = await import("../../frontend/javascript/settings.js");
+  const supported = new Set(["USD", "KZT", "SAR", "AED", "GBP", "INR", "EUR"]);
+  assert.equal(detectRegionCurrency({ timeZone: "Asia/Almaty", languages: ["en-US"], supported }), "KZT");
+  assert.equal(detectRegionCurrency({ timeZone: "Asia/Riyadh", languages: ["ar"], supported }), "SAR");
+  assert.equal(detectRegionCurrency({ timeZone: "Asia/Dubai", languages: [], supported }), "AED");
+  // Older zone names some browsers still report are linked to their country.
+  assert.equal(detectRegionCurrency({ timeZone: "Asia/Calcutta", languages: [], supported }), "INR");
+  // Without a known zone, the browser language's country decides.
+  assert.equal(detectRegionCurrency({ timeZone: "UTC", languages: ["ar-SA", "en"], supported }), "SAR");
+  assert.equal(detectRegionCurrency({ timeZone: "Europe/Berlin", languages: [], supported }), "EUR");
+  // A currency without an exchange rate, an unknown zone or a language without a country falls back to USD.
+  assert.equal(detectRegionCurrency({ timeZone: "Asia/Almaty", languages: [], supported: new Set(["USD"]) }), "USD");
+  assert.equal(detectRegionCurrency({ timeZone: "UTC", languages: ["en", "not a tag!"], supported }), "USD");
+});

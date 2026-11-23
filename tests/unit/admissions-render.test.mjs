@@ -3,6 +3,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { EXAM_CONFIG } from "../../frontend/javascript/utils/config.js";
+
+// Admissions labels come only from the language packs, so the English pack is loaded as in the app.
+global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
+const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
+await initI18n();
+setLanguage("eng", { emit: false });
 import { admissionsProgramLabel, admissionsRouteName, renderAdmissionsContext, renderAdmissionsFacts, renderAdmissionsAssessment, renderAdmissionsValue, renderStudyOptionOverview } from "../../frontend/javascript/pages/university/admissions-render.js";
 
 const examDefinitions = JSON.parse(await readFile(new URL("../../backend/data/exams.json", import.meta.url), "utf8"));
@@ -46,14 +52,21 @@ function context() {
   };
 }
 
+// Mirrors backend preparation for the research labels these fixtures use.
+const PUBLICATION_STATES = { published: "published", conflicting: "conflicting", unknown: "unknown" };
+const REVIEW_STATES = { reviewed: "verified", verified: "verified", verified_current_page: "verified",
+  original_catalog_content_rechecked_2026_10_03: "verified", conflicting: "conflicting" };
+const withStatus = row => ({ ...row, normalized_status: row.normalized_status || {
+  publication: PUBLICATION_STATES[row.publication_status] || "unknown", review: REVIEW_STATES[row.review_status] || "not_recorded" } });
+
 function fact(value, extra = {}) {
-  return {
+  return withStatus({
     id: "private-fact-id", topic: "costs", value, source_ids: ["source-private"],
     publication_status: "published", checked_at: "2026-10-12", period: { kind: "named", label: "2026–2027" },
     applicability: { status: "conditional" },
     scope: { option_ids: ["example-option"], route_ids: ["example-route"], levels: ["undergraduate"], cycle: "Fall 2027" },
     ...extra,
-  };
+ });
 }
 
 test("institution-route reading renders scoped facts without inventing a selected program", () => {
@@ -184,14 +197,14 @@ test("the visible requirements summary emphasizes unmet checks and keeps details
   ] } } };
   const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
   assert.match(html, /At least one evaluated published minimum was not met/);
-  assert.match(html, /Required applicant evidence is missing/);
+  assert.match(html, /Add your results to your profile to compare them with the minimums/);
   assert.match(html, /not an admission probability/);
   assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
   assert.ok(html.indexOf("At least one evaluated published minimum was not met") < html.indexOf("<details class=\"admissions-catalog__assessment-detail\">"));
   assert.doesNotMatch(html, /<strong>0%<\/strong>/);
   const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail">');
   assert.match(summary, /Add the missing evidence in your profile/);
-  assert.doesNotMatch(summary, /Required applicant evidence is missing|of 2 evaluated numeric/);
+  assert.doesNotMatch(summary, /Add your results to your profile to compare them with the minimums|of 2 evaluated numeric/);
   assert.doesNotMatch(summary, /No requirements-match percentage|self-reported|not an admission probability/);
   assert.match(details, /self-reported/);
   assert.match(details, /not an admission probability/);
@@ -394,17 +407,17 @@ test("unselected and incompatible contexts do not display unrelated facts", () =
 
 test("publication, evidence review, and applicability remain independent", () => {
   const resolved = context();
-  resolved.facts = [fact("Read both official versions.", { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
+  resolved.facts = [fact({ amounts: [100, 120], next_official_step: "Ask the admissions office." }, { review_status: "conflicting", reason: "The published values differ.", official_next_step: "Ask the admissions office.", conditions: [], conditions_and_exceptions: null, exceptions: null })];
   resolved.fact_groups = { costs: ["private-fact-id"] };
   const html = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(html, /<span class="admissions-catalog__status">Published<\/span>/);
   assert.match(html, /Evidence review: Conflicting official sources/);
   assert.match(html, /The published values differ/);
   assert.match(html, /Ask the admissions office/);
+  assert.equal((html.match(/Ask the admissions office/g) || []).length, 1);
   assert.match(html, /Conditional — applicability still needs verification<\/span><\/summary>/);
   assert.doesNotMatch(html, /UnknownUnknown|<strong>Conditions and exceptions<\/strong>/);
-  resolved.facts[0].publication_status = "unknown";
-  resolved.facts[0].review_status = "verified";
+  resolved.facts[0] = withStatus({ ...resolved.facts[0], publication_status: "unknown", review_status: "verified", normalized_status: undefined });
   const reviewedUnknown = renderAdmissionsFacts(resolved, ["costs"]);
   assert.match(reviewedUnknown, /<span class="admissions-catalog__status">Unknown<\/span>/);
   assert.match(reviewedUnknown, /Evidence review: Verified/);
@@ -451,9 +464,90 @@ test("unassessed typed profile claims remain available without guessed program s
   const html = renderAdmissionsAssessment(resolved);
   assert.match(html, /Kazakhstan/);
   assert.match(html, /102/);
-  assert.match(html, /<dt>Study option<\/dt><dd>Unknown<\/dd>/);
+  assert.match(html, /<li>Education · EN · Kazakhstan · Yes, entirely<\/li>/);
+  assert.match(html, /<li>Enrollment or course progress · Study option: Unknown · Units in the major requirements: 102<\/li>/);
   assert.match(html, /Applicant evidence is self-reported/);
-  assert.doesNotMatch(html, /another-private-program-id|private-university-id/);
+  assert.doesNotMatch(html, /another-private-program-id|private-university-id|<dt>Kind<\/dt>|<dt>Code<\/dt>/);
+});
+
+test("reported test attempts read as one sentence without raw code, kind or id fields", () => {
+  const resolved = context();
+  resolved.assessment = { chancePercent: null, reason: "unassessed_minimums", activeChoice: { details: { checks: [{
+    kind: "academic_requirement", status: "unassessed",
+    provided: { code: "en", kind: "exam", id: "raw-attempt-id", exam: "NUET", score: 120, taken_on: "2026-03-01" },
+  }, {
+    kind: "scoped_gpa", status: "met", provided: { kind: "gpa", university_id: "hidden-university-id", program_id: "hidden-program-id", metric: "overall", value: 4, scale: 5, as_of_term: "Fall 2026" },
+  }] } } };
+  const html = renderAdmissionsAssessment(resolved);
+  assert.match(html, /<p class="admissions-catalog__reported">NUET: [^<]*120[^<]*Test date: 2026[‑-]03-01<\/p>/);
+  assert.match(html, /<p class="admissions-catalog__reported">Program GPA · Overall GPA: 4\/5 · As of term: Fall 2026<\/p>/);
+  assert.doesNotMatch(html, /<dt>Code<\/dt>|<dt>Kind<\/dt>|<dt>Id<\/dt>|raw-attempt-id|hidden-university-id|hidden-program-id/);
+});
+
+test("source selector keys stay internal while published qualification wording remains visible", () => {
+  const html = renderAdmissionsValue({ qualification_requirements: [{
+    qualification_label: "Access to HE Diploma", published_requirement: "This qualification is not accepted.",
+    source_selector_value: "1781453", selector_id: "course-domestic-qual-1225216",
+  }] });
+  assert.match(html, /Access to HE Diploma/);
+  assert.match(html, /This qualification is not accepted/);
+  assert.doesNotMatch(html, /1781453|course-domestic-qual-1225216|[Ss]elector/);
+});
+
+test("a nested list of covered courses stays visible and identical list items are shown once", () => {
+  const html = renderAdmissionsValue({ medicine_deadline: { date: "2026-10-15", scope: ["MBBS Medicine", "Graduate Entry Medicine"] }, repeated: ["Same note.", "Same note.", "Other note."] });
+  assert.match(html, /MBBS Medicine/);
+  assert.match(html, /Graduate Entry Medicine/);
+  assert.equal((html.match(/Same note\./g) || []).length, 1);
+  assert.match(html, /Other note\./);
+});
+
+test("an assessment check points to the source record shown below instead of repeating it", () => {
+  const resolved = context();
+  resolved.facts = [fact({ minimum: 4.25, scale: 5 }, { id: "gpa-rule", topic: "academic_requirements", conditions: ["Enrollment must first be verified."], checked_at: "2026-10-12" })];
+  resolved.fact_groups = { requirements: ["gpa-rule"] };
+  resolved.sources = [{ id: "source-private", title: "Official standards", url: "https://example.edu/standards", checked_at: "2026-10-12" }];
+  resolved.assessment = { chancePercent: null, reason: "unassessed_minimums", activeChoice: { details: { checks: [{
+    factId: "gpa-rule", kind: "scoped_gpa", status: "unassessed", rule: { metric: "overall", minimum: 4.25, scale: 5 },
+    sourceIds: ["source-private"], sourceRule: resolved.facts[0],
+  }] } } };
+  const html = renderAdmissionsContext(resolved, { domains: ["requirements"], presentation: "simple" });
+  assert.equal((html.match(/Enrollment must first be verified\./g) || []).length, 1);
+  assert.equal((html.match(/data-admissions-fact="gpa-rule"/g) || []).length, 1);
+  assert.equal((html.match(/data-admissions-record-link="gpa-rule"/g) || []).length, 1);
+  assert.doesNotMatch(html, /Original published rule/);
+  assert.match(html, /Show full source record/);
+  assert.match(html, /href="https:\/\/example\.edu\/standards"/);
+  assert.match(html, /2026[‑-]10-12/);
+  // Without the records beside it, the same check keeps its full source rule.
+  const alone = renderAdmissionsAssessment(resolved, { presentation: "simple" });
+  assert.match(alone, /Original published rule/);
+  assert.match(alone, /Enrollment must first be verified\./);
+  assert.doesNotMatch(alone, /data-admissions-record-link/);
+});
+
+test("a record is rendered once with one compact source line and no repeated baseline statuses", () => {
+  const resolved = context();
+  resolved.facts = [fact("Submit the form online.", { id: "once", topic: "application_process", review_status: "reviewed", conditions: ["Fees apply."], conditions_and_exceptions: ["Fees apply."], exceptions: ["Fees apply."] })];
+  resolved.fact_groups = { application: ["once"] };
+  resolved.sources = [{ id: "source-private", title: "Official application", url: "https://example.edu/apply", checked_at: "2026-10-12" }];
+  const html = renderAdmissionsContext(resolved, { domains: ["application"], presentation: "simple", includeAssessment: false });
+  assert.equal((html.match(/data-admissions-fact="once"/g) || []).length, 1);
+  assert.equal((html.match(/Fees apply\./g) || []).length, 1);
+  assert.equal((html.match(/class="admissions-catalog__sources"/g) || []).length, 1);
+  assert.doesNotMatch(html, /Official page checked|Publication status|Evidence review/);
+  assert.match(html, /Last checked: 2026[‑-]10-12|Last checked: 2026-10-12/);
+});
+
+test("records of one group list their identical official sources once", () => {
+  const resolved = context();
+  resolved.facts = ["one", "two"].map(id => fact(`Anonymous ${id} rule.`, { id, topic: "funding_aid" }));
+  resolved.fact_groups = { requirements: ["one", "two"] };
+  resolved.sources = [{ id: "source-private", title: "Official aid page", url: "https://example.edu/aid", checked_at: "2026-10-12" }];
+  const html = renderAdmissionsContext(resolved, { domains: ["requirements"], presentation: "simple", includeAssessment: false });
+  assert.match(html, /Anonymous one rule\./);
+  assert.match(html, /Anonymous two rule\./);
+  assert.equal((html.match(/href="https:\/\/example\.edu\/aid"/g) || []).length, 1);
 });
 
 test("simple source headings use published labels and bounded topic categories", () => {
@@ -490,7 +584,7 @@ test("simple source details retain independent statuses, limits, periods and sou
   assert.doesNotMatch(summary, />Published</);
   assert.equal((html.match(/Scope varies/g) || []).length, 1);
   assert.match(html, /<details class="admissions-catalog__evidence">/);
-  for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Source scope", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
+  for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Applies to", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
   assert.match(html, /2026[‑-]10-12/);
   assert.match(html, /<dd>0<\/dd>/);
 });
@@ -541,10 +635,10 @@ test("simple sections show a multi-domain source fact once with all topic headin
   assert.match(html, /<span>Tests · Funding<\/span>/);
   assert.equal((html.match(/data-admissions-fact="private-fact-id"/g) || []).length, 1);
   assert.match(html, /Tests apply; funding needs a separate award/);
-  assert.doesNotMatch(html, /data-admissions-domain="funding"|Official wording remains in its original language|No source records/);
+  assert.doesNotMatch(html, /data-admissions-domain="funding"|Official wording stays in its original language|No source records/);
   const detailed = renderAdmissionsContext(resolved);
   assert.equal((detailed.match(/data-admissions-fact="private-fact-id"/g) || []).length, 2);
-  assert.match(detailed, /Official wording remains in its original language/);
+  assert.match(detailed, /Official wording stays in its original language/);
 });
 
 test("simple exam headings distinguish explicit source names without interpreting IDs or generic rule markers", () => {
@@ -640,7 +734,7 @@ test("simple qualification tables retain source wording, extra fields, condition
   resolved.sources = [{ id: "qualification-policy", title: "Official qualification policy", url: "https://example.edu/qualifications", checked_at: "2026-10-13" }];
 
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
-  for (const value of ["International Baccalaureate", "Subject", "Published minimum", "Higher level", "The mathematics subject must be taken at higher level", "full diploma", "The university evaluates each qualification", "Only for first-year applicants", "Required subjects vary by course", "A separate test may also apply", "Evidence review", "Source and conditions", "Published period", "2027 entry", "Fall 2027", "Official qualification policy", "https://example.edu/qualifications", "Scope varies"]) {
+  for (const value of ["International Baccalaureate", "Subject", "Published minimum", "Higher level", "The mathematics subject must be taken at higher level", "full diploma", "The university evaluates each qualification", "Only for first-year applicants", "Required subjects vary by course", "A separate test may also apply", "Source and conditions", "Published period", "2027 entry", "Fall 2027", "Official qualification policy", "https://example.edu/qualifications", "Scope varies"]) {
     assert.ok(html.replaceAll("‑", "-").includes(value), value);
   }
   assert.match(html, /2026[‑-]10-13/);
@@ -651,7 +745,7 @@ test("simple unknown information is closed by default while retaining every next
   resolved.unknowns = [{ reason: "Award applicability has not been established.", official_next_step: "Ask the official funding office.", scope: { option_ids: ["example-option"], levels: ["undergraduate"], cycle: "Fall 2027", additional_dimensions: { employer: "Employer sponsorship remains unverified." } }, source_ids: ["official"] }];
   resolved.sources = [{ id: "official", title: "Official funding scope", url: "https://example.edu/funding" }];
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
-  assert.match(html, /<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">Unresolved source information \(1\)/);
+  assert.match(html, /<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">Not yet published by the university \(1\)/);
   for (const text of ["Award applicability has not been established", "Ask the official funding office", "Computing", "Fall 2027", "Employer sponsorship remains unverified", "https://example.edu/funding"]) assert.ok(html.includes(text), text);
   assert.doesNotMatch(renderAdmissionsContext(resolved), /admissions-catalog__unknowns/);
 });
@@ -661,6 +755,26 @@ test("simple route classification labels remain separate from published titles a
   assert.equal(admissionsRouteName({ classification: "ucas_course_choice" }), "ucas_course_choice");
   assert.equal(admissionsRouteName({ title: "Published course application", classification: "ucas_course_choice" }, { presentation: "simple" }), "Published course application");
   assert.equal(admissionsRouteName({ target: "Official programme target", classification: "ucas_course_choice" }, { presentation: "simple" }), "Official programme target");
-  assert.equal(admissionsRouteName({ classification: "external non-professional graduate application" }, { presentation: "simple" }), "external non-professional graduate application");
-  assert.equal(admissionsRouteName({ classification: "internal_progression" }, { presentation: "simple" }), "internal progression");
+  // Unlabelled research classifications fall back to the closed entry label instead of raw source wording.
+  assert.equal(admissionsRouteName({ classification: "internal_progression", entry: "internal" }, { presentation: "simple" }), "Current students only");
+  assert.doesNotMatch(admissionsRouteName({ classification: "external non-professional graduate application", entry: "external" }, { presentation: "simple" }), /non-professional/);
+});
+
+test("status badges read the closed vocabulary rather than research label spelling", () => {
+  const resolved = context();
+  resolved.fact_groups = { costs: ["private-fact-id"] };
+  resolved.facts = [fact("Cycle label awaits confirmation.", { publication_status: "published_but_source_year_unspecified", review_status: "needs_cycle_label_confirmation",
+    normalized_status: { publication: "published_with_limits", review: "needs_resolution" } })];
+  const html = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(html, /Check the conditions on the university site/);
+  assert.match(html, /Evidence review: Source review needs resolution/);
+  resolved.facts = [fact("A label that looks published.", { publication_status: "published_everywhere", review_status: "verified_everything",
+    normalized_status: { publication: "historical", review: "superseded" } })];
+  const historical = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(historical, /Historical source record/);
+  assert.match(historical, /Evidence review: Superseded source review/);
+  resolved.facts = [fact("A previous source review was retained.", { publication_status: "published", review_status: "carried_forward_review",
+    normalized_status: { publication: "published", review: "carried_forward" } })];
+  const carriedForward = renderAdmissionsFacts(resolved, ["costs"]);
+  assert.match(carriedForward, /Previous source review retained/);
 });

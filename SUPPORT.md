@@ -1,26 +1,28 @@
 # Support Information
 
-Welcome to UniSearch! We are here to help you navigate your university search journey.
+UniSearch helps applicants explore universities and compare published admissions information. It is a discovery tool, not a provider of personalized admissions counseling. Use each university's official site for decisions and details not covered here.
 
-## How to Get Help
+## How to get help
 
-If you have questions about how to use UniSearch, find a bug, or have suggestions for new features, please use the following channels:
+### GitHub Discussions
 
-### 1. GitHub Discussions
-For general questions, advice on choosing a university, or sharing your experience, please use our [GitHub Discussions](https://github.com/mukhammedsh/unisearch/discussions).
+Use [GitHub Discussions](https://github.com/mukhammedsh/unisearch/discussions) for questions about UniSearch, general university-search topics, and sharing experience.
 
-UniSearch is designed to be your academic consultant. Whether you are a student just starting your search or a developer like our founder (who recently chose Nazarbayev University), the community is here to help!
+### GitHub Issues
 
-### 2. GitHub Issues
-If you encounter a technical bug or notice incorrect university data, please [open an issue](https://github.com/mukhammedsh/unisearch/issues).
-*   **Data Errors:** Please provide a link to the official university website or admission PDF as proof for data corrections.
-*   **Bugs:** Include steps to reproduce and your browser version.
+Report a technical bug, request a feature, or flag incorrect university data through [GitHub Issues](https://github.com/mukhammedsh/unisearch/issues).
 
-### 3. Email Support
-For inquiries that cannot be handled publicly, you can reach us at [info@unisearch.study](mailto:info@unisearch.study).
+- **Data corrections:** include a link to the official university page or university-hosted document that supports the correction.
+- **Bugs:** include steps to reproduce and your browser and version.
 
-## Response Time
-We are a small team, but we strive to respond to all inquiries within one week.
+### Email
 
-## Academic Support
-Please note that UniSearch provides information for undergraduate programs only. For Master's or PhD inquiries, please contact the universities directly.
+For a private inquiry, email [info@unisearch.study](mailto:info@unisearch.study). Please do not send passwords, account credentials, or private applicant-profile details.
+
+## Response time
+
+The team aims to respond within one week.
+
+## Program coverage
+
+The catalog includes undergraduate, master's, doctoral, professional, and preparatory offerings where universities publish relevant information. Coverage varies by institution and admissions cycle. Follow the official links on each university page for details that are not listed in UniSearch.

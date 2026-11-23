@@ -177,45 +177,33 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_accepts_multiple_citizenships_and_syncs_primary(self):
+    def test_ignores_retired_citizenship_and_residence_keys_from_older_clients(self):
         from app.schemas.payloads import ProfilePayload
-        payload = ProfilePayload(citizenships=["KZ", "US"])
-        self.assertEqual(payload.citizenship, "KZ")
-        self.assertEqual(payload.citizenships, ["KZ", "US"])
+        retired = {
+            "citizenship": "KZ",
+            "citizenships": [f"Country {i}" for i in range(15)] + ["X" * 200, 42, None],
+            "current_residence_country": "US",
+            "current_residence_other": "Y" * 500,
+            "country_of_education": "KZ",
+            "country_of_education_other": "Z" * 500,
+            "education_credential": "other",
+            "education_credential_other": "NIS Grade 12 certificate",
+        }
+        payload = ProfilePayload(**retired)
+        for key in retired:
+            self.assertFalse(hasattr(payload, key), key)
+            self.assertNotIn(key, payload.model_dump())
 
-        response = self._post_ai_sort({"profile": {"citizenships": ["KZ", "US"]}})
+        response = self._post_ai_sort({"profile": retired})
         self.assertEqual(response.status_code, 200)
-
-    def test_accepts_comma_separated_citizenships_string(self):
-        from app.schemas.payloads import ProfilePayload
-        payload = ProfilePayload(citizenships="KZ, GB, US")
-        self.assertEqual(payload.citizenships, ["KZ", "GB", "US"])
-        self.assertEqual(payload.citizenship, "KZ")
-
-    def test_syncs_single_citizenship_to_list(self):
-        from app.schemas.payloads import ProfilePayload
-        payload = ProfilePayload(citizenship="KZ")
-        self.assertEqual(payload.citizenships, ["KZ"])
-        self.assertEqual(payload.citizenship, "KZ")
-
-    def test_citizenships_list_is_canonical_when_primary_disagrees(self):
-        from app.schemas.payloads import ProfilePayload
-        payload = ProfilePayload(citizenship="US", citizenships=["KZ", "GB"])
-        self.assertEqual(payload.citizenship, "KZ")
 
     def test_accepts_optional_world_applicant_context_without_inferring_fee_status(self):
         from app.schemas.payloads import ProfilePayload
         payload = ProfilePayload(
-            country_of_education="KZ",
-            education_credential="other",
-            education_credential_other="NIS Grade 12 certificate",
             applicant_route="first_year",
             study_level="Bachelor",
             intended_entry_cycle="2027 Fall",
-            current_residence_country="US",
         )
-        self.assertEqual(payload.country_of_education, "KZ")
-        self.assertEqual(payload.education_credential_other, "NIS Grade 12 certificate")
         self.assertEqual(payload.applicant_route, "first_year")
         self.assertEqual(payload.fee_status_context, "unknown")
 
@@ -236,11 +224,6 @@ class ProfilePayloadValidationExtendedTests(unittest.TestCase):
         )
         with self.assertRaises(ValidationError):
             ProfilePayload(fee_status_context="home")
-
-    def test_empty_citizenships_do_not_claim_country_mismatch(self):
-        from app.services.citizenship import resolve_citizenship_status
-        result = resolve_citizenship_status("USA", [])
-        self.assertIsNone(result["citizenship_matches_country"])
 
 
 if __name__ == "__main__":

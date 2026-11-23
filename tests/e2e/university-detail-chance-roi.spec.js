@@ -7,9 +7,12 @@ const MBA_URL = "/university.html?id=mit-usa-cambridge&admission_option=mit-sloa
 const MIT_FIRST_YEAR_URL = "/university.html?id=mit-usa-cambridge&admission_option=mit-course-6-3-bachelor&admission_application_route=mit-first-year&admission_level=undergraduate&admission_route=first_year&admission_cycle=Fall%202027%20entry&admission_fee=unknown";
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements");
 }
 
 async function openEvidence(fact) {
@@ -26,7 +29,6 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await seedProfile(page, {
     ...personas.enResearch.profile,
     studyLevel: "Master",
-    applicantRoute: "graduate",
     major: "Business",
     gpa: 4,
     exams: [{ exam: "SAT", score: 1550 }],
@@ -42,7 +44,7 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   const assessment = await openAssessment(page);
   await expect(assessment).toBeVisible();
-  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
@@ -61,12 +63,13 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
 
   await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
   const finance = page.locator("#detailFinance");
-  await expect(finance).toContainText(/No comparable budget is confirmed for this selection/i);
+  await expect(finance.locator('[data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
+  await expect(finance).not.toContainText(/No comparable budget is confirmed/i);
   const feeConflict = finance.locator('[data-admissions-domain="costs"] [data-admissions-fact="mba-tuition-fee-conflict"]');
   await openDisclosureParents(feeConflict);
   await expect(feeConflict).toBeVisible();
   await feeConflict.locator(":scope > summary").click();
-  await expect(feeConflict).toContainText(/2026[-\u2011]2027/);
+  await expect(feeConflict).toContainText(/2026[-\u2011\u2013]2027/);
   await expect(feeConflict).toContainText(/91,?892/);
   await expect(feeConflict).toContainText("Confirm current billed tuition");
   await expect(finance).not.toContainText(/\$\s?0(?:\.00)?\b/);
@@ -112,6 +115,11 @@ test("rank tooltip stays usable for the legacy catalog and MIT admissions source
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const fact = page.locator('#detailRequirements [data-admissions-fact="ug-sat-act-presence"]');
   const group = fact.locator("xpath=ancestor::details[@data-admissions-group][1]");
+  // Full records sit behind the tab's single, initially closed records disclosure.
+  const records = page.locator("#detailRequirements [data-all-records]");
+  await expect(records).not.toHaveAttribute("open");
+  await records.locator(":scope > summary").click();
+  await records.locator("[data-full-records] > summary").click();
   await expect(group).not.toHaveAttribute("open");
   await group.locator(":scope > summary").click();
   await expect(group).toHaveAttribute("open", "");

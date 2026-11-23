@@ -23,7 +23,7 @@ export function bindThemeUiSync() {
   try {
     const observer = new MutationObserver(syncNow);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  } catch (error) {
+  } catch {
     // noop
   }
 

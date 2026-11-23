@@ -4,14 +4,18 @@ import { heroIcon } from "../../icons.js";
 import { safeUrl } from "../_shared.js";
 import { createDeadlineIcs, getCalendarCells, parseExactDeadlineDate } from "./deadline-calendar.js";
 import { admissionDeadlineTitle } from "./admissions-render.js";
+import { renderTermsFor } from "./admissions-glossary.js";
 import { translateAdmissionSummary } from "../../university-translations.js";
 
 const label = key => t(`university.deadlines.${key}`);
 
-export function renderDeadlineCalendar(deadlines, state = {}) {
+export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true } = {}) {
   const dated = deadlines.map((item, index) => ({ item, index, date: item.approximate || item.is_approximate ? null : parseExactDeadlineDate(item.deadline) }))
     .filter(entry => entry.date).sort((left, right) => left.date.localeCompare(right.date));
-  if (!dated.length) return `<section class="deadline-calendar"><h4>${escapeHtml(label("calendar_title"))}</h4><p>${escapeHtml(label("calendar_no_exact"))}</p></section>`;
+  // Without an exportable date the calendar is one quiet note, not a titled empty section; a page that already states its
+  // dates in words leaves it out.
+  if (!dated.length && !emptyNote) return "";
+  if (!dated.length) return `<section class="deadline-calendar deadline-calendar--empty" aria-label="${escapeHtmlAttr(label("calendar_title"))}"><p class="admissions-reading__note">${escapeHtml(label("calendar_no_exact"))}</p></section>`;
   const language = getCurrentLanguage();
   const locale = { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[language];
   const today = new Date().toISOString().slice(0, 10);
@@ -46,14 +50,15 @@ export function renderDeadlineCalendar(deadlines, state = {}) {
         const exportable = !item.time || Boolean(createDeadlineIcs(item));
         return `<li><div>${href ? `<a href="${escapeHtmlAttr(href)}"${item.sourceFactId ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(admissionDeadlineTitle(item))}</a>` : escapeHtml(admissionDeadlineTitle(item))}
           ${item.sourceFactId ? `<small>${escapeHtml(item.time ? [item.time, item.timezone].filter(Boolean).join(" · ") : label("calendar_time_unknown"))}${safeUrl(item.timeSourceUrl) ? ` · <a href="${escapeHtmlAttr(safeUrl(item.timeSourceUrl))}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_source"))}</a>` : ""}</small>${item.applicantCategoryLabel ? `<small>${escapeHtml(translateAdmissionSummary(item.applicantCategoryLabel, { section: "applicant_scope" }) || translateAdmissionSummary(item.applicantCategoryLabel) || item.applicantCategoryLabel)}</small>` : ""}` : ""}</div>
+          ${renderTermsFor(item.name)}
           <button type="button" class="deadline-calendar__export" data-calendar-export="${index}"${exportable ? "" : ` disabled title="${escapeHtmlAttr(label("export_time_unresolved"))}"`}>${escapeHtml(label("export_ics"))}</button></li>`;
       }).join("")}</ul>` : `<p>${escapeHtml(label("calendar_empty_month"))}</p>`}
     </div>${deadlines.length > dated.length ? `<p class="deadline-calendar__note">${escapeHtml(label("calendar_partial_note"))}</p>` : ""}</section>`;
 }
 
-export function mountDeadlineCalendar(host, deadlines, state = {}) {
+export function mountDeadlineCalendar(host, deadlines, state = {}, options = {}) {
   if (!host) return;
-  const render = () => { host.innerHTML = renderDeadlineCalendar(deadlines, state); };
+  const render = () => { host.innerHTML = renderDeadlineCalendar(deadlines, state, options); };
   render();
   host.onclick = event => {
     const button = event.target.closest("button");

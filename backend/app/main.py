@@ -37,8 +37,8 @@ from app.core.settings import (
     REQUEST_BODY_MAX_BYTES,
 )
 from app.routers import root, universities, exams, languages, currency, admissions
-from app.services.background_tasks import warmup_runtime
 from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
+from app.services.background_tasks import warmup_runtime
 
 
 logging.basicConfig(
@@ -187,8 +187,10 @@ def _security_headers() -> dict[str, str]:
             "default-src 'self'; "
             "connect-src 'self' http://127.0.0.1:* http://localhost:*; "
             "script-src 'self' https://unpkg.com; "
-            "img-src 'self' data: https://unpkg.com https://*.tile.openstreetmap.org; "
+            "img-src 'self' data: https://unpkg.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org; "
             "style-src 'self' 'unsafe-inline' https://unpkg.com; "
+            "font-src 'self'; "
+            "form-action 'self'; "
             "base-uri 'self'; "
             "frame-ancestors 'none'; "
             "object-src 'none'"
@@ -318,6 +320,7 @@ def _finalize_request_response(
     )
     return response
 
+
 app.mount(
     "/universities/assets",
     StaticFiles(directory=str(UNIVERSITY_ASSETS_DIR)),
@@ -328,9 +331,12 @@ app.mount(
 @app.exception_handler(AdmissionsCatalogError)
 async def admissions_catalog_error_handler(request: Request, exc: AdmissionsCatalogError) -> JSONResponse:
     missing = isinstance(exc, InstitutionNotFoundError)
-    return JSONResponse(
-        {"detail": "Admissions catalog not found" if missing else "Admissions catalog is unavailable"},
-        status_code=404 if missing else 503, headers={"Cache-Control": "private, no-store"},
+    return _apply_security_headers(
+        JSONResponse(
+            {"detail": "Admissions catalog not found" if missing else "Admissions catalog is unavailable"},
+            status_code=404 if missing else 503,
+            headers={"Cache-Control": "private, no-store"},
+        )
     )
 
 

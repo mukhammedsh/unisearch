@@ -46,12 +46,12 @@ test("UniFit distinguishes unknown fit from failure and explains the actual evid
   await expect(unknown.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveCount(0);
   await expect(unknown.locator(".uni-status-trigger[aria-label*='Aid Available']")).toHaveCount(0);
   await expect(unknown.locator(".uni-status-trigger[aria-label*='No data']")).toHaveAttribute("aria-label", /no measurable published minimums/);
-  await expect(unknown.locator(".uni-status-trigger[aria-label*='Your Vibe']")).toHaveAttribute("aria-label", /Focus.*70\/100.*80\/100/);
+  await expect(unknown.locator(".uni-status-trigger[aria-label*='Your Vibe']")).toHaveAttribute("aria-label", /Close to your settings: focus\./);
   const unmet = page.locator('.uni-card[data-uni-id="unmet-fit-u"]');
-  await expect(unmet.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveAttribute("aria-label", /IELTS.*7.5.*7.*Below minimum/);
-  await expect(unmet.locator(".uni-status-trigger[aria-label*='Over Budget']")).toHaveAttribute("aria-label", /30.*20.*Potential funding has not been deducted/);
+  await expect(unmet.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveAttribute("aria-label", /Below the minimum: IELTS.*7\.5.*you have 7/);
+  await expect(unmet.locator(".uni-status-trigger[aria-label*='Over Budget']")).toHaveAttribute("aria-label", /\$30,000 a year, \$10,000 more than your budget\. Financial aid is not deducted\./);
   const missing = page.locator('.uni-card[data-uni-id="missing-fit-u"]');
-  await expect(missing.locator(".uni-status-trigger[aria-label*='Conditional']")).toHaveAttribute("aria-label", /GMAT.*GRE.*Not provided/);
+  await expect(missing.locator(".uni-status-trigger[aria-label*='Exam result needed']")).toHaveAttribute("aria-label", /add to your profile: .*GMAT.*GRE/);
   await expect(missing.locator(".uni-status-trigger[aria-label*='Below Requirements']")).toHaveCount(0);
 });
 
@@ -152,7 +152,7 @@ test("UniFit cards show requirement and preference signals without grant odds", 
 
   const statuses = firstCard.locator(".uni-card-statuses .uni-status-trigger");
   await expect(statuses).toHaveCount(2);
-  await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
+  await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Exam result needed/);
   await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
   await expect(firstCard).not.toContainText("Likely Grant");
   await expect(page.locator("#unifitWarningBanner")).toBeVisible();
@@ -287,7 +287,7 @@ test("UniFit card caps overlay status icons at four by priority", async ({ page 
 
   const rowStatuses = firstCard.locator(".uni-card-statuses > .uni-status-tooltip > .uni-status-trigger");
   await expect(rowStatuses).toHaveCount(4);
-  await expect(rowStatuses.nth(0)).toHaveAttribute("aria-label", /Conditional/);
+  await expect(rowStatuses.nth(0)).toHaveAttribute("aria-label", /Exam result needed/);
   await expect(rowStatuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
   await expect(rowStatuses.nth(2)).toHaveAttribute("aria-label", /Below Requirements/);
   await expect(rowStatuses.nth(3)).toHaveAttribute("aria-label", /Aid Available/);

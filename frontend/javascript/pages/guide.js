@@ -87,7 +87,7 @@ function describeAcademicExam(id, cfg, labelText = "") {
     OSSDCERT: t("guide.academic.ossdcert", "Completion of the Ontario Secondary School Diploma for Canadian admissions."),
   };
   const base = descriptions[normalized]
-    || t("guide.academic.default", "An academic score that at least one requirement profile asks for.");
+    || t("guide.academic.default", "An academic result requested by at least one published admission requirement.");
   const scale = scoreScaleText(cfg);
   return withExamLabel(`${base}${scale ? ` ${scale}` : ""}`.trim(), labelText);
 }
@@ -97,7 +97,7 @@ function describeLanguageExam(examId, langCode, cfg, labelText = "") {
   const label = String(labelText || "").toUpperCase();
   const key = `${exam} ${label}`;
 
-  let base = t("guide.language.default", "A language proof that at least one admission choice accepts.");
+  let base = t("guide.language.default", "A language proof accepted by at least one application route.");
   if (key.includes("IELTS")) base = t("guide.language.ielts", "The English test of listening, reading, writing, and speaking, accepted almost everywhere.");
   else if (key.includes("TOEFL")) base = t("guide.language.toefl", "Academic English testing, strongest in American admissions.");
   else if (key.includes("DUOLINGO") || key.includes("DET")) base = t("guide.language.det", "The online adaptive English test: taken at home and accepted by a growing list of universities.");
@@ -120,13 +120,13 @@ function glossaryEntries() {
   const chanceName = aiName("chance");
   return [
     { term: fitName, desc: tFormat("guide.glossary.fit", { fit: fitName }, `${fitName} is the sorting mode that ranks the catalog by your profile, where a lower score ranks higher.`) },
-    { term: chanceName, desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is the 0–100 admission estimate for one choice; the card shows your best choice.`) },
-    { term: t("guide.glossary.term.admission_track", "Admission Choice"), desc: t("guide.glossary.admission_track", "Category, profile, and funding selected together as one choice — the unit everything is computed for.") },
-    { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "The minimum scores a profile demands before an application is even considered.") },
-    { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "The average scores of previously admitted students — the number worth planning against.") },
+    { term: chanceName, desc: tFormat("guide.glossary.chance", { chance: chanceName }, `${chanceName} is a 0–100 match score for evaluable published academic and language minimums in the applicable context, not an admission probability or funding prediction.`) },
+    { term: t("guide.glossary.term.admission_track", "Study option and application route"), desc: t("guide.glossary.admission_track", "The selected study option and its application route. Applicant category, entry cycle, and fee-status context are included when published facts depend on them; funding is shown separately.") },
+    { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Published rules and minimums for the selected study option and its application route. Only measurable academic and language minimums count toward the match score; other conditions may need a separate review.") },
+    { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "The average scores of previously admitted students: historical context, not a cutoff or a guarantee.") },
     { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "The language proofs a route accepts: native language, CEFR level, or exam score.") },
     { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Early salary divided by one year of cost: a planning ratio, not a promise.") },
-    { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "The side-by-side table that compares only same-scope published numbers and never names an overall winner.") },
+    { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "The side-by-side table that keeps each university's context visible, marks scope differences or missing data, and never names an overall winner.") },
     { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "A single proof from the language list is enough.") },
     { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "Every proof from the language list is required.") },
     { term: t("guide.glossary.term.match_score", "Match Score"), desc: tFormat("guide.glossary.match_score", { fit: fitName }, `The internal ${fitName} ranking number that orders the list.`) },
@@ -183,7 +183,7 @@ function renderAcademicExams(academicWrap) {
     const examLabel = getExamDisplayName(id, { locale: getCurrentLanguage() });
     return `<li>${escapeHtml(describeAcademicExam(id, cfg, examLabel))}</li>`;
   }).join("");
-  academicWrap.innerHTML = `<p>${escapeHtml(t("guide.academic.intro", "These are the academic exams UniSearch actually matches against requirement profiles. Enter yours in the profile and every relevant choice is re-scored:"))}</p><ul class="guide-list">${items}</ul>`;
+  academicWrap.innerHTML = `<p>${escapeHtml(t("guide.academic.intro", "These are academic exam types UniSearch can match against published admission requirements. Add your results to the profile; on reviewed pages, assessment uses the selected route and applicant context:"))}</p><ul class="guide-list">${items}</ul>`;
 }
 
 function renderLanguageExams(languageWrap) {
@@ -201,7 +201,7 @@ function renderLanguageExams(languageWrap) {
     const arr = Array.isArray(groups[code]) ? groups[code] : [];
     if (!arr.length) return "";
     const title = getLanguageTitle(code, nameByCode[code] || code.toUpperCase());
-    const sortedArr = [...arr].sort((a, b) => {
+    const sortedArr = arr.toSorted((a, b) => {
       const left = stableExamSortKey(a?.id);
       const right = stableExamSortKey(b?.id);
       const byKey = left.localeCompare(right);

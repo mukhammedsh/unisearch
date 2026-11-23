@@ -123,7 +123,6 @@ for (const scenario of cases) {
       const scrolling = document.scrollingElement || doc;
       const card = document.querySelector(".d-card");
       const cover = document.querySelector(".d-cover");
-      const logo = document.querySelector("#detailLogo");
       const activeTab = document.querySelector(".d-tab-btn.active");
       const back = document.querySelector(".d-cover-back");
       const visibleLinks = Array.from(document.querySelectorAll(".d-site-link")).filter(
@@ -132,7 +131,6 @@ for (const scenario of cases) {
 
       const cardStyle = card ? getComputedStyle(card) : null;
       const coverStyle = cover ? getComputedStyle(cover) : null;
-      const logoStyle = logo ? getComputedStyle(logo) : null;
       const activeTabStyle = activeTab ? getComputedStyle(activeTab) : null;
       const backStyle = back ? getComputedStyle(back) : null;
       const linkStyles = visibleLinks.map((el) => getComputedStyle(el));
@@ -142,7 +140,6 @@ for (const scenario of cases) {
         clientWidth: scrolling ? scrolling.clientWidth : 0,
         cardRadius: cardStyle ? parseFloat(cardStyle.borderTopLeftRadius) : 0,
         coverRadius: coverStyle ? parseFloat(coverStyle.borderTopLeftRadius) : 0,
-        logoOverflow: logoStyle ? logoStyle.overflow : "",
         activeTabBackground: activeTabStyle ? activeTabStyle.backgroundColor : "",
         activeTabRadius: activeTabStyle ? parseFloat(activeTabStyle.borderTopLeftRadius) : -1,
         backBackground: backStyle ? backStyle.backgroundColor : "",
@@ -154,7 +151,7 @@ for (const scenario of cases) {
     expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1);
     expect(metrics.cardRadius).toBeGreaterThanOrEqual(scenario.width <= 380 ? 18 : 20);
     expect(metrics.coverRadius).toBeGreaterThanOrEqual(scenario.width <= 380 ? 18 : 20);
-    expect(metrics.logoOverflow).toBe("hidden");
+    await expect(page.locator("#detailLogo")).toHaveCount(0);
     expect(metrics.activeTabBackground).toBe("rgba(0, 0, 0, 0)");
     expect(metrics.activeTabRadius).toBe(0);
     expect(metrics.backBackground).not.toBe("rgba(0, 0, 0, 0)");
@@ -171,11 +168,19 @@ for (const scenario of cases) {
       const visibleCards = Array.from(document.querySelectorAll("#tab-admission .admission-category-card")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
+      const visibleStatsBoxes = Array.from(document.querySelectorAll("#tab-admission .track-stats-box")).filter(
+        (el) => el instanceof HTMLElement && el.offsetParent !== null
+      );
       const visibleFundingOptions = Array.from(document.querySelectorAll("#tab-admission .admission-funding-option")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
+      const visibleExamGroups = Array.from(document.querySelectorAll("#tab-admission .track-exam-group")).filter(
+        (el) => el instanceof HTMLElement && el.offsetParent !== null
+      );
       const firstCardStyle = visibleCards[0] ? getComputedStyle(visibleCards[0]) : null;
+      const firstStatsBoxStyle = visibleStatsBoxes[0] ? getComputedStyle(visibleStatsBoxes[0]) : null;
       const firstFundingOptionStyle = visibleFundingOptions[0] ? getComputedStyle(visibleFundingOptions[0]) : null;
+      const firstExamGroupStyle = visibleExamGroups[0] ? getComputedStyle(visibleExamGroups[0]) : null;
       const admissionPanel = document.querySelector("#tab-admission .d-box");
       const admissionPanelStyle = admissionPanel ? getComputedStyle(admissionPanel) : null;
       const chanceWrap = document.querySelector("#tab-admission .chance-percent-wrap");
@@ -183,20 +188,43 @@ for (const scenario of cases) {
 
       return {
         cardCount: visibleCards.length,
+        statsBoxCount: visibleStatsBoxes.length,
+        fundingOptionCount: visibleFundingOptions.length,
+        examGroupCount: visibleExamGroups.length,
         panelRadius: admissionPanelStyle ? parseFloat(admissionPanelStyle.borderTopLeftRadius) : -1,
         chanceDirection: chanceWrapStyle ? chanceWrapStyle.flexDirection : "",
-        cardRadius: firstCardStyle ? parseFloat(firstCardStyle.borderTopLeftRadius) : 0,
+        cardRadius: firstCardStyle ? parseFloat(firstCardStyle.borderTopLeftRadius) : -1,
+        cardBackground: firstCardStyle ? firstCardStyle.backgroundColor : "",
         cardBackgroundImage: firstCardStyle ? firstCardStyle.backgroundImage : "",
+        statsBoxRadius: firstStatsBoxStyle ? parseFloat(firstStatsBoxStyle.borderTopLeftRadius) : -1,
+        statsBoxBackground: firstStatsBoxStyle ? firstStatsBoxStyle.backgroundColor : "",
+        fundingOptionRadius: firstFundingOptionStyle ? parseFloat(firstFundingOptionStyle.borderTopLeftRadius) : -1,
+        fundingOptionBackground: firstFundingOptionStyle ? firstFundingOptionStyle.backgroundColor : "",
         fundingBackgroundImage: firstFundingOptionStyle ? firstFundingOptionStyle.backgroundImage : "none",
+        examGroupRadius: firstExamGroupStyle ? parseFloat(firstExamGroupStyle.borderTopLeftRadius) : -1,
+        examGroupBackground: firstExamGroupStyle ? firstExamGroupStyle.backgroundColor : "",
       };
     });
 
     expect(admissionSurfaces.cardCount).toBeGreaterThan(0);
     expect(admissionSurfaces.panelRadius).toBe(0);
     expect(admissionSurfaces.chanceDirection).toBe(scenario.width <= 640 ? "row" : "column");
-    expect(admissionSurfaces.cardRadius).toBeGreaterThanOrEqual(16);
+    expect(admissionSurfaces.cardRadius).toBe(0);
+    expect(admissionSurfaces.cardBackground).toBe("rgba(0, 0, 0, 0)");
     expect(admissionSurfaces.cardBackgroundImage).toBe("none");
+    if (admissionSurfaces.statsBoxCount > 0) {
+      expect(admissionSurfaces.statsBoxRadius).toBeGreaterThanOrEqual(12);
+      expect(admissionSurfaces.statsBoxBackground).not.toBe("rgba(0, 0, 0, 0)");
+    }
+    if (admissionSurfaces.fundingOptionCount > 0) {
+      expect(admissionSurfaces.fundingOptionRadius).toBeGreaterThanOrEqual(12);
+      expect(admissionSurfaces.fundingOptionBackground).not.toBe("rgba(0, 0, 0, 0)");
+    }
     expect(admissionSurfaces.fundingBackgroundImage).toBe("none");
+    if (admissionSurfaces.examGroupCount > 0) {
+      expect(admissionSurfaces.examGroupRadius).toBe(0);
+      expect(admissionSurfaces.examGroupBackground).toBe("rgba(0, 0, 0, 0)");
+    }
 
     await page.click(".d-tab-btn[data-tab='tab-finance']");
     await expect(page.locator("#tab-finance")).toHaveClass(/active/);
@@ -211,3 +239,26 @@ for (const scenario of cases) {
     expect(financePanelRadius).toBe(0);
   });
 }
+
+test("every reviewed tab ends with one bottom inset and no empty spacer rows", async ({ page }) => {
+  for (const { width, height } of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    await openDetailPage(page, { theme: "light", width, height, universityId: "mit-usa-cambridge" });
+    const state = page.locator("#detailState");
+    if (await state.evaluate((element) => !element.textContent.trim())) await expect(state).toBeHidden();
+
+    for (const tab of ["tab-general", "tab-programs", "tab-admission", "tab-deadlines", "tab-finance"]) {
+      await page.locator(`[data-tab="${tab}"]`).click();
+      await expect(page.locator(`#${tab}`)).toHaveClass(/active/);
+      await page.waitForLoadState("networkidle");
+      const inset = await page.locator("#detailCard .d-tab-content").evaluate((content) => {
+        const leaves = [...content.querySelectorAll("*")]
+          .filter((element) => !element.closest("svg, button, a, select") || element.matches("button, a, select"))
+          .filter((element) => (element.children.length === 0 || element.matches("button, a, select")) && element.getClientRects().length > 0 && element.getBoundingClientRect().height > 0);
+        const lastBottom = Math.max(...leaves.map((element) => element.getBoundingClientRect().bottom));
+        return { bottom: Math.round(content.getBoundingClientRect().bottom - lastBottom), padding: Number.parseFloat(getComputedStyle(content).paddingBottom) };
+      });
+      // The tab container owns the bottom inset; nested sections must not add their own padding or margins under it.
+      expect(inset.bottom, `${tab} at ${width}px`).toBeLessThanOrEqual(inset.padding + 1);
+    }
+  }
+});

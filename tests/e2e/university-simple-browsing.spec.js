@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { selectAdmissionRoute, openAdmissionSelectionEditor } = require("./helpers/selectors");
+const { openDisclosureParents, selectAdmissionRoute, openAdmissionSelectionEditor } = require("./helpers/selectors");
 const fs = require("node:fs");
 const path = require("node:path");
 const screenshotDir = path.resolve(__dirname, "../../.tmp_test/detail-redesign-browsing");
@@ -118,6 +118,8 @@ async function expectHoverAndActiveContrast(page, locator) {
 }
 
 async function openSourceFact(source) {
+  // Full records sit behind the tab's single records disclosure.
+  await openDisclosureParents(source.locator("xpath=ancestor::*[@data-admissions-fact][1]"));
   const group = source.locator("xpath=ancestor::details[@data-admissions-group][1]");
   if (await group.count()) {
     if (!(await group.evaluate((node) => node.open))) await group.locator(":scope > summary").click();
@@ -172,7 +174,7 @@ async function chooseOption(page, item) {
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expectProgramFacts(page, item);
-  await expect(page.locator("#admissionsStudyInfo .admissions-catalog__assessment")).toHaveCount(0);
+  await expect(page.locator("#admissionsStudyInfo [data-requirements-match]")).toHaveCount(0);
   await expect(page.locator("#admissionsStudyDetails .program-card__body-inner > .admissions-context__note")).toHaveCount(0);
   await expect(page.locator("#admissionsStudyRelationship")).toHaveCount(0);
   const sources = page.locator("#admissionsStudySources .admissions-programs__references");
@@ -185,7 +187,9 @@ async function chooseOption(page, item) {
   }
   const url = new URL(page.url());
   expect(url.searchParams.get("admission_option")).toBe(item.option);
-  expect(url.searchParams.get("admission_application_route")).toBe("");
+  // A program with exactly one application route is read through it directly; otherwise the route stays unchosen.
+  const routes = await page.locator("#admissionsRoute option").evaluateAll(options => options.map(option => option.value).filter(Boolean));
+  expect(url.searchParams.get("admission_application_route")).toBe(routes.length === 1 ? routes[0] : "");
   await expect(page.locator("#admissionsStudyOverview .admissions-programs__admission-note")).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
@@ -209,6 +213,8 @@ for (const item of [journeys[0], journeys[3], {
       bottom: element.getBoundingClientRect().bottom - element.querySelector(".program-card__admission-action").getBoundingClientRect().bottom,
     }));
     const url = page.url();
+    // A preview leaves the path selection as it was (MIT reads its default first-year path; Imperial has none yet).
+    const selectionBefore = { form: await page.locator("#admissionsContextForm").isVisible(), summary: await page.locator("#admissionsReferenceSummary").isVisible() };
     const startsHeightAnimation = await card.evaluate(element => {
       element.querySelector("[data-study-option]").click();
       return element.querySelector(".program-card__body")?.getAnimations().some(animation =>
@@ -220,8 +226,7 @@ for (const item of [journeys[0], journeys[3], {
     await expect(card.locator(".program-card__body")).not.toHaveAttribute("aria-busy", "true");
     await expect.poll(() => card.locator(".program-card__body").evaluate(element => element.getAnimations().length)).toBe(0);
     expect(page.url()).toBe(url);
-    await expect(page.locator("#admissionsContextForm")).toBeHidden();
-    await expect(page.locator("#admissionsReferenceSummary")).toBeHidden();
+    expect({ form: await page.locator("#admissionsContextForm").isVisible(), summary: await page.locator("#admissionsReferenceSummary").isVisible() }).toEqual(selectionBefore);
     await expect(card.locator("[data-select-study-option]")).toBeVisible();
     const after = await card.evaluate(element => ({
       titleTop: element.querySelector(".program-card__title").getBoundingClientRect().top - element.getBoundingClientRect().top,
@@ -353,7 +358,9 @@ test("Imperial's selected card is compact without changing its outer button offs
     const card = element.getBoundingClientRect();
     return { internal: button.top - original.bottom, bottom: card.bottom - button.bottom };
   });
-  expect(distances.internal).toBeLessThanOrEqual(2);
+  // The selection state sits one step (12 px) below the card heading instead of touching the programme code.
+  expect(distances.internal).toBeGreaterThanOrEqual(10);
+  expect(distances.internal).toBeLessThanOrEqual(14);
   expect(distances.bottom).toBe(12);
   await saveScreenshot(page, "imperial-advanced-aeronautical-engineering-selected-program.png");
 });
@@ -380,7 +387,7 @@ async function chooseRoute(page, item) {
   const advanced = page.locator("#admissionsAdvanced[data-admissions-advanced]");
   await expect(advanced).not.toHaveAttribute("open", "");
   expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(item.route);
-  expect(new URL(page.url()).searchParams.get("admission_route")).toBe("");
+  expect(new URL(page.url()).searchParams.has("admission_route")).toBe(false);
 }
 
 async function expectOfficialFact(page, item) {
@@ -409,23 +416,26 @@ async function expectReferenceTabs(page, item) {
     await page.locator(`.d-tab-btn[data-tab="${tab}"]`).click();
     await expect(page.locator(`#${tab}`)).toHaveClass(/active/);
     await expect(summary).toBeVisible();
-    const fullRecords = page.locator(`${pane} > .admissions-reading > .admissions-reading__references:not([data-general-references])`).first();
+    const fullRecords = page.locator(`${pane} > .admissions-reading > [data-all-records]`);
     if (await fullRecords.count() && !(await fullRecords.evaluate(node => node.open))) await fullRecords.locator(":scope > summary").click();
-    const general = page.locator(`${pane} > .admissions-reading > [data-general-references]`);
+    const records = fullRecords.locator(":scope > [data-full-records]");
+    if (await records.count() && !(await records.evaluate(node => node.open))) await records.locator(":scope > summary").click();
+    const general = records.locator(":scope > [data-general-references]");
     if (await general.count() && !(await general.evaluate(node => node.open))) await general.locator(":scope > summary").click();
     await expect(page.locator(`${pane} [data-admissions-domain="${domain}"]`).first()).toBeVisible();
     await expect(page.locator(`${pane} .admissions-catalog__fact[open]`).first()).toBeVisible();
     await expect(page.locator(`${pane} .admissions-catalog__meta`).first()).not.toBeEmpty();
     if (domain === "deadlines" && item.name === "MIT first-year") {
       await expect(page.locator(pane)).toContainText("Fall 2027 entry");
-      await expect(page.locator(pane)).toContainText("Recurring first-year dates; page does not specify entry year");
+      await expect(page.locator(pane)).toContainText("Recurring first-year dates; page does not state entry year");
     }
     if (domain === "deadlines" && item.name === "Imperial Computing MEng") await expect(page.locator(pane)).toContainText(/2027[\u2011-]01[\u2011-]13/);
     if (domain === "deadlines" && item.name === "Stanford CS external MS") await expect(page.locator(pane)).toContainText(/2026[\u2011-]12[\u2011-]08/);
     if (item.name === "MIT first-year") await saveScreenshot(page, `mit-${domain === "deadlines" ? "dates" : "costs"}.png`);
     if (domain === "costs") {
       await expect(page.locator(`${pane} [data-admissions-domain="funding"]`).first()).toBeVisible();
-      await expect(page.locator(pane)).toContainText(/potential funding is not awarded aid|не считается предоставленной помощью|тағайындалған көмек емес/i);
+      // The tab answers what funding exists before its records.
+      await expect(page.locator(`${pane} [data-tab-answers="finance"] [data-key-fact="funding"]`)).toBeVisible();
       if (item.name === "MIT first-year") {
         await expect(page.locator(pane)).toContainText("USD");
         await expect(page.locator(pane)).toContainText("66,720");
@@ -499,9 +509,12 @@ for (const item of [journeys[0], journeys[1], journeys[2]]) {
       .map(selector => getComputedStyle(element.querySelector(selector)).fontSize));
     expect(new Set(sizes).size).toBe(1);
     const sources = card.locator(".admissions-programs__references");
-    await sources.locator(":scope > summary").click();
+    // A late re-render (for example when the translation pack arrives) can collapse the group again, so open it until it stays open.
+    await expect(async () => {
+      if (!(await sources.evaluate(node => node.open))) await sources.locator(":scope > summary").click();
+      await expect(sources.locator(".admissions-catalog__meta").first()).toBeVisible({ timeout: 2000 });
+    }).toPass();
     await expect(sources.locator("a[href^='https://']")).not.toHaveCount(0);
-    await expect(sources.locator(".admissions-catalog__meta").first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.viewport.width);
     await saveScreenshot(page, `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-selected-program.png`);
   });
@@ -554,7 +567,10 @@ test("dates and costs guide guests to the missing program or application path", 
   await openGuestUniversity(page, item);
   await page.locator('[data-tab="tab-deadlines"]').click();
   await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
-  await page.locator("#detailDeadlines .admissions-state button").click();
+  // MIT's shared first-year application is read at once, as on the Overview, instead of asking which path to read.
+  await expect(page.locator("#detailDeadlines [data-tab-answers='deadlines']")).toBeVisible();
+  await expect(page.locator("#detailDeadlines [data-prompt-shared-route]")).toHaveCount(0);
+  await page.locator('[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   const option = page.locator(`[data-study-option="${item.option}"]`);
   await expect(option).toBeVisible();
@@ -568,6 +584,19 @@ test("dates and costs guide guests to the missing program or application path", 
   await expect(page.locator("#admissionsRoute")).toBeEnabled();
   await expect(page.locator("#admissionsRoute")).toHaveValue("");
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe(item.option);
+});
+
+test("a guest reads MIT's first-year dates from the Dates tab without choosing a program", async ({ page }) => {
+  const item = journeys[0];
+  await openGuestUniversity(page, item);
+  await page.locator('[data-tab="tab-deadlines"]').click();
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+  // The shared first-year path is the default, so no choice is needed and the address keeps no path of its own.
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+  await expect(page.locator("#detailDeadlines .admissions-reading__table").first()).toBeVisible();
+  await expect(page.locator("#detailDeadlines [data-prompt-shared-route]")).toHaveCount(0);
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBeNull();
 });
 
 for (const theme of ["light", "dark"]) {
@@ -600,12 +629,17 @@ test("undergraduate requirements in all three universities can be read without a
   for (const item of choices) {
     await openGuestUniversity(page, item);
     await page.screenshot({ path: testInfo.outputPath(`${item.university}-overview.png`), fullPage: false });
+    // The route request may come from a manual choice or, for a single-route course, from the automatic selection.
+    const responsePromise = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST"
+      && response.request().postDataJSON().context.application_route_id === item.route);
     await chooseOption(page, item);
-    const responsePromise = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
     await selectAdmissionRoute(page, item.route);
-    const context = await (await responsePromise).json();
+    const contextResponse = await responsePromise;
+    const context = await contextResponse.json();
     expect(context.selected_route.id).toBe(item.route);
-    expect(context.context.applicant_route).toBeNull();
+    // The page sends no applicant category; the selected route implies it.
+    expect(contextResponse.request().postDataJSON().context).not.toHaveProperty("applicant_route");
+    expect(context.context.applicant_route ?? null).toBe(context.selected_route.applicant_route ?? null);
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open", "");
     await expect(page.locator("#admissionsCycle")).toBeHidden();
@@ -717,8 +751,11 @@ test("Kazakh browsing keeps all three reviewed catalogs usable and searches a tr
     await expect(page.locator("#admissionsContext h2")).toHaveText("Қалай өтініш беруге болады");
     await chooseRoute(page, item);
     await openAdmissionSelectionEditor(page);
-    await expect(page.locator("#admissionsAdvanced > summary")).toHaveText("Контексті нақтылау (міндетті емес)");
-    await expect(page.locator("#admissionsContextApply")).toHaveText("Сүзгілерді қолдану");
+    // Only the fields a path needs are offered: a UK fee status (Imperial), several intakes, or neither.
+    if (await page.locator("#admissionsAdvanced").isVisible()) {
+      await expect(page.locator("#admissionsAdvanced > summary")).toHaveText(/^(?:Түсу жылы|Төлем мәртебесі|Түсу жылы және ақы төлеу мәртебесі)$/);
+      await expect(page.locator("#admissionsContextApply")).toHaveText("Сүзгілерді қолдану");
+    } else await expect(page.locator("#admissionsContextApply")).toBeHidden();
     await expect(page.locator("#admissionsAdvanced")).not.toHaveAttribute("open", "");
   }
 });

@@ -47,6 +47,12 @@ class MockElement {
     this._listeners = new Map();
     this.disabled = false;
     this.dataset = {};
+    const properties = new Map();
+    this.style = {
+      removeProperty: (key) => properties.delete(key),
+      setProperty: (key, value) => properties.set(key, value),
+      getPropertyValue: (key) => properties.get(key),
+    };
     this._value = '';
     this._text = '';
     this._textContent = '';
@@ -106,6 +112,12 @@ class MockElement {
     }
   }
 
+  replaceChildren(...nodes) {
+    this._innerHTML = '';
+    this.children = [];
+    nodes.forEach((node) => this.appendChild(node));
+  }
+
   get options() {
     if (this.tagName !== 'SELECT') return [];
     const opts = [];
@@ -126,6 +138,14 @@ class MockElement {
       this.classList = new ClassList();
       String(val).split(' ').filter(Boolean).forEach((c) => this.classList.add(c));
     }
+  }
+
+  get className() {
+    return this.attributes.get('class') || '';
+  }
+
+  set className(val) {
+    this.setAttribute('class', val);
   }
 
   getAttribute(name) {
@@ -234,6 +254,8 @@ class MockElement {
   }
 
   scrollIntoView() {}
+
+  focus() {}
 }
 
 function createSelectWithOptgroups() {
@@ -518,6 +540,9 @@ describe('custom-select-typeahead and optgroups', () => {
     });
 
     global.window.innerHeight = 540;
+    global.window.getComputedStyle = () => ({ marginBlockStart: '0px' });
+    const panel = wrapper.querySelector('.custom-options');
+    panel.offsetHeight = 160;
 
     trigger.dispatchEvent({
       type: 'click',
@@ -526,6 +551,7 @@ describe('custom-select-typeahead and optgroups', () => {
 
     assert.ok(wrapper.classList.has('open'));
     assert.ok(wrapper.classList.has('open-up'));
+    assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '400px');
 
     trigger.dispatchEvent({
       type: 'click',
@@ -536,7 +562,7 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.ok(!wrapper.classList.has('open-up'));
   });
 
-  it('does not add open-up class when space below is ample', () => {
+  it('opens a short panel below the trigger if it fits', () => {
     const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
@@ -546,15 +572,18 @@ describe('custom-select-typeahead and optgroups', () => {
     const trigger = wrapper.querySelector('.custom-select-trigger');
 
     trigger.getBoundingClientRect = () => ({
-      top: 100,
-      bottom: 140,
+      top: 400,
+      bottom: 440,
       left: 10,
       right: 200,
       width: 190,
       height: 40,
     });
 
-    global.window.innerHeight = 640;
+    global.window.innerHeight = 540;
+    global.window.getComputedStyle = () => ({ marginBlockStart: '0px' });
+    const panel = wrapper.querySelector('.custom-options');
+    panel.offsetHeight = 80;
 
     trigger.dispatchEvent({
       type: 'click',
@@ -563,5 +592,128 @@ describe('custom-select-typeahead and optgroups', () => {
 
     assert.ok(wrapper.classList.has('open'));
     assert.ok(!wrapper.classList.has('open-up'));
+    assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '100px');
+  });
+
+  it('measures clipping ancestors before opening and panel height after display becomes visible', () => {
+    const { select } = createSelectWithOptgroups();
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    const panel = wrapper.querySelector('.custom-options');
+
+    let parentMeasuredWhileClosed = false;
+    const scrollParent = {
+      parentElement: null,
+      clientTop: 0,
+      get clientHeight() {
+        parentMeasuredWhileClosed = !wrapper.classList.has('open');
+        return 400;
+      },
+      getBoundingClientRect: () => ({ top: 100, bottom: 500, left: 0, right: 320, width: 320, height: 400 }),
+    };
+    wrapper.parentElement = scrollParent;
+
+    trigger.getBoundingClientRect = () => ({
+      top: 400,
+      bottom: 440,
+      left: 10,
+      right: 200,
+      width: 190,
+      height: 40,
+    });
+
+    Object.defineProperty(panel, 'offsetHeight', {
+      configurable: true,
+      get() {
+        return wrapper.classList.has('open') ? 160 : 0;
+      },
+    });
+
+    global.window.innerHeight = 900;
+    global.window.getComputedStyle = (node) => (node === scrollParent ? { overflowY: 'auto' } : { marginBlockStart: '0px' });
+
+    trigger.dispatchEvent({
+      type: 'click',
+      stopPropagation: () => {},
+    });
+
+    assert.equal(parentMeasuredWhileClosed, true);
+    assert.ok(wrapper.classList.has('open'));
+    assert.ok(wrapper.classList.has('open-up'));
+    assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '300px');
+  });
+
+  it('ignores Enter in searchable select while IME composition is active', () => {
+    const { select } = createSelectWithOptgroups();
+    select.dataset.searchable = 'true';
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    const searchInput = wrapper.querySelector('.custom-select-search');
+    assert.ok(searchInput);
+
+    trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
+    assert.ok(wrapper.classList.has('open'));
+
+    searchInput.value = 'Kaz';
+    searchInput.dispatchEvent({ type: 'input' });
+
+    searchInput.dispatchEvent({ type: 'keydown', key: 'Enter', isComposing: true, preventDefault: () => {} });
+    assert.equal(select.value, 'USD');
+    assert.ok(wrapper.classList.has('open'));
+
+    searchInput.dispatchEvent({ type: 'keydown', key: 'Enter', keyCode: 229, preventDefault: () => {} });
+    assert.equal(select.value, 'USD');
+    assert.ok(wrapper.classList.has('open'));
+
+    searchInput.dispatchEvent({ type: 'keydown', key: 'Enter', isComposing: false, keyCode: 13, preventDefault: () => {} });
+    assert.equal(select.value, 'KZT');
+    assert.ok(!wrapper.classList.has('open'));
+  });
+
+  it('uses a native button trigger, focuses trigger on associated label click, and ignores Space synthetic click', () => {
+    const { select } = createSelectWithOptgroups();
+    const label = new MockElement('label');
+    select.labels = [label];
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    assert.equal(trigger.tagName, 'BUTTON');
+    assert.equal(trigger.type, 'button');
+    assert.equal(select.tabIndex, -1);
+    assert.equal(select.getAttribute('aria-hidden'), 'true');
+
+    let triggerFocusCount = 0;
+    trigger.focus = () => { triggerFocusCount += 1; };
+
+    let labelDefaultPrevented = false;
+    label.dispatchEvent({
+      type: 'click',
+      preventDefault: () => { labelDefaultPrevented = true; },
+    });
+    assert.equal(labelDefaultPrevented, true);
+    assert.equal(triggerFocusCount, 1);
+
+    select.dispatchEvent({ type: 'focus' });
+    assert.equal(triggerFocusCount, 2);
+
+    trigger.dispatchEvent({ type: 'keydown', key: ' ', preventDefault: () => {} });
+    assert.ok(wrapper.classList.has('open'));
+    trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
+    assert.ok(wrapper.classList.has('open'));
+    trigger.dispatchEvent({ type: 'keyup', key: ' ', preventDefault: () => {} });
+    trigger.dispatchEvent({ type: 'pointerdown' });
+    trigger.dispatchEvent({ type: 'click', stopPropagation: () => {} });
+    assert.ok(!wrapper.classList.has('open'));
   });
 });

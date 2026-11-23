@@ -1,6 +1,6 @@
-# Prepared admissions storage contract
+# Admissions storage contract
 
-This contract prepares the accepted Massachusetts Institute of Technology, Imperial College London, Stanford University, and Nazarbayev University datasets for coordinated Stage 2 integration. It follows [the product model](admissions-product-model.md). The existing [runtime contract](admissions-runtime-contract.md) continues to describe the currently active application.
+This contract defines the active `admissions-storage-1.0` representation for the accepted Massachusetts Institute of Technology, Imperial College London, Stanford University, and Nazarbayev University datasets. Offline preparation still emits inactive candidates for review; [snapshot maintenance](../backend/data/admissions/README.md) documents activation, and the [runtime contract](admissions-runtime-contract.md) documents the live APIs. This contract follows [the product model](admissions-product-model.md).
 
 Preparation does not activate a catalog or migrate a saved selection. The accepted four-institution runtime reads the activated snapshot in `backend/data/admissions/catalog.json`, through the APIs and consumers documented in [the runtime contract](admissions-runtime-contract.md). The coordinated cutover removes their earlier policy fields from `universities.json`, preserves retired records outside runtime, and deliberately resets earlier selections with a visible explanation. Track remaining verification and later batches in [todo.md](../todo.md).
 
@@ -27,7 +27,7 @@ The [JSON Schema](../backend/data/drafts/integration/schema.json) describes the 
 
 ## Shared representation
 
-The envelope identifies the contract version and contains four institution records. Preparation explicitly emits `runtime_active: false`; the production loader requires `runtime_active: true` after the coordinated review and activation. The shared shape supports both states without changing evidence records. Each institution retains its catalog snapshot and an input manifest with repository-relative paths and SHA-256 hashes. Hashes identify the exact input bytes; they do not establish source freshness or research completeness.
+The envelope identifies the contract version and contains four institution records. Preparation explicitly emits `runtime_active: false`; the production loader requires `runtime_active: true` after the coordinated review and activation. The shared shape supports both states without changing evidence records. Each institution retains its catalog snapshot and an input manifest with repository-relative paths and SHA-256 hashes. The blocks only maintainers use (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`) are stored per institution in `backend/data/admissions/research.json` (`admissions-research-1.0`) instead of the runtime snapshot; the backend does not read that file. Hashes identify the exact input bytes; they do not establish source freshness or research completeness.
 
 | Entity | Shared fields and meaning |
 | --- | --- |
@@ -40,7 +40,7 @@ The envelope identifies the contract version and contains four institution recor
 
 `attributes` retains institution-specific fields not represented by the shared fields. Linked index metadata that is not part of the original evidence is retained separately. These fields may contain significant curriculum, application-classification, fee-panel, phase, or source-review details; a later consumer must inspect them rather than discard them because they lack a numeric check. Original values, condition prose, labelled fee panels, and conflicts are not summarized or parsed into invented thresholds.
 
-Resolved evidence remains traceable to its original record ID and evidence file. Catalog IDs are the authoritative cross-reference keys in the prepared representation. Local dossier IDs remain provenance, and Stanford's namespaced IDs remain namespaced. IDs are never regenerated from translated titles. Same-named routes, shared portals, and repeated dossier views are not deduplicated into one application.
+Resolved evidence remains traceable to its original record ID and evidence file. A record's `provenance` holds only that reference (`evidence_file`, `original_id`, plus NU's `packet_id`); the original scope and source IDs stay in the evidence file instead of being copied into the snapshot, and the preparation test resolves every reference against that file. Catalog IDs are the authoritative cross-reference keys in the prepared representation. Local dossier IDs remain provenance, and Stanford's namespaced IDs remain namespaced. IDs are never regenerated from translated titles. Same-named routes, shared portals, and repeated dossier views are not deduplicated into one application.
 
 Catalog inventory, subjects, families, variant relationships, and exclusions retain their institutional meaning. Supporting research files and historical runtime snapshots remain references with hashes where they are not current entity records. Historical runtime imports do not become freshly reviewed policies.
 
@@ -60,7 +60,21 @@ Cycles and periods remain source-labelled. Do not extract an entry year from a r
 
 ## Publication, review, history, and missing evidence
 
-Publication state, content review, HTTP access, and applicant assessment are separate concepts. Preparation preserves the source status vocabulary verbatim, including specific reviewed-selector states, partial publication, conflicting evidence, and not-yet-published values. It does not collapse them into a verified/unverified boolean.
+Publication state, content review, HTTP access, and applicant assessment are separate concepts. Preparation preserves the source status vocabulary verbatim in `publication_status` and `review_status`, including specific reviewed-selector states, partial publication, conflicting evidence, and not-yet-published values. It does not collapse them into a verified/unverified boolean.
+
+### Closed vocabulary
+
+Research labels are descriptive and differ by institution. Preparation maps each one through [`vocabulary.json`](../backend/data/drafts/integration/vocabulary.json) into closed values that consumers use instead of parsing labels:
+
+| Field | Values |
+| --- | --- |
+| `normalized_status.publication` on facts and unknowns | `published`, `published_with_limits` (value published; cycle or scope unconfirmed), `partially_published`, `not_yet_published`, `not_found`, `conflicting`, `historical`, `unknown` |
+| `normalized_status.review` on facts and unknowns | `verified`, `verified_with_limits` (verified content with a stated scope limit), `partially_verified`, `carried_forward`, `conflicting` (official sources disagree), `needs_resolution`, `superseded`, `not_recorded` |
+| `entry` on routes and study options | `external`, `external_restricted`, `internal` (current students only), `no_admission` (awarded during another degree), `closed`, `unresolved` |
+
+A study option's `entry` comes from its own application classifications, taking the most open value (`external` first). An option without its own classification uses its routes. Explicit recruitment-closed availability makes it `closed`. A route without a source classification needs an explicit `route_entry_by_id` entry. An unknown with no recorded status is `unknown`/`not_recorded`.
+
+When a new institution introduces a label, preparation fails until the label is added to exactly one canonical group. Choose the group from the label's evidence, never from its spelling alone. The derived status is excluded from assessment fact hashes, so remapping a label does not invalidate reviewed assessment mappings.
 
 Absent status or review-date fields remain `null` in their shared slots. A separate content-review or recheck date does not replace the original checked date. An unknown, unavailable amount, or unpublished future deadline does not become zero, an empty successful response, or personal ineligibility.
 

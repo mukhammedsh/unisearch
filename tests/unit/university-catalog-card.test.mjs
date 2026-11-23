@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { universityCardPriceInfo, renderUniversityCardCosts, reviewedCardIndicators } = await import("../../frontend/javascript/pages/universities.js");
+const { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip, reviewedCardIndicators } = await import("../../frontend/javascript/pages/universities.js");
 await initI18n();
 
 test("reviewed admissions cards do not reuse legacy finance or match prices", () => {
@@ -40,7 +40,7 @@ test("card uses the selected published reference price", () => {
   assert.doesNotMatch(tuition, /92,760/);
   assert.match(tuition, /data-cost-basis="tuition"/);
   assert.match(tuition, /role="tooltip"/);
-  assert.match(tuition, /2026[‑-]2027/);
+  assert.match(tuition, /2026[-‑–]2027/);
   const annual = renderUniversityCardCosts(university);
   assert.match(annual, /92,760/);
   assert.doesNotMatch(annual, /66,720/);
@@ -52,7 +52,7 @@ test("card keeps an unavailable budget separate from a published tuition range",
   assert.equal(universityCardPriceInfo(university).amount, null);
   const html = renderUniversityCardCosts(university);
   assert.match(html, /data-cost-basis="tuition"/);
-  assert.match(html, /class="uni-price-period">Tuition<\/span>/);
+  assert.match(html, /class="uni-cost-meta__label">Tuition<\/span>/);
   assert.match(html, /class="uni-price-val">[^<]+ – [^<]+<\/span>/);
   assert.match(html, /No comparable full budget/);
   assert.doesNotMatch(html, /data-cost-basis="annual_total"/);
@@ -77,11 +77,11 @@ test("catalog price quotes keep level, source period and unresolved fee or cycle
       fee_statuses: ["Overseas fee"], cycle_status: "dated_reference", fee_status_match: "unknown", filter_match: "partial" },
   } };
   const html = renderUniversityCardCosts(university, "tuition");
-  assert.match(html, /2026[‑-]27/);
+  assert.match(html, /2026[-‑–]27/);
   assert.match(html, /Undergraduate, Master/);
   const context = html.match(/<span class="uni-cost-context" data-cost-context>([^<]+)<\/span>/)?.[1] || "";
   assert.equal((html.match(/data-cost-context/g) || []).length, 1);
-  assert.match(context, /Undergraduate, Master&#039;s · 2026[‑-]27 · Overseas fee · Dated reference; cycle unconfirmed · Fee category unconfirmed · Partial price match/);
+  assert.match(context, /Undergraduate, Master&#039;s · 2026[-‑–]27 · Overseas fee · Dated reference; cycle unconfirmed · Fee category unconfirmed · Partial price match/);
   assert.doesNotMatch(html, /self-reported fee category|Only part of this published range/);
 });
 
@@ -154,7 +154,6 @@ test("large converted card amounts use compact local notation without changing t
   }
 });
 
-
 test("reviewed UniFit indicators describe only the saved route and measurable checks", () => {
   setLanguage("eng", { emit: false });
   const match = { finalScore: 0.2, preferenceMismatch: 0.1, selectedByUser: true,
@@ -175,9 +174,9 @@ test("reviewed UniFit indicators describe only the saved route and measurable ch
   assert.match(indicators[0].detail, /1 of 2/);
   assert.equal(indicators[0].tone, "warning");
   assert.match(indicators[0].detail, /Other admission conditions/i);
-  assert.match(indicators[1].detail, /published price/i);
-  assert.match(indicators[1].detail, /tuition-only/i);
-  assert.match(indicators[1].detail, /Living and other costs are extra/);
+  assert.match(indicators[1].detail, /^\$40,000 – \$50,000 a year, \$10,000 more than your budget\./);
+  assert.match(indicators[1].detail, /Financial aid is not deducted/);
+  assert.match(indicators[1].detail, /Tuition only: living costs are extra/);
   assert.doesNotMatch(indicators[1].detail, /affects UniFit/i);
   assert.doesNotMatch(indicators.map(item => item.label + item.detail).join(" "), /requirements met|probability|award/i);
 });
@@ -218,4 +217,144 @@ test("a real zero requirements match remains visible without internal ranking sc
   assert.equal(indicators[0].value, "0%");
   assert.match(indicators[0].detail, /0 of 1/);
   assert.doesNotMatch(JSON.stringify(indicators), /99|ranking|preference comparison/i);
+});
+
+test("reviewed indicators name the legend meaning of each icon", () => {
+  setLanguage("eng", { emit: false });
+  const indicators = reviewedCardIndicators({ finalScore: 0.4, preferenceMismatch: 0.1, subjectMatch: { status: "matched" },
+    requirementsFitPercent: 100, requirementChecks: [{ measurable: true, status: "met" }],
+    budgetAssessment: { status: "within_budget", evidence: "applicable", basis: "annual_total" }, costQuote: { minUSD: 1, maxUSD: 2 } }, 5000);
+  assert.deepEqual(indicators.map(item => item.legend).sort(), ["requirements_met", "subject_matched", "vibe", "within_budget"]);
+  const below = reviewedCardIndicators({ finalScore: 0.4, requirementsFitPercent: 50,
+    requirementChecks: [{ measurable: true, status: "met" }, { measurable: true, status: "unmet" }] }, null);
+  assert.deepEqual(below.map(item => item.legend), ["requirements_below"]);
+});
+
+test("an over-budget reviewed card says by how much the lowest published price exceeds the budget", () => {
+  setLanguage("eng", { emit: false });
+  const over = reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "over_budget", evidence: "applicable", basis: "annual_total" },
+    costQuote: { minUSD: 40000, maxUSD: 50000 } }, 30000);
+  assert.equal(over[0].legend, "over_budget");
+  assert.match(over[0].detail, /^\$40,000 – \$50,000 a year, \$10,000 more than your budget\./);
+});
+
+test("reviewed cards name what to add, how many programs match and which preferences are close", () => {
+  setLanguage("eng", { emit: false });
+  const indicators = reviewedCardIndicators({ finalScore: 0.4, preferenceMismatch: 0.1,
+    userPreferences: { practice_vs_science: 0.7, city_vs_campus: 0.9 }, factors: { practice_vs_science: 0.75, city_vs_campus: 0.3 },
+    subjectMatch: { status: "matched", option_ids: ["a", "b", "c"] },
+    requirementsFitPercent: null, requirementChecks: [
+      { status: "missing", missingInputs: [{ exam: "SAT", needs: ["result"] }, { exam: "ACT", needs: ["result"] }] },
+      { status: "unassessed" },
+    ] }, 30000);
+  assert.deepEqual(indicators.map(item => item.legend), ["exam_needed", "subject_matched", "vibe"]);
+  assert.match(indicators[0].detail, /^To check the requirements, add to your profile: .*SAT.* or .*ACT.*\.$/);
+  assert.match(indicators[1].detail, /^Matching programs: 3\./);
+  assert.equal(indicators[2].icon, "heart");
+  assert.equal(indicators[2].detail, "Close to your settings: focus.");
+});
+
+test("a price that depends on fee status asks for the fee status instead of hiding the budget", () => {
+  setLanguage("eng", { emit: false });
+  const [check] = reviewedCardIndicators({ finalScore: 0.4,
+    budgetAssessment: { status: "unknown_cost", evidence: "fee_status_unknown", basis: "tuition" },
+    costQuote: { minUSD: 13000, maxUSD: 63000 } }, 30000);
+  assert.equal(check.legend, "budget_check");
+  assert.match(check.detail, /^\$13,000 to \$63,000 a year, depending on your fee status\. Set it on the university page\./);
+  // Without a price or a fee-status reason there is still nothing to compare.
+  assert.deepEqual(reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "unknown_cost" } }, 30000), []);
+});
+
+test("annual total displays min-max range without profile and narrows when specified", () => {
+  setLanguage("eng", { emit: false });
+  const broad = {
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: {
+      annual_total: {
+        min: 26442, max: 69342, currency: "USD", period: "",
+        calculation: "tuition_plus_living_range", billing_period: "academic_year",
+        living_reference: "2026 estimate",
+        levels: ["undergraduate", "masters"], fee_statuses: ["Home fee", "Overseas fee"]
+      }
+    }
+  };
+  const broadHtml = renderUniversityCardCosts(broad, "annual_total");
+  assert.match(broadHtml, /\$26,442 – \$69,342/);
+  assert.match(broadHtml, /Tuition plus living-cost estimate, before aid/);
+  assert.match(broadHtml, /Living-cost estimate: 2026/);
+  assert.match(broadHtml, /Home\/Overseas category is set by the university/);
+  assert.doesNotMatch(broadHtml, /aria-describedby=/);
+  assert.doesNotMatch(broadHtml, /price filter/i);
+
+  const filteredHtml = renderUniversityCardCosts(broad, "annual_total", "catalog", { priceFilterActive: true });
+  assert.match(filteredHtml, /price filter/i);
+
+  setLanguage("rus", { emit: false });
+  const broadRu = renderUniversityCardCosts(broad, "annual_total");
+  assert.match(broadRu, /Обучение плюс оценка проживания, до финпомощи/);
+  assert.match(broadRu, /Оценка проживания: 2026 год/);
+  assert.match(broadRu, /тариф Home \(местный\), тариф Overseas \(международный\)/);
+
+  const exact = {
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: {
+      annual_total: {
+        min: 64192, max: 64192, currency: "USD", period: "2027 entry",
+        billing_period: "academic_year", levels: ["undergraduate"], fee_statuses: ["Overseas fee"]
+      }
+    }
+  };
+  const exactRu = renderUniversityCardCosts(exact, "annual_total");
+  assert.match(exactRu, /\$64,192/);
+  assert.doesNotMatch(exactRu, /–/);
+});
+
+test("card price tooltip collapses broad level lists, translates resident fee tiers and hides redundant cycle/filter noise", () => {
+  setLanguage("rus", { emit: false });
+  const nu = {
+    id: "nazarbayev-university-kaz-astana",
+    admissions_catalog: { availability: "reviewed" },
+    catalog_costs: {
+      annual_total: {
+        min: 9600, max: 33600, currency: "USD", period: "2026-2027",
+        calculation: "tuition_plus_living_range", billing_period: "academic_year",
+        cycle_status: "unspecified", fee_status_match: "unknown",
+        levels: ["doctorate", "masters", "preparatory", "professional", "residency", "undergraduate"],
+        fee_statuses: ["non-resident", "resident"],
+        exclusions: ["travel"],
+      },
+    },
+  };
+  const html = renderUniversityCardCosts(nu, "annual_total");
+  assert.match(html, /Все уровни/);
+  assert.doesNotMatch(html, /Докторантура, Магистратура/);
+  assert.match(html, /нерезидент, резидент/);
+  assert.doesNotMatch(html, /non-resident|Home — местный|Home\/Overseas|Цикл не указан|Категория оплаты не подтверждена|Фильтр проверяет/);
+  assert.match(html, /Проезд отдельно/);
+});
+
+test("card rank tooltip names the ranking source and check date without a redundant Official ranking type", () => {
+  setLanguage("eng", { emit: false });
+  const ranked = buildRankSourceTooltip({
+    rank: 1,
+    rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" },
+  });
+  assert.match(ranked, /^QS World University Rankings 2026 · Checked: 2026[-‑–]04-09$/);
+  assert.doesNotMatch(ranked, /Official ranking|Type:/i);
+
+  const unranked = buildRankSourceTooltip({
+    rank: null,
+    rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" },
+  });
+  assert.match(unranked, /^No position in QS World University Rankings 2026 · Checked: 2026[-‑–]04-09$/);
+
+  setLanguage("rus", { emit: false });
+  assert.match(
+    buildRankSourceTooltip({ rank: 1, rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" } }),
+    /^QS World University Rankings 2026 · Проверено: 2026[-‑–]04-09$/,
+  );
+  assert.match(
+    buildRankSourceTooltip({ rank: null, rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" } }),
+    /^Нет позиции \(QS World University Rankings 2026\) · Проверено: 2026[-‑–]04-09$/,
+  );
 });

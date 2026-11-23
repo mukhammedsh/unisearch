@@ -29,9 +29,11 @@ async function openContext(page, context, { language = "eng", theme = "light", p
     localStorage.setItem("unisearch_theme", selectedTheme);
   }, { selectedLanguage: language, selectedTheme: theme });
 
+  // The Overview also resolves the shared first-year route on the same endpoint; wait for this selection's answer.
   const responsePromise = page.waitForResponse((response) =>
     response.url().includes(`/universities/${MIT_ID}/admissions-context`)
-    && response.request().method() === "POST");
+    && response.request().method() === "POST"
+    && (response.request().postDataJSON()?.context?.study_option_id || "") === (context.option || ""));
   await page.goto(contextUrl(context));
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).not.toBeEmpty();
@@ -56,9 +58,12 @@ async function openFact(page, tab, id) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements .admissions-catalog__assessment");
+  return page.locator("#detailRequirements");
 }
 
 async function openAdvanced(page) {
@@ -84,7 +89,6 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   const { data } = await openContext(page, context, {
     profile: {
       studyLevel: "Doctorate",
-      applicantRoute: "graduate",
       intendedEntryCycle: "2027 entry",
       languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 7.5, taken_on: "2025-03-15" }],
     },
@@ -103,7 +107,9 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   expect(JSON.stringify(testsFact.value)).toContain("not_accepted");
   expect(JSON.stringify(waiverFact.value)).toContain("English was primary/secondary instruction from ages 6–18");
   expect(conflictFact.publication_status).toBe("conflicting");
-  expect(JSON.stringify(conflictFact.value)).toContain("do not silently choose one source");
+  // The official next step stays; the maintainer note after it is removed from applicant responses.
+  expect(JSON.stringify(conflictFact.value)).toContain("Confirm accepted exam/scale");
+  expect(JSON.stringify(conflictFact.value)).not.toContain("do not silently choose one source");
 
   const tests = await openFact(page, "admission", testsFact.id);
   await expect(tests).toContainText("under 2 years old by deadline");
@@ -115,7 +121,7 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   await expect(conflict).toContainText("Cambridge 190");
   await expect(conflict).toContainText(/Confirm accepted exam\/scale/i);
   await expect(page.locator("#admissionsCycle")).toHaveValue("");
-  await expect((await openAssessment(page)).locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 });
 
 test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an invented score", async ({ page }) => {
@@ -145,7 +151,7 @@ test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an inve
   await expect(fact).toContainText("GRE");
   const assessment = await openAssessment(page);
   await expect(assessment).toContainText(/No requirements-match percentage is available|Our data has no numeric minimum/i);
-  await expect(assessment.locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   await expect(page.locator("#admissionsCycle")).toHaveValue("2027 entry");
 });
 
@@ -156,7 +162,7 @@ test("saved GRE evidence persists while Sloan's unassessed rule and cleared cycl
     localStorage.setItem("unisearch_ui_language_v1", "rus");
     localStorage.setItem("unisearch_theme", "dark");
     if (!sessionStorage.getItem("mit-mba-profile-seeded")) {
-      localStorage.setItem("unisearch_profile", JSON.stringify({ studyLevel: "Master", applicantRoute: "graduate" }));
+      localStorage.setItem("unisearch_profile", JSON.stringify({ studyLevel: "Master" }));
       sessionStorage.setItem("mit-mba-profile-seeded", "1");
     }
   });
@@ -223,6 +229,6 @@ test("saved GRE evidence persists while Sloan's unassessed rule and cleared cycl
   expect(cleared.assessment.chancePercent).toBeNull();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(cycle).toHaveValue("");
-  await expect((await openAssessment(page)).locator(":scope > p").first()).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

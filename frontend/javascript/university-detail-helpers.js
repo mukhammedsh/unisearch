@@ -3,16 +3,6 @@ import { getCurrentLanguage, t } from "./i18n.js";
 import { heroIcon } from "./icons.js";
 import { translateAdmissionText, translateTrackLabel, translateUnknownWord, translateWord } from "./university-translations.js";
 
-export function mapMarkerLogoHtml(logoUrl) {
-  const safeLogoUrl = escapeHtml(logoUrl);
-  return `<div class="map-marker-container"><img class="marker-img-inner" src="${safeLogoUrl}" alt="" loading="lazy" decoding="async" data-parent-error-class="no-logo" data-remove-on-error="1"></div>`;
-}
-
-export function clusterMarkerLogoHtml(logoUrl, extraCount) {
-  const count = Number.isFinite(Number(extraCount)) ? Number(extraCount) : 0;
-  return `<div class="cluster-node-fix">${mapMarkerLogoHtml(logoUrl)}<div class="cluster-badge">+${count}</div></div>`;
-}
-
 export function applyPercentWidths(rootEl) {
   if (!rootEl) return;
   rootEl.querySelectorAll("[data-width-pct]").forEach((node) => {
@@ -222,7 +212,7 @@ export function renderGroupedExamPairRows(pairs, opts = {}) {
       const parentExamId = group.exam;
       const parentLabel = getExamDisplayName(parentExamId, opts);
       const hasCompositeChildren = group.entries.some((row) => row.exam !== parentExamId);
-      const sortedEntries = group.entries.slice().sort((a, b) => {
+      const sortedEntries = group.entries.toSorted((a, b) => {
         const left = compositeEntryOrder(parentExamId, a.exam, opts);
         const right = compositeEntryOrder(parentExamId, b.exam, opts);
         if (left !== right) return left - right;

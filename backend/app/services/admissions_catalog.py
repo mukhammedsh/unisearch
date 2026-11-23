@@ -1,6 +1,7 @@
 """Read the active, reviewed admissions snapshot."""
 
 import copy
+import functools
 import hashlib
 import json
 import math
@@ -16,6 +17,12 @@ from app.services.university_tracks import _canonical_major, _major_tags_from_te
 CATALOG_PATH = DATA_DIR / "admissions" / "catalog.json"
 INSTITUTION_IDS = {"mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana"}
 LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"}
+# Closed values prepared from backend/data/drafts/integration/vocabulary.json.
+PUBLICATION_STATES = {"published", "published_with_limits", "partially_published", "not_yet_published", "not_found",
+                      "conflicting", "historical", "unknown"}
+REVIEW_STATES = {"verified", "verified_with_limits", "partially_verified", "carried_forward", "conflicting", "needs_resolution", "superseded", "not_recorded"}
+RESEARCH_SUPERSEDED_STATUS = "superseded_by_completed_research"
+ENTRY_VALUES = {"external", "external_restricted", "internal", "no_admission", "closed", "unresolved"}
 LEVEL_ALIASES = {"bachelor": "undergraduate", "master": "masters", "doctorate": "doctoral", "phd": "doctoral", "foundation": "preparation", "non-degree": "non_degree"}
 _LOCK = threading.Lock()
 _CACHE = {"signature": None, "revision": None, "institutions": {}, "indexes": {}}
@@ -125,12 +132,16 @@ def _load():
                 for option in entities["study_options"].values():
                     if not isinstance(option["levels"], list) or not set(option["levels"]).issubset(LEVELS):
                         raise AdmissionsCatalogError("Invalid normalized study levels")
+                    if option["entry"] not in ENTRY_VALUES:
+                        raise AdmissionsCatalogError("Invalid normalized study option entry")
                     _references(option["route_ids"], entities["application_routes"])
                     _references(option["fact_ids"], entities["facts"])
                     _references(option["source_ids"], entities["sources"])
                     if option["parent_option_id"]:
                         _references([option["parent_option_id"]], entities["study_options"])
                 for route in entities["application_routes"].values():
+                    if route["entry"] not in ENTRY_VALUES:
+                        raise AdmissionsCatalogError("Invalid normalized application route entry")
                     _references(route["option_ids"], entities["study_options"])
                     _references(route["fact_ids"], entities["facts"])
                     _references(route["source_ids"], entities["sources"])
@@ -138,6 +149,9 @@ def _load():
                     _references(_route_metadata(route).get("policy_for_route_ids", []), entities["application_routes"])
                 for key in ("facts", "unknowns"):
                     for fact in entities[key].values():
+                        status = fact["normalized_status"]
+                        if status["publication"] not in PUBLICATION_STATES or status["review"] not in REVIEW_STATES:
+                            raise AdmissionsCatalogError("Invalid normalized publication or review status")
                         _references(fact["scope"]["option_ids"], entities["study_options"])
                         _references(fact["scope"]["route_ids"], entities["application_routes"])
                         _references(fact["source_ids"], entities["sources"])
@@ -171,6 +185,12 @@ def get_institution(institution_id):
     return _load()["institutions"].get(institution_id)
 
 
+@functools.lru_cache(maxsize=2048)
+def _title_major_tags(title):
+    # Tag matching normalises every phrase of the subject taxonomy; option titles are static, so do it once each.
+    return _major_tags_from_text(title)
+
+
 def matching_study_options(institution_id, major=None, study_level=None):
     """Use the catalog subject taxonomy without choosing an application target."""
     institution = get_institution(institution_id)
@@ -180,7 +200,7 @@ def matching_study_options(institution_id, major=None, study_level=None):
     subject = _canonical_major(major) if major else None
     return [option for option in institution["study_options"]
             if (not level or level == "any" or level in option["levels"])
-            and (not major or (subject in _major_tags_from_text(option["title"]) if subject
+            and (not major or (subject in _title_major_tags(option["title"]) if subject
                  else _normalize_major_text(major) == _normalize_major_text(option["title"]))) ]
 
 
@@ -258,7 +278,8 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                        "fact_id": row["id"], "source_ids": row["source_ids"]})
 
     for row in institution["facts"]:
-        if (row["publication_status"] != "published" and not row.get("attributes", {}).get("catalog_costs")) or not re.search(r"verified|reviewed|rechecked|carried_forward_review", row.get("review_status") or "") or re.search(r"superseded|conflict|partial|pending", row.get("review_status") or ""):
+        status = row["normalized_status"]
+        if (status["publication"] != "published" and not row.get("attributes", {}).get("catalog_costs")) or status["review"] not in {"verified", "verified_with_limits", "carried_forward"}:
             continue
         value = row.get("attributes", {}).get("catalog_costs") or row.get("value")
         if not isinstance(value, dict):
@@ -276,6 +297,15 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
             add(row, "tuition", value.get("tuition"), value.get("currency"), period)
             add(row, "annual_total", value.get("total_before_aid"), value.get("currency"), period,
                 exclusions=value.get("exclusions", ["insurance", "travel"] if value.get("health_insurance") else []))
+        # Published budget tables: only the nine-month column matches an academic-year comparison.
+        for budget in value.get("budgets") or []:
+            if isinstance(budget, dict) and budget.get("months") == 9 and "tuition" in budget and "total" in budget:
+                add(row, "tuition", budget["tuition"], value.get("currency"), period)
+                add(row, "annual_total", budget["total"], value.get("currency"), period)
+        # Quarterly full-time graduate rates cover three academic quarters (Autumn, Winter, Spring).
+        quarterly = (value.get("graduate_engineering_quarterly_tuition") or {}).get("11-18_units")
+        if isinstance(quarterly, (int, float)) and not isinstance(quarterly, bool):
+            add(row, "tuition", quarterly * 3, value.get("currency"), value.get("academic_year"))
         panels = value.get("course_page_tuition_fees")
         if not isinstance(panels, dict):
             continue
@@ -289,62 +319,160 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                     if annual or one_year:
                         add(row, "tuition", float((annual or one_year)[1].replace(",", "")), panel.get("currency"), panel.get("panel_cycle_label"), status)
 
+    def period_matches(quote):
+        actual = re.fullmatch(r"(20\d{2})-(?:\d{2}|20\d{2})", quote["period"])
+        published = actual[1] if actual else quote["period"]
+        target = _cycle(intended_entry_cycle)
+        return _cycle_axis(published, str(target[0]) if target and target[1] != "spring" else intended_entry_cycle) == "matched"
+
+    def period_rank(quote):
+        return period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]
+
+    # Every priced variant without a published full budget gains the applicable living-cost range.
+    living = _living_estimates(institution)
+    published_budgets = [quote for quote in quotes if quote["basis"] == "annual_total"]
+    for quote in [quote for quote in quotes if quote["basis"] == "tuition" and quote["billing_period"] == "academic_year"]:
+        option_ids = set(quote["option_ids"])
+        covered_options = set()
+        quote_scope = (quote["currency"], quote["period"], quote["billing_period"], quote["fee_status"], quote["campus"])
+        for budget in published_budgets:
+            budget_scope = (budget["currency"], budget["period"], budget["billing_period"], budget["fee_status"], budget["campus"])
+            if budget_scope != quote_scope:
+                continue
+            covered_options.update(option_ids.intersection(budget["option_ids"]))
+        option_ids.difference_update(covered_options)
+        if not option_ids:
+            continue
+        quote = {**quote, "option_ids": sorted(option_ids)}
+        matches = [estimate for estimate in living if estimate["currency"] == quote["currency"]
+                   and (not estimate["levels"] or set(estimate["levels"]).intersection(quote["levels"]))
+                   and (not estimate["option_ids"] or set(estimate["option_ids"]).intersection(option_ids))]
+        if not matches:
+            continue
+        low, high = min(estimate["min"] for estimate in matches), max(estimate["max"] for estimate in matches)
+        living_references = {estimate["reference"] for estimate in matches if estimate["reference"]}
+        quotes.append({**quote, "basis": "annual_total", "amount": quote["amount"] + low, "amount_max": quote["amount"] + high,
+                       "living": (low, high), "exclusions": sorted({item for estimate in matches for item in estimate["exclusions"]}),
+                       "living_fact_ids": sorted({estimate["fact_id"] for estimate in matches}),
+                       "living_reference": next(iter(living_references)) if len(living_references) == 1 else "",
+                       "source_ids": sorted({*quote["source_ids"], *(value for estimate in matches for value in estimate["source_ids"])})})
+
     for basis in ("annual_total", "tuition"):
         candidates = [quote for quote in quotes if quote["basis"] == basis]
         if not candidates:
             continue
         if not selected_option and any(quote["annual_comparable"] for quote in candidates):
             candidates = [quote for quote in candidates if quote["annual_comparable"]]
-        # Keep one source period and currency; do not join prices across entry years.
-        def period_matches(quote):
-            actual = re.fullmatch(r"(20\d{2})-(?:\d{2}|20\d{2})", quote["period"])
-            published = actual[1] if actual else quote["period"]
-            target = _cycle(intended_entry_cycle)
-            return _cycle_axis(published, str(target[0]) if target and target[1] != "spring" else intended_entry_cycle) == "matched"
-
-        latest = max(candidates, key=lambda quote: (period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]))
-        candidates = [quote for quote in candidates if (quote["period"], quote["currency"], quote["billing_period"]) == (latest["period"], latest["currency"], latest["billing_period"])]
-        bounds = [min(candidates, key=lambda quote: quote["amount"]), max(candidates, key=lambda quote: quote["amount"])]
+        # Keep one published period per priced variant, so a variant is never counted for two entry years.
+        variants = {}
+        for quote in candidates:
+            key = (tuple(quote["option_ids"]), quote["fee_status"], quote["campus"])
+            if key not in variants or period_rank(quote) > period_rank(variants[key]):
+                variants[key] = quote
+        latest = max(variants.values(), key=period_rank)
+        candidates = [quote for quote in variants.values()
+                      if (quote["currency"], quote["billing_period"]) == (latest["currency"], latest["billing_period"])]
+        bounds = [min(candidates, key=lambda quote: quote["amount"]),
+                  max(candidates, key=lambda quote: quote.get("amount_max", quote["amount"]))]
         evidence = candidates if profile is not None else bounds
         source_ids = {source_id for quote in evidence for source_id in quote["source_ids"]}
-        summary[basis] = {"min": min(quote["amount"] for quote in candidates), "max": max(quote["amount"] for quote in candidates),
-                          "amounts": sorted({quote["amount"] for quote in candidates}),
-                          "currency": latest["currency"], "period": latest["period"], "study_level": level or "",
-                          "billing_period": latest["billing_period"], "annual_comparable": all(quote["annual_comparable"] for quote in candidates),
-                          "campuses": sorted({quote["campus"] for quote in candidates if quote.get("campus")}),
-                          "source_year": latest.get("source_year"),
-                          "fee_statuses": sorted({quote["fee_status"] for quote in candidates if quote["fee_status"]}),
-                          "fee_status_match": ("not_required" if not any(quote["fee_status"] for quote in candidates)
-                                               else "unknown" if fee_status_context in (None, "unknown") else "matched"),
-                          "cycle_status": "matched" if period_matches(latest) else "dated_reference" if intended_entry_cycle else "unspecified",
-                          "levels": sorted({value for quote in candidates for value in quote["levels"]}),
-                          "option_ids": sorted({value for quote in candidates for value in quote["option_ids"]}),
-                          "candidate_option_count": len(candidate_ids),
-                          "priced_option_count": len({value for quote in candidates for value in quote["option_ids"]}),
-                          "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
-                          "fact_ids": sorted({quote["fact_id"] for quote in evidence}),
-                          "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
-    defaulted_undergraduate = not level and summary["tuition"] and set(summary["tuition"]["levels"]) == {"undergraduate"}
-    if (profile is not None and institution_id == "imperial-college-london-uk"
-            and (level == "undergraduate" or defaulted_undergraduate)
-            and summary["tuition"] and not summary["annual_total"]):
-        tuition = summary["tuition"]
-        living_fact = next((row for row in institution["facts"] if row["id"] == "imperial-london-living-2026"), None)
-        living_range = (living_fact or {}).get("value", {}).get("average_9months", {})
-        living_min, living_max = living_range.get("min"), living_range.get("max")
-        if (tuition["currency"] == "GBP" and isinstance(living_min, (int, float)) and not isinstance(living_min, bool)
-                and isinstance(living_max, (int, float)) and not isinstance(living_max, bool)
-                and math.isfinite(living_min) and math.isfinite(living_max) and 0 <= living_min <= living_max):
-            intervals = [{"min": amount + living_min, "max": amount + living_max} for amount in tuition["amounts"]]
-            total = {**tuition, "min": min(interval["min"] for interval in intervals),
-                     "max": max(interval["max"] for interval in intervals), "intervals": intervals,
-                     "calculation": "tuition_plus_living_range", "living_min": living_min,
-                     "living_max": living_max, "living_period": "9 months", "living_reference": "2026 estimate"}
-            total.pop("amounts")
-            total["source_urls"] = tuition["source_urls"] + [
-                source["url"] for source in institution["sources"] if source["id"] in living_fact["source_ids"]]
-            summary["annual_total"] = total
+        derived = [quote["living"] for quote in candidates if quote.get("living")]
+        quote_summary = {"min": min(quote["amount"] for quote in candidates),
+                         "max": max(quote.get("amount_max", quote["amount"]) for quote in candidates),
+                         "amounts": sorted({quote["amount"] for quote in candidates}),
+                         "currency": latest["currency"], "period": latest["period"],
+                         "study_level": level or "",
+                         "billing_period": latest["billing_period"], "annual_comparable": all(quote["annual_comparable"] for quote in candidates),
+                         "campuses": sorted({quote["campus"] for quote in candidates if quote.get("campus")}),
+                         "source_year": latest.get("source_year"),
+                         "fee_statuses": sorted({quote["fee_status"] for quote in candidates if quote["fee_status"]}),
+                         "fee_status_match": ("not_required" if not any(quote["fee_status"] for quote in candidates)
+                                              else "unknown" if fee_status_context in (None, "unknown") else "matched"),
+                         "cycle_status": "matched" if period_matches(latest) else "dated_reference" if intended_entry_cycle else "unspecified",
+                         "levels": sorted({value for quote in candidates for value in quote["levels"]}),
+                         "option_ids": sorted({value for quote in candidates for value in quote["option_ids"]}),
+                         "candidate_option_count": len(candidate_ids),
+                         "priced_option_count": len({value for quote in candidates for value in quote["option_ids"]}),
+                         "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
+                         "fact_ids": sorted({quote["fact_id"] for quote in evidence} |
+                                            {fact_id for quote in evidence for fact_id in quote.get("living_fact_ids", [])}),
+                         "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
+        if basis == "annual_total":
+            published_quotes = [quote for quote in candidates if not quote.get("living")]
+            quote_summary["published_intervals"] = [
+                {"min": quote["amount"], "max": quote.get("amount_max", quote["amount"])}
+                for quote in published_quotes
+            ]
+        if derived:
+            quote_summary.pop("amounts")
+            quote_summary.update(
+                intervals=sorted({(quote["amount"], quote.get("amount_max", quote["amount"])) for quote in candidates}),
+                calculation="tuition_plus_living_range", living_period="9 months",
+                living_min=min(low for low, _high in derived), living_max=max(high for _low, high in derived))
+            quote_summary["intervals"] = [{"min": low, "max": high} for low, high in quote_summary["intervals"]]
+            living_references = {quote["living_reference"] for quote in candidates if quote.get("living_reference")}
+            if len(living_references) == 1:
+                quote_summary["living_reference"] = next(iter(living_references))
+        summary[basis] = quote_summary
     return summary
+
+
+def _usd_range(quote):
+    """Convert an annual quote for budget comparison; other billing periods stay unconverted."""
+    if not quote.get("annual_comparable"):
+        return None
+    if quote["currency"] == "USD":
+        return {"min": quote["min"], "max": quote["max"]}
+    from app.services.currency import convert
+    try:
+        return {"min": round(convert(quote["min"], quote["currency"], "USD")), "max": round(convert(quote["max"], quote["currency"], "USD"))}
+    except ValueError:
+        return None
+
+
+def selected_costs(institution_id, context):
+    """Published reference costs for one resolved selection, with a USD range when the quote is annual."""
+    costs = catalog_costs(institution_id, context.get("study_level"), fee_status_context=context.get("fee_status_context"),
+                          intended_entry_cycle=context.get("intended_entry_cycle"),
+                          study_option_id=context.get("study_option_id"), application_route_id=context.get("application_route_id"))
+    for basis in ("annual_total", "tuition"):
+        if isinstance(costs.get(basis), dict):
+            costs[basis]["usd"] = _usd_range(costs[basis])
+    return costs
+
+
+def _living_estimates(institution):
+    """Read published non-tuition estimates and express them for one nine-month academic year."""
+    estimates = []
+    for row in institution["facts"]:
+        if (not str(row.get("publication_status") or "").startswith("published")
+                or not re.search(r"verified|reviewed", row.get("review_status") or "")
+                or re.search(r"superseded|conflict|partial|pending", row.get("review_status") or "")):
+            continue
+        value = row.get("value")
+        if not isinstance(value, dict):
+            continue
+        if isinstance(value.get("average_9months"), dict):
+            low, high, exclusions = value["average_9months"].get("min"), value["average_9months"].get("max"), ["insurance", "travel"]
+        elif "three_quarter_non_tuition_total" in value:
+            low = high = value["three_quarter_non_tuition_total"]
+            exclusions = ["travel"]
+        elif "living" in str(row.get("topic") or "") and value.get("period") == "month" and isinstance(value.get("amount"), (int, float)):
+            low = high = value["amount"] * 9
+            exclusions = ["travel"]
+        else:
+            continue
+        if (any(isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount) for amount in (low, high))
+                or not 0 <= low <= high or not re.fullmatch(r"[A-Z]{3}", str(value.get("currency") or ""))):
+            continue
+        reference = value.get("cycle") or value.get("year") or value.get("academic_year")
+        if not reference:
+            period = row.get("period")
+            reference = period.get("label") if isinstance(period, dict) else period
+        estimates.append({"min": low, "max": high, "currency": value["currency"], "exclusions": exclusions,
+                          "levels": row["scope"]["levels"], "option_ids": row["scope"]["option_ids"],
+                          "fact_id": row["id"], "source_ids": row["source_ids"], "reference": str(reference or "")})
+    return estimates
 
 
 def get_public_contract(institution_id):
@@ -366,11 +494,11 @@ def _institution(institution_id):
 
 
 def _option_summary(option):
-    summary = {key: option[key] for key in ("id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids")}
+    summary = {key: option[key] for key in ("id", "title", "levels", "awards", "route_ids", "parent_option_id", "source_ids", "fact_ids", "entry")}
     metadata = option.get("attributes", {})
     for key in ("application", "application_classification", "application_classifications", "catalog_classification",
                 "new_applicant_availability", "inventory_status", "application_relationship", "reconciled_application_relationship",
-                "independent_application_status", "ucas_course_codes", "course_url", "catalog_code", "format"):
+                "independent_application_status", "ucas_course_codes", "course_url", "catalog_code", "format", "description"):
         if key in metadata:
             summary[key] = metadata[key]
     if not summary.get("course_url") and metadata.get("official_program_url"):
@@ -383,12 +511,14 @@ def _route_metadata(route):
 
 
 def _route_summary(route):
-    summary = {key: route[key] for key in ("id", "title", "classification", "target", "destination", "shared_form_family",
+    summary = {key: route[key] for key in ("id", "title", "classification", "entry", "target", "destination", "shared_form_family",
                                          "option_ids", "source_ids", "fact_ids", "shared_policy_context_ids")}
     metadata = _route_metadata(route)
-    for key in ("application_url", "admission_scope", "applicant_route", "policy_for_route_ids"):
+    for key in ("application_url", "admission_scope", "policy_for_route_ids"):
         if key in metadata:
             summary[key] = metadata[key]
+    if route.get("applicant_route"):
+        summary["applicant_route"] = route["applicant_route"]
     return copy.deepcopy(summary)
 
 
@@ -400,6 +530,72 @@ def _reference_labels(indexed):
                 if alias and row.get("title"):
                     labels.setdefault(alias, set()).add(row["title"])
     return {alias: next(iter(titles)) for alias, titles in labels.items() if len(titles) == 1}
+
+
+# HTTP projections. Backend logic (scoring, assessment hashes, tests) reads the complete in-memory records; the
+# applicant pages never read the fields below, so the responses omit them. Project only after the assessment has
+# hashed the full facts, and never mutate the cached catalog records (the callers pass copies).
+RECORD_INTERNAL_KEYS = frozenset({"provenance", "index_attributes", "related_fact_ids", "content_reviewed_at"})
+PUBLIC_RECORD_ATTRIBUTES = ("catalog_costs", "deadline_events")
+ASSESSMENT_DUPLICATE_KEYS = frozenset({"choices", "selectedContext", "unknowns", "sources"})
+RESPONSE_SHAPE = "public-2"
+
+
+def _public_record(row):
+    """A fact or unknown without research-only fields; expose only the resolution copy needed for conflicts."""
+    public = {key: value for key, value in row.items() if key not in RECORD_INTERNAL_KEYS and key != "attributes"}
+    attributes = {key: row["attributes"][key] for key in PUBLIC_RECORD_ATTRIBUTES if key in row.get("attributes", {})}
+    if attributes:
+        public["attributes"] = attributes
+    status = row.get("normalized_status") if isinstance(row.get("normalized_status"), dict) else {}
+    if status.get("publication") == "conflicting" or status.get("review") in {"conflicting", "needs_resolution"}:
+        resolution = row.get("attributes", {}).get("resolution")
+        if isinstance(resolution, dict):
+            reason = resolution.get("reason")
+            next_step = resolution.get("next_official_step")
+            value = row.get("value") if isinstance(row.get("value"), dict) else {}
+            next_step = next_step or value.get("next_official_step")
+            if isinstance(reason, str) and reason.strip() and not (isinstance(public.get("reason"), str) and public["reason"].strip()):
+                public["reason"] = reason
+            if isinstance(next_step, str) and next_step.strip() and not (isinstance(public.get("official_next_step"), str) and public["official_next_step"].strip()):
+                public["official_next_step"] = next_step
+    return public
+
+
+def _public_summary(summary):
+    """An option or route summary without the fact references used only to validate the catalog."""
+    return {key: value for key, value in summary.items() if key != "fact_ids"}
+
+
+def public_study_options(result):
+    """The study-options page as sent over HTTP."""
+    public = {**result, "items": [_public_summary(row) for row in result["items"]]}
+    for key in ("shared_routes", "preparation_entries"):
+        if key in result:
+            public[key] = [_public_summary(row) for row in result[key]]
+    return public
+
+
+def public_context(resolved):
+    """The admissions-context response as sent over HTTP: the resolved context plus its assessment and prices."""
+    public = {key: value for key, value in resolved.items() if key != "excluded"}
+    for key in ("facts", "unknowns"):
+        if key in public:
+            public[key] = [_public_record(row) for row in public[key]]
+    for key in ("selected_option", "selected_route"):
+        if public.get(key):
+            public[key] = _public_summary(public[key])
+    if "available_routes" in public:
+        public["available_routes"] = [_public_summary(row) for row in public["available_routes"]]
+    if "sources" in public:
+        public["sources"] = [{key: value for key, value in source.items() if key != "attributes"} for source in public["sources"]]
+    if isinstance(public.get("history"), dict):
+        public["history"] = {key: [_public_record(row) for row in value] if key in ("facts", "unknowns") else value
+                             for key, value in public["history"].items()}
+    if isinstance(public.get("assessment"), dict):
+        # `choices` repeats `activeChoice`; the other keys repeat the top-level context, unknowns and sources.
+        public["assessment"] = {key: value for key, value in public["assessment"].items() if key not in ASSESSMENT_DUPLICATE_KEYS}
+    return public
 
 
 def list_study_options(institution_id, search_candidates=(), study_level=None, page=1, limit=30, *, major=None):
@@ -415,11 +611,18 @@ def list_study_options(institution_id, search_candidates=(), study_level=None, p
     if queries:
         items.sort(key=lambda row: (-row[0], row[1]["title"].casefold(), row[1]["id"]))
     start = (page - 1) * limit
+    # The path serving the most programs (the regular application) comes first; one-off intakes follow.
+    shared = sorted((route for route in institution["application_routes"]
+                     if _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate"),
+                    key=lambda route: -len(route["option_ids"]))
+    shared_ids = {route["id"] for route in shared}
     return {"institution_id": institution_id, "revision": cached["revision"], "total": len(items), "page": page, "limit": limit,
             "shared_routes": [{**_route_summary(route), "levels": ["undergraduate"]}
-                              for route in institution["application_routes"]
-                              if _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate"
-                              and study_level in (None, "undergraduate")],
+                              for route in shared if study_level in (None, "undergraduate")],
+            # A preparatory year applied for through the shared undergraduate application, e.g. NU's Foundation Year.
+            "preparation_entries": [_option_summary(option) for option in institution["study_options"]
+                                    if option["levels"] == ["preparation"] and shared_ids.intersection(option["route_ids"])
+                                    and study_level in (None, "undergraduate", "preparation")],
             "items": [_option_summary(option) for _, option in items[start:start + limit]]}
 
 
@@ -435,8 +638,8 @@ def _axis(values, selected):
 
 
 def _history(row):
-    return str(row.get("review_status") or "").startswith("superseded") or row.get("publication_status") in {
-        "historical", "published_historical_cycle"}
+    status = row["normalized_status"]
+    return status["review"] == "superseded" or status["publication"] == "historical"
 
 
 def _cycle(value):
@@ -447,6 +650,13 @@ def _cycle(value):
     localized = re.fullmatch(r"(20\d{2}) жылғы (күзгі|көктемгі) қабылдау", label)
     if localized:
         return int(localized[1]), "fall" if localized[2] == "күзгі" else "spring"
+    # Plain applicant wording such as "осень 2027" or "2027 күз" names the same intake.
+    season = r"(осень|осенью|осенний набор|весна|весной|весенний набор|күз|күзгі|күзі|көктем|көктемгі|көктемі)"
+    localized = (re.fullmatch(season + r" (20\d{2})(?: года| г\.?| жыл| жылы)?", label)
+                 or re.fullmatch(r"(20\d{2})(?: года| г\.?| жылғы| жыл| жылы)? " + season + r"(?: қабылдау| набор)?", label))
+    if localized:
+        term, year = (localized[1], localized[2]) if localized[1][0].isalpha() else (localized[2], localized[1])
+        return int(year), "fall" if term.startswith(("осен", "күз")) else "spring"
     cycle_parts = label.rsplit(None, 1)
     if len(cycle_parts) == 2 and cycle_parts[1] == "entry":
         label = cycle_parts[0]
@@ -562,8 +772,13 @@ def resolve_context(institution_id, profile=None, context=None):
                       and _route_metadata(route).get("admission_scope") == "institution_wide_undergraduate")
     if shared_reading:
         effective["study_level"] = effective["study_level"] or "undergraduate"
-        effective["applicant_route"] = effective["applicant_route"] or _route_metadata(route).get("applicant_route")
     statuses = {"option": "matched" if option else "unknown", "route": "matched" if route else "unknown", "level": "unknown"}
+    # A route that implies an applicant category governs. Only a category named in this request can contradict it; a
+    # profile or saved-selection value is a default and is replaced silently.
+    implied = route.get("applicant_route") if route else None
+    if implied:
+        statuses["applicant"] = "mismatched" if context.get("applicant_route") not in (None, "", implied) else "matched"
+        effective["applicant_route"] = implied
     if shared_reading:
         statuses["option"] = "not_required"
     if effective["study_level"]:
@@ -575,6 +790,7 @@ def resolve_context(institution_id, profile=None, context=None):
     invalid_selection = ((effective["study_option_id"] and option is None)
                          or (effective["application_route_id"] and route is None)
                          or statuses["route"] == "mismatched"
+                         or statuses.get("applicant") == "mismatched"
                          or (option is None and not shared_reading)
                          or (shared_reading and effective["study_level"] != "undergraduate")
                          or (option is None and route is None))
@@ -605,6 +821,10 @@ def resolve_context(institution_id, profile=None, context=None):
                 continue
             dated_reference = (row.get("attributes", {}).get("retain_as_dated_history") and applicability["cycle"] == "mismatched"
                                and all(value != "mismatched" for axis, value in applicability.items() if axis not in {"cycle", "status"}))
+            # Research-process notes superseded by completed research are internal; their applicant facts live in current records.
+            if key == "unknowns" and _history(row) and row.get("review_status") == RESEARCH_SUPERSEDED_STATUS:
+                excluded[key].append({"id": row["id"], "applicability": applicability})
+                continue
             if _history(row) or dated_reference:
                 history["fact_ids" if key == "facts" else "unknown_ids"].append(row["id"])
                 historical_context = {**effective, "intended_entry_cycle": None}
@@ -625,6 +845,10 @@ def resolve_context(institution_id, profile=None, context=None):
                     groups.setdefault(domain, []).append(row["id"])
     available_routes = [_route_summary(indexed["application_routes"][route_id]) for route_id in option["route_ids"]
                         if route_id == effective["application_route_id"] or not set(_route_metadata(indexed["application_routes"][route_id]).get("policy_for_route_ids", [])).intersection(option["route_ids"])] if option else []
+    if shared_reading:
+        # Without a program, the university's other shared paths (such as a post-offer funding application) stay reachable.
+        available_routes = [_route_summary(row) for row in institution["application_routes"]
+                            if _route_metadata(row).get("admission_scope") == "institution_wide_undergraduate"]
     selected_option = _option_summary(option) if option else None
     if selected_option is not None:
         selected_option["overviews"] = []

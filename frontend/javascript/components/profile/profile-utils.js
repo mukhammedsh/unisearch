@@ -34,13 +34,28 @@ export const normalizeFundingType = (value) => {
     return (raw === "grant" || raw === "paid") ? raw : "any";
 };
 
-export const cloneProfile = (value) => JSON.parse(JSON.stringify(value && typeof value === "object" ? value : {}));
+export const cloneProfile = (value) => structuredClone(value && typeof value === "object" ? value : {});
 
 export const GPA_MAX_CHARS = 4;
 
 export const normalizeGpaRaw = (value) => String(value ?? "").trim().replace(/,/g, ".");
 
 export const normalizeAmountRaw = (value) => String(value ?? "").replace(/\s+/g, "");
+
+// The budget is stored as the applicant entered it; another display currency only shows its rounded conversion,
+// so switching currencies back and forth never changes the stored amount.
+export const budgetInCurrency = (profile, currency) => {
+    const raw = String(profile?.budget ?? "").trim();
+    if (!raw || !Number.isFinite(Number(raw))) return raw;
+    const from = String(profile?.budgetCurrency || "USD").trim().toUpperCase();
+    return from === currency ? Number(raw) : Math.round(convert(Number(raw), from, currency));
+};
+
+// A field value equal to the shown conversion keeps the stored entry; any other value becomes the new entry.
+export const applyBudgetEntry = (profile, value, currency) => {
+    if (String(value ?? "").trim() === String(budgetInCurrency(profile, currency)).trim()) return profile;
+    return { ...profile, budget: value, budgetCurrency: currency };
+};
 
 export const enforceGpaMaxLength = (gpaInput) => {
     if (!gpaInput) return;
@@ -89,6 +104,10 @@ export const setFieldInvalid = (el, isInvalid = true, message = "") => {
         }
     }
 };
+
+// A date field holding a partly typed date (only the year, say) reports an empty value but a bad input;
+// it must be treated as an invalid date, never as "no date".
+export const hasPartialDateInput = (input) => Boolean(input?.validity?.badInput);
 
 export const reportInvalidDate = (input) => {
     input?.focus();
@@ -147,25 +166,13 @@ export const stableProfileSignature = (raw) => {
     return JSON.stringify({
         budget: String(p.budget ?? "").trim(),
         budgetCurrency: String(p.budgetCurrency || "USD").toUpperCase(),
-        familyIncomeAmount: String(p.familyIncomeAmount ?? "").trim(),
-        familyIncomeCurrency: String(p.familyIncomeCurrency || "USD").toUpperCase(),
         gpa: String(p.gpa ?? "").trim(),
         gpaScale: Number(p.gpaScale) === 5 ? 5 : 4,
         major: String(p.major || "").trim(),
         interests: String(p.interests || "").trim(),
         studyMode: String(p.studyMode || "Any").trim() || "Any",
         fundingType: normalizeFundingType(p.fundingType),
-        citizenships: (Array.isArray(p.citizenships) ? p.citizenships : []).map((c) => String(c || "").trim()).filter(Boolean),
         studyLevel: String(p.studyLevel || "Any").trim() || "Any",
-        countryOfEducation: String(p.countryOfEducation || "").trim(),
-        countryOfEducationOther: String(p.countryOfEducationOther || "").trim(),
-        educationCredential: String(p.educationCredential || "").trim(),
-        educationCredentialOther: String(p.educationCredentialOther || "").trim(),
-        applicantRoute: String(p.applicantRoute || "").trim(),
-        intendedEntryCycle: String(p.intendedEntryCycle || "").trim(),
-        currentResidenceCountry: String(p.currentResidenceCountry || "").trim(),
-        currentResidenceOther: String(p.currentResidenceOther || "").trim(),
-        feeStatusContext: String(p.feeStatusContext || "unknown").trim() || "unknown",
         exams,
         languages,
         languageEvidence: Array.isArray(p.languageEvidence) ? p.languageEvidence : [],

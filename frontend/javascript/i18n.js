@@ -5,7 +5,10 @@ import { escapeHtml, escapeHtmlAttr } from "./utils/format.js";
 import { aiName } from "./utils/runtime.js";
 
 const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
-const I18N_PACK_REVISION = "43";
+// Fingerprint of the three localization files (first 8 hex characters of their SHA-256 with LF line endings).
+// It names the tab's cached packs, so a changed file is fetched again even when the app version is unchanged.
+// tests/unit/i18n-pack-revision.test.mjs fails with the expected value whenever a localization file changes.
+const I18N_PACK_REVISION = "ce83bc17";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";
@@ -56,7 +59,7 @@ function detectDeviceLang() {
 function readStoredLang() {
   try {
     return normalizeLang(localStorage.getItem(I18N_STORAGE_KEY));
-  } catch (e) {
+  } catch {
     return "";
   }
 }
@@ -64,7 +67,7 @@ function readStoredLang() {
 function writeStoredLang(lang) {
   try {
     localStorage.setItem(I18N_STORAGE_KEY, lang);
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
@@ -104,7 +107,7 @@ async function _fetchLocalizationText(file, timeoutMs) {
     timeoutId = setTimeout(() => {
       try {
         controller?.abort();
-      } catch (e) {
+      } catch {
         // ignore
       }
       resolve("");
@@ -133,7 +136,7 @@ function _hydratePacksFromSession() {
       const code = String(parsed["meta.code"] || "").trim();
       const navKey = `nav.lang.${lang}`;
       if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
-    } catch (e) {
+    } catch {
       // ignore
     }
   });
@@ -165,7 +168,7 @@ function _loadLocalizationPack(lang) {
       const navKey = `nav.lang.${lang}`;
       if (code && !String(DICT[lang][navKey] || "").trim()) DICT[lang][navKey] = code.toUpperCase();
       return true;
-    } catch (e) {
+    } catch {
       return false;
     }
   })();
@@ -391,7 +394,7 @@ if (typeof window !== "undefined" && typeof window.addEventListener === "functio
   window.addEventListener("currencyChanged", () => {
     try {
       applyTranslations();
-    } catch (e) {
+    } catch {
       // ignore
     }
   });

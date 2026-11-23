@@ -2,12 +2,16 @@
 
 UniSearch uses a calm academic product workspace style. The interface should feel like a practical admissions and university-selection tool: data-dense, quiet, trustworthy, and fast to scan.
 
-Use this document as the source of truth for new UI work. The global stylesheet entry point is `frontend/css/style.css`; its ordered modules are documented in `frontend/css/shared/README.md`.
+Use this document as the source of truth for new UI work. Global tokens and shared stylesheets live in `frontend/css/shared/01-foundation.css` and its sibling modules (documented in `frontend/css/shared/README.md`), linked directly from HTML pages without CSS `@import` chains.
 
 ## Design Direction
 
 - Build working screens first. Catalog, ranking, guide, profile, and university detail pages should solve the task immediately, not behave like decorative landing pages.
 - Favor restrained academic/product UI over generic SaaS styling. Avoid plastic gradients, loud AI-style visuals, and one-off decorative effects.
+- Reference archetypes: Align UI work with three core aesthetic archetypes (available as reference specifications in `awesome-design-md`):
+  - **Linear (`linear.app`)** for data-dense productivity: catalog grids, search & filter toolbars, comparison matrices, metric indicators, and compact sorting controls. Emphasizes tight layout discipline, micro-elevation, and zero box borders.
+  - **Notion (`notion`)** for structured academic content: university detail pages, study options, admission routes, policy condition lists, deadline schedules, and explanatory callouts. Emphasizes clean typographic hierarchy, comfortable reading rhythm, and distraction-free content blocks.
+  - **Cal.com (`cal`)** for focused applicant workflows: applicant profile inputs (GPA, test scores, financial budgets), modal dialogs, and interactive selection sheets. Emphasizes clean borderless form fields, distinct focus outlines, and frictionless task completion.
 - Borderless surface hierarchy: UniSearch intentionally avoids visible box borders. Cards, panels, inputs, chips, badges, and buttons are borderless in resting, hover, active, and selected states. Use semantic surface contrast (`var(--surface-soft)`, `var(--surface-solid)`), restrained micro-elevation (`var(--shadow-xs)`, `var(--shadow-micro)`), and disciplined whitespace instead. The main catalog search and filter bar is the visual reference for this modern, minimal clarity.
 - Keep visual hierarchy clear and never let two adjacent visible components share an indistinguishable surface: page background -> solid working surfaces -> soft nested controls -> selectively raised controls or overlays.
 - Use real university media where it helps identify a university. Do not use atmospheric imagery when the user needs to inspect a concrete university.
@@ -23,9 +27,9 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 - Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
 - Spacing uses shared `--space-*` primitives from 1px to 96px and semantic aliases (`--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, `--component-card-gap`, and `--component-control-gap`) for repeated roles and responsive changes.
-- Accent: `--accent` (`#5D17EB`, shared by light and dark themes), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`). Browser chrome reads this token through `theme-init.js`; external SVG logos mirror it with their fill value because they do not inherit CSS custom properties.
+- Accent: `--accent` (`#5D17EB`, shared by light and dark themes, reserved for solid fills and indicators), `--accent-text` (`#5D17EB` light / `#a78bfa` dark, for foreground text and icons), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`). Browser chrome reads `--accent` through `theme-init.js`; external SVG logos mirror it with their fill value because they do not inherit CSS custom properties.
 - Interaction states: `--interaction-hover-text`, `--interaction-hover-surface`, `--interaction-active-text`, `--interaction-active-surface`, and `--interaction-disabled-opacity`. Reusable links, tabs, buttons, and icon controls must use these tokens instead of choosing local hover or selected colors. Semantic danger, warning, and success controls keep their matching status tokens.
-- Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`.
+- Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`, plus context-scoped `--control-bg` and `--control-shadow` (defaulting to `--surface-soft` / `--shadow-micro` on `--surface-solid` and flipping automatically to `--surface-solid` / `--shadow-xs` inside soft containers).
 - Text: `--text`, `--text-muted`.
 - Lines & state rings: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`, `--line-info`. These tokens are reserved for focus outlines, separators, and non-box state rings; they must not reintroduce default card or control borders.
 - Statuses:
@@ -52,7 +56,8 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 | `--line` | `rgba(15, 23, 42, 0.20)` | `rgba(255, 255, 255, 0.20)` | Focus ring or structural separator, never a default component box |
 | `--line-strong` | `rgba(15, 23, 42, 0.30)` | `rgba(255, 255, 255, 0.30)` | Prominent structural separator or non-box state ring |
 | `--line-faint` | `rgba(15, 23, 42, 0.10)` | `rgba(255, 255, 255, 0.10)` | Subtle separator where whitespace alone cannot express structure |
-| `--accent` | `#5D17EB` | `#5D17EB` | Primary action button, active indicator, focus ring (exact logo brand purple) |
+| `--accent` | `#5D17EB` | `#5D17EB` | Primary action button fill, active indicator, focus ring (exact logo brand purple) |
+| `--accent-text` | `#5D17EB` | `#a78bfa` | Accent foreground text and icons on light or dark surfaces |
 | `--accent-soft` | `color-mix(var(--accent) 12%)` | `color-mix(var(--accent) 18%)` | Active row highlight, soft badge background |
 | `--color-success` | `#15803d` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA 5.02:1) |
 | `--color-success-bg` | `#f0fdf4` | `rgba(16, 185, 129, 0.14)` | Success badge/banner background |
@@ -82,7 +87,7 @@ Use this structure for catalog-like or data-heavy pages:
 
 Good references:
 
-- `frontend/css/universities.css` catalog toolbar, filters, and university cards.
+- `frontend/css/universities/*` catalog toolbar, filters, and university cards.
 - `frontend/css/ranking.css` ranking list.
 - `frontend/css/guide.css` guide sidebar and content sections.
 
@@ -101,7 +106,7 @@ Use one main detail shell with a real cover image, header metadata, tabs, and ta
 
 Good reference:
 
-- `frontend/css/university.css`, especially the final `2026 University Refresh` and later polish overrides.
+- `frontend/css/university/`, especially the detail shell, overview/programs, admissions, and finance modules.
 
 ## Spacing and Grid System
 
@@ -129,9 +134,19 @@ Use `--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, 
 - **One owner for sibling spacing:** A flex/grid parent uses `gap`; direct children have zero margin on that same axis. Do not combine `gap` with child margins. When a title and its body need different spacing, group them in a wrapper and give that wrapper one `gap` value.
 - **Zero margins at container boundaries:** Inside any container that has `padding`, the first child must have `margin-top: 0` and the last child must have `margin-bottom: 0` (e.g., `:first-child { margin-top: 0; }` and `:last-child { margin-bottom: 0; }`).
 - **Single-layer padding responsibility:** Do not stack identical padding across nested wrapper divs (e.g. section padding + container padding + inner card padding). Allocate padding only to the visual surface boundary.
+- **No phantom slots:** An empty element still takes a flex/grid gap slot and keeps its own padding and margins. Hide empty hosts (`:empty { display: none; }`, or `:has()` for a wrapper around an empty list); keep an empty `aria-live` region rendered but out of the gap flow with `position: absolute`.
 - **No negative margin compensation:** Never use negative margins (`margin-top: -Npx`) to counteract unwanted gaps or line-height offsets. Eliminate the source margin or align the typography instead.
 
 Use shared `var(--space-*)` or semantic aliases in margin, padding, gap, and scroll-spacing declarations. `npm run check:design-lint` rejects raw nonzero pixel values, including values inside `calc()` and `clamp()`; a necessary optical or platform workaround needs a same-line `/* spacing-exception: reason */` comment. Browser E2E checks scan active catalog, profile, admissions, and finance layouts for margins stacked on a flex/grid gap axis; add the check when introducing another layout state.
+
+### Cascade and token checks
+
+`npm run check:stylelint` runs [Stylelint](https://stylelint.io/) with `stylelint.config.mjs`; editors with the Stylelint extension show the same findings while typing. It reports:
+
+- `no-duplicate-selectors`: a selector defined twice in the same at-rule context. Merge the rules; a breakpoint variant belongs in its own `@media` block.
+- `unisearch/no-overridden-declarations` (`scripts/stylelint/no-overridden-declarations.mjs`): a declaration that a later rule for the same selector always overrides, in the same context, a wider `max-width` query or the top level. Delete it, or move the later value into the first rule.
+- `declaration-block-no-duplicate-properties` and `declaration-block-no-shorthand-property-overrides`: a property repeated in one block, or a shorthand that resets a longhand above it. An intentional fallback (for example `100vh` before `100dvh`) carries a `stylelint-disable-next-line ... -- reason` comment.
+- `scale-unlimited/declaration-strict-value`: colors, `font-size`, `font-weight` and radii must use a token, a function or a keyword; raw values live only in `shared/01-foundation.css`.
 
 ### 3. Responsive Spacing
 - On desktop, page container padding uses `var(--layout-page-gutter)`; it resolves to 24px.
@@ -182,7 +197,7 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 - Visible box borders are prohibited for cards, panels, inputs, selects, chips, badges, buttons, and their hover, active, or selected states. `border-color` cannot be used as an interaction cue when `border: none` is the base state.
 - The only permitted visible lines are focus outlines, active-tab underlines, table/list separators, range/thumb edges, and a non-box status ring when semantic background, icon, and text cannot make the state clear. Prefer `outline`, `box-shadow`, or a pseudo-element over a component box border.
-- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact controls to `var(--surface-solid)` and give them `var(--shadow-xs)` or `var(--shadow-micro)`.
+- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact controls to `var(--surface-solid)` and give them `var(--shadow-xs)` or `var(--shadow-micro)` — prefer `var(--control-bg)` and `var(--control-shadow)` (scoped in `shared/01-foundation.css`) over one-off `.parent .child` overrides.
 - Do not place a child with the same background token beside or inside its visible parent. Change its surface, give the raised item restrained elevation, or remove the unnecessary wrapper. This rule is mandatory in light and dark themes.
 - Status components use the matching semantic background token (`--color-*-bg` or `--accent-panel`) plus text/icon color for compact badges and status banners only. Large data cards, funding option cards (`.admission-funding-option`), and exam/stat groups must use neutral surfaces (`var(--surface-solid)` or `var(--surface-soft)`) with micro-elevation (`var(--shadow-micro)` / `var(--shadow-xs)`), never full-card pastel washes.
 - Documentary source links (`.program-card__source`, `.qualification-guidance__source`, `.admissions-source-link`) use `color: var(--text); text-decoration: underline; text-underline-offset: var(--space-1)` rather than SaaS button or loud accent link styling.
@@ -274,7 +289,7 @@ To eliminate the "Z-Index escalation race" (`z-index: 15`, `60`, `80`, `100`, `4
 
 1. **Stacking Context Isolation:** Complex widgets with internal layers (maps, sticky data tables) must create their own stacking context via `isolation: isolate`.
 2. **Local Layers:** Within an isolated context, only micro-layers (`-1`, `0`, `1`, `2`) are permitted for pseudo-elements and sticky columns/headers.
-3. **Global Semantic Layers:** Cross-component layering must use the standard tokens declared in `frontend/css/shared/01-foundation.css` and exposed through `frontend/css/style.css`:
+3. **Global Semantic Layers:** Cross-component layering must use the standard tokens declared in `frontend/css/shared/01-foundation.css`:
    - `--z-nav` (`1000`): Sticky page header and primary navigation bar.
    - `--z-dropdown` (`1200`): Search suggestions, autocomplete popups, custom select menus, and tooltips (`calc(var(--z-dropdown) + 1)` for active tooltip wrappers).
    - `--z-docked-control` (`1300`): Floating action buttons, docked bottom comparison bar.
@@ -298,7 +313,7 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 
 ## Motion
 
-- Use the shared tokens in `frontend/css/shared/06-motion-accessibility.css`, exposed through `frontend/css/style.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
+- Use the shared tokens in `frontend/css/shared/06-motion-accessibility.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
 - Use global motion classes before adding component-specific keyframes: `.motion-panel-enter`, `.motion-list-item-enter`, `.motion-row-exit`, `.motion-chip-remove`, `.motion-card-remove`, `.motion-icon-*`, and `.motion-state-pulse`.
 - Page and panel motion should be short fade/lift transitions. Lists may use limited stagger for the first visible items only. Save, compare, remove, and switch feedback should target the icon, thumb, or removed node.
 - Calm academic motion over "video game" playfulness: Strictly avoid gratuitous, exaggerated, or gamified animations (no bouncy springs, cartoon squashes like `scale(0.95)`, wobbly button presses, or playful bobbing). Transitions must remain smooth, understated, and functional—focusing on opacity, subtle background color changes, and precise translate enters/exits.

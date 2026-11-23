@@ -22,6 +22,10 @@ export function escapeHtmlAttr(value) {
 
 let imageFallbacksBound = false;
 
+export function registerUiTranslator(translator) {
+  registerUiTranslator.current = typeof translator === "function" ? translator : null;
+}
+
 export function bindImageFallbacks(root = document) {
   const targetRoot = root || document;
   if (targetRoot === document && imageFallbacksBound) return;
@@ -87,10 +91,23 @@ export function initials(name) {
   return parts.map((part) => (part[0] || "").toUpperCase()).join("") || "U";
 }
 
+const NUMBER_LOCALE_BY_HTML_LANG = { ru: "ru-RU", kk: "kk-KZ" };
+
+/**
+ * Locale for formatting numbers in the current interface language: Russian and Kazakh group digits
+ * with a no-break space and use a decimal comma, English uses commas and a decimal point.
+ * Reads the page language that the i18n module keeps on the document element.
+ * @returns {"en-US"|"ru-RU"|"kk-KZ"}
+ */
+export function numberLocale() {
+  const htmlLang = String(globalThis.document?.documentElement?.lang || "").slice(0, 2).toLowerCase();
+  return NUMBER_LOCALE_BY_HTML_LANG[htmlLang] || "en-US";
+}
+
 export function moneyUSD(value) {
   const amount = Number(value);
   if (!Number.isFinite(amount)) return "—";
-  return `$${new Intl.NumberFormat("en-US").format(amount)}`;
+  return `$${new Intl.NumberFormat(numberLocale()).format(amount)}`;
 }
 
 export function formatCurrency(amount, code = "USD", options = {}) {
@@ -98,14 +115,14 @@ export function formatCurrency(amount, code = "USD", options = {}) {
   if (!Number.isFinite(num)) return "—";
   const currencyCode = String(code || "USD").trim().toUpperCase();
   try {
-    return new Intl.NumberFormat(options.locale || "en-US", {
+    return new Intl.NumberFormat(options.locale || numberLocale(), {
       style: "currency",
       currency: currencyCode,
       maximumFractionDigits: options.maximumFractionDigits ?? 0,
       ...options,
     }).format(num);
-  } catch (e) {
-    const formattedNum = new Intl.NumberFormat("en-US", {
+  } catch {
+    const formattedNum = new Intl.NumberFormat(options.locale || numberLocale(), {
       maximumFractionDigits: options.maximumFractionDigits ?? 0,
     }).format(num);
     return `${currencyCode} ${formattedNum}`;
@@ -268,22 +285,99 @@ export function showToast(message, type = "error") {
   const icon = type === "success"
     ? heroIcon("check-circle", "ui-icon ui-icon--18 toast-icon")
     : heroIcon("exclamation-triangle", "ui-icon ui-icon--18 toast-icon");
-  toast.innerHTML = `<span class="toast-message">${icon}<span>${escapeHtml(text)}</span></span><button class="toast-close" type="button" aria-label="Close">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
+  const translator = registerUiTranslator.current;
+  const closeLabel = translator ? translator("common.close", "Close") : "Close";
+  toast.innerHTML = `<span class="toast-message">${icon}<span role="status" aria-live="polite">${escapeHtml(text)}</span></span><button class="toast-close" type="button" aria-label="${escapeHtmlAttr(closeLabel)}">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
 
   const dismiss = () => {
     removeToast(toast);
   };
 
+  if (typeof container.addEventListener === "function" && !container.dataset?.toastFocusBound) {
+    if (container.dataset) container.dataset.toastFocusBound = "1";
+    container.addEventListener("focusin", (event) => {
+      const related = event.relatedTarget;
+      if (related && typeof container.contains === "function" && !container.contains(related)) {
+        container._previousFocus = related;
+      }
+    });
+  }
+
+  let pointerInside = false;
+  let focusInside = false;
+  const pauseAutoDismiss = () => {
+    if (toast._dismissTimer) {
+      window.clearTimeout(toast._dismissTimer);
+      toast._dismissTimer = null;
+    }
+  };
+  const scheduleAutoDismiss = () => {
+    if (toast.dataset?.dismissing === "1" || pointerInside || focusInside) return;
+    pauseAutoDismiss();
+    toast._dismissTimer = window.setTimeout(dismiss, 3000);
+  };
+
   const closeBtn = typeof toast.querySelector === "function"
     ? toast.querySelector(".toast-close")
     : null;
-  if (closeBtn) closeBtn.onclick = dismiss;
-  toast._dismissTimer = window.setTimeout(dismiss, 3000);
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      const hasFocus = typeof toast.contains === "function" && toast.contains(document.activeElement);
+      if (hasFocus && typeof container.querySelectorAll === "function") {
+        const remaining = Array.from(container.querySelectorAll(".toast:not(.is-leaving)"))
+          .filter((item) => item !== toast);
+        const nextFocus = remaining[0]?.querySelector?.(".toast-close") || container._previousFocus;
+        if (nextFocus && typeof nextFocus.focus === "function") {
+          nextFocus.focus();
+        }
+        container._previousFocus = null;
+      }
+      dismiss();
+    };
+  }
+  if (typeof toast.addEventListener === "function") {
+    toast.addEventListener("pointerenter", () => {
+      pointerInside = true;
+      pauseAutoDismiss();
+    });
+    toast.addEventListener("pointerleave", () => {
+      pointerInside = false;
+      scheduleAutoDismiss();
+    });
+    toast.addEventListener("focusin", () => {
+      focusInside = true;
+      pauseAutoDismiss();
+    });
+    toast.addEventListener("focusout", (event) => {
+      if (typeof toast.contains === "function" && event.relatedTarget && toast.contains(event.relatedTarget)) {
+        return;
+      }
+      focusInside = false;
+      scheduleAutoDismiss();
+    });
+  }
+  scheduleAutoDismiss();
+
+  const supportsPopover =
+    typeof HTMLElement === "function" &&
+    Object.hasOwn(HTMLElement.prototype, "popover") &&
+    typeof container.showPopover === "function";
+  if (supportsPopover) {
+    if (!container.hasAttribute?.("popover")) {
+      container.setAttribute("popover", "manual");
+    }
+    if (!container.matches?.(":popover-open")) {
+      try {
+        container.showPopover();
+      } catch {}
+    }
+  }
   container.appendChild(toast);
 }
 
 export function removeToast(toast) {
   if (!toast || !toast.parentNode) return;
+  const parentContainer = toast.parentNode;
   if (toast._dismissTimer) {
     window.clearTimeout(toast._dismissTimer);
     toast._dismissTimer = null;
@@ -298,6 +392,18 @@ export function removeToast(toast) {
     } else if (toast.parentNode && typeof toast.parentNode.removeChild === "function") {
       toast.parentNode.removeChild(toast);
     }
+    if (
+      parentContainer &&
+      typeof parentContainer.hidePopover === "function" &&
+      typeof parentContainer.querySelectorAll === "function" &&
+      parentContainer.querySelectorAll(".toast").length === 0
+    ) {
+      try {
+        if (parentContainer.matches?.(":popover-open")) {
+          parentContainer.hidePopover();
+        }
+      } catch {}
+    }
   };
 
   let removed = false;
@@ -311,9 +417,6 @@ export function removeToast(toast) {
     toast.classList.add("is-leaving");
   } else {
     toast.className = `${toast.className || ""} is-leaving`.trim();
-  }
-  if (toast.style) {
-    toast.style.animation = "motion-toast-out 350ms cubic-bezier(0.4, 0, 0.2, 1) forwards";
   }
   if (typeof toast.addEventListener === "function") {
     toast.addEventListener("animationend", cleanup, { once: true });

@@ -1,4 +1,5 @@
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+const APP_ROUTE_TAIL_RE = /\/(?:universities\/[^/]+|(?:index|compare|guide|about|privacy|terms|profile|university)(?:\.html)?)\/?$/i;
 
 function normalizePath(pathname = "/") {
   const raw = String(pathname || "").trim();
@@ -10,6 +11,32 @@ function normalizePath(pathname = "/") {
     end--;
   }
   return withSlash.slice(0, end);
+}
+
+export function resolveAppBasePath(pathname = "/") {
+  const raw = String(pathname || "").trim();
+  if (!raw || raw === "/") return "/";
+  const withSlash = raw.startsWith("/") ? raw : `/${raw}`;
+  if (APP_ROUTE_TAIL_RE.test(withSlash)) {
+    const stripped = withSlash.replace(APP_ROUTE_TAIL_RE, "");
+    return stripped ? `${stripped}/` : "/";
+  }
+  if (/\/frontend\/?$/i.test(withSlash)) {
+    return withSlash.endsWith("/") ? withSlash : `${withSlash}/`;
+  }
+  const lastSlash = withSlash.lastIndexOf("/");
+  return lastSlash >= 0 ? withSlash.slice(0, lastSlash + 1) : "/";
+}
+
+export function resolveAppBaseUrl(routeUrl) {
+  const fallbackBase = typeof window !== "undefined" && window.location?.href
+    ? window.location.href
+    : "https://unisearch.local/";
+  const url = routeUrl instanceof URL ? routeUrl : new URL(String(routeUrl || "/"), fallbackBase);
+  if (!/^https?:$/i.test(url.protocol)) {
+    return new URL("./", url.href).href;
+  }
+  return new URL(resolveAppBasePath(url.pathname), url.origin).href;
 }
 
 function toQueryString(value) {
@@ -152,7 +179,7 @@ export function getUniversityIdFromPath(pathname = "") {
   if (!match) return "";
   try {
     return decodeURIComponent(match[1] || "").trim();
-  } catch (e) {
+  } catch {
     return String(match[1] || "").trim();
   }
 }
@@ -166,7 +193,7 @@ export function extractUniversityIdFromLocation(locationLike = null) {
     const params = new URLSearchParams(search);
     const queryId = String(params.get("id") || "").trim();
     if (queryId) return queryId;
-  } catch (e) {
+  } catch {
     // continue with path parsing
   }
 

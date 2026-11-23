@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <base href="./" />
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.about">About Us | UniSearch</title>
-  <meta name="description" content="UniSearch is a service created by applicants for applicants. Meet co-founders Mukhammed Shabdaluly and Yerbolat Rashidov." />
+  <meta name="description" content="UniSearch is a service created by applicants for applicants. Meet its co-founders." />
 
   <!-- Open Graph / Facebook / Telegram -->
   <meta property="og:type" content="website" />
@@ -30,8 +31,12 @@
   <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/inter/inter-latin-wght-normal.woff2" crossorigin />
 
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/shared/01-foundation.css" />
+  <link rel="stylesheet" href="css/shared/02-shell-settings-feedback.css" />
+  <link rel="stylesheet" href="css/shared/06-motion-accessibility.css" />
+  <link rel="stylesheet" href="css/shared/08-device-responsive.css" />
   <link rel="stylesheet" href="css/about.css" />
 
 </head>
@@ -51,16 +56,14 @@
       <div class="about-team-list">
         <article class="about-team-member">
           <div class="about-team-identity">
-            <h3 data-i18n="about.name.lead">Mukhammed Shabdaluly</h3>
-            <p data-i18n="about.role.lead">Co-founder &amp; Lead Developer</p>
+            <h3 data-i18n="about.role.lead">Co-founder &amp; Lead Developer</h3>
           </div>
           <p class="about-team-bio" data-i18n="about.bio.lead">Oversees the backend, database, and internal systems, and sets the project's direction.</p>
         </article>
 
         <article class="about-team-member">
           <div class="about-team-identity">
-            <h3 data-i18n="about.name.planning">Yerbolat Rashidov</h3>
-            <p data-i18n="about.role.planning">Co-founder &amp; Lead Frontend Developer</p>
+            <h3 data-i18n="about.role.planning">Co-founder &amp; Lead Frontend Developer</h3>
           </div>
           <p class="about-team-bio" data-i18n="about.bio.planning">Develops the entire user interface and leads testing for the service.</p>
         </article>

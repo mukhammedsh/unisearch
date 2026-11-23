@@ -8,7 +8,6 @@ const cases = [
     option: "mit-course-6-3-bachelor",
     route: "mit-first-year",
     level: "undergraduate",
-    applicant: "first_year",
     cycle: "Fall 2027 entry",
     fee: "unknown",
     viewport: { width: 1280, height: 900 },
@@ -19,7 +18,7 @@ const cases = [
       { id: "ug-sat-act-presence", text: /SAT.*ACT|ACT.*SAT/i },
     ],
     excludedFacts: ["reviewed-mit_eecs_doctoral_admissions-tests"],
-    finance: { note: /Published reference budget.*2026[‑-]2027/i },
+    finance: { note: /Published reference budget.*2026[-‑–]2027/i },
   },
   {
     name: "MIT EECS doctoral Computer Science",
@@ -27,7 +26,6 @@ const cases = [
     option: "mit-eecs-phd-course-6",
     route: "mit_eecs_doctoral_admissions",
     level: "doctoral",
-    applicant: "graduate",
     cycle: "",
     fee: "unknown",
     viewport: { width: 390, height: 844 },
@@ -40,7 +38,7 @@ const cases = [
       { id: "reviewed-mit_eecs_doctoral_admissions-funding", tab: "finance", text: /automatically considered|full tuition|medical insurance/i },
     ],
     excludedFacts: ["ug-sat-act-presence"],
-    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i, excluded: /MIT Need-Based Scholarship/i },
+    finance: { excluded: /MIT Need-Based Scholarship/i },
   },
   {
     name: "Imperial Computing MEng",
@@ -48,7 +46,6 @@ const cases = [
     option: "imperial-option-computing-meng",
     route: "procedure-computing-meng",
     level: "undergraduate",
-    applicant: "first_year",
     cycle: "2027 entry",
     fee: "unknown",
     viewport: { width: 1280, height: 900 },
@@ -62,7 +59,7 @@ const cases = [
       { id: "imperial-computing-meng-course-profile", tab: "finance", text: /Home|Overseas/i },
     ],
     excludedFacts: ["imperial-computing-admission"],
-    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
+    finance: {},
   },
   {
     name: "Imperial Computing MSc",
@@ -70,7 +67,6 @@ const cases = [
     option: "imperial-option-computing",
     route: "procedure-computing",
     level: "masters",
-    applicant: "graduate",
     cycle: "2027 entry",
     fee: "unknown",
     viewport: { width: 390, height: 844 },
@@ -83,7 +79,7 @@ const cases = [
       { id: "imperial-computing-course-profile", tab: "finance", text: /Home|Overseas/i },
     ],
     excludedFacts: ["imperial-computing-meng-admission"],
-    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
+    finance: {},
   },
   {
     name: "Stanford external Computer Science MS",
@@ -91,7 +87,6 @@ const cases = [
     option: "stanford-option-cs-ms",
     route: "directory-evidence:stanford-graduate-cs-ms",
     level: "masters",
-    applicant: "graduate",
     cycle: "2027-28 entry",
     fee: "unknown",
     viewport: { width: 1280, height: 900 },
@@ -102,7 +97,7 @@ const cases = [
       { id: "engineering-doerr-evidence:graduate-entry-eligibility", text: /bachelor.*equivalent|recognized international equivalent/i },
       { id: "engineering-doerr-evidence:graduate-application-limit", text: /one.*graduate degree program|one Stanford graduate degree program/i },
     ],
-    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
+    finance: {},
   },
   {
     name: "Stanford current-student Computer Science coterm",
@@ -110,7 +105,6 @@ const cases = [
     option: "stanford-option-cs-ms",
     route: "engineering-doerr-evidence:cs-coterm",
     level: "masters",
-    applicant: "",
     cycle: "2026-27 to 2027-28 entries",
     fee: "unknown",
     viewport: { width: 390, height: 844 },
@@ -118,11 +112,11 @@ const cases = [
     theme: "dark",
     tab: "admission",
     facts: [
-      { id: "coterm-central-evidence:stanford-coterm-central-eligibility", text: /Current Stanford undergraduate|120 units/i },
+      { id: "coterm-central-evidence:stanford-coterm-central-eligibility", text: /Current Stanford undergraduate|120 units|студент бакалавриата Stanford/i },
       { id: "coterm-central-evidence:stanford-coterm-central-application-fee", tab: "finance", text: /125|coterm application fee/i },
     ],
     excludedFacts: ["engineering-doerr-evidence:graduate-application-limit"],
-    finance: { note: /No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i },
+    finance: {},
   },
 ];
 
@@ -134,7 +128,6 @@ function contextUrl(item) {
     admission_level: item.level,
     admission_fee: item.fee,
   });
-  if (item.applicant) params.set("admission_route", item.applicant);
   if (item.cycle) params.set("admission_cycle", item.cycle);
   return `/university.html?${params.toString()}`;
 }
@@ -152,7 +145,6 @@ async function openContext(page, item) {
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
-  await expect(page.locator("#admissionsApplicant")).toHaveValue(item.applicant);
   await expect(page.locator("#admissionsCycle")).toHaveValue(item.cycle);
   await expect(page.locator("#admissionsFee")).toHaveValue(item.fee);
   await expect(page.locator("html")).toHaveAttribute("data-theme", item.theme);
@@ -160,11 +152,16 @@ async function openContext(page, item) {
 
 async function openAdvanced(page) {
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
+  // Paths with one intake and no fee classes offer no entry-year or fee-status fields.
+  if (await advanced.isVisible() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
 }
@@ -205,7 +202,10 @@ for (const item of cases) {
     if (item.finance) {
       await page.locator('.d-tab-btn[data-tab="tab-finance"]').click();
       await expect(page.locator("#tab-finance")).toHaveClass(/active/);
-      await expect(page.locator("#detailFinance")).toContainText(item.finance.note);
+      // The cost answer leads the tab; the research note about a missing comparable budget is gone.
+      await expect(page.locator('#detailFinance [data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
+      if (item.finance.note) await expect(page.locator("#detailFinance")).toContainText(item.finance.note);
+      await expect(page.locator("#detailFinance")).not.toContainText(/No comparable budget is confirmed|Сопоставимый бюджет.*не подтверждён/i);
       if (item.finance.excluded) await expect(page.locator("#detailFinance")).not.toContainText(item.finance.excluded);
     }
 
@@ -279,7 +279,7 @@ test("program search resolves its sole route from applicant context without chan
     localStorage.setItem("unisearch_ui_language_v1", "eng");
     localStorage.setItem("unisearch_theme", "light");
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
-    localStorage.setItem("unisearch_profile", JSON.stringify({ gpa: 3.8, applicant_route: "first_year" }));
+    localStorage.setItem("unisearch_profile", JSON.stringify({ gpa: 3.8 }));
   });
   await page.goto("/university.html?id=imperial-college-london-uk");
   await expect(page.locator("#detailCard")).toBeVisible();
@@ -304,17 +304,16 @@ test("program search resolves its sole route from applicant context without chan
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator("#admissionsRoute")).toHaveValue("");
-  await expect(page.locator("#admissionsRoute")).toBeEnabled();
-
-  await setNativeSelect(page, "admissionsRoute", "procedure-computing-meng");
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  // The course has one application route, which is read directly without a picker.
+  await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
+  await expect(page).toHaveURL(/admission_application_route=procedure-computing-meng/);
   await openAdvanced(page);
-  await setNativeSelect(page, "admissionsApplicant", "first_year");
-  await page.locator("#admissionsCycle").fill("2027 entry");
-  await setNativeSelect(page, "admissionsFee", "unknown");
+  // The course publishes one intake, so only its UK fee status is asked.
+  await expect(page.locator("#admissionsCycle")).toBeHidden();
+  await setNativeSelect(page, "admissionsFee", "self_reported_international_overseas");
   await page.locator("#admissionsContextApply").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page).toHaveURL(/admission_fee=self_reported_international_overseas/);
   await expect(page).toHaveURL(/admission_option=imperial-option-computing-meng/);
   await expect(page).toHaveURL(/admission_application_route=procedure-computing-meng/);
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
@@ -327,7 +326,8 @@ test("program search resolves its sole route from applicant context without chan
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
-  await expect(page.locator("#admissionsCycle")).toHaveValue("");
+  // Without a chosen cycle the course is read for its only published entry cycle; the saved profile is untouched.
+  await expect(page.locator("#admissionsCycle")).toHaveValue("2027 entry");
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBe(originalProfile);
 });
 
@@ -362,8 +362,7 @@ test("admissions context retry recovers from one request failure using the live 
   await expect(page.locator("#admissionsRoute")).toHaveValue(item.route);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const examFact = page.locator('#tab-admission [data-admissions-fact="ug-sat-act-presence"]').first();
-  const examGroup = examFact.locator("xpath=ancestor::details[@data-admissions-group][1]");
-  if (await examGroup.count() && !(await examGroup.evaluate((node) => node.open))) await examGroup.locator(":scope > summary").click();
+  await openDisclosureParents(examFact);
   await expect(examFact).toBeVisible();
   expect(failedFirstContext).toBe(true);
 });
@@ -464,7 +463,7 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   const isDetails = await table.evaluate((node) => node.tagName === "DETAILS");
   if (isDetails && !(await table.evaluate((node) => node.open))) await table.locator(":scope > summary").click();
   await expect(table).toContainText("Computer Science (MS)");
-  await expect(table).toContainText(/2026[-‑]12-08/);
+  await expect(table).toContainText(/2026[-‑–]12-08/);
   await expect(table).toContainText("Aeronautics and Astronautics (MS)");
   await expect(table).not.toContainText(/stanford-aa-ms|stanford-cs-ms|source-[a-f0-9]+/i);
 
@@ -476,7 +475,9 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
     localStorage.setItem("unisearch_theme", "dark");
     document.documentElement.setAttribute("data-theme", "dark");
   });
-  const cycle = page.locator("#admissionsCycle");
+  // The path reads its one published intake, so the route picker is the field checked against the sticky navbar.
+  await expect(page.locator("#admissionsCycle")).toBeHidden();
+  const cycle = page.locator("#admissionsContext .custom-select-wrapper:has(#admissionsRoute) .custom-select-trigger");
   await page.waitForLoadState("networkidle");
   await expect(page.locator("#detailCard")).not.toHaveClass(/is-language-refreshing/);
   await expect(page.locator("#admissionsRoute")).toBeEnabled();
@@ -506,16 +507,8 @@ test("Stanford deadline and GRE table labels stay readable in a mobile admission
   await routeOption.click();
   await expect(route).toHaveValue("directory-evidence:stanford-graduate-cs-ms");
 
-  const applicant = page.locator("#admissionsApplicant");
-  const applicantTrigger = page.locator("#admissionsContext .custom-select-wrapper:has(#admissionsApplicant) .custom-select-trigger");
-  await applicantTrigger.focus();
-  await applicantTrigger.press("ArrowDown");
-  await applicantTrigger.press("Home");
-  await applicantTrigger.press("ArrowDown");
-  await applicantTrigger.press("Enter");
-  await expect(applicant).toHaveValue("first_year");
-  await applicantTrigger.press("g");
-  await expect(applicant).toHaveValue("graduate");
+  // Stanford publishes no UK-style fee classes, so no fee-status select is offered.
+  await expect(page.locator("select#admissionsFee")).toHaveCount(0);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   expect(pageErrors).toEqual([]);
 });
@@ -544,9 +537,12 @@ test("dynamic admission controls release global subscriptions on refresh and pag
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
     expect(await page.evaluate(() => window.__testLanguageListenerCount())).toBe(baseline);
   }
+  // Every custom select of the admission controls subscribes once; a path without fee classes has no fee select.
+  const selects = await page.locator("#detailCard .custom-select-wrapper").count();
+  expect(selects).toBeGreaterThanOrEqual(2);
   await page.evaluate(async () => {
     const { disposeUniversityPage } = await import("/javascript/pages/university.js");
     disposeUniversityPage();
   });
-  expect(await page.evaluate(() => window.__testLanguageListenerCount())).toBeLessThanOrEqual(baseline - 4);
+  expect(await page.evaluate(() => window.__testLanguageListenerCount())).toBeLessThanOrEqual(baseline - selects);
 });

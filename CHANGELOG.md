@@ -2,6 +2,509 @@
 
 All notable project changes should be recorded here.
 
+## 10.7.0 (2026-11-21) - Name universities on the map and search every name
+
+Minor release: map markers now say which university they mark, and search matches every name a university goes by in any language.
+
+### Added
+- Label each university on the map with a short name next to a graduation-cap icon: an established abbreviation such as MIT or KBTU, or a distinctive name such as Harvard. The Russian interface uses Cyrillic forms and the Kazakh one Kazakh forms such as ҚБТУ; the full name appears in a tooltip on hover or focus. The map-point API now returns `map_label`. All markers share one calm style and the same height: a raised surface pill with a soft shadow and no border, with the accent colour kept for the icon and the count.
+- Name map groups like single universities instead of showing a bare number: a group carries the label of the university that comes first in the selected sort (the order of the results list, UniFit included, so "MIT +11" under Global Rank and "КазНУ +12" there for Kazakhstan) and the number of other universities it holds. Labels follow the sort when it changes, and groups merge at a wider radius so labels do not overlap.
+- Keep every name a university goes by in one file, `backend/data/university_name_variants.json`: per university id, three languages (English, Russian, Kazakh), each holding the official full name, the main abbreviation (the one shown on the map), a short name (shown instead when the university has no abbreviation, for example Harvard), all abbreviations, and alternatives (other full names, short names, transliterations). Kazakh-script forms cite the official pages they were checked on.
+
+### Improved
+- Clean up dividers and vertical rhythm on the About page: place hairline separators only between sibling team and contact rows (removing the stray lines under section headings and below the last item), align contact rows vertically, soften team role headings to `16px` medium so they sit clearly below section headings, and eliminate double bottom padding inside the page card.
+- Unify the catalog toolbar grid, control sizing, and spacing across desktop, tablet, and mobile: give Recently viewed, the List/Map segmented switcher, and Compare mode identical compact heights (`36px` desktop/tablet, `34px` at `<= 480px`), matching `10px` corner radii, symmetric `12px` horizontal padding, uniform `18px` text-button icons (`16px` at `<= 480px`), full-half `40×36px` List/Map segments with `20px` icons (`36×34px` with `18px` icons at `<= 480px`) that clip cleanly to the shared pill's outer rounded corners without clipping focus outlines, optical text alignment via `text-box: trim-both cap alphabetic`, symmetric vertical margins above and below the bar, aligned page gutters with the navbar and layout grid, clean wrapping on `320px` screens without overlap, exclusive `aria-pressed` synchronization when switching between List and Map views, and preserved active-state styling while hovering an open Recently viewed button.
+- Make the desktop catalog filter panel visibly scrollable: show its thin scrollbar again and add soft fades on the top and bottom edges that show only while more filters lie in that direction (browsers without scroll-driven animations keep the scrollbar only).
+- Size the desktop filter panel from where it starts on the unscrolled page, so its last filters end inside the window instead of below its edge before the catalog is scrolled.
+- Move the study-level selector into the catalog filter panel alongside the other filters, and turn Recently viewed into a compact toolbar popover button next to the view and compare controls (showing full university names and a scoped Clear all action inside the popover).
+- Flatten redundant intermediate nested card wrappers (Levels 2 and 4) across university admissions, finance/aid, comparison setup, and profile evidence sections—replacing extra boxes and stacked padding with `1px solid var(--line-faint)` dividers while preserving selectable/grid Level 3 cards on `--surface-soft` and contextual `--control-bg` controls—and update `university-detail-design` E2E surface checks to match.
+- Introduce `--accent-text` (separating accent fills from accessible dark-mode text/icon colors) and context-scoped `--control-bg` / `--control-shadow` tokens in `shared/01-foundation.css` so nested controls automatically adapt between `--surface-solid` and `--surface-soft` parents without per-container CSS overrides, guarded by a new `color-role-mismatch` rule in `check:design-lint`.
+- Search matches the official name, abbreviations and alternative names in all three languages whatever the interface language is, so an abbreviation, an alternate full name or a renamed university is found from any language. The official name must equal the stored full name that cards display; a university missing from the file keeps its stored name.
+- List abbreviations separately in the card payload (`abbreviations`), so the search box shows the abbreviation badge only for real abbreviations rather than for other names.
+- Show the university campus photo as a backdrop in the map-mode result cards, fading smoothly into the card surface the same way as in university comparison.
+- Open Nazarbayev University's Admission tab on its real ways in: regular first-year admission, the Foundation Year, transfer and the mid-year intake, readable without choosing a program first, the same way as MIT and Stanford. NU publishes one set of undergraduate minimums for all bachelor programs; Nursing and the joint BBA keep their own paths.
+- Offer a university's preparatory year (NU Foundation) beside its shared undergraduate paths, with its own requirements and price.
+- Stop listing a post-offer funding application among the ways to apply; the key facts name it as the next step and open its grant conditions with one button.
+- Read a path for its only published entry cycle, so the minimums check runs without first asking for a year; the cycle shows in the selection summary, can be changed, and is not carried over to another path.
+- List a program's own paths before the university's other shared paths, and lead the shared list with the main application.
+- Show a path's published academic and language minimums as a checklist in its key facts, each with the applicant's own status (met, below the minimum, what to add, or a result whose counting depends on conditions), for example NU's IELTS 6.0 and one of SAT 1240, ACT 26, GPA 4 of 5 or UNT 85.
+- Fill the Overview "What you'll need" card from the same minimums when a university publishes them (NU), keeping published test and English wording where no minimum is checkable (MIT's recommended English test).
+- Add a "Where to apply" row with the official application link to the key facts, instead of a separate link below the path selection.
+- Name the level a two-level path is read for ("Regular first-year admission", "Regular Foundation admission") and drop the repeated applicant category from the selection summary of shared paths.
+- State a calculated yearly cost as tuition plus living with both parts ("Tuition $15,000 + living ≈ $3,600"), in the key facts, the Overview and comparison, so it is not read as a published figure that contradicts the tuition shown under Costs.
+- List NU's regular path as first-year admission when the Foundation Year has its own entry, or when a bachelor's program is selected, without a Foundation term under it that read as a second Foundation path.
+- Drop the separate "choose a path" prompt above the shared paths, which repeated the list right below it; say "some" of the requirements cannot be checked automatically, and that the living estimate covers the 9-month academic year.
+- Rewrite remaining jargon in the key facts: what to add instead of "Required applicant evidence is missing", conditions to check yourself, requirements that cannot be checked automatically, and funding options without record counts.
+- Use plain wording in admission details: no record-count badges, "Details and sources", "Not yet published by the university", "Check the conditions on the university site", and the optional fields named "Entry year and fee status".
+
+- Open the Dates and Costs tabs with plain answers in the key-facts wording: the next deadline or application period, the yearly cost with its parts, and what funding exists with the action that opens a separate funding application. Drop the research notes that led these tabs ("Costs keep their published scope", "No comparable budget is confirmed", the empty calendar-export note) and rewrite the tab introductions.
+- Keep each tab's official pages, full source records and unresolved items behind one closed "Sources" disclosure instead of an open "Details and sources" block with a record count.
+- Show the entry-year field only when a path publishes several intakes, needs one, or the reader chose another, and the fee-status field only where the university publishes fee classes (UK Home/Overseas), so MIT, Stanford and NU no longer ask about a UK fee status.
+- Explain saving a path in plain words ("Remember this path": the catalog and comparison then check your results against its minimums; nothing is sent to the university) instead of "saved for UniFit".
+- Rename the Programs tab's "Select program" to "See admission for this program", so choosing a program does not read as a required application step.
+- Lead the Admission key facts with the minimums checklist ("Your results against the published minimums") and move how each condition was checked into the tab's closed "Sources" disclosure; drop "entry year not specified" and carried-forward review notes from the requirement answers, and rewrite the remaining research wording ("no passing score", "Documents and other conditions are not checked here").
+- Show MIT's English-test recommendation in the minimums checklist as a recommendation, not a pass or fail: IELTS 7.0 (better 7.5) or the applicant's own English test, the official condition (English not the first language and used for less than five years or not spoken at home or at school), and the applicant's result. It disappears when the profile says English is native and asks the applicant to say so when the profile does not state a native language. UniFit scoring is unchanged.
+- Place an English test's section scores right below its overall score in the profile as one labelled group, and link a checklist note that asks for a missing result or section scores straight to that test in the profile.
+- Open the Admission, Dates and Costs tabs on the same default path as the Overview (shared first-year admission) when nothing is chosen yet, instead of asking "Choose how you apply" on each tab; the path can still be changed, and a saved or linked choice is kept. Universities without a shared path (Imperial) still ask for a program first.
+- Keep an entered result visible when a minimums check still needs a date or section scores ("You have: IELTS Academic 6.5, the overall score meets the minimum. To check it fully, add: …"), and introduce the checklist instead of asking to "add your results" that are already in the profile.
+- Name the separate grant application as such when it is opened from the key facts ("Open the grant application"), and offer one button back to the admission path it was opened from.
+- Name application rounds in the interface language first, with the official term in brackets ("Early application (Early Action)", "Regular application (Regular Decision)", "Main UCAS deadline"), and write a passed round as "Early application (Early Action), November 1: this deadline has passed." instead of nesting brackets.
+- Answer Kazakhstan documents at the top of the Admission key facts when the university publishes no ruling on them (Imperial, Stanford): no decision is published, it is not a rejection, ask the admissions office, with a link to the official guidance.
+- Rewrite the visible Russian MIT and Stanford application, test, document, transfer and aid summaries in plain Russian, keeping the official term in brackets (first-year, transfer, superscore, School Report, eligible noncitizens).
+- Say under the Overview admission rate that it is the share of all applicants, not a personal chance; rename the card "Competition and students" and drop research wording ("Source scope", "Full records retain the official source language").
+- Ask what the profile GPA is out of with two visible options ("4.0 — US and international schools", "5.0 — schools in Kazakhstan and the CIS") instead of only a "/ 4.0" suffix button, because a value such as 3.6 cannot tell the scale by itself. A grade between 4 and 5 typed on the 4.0 scale selects 5.0 and says why, instead of an error; switching back stays the reader's choice.
+- List IELTS, TOEFL iBT, Duolingo and PTE in the profile's exam list as shortcuts that open the Languages editor at that test, where English tests and their section scores are entered.
+- Offer up to three programs that match the profile's subject as one-click choices on Imperial's Admission, Dates and Costs tabs, where admission is published per program, instead of only pointing to the Programs tab. The profile still never chooses a program by itself.
+- Say "Apply through UCAS" in Imperial's "Where to apply" row instead of "on the university's official site", and introduce a test date that comes before the application deadline as "Before that, first:".
+- Show an English test recommendation on the Overview checklist with the applicant's own result (MIT: IELTS 7.0, better 7.5; you have IELTS 6.5) instead of "still to prepare".
+- Write a test with section scores as its total followed by the sections ("SAT 1310 (Math 690, Reading and Writing 620)") instead of repeating the test name before each section without the total.
+- Name the grant link "How to get the grant" and describe the screen as the grant conditions, applied for separately after an offer.
+- Confirm a chosen 5.0 GPA scale in the hint, and name the tuition inside a published yearly budget ("Of this, tuition is $67,731; the rest is housing, meals and other costs").
+- Replace "path" wording in the Russian admission interface with plain words ("How you apply", "Change", "Remember this choice", "Key facts for applying", "Your choice"), and drop "for this path" from the Dates and Costs introductions.
+- Let the Overview of a university without a shared path (Imperial) answer for the program chosen on the Admission tab ("Shown for the program you chose") instead of asking to choose a program again.
+- Make the catalog card price tooltip compact and specific: collapse 4+ study levels to "All levels", localize fee categories (such as resident/non-resident), show the Home/Overseas note only when those tiers apply, drop duplicated reference/cycle notices, and show the price-filter hint only while a price filter is active.
+- Drop the redundant "Type: Official ranking" label from university card rank tooltips so ranked cards show the ranking source and check date, and unranked cards state clearly that no position is published in that ranking.
+- Pick the default price currency from the device, as booking and store sites do, until the reader chooses one: the country of the device time zone (Asia/Almaty: tenge, Asia/Riyadh: riyal, Europe/London: pounds), else the country in the browser language (ar-AE), else US dollars, and only currencies with an exchange rate. A local default shows the university's own price beside it ("≈ 42 M ₸ ($92,760) a year"). The country and time-zone tables are generated from Unicode CLDR and the IANA tz database (`scripts/generate-region-currency.py`); nothing leaves the device.
+- Rewrite the visible Kazakh MIT and Stanford application, test, document, transfer and aid summaries in plain Kazakh to match the Russian rewrite, explaining each term with the official English term in brackets once (first-year, transfer, superscore, School Report, eligible noncitizens, REA/RD).
+- Replace "path" wording in the Kazakh admission interface with plain words that match Russian ("нұсқа", "Қалай түсетініңізді таңдаңыз"), and fix "Өтінімді" to "Өтінішті".
+- State Stanford's aid for international first-year applicants in one sentence in the key facts and Costs funding answer, as MIT's: Stanford considers need when admitting international students (need-aware), and says it meets the full demonstrated need of every admitted student who asked for aid; the condition that aid must be requested on the admission application is shown with it. Sourced from Stanford's international applicants page (checked 2026-11-22), in English, Russian and Kazakh.
+- Keep the university page tabs on one scrollable row on every university, not only the four reviewed ones: 48px previous/next arrows overlaid on the edges appear only when the tabs overflow (tablets included), edges fade while more tabs lie in that direction (where scroll-driven animations are supported), the active tab is centred when opened from a `#tab-…` link or a click (instantly under reduced motion), and the focus ring is drawn inside the tab so it is not clipped.
+- Shrink the campus-photo area to a slim 96px band when a university has no photo, instead of an empty 16:9 grey block.
+- Write year ranges ("2026–27", "2026–2027") and day ranges next to a month ("12–16 October", "12–16 октября") with an en dash wherever the interface shows them, instead of a mix of hyphens, non-breaking hyphens and dashes; ISO dates keep plain hyphens throughout instead of a mixed first character, and codes, times and URL paths are unchanged.
+- Show the English requirement outside the collapsed source record: Imperial's course level with its IELTS numbers ("Standard: IELTS 6.5, at least 6.0 in each part") and Stanford's "no English test required", next to the other requirements.
+- Show section and subject minimums next to an overall minimum ("IELTS 6.0 (writing at least 6.0, other parts at least 5.5)", "UNT 85 (mathematical and reading literacy at least 8)"), and say which section scores to add when the profile has only a total, instead of reading the total as enough.
+- Show up to five key funding lines in the key facts (award type, coverage, deadline), such as Imperial Inspires and NU's grant coverage by category, and point to Sources instead of "described below" when nothing is shown below.
+- Mark a minimum whose overall score is met but whose section scores are missing as "Partly checked" with what to add, and list recommendations as recommendations rather than under "Still to prepare".
+- Read NU in comparison with its single published entry cycle, like its own page, so comparison shows the same minimums status instead of "Still to prepare" for everything.
+- Write a yearly deadline whose year the university does not state as "4 January (the university does not state the year)" with an approximate countdown, instead of presenting an inferred year as published.
+- Show NU's application fee (10,000 ₸, late fee 30,000 ₸) in the Admission and Costs key facts, its rolling application period, and that dates for some international applicants are not yet published.
+- Add "if English is not your first language" to MIT's English recommendation on the Overview, and offer a "Set your fee status" button on Imperial that opens the fee-status field instead of pointing to "additional options above".
+- Rename NU's grant link "Grant conditions (separate section)" and return to the regular path when a program is chosen, and stop showing first-year round terms (REA, RD) in the glossary of transfer and graduate paths.
+- Say in Russian "Дороже вашего бюджета (…)" instead of "Выше вашего бюджета ≈ …", which read as the size of the excess.
+- State MIT's aid policy for international applicants in one sentence, as Stanford's: MIT does not consider ability to pay in admission (need-blind), including for international applicants, and meets the full demonstrated need of admitted students who apply for aid. Sourced from MIT Admissions and MIT Student Financial Services (checked 2026-11-23), in English, Russian and Kazakh.
+- Count an entered SAT or ACT as provided for Stanford first-year and transfer admission, as for MIT (no minimum score is published).
+- Let the onboarding tour close with Esc or a visible close button, both counting as "skip", instead of requiring completion or the skip button.
+- Name the filters that hide every result in an empty catalog ("Hidden by your filters: search "MIT" · price up to 5,200,000 ₸") with "Reset filters" and "Show universities above my budget"; the Saved tab says so too and explains how to save when nothing is saved.
+- Label a card price range that spans several study levels ("All levels", or the levels listed), or name the level selected in the filter.
+- Choose the budget currency right next to the profile budget field instead of through Settings, keep the amount the user typed instead of a round trip through rounded dollars (5 200 000 ₸ no longer becomes 5 200 030 ₸), and explain that a zero budget is ignored.
+- Format numbers by interface language (Russian and Kazakh "5 200 000", decimal comma; English "5,200,000"), and show A-level results as grades ("A*A*A") instead of an internal sum.
+- Find a program in Russian by one word of its translated name ("Вычислительные" finds "Вычислительные системы").
+- Treat the profile budget currency as the unit of the typed amount: choosing another currency keeps the number instead of converting it (45000 then GBP stays £45,000).
+- Keep the chosen sort and its UniFit sliders when "Reset filters" clears search and filters.
+- Keep the phone tab arrows from covering tab labels: arrows sit on a background matching the tab bar, a step scrolls to the first hidden tab, and the selected tab is always brought into view.
+- Rewrite unnatural Kazakh interface wording (application and late fees, the text-analysis service, ACT alternatives, source notes) and replace Russian words left in the Kazakh interface.
+### Fixed
+- Hide closed custom-select dropdown menus with `display: none` instead of `visibility: hidden` (measuring container bounds before revealing `.open` to read panel height), eliminating the ~150px phantom empty scroll space below the catalog filter card and keeping bottom dropdowns flipping upward cleanly.
+- Stop offering "Remember this path" on NU's separate grant application, which saved the grant as the applicant's way in.
+- Name the applicant's GPA beside a met GPA alternative ("You have: GPA 4.6 of 5").
+- Translate approximate published dates such as "early April" (Stanford's Regular Decision notification) like "mid-December".
+- Show a single "≈" in a converted calculated yearly cost and its living part (Imperial showed "≈ ≈ $35,000 – $85,000").
+- Head MIT's English-score column "Minimum if you take it" instead of "Minimum", because the test is recommended, not required.
+- Replace a language test opened with "Edit" in the profile when its date changes, instead of adding a second row for the same test.
+- Keep NU's shared undergraduate path when a bachelor's program is chosen in Programs instead of asking for the path again.
+- Stop offering NU's post-offer funding selection as a way to apply in the Dates and Costs prompts.
+- Report the cause when the Admission context fails to render instead of swallowing it behind the retry message.
+- Keep NU's state-grant work obligation on master's, doctoral and residency paths instead of every path: source level labels such as "PhD" are now recognized rather than dropped.
+- Stop showing first-pass master's and doctoral research notes (such as a master's IELTS rule) as history on NU undergraduate paths.
+- Style admissions prompt and retry buttons (`.admissions-state button`) with `--surface-soft` on card surfaces and `--surface-solid` inside `.program-card` so controls stay distinct in both themes.
+- Fix same-surface blending and low-contrast dark-theme colors across CSS stylesheets: nested controls and cards in admissions, finance, comparison, map results, tour modal, profile breakdowns, search suggestions, and empty/error states now step cleanly between `--bg`/`--bg-soft`, `--surface-solid`, and `--surface-soft`, while dark-mode links, badges, tooltips, danger hover actions, and milestone steps use readable semantic text/status tokens instead of dark `--accent` or pale `--color-danger` backgrounds with white text.
+- Let single-column catalog cards (`<= 640px`) fill their full grid track instead of stopping at `max-width: 550px`, remove redundant desktop grid media blocks, and remove fixed `100vw` widths on `.profile-confirm-modal` and `.d-photo-viewer` plus the off-contract `@media (max-width: 600px)` profile breakpoint.
+- Switch catalog toolbar compaction (hiding the Recently viewed label, compacting the Compare mode button, and stacking actions cleanly on ultra-narrow bars) to CSS `@container catalog-toolbar` queries on `.u-section-bar` so the result count and action controls do not wrap prematurely on intermediate mobile widths (`481–580px`).
+- Remove legacy asymmetric right padding on the navbar language trigger at `641–1024px` so the flag and label stay centered across all viewport widths.
+- Isolate desktop sticky sidebar positioning (`min-width: 1025px`) from the tablet/mobile filter drawer (`max-width: 1024px`) and bottom sheet (`max-width: 640px`): reset `align-self: stretch` and `flex-direction: row` so the blurred backdrop always reaches the bottom of the viewport, dock the tablet drawer flush with square corners and a bottom-anchored footer, and prevent `@media (max-width: 380px)` from re-rounding the bottom corners of the mobile sheet.
+- Stop legacy admission funding cards (`.admission-funding-option`) from wrapping `.admission-funding-diff-note` into an off-screen second column inside the `<= 768px` column stack by resetting `flex-wrap: nowrap` and clearing horizontal `flex-basis` / `min-width` overrides on mobile/tablet widths.
+- Render closed shared tooltip bubbles with `display: none` so hidden tooltips never expand document `scrollWidth`, clamp opened/hovered/focused tooltip bubbles horizontally within the viewport via `--tooltip-shift-x` in `frontend/javascript/tooltip.js`, and remove the `@media (max-width: 480px)` `.d-container { overflow-x: clip; }` masking workaround.
+- Stop requesting campus images for universities without one (Astana Medical University, KIMEP): the catalog and map payload now carry `cover_available`, and cards use the placeholder.
+- Report a partly typed test date in the profile instead of saving the test without a date.
+- Mark an English test as below the minimum when a known section is below its published section minimum (NU: IELTS 6.0 with Writing 5.5 against "writing at least 6.0"), naming the section, even when the test date is missing; a missing date no longer hides a known failure.
+- Write "£34.50" and "$162.75 CAD" in the Russian and Kazakh translations instead of "£34,50" next to "£10,050".
+
+### Tests
+- Add the novice university page checklist (`docs/novice-page-checklist.md`) from a five-persona audit of MIT, Stanford, Imperial and NU, and use it as the Stage 3 acceptance check.
+- Add unit coverage for visible English and section minimums, funding lines, partly checked marks, empty-catalog filter names, card level labels, partial dates, number formatting and A-level grades, and backend coverage for Stanford SAT/ACT assessment, MIT's aid statement, `cover_available`, word-prefix program search and number formats in translations.
+- Update E2E specs for the closable tour, the budget currency select, locale number formatting, en-dash year ranges, the key-facts minimums row, the default NU path, and refreshed MIT snapshots.
+- Check single-column catalog card width fill (`607px`, `640px`), symmetric language trigger padding (`390–1280px`), full-height filter overlay geometry (`375–1001px`), and intermediate-width Russian catalog toolbar alignment (`503px`, `607px`).
+- Add unit coverage (`tests/unit/tooltip-viewport-clamp.test.mjs`) for tooltip horizontal viewport clamping and a permanent cross-page Playwright responsive audit matrix (`tests/e2e/responsive-audit-matrix.spec.js`) across mobile, intermediate, tablet, and desktop widths (`320px–1280px`).
+- Check the GPA scale switch on a five-point grade and switching back.
+- Check the Kazakhstan-document answer (shown only without a published ruling), the plain round names, the admission-rate note and "early April".
+- Check a single "≈" in converted calculated costs, the entered result beside what a minimums check still needs, and that editing a language test replaces the opened entry.
+- Update the admissions E2E specs for the default first-year path (no path prompt on MIT, Stanford and NU tabs, nothing saved until "Remember this path", a program's own path chosen again) and check the way back from NU's grant application.
+- Check the English-test recommendation for native, non-native and unstated English, the profile link from a checklist note to the test's section scores, and that the check details sit behind the Sources disclosure.
+- Check that the Dates and Costs tabs lead with their plain answers and keep sources behind one closed disclosure, that the entry-year and fee-status fields appear only where a path needs them (MIT transfer windows, Imperial fee classes), that NU's mid-year path reads its Spring 2027 deadline, and update the admissions E2E specs for the new wording.
+- Check that NU's shared undergraduate paths read without a program and without graduate history, that the Foundation Year is offered beside them, and that a single requirement cycle is used only for its own path.
+- Check that every catalog university has all three languages, that no name belongs to two universities, that map labels are listed abbreviations or alternatives, and that search ranks each university first for its map labels and finds it by alternate full names.
+
+## 10.6.7 (2026-11-21) - Cite reviewed study formats
+
+### Improved
+- Show university study formats only when official source metadata is linked; hide reviewed-catalog modes that lack a displayable source.
+- Add scoped official MIT sources for undergraduate and graduate on-campus study formats.
+- Collapse each overview fact's source scope into a disclosure under the source link and check date, fold the study-format sources and availability note into one "Sources" disclosure, and rename the "В цифрах" overview heading to "Ключевые факты" (Key facts / Негізгі деректер).
+- Show the study-format and campus-area values in the primary text colour, matching the other overview facts, and keep the "Sources" toggle small and muted.
+- Keep the study-format count in university comparison to universities with a linked official formats source, and show that source and its check date beside it.
+
+## 10.6.6 (2026-11-20) - Show sources for university overview facts
+
+### Improved
+- Made ranking sources clickable, displayed existing student-count provenance, linked explicitly tagged study-format sources, and surfaced available check dates beside university facts.
+- Clarified source check dates, exposed missing check dates and carried-forward reviews, and kept cycle-specific applicability visible.
+- Exposed conflict reasons and official next steps through the response's narrow public projection.
+- Updated MIT and Oxford enrollment figures and aligned Oxford's international shares and accommodation guarantee with current official publications.
+- Recalculated MIT and Oxford research-focus factors from their refreshed student counts.
+- Limited campus areas and study formats to official evidence with a clear campus or program scope; removed disputed areas and unsupported formats.
+- Added source scope, checked dates, and approximate-area labels to university comparison rows.
+
+## 10.6.4 (2026-11-20) - Update Nazarbayev University Zero Year information
+
+Patch release: refreshes the graduate-preparatory offering's official name and source-backed description without changing admissions routes or assessment behavior.
+
+### Changed
+- Updated the offering to Zero Year of Graduate Programs (ZYGP), retained NUZYP as a search alias, and localized its School-recommendation description.
+- Kept current-cycle availability, general entry terms, tuition, and funding unconfirmed where NU's public applicant pages do not publish them.
+- Included reviewed offering descriptions in the admissions detail response and program overview.
+### Improved
+- Corrected catalog and Guide semantics, named the map-results landmark, replaced the gallery's close listener with a native dialog command, restored keyboard focus after a failed-photo retry, removed unused JavaScript bindings and repeated map-footer wiring, and routed toast exit motion through shared CSS tokens.
+### Fixed
+- Added Russian and Kazakh exact translations for the reviewed NU ZYGP source gaps, next steps, historical notes, and program scope; rewrote the next step as applicant guidance and removed obsolete NUZYP editorial rules and translation entries.
+
+### Tests
+- Made the admissions-selection E2E helper wait for its edit button to become actionable after history navigation.
+
+## 10.6.3 (2026-11-19) - Align documentation with the reviewed admissions model
+
+Patch release: documentation and Guide copy corrections with no API or storage contract changes.
+
+### Changed
+- Added the reviewed study-options and admissions-context endpoints to the README API overview and aligned the Guide's English, Russian, and Kazakh explanations with the selected study option, application route, and applicant context.
+- Reconciled the current four-institution batch, remaining 46 legacy institutions, and first-ten expansion boundary across the roadmap, task checklist, runbook, architecture overview, and admissions storage contract.
+- Removed the unapproved Google-auth state-sync proposal because its implementation inventory was stale and the work was not scheduled.
+- Added README links to Support and Accessibility, and corrected Support's program-coverage description to match the catalog.
+- Reduced the active project instructions, removed completed checkpoints from the admissions tracker, and condensed the runbook and roadmap to current work.
+- Aligned the release checklist with explicit push, tag, and publication permissions; dated the OSPS assessment and refreshed the verified `main` ruleset facts.
+
+## 10.6.2 (2026-11-19) - Fix university page styles on hosted pretty-URL SPA navigation
+
+Patch release: fixes missing university stylesheets during client-side navigation to nested pretty URLs (`/universities/<id>`) and prevents the service worker from caching HTML pages as API responses.
+
+### Fixed
+- Resolved client-side routed stylesheets against the application root (`resolveAppBaseUrl` / `resolveAppBasePath` in `frontend/javascript/routes.js`) and synchronized `<base href>` in `frontend/javascript/main.js` so SPA navigation from `/` to hosted `/universities/<id>` loads `/css/university/*.css` instead of 404 `/universities/css/...` paths and keeps `document.baseURI` anchored at the app root.
+- Increased the client router stylesheet load wait timeout from `150 ms` to `1500 ms` to avoid brief flashes of unstyled content on cold-cache transitions.
+- Excluded navigation, document, and `Accept: text/html` requests from `isApiRequest` in `frontend/javascript/sw-worker.js`, prevented `text/html` responses from entering `API_CACHE`, and bumped the service worker version (`2026-11-19-1`) in `frontend/sw.js` and `frontend/javascript/sw-worker.js` to purge previously cached HTML entries on activation.
+
+### Tests
+- Added unit tests for `resolveAppBasePath`, `resolveAppBaseUrl`, and service worker HTML/navigation pass-through in `tests/unit/routes.test.mjs` and `tests/unit/service-worker.test.mjs`, plus an E2E regression test for SPA navigation to `/universities/<id>` in `tests/e2e/university-frontend-mount.spec.js`.
+
+## 10.6.1 (2026-11-19) - CSS cascade cleanup, university stylesheet modularization, and strict CSS audit
+
+Patch release: internal CSS architecture refactoring and tooling with no user-visible feature or API changes.
+
+### Added
+- Added `scripts/audit-css.mjs` (`npm run audit:css`, wired into `npm run test:all`) powered by `@projectwallace/css-analyzer`, `purgecss`, and PostCSS HTML-bundle cascade analysis to enforce zero cross-file property overrides, zero same-context cross-file duplicate selectors, zero unknown CSS custom properties, zero `[data-theme="dark"]` or `:root` blocks outside `shared/01-foundation.css`, zero non-accessibility `!important` declarations, zero unused CSS selectors, zero fragmented duplicate `@media` blocks per file, and zero unapproved ID selectors, alongside `stylelint-value-no-unknown-custom-properties` in `stylelint.config.mjs` and unit tests in `tests/unit/audit-css.test.mjs`.
+
+### Changed
+- Consolidated 763 cross-file overridden CSS declarations and remaining same-context split selectors across `frontend/css/**` (`shared/*`, `profile/*`, `universities/*`, `university/*`, `error.css`, `guide.css`), reducing total CSS volume by ~3,350 lines.
+- Dissolved `frontend/css/universities/04-catalog-responsive.css` and `frontend/css/universities/05-catalog-polish.css` into their owning catalog modules (`01-shell-controls.css`, `02-catalog.css`, `06-map.css`, `07-responsive.css`) and removed their stylesheet links from `index.html` and `compare.html`.
+- Modularized `frontend/css/university.css`, `frontend/css/university-admissions.css`, and `frontend/css/university-qualification-guidance.css` into `frontend/css/university/01..06` (`01-shell-hero.css`, `02-overview-programs.css`, `03-admissions.css`, `04-finance-aid.css`, `05-admissions-reviewed.css`, `06-qualification-guidance.css`) and updated references in `university.html`, `compare.html`, `stylelint.config.mjs`, `docs/design-system.md`, and E2E tests.
+- Removed all 21 component-level `:root[data-theme="dark"]` selectors (moving the dark overflow-trigger shadow into a root token), all 42 non-accessibility `!important` declarations, 151 unused CSS selectors, and redundant defensive reset declarations.
+- Deduplicated shared CSS across all 24 stylesheets (-1,276 net lines, 21,543 → 20,267): expanded the global zero-specificity `:focus-visible` rule and added `:where(button) { border: none; }` in `shared/01-foundation.css`, unified all five tooltip surfaces and open/hover/focus/closed state rules (`.ui-tooltip-bubble`, `.u-tooltip`, `.profile-tooltip`, `.d-tooltip`, `.uni-status-tooltip__content`) in `shared/02-shell-settings-feedback.css`, stripped redundant `:focus-visible`, no-op `border: none`/`0`, and no-op `margin: 0` declarations, collapsed scattered `@media (hover: hover) and (pointer: fine)` blocks, and simplified repetitive `:has()`/state selector chains with `:is()` and `:where()`.
+- Eliminated the `#tab-programs` and ID specificity overrides across `frontend/css/university/01..05` (`02-overview-programs.css` 17 → 0 ID rules, `05-admissions-reviewed.css` 75 → 4 classless-element ID rules, `04-finance-aid.css` 5 → 0, `01-shell-hero.css` 1 → 0) by consolidating `.program-card*` into `02-overview-programs.css`, collapsed fragmented same-breakpoint `@media` blocks across `shared/*`, `guide.css`, and `university/01..05` into strict descending breakpoint order (-612 net lines, 20,267 → 19,655), and updated the four `university-detail-design.spec.js` cover snapshots for the gallery controls refresh.
+- Unified shared zero-specificity info-button primitives (`.u-info*`, `.profile-info*`, `.d-info*`) in `shared/02-shell-settings-feedback.css` and underlined-tab primitives (`.admission-program-option`, `.requirement-profile-tab`, `.programs-level-tab`, `.admissions-level-tab`) in `shared/10-admissions.css`, merged `frontend/css/profile/01-shared-foundation.css` into `frontend/css/profile/02-page.css` (reducing profile ID rules 4 → 1 and total CSS to 23 files / 19,503 lines, -152 net lines), and updated `frontend/profile.html`, `stylelint.config.mjs`, and `frontend/css/profile/README.md`.
+
+### Fixed
+- Fixed `.center-loading-spinner` accent spinner color in `frontend/css/shared/01-foundation.css` where `08-device-responsive.css` previously overwrote `border-top-color` with `border-color: var(--line)`.
+- Fixed the missing navbar language dropdown chevron (`content: ""` on `.navbar-right .lang-control .custom-select-trigger::after`) and stray checkmark leaking from closed `.custom-options` menus (switched `.custom-option-check` from `visibility` to `opacity`) in `frontend/css/shared/02-shell-settings-feedback.css`.
+
+## 10.6.0 (2026-11-19) - Currency fallback snapshot sync and rate update status
+
+Minor release: synchronizes static offline exchange rates across backend and frontend with an explicit snapshot date and displays localized currency rate freshness or offline snapshot status in Settings.
+
+### Added
+- Added `FALLBACK_RATES_DATE` (`2026-11-18`) alongside `FALLBACK_RATES` in both `backend/app/services/currency.py` and `frontend/javascript/currency.js`, plus `scripts/sync-currency-fallback.mjs` to refresh rates from ExchangeRate-API and check backend/frontend parity.
+- Exported `getRatesMetadata()` and `formatRatesTimestamp()` from `frontend/javascript/currency.js` to format UTC timestamps in the user's local timezone and keep `YYYY-MM-DD` calendar dates anchored in UTC without negative-offset day shift.
+- Added `#currencyRatesStatus` inside `.settings-attribution` in `#settingsModal` (`frontend/javascript/components.js`, `frontend/javascript/components/settings-ui.js`, `frontend/css/shared/02-shell-settings-feedback.css`) with localized `currency.rates_updated` and `currency.rates_offline` strings in English, Russian, and Kazakh, updating reactively on modal open, background rate arrival (`currencyRatesStatusUpdated` / `currencyRatesUpdated`), and language switches.
+
+### Changed
+- Updated `FALLBACK_RATES` across backend and frontend to the 2026-11-18 ExchangeRate-API USD snapshot (166 currencies) and returned `FALLBACK_RATES_DATE` instead of `"fallback"` in `get_rates()` and frontend fallback paths, skipping `sessionStorage` persistence for fallback responses.
+
+### Tests
+- Added backend and frontend unit tests covering `FALLBACK_RATES` / `FALLBACK_RATES_DATE` parity, fallback `date` responses, timezone-aware and calendar-safe timestamp formatting, and reactive Settings attribution updates, and updated existing unit and currency E2E expectations for the refreshed fallback rates.
+
+## 10.5.0 (2026-11-18) - Broader annual cost ranges and campus photo fallback
+
+Backward-compatible minor version update for catalog cost references and missing campus-photo states.
+
+### Added
+- Calculate annual reference ranges from compatible published tuition and living-cost facts, retaining program scope, source periods, exclusions and living-cost provenance.
+- Show a localized campus-photo placeholder when a university has no reusable cover image.
+
+### Changed
+- Remove the unreviewed-data notice from university catalog cards; review status remains available on university pages and in comparison guidance.
+- Explain that price ranges can narrow as study level, fee status and program details are set, and label tuition-plus-living calculations as references.
+- Identify calculated tuition-plus-living references in university summaries and comparison.
+- Rename Russian university favorites filter labels to saved wording.
+
+### Fixed
+- Keep each priced program variant on its latest published period instead of mixing prices from different entry years.
+
+### Tests
+- Cover scoped annual budget ranges, living-cost provenance, localized price explanations and missing campus-photo states.
+- Check that the catalog level selector uses the solid surface token across themes and layouts.
+
+## 10.4.4 (2026-11-18) - University media policy wording
+
+Patch release: university media guidance and interface refinements with no breaking API or storage changes.
+
+### Changed
+- Clarified that UniSearch identifies institutions by name and campus photography and does not publish university logos; aligned the third-party notice, photo contribution guidance, architecture diagram, and catalog expansion roadmap.
+- Simplified the campus photo gallery with a clickable cover, translucent photo count and credits, side arrows, and a back arrow in the full-size viewer.
+
+### Fixed
+- Unified dropdown spacing, panel styling, and selection feedback across catalog filters, profile, settings, and university pages.
+- Set the catalog study-level filter button to the solid surface color.
+- Standardized website, map, and save actions across all university pages, including their typography and stable localized save-state width.
+
+## 10.4.3 (2026-11-18) - Modern web platform baseline, accessibility, and security hardening
+
+Patch release with no new user-visible capability: adopts Baseline Widely available JS/CSS APIs, converts overlays to native `<dialog>` elements, upgrades WAI-ARIA tabs/tables/selects/toasts and Forced Colors support, removes CSS `@import` waterfalls, and tightens static security headers.
+
+### Changed
+- Adopted modern JavaScript and CSS primitives (`replaceChildren()`, `structuredClone()`, `toSorted()`, `Promise.withResolvers()`, `AbortSignal.timeout()`, `100dvh` fallbacks, `:user-invalid`, `content-visibility: auto` on deep admissions sources, and `:root[data-theme-switching]` transitions without layout thrashing).
+- Migrated `#settingsModal`, profile confirmation dialogs, `#uTourModal`, and the reviewed comparison program picker `<dialog>` to native modal `<dialog>` (`showModal()`, `::backdrop`, `overscroll-behavior: contain`, `h2` headings, safe `autofocus`, and `closedby` with fallbacks), and updated `#uSidebar` to isolate background content with `inert` instead of locking `body` overflow.
+- Upgraded UI semantics and keyboard/High Contrast support: WAI-ARIA `tablist`/`tab`/`tabpanel` navigation and `border-block-end` indicator on university sections, `@media (forced-colors: active)` token/control fallbacks, native `<button>` triggers for custom selects with `<label>` focus forwarding, `<search>` landmark with `enterkeyhint="search"`, scrollable `role="region"` + `<caption>` + `<th scope="row|col">` on tables, progressive `popover="manual"` + `role="status"` toasts, and post-transition focus routing (`focusRouteDestination()`).
+- Flattened CSS `@import` chains into consolidated shared `<link rel="stylesheet">` modules (dropping unused page-level CSS links) with `<meta name="color-scheme" content="light dark">` and font preloads, added CSP/security headers in `firebase.json`, `frontend/.htaccess`, and backend/dev-server policies, and aligned localized accessibility labels.
+
+### Fixed
+- Guarded Enter key submission against active IME composition, restored profile validation focus after closing the native unsaved confirmation dialog, eliminated per-item layout reflows in `markMotionEnter()`, and escaped `renderErrorScreen()` / network-status messages.
+
+### Tests
+- Added unit and backend tests and updated existing E2E/unit suites for WAI-ARIA tabs, native `<dialog>` modals, accessible toasts, custom select buttons, `<th scope="row">` tables, IME composition guards, theme transitions, error escaping, and CSP headers.
+
+## 10.4.2 (2026-11-18) - Campus photos and viewer fixes
+
+Patch release: UI and asset refinements with no new user-facing capability or breaking API/storage change.
+
+### Changed
+- Remove university logo placeholders throughout UniSearch; use dots and counts on the map and credited campus photos in comparison headers.
+- Align both university cards and their values in two equal comparison columns, with guidance above the cards and metric labels above each pair of values.
+- Show a themed campus photo placeholder when a catalog card has no usable image.
+- Limit the CI Node dependency audit to runtime packages (`npm audit --omit=dev`) because frontend assets ship without a bundler and Node packages are CI/test/lint tooling only.
+
+### Fixed
+- Close the campus photo viewer when clicking or tapping the dark area outside the photograph, while ignoring drags, swipes, and pinches and keeping zoom cursor feedback on the photograph only.
+
+### Tests
+- Scope `admissions-final-journeys` reload and context waiters to the selected application route and settle overview requests before reloading so background responses cannot drop during navigation.
+
+## 10.4.1 (2026-11-17) - CodeQL test fixes
+
+### Fixed
+- Verify the full MIT Admissions link in comparison tests and remove unused imports from responsive layout and profile language tests.
+
+## 10.4.0 (2026-11-17) - Campus photo galleries
+
+### Added
+- Open campus covers in a full-size viewer and browse credited alternate photos with arrows, photo indicators, keyboard controls, or a swipe.
+- Zoom and move campus photos in the viewer using a mouse, touch gestures, or keyboard controls.
+
+### Fixed
+- Keep campus photos clear on narrow screens by placing the gallery controls and attribution below the image.
+- Keep touch controls responsive immediately after swiping between campus photos.
+- Show the university page as soon as its main content is ready. Programs and admissions show their own loading states while their requests finish.
+- Use recognizable campus exteriors for Australian National University, Delft University of Technology, the National University of Singapore, Tsinghua University, and the University of Melbourne.
+- Replace the distant Seoul National University medical-campus panorama with a street-level photograph of the historic Daehan Hospital building.
+
+### Changed
+- Retain former covers and alternate campus views with per-photo credits in the gallery.
+
+## 10.3.3 (2026-11-16) - Modern web platform rule for agents
+
+Patch release: documentation-only change with no application, API or data change.
+
+### Changed
+- `AGENTS.md` now tells agents to consult the `modern-web-guidance` skill before new or changed HTML, CSS or client-side JavaScript and to prefer native platform features over custom code or dependencies. Browser support policy: Baseline Widely available features need no fallback; Newly available features require feature detection, graceful degradation and a fallback of at most 20 lines with no external dependencies. The Calm Academic Workspace rules still take precedence over a guide's suggestions.
+
+## 10.3.2 (2026-11-16) - Faster pull-request E2E checks
+
+Patch release: CI-only change with no application, API or data change. A pull-request Tests run takes about 6.5 minutes instead of about 25.
+
+### Changed
+- The pull-request E2E job is split into six parallel shards, one worker each, on separate runners (the 524-test suite took about 23 minutes on one runner, and three workers on one runner saved only about 4 minutes because the API is a single process). The required `e2e-pr` check is kept as a job that passes only when every shard passes. A new push to a pull request cancels its superseded Tests run; runs on `main`, the nightly schedule and manual dispatch are never cancelled.
+
+### Tests
+- The admissions journeys browser test reads each admissions-context response body as soon as it arrives, so it no longer fails with a dropped-response protocol error when the page reloads or re-renders first.
+
+## 10.3.1 (2026-11-16) - Smaller admissions snapshot and steady university pages under late exchange rates
+
+Patch release with no new capability: the reviewed admissions data keeps the same content in a smaller, leaner stored form, and exchange rates that arrive late no longer reset a university page. The backend cache revisions and detail ETags change once because they hash the snapshot bytes.
+
+### Added
+- The guide explains the "Check the cost" tag, the compact card icons with the catalog banner legend, and how the profile page shows which answers UniFit uses.
+
+### Changed
+- The reviewed admissions snapshot `backend/data/admissions/catalog.json` is stored as compact JSON with one line per record, cutting it from 25.4 MB to 18.2 MB (about 1.9 MB to 1.6 MB compressed) with identical content. `prepare_admissions_catalog.py` writes this format, so snapshot refreshes keep one reviewable line per fact. Backend cache revisions and detail ETags change once because they hash the file bytes.
+- The maintainer-only blocks of each reviewed institution (`organization`, `dossier_metadata`, `collection_tasks`, `supporting_records`, `historical_provenance`, about 650 KB) moved from the runtime snapshot to `backend/data/admissions/research.json`. The backend never read them; the preparation script writes both files and the preparation and editorial tests check the new file.
+- Records in the reviewed admissions snapshot keep only a reference to their research record (`evidence_file`, `original_id`) instead of a copy of its original scope and source IDs (about 1.6 MB; the snapshot is now 16.4 MB). The preparation test resolves every reference against the evidence file. The reviewed assessment mappings in `assessments.json` were re-hashed against the unchanged fact content after confirming that each old hash matched its old fact.
+
+### Fixed
+- Exchange rates that arrive after the first render (for example while the API wakes up) no longer rebuild a university page the reader is working in. In 10.3.0 they were announced as a currency change, so an open program and route editor closed and its choices were lost. Late rates now redraw only the catalog cards in place; other pages use them from the next page view.
+- The guide named the old UniFit sliders. It now uses the current names (Focus, Selectivity, Cost vs Prestige, Location), says what each one measures, that a centred slider is ignored, and that a moved slider without university data counts as a typical university. The Your Vibe tag description counts only the sliders the reader moved.
+- The interests formula no longer shows a non-English query offset that the ranking dropped; it is `clip((sim - 0.55) / 0.35, 0, 1)`.
+- The comparison section no longer promises two or three candidates or a separate tab step. It describes the two-university pair, the one-group rule, the columns of rechecked universities and the Home/Overseas price switch.
+- The glossary calls admitted-student averages historical context instead of a number to plan against, in line with the admission section.
+- Replaced the stale English fallback formulas in `guide.html` with the current text.
+
+### Tests
+- A browser test holds the rates response while the admissions editor is open, and another checks that catalog card prices redraw when live rates arrive late.
+- The slow-rates unit test checks event order instead of wall-clock time, so it no longer fails on a loaded CI runner.
+
+## 10.3.0 (2026-11-13) - Simplified profile and admission pages
+
+Minor release: returning users see a simpler profile and admission page, and a program with a single application route is read directly. Saved profiles keep working because removed profile keys are stripped on load, so the change is not major.
+
+### Added
+- The university page cover shows a photo credit ("Photo: author, license (cropped)") that links to the photograph's Wikimedia Commons file page, as the photo licenses require. Credits come from `backend/data/university_assets/credits.json`, served with the other university assets.
+- Added `applicant_route` (`first_year`, `transfer`, `graduate` or null) to application route summaries in the admissions API responses, derived for every route during catalog preparation.
+- A live "How UniFit will use your profile" summary on the profile page lists each group of answers as used or not used, echoes the entered values (for example "GPA 4.6 / 5, IELTS 6.5") and says what to add.
+- A "Save and show matches" profile action saves the profile and opens the catalog sorted by UniFit with the profile's study level pre-selected. The first-visit catalog tour does not open over those results.
+- In UniFit sort, the catalog banner names the profile answers the ranking uses, links to the profile, and shows a legend for the card status icons on the current page. The icons stay compact and cards keep equal size. Icon tooltips now name the exam result still needed and say how far a price is above the budget.
+- The university Overview tab opens with key admission facts: when to apply with a countdown, the published annual cost before aid with the university's aid policy, a short checklist of required tests and documents marked against the applicant's profile, and who studies there. Universities with one shared first-year application answer these without a chosen program, and the card links open the Dates, Costs and Admission tabs on that application without saving it.
+- Official admission statistics for the latest intake in a new `admission_statistics` field of the four reviewed universities, shown with source and intake year: MIT and Stanford first-year admits, Imperial College London offers per undergraduate application, and Nazarbayev University admits from its combined foundation and undergraduate application. The field feeds only the UniFit selectivity slider, not filters or the requirements match.
+- Universities that admit by program show one overview card with study-level shortcuts into the program list.
+- Universities still on earlier-format data carry a quiet note on their page and catalog card that the data may be inaccurate or out of date and will be updated. Without collected application dates, their overview links to the official website.
+- A per-institution conversion checklist in `docs/admissions-light-dossier.md` for moving the remaining universities to reviewed data.
+- Reviewed university cards show an "Exam result needed" icon when the chosen route requires a test the profile lacks, naming what to add (for example "SAT or ACT"), and a "Check the cost" icon when the price depends on a fee status (such as Home or Overseas) that is not set yet.
+- Two universities with rechecked data are compared on one page without a setup step. Each column starts from the university's shared first-year application, or asks for a program where the university admits by program, and shows when to apply, what you'll need, the cost before aid with the budget check, financial aid and the university's published figures with their sources. A program picker in each column searches programs, filters them by study level and asks for the application route only when a program has several; the choice is the same saved choice the university page uses. Where a price depends on the Home or Overseas fee status, the cost cell switches between the two.
+- A comparison pair stays within one data group. In compare mode, universities from the other group are marked and cannot join the pair, and the tray says why; an older link to a mixed pair explains why it is not compared and links both university pages.
+
+### Changed
+- `npm run fix:i18n` updates the locale pack cache revision after localization edits, and `npm run check:i18n` fails while the revision is stale.
+- Self-hosted the Inter typeface (SIL OFL 1.1) as the interface font in place of Noto Sans, with its license text and entry in `THIRD_PARTY_NOTICES.md`.
+- The applicant category follows the selected application route. The admissions page and the comparison no longer ask for it, and older links that still carry the removed applicant parameter ignore it.
+- A program with exactly one application route reads that route directly, without saving it.
+- The Admission tab shows the requirements-match summary once, in the key facts; Study details no longer repeat it.
+- Source references use numbered markers with one titled source list per tab, and the full source records sit behind one disclosure.
+- Card prices show their qualifiers (tuition label and second currency) on a line above the price, so every card keeps its price on the bottom row next to the details link.
+- Admissions responses return only the fields the pages read. Fact and unknown records omit provenance, index attributes, related-fact IDs and review timestamps, and the assessment omits values it repeats. Stored records and assessment hashes are unchanged.
+- Reviewed institutions keep their funding facts in the admissions catalog, so the grant and paid list filters exclude only institutions whose records establish that the funding type is absent.
+- Published qualification guidance is shown to every reader as reference.
+- Precomputed the major-taxonomy normalisation, so the first admissions request is faster.
+- Regenerated `backend/data/admissions/catalog.json` with the route-level applicant category and the closed overrides in the draft vocabulary.
+- Newly added institutions follow the light dossier standard (`docs/admissions-light-dossier.md`), which bounds research depth. The four accepted deep datasets are unchanged.
+- The profile is one guided page instead of four tabs. Sections follow their effect on results (study, budget and funding, grades and exams, languages, university-specific details), each field states what it changes in one short sentence, an outline marks answered sections, and actions stay in a sticky bar. Exam and language lists keep Edit and Delete together at the row end, the add forms share one aligned layout, and the university-specific form uses the same styled selects as the rest of the page.
+- UniFit applies the profile's funding type like the other sorts: only universities known to lack the chosen option are hidden.
+- The university-specific language background records English, the only language the reviewed checks read. Existing entries in other languages stay visible and can be removed.
+- Profile copy is plainer: the preparation level is fully translated, the evidence form drops field-code wording, and the unfinished-report notice is shorter.
+- Admission tabs replace English research notes about source periods with the entry cycle, academic year or a "year not stated" note; the original wording stays in the full source records.
+- University page styles are consolidated: about 850 declarations that a later rule for the same selector always overrode, 40 rules for classes no page renders, and 83 split duplicate rules were removed or merged, cutting `university.css` from 7,809 to 5,805 lines. Computed styles on every tab, breakpoint, theme and admission-route state of five universities and the comparison page are unchanged.
+- Browser tests run against their own API on port 8010 instead of reusing a development API on 8000, whose rate limit of 600 requests a minute per client failed parallel workers with 429 responses. The test frontend server takes `--api-port` and points `env.js` at it; the full Chromium suite now passes in parallel while a development server runs.
+- `npm run check:stylelint` runs Stylelint over all frontend CSS, in CI and in `test:all`: duplicate selectors, repeated properties, shorthand resets, raw colors, type sizes, weights and radii instead of tokens, and a project rule (`unisearch/no-overridden-declarations`) for declarations that a later rule for the same selector always overrides. The existing findings (54 overridden declarations and 33 split duplicate selectors in catalog, profile, navbar and university styles) are removed or merged with computed styles unchanged on every page, breakpoint and theme. `check:design-lint` no longer accepts the off-scale 12px and 32px+ type sizes.
+- The overview lists campus, hybrid or online study instead of each program's own schedule wording.
+- Reviewed universities no longer show an outcome earnings figure on the overview, as in comparison.
+- Clearer wording for the selection strip, annual dates and selectivity in English, Russian and Kazakh.
+- Pairs of earlier-format universities keep their existing comparison. The rechecked-university chooser, its source-record panels and the profile-budget signal left that page, and their unused strings were removed.
+- University page layout pass: every tab's content on reviewed pages lines up with the page title and tabs (one side-padding layer instead of two), tab sections share one heading scale, long reading tabs separate their topics with a faint rule, key-fact answers use regular weight, and "Key figures" (formerly a second "Overview") follows the key admission facts. An empty deadline calendar is one quiet note instead of a titled section, and on phones the site, map and save actions share one row and a countdown no longer wraps between its number and unit. Every "choose first" state uses one layout: the explanation, then its actions in a row beneath it. Source numbers read as "Source 1" instead of an unlabelled "1", each route note sits next to its own button, and a programme card separates its description from the heading and the Admission-tab pointer, with its select action aligned to the text.
+- The university overview replaces the "small / medium / large" campus size, which mixed land area and student numbers, with the official campus area in hectares, an everyday football-pitch comparison and its source. Rows without data are left out instead of reading "No data", and the student count follows the interface language.
+- The `size` list filter and `student_life.size` use student-count bands (under 10,000, 10,000–30,000, over 30,000) instead of the earlier mixed land-area and enrollment buckets; a university without a published student count stays visible under every size filter.
+- The university page, its key facts and the comparison no longer offer to apply a profile entry cycle or fee status: the general profile no longer holds them, and both are chosen in each university's own selection.
+- Catalog card icon tooltips are one or two plain sentences instead of a dump of every requirement check: what to add to the profile, which minimum falls short and by how much, the price against the budget in the reader's currency, how many programs match the subject, and which preference sliders are close. The preference icon is a heart, so it no longer looks like the requirement checkmarks.
+- UniFit preference sliders: a centred slider now means "doesn't matter" instead of asking for an average university, and each slider counts as much as it is moved, so a neutral profile no longer pushes highly ranked universities down. The "Study style" slider becomes "Selectivity", based on the published first-year admission rate (applicants per place). Research focus uses publications per enrolled student and location uses the OECD urban-area size classes, both on fixed log scales in the new `backend/app/services/preference_factors.py` instead of values stretched across the 50 catalog universities, which had placed every city below about 9 million people near "outside the city". Missing data stays unknown (`null` in `factors`); a moved slider without data counts as a typical university, so missing data cannot produce a perfect match. `backend/scripts/refresh_university_factors.py` writes the same scales, and the stored factors were recomputed from the existing raw metrics.
+- Slider inputs corrected from official sources: 25 universities now record their urban-area population (OECD functional urban areas, the Hong Kong Census and Statistics Department mid-2026 estimate, and Astana's 1.6 million residents in October 2025 instead of a stale 345,604), so campuses such as Stanford, MIT, Princeton and Delft count as part of their metropolitan area. UNSW Sydney and the University of Oxford use their actual OpenAlex records, Astana IT University's publication count is current, and Asfendiyarov Kazakh National Medical University and Abai Kazakh National Pedagogical University gain official student counts. The cost-versus-prestige slider averages annual cost and official rank on fixed scales instead of tuition and research volume stretched across the catalog.
+
+### Removed
+- Profile inputs: citizenship (including multiple citizenships), current country of residence, family income, country of education, education credential and the general applicant route. Saved values are stripped on load and are never sent to the API.
+- The general profile's intended entry cycle and fee status. They duplicated the per-university cycle and fee status on reviewed admissions pages, which remain and are saved per institution. Saved general values are stripped on load and are no longer sent with catalog requests.
+- Institution-evidence options for Imperial College London and Stanford and the "major" evidence metric. The MIT Course 6-9 and MITx credential checks remain.
+- The `citizenshipStatus` field from minimum-requirements responses, the citizenship service and its tests (`backend/app/services/citizenship.py`, `backend/tests/test_citizenship_service.py`), and the country list module (`frontend/javascript/utils/countries.js`).
+
+### Fixed
+- Replaced every campus photograph whose source was unknown with a freely licensed Wikimedia Commons photograph (CC0, public domain, CC BY or CC BY-SA) for 48 universities. Astana Medical University and KIMEP University have no reusable photograph of sufficient size, so their old photographs were removed. Their catalog cards show a plain surface with the logo badge instead of the logo stretched across the card image.
+- The catalog, university and comparison pages carry the source notice that the QS World University Rankings terms require for showing QS positions ("Source: QS Quacquarelli Symonds (www.qs.com). With permission from QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.") in the footer, with a link to www.qs.com.
+- The comparison browser test expects reviewed prices in the preferred currency, the behaviour this version introduced, and checks that changing the preferred currency converts both columns.
+- `npm run audit:images` fails when a university photograph has no credit, a non-Commons source or a non-free license, and accepts a university without a photograph only when no photograph files remain.
+- `scripts/generate-university-image-variants.py` uses the same WebP byte limits as the image audit and keeps every WebP smaller than its JPG fallback, so regenerated thumbnails pass `npm run audit:images`.
+- The catalog map shows the "© OpenStreetMap contributors" attribution that the OpenStreetMap license and tile policy require, linked to the OpenStreetMap copyright page, and loads tiles from the single `tile.openstreetmap.org` host the tile policy recommends.
+- The Terms of Use and Privacy Policy (revised November 15, 2026) name the hosting providers (Firebase Hosting and Render) and say that technical request data may be processed outside Kazakhstan, state that the Terms are governed by the laws of the Republic of Kazakhstan, ask users under 18 to use the site with a parent's or guardian's knowledge, and describe the operator as a student team instead of listing personal names. University names and logos are described as used only to identify institutions, and campus photographs as used only from sources that permit reuse, in place of the US "fair use" wording, which does not cover photographs.
+- The About page introduces the co-founders by role without personal names, and `GOVERNANCE.md` identifies maintainers by GitHub handle only.
+- Every page, the license notice and the takedown notices give one contact address, `unisearch.sup@gmail.com`; the Terms, Privacy Policy and media notices previously gave `unisearch@inbox.ru` while the About page gave the Gmail address.
+- `THIRD_PARTY_NOTICES.md` lists Leaflet, Leaflet.markercluster and OpenStreetMap, describes the GitHub footer link as text only, and drops the 48-hour takedown promise; `backend/data/university_assets/README.md` sets the photo sourcing and provenance rule for new and replaced campus photographs.
+- Prices of universities with reviewed admissions data follow the currency settings like the rest of the site: the Overview cost card, the admission key facts, the Costs tab (reference budget, published tuition and living-cost tables) and the reviewed comparison convert to the preferred currency and honour the "original" and "both" display modes. Previously they always showed the published currency (for example only USD for MIT). Short answers round converted amounts and write millions compactly (for example "≈ 42 млн ₸ ($92,760)"); tables keep exact amounts, and the applicant's own budget is never rounded.
+- A price range shows one approximation sign and one bracketed original range ("≈ ₸4.5M – ₸9M ($10,000 – $20,000)") instead of repeating them for each end, in reviewed and earlier-format comparison cells alike.
+- A price in a currency without an exchange rate is shown as published instead of being labeled with the preferred currency's symbol unconverted.
+- Earlier-format earnings figures on the Overview tab follow the currency settings.
+- Every page loads live exchange rates at start, not only the catalog. A university page, the comparison or the profile opened directly used to convert with the built-in fallback table (for example 450 ₸ per dollar) for the whole visit. Rates cached earlier in the session apply from the first render; rates that arrive after a short wait redraw the prices already on screen.
+- The profile budget keeps the amount and currency it was entered in. Changing the display currency used to convert, round and save the budget each time, so switching back and forth drifted it (10,000,000 ₸ became 9,999,900 ₸); the field now shows a conversion and stores a new amount only when one is typed.
+- With a price range set on the full yearly cost, a university with reviewed data that publishes only tuition (Imperial College London, Nazarbayev University) stays in the results with its tuition marked as a partial price match, as its card already shows tuition. They used to disappear from every price-filtered list. The budget filter still requires a full yearly cost.
+- The catalog price slider labels its right edge "$100,000+", because at that position the filter has no upper limit and pricier universities still match. Screen readers hear "and above".
+- The gap between the key figures and the next section on the university Overview tab is 32px on desktop, as on phones, instead of stacking the last row's padding and two box paddings (56px).
+- University page tabs end with one bottom inset (24px on desktop, 12px on phones) instead of stacking the last section's padding, trailing margins and empty helper rows (up to 100px on the Admission tab). The empty status row above the cover no longer adds 28px, and top-level Admission sections are separated like Overview sections.
+- On phones, the catalog no longer leaves a 16px gap above the first card when there is no recent history, the navbar logo lines up with the 12px page gutter, and the university header actions no longer stack a margin on their row gap.
+- The site footer spans the same frame as the navbar on desktop, the Guide page starts at the same top inset as the other reading pages, and empty exam and language lists in the profile no longer take a row gap.
+- On earlier-format university pages, the cost total no longer squeezes its "Total per year" label into a column of single letters with overlapping notes: the label and amount share one row, the notes run full width below, and the amount uses its intended large size and primary color instead of a muted 13px.
+- Text that used an off-scale 12px across the site (tags, badges, kickers, counters, slider and table labels at 11px; tooltips, hints, errors, control labels, values and table cells at 13px) now uses the type-scale step for its role, and the two 32px headings use the 28px step. Raw font sizes, radii and weights that already matched a token now reference it.
+- Eight places on university and comparison pages no longer add their own or the browser's paragraph margins on top of their container's gap, such as cost notes, program source dates, source links, exam groups and the deadline and program-level blocks of earlier-format pages.
+- A context whose applicant category contradicts the selected route is no longer treated as applicable to the requirements check.
+- Reviewed institutions report unknown, not absent, grant, paid and aid availability, so the list filters no longer hide them.
+- Same-titled official pages at different URLs, such as Stanford's first-year and transfer "Application and Essays", are told apart in the source list by a URL-path hint.
+- Removed a restated research sentence about a named Kazakhstan diploma from Stanford's school-education requirement text in English, Russian and Kazakh. The unresolved-qualification entry stays.
+- Stanford facts that spelled their applicant category `first-year`, `first-year/frosh` or `first-year REA` now use the closed `first_year` value, so they match the first-year route and are no longer shown as conditional on the transfer route. Catalog preparation maps these spellings through the new `applicant_category_alias` table in `vocabulary.json` and keeps the research wording in provenance.
+- The `format` and acceptance-rate list filters keep reviewed institutions whose value is unknown; only a known mismatch excludes them.
+- An expired exchange-rate cache entry is served immediately and refreshed in a background thread, so a request no longer waits for the rate provider (up to its timeout when the provider is slow or down) once rates have loaded.
+- A 5-point GPA typed on the 4.0 scale is flagged while typing instead of only failing on save, and the exams field points IELTS and TOEFL to the Languages section.
+- On phones the profile reset action no longer sits above the questions, and the profile action bar stays above an open dropdown.
+- The UniFit banner link meets text contrast in the dark theme.
+- The catalog study-level filter matches the 36px toolbar controls and sits next to the result count, so the toolbar is one compact row on desktop.
+- MIT's overview no longer describes the university as an evening school because of one professional program's schedule.
+- The selection strip no longer reports that an application path needs clarification while a program's paths are still loading.
+- The empty Dates tab of earlier-format universities is localized instead of showing an English placeholder.
+- Removed Nazarbayev University's campus area, whose linked official page does not state it.
+- New interface text no longer renders empty in a browser tab that cached the previous translations. The locale-pack revision is now a fingerprint of the localization files, and `tests/unit/i18n-pack-revision.test.mjs` fails with the expected value whenever a localization file changes without it.
+- The comparison's campus-area row shows hectares instead of a raw square-metre number.
+- The Dates tab of reviewed universities was indented 24 px less than the other tabs.
+- A link to a specific tab now opens that tab on earlier-format university pages too.
+- Without a selection, the Dates, Costs and Admission tabs of a university with one shared undergraduate application (MIT, Stanford) offer its application paths directly instead of asking for a program; the reader stays on the tab they opened.
+- Applicable majors on earlier-format admission routes no longer repeat the same programme twice.
+- Key admission fact cards keep their own height instead of stretching into empty blocks beside a longer card, checklist items still to prepare use plain bullets instead of rings that looked like checkboxes, and the catalog's "data not yet rechecked" note is plain text without a status icon. The cards stack in two independent columns on wide screens and keep their reading order in one column on phones, and a programme card leaves one step of space above its select action.
+- The tooltip of the leftmost status icon on a catalog card no longer runs off the screen on two-column widths; tooltips align to the icon row inside the card.
+
+## 10.2.0 (2026-11-11) - Admissions key facts and plain-language translations
+
+### Added
+- Added a key-facts summary to the Admission tab with the requirements-match result, the nearest action deadline, the published annual price against the profile budget, and the funding route status.
+- Added `selected_costs` to the admissions-context API response, with USD ranges for annual quotes so clients can compare them with a budget.
+- Added the `entry_cycle_required` check and assessment reason for cycle-scoped minimums when no entry cycle is selected; the Admission tab offers the recognised profile cycle or opens the entry-cycle field.
+- Recognised plain seasonal entry cycles in Russian and Kazakh, such as "осень 2027" and "2027 күз".
+- Added plain-language explanations for UCAS, TMUA, Foundation/NUFYP, early and regular application rounds, CSS Profile and Home/Overseas fees on reviewed university pages, usable by hover, keyboard and touch.
+- Explained Home and Overseas fee status next to fee-dependent prices, with a link to the university's official fee-status page; the applicant's status is never inferred.
+- Showed a university's published financial-need policy for the selected route in the key facts, labelled as policy rather than an award.
+- Allowed SAT, UNT and IELTS to be saved with only the overall score; unreported section minimums stay unassessed.
+- Replaced empty comparison rows with a prompt to choose a program or route, and applied the only compatible route after a deliberate program choice in the comparison.
+- The key-facts requirements row names the missing evidence, such as a SAT test date or IELTS section scores, and which overall scores already meet the published minimum.
+- Annual deadlines published without a year, such as MIT's first-year rounds, show whether this year's date has passed and the next occurrence with a countdown, labelled as an annual date to confirm.
+- The key facts lead with the main application deadline, keep earlier test registration dates as a second line, and skip test dates for exams the applicant has not listed when another accepted exam is in the profile.
+- The comparison uses profile subject, level, entry cycle and budget as suggestions, compares each selected annual price with the budget, and shows published application periods and requirement summaries.
+- Russian and Kazakh translations of the admissions text for Imperial College London (all undergraduate and postgraduate course text, including overviews, interviews, deadlines, careers, funding, research-degree rules and module descriptions) and Stanford University (all applicant-facing long text, including program pages from the Stanford Bulletin); official quotations, qualification and test-requirement tables, ATAS course descriptions, course and module titles stay in English.
+- Stanford's first-year (Restrictive Early Action, Regular Decision) and transfer deadlines, and the standing deadlines of the CHPR and Neurosciences MS routes for current students, now show the next annual date with a countdown, from structured companion records that keep the original prose.
+
+### Changed
+- Admissions status now uses a closed vocabulary, and internal-only or restricted-group routes are labelled explicitly.
+- Admissions preparation rejects research labels that are missing from the vocabulary table.
+- Gap explanations and next steps for MIT, Imperial, Stanford and Nazarbayev University read as plain guidance to the applicant instead of research notes, in English and in the existing Russian and Kazakh translations, through an ordered rewrite table; numbers, dates and conditions are unchanged.
+
+### Fixed
+- Removed maintainer research notes from applicant-facing admissions text and its Russian and Kazakh translations; the source records are unchanged.
+- Stopped showing half-translated admissions sentences in Russian and Kazakh; text without a full translation is shown whole in its source language.
+- Saving the profile is no longer blocked by a prefilled score after selecting an exam that is already saved.
+- Distinguished the US high school diploma from the national school certificate in the qualification list.
+- A program or route chosen in the comparison is no longer lost when the applicant continues without pressing the separate apply button.
+- Shortened the Admission tab by linking requirement checks to their source record instead of repeating it, showing each record's source once, merging duplicate conditions, and hiding internal selector and evidence fields.
+- Localized Imperial's UCAS date labels and fixed missing spaces in entry-cycle labels.
+- Cached study-option lists now refresh when the applicant-facing wording rules change.
+- Restated about 150 more research-voice sentences as plain guidance, including scope notes in the source details, with matching Russian and Kazakh edits for translated MIT and NU text.
+- Internal status codes such as `round_1` or `tuition_and_mandatory_fee` show as readable labels in all three languages, and Stanford Bulletin metadata shows as labelled values instead of raw Python text.
+- Stanford's historical records no longer list research notes that later reviewed records replaced.
+- Applicant-facing text editing is memoised, so the larger rule set no longer slows admissions responses.
+- The NU next step for NUET no longer loses the NUFYP regular-entry minimum of 120/50/50 together with the removed maintainer instruction.
+
 ## 10.1.0 (2026-11-05) - Reviewed admissions requirements match
 
 ### Changed

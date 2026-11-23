@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <base href="./" />
   <link rel="icon" href="images/minilogo.svg" type="image/svg+xml">
   <title data-i18n="title.universities">Universities | UniSearch</title>
@@ -30,8 +31,19 @@
   <meta name="twitter:image:alt" content="UniSearch university discovery and admissions comparison platform" />
 
   <script src="javascript/theme-init.js"></script>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/universities.css" />
+  <link rel="preload" as="font" type="font/woff2" href="fonts/inter/inter-latin-wght-normal.woff2" crossorigin />
+  <link rel="stylesheet" href="css/shared/01-foundation.css" />
+  <link rel="stylesheet" href="css/shared/02-shell-settings-feedback.css" />
+  <link rel="stylesheet" href="css/shared/06-motion-accessibility.css" />
+  <link rel="stylesheet" href="css/shared/08-device-responsive.css" />
+  <link rel="stylesheet" href="css/shared/10-admissions.css" />
+  <link rel="stylesheet" href="css/universities/01-shell-controls.css" />
+  <link rel="stylesheet" href="css/universities/02-catalog.css" />
+  <link rel="stylesheet" href="css/universities/03-comparison.css" />
+  <link rel="stylesheet" href="css/universities/06-map.css" />
+  <link rel="stylesheet" href="css/universities/07-responsive.css" />
+  <link rel="stylesheet" href="css/universities/08-onboarding.css" />
+  <link rel="stylesheet" href="css/universities/09-reviewed-comparison.css" />
 
 </head>
 
@@ -47,28 +59,16 @@
           <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
         </div>
 
-        <div id="catalogLevelFilter" class="catalog-level-filter">
-          <label class="sr-only" for="studyLevelSelect" data-i18n="universities.level_segmented.aria">Study level</label>
-          <select id="studyLevelSelect" class="u-select" data-flags="off">
-            <option value="" data-i18n="universities.level.all">All Levels</option>
-            <option value="preparation" data-i18n="universities.level.preparation">Preparation</option>
-            <option value="bachelor" data-i18n="universities.level.bachelor">Bachelor's</option>
-            <option value="master" data-i18n="universities.level.master">Master's</option>
-            <option value="doctorate" data-i18n="universities.level.doctorate">PhD</option>
-            <option value="mba" data-i18n="universities.level.mba">MBA</option>
-            <option value="professional" data-i18n="universities.level.professional">Professional</option>
-            <option value="residency" data-i18n="universities.level.residency">Residency</option>
-            <option value="non_degree" data-i18n="universities.level.non_degree">Non-degree</option>
-          </select>
-        </div>
-
         <div class="u-section-actions">
+          <div id="mobileRecentSlot" class="u-mobile-recent-slot">
+            <div id="recentlyViewedBar" class="u-recent" hidden></div>
+          </div>
           <div id="viewToggles" class="view-toggles" role="group" aria-label="View mode" data-i18n-aria-label="universities.view_toggles.aria">
-            <button id="viewListBtn" class="view-btn active" title="List View" data-i18n-title="universities.view_list" aria-pressed="true" disabled aria-disabled="true">
-              <span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span>
+            <button id="viewListBtn" class="view-btn active" type="button" title="List View" data-i18n-title="universities.view_list" aria-label="List View" data-i18n-aria-label="universities.view_list" aria-pressed="true" disabled>
+              <span aria-hidden="true" data-heroicon="bars-3-bottom-left" data-icon-size="16"></span>
             </button>
-            <button id="viewMapBtn" class="view-btn" title="Map View" data-i18n-title="universities.view_map" aria-pressed="false" disabled aria-disabled="true">
-              <span data-heroicon="map" data-icon-size="16"></span>
+            <button id="viewMapBtn" class="view-btn" type="button" title="Map View" data-i18n-title="universities.view_map" aria-label="Map View" data-i18n-aria-label="universities.view_map" aria-pressed="false" disabled>
+              <span aria-hidden="true" data-heroicon="map" data-icon-size="16"></span>
             </button>
           </div>
           <button id="compareModeBtn" class="u-compare-mode-btn" type="button" aria-pressed="false" title="Compare mode" data-i18n-title="universities.compare.enter" aria-label="Compare mode" data-i18n-aria-label="universities.compare.enter">
@@ -80,7 +80,7 @@
     </div>
 
     <div id="universitiesWorkspaceLayout" class="u-layout">
-      <aside id="uSidebar" class="u-sidebar">
+      <aside id="uSidebar" class="u-sidebar" aria-label="Catalog filters" data-i18n-aria-label="universities.filter.drawer_aria">
         <div class="u-filter-card">
           <div class="u-filter-title">
             <span class="u-filter-icon" aria-hidden="true">
@@ -106,6 +106,23 @@
                 <span data-i18n="universities.filter.favorites">Favorites</span>
               </button>
             </div>
+          </div>
+
+          <div id="catalogLevelFilter" class="u-field catalog-level-filter">
+            <label class="u-label" for="studyLevelSelect">
+              <span class="u-label-icon"><span data-heroicon="academic-cap" data-icon-size="16"></span><span data-i18n="profile.label.study_level">Study level</span></span>
+            </label>
+            <select id="studyLevelSelect" class="u-select" data-flags="off">
+              <option value="" data-i18n="universities.level.all">All Levels</option>
+              <option value="preparation" data-i18n="universities.level.preparation">Preparation</option>
+              <option value="bachelor" data-i18n="universities.level.bachelor">Bachelor's</option>
+              <option value="master" data-i18n="universities.level.master">Master's</option>
+              <option value="doctorate" data-i18n="universities.level.doctorate">PhD</option>
+              <option value="mba" data-i18n="universities.level.mba">MBA</option>
+              <option value="professional" data-i18n="universities.level.professional">Professional</option>
+              <option value="residency" data-i18n="universities.level.residency">Residency</option>
+              <option value="non_degree" data-i18n="universities.level.non_degree">Non-degree</option>
+            </select>
           </div>
 
           <div class="u-field">
@@ -149,22 +166,22 @@
                 </select>
                 <div class="budget-inputs">
                     <label class="sr-only" for="minCostInput" data-i18n="universities.cost_min">Min cost</label>
-                    <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
+                    <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" />
                     <span class="budget-range-separator" aria-hidden="true">&ndash;</span>
                     <label class="sr-only" for="maxCostInput" data-i18n="universities.cost_max">Max cost</label>
-                    <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="100000" aria-label="Max cost" data-i18n-aria-label="universities.cost_max" />
+                    <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="100000" />
                 </div>
 
                 <div class="dual-slider-container">
                     <div class="slider-track" id="sliderTrack"></div>
                     <label class="sr-only" for="minCostSlider" data-i18n="universities.cost_min">Min cost</label>
-                    <input id="minCostSlider" type="range" min="0" value="0" step="100" aria-label="Min cost" data-i18n-aria-label="universities.cost_min" />
+                    <input id="minCostSlider" type="range" min="0" value="0" step="100" />
                     <label class="sr-only" for="maxCostSlider" data-i18n="universities.cost_max">Max cost</label>
-                    <input id="maxCostSlider" type="range" min="0" value="100000" step="100" aria-label="Max cost" data-i18n-aria-label="universities.cost_max" />
+                    <input id="maxCostSlider" type="range" min="0" value="100000" step="100" />
                 </div>
                 <div class="budget-range-labels" id="budgetRangeLabels">
                     <span id="minCostLabel">$0</span>
-                    <span id="maxCostLabel">$100,000</span>
+                    <span id="maxCostLabel">$100,000+</span>
                 </div>
                 <details class="catalog-cost-help">
                     <summary id="catalogCostHelp" data-i18n="universities.cost.filter_help_summary">Price limits hide unknown prices; profile budget affects UniFit.</summary>
@@ -176,13 +193,13 @@
           <div class="u-sep u-sep--sort"></div>
 
           <div class="u-field u-field--sort">
-            <label class="u-label u-label-with-help" for="sortSelect">
-              <span class="u-label-icon"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></span>
+            <div class="u-label u-label-with-help">
+              <label class="u-label-icon" for="sortSelect"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></label>
               <span class="u-info-wrap">
                 <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
                 <span class="u-tooltip" role="tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
               </span>
-            </label>
+            </div>
             <select id="sortSelect" class="u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
               <option value="relevance" data-i18n="universities.sort_relevance">Relevance</option>
@@ -272,14 +289,12 @@
             </div>
           </div>
 
-          <div class="u-filter-footer" aria-label="Filter actions" data-i18n-aria-label="universities.filter.actions">
+          <div class="u-filter-footer" role="group" aria-label="Filter actions" data-i18n-aria-label="universities.filter.actions">
             <button id="mobileResetFilters" class="u-filter-footer__reset" type="button" data-i18n="universities.reset">Reset</button>
             <button id="mobileApplyFilters" class="u-filter-footer__apply" type="button" data-i18n="universities.filter.apply">Apply filters</button>
           </div>
 
         </div>
-
-        <div id="recentlyViewedBar" class="u-recent" hidden></div>
       </aside>
 
       <div id="universitiesCatalogPane" class="u-content" data-universities-pane="catalog">
@@ -288,13 +303,17 @@
             <span class="u-unifit-warning__icon" aria-hidden="true">
               <span data-heroicon="information-circle" data-icon-size="18"></span>
             </span>
-            <span class="u-unifit-warning__text" data-i18n="universities.unifit_banner.text">UniFit uses the available profile data. Minimum requirements are checked for the selected application path; missing information is not a failed requirement.</span>
+            <div class="u-unifit-warning__body">
+              <p id="unifitBannerTitle" class="u-unifit-warning__text"></p>
+              <p class="u-unifit-warning__note" data-i18n="universities.ux2.banner.disclaimer">A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.</p>
+            </div>
           </div>
+          <a id="unifitBannerEdit" class="u-unifit-warning__link" href="profile.html" data-route="profile"></a>
           <button id="dismissUnifitWarningBanner" class="u-unifit-warning__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.unifit_banner.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.unifit_banner.dismiss">
             <span data-heroicon="x-mark" data-icon-size="16"></span>
           </button>
+          <div id="unifitLegend" class="u-unifit-legend" role="group" aria-label="Icons on university cards" data-i18n-aria-label="universities.ux2.legend.aria" hidden></div>
         </div>
-        <div id="mobileRecentSlot" class="u-mobile-recent-slot"></div>
         <div id="listState" class="u-state"></div>
         <div class="u-catalog-stage">
           <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true" style="display:none;"></div>
@@ -303,14 +322,14 @@
 
         <div id="mapStage" class="u-map-stage" style="display: none;">
           <div id="mapContainer" class="u-map-container"></div>
-          <aside id="mapResultsPanel" class="u-map-results" aria-live="polite"></aside>
+          <aside id="mapResultsPanel" class="u-map-results" aria-live="polite" aria-label="Results on the map" data-i18n-aria-label="universities.map_panel.title"></aside>
         </div>
 
         <div id="pagination" class="u-pagination"></div>
       </div>
     </div>
 
-    <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button">
+    <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button" aria-controls="uSidebar" aria-expanded="false">
       <span data-heroicon="funnel" data-icon-size="20"></span>
       <span data-i18n="universities.filter_mobile">Filter</span>
       <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
@@ -340,6 +359,7 @@
                   <span class="footer-social-label">GitHub</span>
               </a>
           </div>
+          <p class="footer-attribution" data-i18n-html="footer.qs_attribution">Global ranks: Source: QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). With permission from QS Quacquarelli Symonds. Copyright &copy; QS Quacquarelli Symonds Ltd.</p>
       </div>
   </footer>
 </body>

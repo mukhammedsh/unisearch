@@ -16,3 +16,14 @@ RewriteRule ^about/?$ about.html [L]
 
 # Custom error page for unknown paths.
 ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
+  Header always set Content-Security-Policy "default-src 'self'; connect-src 'self' https://unisearch-backend-8cet.onrender.com http://127.0.0.1:* http://localhost:*; script-src 'self' 'sha256-CVvF3tNBc9I3R2PMh2zyrgWdsvvjzZzREOqw2vKxSEg=' https://unpkg.com; img-src 'self' data: https://unisearch-backend-8cet.onrender.com http://127.0.0.1:* http://localhost:* https://unpkg.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://unpkg.com; style-src-elem 'self' https://unpkg.com; style-src-attr 'unsafe-inline'; font-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'"
+</IfModule>

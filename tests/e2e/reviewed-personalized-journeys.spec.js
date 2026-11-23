@@ -11,7 +11,7 @@ test("mobile UniFit explains a dated budget reference in the user's language", a
     localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
     localStorage.setItem("unisearch_profile", JSON.stringify({
       _v: 2, studyLevel: "Bachelor", budget: 20000, budgetCurrency: "USD",
-      intendedEntryCycle: "2027 entry", selectedAdmissionChoices: {},
+      selectedAdmissionChoices: { "mit-usa-cambridge": { studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year", studyLevel: "undergraduate", intendedEntryCycle: "2027 entry", feeStatusContext: "unknown" } },
     }));
   });
   await page.goto("/index.html?sort=uni_ai&q=MIT");
@@ -73,10 +73,11 @@ test("basic budget profile without a major can discover, filter and shortlist un
   await page.goto("/index.html?sort=name_asc&study_level=undergraduate&cost_basis=tuition&max_tuition=70000");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await expect.poll(() => catalogRequest && catalogRequest.postDataJSON().fee_status_context)
-    .toBe("self_reported_international_overseas");
+  await expect.poll(() => catalogRequest?.postDataJSON()).toBeTruthy();
   const query = catalogRequest.postDataJSON();
-  expect(query.intended_entry_cycle).toBe("2027 entry");
+  // The removed general entry cycle and fee status (still in this saved profile) are stripped and not sent.
+  expect(query.fee_status_context).toBeUndefined();
+  expect(query.intended_entry_cycle).toBeUndefined();
   expect(query.major).toBeUndefined();
   expect(query.study_level).toBe("undergraduate");
   expect(query.cost_basis).toBe("tuition");
@@ -103,15 +104,15 @@ test("basic budget profile without a major can discover, filter and shortlist un
   await expect(page.locator("#compareTray .compare-tray__chip")).toHaveCount(2);
   await page.locator('[data-action="open-compare"]').click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "compare");
-  await expect(page.locator(".compare-config-column")).toHaveCount(2);
+  await expect(page.locator("[data-reviewed-comparison] .compare-reviewed__head")).toHaveCount(2);
   await expect(page).toHaveURL(new RegExp(`${MIT}.*${STANFORD}|${STANFORD}.*${MIT}`));
 });
 
 
 for (const [language, heading, action, width, theme] of [
-  ["eng", "Minimum requirements match", "Check requirements", 1280, "light"],
-  ["rus", "Соответствие минимальным требованиям", "Проверить требования", 390, "dark"],
-  ["kaz", "Ең төменгі талаптарға сәйкестік", "Талаптарды тексеру", 390, "light"],
+  ["eng", "Minimum requirements", "Check requirements", 1280, "light"],
+  ["rus", "Минимальные требования", "Проверить требования", 390, "dark"],
+  ["kaz", "Ең төменгі талаптар", "Талаптарды тексеру", 390, "light"],
 ]) {
   test(`${language} cards show the requirements percentage and open the university`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
@@ -149,8 +150,9 @@ for (const [language, heading, action, width, theme] of [
     await page.locator('[data-tab="tab-admission"]').click();
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
     const result = page.locator("#detailRequirements [data-requirements-match]");
-    await expect(result.getByRole("heading", { name: heading, exact: true })).toBeVisible();
-    await expect(result.getByRole("button")).toBeVisible();
+    // The requirements answer is the first row of the key facts; it names the minimums even without a profile.
+    await expect(result.locator("dt")).toHaveText(heading);
+    await expect(result.locator("dd")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }

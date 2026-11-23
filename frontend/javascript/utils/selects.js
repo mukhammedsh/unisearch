@@ -1,4 +1,5 @@
 import { escapeHtml, getFlagImg } from "./format.js";
+import { heroIcon } from "../icons.js";
 
 let customSelectGlobalClickBound = false;
 
@@ -37,15 +38,20 @@ function ensureSelectWrapper(select) {
     wrapper.appendChild(select);
   }
   select.classList.add("u-select-hidden");
+  select.tabIndex = -1;
+  select.setAttribute("aria-hidden", "true");
   return wrapper;
 }
 
 function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) {
   let trigger = wrapper.querySelector(".custom-select-trigger");
   if (!trigger) {
-    trigger = document.createElement("div");
+    trigger = document.createElement("button");
+    trigger.type = "button";
     trigger.classList.add("custom-select-trigger");
     wrapper.appendChild(trigger);
+  } else if (trigger.tagName === "BUTTON" && !trigger.getAttribute("type")) {
+    trigger.setAttribute("type", "button");
   }
   if (isLanguageSelect) {
     wrapper.classList.add("custom-select-wrapper--language");
@@ -88,37 +94,43 @@ function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) 
   return { trigger, customOptions, optionList, searchInput, listboxId };
 }
 
-function shouldOpenUp(trigger, wrapper) {
-  if (typeof trigger.getBoundingClientRect !== "function") return false;
+/**
+ * Reveal and place a custom-select dropdown panel within clipping ancestors and
+ * the visual viewport. Ancestor bounds are measured while the panel is still
+ * `display: none` so an unpositioned menu cannot distort scroll geometry; then
+ * `.open` is applied to read the panel's true rendered height before deciding
+ * whether to flip upward (`open-up`).
+ *
+ * @param {HTMLElement} trigger
+ * @param {HTMLElement} wrapper
+ * @param {HTMLElement} panel
+ * @returns {boolean} True when the panel should open upward.
+ */
+function openAndPositionSelectPanel(trigger, wrapper, panel) {
+  if (typeof trigger.getBoundingClientRect !== "function") {
+    wrapper.classList.add("open");
+    return false;
+  }
 
   const triggerRect = trigger.getBoundingClientRect();
-  let scrollParent = null;
-
-  if (typeof wrapper.closest === "function") {
-    const filterCard = wrapper.closest(".u-filter-card");
-    const sidebar = wrapper.closest(".u-sidebar");
-    if (filterCard && typeof window !== "undefined" && typeof window.getComputedStyle === "function") {
-      const fcOverflow = window.getComputedStyle(filterCard).overflowY;
-      if (fcOverflow === "auto" || fcOverflow === "scroll") {
-        scrollParent = filterCard;
-      }
-    }
-    if (!scrollParent && sidebar) {
-      scrollParent = sidebar;
-    }
+  const viewport = window.visualViewport;
+  let top = viewport?.offsetTop ?? 0;
+  let bottom = top + (viewport?.height ?? window.innerHeight);
+  for (let parent = wrapper.parentElement; parent && parent !== document.body; parent = parent.parentElement) {
+    if (window.getComputedStyle(parent).overflowY === "visible") continue;
+    const innerTop = parent.getBoundingClientRect().top + parent.clientTop;
+    top = Math.max(top, innerTop);
+    bottom = Math.min(bottom, innerTop + parent.clientHeight);
   }
 
-  let parentBottom = typeof window !== "undefined" && window.innerHeight ? window.innerHeight : 800;
-  let parentTop = 0;
-  if (scrollParent && typeof scrollParent.getBoundingClientRect === "function") {
-    const parentRect = scrollParent.getBoundingClientRect();
-    parentBottom = Math.min(parentBottom, parentRect.bottom);
-    parentTop = Math.max(parentTop, parentRect.top);
-  }
-
-  const spaceBelow = parentBottom - triggerRect.bottom;
-  const spaceAbove = triggerRect.top - parentTop;
-  return spaceBelow < 210 && spaceAbove > spaceBelow;
+  panel.style.removeProperty("--dropdown-available-height");
+  wrapper.classList.add("open");
+  const gap = Number.parseFloat(window.getComputedStyle(panel).marginBlockStart) || 0;
+  const spaceBelow = bottom - triggerRect.bottom - gap;
+  const spaceAbove = triggerRect.top - top - gap;
+  const openUp = spaceBelow < panel.offsetHeight && spaceAbove > spaceBelow;
+  panel.style.setProperty("--dropdown-available-height", `${Math.max(0, openUp ? spaceAbove : spaceBelow)}px`);
+  return openUp;
 }
 
 function createOptionNode(option, index, listboxId, showFlags) {
@@ -134,16 +146,16 @@ function createOptionNode(option, index, listboxId, showFlags) {
     node.setAttribute("aria-disabled", "true");
   }
   const flag = showFlags ? getFlagImg(option.value) : "";
-  node.innerHTML = flag ? `${flag} <span>${escapeHtml(option.text)}</span>` : escapeHtml(option.text);
+  node.innerHTML = `${flag}<span>${escapeHtml(option.text)}</span>${heroIcon("check", "custom-option-check")}`;
   if (option.selected) node.classList.add("selected");
   return node;
 }
 
 function rebuildCustomOptions(select, customOptions, optionList, searchInput, listboxId, showFlags) {
-  customOptions.innerHTML = "";
+  customOptions.replaceChildren();
   if (searchInput) customOptions.appendChild(searchInput);
   if (optionList) {
-    optionList.innerHTML = "";
+    optionList.replaceChildren();
     customOptions.appendChild(optionList);
   }
   const fragment = document.createDocumentFragment();
@@ -185,9 +197,10 @@ function updateTriggerContent(trigger, select, isLanguageSelect, showFlags) {
     trigger.innerHTML = `<div class="custom-select-trigger-content custom-select-trigger-content--compact">${flag || ""}<span>${escapeHtml(shortLabel)}</span></div>`;
     return;
   }
-  trigger.innerHTML = flag
+  const label = flag
     ? `<div class="custom-select-trigger-content">${flag} <span>${escapeHtml(selectedOption.text)}</span></div>`
     : `<span>${escapeHtml(selectedOption.text)}</span>`;
+  trigger.innerHTML = label + heroIcon("chevron-down", "custom-select-chevron");
 }
 
 function findTypeaheadMatch(enabled, currentIdx, buffer) {
@@ -240,7 +253,7 @@ function bindSearchInputEvents(searchInput, customOptions, closeSelect, setHighl
     } else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
       setHighlightedOption(event.key === "ArrowDown" ? 1 : -1, true, true);
-    } else if (event.key === "Enter") {
+    } else if (event.key === "Enter" && !event.isComposing && event.keyCode !== 229) {
       event.preventDefault();
       const option = getSelectedOption();
       if (option) selectOptionByNode(option);
@@ -312,6 +325,10 @@ function bindTriggerKeyboardEvents({ select, wrapper, trigger, getEnabledOptions
       case "Enter":
       case " ":
         event.preventDefault();
+        if (event.key === " " && trigger.dataset) {
+          // Suppress native <button> Space keyup click so keydown toggle is not immediately inverted.
+          trigger.dataset.suppressKeyClick = "1";
+        }
         if (!isOpen) openSelect();
         else {
           const enabled = getEnabledOptions();
@@ -342,6 +359,22 @@ function bindTriggerKeyboardEvents({ select, wrapper, trigger, getEnabledOptions
           handleTypeahead(event.key, isOpen);
         }
         break;
+    }
+  });
+
+  trigger.addEventListener("pointerdown", () => {
+    if (trigger.dataset) delete trigger.dataset.suppressKeyClick;
+  });
+
+  trigger.addEventListener("keyup", (event) => {
+    if (event.key !== " ") return;
+    event.preventDefault();
+    if (typeof queueMicrotask === "function") {
+      queueMicrotask(() => {
+        if (trigger.dataset) delete trigger.dataset.suppressKeyClick;
+      });
+    } else if (trigger.dataset) {
+      delete trigger.dataset.suppressKeyClick;
     }
   });
 }
@@ -379,7 +412,7 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
     if (searchInput) searchInput.value = "";
     highlightedIndex = -1;
     if (restoreFocus) {
-      try { trigger.focus(); } catch (e) {}
+      try { trigger.focus(); } catch {}
     }
   };
 
@@ -394,16 +427,13 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
       }
     });
 
-    if (shouldOpenUp(trigger, wrapper)) wrapper.classList.add("open-up");
-    else wrapper.classList.remove("open-up");
-
-    wrapper.classList.add("open");
-    trigger.setAttribute("aria-expanded", "true");
-
     if (searchInput) {
       searchInput.value = "";
       customOptions.querySelectorAll(".custom-option[hidden]").forEach((option) => { option.hidden = false; });
     }
+
+    wrapper.classList.toggle("open-up", openAndPositionSelectPanel(trigger, wrapper, customOptions));
+    trigger.setAttribute("aria-expanded", "true");
 
     const enabled = getEnabledOptions();
     const curVal = String(select.value || "");
@@ -537,13 +567,33 @@ export function initCustomSelect(selectId) {
   if (wrapper.dataset.bound !== "1") {
     wrapper.dataset.bound = "1";
     trigger.addEventListener("click", (event) => {
+      if (trigger.dataset?.suppressKeyClick === "1") {
+        delete trigger.dataset.suppressKeyClick;
+        return;
+      }
       if (select.disabled) return;
       event.stopPropagation();
       if (wrapper.classList.contains("open")) state.closeSelect(false);
       else state.openSelect();
     });
     select.addEventListener("change", state.syncFromNativeSelect);
+    select.addEventListener("focus", () => {
+      if (!select.disabled && typeof trigger.focus === "function") {
+        trigger.focus();
+      }
+    });
   }
+
+  Array.from(select.labels || []).forEach((label) => {
+    if (!label || label.dataset?.customSelectLabelBound === "1") return;
+    if (label.dataset) label.dataset.customSelectLabelBound = "1";
+    label.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (!select.disabled && typeof trigger.focus === "function") {
+        trigger.focus();
+      }
+    });
+  });
 
   bindTriggerKeyboardEvents({
     select,

@@ -14,6 +14,12 @@ DRAFTS = REPO / "backend/data/drafts"
 DOSSIER_BATCH = ("mit", "imperial-college-london-uk", "stanford-university-usa-ca")
 BATCH = (*DOSSIER_BATCH, "nazarbayev-university-kaz-astana")
 VERSION = "admissions-storage-1.0"
+RESEARCH_VERSION = "admissions-research-1.0"
+MAINTAINER_KEYS = ("collection_tasks", "organization", "supporting_records", "dossier_metadata", "historical_provenance")
+VOCABULARY_PATH = DRAFTS / "integration/vocabulary.json"
+ENTRY_VALUES = ("external", "external_restricted", "internal", "no_admission", "closed", "unresolved")
+APPLICANT_ROUTES = ("first_year", "transfer", "graduate")
+GRADUATE_LEVELS = frozenset({"masters", "doctoral", "professional"})
 LEVELS = {
     "Bachelor": "undergraduate", "Master": "masters", "Doctorate": "doctoral",
     "Professional": "professional", "bachelor": "undergraduate", "master": "masters",
@@ -63,8 +69,10 @@ def as_list(value):
     return [value] if isinstance(value, str) else value
 
 
-def scope(row, original=None):
+def scope(row, original=None, category_alias=None):
+    """Prepared scope; research spellings of an applicant category map to the closed value, the original stays in provenance."""
     original = row if original is None else original
+    category_alias = category_alias or {}
     level_values = row.get("levels", row.get("study_levels", row.get("study_level", row.get("level"))))
     levels = as_list(level_values)
     require(all(level in LEVELS or level in LEVEL_CONTEXTS or level == "undergraduate_and_postgraduate_taught"
@@ -82,7 +90,8 @@ def scope(row, original=None):
         "option_ids": as_list(row.get("option_ids", row.get("study_option_ids", row.get("study_option_id")))),
         "route_ids": as_list(row.get("route_ids", row.get("procedure_ids"))),
         "levels": normalized_levels,
-        "applicant_categories": as_list(row.get("applicant_categories", row.get("applicant_category"))),
+        "applicant_categories": [category_alias.get(category, category) for category in
+                                 as_list(row.get("applicant_categories", row.get("applicant_category")))],
         "cycle": row.get("cycle", row.get("admission_cycle")),
         "fee_status": as_list(row.get("fee_status")),
         "additional_dimensions": {
@@ -94,12 +103,8 @@ def scope(row, original=None):
 
 
 def provenance(index, raw, filename):
-    return {
-        "evidence_file": filename,
-        "original_id": raw["id"],
-        "original_scope": raw.get("scope"),
-        "original_source_ids": raw.get("source_ids"),
-    }
+    # The original scope and source IDs stay in the evidence file, where this reference finds them.
+    return {"evidence_file": filename, "original_id": raw["id"]}
 
 
 def _nu_adapter():
@@ -109,14 +114,132 @@ def _nu_adapter():
     return module
 
 
-def prepare_institution(folder):
+def load_vocabulary(path=VOCABULARY_PATH):
+    """Index the closed vocabulary; every research label maps to exactly one canonical value."""
+    try:
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise PreparationError(f"Invalid admissions vocabulary: {path}") from error
+    tables = {}
+    for section in ("publication", "review", "entry"):
+        table = {}
+        for canonical, labels in data.get(section, {}).items():
+            for label in labels:
+                require(label not in table, f"Vocabulary label appears twice in {section}: {label}")
+                table[label] = canonical
+        tables[section] = table
+    require(tuple(data.get("entry_precedence", ())) == ENTRY_VALUES and set(data["entry"]) == set(ENTRY_VALUES),
+            "Vocabulary entry values must match the closed entry set")
+    require(set(data.get("route_entry_by_id", {}).values()) <= set(ENTRY_VALUES), "Unknown route entry override")
+    applicant = {}
+    for canonical, labels in data.get("applicant_route", {}).items():
+        require(canonical in APPLICANT_ROUTES, f"Unknown applicant category in vocabulary: {canonical}")
+        for label in labels:
+            require(label not in applicant, f"Vocabulary label appears twice in applicant_route: {label}")
+            applicant[label] = canonical
+    by_id = data.get("applicant_route_by_id", {})
+    require(set(by_id.values()) <= {*APPLICANT_ROUTES, None}, "Unknown applicant category override")
+    category_alias = {}
+    for canonical, labels in data.get("applicant_category_alias", {}).items():
+        require(canonical in APPLICANT_ROUTES, f"Unknown applicant category in vocabulary: {canonical}")
+        for label in labels:
+            require(label not in category_alias, f"Vocabulary label appears twice in applicant_category_alias: {label}")
+            category_alias[label] = canonical
+    return {**tables, "route_entry_by_id": data.get("route_entry_by_id", {}),
+            "applicant_route": applicant, "applicant_route_by_id": by_id, "applicant_category_alias": category_alias,
+            "option_closed_availability": data.get("option_closed_availability", {})}
+
+
+def _canonical(vocabulary, section, label, context):
+    require(label in vocabulary[section], f"Unmapped {section} label in {context}: {label!r}")
+    return vocabulary[section][label]
+
+
+def _first_entry(values):
+    return next((value for value in ENTRY_VALUES if value in values), None)
+
+
+def _option_classifications(option):
+    metadata = option["attributes"]
+    application = metadata.get("application")
+    labels = [application.get("classification")] if isinstance(application, dict) else []
+    labels += [metadata.get("catalog_classification"), metadata.get("application_classification")]
+    labels += [row.get("classification") for row in metadata.get("application_classifications") or [] if isinstance(row, dict)]
+    return [label for label in labels if label is not None]
+
+
+def normalize_institution(institution, vocabulary):
+    """Attach closed status and entry values while keeping every research label verbatim."""
+    for key in ("facts", "unknowns"):
+        for row in institution[key]:
+            publication, review = row["publication_status"], row["review_status"]
+            row["normalized_status"] = {
+                # A researched unknown without a recorded publication state is still an unknown value.
+                "publication": "unknown" if publication is None and key == "unknowns"
+                else _canonical(vocabulary, "publication", publication, row["id"]),
+                "review": "not_recorded" if review is None and key == "unknowns"
+                else _canonical(vocabulary, "review", review, row["id"]),
+            }
+    overrides = vocabulary["route_entry_by_id"]
+    for route in institution["application_routes"]:
+        if route["classification"] is None:
+            require(route["id"] in overrides, f"Route without classification needs an entry override: {route['id']}")
+            route["entry"] = overrides[route["id"]]
+        else:
+            require(route["id"] not in overrides, f"Entry override for a classified route: {route['id']}")
+            route["entry"] = _canonical(vocabulary, "entry", route["classification"], route["id"])
+    option_levels = {option["id"]: set(option["levels"]) for option in institution["study_options"]}
+    for route in institution["application_routes"]:
+        levels = {level for option_id in route["option_ids"] for level in option_levels[option_id]}
+        route["applicant_route"] = _applicant_route(route, levels, vocabulary)
+    entries = {route["id"]: route["entry"] for route in institution["application_routes"]}
+    closed = vocabulary["option_closed_availability"]
+    for option in institution["study_options"]:
+        metadata = option["attributes"]
+        labels = _option_classifications(option)
+        if any(metadata.get(field) in values for field, values in closed.items()):
+            option["entry"] = "closed"
+        elif labels:
+            option["entry"] = _first_entry({_canonical(vocabulary, "entry", label, option["id"]) for label in labels})
+        else:
+            option["entry"] = _first_entry({entries[route_id] for route_id in option["route_ids"]}) or "unresolved"
+
+
+def _applicant_route(route, levels, vocabulary):
+    """The applicant category a route implies, or None when it is not applicable or not established.
+
+    Order: a closed per-route entry, the category the reviewed route data declares, a closed classification label for
+    undergraduate school-leaver entry, then graduate-only levels of an open route. Internal, no-admission, closed,
+    unresolved, preparation, non-degree and mixed-level routes imply no single category.
+    """
+    metadata = {**route["attributes"], **route["index_attributes"]}
+    declared = metadata.get("applicant_route")
+    require(declared in (None, *APPLICANT_ROUTES), f"Unknown applicant category on route {route['id']}: {declared!r}")
+    by_id = vocabulary["applicant_route_by_id"]
+    if route["id"] in by_id:
+        require(declared in (None, by_id[route["id"]]), f"Applicant category override contradicts route data: {route['id']}")
+        return by_id[route["id"]]
+    if declared:
+        return declared
+    label = vocabulary["applicant_route"].get(route["classification"])
+    if label:
+        require(levels == {"undergraduate"}, f"Undergraduate applicant category on a non-undergraduate route: {route['id']}")
+        return label
+    if route["entry"] in ("external", "external_restricted") and levels and levels <= GRADUATE_LEVELS:
+        return "graduate"
+    return None
+
+
+def prepare_institution(folder, vocabulary=None):
     folder = Path(folder).resolve()
+    vocabulary = vocabulary or load_vocabulary()
     if folder.name == "nazarbayev-university-kaz-astana":
         try:
             result = _nu_adapter().prepare_nu_institution(folder)
         except ValueError as error:
             raise PreparationError(str(error)) from error
         validate_institution(result)
+        normalize_institution(result, vocabulary)
         return result
     manifest = {}
 
@@ -214,7 +337,7 @@ def prepare_institution(folder):
                     "period", "related_fact_ids", "topics"}
         facts.append({
             "id": index["id"], "topic": raw.get("topic", raw.get("group")), "topics": raw.get("topics", []),
-            "scope": scope(index["scope"], raw["scope"]), "value": raw["value"],
+            "scope": scope(index["scope"], raw["scope"], vocabulary["applicant_category_alias"]), "value": raw["value"],
             "conditions": raw.get("conditions"), "conditions_and_exceptions": raw.get("conditions_and_exceptions"),
             "exceptions": raw.get("exceptions"), "source_ids": index["source_ids"],
             "publication_status": raw.get("publication_status"), "review_status": raw.get("review_status"),
@@ -294,7 +417,7 @@ def prepare_institution(folder):
                     "review_status", "checked_at", "content_reviewed_at"}
         unknowns.append({"id": index["id"], "reason": raw.get("reason", raw.get("finding")),
                          "official_next_step": raw.get("official_next_step", raw.get("next_official_step", raw.get("next_step"))),
-                         "scope": scope(indexed_scope, raw_scope), "source_ids": index.get("source_ids", []),
+                         "scope": scope(indexed_scope, raw_scope, vocabulary["applicant_category_alias"]), "source_ids": index.get("source_ids", []),
                          "publication_status": raw.get("publication_status"), "review_status": raw.get("review_status"),
                          "checked_at": raw.get("checked_at"), "content_reviewed_at": raw.get("content_reviewed_at"),
                          "provenance": provenance(index, raw, filename), "attributes": attributes(raw, consumed),
@@ -351,6 +474,7 @@ def prepare_institution(folder):
             "exclusions": ["insurance", "travel", "one_time_fees"],
         }
     validate_institution(result)
+    normalize_institution(result, vocabulary)
     return result
 
 
@@ -389,8 +513,47 @@ def validate_institution(institution):
 
 
 def prepare_batch(drafts=DRAFTS):
-    return {"schema_version": VERSION, "runtime_active": False,
-            "institutions": [prepare_institution(Path(drafts) / name) for name in BATCH]}
+    vocabulary = load_vocabulary()
+    institutions = []
+    used_overrides = set()
+    for name in BATCH:
+        institutions.append(prepare_institution(Path(drafts) / name, vocabulary))
+        used_overrides |= {route["id"] for route in institutions[-1]["application_routes"]
+                           if route["id"] in vocabulary["route_entry_by_id"]}
+    stale = set(vocabulary["route_entry_by_id"]) - used_overrides
+    require(not stale, f"Entry overrides name unknown routes: {sorted(stale)}")
+    route_ids = {route["id"] for institution in institutions for route in institution["application_routes"]}
+    stale = set(vocabulary["applicant_route_by_id"]) - route_ids
+    require(not stale, f"Applicant category overrides name unknown routes: {sorted(stale)}")
+    return {"schema_version": VERSION, "runtime_active": False, "institutions": institutions}
+
+
+def dump_records(value, depth=4, level=0):
+    """Serialize JSON with one line per record (institutions[i].facts[j], ...) and compact content inside it.
+
+    Indentation and spacing were about a quarter of the snapshot, while a single-line file would make every
+    review diff unreadable; one line per record keeps diffs per fact and loads the same through json.loads.
+    """
+    if level >= depth or not isinstance(value, (dict, list)) or not value:
+        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    pad = " " * (level + 1)
+    if isinstance(value, dict):
+        rows = [f"{pad}{json.dumps(key, ensure_ascii=False)}:{dump_records(item, depth, level + 1)}" for key, item in value.items()]
+        return "{\n" + ",\n".join(rows) + "\n" + " " * level + "}"
+    return "[\n" + ",\n".join(pad + dump_records(item, depth, level + 1) for item in value) + "\n" + " " * level + "]"
+
+
+def split_maintainer_records(prepared):
+    """Separate the runtime snapshot from the research records only maintainers read.
+
+    The backend never reads these blocks, so they live in their own file and keep the runtime snapshot small.
+    """
+    runtime = {**prepared, "institutions": [{key: value for key, value in row.items() if key not in MAINTAINER_KEYS}
+                                            for row in prepared["institutions"]]}
+    research = {"schema_version": RESEARCH_VERSION,
+                "institutions": [{"id": row["institution"]["id"], **{key: row[key] for key in MAINTAINER_KEYS}}
+                                 for row in prepared["institutions"]]}
+    return runtime, research
 
 
 def write_output(prepared, directory, repo=REPO):
@@ -402,9 +565,11 @@ def write_output(prepared, directory, repo=REPO):
     require(not destination.exists(), "Output directory already exists; refusing to overwrite")
     destination.mkdir(parents=True, exist_ok=False)
     path = destination / "admissions-catalog.json"
+    runtime, research = split_maintainer_records(prepared)
     with path.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(prepared, stream, ensure_ascii=False, indent=2)
-        stream.write("\n")
+        stream.write(dump_records(runtime) + "\n")
+    with (destination / "admissions-research.json").open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(dump_records(research, depth=2) + "\n")
     nu = next((row for row in prepared["institutions"] if row["institution"]["id"] == "nazarbayev-university-kaz-astana"), None)
     if nu is not None:
         annotations = {"schema_version": "admissions-assessments-1.0", "records": _nu_adapter().build_nu_assessments(nu)}

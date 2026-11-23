@@ -143,3 +143,24 @@ class ValidateLanguageExamFromCfgTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LanguageExamTotalOnlyTests(unittest.TestCase):
+    def validate(self, **fields):
+        return languages.validate_language({"code": "en", "kind": "exam", "exam": "IELTS", **fields})["language"]
+
+    def test_ielts_overall_without_sections_is_saved_and_still_checks_scale(self):
+        saved = self.validate(score=6.5)
+        self.assertEqual(6.5, saved["score"])
+        self.assertEqual([], saved["details"]["components"])
+        for score in (6.25, 9.5, -0.5):
+            with self.subTest(score=score), self.assertRaises(ValueError):
+                self.validate(score=score)
+
+    def test_ielts_sections_still_derive_the_overall_and_partial_sections_keep_the_overall(self):
+        sections = [{"exam": "IELTS_LISTENING", "score": 7}, {"exam": "IELTS_READING", "score": 6.5},
+                    {"exam": "IELTS_WRITING", "score": 6}, {"exam": "IELTS_SPEAKING", "score": 6.5}]
+        self.assertEqual(6.5, self.validate(details={"components": sections})["score"])
+        partial = self.validate(score=6.5, details={"components": sections[:1]})
+        self.assertEqual(6.5, partial["score"])
+        self.assertEqual(1, len(partial["details"]["components"]))

@@ -15,6 +15,45 @@
         "source": "/universities/*",
         "destination": "/university.html"
       }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          {
+            "key": "Strict-Transport-Security",
+            "value": "max-age=31536000; includeSubDomains"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "Referrer-Policy",
+            "value": "strict-origin-when-cross-origin"
+          },
+          {
+            "key": "Permissions-Policy",
+            "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+          },
+          {
+            "key": "Cross-Origin-Opener-Policy",
+            "value": "same-origin"
+          },
+          {
+            "key": "Cross-Origin-Resource-Policy",
+            "value": "same-origin"
+          },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; connect-src 'self' https://unisearch-backend-8cet.onrender.com http://127.0.0.1:* http://localhost:*; script-src 'self' 'sha256-CVvF3tNBc9I3R2PMh2zyrgWdsvvjzZzREOqw2vKxSEg=' https://unpkg.com; img-src 'self' data: https://unisearch-backend-8cet.onrender.com http://127.0.0.1:* http://localhost:* https://unpkg.com https://tile.openstreetmap.org https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://unpkg.com; style-src-elem 'self' https://unpkg.com; style-src-attr 'unsafe-inline'; font-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'"
+          }
+        ]
+      }
     ]
   }
 }
