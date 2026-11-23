@@ -47,12 +47,12 @@ jobs:
           uv pip install --system --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 
       - name: Lint backend with Ruff
-        run: uvx --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app
+        run: uvx --no-build --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app
 
       - name: Typecheck backend with mypy
         env:
           MYPYPATH: ${{ github.workspace }}/backend
-        run: uvx --python 3.12 --from mypy==1.15.0 mypy --config-file backend/pyproject.toml backend/app
+        run: uvx --no-build --python 3.12 --from mypy==1.15.0 mypy --no-incremental --cache-dir /dev/null --python-executable "$(command -v python)" --config-file backend/pyproject.toml backend/app
 
       - name: Run backend tests
         working-directory: backend

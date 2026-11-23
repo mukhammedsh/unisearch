@@ -63,7 +63,7 @@ def TestOneInput(data: bytes) -> None:
         import atheris
         fdp = atheris.FuzzedDataProvider(data)
     except ImportError:
-        from fuzz_helpers import SimpleFuzzedDataProvider
+        from helpers import SimpleFuzzedDataProvider
         fdp = SimpleFuzzedDataProvider(data)
 
     synth_dict = {

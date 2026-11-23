@@ -77,7 +77,7 @@ def TestOneInput(data: bytes) -> None:
         fdp = atheris.FuzzedDataProvider(data)
     except ImportError:
         # Fallback provider for standalone / test runs without atheris
-        from fuzz_helpers import SimpleFuzzedDataProvider
+        from helpers import SimpleFuzzedDataProvider
         fdp = SimpleFuzzedDataProvider(data)
 
     profile = _generate_fuzzed_profile(fdp)

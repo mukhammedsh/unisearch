@@ -22,7 +22,7 @@
     "check:inline-styles": "node scripts/check-inline-styles.mjs --strict",
     "fix:encoding": "node scripts/check-encoding.mjs --fix",
     "fix:i18n": "node scripts/i18n-pack-revision.mjs --fix",
-    "lint:backend": "uvx --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app",
+    "lint:backend": "uvx --no-build --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app",
     "sync:heroicons": "node scripts/sync-heroicons.mjs",
     "test:backend": "node scripts/test-backend.mjs",
     "test:unit": "node scripts/test-unit.mjs",
