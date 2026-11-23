@@ -20,6 +20,14 @@ from app.services.scoring_profile import _normalize_study_level_str, _track_stud
 from app.services.university_tracks import _canonical_major, _iter_programs, _normalize_major_text
 
 
+def _as_dict(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _as_list(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
+
+
 def _cost_to_usd(amount: float | None, currency_code: str) -> float:
     if amount is None or amount <= 0:
         return 0.0
@@ -39,7 +47,7 @@ def _university_matches_major(university: dict[str, Any], major: str) -> bool:
         return True
     m_exact = _canonical_major(target_major)
     m_raw = _normalize_major_text(target_major)
-    academics = university.get("academics") if isinstance(university.get("academics"), dict) else {}
+    academics = _as_dict(university.get("academics"))
     programs = _iter_programs(university)
 
     for p in programs:
@@ -97,9 +105,9 @@ def _finance_cost_range(finance: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def _finance_for_cost(university: dict[str, Any], track: dict[str, Any]) -> dict[str, Any]:
-    track_fin = track.get("finance_override") if isinstance(track.get("finance_override"), dict) else {}
-    uni_fin = university.get("finance") if isinstance(university.get("finance"), dict) else {}
-    levels = track.get("study_levels") if isinstance(track.get("study_levels"), list) else []
+    track_fin = _as_dict(track.get("finance_override"))
+    uni_fin = _as_dict(university.get("finance"))
+    levels = _as_list(track.get("study_levels"))
     raw_scope = track.get("scope")
     scope = (
         " ".join(str(value or "") for value in raw_scope.values()).strip().lower()
@@ -208,11 +216,11 @@ def _effective_track_cost_details(
     finance = _finance_for_cost(university, track)
     total_usd = float(finance.get("total") or 0.0)
     raw_total = float(_to_num(finance.get("raw_total")) or 0.0)
-    breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
+    breakdown = _as_dict(finance.get("breakdown"))
     tuition = _extract_tuition_cost(breakdown)
     mode = _effective_cost_mode(preferred_mode, _track_study_mode(university, track))
-    track_fin = finance.get("track_finance") if isinstance(finance.get("track_finance"), dict) else {}
-    uni_fin = finance.get("university_finance") if isinstance(finance.get("university_finance"), dict) else {}
+    track_fin = _as_dict(finance.get("track_finance"))
+    uni_fin = _as_dict(finance.get("university_finance"))
     currency = str(finance.get("currency") or "USD").strip().upper()
 
     if _cost_cycle_mismatch(finance.get("cost_cycle_source"), intended_entry_cycle):

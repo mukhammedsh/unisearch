@@ -161,8 +161,8 @@ def _normalize_university_schema(u: dict[str, Any]) -> dict[str, Any]:
                 levels.append(lv)
         academics["study_levels"] = _uniq_non_empty(levels)
 
-    formats = academics.get("formats")
-    if not isinstance(formats, list) or len(formats) == 0:
+    existing_formats = academics.get("formats")
+    if not isinstance(existing_formats, list) or len(existing_formats) == 0:
         fmts: list[Any] = []
         for p in programs:
             mode = p.get("study_mode")

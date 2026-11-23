@@ -60,6 +60,10 @@ def _get_list(u: dict[str, Any], path: list[str]) -> list[Any]:
     return []
 
 
+def _as_dict(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
 def _to_float(x: Any) -> float | None:
     try:
         if x is None or x == "":
@@ -84,7 +88,7 @@ def _effective_university_cost(
     format_preference: Any = "any",
 ) -> float | None:
     mode = _normalize_study_mode(format_preference)
-    finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
+    finance = _as_dict(u.get("finance"))
     total = _to_float(finance.get("total_cost_year_usd"))
     breakdown = finance.get("costs_breakdown_year_usd")
     if not isinstance(breakdown, dict):
@@ -118,7 +122,7 @@ def _effective_university_cost_usd(
         return None
     if raw_cost <= 0:
         return raw_cost
-    finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
+    finance = _as_dict(u.get("finance"))
     currency_code = str(finance.get("currency") or "USD").strip().upper()
     if not currency_code or currency_code == "USD":
         return raw_cost
@@ -131,7 +135,7 @@ def _effective_university_cost_usd(
 
 
 def _university_cost_range(u: dict[str, Any]) -> dict[str, Any] | None:
-    finance = u.get("finance") if isinstance(u.get("finance"), dict) else {}
+    finance = _as_dict(u.get("finance"))
     minimum = _to_float(finance.get("total_cost_year_min"))
     maximum = _to_float(finance.get("total_cost_year_max"))
     if minimum is None or maximum is None or minimum < 0 or maximum < minimum:
@@ -235,11 +239,12 @@ def _profiled_legacy_costs(
             ]
             if matches:
                 programs = matches
-        fee_context = choice.get("feeStatusContext") or profile.get("fee_status_context")
-        fee_fields = {
+        fee_context = str(choice.get("feeStatusContext") or profile.get("fee_status_context") or "")
+        fee_field_map: dict[str, tuple[str, ...]] = {
             "self_reported_home_domestic": ("home_annual_fee_gbp",),
             "self_reported_international_overseas": ("overseas_annual_fee_gbp",),
-        }.get(fee_context, ("home_annual_fee_gbp", "overseas_annual_fee_gbp"))
+        }
+        fee_fields = fee_field_map.get(fee_context, ("home_annual_fee_gbp", "overseas_annual_fee_gbp"))
         amounts = [
             float(program[field])
             for program in programs
@@ -250,7 +255,7 @@ def _profiled_legacy_costs(
         living_low, living_high = _to_float(living_range.get("min")), _to_float(living_range.get("max"))
         if amounts and currency == "GBP":
             amounts = sorted(set(amounts))
-            source_urls = sorted({program.get("tuition_source_url") for program in programs if program.get("tuition_source_url")})
+            source_urls = sorted({str(url) for program in programs if (url := program.get("tuition_source_url"))})
             tuition = {
                 "min": amounts[0],
                 "max": amounts[-1],
@@ -280,7 +285,7 @@ def _profiled_legacy_costs(
         choice = (profile.get("selectedAdmissionChoices") or {}).get(u["id"], {})
         level = str(choice.get("studyLevel") or profile.get("study_level") or "").lower()
         if level in {"master", "masters", "professional", "doctoral", "doctorate"}:
-            level_names = {
+            harvard_level_names: dict[str, str] = {
                 "master": "Master",
                 "masters": "Master",
                 "professional": "Professional",
@@ -292,7 +297,7 @@ def _profiled_legacy_costs(
             programs = [
                 program
                 for program in _iter_programs(u)
-                if level_names[level] in (program.get("study_levels") or [])
+                if harvard_level_names[level] in (program.get("study_levels") or [])
                 and (not selected_id or program.get("id") == selected_id)
             ]
             if wanted and not selected_id:
@@ -323,20 +328,20 @@ def _profiled_legacy_costs(
                     "amounts": amounts,
                     "currency": "USD",
                     "period": latest_period,
-                    "source_urls": sorted({program.get("tuition_source_url") for program in priced if program.get("tuition_source_url")}),
+                    "source_urls": sorted({str(url) for program in priced if (url := program.get("tuition_source_url"))}),
                 }
                 return {"annual_total": None, "tuition": tuition, "reference": True}
             return {"annual_total": None, "tuition": None, "reference": True}
     breakdown = finance.get("costs_breakdown_year_usd") or {}
     if currency == "USD" and isinstance(breakdown, dict) and breakdown:
-        tuition = _extract_tuition_cost(breakdown)
+        tuition_amount = _extract_tuition_cost(breakdown)
         costs = [_to_float(value) for value in breakdown.values()]
-        if tuition is not None and all(value is not None and value >= 0 for value in costs):
-            base = sum(value for value in costs if value is not None) - tuition
+        if tuition_amount is not None and all(value is not None and value >= 0 for value in costs):
+            base = sum(value for value in costs if value is not None) - tuition_amount
             published["annual_total"] = {
                 **(published.get("annual_total") or {}),
-                "min": tuition + base,
-                "max": tuition + base,
+                "min": tuition_amount + base,
+                "max": tuition_amount + base,
                 "currency": "USD",
                 "calculation": "published_fixed_budget",
             }
@@ -355,6 +360,8 @@ def _catalog_cost_range_usd(
         return None
     if quote.get("annual_comparable") is False:
         return None
+    low: float | None
+    high: float | None
     if published_only and "published_intervals" in quote:
         intervals = quote["published_intervals"]
         if not intervals:

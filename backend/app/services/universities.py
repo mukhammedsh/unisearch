@@ -503,8 +503,10 @@ def get_university_translation_bundle(
 ) -> dict[str, Any]:
     lang = _normalize_search_lang(search_lang)
     raw = _load_university_translations_raw()
-    langs = raw.get("languages") if isinstance(raw.get("languages"), dict) else {}
-    pack = langs.get(lang) if isinstance(langs.get(lang), dict) else {}
+    raw_langs = raw.get("languages")
+    langs: dict[str, Any] = raw_langs if isinstance(raw_langs, dict) else {}
+    raw_pack = langs.get(lang)
+    pack: dict[str, Any] = raw_pack if isinstance(raw_pack, dict) else {}
     try:
         clauses = admissions_editorial.load_clauses()
         cached = _CLEAN_TRANSLATION_CACHE.get(lang)

@@ -418,9 +418,12 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
     """Compare supported published minimums, retaining every unresolved source condition."""
     resolved = resolved if isinstance(resolved, dict) else {}
     profile = profile if isinstance(profile, dict) else {}
-    selected_route = resolved.get("selected_route") if isinstance(resolved.get("selected_route"), dict) else {}
-    selected_option = resolved.get("selected_option") if isinstance(resolved.get("selected_option"), dict) else {}
-    context = resolved.get("context") if isinstance(resolved.get("context"), dict) else {}
+    raw_selected_route = resolved.get("selected_route")
+    selected_route: dict[str, Any] = raw_selected_route if isinstance(raw_selected_route, dict) else {}
+    raw_selected_option = resolved.get("selected_option")
+    selected_option: dict[str, Any] = raw_selected_option if isinstance(raw_selected_option, dict) else {}
+    raw_context = resolved.get("context")
+    context: dict[str, Any] = raw_context if isinstance(raw_context, dict) else {}
     source_index = _source_lookup(resolved)
     source_fact_ids: list[str] = []
     checks: list[dict[str, Any]] = []
@@ -447,10 +450,14 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
             missing_evidence.extend({"type": row["kind"], "factId": fact_id, "checkId": row.get("checkId"),
                                      "sourceIds": source_ids} for row in annotated if row["status"] == "missing")
             continue
-        value = fact.get("value") if isinstance(fact.get("value"), dict) else {}
+        raw_value = fact.get("value")
+        value: dict[str, Any] = raw_value if isinstance(raw_value, dict) else {}
         blocks_numeric = bool(value.get("requirements") or value.get("minima") or any(
             row.get("minimum") is not None for row in value.get("unassessed_published_minimums", []) if isinstance(row, dict)
-        ) or any(isinstance(value.get(key), dict) and value[key].get("minimum") is not None for key in ("technical_gpa", "overall_gpa")))
+        ) or any(
+            isinstance(gpa_val, dict) and gpa_val.get("minimum") is not None
+            for gpa_val in (value.get("technical_gpa"), value.get("overall_gpa"))
+        ))
         alternatives = value.get("alternatives")
         is_required_presence = (
             fact["normalized_status"]["publication"] == "published"
@@ -479,7 +486,7 @@ def assess_resolved_context(resolved: dict[str, Any], profile: dict[str, Any]) -
                 "sourceRule": _source_rule(fact),
             })
             continue
-        if is_required_presence:
+        if is_required_presence and isinstance(alternatives, list):
             exam_ids = [exams_service.resolve_exam_key(item).upper() for item in alternatives]
             provided = next((exam_id for exam_id in exam_ids if exam_id and exam_id in valid_exams), None)
             checks.append({

@@ -554,7 +554,8 @@ def _language_rule_assessments(
     if not isinstance(requirements, dict):
         requirements = rule.get("exams")
     if isinstance(requirements, dict):
-        user_exam_scores = state.get("exams") if isinstance(state.get("exams"), dict) else {}
+        raw_user_exams = state.get("exams")
+        user_exam_scores: dict[str, Any] = raw_user_exams if isinstance(raw_user_exams, dict) else {}
         for exam_id, raw_minimum in requirements.items():
             minimum = _to_num(raw_minimum)
             configured_exam_id = _configured_language_exam_id(code, exam_id, raw_minimum)

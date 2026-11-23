@@ -41,6 +41,14 @@ _MAP_LABEL_FALLBACK_ORDER = {
 _NAME_LANGS = (SEARCH_LANG_ENG, SEARCH_LANG_RUS, SEARCH_LANG_KAZ)
 
 
+def _as_dict(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _as_list(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
+
+
 def _uniq_non_empty(items: list[Any]) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
@@ -189,16 +197,14 @@ def _load_university_translations_raw() -> dict[str, Any]:
 def _translation_lang_pack(search_lang: Any) -> dict[str, Any]:
     lang = _normalize_search_lang(search_lang)
     data = _load_university_translations_raw()
-    langs = data.get("languages") if isinstance(data.get("languages"), dict) else {}
-    pack = langs.get(lang)
-    return pack if isinstance(pack, dict) else {}
+    langs = _as_dict(data.get("languages"))
+    return _as_dict(langs.get(lang))
 
 
 def _translation_group(search_lang: Any, group: str) -> dict[str, str]:
     pack = _translation_lang_pack(search_lang)
-    groups = pack.get("groups") if isinstance(pack.get("groups"), dict) else {}
-    group_map = groups.get(group)
-    return group_map if isinstance(group_map, dict) else {}
+    groups = _as_dict(pack.get("groups"))
+    return _as_dict(groups.get(group))
 
 
 @lru_cache(maxsize=2048)
@@ -234,9 +240,7 @@ def _translate_program_name(value: Any, search_lang: Any) -> str:
     if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
         return raw
     pack = _translation_lang_pack(search_lang)
-    table = (
-        pack.get("program_names") if isinstance(pack.get("program_names"), dict) else {}
-    )
+    table = _as_dict(pack.get("program_names"))
     if _keyify(raw) in table:
         return str(table[_keyify(raw)])
     if raw in table:
@@ -260,11 +264,7 @@ def _translate_admission_text(value: Any, search_lang: Any) -> str:
     if raw in memo:
         return memo[raw]
 
-    exact = (
-        pack.get("admission_exact")
-        if isinstance(pack.get("admission_exact"), dict)
-        else {}
-    )
+    exact = _as_dict(pack.get("admission_exact"))
     if raw in exact:
         res = str(exact[raw])
         memo[raw] = res
@@ -274,11 +274,7 @@ def _translate_admission_text(value: Any, search_lang: Any) -> str:
         res = str(exact[norm_quotes])
         memo[raw] = res
         return res
-    rules = (
-        pack.get("admission_replace")
-        if isinstance(pack.get("admission_replace"), list)
-        else []
-    )
+    rules = _as_list(pack.get("admission_replace"))
     out = raw
     for rule in rules:
         if not isinstance(rule, (list, tuple)) or len(rule) < 2:
@@ -304,9 +300,7 @@ def _translate_track_label(value: Any, search_lang: Any) -> str:
     if raw in memo:
         return memo[raw]
 
-    table = (
-        pack.get("track_labels") if isinstance(pack.get("track_labels"), dict) else {}
-    )
+    table = _as_dict(pack.get("track_labels"))
     direct = table.get(_keyify(raw))
     if direct:
         res = str(direct)
@@ -317,11 +311,7 @@ def _translate_track_label(value: Any, search_lang: Any) -> str:
         memo[raw] = res
         return res
     out = _translate_admission_text(raw, lang)
-    fallback_rules = (
-        pack.get("track_label_fallback_replace")
-        if isinstance(pack.get("track_label_fallback_replace"), list)
-        else []
-    )
+    fallback_rules = _as_list(pack.get("track_label_fallback_replace"))
     for rule in fallback_rules:
         if not isinstance(rule, (list, tuple)) or len(rule) < 2:
             continue
@@ -338,11 +328,7 @@ def _translate_university_name(
     if not uid:
         return fallback_text
     pack = _translation_lang_pack(search_lang)
-    names = (
-        pack.get("university_names")
-        if isinstance(pack.get("university_names"), dict)
-        else {}
-    )
+    names = _as_dict(pack.get("university_names"))
     translated = str(names.get(uid, "")).strip()
     return translated or fallback_text
 
@@ -359,11 +345,7 @@ def _translate_university_description(
     if source:
         if lang == SEARCH_LANG_ENG:
             return source
-        desc_map = (
-            pack.get("university_descriptions")
-            if isinstance(pack.get("university_descriptions"), dict)
-            else {}
-        )
+        desc_map = _as_dict(pack.get("university_descriptions"))
         if uid:
             localized = str(desc_map.get(uid, "")).strip()
             if localized:
@@ -720,11 +702,7 @@ def _load_localized_university_names(search_lang: str) -> dict[str, str]:
     if lang not in {SEARCH_LANG_RUS, SEARCH_LANG_KAZ}:
         return {}
     pack = _translation_lang_pack(lang)
-    names = (
-        pack.get("university_names")
-        if isinstance(pack.get("university_names"), dict)
-        else {}
-    )
+    names = _as_dict(pack.get("university_names"))
     out: dict[str, str] = {}
     for uni_id, uni_name in names.items():
         key = str(uni_id or "").strip()
@@ -760,7 +738,7 @@ def _get_query_alias_index(
                 alias_map[lk] = ck
 
     if lang == SEARCH_LANG_KAZ:
-        groups = pack.get("groups") if isinstance(pack.get("groups"), dict) else {}
+        groups = _as_dict(pack.get("groups"))
         for group_name in (
             "country",
             "city",
@@ -779,7 +757,7 @@ def _get_query_alias_index(
                 if lk and ck:
                     alias_map[lk] = ck
 
-    program_names = pack.get("program_names") if isinstance(pack.get("program_names"), dict) else {}
+    program_names = _as_dict(pack.get("program_names"))
     for key, localized in program_names.items():
         lk = _norm_space(localized)
         ck = _norm_space(str(key).replace("_", " "))

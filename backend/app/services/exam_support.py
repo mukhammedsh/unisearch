@@ -8,7 +8,7 @@ from app.core.paths import EXAMS_PATH
 
 EXAMS_CONFIG: dict[str, dict[str, Any]] = {}
 EXAM_WHITELIST: dict[str, Any] = {}
-_EXAMS_CACHE = {"mtime": None}
+_EXAMS_CACHE: dict[str, float | None] = {"mtime": None}
 EXAM_KEY_ALIASES = {
     "ENT": ["UNT"],
     "NUET": ["NUET_TOTAL"],

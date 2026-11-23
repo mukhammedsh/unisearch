@@ -16,17 +16,7 @@ const env = {
 };
 
 const python = detectPython(rootDir, env);
-const targets = [
-  "backend/app/core",
-  "backend/app/schemas",
-  "backend/app/routers",
-  "backend/app/main.py",
-  "backend/app/services/university_coverage.py",
-  "backend/app/services/university_level_coverage.py",
-  "backend/app/services/university_tracks.py",
-  "backend/app/services/university_majors.py",
-  "backend/app/services/university_track_scores.py",
-];
+const targets = ["backend/app"];
 
 const args = [
   "--python",

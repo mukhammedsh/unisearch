@@ -52,7 +52,7 @@ jobs:
       - name: Typecheck backend with mypy
         env:
           MYPYPATH: ${{ github.workspace }}/backend
-        run: uvx --python 3.12 --from mypy==1.15.0 mypy --config-file backend/pyproject.toml backend/app/core backend/app/schemas backend/app/routers backend/app/main.py backend/app/services/university_coverage.py backend/app/services/university_level_coverage.py backend/app/services/university_tracks.py backend/app/services/university_majors.py backend/app/services/university_track_scores.py
+        run: uvx --python 3.12 --from mypy==1.15.0 mypy --config-file backend/pyproject.toml backend/app
 
       - name: Run backend tests
         working-directory: backend

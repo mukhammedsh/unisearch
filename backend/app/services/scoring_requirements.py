@@ -142,11 +142,12 @@ def _applicability_unknown_reason(applicability: dict[str, str]) -> str:
 
 
 def _known_program_ids(university: dict[str, Any], choices: list[dict[str, Any]]) -> set[str]:
-    ids = {
-        str(value or "").strip().casefold()
-        for choice in choices
-        for value in (choice.get("program_ids") if isinstance(choice.get("program_ids"), list) else [])
-    }
+    ids: set[str] = set()
+    for choice in choices:
+        p_ids = choice.get("program_ids")
+        if isinstance(p_ids, list):
+            for value in p_ids:
+                ids.add(str(value or "").strip().casefold())
     academics = university.get("academics") if isinstance(university, dict) else None
     programs = academics.get("programs") if isinstance(academics, dict) else None
     if isinstance(programs, list):
@@ -644,7 +645,7 @@ def _filter_admission_entries(
     university: dict[str, Any],
     profile: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    entries = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
+    entries: list[dict[str, Any]] = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
     target_level = _normalize_study_level_str(
         profile.get("studyLevel") or profile.get("study_level") or ""
     )
@@ -822,7 +823,7 @@ def estimate_uni_chance(
     }
     user_selected = _choice_result_by_key(per_choice, selected_choice_key)
     selected_by_user = user_selected is not None and str(user_selected.get("choiceKey") or "") != str(recommended.get("choiceKey") or "")
-    best = user_selected if selected_by_user else recommended
+    best: dict[str, Any] = user_selected if (user_selected is not None and selected_by_user) else recommended
 
     return {
         "overallChance": best.get("chancePercent"),

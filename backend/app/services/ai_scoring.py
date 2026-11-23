@@ -152,13 +152,14 @@ def _preference_mismatch(
     weighted, total, known = 0.0, 0.0, False
     for key, requested in user_pref.items():
         observed = uni_factors.get(key)
-        deltas[key] = None if observed is None else abs(float(requested) - float(observed))
+        delta = None if observed is None else abs(float(requested) - float(observed))
+        deltas[key] = delta
         if weights[key] <= 0:
             continue
-        if deltas[key] is None:
+        if delta is None:
             weighted += weights[key] * (requested * requested + (1.0 - requested) ** 2) / 2.0
         else:
-            weighted += weights[key] * deltas[key]
+            weighted += weights[key] * delta
             known = True
         total += weights[key]
     return (_clamp01(weighted / total) if known else None), deltas
@@ -313,8 +314,9 @@ def _resolve_choice_selection_for_sort(
         else _selected_choice_key_for_university(profile, row)
     )
 
-    general_choice_results = (
-        chance_general.get("choices") if isinstance(chance_general.get("choices"), list) else []
+    raw_general_choices = chance_general.get("choices")
+    general_choice_results: list[dict[str, Any]] = (
+        raw_general_choices if isinstance(raw_general_choices, list) else []
     )
     selected_general_choice = _choice_result_by_key(general_choice_results, selected_choice_key)
     selected_actual_chance = _chance_percent_value(chance_general.get("overallChance"))
@@ -418,7 +420,8 @@ def _compute_sort_budget_outcome(
         not eligible_choices
         and (target_level != "any" or target_route or target_cycle or selected_program_id)
     ):
-        finance = row.get("finance") if isinstance(row.get("finance"), dict) else {}
+        raw_finance = row.get("finance")
+        finance: dict[str, Any] = raw_finance if isinstance(raw_finance, dict) else {}
         cost_usd, cost_native = 0.0, 0.0
         cost_currency = str(finance.get("currency") or "USD").strip().upper()
         cost_mode = "unavailable"

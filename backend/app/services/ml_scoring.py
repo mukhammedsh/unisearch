@@ -13,9 +13,9 @@ from app.core.settings import (
 )
 from app.services import admissions_catalog
 
-SentenceTransformer = None  # type: ignore[assignment]
+SentenceTransformer: Any = None
 _SENTENCE_TRANSFORMERS_AVAILABLE: bool | None = None
-np = None  # type: ignore[assignment]
+np: Any = None
 _NUMPY_AVAILABLE: bool | None = None
 
 def _load_numpy():
@@ -27,11 +27,11 @@ def _load_numpy():
     try:
         import numpy as numpy_module
 
-        np = numpy_module  # type: ignore[assignment]
+        np = numpy_module
         _NUMPY_AVAILABLE = True
         return np
     except Exception:
-        np = None  # type: ignore[assignment]
+        np = None
         _NUMPY_AVAILABLE = False
         return None
 
@@ -45,11 +45,11 @@ def _load_sentence_transformer_class():
     try:
         from sentence_transformers import SentenceTransformer as SentenceTransformerClass
 
-        SentenceTransformer = SentenceTransformerClass  # type: ignore[assignment]
+        SentenceTransformer = SentenceTransformerClass
         _SENTENCE_TRANSFORMERS_AVAILABLE = True
         return SentenceTransformer
     except Exception:
-        SentenceTransformer = None  # type: ignore[assignment]
+        SentenceTransformer = None
         _SENTENCE_TRANSFORMERS_AVAILABLE = False
         return None
 
@@ -245,8 +245,8 @@ class MLRecommender:
         self._data_mtime: float = -1.0
         self._university_ids: list[str] = []
 
-        self._semantic_model = None
-        self._semantic_embeddings = None
+        self._semantic_model: Any = None
+        self._semantic_embeddings: Any = None
         self._semantic_ready = False
         self._semantic_error = ""
 
@@ -392,7 +392,7 @@ class MLRecommender:
 
             passages = [self._format_semantic_passage(text) for text in docs]
             batch_size = max(1, int(ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE or 32))
-            embeddings = self._semantic_model.encode(  # type: ignore[union-attr]
+            embeddings = self._semantic_model.encode(
                 passages,
                 batch_size=batch_size,
                 show_progress_bar=False,
@@ -457,7 +457,7 @@ class MLRecommender:
             return None
         try:
             q = self._format_semantic_query(query)
-            query_vec = self._semantic_model.encode(  # type: ignore[union-attr]
+            query_vec = self._semantic_model.encode(
                 [q],
                 show_progress_bar=False,
                 convert_to_numpy=True,
@@ -465,7 +465,7 @@ class MLRecommender:
             )
             if query_vec is None or len(query_vec) == 0:
                 return None
-            sims = self._semantic_embeddings @ query_vec[0]  # type: ignore[operator]
+            sims = self._semantic_embeddings @ query_vec[0]
             # Rescale cosine similarities to expand contrast between relevant programs and background noise.
             sims01 = np.clip((sims - 0.55) / 0.35, 0.0, 1.0)
 

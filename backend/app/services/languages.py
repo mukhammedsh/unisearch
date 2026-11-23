@@ -29,9 +29,9 @@ def _build_languages_index(cfg: dict[str, Any]) -> dict[str, Any]:
     # CEFR levels list containing id, code, and label fields.
     cefr_list = cfg.get("cefr", [])
     cefr_map = {}
-    for c in cefr_list:
-        label = str(c.get("code", "")).strip().upper()  # A1..C2
-        cid = c.get("id", None)
+    for cefr_entry in cefr_list:
+        label = str(cefr_entry.get("code", "")).strip().upper()  # A1..C2
+        cid = cefr_entry.get("id", None)
         if label and cid is not None:
             # Ignore CEFR definitions with missing or non-numeric identifiers
             with contextlib.suppress(ValueError, TypeError):
@@ -252,7 +252,7 @@ def validate_language_exam_from_cfg(lang_cfg: dict[str, Any], score_raw: Any) ->
     return float(dv)
 
 
-_LANG_CACHE = {"mtime": None, "data": {}, "index": None}
+_LANG_CACHE: dict[str, Any] = {"mtime": None, "data": {}, "index": None}
 
 
 def load_languages() -> dict[str, Any]:

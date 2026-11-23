@@ -364,10 +364,11 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> dict[str, Any]:
     # Tier 2: Redis cache
     if not force_refresh:
         redis_cached = cache_get_json(redis_key)
-        if isinstance(redis_cached, dict) and isinstance(redis_cached.get("rates"), dict):
+        raw_rates = redis_cached.get("rates") if isinstance(redis_cached, dict) else None
+        if isinstance(redis_cached, dict) and isinstance(raw_rates, dict):
             parsed_rates = {
                 str(k).upper(): float(v)
-                for k, v in redis_cached["rates"].items()
+                for k, v in raw_rates.items()
                 if isinstance(v, (int, float)) and v > 0
             }
             if parsed_rates:

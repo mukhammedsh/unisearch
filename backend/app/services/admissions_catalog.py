@@ -8,6 +8,7 @@ import math
 import re
 import threading
 from pathlib import Path
+from typing import Any
 
 from app.core.paths import DATA_DIR
 from app.services import search as search_service
@@ -24,7 +25,7 @@ RESEARCH_SUPERSEDED_STATUS = "superseded_by_completed_research"
 ENTRY_VALUES = {"external", "external_restricted", "internal", "no_admission", "closed", "unresolved"}
 LEVEL_ALIASES = {"bachelor": "undergraduate", "master": "masters", "doctorate": "doctoral", "phd": "doctoral", "foundation": "preparation", "non-degree": "non_degree"}
 _LOCK = threading.Lock()
-_CACHE = {"signature": None, "revision": None, "institutions": {}, "indexes": {}}
+_CACHE: dict[str, Any] = {"signature": None, "revision": None, "institutions": {}, "indexes": {}}
 DOMAINS = {
     "program_details": ("reference",), "admission_requirement": ("requirements",),
     "admission_requirement_and_cost": ("requirements", "costs"), "preparatory_program_status": ("study", "application"),
