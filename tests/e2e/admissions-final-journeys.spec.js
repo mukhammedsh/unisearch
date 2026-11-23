@@ -88,11 +88,19 @@ async function applyContext(page, route, cycle) {
   await selectRoute(page, route);
   if (await page.locator("#admissionsSelectionEditor").isHidden()) await page.locator("#admissionsReferenceSummary button").click();
   const advanced = page.locator("#admissionsAdvanced");
-  if (await advanced.count() && !(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
-  await page.locator("#admissionsCycle").fill(cycle);
-  await setNativeSelect(page, "admissionsFee", "unknown");
-  const response = waitForAdmissionsContext(page, route);
-  await page.locator("#admissionsContextApply").click();
+  let response;
+  if (!(await advanced.isVisible())) {
+    // A path with one intake and no fee classes asks for neither; it is read as linked.
+    expect(cycle, `${route} offers no entry-year field`).toBe("");
+    response = waitForAdmissionsContext(page, route);
+    await page.reload();
+  } else {
+    if (!(await advanced.evaluate((node) => node.open))) await advanced.locator(":scope > summary").click();
+    await page.locator("#admissionsCycle").fill(cycle);
+    if (await page.locator("select#admissionsFee").count()) await setNativeSelect(page, "admissionsFee", "unknown");
+    response = waitForAdmissionsContext(page, route);
+    await page.locator("#admissionsContextApply").click();
+  }
   const result = await response;
   expect(result.status).toBe(200);
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
@@ -117,9 +125,12 @@ async function openFact(page, tab, id) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements [data-requirements-match]");
+  return page.locator("#detailRequirements");
 }
 
 test("Kazakhstan secondary-school guest and applicant can distinguish university-wide MIT and Stanford first-year and transfer routes", async ({ page }, testInfo) => {
@@ -129,10 +140,10 @@ test("Kazakhstan secondary-school guest and applicant can distinguish university
   await preparePage(page);
 
   const journeys = [
-    { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-first-year", applicant: "first_year", cycle: "Fall 2027 entry", guest: true },
+    { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-first-year", applicant: "first_year", cycle: "", guest: true },
     { university: MIT, option: "mit-course-6-3-bachelor", search: "Computer Science and Engineering", route: "mit-transfer", applicant: "transfer", cycle: "Fall 2027 entry" },
-    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-first-year", applicant: "first_year", cycle: "2027 entry" },
-    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-transfer", applicant: "transfer", cycle: "2027 entry", guest: true },
+    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-first-year", applicant: "first_year", cycle: "" },
+    { university: STANFORD, option: "stanford-option-cs-bs", search: "Computer Science", route: "undergraduate-shared-evidence:stanford-transfer", applicant: "transfer", cycle: "", guest: true },
   ];
 
   for (const journey of journeys) {
@@ -250,7 +261,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   expect(checks["overall-gpa"].sourceRule.id).toBe("bcs-meng-entry-conditions");
   const bcsContextUrl = page.url();
   const assessment = await openAssessment(page);
-  await expect(assessment.locator(".admissions-key-facts__value")).toContainText("(100%)");
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).toContainText("(100%)");
   const scopedAverages = assessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" });
   await expect(scopedAverages).toHaveCount(2);
   await expect(scopedAverages.nth(0).locator(":scope > summary")).toContainText(/Met/i);
@@ -291,8 +302,8 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   const updatedAssessment = await openAssessment(page);
-  await expect(updatedAssessment).toContainText("Required applicant evidence is missing");
-  await expect(updatedAssessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(updatedAssessment).toContainText("Add your results to your profile");
+  await expect(updatedAssessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   const missingOverall = updatedAssessment.locator(".admissions-catalog__list > .admissions-catalog__check").filter({ hasText: "Scoped academic average" }).nth(1);
   await expect(missingOverall.locator(":scope > summary")).toContainText(/Evidence missing/i);
   await missingOverall.locator(":scope > summary").click();
@@ -308,10 +319,10 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#tab-general")).toHaveClass(/active/);
   await chooseOption(page, "mit-data-economics-and-design-of-policy-masc-mit-grad-data-economics-and-design-of-policy", "Data, Economics, and Design of Policy", "masters");
-  const result = await applyContext(page, "mit_grad_dedp_admissions", "Spring 2028");
+  // DEDP publishes one Spring 2028 intake, read with its dates without an entry-year field.
+  const result = await applyContext(page, "mit_grad_dedp_admissions", "");
   expect(result.selected_route.id).toBe("mit_grad_dedp_admissions");
   expect(result.selected_route.target).toMatch(/Data, Economics, and Design of Policy/i);
-  await expect(page.locator("#admissionsCycle")).toHaveValue("Spring 2028");
   await expect(page.locator("#admissionsContext")).toContainText("Data, Economics, and Design of Policy");
   await page.locator("#admissionsContext").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath("mit-dedp-context-mobile.png") });
@@ -340,6 +351,6 @@ test("MIT DEDP routes a credential-based professional master's choice to its own
   await expect(funding.locator("a[href^='https://']").first()).toHaveAttribute("href", /^https:\/\//);
 
   await openAdmission(page);
-  await expect(page.locator('#admissionsContext a[href^="https://apply.mit.edu/"]')).toBeVisible();
+  await expect(page.locator('#detailRequirements .admissions-application-link[href^="https://apply.mit.edu/"]')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

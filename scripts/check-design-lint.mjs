@@ -431,6 +431,28 @@ export function scanCssFile(filePath) {
         }
       }
     }
+
+    // 12. Guard against fill/surface tokens used directly as text or icon foreground colors.
+    const colorValue = declarationValue(line, (property) => property === "color");
+    if (colorValue && currentSelector && !isSliderThumb && !currentSelector.includes("-slider-thumb")) {
+      if (/\bvar\(\s*--accent\s*\)/i.test(colorValue)) {
+        violations.push({
+          line: i + 1,
+          type: "color-role-mismatch",
+          message: `Fill token "${colorValue}" used as foreground color in "${currentSelector}" fails contrast on dark surfaces`,
+          code: rawLine.trim(),
+          suggestion: "Use var(--accent-text), var(--interaction-hover-text), or var(--interaction-active-text)",
+        });
+      } else if (/\bvar\(\s*--(?:surface-solid|card)\s*\)/i.test(colorValue)) {
+        violations.push({
+          line: i + 1,
+          type: "color-role-mismatch",
+          message: `Surface token "${colorValue}" used as foreground color in "${currentSelector}" turns dark on dark themes`,
+          code: rawLine.trim(),
+          suggestion: "Use var(--text-inverse) on accent/dark fills or var(--text)",
+        });
+      }
+    }
   }
 
   return { relPath, violations };

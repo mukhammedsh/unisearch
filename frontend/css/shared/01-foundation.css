@@ -55,6 +55,7 @@
   --leading-normal: 1.5;
   --leading-loose: 1.7;
   --accent: #5D17EB;
+  --accent-text: var(--accent);
   --accent2: var(--accent);
   --accent-highlight: var(--accent);
   --accent-strong: color-mix(in srgb, var(--accent) 76%, #000);
@@ -73,6 +74,8 @@
   --surface-solid: #ffffff;
   --surface: rgba(255, 255, 255, 0.88);
   --surface-soft: #f2f3f7;
+  --control-bg: var(--surface-soft);
+  --control-shadow: var(--shadow-micro);
   --tour-skip-bg: #F2F3F7;
   --card: var(--surface-solid);
   --text: #111827;
@@ -194,10 +197,13 @@
   --sidebar-max-height: calc(100vh - 105px);
   --u-mobile-filter-footer-clearance: 0px;
   --photo-fit-height: 100%;
+  --tooltip-display: block;
+  --tooltip-shift-x: 0px;
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
+  --accent-text: #a78bfa;
   --accent-strong: color-mix(in srgb, var(--accent) 80%, #fff);
   --interaction-hover-text: #a78bfa;
   --interaction-active-text: var(--text);
@@ -557,6 +563,30 @@ a {
   position: relative;
   min-width: 0;
   background: var(--surface-soft);
+}
+
+/* Contextual surface scoping: inside soft containers, nested controls return to solid with micro-elevation. */
+:where(
+  .program-card,
+  .admission-funding-option,
+  .finance-summary-container,
+  .finance-option-card,
+  .finance-fee-status-banner,
+  .finance-threshold-item,
+  .finance-phd-guarantee-card,
+  .roi-box,
+  .track-stats-box,
+  .track-extra-req,
+  .admissions-deadline-item,
+  .deadline-calendar__details,
+  .deadline-guidance-item,
+  .admissions-selection,
+  .profile-exam-item,
+  .lang-item,
+  .profile-summary
+) {
+  --control-bg: var(--surface-solid);
+  --control-shadow: var(--shadow-xs);
 }
 
 .ui-input-composite:focus-within {

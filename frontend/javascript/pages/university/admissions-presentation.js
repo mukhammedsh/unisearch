@@ -20,10 +20,11 @@ export function formatPublishedDate(value) {
     const month = label(`month.${Number(iso[2])}`);
     return getCurrentLanguage() === "eng" ? `${month} ${Number(iso[3])}, ${iso[1]}` : `${Number(iso[3])} ${month} ${iso[1]}`;
   }
-  const middle = text.match(/^mid-(January|February|March|April|May|June|July|August|September|October|November|December)$/i);
+  // "mid-April" and "early April" are published as approximate dates; both read in the interface language.
+  const middle = text.match(/^(mid-|early )(January|February|March|April|May|June|July|August|September|October|November|December)$/i);
   if (middle) {
-    const month = formatPublishedDate(`${middle[1][0].toUpperCase()}${middle[1].slice(1).toLowerCase()} 1`).replace(/\b1\b/, "").trim();
-    return label("mid_month").replace("{month}", month);
+    const month = formatPublishedDate(`${middle[2][0].toUpperCase()}${middle[2].slice(1).toLowerCase()} 1`).replace(/\b1\b/, "").trim();
+    return label(/^mid/i.test(middle[1]) ? "mid_month" : "early_month").replace("{month}", month);
   }
   const match = text.match(/^(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2})$/);
   if (!match) return text === "January test dates accepted" ? label("january_tests") : text;
@@ -152,20 +153,21 @@ export function plainPeriodLabel(value, kind = "") {
   return "";
 }
 
-// The published period as plain muted text in the applicant's language; the original wording remains in the full source records.
-function periodNote(row, { omitYearless = false } = {}) {
+// The published period as plain muted text in the applicant's language: an entry year or academic year only. A note that
+// the page names no year is research scope, not an answer, so it stays in the full source records.
+function periodNote(row) {
   const value = period(row || {}) || row?.scope?.cycle || "";
   const plain = plainPeriodLabel(value, row?.period?.kind);
-  if (!plain || (omitYearless && plain === label("yearless_period"))) return "";
+  if (!plain || [label("yearless_period"), label("current_policy")].includes(plain)) return "";
   return `<span data-source-period>${escapeHtml(plain)}</span>`;
 }
 
-function sourceNote(row, resolved, { omitYearless = false, omitPeriod = false } = {}) {
-  const content = `${omitPeriod ? "" : periodNote(row, { omitYearless })}${markers(row, resolved)}`;
+function sourceNote(row, resolved, { omitPeriod = false } = {}) {
+  const content = `${omitPeriod ? "" : periodNote(row)}${markers(row, resolved)}`;
   return content ? `<div class="admissions-reading__source">${content}</div>` : "";
 }
 
-function sourceSummaries(rows, resolved, section, options = {}) {
+function sourceSummaries(rows, resolved, section) {
   const seen = resolved.readingSeen || new Set();
   // The CS MS policy includes the central English minima and exemptions; retain the shared record in full references.
   const csEnglish = section === "requirements" && rows.some(row => row.id === "engineering-doerr-evidence:cs-ms-tests-and-english-policy"
@@ -184,16 +186,15 @@ function sourceSummaries(rows, resolved, section, options = {}) {
       seen.add(key);
       return true;
     });
-    return texts.length ? { row, texts, status, period: periodNote(row, options) } : null;
+    return texts.length ? { row, texts, status, period: periodNote(row) } : null;
   }).filter(Boolean);
   if (!excerpts.length) return "";
   // A period shared by every excerpt of the section is stated once under its heading; differing periods stay beside their excerpts.
   const sharedPeriod = excerpts.length > 1 && excerpts[0].period && excerpts.every(item => item.period === excerpts[0].period) ? excerpts[0].period : "";
-  const statusNote = status => status === "conflict" ? label("source_conflict")
-    : status === "carried_forward" ? t("university.admissions.catalog.review.carried_forward_review") : label("source_unverified");
-  const statusAttribute = status => status === "conflict" ? "data-summary-conflict"
-    : status === "carried_forward" ? "data-summary-carried-forward" : "data-summary-unverified";
-  const blocks = excerpts.map(({ row, texts, status }) => `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${status !== "reviewed" ? `<p class="admissions-context__note" ${statusAttribute(status)}>${escapeHtml(statusNote(status))}</p>` : ""}${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, { ...options, omitPeriod: Boolean(sharedPeriod) })}</div>`);
+  // A text that is unconfirmed or conflicting says so beside it; a carried-forward review is provenance and stays in the full records.
+  const statusNote = status => status === "conflict" ? label("source_conflict") : label("source_unverified");
+  const statusAttribute = status => status === "conflict" ? "data-summary-conflict" : "data-summary-unverified";
+  const blocks = excerpts.map(({ row, texts, status }) => `<div class="admissions-reading__excerpt" data-summary-fact="${escapeHtmlAttr(row.id)}">${!["reviewed", "carried_forward"].includes(status) ? `<p class="admissions-context__note" ${statusAttribute(status)}>${escapeHtml(statusNote(status))}</p>` : ""}${texts.map(text => `<p>${escapeHtml(text)}</p>`).join("")}${sourceNote(row, resolved, { omitPeriod: Boolean(sharedPeriod) })}</div>`);
   return `<section class="admissions-reading__section" data-source-summary="${section}"><h3>${escapeHtml(label(`summary_${section}`))}</h3>${sharedPeriod ? `<div class="admissions-reading__source" data-section-period>${sharedPeriod}</div>` : ""}${blocks.join("")}</section>`;
 }
 
@@ -237,7 +238,9 @@ function requirements(rows, resolved) {
         renderAdmissionsValue(exam.minimum), renderAdmissionsValue(exam.recommended),
       ]);
       const condition = row.conditions?.find(item => item.when === "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)");
-      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("language"))}</h3><p>${renderAdmissionsValue(value.presence)}</p>${condition ? `<p>${escapeHtml(label("english_condition"))}</p>` : ""}${table(label("language_scores"), [label("exam"), label("minimum"), label("recommended")], entries)}${sourceNote(row, resolved)}</section>`;
+      // A score floor for an optional test applies only to applicants who take it; a bare "Minimum" would read as a requirement.
+      const minimumHeading = label(value.presence === "required" ? "minimum" : "minimum_if_taken");
+      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("language"))}</h3><p>${renderAdmissionsValue(value.presence)}</p>${condition ? `<p>${escapeHtml(label("english_condition"))}</p>` : ""}${table(label("language_scores"), [label("exam"), minimumHeading, label("recommended")], entries)}${sourceNote(row, resolved)}</section>`;
     }
     if (Array.isArray(value.required) && value.required.every(item => typeof item === "string") && ["documents", "application_process"].includes(row.topic)) {
       const documentLabels = {
@@ -302,7 +305,7 @@ function deadlines(rows, resolved) {
       : tests.map(window => [escapeHtml(windowName(window.round)), escapeHtml(window.tests.map(test => test === "English proficiency" ? label("language") : test).join(", ")), escapeHtml(formatPublishedDate(window.latest))]);
     const recurring = !row.scope?.cycle && !/20\d{2}/.test(JSON.stringify(windows)) && !recurringShown;
     if (recurring) recurringShown = true;
-    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermList(glossaryTerms(rounds.map(window => window.name), tests.map(window => window.round)), resolved.readingTerms)}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved, { omitYearless: recurringShown })}</section>`;
+    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermList(glossaryTerms(rounds.map(window => window.name), tests.map(window => window.round)), resolved.readingTerms)}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved)}</section>`;
   }).join("");
 }
 
@@ -334,7 +337,8 @@ function finance(rows, resolved) {
       : availability === "not_established" ? "funding_unconfirmed" : "potential_aid";
     return `<section class="admissions-reading__section" data-funding-availability="${escapeHtmlAttr(availability || "conditional")}"><h3>${escapeHtml(row.value.funding_program === "Need-based Aid" ? label("aid_title") : row.value.funding_program)}</h3><p>${escapeHtml(label(status))}</p>${row.value.eligibility_note ? `<p>${escapeHtml(translateAdmissionSummary(row.value.eligibility_note) || row.value.eligibility_note)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
   }).join("");
-  return `${budgets.length ? "" : `<p class="admissions-reading__note">${escapeHtml(label("no_budget"))}</p>`}${budgetHtml}${fundingHtml}`;
+  // Without a published budget the tab's cost answer above already says what is known; no extra note repeats it.
+  return `${budgetHtml}${fundingHtml}`;
 }
 
 export function billingPeriodLabel(value) {
@@ -402,7 +406,13 @@ function scholarshipRounds(rows, resolved) {
   }).join("");
 }
 
-export function renderApplicantSection(source, domains) {
+/**
+ * @param {object} source The admissions-context response.
+ * @param {string[]} domains The fact domains the tab reads.
+ * @param {{checkDetails?: string}} [options] `checkDetails`: how the key facts checked each condition (HTML), kept in the "Sources" disclosure.
+ * @returns {string} The tab's reading area as HTML.
+ */
+export function renderApplicantSection(source, domains, { checkDetails = "" } = {}) {
   // Each tab's reading area numbers its own sources, explains each term once and prints each identical excerpt once.
   const resolved = { ...source, readingSources: createSourceRegistry(source), readingTerms: new Set(), readingSeen: new Set() };
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
@@ -417,10 +427,8 @@ export function renderApplicantSection(source, domains) {
   const summaryRows = (resolved.facts || []).filter(row => row.applicability?.status !== "mismatched");
   const tba = mode === "dates" && resolved.selected_route && !Object.values(resolved.context_applicability || {}).includes("mismatched") && (resolved.unknowns || []).find(row => row.id === "nu-b-gap-future-central-dates" && row.applicability?.status !== "mismatched" && row.scope?.option_ids?.includes(resolved.selected_option?.id));
   const tbaSource = tba && { ...tba, source_ids: tba.source_ids?.filter(id => resolved.selected_option?.levels?.includes("masters") ? id.includes("master-regular") : id.includes("doctoral-regular")) };
-  const hasYearlessDates = focused.some(row => reviewed(row) && !row.scope?.cycle && Array.isArray(row.value?.windows)
-    && row.value.windows.some(window => typeof window.name === "string" && typeof window.application_due === "string") && !/20\d{2}/.test(JSON.stringify(row.value.windows)));
-  const highlights = mode === "finance" ? `<p class="admissions-reading__note" data-finance-scope>${escapeHtml(label("cost_scope"))}</p>${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
-    : mode === "dates" ? `${tba ? `<section class="admissions-reading__section" data-dates-tba><p>${escapeHtml(label("dates_tba"))}</p><p>${escapeHtml(label("dates_tba_next"))}</p>${sourceNote(tbaSource, resolved)}</section>` : ""}${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines", { omitYearless: hasYearlessDates })}`
+  const highlights = mode === "finance" ? `${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
+    : mode === "dates" ? `${tba ? `<section class="admissions-reading__section" data-dates-tba><p>${escapeHtml(label("dates_tba"))}</p><p>${escapeHtml(label("dates_tba_next"))}</p>${sourceNote(tbaSource, resolved)}</section>` : ""}${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines")}`
       : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
   const references = facts => renderAdmissionsContext({ ...source, facts }, {
     domains: [...domains, ...(referenceIds.size ? ["reference"] : [])], includeAssessment: false, includeUnknowns: false, includeHistory: false,
@@ -428,12 +436,15 @@ export function renderApplicantSection(source, domains) {
   });
   const unknowns = mode === "requirements" ? source.unknowns || [] : [];
   const count = focused.length + general.length + unknowns.length;
-  const hasReading = highlights.includes("admissions-reading__section");
-  // Every full record, the additional references and the unresolved information sit behind one disclosure, with one language note.
-  const records = count ? `<details class="admissions-reading__references" data-all-records ${hasReading ? "" : "open"}><summary>${escapeHtml(label("full_records"))} (${count})</summary>
+  // The tab's plain answers come first (the key facts above it); the official pages, every full record, the additional
+  // references and the unresolved information sit behind one closed "Sources" disclosure with one language note.
+  const fullRecords = count ? `<details class="admissions-reading__references" data-full-records><summary>${escapeHtml(label("full_records"))}</summary>
     <p class="admissions-reading__note">${escapeHtml(label("reference_scope_note"))}</p>${focused.length ? references(focused) : ""}
     ${general.length ? `<details class="admissions-reading__references" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}
-    ${unknowns.length ? renderAdmissionsUnknowns(source) : ""}</details>`
+    ${unknowns.length ? renderAdmissionsUnknowns(source) : ""}</details>` : "";
+  const sourceList = renderSourceList(resolved.readingSources);
+  const sourceCount = resolved.readingSources.entries().length;
+  const records = sourceList || fullRecords || checkDetails ? `<details class="admissions-reading__references admissions-reading__provenance" data-all-records><summary>${escapeHtml(sourceCount ? tFormat("university.admissions.reading.sources_disclosure_count", { count: sourceCount }) : label("sources_disclosure"))}</summary>${checkDetails}${sourceList}${fullRecords}</details>`
     : tba ? "" : references([]);
-  return `<div class="admissions-reading">${highlights}${mode === "finance" && !focused.some(row => row.value?.funding_program) ? `<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>` : ""}${renderSourceList(resolved.readingSources)}${records}</div>`;
+  return `<div class="admissions-reading">${highlights}${records}</div>`;
 }

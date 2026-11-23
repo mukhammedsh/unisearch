@@ -497,7 +497,7 @@
 
 .compare-reviewed__fee-option[aria-pressed="true"] {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 /* Program picker dialog */
@@ -654,7 +654,7 @@
 
 .compare-picker__level[aria-pressed="true"] {
   background: var(--accent-soft);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 .compare-picker__list {
@@ -692,7 +692,7 @@
 
 .compare-picker__option[aria-current="true"] {
   background: var(--accent-faint);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 .compare-picker__option-text {
@@ -726,6 +726,11 @@
 .compare-picker__more,
 .compare-picker__back {
   align-self: flex-start;
+}
+
+.compare-picker .compare-picker__back {
+  background: var(--surface-soft);
+  box-shadow: none;
 }
 
 .compare-picker__state {

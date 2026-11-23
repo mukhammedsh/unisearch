@@ -94,7 +94,7 @@ test("accepted MIT and Stanford qualification context stays source-scoped and un
     const html = renderAdmissionsContext(acceptedContext(institutionId, optionId, routeId, factId), { domains: ["requirements"] });
     assert.match(html, sourceText, institutionId);
     assert.match(html, /Not assessed/, institutionId);
-    assert.match(html, /Some published minima or their conditions cannot yet be assessed/, institutionId);
+    assert.match(html, /Some conditions cannot be compared with your profile/, institutionId);
     assert.doesNotMatch(html, /<strong>\d+(?:\.\d+)?%<\/strong>/, institutionId);
     assert.match(html, /Applicant evidence is self-reported/, institutionId);
     assert.doesNotMatch(html, /Accepted qualification|Explicitly not accepted/, institutionId);

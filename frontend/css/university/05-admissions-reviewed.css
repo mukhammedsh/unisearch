@@ -230,6 +230,13 @@
   display: grid;
 }
 
+/* The separate grant application names itself and the way back to the admission path. */
+.admissions-key-facts__notice {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
 .admissions-key-facts__row {
   display: grid;
   grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);
@@ -258,6 +265,83 @@
   overflow-wrap: anywhere;
   /* Key-fact answers are often full sentences; regular weight keeps the list calm, the label column carries structure. */
   font-weight: var(--font-weight-regular);
+}
+
+/* Published minimums with the applicant's own status, marked like the Overview checklist. */
+.admissions-key-facts__checklist {
+  display: grid;
+  gap: var(--space-2);
+  /* The key-fact cell's own gap spaces the checklist from the answer above it. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.admissions-key-facts__checklist > li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  line-height: var(--leading-normal);
+}
+
+.admissions-key-facts__mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-4);
+  height: calc(1em * var(--leading-normal));
+  color: var(--text-muted);
+}
+
+.admissions-key-facts__checklist > li[data-mark="todo"] .admissions-key-facts__mark::before {
+  content: "";
+  width: var(--space-1-5);
+  height: var(--space-1-5);
+  border-radius: var(--radius-circle);
+  background: currentColor;
+}
+
+.admissions-key-facts__checklist > li[data-mark="met"] .admissions-key-facts__mark {
+  color: var(--color-success);
+}
+
+.admissions-key-facts__checklist > li[data-mark="below"] .admissions-key-facts__mark {
+  color: var(--color-warning);
+}
+
+/* A note that asks for a missing result opens that field in the profile. */
+a.admissions-key-facts__checklist-note {
+  width: fit-content;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+a.admissions-key-facts__checklist-note:hover {
+  color: var(--interaction-hover-text);
+}
+
+.admissions-key-facts__checklist-text {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.admissions-key-facts__checklist-note {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+/* Short funding lines: award type, coverage and deadline, as the university publishes them. */
+.admissions-key-facts__lines {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  overflow-wrap: anywhere;
 }
 
 .admissions-key-facts__flag {
@@ -329,15 +413,6 @@ a.admissions-key-facts__link {
 .admissions-reading__references > .admissions-catalog,
 .admissions-reading__references > .admissions-reading__note {
   padding-top: var(--space-3);
-}
-
-.admissions-tabs-navigation {
-  position: relative;
-  min-width: 0;
-}
-
-.admissions-tabs-navigation > button {
-  display: none;
 }
 
 /* Top-level admissions sections are separated like Overview sections, clearly wider than heading-to-body spacing. */
@@ -770,16 +845,11 @@ details[open] > summary > .admissions-disclosure-icon {
 :is(
   .admissions-context__heading button,
   .admissions-context__actions button:not([type="submit"]),
-  .admissions-programs__pagination button
+  .admissions-programs__pagination button,
+  .admissions-state button
 ) {
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-micro);
-  color: var(--text);
-}
-
-.admissions-state button {
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-micro);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
 }
 
@@ -1057,7 +1127,7 @@ details[open] > summary > .admissions-disclosure-icon {
 .admissions-catalog__record-link {
   padding: 0;
   background: none;
-  color: var(--accent);
+  color: var(--text);
   font: inherit;
   text-align: start;
   text-decoration: underline;
@@ -1167,7 +1237,7 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-state .center-loading-spinner {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .university--reviewed .d-page {
@@ -1346,8 +1416,8 @@ details[open] > summary > .admissions-disclosure-icon {
   min-height: 44px;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-base);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-micro);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
   cursor: pointer;
   font: inherit;
@@ -1544,9 +1614,11 @@ details[open] > summary > .admissions-disclosure-icon {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  color: var(--accent-strong);
+  color: var(--text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
 }
 
 .admissions-reading h4,
@@ -1648,36 +1720,6 @@ details[open] > summary > .admissions-disclosure-icon {
   .d-head-links > .d-site-link {
     min-width: 0;
     padding-inline: var(--space-2);
-  }
-
-  .admissions-tabs-navigation {
-    display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) 32px;
-    align-items: center;
-    scroll-margin-top: var(--space-20);
-  }
-
-  .admissions-tabs-navigation > button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    padding: 0;
-    border-radius: var(--radius-sm);
-    background: var(--surface-soft);
-    color: var(--text);
-    cursor: pointer;
-  }
-
-  .admissions-tabs-navigation > button:disabled {
-    opacity: var(--interaction-disabled-opacity);
-    cursor: default;
-  }
-
-  .admissions-tabs-navigation > .d-tabs {
-    min-width: 0;
-    padding-inline: 0;
-    scroll-behavior: smooth;
   }
 
   .admissions-selection {

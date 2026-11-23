@@ -66,3 +66,26 @@ test("anti-slop lint catches uppercase, positive letter-spacing, italic, hover b
     fs.unlinkSync(tmpFile);
   }
 });
+
+test("color-role-mismatch lint catches fill and surface tokens used as foreground colors", async () => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const tmpFile = path.join(os.tmpdir(), `unisearch-color-role-${Date.now()}.css`);
+  fs.writeFileSync(
+    tmpFile,
+    [
+      ".bad-link { color: var(--accent); }",
+      ".bad-step { color: var(--surface-solid); }",
+      ".good-link { color: var(--accent-text); }",
+      ".range::-webkit-slider-thumb { color: var(--accent); }",
+    ].join("\n"),
+    "utf8"
+  );
+  try {
+    const { violations } = scanCssFile(tmpFile);
+    const mismatches = violations.filter((v) => v.type === "color-role-mismatch");
+    assert.deepEqual(mismatches.map((v) => v.line), [1, 2]);
+  } finally {
+    fs.unlinkSync(tmpFile);
+  }
+});

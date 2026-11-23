@@ -125,7 +125,7 @@
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
   background: var(--accent-panel);
   box-shadow: var(--shadow-sm);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 .settings-trigger-btn {
@@ -154,7 +154,7 @@
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger::after {
   opacity: 1;
-  background-color: var(--accent);
+  background-color: currentColor;
   transform: rotate(180deg);
 }
 
@@ -255,7 +255,7 @@
 
 .icon-btn{
   background: var(--surface-soft);
-  color: var(--accent);
+  color: var(--text-muted);
   width: 36px;
   height: 36px;
   border-radius: var(--radius-md);
@@ -344,6 +344,7 @@
 }
 
 :where(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  display: none;
   position: absolute;
   top: calc(100% + var(--space-2));
   left: 0;
@@ -357,6 +358,7 @@
   z-index: var(--z-dropdown);
   opacity: 0;
   visibility: hidden;
+  translate: var(--tooltip-shift-x, 0px) 0;
   transform: translateY(-4px);
   pointer-events: none;
   transition:
@@ -375,6 +377,7 @@
 
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):focus-within > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content),
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip).is-open > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  display: var(--tooltip-display, block);
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -382,6 +385,7 @@
 }
 
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip).is-closed > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  display: none;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
@@ -929,7 +933,7 @@
 }
 
 .toast.info .toast-icon {
-  color: var(--accent);
+  color: var(--color-info);
 }
 
 .toast-close {
@@ -1085,14 +1089,13 @@ select:not(.u-select-hidden) {
 }
 
 .custom-options {
+  display: none;
   position: absolute;
   inset-block-start: 100%;
   inset-inline: 0;
   border-radius: var(--dropdown-radius);
   box-shadow: var(--shadow-md);
   background: var(--dropdown-surface);
-  visibility: hidden;
-  pointer-events: none;
   z-index: var(--z-dropdown);
   max-block-size: min(220px, var(--dropdown-available-height, 220px));
   overflow-x: hidden;
@@ -1102,8 +1105,7 @@ select:not(.u-select-hidden) {
 }
 
 .custom-select-wrapper.open .custom-options {
-  visibility: visible;
-  pointer-events: auto;
+  display: block;
 }
 
 .custom-select-wrapper.open-up .custom-options {
@@ -1383,14 +1385,14 @@ select:not(.u-select-hidden) {
   .navbar-search-toggle:hover,
   .lang-switch:hover,
   .navbar-right .lang-control .custom-select-trigger:hover {
-    background: var(--accent-panel);
+    background: var(--interaction-hover-surface);
     box-shadow: var(--shadow-sm);
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .navbar-right .lang-control .custom-select-trigger:hover::after {
     opacity: 1;
-    background-color: var(--accent);
+    background-color: currentColor;
   }
 
   .icon-btn:hover {
@@ -1398,6 +1400,7 @@ select:not(.u-select-hidden) {
   }
 
   :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+    display: var(--tooltip-display, block);
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -1418,7 +1421,7 @@ select:not(.u-select-hidden) {
   }
 
   .settings-attribution a:hover {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .toast-close:hover {
@@ -1436,7 +1439,7 @@ select:not(.u-select-hidden) {
   }
 
   .footer-legal-links a:hover {
-    color: var(--accent);
+    color: var(--interaction-hover-text);
   }
 
   .social-links a:hover {

@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { costFact, deadlineFact, fundingFact, renderAdmissionsKeyFacts, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+const { costFact, deadlineFact, englishRecommendationItem, englishStatus, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, renderTabAnswers, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 await initI18n();
 setLanguage("eng", { emit: false });
 
@@ -59,7 +59,7 @@ test("yearless rounds and application periods are shown as published without a c
     { name: "Regular Action", application_due: "January 4" }] } };
   const yearless = deadlineFact(withRows([rounds]), NOW);
   assert.equal(yearless.status, "yearless");
-  assert.match(yearless.text, /without a year: Early Action[^:]*: November 1; Regular Action[^:]*: January 4/);
+  assert.match(yearless.text, /without a year: Early application \(Early Action\): November 1; Regular application \(Regular Action\): January 4/);
   assert.equal(yearless.days, undefined);
   const period = { ...events([]), id: "window", attributes: {}, normalized_status: { publication: "partially_published", review: "verified" },
     value: { application_period: "October 2026–August 2027", submission: "rolling basis" } };
@@ -75,16 +75,16 @@ test("yearless dates the record describes as recurring get their next calendar o
   const fact = deadlineFact(withRows([recurringRounds()]), today);
   assert.equal(fact.status, "recurring");
   assert.equal(fact.days, 55);
-  assert.match(fact.text, /^Early Action[^:]*: November 1 has passed\. Next: Regular Action[^—]*— January 4, 2027, in 55 days \(annual date; confirm the year on the official page\)$/);
+  assert.match(fact.text, /^Early application \(Early Action\): November 1 has passed\. Next: Regular application \(Regular Action\) — January 4 \(the university does not state the year\), in about 55 days; confirm it on the official page$/);
   assert.deepEqual(fact.terms, ["early_action", "regular_action"]);
   // Before the first round nothing has passed; after the last one the next occurrence is the following year's first round.
   const beforeEarly = deadlineFact(withRows([recurringRounds()]), new Date(2026, 9, 1, 12, 0));
-  assert.match(beforeEarly.text, /^Next: Early Action[^—]*— November 1, 2026, in 31 days/);
+  assert.match(beforeEarly.text, /^Next: Early application \(Early Action\) — November 1 \(the university does not state the year\), in about 31 days/);
   const afterRegular = deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 10, 12, 0));
-  assert.match(afterRegular.text, /^Next: Early Action[^—]*— November 1, 2027, in 295 days/);
-  assert.match(deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 4, 12, 0)).text, /^Next: Regular Action[^—]*— January 4, 2027, today /);
+  assert.match(afterRegular.text, /^Next: Early application \(Early Action\) — November 1 \(the university does not state the year\), in about 295 days/);
+  assert.match(deadlineFact(withRows([recurringRounds()]), new Date(2027, 0, 4, 12, 0)).text, /^Next: Regular application \(Regular Action\) — January 4 \(the university does not state the year\), today;/);
   setLanguage("rus", { emit: false });
-  assert.match(deadlineFact(withRows([recurringRounds()]), today).text, /ежегодная дата; год уточните на официальной странице/);
+  assert.match(deadlineFact(withRows([recurringRounds()]), today).text, /год университет не указывает.*уточните на официальной странице/);
   setLanguage("eng", { emit: false });
 });
 
@@ -123,18 +123,18 @@ test("Stanford's recurring first-year and transfer windows get the next calendar
   const firstYear = deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today);
   assert.equal(firstYear.status, "recurring");
   assert.equal(firstYear.days, 56);
-  assert.match(firstYear.text, /^Restrictive Early Action[^:]*: November 1 has passed\. Next: Regular Decision[^—]*— January 5, 2027, in 56 days \(annual date; confirm the year on the official page\)$/);
+  assert.match(firstYear.text, /^Early application with limits \(Restrictive Early Action\): November 1 has passed\. Next: Regular application \(Regular Decision\) — January 5 \(the university does not state the year\), in about 56 days; confirm it on the official page$/);
   assert.deepEqual(firstYear.terms, ["restrictive_early_action", "regular_decision"]);
   // After Regular Decision the following year's Restrictive Early Action date leads.
-  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), new Date(2027, 0, 10, 12, 0)).text, /^Next: Restrictive Early Action[^—]*— November 1, 2027, in 295 days/);
+  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), new Date(2027, 0, 10, 12, 0)).text, /^Next: Early application with limits \(Restrictive Early Action\) — November 1 \(the university does not state the year\), in about 295 days/);
   const transfer = deadlineFact(withRows([stanfordProse, stanfordTransfer]), today);
   assert.equal(transfer.status, "recurring");
   assert.equal(transfer.days, 125);
-  assert.match(transfer.text, /^Next: Transfer application — March 15, 2027, in 125 days \(annual date; confirm the year on the official page\)$/);
+  assert.match(transfer.text, /^Next: Transfer application — March 15 \(the university does not state the year\), in about 125 days; confirm it on the official page$/);
   // The window names follow the interface language.
   setLanguage("rus", { emit: false });
-  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today).text, /^Restrictive Early Action · .*: 1 ноября — срок прошёл\. Следующий: Regular Decision · .* — 5 января 2027/);
-  assert.match(deadlineFact(withRows([stanfordTransfer]), today).text, /^Следующий: Подача на перевод — 15 марта 2027/);
+  assert.match(deadlineFact(withRows([stanfordProse, stanfordFirstYear]), today).text, /^Ранняя подача с ограничением \(Restrictive Early Action\): 1 ноября — срок прошёл\. Следующий: Обычная подача \(Regular Decision\) — 5 января \(год университет не указывает\)/);
+  assert.match(deadlineFact(withRows([stanfordTransfer]), today).text, /^Следующий: Подача на перевод — 15 марта \(год университет не указывает\)/);
   setLanguage("eng", { emit: false });
 });
 
@@ -147,7 +147,7 @@ test("the application deadline is the headline and a nearer test or booking date
   assert.equal(fact.days, 64);
   assert.match(fact.text, /^Application deadline: January 13, 2027, in 64 days$/);
   assert.equal(fact.notes.length, 1);
-  assert.match(fact.notes[0], /^Earlier: .*TMUA.*December 21, 2026, in 41 days$/);
+  assert.match(fact.notes[0], /^Before that, first: .*TMUA.*December 21, 2026, in 41 days$/);
   // Once the application deadline is behind, the nearest remaining date leads and nothing precedes it.
   const late = deadlineFact(withDates(list), new Date(2027, 0, 20, 12, 0));
   assert.match(late.text, /February 5, 2027/);
@@ -181,7 +181,9 @@ test("tuition-only prices never look like a full budget", () => {
   assert.match(within.flag.text, /living costs are extra/);
   const over = costFact(context({ selected_costs: { annual_total: quote({ min: 92760, max: 92760, usd: { min: 92760, max: 92760 } }), tuition: quote() } }), 10000);
   assert.equal(over.status, "over");
-  assert.match(over.text, /Published budget: \$92,760/);
+  assert.match(over.text, /Yearly budget published by the university: \$92,760/);
+  // A published budget names the tuition it includes.
+  assert.match(over.referenceNote, /Of this, tuition is \$15,000; the rest is housing, meals and other costs\./);
   assert.equal(over.flag.tone, "danger");
   assert.match(over.flag.text, /Above your budget of \$10,000/);
 });
@@ -199,6 +201,12 @@ test("fee-status ranges, missing budgets, non-annual prices and missing prices s
   });
   assert.match(range.notes.join(" "), /Depends on fee status/);
   assert.match(range.notes.join(" "), /Add a yearly budget/);
+  // A converted calculated total carries a single "≈", in the total and in the living part.
+  const estimate = costFact(context({ selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", usd: { min: 13429, max: 63872 } }),
+    annual_total: quote({ min: 26050, max: 64300, currency: "GBP", calculation: "tuition_plus_living_range", living_min: 16000, living_max: 16500,
+      usd: { min: 34800, max: 85900 } }) } }), 0);
+  assert.doesNotMatch(`${estimate.text} ${estimate.notes.join(" ")}`, /≈\s*≈/);
+  assert.match(estimate.text, /≈ \$/);
   const program = costFact(context({ selected_costs: { tuition: quote({ billing_period: "whole_program", annual_comparable: false, usd: null }) } }), 20000);
   assert.equal(program.status, "not_annual");
   assert.equal(costFact(context({ selected_costs: { annual_total: null, tuition: null } }), 20000).status, "unknown");
@@ -209,9 +217,9 @@ test("requirements summarise measurable checks and fall back to the published re
     { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" }] } } } }));
   assert.match(measured.text, /1 of 2 measurable minimums met \(50%\)/);
   assert.equal(measured.tone, "warning");
-  assert.deepEqual(measured.notes, ["Conditions to check against the official rules: 1"]);
+  assert.deepEqual(measured.notes, ["Documents and other conditions are not checked here; the university's published records are under “Sources”."]);
   const unavailable = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [] } } } }));
-  assert.equal(unavailable.text, "Required applicant evidence is missing.");
+  assert.equal(unavailable.text, "Add your results to your profile to compare them with the minimums.");
 });
 
 test("missing requirement evidence names what to add and which overall scores already meet a minimum, never as a pass or fail", () => {
@@ -226,33 +234,72 @@ test("missing requirement evidence names what to add and which overall scores al
   const presence = { kind: "required_exam_presence", status: "missing", examIds: ["SAT", "ACT"] };
   const fact = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } }));
-  assert.equal(fact.text, "Required applicant evidence is missing.");
+  assert.equal(fact.text, "Add your results to your profile to compare them with the minimums.");
   assert.equal(fact.tone, "");
-  assert.deepEqual(fact.notes, [
-    "Academic requirement: add any one of: UNT (Kazakhstan) section scores; SAT test date",
-    "English requirement: add IELTS Academic test date and section scores",
-    "Required test: add TMUA result",
-    "Required test: add any one of: SAT result; ACT result",
-    // Only the overall score is named; the met IELTS Writing section is not a met requirement.
-    "Overall score already meets the published minimum: UNT (Kazakhstan), IELTS Academic",
-    "Conditions to check against the official rules: 1",
+  // The checklist names each published minimum and what to add, so the notes keep only the manual conditions.
+  assert.deepEqual(fact.notes, ["Documents and other conditions are not checked here; the university's published records are under “Sources”."]);
+  const resolved = context({ assessment: { chancePercent: null, reason: "missing_evidence",
+    activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } });
+  assert.deepEqual(minimumChecklist(resolved).map(({ kind, mark, text, note }) => ({ kind, mark, text, note })), [
+    { kind: "academic", mark: "partial", text: "Academic result, one of: UNT (Kazakhstan) 85, SAT 1240", note: "Add: UNT (Kazakhstan) section scores, SAT test date" },
+    { kind: "language", mark: "partial", text: "English: IELTS Academic", note: "Add: IELTS Academic test date and section scores" },
+    // A required test known only from what to add is still named.
+    { kind: "exam", mark: "todo", text: "Required test: TMUA", note: "Add: TMUA result" },
+    { kind: "exam", mark: "todo", text: "Required test, one of: SAT, ACT", note: "" },
   ]);
+  // A language check that asks for a result or section scores links to that test in the profile; other checks do not.
+  assert.deepEqual(minimumChecklist(resolved).map(item => item.href || ""), ["", "/profile.html?language_exam=IELTS", "", ""]);
+  assert.match(renderAdmissionsKeyFacts(resolved, { now: NOW }), /<a class="admissions-key-facts__checklist-note" href="\/profile.html\?language_exam=IELTS" data-route="profile">Add: IELTS Academic test date and section scores<\/a>/);
+  // Met and unmet checks state the applicant's own result; IELTS bands keep one decimal and scores no digit grouping.
+  const ielts = { kind: "language_requirement", status: "unmet", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6 }] }, provided: { exam: "IELTS", score: 5.5 } };
+  const sat = { kind: "academic_requirement", status: "met", rule: { alternatives: [{ profile_field: "gpa", minimum: 4, scale: 5 }, { exam_id: "SAT", minimum: 1240 }] }, provided: { exam: "SAT", score: 1300 } };
+  assert.deepEqual(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [ielts, sat] } } } })).map(({ mark, text, note }) => ({ mark, text, note })), [
+    { mark: "below", text: "English: IELTS Academic 6.0", note: "You have: IELTS Academic 5.5, below the minimum" },
+    { mark: "met", text: "Academic result, one of: GPA 4 of 5, SAT 1240", note: "You have: SAT 1300" },
+  ]);
+  // A met GPA alternative names the profile GPA and its scale.
+  const gpa = { kind: "academic_requirement", status: "met", rule: { alternatives: [{ profile_field: "gpa", minimum: 4, scale: 5 }] }, provided: { gpa: 4.6, gpa_scale: 5 } };
+  assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [gpa] } } } }))[0].note, "You have: GPA 4.6 of 5");
+  // A section below its minimum is named; the overall score that meets the minimum does not hide it.
+  const lowWriting = { kind: "language_requirement", status: "unmet", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6, component_minimums: { IELTS_WRITING: 6 } }] },
+    provided: { exam: "IELTS", score: 6, minimum_checks: [{ exam: "IELTS", minimum: 6, provided: 6, status: "met" },
+      { exam: "IELTS_WRITING", minimum: 6, provided: 5.5, status: "unmet" }, { exam: "IELTS_READING", minimum: 5.5, provided: 6, status: "met" }] } };
+  assert.deepEqual(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [lowWriting] } } } })).map(({ mark, note }) => ({ mark, note })),
+    [{ mark: "below", note: "You have: IELTS Academic 6.0. Below the minimum: Writing 5.5 (at least 6.0 needed)" }]);
+  // Total UNT without section scores is checked in part and says what to add, never "met".
+  const untTotal = { kind: "academic_requirement", status: "missing", rule: { alternatives: [{ exam_id: "UNT", minimum: 85, component_minimums: { UNT_MATHEMATICAL_LITERACY: 8, UNT_READING_LITERACY: 8 } }] },
+    missingInputs: [{ exam: "UNT", needs: ["components"] }],
+    provided: { exam: "UNT", score: 110, minimum_checks: [{ exam: "UNT", minimum: 85, provided: 110, status: "met" }] } };
+  const untNote = minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [untTotal] } } } }))[0];
+  assert.equal(untNote.mark, "partial");
+  assert.match(untNote.note, /^Partly checked\. You have: UNT \(Kazakhstan\) 110; the overall score meets the minimum\. To finish the check, add: /);
+  // A result the check could not count is named without being presented as met.
+  const uncounted = { ...sat, status: "missing", missingInputs: [] };
+  assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [uncounted] } } } }))[0].note,
+    "You have: SAT 1300; whether it counts depends on the conditions below");
+  // An entered result stays visible beside what is still missing, and an overall score that meets the minimum says so.
+  const partial = { kind: "language_requirement", status: "missing", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6 }] },
+    missingInputs: [{ exam: "IELTS", needs: ["components", "taken_on"] }],
+    provided: { exam: "IELTS", score: 6.5, minimum_checks: [{ exam: "IELTS", minimum: 6, provided: 6.5, status: "met" }] } };
+  const partialResolved = context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [partial] } } } });
+  assert.equal(minimumChecklist(partialResolved)[0].note,
+    "Partly checked. You have: IELTS Academic 6.5; the overall score meets the minimum. To finish the check, add: IELTS Academic test date and section scores");
+  // With a checklist, the requirements row introduces it instead of asking to add results that are already there.
+  assert.doesNotMatch(renderAdmissionsKeyFacts(partialResolved, { now: NOW }), /Add your results to your profile/);
   // A check without nameable inputs adds no instruction, and a resolved assessment adds none either.
   const unnamed = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [{ kind: "scoped_gpa", status: "missing" }] } } } }));
   assert.deepEqual(unnamed.notes, []);
   assert.deepEqual(requirementsFact(context({ assessment: { chancePercent: 100, reason: "", activeChoice: { details: { checks: [{ ...academic, status: "met" }] } } } })).notes, []);
   setLanguage("rus", { emit: false });
-  assert.match(requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [academic] } } } })).notes[0],
-    /^Академическое требование: добавьте что-то одно из: баллы .* по разделам; дату сдачи SAT$/);
+  assert.equal(minimumChecklist(context({ assessment: { activeChoice: { details: { checks: [academic] } } } }))[0].text, "Академический результат, одно из: ЕНТ 85, SAT 1240");
   setLanguage("eng", { emit: false });
 });
-
 test("funding names a separate support application before counting records", () => {
   const support = fundingFact(context({ available_routes: [{ id: "support", title: "Financial support selection", classification: "financial_support_application" }],
     fact_groups: { funding: ["a"] } }));
   assert.match(support.text, /Applied for separately: Financial support selection/);
-  assert.match(fundingFact(context({ fact_groups: { funding: ["a", "b"] } })).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(context({ fact_groups: { funding: ["a", "b"] } })).text, /Funding records are in the official sources on the Costs and funding tab/);
   assert.match(fundingFact(context()).text, /No funding is catalogued/);
 });
 
@@ -263,7 +310,7 @@ test("the block appears only for a selected route and links to the dates and cos
   assert.match(html, /data-open-tab="tab-deadlines"/);
   assert.match(html, /data-open-tab="tab-finance"/);
   setLanguage("rus", { emit: false });
-  assert.match(renderAdmissionsKeyFacts(withDates([]), { now: NOW }), /Главное по этому пути/);
+  assert.match(renderAdmissionsKeyFacts(withDates([]), { now: NOW }), /Главное для поступления/);
   setLanguage("eng", { emit: false });
 });
 
@@ -306,15 +353,15 @@ test("funding shows one published need policy for the selected route as policy, 
   const withAid = row => context({ facts: [row], fact_groups: { funding: ["aid", "other"] } });
   const policy = fundingFact(withAid(aid()));
   assert.equal(policy.text, "Published policy: MIT meets full demonstrated need using same consideration process");
-  assert.match(policy.notes[0], /not an award offered to you\. Funding records for this path: 2/);
+  assert.match(policy.notes[0], /not an award offered to you\.$/);
   setLanguage("rus", { emit: false });
   assert.match(fundingFact(withAid(aid())).text, /^Опубликованная политика вуза: /);
   setLanguage("eng", { emit: false });
   // Facts for another route, an unreviewed fact, and facts without the policy field never produce a policy.
-  assert.match(fundingFact(withAid(aid({ applicability: { route: "mismatched", status: "mismatched" } }))).text, /Funding records for this path: 2/);
-  assert.match(fundingFact(withAid(aid({ applicability: { route: "unknown", status: "conditional" } }))).text, /Funding records for this path: 2/);
-  assert.match(fundingFact(withAid(aid({ normalized_status: { publication: "published", review: "needs_resolution" } }))).text, /Funding records for this path: 2/);
-  assert.match(fundingFact(withAid(reviewedFact("aid", "funding", { summary: "Aid exists" }))).text, /Funding records for this path: 2/);
+  assert.match(fundingFact(withAid(aid({ applicability: { route: "mismatched", status: "mismatched" } }))).text, /Funding records are in the official sources on the Costs and funding tab/);
+  assert.match(fundingFact(withAid(aid({ applicability: { route: "unknown", status: "conditional" } }))).text, /Funding records are in the official sources on the Costs and funding tab/);
+  assert.match(fundingFact(withAid(aid({ normalized_status: { publication: "published", review: "needs_resolution" } }))).text, /Funding records are in the official sources on the Costs and funding tab/);
+  assert.match(fundingFact(withAid(reviewedFact("aid", "funding", { summary: "Aid exists" }))).text, /Funding records are in the official sources on the Costs and funding tab/);
 });
 
 test("funding and deadline rows name the terms the applicant sees without relying on translated text", () => {
@@ -331,4 +378,84 @@ test("funding and deadline rows name the terms the applicant sees without relyin
   setLanguage("rus", { emit: false });
   assert.match(renderAdmissionsKeyFacts(withRows([rounds]), { now: NOW }), /data-term="early_action"/);
   setLanguage("eng", { emit: false });
+});
+
+test("the Dates and Costs tabs open with the same plain answers as the key facts, without record detail", () => {
+  const resolved = { ...withRows([events([{ date: "2026-12-01", deadline_type: "application", publication_status: "published" }])]),
+    selected_costs: { tuition: quote() }, available_routes: [{ id: "aid", title: "Funding selection", classification: "financial_support_application" }] };
+  const dates = renderTabAnswers(resolved, "deadlines", { now: NOW });
+  assert.match(dates, /data-tab-answers="deadlines"/);
+  assert.match(dates, /data-key-fact="deadline"/);
+  assert.doesNotMatch(dates, /data-key-fact="(?:cost|funding|requirements)"/);
+  const costs = renderTabAnswers(resolved, "finance", { now: NOW });
+  assert.match(costs, /data-key-fact="cost"[\s\S]*data-key-fact="funding"/);
+  // A separate funding application is opened from the answer, as in the key facts.
+  assert.match(costs, /data-key-facts-route="aid"/);
+  assert.equal(renderTabAnswers({ ...resolved, selected_route: null }, "finance"), "");
+  // On the Costs tab the funding answer points below instead of at the tab the reader is on.
+  const records = { ...resolved, available_routes: [], fact_groups: { ...resolved.fact_groups, funding: ["grant"] } };
+  assert.match(renderTabAnswers(records, "finance"), /official sources under “Sources” below/);
+  assert.doesNotMatch(renderTabAnswers(records, "finance"), /Costs and funding/);
+});
+
+// MIT's published English-test recommendation, as the catalog stores it.
+const englishRecommendation = (extra = {}) => ({ id: "ug-english-recommendation", topic: "language_tests", source_ids: ["official"],
+  publication_status: "published", review_status: "verified", normalized_status: { publication: "published", review: "verified" },
+  applicability: { status: "matched" }, scope: { option_ids: [], route_ids: ["first-year"], levels: ["undergraduate"] },
+  value: { presence: "strongly_recommended", minima_and_recommendations: [
+    { exam: "TOEFL iBT", scale: "0-120", minimum: 90, recommended: 100 }, { exam: "IELTS Academic", minimum: 7, recommended: 7.5 },
+    { exam: "Duolingo English Test", minimum: 120, recommended: 125 }] },
+  conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)" }], ...extra });
+const withRecommendation = row => context({ facts: [row], fact_groups: { requirements: [row.id] } });
+
+test("an English-test recommendation for non-native speakers is a recommendation beside the applicant's result, never a pass or fail", () => {
+  const resolved = withRecommendation(englishRecommendation());
+  const ielts = { code: "en", kind: "exam", exam: "IELTS", score: 6.5 };
+  assert.equal(englishStatus({ languages: [{ code: "en", kind: "native" }] }), "native");
+  assert.equal(englishStatus({ languages: [{ code: "ru", kind: "native" }, ielts] }), "not_native");
+  assert.equal(englishStatus({ languages: [ielts] }), "unknown");
+  // English stated as native: no row at all.
+  assert.equal(englishRecommendationItem(resolved, { languages: [{ code: "en", kind: "native" }, ielts] }), null);
+  // Another native language: the row names the published minimum and the better score next to the applicant's own result.
+  const notNative = englishRecommendationItem(resolved, { languages: [{ code: "ru", kind: "native" }, ielts] });
+  assert.deepEqual({ ...notNative }, { kind: "language_recommendation", factId: "ug-english-recommendation", mark: "recommended",
+    text: "Recommended English test: IELTS Academic 7.0 (better 7.5)",
+    // With another native language stated, the condition left to check is the applicant's own use of English.
+    note: "Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.",
+    have: "You have: IELTS Academic 6.5" });
+  // Unknown native language: the same row plus a link to say it in the profile.
+  const unknown = englishRecommendationItem(resolved, { languages: [ielts] });
+  assert.equal(unknown.text, notNative.text);
+  assert.match(unknown.note, /if English is not your first language/);
+  assert.deepEqual(unknown.hint, { text: "Is English your native language? Say so in your profile, and this line will show only when it applies to you.", href: "/profile.html?language=en" });
+  // The applicant's own test leads; without one, IELTS stands for the list.
+  assert.match(englishRecommendationItem(resolved, { languages: [{ code: "en", kind: "exam", exam: "DET", score: 115 }] }).text, /Duolingo.*120 \(better 125\)/);
+  assert.equal(englishRecommendationItem(resolved, {}).have, undefined);
+  // Not a recommendation of this kind, or not reviewed: nothing.
+  assert.equal(englishRecommendationItem(withRecommendation(englishRecommendation({ conditions: [] })), {}), null);
+  assert.equal(englishRecommendationItem(withRecommendation(englishRecommendation({ value: { presence: "required", minima_and_recommendations: [] } })), {}), null);
+  assert.equal(englishRecommendationItem(withRecommendation(englishRecommendation({ review_status: "unverified", normalized_status: { publication: "published", review: "unverified" } })), {}), null);
+
+  const html = renderAdmissionsKeyFacts(resolved, { now: NOW, profile: { languages: [ielts] } });
+  assert.match(html, /<li data-mark="recommended" data-recommendation>/);
+  assert.match(html, /Recommendation, not a requirement/);
+  assert.doesNotMatch(html, /below the minimum|Below the published minimum/);
+  assert.match(html, /href="\/profile.html\?language=en" data-route="profile"/);
+  assert.doesNotMatch(renderAdmissionsKeyFacts(resolved, { now: NOW, profile: { languages: [{ code: "en", kind: "native" }] } }), /data-recommendation/);
+  setLanguage("rus", { emit: false });
+  assert.equal(englishRecommendationItem(resolved, { languages: [ielts] }).text, "Рекомендуемый тест по английскому: IELTS (академический модуль) 7,0 (лучше 7,5)");
+  setLanguage("eng", { emit: false });
+});
+
+test("a Kazakhstan document without a published ruling is answered at the top, a published one is not", async () => {
+  const { kazakhstanCredentialFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+  const note = { id: "kz", topic: "qualification_recognition", value: "Kazakhstan school-leaving qualifications are not listed.", source_ids: ["official"],
+    normalized_status: { publication: "unknown", review: "verified" }, scope: { applicant_categories: [] } };
+  const unlisted = kazakhstanCredentialFact(context({ facts: [note] }));
+  assert.match(unlisted.text, /no decision on school or degree documents from Kazakhstan/);
+  assert.deepEqual(unlisted.links, [{ url: "https://example.edu/apply", label: "Official guidance" }]);
+  assert.match(renderAdmissionsKeyFacts(context({ facts: [note] }), { now: NOW }), /data-key-fact="credential"/);
+  assert.equal(kazakhstanCredentialFact(context({ facts: [{ ...note, normalized_status: { publication: "published", review: "verified" } }] })), null);
+  assert.equal(kazakhstanCredentialFact(context({ facts: [{ ...note, value: "Albania qualifications" }] })), null);
+  assert.equal(kazakhstanCredentialFact(context({ facts: [{ ...note, applicability: { status: "mismatched" } }] })), null);
 });

@@ -149,17 +149,20 @@ def _exam_minimum(alternative, row):
         checks.append({"exam": alternative["exam_id"], "minimum": count_rule,
                        "provided": {"reported": len(values), "meeting_minimum": met},
                        "status": "met" if met >= count_rule["count"] else "missing" if len(values) < count_rule["count"] else "unmet"})
-    status = "missing" if any(item["status"] == "missing" for item in checks) else "unmet" if any(item["status"] == "unmet" for item in checks) else "met"
+    # A reported score below a published minimum stays below it whatever the other sections or the test date turn
+    # out to be, so a missing section, or a missing, future or out-of-window date, never hides it.
+    below_minimum = any(item["status"] == "unmet" for item in checks)
+    status = "unmet" if below_minimum else "missing" if any(item["status"] == "missing" for item in checks) else "met"
     dated = _dated_status(row.get("taken_on"), alternative.get("windows"))
-    if dated != "met":
+    if dated != "met" and not below_minimum:
         status = dated
-    if alternative.get("date_boundary"):
+    if alternative.get("date_boundary") and not below_minimum:
         boundary = alternative["date_boundary"]
         if not row.get("taken_on"):
             status = "missing"
         elif not boundary[0] <= row["taken_on"] <= boundary[1]:
             status = "unassessed"
-    if alternative.get("max_age_years"):
+    if alternative.get("max_age_years") and not below_minimum:
         status = "unassessed"
     if alternative.get("requires_review"):
         status = "unassessed"

@@ -17,6 +17,7 @@ import { initUniversityTranslations } from "../../university-translations.js";
 import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
+import { mountTabsNavigation } from "./tabs-navigation.js";
 import { mountOverviewSummary } from "./overview-summary.js";
 import { mountUniversityGallery } from "./gallery.js";
 import { heroIcon } from "../../icons.js";
@@ -48,6 +49,7 @@ let detailPopStateHandler = null;
 let detailAdmissionsCleanup = null;
 let detailOverviewSummaryCleanup = null;
 let detailGalleryCleanup = null;
+let detailTabsCleanup = null;
 let detailPageVersion = 0;
 
 function clearDetailLanguageSkeletons() {
@@ -97,6 +99,8 @@ function bindDetailLanguageLifecycle() {
 function cleanupDetailListeners() {
   detailGalleryCleanup?.();
   detailGalleryCleanup = null;
+  detailTabsCleanup?.();
+  detailTabsCleanup = null;
   detailAdmissionsCleanup?.();
   detailAdmissionsCleanup = null;
   detailOverviewSummaryCleanup?.();
@@ -323,6 +327,7 @@ function renderReviewedUniversityPage({ id, preserveVisibleContent, university, 
     cardEl.classList.add("is-mounted");
   }
   setupTabs();
+  detailTabsCleanup = mountTabsNavigation(cardEl);
   const initialUrl = new URL(window.location.href);
   const requestedTab = initialUrl.hash.match(/^#tab-(general|programs|admission|deadlines|finance)$/)?.[1];
   const initialTab = requestedTab || (initialUrl.searchParams.get("admission_application_route") ? "admission"
@@ -518,6 +523,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
     cardEl.classList.add("is-mounted");
   }
   setupTabs();
+  detailTabsCleanup = mountTabsNavigation(cardEl);
   // A link to a tab (for example from the overview or another page) opens that tab, as on reviewed pages.
   const requestedTab = window.location.hash.match(/^#tab-(general|programs|admission|deadlines|finance)$/)?.[1];
   if (requestedTab && requestedTab !== "general") document.querySelector(`[data-tab="tab-${requestedTab}"]`)?.click();

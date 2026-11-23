@@ -49,6 +49,24 @@ class NuAdmissionsTests(unittest.TestCase):
             result = self.assess(self.resolve(*args, profile=profile, cycle=cycle), profile)
             self.assertEqual(100.0, result["chancePercent"], cycle)
 
+    def test_shared_undergraduate_paths_read_without_a_program(self):
+        shared = {row["id"] for row in self.nu["application_routes"]
+                  if row["attributes"].get("admission_scope") == "institution_wide_undergraduate"}
+        self.assertEqual({"nu-a-route-regular-foundation-undergraduate", "nu-a-route-financial-support", "nu-a-route-transfer",
+                          "nu-a-route-midyear-2026-27"}, shared)
+        resolved = self.resolve("", "nu-a-route-regular-foundation-undergraduate", "undergraduate")
+        self.assertEqual("institution_route", resolved["reading_scope"])
+        self.assertIn("nu-a-fact-ug-english", {row["id"] for row in resolved["facts"]})
+        # First-pass graduate research notes are not history of an undergraduate path.
+        history = {row["id"] for row in resolved["history"]["facts"]}
+        self.assertFalse({ident for ident in history if ident.startswith("nu-b-fact-")})
+        # The Foundation Year is applied for through the shared application, so it is offered beside the shared paths.
+        with patch.object(admissions_catalog, "_institution", return_value=({"revision": "nu-test"}, self.nu, {**self.index, "search": {}})):
+            listing = admissions_catalog.list_study_options(NU_ID)
+            graduate = admissions_catalog.list_study_options(NU_ID, study_level="masters")
+        self.assertEqual(["nu-a-study-nu-foundation-year-program"], [row["id"] for row in listing["preparation_entries"]])
+        self.assertEqual([], graduate["preparation_entries"])
+
     def test_program_summary_exposes_its_reviewed_official_page(self):
         resolved = self.resolve("nu-a-study-bachelor-in-nursing", "nu-a-route-nursing", "undergraduate")
         self.assertEqual("https://nusom.nu.edu.kz/bn", resolved["selected_option"].get("course_url"))

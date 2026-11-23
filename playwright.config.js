@@ -23,6 +23,9 @@ module.exports = defineConfig({
   ],
   use: {
     baseURL: "http://127.0.0.1:5510",
+    // The default currency follows the device time zone and language; specs expect the US-dollar default.
+    timezoneId: "UTC",
+    locale: "en-US",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",

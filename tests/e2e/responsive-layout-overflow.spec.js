@@ -10,6 +10,9 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     // On desktop, the filter sidebar must be visible
     const sidebar = page.locator("#uSidebar");
     await expect(sidebar).toBeVisible();
+    await expect(sidebar.locator("#catalogLevelFilter")).toBeVisible();
+    await expect(sidebar.locator("#recentlyViewedBar")).toHaveCount(0);
+    await expect(page.locator("#mobileRecentSlot #recentlyViewedBar")).toHaveCount(1);
 
     // The mobile filter toggle button must be hidden
     const mobileFilterToggle = page.locator("#mobileFilterToggle");
@@ -26,6 +29,9 @@ test.describe("Responsive Layout and Overflow Verification", () => {
 
     const sidebar = page.locator("#uSidebar");
     await expect(sidebar).toBeVisible();
+    await expect(sidebar.locator("#catalogLevelFilter")).toBeVisible();
+    await expect(sidebar.locator("#recentlyViewedBar")).toHaveCount(0);
+    await expect(page.locator("#mobileRecentSlot #recentlyViewedBar")).toHaveCount(1);
 
     const initialScrollY = await page.evaluate(() => window.scrollY);
     expect(initialScrollY).toBe(0);
@@ -194,6 +200,9 @@ test.describe("Responsive Layout and Overflow Verification", () => {
 
     const sidebar = page.locator("#uSidebar");
     await expect(sidebar).toBeVisible();
+    await expect(sidebar.locator("#catalogLevelFilter")).toBeVisible();
+    await expect(sidebar.locator("#recentlyViewedBar")).toHaveCount(0);
+    await expect(page.locator("#mobileRecentSlot #recentlyViewedBar")).toHaveCount(1);
 
     // Expand the filter column so it always overflows its clamped height.
     await page.evaluate(() => {
@@ -218,6 +227,11 @@ test.describe("Responsive Layout and Overflow Verification", () => {
       return { y: box.y, height: box.height, scrollTop: el.scrollTop, pageY: window.scrollY };
     });
     expect(before.pageY).toBe(0);
+
+    // The unscrolled filter column must end inside the viewport, so a scrolled-to-the-end
+    // panel is visibly at its end before the page itself is scrolled.
+    const viewportHeight = page.viewportSize().height;
+    expect(before.y + before.height).toBeLessThanOrEqual(viewportHeight);
 
     // 1. Scrolling the catalog (page) must not resize or inner-scroll the filters.
     await page.evaluate(() => window.scrollTo(0, 400));
@@ -270,6 +284,66 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     expect(afterSidebarWheel.pageY).toBe(pageYBeforeSidebarWheel);
   });
 
+  test("closed filter dropdowns do not leave empty scroll space below the filter card", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    });
+
+    // On a tall viewport where all default filters fit, the sidebar should not scroll at all.
+    await page.setViewportSize({ width: 1920, height: 1080 });
+    await page.goto("/index.html");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    const tallMetrics = await page.evaluate(() => {
+      const sb = document.getElementById("uSidebar");
+      const card = sb.querySelector(".u-filter-card");
+      const padBottom = parseFloat(getComputedStyle(sb).paddingBottom) || 0;
+      return {
+        scrollHeight: sb.scrollHeight,
+        clientHeight: sb.clientHeight,
+        expectedHeight: card.offsetHeight + padBottom,
+      };
+    });
+    expect(tallMetrics.scrollHeight).toBeLessThanOrEqual(tallMetrics.expectedHeight + 2);
+    expect(tallMetrics.scrollHeight).toBeLessThanOrEqual(tallMetrics.clientHeight + 1);
+
+    // On a compact desktop viewport, scrolling to the bottom should stop at the card with no void below it,
+    // and opening the bottom Sort dropdown should flip upward inside the sidebar.
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/index.html");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    const compactMetrics = await page.evaluate(() => {
+      const sb = document.getElementById("uSidebar");
+      const card = sb.querySelector(".u-filter-card");
+      const padBottom = parseFloat(getComputedStyle(sb).paddingBottom) || 0;
+      sb.scrollTop = sb.scrollHeight;
+      const sbRect = sb.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      return {
+        scrollHeight: sb.scrollHeight,
+        expectedHeight: card.offsetHeight + padBottom,
+        gapBelowCard: sbRect.bottom - cardRect.bottom,
+        padBottom,
+      };
+    });
+    expect(compactMetrics.scrollHeight).toBeLessThanOrEqual(compactMetrics.expectedHeight + 2);
+    expect(compactMetrics.gapBelowCard).toBeLessThanOrEqual(compactMetrics.padBottom + 2);
+
+    const sortWrapper = page.locator(".custom-select-wrapper", { has: page.locator("#sortSelect") });
+    await sortWrapper.locator(".custom-select-trigger").click();
+    await expect(sortWrapper).toHaveClass(/\bopen\b/);
+    await expect(sortWrapper).toHaveClass(/\bopen-up\b/);
+    const panelInBounds = await page.evaluate(() => {
+      const sb = document.getElementById("uSidebar");
+      const opts = document.getElementById("custom-options-sortSelect");
+      const sbRect = sb.getBoundingClientRect();
+      const optsRect = opts.getBoundingClientRect();
+      return optsRect.top >= sbRect.top - 1 && optsRect.bottom <= sbRect.bottom + 1;
+    });
+    expect(panelInBounds).toBe(true);
+  });
+
   test("keeps navbar logo left-aligned under 560px viewport", async ({ page }) => {
     for (const width of [500, 420, 375]) {
       await page.setViewportSize({ width, height: 750 });
@@ -282,6 +356,84 @@ test.describe("Responsive Layout and Overflow Verification", () => {
       expect(navBox).not.toBeNull();
       // On mobile (<560px), navbar padding is 10-12px. Logo must stay anchored near left edge.
       expect(logoBox.x - navBox.x).toBeLessThanOrEqual(20);
+    }
+  });
+
+  test("fills single-column cards, keeps language trigger padding symmetric, and anchors filter overlays", async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+    });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/index.html?lang=rus");
+    await page.waitForSelector("#universitiesList .uni-card:not(.is-skeleton)");
+
+    for (const width of [607, 640]) {
+      await page.setViewportSize({ width, height: 911 });
+      const cardMetrics = await page.evaluate(() => {
+        const grid = document.getElementById("universitiesList");
+        const card = grid?.querySelector(".uni-card:not(.is-skeleton)");
+        const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").map(Number.parseFloat);
+        return { trackWidth: cols[0], cardWidth: card.getBoundingClientRect().width };
+      });
+      expect(cardMetrics.trackWidth - cardMetrics.cardWidth, `single-column card fill at ${width}px`).toBeLessThanOrEqual(2);
+    }
+
+    for (const vp of [
+      { width: 1280, height: 900 },
+      { width: 1001, height: 941 },
+      { width: 768, height: 900 },
+      { width: 640, height: 911 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(vp);
+      const pad = await page.evaluate(() => {
+        const trigger = document.querySelector(".navbar-right .lang-control .custom-select-trigger");
+        const cs = getComputedStyle(trigger);
+        return { left: Number.parseFloat(cs.paddingLeft), right: Number.parseFloat(cs.paddingRight) };
+      });
+      expect(Math.abs(pad.left - pad.right), `symmetric lang padding at ${vp.width}px`).toBeLessThanOrEqual(1);
+    }
+
+    for (const vp of [
+      { width: 1001, height: 941, mode: "drawer" },
+      { width: 768, height: 900, mode: "drawer" },
+      { width: 607, height: 911, mode: "sheet" },
+      { width: 375, height: 812, mode: "sheet" },
+    ]) {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await page.locator("#mobileFilterToggle").click();
+      await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
+
+      const overlay = await page.evaluate(() => {
+        const sidebar = document.getElementById("uSidebar");
+        const card = sidebar.querySelector(".u-filter-card");
+        const sr = sidebar.getBoundingClientRect();
+        const cr = card.getBoundingClientRect();
+        const ccs = getComputedStyle(card);
+        return {
+          innerHeight: window.innerHeight,
+          sidebarBottom: sr.bottom,
+          cardLeft: cr.left,
+          cardBottom: cr.bottom,
+          borderRadius: ccs.borderRadius,
+          bottomLeftRadius: ccs.borderBottomLeftRadius,
+          bottomRightRadius: ccs.borderBottomRightRadius,
+        };
+      });
+
+      expect(Math.abs(overlay.sidebarBottom - overlay.innerHeight), `${vp.width}px backdrop reaches viewport bottom`).toBeLessThanOrEqual(1);
+      expect(Math.abs(overlay.cardBottom - overlay.innerHeight), `${vp.width}px filter card reaches viewport bottom`).toBeLessThanOrEqual(1);
+      if (vp.mode === "drawer") {
+        expect(Math.abs(overlay.cardLeft), `${vp.width}px drawer flush to left edge`).toBeLessThanOrEqual(1);
+        expect(overlay.borderRadius, `${vp.width}px drawer has no rounded corners`).toBe("0px");
+      } else {
+        expect(overlay.bottomLeftRadius, `${vp.width}px sheet bottom-left radius`).toBe("0px");
+        expect(overlay.bottomRightRadius, `${vp.width}px sheet bottom-right radius`).toBe("0px");
+      }
+
+      await page.locator("#closeMobileFilters").click();
+      await expect(page.locator("#uSidebar")).not.toHaveClass(/is-open/);
     }
   });
 });

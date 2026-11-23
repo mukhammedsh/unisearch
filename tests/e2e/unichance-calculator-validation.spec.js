@@ -23,7 +23,6 @@ async function openPublishedChecks(page) {
   const analysis = page.locator("#detailRequirements [data-requirements-match]");
   await openDisclosureParents(analysis);
   await expect(analysis).toBeVisible();
-  await expect(analysis).toContainText("not an admission probability");
   await expect(page.locator(".mit-admission-analysis")).toHaveCount(0);
   return { analysis, assessment: resolved.assessment };
 }
@@ -35,7 +34,11 @@ test.describe("UniChance Calculator Validation", () => {
     expect(assessment.chanceAvailable).toBe(false);
     expect(assessment.chancePercent).toBeNull();
     expect(assessment.reason).toBe("missing_evidence");
-    await expect(analysis).toContainText(/No requirements-match percentage is available|Add the missing evidence/i);
+    // Without evidence the checklist of published minimums is the answer: it says what to add, and no percentage is claimed.
+    await expect(analysis).toContainText("Your results against the published minimums");
+    await expect(analysis).toContainText(/Add: /);
+    await expect(analysis.getByRole("link", { name: "Edit profile" })).toBeVisible();
+    await expect(analysis).not.toContainText("not an admission probability");
     await expect(analysis.locator(".admissions-key-facts__value")).not.toContainText(/\b0%/);
     await expect(analysis.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   });
@@ -52,15 +55,17 @@ test.describe("UniChance Calculator Validation", () => {
     expect(assessment.scoreMeaning).toBe("published_requirements_met_percent");
     await expect(analysis.locator(".admissions-key-facts__value")).toContainText("(100%)");
     await expect(analysis).not.toContainText("No requirements-match percentage is available");
+    // The caveat that the share is not an admission probability appears next to a measured share.
+    await expect(analysis).toContainText("not an admission probability");
     for (const kind of ["academic_requirement", "language_requirement"]) {
       const check = assessment.activeChoice.details.checks.find(item => item.kind === kind);
       expect(check.status).toBe("met");
       expect(check.provided.minimum_checks.every(item => item.status === "met")).toBe(true);
     }
-    const sat = analysis.locator("[data-minimum-exam='SAT'][data-minimum-status='met']");
-    await openDisclosureParents(sat);
-    await expect(sat).toBeVisible();
-    await expect(sat).toContainText("1240");
+    // Each measured minimum is marked met in the key-facts checklist; the test alternatives name SAT with its published minimum.
+    const met = analysis.locator(".admissions-key-facts__checklist li[data-mark='met']");
+    await expect(met).toHaveCount(2);
+    await expect(met.filter({ hasText: "SAT 1240" })).toBeVisible();
     expect(await analysis.locator(".admissions-key-facts__value").evaluate(node => node.getBoundingClientRect().width)).toBeGreaterThan(0);
   });
 });

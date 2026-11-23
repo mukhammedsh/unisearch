@@ -1,6 +1,7 @@
 /* ===== Shared Admission & Funding Option Cards ===== */
 .track-select-btn {
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-4);
@@ -17,7 +18,7 @@
 .track-select-btn:disabled,
 .track-select-btn.is-active {
   cursor: default;
-  background: var(--surface-soft);
+  background: var(--control-bg);
   color: var(--interaction-active-text);
 }
 
@@ -121,15 +122,23 @@
 
 .admission-category-list {
   display: grid;
-  gap: var(--component-card-gap);
+  gap: var(--space-6);
   margin-top: var(--space-4);
 }
 
 .admission-category-card {
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
-  padding: var(--component-card-padding);
-  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.admission-category-card + .admission-category-card {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line-faint);
 }
 
 .admission-category-head,
@@ -173,7 +182,8 @@
 .track-selection-badge {
   flex: 0 0 auto;
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text-muted);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
@@ -192,7 +202,8 @@
 .admission-applicable-programs .tag,
 .admission-option-meta .tag {
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
@@ -208,7 +219,7 @@
 .requirement-profile-panel {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .requirement-profile-badges,
@@ -328,16 +339,24 @@
 }
 
 @media (max-width: 768px) {
-  .admission-category-card {
-    padding: var(--space-4);
-  }
-
   .admission-category-head,
   .requirement-profile-head,
-  .admission-funding-option,
   .admission-funding-option-side {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .admission-funding-option {
+    align-items: stretch;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .admission-funding-option-main,
+  .admission-funding-diff,
+  .admission-funding-diff-note {
+    flex: 0 0 auto;
+    min-width: 0;
   }
 
   .admission-requirement-grid {
@@ -371,6 +390,7 @@
   line-height: 1.2;
 }
 
+.admission-chance-badge,
 .track-factor-chip {
   display: inline-flex;
   align-items: flex-start; /* Fix for multi-line text alignment */
@@ -540,13 +560,15 @@ button.track-factor-chip {
 
 /* ===== Track Exam Groups (Global) ===== */
 .track-exam-group {
-  border-radius: var(--radius-md);
-  background: var(--surface-soft);
-  padding: var(--space-3);
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
 }
 
 .track-exam-group + .track-exam-group {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line-faint);
 }
 
 .track-exam-group-title {
@@ -564,20 +586,18 @@ button.track-factor-chip {
   line-height: 1.4;
 }
 
-.track-exam-group--neutral {
-  background: var(--surface-soft);
+.track-exam-group--neutral,
+.track-exam-group--info,
+.track-exam-group--success {
+  background: transparent;
 }
 
-.track-exam-group--info {
-  background: var(--color-info-bg);
+.track-exam-group--neutral .track-exam-group-title {
+  color: var(--text-muted);
 }
 
 .track-exam-group--info .track-exam-group-title {
   color: var(--color-info);
-}
-
-.track-exam-group--success {
-  background: var(--color-success-bg);
 }
 
 .track-exam-group--success .track-exam-group-title {
@@ -590,7 +610,8 @@ button.track-factor-chip {
   align-items: center;
   gap: var(--space-2);
   border-radius: var(--radius-md);
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
@@ -608,7 +629,6 @@ button.track-factor-chip {
 }
 
 .track-select-row {
-  margin-top: var(--space-3);
   display: flex;
   justify-content: flex-end;
 }
