@@ -37,10 +37,10 @@ export function formatPublishedDate(value) {
 }
 
 function linked(row, resolved) {
-  const routes = [resolved.selected_route?.id, ...(resolved.selected_route?.shared_policy_context_ids || [])];
+  const routes = new Set([resolved.selected_route?.id, ...(resolved.selected_route?.shared_policy_context_ids || [])]);
   return (resolved.reading_scope === "institution_route" && !row.scope?.option_ids?.length)
     || row.scope?.option_ids?.includes(resolved.selected_option?.id)
-    || row.scope?.route_ids?.some(id => routes.includes(id));
+    || row.scope?.route_ids?.some(id => routes.has(id));
 }
 
 function safeSourceUrl(value) {
@@ -99,9 +99,9 @@ export function sourceDistinguishingHints(entries) {
       });
       return { entry, host: url.hostname.replace(/^www\./, ""), segments, query: url.search };
     });
-    const common = parsed[0].segments.filter(segment => parsed.every(item => item.segments.includes(segment)));
+    const common = new Set(parsed[0].segments.filter(segment => parsed.every(item => item.segments.includes(segment))));
     for (const item of parsed) {
-      const distinct = item.segments.filter(segment => !common.includes(segment));
+      const distinct = item.segments.filter(segment => !common.has(segment));
       const path = (distinct.length ? distinct : item.segments.slice(-1)).join(" / ");
       const sameHost = parsed.every(other => other.host === item.host);
       const hint = [sameHost ? "" : item.host, path, item.query].filter(Boolean).join(" ");

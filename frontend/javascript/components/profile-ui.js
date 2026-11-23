@@ -1,43 +1,28 @@
 import {
-  API_BASE,
   EXAM_CONFIG,
   MAJOR_OPTIONS,
-  animateElementOut,
+  bindDialogLightDismiss,
   canonicalizeExamId,
   clearProfile,
   escapeHtml,
-  formatExamValue,
-  getExamConfig,
-  getExamDisplayName,
   getExamInputMode,
-  initCustomSelect,
-  loadProfile,
   isFutureProfile,
-  markMotionEnter,
+  loadProfile,
   motionPress,
-  prefersReducedMotion,
   replayMotion,
   saveProfile,
   showToast,
   trapFocus,
 } from "../utils.js";
-import { applyTranslations, getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { formatMoney } from "../currency.js";
+import { applyTranslations, t } from "../i18n.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
-import { heroIcon, hydrateHeroIcons } from "../icons.js";
+import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
 import { hasUniversitiesTourResumeStep, requestUniversitiesTourSkipOnce } from "../pages/shared/cache.js";
-import { isProfilePath, navigateToAppRoute, routeGuide, routeUniversities } from "../routes.js";
-import {
-  breakdownAllowsTotalOnly,
-  breakdownSchemeFor,
-  readSubjectBreakdownDraft as readSubjectBreakdownDraftFromModule,
-  renderSpecialExamInput as renderSpecialExamInputFromModule,
-} from "./profile/exam-breakdowns.js";
+import { isProfilePath, routeGuide, routeUniversities, navigateToAppRoute } from "../routes.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
-import { applyBudgetCurrencyChoice, fillBudgetCurrencyOptions, reinterpretBudgetCurrency, syncBudgetCurrencySelect } from "./profile/budget-currency.js";
-import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile/profile-summary.js";
+import { applyBudgetCurrencyChoice, reinterpretBudgetCurrency } from "./profile/budget-currency.js";
 import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
   applyBudgetEntry,
@@ -45,28 +30,73 @@ import {
   cloneProfile,
   enforceGpaMaxLength,
   ensureProfileShape,
-  formatExamValidationToast,
   getBudgetCurrency,
-  getBudgetPlaceholderValue,
-  getLowBudgetGrantThreshold,
-  getMaxBudgetForCurrency,
-  hasPartialDateInput,
-  normalizeFundingType,
   normalizeAmountRaw,
+  normalizeFundingType,
   normalizeGpaRaw,
-  reportInvalidDate,
   setFieldInvalid,
   stableProfileSignature,
 } from "./profile/profile-utils.js";
+import {
+  PROFILE_RETURN_URL_KEY,
+  closeDialogWithMotion,
+  closeImmediately,
+  closeResetDialog,
+  closeUnsavedDialog,
+  openResetDialog,
+  openUnsavedDialog,
+  profileValidationFocusTarget,
+  requestClose,
+} from "./profile/profile-dialogs.js";
+import {
+  getInterestsDraft,
+  goToProfileSection,
+  initCommonSelects,
+  isProfileDirty,
+  refreshSaveState,
+  renderGpaHint,
+  renderLowBudgetGrantHint,
+  renderProfileSummary,
+  sectionIdOf,
+  setActiveProfileSection,
+  setGpaScale,
+  syncInputsToDraft,
+  updateBudgetUI,
+  updateGpaScaleUI,
+  validateBudgetInput,
+  validateGpaInput,
+} from "./profile/profile-form-fields.js";
+import {
+  LANGUAGE_EXAM_PREFIX,
+  examDraftControls,
+  findExistingExamEntry,
+  handleAddExam,
+  handleExamListClick,
+  populateExamSelect,
+  readSelectedExamPayload,
+  refreshExamActionButton,
+  renderProfileData,
+  renderSpecialExamInput,
+  syncExamScoreInputState,
+} from "./profile/profile-exam-editor.js";
 
-const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
+export {
+  readSelectedExamPayload,
+  profileValidationFocusTarget,
+  closeDialogWithMotion,
+  closeUnsavedDialog,
+  closeResetDialog,
+  openUnsavedDialog,
+  openResetDialog,
+};
+
 let activeProfileNavigationClose = null;
 
 export function requestProfileNavigationClose() {
     return activeProfileNavigationClose ? activeProfileNavigationClose() : true;
 }
 
-export const queryProfileElements = (modal) => {
+const queryProfileElements = (modal) => {
     const unsavedModal = document.getElementById("profileUnsavedModal");
     const resetModal = document.getElementById("profileResetModal");
     const budgetInput = document.getElementById("budgetInput");
@@ -119,16 +149,7 @@ export const queryProfileElements = (modal) => {
     };
 };
 
-export const initCommonSelects = (selectIds = []) => {
-    if (typeof initCustomSelect !== "function") return;
-    selectIds.forEach((id) => {
-        if (id) initCustomSelect(id);
-    });
-};
-
-export const isProfileDirty = (state) => !!(state.examEditorDirty || state.languageEditorDirty) || stableProfileSignature(state.profile) !== state.savedSignature;
-
-export const setProfileDraft = (state, els, next, options = {}) => {
+const setProfileDraft = (state, els, next, options = {}) => {
     state.profile = ensureProfileShape(next);
     if (options.markAsSaved) {
         state.savedSignature = stableProfileSignature(state.profile);
@@ -136,7 +157,7 @@ export const setProfileDraft = (state, els, next, options = {}) => {
     refreshSaveState(els, state);
 };
 
-export const populateMajors = (select) => {
+const populateMajors = (select) => {
     if (!select) return;
     select.innerHTML = `<option value="">${escapeHtml(t("profile.option.major_any", "Undecided / Any"))}</option>`;
     MAJOR_OPTIONS.forEach((m) => {
@@ -147,563 +168,7 @@ export const populateMajors = (select) => {
     });
 };
 
-// English tests offered in the exam list as shortcuts to the Languages editor, which holds their section scores.
-const ENGLISH_TEST_SHORTCUTS = ["IELTS", "TOEFL_iBT_0_120", "DET", "PTE"];
-const LANGUAGE_EXAM_PREFIX = "language:";
-
-export const populateExamSelect = (els, state) => {
-    if (!els.examNameSelect) return;
-    const selectedExam = els.examNameSelect.value;
-    els.examNameSelect.innerHTML = `<option value="" disabled selected>${escapeHtml(t("profile.option.select_exam", "Select Exam"))}</option>`;
-
-    const seen = new Set();
-    Object.keys(EXAM_CONFIG).forEach((examKey) => {
-        const cfg = EXAM_CONFIG?.[examKey];
-        if (cfg?.hidden) return;
-        const normalized = canonicalizeExamId(examKey);
-        const key = String(normalized || examKey).toUpperCase().replace(/[^A-Z0-9]/g, "");
-        if (!key || key === "GPA") return;
-        if (seen.has(key)) return;
-        seen.add(key);
-
-        const opt = document.createElement("option");
-        opt.value = normalized || examKey;
-        opt.textContent = getExamDisplayName(normalized || examKey, { locale: getCurrentLanguage() });
-        els.examNameSelect.appendChild(opt);
-    });
-    // English tests are entered under Languages, but applicants look for them here: these entries open that editor.
-    ENGLISH_TEST_SHORTCUTS.forEach((examId) => {
-        const opt = document.createElement("option");
-        opt.value = `${LANGUAGE_EXAM_PREFIX}${examId}`;
-        opt.textContent = tFormat("profile.exam_option.language", { exam: getExamDisplayName(examId, { langCode: "en", locale: getCurrentLanguage() }) });
-        els.examNameSelect.appendChild(opt);
-    });
-
-    els.examNameSelect.value = selectedExam;
-    initCommonSelects(["examNameSelect"]);
-    syncExamScoreInputState(els, state);
-    refreshExamActionButton(els, state);
-};
-
-export const parseBudgetDraftValue = (els, state) => {
-    const raw = String(els.budgetInput?.value || state.profile?.budget || "").trim();
-    if (!raw) return null;
-    if (raw.includes(".") || raw.includes(",")) return null;
-    const value = Number(raw);
-    if (!Number.isFinite(value) || value < 0) return null;
-    return value;
-};
-
-export const shouldShowLowBudgetGrantHint = (els, state) => {
-    const budgetValue = parseBudgetDraftValue(els, state);
-    if (budgetValue === null) return false;
-    const currency = getBudgetCurrency();
-    const threshold = getLowBudgetGrantThreshold(currency);
-    if (budgetValue >= threshold) return false;
-    const fundingType = normalizeFundingType(els.profileFundingTypeSelect?.value || state.profile?.fundingType || "any");
-    return fundingType !== "grant";
-};
-
-export const renderLowBudgetGrantHint = (els, state) => {
-    if (!els.lowBudgetGrantHint) return;
-
-    const shouldShow = shouldShowLowBudgetGrantHint(els, state);
-    if (!shouldShow) {
-        state.lowBudgetGrantHintDismissed = false;
-        els.lowBudgetGrantHint.hidden = true;
-        return;
-    }
-
-    if (state.lowBudgetGrantHintDismissed) {
-        els.lowBudgetGrantHint.hidden = true;
-        return;
-    }
-
-    const currency = getBudgetCurrency();
-    const threshold = getLowBudgetGrantThreshold(currency);
-    const formattedAmount = formatMoney(threshold, currency);
-
-    const textEl = els.lowBudgetGrantHint.querySelector(".profile-budget-grant-hint__text");
-    if (textEl) {
-        textEl.removeAttribute("data-i18n");
-        textEl.textContent = tFormat(
-            "profile.hint.low_budget_grant",
-            { amount: formattedAmount },
-            `Budget is under ${formattedAmount}. Maybe you need Grant only.`
-        );
-    }
-    if (els.lowBudgetGrantApplyBtn) {
-        els.lowBudgetGrantApplyBtn.textContent = t("profile.hint.low_budget_grant_action", "Set Grant only");
-    }
-    if (els.lowBudgetGrantDismissBtn) {
-        const dismissTitle = t("profile.hint.dismiss", "Dismiss hint");
-        els.lowBudgetGrantDismissBtn.title = dismissTitle;
-        els.lowBudgetGrantDismissBtn.setAttribute("aria-label", dismissTitle);
-    }
-
-    els.lowBudgetGrantHint.hidden = false;
-};
-
-export const updateBudgetUI = (els, state) => {
-    const currency = getBudgetCurrency();
-    const maxBudget = getMaxBudgetForCurrency(currency);
-    if (els.profileBudgetUnit) els.profileBudgetUnit.textContent = t("profile.unit.per_year", "/ year");
-    if (els.profileBudgetCurrency) {
-        const select = els.profileBudgetCurrency;
-        if (fillBudgetCurrencyOptions(select)) applyTranslations(select);
-        syncBudgetCurrencySelect(select, currency);
-        select.setAttribute("aria-label", t("profile.budget_currency_label", "Budget currency"));
-        initCommonSelects(["profileBudgetCurrency"]);
-    }
-    if (els.budgetInput) {
-        els.budgetInput.removeAttribute("data-i18n-placeholder");
-        const exampleVal = getBudgetPlaceholderValue(currency);
-        els.budgetInput.placeholder = tFormat("profile.placeholder.budget", { example: String(exampleVal) }, `e.g. ${exampleVal}`);
-        els.budgetInput.maxLength = String(maxBudget).length * 2;
-    }
-    renderLowBudgetGrantHint(els, state);
-};
-
-const SUMMARY_STATE_ICONS = { used: "check-circle", partial: "adjustments-horizontal", not_used: "x-mark" };
-
-export const renderProfileSummary = (els, state) => {
-    if (!els.profileSummaryList) return;
-    const ctx = {
-        t,
-        tFormat,
-        formatMoney,
-        majorLabel: (major) => translateProgramName(major, major),
-        examLabel: (row) => {
-            const examId = row.exam ?? row.id;
-            const locale = getCurrentLanguage();
-            const value = formatExamValue(examId, row, { context: "profile", locale });
-            return [shortExamLabel(getExamDisplayName(examId, { locale })), value].filter(Boolean).join(" ");
-        },
-    };
-    const rows = buildProfileSummary(state.profile, ctx);
-    const sentence = buildSummarySentence(rows, ctx);
-    const fillStates = buildSectionFillStates(state.profile);
-    const signature = JSON.stringify([getCurrentLanguage(), rows, sentence, fillStates]);
-    if (state.summarySignature === signature) return;
-    state.summarySignature = signature;
-
-    els.profileSummaryList.innerHTML = rows.map((row) => `
-        <li class="profile-summary__row" data-state="${row.state}" data-summary-row="${escapeHtml(row.id)}">
-            <span class="profile-summary__icon" aria-hidden="true">${heroIcon(SUMMARY_STATE_ICONS[row.state] || "x-mark", "ui-icon ui-icon--16")}</span>
-            <div class="profile-summary__body">
-                <p class="profile-summary__row-head">
-                    <span class="profile-summary__row-title">${escapeHtml(row.title)}</span>
-                    <span class="sr-only">${escapeHtml(t(`profile.ux2.summary.state.${row.state}`))}</span>
-                </p>
-                ${row.value ? `<p class="profile-summary__row-value">${escapeHtml(row.value)}</p>` : ""}
-                ${row.state === "used" ? "" : `<p class="profile-summary__row-detail">${escapeHtml(row.detail)}</p>`}
-            </div>
-        </li>`).join("");
-    if (els.profileSummarySentence) els.profileSummarySentence.textContent = sentence;
-
-    els.profileSectionTabs.forEach((tab) => {
-        const filled = !!fillStates[String(tab.dataset.profileTab || "")];
-        tab.dataset.filled = filled ? "true" : "false";
-        const status = tab.querySelector(".profile-outline__status");
-        if (status) {
-            status.textContent = filled
-                ? t("profile.ux2.nav.filled", "has answers")
-                : t("profile.ux2.nav.empty", "no answers yet");
-        }
-    });
-};
-
-export const refreshSaveState = (els, state) => {
-    const dirty = isProfileDirty(state);
-    if (els.profileSaveState) {
-        els.profileSaveState.removeAttribute("data-i18n");
-        if (dirty) {
-            els.profileSaveState.textContent = state.examEditorDirty || state.languageEditorDirty
-                ? t("profile.report_draft_pending") : t("profile.state.unsaved", "Unsaved changes");
-        } else {
-            els.profileSaveState.textContent = state.profileStoragePersistent
-                ? t("profile.state.saved_local", "Saved on this device")
-                : t("profile.state.saved_session", "Saved until this tab is closed");
-        }
-        els.profileSaveState.classList.toggle("is-dirty", dirty);
-    }
-    if (els.saveProfileBtn) els.saveProfileBtn.disabled = !dirty;
-    renderLowBudgetGrantHint(els, state);
-    renderProfileSummary(els, state);
-    return dirty;
-};
-
-const sectionIdOf = (node) => String(node?.getAttribute("data-profile-section") || "");
-
-export const setActiveProfileSection = (els, section) => {
-    const active = String(section || "basics");
-    els.profileSectionTabs.forEach((tab) => {
-        const isActive = String(tab.dataset.profileTab || "") === active;
-        tab.classList.toggle("is-active", isActive);
-        if (isActive) tab.setAttribute("aria-current", "location");
-        else tab.removeAttribute("aria-current");
-    });
-};
-
-// All sections stay visible; the outline only scrolls to one of them and marks it as current.
-export const goToProfileSection = (els, state, section, { focusHeading = true } = {}) => {
-    const node = els.profileSectionNodes.find((candidate) => sectionIdOf(candidate) === section);
-    if (!node) return;
-    setActiveProfileSection(els, section);
-    // Ignore the scroll observer while the smooth scroll runs, so the clicked item stays current.
-    state.sectionNavLockUntil = Date.now() + 900;
-    node.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
-    if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
-};
-
-export const findExistingExamEntry = (examId, els, state) => {
-    const selected = canonicalizeExamId(examId);
-    const takenOn = String(els.examTakenOnInput?.value || "").trim();
-    if (!selected || !Array.isArray(state.profile.exams)) return null;
-    return state.profile.exams.find((row) => canonicalizeExamId(row?.exam ?? row?.id ?? "") === selected
-        && String(row?.taken_on || "") === takenOn) || null;
-};
-
-const examDraftControls = (els) => [els.examScoreInput, els.examTakenOnInput,
-    ...Array.from(els.examSpecialInputContainer?.querySelectorAll("input, select") || [])].filter(Boolean);
-
-export const readSubjectBreakdownDraft = (examId, els, state, options = {}) =>
-    readSubjectBreakdownDraftFromModule(examId, els.examSpecialInputContainer, {
-        ...options,
-        findExistingExamEntry: (id) => findExistingExamEntry(id, els, state),
-    });
-
-export const renderSpecialExamInput = (examId, els, state) =>
-    renderSpecialExamInputFromModule(examId, els.examSpecialInputContainer, {
-        findExistingExamEntry: (id) => findExistingExamEntry(id, els, state),
-    });
-
-export const syncExamScoreInputState = (els, state) => {
-    if (!els.examScoreInput) return;
-
-    const selectedExam = canonicalizeExamId(els.examNameSelect?.value);
-    const mode = getExamInputMode(selectedExam);
-    const cfg = getExamConfig(selectedExam);
-    const breakdownScheme = breakdownSchemeFor(selectedExam);
-    const examForm = els.examScoreInput.closest(".profile-exam-form");
-    const existing = findExistingExamEntry(selectedExam, els, state);
-    const usesCompositeParentScore = mode === "subject_breakdown"
-        && String(breakdownScheme?.total_strategy || "").trim().toLowerCase() === "use_parent_score";
-    const usesTotalOnlyInput = mode === "subject_breakdown" && breakdownAllowsTotalOnly(selectedExam);
-    const usesNumberInput = mode === "number" || usesCompositeParentScore || usesTotalOnlyInput;
-    const usesSpecialInput = mode === "band_select" || mode === "grade_combo" || mode === "subject_breakdown";
-
-    els.examScoreInput.hidden = !usesNumberInput;
-    const scoreField = els.examScoreInput.closest(".profile-exam-score-wrap");
-    if (scoreField) scoreField.hidden = !usesNumberInput;
-    els.examScoreInput.disabled = !usesNumberInput;
-    els.examScoreInput.setAttribute("aria-hidden", usesNumberInput ? "false" : "true");
-
-    if (els.examSpecialInputContainer) {
-        els.examSpecialInputContainer.hidden = !usesSpecialInput;
-        els.examSpecialInputContainer.style.display = usesSpecialInput ? "" : "none";
-        els.examSpecialInputContainer.setAttribute("aria-hidden", usesSpecialInput ? "false" : "true");
-        renderSpecialExamInput(selectedExam, els, state);
-    }
-
-    if (examForm) {
-        examForm.classList.toggle("profile-exam-form--no-score", !usesNumberInput && !usesSpecialInput);
-        examForm.classList.toggle("profile-exam-form--with-special", usesSpecialInput);
-        examForm.classList.toggle("profile-exam-form--grades", mode === "grade_combo");
-        examForm.classList.toggle("profile-exam-form--band", mode === "band_select");
-        examForm.classList.toggle("profile-exam-form--breakdown", mode === "subject_breakdown");
-    }
-
-    if (!usesNumberInput) {
-        els.examScoreInput.value = "";
-        return;
-    }
-
-    els.examScoreInput.placeholder = usesCompositeParentScore || usesTotalOnlyInput
-        ? t("profile.exam_total_placeholder", "Overall total")
-        : t("profile.placeholder.score", "Score");
-    if (existing && Number.isFinite(Number(existing?.score))) {
-        els.examScoreInput.value = String(existing.score);
-    } else {
-        els.examScoreInput.value = "";
-    }
-
-    if (cfg) {
-        if (cfg.min !== undefined) els.examScoreInput.min = String(cfg.min);
-        else els.examScoreInput.removeAttribute("min");
-        if (cfg.max !== undefined) els.examScoreInput.max = String(cfg.max);
-        else els.examScoreInput.removeAttribute("max");
-        if (cfg.step !== undefined) els.examScoreInput.step = String(cfg.step);
-        else els.examScoreInput.step = cfg.type === "float" ? "any" : "1";
-        return;
-    }
-
-    els.examScoreInput.removeAttribute("min");
-    els.examScoreInput.removeAttribute("max");
-    els.examScoreInput.step = "0.1";
-};
-
-export const readSelectedExamPayload = (examId, els, state) => {
-    const mode = getExamInputMode(examId);
-    if (mode === "flag") {
-        return { score: 1 };
-    }
-
-    if (mode === "band_select") {
-        const bandSelect = els.examSpecialInputContainer?.querySelector("#examBandSelect");
-        const band = String(bandSelect?.value || "").trim();
-        if (!band) {
-            showToast(t("profile.exam_band_required", "Select a level"), "error");
-            return null;
-        }
-        return {
-            raw_value: band,
-            details: { band },
-        };
-    }
-
-    if (mode === "grade_combo") {
-        const cfg = getExamConfig(examId);
-        const gradeScheme = cfg?.grade_scheme || {};
-        const minCount = Math.max(1, Number(gradeScheme?.subject_count_min) || 3);
-        const gradeSelects = Array.from(els.examSpecialInputContainer?.querySelectorAll("[data-grade-slot]") || []);
-        const grades = gradeSelects.map((node) => String(node?.value || "").trim());
-        const requiredGrades = grades.slice(0, minCount);
-        if (requiredGrades.some((grade) => !grade)) {
-            showToast(
-                tFormat(
-                    "profile.exam_grade_required",
-                    { exam: getExamDisplayName(examId, { locale: getCurrentLanguage() }), count: minCount },
-                    `Choose ${minCount} grades for ${getExamDisplayName(examId, { locale: getCurrentLanguage() })}`
-                ),
-                "error"
-            );
-            return null;
-        }
-
-        const normalizedGrades = grades.filter(Boolean);
-        const rawValue = normalizedGrades.join("");
-        return {
-            raw_value: rawValue,
-            details: { grades: normalizedGrades },
-        };
-    }
-
-    if (mode === "subject_breakdown") {
-        const scheme = breakdownSchemeFor(examId);
-        const draft = readSubjectBreakdownDraft(examId, els, state);
-        if (!draft) return null;
-
-        if (breakdownAllowsTotalOnly(examId) && !draft.components.length) {
-            const rawScore = String(els.examScoreInput?.value || "").trim();
-            const score = Number(rawScore);
-            if (!rawScore || Number.isNaN(score)) {
-                showToast(t("profile.exam_total_or_sections_required", "Enter the overall score or the score for each section."), "error");
-                return null;
-            }
-            return { score, raw_input_score: rawScore };
-        }
-
-        const selectableMin = Math.max(0, Number(scheme?.selectable_count_min) || 0);
-        const selectableSet = new Set(draft.selectable.map((item) => item.exam));
-        const selectedOptionalCount = draft.components.filter((row) => selectableSet.has(row.exam)).length;
-        if (selectedOptionalCount < selectableMin) {
-            showToast(
-                tFormat(
-                    "profile.exam_subject_required_count",
-                    { count: selectableMin, exam: getExamDisplayName(examId, { locale: getCurrentLanguage() }) },
-                    `Choose at least ${selectableMin} subjects for ${getExamDisplayName(examId, { locale: getCurrentLanguage() })}`
-                ),
-                "error"
-            );
-            return null;
-        }
-
-        const payload = {
-            details: {
-                components: draft.components,
-                ...(draft.extraScores.length ? { extra_scores: draft.extraScores } : {}),
-            },
-        };
-
-        if (scheme.total_strategy === "components_only" && !draft.components.length) {
-            showToast(t("profile.exam_section_required", "Add at least one reported section score."), "error");
-            return null;
-        }
-
-        if (String(scheme?.total_strategy || "").trim().toLowerCase() === "use_parent_score") {
-            const rawScore = String(els.examScoreInput?.value || "").trim();
-            const canDeriveTotal = scheme.auto_total_strategy === "sum" && draft.fixed.length > 0
-                && draft.fixed.every(({ exam }) => draft.components.some((row) => row.exam === exam && Number.isFinite(row.score)));
-            if (!rawScore && canDeriveTotal) return payload;
-            const score = Number(rawScore);
-            if (!rawScore || Number.isNaN(score)) {
-                showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
-                return null;
-            }
-            payload.score = score;
-            payload.raw_input_score = rawScore;
-        }
-
-        return payload;
-    }
-
-    const rawScore = String(els.examScoreInput?.value || "").trim();
-    const score = Number.parseFloat(rawScore);
-    return { score, raw_input_score: rawScore };
-};
-
-export const refreshExamActionButton = (els, state) => {
-    if (!els.addExamBtn || !els.examNameSelect) return;
-    const selected = canonicalizeExamId(els.examNameSelect.value);
-    if (els.clearExamDraftBtn) els.clearExamDraftBtn.hidden = !selected;
-    const takenOn = String(els.examTakenOnInput?.value || "").trim();
-    const hasExisting = !!selected && Array.isArray(state.profile.exams)
-        && state.profile.exams.some((e) => canonicalizeExamId(e.exam ?? e.id ?? "") === selected && String(e.taken_on || "") === takenOn);
-    const key = hasExisting ? "profile.edit" : "profile.add";
-    const fallback = hasExisting ? "Edit" : "Add";
-    els.addExamBtn.setAttribute("data-i18n", key);
-    els.addExamBtn.textContent = t(key, fallback);
-};
-
-export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
-
-export const syncInputsToDraft = (els, state) => {
-    if (els.budgetInput) {
-        state.profile = applyBudgetEntry(state.profile, normalizeAmountRaw(els.budgetInput.value), state.budgetInputCurrency || getBudgetCurrency());
-    }
-    if (els.gpaInput) state.profile.gpa = normalizeGpaRaw(els.gpaInput.value || "");
-    state.profile.gpaScale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
-    if (els.studyModeSelect) state.profile.studyMode = String(els.studyModeSelect.value || "Any").trim() || "Any";
-    if (els.profileFundingTypeSelect) state.profile.fundingType = normalizeFundingType(els.profileFundingTypeSelect.value);
-    if (els.profileMajorSelect) state.profile.major = String(els.profileMajorSelect.value || "").trim();
-    if (els.profileInterestsInput) state.profile.interests = getInterestsDraft(els);
-    if (els.studyLevelSelect) state.profile.studyLevel = String(els.studyLevelSelect.value || "Any").trim() || "Any";
-    // University choices are edited separately and may have changed in another tab.
-    state.profile.selectedAdmissionChoices = ensureProfileShape(loadProfile()).selectedAdmissionChoices;
-    state.profile = ensureProfileShape(state.profile);
-};
-
-export const reportFieldValidationError = (inputEl, message) => {
-    setFieldInvalid(inputEl, true, message);
-    inputEl?.focus();
-    return { ok: false, value: "" };
-};
-
-export const validateBudgetInput = (els) => {
-    const rawVal = normalizeAmountRaw(els.budgetInput?.value);
-    if (!rawVal) {
-        setFieldInvalid(els.budgetInput, false);
-        return { ok: true, value: "" };
-    }
-    if (rawVal.includes(".") || rawVal.includes(",")) {
-        return reportFieldValidationError(els.budgetInput, t("profile.budget_integers_only", "Integers only (no dots/commas)"));
-    }
-    const val = Number(rawVal);
-    if (!Number.isFinite(val)) {
-        return reportFieldValidationError(els.budgetInput, t("profile.budget_must_number", "Budget must be a number"));
-    }
-    const currency = getBudgetCurrency();
-    const maxBudget = getMaxBudgetForCurrency(currency);
-    if (val < 0 || val > maxBudget) {
-        const formattedMax = new Intl.NumberFormat("en-US").format(maxBudget);
-        return reportFieldValidationError(
-            els.budgetInput,
-            tFormat("profile.budget_limit", { max: `${formattedMax} ${currency}` }, `Limit: 0–${formattedMax} ${currency}`)
-        );
-    }
-    setFieldInvalid(els.budgetInput, false);
-    return { ok: true, value: val };
-};
-
-export const updateGpaScaleUI = (els, state, scale) => {
-    const s = scale === 5 ? 5 : 4;
-    state.profile.gpaScale = s;
-    if (els.gpaInput) {
-        els.gpaInput.max = String(s);
-        els.gpaInput.placeholder = s === 5 ? "4.80" : "3.80";
-    }
-    if (els.gpaUnit) {
-        const unitKey = s === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4";
-        els.gpaUnit.setAttribute("data-i18n", unitKey);
-        els.gpaUnit.textContent = s === 5 ? "/ 5.0" : "/ 4.0";
-        const toggleLabel = tFormat(
-            "profile.scale.toggle",
-            { scale: s === 5 ? "4.0" : "5.0" },
-            `Switch GPA scale to ${s === 5 ? "4.0" : "5.0"}`
-        );
-        els.gpaUnit.setAttribute("aria-label", toggleLabel);
-        els.gpaUnit.title = toggleLabel;
-    }
-    document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
-        radio.checked = Number(radio.value) === s;
-    });
-    renderGpaHint(els, state);
-};
-
-// Warns while typing when a 5-point grade is entered on the 4.0 scale, instead of only failing on save.
-export const renderGpaHint = (els, state) => {
-    if (!els.gpaHint) return;
-    const scale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
-    const value = Number(normalizeGpaRaw(els.gpaInput?.value || ""));
-    const overScale = scale === 4 && Number.isFinite(value) && value > 4 && value <= 5;
-    els.gpaHint.removeAttribute("data-i18n");
-    els.gpaHint.setAttribute("aria-live", "polite");
-    els.gpaHint.classList.toggle("is-warning", overScale);
-    els.gpaHint.textContent = overScale
-        ? tFormat("profile.ux2.gpa.over_scale", { value: String(value) }, `${value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.`)
-        : scale === 5 && state.gpaScaleAutoSwitched ? t("profile.ux2.gpa.auto_switched")
-        : scale === 5 ? t("profile.ux2.gpa.scale_chosen_5")
-        : tFormat("profile.ux2.gpa.scale_hint", {
-            scale: scale === 5 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)") : t("profile.scale.gpa_4", "4.0 (US / International)"),
-            unit: scale === 5 ? "/ 5.0" : "/ 4.0",
-        }, "");
-};
-
-export const validateGpaInput = (els, state) => {
-    const rawVal = normalizeGpaRaw(els.gpaInput?.value || "");
-    if (!rawVal) {
-        setFieldInvalid(els.gpaInput, false);
-        return { ok: true, value: "" };
-    }
-
-    const val = Number(rawVal);
-    if (!Number.isFinite(val)) {
-        return reportFieldValidationError(els.gpaInput, t("profile.gpa_must_number", "GPA must be a number"));
-    }
-
-    const scale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
-    const min = 0;
-    const max = scale;
-
-    if (val < min || val > max) {
-        return reportFieldValidationError(els.gpaInput, tFormat("profile.gpa_range", { min, max }, `GPA must be between ${min} and ${max}`));
-    }
-    setFieldInvalid(els.gpaInput, false);
-    return { ok: true, value: Number(Math.round(val * 100) / 100) };
-};
-
-export const renderProfileData = (els, state) => {
-    if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
-    if (els.examList) {
-        els.examList.innerHTML = state.profile.exams.map((ex, i) => `
-            <div class="profile-exam-item">
-                <div class="profile-exam-meta">
-                    <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam, { locale: getCurrentLanguage() }))}</span>
-                    <span class="profile-exam-score">${escapeHtml([formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }), ex.taken_on].filter(Boolean).join(" · "))}</span>
-                </div>
-                <div class="profile-list-actions">
-                    <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
-                    <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
-                </div>
-            </div>
-        `).join("");
-        markMotionEnter(els.examList, ".profile-exam-item", { limit: 8, staggerMs: 18 });
-    }
-    refreshExamActionButton(els, state);
-};
-
-export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
+const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
     setFieldInvalid(els.budgetInput, false);
     setFieldInvalid(els.gpaInput, false);
     setFieldInvalid(els.examScoreInput, false);
@@ -754,14 +219,14 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     refreshSaveState(els, state);
 };
 
-export const resetFields = (els, state) => {
+const resetFields = (els, state) => {
     state.gpaScaleAutoSwitched = false;
     const savedProfile = ensureProfileShape(loadProfile());
     setProfileDraft(state, els, savedProfile, { markAsSaved: true });
     applyDraftToInputs(els, state);
 };
 
-export const saveAllProfileChanges = (els, state) => {
+const saveAllProfileChanges = (els, state) => {
     if (state.examEditorDirty || state.languageEditorDirty) {
         goToProfileSection(els, state, state.examEditorDirty ? "scores" : "languages", { focusHeading: false });
         (state.examEditorDirty ? els.addExamBtn : document.getElementById("langAddBtn"))?.focus();
@@ -799,157 +264,7 @@ export const saveAllProfileChanges = (els, state) => {
     return true;
 };
 
-export const profileValidationFocusTarget = (els, state) => {
-    if (state.examEditorDirty) return els.addExamBtn || null;
-    if (state.languageEditorDirty) return document.getElementById("langAddBtn");
-    if (els.budgetInput?.getAttribute("aria-invalid") === "true") return els.budgetInput;
-    if (els.gpaInput?.getAttribute("aria-invalid") === "true") return els.gpaInput;
-    return null;
-};
-
-export const closeDialogWithMotion = (modal, focusTrapCleanup, focusTargetOnClose) => {
-    if (!modal || modal.classList.contains("is-closing")) return;
-    window.clearTimeout(modal._closeMotionTimer);
-    const isNativeDialog = typeof modal.close === "function";
-    const finish = () => {
-        modal._closeMotionTimer = null;
-        focusTrapCleanup?.();
-        modal.classList.remove("is-open", "is-closing");
-        if (isNativeDialog) {
-            if (modal.open) modal.close();
-        } else {
-            modal.setAttribute("aria-hidden", "true");
-            modal.style.display = "none";
-        }
-        if (focusTargetOnClose) focusTargetOnClose.focus();
-    };
-    if (prefersReducedMotion() || !modal.classList.contains("is-open")) {
-        finish();
-        return;
-    }
-    modal.classList.add("is-closing");
-    modal._closeMotionTimer = window.setTimeout(finish, 180);
-};
-
-export const closeUnsavedDialog = (els, state, focusCloseButton = false, focusTarget = null) => {
-    if (!els.unsavedModal) return;
-    closeDialogWithMotion(els.unsavedModal, () => {
-        state.cleanupUnsavedFocusTrap?.();
-        state.cleanupUnsavedFocusTrap = null;
-    }, focusTarget || (focusCloseButton ? els.closeBtn : null));
-};
-
-export const closeResetDialog = (els, state, focusResetButton = false) => {
-    if (!els.resetModal) return;
-    closeDialogWithMotion(els.resetModal, () => {
-        state.cleanupResetFocusTrap?.();
-        state.cleanupResetFocusTrap = null;
-    }, focusResetButton ? els.resetProfileBtn : null);
-};
-
-export const closeImmediately = (els, state) => {
-    if (!els.modal.classList.contains("is-open") && !state.isDedicatedPage) return;
-    state.isDiscarding = true;
-
-    closeUnsavedDialog(els, state, false);
-    closeResetDialog(els, state, false);
-    if (typeof state.cleanupFocusTrap === "function") {
-        state.cleanupFocusTrap();
-        state.cleanupFocusTrap = null;
-    }
-
-    const finish = () => {
-        window.dispatchEvent(new Event("profileModalClosed"));
-        if (state.isDedicatedPage) {
-            const returnUrl = safeSessionStorage.get(PROFILE_RETURN_URL_KEY, "");
-            if (returnUrl) {
-                safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
-                try {
-                    const parsed = new URL(returnUrl, window.location.href);
-                    if (parsed.origin === window.location.origin && !isProfilePath(parsed.pathname)) {
-                        if (window.history.length > 1) {
-                            window.history.back();
-                        } else {
-                            navigateToAppRoute(parsed.href);
-                        }
-                        return;
-                    }
-                } catch {}
-            }
-
-            if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
-                window.history.back();
-            } else {
-                navigateToAppRoute(routeUniversities());
-            }
-            return;
-        }
-        els.modal.classList.remove("is-open", "is-closing");
-        els.modal.style.display = "none";
-        els.modal.setAttribute("aria-hidden", "true");
-        if (els.openBtn) els.openBtn.focus();
-        resetFields(els, state);
-    };
-    if (prefersReducedMotion()) {
-        finish();
-        return;
-    }
-    if (!state.isDedicatedPage) {
-        els.modal.classList.add("is-closing");
-        window.setTimeout(finish, 180);
-    } else {
-        finish();
-    }
-};
-
-export const openUnsavedDialog = (els, state) => {
-    if (!els.unsavedModal) return;
-    window.clearTimeout(els.unsavedModal._closeMotionTimer);
-    els.unsavedModal.classList.remove("is-closing");
-    els.unsavedModal.classList.add("is-open");
-    if (typeof els.unsavedModal.showModal === "function") {
-        if (!els.unsavedModal.open) els.unsavedModal.showModal();
-    } else {
-        els.unsavedModal.style.display = "flex";
-        els.unsavedModal.setAttribute("aria-hidden", "false");
-        state.cleanupUnsavedFocusTrap?.();
-        state.cleanupUnsavedFocusTrap = trapFocus(els.unsavedModal);
-    }
-    els.cancelCloseBtn?.focus();
-};
-
-export const openResetDialog = (els, state) => {
-    if (!els.resetModal) {
-        if (window.confirm(t("profile.reset.confirm_message", "This will remove all saved profile data on this device and set the profile back to empty values."))) {
-            resetProfileData(els, state);
-        }
-        return;
-    }
-    window.clearTimeout(els.resetModal._closeMotionTimer);
-    els.resetModal.classList.remove("is-closing");
-    els.resetModal.classList.add("is-open");
-    if (typeof els.resetModal.showModal === "function") {
-        if (!els.resetModal.open) els.resetModal.showModal();
-    } else {
-        els.resetModal.style.display = "flex";
-        els.resetModal.setAttribute("aria-hidden", "false");
-        state.cleanupResetFocusTrap?.();
-        state.cleanupResetFocusTrap = trapFocus(els.resetModal);
-    }
-    els.resetCancelBtn?.focus();
-};
-
-export const requestClose = (els, state) => {
-    if (!els.modal.classList.contains("is-open") && !state.isDedicatedPage) return;
-    syncInputsToDraft(els, state);
-    if (!refreshSaveState(els, state)) {
-        closeImmediately(els, state);
-        return;
-    }
-    openUnsavedDialog(els, state);
-};
-
-export const resetProfileData = (els, state) => {
+const resetProfileData = (els, state) => {
     state.lowBudgetGrantHintDismissed = false;
     safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
     state.profileStoragePersistent = clearProfile();
@@ -962,7 +277,7 @@ export const resetProfileData = (els, state) => {
     showToast(t("profile.reset.done", "Profile data reset"), "success");
 };
 
-export const retranslateProfileUi = (els, state) => {
+const retranslateProfileUi = (els, state) => {
     const selectedExam = els.examNameSelect ? String(els.examNameSelect.value || "") : "";
     const examValues = examDraftControls(els).map(control => control.value);
     const selectedLangCode = document.getElementById("langCode");
@@ -1005,14 +320,7 @@ export const retranslateProfileUi = (els, state) => {
     ]);
 };
 
-export const setGpaScale = (els, state, scale) => {
-    const nextScale = scale === 5 ? 5 : 4;
-    if (Number(state.profile.gpaScale) === nextScale) return;
-    updateGpaScaleUI(els, state, nextScale);
-    refreshSaveState(els, state);
-};
-
-export const openProfile = (els, state) => {
+const openProfile = (els, state) => {
     state.isDiscarding = false;
     resetFields(els, state);
     retranslateProfileUi(els, state);
@@ -1040,231 +348,7 @@ export const openProfile = (els, state) => {
     }
 };
 
-export const showExamScoreError = (inputEl, message) => {
-    setFieldInvalid(inputEl, true, message);
-    inputEl?.focus();
-    showToast(message, "error");
-};
-
-export const handleAddExam = async (els, state) => {
-    if (!els.addExamBtn || !els.examNameSelect || state.examValidationPending) return;
-    motionPress(els.addExamBtn);
-    const name = canonicalizeExamId(els.examNameSelect.value);
-    const takenOn = String(els.examTakenOnInput?.value || "").trim();
-    const mode = getExamInputMode(name);
-    if (mode === "subject_breakdown") {
-        const invalid = [...els.examSpecialInputContainer.querySelectorAll("[data-breakdown-value]")]
-            .find(input => input.validity && !input.validity.valid);
-        if (invalid) {
-            const exam = invalid.dataset.breakdownExamValue;
-            const cfg = getExamConfig(exam);
-            const detail = invalid.validity.rangeOverflow || invalid.validity.rangeUnderflow
-                ? `Score must be between ${cfg.min} and ${cfg.max}`
-                : invalid.validity.stepMismatch ? `step=${cfg.step}` : "invalid score format";
-            showExamScoreError(invalid, formatExamValidationToast(exam, detail, getExamConfig));
-            return;
-        }
-    }
-    const selectedPayload = readSelectedExamPayload(name, els, state);
-    const score = Number(selectedPayload?.score);
-    const compositeUsesParentScore = mode === "subject_breakdown" && selectedPayload?.score !== undefined
-        && (breakdownAllowsTotalOnly(name)
-            || String(breakdownSchemeFor(name)?.total_strategy || "").trim().toLowerCase() === "use_parent_score");
-
-    const cfg = getExamConfig(name);
-    if (cfg) {
-        const min = (cfg.min !== undefined) ? Number(cfg.min) : null;
-        const max = (cfg.max !== undefined) ? Number(cfg.max) : null;
-        const step = (cfg.step !== undefined) ? Number(cfg.step) : null;
-        const usesNumberInput = mode === "number" || compositeUsesParentScore;
-
-        if (usesNumberInput && Number.isFinite(min) && score < min) {
-            showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_min", { exam: name, min }, `Min for ${name} is ${min}`));
-            return;
-        }
-        if (usesNumberInput && Number.isFinite(max) && score > max) {
-            showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_max", { exam: name, max }, `Max for ${name} is ${max}`));
-            return;
-        }
-
-        if (usesNumberInput && Number.isFinite(step) && step > 0) {
-            const base = Number.isFinite(min) ? min : 0;
-            const k = (score - base) / step;
-            const diff = Math.abs(k - Math.round(k));
-            if (diff > 1e-9) {
-                showExamScoreError(els.examScoreInput, tFormat("profile.exam_score_step", { exam: name, step }, `${name} score must use step ${step}`));
-                return;
-            }
-        }
-    }
-
-    if (!name) {
-        showToast(t("profile.exam_select_required", "Please select an exam"), "error");
-        return;
-    }
-    if (hasPartialDateInput(els.examTakenOnInput)
-        || (takenOn && (takenOn > new Date().toISOString().slice(0, 10) || !/^\d{4}-\d{2}-\d{2}$/.test(takenOn)))) {
-        reportInvalidDate(els.examTakenOnInput);
-        return;
-    }
-    if (!selectedPayload) {
-        return;
-    }
-    if ((mode === "number" || compositeUsesParentScore) && Number.isNaN(score)) {
-        showExamScoreError(els.examScoreInput, t("profile.exam_invalid_score", "Invalid score format"));
-        return;
-    }
-
-    if ((mode === "number" || compositeUsesParentScore) && cfg?.type === "int" && !Number.isInteger(score)) {
-        showExamScoreError(els.examScoreInput, tFormat("profile.exam_integer_required", { exam: name }, `${name} score must be an integer (e.g. 1400)`));
-        return;
-    }
-
-    if ((mode === "number" || compositeUsesParentScore) && name === "IELTS" && (score % 0.5 !== 0)) {
-        showExamScoreError(els.examScoreInput, t("profile.exam_ielts_step", "IELTS score must end with .0 or .5"));
-        return;
-    }
-
-    const submittedDraftRevision = state.examDraftRevision;
-    const submittedResetRevision = state.editorResetRevision;
-    state.examValidationPending = true;
-    els.addExamBtn.disabled = true;
-    if (els.clearExamDraftBtn) els.clearExamDraftBtn.disabled = true;
-    try {
-        const res = await fetch(`${API_BASE}/exams/validate`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                exam: name,
-                ...(takenOn ? { taken_on: takenOn } : {}),
-                ...(selectedPayload.score !== undefined && Number.isFinite(Number(selectedPayload.score)) ? { score: selectedPayload.score } : {}),
-                ...(selectedPayload.raw_value ? { raw_value: selectedPayload.raw_value } : {}),
-                ...(selectedPayload.details ? { details: selectedPayload.details } : {}),
-            }),
-        });
-        let json = {};
-        try {
-            json = await res.json();
-        } catch {
-            json = {};
-        }
-        if (!res.ok) {
-            const rawDetail = json && (json.detail || json.message || json.error);
-            const code = String(
-                typeof rawDetail === "string" && rawDetail.trim()
-                    ? rawDetail
-                    : (Array.isArray(rawDetail) ? "validation_error" : `http_${res.status}`)
-            )
-                .trim()
-                .replace(/\s+/g, "_")
-                .slice(0, 64);
-            const err = new Error("exam_validate_failed");
-            err.code = code || "unknown";
-            err.detail = rawDetail;
-            throw err;
-        }
-
-        if (state.disposed || submittedResetRevision !== state.editorResetRevision) return;
-        const examId = canonicalizeExamId(json.exam ?? json.id ?? name);
-        const examLabel = getExamDisplayName(examId || name, { locale: getCurrentLanguage() });
-        const savedValue = formatExamValue(examId || name, json, { context: "profile", locale: getCurrentLanguage() });
-        if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
-        const existingIndex = state.profile.exams.findIndex((e) =>
-            canonicalizeExamId(e.exam ?? e.id ?? "") === examId
-            && String(e.taken_on || "") === takenOn
-        );
-
-        const examRecord = {
-            exam: examId,
-            ...(json.taken_on ? { taken_on: json.taken_on } : {}),
-            score: json.score,
-            ...(json.raw_value ? { raw_value: json.raw_value } : {}),
-            ...(json.display_value ? { display_value: json.display_value } : {}),
-            ...(json.details ? { details: json.details } : {}),
-        };
-
-        if (existingIndex !== -1) {
-            state.profile.exams[existingIndex] = {
-                ...state.profile.exams[existingIndex],
-                ...examRecord,
-            };
-            showToast(
-                (mode !== "number")
-                    ? tFormat("profile.exam_updated_value", { exam: examLabel, value: savedValue || examLabel }, `Updated ${examLabel}: ${savedValue || examLabel}`)
-                    : tFormat("profile.exam_updated", { exam: examLabel, score: json.score }, `Updated ${examLabel} to ${json.score}`),
-                "success"
-            );
-        } else {
-            state.profile.exams.push(examRecord);
-            showToast(
-                savedValue
-                    ? tFormat("profile.exam_added_value", { exam: examLabel, value: savedValue }, `Added ${examLabel}: ${savedValue}`)
-                    : tFormat("profile.exam_added", { exam: examLabel }, `Added ${examLabel}`),
-                "success"
-            );
-        }
-
-        state.profile = ensureProfileShape(state.profile);
-        refreshSaveState(els, state);
-        renderProfileData(els, state);
-
-        if (state.examDraftRevision === submittedDraftRevision) {
-            state.examEditorDirty = false;
-            setFieldInvalid(els.examScoreInput, false);
-            els.examScoreInput.value = "";
-            if (els.examTakenOnInput) els.examTakenOnInput.value = "";
-            els.examNameSelect.value = "";
-            syncExamScoreInputState(els, state);
-            initCommonSelects(["examNameSelect"]);
-        }
-        refreshExamActionButton(els, state);
-        refreshSaveState(els, state);
-    } catch (e) {
-        if (!state.disposed && submittedResetRevision === state.editorResetRevision && state.examDraftRevision === submittedDraftRevision) {
-            showExamScoreError(els.examScoreInput, formatExamValidationToast(name, e?.detail || e?.message || e?.code || e?.name || "", getExamConfig));
-        }
-    } finally {
-        state.examValidationPending = false;
-        els.addExamBtn.disabled = false;
-        if (els.clearExamDraftBtn) els.clearExamDraftBtn.disabled = false;
-    }
-};
-
-export const handleExamListClick = (e, els, state) => {
-    const editBtn = e.target instanceof Element ? e.target.closest("button[data-edit-idx]") : null;
-    if (editBtn) {
-        motionPress(editBtn);
-        const idx = Number(editBtn.dataset.editIdx);
-        const entry = state.profile.exams?.[idx];
-        if (!entry) return;
-        state.examEditorDirty = false;
-        els.examNameSelect.value = canonicalizeExamId(entry.exam ?? entry.id ?? "");
-        if (els.examTakenOnInput) els.examTakenOnInput.value = String(entry.taken_on || "");
-        if (els.examSpecialInputContainer) delete els.examSpecialInputContainer.dataset.breakdownExam;
-        initCommonSelects(["examNameSelect"]);
-        syncExamScoreInputState(els, state);
-        refreshExamActionButton(els, state);
-        els.examScoreInput?.focus();
-        return;
-    }
-    const btn = e.target instanceof Element ? e.target.closest("button[data-idx]") : null;
-    if (!btn) return;
-    motionPress(btn);
-    const idx = Number(btn.dataset.idx);
-    if (!Number.isFinite(idx)) return;
-    if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
-
-    const row = btn.closest(".profile-exam-item");
-    animateElementOut(row, () => {
-        state.profile.exams.splice(idx, 1);
-        state.profile = ensureProfileShape(state.profile);
-        refreshSaveState(els, state);
-        renderProfileData(els, state);
-        showToast(t("profile.exam_removed", "Exam removed"), "success");
-    });
-};
-
-export const bindProfileEvents = (els, state) => {
+const bindProfileEvents = (els, state) => {
     const globalListenerDisposers = [];
     const listenGlobal = (target, type, handler) => {
         target.addEventListener(type, handler);
@@ -1279,6 +363,12 @@ export const bindProfileEvents = (els, state) => {
         pendingNavigationPromise = null;
         resolve(allowed);
     };
+    const closeCallbacks = {
+        syncInputsToDraft: () => syncInputsToDraft(els, state),
+        refreshSaveState: () => refreshSaveState(els, state),
+        onResetFields: () => resetFields(els, state),
+    };
+    const closeModalNow = () => closeImmediately(els, state, { onResetFields: () => resetFields(els, state) });
     const examForm = els.modal.querySelector(".profile-exam-form");
     const markExamDraftChanged = event => {
         state.examDraftRevision += 1;
@@ -1505,7 +595,7 @@ export const bindProfileEvents = (els, state) => {
     if (els.saveProfileBtn) {
         els.saveProfileBtn.addEventListener("click", () => {
             motionPress(els.saveProfileBtn);
-            if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeImmediately(els, state);
+            if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeModalNow();
         });
     }
 
@@ -1516,7 +606,7 @@ export const bindProfileEvents = (els, state) => {
         // A failed save (validation error, unfinished report draft) keeps the page open.
         if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) return;
         if (hasUniversitiesTourResumeStep()) {
-            closeImmediately(els, state);
+            closeModalNow();
             return;
         }
         els.showMatchesBtn.disabled = true;
@@ -1530,11 +620,11 @@ export const bindProfileEvents = (els, state) => {
     els.resetProfileBtn?.addEventListener("click", () => {
         motionPress(els.resetProfileBtn);
         syncInputsToDraft(els, state);
-        openResetDialog(els, state);
+        openResetDialog(els, state, { onResetProfileData: () => resetProfileData(els, state) });
     });
 
     const openProfileHandler = () => openProfile(els, state);
-    const requestCloseHandler = () => requestClose(els, state);
+    const requestCloseHandler = () => requestClose(els, state, closeCallbacks);
     if (els.openBtn) els.openBtn.onclick = openProfileHandler;
 
     if (els.closeBtn) els.closeBtn.onclick = requestCloseHandler;
@@ -1549,7 +639,7 @@ export const bindProfileEvents = (els, state) => {
             settleNavigationClose(true);
             return;
         }
-        closeImmediately(els, state);
+        closeModalNow();
     });
     els.cancelCloseBtn?.addEventListener("click", () => {
         motionPress(els.cancelCloseBtn);
@@ -1569,25 +659,8 @@ export const bindProfileEvents = (els, state) => {
             settleNavigationClose(true);
             return;
         }
-        closeImmediately(els, state);
+        closeModalNow();
     });
-    const bindDialogLightDismiss = (modal, card, onDismiss) => {
-        if (!modal) return;
-        modal.addEventListener("cancel", (event) => {
-            event.preventDefault();
-            onDismiss();
-        });
-        let pressedBackdrop = false;
-        modal.addEventListener("pointerdown", (event) => {
-            pressedBackdrop = Boolean((modal.open || modal.classList.contains("is-open")) && card && event.target === modal);
-        });
-        modal.addEventListener("pointerup", (event) => {
-            if (pressedBackdrop && (modal.open || modal.classList.contains("is-open")) && card && event.target === modal) {
-                onDismiss();
-            }
-            pressedBackdrop = false;
-        });
-    };
     bindDialogLightDismiss(els.unsavedModal, els.unsavedCard, () => {
         closeUnsavedDialog(els, state, true);
         settleNavigationClose(false);
@@ -1615,7 +688,7 @@ export const bindProfileEvents = (els, state) => {
             settleNavigationClose(false);
             return;
         }
-        requestClose(els, state);
+        requestClose(els, state, closeCallbacks);
     };
     listenGlobal(document, "keydown", handleProfileKeydown);
 

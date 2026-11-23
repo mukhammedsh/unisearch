@@ -149,7 +149,7 @@ test('admissions verified-null UI names the missing data and exposes source cont
 });
 
 test('map CDN assets are pinned with SRI', () => {
-  const source = fs.readFileSync(new URL('../../frontend/javascript/pages/universities.js', import.meta.url), 'utf8');
+  const source = fs.readFileSync(new URL('../../frontend/javascript/pages/universities/map-assets.js', import.meta.url), 'utf8');
   assert.match(source, /leaflet@1\.9\.4\/dist\/leaflet\.js/);
   assert.match(source, /leaflet\.markercluster@1\.4\.1\/dist\/leaflet\.markercluster\.js/);
   assert.match(source, /integrity: "sha384-/);

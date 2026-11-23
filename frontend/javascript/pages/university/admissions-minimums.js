@@ -25,7 +25,7 @@ const joinNames = names => new Intl.ListFormat(locale(), { style: "long", type: 
  * @param {string} id A section id such as IELTS_WRITING or UNT_MATHEMATICAL_LITERACY.
  * @returns {string}
  */
-export function sectionName(id) {
+function sectionName(id) {
   const part = String(id || "").replace(EXAM_PREFIX, "").toLowerCase();
   // Another test's sections (NUET) are named by their own label, without the test's name in front.
   return t(`university.admissions.key_facts.section_${part}`) || examName(id).replace(/^[^:]*:\s*/, "");

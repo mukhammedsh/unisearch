@@ -1,5 +1,7 @@
 /* legal.js - Table of contents, smooth scrolling, and scroll-spy for legal pages */
 
+import { setManualScrollRestoration } from "../utils.js";
+
 let legalHashChangeHandler = null;
 let legalExternalUpdateHandler = null;
 
@@ -251,11 +253,7 @@ export function initLegalPage() {
       }
     } else {
       activateSection(sections[0]?.id, { updateHash: false, scroll: false });
-      if (window.history && "scrollRestoration" in window.history) {
-        try {
-          window.history.scrollRestoration = "manual";
-        } catch {}
-      }
+      setManualScrollRestoration();
       window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
 

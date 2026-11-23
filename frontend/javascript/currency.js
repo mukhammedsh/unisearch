@@ -182,7 +182,7 @@ export const FALLBACK_RATES = {
   ZWL: 26.6142,
 };
 
-export const STATIC_FILTER_LIMITS = {
+const STATIC_FILTER_LIMITS = {
   _comment: "Filter slider bounds per currency. 'default' in USD, converted for unlisted currencies.",
   default: {
     min: 0,
@@ -191,7 +191,7 @@ export const STATIC_FILTER_LIMITS = {
   }
 };
 
-export const CURRENCY_FORMAT_MAP = {
+const CURRENCY_FORMAT_MAP = {
   KZT: { symbol: "₸", position: "after", maximumFractionDigits: 0 },
   RUB: { symbol: "₽", position: "after", maximumFractionDigits: 0 },
   UZS: { symbol: "soʻm", position: "after", maximumFractionDigits: 0 },
@@ -564,7 +564,7 @@ export function niceStep(rawStep) {
   const p = Math.pow(10, Math.floor(Math.log10(stepNum)));
   const m = stepNum / p;
   let tick = 10;
-  if (m < 1.41421356) {
+  if (m < Math.SQRT2) {
     tick = 1;
   } else if (m < 3.16227766) {
     tick = 2;
@@ -603,8 +603,8 @@ export function getFilterLimits(code) {
   const convMax = convert(defaultMax, "USD", currencyCode);
   const convStep = convert(defaultStep, "USD", currencyCode);
 
-  let stepVal = override.step !== undefined ? Math.max(1, Number(override.step)) : niceStep(convStep);
-  let minVal = override.min !== undefined ? Math.max(0, Number(override.min)) : Math.max(0, Math.round(convMin));
+  const stepVal = override.step !== undefined ? Math.max(1, Number(override.step)) : niceStep(convStep);
+  const minVal = override.min !== undefined ? Math.max(0, Number(override.min)) : Math.max(0, Math.round(convMin));
   let maxVal;
 
   if (override.max !== undefined) {

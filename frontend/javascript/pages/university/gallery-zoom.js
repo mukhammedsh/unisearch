@@ -1,11 +1,9 @@
+import { clamp } from "../../utils/runtime.js";
+
 const MAX_ZOOM = 4;
 const ZOOM_STEP = 1.5;
 const ORIGIN = { x: 0, y: 0 };
 const FIT = { scale: 1, ...ORIGIN };
-
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(value, max));
-}
 
 /**
  * Check whether viewport coordinates fall within the visible rendered photo inside the canvas.

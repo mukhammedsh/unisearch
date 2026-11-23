@@ -2,7 +2,7 @@ import { safeLocalStorage } from "./safe-storage.js";
 
 export const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 export const API_LANG_DEFAULT = "eng";
-export const API_LANG_SUPPORTED = new Set(["eng", "rus", "kaz"]);
+const API_LANG_SUPPORTED = new Set(["eng", "rus", "kaz"]);
 
 export function normalizeUiLanguageForApi(value) {
   const raw = String(value || "").trim().toLowerCase();

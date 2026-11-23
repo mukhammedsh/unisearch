@@ -63,7 +63,7 @@ export function getCurrentTheme() {
   return systemTheme();
 }
 
-export function resolveTheme(preference) {
+function resolveTheme(preference) {
   const normalized = normalizeThemePreference(preference);
   if (normalized === THEME_DARK) return THEME_DARK;
   if (normalized === THEME_LIGHT) return THEME_LIGHT;

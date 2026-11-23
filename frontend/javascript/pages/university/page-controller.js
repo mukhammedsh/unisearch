@@ -1,5 +1,4 @@
 import {
-  API_BASE,
   escapeHtml,
   getFlagImg,
   loadProfile,
@@ -61,7 +60,7 @@ function clearDetailLanguageSkeletons() {
 
 function showDetailLanguageSkeletons() {
   const card = document.getElementById("detailCard");
-  if (!card || card.style.display === "none") return;
+  if (!card || !card.classList.contains("is-mounted") || card.style.display === "none") return;
   card.classList.add("is-language-refreshing");
   card.setAttribute("aria-busy", "true");
 

@@ -4,7 +4,6 @@ import {
   API_BASE,
   escapeHtml,
   escapeHtmlAttr,
-  moneyUSD,
 } from "../utils.js";
 import { convert, formatPrice } from "../currency.js";
 
@@ -23,7 +22,6 @@ import {
   translateFactStatus,
   translateProgramName,
   translateTrackLabel,
-  translateTemplate,
   translateUniversityDescription,
   translateUniversityName,
   translateUnknownField,
@@ -34,79 +32,87 @@ import {
 import {
   COMPARE_ADMISSION_CHOICES_KEY,
   COMPARE_UNIVERSITIES_KEY,
-  DETAIL_CACHE_KEY,
-  DETAIL_CACHE_MAX_ITEMS,
-  DETAIL_CACHE_TTL_MS,
   fetchUniversityDetailCached,
   getDetailCacheEntry,
   hasSeenUniversitiesTour,
-  hasUniversitiesTourResumeStep,
   markUniversitiesTourSeen,
   MAX_COMPARE_UNIVERSITIES,
-  MAX_RECENT_UNIVERSITIES,
-  readDetailCache,
   readUniversitiesTourResumeStep,
   readIdListStorage,
   RECENT_UNIVERSITIES_KEY,
   rememberRecentUniversity,
   SAVED_UNIVERSITIES_KEY,
-  setDetailCacheEntry,
   clearUniversitiesTourResumeStep,
-  saveUniversitiesTourResumeStep,
   shouldOpenUniversitiesInNewTab,
-  touchDetailCacheEntry,
-  writeDetailCache,
   writeIdListStorage,
 } from "./shared/cache.js";
 export {
-  // shared/cache.js re-exports (used by universities.js)
   COMPARE_ADMISSION_CHOICES_KEY,
   COMPARE_UNIVERSITIES_KEY,
-  DETAIL_CACHE_KEY,
-  DETAIL_CACHE_MAX_ITEMS,
-  DETAIL_CACHE_TTL_MS,
   fetchUniversityDetailCached,
   getDetailCacheEntry,
   hasSeenUniversitiesTour,
-  hasUniversitiesTourResumeStep,
   markUniversitiesTourSeen,
   MAX_COMPARE_UNIVERSITIES,
-  MAX_RECENT_UNIVERSITIES,
-  readDetailCache,
   readUniversitiesTourResumeStep,
   readIdListStorage,
   RECENT_UNIVERSITIES_KEY,
   rememberRecentUniversity,
   SAVED_UNIVERSITIES_KEY,
-  setDetailCacheEntry,
   clearUniversitiesTourResumeStep,
-  saveUniversitiesTourResumeStep,
   shouldOpenUniversitiesInNewTab,
-  touchDetailCacheEntry,
-  writeDetailCache,
   writeIdListStorage,
 };
-export const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
+const SAFE_PROTOCOLS = new Set(["http:", "https:"]);
 
-export function normalizeUrl(raw) {
+export function normalizeUrl(raw, { allowImplicitHttps = true } = {}) {
   const s = String(raw || "").trim();
   if (!s) return "";
   if (/^https?:\/\//i.test(s)) return s;
-  if (/^\/\//.test(s)) return `https:${s}`;
-  if (/^www\./i.test(s)) return `https://${s}`;
+  if (allowImplicitHttps) {
+    if (s.startsWith("//")) return `https:${s}`;
+    if (/^www\./i.test(s)) return `https://${s}`;
+  }
   return "";
 }
 
-export function safeUrl(raw) {
-  const candidate = normalizeUrl(raw);
+export function safeUrl(raw, options) {
+  const candidate = normalizeUrl(raw, options);
   if (!candidate) return "";
   try {
     const url = new URL(candidate);
-    if (SAFE_PROTOCOLS.has(url.protocol)) return url.href;
+    if (SAFE_PROTOCOLS.has(url.protocol) && !url.username && !url.password) return url.href;
   } catch {
     return "";
   }
   return "";
+}
+
+const STUDY_LEVEL_DISPLAY_ORDER = ["bachelor", "master", "doctorate", "professional", "mba"];
+const STUDY_LEVEL_LABEL_DEFAULTS = {
+  bachelor: ["profile.option.study_level_bachelor", "Bachelor's"],
+  master: ["profile.option.study_level_master", "Master's"],
+  doctorate: ["profile.option.study_level_doctorate", "Doctorate / PhD"],
+};
+
+export function formatStudyLevelCounts(counts, { mbaKey, professionalKey }) {
+  const out = [];
+  STUDY_LEVEL_DISPLAY_ORDER.forEach((key) => {
+    if (!counts.has(key)) return;
+    let label = "";
+    if (STUDY_LEVEL_LABEL_DEFAULTS[key]) {
+      const [i18nKey, fallback] = STUDY_LEVEL_LABEL_DEFAULTS[key];
+      label = t(i18nKey, fallback);
+    } else if (key === "mba") {
+      label = t(mbaKey, "MBA");
+    } else if (key === "professional") {
+      label = t(professionalKey, "Professional");
+    } else {
+      label = trStudyLevel(key);
+    }
+    out.push({ key, label, count: counts.get(key) });
+  });
+  return out;
 }
 
 export function safePathSegment(raw) {
@@ -282,8 +288,6 @@ export function splitPriceDisplay(value) {
   }
   return { primary: text, secondary: "" };
 }
-
-export { normalizeTranslationKey } from "../utils/text.js";
 
 export function translateCostBreakdownLabel(rawKey) {
   const key = normalizeTranslationKey(rawKey);
@@ -560,7 +564,7 @@ export function admissionsDataTypeLabel(typeKey) {
   return t("university.admissions.metric.official_signal", "Official signal");
 }
 
-export function admissionsRateLabel(row) {
+function admissionsRateLabel(row) {
   const status = String(row?.status || "").trim().toLowerCase();
   const counts = row?.counts && typeof row.counts === "object" ? row.counts : {};
   const hasCountBasis = toFiniteNumber(counts?.applicants) !== null

@@ -1,5 +1,25 @@
 import { escapeHtmlAttr } from "../../utils/format.js";
-import { uniThumbnailSrc } from "../_shared.js";
+import {
+  uniThumbnailSrc,
+  toFiniteNumber,
+  formatUiNumber,
+  trUniversityName,
+  trCity,
+  trState,
+  trCountry,
+  trTrackLabel,
+  textOrUnknown,
+  unknownFieldText,
+  ruPlural,
+  modeAwareAnnualCost,
+  normalizeStudyModeForCost,
+  trTrackDescription,
+  COMPARE_ADMISSION_CHOICES_KEY,
+  trProgramName,
+  trFactSource,
+  trFactStatus,
+  campusAreaFact,
+} from "../_shared.js";
 import { coverCreditHtml } from "../university/cover-credit.js";
 
 export function compareCampusHtml(id, photos) {
@@ -129,26 +149,7 @@ import {
   getExamDisplayName,
   formatExamValue,
 } from "../../utils.js";
-import { 
-  toFiniteNumber, 
-  formatUiNumber,
-  trUniversityName,
-  trCity,
-  trState,
-  trCountry,
-  trTrackLabel,
-  textOrUnknown,
-  unknownFieldText,
-  ruPlural,
-  modeAwareAnnualCost,
-  normalizeStudyModeForCost,
-  trTrackDescription,
-  COMPARE_ADMISSION_CHOICES_KEY,
-  trProgramName,
-  trFactSource,
-  trFactStatus,
-  campusAreaFact,
-} from "../_shared.js";
+import { extractAdmissionSelectionTargetFields } from "../../utils/persistence.js";
 import { 
   translateDataValue, 
   translateProgramName, 
@@ -197,7 +198,7 @@ export function soleCompatibleRoute(resolved, context = {}) {
   return route;
 }
 
-export function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
+function formatCompareCost(value, fallbackKey = "placeholder.field.cost", fallback = "Cost", currency = "USD") {
   const n = toFiniteNumber(value);
   return n !== null ? formatPrice(n, String(currency || "USD").trim().toUpperCase()) : unknownFieldText(fallbackKey, fallback);
 }
@@ -250,11 +251,6 @@ export function comparePublishedAdmission(u, compareAdmissionChoices = null) {
   };
 }
 
-export function compareAcceptanceText(u, compareAdmissionChoices = null) {
-  const acc = comparePublishedAdmission(u, compareAdmissionChoices).value;
-  return acc !== null ? `${Math.round(acc * 100) / 100}%` : t("common.na", "N/A");
-}
-
 export function compareAidText(u) {
   if (hasReviewedAdmissions(u)) return t("common.na", "N/A");
   const grants = getGrantsFromCategories(u?.admission_categories);
@@ -276,7 +272,7 @@ function isBachelorStudyLevel(level) {
   return /bachelor|undergraduate|бакалавр|бакалавриат/.test(normalized);
 }
 
-export function compareBachelorPrograms(u) {
+function compareBachelorPrograms(u) {
   if (hasReviewedAdmissions(u)) return [];
   const programs = Array.isArray(u?.academics?.programs) ? u.academics.programs : [];
   return programs.filter((program) => {
@@ -412,16 +408,12 @@ export function compareChoiceKey(selection) {
   return String(selection.choiceKey || selection.choice_key || "").trim();
 }
 
-export function normalizeCompareAdmissionSelection(selection) {
+function normalizeCompareAdmissionSelection(selection) {
   if (!selection || typeof selection !== "object" || Array.isArray(selection)) return null;
   const choiceKey = compareChoiceKey(selection);
   if (!choiceKey) return null;
   return {
-    programId: String(selection.programId || selection.program_id || "").trim(),
-    programName: String(selection.programName || selection.program_name || "").trim(),
-    categoryId: String(selection.categoryId || selection.category_id || "").trim(),
-    requirementProfileId: String(selection.requirementProfileId || selection.requirement_profile_id || "").trim(),
-    fundingOptionId: String(selection.fundingOptionId || selection.funding_option_id || "").trim(),
+    ...extractAdmissionSelectionTargetFields(selection),
     choiceKey,
   };
 }
@@ -496,7 +488,7 @@ export function compareSelectedAdmissionOption(u, compareAdmissionChoices = null
   return compareSelectedAdmissionEntry(u, compareAdmissionChoices)?.option || null;
 }
 
-export function compareSelectedFinance(u, compareAdmissionChoices = null) {
+function compareSelectedFinance(u, compareAdmissionChoices = null) {
   if (hasReviewedAdmissions(u)) return {};
   const option = compareSelectedAdmissionOption(u, compareAdmissionChoices);
   return getFinanceForChoice(option, u?.finance) || {};
@@ -676,12 +668,8 @@ export function compareSourceText(u, factKey) {
   }
   const source = String(fact?.source || "").trim();
   const status = String(fact?.status || u?.rank_meta?.status || "").trim();
-  const translatedSource = source
-    ? (typeof trFactSource === "function" ? trFactSource(source) : (typeof translateFactSource === "function" ? translateFactSource(source, source) : source))
-    : "";
-  const translatedStatus = status
-    ? (typeof trFactStatus === "function" ? trFactStatus(status) : (typeof translateFactStatus === "function" ? translateFactStatus(status, status) : (typeof humanizeMachineLabel === "function" ? humanizeMachineLabel(status, status) : status)))
-    : "";
+  const translatedSource = source ? trFactSource(source) : "";
+  const translatedStatus = status ? trFactStatus(status) : "";
   const parts = [translatedSource, translatedStatus].filter(Boolean);
   return parts.length ? parts.join(" - ") : (typeof t === "function" ? t("common.na", "N/A") : "N/A");
 }

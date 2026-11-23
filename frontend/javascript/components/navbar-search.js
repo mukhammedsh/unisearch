@@ -368,7 +368,7 @@ export function initGlobalNavbarSearch() {
 
   const syncClearButton = () => {
     if (searchClearBtn) {
-      searchClearBtn.hidden = !Boolean(qInput.value.trim().length);
+      searchClearBtn.hidden = !qInput.value.trim().length;
     }
   };
 

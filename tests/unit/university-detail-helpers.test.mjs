@@ -1132,3 +1132,72 @@ test("funding displays its published coverage without inferring a competitive aw
   assert.match(container.innerHTML, /Covers tuition and health insurance plus a stipend/);
   assert.doesNotMatch(container.innerHTML, /competition or ranking/);
 });
+
+test("renderFinanceSection hydrates cost-progress bars with data-width-pct instead of inline styles", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const previousProfile = loadProfile();
+  const previousSearch = window.location.search;
+  saveProfile({ studyLevel: "Bachelor" });
+  window.location.search = "";
+  const segments = [];
+  const container = {
+    _html: "",
+    set innerHTML(html) {
+      this._html = html;
+      segments.length = 0;
+      for (const match of String(html).matchAll(/data-width-pct="([^"]+)"/g)) {
+        const properties = {};
+        segments.push({
+          getAttribute: () => match[1],
+          style: { setProperty: (name, value) => { properties[name] = value; } },
+          properties,
+        });
+      }
+    },
+    get innerHTML() {
+      return this._html;
+    },
+    querySelectorAll: (selector) => (selector === "[data-width-pct]" ? segments : []),
+  };
+  try {
+    renderFinanceSection({
+      annualCostForTrack: () => null,
+      container,
+      university: {
+        id: "ux-cost-progress-bars",
+        finance: {
+          total_cost_year_usd: 10000,
+          costs_breakdown_year_usd: {
+            Tuition: 7000,
+            Room_and_Board: 3000,
+          },
+        },
+        admission_categories: [
+          {
+            id: "undergraduate",
+            label: "Undergraduate",
+            study_level: "Bachelor",
+            requirement_profiles: [{
+              id: "general",
+              label: "General",
+              funding_options: [{ id: "paid", label: "Self-funded", funding_type: "paid" }],
+            }],
+          },
+        ],
+      },
+    });
+    assert.doesNotMatch(container.innerHTML, /\bstyle\s*=/i);
+    assert.match(container.innerHTML, /class="cost-progress-segment cost-color-1" data-width-pct="70"/);
+    assert.match(container.innerHTML, /class="cost-progress-segment cost-color-2" data-width-pct="30"/);
+    assert.deepEqual(
+      segments.map((node) => node.properties),
+      [
+        { "--fill-width": "70%", "--fill-scale": "0.7" },
+        { "--fill-width": "30%", "--fill-scale": "0.3" },
+      ],
+    );
+  } finally {
+    saveProfile(previousProfile);
+    window.location.search = previousSearch;
+  }
+});

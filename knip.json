@@ -1,0 +1,33 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "frontend/javascript/main.js!",
+    "frontend/javascript/theme-init.js!",
+    "frontend/config.js!",
+    "frontend/env.js!",
+    "frontend/sw.js!",
+    "frontend/javascript/sw-worker.js!",
+    "scripts/*.mjs",
+    "frontend/scripts/*.mjs",
+    "tests/unit/**/*.mjs",
+    "tests/e2e/**/*.js",
+    "playwright*.config.js"
+  ],
+  "project": [
+    "frontend/javascript/**/*.js!",
+    "frontend/*.js!",
+    "scripts/**/*.mjs",
+    "frontend/scripts/**/*.mjs",
+    "tests/**/*.{js,mjs}"
+  ],
+  "paths": {
+    "/javascript/*": ["frontend/javascript/*"]
+  },
+  "ignoreDependencies": [
+    "@heroicons/react",
+    "postcss"
+  ],
+  "ignoreBinaries": [
+    "uvx"
+  ]
+}

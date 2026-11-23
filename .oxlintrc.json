@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["unicorn", "typescript", "oxc", "import"],
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "no-empty": "error",
+    "no-console": [
+      "error",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-unreachable": "error",
+    "no-duplicate-imports": "error",
+    "import/no-cycle": "error",
+    "no-undef": "error",
+    "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "unicorn/prefer-add-event-listener": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/no-array-sort": "off",
+    "unicorn/no-array-reverse": "off",
+    "oxc/no-map-spread": "off"
+  },
+  "overrides": [
+    {
+      "files": ["frontend/sw.js", "frontend/javascript/sw-worker.js"],
+      "env": {
+        "serviceworker": true
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "frontend/env.js",
+    "frontend/javascript/data/region-currency.js"
+  ]
+}

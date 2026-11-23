@@ -2,6 +2,22 @@
 
 All notable project changes should be recorded here.
 
+## 10.7.2 (2026-11-23) - Frontend code quality and modularization
+
+Patch release: add frontend JavaScript static analysis tooling, remove dead code and duplicates, and modularize large frontend page controllers.
+
+### Maintenance
+- Configure frontend JavaScript static analysis with Oxlint (`.oxlintrc.json`), Knip (`knip.json`), and jscpd (`.jscpd.json`) alongside `npm run lint:frontend`, `npm run audit:dead-code`, and `npm run audit:duplicates` scripts in `package.json`.
+- Resolve all frontend Oxlint errors, empty `catch` blocks, unused imports/variables, Knip-detected dead code and unused exports (plus the duplicate recent-universities setting constant in `frontend/javascript/settings.js`), and cross-file helper/validation/persistence duplicates (`jscpd` clones reduced to zero); remove the stale `#profileBudgetUnit:focus-visible` allowlist entry from `scripts/audit-css.mjs`, and enforce `lint:frontend` and `audit:dead-code` in `test:all` and `.github/workflows/repository-hygiene.yml`.
+- Decompose `frontend/javascript/pages/universities.js` into focused modules under `frontend/javascript/pages/universities/`: `map-assets.js`, `api-client.js`, `card-renderer.js`, `recently-viewed.js`, and `map-controller.js`.
+- Decompose `frontend/javascript/pages/university/render-sections.js` and `frontend/javascript/pages/university/render-content.js` into focused acyclic modules (`section-context.js`, `funding-awards.js`, `deadlines-section.js`, `admission-section.js`, `program-coverage.js`, `programs-section.js`, `qualification-guidance.js`).
+- Decompose `frontend/javascript/components/profile-ui.js` (`profile-dialogs.js`, `profile-form-fields.js`, `profile-exam-editor.js`) and `frontend/javascript/languages.js` (`language-helpers.js`), simplify dead global checks in `compare-helpers.js`, and enable the `no-undef` rule in `.oxlintrc.json`.
+- Remove 387 retired unused localization keys symmetrically across `frontend/Localization/eng`, `ru`, and `kaz`, and refresh `I18N_PACK_REVISION` in `frontend/javascript/i18n.js`.
+- Break the core `utils/runtime.js` <-> `i18n.js` import cycle via `registerRuntimeTranslator` and enforce `import/no-cycle` in `.oxlintrc.json`; extend `scripts/check-hardcoded-text.mjs` to scan frontend JavaScript via `oxc-parser` (fixing unlocalized navbar `<option>` tags in `frontend/javascript/components.js`), add unused i18n key detection to `scripts/i18n-check.mjs` while removing 9 remaining unused keys, and wire `lint:frontend`, `check:i18n`, `audit:css`, `check:hardcoded-text`, and `audit:duplicates` across `.githooks/pre-commit`, `test:all`, and `.github/workflows/repository-hygiene.yml`.
+- Complete the decomposition of `frontend/javascript/pages/universities.js` by extracting `query-state.js`, `layout-sync.js`, `unifit-banner.js`, `compare-controller.js`, and `filter-controls.js` under `frontend/javascript/pages/universities/`.
+- Remove all 14 remaining legacy inline style attributes across `frontend/` (`scripts/inline-styles-baseline.json` reduced to zero) by moving static display and skeleton dimensions into CSS, hydrating finance breakdown bars via `applyPercentWidths`, and adding `.gitattributes` aligned with `.editorconfig`.
+- Prune obsolete inline compare-results branches and CSS selectors across `frontend/javascript/pages/universities/` and `frontend/css/universities/07-responsive.css`, add `jsconfig.json` and JSDoc annotations on the catalog/detail API and cache layer, and add unit tests for `query-state.js` and `api-client.js`.
+
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 
 Patch release: harden API rate-limiting and error-response security headers, and update backend and CI dependencies.

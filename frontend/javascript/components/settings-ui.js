@@ -1,5 +1,4 @@
-import { closeMotionLayer, initCustomSelect, replayMotion } from "../utils.js";
-import { applyTheme, getThemePreference } from "../utils.js";
+import { applyTheme, bindDialogLightDismiss, closeMotionLayer, getThemePreference, initCustomSelect, replayMotion } from "../utils.js";
 import { formatRatesTimestamp, getRatesMetadata } from "../currency.js";
 import { getCurrentLanguage, tFormat } from "../i18n.js";
 import {
@@ -113,20 +112,7 @@ export function initSettingsUI() {
 
   openBtn.addEventListener("click", openSettings);
   closeBtn?.addEventListener("click", closeSettings);
-  modal.addEventListener("cancel", (event) => {
-    event.preventDefault();
-    closeSettings();
-  });
-  let pressedBackdrop = false;
-  modal.addEventListener("pointerdown", (event) => {
-    pressedBackdrop = Boolean((modal.open || modal.classList.contains("is-open")) && card && event.target === modal);
-  });
-  modal.addEventListener("pointerup", (event) => {
-    if (pressedBackdrop && (modal.open || modal.classList.contains("is-open")) && card && event.target === modal) {
-      closeSettings();
-    }
-    pressedBackdrop = false;
-  });
+  bindDialogLightDismiss(modal, card, closeSettings);
   settingInputs.forEach((input) => {
     input.addEventListener("change", () => {
       const key = String(input.getAttribute("data-setting-input") || "").trim();

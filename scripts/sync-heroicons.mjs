@@ -16,7 +16,6 @@ const SOURCE_ICON_PATTERNS = [
   /renderInlineIcon\("([^"]+)"/g,
   /renderUniPill\("([^"]+)"/g,
   /renderScholarshipLine\("([^"]+)"/g,
-  /setHeroIcon\([^,]+,\s*"([^"]+)"/g,
   /data-heroicon="([^"]+)"/g,
 ];
 
@@ -175,11 +174,6 @@ export function heroIcon(name, className = "", attributes = {}) {
   });
 
   return \`<svg \${attrs}>\${entry.body}</svg>\`;
-}
-
-export function setHeroIcon(element, name, className = "", attributes = {}) {
-  if (!element) return;
-  element.innerHTML = heroIcon(name, className, attributes);
 }
 
 export function hydrateHeroIcons(root = document) {

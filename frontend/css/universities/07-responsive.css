@@ -283,9 +283,7 @@
   }
 
   body:not([data-page="universities"]) .u-mobile-filter-btn,
-  body:not([data-page="universities"]) .u-sidebar,
-  body.universities-compare-configure-mode .u-mobile-filter-btn,
-  body.universities-compare-results-mode .u-mobile-filter-btn {
+  body:not([data-page="universities"]) .u-sidebar {
     display: none;
   }
 

@@ -77,12 +77,9 @@ function applyAINameConfig(root = document) {
 
 function maybeWakeBackend() {
   const now = Date.now();
-  try {
-    const lastRaw = sessionStorage.getItem(BACKEND_WAKE_PING_KEY);
-    const last = Number(lastRaw || 0);
-    if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
-    sessionStorage.setItem(BACKEND_WAKE_PING_KEY, String(now));
-  } catch {}
+  const last = Number(safeSessionStorage.get(BACKEND_WAKE_PING_KEY, "0") || 0);
+  if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
+  safeSessionStorage.set(BACKEND_WAKE_PING_KEY, String(now));
 
   const pingUrl = `${API_BASE}/health?t=${now}`;
   fetch(pingUrl, {
@@ -210,9 +207,9 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
     if (comparePane && !comparePane.innerHTML.trim()) {
       comparePane.innerHTML = `
         <div class="compare-results-loading" role="status">
-          <div class="skeleton-line" style="width: 38%; height: 22px;"></div>
-          <div class="skeleton-line" style="width: 100%; height: 118px;"></div>
-          <div class="skeleton-line" style="width: 92%; height: 180px;"></div>
+          <div class="skeleton-line compare-results-loading__title"></div>
+          <div class="skeleton-line compare-results-loading__summary"></div>
+          <div class="skeleton-line compare-results-loading__body"></div>
         </div>
       `;
     }
@@ -311,7 +308,7 @@ async function initRoutePage(ctx = currentRouteContext()) {
       ensureLanguageConfig(),
     ]);
     return module?.initGuidePage?.();
-  }
+  }
   if (ctx.isPrivacyPage || ctx.isTermsPage) {
     try {
       const module = await loadRouteModule(ctx.isPrivacyPage ? "privacy" : "terms");
@@ -503,7 +500,9 @@ export function prefetchRoute(href) {
     if (!isAppRouteUrl(url)) return;
     if (getCachedRouteHtml(url.href)) return;
     fetchRouteHtml(url.href).catch(() => {});
-  } catch {}
+  } catch {
+    return;
+  }
 }
 
 function shouldPrefetchLink(link) {
@@ -599,8 +598,12 @@ async function loadAppRoute(rawHref, options = {}) {
 
   if (appRouteNavigationInFlight) {
     try {
-      appRouteNavigationInFlight.abort();
-    } catch {}
+      if (!appRouteNavigationInFlight.signal?.aborted) {
+        appRouteNavigationInFlight.abort();
+      }
+    } catch {
+      appRouteNavigationInFlight = null;
+    }
   }
 
   const controller = new AbortController();

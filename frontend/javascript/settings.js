@@ -1,8 +1,7 @@
 import { COUNTRY_CURRENCY, TIME_ZONE_COUNTRY } from "./data/region-currency.js";
 
 export const SETTINGS_CACHE_KEY = "unisearch_settings_cache_v1";
-export const SETTING_DISABLE_RECENT_UNIVERSITIES = "disable_recent_universities";
-export const SETTING_STORE_RECENT_UNIVERSITIES = SETTING_DISABLE_RECENT_UNIVERSITIES;
+export const SETTING_STORE_RECENT_UNIVERSITIES = "disable_recent_universities";
 export const SETTING_OPEN_UNIVERSITIES_NEW_TAB = "open_universities_new_tab";
 export const SETTING_PREFERRED_CURRENCY = "preferred_currency";
 export const SETTING_CURRENCY_DISPLAY = "currency_display_mode";
@@ -338,7 +337,7 @@ export function setSettingValue(key, value) {
 }
 
 export function shouldStoreRecentUniversities() {
-  return getSettingValue(SETTING_DISABLE_RECENT_UNIVERSITIES) !== true;
+  return getSettingValue(SETTING_STORE_RECENT_UNIVERSITIES) !== true;
 }
 
 export function shouldOpenUniversitiesInNewTab() {

@@ -171,20 +171,6 @@ export function showNetworkStatusBanner(status) {
 }
 
 /**
- * Hides the network status banner immediately.
- */
-export function hideNetworkStatusBanner() {
-  if (dismissTimer) {
-    clearTimeout(dismissTimer);
-    dismissTimer = 0;
-  }
-  const banner = document.getElementById(BANNER_ID);
-  if (banner) {
-    banner.classList.remove("is-visible");
-  }
-}
-
-/**
  * Initializes global online/offline listeners and automatic reconnection events.
  */
 export function initNetworkStatusMonitor() {

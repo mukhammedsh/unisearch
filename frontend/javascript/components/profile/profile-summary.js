@@ -4,8 +4,6 @@
 
 import { withoutBracketedText } from "../../utils/text.js";
 
-export const PROFILE_SECTION_IDS = ["basics", "preferences", "scores", "languages", "specific"];
-
 const LEVEL_LABEL_KEYS = {
   preparation: "profile.option.study_level_preparation",
   bachelor: "profile.option.study_level_bachelor",
@@ -43,8 +41,8 @@ export const shortExamLabel = (label) => {
   return short || full;
 };
 
-export const hasExamEvidence = (profile) => asList(profile?.exams).some((row) => row && (row.exam || row.id));
-export const hasLanguageEvidence = (profile) => asList(profile?.languages).some((row) => row && (row.code || row.lang));
+const hasExamEvidence = (profile) => asList(profile?.exams).some((row) => row && (row.exam || row.id));
+const hasLanguageEvidence = (profile) => asList(profile?.languages).some((row) => row && (row.code || row.lang));
 
 // Which of the five page sections already hold an answer (outline markers).
 export const buildSectionFillStates = (profile) => {

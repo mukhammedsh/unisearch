@@ -1,5 +1,4 @@
 import {
-  API_BASE,
   bindImageFallbacks,
   escapeHtml,
   escapeHtmlAttr,
@@ -491,9 +490,9 @@ export async function initComparePage() {
 
   container.innerHTML = `
     <div class="compare-results-loading" role="status">
-      <div class="skeleton-line" style="width: 38%; height: 22px;"></div>
-      <div class="skeleton-line" style="width: 100%; height: 118px;"></div>
-      <div class="skeleton-line" style="width: 92%; height: 180px;"></div>
+      <div class="skeleton-line compare-results-loading__title"></div>
+      <div class="skeleton-line compare-results-loading__summary"></div>
+      <div class="skeleton-line compare-results-loading__body"></div>
     </div>
   `;
 

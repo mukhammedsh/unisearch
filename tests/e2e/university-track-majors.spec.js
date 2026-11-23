@@ -610,11 +610,15 @@ test("admission category major tags are localized in russian", async ({ page }) 
 
 test("nazarbayev university keeps regular admission separate from financial support", async ({ page }) => {
   const university = "nazarbayev-university-kaz-astana";
+  const regularOption = "nu-a-study-bachelor-of-science-in-computer-science";
   const regularRoute = "nu-a-route-regular-foundation-undergraduate";
   const supportRoute = "nu-a-route-financial-support";
-  const params = new URLSearchParams({ id: university, admission_option: "nu-a-study-bachelor-of-science-in-computer-science",
+  const params = new URLSearchParams({ id: university, admission_option: regularOption,
     admission_application_route: regularRoute, admission_level: "undergraduate", admission_route: "first_year", admission_cycle: "2027/28" });
-  const regularResponse = page.waitForResponse(response => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
+  const regularResponse = page.waitForResponse(response => response.url().endsWith("/admissions-context")
+    && response.request().method() === "POST"
+    && response.request().postDataJSON()?.context?.study_option_id === regularOption
+    && response.request().postDataJSON()?.context?.application_route_id === regularRoute);
   await openCatalog(page, university, { url: `/university.html?${params}` });
   const regular = await (await regularResponse).json();
   await expect(page.locator("#admissionsRoute")).toHaveValue(regularRoute);

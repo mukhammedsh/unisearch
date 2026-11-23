@@ -208,11 +208,11 @@ const FUNDING_AVAILABILITY = {
 function fundingPrograms(resolved) {
   const ids = new Set(resolved?.fact_groups?.funding || []);
   const optionId = resolved?.selected_option?.id;
-  const routeIds = [resolved?.selected_route?.id, ...(resolved?.selected_route?.shared_policy_context_ids || [])];
+  const routeIds = new Set([resolved?.selected_route?.id, ...(resolved?.selected_route?.shared_policy_context_ids || [])]);
   const rows = (resolved?.facts || []).filter((row) => ids.has(row.id) && isPublished(row) && isEvidenceReviewed(row)
     && row.applicability?.status !== "mismatched" && typeof row.value?.funding_program === "string"
     && (!row.scope?.option_ids?.length || row.scope.option_ids.includes(optionId))
-    && (!row.scope?.route_ids?.length || row.scope.route_ids.some((id) => routeIds.includes(id))));
+    && (!row.scope?.route_ids?.length || row.scope.route_ids.some((id) => routeIds.has(id))));
   const unique = new Map(rows.map((row) => [JSON.stringify([row.value.funding_program, row.value.availability]), row]));
   return [...unique.values()].map((row) => {
     const name = row.value.funding_program === "Need-based Aid"
@@ -620,6 +620,7 @@ function openPicker({ column, trigger, onApply }) {
   dialog.addEventListener("input", (event) => {
     if (event.target.id !== "comparePickerSearch") return;
     picker.search = event.target.value.trim();
+    picker.request?.abort();
     searchLater();
   });
   dialog.addEventListener("submit", (event) => {

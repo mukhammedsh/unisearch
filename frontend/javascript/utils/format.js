@@ -239,6 +239,21 @@ export function getFlagImg(countryName) {
   return html;
 }
 
+function setToastPopoverOpen(container, open) {
+  try {
+    if (open) {
+      if (!container.matches?.(":popover-open")) {
+        container.showPopover();
+      }
+    } else if (container.matches?.(":popover-open")) {
+      container.hidePopover();
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function showToast(message, type = "error") {
   const container = document.getElementById("toast-container");
   if (!container) return;
@@ -325,8 +340,8 @@ export function showToast(message, type = "error") {
       const hasFocus = typeof toast.contains === "function" && toast.contains(document.activeElement);
       if (hasFocus && typeof container.querySelectorAll === "function") {
         const remaining = Array.from(container.querySelectorAll(".toast:not(.is-leaving)"))
-          .filter((item) => item !== toast);
-        const nextFocus = remaining[0]?.querySelector?.(".toast-close") || container._previousFocus;
+          .find((item) => item !== toast);
+        const nextFocus = remaining?.querySelector?.(".toast-close") || container._previousFocus;
         if (nextFocus && typeof nextFocus.focus === "function") {
           nextFocus.focus();
         }
@@ -366,11 +381,7 @@ export function showToast(message, type = "error") {
     if (!container.hasAttribute?.("popover")) {
       container.setAttribute("popover", "manual");
     }
-    if (!container.matches?.(":popover-open")) {
-      try {
-        container.showPopover();
-      } catch {}
-    }
+    setToastPopoverOpen(container, true);
   }
   container.appendChild(toast);
 }
@@ -398,11 +409,7 @@ export function removeToast(toast) {
       typeof parentContainer.querySelectorAll === "function" &&
       parentContainer.querySelectorAll(".toast").length === 0
     ) {
-      try {
-        if (parentContainer.matches?.(":popover-open")) {
-          parentContainer.hidePopover();
-        }
-      } catch {}
+      setToastPopoverOpen(parentContainer, false);
     }
   };
 

@@ -16,7 +16,7 @@ export const parseAlevelGrades = (rawValue) => {
         .replaceAll(" ", "")
         .replaceAll("★", "*")
         .replaceAll("в˜…", "*")
-        .replace(/[,;/|+\-]+/g, "");
+        .replace(/[,;/|+-]+/g, "");
     if (!compact) return [];
     const tokens = compact.match(/A\*|[ABCDEU]/g) || [];
     return tokens.join("") === compact ? tokens : [];
@@ -222,23 +222,18 @@ export function readSubjectBreakdownDraft(examId, container, options = {}) {
     // An untouched breakdown is a total-only report, not a set of missing required sections.
     if (breakdownAllowsTotalOnly(selected) && !hasBreakdownInput(container)) return state;
 
-    const fixedRows = Array.from(container.querySelectorAll("[data-breakdown-fixed-row]"));
-    for (const row of fixedRows) {
-        const exam = canonicalizeExamId(row.getAttribute("data-breakdown-exam"));
-        const payload = readBreakdownFieldPayload(row, exam);
+    const pushBreakdownComponent = (exam, payload, label) => {
         if (!payload) {
-            if (state.fixed.find((item) => item.exam === exam)?.required === false) continue;
             if (silent) {
                 state.components.push({ exam, score: null });
-                continue;
+                return true;
             }
-            const label = String(row.getAttribute("data-breakdown-label") || getExamDisplayName(exam, { locale: getCurrentLanguage() })).trim();
-            if (!silent) showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
-            return null;
+            showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
+            return false;
         }
         if (payload.invalid) {
             if (!silent) showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
-            return null;
+            return false;
         }
         state.components.push({
             exam,
@@ -246,6 +241,16 @@ export function readSubjectBreakdownDraft(examId, container, options = {}) {
             ...(payload.raw_value ? { raw_value: payload.raw_value } : {}),
             ...(payload.details ? { details: payload.details } : {}),
         });
+        return true;
+    };
+
+    const fixedRows = Array.from(container.querySelectorAll("[data-breakdown-fixed-row]"));
+    for (const row of fixedRows) {
+        const exam = canonicalizeExamId(row.getAttribute("data-breakdown-exam"));
+        const payload = readBreakdownFieldPayload(row, exam);
+        if (!payload && state.fixed.find((item) => item.exam === exam)?.required === false) continue;
+        const label = String(row.getAttribute("data-breakdown-label") || getExamDisplayName(exam, { locale: getCurrentLanguage() })).trim();
+        if (!pushBreakdownComponent(exam, payload, label)) return null;
     }
 
     const selectableRows = Array.from(container.querySelectorAll("[data-breakdown-selectable-row]"));
@@ -253,25 +258,8 @@ export function readSubjectBreakdownDraft(examId, container, options = {}) {
         const exam = canonicalizeExamId(row.querySelector("[data-breakdown-subject-select]")?.value || "");
         if (!exam) continue;
         const payload = readBreakdownFieldPayload(row, exam);
-        if (!payload) {
-            if (silent) {
-                state.components.push({ exam, score: null });
-                continue;
-            }
-            const label = getExamDisplayName(exam, { locale: getCurrentLanguage() });
-            if (!silent) showToast(tFormat("profile.exam_component_required", { subject: label }, `Enter a score for ${label}`), "error");
-            return null;
-        }
-        if (payload.invalid) {
-            if (!silent) showToast(t("profile.exam_invalid_score", "Invalid score format"), "error");
-            return null;
-        }
-        state.components.push({
-            exam,
-            ...(payload.score !== undefined ? { score: payload.score } : {}),
-            ...(payload.raw_value ? { raw_value: payload.raw_value } : {}),
-            ...(payload.details ? { details: payload.details } : {}),
-        });
+        const label = getExamDisplayName(exam, { locale: getCurrentLanguage() });
+        if (!pushBreakdownComponent(exam, payload, label)) return null;
     }
 
     const extraRows = Array.from(container.querySelectorAll("[data-breakdown-extra-row]"));

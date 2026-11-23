@@ -1,289 +1,117 @@
 /* frontend/javascript/pages/universities.js */
 
 import {
-  API_BASE,
-  $,
-  debounce,
-  loadFilters,
-  saveFilters,
-  setUrlParams,
-  nested,
-  escapeHtml,
-  escapeHtmlAttr,
-  loadProfile,
-  loadProfileForApi,
-  formatExamValue,
-  getExamDisplayName,
-  getFlagImg,
-  initCustomSelect,
-  CITY_OPTIONS_BY_COUNTRY,
-  aiName,
-  animateElementOut,
-  markMotionEnter,
-  motionPress,
-  replayMotion,
-  setupSlidingIndicator,
-  safeSessionStorage,
-  showToast,
+    $,
+    debounce,
+    loadFilters,
+    saveFilters,
+    setUrlParams,
+    escapeHtml,
+    escapeHtmlAttr,
+    loadProfileForApi,
+    initCustomSelect,
+    CITY_OPTIONS_BY_COUNTRY,
+    markMotionEnter,
+    motionPress,
+    setupSlidingIndicator,
+    showToast,
 } from "../utils.js";
-
-import {
-  getGrantsFromCategories,
-  chanceNoDataHelpNote,
-} from "../university-detail-helpers.js";
 
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
-import { heroIcon } from "../icons.js";
-import { getCurrentLanguage, t, tFormat } from "../i18n.js";
+import { t } from "../i18n.js";
 import {
-  getPreferredCurrency,
-  loadRates,
-  convert,
-  getFilterLimits,
-  formatMoney,
+    getPreferredCurrency,
+    loadRates,
+    getFilterLimits,
+    formatMoney,
 } from "../currency.js";
-import { isUniversitiesListPath, navigateToAppRoute, routeCompare, routeCompareConfigure, routeProfile, routeUniversityDetail } from "../routes.js";
-import {
-  readCompareAdmissionChoices,
-  writeCompareAdmissionChoices as persistCompareAdmissionChoices,
-  resolveAiSortResult,
-} from "./universities/compare-helpers.js";
-import {
-  showUniversitiesTour,
-} from "./universities/tour-modals.js";
+import { isUniversitiesListPath, navigateToAppRoute, routeCompare } from "../routes.js";
+import { resolveAiSortResult } from "./universities/compare-helpers.js";
+import { showUniversitiesTour } from "./universities/tour-modals.js";
 import { describeActiveFilters, buildEmptyStateModel, renderEmptyStateCard } from "./universities/empty-state.js";
-import { buildFilterResetPatch } from "./universities/filter-reset.js";
-import {
-  translateUniversityName,
-  translateWord,
-  translateProgramName,
-} from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 
 import {
-  cleanDecoratedText,
-  renderInlineIcon,
-  renderLocationMarkup,
-  trCountry,
-  trCity,
-  trState,
-  trUniversityName,
-  unknownFieldText,
-  textOrUnknown,
-  normalizeSortMode,
-  fundingPreferenceToQueryValue,
-  uniThumbnailSrc,
-  SAVED_UNIVERSITIES_KEY,
-  COMPARE_UNIVERSITIES_KEY,
-  RECENT_UNIVERSITIES_KEY,
-  MAX_COMPARE_UNIVERSITIES,
-  hasSeenUniversitiesTour,
-  clearUniversitiesTourResumeStep,
-  markUniversitiesTourSeen,
-  readUniversitiesTourResumeStep,
-  readIdListStorage,
-  writeIdListStorage,
-  shouldOpenUniversitiesInNewTab,
-  rememberRecentUniversity,
-  fetchUniversityDetailCached,
-  getDetailCacheEntry,
-  toFiniteNumber,
-} from './_shared.js';
+    MAX_COMPARE_UNIVERSITIES,
+    hasSeenUniversitiesTour,
+    clearUniversitiesTourResumeStep,
+    markUniversitiesTourSeen,
+    readUniversitiesTourResumeStep,
+    rememberRecentUniversity,
+    shouldOpenUniversitiesInNewTab,
+} from "./_shared.js";
 
-import {
-  universityCardPriceInfo,
-  renderUniversityCardCosts,
-  buildRankSourceTooltip,
-} from "./universities/card-tooltips.js";
 import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
-  budgetTooltip,
-  closePreferenceLabels,
-  exactBudgetMoney,
-  describeRankingProfile,
-  legendEntries,
-  missingExamNames,
-  reviewedMissingInputs,
-  unmetMinimums,
-} from "./universities/unifit-explanation.js";
+    abortUniversitiesApiRequests,
+    createUniversitiesApiState,
+    fetchUniversitiesAiSort,
+    fetchUniversitiesList,
+    initTranslationDebugLogger,
+} from "./universities/api-client.js";
+import {
+    renderCatalogPagination,
+    renderUniversityCard,
+    reviewedCardIndicators,
+} from "./universities/card-renderer.js";
+import { createRecentlyViewedController } from "./universities/recently-viewed.js";
+import { createUniversitiesMapController } from "./universities/map-controller.js";
+import {
+    applyUrlParamsToState,
+    buildCatalogAiSortPayload,
+    buildCatalogParams,
+    buildFallbackListParams,
+    buildSectionUrlParams,
+    createInitialCatalogState,
+    getProfileFundingQueryValue,
+    parseCompareIds,
+    readPageParams,
+} from "./universities/query-state.js";
+import { createLayoutSyncController } from "./universities/layout-sync.js";
+import { createUnifitBannerController } from "./universities/unifit-banner.js";
+import { createCompareController } from "./universities/compare-controller.js";
+import { createFilterControls } from "./universities/filter-controls.js";
 
-// Card tooltip helpers: a USD amount in the reader's currency, and the preference sliders a university is close to.
-const tooltipMoney = (usd) => {
-    const code = getPreferredCurrency();
-    const amount = convert(Number(usd), "USD", code);
-    return Number.isFinite(amount) ? formatMoney(amount, code) : formatMoney(Number(usd), "USD");
-};
-const tooltipBudgetMoney = (usd) => exactBudgetMoney(usd, loadProfile(), { convert, formatMoney, fallback: tooltipMoney });
-const tooltipHelpers = { money: tooltipMoney, budgetMoney: tooltipBudgetMoney, tr: t, trf: tFormat };
-const cardExamLabel = (id) => getExamDisplayName(id, { locale: getCurrentLanguage() });
-const preferenceTooltip = (match, fallbackKey) => {
-    const labels = closePreferenceLabels(match).map((label) => t(`universities.tradeoff.${label}`).toLocaleLowerCase());
-    return labels.length ? tFormat("universities.tip.preferences_close", { dimensions: labels.join(", ") }) : t(fallbackKey);
-};
+export { reviewedCardIndicators };
+export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip } from "./universities/card-tooltips.js";
 
-export function reviewedCardIndicators(match, budget) {
-    if (!match || match.finalScore == null || !Number.isFinite(Number(match.finalScore))) return [];
-    const indicators = [];
-    // `legend` names the meaning of the icon for the UniFit banner legend (see LEGEND_LABEL_KEYS).
-    const add = (icon, tone, label, detail, priority = 2, value = "", legend = "") => indicators.push({ icon, tone, label, detail, priority, value, legend });
-    const programSelected = Boolean(match.admissionsContext?.study_option_id);
-    if (match.subjectMatch?.status === "missing") {
-        add("academic-cap", "warning", t(programSelected ? "universities.match.selected_subject_mismatch" : "universities.match.subject_missing"),
-            t(programSelected ? "universities.match.selected_subject_mismatch_detail" : "universities.match.subject_missing_detail"), 0, "",
-            "subject_missing");
-    } else if (match.subjectMatch?.status === "matched") {
-        // Name how many programs match and what choosing one unlocks, instead of restating the label.
-        const count = Array.isArray(match.subjectMatch.option_ids) ? match.subjectMatch.option_ids.length : 0;
-        const detail = programSelected ? t("universities.tip.subject_selected")
-            : count ? tFormat("universities.tip.subject_options", { count }) : t("universities.match.subject_matched_detail");
-        add("academic-cap", "match", t("universities.match.subject_matched"), detail, 2, "", "subject_matched");
-    }
-    const mismatch = match.preferenceMismatch == null ? NaN : Number(match.preferenceMismatch);
-    if (Number.isFinite(mismatch) && mismatch <= 0.22) {
-        add("heart", "match", t(mismatch <= 0.14 ? "universities.badge.your_vibe" : "universities.badge.top_match"),
-            preferenceTooltip(match, "universities.match.preference_detail"), 3, "", "vibe");
-    }
-    // A published check of the selected route that the profile cannot answer yet: say what to add.
-    const missingInputs = reviewedMissingInputs(match.requirementChecks, {
-        examLabel: cardExamLabel, joiner: t("admission.requirements_fit.check.or", "or"),
-    }).slice(0, 3);
-    if (missingInputs.length) {
-        add("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed"),
-            tFormat("universities.tip.add_to_profile", { exams: missingInputs.join(", ") }), 1, "", "exam_needed");
-    }
-    const checks = Array.isArray(match.requirementChecks) ? match.requirementChecks.filter(check => check.measurable) : [];
-    if (typeof match.requirementsFitPercent === "number" && Number.isFinite(match.requirementsFitPercent) && checks.length) {
-        const met = checks.filter(check => check.status === "met").length;
-        const percent = new Intl.NumberFormat({ eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US", { maximumFractionDigits: 1 }).format(match.requirementsFitPercent);
-        add("clipboard-document-list", met < checks.length ? "warning" : "finance",
-            tFormat("universities.match.score", { percent }),
-            tFormat("universities.match.checks_detail", { met, total: checks.length }), met < checks.length ? 0 : 2, `${percent}%`,
-            met < checks.length ? "requirements_below" : "requirements_met");
-    }
-    const assessment = match.budgetAssessment || {};
-    // Prices that differ by fee status (Home / Overseas) cannot be compared until the reader sets one.
-    const feeStatusUnknown = assessment.status === "unknown_cost" && assessment.evidence === "fee_status_unknown";
-    if (Number(budget) > 0 && match.costQuote && (feeStatusUnknown || ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status))) {
-        const state = feeStatusUnknown ? "uncertain" : { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
-        const detail = budgetTooltip({
-            status: feeStatusUnknown ? "fee_status" : { within: "within", over: "over", uncertain: "range" }[state],
-            costMin: match.costQuote.minUSD, costMax: match.costQuote.maxUSD, budget, tuitionOnly: assessment.basis === "tuition",
-        }, tooltipHelpers);
-        add("banknotes", state === "over" ? "budget" : "finance", t(`universities.match.budget_${state}`), detail, state === "over" ? 1 : 2, "",
-            { over: "over_budget", within: "within_budget", uncertain: "budget_check" }[state]);
-    }
-    return indicators.sort((a, b) => a.priority - b.priority);
-}
-
-export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip };
-
-let __universitiesProfileUpdatedHandler = null;
-let __universitiesLanguageChangedHandler = null;
-let __universitiesLanguageVisualPendingHandler = null;
-let __universitiesLanguageFinishedHandler = null;
-let __universitiesMapCardActionHandler = null;
-let __universitiesSettingsChangedHandler = null;
-let __universitiesScrollHandler = null;
-let __universitiesPagehideHandler = null;
-let __universitiesBeforeunloadHandler = null;
-let __universitiesCurrencyChangedHandler = null;
-let __universitiesRatesUpdatedHandler = null;
-let __universitiesMobileFilterKeydownHandler = null;
-let __universitiesResizeHandler = null;
-let __universitiesResizeObserver = null;
-let __universitiesOnlineReconnectHandler = null;
-let __universitiesMapResizeTimer = 0;
-let __universitiesOverflowClickHandler = null;
-let __universitiesOverflowKeydownHandler = null;
-let __universitiesMapResultsObserver = null;
+let __universitiesWindowBindings = [];
 let __universitiesSearchCleanup = null;
+let __universitiesLayoutSync = null;
+let __universitiesUnifitBanner = null;
+let __universitiesCompareController = null;
+let __universitiesFilterControls = null;
+let __universitiesMapController = null;
+let __universitiesRecentController = null;
+let __universitiesApiState = null;
+
+function bindWindowListener(eventName, handler) {
+    window.addEventListener(eventName, handler);
+    __universitiesWindowBindings.push([eventName, handler]);
+}
 
 export function disposeUniversitiesPage() {
     __universitiesSearchCleanup?.();
     __universitiesSearchCleanup = null;
-    if (__universitiesProfileUpdatedHandler) {
-        window.removeEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
-        __universitiesProfileUpdatedHandler = null;
+    __universitiesLayoutSync?.dispose();
+    __universitiesLayoutSync = null;
+    __universitiesUnifitBanner?.dispose();
+    __universitiesUnifitBanner = null;
+    __universitiesCompareController?.dispose();
+    __universitiesCompareController = null;
+    __universitiesFilterControls?.dispose();
+    __universitiesFilterControls = null;
+    __universitiesMapController?.dispose();
+    __universitiesMapController = null;
+    __universitiesRecentController?.dispose();
+    __universitiesRecentController = null;
+    abortUniversitiesApiRequests(__universitiesApiState);
+    __universitiesApiState = null;
+    for (const [eventName, handler] of __universitiesWindowBindings) {
+        window.removeEventListener(eventName, handler);
     }
-    if (__universitiesLanguageChangedHandler) {
-        window.removeEventListener("languageChanged", __universitiesLanguageChangedHandler);
-        __universitiesLanguageChangedHandler = null;
-    }
-    if (__universitiesLanguageVisualPendingHandler) {
-        window.removeEventListener("languageChangeVisualPending", __universitiesLanguageVisualPendingHandler);
-        __universitiesLanguageVisualPendingHandler = null;
-    }
-    if (__universitiesLanguageFinishedHandler) {
-        window.removeEventListener("languageChangeFinished", __universitiesLanguageFinishedHandler);
-        __universitiesLanguageFinishedHandler = null;
-    }
-    if (__universitiesMapCardActionHandler) {
-        document.removeEventListener("click", __universitiesMapCardActionHandler, true);
-        __universitiesMapCardActionHandler = null;
-    }
-    if (__universitiesSettingsChangedHandler) {
-        window.removeEventListener("settingsChanged", __universitiesSettingsChangedHandler);
-        __universitiesSettingsChangedHandler = null;
-    }
-    if (__universitiesScrollHandler) {
-        window.removeEventListener("scroll", __universitiesScrollHandler);
-        __universitiesScrollHandler = null;
-    }
-    if (__universitiesPagehideHandler) {
-        window.removeEventListener("pagehide", __universitiesPagehideHandler);
-        __universitiesPagehideHandler = null;
-    }
-    if (__universitiesBeforeunloadHandler) {
-        window.removeEventListener("beforeunload", __universitiesBeforeunloadHandler);
-        __universitiesBeforeunloadHandler = null;
-    }
-    if (__universitiesCurrencyChangedHandler) {
-        window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
-        __universitiesCurrencyChangedHandler = null;
-    }
-    if (__universitiesRatesUpdatedHandler) {
-        window.removeEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
-        __universitiesRatesUpdatedHandler = null;
-    }
-    if (__universitiesOnlineReconnectHandler) {
-        window.removeEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
-        __universitiesOnlineReconnectHandler = null;
-    }
-    if (__universitiesMobileFilterKeydownHandler) {
-        document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
-        __universitiesMobileFilterKeydownHandler = null;
-    }
-    if (__universitiesResizeHandler) {
-        window.removeEventListener("resize", __universitiesResizeHandler);
-        __universitiesResizeHandler = null;
-    }
-    if (__universitiesMapResizeTimer) {
-        window.clearTimeout(__universitiesMapResizeTimer);
-        __universitiesMapResizeTimer = 0;
-    }
-    if (__universitiesResizeObserver) {
-        __universitiesResizeObserver.disconnect();
-        __universitiesResizeObserver = null;
-    }
-    if (__universitiesOverflowClickHandler) {
-        document.removeEventListener("click", __universitiesOverflowClickHandler);
-        __universitiesOverflowClickHandler = null;
-    }
-    if (__universitiesOverflowKeydownHandler) {
-        document.removeEventListener("keydown", __universitiesOverflowKeydownHandler);
-        __universitiesOverflowKeydownHandler = null;
-    }
-    if (__universitiesMapResultsObserver) {
-        __universitiesMapResultsObserver.disconnect();
-        __universitiesMapResultsObserver = null;
-    }
-    document.documentElement.classList.remove("sidebar-filters-open");
-    document.body.classList.remove("sidebar-filters-open");
-    document.querySelectorAll("[data-sidebar-inert='1']").forEach((node) => {
-        node.inert = false;
-        delete node.dataset.sidebarInert;
-    });
+    __universitiesWindowBindings = [];
 }
 
 function collectUniversitiesElements() {
@@ -339,325 +167,74 @@ function collectUniversitiesElements() {
     return el;
 }
 
-function initTranslationDebugLogger() {
-    const isTranslationDebugEnabled = (() => {
-        const raw = window.APP_DEBUG;
-        if (typeof raw === "boolean") return raw;
-        const text = String(raw ?? "").trim().toLowerCase();
-        return ["1", "true", "yes", "on"].includes(text);
-    })();
-    const logTranslationDebug = (stage, details = {}) => {
-        if (!isTranslationDebugEnabled) return;
-        try {
-            console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
-            Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
-            console.groupEnd();
-        } catch {
-            // ignore logging errors
-        }
-    };
-    logTranslationDebug("debug mode enabled", {
-        enabled: true,
-        note: "ML + translation debug is enabled by APP_DEBUG runtime flag.",
-    });
-    return logTranslationDebug;
-}
-
-function getProfileFundingQueryValue() {
-    const profile = loadProfile();
-    return fundingPreferenceToQueryValue(profile?.fundingType || profile?.funding_type || "any");
-}
-
-function hasProfileEvidence(profile) {
-    const exams = Array.isArray(profile?.exams) ? profile.exams : [];
-    const langs = Array.isArray(profile?.languages) ? profile.languages : [];
-    return exams.length > 0 || langs.length > 0;
-}
-
-function setupStatusOverflowHandlers() {
-    const closeAllStatusOverflows = () => {
-        document.querySelectorAll(".uni-status-overflow.is-open").forEach((wrap) => {
-            wrap.classList.remove("is-open");
-            const trigger = wrap.querySelector(".uni-status-overflow-trigger");
-            if (trigger) trigger.setAttribute("aria-expanded", "false");
-            const popover = wrap.querySelector(".uni-status-overflow-popover");
-            if (popover) popover.hidden = true;
-        });
-    };
-
-    __universitiesOverflowClickHandler = (evt) => {
-        const target = evt.target instanceof Element ? evt.target : null;
-        if (!target) return;
-
-        const trigger = target.closest(".uni-status-overflow-trigger");
-        if (trigger) {
-            evt.preventDefault();
-            evt.stopPropagation();
-            const wrap = trigger.closest(".uni-status-overflow");
-            if (!wrap) return;
-            const popover = wrap.querySelector(".uni-status-overflow-popover");
-            const isCurrentlyOpen = wrap.classList.contains("is-open");
-
-            closeAllStatusOverflows();
-
-            if (!isCurrentlyOpen) {
-                wrap.classList.add("is-open");
-                trigger.setAttribute("aria-expanded", "true");
-                if (popover) popover.hidden = false;
-            }
-            return;
-        }
-
-        if (!target.closest(".uni-status-overflow")) {
-            closeAllStatusOverflows();
-        }
-    };
-    document.addEventListener("click", __universitiesOverflowClickHandler);
-
-    __universitiesOverflowKeydownHandler = (evt) => {
-        if (evt.key === "Escape") {
-            const openWrap = document.querySelector(".uni-status-overflow.is-open");
-            if (openWrap) {
-                evt.preventDefault();
-                const trigger = openWrap.querySelector(".uni-status-overflow-trigger");
-                closeAllStatusOverflows();
-                if (trigger && typeof trigger.focus === "function") {
-                    trigger.focus();
-                }
-            }
-        }
-    };
-    document.addEventListener("keydown", __universitiesOverflowKeydownHandler);
+/** Visible text of the selected option of a filter dropdown, or the raw value when it is not listed. */
+function selectedFilterOptionLabel(field, value) {
+    const selectId = { country: "countrySelect", region: "stateSelect", city: "citySelect", study_level: "studyLevelSelect" }[field];
+    const option = Array.from($(selectId)?.options || []).find((item) => item.value === value);
+    return String(option?.textContent || value || "").trim();
 }
 
 export function initUniversitiesPage() {
     const prefCurrency = getPreferredCurrency();
     let currentCurrency = prefCurrency;
     let currentLimits = getFilterLimits(prefCurrency);
-    const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
-    const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
-
-    if (window.history && "scrollRestoration" in window.history) {
-        try {
-            window.history.scrollRestoration = "manual";
-        } catch {}
-    }
-
-    const saveCurrentScrollPosition = () => {
-        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
-        const currentY = Math.max(0, Math.round(window.scrollY || window.pageYOffset || 0));
-        safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(currentY));
-    };
-
-    const clearSavedScrollPosition = () => {
-        safeSessionStorage.remove(UNIVERSITIES_SCROLL_KEY);
-    };
-
-    const restoreScrollPosition = () => {
-        if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
-        const rawY = safeSessionStorage.get(UNIVERSITIES_SCROLL_KEY);
-        const targetY = rawY !== null ? Math.max(0, Number.parseInt(rawY, 10) || 0) : 0;
-        window.requestAnimationFrame(() => {
-            window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
-        });
-    };
-
-    const clampTuition = (value, fallback = 0) => {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return fallback;
-        return Math.max(currentLimits.min, Math.min(currentLimits.max, Math.round(n)));
-    };
-    const clampPercent = (value, fallback = 50) => {
-        const n = Number(value);
-        if (!Number.isFinite(n)) return fallback;
-        return Math.max(0, Math.min(100, Math.round(n)));
-    };
 
     const el = collectUniversitiesElements();
     const logTranslationDebug = initTranslationDebugLogger();
 
     if (!el.list) return;
     disposeUniversitiesPage();
+
+    const pageParams = readPageParams();
+    const redirectCompareIds = parseCompareIds(pageParams.get("ids"));
+    const initialCompareParam = String(pageParams.get("compare") || "").trim().toLowerCase();
+    if (redirectCompareIds.length === MAX_COMPARE_UNIVERSITIES && ["configure", "results"].includes(initialCompareParam)) {
+        const choices = String(pageParams.get("choices") || "").split(",").filter(Boolean);
+        const stage = (initialCompareParam === "configure" || choices.length === 0) ? "configure" : "results";
+        const redirectUrl = routeCompare(redirectCompareIds, choices, stage === "configure" ? { stage: "configure" } : "");
+        navigateToAppRoute(redirectUrl, { replace: true });
+        return;
+    }
+
     let catalogDisposed = false;
     const isCurrentCatalog = () => !catalogDisposed && el.list.isConnected && isUniversitiesListPath(window.location.pathname);
 
     bindInfoTooltips({ wrapSelector: ".u-info-wrap", buttonSelector: ".u-info" });
     bindInfoTooltips({ wrapSelector: ".uni-status-tooltip", buttonSelector: ".uni-status-trigger" });
     bindInfoTooltips({ wrapSelector: ".uni-metric-tooltip", buttonSelector: ".uni-metric-trigger" });
-
-    setupStatusOverflowHandlers();
-
-    let unifitWarningBannerDismissed = false;
-
-    el.unifitWarningDismiss?.addEventListener("click", () => {
-        unifitWarningBannerDismissed = true;
-        if (el.unifitWarningBanner) {
-            el.unifitWarningBanner.hidden = true;
-        }
-    });
-
-    const updateUnifitWarningBanner = () => {
-        if (!el.unifitWarningBanner) return;
-        if (state.sort !== "uni_ai") {
-            el.unifitWarningBanner.hidden = true;
-            return;
-        }
-        if (unifitWarningBannerDismissed) {
-            el.unifitWarningBanner.hidden = true;
-            return;
-        }
-        // The banner states which profile answers the ranking uses, so the list never looks unexplained.
-        const profile = loadProfile();
-        const parts = describeRankingProfile(profile, {
-            t, tFormat, formatMoney, majorLabel: (major) => translateProgramName(major, major),
-            examName: (id) => getExamDisplayName(id, { locale: getCurrentLanguage() }),
-        });
-        const hasEvidence = hasProfileEvidence(profile);
-        if (el.unifitBannerTitle) {
-            el.unifitBannerTitle.textContent = parts.length
-                ? tFormat("universities.ux2.banner.ranked", { values: parts.join(" · ") })
-                : t(hasEvidence ? "universities.ux2.banner.scores_only" : "universities.ux2.banner.generic");
-        }
-        if (el.unifitBannerEdit) {
-            el.unifitBannerEdit.textContent = t(parts.length || hasEvidence ? "universities.ux2.banner.edit" : "universities.ux2.banner.set_up");
-            el.unifitBannerEdit.setAttribute("href", routeProfile());
-        }
-        el.unifitWarningBanner.hidden = false;
-        refreshUnifitLegend();
-    };
-
-    // Legend of the icon badges that are on the rendered cards, drawn with the same icons and tones as the badges,
-    // so a first-time visitor learns the mapping once. Called after the banner updates and after each card render.
-    const refreshUnifitLegend = () => {
-        const box = el.unifitLegend;
-        if (!box) return;
-        const scope = state.viewMode === "map" ? el.mapResults : el.list;
-        const badges = state.sort === "uni_ai" && scope
-            ? Array.from(scope.querySelectorAll(".uni-card:not(.is-skeleton) .uni-status-trigger[data-legend]"))
-                .map((node) => ({ key: node.dataset.legend, icon: node.dataset.legendIcon, tone: node.dataset.legendTone }))
-            : [];
-        const entries = legendEntries(badges);
-        box.hidden = !entries.length;
-        box.innerHTML = entries.length
-            ? `<span class="u-unifit-legend__lead">${escapeHtml(t("universities.ux2.legend.lead"))}</span>${entries.map(({ icon, tone, labelKey }) =>
-                `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 16, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`).join("")}`
-            : "";
-    };
-
     setupSlidingIndicator(".u-saved-filter", ".u-saved-filter__btn", "is-active");
 
-    const applyAISortOptionLabel = () => {
-        if (!el.sortSelect) return;
-        const aiOpt = el.sortSelect.querySelector('option[value="uni_ai"]');
-        if (aiOpt) aiOpt.textContent = cleanDecoratedText(
-            tFormat("universities.sort_ai", { fit: aiName("fit") }, `${aiName("fit")}: ${t("common.ai_short", "AI")} Smart Sort`)
-        );
-    };
-    applyAISortOptionLabel();
+    const { state, defaultSortMode, initialCompareIds } = createInitialCatalogState({
+        pageParams,
+        savedState: loadFilters(),
+        currentCurrency,
+        currentLimits,
+    });
 
-    const readPageParams = () => {
-        try {
-            return new URLSearchParams(window.location.search || "");
-        } catch {
-            return new URLSearchParams();
-        }
-    };
-    const normalizeUniversitiesTab = (value) => {
-        const raw = String(value || "").trim().toLowerCase();
-        return ["catalog", "compare"].includes(raw) ? raw : "catalog";
-    };
-    const normalizeCompareIdList = (ids) => Array.from(new Set(
-        (Array.isArray(ids) ? ids : [])
-            .map((item) => String(item || "").trim())
-            .filter(Boolean)
-    )).slice(0, COMPARE_PAIR_SIZE);
-    const parseCompareIds = (value) => normalizeCompareIdList(
-        String(value || "").split(",")
-    );
-    const pageParams = readPageParams();
-    const initialCompareIds = parseCompareIds(pageParams.get("ids"));
-    const initialCompareParam = String(pageParams.get("compare") || "").trim().toLowerCase();
-    if (initialCompareIds.length === COMPARE_PAIR_SIZE && ["configure", "results"].includes(initialCompareParam)) {
-        const choices = String(pageParams.get("choices") || "").split(",").filter(Boolean);
-        const stage = (initialCompareParam === "configure" || choices.length === 0) ? "configure" : "results";
-        const redirectUrl = routeCompare(initialCompareIds, choices, stage === "configure" ? { stage: "configure" } : "");
-        navigateToAppRoute(redirectUrl, { replace: true });
-        return;
+    let focusUniId = "";
+    let focusUniDone = false;
+
+    const CACHE_TTL_MS = 30000;
+    const AI_FAST_FALLBACK_MS = 450;
+    const SKELETON_SHOW_DELAY_MS = 120;
+    const SKELETON_FADE_MS = 160;
+    let skeletonShowTimer = 0;
+    let skeletonFadeTimer = 0;
+    let isSkeletonCurrentlyVisible = false;
+    const apiState = createUniversitiesApiState({ cacheTtlMs: CACHE_TTL_MS });
+    __universitiesApiState = apiState;
+    let fetchRunSeq = 0;
+    let firstVisitTourPending = !hasSeenUniversitiesTour();
+    if (consumeUniversitiesTourSkipOnce()) {
+        // Arrived through "Save and show matches": the visitor already did the tour's main step.
+        firstVisitTourPending = false;
+        markUniversitiesTourSeen();
     }
-    const savedState = loadFilters();
-    const tabFromUrl = pageParams.get("tab");
-    const tabFromSaved = savedState.activeTab || null;
-    const initialTab = normalizeUniversitiesTab(tabFromUrl || tabFromSaved || "catalog");
+    let hasInitialListPaint = false;
+    let hasRestoredInitialScroll = false;
+    let lastRenderedItems = [];
+    let viewModesReady = false;
 
-    const pageParamsSort = pageParams.get("sort");
-    const pageParamsQ = pageParams.get("q");
-    const initialQ = (pageParamsQ !== null ? pageParamsQ : (savedState.q || "")).trim();
-    const defaultSortMode = initialQ ? "relevance" : (hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc");
-    let initialMin = currentLimits.min;
-    let initialMax = currentLimits.max;
-
-    if (savedState.min_tuition !== undefined && savedState.min_tuition !== null && savedState.min_tuition !== "") {
-        let rawMin = Number(savedState.min_tuition);
-        if (Number.isFinite(rawMin)) {
-            if (savedState.currency && savedState.currency !== currentCurrency) {
-                const usd = convert(rawMin, savedState.currency, "USD");
-                rawMin = Math.round(convert(usd, "USD", currentCurrency) / currentLimits.step) * currentLimits.step;
-            }
-            initialMin = Math.max(currentLimits.min, Math.min(currentLimits.max, rawMin));
-        }
-    }
-
-    if (savedState.max_tuition !== undefined && savedState.max_tuition !== null && savedState.max_tuition !== "") {
-        let rawMax = Number(savedState.max_tuition);
-        if (Number.isFinite(rawMax)) {
-            if (savedState.currency && savedState.currency !== currentCurrency) {
-                const oldMaxLimit = getFilterLimits(savedState.currency).max;
-                if (rawMax >= oldMaxLimit) {
-                    rawMax = currentLimits.max;
-                } else {
-                    const usd = convert(rawMax, savedState.currency, "USD");
-                    rawMax = Math.round(convert(usd, "USD", currentCurrency) / currentLimits.step) * currentLimits.step;
-                }
-            }
-            initialMax = Math.max(currentLimits.min, Math.min(currentLimits.max, rawMax));
-        }
-    }
-
-    const minRangeGap = currentLimits.step;
-    if (initialMin > currentLimits.max - minRangeGap) initialMin = currentLimits.max - minRangeGap;
-    if (initialMax < initialMin + minRangeGap) initialMax = Math.min(currentLimits.max, initialMin + minRangeGap);
-
-    let resolvedSort = pageParamsSort || savedState.sort;
-    if (initialQ && !pageParamsSort && (!resolvedSort || resolvedSort === "name_asc")) {
-        resolvedSort = "relevance";
-    }
-
-    const state = {
-        q: initialQ, country: savedState.country || "", region: savedState.region || "", 
-        city: savedState.city || "", study_level: savedState.study_level || "",
-        funding_type: getProfileFundingQueryValue(),
-        currency: currentCurrency,
-        min_tuition: initialMin,
-        max_tuition: initialMax, 
-        cost_basis: savedState.cost_basis === "tuition" ? "tuition" : "annual_total",
-        sort: normalizeSortMode(resolvedSort || defaultSortMode),
-        practice_vs_science: clampPercent(savedState.practice_vs_science, 50),
-        social_vs_hardcore: clampPercent(
-            savedState.social_vs_hardcore !== undefined ? savedState.social_vs_hardcore : savedState.admission_bias,
-            50
-        ),
-        budget_vs_prestige: clampPercent(
-            savedState.budget_vs_prestige !== undefined ? savedState.budget_vs_prestige : savedState.ai_balance,
-            50
-        ),
-        city_vs_campus: clampPercent(savedState.city_vs_campus, 50),
-        only_saved: savedState.only_saved === true || savedState.only_saved === "true" || savedState.only_saved === "1",
-        activeTab: initialTab,
-        compareStage: "select",
-        compareResultIds: [],
-        compareDiffOnly: false,
-        viewMode: savedState.viewMode || "list", page: 1, limit: 24,
-    };
     const getUniversitiesSkeletonCount = () => {
         const renderedColumns = el.list
             ? getComputedStyle(el.list).gridTemplateColumns.split(" ").filter(Boolean).length
@@ -675,58 +252,6 @@ export function initUniversitiesPage() {
         const rows = 3;
         return Math.min(state.limit, Math.max(columns, columns * rows));
     };
-    let focusUniId = "";
-    let focusUniDone = false;
-
-    const CACHE_TTL_MS = 30000;
-    const MAP_RESULTS_PAGE_SIZE = 100;
-    const AI_FAST_FALLBACK_MS = 450;
-    const SKELETON_SHOW_DELAY_MS = 120;
-    const SKELETON_FADE_MS = 160;
-    let skeletonShowTimer = 0;
-    let skeletonFadeTimer = 0;
-    let isSkeletonCurrentlyVisible = false;
-    const universitiesFetchCache = new Map();
-    let profiledEndpointUnavailableUntil = 0;
-    let legacyPricesWarningShown = false;
-    let lastAiFetchKey = "";
-    let lastAiFetchPayload = null;
-    let lastAiFetchAt = 0;
-    let listFetchController = null;
-    let aiFetchController = null;
-    let mapPointsFetchController = null;
-    let fetchRunSeq = 0;
-    let firstVisitTourPending = !hasSeenUniversitiesTour();
-    if (consumeUniversitiesTourSkipOnce()) {
-        // Arrived through "Save and show matches": the visitor already did the tour's main step.
-        firstVisitTourPending = false;
-        markUniversitiesTourSeen();
-    }
-    let hasInitialListPaint = false;
-    let hasRestoredInitialScroll = false;
-    let lastRenderedItems = [];
-    let mapResultsItems = [];
-    let mapResultsPage = 0;
-    let mapResultsTotal = 0;
-    let mapResultsHasMore = false;
-    let mapResultsLoadingMore = false;
-    let mapResultsLoadFailed = false;
-    let mapResultsRunSeq = 0;
-    let mapPointsRunSeq = 0;
-    let lastMapPointsBounds = null;
-    let pendingMapFocusId = "";
-    let viewModesReady = false;
-    let savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
-    let compareUniversityIds = new Set(
-        initialCompareIds.length === COMPARE_PAIR_SIZE
-            ? initialCompareIds
-            : normalizeCompareIdList(readIdListStorage(COMPARE_UNIVERSITIES_KEY))
-    );
-    if (initialCompareIds.length !== COMPARE_PAIR_SIZE) {
-        state.compareResultIds.forEach((id) => compareUniversityIds.add(id));
-    }
-    compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
-    let compareAdmissionChoices = new Map();
 
     const clearLanguageCardSkeletons = () => {
         if (!el.list) return;
@@ -772,71 +297,28 @@ export function initUniversitiesPage() {
 
     syncViewModeControls();
 
-    function activeFilterCount() {
-        let count = 0;
-        if (state.q) count += 1;
-        if (state.country) count += 1;
-        if (state.region) count += 1;
-        if (state.city) count += 1;
-        if (Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max) count += 1;
-        if (state.sort && state.sort !== "name_asc" && !(state.q && state.sort === "relevance")) count += 1;
-        if (state.study_level) count += 1;
-        if (state.funding_type && state.funding_type !== "any") count += 1;
-        if (state.only_saved) count += 1;
-        return count;
-    }
-
-
-    function syncSavedFilterButtons() {
+    const syncSavedFilterButtons = () => {
         const mode = state.only_saved ? "favorites" : "all";
         el.savedFilterButtons.forEach((btn) => {
             const active = String(btn.getAttribute("data-saved-filter") || "") === mode;
             btn.classList.toggle("is-active", active);
             btn.setAttribute("aria-pressed", active ? "true" : "false");
         });
-    }
-
-    function updateMobileFilterUi() {
-        const count = activeFilterCount();
-        if (el.mobileFilterCount) {
-            el.mobileFilterCount.hidden = count <= 0;
-            el.mobileFilterCount.textContent = String(count);
-        }
-    }
-
-        const isCompareTab = () => state.activeTab === "compare";
-    const isCompareResultsMode = () => false;
-    const isCompareSelectionMode = () => isCompareTab();
-
-    const sectionUrlParams = () => {
-        const params = buildParams(false);
-        if (state.activeTab === "compare") {
-            params.set("tab", "compare");
-        } else {
-            params.delete("tab");
-        }
-        params.delete("compare");
-        params.delete("ids");
-        params.delete("choices");
-        return params;
     };
 
-    const setSectionUrl = (replace = true) => {
-        if (!isCurrentCatalog()) return;
-        const url = new URL(window.location.href);
-        url.search = sectionUrlParams().toString();
-        window.history[replace ? "replaceState" : "pushState"]({}, "", url.toString());
+    const hideSearchSuggestions = () => {
+        const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
+        const node = host?.querySelector(".navbar-search-suggestions");
+        if (node) {
+            node.replaceChildren();
+            node.classList.remove("is-open");
+        }
     };
 
-    const syncCompareModeControls = () => {
-        if (!el.compareModeBtn || !el.compareModeLabel) return;
-        const active = isCompareSelectionMode();
-        el.compareModeBtn.classList.toggle("is-active", active);
-        el.compareModeBtn.setAttribute("aria-pressed", active ? "true" : "false");
-        const label = t("universities.compare.enter", "Compare mode");
-        el.compareModeBtn.setAttribute("aria-label", label);
-        el.compareModeBtn.setAttribute("title", label);
-        el.compareModeLabel.textContent = label;
+    const syncSearchClearButton = () => {
+        if (!el.searchClearBtn) return;
+        const hasText = Boolean(String(el.qInput?.value || "").trim().length);
+        el.searchClearBtn.hidden = !hasText;
     };
 
     const syncHeaderSearchContext = () => {
@@ -851,6 +333,103 @@ export function initUniversitiesPage() {
         el.qInput.setAttribute("data-i18n-aria-label", placeholderKey);
     };
 
+    const layoutSync = createLayoutSyncController({
+        el,
+        state,
+        onResize: () => {
+            filterControls.closeMobileIfDesktop();
+            // Map stage height follows the viewport, so tell Leaflet to re-fit tiles.
+            mapController.scheduleInvalidateSize(150);
+        },
+    });
+    __universitiesLayoutSync = layoutSync;
+
+    const unifitBanner = createUnifitBannerController({ el, state });
+    __universitiesUnifitBanner = unifitBanner;
+
+    const compareController = createCompareController({
+        el,
+        state,
+        initialCompareIds,
+        getLastRenderedItems: () => lastRenderedItems,
+        onRenderRecentlyViewed: () => renderRecentlyViewedBar(),
+        onHideSearchSuggestions: hideSearchSuggestions,
+        onRefetch: () => refetch(),
+        onSyncSectionVisibility: (options) => syncSectionVisibility(options),
+    });
+    __universitiesCompareController = compareController;
+
+    const recentController = createRecentlyViewedController({
+        container: el.recentlyViewedBar,
+        getUniversityDisplayNameById: compareController.getUniversityDisplayNameById,
+        universityLinkAttrs: compareController.universityLinkAttrs,
+        scheduleSyncWorkspaceDepth: layoutSync.scheduleSyncWorkspaceDepth,
+    });
+    __universitiesRecentController = recentController;
+    const renderRecentlyViewedBar = (options) => recentController.render(options);
+
+    const scheduleRefetch = debounce(() => {
+        if (!isCurrentCatalog()) return;
+        state.page = 1;
+        layoutSync.clearSavedScrollPosition();
+        filterControls.updateMobileFilterUi();
+        saveFilters(state);
+        fetchAndRender();
+    }, 250);
+
+    const refetch = (...args) => {
+        if (filterControls.isMobileEditing()) return;
+        scheduleRefetch(...args);
+    };
+
+    const filterControls = createFilterControls({
+        el,
+        state,
+        defaultSortMode,
+        getCurrentCurrency: () => currentCurrency,
+        setCurrentCurrency: (currency) => { currentCurrency = currency; },
+        getCurrentLimits: () => currentLimits,
+        setCurrentLimits: (limits) => { currentLimits = limits; },
+        syncSearchClearButton,
+        syncSavedFilterButtons,
+        clearSavedScrollPosition: layoutSync.clearSavedScrollPosition,
+        refetch,
+        fetchAndRender: (options) => fetchAndRender(options),
+    });
+    __universitiesFilterControls = filterControls;
+
+    const buildParams = (forApi = false) => buildCatalogParams(state, {
+        forApi,
+        minSlider: el.minSlider,
+        maxSlider: el.maxSlider,
+        currentCurrency,
+        currentLimits,
+        focusUniId,
+    });
+
+    const sectionUrlParams = () => buildSectionUrlParams(state, {
+        minSlider: el.minSlider,
+        maxSlider: el.maxSlider,
+        currentCurrency,
+        currentLimits,
+        focusUniId,
+    });
+
+    const buildAiSortPayload = () => buildCatalogAiSortPayload(state, {
+        minSlider: el.minSlider,
+        maxSlider: el.maxSlider,
+        currentCurrency,
+        currentLimits,
+        logTranslationDebug,
+    });
+
+    const setSectionUrl = (replace = true) => {
+        if (!isCurrentCatalog()) return;
+        const url = new URL(window.location.href);
+        url.search = sectionUrlParams().toString();
+        window.history[replace ? "replaceState" : "pushState"]({}, "", url.toString());
+    };
+
     const syncSectionVisibility = async ({
         shouldFetch = false,
         updateUrl = true,
@@ -859,595 +438,20 @@ export function initUniversitiesPage() {
     } = {}) => {
         if (el.workspaceLayout) el.workspaceLayout.hidden = false;
         if (el.catalogPane) el.catalogPane.hidden = false;
-        document.body.classList.toggle("universities-compare-mode", isCompareSelectionMode());
-        document.body.classList.remove("universities-compare-configure-mode");
-        document.body.classList.remove("universities-compare-results-mode");
+        document.body.classList.toggle("universities-compare-mode", compareController.isCompareSelectionMode());
         if (el.viewToggles) el.viewToggles.hidden = false;
         if (el.total) {
             el.total.textContent = String(state.lastCatalogTotal ?? el.total.textContent ?? "0");
         }
         syncHeaderSearchContext();
-        syncCompareModeControls();
-        renderCompareTray();
-        updateUnifitWarningBanner();
+        compareController.syncCompareModeControls();
+        compareController.renderCompareTray();
+        unifitBanner.update();
         if (updateUrl) setSectionUrl(replaceUrl);
 
         await switchView(state.viewMode || "list", false);
         if (shouldFetch) await fetchAndRender(fetchOptions);
     };
-
-    const getRenderedUniversityById = (id) => {
-        const cleanId = String(id || "").trim();
-        return lastRenderedItems.find((item) => String(item?.id || "") === cleanId) || null;
-    };
-
-    const getUniversityDisplayNameById = (id) => {
-        const cleanId = String(id || "").trim();
-        if (!cleanId) return "";
-
-        const rendered = getRenderedUniversityById(cleanId);
-        const renderedName = String(rendered ? trUniversityName(rendered) : "").trim();
-        if (renderedName) return renderedName;
-
-        const cachedLanguages = [getCurrentLanguage(), "eng", "ru"];
-        for (const lang of cachedLanguages) {
-            const cached = getDetailCacheEntry(cleanId, lang);
-            const cachedName = String(cached?.data ? trUniversityName(cached.data) : "").trim();
-            if (cachedName) return cachedName;
-        }
-
-        const translated = String(translateUniversityName(cleanId, "") || "").trim();
-        return translated && translated !== cleanId ? translated : "";
-    };
-
-    const comparePairIds = () => normalizeCompareIdList(Array.from(compareUniversityIds));
-    const setComparePairIds = (ids) => {
-        const nextIds = normalizeCompareIdList(ids);
-        compareUniversityIds = new Set(nextIds);
-        const nextSet = new Set(nextIds);
-        Array.from(compareAdmissionChoices.keys()).forEach((id) => {
-            if (!nextSet.has(id)) compareAdmissionChoices.delete(id);
-        });
-    };
-    const writeCompareAdmissionChoices = () => persistCompareAdmissionChoices(compareAdmissionChoices, comparePairIds());
-    compareAdmissionChoices = readCompareAdmissionChoices();
-    // A pair is compared only within one data group: universities with rechecked (reviewed) admissions data, or
-    // universities in the earlier format. The group of an id comes from its catalog row or cached detail; an unknown
-    // group never blocks a choice here, and the comparison page itself explains a mixed pair.
-    const compareGroupById = new Map();
-    let compareTrayNotice = "";
-    const compareGroupOf = (id) => {
-        const cleanId = String(id || "").trim();
-        const known = compareGroupById.get(cleanId);
-        if (known) return known;
-        const row = getRenderedUniversityById(cleanId)
-            || [getCurrentLanguage(), "eng", "ru"].map((lang) => getDetailCacheEntry(cleanId, lang)?.data).find(Boolean);
-        const availability = row?.admissions_catalog?.availability;
-        if (!availability) return "";
-        const group = availability === "reviewed" ? "reviewed" : "legacy";
-        compareGroupById.set(cleanId, group);
-        return group;
-    };
-    const comparePairGroups = () => new Set(comparePairIds().map(compareGroupOf).filter(Boolean));
-    const isComparePairMixed = () => comparePairGroups().size > 1;
-    const isComparePairReady = () => comparePairIds().length >= 2 && !isComparePairMixed();
-
-    const syncCompareSelectionFromStorage = () => {
-        const rawIds = readIdListStorage(COMPARE_UNIVERSITIES_KEY);
-        const storedIds = normalizeCompareIdList(rawIds);
-        if (rawIds.length !== storedIds.length) {
-            writeIdListStorage(COMPARE_UNIVERSITIES_KEY, storedIds);
-        }
-        if (!storedIds.length) return;
-        const currentIds = comparePairIds();
-        if (storedIds.join("|") !== currentIds.join("|")) {
-            setComparePairIds(storedIds);
-        }
-    };
-
-    const renderCompareTray = () => {
-        if (!el.compareTray) return;
-        if (isCompareSelectionMode()) syncCompareSelectionFromStorage();
-        const ids = comparePairIds();
-        if (!ids.length || !isCompareSelectionMode() || isCompareResultsMode()) {
-            el.compareTray.hidden = true;
-            el.compareTray.replaceChildren();
-            return;
-        }
-        el.compareTray.hidden = false;
-        el.compareTray.classList.toggle("is-ready", isComparePairReady());
-        const canCompare = isComparePairReady();
-        const notice = isComparePairMixed() ? t("universities.compare.tray_mixed") : compareTrayNotice;
-        const chipsHtml = ids.map((id) => {
-            const name = getUniversityDisplayNameById(id);
-            const removeLabel = t("universities.compare.remove", "Remove from comparison");
-            return `
-                <div class="compare-tray__chip" role="listitem">
-                    <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
-                    <button class="compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
-                        ${renderInlineIcon("x-mark", 12)}
-                    </button>
-                </div>
-            `;
-        }).join("");
-        el.compareTray.classList.toggle("has-note", Boolean(notice));
-        el.compareTray.innerHTML = `
-            ${notice ? `<p class="compare-tray__note" role="status">${escapeHtml(notice)}</p>` : ""}
-            <span class="compare-tray__badge">${ids.length}/${MAX_COMPARE_UNIVERSITIES}</span>
-            <div class="compare-tray__chips" role="list" aria-label="${escapeHtmlAttr(t("universities.compare.selection", "Selected universities"))}">
-                ${chipsHtml}
-            </div>
-            <div class="compare-tray__actions">
-                <button class="compare-tray__btn compare-tray__btn--ghost" type="button" data-action="clear-compare">${escapeHtml(t("universities.compare.clear", "Clear"))}</button>
-                <button class="compare-tray__btn compare-tray__btn--primary" type="button" data-action="open-compare"${canCompare ? "" : " disabled"}>${escapeHtml(t(canCompare ? "universities.compare.continue" : "universities.compare.open", canCompare ? "Continue" : "Compare"))}</button>
-            </div>
-        `;
-        replayMotion(el.compareTray, "motion-panel-enter", { timeoutMs: 420 });
-    };
-
-    const compensateCardAnchorShift = (card, beforeTop) => {
-        if (!(card instanceof Element) || !Number.isFinite(beforeTop)) return;
-        window.requestAnimationFrame(() => {
-            const afterTop = card.getBoundingClientRect().top;
-            const delta = afterTop - beforeTop;
-            if (Math.abs(delta) > 1) {
-                window.scrollBy({ top: delta, left: 0, behavior: "auto" });
-            }
-        });
-    };
-
-    const syncCardActionState = () => {
-        const showCompareSelection = isCompareSelectionMode();
-        const pairGroups = showCompareSelection ? comparePairGroups() : new Set();
-        const pairGroup = pairGroups.size === 1 ? [...pairGroups][0] : "";
-        document.querySelectorAll(".uni-card[data-uni-id]").forEach((card) => {
-            const rowId = String(card.getAttribute("data-uni-id") || "").trim();
-            const saved = savedUniversityIds.has(rowId);
-            const compared = showCompareSelection && compareUniversityIds.has(rowId);
-            const rowGroup = pairGroup && !compared ? compareGroupOf(rowId) : "";
-            const otherGroup = Boolean(rowGroup && rowGroup !== pairGroup);
-            const saveBtn = card.querySelector("[data-card-action='save']");
-            const compareBtn = card.querySelector("[data-card-action='compare']");
-            card.classList.toggle("uni-card--compare-selected", compared);
-            card.classList.toggle("uni-card--compare-unavailable", otherGroup);
-            card.setAttribute("aria-selected", compared ? "true" : "false");
-            if (saveBtn) {
-                saveBtn.classList.toggle("is-active", saved);
-                saveBtn.setAttribute("aria-pressed", saved ? "true" : "false");
-            }
-            const details = card.querySelector(".uni-details");
-            if (details) {
-                const label = showCompareSelection
-                    ? (compared
-                        ? t("universities.card.compare_selected_short", "Selected")
-                        : otherGroup ? t("universities.card.compare_other_group") : t("universities.card.compare_short", "Compare"))
-                    : t("universities.card.view_details", "View details");
-                details.innerHTML = otherGroup ? escapeHtml(label) : `${escapeHtml(label)}<span aria-hidden="true">→</span>`;
-                if (otherGroup) details.setAttribute("title", t("universities.card.compare_other_group_title"));
-                else details.removeAttribute("title");
-            }
-            if (compareBtn) {
-                const label = compared
-                    ? t("universities.card.compare_selected", "Selected for comparison")
-                    : otherGroup ? t("universities.card.compare_other_group_title") : t("universities.card.compare", "Add to compare");
-                compareBtn.classList.toggle("is-active", compared);
-                compareBtn.setAttribute("aria-pressed", compared ? "true" : "false");
-                if (otherGroup) compareBtn.setAttribute("aria-disabled", "true");
-                else compareBtn.removeAttribute("aria-disabled");
-                compareBtn.setAttribute("title", label);
-                compareBtn.setAttribute("aria-label", label);
-                compareBtn.innerHTML = renderInlineIcon(compared ? "check-circle" : "adjustments-horizontal", 16, "uni-action-icon");
-            }
-        });
-    };
-
-    const toggleCompareUniversity = (uniId) => {
-        const cleanId = String(uniId || "").trim();
-        if (!cleanId) return false;
-        const currentPair = comparePairIds();
-        const wasCompared = currentPair.includes(cleanId);
-        const pairGroups = comparePairGroups();
-        const group = compareGroupOf(cleanId);
-        if (!wasCompared && group && pairGroups.size === 1 && !pairGroups.has(group)) {
-            // The other data group cannot join this pair; the tray says why instead of silently replacing a choice.
-            compareTrayNotice = tFormat(`universities.compare.tray_blocked_${group}`, { university: getUniversityDisplayNameById(cleanId) });
-            renderCompareTray();
-            return true;
-        }
-        compareTrayNotice = "";
-        if (wasCompared) {
-            setComparePairIds(currentPair.filter((id) => id !== cleanId));
-        } else {
-            const nextPair = currentPair.length >= MAX_COMPARE_UNIVERSITIES
-                ? currentPair.slice(1)
-                : currentPair.slice();
-            nextPair.push(cleanId);
-            setComparePairIds(nextPair);
-        }
-        syncCardActionState();
-        persistSavedAndCompare();
-        return true;
-    };
-
-    const handleCardAction = (actionBtn, options = {}) => {
-        if (!(actionBtn instanceof Element)) return false;
-        const card = actionBtn.closest("[data-uni-id]");
-        const uniId = String(card?.getAttribute("data-uni-id") || "").trim();
-        const action = String(actionBtn.getAttribute("data-card-action") || "").trim();
-        if (!card || !uniId || !action) return false;
-
-        motionPress(actionBtn);
-
-        if (action === "save") {
-            const wasSaved = savedUniversityIds.has(uniId);
-            const beforeTop = card.getBoundingClientRect().top;
-            const savedCountBefore = savedUniversityIds.size;
-            const shouldCompensateShift = !!options.compensateLayoutShift && (
-                (!wasSaved && savedCountBefore === 0) ||
-                wasSaved
-            );
-            if (wasSaved) savedUniversityIds.delete(uniId);
-            else savedUniversityIds.add(uniId);
-            syncCardActionState();
-            replayMotion(
-                actionBtn.querySelector(".uni-action-icon") || actionBtn,
-                wasSaved ? "motion-icon-unsave" : "motion-icon-save",
-                { timeoutMs: 320 }
-            );
-            persistSavedAndCompare();
-            if (state.only_saved && wasSaved) {
-                refetch();
-            } else if (shouldCompensateShift) {
-                compensateCardAnchorShift(card, beforeTop);
-            }
-            return true;
-        }
-
-        if (action === "compare") {
-            return isCompareSelectionMode() ? toggleCompareUniversity(uniId) : false;
-        }
-
-        return false;
-    };
-
-    const openCompareResultsPage = async () => {
-        const ids = comparePairIds();
-        if (ids.length !== COMPARE_PAIR_SIZE || isComparePairMixed()) return;
-        // Rechecked universities open their one-stage comparison; earlier-format pairs choose admission options first.
-        const reviewedPair = ids.every((id) => compareGroupOf(id) === "reviewed");
-        navigateToAppRoute(reviewedPair ? routeCompare(ids) : routeCompareConfigure(ids));
-    };
-
-    const universityLinkAttrs = () => (
-        shouldOpenUniversitiesInNewTab()
-            ? ' target="_blank" rel="noopener noreferrer"'
-            : ""
-    );
-
-    const openUniversityDetail = (id) => {
-        const cleanId = String(id || "").trim();
-        if (!cleanId) return;
-        const href = routeUniversityDetail(cleanId);
-        if (shouldOpenUniversitiesInNewTab()) {
-            window.open(href, "_blank", "noopener,noreferrer");
-            return;
-        }
-        navigateToAppRoute(href);
-    };
-
-    const lockRecentChipWidths = (root) => {
-        if (!root) return;
-        root.querySelectorAll(".u-recent__chip").forEach((chip) => {
-            chip.style.removeProperty("--recent-chip-width");
-        });
-    };
-
-    const renderRecentlyViewedBar = ({ keepOpen = false } = {}) => {
-        if (!el.recentlyViewedBar) return;
-        const existingPopover = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
-        const wasOpen = Boolean(
-            keepOpen
-            || existingPopover?.matches?.(":popover-open")
-            || existingPopover?.classList.contains("is-open")
-        );
-        const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
-        if (!recentIds.length) {
-            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
-            el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.replaceChildren();
-            scheduleSyncWorkspaceDepth();
-            return;
-        }
-        const rows = recentIds
-            .map((id) => ({ id, label: getUniversityDisplayNameById(id) }))
-            .filter((row) => row.label);
-        if (!rows.length) {
-            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
-            el.recentlyViewedBar.hidden = true;
-            el.recentlyViewedBar.replaceChildren();
-            scheduleSyncWorkspaceDepth();
-            return;
-        }
-        const titleText = t("universities.recent.title", "Recently viewed");
-        const clearAllText = t("universities.recent.clear_all", "Clear all");
-        el.recentlyViewedBar.hidden = false;
-        el.recentlyViewedBar.innerHTML = `
-            <button
-                id="recentlyViewedBtn"
-                class="u-recent-trigger"
-                type="button"
-                popovertarget="recentlyViewedPopover"
-                aria-controls="recentlyViewedPopover"
-                aria-expanded="false"
-                title="${escapeHtmlAttr(titleText)}"
-                aria-label="${escapeHtmlAttr(`${titleText} (${rows.length})`)}"
-            >
-                ${renderInlineIcon("clock", 16, "u-recent-trigger__icon")}
-                <span class="u-recent-trigger__label">${escapeHtml(titleText)}</span>
-                <span class="u-recent-trigger__count" aria-hidden="true">${rows.length}</span>
-                ${renderInlineIcon("chevron-down", 14, "u-recent-trigger__chevron")}
-            </button>
-            <div
-                id="recentlyViewedPopover"
-                class="u-recent-popover"
-                popover="auto"
-                aria-labelledby="recentlyViewedTitle"
-            >
-                <div class="u-recent__head">
-                    <span id="recentlyViewedTitle" class="u-recent__label">${escapeHtml(titleText)}</span>
-                    <button class="u-recent__clear" type="button" data-action="clear-recent">
-                        ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-                        <span>${escapeHtml(clearAllText)}</span>
-                    </button>
-                </div>
-                <div class="u-recent__items">
-                    ${rows.map((row) => {
-                        const removeLabel = tFormat(
-                            "universities.recent.remove",
-                            { university: row.label },
-                            `Remove ${row.label} from recently viewed`
-                        );
-                        return `
-                            <span class="u-recent__chip">
-                                <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
-                                <button
-                                    class="u-recent__remove"
-                                    type="button"
-                                    data-action="remove-recent"
-                                    data-uni-id="${escapeHtmlAttr(row.id)}"
-                                    aria-label="${escapeHtmlAttr(removeLabel)}"
-                                    title="${escapeHtmlAttr(removeLabel)}"
-                                >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
-                            </span>
-                        `;
-                    }).join("")}
-                </div>
-            </div>
-        `;
-        lockRecentChipWidths(el.recentlyViewedBar);
-        scheduleSyncWorkspaceDepth();
-
-        const triggerBtn = el.recentlyViewedBar.querySelector("#recentlyViewedBtn");
-        const popoverEl = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
-        const supportsNativePopover = Boolean(popoverEl && typeof popoverEl.showPopover === "function");
-        const syncTriggerExpanded = (isOpen) => {
-            triggerBtn?.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            triggerBtn?.classList.toggle("is-active", isOpen);
-        };
-
-        if (supportsNativePopover) {
-            popoverEl.addEventListener("toggle", (event) => {
-                syncTriggerExpanded(event.newState === "open");
-            });
-            if (wasOpen) {
-                try {
-                    popoverEl.showPopover();
-                } catch (err) {
-                    console.warn("Unable to reopen recently viewed popover", err);
-                }
-            }
-        } else if (triggerBtn && popoverEl) {
-            triggerBtn.addEventListener("click", () => {
-                const nextOpen = !popoverEl.classList.contains("is-open");
-                popoverEl.classList.toggle("is-open", nextOpen);
-                syncTriggerExpanded(nextOpen);
-            });
-            if (wasOpen) {
-                popoverEl.classList.add("is-open");
-                syncTriggerExpanded(true);
-            }
-        }
-
-        el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
-            const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
-            motionPress(clearBtn);
-            replayMotion(clearBtn?.querySelector(".u-recent__clear-icon") || clearBtn, "motion-icon-clear", { timeoutMs: 240 });
-            animateElementOut(popoverEl || el.recentlyViewedBar, () => {
-                writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
-                renderRecentlyViewedBar({ keepOpen: false });
-            }, { className: "motion-row-exit", timeoutMs: 280 });
-        });
-        el.recentlyViewedBar.querySelectorAll('[data-action="remove-recent"]').forEach((button) => {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                event.stopPropagation();
-                const uniId = String(button.getAttribute("data-uni-id") || "").trim();
-                if (!uniId) return;
-                const chip = button.closest(".u-recent__chip");
-                motionPress(button);
-                replayMotion(button.querySelector(".u-recent__remove-icon") || button, "motion-icon-remove", { timeoutMs: 240 });
-                animateElementOut(chip, () => {
-                    const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
-                    writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
-                    renderRecentlyViewedBar({ keepOpen: nextIds.length > 0 });
-                }, { className: "motion-chip-remove", timeoutMs: 260 });
-            });
-        });
-    };
-
-    let lastAppliedLayoutDepth = "";
-    let depthSyncRafId = 0;
-
-    const syncWorkspaceDepth = () => {
-        if (depthSyncRafId) {
-            window.cancelAnimationFrame(depthSyncRafId);
-            depthSyncRafId = 0;
-        }
-        if (!el.workspaceLayout || typeof window === "undefined") return;
-
-        if (state.viewMode !== "map") clearMapSidebarDepth();
-
-        // Mobile / tablet screen layouts stack vertically, do not force desktop depth
-        if (window.innerWidth <= 1024) {
-            if (lastAppliedLayoutDepth !== "") {
-                lastAppliedLayoutDepth = "";
-                el.workspaceLayout.style.removeProperty("min-height");
-            }
-            clearMapSidebarDepth();
-            return;
-        }
-
-        // Map mode content is short and stable; forcing list-mode depth would
-        // leave a large empty area below the map.
-        if (state.viewMode === "map") {
-            if (lastAppliedLayoutDepth !== "") {
-                lastAppliedLayoutDepth = "";
-                el.workspaceLayout.style.removeProperty("min-height");
-            }
-            syncMapSidebarDepth();
-            return;
-        }
-
-        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
-        const content = el.catalogPane || el.content || document.querySelector(".u-content");
-        if (!sidebar || !content) return;
-
-        const filterCard = el.filterCard || sidebar.querySelector(".u-filter-card");
-
-        let leftColHeight = 0;
-        if (filterCard) {
-            leftColHeight += filterCard.offsetHeight;
-        }
-        leftColHeight = Math.max(leftColHeight, sidebar.scrollHeight || 0);
-
-        const rightColHeight = content.offsetHeight || 0;
-        const targetDepth = Math.max(leftColHeight, rightColHeight);
-        const targetStr = targetDepth > 0 ? `${targetDepth}px` : "";
-
-        if (lastAppliedLayoutDepth !== targetStr) {
-            lastAppliedLayoutDepth = targetStr;
-            if (targetStr) {
-                el.workspaceLayout.style.minHeight = targetStr;
-            } else {
-                el.workspaceLayout.style.removeProperty("min-height");
-            }
-        }
-        syncSidebarMaxHeight();
-    };
-
-    let sidebarMaxHeightRafId = 0;
-    let lastAppliedSidebarMaxHeight = null;
-
-    const syncSidebarMaxHeight = () => {
-        if (typeof window === "undefined") return;
-        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
-        if (!sidebar) return;
-
-        if (window.innerWidth <= 1024 || (state.viewMode === "map" && window.innerWidth > 1180)) {
-            if (lastAppliedSidebarMaxHeight !== null) {
-                lastAppliedSidebarMaxHeight = null;
-                sidebar.style.removeProperty("--sidebar-max-height");
-            }
-            return;
-        }
-
-        // Independent panels invariant: sidebar geometry must never depend on
-        // the live scroll position. Derive the height from offsets that do not
-        // change while scrolling: the sticky `top` and the layout's document
-        // offset (where the unscrolled sidebar starts). Using the larger of the
-        // two keeps the panel's bottom inside the viewport before the page is
-        // scrolled, so the end of the filters is never hidden below the fold.
-        const computedTop = Number.parseFloat(window.getComputedStyle(sidebar).top) || 90;
-        const layoutTop = el.workspaceLayout
-            ? el.workspaceLayout.getBoundingClientRect().top + window.scrollY
-            : 0;
-        const startTop = Math.max(computedTop, layoutTop);
-        const bottomGap = 16;
-        const availableHeight = Math.max(200, Math.floor(window.innerHeight - startTop - bottomGap));
-        if (lastAppliedSidebarMaxHeight !== availableHeight) {
-            lastAppliedSidebarMaxHeight = availableHeight;
-            sidebar.style.setProperty("--sidebar-max-height", `${availableHeight}px`);
-        }
-    };
-
-    const scheduleSyncSidebarMaxHeight = () => {
-        if (typeof window === "undefined") return;
-        if (sidebarMaxHeightRafId) return;
-        sidebarMaxHeightRafId = window.requestAnimationFrame(() => {
-            sidebarMaxHeightRafId = 0;
-            syncSidebarMaxHeight();
-        });
-    };
-
-    const scheduleSyncWorkspaceDepth = () => {
-        if (typeof window === "undefined") return;
-        scheduleSyncSidebarMaxHeight();
-        if (depthSyncRafId) return;
-        depthSyncRafId = window.requestAnimationFrame(() => {
-            depthSyncRafId = 0;
-            syncWorkspaceDepth();
-        });
-    };
-
-    // In map mode the sidebar keeps its own internal scroll, but its outer
-    // height is clamped to the content column so the filter column, the map,
-    // and the results rail all end at the same depth.
-    const clearMapSidebarDepth = () => {
-        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
-        if (sidebar) sidebar.style.removeProperty("height");
-    };
-
-    const syncMapSidebarDepth = () => {
-        const sidebar = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
-        const content = el.catalogPane || el.content || document.querySelector(".u-content");
-        if (!sidebar || !content) return;
-        // Below the split breakpoint the columns stack; the stylesheet
-        // rules apply untouched there.
-        if (state.viewMode !== "map" || window.innerWidth <= 1180) {
-            clearMapSidebarDepth();
-            return;
-        }
-        clearMapSidebarDepth();
-        const targetH = content.offsetHeight || 0;
-        if (targetH > 0) sidebar.style.height = `${targetH}px`;
-    };
-
-    const persistSavedAndCompare = () => {
-        setComparePairIds(comparePairIds());
-        writeIdListStorage(SAVED_UNIVERSITIES_KEY, Array.from(savedUniversityIds));
-        writeIdListStorage(COMPARE_UNIVERSITIES_KEY, comparePairIds());
-        writeCompareAdmissionChoices();
-        renderCompareTray();
-        syncCompareModeControls();
-        renderRecentlyViewedBar();
-        syncCardActionState();
-    };
-
-    const hideSearchSuggestions = () => {
-        const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
-        const node = host?.querySelector(".navbar-search-suggestions");
-        if (node) {
-            node.replaceChildren();
-            node.classList.remove("is-open");
-        }
-    };
-
-    /** Visible text of the selected option of a filter dropdown, or the raw value when it is not listed. */
-    function selectedFilterOptionLabel(field, value) {
-        const selectId = { country: "countrySelect", region: "stateSelect", city: "citySelect", study_level: "studyLevelSelect" }[field];
-        const option = Array.from($(selectId)?.options || []).find((item) => item.value === value);
-        return String(option?.textContent || value || "").trim();
-    }
 
     /** Empty-result card that names the filters hiding results and offers a way out. */
     function buildCatalogEmptyState() {
@@ -1505,8 +509,8 @@ export function initUniversitiesPage() {
                             <div class="uni-body">
                                 <div class="uni-head">
                                     <span class="uni-head-copy">
-                                        <span class="skeleton-line" style="width: 84%; height: 15px;"></span>
-                                        <span class="skeleton-line" style="width: 58%; height: 12px;"></span>
+                                        <span class="skeleton-line u-map-skeleton-title"></span>
+                                        <span class="skeleton-line u-map-skeleton-subtitle"></span>
                                     </span>
                                 </div>
                                 <div class="u-skeleton-metric">
@@ -1542,7 +546,7 @@ export function initUniversitiesPage() {
             el.content.setAttribute("aria-busy", isLoading ? "true" : "false");
         }
         if (el.mapStage) {
-            el.mapStage.classList.toggle("is-loading", !!isLoading && mapMode && !preserveResults);
+            el.mapStage.classList.toggle("is-loading", Boolean(isLoading) && mapMode && !preserveResults);
         }
         if (el.mapResults) {
             el.mapResults.setAttribute("aria-busy", isLoading && mapMode ? "true" : "false");
@@ -1630,7 +634,6 @@ export function initUniversitiesPage() {
             return;
         }
 
-        // isLoading === false
         if (skeletonShowTimer) {
             clearTimeout(skeletonShowTimer);
             skeletonShowTimer = 0;
@@ -1666,388 +669,85 @@ export function initUniversitiesPage() {
         }
     }
 
-    // --- Sliders ---
-    function applySliderBounds(limits) {
-        currentLimits = limits;
-        [el.minSlider, el.maxSlider, el.minInput, el.maxInput].forEach((input) => {
-            if (!input) return;
-            input.min = String(limits.min);
-            input.max = String(limits.max);
-            input.step = String(limits.step);
-        });
-        if (el.minInput) el.minInput.placeholder = String(limits.min);
-        if (el.maxInput) el.maxInput.placeholder = String(limits.max);
-        updateSliderLabels();
+    const renderCard = (u, myBudget, idx = 99, options = {}) => renderUniversityCard(u, myBudget, idx, options, {
+        costBasis: state.cost_basis,
+        priceFilterActive: Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max,
+        studyLevel: state.study_level,
+        isCompareMode: compareController.isCompareSelectionMode(),
+        compareUniversityIds: compareController.getCompareUniversityIds(),
+        linkAttrs: compareController.universityLinkAttrs(),
+    });
+    const fetchUniversities = (apiParams) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug });
+    const fetchAiSort = (payload) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug });
+
+    const mapController = createUniversitiesMapController({
+        el,
+        state,
+        apiState,
+        savedUniversityIds: compareController.getSavedUniversityIds(),
+        getFocusUniId: () => focusUniId,
+        isFocusUniDone: () => focusUniDone,
+        setFocusUniDone: (done) => { focusUniDone = done; },
+        getLastRenderedItems: () => lastRenderedItems,
+        setLastRenderedItems: (items) => { lastRenderedItems = items; },
+        setViewModesReady: (ready) => { viewModesReady = ready; },
+        syncViewModeControls,
+        scheduleSyncWorkspaceDepth: layoutSync.scheduleSyncWorkspaceDepth,
+        refreshUnifitLegend: unifitBanner.refreshLegend,
+        updateUnifitWarningBanner: unifitBanner.update,
+        renderCompareTray: compareController.renderCompareTray,
+        syncCardActionState: compareController.syncCardActionState,
+        renderRecentlyViewedBar,
+        updateMobileFilterUi: filterControls.updateMobileFilterUi,
+        isCompareSelectionMode: compareController.isCompareSelectionMode,
+        toggleCompareUniversity: compareController.toggleCompareUniversity,
+        openUniversityDetail: compareController.openUniversityDetail,
+        universityLinkAttrs: compareController.universityLinkAttrs,
+        renderCard,
+        buildParams,
+        buildAiSortPayload,
+        fetchUniversities,
+        fetchUniversitiesAiSort: fetchAiSort,
+        fetchAndRender: (options) => fetchAndRender(options),
+    });
+    __universitiesMapController = mapController;
+    const {
+        switchView,
+        initMap,
+        warmMapMode,
+        loadNextMapResults,
+        refreshMapPoints,
+        updateMapMarkers,
+    } = mapController;
+
+    ({ focusUniId } = applyUrlParamsToState(state, { currentCurrency, currentLimits }));
+
+    if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) {
+        filterControls.initLocations();
     }
 
-    function updateSliderLabels() {
-        const pref = currentCurrency || getPreferredCurrency();
-        const minVal = Number(el.minSlider ? el.minSlider.value : state.min_tuition) || 0;
-        const maxVal = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition) || currentLimits.max;
-        const formattedMin = formatMoney(minVal, pref);
-        const formattedMax = formatMoney(maxVal, pref);
-        // At the right edge the filter has no upper limit, so pricier universities still match.
-        const openEnded = maxVal >= currentLimits.max;
-        if (el.minCostLabel) el.minCostLabel.textContent = formattedMin;
-        if (el.maxCostLabel) el.maxCostLabel.textContent = openEnded ? `${formattedMax}+` : formattedMax;
-        if (el.minSlider) el.minSlider.setAttribute("aria-valuetext", formattedMin);
-        if (el.maxSlider) el.maxSlider.setAttribute("aria-valuetext", openEnded ? tFormat("universities.cost.max_open", { amount: formattedMax }) : formattedMax);
-    }
+    unifitBanner.bindEvents();
+    compareController.bindEvents();
+    filterControls.bindEvents();
+    layoutSync.bindEvents();
 
-    function fillTrack() {
-        if (!el.minSlider || !el.maxSlider || !el.track) return;
-        const minVal = Number(el.minSlider.value) || 0;
-        const maxVal = Number(el.maxSlider.value) || 0;
-        const minLimit = Number(el.minSlider.min) || currentLimits.min || 0;
-        const maxRange = Number(el.maxSlider.max) || currentLimits.max || 100000;
-        const rangeSpan = Math.max(1, maxRange - minLimit);
+    filterControls.applySliderBounds(currentLimits);
+    filterControls.applyToForm();
+    filterControls.updateSliderVisibility();
+    layoutSync.syncSidebarMaxHeight();
 
-        const r1 = Math.max(0, Math.min(1, (minVal - minLimit) / rangeSpan));
-        const r2 = Math.max(0, Math.min(1, (maxVal - minLimit) / rangeSpan));
-
-        const thumbSize = 18;
-        const getThumbPos = (r) => {
-            const pct = (r * 100).toFixed(2);
-            const offset = (0.5 - r) * thumbSize;
-            if (Math.abs(offset) < 0.001) return `${pct}%`;
-            const sign = offset >= 0 ? "+" : "-";
-            return `calc(${pct}% ${sign} ${Math.abs(offset).toFixed(2)}px)`;
-        };
-
-        const pos1 = getThumbPos(r1);
-        const pos2 = getThumbPos(r2);
-
-        const styles = getComputedStyle(el.track);
-        const inactive = styles.getPropertyValue("--slider-track-inactive").trim();
-        const active = styles.getPropertyValue("--slider-track-active").trim();
-        el.track.style.background = `linear-gradient(to right, ${inactive} 0%, ${inactive} ${pos1}, ${active} ${pos1}, ${active} ${pos2}, ${inactive} ${pos2}, ${inactive} 100%)`;
-    }
-    function slideMin() {
-        const gap = currentLimits.step;
-        let minVal = Number.parseInt(el.minSlider.value, 10) || 0;
-        const maxVal = Number.parseInt(el.maxSlider.value, 10) || currentLimits.max;
-        if (maxVal - minVal < gap) {
-            minVal = Math.max(currentLimits.min, maxVal - gap);
-            el.minSlider.value = String(minVal);
-        }
-        el.minInput.value = el.minSlider.value;
-        state.min_tuition = Number(el.minSlider.value);
-        fillTrack();
-        updateSliderLabels();
-    }
-    function slideMax() {
-        const gap = currentLimits.step;
-        const minVal = Number.parseInt(el.minSlider.value, 10) || 0;
-        let maxVal = Number.parseInt(el.maxSlider.value, 10) || currentLimits.max;
-        if (maxVal - minVal < gap) {
-            maxVal = Math.min(currentLimits.max, minVal + gap);
-            el.maxSlider.value = String(maxVal);
-        }
-        el.maxInput.value = el.maxSlider.value;
-        state.max_tuition = Number(el.maxSlider.value);
-        fillTrack();
-        updateSliderLabels();
-    }
-
-    // --- Map ---
-    let mapInstance = null;
-    let markersLayer = null;
-    let markersByUniId = new Map();
-    const mapPopupLoads = new Map();
-    let activeMapUniId = String(focusUniId || "").trim();
-    // Serializes programmatic "fly, then open the card" flights so concurrent
-    // clicks cannot reopen a stale popup after a newer flight has started.
-    let mapFocusSeq = 0;
-    // Counts opened map popups. A repeat marker click makes Leaflet toggle the
-    // focused card closed right before our handler runs, so the focus must
-    // only be cleared when no reopen follows the close (checked below).
-    let mapPopupOpenCount = 0;
-    // Guards our own programmatic closePopup (flight start) so it never wipes
-    // the focus the flight has just selected. Genuine closes always arrive as
-    // separate tasks and are unaffected.
-    let suppressMapCloseClear = false;
-    let mapLibrariesPromise = null;
-    let mapInitPromise = null;
-    let mapWarmupScheduled = false;
-    const MAP_OVERVIEW_CENTER = [25, 0];
-    const MAP_MIN_ZOOM = 2;
-    const MAP_MAX_LATITUDE = 85.0511287798;
-    // Give worldCopyJump enough horizontal room to normalize a wrapped view,
-    // while preventing panning beyond the finite north/south extent of Web Mercator.
-    const MAP_WORLD_WRAP_BOUNDS = [
-        [-MAP_MAX_LATITUDE, -540],
-        [MAP_MAX_LATITUDE, 540],
-    ];
-    const MAP_MAX_ZOOM = 18;
-    const scheduleMapPointsRefresh = debounce(() => {
-        if (state.viewMode !== "map" || !mapInstance) return;
-        const visibleBounds = mapInstance.getBounds();
-        if (lastMapPointsBounds && lastMapPointsBounds.contains(visibleBounds)) return;
-        refreshMapPoints().catch((error) => console.warn("Map points refresh failed", error));
-    }, 250);
-
-    const MAP_ASSETS = {
-        leafletCss: {
-            href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
-            integrity: "sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H",
-        },
-        markerClusterCss: {
-            href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css",
-            integrity: "sha384-lPzjPsFQL6te2x+VxmV6q1DpRxpRk0tmnl2cpwAO5y04ESyc752tnEWPKDfl1olr",
-        },
-        markerClusterDefaultCss: {
-            href: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css",
-            integrity: "sha384-5kMSQJ6S4Qj5i09mtMNrWpSi8iXw230pKU76xTmrpezGnNJQzj0NzXjQLLg+jE7k",
-        },
-        leafletJs: {
-            src: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
-            integrity: "sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH",
-        },
-        markerClusterJs: {
-            src: "https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js",
-            integrity: "sha384-RLIyj5q1b5XJTn0tqUhucRZe40nFTocRP91R/NkRJHwAe4XxnTV77FXy/vGLiec2",
-        },
-    };
-
-    function loadStylesheetOnce(id, asset) {
-        if (document.getElementById(id)) return Promise.resolve();
-        return new Promise((resolve, reject) => {
-            const href = String(typeof asset === "string" ? asset : asset?.href || "").trim();
-            const link = document.createElement("link");
-            link.id = id;
-            link.rel = "stylesheet";
-            link.href = href;
-            link.crossOrigin = "anonymous";
-            if (typeof asset !== "string" && asset?.integrity) link.integrity = asset.integrity;
-            link.onload = () => resolve();
-            link.onerror = () => reject(new Error(`Failed to load ${href}`));
-            document.head.appendChild(link);
-        });
-    }
-
-        function loadScriptOnce(id, asset) {
-        if (document.getElementById(id)) return Promise.resolve();
-        return new Promise((resolve, reject) => {
-            const src = String(typeof asset === "string" ? asset : asset?.src || "").trim();
-            const script = document.createElement("script");
-            script.id = id;
-            script.src = src;
-            script.async = true;
-            script.crossOrigin = "anonymous";
-            if (typeof asset !== "string" && asset?.integrity) script.integrity = asset.integrity;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error(`Failed to load ${src}`));
-            document.head.appendChild(script);
-        });
-    }
-
-    function ensureMapLibraries() {
-        if (window.L && typeof window.L.markerClusterGroup === "function") {
-            return Promise.resolve(window.L);
-        }
-        if (!mapLibrariesPromise) {
-            mapLibrariesPromise = Promise.all([
-                loadStylesheetOnce("leafletCss", MAP_ASSETS.leafletCss),
-                loadStylesheetOnce("leafletMarkerClusterCss", MAP_ASSETS.markerClusterCss),
-                loadStylesheetOnce("leafletMarkerClusterDefaultCss", MAP_ASSETS.markerClusterDefaultCss),
-                loadScriptOnce("leafletJs", MAP_ASSETS.leafletJs)
-                    .then(() => loadScriptOnce("leafletMarkerClusterJs", MAP_ASSETS.markerClusterJs)),
-            ]).then(() => {
-                if (!window.L || typeof window.L.markerClusterGroup !== "function") {
-                    throw new Error("Leaflet marker cluster is unavailable");
-                }
-                return window.L;
-            }).catch((error) => {
-                mapLibrariesPromise = null;
-                throw error;
-            });
-        }
-        return mapLibrariesPromise;
-    }
-
-    readFromUrl(); 
-    
-    const initLocations = () => {
-        updateCountryOptions();
-        if (state.country) {
-            if (el.countrySelect) el.countrySelect.value = state.country;
-            updateLocationLogic(state.country);
-            if (state.region && el.stateSelect) { el.stateSelect.value = state.region; updateCitiesForState(state.country, state.region); }
-            if (state.city && el.citySelect) el.citySelect.value = state.city;
-        }
-        applyToForm();
-    };
-    
-    if (Object.keys(CITY_OPTIONS_BY_COUNTRY).length > 0) initLocations();
-    window.addEventListener("citiesLoaded", initLocations);
-
-    applySliderBounds(currentLimits);
-    applyToForm();
-    updateSliderVisibility();
-    syncSidebarMaxHeight();
-    
     loadRates().then(() => {
         const pref = getPreferredCurrency();
         if (pref === currentCurrency) {
             const freshLimits = getFilterLimits(pref);
             currentLimits = freshLimits;
-            applySliderBounds(freshLimits);
-            fillTrack();
-            updateSliderLabels();
+            filterControls.applySliderBounds(freshLimits);
+            filterControls.fillTrack();
+            filterControls.updateSliderLabels();
         }
     }).catch(() => {});
-    
+
     switchView(state.viewMode, false).catch((err) => console.error(err));
-    
-    const setupMobileFilters = () => {
-        const toggleBtn = $("mobileFilterToggle");
-        const sidebar = $("uSidebar");
-        if (!toggleBtn || !sidebar) return;
-
-        let draftSnapshot = null;
-        let isEditing = false;
-        const isMobileViewport = () => window.innerWidth <= 1024;
-
-        const resetDraft = () => {
-            clearSavedScrollPosition();
-            Object.assign(state, buildFilterResetPatch(state, {
-                fundingType: getProfileFundingQueryValue(),
-                limits: currentLimits,
-                onlySaved: false,
-            }));
-            applyToForm();
-            if (el.stateDiv) el.stateDiv.style.display = "none";
-            updateCityDropdown([]);
-            updateSliderVisibility();
-            updateMobileFilterUi();
-        };
-
-        const setBackgroundInert = (active) => {
-            if (!active) {
-                document.querySelectorAll("[data-sidebar-inert='1']").forEach((node) => {
-                    node.inert = false;
-                    delete node.dataset.sidebarInert;
-                });
-                return;
-            }
-            let current = sidebar;
-            while (current && current.parentElement && current !== document.body) {
-                for (const sibling of current.parentElement.children) {
-                    if (sibling !== current && sibling.tagName !== "SCRIPT" && sibling.id !== "toast-container") {
-                        sibling.inert = true;
-                        sibling.dataset.sidebarInert = "1";
-                    }
-                }
-                current = current.parentElement;
-            }
-        };
-
-        const setOpen = (isOpen, { apply = false } = {}) => {
-            if (isOpen && !isMobileViewport()) return;
-            const wasOpen = sidebar.classList.contains("is-open");
-            if (isOpen) {
-                draftSnapshot = { ...state };
-                isEditing = true;
-            } else if (isEditing && !apply && draftSnapshot) {
-                Object.assign(state, draftSnapshot);
-                applyToForm();
-            }
-            sidebar.classList.toggle("is-open", isOpen);
-            if (isOpen) {
-                sidebar.setAttribute("role", "dialog");
-                sidebar.setAttribute("aria-modal", "true");
-            } else {
-                sidebar.removeAttribute("role");
-                sidebar.removeAttribute("aria-modal");
-            }
-            toggleBtn.classList.toggle("is-active", isOpen);
-            toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            toggleBtn.hidden = isOpen;
-            setBackgroundInert(isOpen);
-            document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
-            if (isOpen) {
-                const firstFocusTarget = el.mobileFilterClose || sidebar.querySelector("button, input, select, [tabindex='0']");
-                firstFocusTarget?.focus({ preventScroll: true });
-            } else {
-                isEditing = false;
-                draftSnapshot = null;
-                updateMobileFilterUi();
-                if (wasOpen) {
-                    toggleBtn.focus({ preventScroll: true });
-                }
-            }
-        };
-
-        toggleBtn.addEventListener("click", () => {
-            setOpen(!sidebar.classList.contains("is-open"));
-        });
-        el.mobileFilterClose?.addEventListener("click", () => setOpen(false));
-        el.mobileResetFilters?.addEventListener("click", () => resetDraft());
-        el.mobileApplyFilters?.addEventListener("click", () => {
-            if (!isEditing) return;
-            state.page = 1;
-            clearSavedScrollPosition();
-            setOpen(false, { apply: true });
-            saveFilters(state);
-            fetchAndRender();
-        });
-
-        // Close sidebar when clicking outside on mobile backdrop
-        sidebar.addEventListener("click", (e) => {
-            if (window.innerWidth <= 1024 && e.target === sidebar) {
-                setOpen(false);
-            }
-        });
-
-        __universitiesMobileFilterKeydownHandler = (event) => {
-            if (event.key === "Escape" && sidebar.classList.contains("is-open")) setOpen(false);
-        };
-        document.addEventListener("keydown", __universitiesMobileFilterKeydownHandler);
-
-        return {
-            isEditing: () => isEditing,
-            closeIfDesktop: () => {
-                if (!isMobileViewport() && sidebar.classList.contains("is-open")) {
-                    setOpen(false);
-                }
-            },
-        };
-    };
-    const mobileFilters = setupMobileFilters();
-
-    function handleSortChange(nextSort) {
-        if (el.sortSelect) el.sortSelect.value = nextSort;
-
-        state.sort = el.sortSelect ? el.sortSelect.value : normalizeSortMode(nextSort);
-        if (state.sort !== "uni_ai" && el.unifitWarningBanner) {
-            unifitWarningBannerDismissed = false;
-            el.unifitWarningBanner.hidden = true;
-        }
-        updateSliderVisibility();
-        updateMobileFilterUi();
-        refetch();
-    }
-
-    const scheduleRefetch = debounce(() => {
-        if (!isCurrentCatalog()) return;
-        state.page = 1; 
-        clearSavedScrollPosition();
-        updateMobileFilterUi();
-        saveFilters(state);
-        
-        fetchAndRender(); 
-    }, 250);
-    const refetch = (...args) => {
-        if (mobileFilters?.isEditing()) return;
-        scheduleRefetch(...args);
-    };
-
-    // --- Listeners ---
-    function syncSearchClearButton() {
-        if (!el.searchClearBtn) return;
-        const hasText = Boolean(String(el.qInput?.value || "").trim().length);
-        el.searchClearBtn.hidden = !hasText;
-    }
 
     const onCatalogSearchInput = () => {
         if (!isCurrentCatalog()) return;
@@ -2068,7 +768,7 @@ export function initUniversitiesPage() {
                 initCustomSelect("sortSelect");
             }
         }
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && !compareController.isCompareSelectionMode()) return;
         refetch();
     };
     const onCatalogSearchBlur = () => window.setTimeout(() => { if (isCurrentCatalog()) hideSearchSuggestions(); }, 160);
@@ -2087,7 +787,7 @@ export function initUniversitiesPage() {
                 initCustomSelect("sortSelect");
             }
         }
-        if (state.activeTab !== "catalog" && !isCompareSelectionMode()) return;
+        if (state.activeTab !== "catalog" && !compareController.isCompareSelectionMode()) return;
         refetch();
     };
     el.qInput?.addEventListener("input", onCatalogSearchInput);
@@ -2095,22 +795,18 @@ export function initUniversitiesPage() {
     el.searchClearBtn?.addEventListener("click", onCatalogSearchClear);
     __universitiesSearchCleanup = () => {
         catalogDisposed = true;
+        if (skeletonShowTimer) {
+            clearTimeout(skeletonShowTimer);
+            skeletonShowTimer = 0;
+        }
+        if (skeletonFadeTimer) {
+            clearTimeout(skeletonFadeTimer);
+            skeletonFadeTimer = 0;
+        }
         el.qInput?.removeEventListener("input", onCatalogSearchInput);
         el.qInput?.removeEventListener("blur", onCatalogSearchBlur);
         el.searchClearBtn?.removeEventListener("click", onCatalogSearchClear);
     };
-    
-    el.countrySelect?.addEventListener("change", () => {
-        state.country = el.countrySelect.value; state.region = ""; state.city = ""; 
-        if(el.stateSelect) el.stateSelect.value = ""; if(el.citySelect) el.citySelect.value = "";
-        updateLocationLogic(state.country); refetch();
-    });
-    
-    el.stateSelect?.addEventListener("change", () => { state.region = el.stateSelect.value; state.city = ""; updateCitiesForState(state.country, state.region); refetch(); });
-    el.citySelect?.addEventListener("change", () => { state.city = el.citySelect.value; refetch(); });
-    
-    if ($("studyLevelSelect")) $("studyLevelSelect").addEventListener("change", () => { state.study_level = $("studyLevelSelect").value; refetch(); });
-    $("costBasisSelect")?.addEventListener("change", () => { state.cost_basis = $("costBasisSelect").value; refetch(); });
 
     el.savedFilterButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -2123,88 +819,15 @@ export function initUniversitiesPage() {
     });
 
     el.sortSelect?.addEventListener("change", () => {
-        handleSortChange(el.sortSelect.value);
-    });
-
-    const bindTradeoffSlider = (sliderEl, stateKey, leftTextKey, leftTextFallback, rightTextKey, rightTextFallback, labelEl) => {
-        if (!sliderEl) return;
-        sliderEl.addEventListener("input", () => {
-            state[stateKey] = clampPercent(sliderEl.value, 50);
-            updateTradeoffLabel(labelEl, state[stateKey], leftTextKey, leftTextFallback, rightTextKey, rightTextFallback);
-        });
-        sliderEl.addEventListener("change", () => {
-            state[stateKey] = clampPercent(sliderEl.value, 50);
-            updateTradeoffLabel(labelEl, state[stateKey], leftTextKey, leftTextFallback, rightTextKey, rightTextFallback);
-            refetch();
-        });
-    };
-
-    bindTradeoffSlider(
-        el.focusSlider,
-        "practice_vs_science",
-        "universities.tradeoff.focus.left",
-        "Career & Practice",
-        "universities.tradeoff.focus.right",
-        "Science & Research",
-        el.focusLabel
-    );
-    bindTradeoffSlider(
-        el.atmosphereSlider,
-        "social_vs_hardcore",
-        "universities.tradeoff.atmosphere.left",
-        "Social & Events",
-        "universities.tradeoff.atmosphere.right",
-        "Hardcore Study",
-        el.atmosphereLabel
-    );
-    bindTradeoffSlider(
-        el.financeSlider,
-        "budget_vs_prestige",
-        "universities.tradeoff.finance.left",
-        "Budget & Grants",
-        "universities.tradeoff.finance.right",
-        "Prestige & Comfort",
-        el.financeLabel
-    );
-    bindTradeoffSlider(
-        el.locationSlider,
-        "city_vs_campus",
-        "universities.tradeoff.location.left",
-        "Study in City",
-        "universities.tradeoff.location.right",
-        "Study Outside City",
-        el.locationLabel
-    );
-
-    function handleResetAllFilters({ keepSaved = false } = {}) {
-        clearSavedScrollPosition();
-        Object.assign(state, buildFilterResetPatch(state, {
-            fundingType: getProfileFundingQueryValue(),
-            limits: currentLimits,
-            onlySaved: keepSaved ? state.only_saved : false,
-        }));
-        saveFilters(state);
-        applyToForm();
-        if (el.stateDiv) el.stateDiv.style.display = "none"; 
-        updateCityDropdown([]); 
-        updateSliderVisibility(); 
-        updateMobileFilterUi();
-        
-        fetchAndRender();
-    }
-
-    /** Drop only the price range; every other filter stays as the visitor set it. */
-    function handleClearPriceFilter() {
-        clearSavedScrollPosition();
-        Object.assign(state, { min_tuition: currentLimits.min, max_tuition: currentLimits.max, page: 1 });
-        saveFilters(state);
-        applyToForm();
-        fetchAndRender();
-    }
-
-    el.resetBtn?.addEventListener("click", () => {
-        motionPress(el.resetBtn);
-        handleResetAllFilters();
+        const nextSort = el.sortSelect.value;
+        el.sortSelect.value = nextSort;
+        state.sort = nextSort;
+        if (state.sort !== "uni_ai") {
+            unifitBanner.resetDismissed();
+        }
+        filterControls.updateSliderVisibility();
+        filterControls.updateMobileFilterUi();
+        refetch();
     });
 
     el.state?.addEventListener("click", (e) => {
@@ -2212,13 +835,13 @@ export function initUniversitiesPage() {
         const clearPriceBtn = target?.closest('[data-action="clear-price-filter"]');
         if (clearPriceBtn) {
             motionPress(clearPriceBtn);
-            handleClearPriceFilter();
+            filterControls.handleClearPriceFilter();
             return;
         }
         const btn = target?.closest('[data-action="reset-filters"]');
         if (!btn) return;
         motionPress(btn);
-        handleResetAllFilters({ keepSaved: btn.hasAttribute("data-keep-saved") });
+        filterControls.handleResetAllFilters({ keepSaved: btn.hasAttribute("data-keep-saved") });
     });
 
     el.list.addEventListener("click", (e) => {
@@ -2229,16 +852,16 @@ export function initUniversitiesPage() {
         if (detailLink) {
             const card = detailLink.closest("[data-uni-id]");
             const uniId = card?.getAttribute("data-uni-id");
-            if (isCompareSelectionMode()) {
+            if (compareController.isCompareSelectionMode()) {
                 e.preventDefault();
                 e.stopPropagation();
-                toggleCompareUniversity(uniId);
+                compareController.toggleCompareUniversity(uniId);
                 return;
             }
             rememberRecentUniversity(uniId);
             if (shouldOpenUniversitiesInNewTab()) {
                 e.preventDefault();
-                openUniversityDetail(uniId);
+                compareController.openUniversityDetail(uniId);
             }
             return;
         }
@@ -2246,92 +869,20 @@ export function initUniversitiesPage() {
         if (actionBtn) {
             e.preventDefault();
             e.stopPropagation();
-            handleCardAction(actionBtn, { compensateLayoutShift: true });
+            compareController.handleCardAction(actionBtn, { compensateLayoutShift: true });
             return;
         }
         const card = target.closest("[data-uni-id]");
         if (!card || target.tagName === "A") return;
-        if (isCompareSelectionMode()) {
+        if (compareController.isCompareSelectionMode()) {
             e.preventDefault();
             e.stopPropagation();
-            toggleCompareUniversity(card.getAttribute("data-uni-id"));
+            compareController.toggleCompareUniversity(card.getAttribute("data-uni-id"));
             return;
         }
         rememberRecentUniversity(card.getAttribute("data-uni-id"));
-        openUniversityDetail(card.getAttribute("data-uni-id"));
+        compareController.openUniversityDetail(card.getAttribute("data-uni-id"));
     });
-
-    __universitiesMapCardActionHandler = (e) => {
-        const target = e.target instanceof Element ? e.target : null;
-        const actionBtn = target?.closest(".map-card-wrapper [data-card-action]");
-        if (actionBtn) {
-            e.preventDefault();
-            e.stopPropagation();
-            handleCardAction(actionBtn, { compensateLayoutShift: false });
-            return;
-        }
-        if (!isCompareSelectionMode()) return;
-        const popupCard = target?.closest(".map-card-wrapper [data-uni-id]");
-        if (!popupCard) return;
-        e.preventDefault();
-        e.stopPropagation();
-        toggleCompareUniversity(popupCard.getAttribute("data-uni-id"));
-    };
-    document.addEventListener("click", __universitiesMapCardActionHandler, true);
-
-    el.compareTray?.addEventListener("click", (e) => {
-        const action = e.target instanceof Element ? e.target.closest("[data-action]")?.getAttribute("data-action") : "";
-        const actionButton = e.target instanceof Element ? e.target.closest("[data-action]") : null;
-        if (actionButton) motionPress(actionButton);
-        if (action === "clear-compare") {
-            const wasCompareResults = isCompareResultsMode();
-            compareTrayNotice = "";
-            compareUniversityIds.clear();
-            compareAdmissionChoices.clear();
-            state.compareResultIds = [];
-            state.compareStage = "select";
-            persistSavedAndCompare();
-            syncCardActionState();
-            if (wasCompareResults) {
-                syncSectionVisibility({ shouldFetch: false, replaceUrl: true }).catch((err) => console.error(err));
-            }
-        }
-        if (action === "remove-compare-slot") {
-            const slotUniId = String(actionButton?.getAttribute("data-uni-id") || "").trim();
-            if (slotUniId) {
-                toggleCompareUniversity(slotUniId);
-            }
-        }
-        if (action === "open-compare") {
-            openCompareResultsPage().catch((err) => console.error(err));
-        }
-    });
-
-    const setCompareSelectionMode = (enabled, { replaceUrl = false } = {}) => {
-        hideSearchSuggestions();
-        const nextTab = enabled ? "compare" : "catalog";
-        if (nextTab === state.activeTab && !(nextTab === "compare" && isCompareResultsMode())) return;
-        state.activeTab = nextTab;
-        if (nextTab !== "compare") {
-            state.compareStage = "select";
-            state.compareResultIds = [];
-        } else if (state.compareStage !== "results") {
-            state.compareStage = "select";
-        }
-        saveFilters(state);
-        syncSectionVisibility({
-            shouldFetch: !lastRenderedItems.length,
-            updateUrl: true,
-            replaceUrl,
-        }).catch((err) => console.error(err));
-        syncCardActionState();
-    };
-
-    el.compareModeBtn?.addEventListener("click", () => {
-        motionPress(el.compareModeBtn);
-        setCompareSelectionMode(!isCompareSelectionMode());
-    });
-
 
     el.btnList?.addEventListener("click", () => {
         switchView("list", true).catch((err) => console.error(err));
@@ -2340,95 +891,29 @@ export function initUniversitiesPage() {
         switchView("map", true).catch((err) => console.error(err));
     });
 
-    if (el.minSlider && el.maxSlider) {
-        el.minSlider.addEventListener("input", slideMin);
-        el.maxSlider.addEventListener("input", slideMax);
-        el.minSlider.addEventListener("change", () => refetch());
-        el.maxSlider.addEventListener("change", () => refetch());
-    }
-
-    el.minInput?.addEventListener("change", () => {
-        const gap = currentLimits.step;
-        let val = clampTuition(el.minInput.value, currentLimits.min);
-        const maxVal = Number.parseInt(el.maxSlider?.value, 10) || currentLimits.max;
-        if (val > maxVal - gap) {
-            val = Math.max(currentLimits.min, maxVal - gap);
-        }
-        el.minInput.value = String(val);
-        if (el.minSlider) el.minSlider.value = String(val);
-        state.min_tuition = val;
-        fillTrack();
-        updateSliderLabels();
-        refetch();
-    });
-
-    el.maxInput?.addEventListener("change", () => {
-        const gap = currentLimits.step;
-        let val = clampTuition(el.maxInput.value, currentLimits.max);
-        const minVal = Number.parseInt(el.minSlider?.value, 10) || 0;
-        if (val < minVal + gap) {
-            val = Math.min(currentLimits.max, minVal + gap);
-        }
-        el.maxInput.value = String(val);
-        if (el.maxSlider) el.maxSlider.value = String(val);
-        state.max_tuition = val;
-        fillTrack();
-        updateSliderLabels();
-        refetch();
-    });
-
-    const refreshLocationFilterLabels = () => {
-        updateCountryOptions();
-        if (!state.country) {
-            if (el.countrySelect) el.countrySelect.value = "";
-            if (el.stateSelect) el.stateSelect.value = "";
-            if (el.citySelect) el.citySelect.value = "";
-            updateLocationLogic("");
-            return;
-        }
-
-        if (el.countrySelect) el.countrySelect.value = state.country;
-        updateLocationLogic(state.country);
-
-        if (state.region && el.stateSelect) {
-            el.stateSelect.value = state.region;
-            updateCitiesForState(state.country, state.region);
-        }
-
-        if (state.city && el.citySelect) {
-            el.citySelect.value = state.city;
-        }
-
-        ["countrySelect", "stateSelect", "citySelect"].forEach((id) => initCustomSelect(id));
-    };
-
     hideSearchSuggestions();
     syncSectionVisibility({
-        shouldFetch: !isCompareResultsMode(),
+        shouldFetch: true,
         updateUrl: true,
         replaceUrl: true,
     }).catch((err) => console.error(err));
-    __universitiesProfileUpdatedHandler = () => {
+
+    bindWindowListener("profileUpdated", () => {
         state.funding_type = getProfileFundingQueryValue();
         state.page = 1;
         saveFilters(state);
-        if (!isCompareResultsMode()) {
-            fetchAndRender();
-        }
-    };
-    window.addEventListener("profileUpdated", __universitiesProfileUpdatedHandler);
-    __universitiesLanguageVisualPendingHandler = showLanguageCardSkeletons;
-    window.addEventListener("languageChangeVisualPending", __universitiesLanguageVisualPendingHandler);
-    __universitiesLanguageFinishedHandler = clearLanguageCardSkeletons;
-    window.addEventListener("languageChangeFinished", __universitiesLanguageFinishedHandler);
-    __universitiesLanguageChangedHandler = (event) => {
+        fetchAndRender();
+    });
+    bindWindowListener("languageChangeVisualPending", showLanguageCardSkeletons);
+    bindWindowListener("languageChangeFinished", clearLanguageCardSkeletons);
+    bindWindowListener("languageChanged", (event) => {
         const refreshPromise = (async () => {
-            applyAISortOptionLabel();
-            refreshLocationFilterLabels();
-            applyToForm();
-            updateTradeoffLabels();
+            unifitBanner.applyAISortOptionLabel();
+            filterControls.refreshLocationFilterLabels();
+            filterControls.applyToForm();
+            filterControls.updateTradeoffLabels();
             await syncSectionVisibility({
-                shouldFetch: !isCompareResultsMode(),
+                shouldFetch: true,
                 updateUrl: true,
                 replaceUrl: true,
                 fetchOptions: {
@@ -2439,1368 +924,19 @@ export function initUniversitiesPage() {
         })();
         event?.detail?.waitUntil?.(refreshPromise);
         refreshPromise.catch((err) => console.error(err));
-    };
-    window.addEventListener("languageChanged", __universitiesLanguageChangedHandler);
-    __universitiesSettingsChangedHandler = () => {
-        renderRecentlyViewedBar();
-    };
-    window.addEventListener("settingsChanged", __universitiesSettingsChangedHandler);
-
-    if (__universitiesOnlineReconnectHandler) {
-        window.removeEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
-    }
-    __universitiesOnlineReconnectHandler = () => {
-        if (!isCompareResultsMode() && typeof fetchAndRender === "function") {
-            fetchAndRender();
-        }
-    };
-    window.addEventListener("app:online-reconnect", __universitiesOnlineReconnectHandler);
-
+    });
+    bindWindowListener("settingsChanged", () => renderRecentlyViewedBar());
+    bindWindowListener("app:online-reconnect", () => {
+        fetchAndRender();
+    });
     // Live rates that arrive after the first render redraw the cards and slider bounds; filters stay as they are.
-    if (__universitiesRatesUpdatedHandler) {
-        window.removeEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
-    }
-    __universitiesRatesUpdatedHandler = () => {
-        if (typeof fetchAndRender === "function" && !isCompareResultsMode()) fetchAndRender().catch((err) => console.error(err));
-    };
-    window.addEventListener("currencyRatesUpdated", __universitiesRatesUpdatedHandler);
-
-    if (__universitiesCurrencyChangedHandler) {
-        window.removeEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
-    }
-    __universitiesCurrencyChangedHandler = (e) => {
-        const newCurrency = String(e?.detail?.currency || e?.detail?.preferredCurrency || getPreferredCurrency() || "USD").trim().toUpperCase();
-        const oldCurrency = currentCurrency || "USD";
-        if (newCurrency === oldCurrency) {
-            if (typeof fetchAndRender === "function" && !isCompareResultsMode()) {
-                fetchAndRender();
-            }
-            return;
-        }
-
-        // 1. Read current slider positions
-        const oldMin = Number(el.minSlider ? el.minSlider.value : state.min_tuition);
-        const oldMax = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition);
-        const oldLimits = currentLimits || getFilterLimits(oldCurrency);
-
-        // 2. Convert: old currency -> USD -> new currency
-        const wasAtMin = !Number.isFinite(oldMin) || oldMin <= oldLimits.min;
-        const wasAtMax = !Number.isFinite(oldMax) || oldMax >= oldLimits.max;
-
-        const usdMin = convert(oldMin, oldCurrency, "USD");
-        const usdMax = convert(oldMax, oldCurrency, "USD");
-
-        const convertedMin = convert(usdMin, "USD", newCurrency);
-        const convertedMax = convert(usdMax, "USD", newCurrency);
-
-        // 3. Get new bounds from getFilterLimits(newCurrency)
-        const newLimits = getFilterLimits(newCurrency);
-        currentLimits = newLimits;
-        currentCurrency = newCurrency;
-
-        // 4. Clamp converted positions to new bounds
-        const step = newLimits.step || 1;
-        let clampedMin = wasAtMin ? newLimits.min : Math.max(newLimits.min, Math.min(newLimits.max, Math.round(convertedMin / step) * step));
-        let clampedMax = wasAtMax ? newLimits.max : Math.max(newLimits.min, Math.min(newLimits.max, Math.round(convertedMax / step) * step));
-
-        if (clampedMax - clampedMin < step) {
-            if (clampedMin + step <= newLimits.max) {
-                clampedMax = clampedMin + step;
-            } else {
-                clampedMin = Math.max(newLimits.min, clampedMax - step);
-            }
-        }
-
-        // 5. Update slider min/max/step attributes
-        applySliderBounds(newLimits);
-
-        // 6. Update slider positions and input values
-        if (el.minSlider) el.minSlider.value = String(clampedMin);
-        if (el.maxSlider) el.maxSlider.value = String(clampedMax);
-        if (el.minInput) el.minInput.value = String(clampedMin);
-        if (el.maxInput) el.maxInput.value = String(clampedMax);
-        state.min_tuition = clampedMin;
-        state.max_tuition = clampedMax;
-        state.currency = newCurrency;
-        saveFilters(state);
-        fillTrack();
-
-        // 7. Re-render slider labels
-        updateSliderLabels();
-
-        // Re-render visible cards and map markers
-        if (typeof fetchAndRender === "function" && !isCompareResultsMode()) {
-            fetchAndRender();
-        }
-    };
-    window.addEventListener("currencyChanged", __universitiesCurrencyChangedHandler);
-
-    let scrollSaveTimer = null;
-    const syncMobileFilterFooterClearance = () => {
-        const toggleBtn = el.mobileFilterToggle || $("mobileFilterToggle");
-        if (!toggleBtn) return;
-        if (window.innerWidth > 1024) {
-            toggleBtn.style.removeProperty("--u-mobile-filter-footer-clearance");
-            return;
-        }
-
-        const footer = document.querySelector(".site-footer");
-        if (!footer) return;
-        const footerClearance = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top + 16);
-        toggleBtn.style.setProperty("--u-mobile-filter-footer-clearance", `${Math.ceil(footerClearance)}px`);
-    };
-
-    const onCatalogScroll = () => {
-        // Independent panels invariant: window scroll must never recompute
-        // sidebar geometry (see syncSidebarMaxHeight). Only viewport
-        // clearance and scroll persistence are scroll-safe here.
-        syncMobileFilterFooterClearance();
-        if (scrollSaveTimer) return;
-        scrollSaveTimer = window.setTimeout(() => {
-            scrollSaveTimer = null;
-            saveCurrentScrollPosition();
-        }, 150);
-    };
-
-    __universitiesScrollHandler = onCatalogScroll;
-    __universitiesPagehideHandler = saveCurrentScrollPosition;
-    __universitiesBeforeunloadHandler = saveCurrentScrollPosition;
-
-    window.addEventListener("scroll", __universitiesScrollHandler, { passive: true });
-    window.addEventListener("pagehide", __universitiesPagehideHandler);
-    window.addEventListener("beforeunload", __universitiesBeforeunloadHandler);
-
-    __universitiesResizeHandler = () => {
-        mobileFilters?.closeIfDesktop?.();
-        scheduleSyncWorkspaceDepth();
-        scheduleSyncSidebarMaxHeight();
-        syncMobileFilterFooterClearance();
-        // Map stage height follows the viewport, so tell Leaflet to re-fit tiles.
-        if (state.viewMode === "map" && mapInstance) {
-            if (__universitiesMapResizeTimer) window.clearTimeout(__universitiesMapResizeTimer);
-            __universitiesMapResizeTimer = window.setTimeout(() => {
-                __universitiesMapResizeTimer = 0;
-                if (mapInstance) mapInstance.invalidateSize();
-            }, 150);
-        }
-    };
-    window.addEventListener("resize", __universitiesResizeHandler, { passive: true });
-    syncMobileFilterFooterClearance();
-
-    if (typeof ResizeObserver !== "undefined") {
-        __universitiesResizeObserver = new ResizeObserver(() => {
-            scheduleSyncWorkspaceDepth();
-            scheduleSyncSidebarMaxHeight();
-        });
-        const sidebarNode = el.sidebar || $("uSidebar") || document.querySelector(".u-sidebar");
-        const contentNode = el.catalogPane || el.content || document.querySelector(".u-content");
-        if (sidebarNode) __universitiesResizeObserver.observe(sidebarNode);
-        if (contentNode) __universitiesResizeObserver.observe(contentNode);
-        if (el.recentlyViewedBar) __universitiesResizeObserver.observe(el.recentlyViewedBar);
-        const filterCardNode = el.filterCard || sidebarNode?.querySelector(".u-filter-card");
-        if (filterCardNode) __universitiesResizeObserver.observe(filterCardNode);
-    }
-
-    function applyViewVisibility(mode) {
-        if (el.list) el.list.style.display = mode === "list" ? "grid" : "none";
-        if (el.pagination) el.pagination.style.display = mode === "list" ? "flex" : "none";
-        if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
-        if (mode !== "map" && __universitiesMapResultsObserver) {
-            __universitiesMapResultsObserver.disconnect();
-        }
-    }
-
-    async function switchView(mode, shouldFetch = false) {
-        state.viewMode = mode;
-        saveFilters(state);
-        syncViewModeControls();
-
-        if (mode === "map" && Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) {
-            renderMapResultsPanel(lastRenderedItems);
-        }
-
-        applyViewVisibility(mode);
-        scheduleSyncWorkspaceDepth();
-
-        if (mode === "map") {
-            await initMap();
-            if (state.viewMode !== "map") return;
-            if (lastRenderedItems.length > 0) {
-                updateMapMarkers(lastRenderedItems, { renderResults: false });
-            }
-            window.setTimeout(() => { if (mapInstance) mapInstance.invalidateSize(); }, 100);
-        }
-
-        if (shouldFetch) {
-            fetchAndRender({ preserveVisibleResults: true, animateResults: false });
-        }
-    }
-
-    async function initMap() {
-        if (mapInstance) return mapInstance;
-        if (mapInitPromise) return mapInitPromise;
-        mapInitPromise = (async () => {
-            const L = await ensureMapLibraries();
-            if (mapInstance) return mapInstance;
-            mapInstance = L.map('mapContainer', {
-                worldCopyJump: true,
-                maxBounds: MAP_WORLD_WRAP_BOUNDS,
-                maxBoundsViscosity: 1.0,
-                minZoom: MAP_MIN_ZOOM,
-                maxZoom: MAP_MAX_ZOOM,
-                zoomControl: false,
-                zoomAnimation: true,
-                zoomAnimationThreshold: 4,
-                fadeAnimation: true,
-                markerZoomAnimation: true,
-                zoomSnap: 1,
-                zoomDelta: 1,
-                wheelDebounceTime: 30,
-                wheelPxPerZoomLevel: 60,
-                keyboard: true,
-            }).setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                noWrap: false,
-                attribution: `&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">${escapeHtml(t("universities.map_controls.osm_contributors", "OpenStreetMap contributors"))}</a>`,
-            }).addTo(mapInstance);
-            L.control.zoom({
-                position: "topleft",
-                zoomInTitle: t("universities.map_controls.zoom_in", "Zoom in"),
-                zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
-            }).addTo(mapInstance);
-
-            // The cluster radius (px between marker centres) is kept wider than a
-            // label pill, so clustering also keeps unclustered labels from overlapping.
-            markersLayer = L.markerClusterGroup({
-                showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
-                maxClusterRadius: 100,
-                chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
-                iconCreateFunction: function(cluster) {
-                    const label = mapClusterLabel(cluster);
-                    return L.divIcon({
-                        html: label
-                            ? `<span class="map-cluster-pill" aria-hidden="true"><span class="map-cluster-pill__place">${escapeHtml(label.text)}</span><span class="map-cluster-pill__count">${escapeHtml(label.count)}</span></span>`
-                            : `<span class="map-cluster-count" aria-hidden="true">${cluster.getChildCount()}</span>`,
-                        className: "cluster-icon-container",
-                        // No fixed size: the pill is as wide as its label and is
-                        // centred on the point with CSS.
-                        iconSize: null,
-                    });
-                }
-            });
-            markersLayer.on('clusterclick', function (a) { mapInstance.flyToBounds(a.layer.getBounds(), { padding: [80, 80], duration: 1.0 }); });
-            mapInstance.on('popupopen', () => {
-                mapPopupOpenCount += 1;
-            });
-            mapInstance.on('popupclose', (e) => {
-                if (suppressMapCloseClear || markersByUniId.size === 0) return;
-                const source = e.popup && typeof e.popup.getSource === "function" ? e.popup.getSource() : e.popup?._source;
-                const closedUniId = source?.options?.uniId;
-                if (closedUniId && closedUniId === activeMapUniId) {
-                    const closeCount = mapPopupOpenCount;
-                    window.setTimeout(() => {
-                        // A repeat click on the focused marker makes Leaflet
-                        // toggle its card closed and our handler reopens it in
-                        // the same task: keep the focus then, clear it only on
-                        // a real close.
-                        if (mapPopupOpenCount !== closeCount) return;
-                        if (closedUniId === activeMapUniId) updateMapResultsSelection("");
-                    }, 0);
-                }
-            });
-            mapInstance.on('moveend', scheduleMapPointsRefresh);
-            mapInstance.addLayer(markersLayer);
-            return mapInstance;
-        })().catch((error) => {
-            mapInitPromise = null;
-            throw error;
-        });
-        return mapInitPromise;
-    }
-
-    function warmMapMode() {
-        if (mapInstance || mapWarmupScheduled) return;
-        mapWarmupScheduled = true;
-
-        // Loading the map libraries after the first catalog paint keeps the
-        // first view switch from racing a cold Leaflet setup. The visible map
-        // still invalidates its size when it is opened for the first time.
-        const startWarmup = () => {
-            initMap()
-                .then(() => {
-                    updateMapMarkers(lastRenderedItems, { renderResults: false });
-                    viewModesReady = true;
-                    syncViewModeControls();
-                })
-                .catch((error) => console.warn("Map warmup failed", error));
-        };
-        if (typeof window.requestIdleCallback === "function") {
-            window.requestIdleCallback(startWarmup, { timeout: 1000 });
-        } else {
-            window.setTimeout(startWarmup, 0);
-        }
-    }
-
-    // Where each university stands in the results list the user is looking at
-    // (the selected sort, UniFit included). The list holds every matching
-    // university, so this is the order a group is labelled by.
-    let mapResultsOrder = new Map();
-
-    function syncMapResultsOrder() {
-        mapResultsOrder = new Map(mapResultsItems.map((item, index) => [String(item?.id || "").trim(), index]));
-        if (markersLayer && typeof markersLayer.refreshClusters === "function") markersLayer.refreshClusters();
-    }
-
-    // A group is named like a single marker: by the university that comes
-    // first in the selected sort, plus how many others it holds ("КазНУ +3").
-    // Without any label to show it is just the count.
-    function mapClusterLabel(cluster) {
-        const markers = cluster.getAllChildMarkers();
-        const orderOf = (marker) => mapResultsOrder.get(marker.options.uniId) ?? Number.MAX_SAFE_INTEGER;
-        const top = markers
-            .filter((marker) => marker.options.mapLabel)
-            .sort((a, b) => (orderOf(a) - orderOf(b)) || (a.options.mapRank - b.options.mapRank))[0];
-        return top ? { text: top.options.mapLabel, count: `+${markers.length - 1}` } : null;
-    }
-
-    function updateMapResultsSelection(uniId) {
-        activeMapUniId = String(uniId || "").trim();
-        if (!el.mapResults) return;
-        el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]").forEach((card) => {
-            const isActive = card.getAttribute("data-uni-id") === activeMapUniId;
-            card.classList.toggle("is-active", isActive);
-        });
-    }
-
-    // Settles the map before a programmatic flight: closes any open card (its
-    // autoPan/keepInView would fight the flight) and stops an in-progress pan
-    // animation. The stop is required: starting flyTo over a running panBy
-    // leaves Leaflet 1.9.4 with a stale `leaflet-pan-anim` pane transform, so
-    // the map renders offset from its true view until something resyncs it.
-    function settleMapForFlight() {
-        suppressMapCloseClear = true;
-        try {
-            mapInstance.closePopup();
-        } finally {
-            suppressMapCloseClear = false;
-        }
-        try {
-            if (mapInstance._panAnim) mapInstance._panAnim.stop();
-        } catch {
-            // Pan-animation internals are version-specific; the flight below
-            // still works, it just cannot reuse the cleanup.
-        }
-    }
-
-    // Flies to the marker with no popup on the map: an open popup would fight
-    // the flight with its own autoPan/keepInView panning. The card opens once,
-    // after the flight has actually arrived (a stale moveend from the
-    // cancelled pan is ignored via the arrival check below).
-    function flyMapToUniversity(targetId, latLng, { openPopup = true, zoom = 14 } = {}) {
-        updateMapResultsSelection(targetId);
-        const focusSeq = ++mapFocusSeq;
-        const flightStartedAt = Date.now();
-        const awaitArrival = () => {
-            if (!mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
-                if (mapInstance) mapInstance.off("moveend", awaitArrival);
-                return;
-            }
-            // The flight lasts 1s; an arrival much later means the user took
-            // over the map, so never surprise-open the card afterwards.
-            if (Date.now() - flightStartedAt > 2500) {
-                mapInstance.off("moveend", awaitArrival);
-                return;
-            }
-            let arrived = false;
-            try {
-                arrived = mapInstance.distance(mapInstance.getCenter(), latLng) < 20;
-            } catch {
-                arrived = false;
-            }
-            if (!arrived) return;
-            mapInstance.off("moveend", awaitArrival);
-            const current = markersByUniId.get(targetId);
-            if (current) {
-                current.setZIndexOffset(1200);
-                if (openPopup) {
-                    try {
-                        if (!current.getPopup()?.isOpen()) current.openPopup();
-                    } catch {
-                        current.openPopup();
-                    }
-                }
-            }
-            // Heal any pan animation left hanging by the flight: a starved
-            // rAF (background/headless page) can leave Leaflet with a stale
-            // `leaflet-pan-anim` pane transform, so the map renders offset
-            // from its true view until something resyncs it. Fast-forwarding
-            // renders the same end state the pan was heading to, so this is
-            // visually a no-op when animations run normally.
-            window.setTimeout(() => {
-                if (focusSeq !== mapFocusSeq || !mapInstance || state.viewMode !== "map") return;
-                try {
-                    if (mapInstance._panAnim) mapInstance._panAnim.stop();
-                } catch {
-                    // Pan-animation internals are version-specific.
-                }
-            }, 400);
-        };
-        mapInstance.on("moveend", awaitArrival);
-        // Closes the just auto-opened popup (Leaflet opens it synchronously on
-        // marker click, before our handler runs) and any previous card, so the
-        // flight owns the viewport until arrival. Same-tick close: no flicker.
-        settleMapForFlight();
-        mapInstance.flyTo(latLng, zoom, {
-            animate: true,
-            duration: 1.0,
-            easeLinearity: 0.2
-        });
-    }
-
-    function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
-        const targetId = String(uniId || "").trim();
-        if (!targetId || !mapInstance) return;
-        if (targetId === activeMapUniId) {
-            const current = markersByUniId.get(targetId);
-            let popupOpen = false;
-            try {
-                popupOpen = Boolean(current && typeof current.getPopup === "function" && current.getPopup()?.isOpen());
-            } catch {
-                popupOpen = false;
-            }
-            if (popupOpen) return;
-        }
-        const marker = markersByUniId.get(targetId);
-        if (!marker) {
-            const item = mapResultsItems.find((row) => String(row?.id || "") === targetId);
-            const lat = Number(item?.coordinates?.lat);
-            const lon = Number(item?.coordinates?.lon);
-            if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-            pendingMapFocusId = targetId;
-            updateMapResultsSelection(targetId);
-            settleMapForFlight();
-            mapInstance.flyTo([lat, lon], zoom, {
-                animate: true,
-                duration: 1.0,
-                easeLinearity: 0.2,
-            });
-            return;
-        }
-
-        const latLng = marker.getLatLng();
-        if (fly) {
-            flyMapToUniversity(targetId, latLng, { openPopup, zoom });
-            return;
-        }
-
-        updateMapResultsSelection(targetId);
-        mapInstance.panTo(latLng);
-        const current = markersByUniId.get(targetId);
-        if (!current) return;
-        current.setZIndexOffset(1200);
-        if (openPopup) current.openPopup();
-    }
-
-    function mapResultsFooterHtml() {
-        const shown = mapResultsItems.length;
-        const total = Math.max(shown, mapResultsTotal);
-        const summary = tFormat(
-            "universities.map_panel.showing",
-            { count: String(shown), total: String(total) },
-            `Showing ${shown} of ${total}`
-        );
-        const buttonLabel = mapResultsLoadFailed
-            ? t("error.retry", "Retry")
-            : t("universities.map_panel.load_more", "Load more");
-        const loadingText = t("universities.map_panel.loading_more", "Loading more universities");
-        return `
-            <div class="u-map-results-footer" data-map-results-footer>
-                <span class="u-map-results-count" role="status" aria-live="polite">${escapeHtml(summary)}</span>
-                ${mapResultsHasMore ? `
-                    <button type="button" class="u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
-                        ${mapResultsLoadingMore ? `<span class="u-map-results-spinner" aria-hidden="true"></span>${escapeHtml(loadingText)}` : escapeHtml(buttonLabel)}
-                    </button>
-                ` : `<span class="u-map-results-complete">${escapeHtml(t("universities.map_panel.all_loaded", "All matching universities are loaded"))}</span>`}
-            </div>
-        `;
-    }
-
-    function bindMapResultCards(cards) {
-        cards.forEach((card) => {
-            card.addEventListener("click", (event) => {
-                const target = event.target instanceof Element ? event.target : null;
-                if (!target) return;
-                if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble, .uni-status-overflow")) return;
-                const uniId = String(card.getAttribute("data-uni-id") || "").trim();
-                if (!uniId) return;
-                const detailsLink = target.closest("a.uni-details");
-                if (detailsLink) {
-                    event.preventDefault();
-                    if (isCompareSelectionMode()) {
-                        toggleCompareUniversity(uniId);
-                        return;
-                    }
-                    rememberRecentUniversity(uniId);
-                    openUniversityDetail(uniId);
-                    return;
-                }
-                if (isCompareSelectionMode()) {
-                    toggleCompareUniversity(uniId);
-                    return;
-                }
-                focusMapUniversity(uniId, { openPopup: true, fly: true, zoom: 14 });
-            });
-        });
-    }
-
-    function syncMapResultsObserver() {
-        if (__universitiesMapResultsObserver) {
-            __universitiesMapResultsObserver.disconnect();
-            __universitiesMapResultsObserver = null;
-        }
-        if (!mapResultsHasMore || mapResultsLoadingMore || state.viewMode !== "map") return;
-        const list = el.mapResults?.querySelector(".u-map-results-list");
-        const loadMoreButton = list?.querySelector('[data-action="load-more-map-results"]');
-        if (!list || !loadMoreButton || typeof IntersectionObserver === "undefined") return;
-        __universitiesMapResultsObserver = new IntersectionObserver((entries) => {
-            if (!entries.some((entry) => entry.isIntersecting)) return;
-            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
-        }, { root: list, rootMargin: "0px 0px 320px 0px", threshold: 0.01 });
-        __universitiesMapResultsObserver.observe(loadMoreButton);
-    }
-
-    function bindMapResultsFooter() {
-        const loadMoreButton = el.mapResults?.querySelector('[data-action="load-more-map-results"]');
-        loadMoreButton?.addEventListener("click", () => {
-            loadNextMapResults().catch((error) => console.warn("Map results pagination failed", error));
-        });
-        syncMapResultsObserver();
-    }
-
-    function renderMapResultsPanel(items, options = {}) {
-        if (!el.mapResults) return;
-        const append = options.append === true;
-        const nextItems = Array.isArray(items) ? items : [];
-
-        if (!append && !nextItems.length) {
-            el.mapResults.innerHTML = `
-                <div class="u-map-results-empty">${escapeHtml(t("universities.state.empty", "No universities found."))}</div>
-            `;
-            return;
-        }
-
-        const preferredId = mapResultsItems.some((u) => String(u.id || "") === activeMapUniId)
-            ? activeMapUniId
-            : (mapResultsItems.some((u) => String(u.id || "") === focusUniId) ? String(focusUniId || "") : "");
-        activeMapUniId = preferredId;
-
-        const profile = loadProfileForApi();
-        const userBudget = Number.parseFloat(profile.budget);
-        const cardsHtml = nextItems.map((u, idx) => {
-            const uniId = String(u?.id || "");
-            return renderCard(u, userBudget, (mapResultsItems.length - nextItems.length) + idx, {
-                hideMedia: true,
-                mapVariant: true,
-                isActive: uniId !== "" && uniId === preferredId,
-            });
-        }).join("");
-
-        if (!append) {
-            el.mapResults.innerHTML = `<div class="u-map-results-list">${cardsHtml}${mapResultsFooterHtml()}</div>`;
-            bindMapResultCards(Array.from(el.mapResults.querySelectorAll(".u-map-results-list .uni-card[data-uni-id]")));
-        } else {
-            const list = el.mapResults.querySelector(".u-map-results-list");
-            const footer = list?.querySelector("[data-map-results-footer]");
-            if (!list || !footer) {
-                renderMapResultsPanel(mapResultsItems);
-                return;
-            }
-            footer.insertAdjacentHTML("beforebegin", cardsHtml);
-            footer.outerHTML = mapResultsFooterHtml();
-            const appendedIds = new Set(nextItems.map((item) => String(item?.id || "")));
-            bindMapResultCards(Array.from(list.querySelectorAll(".uni-card[data-uni-id]")).filter((card) => appendedIds.has(String(card.getAttribute("data-uni-id") || ""))));
-        }
-
-        refreshUnifitLegend();
-        bindMapResultsFooter();
-    }
-
-    function refreshMapResultsFooter() {
-        const footer = el.mapResults?.querySelector("[data-map-results-footer]");
-        if (!footer) return;
-        footer.outerHTML = mapResultsFooterHtml();
-        bindMapResultsFooter();
-    }
-
-    async function fetchMapResultsPage(page) {
-        if (state.sort === "uni_ai") {
-            const payload = buildAiSortPayload();
-            payload.page = state.only_saved ? 1 : page;
-            payload.limit = state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE;
-            return fetchUniversitiesAiSort(payload);
-        }
-
-        const params = buildParams(true);
-        params.set("page", String(state.only_saved ? 1 : page));
-        params.set("limit", String(state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE));
-        return fetchUniversities(params);
-    }
-
-    async function loadNextMapResults({ reset = false, animateResults = true } = {}) {
-        if (mapResultsLoadingMore || (!reset && !mapResultsHasMore)) return;
-        const runSeq = reset ? ++mapResultsRunSeq : mapResultsRunSeq;
-        const nextPage = reset ? 1 : mapResultsPage + 1;
-        if (reset) {
-            mapResultsItems = [];
-            mapResultsPage = 0;
-            mapResultsTotal = 0;
-            mapResultsHasMore = true;
-            mapResultsLoadFailed = false;
-            syncMapResultsOrder();
-        }
-
-        mapResultsLoadingMore = true;
-        mapResultsLoadFailed = false;
-        refreshMapResultsFooter();
-
-        try {
-            const data = await fetchMapResultsPage(nextPage);
-            if (data?.__aborted || runSeq !== mapResultsRunSeq || state.viewMode !== "map") return;
-
-            const rawItems = Array.isArray(data.items) ? data.items : [];
-            const pageItems = state.only_saved
-                ? rawItems.filter((item) => savedUniversityIds.has(String(item?.id || "").trim()))
-                : rawItems;
-            const existingIds = new Set(mapResultsItems.map((item) => String(item?.id || "")));
-            const uniqueItems = pageItems.filter((item) => {
-                const id = String(item?.id || "");
-                return id && !existingIds.has(id);
-            });
-
-            mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
-            syncMapResultsOrder();
-            mapResultsPage = nextPage;
-            mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
-            mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
-            lastRenderedItems = mapResultsItems;
-            state.lastCatalogTotal = mapResultsTotal;
-            if (el.total) el.total.textContent = String(mapResultsTotal);
-            updateUnifitWarningBanner();
-
-            renderMapResultsPanel(uniqueItems, { append: !reset });
-            if (animateResults && uniqueItems.length) {
-                const cards = Array.from(el.mapResults?.querySelectorAll(".u-map-results-list .uni-card") || []).slice(-uniqueItems.length);
-                cards.forEach((card, index) => markMotionEnter(card, null, { limit: 1, staggerMs: Math.min(index * 12, 120) }));
-            }
-            renderCompareTray();
-            syncCardActionState();
-            renderRecentlyViewedBar();
-            updateMobileFilterUi();
-            scheduleSyncWorkspaceDepth();
-        } catch (error) {
-            if (runSeq !== mapResultsRunSeq || error?.name === "AbortError") return;
-            mapResultsLoadFailed = true;
-            mapResultsHasMore = true;
-            if (!mapResultsItems.length) {
-                el.mapResults.innerHTML = `
-                    <div class="u-map-results-list">
-                        <div class="u-map-results-empty" role="alert">${escapeHtml(t("universities.map_panel.load_failed", "Could not load map results."))}</div>
-                        ${mapResultsFooterHtml()}
-                    </div>
-                `;
-            }
-            console.error(error);
-        } finally {
-            if (runSeq === mapResultsRunSeq) {
-                mapResultsLoadingMore = false;
-                refreshMapResultsFooter();
-            }
-        }
-    }
-
-    function buildMapPointsParams(bounds) {
-        const params = buildParams(true);
-        ["fields", "page", "limit", "sort", "view", "practice_vs_science", "social_vs_hardcore", "budget_vs_prestige", "city_vs_campus"].forEach((key) => params.delete(key));
-        if (state.sort === "uni_ai") params.delete("major");
-        params.set("west", String(Math.max(-180, bounds.getWest())));
-        params.set("south", String(Math.max(-90, bounds.getSouth())));
-        params.set("east", String(Math.min(180, bounds.getEast())));
-        params.set("north", String(Math.min(90, bounds.getNorth())));
-        return params;
-    }
-
-    async function refreshMapPoints({ force = false } = {}) {
-        if (!mapInstance || state.viewMode !== "map") return;
-        const visibleBounds = mapInstance.getBounds();
-        if (!force && lastMapPointsBounds && lastMapPointsBounds.contains(visibleBounds)) return;
-
-        const requestBounds = visibleBounds.pad(0.35);
-        const params = buildMapPointsParams(requestBounds);
-        const requestSeq = ++mapPointsRunSeq;
-        if (mapPointsFetchController) mapPointsFetchController.abort();
-        const controller = new AbortController();
-        mapPointsFetchController = controller;
-
-        try {
-            let response;
-            let profiled = Date.now() >= profiledEndpointUnavailableUntil;
-            if (profiled) {
-                const payload = { ...Object.fromEntries(params), profile: loadProfileForApi(),
-                    fields: "map", sort: "rank_asc", page: 1, limit: 2000 };
-                ["west", "south", "east", "north"].forEach((key) => delete payload[key]);
-                response = await fetch(`${API_BASE}/universities/profiled`, {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload), signal: controller.signal,
-                });
-                if (response.status === 404 || response.status === 405) {
-                    profiledEndpointUnavailableUntil = Date.now() + CACHE_TTL_MS;
-                    profiled = false;
-                }
-            }
-            if (!profiled) response = await fetch(`${API_BASE}/universities/map-points?${params.toString()}`, { signal: controller.signal });
-            if (!response.ok) throw new Error("Map points API error");
-            const data = await response.json();
-            if (requestSeq !== mapPointsRunSeq || state.viewMode !== "map") return;
-            const west = Number(params.get("west"));
-            const east = Number(params.get("east"));
-            const south = Number(params.get("south"));
-            const north = Number(params.get("north"));
-            const points = (Array.isArray(data.items) ? data.items : []).filter((item) => (
-                (!state.only_saved || savedUniversityIds.has(String(item?.id || "").trim()))
-                && (!profiled || (
-                    Number(item?.coordinates?.lat) >= south && Number(item?.coordinates?.lat) <= north
-                    && (west <= east
-                        ? Number(item?.coordinates?.lon) >= west && Number(item?.coordinates?.lon) <= east
-                        : Number(item?.coordinates?.lon) >= west || Number(item?.coordinates?.lon) <= east)
-                ))
-            ));
-            lastMapPointsBounds = requestBounds;
-            updateMapMarkers(points, { renderResults: false });
-        } catch (error) {
-            if (error?.name !== "AbortError") throw error;
-        } finally {
-            if (mapPointsFetchController === controller) mapPointsFetchController = null;
-        }
-    }
-
-    function renderMapPointPopup(item, stateName = "loading") {
-        const id = String(item?.id || "").trim();
-        const name = textOrUnknown(trUniversityName(item), "placeholder.field.university_name", "University name");
-        const country = trCountry(nested(item, ["location", "country"], ""));
-        const city = trCity(nested(item, ["location", "city"], ""));
-        const locationText = [city, country].filter(Boolean).join(", ");
-        const isFailed = stateName === "failed";
-        const statusText = isFailed
-            ? t("universities.map_popup.failed", "Could not load the university card.")
-            : t("universities.map_popup.loading", "Loading university card");
-        return `
-            <div class="map-card-wrapper map-point-popup" data-uni-id="${escapeHtmlAttr(id)}">
-                <div class="map-point-popup__head">
-                    <span class="map-point-popup__copy">
-                        <strong>${escapeHtml(name)}</strong>
-                        ${locationText ? `<span>${escapeHtml(locationText)}</span>` : ""}
-                    </span>
-                </div>
-                <span class="map-point-popup__status" role="status">
-                    ${isFailed ? "" : '<span class="u-map-results-spinner" aria-hidden="true"></span>'}
-                    ${escapeHtml(statusText)}
-                </span>
-                <a class="uni-details" href="${routeUniversityDetail(id)}"${universityLinkAttrs()}>${escapeHtml(t("universities.card.view_details", "View details"))}<span aria-hidden="true">→</span></a>
-            </div>
-        `;
-    }
-
-    function renderFullMapPopup(item) {
-        const profile = loadProfileForApi();
-        const userBudget = Number.parseFloat(profile.budget);
-        return `<div class="map-card-wrapper">${renderCard(item, userBudget, 0, { costTooltipScope: "map-popup" })}</div>`;
-    }
-
-    function findLoadedMapCard(uniId) {
-        return mapResultsItems.find((item) => String(item?.id || "").trim() === uniId) || null;
-    }
-
-    async function hydrateMapMarkerPopup(marker, point) {
-        const uniId = String(point?.id || "").trim();
-        if (!uniId || !marker) return;
-
-        const loadedCard = findLoadedMapCard(uniId);
-        if (loadedCard) {
-            marker.setPopupContent(renderFullMapPopup(loadedCard));
-            marker.getPopup()?.update();
-            syncCardActionState();
-            return;
-        }
-
-        marker.setPopupContent(renderMapPointPopup(point, "loading"));
-        marker.getPopup()?.update();
-        const cacheKey = `${getCurrentLanguage() || "eng"}:${uniId}`;
-        if (!mapPopupLoads.has(cacheKey)) {
-            const request = fetchUniversityDetailCached(uniId).catch((error) => {
-                mapPopupLoads.delete(cacheKey);
-                throw error;
-            });
-            mapPopupLoads.set(cacheKey, request);
-        }
-
-        try {
-            const detail = await mapPopupLoads.get(cacheKey);
-            if (markersByUniId.get(uniId) !== marker) return;
-            marker.setPopupContent(renderFullMapPopup({ ...detail, catalog_costs: point.catalog_costs || detail.catalog_costs }));
-            marker.getPopup()?.update();
-            syncCardActionState();
-        } catch (error) {
-            if (markersByUniId.get(uniId) !== marker) return;
-            marker.setPopupContent(renderMapPointPopup(point, "failed"));
-            marker.getPopup()?.update();
-            console.warn("Map university card failed to load", error);
-        }
-    }
-
-    function updateMapMarkers(items, options = {}) {
-        if (!mapInstance || !markersLayer) return;
-        const L = window.L;
-        if (!L) return;
-        markersLayer.clearLayers();
-        markersByUniId = new Map();
-        if (options.renderResults !== false) renderMapResultsPanel(items);
-        const isCompactViewport = window.matchMedia("(max-width: 768px)").matches;
-        const popupOptions = {
-            minWidth: isCompactViewport ? 220 : 320,
-            maxWidth: isCompactViewport ? 280 : 380,
-            className: "custom-map-popup",
-            autoPan: true,
-            keepInView: true,
-            autoPanPaddingTopLeft: L.point(20, 20),
-            autoPanPaddingBottomRight: L.point(20, 20)
-        };
-        const newMarkers = [];
-        items.forEach((u, index) => {
-            const latitude = Number(u?.coordinates?.lat);
-            const longitude = Number(u?.coordinates?.lon);
-            if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
-                const uniId = String(u.id || "");
-                // The short label (abbreviation or distinctive name) comes from the
-                // API; without one the marker stays icon-only rather than guessing.
-                const mapLabel = String(u.map_label || "").trim();
-                const customIcon = L.divIcon({
-                    className: "custom-div-icon",
-                    html: `<span class="map-university-marker" aria-hidden="true">${heroIcon("academic-cap", "map-university-marker__icon", { "stroke-width": 2 })}${mapLabel ? `<span class="map-university-marker__label">${escapeHtml(mapLabel)}</span>` : ""}</span>`,
-                    iconSize: null,
-                    popupAnchor: [0, -24],
-                });
-                const marker = L.marker([latitude, longitude], {
-                    icon: customIcon,
-                    title: trUniversityName(u),
-                    uniId: uniId,
-                    mapLabel,
-                    mapRank: index,
-                });
-                marker.bindTooltip(escapeHtml(trUniversityName(u)), {
-                    direction: "top",
-                    offset: [0, -18],
-                    className: "map-university-tooltip",
-                });
-                const loadedCard = findLoadedMapCard(uniId);
-                const cardHTML = loadedCard ? renderFullMapPopup(loadedCard) : renderMapPointPopup(u, "loading");
-                marker.bindPopup(cardHTML, popupOptions);
-                marker.on("popupopen", () => {
-                    hydrateMapMarkerPopup(marker, u).catch((error) => console.warn("Map university card failed to load", error));
-                });
-                marker.on('click', function() {
-                    const clickedMarker = this;
-                    if (uniId === activeMapUniId) {
-                        // Repeat click on the focused marker: Leaflet toggles
-                        // its card closed right before this handler runs, so
-                        // reopen it in place and never re-fly to the logo.
-                        let popupOpen = false;
-                        try {
-                            popupOpen = Boolean(clickedMarker.getPopup()?.isOpen());
-                        } catch {
-                            popupOpen = false;
-                        }
-                        if (!popupOpen) clickedMarker.openPopup();
-                        return;
-                    }
-                    clickedMarker.setZIndexOffset(1000);
-                    flyMapToUniversity(uniId, clickedMarker.getLatLng(), { openPopup: true, zoom: 16 });
-                });
-                newMarkers.push(marker);
-                markersByUniId.set(uniId, marker);
-            }
-        });
-        markersLayer.addLayers(newMarkers);
-        if (pendingMapFocusId && markersByUniId.has(pendingMapFocusId)) {
-            const pendingId = pendingMapFocusId;
-            pendingMapFocusId = "";
-            const pendingMarker = markersByUniId.get(pendingId);
-            updateMapResultsSelection(pendingId);
-            pendingMarker.setZIndexOffset(1200);
-            pendingMarker.openPopup();
-        }
-        if (state.viewMode === "map" && focusUniId && !focusUniDone) {
-            const target = markersByUniId.get(focusUniId);
-            if (target) {
-                updateMapResultsSelection(focusUniId);
-                focusUniDone = true;
-                const latLng = target.getLatLng();
-                mapInstance.once('moveend', () => {
-                    target.setZIndexOffset(1200);
-                    target.openPopup();
-                });
-                mapInstance.flyTo(latLng, 14, { animate: true, duration: 1.2 });
-            }
-        }
-
-        if (!focusUniDone) {
-            if (activeMapUniId) updateMapResultsSelection(activeMapUniId);
-        }
-    }
-
-    function updateSliderVisibility() {
-        if (el.sortStrategyInfoWrap) {
-            const showSortInfo = state.sort === "uni_ai";
-            el.sortStrategyInfoWrap.style.display = showSortInfo ? "" : "none";
-            el.sortStrategyInfoWrap.setAttribute("aria-hidden", showSortInfo ? "false" : "true");
-            if (!showSortInfo) el.sortStrategyInfoWrap.classList.remove("is-open");
-        }
-        if (el.sortAiTagsHint) {
-            const showAiTagsHint = state.sort !== "uni_ai";
-            el.sortAiTagsHint.style.display = showAiTagsHint ? "" : "none";
-            el.sortAiTagsHint.setAttribute("aria-hidden", showAiTagsHint ? "false" : "true");
-        }
-        if (!el.sliderContainer) return;
-        if (state.sort === "uni_ai") {
-            el.sliderContainer.style.display = "block";
-            updateTradeoffLabels();
-        } 
-        else { el.sliderContainer.style.display = "none"; }
-    }
-
-    function updateTradeoffLabel(labelEl, value, leftTextKey, leftTextFallback, rightTextKey, rightTextFallback) {
-        if (!labelEl) return;
-        const val = clampPercent(value, 50);
-        const leftText = t(leftTextKey, leftTextFallback);
-        const rightText = t(rightTextKey, rightTextFallback);
-        let text = t("universities.tradeoff.balanced", "Balanced (50/50)");
-        if (val < 50) text = `${leftText} (${100 - val}%)`;
-        else if (val > 50) text = `${rightText} (${val}%)`;
-        labelEl.textContent = text;
-    }
-
-    function updateTradeoffLabels() {
-        updateTradeoffLabel(
-            el.focusLabel,
-            state.practice_vs_science,
-            "universities.tradeoff.focus.left",
-            "Career & Practice",
-            "universities.tradeoff.focus.right",
-            "Science & Research"
-        );
-        updateTradeoffLabel(
-            el.atmosphereLabel,
-            state.social_vs_hardcore,
-            "universities.tradeoff.atmosphere.left",
-            "Social & Events",
-            "universities.tradeoff.atmosphere.right",
-            "Hardcore Study"
-        );
-        updateTradeoffLabel(
-            el.financeLabel,
-            state.budget_vs_prestige,
-            "universities.tradeoff.finance.left",
-            "Budget & Grants",
-            "universities.tradeoff.finance.right",
-            "Prestige & Comfort"
-        );
-        updateTradeoffLabel(
-            el.locationLabel,
-            state.city_vs_campus,
-            "universities.tradeoff.location.left",
-            "Study in City",
-            "universities.tradeoff.location.right",
-            "Study Outside City"
-        );
-    }
-    
-    function getApiTuitionParams() {
-        const pref = currentCurrency || getPreferredCurrency();
-        const minSliderVal = Number(el.minSlider ? el.minSlider.value : state.min_tuition);
-        const maxSliderVal = Number(el.maxSlider ? el.maxSlider.value : state.max_tuition);
-        const result = {};
-
-        if (Number.isFinite(minSliderVal) && minSliderVal > currentLimits.min) {
-            const usdMin = convert(minSliderVal, pref, "USD");
-            result.min_tuition = Math.max(0, Math.floor(usdMin) - 1);
-        }
-
-        if (Number.isFinite(maxSliderVal) && maxSliderVal < currentLimits.max) {
-            const usdMax = convert(maxSliderVal, pref, "USD");
-            result.max_tuition = Math.ceil(usdMax) + 1;
-        }
-
-        return result;
-    }
-
-    function buildParams(forApi = false) {
-        const p = new URLSearchParams();
-        const uiLang = getCurrentLanguage();
-        if (uiLang) p.set("lang", uiLang);
-        if (forApi) p.set("fields", "card");
-        state.funding_type = getProfileFundingQueryValue();
-        if (state.q) p.set("q", state.q); if (state.country) p.set("country", state.country);
-        if (state.region) p.set("region", state.region); if (state.city) p.set("city", state.city);
-        const tuitionParams = getApiTuitionParams();
-        if (tuitionParams.min_tuition !== undefined) p.set("min_tuition", String(tuitionParams.min_tuition));
-        if (tuitionParams.max_tuition !== undefined) p.set("max_tuition", String(tuitionParams.max_tuition));
-        if (state.cost_basis === "tuition") p.set("cost_basis", "tuition");
-        if (state.study_level) p.set("study_level", state.study_level);
-        if (state.funding_type) p.set("funding_type", state.funding_type);
-
-        const isAiSort = (state.sort === "uni_ai");
-        if (forApi) p.set("sort", isAiSort ? "name_asc" : state.sort);
-
-        if (forApi && state.only_saved) {
-            p.set("limit", "2000"); p.set("page", "1");
-        } else if (forApi && state.viewMode === "map") {
-            p.set("limit", "200"); p.set("page", "1");
-        } else {
-            if (forApi && isAiSort) { p.set("limit", "100"); p.set("page", "1"); } 
-            else { p.set("page", String(state.page)); p.set("limit", String(state.limit)); }
-        }
-        if (forApi && state.practice_vs_science !== undefined && state.practice_vs_science !== null) p.set("practice_vs_science", String(state.practice_vs_science));
-        if (forApi && state.social_vs_hardcore !== undefined && state.social_vs_hardcore !== null) p.set("social_vs_hardcore", String(state.social_vs_hardcore));
-        if (forApi && state.budget_vs_prestige !== undefined && state.budget_vs_prestige !== null) p.set("budget_vs_prestige", String(state.budget_vs_prestige));
-        if (forApi && state.city_vs_campus !== undefined && state.city_vs_campus !== null) p.set("city_vs_campus", String(state.city_vs_campus));
-        if (state.viewMode) p.set("view", state.viewMode);
-        if (!forApi && state.sort && state.sort !== "name_asc") p.set("sort", state.sort);
-        if (!forApi && state.only_saved) p.set("only_saved", "1");
-        if (!forApi && focusUniId) p.set("focus_uni", focusUniId);
-        return p;
-    }
-
-    function buildAiSortPayload() {
-        const profile = loadProfileForApi();
-        const uiLang = getCurrentLanguage();
-        const isMapMode = state.viewMode === "map";
-        const shouldClientPageSaved = !!state.only_saved;
-        const payload = {
-            profile,
-            lang: uiLang,
-            practice_vs_science: state.practice_vs_science,
-            social_vs_hardcore: state.social_vs_hardcore,
-            budget_vs_prestige: state.budget_vs_prestige,
-            city_vs_campus: state.city_vs_campus,
-            page: (isMapMode || shouldClientPageSaved) ? 1 : state.page,
-            limit: shouldClientPageSaved ? 2000 : (isMapMode ? 200 : state.limit),
-        };
-        state.funding_type = getProfileFundingQueryValue();
-        if (state.q) payload.q = state.q;
-        if (state.country) payload.country = state.country;
-        if (state.region) payload.region = state.region;
-        if (state.city) payload.city = state.city;
-        if (state.study_level) payload.study_level = state.study_level;
-        if (state.funding_type) payload.funding_type = state.funding_type;
-        payload.cost_basis = state.cost_basis;
-        const tuitionParams = getApiTuitionParams();
-        if (tuitionParams.min_tuition !== undefined) payload.min_tuition = tuitionParams.min_tuition;
-        if (tuitionParams.max_tuition !== undefined) payload.max_tuition = tuitionParams.max_tuition;
-
-        logTranslationDebug("ai-sort payload", {
-            viewMode: state.viewMode,
-            uiLang,
-            localeInProfile: profile?.locale || profile?.language || profile?.lang || "",
-            interestsRawLength: String(profile?.interests || "").trim().length,
-        });
-        return payload;
-    }
-
-    function buildFallbackListParams(apiParams) {
-        const fallback = new URLSearchParams(apiParams.toString());
-        fallback.set("sort", state.q ? "relevance" : "name_asc");
-        fallback.set("page", state.only_saved ? "1" : String(state.page));
-        fallback.set("limit", state.only_saved ? "2000" : String(state.limit));
-        return fallback;
-    }
-
-    function applyToForm() {
-        if(el.qInput) el.qInput.value = state.q;
-        syncSearchClearButton();
-        if(el.countrySelect) el.countrySelect.value = state.country;
-        if(el.stateSelect) el.stateSelect.value = state.region; if(el.citySelect) el.citySelect.value = state.city;
-        if (el.sortSelect) {
-            state.sort = normalizeSortMode(state.sort);
-            el.sortSelect.value = state.sort;
-            if (el.sortSelect.value !== state.sort) {
-                state.sort = defaultSortMode;
-                el.sortSelect.value = state.sort;
-            }
-        }
-        const studyLevelSelect = $("studyLevelSelect");
-        if (studyLevelSelect) studyLevelSelect.value = state.study_level || "";
-        if ($("costBasisSelect")) $("costBasisSelect").value = state.cost_basis;
-        if (el.focusSlider) el.focusSlider.value = state.practice_vs_science;
-        if (el.atmosphereSlider) el.atmosphereSlider.value = state.social_vs_hardcore;
-        if (el.financeSlider) el.financeSlider.value = state.budget_vs_prestige;
-        if (el.locationSlider) el.locationSlider.value = state.city_vs_campus;
-        if (el.minSlider) el.minSlider.value = state.min_tuition;
-        if (el.maxSlider) el.maxSlider.value = state.max_tuition;
-        if (el.minInput) el.minInput.value = state.min_tuition;
-        if (el.maxInput) el.maxInput.value = state.max_tuition;
-        syncSavedFilterButtons();
-        
-        fillTrack(); 
-        updateSliderLabels();
-
-        ["countrySelect", "stateSelect", "citySelect", "sortSelect", "studyLevelSelect", "costBasisSelect"].forEach(id => initCustomSelect(id));
-        updateSliderVisibility();
-        updateTradeoffLabels();
-        updateMobileFilterUi();
-    }
-
-    function updateLocationLogic(country) {
-        if (!el.stateDiv) return;
-        const countryData = CITY_OPTIONS_BY_COUNTRY[country];
-        if (!country || !countryData) { el.stateDiv.style.display = "none"; updateCityDropdown([]); return; }
-        if (Array.isArray(countryData)) { el.stateDiv.style.display = "none"; updateCityDropdown(countryData); } 
-        else {
-            el.stateDiv.style.display = "block"; 
-            const states = Object.keys(countryData).sort((a, b) => a.localeCompare(b));
-            el.stateSelect.innerHTML = `<option value="">${escapeHtml(t("universities.any_state", "Any State"))}</option>`;
-            states.forEach((s) => {
-                const value = String(s || "");
-                const label = trState(value);
-                el.stateSelect.innerHTML += `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`;
-            });
-            initCustomSelect("stateSelect");
-            updateCitiesForState(country, "");
-        }
-    }
-    function updateCitiesForState(country, region) {
-        if (!country) { updateCityDropdown([]); return; }
-        const countryData = CITY_OPTIONS_BY_COUNTRY[country];
-        if (Array.isArray(countryData)) { updateCityDropdown(countryData); return; }
-        if (countryData && typeof countryData === "object") {
-            const cities = region
-                ? countryData[region] || []
-                : [...new Set(Object.values(countryData).flatMap((items) => Array.isArray(items) ? items : []))];
-            updateCityDropdown(cities);
-        }
-    }
-    function updateCityDropdown(cities) {
-        if (!el.citySelect) return;
-        if (!cities || cities.length === 0) { el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.select_country_first", "Select country first"))}</option>`; el.citySelect.disabled = true; } 
-        else {
-            el.citySelect.disabled = false;
-            el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
-            cities.toSorted((a, b) => a.localeCompare(b)).forEach((c) => {
-                const value = String(c || "");
-                const opt = document.createElement("option");
-                opt.value = value;
-                opt.textContent = trCity(value);
-                el.citySelect.appendChild(opt);
-            });
-        }
-        initCustomSelect("citySelect");
-    }
-    function updateCountryOptions() {
-        if (!el.countrySelect) return;
-        const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort((a, b) => a.localeCompare(b));
-        const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">${escapeHtml(t("universities.global", "Global"))}</option>`;
-        countries.forEach(c => { 
-            const isSelected = (c === currentVal) ? "selected" : ""; 
-            const value = String(c || "");
-            const text = escapeHtml(trCountry(value));
-            html += `<option value="${escapeHtml(value)}" ${isSelected}>${text}</option>`; 
-        });
-        el.countrySelect.innerHTML = html;
-        initCustomSelect("countrySelect");
-    }
-    function readFromUrl() {
-        const sp = new URL(window.location.href).searchParams;
-        if(sp.has("q")) state.q = sp.get("q");
-        if(sp.has("sort")) state.sort = normalizeSortMode(sp.get("sort"));
-        else if(sp.has("q") && state.sort === "name_asc") state.sort = "relevance";
-        if(sp.has("country")) state.country = sp.get("country");
-        if(sp.has("region")) state.region = sp.get("region");
-        if(sp.has("city")) state.city = sp.get("city");
-        if(sp.has("study_level")) state.study_level = sp.get("study_level");
-        if(sp.has("cost_basis")) state.cost_basis = sp.get("cost_basis") === "tuition" ? "tuition" : "annual_total";
-        if(sp.has("min_tuition")) {
-            const raw = Number(sp.get("min_tuition"));
-            if (Number.isFinite(raw)) {
-                const inPref = currentCurrency === "USD" ? raw : convert(raw, "USD", currentCurrency);
-                const stepped = Math.round(inPref / currentLimits.step) * currentLimits.step;
-                state.min_tuition = clampTuition(stepped, state.min_tuition);
-            }
-        }
-        if(sp.has("max_tuition")) {
-            const raw = Number(sp.get("max_tuition"));
-            if (Number.isFinite(raw)) {
-                const inPref = currentCurrency === "USD" ? raw : convert(raw, "USD", currentCurrency);
-                const stepped = Math.round(inPref / currentLimits.step) * currentLimits.step;
-                state.max_tuition = clampTuition(stepped, state.max_tuition);
-            }
-        }
-        if (sp.has("only_saved")) state.only_saved = ["1", "true", "yes", "on"].includes(String(sp.get("only_saved") || "").trim().toLowerCase());
-        if(sp.has("page")) {
-            const page = Number(sp.get("page"));
-            if (Number.isFinite(page) && page >= 1) state.page = Math.floor(page);
-        }
-        if(sp.has("view")) {
-            const view = sp.get("view");
-            if (view === "map" || view === "list") state.viewMode = view;
-        }
-        if (sp.has("focus_uni")) {
-            const id = String(sp.get("focus_uni") || "").trim();
-            if (id) focusUniId = id;
-        }
-
-        const minGap = currentLimits.step;
-        if (state.min_tuition > (currentLimits.max - minGap)) state.min_tuition = currentLimits.max - minGap;
-        state.max_tuition = Math.min(currentLimits.max, state.max_tuition);
-        if (state.max_tuition < state.min_tuition + minGap) {
-            state.max_tuition = state.min_tuition + minGap;
-        }
-    }
-
-    async function fetchUniversities(apiParams) {
-        const profile = loadProfileForApi();
-        const requestPayload = { ...Object.fromEntries(apiParams), profile };
-        const key = JSON.stringify(requestPayload);
-        const now = Date.now();
-        logTranslationDebug("non-ai request start", {
-            query: apiParams.toString(),
-            reason: "sort is not uni_ai or AI fallback path",
-        });
-        const cached = universitiesFetchCache.get(key);
-        if (cached && (now - cached.timestamp) < CACHE_TTL_MS) {
-            logTranslationDebug("non-ai request cache hit (frontend memory)", {
-                ageMs: now - cached.timestamp,
-            });
-            return cached.payload;
-        }
-
-        if (listFetchController) {
-            listFetchController.abort();
-        }
-        const controller = new AbortController();
-        listFetchController = controller;
-
-        let res;
-        try {
-            if (Date.now() < profiledEndpointUnavailableUntil) {
-                res = await fetch(`${API_BASE}/universities?${apiParams}`, { signal: controller.signal });
-            } else {
-                res = await fetch(`${API_BASE}/universities/profiled`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: key,
-                    signal: controller.signal,
-                });
-                if (res.status === 404 || res.status === 405) {
-                    profiledEndpointUnavailableUntil = Date.now() + CACHE_TTL_MS;
-                    if (!legacyPricesWarningShown) {
-                        legacyPricesWarningShown = true;
-                        showToast(t("universities.cost.legacy_server_warning"), "warning");
-                    }
-                    res = await fetch(`${API_BASE}/universities?${apiParams}`, { signal: controller.signal });
-                }
-            }
-        } catch (err) {
-            if (err?.name === "AbortError") {
-                return { items: [], total: 0, __aborted: true };
-            }
-            throw err;
-        } finally {
-            if (listFetchController === controller) {
-                listFetchController = null;
-            }
-        }
-
-        if (!res.ok) throw new Error("API Error");
-        const data = await res.json();
-        const payload = {
-            items: data.items || [],
-            total: data.total || 0,
-        };
-        logTranslationDebug("non-ai response received", {
-            httpStatus: res.status,
-            apiItems: payload.items.length,
-            total: payload.total,
-        });
-        if (universitiesFetchCache.size >= 50) {
-            const oldestKey = universitiesFetchCache.keys().next().value;
-            if (oldestKey !== undefined) universitiesFetchCache.delete(oldestKey);
-        }
-        universitiesFetchCache.set(key, { payload, timestamp: now });
-        return payload;
-    }
-
-    async function fetchUniversitiesAiSort(payload) {
-        const key = JSON.stringify(payload);
-        const now = Date.now();
-        const payloadInterests = String(payload?.profile?.interests || "").trim();
-        logTranslationDebug("request start", {
-            cacheCandidateKeyLength: key.length,
-            interestsRawLength: payloadInterests.length,
-        });
-        if (lastAiFetchKey === key && lastAiFetchPayload && (now - lastAiFetchAt) < CACHE_TTL_MS) {
-            logTranslationDebug("request cache hit (frontend memory)", {
-                ageMs: now - lastAiFetchAt,
-            });
-            return lastAiFetchPayload;
-        }
-
-        if (aiFetchController) {
-            aiFetchController.abort();
-        }
-        const controller = new AbortController();
-        aiFetchController = controller;
-
-        let res;
-        try {
-            res = await fetch(`${API_BASE}/universities/ai-sort`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-                signal: controller.signal,
-            });
-        } catch (err) {
-            if (err?.name === "AbortError") {
-                return { items: [], total: 0, __aborted: true };
-            }
-            throw err;
-        } finally {
-            if (aiFetchController === controller) {
-                aiFetchController = null;
-            }
-        }
-
-        if (!res.ok) throw new Error("AI sort API Error");
-        const data = await res.json();
-        const parsed = {
-            items: data.items || [],
-            total: data.total || 0,
-            warnings: Array.isArray(data.warnings) ? data.warnings : [],
-        };
-        const probe = parsed.items[0] || {};
-        const match = (probe && typeof probe === "object") ? (probe.matchData || {}) : {};
-        logTranslationDebug("response received", {
-            httpStatus: res.status,
-            apiItems: parsed.items.length,
-            apiWarnings: parsed.warnings,
-            mlApplied: Boolean(match.mlApplied),
-            mlAvailable: Boolean(match.mlAvailable),
-            mlUnavailable: Boolean(match.mlUnavailable),
-            mlWarning: String(match.mlWarning || ""),
-        });
-        lastAiFetchKey = key;
-        lastAiFetchPayload = parsed;
-        lastAiFetchAt = now;
-        return parsed;
-    }
+    bindWindowListener("currencyRatesUpdated", () => {
+        fetchAndRender().catch((err) => console.error(err));
+    });
+    bindWindowListener("currencyChanged", (e) => {
+        filterControls.handleCurrencyChanged(e);
+        fetchAndRender();
+    });
 
     function renderFetchedData(data, options = {}) {
         const animateResults = options.animateResults !== false;
@@ -3808,7 +944,7 @@ export function initUniversitiesPage() {
         let items = rawItems;
         let total = data.total || 0;
         if (state.only_saved) {
-            const savedIds = new Set(Array.from(savedUniversityIds).map((id) => String(id || "").trim()).filter(Boolean));
+            const savedIds = new Set(Array.from(compareController.getSavedUniversityIds()).map((id) => String(id || "").trim()).filter(Boolean));
             const filteredItems = rawItems.filter((item) => savedIds.has(String(item?.id || "").trim()));
             total = filteredItems.length;
             items = state.viewMode === "map"
@@ -3822,7 +958,7 @@ export function initUniversitiesPage() {
             ? t("universities.state.ml_unavailable", "Interests from your profile are temporarily not affecting sorting.")
             : "";
 
-        updateUnifitWarningBanner();
+        unifitBanner.update();
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
@@ -3837,25 +973,25 @@ export function initUniversitiesPage() {
                     warningText,
                     emptyHtml: buildCatalogEmptyState(),
                 });
-                renderCompareTray();
+                compareController.renderCompareTray();
                 renderRecentlyViewedBar();
-                updateMobileFilterUi();
-                scheduleSyncWorkspaceDepth();
+                filterControls.updateMobileFilterUi();
+                layoutSync.scheduleSyncWorkspaceDepth();
                 return;
             }
             renderUniversitiesState({ warningText });
             const profile = loadProfileForApi();
             const userBudget = Number.parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
-            refreshUnifitLegend();
+            unifitBanner.refreshLegend();
             warmMapMode();
             if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
             renderPagination(total);
             if (animateResults) markMotionEnter(el.pagination, ".page-btn", { limit: 10, staggerMs: 12 });
-            renderCompareTray();
+            compareController.renderCompareTray();
             renderRecentlyViewedBar();
-            updateMobileFilterUi();
-            scheduleSyncWorkspaceDepth();
+            filterControls.updateMobileFilterUi();
+            layoutSync.scheduleSyncWorkspaceDepth();
             return;
         }
 
@@ -3874,11 +1010,11 @@ export function initUniversitiesPage() {
                 warningText,
                 emptyHtml: items.length ? "" : buildCatalogEmptyState(),
             });
-            renderCompareTray();
-            syncCardActionState();
+            compareController.renderCompareTray();
+            compareController.syncCardActionState();
             renderRecentlyViewedBar();
-            updateMobileFilterUi();
-            scheduleSyncWorkspaceDepth();
+            filterControls.updateMobileFilterUi();
+            layoutSync.scheduleSyncWorkspaceDepth();
         }
     }
 
@@ -3897,409 +1033,121 @@ export function initUniversitiesPage() {
             state.lastCatalogTotal = 0;
             if (el.total) el.total.textContent = "0";
             renderUniversitiesState();
-            if (state.viewMode === 'list') el.list.replaceChildren();
+            if (state.viewMode === "list") el.list.replaceChildren();
             if (el.pagination) el.pagination.replaceChildren();
         }
-        if (state.viewMode === "map" && !mapInstance) await initMap();
+        if (state.viewMode === "map" && !mapController.hasMapInstance()) await initMap();
         if (!isCurrentCatalog()) return;
 
         const urlParams = sectionUrlParams();
         const apiParams = buildParams(true);
         setUrlParams(urlParams);
 
+        const savedIds = compareController.getSavedUniversityIds();
+
         try {
-        if (state.viewMode === "map") {
-            if (mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
-            if (state.only_saved && savedUniversityIds.size === 0) {
-                mapResultsItems = [];
-                syncMapResultsOrder();
-                mapResultsPage = 0;
-                mapResultsTotal = 0;
-                mapResultsHasMore = false;
-                lastRenderedItems = [];
-                state.lastCatalogTotal = 0;
-                if (el.total) el.total.textContent = "0";
-                renderMapResultsPanel([]);
-                updateMapMarkers([], { renderResults: false });
+            if (state.viewMode === "map") {
+                mapController.invalidateSize({ pan: false, animate: false });
+                if (state.only_saved && savedIds.size === 0) {
+                    mapController.resetForEmptySaved();
+                    return;
+                }
+
+                mapController.clearBoundsCache();
+                await Promise.all([
+                    loadNextMapResults({ reset: true, animateResults }),
+                    refreshMapPoints({ force: true }).catch((error) => {
+                        console.warn("Map points failed to load", error);
+                        showToast(t("universities.map_panel.points_failed", "Map markers could not be refreshed."), "warning");
+                    }),
+                ]);
+                viewModesReady = true;
+                syncViewModeControls();
+                renderUniversitiesState({
+                    emptyHtml: mapController.getMapResultsCount() ? "" : buildCatalogEmptyState(),
+                });
                 return;
             }
 
-            lastMapPointsBounds = null;
-            await Promise.all([
-                loadNextMapResults({ reset: true, animateResults }),
-                refreshMapPoints({ force: true }).catch((error) => {
-                    console.warn("Map points failed to load", error);
-                    showToast(t("universities.map_panel.points_failed", "Map markers could not be refreshed."), "warning");
-                }),
-            ]);
-            viewModesReady = true;
-            syncViewModeControls();
-            renderUniversitiesState({
-                emptyHtml: mapResultsItems.length ? "" : buildCatalogEmptyState(),
-            });
-            return;
-        }
-
-        if (state.only_saved && savedUniversityIds.size === 0) {
-            renderFetchedData({ items: [], total: 0 }, { animateResults });
-            return;
-        }
-        const isAiSort = (state.sort === "uni_ai");
-        if (isAiSort) {
-            await resolveAiSortResult({
-                canUseFastFallback: state.viewMode === "list" && !hasInitialListPaint && state.page === 1,
-                fastFallbackMs: AI_FAST_FALLBACK_MS,
-                fetchAi: () => fetchUniversitiesAiSort(buildAiSortPayload()),
-                fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams)),
-                isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
-                renderData: (data) => renderFetchedData(data, { animateResults }),
-                onAiError: (err, mode) => {
-                    const message = mode === "direct"
-                        ? "AI sort failed, fallback list is used."
-                        : "AI sort request failed, fallback list is kept.";
-                    console.warn(message, err);
-                },
-            });
-            return;
-        }
-
-        const data = await fetchUniversities(apiParams);
-        if (data?.__aborted) return;
-        if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
-        renderFetchedData(data, { animateResults });
-
-        } catch (err) {
-        if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
-        if (err?.name === "AbortError") return;
-        console.error(err);
-        const classified = classifyError(err);
-        if (el.list) {
-            const hasExistingCards = (Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) ||
-                                     Boolean(el.list.querySelector(".uni-card"));
-            if (hasExistingCards && classified.isOffline) {
-                showToast(t("universities.offline_action_warning", "Cannot refresh catalog while offline. Showing cached results."), "warning");
-            } else {
-                renderErrorScreen({
-                    type: classified.type,
-                    containerId: "universitiesList",
-                    onRetry: () => fetchAndRender()
+            if (state.only_saved && savedIds.size === 0) {
+                renderFetchedData({ items: [], total: 0 }, { animateResults });
+                return;
+            }
+            const isAiSort = state.sort === "uni_ai";
+            if (isAiSort) {
+                await resolveAiSortResult({
+                    canUseFastFallback: state.viewMode === "list" && !hasInitialListPaint && state.page === 1,
+                    fastFallbackMs: AI_FAST_FALLBACK_MS,
+                    fetchAi: () => fetchAiSort(buildAiSortPayload()),
+                    fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams, state)),
+                    isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
+                    renderData: (data) => renderFetchedData(data, { animateResults }),
+                    onAiError: (err, mode) => {
+                        const message = mode === "direct"
+                            ? "AI sort failed, fallback list is used."
+                            : "AI sort request failed, fallback list is kept.";
+                        console.warn(message, err);
+                    },
                 });
+                return;
             }
-        } else if (el.state) {
-            el.state.textContent = t("universities.state.failed", "Failed to load data.");
-        }
+
+            const data = await fetchUniversities(apiParams);
+            if (data?.__aborted) return;
+            if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            renderFetchedData(data, { animateResults });
+        } catch (err) {
+            if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            if (err?.name === "AbortError") return;
+            console.error(err);
+            const classified = classifyError(err);
+            if (el.list) {
+                const hasExistingCards = (Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0)
+                    || Boolean(el.list.querySelector(".uni-card"));
+                if (hasExistingCards && classified.isOffline) {
+                    showToast(t("universities.offline_action_warning", "Cannot refresh catalog while offline. Showing cached results."), "warning");
+                } else {
+                    renderErrorScreen({
+                        type: classified.type,
+                        containerId: "universitiesList",
+                        onRetry: () => fetchAndRender(),
+                    });
+                }
+            } else if (el.state) {
+                el.state.textContent = t("universities.state.failed", "Failed to load data.");
+            }
         } finally {
-        if (runSeq === fetchRunSeq && isCurrentCatalog()) {
-            setUniversitiesLoading(false, { preserveResults: preserveVisibleResults });
-            if (!hasRestoredInitialScroll) {
-                hasRestoredInitialScroll = true;
-                restoreScrollPosition();
+            if (runSeq === fetchRunSeq && isCurrentCatalog()) {
+                setUniversitiesLoading(false, { preserveResults: preserveVisibleResults });
+                if (!hasRestoredInitialScroll) {
+                    hasRestoredInitialScroll = true;
+                    layoutSync.restoreScrollPosition();
+                }
+                if (firstVisitTourPending) {
+                    firstVisitTourPending = false;
+                    window.setTimeout(async () => {
+                        await showUniversitiesTour({ startStep: readUniversitiesTourResumeStep() });
+                        clearUniversitiesTourResumeStep();
+                        markUniversitiesTourSeen();
+                    }, 120);
+                }
             }
-            if (firstVisitTourPending) {
-                firstVisitTourPending = false;
-                window.setTimeout(async () => {
-                    await showUniversitiesTour({ startStep: readUniversitiesTourResumeStep() });
-                    clearUniversitiesTourResumeStep();
-                    markUniversitiesTourSeen();
-                }, 120);
-            }
         }
-        }
-    }
-
-    // --- Render University Catalog Card ---
-    function renderCard(u, myBudget, idx = 99, options = {}) {
-        const hideMedia = Boolean(options && options.hideMedia);
-        const mapVariant = Boolean(options && options.mapVariant);
-        const cardIsActive = Boolean(options && options.isActive);
-        const id = u.id;
-        const name = textOrUnknown(trUniversityName(u), "placeholder.field.university_name", "University name");
-        const countryRaw = nested(u, ["location", "country"], "");
-        const cityRaw = nested(u, ["location", "city"], "");
-        const locHtml = renderLocationMarkup({
-            city: trCity(cityRaw),
-            country: trCountry(countryRaw),
-            flagHtml: countryRaw ? getFlagImg(countryRaw) : "",
-            wrapperClass: "uni-loc",
-            iconClass: "uni-loc-icon",
-            showIcon: false,
-            cityClass: "uni-loc-city",
-            countryClass: "uni-loc-country",
-            fallbackClass: "uni-loc-line",
-        });
-        const reviewedAdmissions = u?.admissions_catalog?.availability === "reviewed";
-        const match = u.matchData || {};
-        const priceInfo = universityCardPriceInfo(u, state.cost_basis);
-        const cost = priceInfo.amount;
-        const uniCurrency = priceInfo.currency;
-
-        const statusIndicators = [];
-        // `legend` is the meaning key the UniFit banner legend lists for this icon (LEGEND_LABEL_KEYS).
-        const addStatusIndicator = (iconName, tone, label, detail = "", value = "", legend = "") => {
-            const cleanLabel = String(label || "").trim();
-            const cleanDetail = String(detail || "").trim();
-            const ariaText = cleanDetail ? `${cleanLabel}: ${cleanDetail}` : cleanLabel;
-            const tooltipHtml = cleanDetail
-                ? `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong><span class="uni-status-tooltip__text">${escapeHtml(cleanDetail)}</span>`
-                : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
-            statusIndicators.push(`
-                <span class="uni-status-tooltip">
-                    <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}" data-legend-icon="${escapeHtmlAttr(iconName)}" data-legend-tone="${escapeHtmlAttr(tone)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
-                        <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
-                    </button>
-                    <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
-                </span>
-            `);
-        };
-        const badgeHints = (match.uiBadgeHints && typeof match.uiBadgeHints === "object") ? match.uiBadgeHints : {};
-        const preferenceMismatch = Number(match.preferenceMismatch);
-        const hintedVibe = String(badgeHints.vibe || "").toLowerCase();
-        const hintedRequirements = reviewedAdmissions ? "" : String(badgeHints.requirements || "").toLowerCase();
-        const hintedBudgetAid = reviewedAdmissions ? "" : String(badgeHints.budgetAid || "").toLowerCase();
-        const conditionalCount = Number(match.conditionalRequirements || 0);
-        const hasConditionalExamWarning = !reviewedAdmissions && ((badgeHints.showConditionalExamNeeded === true) || (!!match.conditional && conditionalCount > 0));
-        const hasVeryHighVibeMatch = hintedVibe === "your_vibe" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch <= 0.14);
-        const hasHighVibeMatch = hintedVibe === "top_match" || (!hintedVibe && Number.isFinite(preferenceMismatch) && preferenceMismatch > 0.14 && preferenceMismatch <= 0.22);
-        const meetsMinRequirements = !reviewedAdmissions && (hintedRequirements === "requirements_met" || (!hintedRequirements && match.meetMinRequirements === true && !hasConditionalExamWarning));
-        const hasRequirementsScore = !reviewedAdmissions && match.requirementsFitPercent !== null && match.requirementsFitPercent !== undefined;
-        const belowRequirements = !reviewedAdmissions && (hintedRequirements === "below_requirements" || (!hintedRequirements && hasRequirementsScore && match.meetMinRequirements === false));
-        const hasGrant = !reviewedAdmissions && getGrantsFromCategories(u?.admission_categories).length > 0;
-        const aidAny = !reviewedAdmissions && (Object.hasOwn(match, "aidAny") ? match.aidAny === true : hasGrant);
-        const hasUserBudget = Number.isFinite(Number(myBudget)) && Number(myBudget) > 0;
-        const compareCostUSD = priceInfo.amountUSD ?? (cost !== null && uniCurrency ? (uniCurrency === "USD" ? cost : convert(cost, uniCurrency, "USD")) : cost);
-        const overBudget = !reviewedAdmissions && state.cost_basis === "annual_total" && hasUserBudget && compareCostUSD !== null && Number.isFinite(Number(compareCostUSD)) && Number(compareCostUSD) > Number(myBudget);
-        const showOverBudgetAid = hintedBudgetAid === "over_budget_aid" || (!hintedBudgetAid && overBudget && aidAny);
-        const showOverBudgetStrict = hintedBudgetAid === "over_budget" || (!hintedBudgetAid && overBudget && !aidAny);
-        const showAidAvailable = hintedBudgetAid === "aid_available" || (!hintedBudgetAid && !overBudget && aidAny);
-        const hasMissingProgram = !reviewedAdmissions && Boolean(badgeHints.missingProgram || match.missingProgram);
-        // Earlier-format tooltips: one or two plain sentences (what to add, what falls short, price against budget).
-        // The per-check breakdown stays on the university page.
-        const requirementChecks = !reviewedAdmissions && Array.isArray(match.requirementChecks) ? match.requirementChecks : [];
-        const orJoiner = t("admission.requirements_fit.check.or", "or");
-        const missingExams = missingExamNames(requirementChecks, {
-            examLabel: cardExamLabel, languageTest: t("universities.ux2.tip.language_test"), joiner: orJoiner,
-        }).slice(0, 3);
-        const examNeededDetail = missingExams.length
-            ? tFormat("universities.tip.add_to_profile", { exams: missingExams.join(", ") })
-            : t("universities.why.conditional_exam_needed");
-        const unmet = unmetMinimums(requirementChecks, {
-            examLabel: cardExamLabel, joiner: orJoiner,
-            formatValue: (exam, value, context) => formatExamValue(exam, value, { context }),
-        }).slice(0, 2);
-        const belowDetail = unmet.length
-            ? tFormat("universities.tip.below_minimum", { items: unmet.map((item) => tFormat("universities.tip.minimum_gap", item)).join("; ") })
-            : t("admission.chance.requirements_not_met");
-        const overBudgetDetail = budgetTooltip({ status: "over", costMin: compareCostUSD, budget: myBudget }, tooltipHelpers);
-
-        if (reviewedAdmissions) {
-            reviewedCardIndicators(match, myBudget).forEach(({ icon, tone, label, detail, value, legend }) => addStatusIndicator(icon, tone, label, detail, value, legend));
-        } else {
-        // Priority 0: warning on missing profile major program
-        if (hasMissingProgram) {
-            addStatusIndicator(
-                "academic-cap",
-                "warning",
-                t("universities.badge.no_matching_program", "Program Not Offered"),
-                t("universities.why.no_matching_program", "This university does not offer the study program selected in your profile."),
-                "", "subject_missing"
-            );
-        }
-
-        // Priority 1: warning on missing exam evidence (conditional, not fail)
-        if (hasConditionalExamWarning) {
-            addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Exam result needed"), examNeededDetail, "", "exam_needed");
-        }
-
-        // Priority 2: preference-match group. Only one vibe tag may be shown.
-        if (hasVeryHighVibeMatch) {
-            addStatusIndicator("heart", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceTooltip(match, "universities.why.your_vibe"), "", "vibe");
-        } else if (hasHighVibeMatch) {
-            addStatusIndicator("heart", "match", t("universities.badge.top_match", "Good Match"), preferenceTooltip(match, "universities.why.top_match"), "", "vibe");
-        }
-
-        // Status tags: requirements + budget + aid.
-        if (belowRequirements) {
-            addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), belowDetail, "", "requirements_below");
-        } else if (meetsMinRequirements) {
-            addStatusIndicator("check-circle", "requirements", t("universities.badge.requirements_met", "Requirements Met"), t("universities.tip.requirements_met"), "", "requirements_met");
-        } else if (!reviewedAdmissions && match.requirementsReason && !hasConditionalExamWarning) {
-            addStatusIndicator("information-circle", "warning", t("common.no_data", "No data"), chanceNoDataHelpNote({ reason: match.requirementsReason, scoreMeaning: match.scoreMeaning }), "", "no_data");
-        }
-
-        if (showOverBudgetAid) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget_aid", "Over Budget • Aid Available"), overBudgetDetail, "", "over_budget_aid");
-        } else if (showOverBudgetStrict) {
-            addStatusIndicator("banknotes", "budget", t("universities.badge.over_budget", "Over Budget"), overBudgetDetail, "", "over_budget");
-        } else if (showAidAvailable) {
-            addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"), "", "", "aid");
-        }
-
-        }
-
-        const MAX_VISIBLE_BADGES = reviewedAdmissions ? 3 : 4;
-        let statusHtml = "";
-        if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
-            statusHtml = statusIndicators.join("");
-        } else {
-            const visible = statusIndicators.slice(0, MAX_VISIBLE_BADGES - 1);
-            const hidden = statusIndicators.slice(MAX_VISIBLE_BADGES - 1);
-            const hiddenCount = hidden.length;
-            const overflowLabel = tFormat("universities.badge.overflow_more", { count: String(hiddenCount) }, `+${hiddenCount} more badges`);
-            const overflowAria = t("universities.badge.overflow_label", "Additional status indicators");
-            const overflowHtml = `
-                <span class="uni-status-overflow">
-                    <button type="button" class="uni-status-overflow-trigger" aria-label="${escapeHtmlAttr(overflowLabel)}" aria-expanded="false" title="${escapeHtmlAttr(overflowLabel)}">
-                        <span aria-hidden="true">+${hiddenCount}</span>
-                    </button>
-                    <span class="uni-status-overflow-popover" role="region" aria-label="${escapeHtmlAttr(overflowAria)}" hidden>
-                        ${hidden.join("")}
-                    </span>
-                </span>
-            `;
-            statusHtml = `${visible.join("")}${overflowHtml}`;
-        }
-
-        // ROI intentionally removed from university cards.
-
-        const thumbSrc = uniThumbnailSrc(id);
-        const thumbSrcMedium = uniThumbnailSrc(id, { size: "medium" });
-        const thumbSrcFull = uniThumbnailSrc(id, { forceFull: true });
-        const thumbSrcFullFallback = uniThumbnailSrc(id, { forceFull: true, format: "jpg" });
-        const thumbSrcset = `${thumbSrc} 640w, ${thumbSrcMedium} 960w, ${thumbSrcFull} 1600w`;
-        const loadingAttr = idx < 4 ? "eager" : "lazy";
-        const fetchPriorityAttr = idx < 2 ? "high" : "auto";
-        const detailHref = routeUniversityDetail(id);
-        const safeName = escapeHtml(name);
-        const overlayTitle = String(name || "");
-        const rankValue = toFiniteNumber(u?.rank);
-        const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
-        const isCompared = isCompareSelectionMode() && compareUniversityIds.has(String(id));
-        const detailLabel = escapeHtml(isCompareSelectionMode()
-            ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
-            : t("universities.card.view_details", "View details"));
-        const sourceTooltip = buildRankSourceTooltip(u);
-        const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
-        const rankAriaLabel = sourceTooltip
-            ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
-            : `${rankLabel}: ${rankValueText}`;
-        const rankInnerHtml = `
-                    <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
-                    <span class="uni-metric-label">${rankLabel}:</span>
-                    <span class="uni-metric-value">${rankValueText}</span>
-        `;
-        const metricsHtml = `
-            <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
-                ${sourceTooltip ? `
-                <span class="ui-tooltip-wrap uni-metric-tooltip">
-                    <button type="button" class="ui-tooltip-trigger uni-metric uni-metric--rank uni-metric-trigger${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}" aria-label="${escapeHtmlAttr(rankAriaLabel)}" aria-expanded="false">
-${rankInnerHtml}
-                    </button>
-                    <span class="ui-tooltip-bubble uni-metric-tooltip__content" role="tooltip">
-                        <strong class="ui-tooltip-title">${rankLabel}</strong>
-                        <span class="ui-tooltip-text">${escapeHtml(sourceTooltip)}</span>
-                    </span>
-                </span>
-                ` : `
-                <span class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}">
-${rankInnerHtml}
-                </span>
-                `}
-            </div>
-        `;
-        const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const priceFilterActive = Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max;
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), { priceFilterActive, studyLevel: state.study_level });
-        // The catalog API flags universities that have no campus photo; those cards show the placeholder
-        // without requesting an image that does not exist (older API responses omit the flag).
-        const hasCover = u?.cover_available !== false;
-        const mediaHtml = hideMedia ? "" : `
-            <div class="uni-media">
-                ${hasCover ? `<img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">` : ""}
-                <div class="uni-media-empty">
-                    ${renderInlineIcon("building-office-2", 24)}
-                    <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
-                </div>
-            </div>`;
-        const backdropHtml = hideMedia && mapVariant && hasCover
-            ? `<div class="uni-card-backdrop" aria-hidden="true"><img src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 360px, 100vw" alt="" loading="${loadingAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1"></div>`
-            : "";
-        const headHtml = hideMedia
-            ? `<div class="uni-head"><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
-            : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
-        const detailsHtml = mapVariant
-            ? `<a class="uni-details" href="${detailHref}"${universityLinkAttrs()}>${detailLabel}<span aria-hidden="true">→</span></a>`
-            : `<span class="uni-details">${detailLabel}<span aria-hidden="true">→</span></span>`;
-        const overlayHtml = mapVariant
-            ? ""
-            : `<a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
-        return `
-        <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
-            ${mediaHtml}${backdropHtml}
-            ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
-            <div class="uni-body">
-            ${headHtml}
-            ${metricsHtml}
-            <div class="uni-footer">
-                ${priceHtml}
-                ${detailsHtml}
-            </div>
-            </div>
-            ${overlayHtml}
-        </article>
-        `;
     }
 
     function renderPagination(total) {
-        if (!el.pagination) return;
-        const totalPages = Math.ceil(total / state.limit);
-        if (totalPages <= 1) { el.pagination.replaceChildren(); return; }
-        let html = ""; const p = state.page; const maxVisible = 5;
-        const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
-            const activeClass = isActive ? "page-btn--active" : "";
-            const disabledClass = isDisabled ? "page-btn--disabled" : "";
-            const classes = ["page-btn", activeClass, disabledClass, extraClass].filter(Boolean).join(" ");
-            return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ''}${isDisabled ? ' disabled' : ''}>${content}</button>`;
-        };
-        html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first", p <= 1);
-        html += createBtn(Math.max(1, p - 1), `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`, false, "page-btn--nav page-btn--prev", p <= 1);
-        let startPage, endPage;
-        if (totalPages <= maxVisible) {
-            startPage = 1;
-            endPage = totalPages;
-        } else {
-            const maxPagesBefore = Math.floor(maxVisible / 2);
-            const maxPagesAfter = Math.ceil(maxVisible / 2) - 1;
-            if (p <= maxPagesBefore + 1) {
-                startPage = 1;
-                endPage = maxVisible;
-            } else if (p + maxPagesAfter >= totalPages) {
-                startPage = totalPages - maxVisible + 1;
-                endPage = totalPages;
-            } else {
-                startPage = p - maxPagesBefore;
-                endPage = p + maxPagesAfter;
-            }
-        }
-        if (startPage > 1) html += `<span class="page-dots">...</span>`;
-        for (let i = startPage; i <= endPage; i++) {
-            html += createBtn(i, `<span class="page-btn__text">${i}</span>`, i === p, "page-btn--num");
-        }
-        if (endPage < totalPages) html += `<span class="page-dots">...</span>`;
-        html += createBtn(Math.min(totalPages, p + 1), `<span class="page-btn__text">${escapeHtml(t("universities.pagination.next", "Next"))}</span>${heroIcon("chevron-right", "page-btn__icon", { "stroke-width": 2 })}`, false, "page-btn--nav page-btn--next", p >= totalPages);
-        html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last", p >= totalPages);
-        el.pagination.innerHTML = html;
-        el.pagination.querySelectorAll("button").forEach(b => {
-            b.onclick = () => {
-                const newPage = Number(b.dataset.page);
-                if (newPage && newPage !== state.page) {
-                    state.page = newPage;
-                    clearSavedScrollPosition();
-                    void fetchAndRender();
-                    window.scrollTo({top: 0, behavior: 'smooth'});
-                }
-            };
+        renderCatalogPagination(el.pagination, {
+            total,
+            currentPage: state.page,
+            pageSize: state.limit,
+            onPageChange: (newPage) => {
+                state.page = newPage;
+                layoutSync.clearSavedScrollPosition();
+                void fetchAndRender();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            },
         });
     }
 
-    syncWorkspaceDepth();
+    layoutSync.syncWorkspaceDepth();
 }

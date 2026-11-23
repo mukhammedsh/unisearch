@@ -31,7 +31,7 @@ const FEE_STATUS_KEY_MAP = {
  * @param {string} status
  * @returns {string}
  */
-export function formatCatalogFeeStatus(status) {
+function formatCatalogFeeStatus(status) {
   const raw = String(status || "").trim();
   if (!raw) return "";
   const key = FEE_STATUS_KEY_MAP[raw.toLowerCase()];

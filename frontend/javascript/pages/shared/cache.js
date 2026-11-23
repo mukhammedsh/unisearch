@@ -5,16 +5,16 @@ import { shouldOpenUniversitiesInNewTab, shouldStoreRecentUniversities } from ".
 const safeLocalStorage = createSafeStorage("local");
 const safeSessionStorage = createSafeStorage("session");
 
-export const DETAIL_CACHE_KEY = "unisearch_detail_cache_v4";
+const DETAIL_CACHE_KEY = "unisearch_detail_cache_v4";
 safeLocalStorage.remove("unisearch_detail_cache_v3");
 export const DETAIL_CACHE_TTL_MS = 5 * 60 * 1000;
 export const DETAIL_CACHE_MAX_ITEMS = 24;
 const DETAIL_FETCH_RETRY_DELAY_MS = 120;
-export const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
-export const UNIVERSITIES_TOUR_RESUME_STEP_KEY = "unisearch_universities_tour_resume_step_v1";
+const UNIVERSITIES_TOUR_SEEN_KEY = "unisearch_universities_tour_seen_v1";
+const UNIVERSITIES_TOUR_RESUME_STEP_KEY = "unisearch_universities_tour_resume_step_v1";
 // One-shot hand-off from the profile page: the visitor just filled in the profile and asked for matches,
 // so the first-visit catalog tour must not open over the results. Session-scoped and consumed once.
-export const UNIVERSITIES_TOUR_SKIP_ONCE_KEY = "unisearch_universities_tour_skip_once_v1";
+const UNIVERSITIES_TOUR_SKIP_ONCE_KEY = "unisearch_universities_tour_skip_once_v1";
 export const SAVED_UNIVERSITIES_KEY = "unisearch_saved_university_ids_v1";
 export const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
 export const COMPARE_ADMISSION_CHOICES_KEY = "unisearch_compare_admission_choices_v1";
@@ -84,6 +84,11 @@ export function consumeUniversitiesTourSkipOnce() {
   return requested;
 }
 
+/**
+ * Read a deduplicated string ID list from local storage.
+ * @param {string} key
+ * @returns {string[]}
+ */
 export function readIdListStorage(key) {
   const parsed = safeLocalStorage.getJson(key, []);
   return Array.isArray(parsed)
@@ -91,6 +96,11 @@ export function readIdListStorage(key) {
     : [];
 }
 
+/**
+ * Persist a deduplicated list of non-empty IDs to local storage.
+ * @param {string} key
+ * @param {Array<unknown>} ids
+ */
 export function writeIdListStorage(key, ids) {
   const normalized = Array.from(new Set(
     (Array.isArray(ids) ? ids : [])
@@ -118,6 +128,12 @@ export function writeDetailCache(cache) {
   safeLocalStorage.setJson(DETAIL_CACHE_KEY, cache || {});
 }
 
+/**
+ * Look up a valid cached university detail entry by ID and UI language.
+ * @param {string} universityId
+ * @param {string} [lang]
+ * @returns {{ key: string, data: Record<string, any>, etag: string, ts: number } | null}
+ */
 export function getDetailCacheEntry(universityId, lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
   const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
@@ -133,6 +149,13 @@ export function getDetailCacheEntry(universityId, lang = getCurrentLanguage()) {
   };
 }
 
+/**
+ * Store a university detail response and optional ETag in bounded local storage cache.
+ * @param {string} universityId
+ * @param {Record<string, any>} data
+ * @param {string} [etag=""]
+ * @param {string} [lang]
+ */
 export function setDetailCacheEntry(universityId, data, etag = "", lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
   const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
@@ -164,6 +187,12 @@ export function touchDetailCacheEntry(universityId, lang = getCurrentLanguage())
   writeDetailCache(cache);
 }
 
+/**
+ * Fetch a university detail payload with ETag revalidation, TTL caching, and single retry.
+ * @param {string} universityId
+ * @param {{ requireReviewedCatalog?: boolean }} [options]
+ * @returns {Promise<Record<string, any>>}
+ */
 export async function fetchUniversityDetailCached(universityId, { requireReviewedCatalog = false } = {}) {
   const key = String(universityId || "").trim();
   const lang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
@@ -186,12 +215,15 @@ export async function fetchUniversityDetailCached(universityId, { requireReviewe
 
     for (let attempt = 0; attempt < 2; attempt += 1) {
       try {
+        // Sequential retry loop: the second request only runs if attempt 0 fails before backoff.
+        // oxlint-disable-next-line no-await-in-loop
         const response = await fetch(url, { headers });
         if (response.status === 304 && cached?.data && (!requireReviewedCatalog || reviewed)) {
           touchDetailCacheEntry(key, lang);
           return cached.data;
         }
         if (response.ok) {
+          // oxlint-disable-next-line no-await-in-loop
           const data = await response.json();
           if (requireReviewedCatalog && data?.admissions_catalog?.availability !== "reviewed") {
             throw new Error("Reviewed university catalog contract is unavailable");
@@ -203,6 +235,7 @@ export async function fetchUniversityDetailCached(universityId, { requireReviewe
       } catch (error) {
         lastError = error;
       }
+      // oxlint-disable-next-line no-await-in-loop
       if (attempt === 0) await waitForRetry();
     }
 

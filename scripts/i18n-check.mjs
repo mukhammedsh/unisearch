@@ -13,6 +13,42 @@ const LANG_FILES = {
   kaz: path.join(LOCALIZATION_DIR, "kaz"),
 };
 const ALLOWED_EXTRA_KEY_PREFIXES = ["university.description."];
+const DYNAMIC_KEY_PREFIXES = [
+  "country.name.",
+  "languages.name.",
+  "universities.compare.reviewed.",
+  "universities.compare.tray_blocked_",
+  "universities.match.",
+  "universities.tradeoff.",
+  "universities.cost.",
+  "universities.level.",
+  "university.admissions.",
+  "university.ux2.",
+  "university.finance.award.",
+  "university.coverage.",
+  "university.program_coverage.",
+  "university.programs.field.",
+  "university.qualification_guidance.",
+  "profile.evidence.",
+  "profile.option.",
+  "profile.ux2.",
+  "facts.status.",
+  "ranking.source_status.",
+  "cost_item_",
+  "placeholder.field.",
+  "meta.",
+  "currency.",
+  "exam.",
+  "major.",
+  "admission.track.",
+  "admission.profile.",
+  "admission.scope.",
+  "admission.funding",
+  "university.deadlines.event.",
+  "university.finance.award_basis.",
+  "university.finance.award_process.",
+  "university.finance.range_applicants.",
+];
 const KAZ_UNIVERSITY_BUNDLE = path.join(LOCALIZATION_DIR, "universities-kaz.json");
 const BACKEND_UNIVERSITY_BUNDLE = path.join(ROOT, "backend", "data", "universities_translations.json");
 
@@ -137,6 +173,46 @@ function sortedDiff(baseSet, compareSet) {
   return [...baseSet].filter((key) => !compareSet.has(key)).sort((a, b) => a.localeCompare(b));
 }
 
+function findUnusedI18nKeys(engKeys) {
+  const scanRoots = [
+    [FRONTEND_DIR, /\.(js|html|css|json)$/],
+    [path.join(ROOT, "backend", "app"), /\.py$/],
+    [path.join(ROOT, "tests"), /\.(js|mjs|py)$/],
+    [path.join(ROOT, "scripts"), /\.(js|mjs|py)$/],
+  ];
+  const referencedTokens = new Set();
+  const dynamicPrefixes = new Set(DYNAMIC_KEY_PREFIXES);
+
+  for (const [dirPath, extPattern] of scanRoots) {
+    const files = walkFiles(
+      dirPath,
+      (absPath) => !absPath.startsWith(LOCALIZATION_DIR + path.sep) && extPattern.test(absPath)
+    );
+    for (const filePath of files) {
+      const content = fs.readFileSync(filePath, "utf8");
+      for (const match of content.matchAll(/["'`]([a-z0-9_.-]+)["'`]/gi)) {
+        referencedTokens.add(match[1]);
+      }
+      for (const match of content.matchAll(/`([a-z0-9_.-]+)\$\{/gi)) {
+        if (match[1].includes(".")) dynamicPrefixes.add(match[1]);
+      }
+      for (const match of content.matchAll(/["']([a-z0-9_.-]+\.)["']\s*\+/gi)) {
+        dynamicPrefixes.add(match[1]);
+      }
+    }
+  }
+
+  return [...engKeys]
+    .filter((key) => {
+      if (referencedTokens.has(key)) return false;
+      for (const prefix of dynamicPrefixes) {
+        if (key.startsWith(prefix)) return false;
+      }
+      return true;
+    })
+    .sort((a, b) => a.localeCompare(b));
+}
+
 function isAllowedExtraKey(key) {
   return ALLOWED_EXTRA_KEY_PREFIXES.some((prefix) => key.startsWith(prefix));
 }
@@ -177,6 +253,7 @@ function main() {
   const usedKeys = extractUsedI18nKeys();
   const missingUsedInEng = sortedDiff(usedKeys, engKeys);
   const toastIssues = findHardcodedToastIssues();
+  const unusedKeys = findUnusedI18nKeys(engKeys);
   const universityBundleIssue = checkKazakhUniversityBundle();
 
   const hasIssues =
@@ -188,6 +265,7 @@ function main() {
     missingUsedInEng.length > 0 ||
     placeholderIssues.length > 0 ||
     toastIssues.length > 0 ||
+    unusedKeys.length > 0 ||
     Boolean(universityBundleIssue);
 
   if (hasIssues) {
@@ -199,6 +277,7 @@ function main() {
     printList("Used i18n keys missing in eng localization:", missingUsedInEng);
     printList("Translation placeholder mismatches:", placeholderIssues);
     printList("Hardcoded/non-localized toast usages:", toastIssues);
+    printList("Unused localization keys (not referenced in code or dynamic prefixes):", unusedKeys);
     if (universityBundleIssue) console.error(universityBundleIssue);
     process.exit(1);
   }

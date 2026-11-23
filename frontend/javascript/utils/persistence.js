@@ -5,7 +5,8 @@ import {
   getExamConfig,
   getLangExamLimits,
 } from "./config.js";
-import { API_LANG_DEFAULT, API_LANG_SUPPORTED, getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
+import { getUiLanguageForApi } from "./locale.js";
+import { clamp } from "./runtime.js";
 import { safeLocalStorage } from "./safe-storage.js";
 import { convert } from "../currency.js";
 
@@ -69,8 +70,38 @@ const PROFILE_DEFAULTS = {
   selectedAdmissionChoices: {},
 };
 
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
+export function extractAdmissionSelectionTargetFields(selection) {
+  return {
+    programId: String(selection?.programId || selection?.program_id || "").trim(),
+    programName: String(selection?.programName || selection?.program_name || "").trim(),
+    categoryId: String(selection?.categoryId || selection?.category_id || "").trim(),
+    requirementProfileId: String(selection?.requirementProfileId || selection?.requirement_profile_id || "").trim(),
+    fundingOptionId: String(selection?.fundingOptionId || selection?.funding_option_id || "").trim(),
+  };
+}
+
+function readRawScoreMetadata(row) {
+  const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
+  const displayValue = String(row?.display_value || row?.displayValue || "").trim();
+  let details = null;
+  if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
+    try {
+      details = structuredClone(row.details);
+    } catch {
+      details = null;
+    }
+  }
+  return { rawValue, displayValue, details };
+}
+
+function buildNormalizedScoreEntry(base, { score, rawValue, displayValue, details, takenOn }) {
+  const next = { ...base };
+  if (score !== null) next.score = score;
+  if (rawValue) next.raw_value = rawValue;
+  if (displayValue) next.display_value = displayValue;
+  if (details) next.details = details;
+  if (takenOn) next.taken_on = takenOn;
+  return next;
 }
 
 function roundToStep(value, min, step) {
@@ -227,11 +258,7 @@ function normalizeAdmissionChoiceSelection(selection) {
     ...(applicantRoute !== undefined ? { applicantRoute } : {}),
     ...(intendedEntryCycle !== undefined ? { intendedEntryCycle } : {}),
     ...(feeStatusContext !== undefined ? { feeStatusContext } : {}),
-    programId: String(selection.programId || selection.program_id || "").trim(),
-    programName: String(selection.programName || selection.program_name || "").trim(),
-    categoryId: String(selection.categoryId || selection.category_id || "").trim(),
-    requirementProfileId: String(selection.requirementProfileId || selection.requirement_profile_id || "").trim(),
-    fundingOptionId: String(selection.fundingOptionId || selection.funding_option_id || "").trim(),
+    ...extractAdmissionSelectionTargetFields(selection),
     choiceKey,
   };
 }
@@ -449,16 +476,7 @@ export function normalizeProfileData(profile) {
     }
 
     const config = getExamConfig(normalizedId);
-    const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
-    const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-    let details = null;
-    if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
-      try {
-        details = structuredClone(row.details);
-      } catch {
-        details = null;
-      }
-    }
+    const { rawValue, displayValue, details } = readRawScoreMetadata(row);
     const clamped = config ? clampWithConfig(row?.score, config) : Number(row?.score);
     const score = Number.isFinite(clamped) ? clamped : null;
     if (score === null && !rawValue && !details) return;
@@ -471,16 +489,10 @@ export function normalizeProfileData(profile) {
       }
     }
 
-    const normalizedExam = {
-      ...extraExamKeys,
-      id: normalizedId,
-      exam: normalizedId,
-    };
-    if (score !== null) normalizedExam.score = score;
-    if (rawValue) normalizedExam.raw_value = rawValue;
-    if (displayValue) normalizedExam.display_value = displayValue;
-    if (details) normalizedExam.details = details;
-    if (takenOn) normalizedExam.taken_on = takenOn;
+    const normalizedExam = buildNormalizedScoreEntry(
+      { ...extraExamKeys, id: normalizedId, exam: normalizedId },
+      { score, rawValue, displayValue, details, takenOn }
+    );
 
     if (!dedupedExams.has(key)) {
       dedupedExams.set(key, normalizedExam);
@@ -526,28 +538,16 @@ export function normalizeProfileData(profile) {
 
       const examId = String(row?.exam || row?.examId || "").trim();
       if (!examId) return null;
-      const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
-      const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-      let details = null;
-      if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
-        try {
-          details = structuredClone(row.details);
-        } catch {
-          details = null;
-        }
-      }
+      const { rawValue, displayValue, details } = readRawScoreMetadata(row);
       const limits = getLangExamLimits(examId) || FALLBACK_LANG_LIMITS[examId] || null;
       const clamped = limits ? clampNumberToLimits(row?.score, limits) : Number(row?.score);
       const normalizedScore = Number.isFinite(clamped) ? clamped : null;
       if (normalizedScore === null && !rawValue && !displayValue && !details) return null;
 
-      const next = { ...extraLangKeys, code, kind: "exam", exam: examId };
-      if (normalizedScore !== null) next.score = normalizedScore;
-      if (rawValue) next.raw_value = rawValue;
-      if (displayValue) next.display_value = displayValue;
-      if (details) next.details = details;
-      if (takenOn) next.taken_on = takenOn;
-      return next;
+      return buildNormalizedScoreEntry(
+        { ...extraLangKeys, code, kind: "exam", exam: examId },
+        { score: normalizedScore, rawValue, displayValue, details, takenOn }
+      );
     })
     .filter(Boolean);
 
@@ -646,26 +646,14 @@ export function loadProfileForApi() {
   payload.exams = (Array.isArray(profile?.exams) ? profile.exams : [])
     .map((row) => {
       const id = String(row?.id || row?.exam || "").trim();
-      const score = Number(row?.score);
-      const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
-      const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-      let details = null;
-      if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
-        try {
-          details = structuredClone(row.details);
-        } catch {
-          details = null;
-        }
-      }
-      if (!id || (!Number.isFinite(score) && !rawValue && !details)) return null;
-      const next = { id, exam: id };
-      if (Number.isFinite(score)) next.score = score;
-      if (rawValue) next.raw_value = rawValue;
-      if (displayValue) next.display_value = displayValue;
-      if (details) next.details = details;
-      const takenOn = normalizeEvidenceDate(row?.taken_on);
-      if (takenOn) next.taken_on = takenOn;
-      return next;
+      const rawScore = Number(row?.score);
+      const score = Number.isFinite(rawScore) ? rawScore : null;
+      const { rawValue, displayValue, details } = readRawScoreMetadata(row);
+      if (!id || (score === null && !rawValue && !details)) return null;
+      return buildNormalizedScoreEntry(
+        { id, exam: id },
+        { score, rawValue, displayValue, details, takenOn: normalizeEvidenceDate(row?.taken_on) }
+      );
     })
     .filter(Boolean);
 
@@ -682,25 +670,14 @@ export function loadProfileForApi() {
       }
       if (kind !== "exam") return null;
       const exam = String(row?.exam || row?.examId || "").trim();
-      const score = Number(row?.score);
-      const rawValue = String(row?.raw_value || row?.rawValue || "").trim();
-      const displayValue = String(row?.display_value || row?.displayValue || "").trim();
-      let details = null;
-      if (row?.details && typeof row.details === "object" && !Array.isArray(row.details)) {
-        try {
-          details = structuredClone(row.details);
-        } catch {
-          details = null;
-        }
-      }
-      if (!exam || (!Number.isFinite(score) && !rawValue && !details)) return null;
-      const next = { code, kind: "exam", exam };
-      if (Number.isFinite(score)) next.score = score;
-      if (rawValue) next.raw_value = rawValue;
-      if (displayValue) next.display_value = displayValue;
-      if (details) next.details = details;
-      if (takenOn) next.taken_on = takenOn;
-      return next;
+      const rawScore = Number(row?.score);
+      const score = Number.isFinite(rawScore) ? rawScore : null;
+      const { rawValue, displayValue, details } = readRawScoreMetadata(row);
+      if (!exam || (score === null && !rawValue && !details)) return null;
+      return buildNormalizedScoreEntry(
+        { code, kind: "exam", exam },
+        { score, rawValue, displayValue, details, takenOn }
+      );
     })
     .filter(Boolean);
 
@@ -873,10 +850,3 @@ export function loadFilters() {
   filtersMemoryFallback = { ...parsed };
   return parsed;
 }
-
-export {
-  API_LANG_DEFAULT,
-  API_LANG_SUPPORTED,
-  getUiLanguageForApi,
-  normalizeUiLanguageForApi,
-};

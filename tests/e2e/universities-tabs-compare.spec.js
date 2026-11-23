@@ -110,7 +110,12 @@ async function pickProgram(page, id, { search, option, route = "", level = "" })
   const dialog = page.locator("dialog.compare-picker[open]");
   await expect(dialog).toBeVisible();
   if (level) await dialog.locator(`[data-picker-level="${level}"]`).click();
+  const searchResponse = page.waitForResponse((res) => {
+    if (!res.ok() || !res.url().includes(`/universities/${encodeURIComponent(id)}/study-options`)) return false;
+    return new URL(res.url()).searchParams.get("search") === search;
+  });
   await dialog.locator("#comparePickerSearch").fill(search);
+  await searchResponse;
   await expect(dialog.locator("[data-picker-count]")).not.toBeEmpty();
   await dialog.locator(`[data-picker-option="${option}"]`).click();
   await expect.poll(async () => (await page.locator("dialog.compare-picker").count()) === 0
