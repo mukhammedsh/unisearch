@@ -22,7 +22,7 @@ export const CEFR_LABEL = {
 };
 
 export function getConfigOrNull() {
-  return (typeof LANG_CONFIG !== "undefined" && LANG_CONFIG) ? LANG_CONFIG : null;
+  return Object.keys(LANG_CONFIG).length > 0 ? LANG_CONFIG : null;
 }
 
 export function normalizeKind(kindRaw) {
