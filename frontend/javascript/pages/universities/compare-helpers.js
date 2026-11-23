@@ -668,12 +668,8 @@ export function compareSourceText(u, factKey) {
   }
   const source = String(fact?.source || "").trim();
   const status = String(fact?.status || u?.rank_meta?.status || "").trim();
-  const translatedSource = source
-    ? (typeof trFactSource === "function" ? trFactSource(source) : (typeof translateFactSource === "function" ? translateFactSource(source, source) : source))
-    : "";
-  const translatedStatus = status
-    ? (typeof trFactStatus === "function" ? trFactStatus(status) : (typeof translateFactStatus === "function" ? translateFactStatus(status, status) : (typeof humanizeMachineLabel === "function" ? humanizeMachineLabel(status, status) : status)))
-    : "";
+  const translatedSource = source ? trFactSource(source) : "";
+  const translatedStatus = status ? trFactStatus(status) : "";
   const parts = [translatedSource, translatedStatus].filter(Boolean);
   return parts.length ? parts.join(" - ") : (typeof t === "function" ? t("common.na", "N/A") : "N/A");
 }

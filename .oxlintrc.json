@@ -30,6 +30,7 @@
     "prefer-const": "error",
     "no-unreachable": "error",
     "no-duplicate-imports": "error",
+    "no-undef": "error",
     "no-underscore-dangle": "off",
     "no-shadow": "off",
     "unicorn/prefer-add-event-listener": "off",

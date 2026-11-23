@@ -11,6 +11,7 @@ Patch release: add frontend JavaScript static analysis tooling, remove dead code
 - Resolve all frontend Oxlint errors, empty `catch` blocks, unused imports/variables, Knip-detected dead code and unused exports (plus the duplicate recent-universities setting constant in `frontend/javascript/settings.js`), and cross-file helper/validation/persistence duplicates (`jscpd` clones reduced to zero); remove the stale `#profileBudgetUnit:focus-visible` allowlist entry from `scripts/audit-css.mjs`, and enforce `lint:frontend` and `audit:dead-code` in `test:all` and `.github/workflows/repository-hygiene.yml`.
 - Decompose `frontend/javascript/pages/universities.js` into focused modules under `frontend/javascript/pages/universities/`: `map-assets.js`, `api-client.js`, `card-renderer.js`, `recently-viewed.js`, and `map-controller.js`.
 - Decompose `frontend/javascript/pages/university/render-sections.js` and `frontend/javascript/pages/university/render-content.js` into focused acyclic modules (`section-context.js`, `funding-awards.js`, `deadlines-section.js`, `admission-section.js`, `program-coverage.js`, `programs-section.js`, `qualification-guidance.js`).
+- Decompose `frontend/javascript/components/profile-ui.js` (`profile-dialogs.js`, `profile-form-fields.js`, `profile-exam-editor.js`) and `frontend/javascript/languages.js` (`language-helpers.js`), simplify dead global checks in `compare-helpers.js`, and enable the `no-undef` rule in `.oxlintrc.json`.
 
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 
