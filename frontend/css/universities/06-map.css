@@ -217,9 +217,9 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to bottom in oklab,
-    color-mix(in oklab, var(--uni-card-bg) 55%, transparent),
-    var(--uni-card-bg) 80%
+    to bottom in srgb,
+    color-mix(in srgb, var(--uni-card-bg) 78%, transparent),
+    var(--uni-card-bg) 68%
   );
 }
 

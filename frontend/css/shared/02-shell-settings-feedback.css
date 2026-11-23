@@ -1326,9 +1326,10 @@ select:not(.u-select-hidden) {
 }
 
 .footer-legal-links {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-1-5) var(--space-3);
 }
 
 .footer-legal-links a {

@@ -1042,6 +1042,10 @@ body[data-page="university"],
     padding: 0 var(--space-3);
   }
 
+  .d-gallery-cover-credit {
+    inset-inline-start: calc(var(--space-16) + var(--space-2));
+  }
+
   .d-cover-credit {
     min-height: 36px;
   }
