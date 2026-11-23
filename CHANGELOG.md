@@ -2,17 +2,26 @@
 
 All notable project changes should be recorded here.
 
+## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
+
+Minor release: redesign the frontend surface ladder and Indigo visual system, replace mute catalog badge icons with plain-language status pills, fix initial map framing, add a 3-step guide overview and in-place comparison university switcher, and enforce automated layout and accessibility checks.
+
+### Added
+- Add automated Playwright geometric layout and Axe WCAG accessibility audit pipeline (`scripts/audit-layout.mjs`, `npm run audit:layout`) with `@axe-core/playwright`.
+- Add a `Detailed admissions data` (`only_reviewed`) filter in the catalog and map views (`frontend/index.html`, `query-state.js`, `filter-controls.js`, `map-controller.js`, `universities.js`).
+- Add a 3-step `Getting started` overview section (`#guide-start`) with direct catalog/profile CTAs on `frontend/guide.html`.
+- Add in-place searchable `Change university` (`universities.compare.swap_university`) picker dialogs on both reviewed and legacy comparison column headers (`compare-reviewed.js`, `compare.js`, `09-reviewed-comparison.css`, `03-comparison.css`).
+
+### Changed
+- Refine the 4-tier neutral surface ladder, Indigo accent palette (`#4F46E5` light / `#5850EC` dark), WCAG AA status contrast (`--color-success`, `--color-warning`, `--color-danger`), harmonized soft status tokens across light and dark themes, wrapping defaults (`break-word`, `balance`, `pretty`), brand logos (`whitelogo.svg`, `minilogo.svg`, `darklogo.svg`), and `docs/design-system.md`.
+- Upgrade shell navigation bar and profile sticky action dock with frosted surfaces (`backdrop-filter: blur(12px)` and `scroll-padding-bottom`), inline mobile catalog filter action, `tabular-nums` alignment on tables and pricing, and readable map card scrims.
+- Replace mute floating card status icons and the banner icon legend wall with inline plain-language status pills inside `.uni-body` (including study-level budget guidance when `studyLevel` is unset), and wrap UniFit tradeoff sliders in a collapsible `#unifitPreferencesPanel` with an active-count badge and banner shortcut so sidebar controls stay unclipped above the fold.
+- Fix initial Leaflet map framing and bounds (`[-58, 83]` latitude clamp excluding Antarctica, `[30, 15]` populated-world overview, and asset-only warmup so hidden `0x0` containers never offset map centers), collapse technical formulas inside `<details class="guide-formula-details">` on `guide.html`, and remove the 3-line truncation on `.compare-reviewed__checklist [data-prose]`.
+- Resolve all layout overlaps, non-overlapping 3-track scrollable university tabs, top-right single-line hero photo credits, keyboard-focusable guide formula scroll regions (`tabindex="0"`), valid `data-compare-selected` card attributes, and mobile touch target compliance (`<= 768px`) across all pages (verified 0 layout/accessibility errors across 72 page loads and 288 viewport checks).
+
 ## 10.7.2 (2026-11-23) - Frontend code quality and modularization
 
 Patch release: add frontend JavaScript static analysis tooling, remove dead code and duplicates, and modularize large frontend page controllers.
-
-### Changed
-- Add automated Playwright geometric layout and Axe WCAG accessibility audit pipeline (`scripts/audit-layout.mjs`, `npm run audit:layout`) with `@axe-core/playwright`.
-- Refine the 4-tier neutral surface ladder, Indigo accent palette (`#4F46E5` light / `#5850EC` dark), WCAG AA status contrast (`--color-success`, `--color-warning`, `--color-danger`), wrapping defaults (`break-word`, `balance`, `pretty`), brand logos (`whitelogo.svg`, `minilogo.svg`, `darklogo.svg`), and `docs/design-system.md`.
-- Upgrade shell navigation bar and profile sticky action dock with frosted surfaces (`backdrop-filter: blur(12px)` and `scroll-padding-bottom`), inline mobile catalog filter action, `tabular-nums` alignment on tables and pricing, and readable map card scrims.
-- Replace mute floating card status icons and the banner icon legend wall with inline plain-language status pills inside `.uni-body` (harmonized soft status tokens in light and dark themes, plus study-level budget guidance when `studyLevel` is unset), add a `Detailed admissions data` (`only_reviewed`) catalog/map filter, and wrap UniFit tradeoff sliders in a collapsible `#unifitPreferencesPanel` with an active-count badge and banner shortcut so sidebar controls stay unclipped above the fold.
-- Fix initial Leaflet map framing and bounds (`[-58, 83]` latitude clamp excluding Antarctica, `[30, 15]` populated-world overview, and asset-only warmup so hidden `0x0` containers never offset map centers), add a 3-step `Getting started` overview and collapsible formula disclosures on `guide.html`, and add in-place searchable university swapper dialogs (`Change university`) plus unclamped requirement prose on both reviewed and legacy comparison views.
-- Resolve all layout overlaps, non-overlapping 3-track scrollable university tabs, top-right single-line hero photo credits, keyboard-focusable guide formula scroll regions (`tabindex="0"`), valid `data-compare-selected` card attributes, and mobile touch target compliance (`<= 768px`) across all pages (verified 0 layout/accessibility errors across 72 page loads and 288 viewport checks).
 
 ### Maintenance
 - Configure frontend JavaScript static analysis with Oxlint (`.oxlintrc.json`), Knip (`knip.json`), and jscpd (`.jscpd.json`) alongside `npm run lint:frontend`, `npm run audit:dead-code`, and `npm run audit:duplicates` scripts in `package.json`.
