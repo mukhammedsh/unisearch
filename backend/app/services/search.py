@@ -538,7 +538,7 @@ def _best_token_score(
             # Prefix match:
             # - For short 2-char tokens, ONLY allow prefix if cand is in search_aliases
             # - For 3+ char tokens, standard prefix match
-            if c_len > q_len and cand.startswith(token) and (q_len >= 3 or (q_len >= 2 and is_alias)):
+            if c_len > q_len and cand.startswith(token) and (q_len >= 3 or is_alias):
                 mult = 0.85
                 if weight * mult > best_weight * best_mult:
                     best_weight, best_mult = weight, mult

@@ -1,4 +1,4 @@
-import { EXAM_CONFIG, LANG_CONFIG, canonicalizeExamId, escapeHtml, escapeHtmlAttr, formatExamValue, getExamDisplayName } from "./utils.js";
+import { EXAM_CONFIG, LANG_CONFIG, canonicalizeExamId, escapeHtml, formatExamValue, getExamDisplayName } from "./utils.js";
 import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateWord } from "./university-translations.js";
 

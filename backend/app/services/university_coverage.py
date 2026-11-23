@@ -7,9 +7,7 @@ from collections.abc import Iterable
 from typing import Any
 
 from app.services.university_level_coverage import (
-    _CONFLICTING_DEADLINE_TEXT,
     _MBA_RE,
-    _UNPUBLISHED_DEADLINE_TEXT,
     AVAILABLE,
     NOT_CATALOGUED,
     _course_deadline_rows,
@@ -22,6 +20,15 @@ from app.services.university_level_coverage import (
     _non_empty_text,
     _program_name,
     build_coverage_by_level,
+)
+
+_UNPUBLISHED_DEADLINE_TEXT = re.compile(
+    r"\b(?:not yet published|not published|not been published|to be announced|\bTBA\b)\b",
+    re.I,
+)
+_CONFLICTING_DEADLINE_TEXT = re.compile(
+    r"\b(?:conflict|conflicting|inconsistent|contradictory|disagree)\b",
+    re.I,
 )
 
 __all__ = [

@@ -25,14 +25,6 @@ _DAY_MONTH_DATE_RE = re.compile(
 )
 _ISO_DATE_RE = re.compile(r"\b20\d{2}-\d{2}-\d{2}\b")
 _AID_TERMS = re.compile(r"\b(?:aid|grant|scholarship|fellowship|assistantship|stipend|tuition waiver)\b", re.I)
-_UNPUBLISHED_DEADLINE_TEXT = re.compile(
-    r"\b(?:not yet published|not published|not been published|to be announced|\bTBA\b)\b",
-    re.I,
-)
-_CONFLICTING_DEADLINE_TEXT = re.compile(
-    r"\b(?:conflict|conflicting|inconsistent|contradictory|disagree)\b",
-    re.I,
-)
 _COURSE_DEADLINE_KEYS = (
     "deadline",
     "deadlines",

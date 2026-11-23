@@ -32,7 +32,8 @@ TrustedProxyEntry = (
 
 
 class _RedisEvalClient(Protocol):
-    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object: ...
+    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object:
+        pass
 
 
 class SlidingWindowRateLimiter:

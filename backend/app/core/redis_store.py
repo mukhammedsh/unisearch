@@ -24,11 +24,20 @@ REDIS_JSON_ERRORS: tuple[type[Exception], ...] = (*REDIS_ERRORS, json.JSONDecode
 
 
 class RedisClientProtocol(Protocol):
-    def ping(self) -> object: ...
-    def get(self, name: str) -> object: ...
-    def setex(self, name: str, time: int, value: str) -> object: ...
-    def delete(self, *names: str) -> object: ...
-    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object: ...
+    def ping(self) -> object:
+        pass
+
+    def get(self, name: str) -> object:
+        pass
+
+    def setex(self, name: str, time: int, value: str) -> object:
+        pass
+
+    def delete(self, *names: str) -> object:
+        pass
+
+    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object:
+        pass
 
 
 class _RedisPingState(TypedDict):
