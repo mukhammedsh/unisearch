@@ -25,7 +25,7 @@
 }
 
 .u-skeleton-grid {
-  display: grid;
+  display: none;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-5);
   align-items: stretch;

@@ -511,8 +511,8 @@ export function initUniversitiesPage() {
                             <div class="uni-body">
                                 <div class="uni-head">
                                     <span class="uni-head-copy">
-                                        <span class="skeleton-line" style="width: 84%; height: 15px;"></span>
-                                        <span class="skeleton-line" style="width: 58%; height: 12px;"></span>
+                                        <span class="skeleton-line u-map-skeleton-title"></span>
+                                        <span class="skeleton-line u-map-skeleton-subtitle"></span>
                                     </span>
                                 </div>
                                 <div class="u-skeleton-metric">

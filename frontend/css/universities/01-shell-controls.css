@@ -254,6 +254,10 @@ body[data-page="universities"] {
   margin-top: var(--space-3);
 }
 
+.u-field--state {
+  display: none;
+}
+
 .u-field--saved-scope {
   margin-top: var(--space-1-5);
 }

@@ -915,6 +915,21 @@
   gap: var(--space-4);
 }
 
+.compare-results-loading__title {
+  width: 38%;
+  height: 22px;
+}
+
+.compare-results-loading__summary {
+  width: 100%;
+  height: 118px;
+}
+
+.compare-results-loading__body {
+  width: 92%;
+  height: 180px;
+}
+
 .compare-decision-list {
   display: grid;
 }

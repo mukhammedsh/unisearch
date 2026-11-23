@@ -207,9 +207,9 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
     if (comparePane && !comparePane.innerHTML.trim()) {
       comparePane.innerHTML = `
         <div class="compare-results-loading" role="status">
-          <div class="skeleton-line" style="width: 38%; height: 22px;"></div>
-          <div class="skeleton-line" style="width: 100%; height: 118px;"></div>
-          <div class="skeleton-line" style="width: 92%; height: 180px;"></div>
+          <div class="skeleton-line compare-results-loading__title"></div>
+          <div class="skeleton-line compare-results-loading__summary"></div>
+          <div class="skeleton-line compare-results-loading__body"></div>
         </div>
       `;
     }
@@ -308,7 +308,7 @@ async function initRoutePage(ctx = currentRouteContext()) {
       ensureLanguageConfig(),
     ]);
     return module?.initGuidePage?.();
-  }
+  }
   if (ctx.isPrivacyPage || ctx.isTermsPage) {
     try {
       const module = await loadRouteModule(ctx.isPrivacyPage ? "privacy" : "terms");

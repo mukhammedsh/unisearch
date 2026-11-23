@@ -726,6 +726,10 @@ a.d-cover-credit:hover {
   padding: 0;
 }
 
+.d-site-link--map {
+  display: none;
+}
+
 .d-site-link-label {
   display: none;
 }
@@ -929,6 +933,10 @@ body[data-page="university"],
   box-shadow: var(--shadow-card);
   overflow: visible;
   isolation: isolate;
+}
+
+.d-card:not(.is-mounted) {
+  display: none;
 }
 
 .d-info:focus-visible,

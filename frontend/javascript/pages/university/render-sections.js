@@ -2,6 +2,7 @@ import { escapeHtml, escapeHtmlAttr, loadProfile, loadProfileForApi, markMotionE
 import { t } from "../../i18n.js";
 import { formatMoney, formatPrice } from "../../currency.js";
 import {
+  applyPercentWidths,
   getAdmissionChoicesFromCategories,
   getGrantsFromCategories,
   getTrackFundingType,
@@ -418,7 +419,7 @@ export function renderFinanceSection({
           const breakdownHtml = breakdownEntries.length > 1
             ? `
               <div class="cost-progress-bar" aria-hidden="true">
-                ${breakdownEntries.map((entry) => `<span class="cost-progress-segment ${entry.colorClass}" style="--fill-width:${entry.percent}%; --fill-scale:${Math.max(0, Math.min(100, Number(entry.percent) || 0)) / 100}"></span>`).join("")}
+                ${breakdownEntries.map((entry) => `<span class="cost-progress-segment ${entry.colorClass}" data-width-pct="${escapeHtmlAttr(entry.percent)}"></span>`).join("")}
               </div>
               <dl class="cost-legend">
                 ${breakdownEntries.map((entry) => `
@@ -497,6 +498,7 @@ export function renderFinanceSection({
         ? `<div class="finance-grid-new">${financeHtml}</div>`
         : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
       container.innerHTML = `${policyHtml}${oneTimeCostsHtml}${financeGridHtml}`;
+      applyPercentWidths(container);
       markMotionEnter(container, ".finance-policy-card, .finance-one-time-costs, .finance-track-group, .finance-option-card, .admission-empty-state", { limit: 18, staggerMs: 18 });
     }
     return;

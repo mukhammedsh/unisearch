@@ -3,7 +3,7 @@ import { getCurrentLanguage, t } from "./i18n.js";
 import { translateAdmissionText, translateTrackLabel, translateWord } from "./university-translations.js";
 
 export function applyPercentWidths(rootEl) {
-  if (!rootEl) return;
+  if (typeof rootEl?.querySelectorAll !== "function") return;
   rootEl.querySelectorAll("[data-width-pct]").forEach((node) => {
     const raw = Number(node.getAttribute("data-width-pct"));
     const pct = Number.isFinite(raw) ? Math.max(0, Math.min(100, raw)) : 0;
