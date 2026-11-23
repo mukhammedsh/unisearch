@@ -21,6 +21,8 @@ const LEGEND_LABEL_KEYS = {
 };
 const LEGEND_ORDER = Object.keys(LEGEND_LABEL_KEYS);
 
+export const statusLabelKey = (key) => LEGEND_LABEL_KEYS[key] || "";
+
 const text = (value) => String(value ?? "").trim();
 const isAny = (value) => !text(value) || text(value).toLowerCase() === "any";
 
@@ -140,6 +142,8 @@ export const budgetTooltip = ({ status, costMin, costMax = costMin, budget, tuit
     notes.push(trf("universities.tip.budget_range", { min: money(min), max: money(max) }));
   } else if (status === "fee_status") {
     notes.push(trf("universities.tip.budget_fee_status", { min: money(min), max: money(max) }));
+  } else if (status === "level_needed") {
+    notes.push(trf("universities.tip.budget_level_needed", { cost }));
   } else {
     return "";
   }

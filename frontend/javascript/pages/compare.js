@@ -17,12 +17,14 @@ import {
   routeUniversityDetail,
 } from "../routes.js";
 import {
+  COMPARE_UNIVERSITIES_KEY,
   fetchUniversityDetailCached,
   modeAwareAnnualCost,
   normalizeStudyModeForCost,
   readIdListStorage,
   renderInlineIcon,
   shouldOpenUniversitiesInNewTab,
+  writeIdListStorage,
 } from "./_shared.js";
 import {
   compareAdmissionChoiceOptionLabel,
@@ -52,11 +54,10 @@ import {
 } from "./universities/compare-specs.js";
 import { getFinanceForChoice, renderAdmissionSection } from "./university/render-sections.js";
 import { loadPhotoCredits } from "./university/cover-credit.js";
-import { mountReviewedComparison } from "./universities/compare-reviewed.js";
+import { mountReviewedComparison, openUniversitySwapDialog } from "./universities/compare-reviewed.js";
 import { initUniversityTranslations } from "../university-translations.js";
 
 const COMPARE_PAIR_SIZE = 2;
-const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
 
 let activeUniversities = [];
 let comparePhotos = null;
@@ -132,7 +133,10 @@ function compareCardsHtml(universities) {
     return `
       <article class="compare-uni-card compare-uni-card--pair" data-compare-slot="${index + 1}" data-uni-id="${escapeHtmlAttr(id)}">
         ${compareCampusHtml(id, comparePhotos)}
-        <span class="compare-uni-card__slot">${escapeHtml(compareSlotLabel(index))}</span>
+        <div class="compare-uni-card__top">
+          <span class="compare-uni-card__slot">${escapeHtml(compareSlotLabel(index))}</span>
+          <button type="button" class="compare-uni-card__swap" data-action="swap-compare-uni" data-uni-id="${escapeHtmlAttr(id)}">${renderInlineIcon("arrows-right-left", 16)}<span>${escapeHtml(t("universities.compare.swap_university"))}</span></button>
+        </div>
         <h3>${escapeHtml(compareUniversityName(u))}</h3>
         <p>${escapeHtml(compareLocationText(u))}</p>
         <p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>
@@ -367,6 +371,43 @@ function bindCompareEvents(container) {
       event.preventDefault();
       await renderCompareResults(container, { pushState: true });
       window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (action === "swap-compare-uni") {
+      event.preventDefault();
+      const targetId = String(actionBtn.getAttribute("data-uni-id") || "").trim();
+      const colIndex = activeUniversities.findIndex((u) => String(u?.id || "") === targetId);
+      if (colIndex < 0) return;
+      const currentUni = activeUniversities[colIndex];
+      const otherId = String(activeUniversities[1 - colIndex]?.id || "");
+      openUniversitySwapDialog({
+        currentUni,
+        otherId,
+        trigger: actionBtn,
+        reviewedOnly: false,
+        onChoose: async (picked) => {
+          try {
+            const detail = await fetchUniversityDetailCached(picked.id);
+            if (!detail || !container.isConnected) return;
+            activeUniversities[colIndex] = detail;
+            const nextIds = activeUniversities.map((u) => String(u?.id || "").trim()).filter(Boolean);
+            writeIdListStorage(COMPARE_UNIVERSITIES_KEY, nextIds);
+            const newId = String(detail.id);
+            const entries = compareAdmissionOptionEntries(detail);
+            const storedKey = compareChoiceKey(compareAdmissionChoices.get(newId));
+            const matchedEntry = (storedKey && entries.find((e) => e.key === storedKey)) || entries[0] || null;
+            if (matchedEntry) {
+              compareAdmissionChoices.set(newId, compareAdmissionSelectionFromEntry(matchedEntry));
+            }
+            writeCompareAdmissionChoices(compareAdmissionChoices, nextIds);
+            syncUrlWithState(currentStage);
+            await renderCompareResults(container);
+          } catch (error) {
+            console.error("Failed to swap comparison university:", error);
+          }
+        },
+      });
       return;
     }
   });

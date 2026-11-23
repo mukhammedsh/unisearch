@@ -21,6 +21,7 @@ export function buildFilterResetPatch(state, { fundingType, limits, onlySaved })
         max_tuition: limits.max,
         sort: state.sort === "relevance" ? "name_asc" : state.sort || "name_asc",
         only_saved: onlySaved,
+        only_reviewed: false,
         page: 1,
     };
 }

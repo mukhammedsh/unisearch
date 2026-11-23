@@ -21,14 +21,15 @@ import {
 } from "../_shared.js";
 import { ensureMapLibraries } from "./map-assets.js";
 
-const MAP_OVERVIEW_CENTER = [25, 0];
+const MAP_OVERVIEW_CENTER = [30, 15];
 const MAP_MIN_ZOOM = 2;
-const MAP_MAX_LATITUDE = 85.0511287798;
+const MAP_SOUTH_LATITUDE = -58;
+const MAP_NORTH_LATITUDE = 83;
 // Give worldCopyJump enough horizontal room to normalize a wrapped view,
-// while preventing panning beyond the finite north/south extent of Web Mercator.
+// while keeping Antarctica out of the viewport and bounding Web Mercator pan.
 const MAP_WORLD_WRAP_BOUNDS = [
-  [-MAP_MAX_LATITUDE, -540],
-  [MAP_MAX_LATITUDE, 540],
+  [MAP_SOUTH_LATITUDE, -540],
+  [MAP_NORTH_LATITUDE, 540],
 ];
 const MAP_MAX_ZOOM = 18;
 const MAP_RESULTS_PAGE_SIZE = 100;
@@ -90,6 +91,40 @@ export function createUniversitiesMapController(ctx) {
   let mapPointsFetchController = null;
   let mapResultsObserver = null;
   let mapResizeTimer = 0;
+  let needsInitialMapFrame = true;
+
+  function frameMapToVisibleResults() {
+    if (!mapInstance || !window.L) return;
+    mapInstance.invalidateSize({ pan: false, animate: false });
+    const sourceItems = mapResultsItems.length ? mapResultsItems : getLastRenderedItems();
+    const coords = [];
+    for (const item of Array.isArray(sourceItems) ? sourceItems : []) {
+      const rawLat = item?.coordinates?.lat;
+      const rawLon = item?.coordinates?.lon;
+      if (rawLat == null || rawLat === "" || rawLon == null || rawLon === "") continue;
+      const lat = Number(rawLat);
+      const lon = Number(rawLon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+      coords.push([Math.max(-55, Math.min(70, lat)), lon]);
+    }
+    if (coords.length === 1) {
+      mapInstance.setView(coords[0], 11, { animate: false });
+      return;
+    }
+    if (coords.length > 1) {
+      let minLon = Infinity;
+      let maxLon = -Infinity;
+      for (const [, lon] of coords) {
+        if (lon < minLon) minLon = lon;
+        if (lon > maxLon) maxLon = lon;
+      }
+      if (coords.length <= 12 || (maxLon - minLon) < 95) {
+        mapInstance.fitBounds(window.L.latLngBounds(coords), { padding: [48, 48], maxZoom: 10, animate: false });
+      } else {
+        mapInstance.setView(MAP_OVERVIEW_CENTER, MAP_MIN_ZOOM, { animate: false });
+      }
+    }
+  }
 
   const scheduleMapPointsRefresh = debounce(() => {
     if (disposed || state.viewMode !== "map" || !mapInstance) return;
@@ -368,16 +403,17 @@ export function createUniversitiesMapController(ctx) {
   }
 
   async function fetchMapResultsPage(page) {
+    const clientFiltered = Boolean(state.only_saved || state.only_reviewed);
     if (state.sort === "uni_ai") {
       const payload = buildAiSortPayload();
-      payload.page = state.only_saved ? 1 : page;
-      payload.limit = state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE;
+      payload.page = clientFiltered ? 1 : page;
+      payload.limit = clientFiltered ? 2000 : MAP_RESULTS_PAGE_SIZE;
       return fetchUniversitiesAiSort(payload);
     }
 
     const params = buildParams(true);
-    params.set("page", String(state.only_saved ? 1 : page));
-    params.set("limit", String(state.only_saved ? 2000 : MAP_RESULTS_PAGE_SIZE));
+    params.set("page", String(clientFiltered ? 1 : page));
+    params.set("limit", String(clientFiltered ? 2000 : MAP_RESULTS_PAGE_SIZE));
     return fetchUniversities(params);
   }
 
@@ -403,8 +439,12 @@ export function createUniversitiesMapController(ctx) {
       if (disposed || data?.__aborted || runSeq !== mapResultsRunSeq || state.viewMode !== "map") return;
 
       const rawItems = Array.isArray(data.items) ? data.items : [];
-      const pageItems = state.only_saved
-        ? rawItems.filter((item) => savedUniversityIds.has(String(item?.id || "").trim()))
+      const clientFiltered = Boolean(state.only_saved || state.only_reviewed);
+      const pageItems = clientFiltered
+        ? rawItems.filter((item) => (
+          (!state.only_saved || savedUniversityIds.has(String(item?.id || "").trim()))
+          && (!state.only_reviewed || item?.admissions_catalog?.availability === "reviewed")
+        ))
         : rawItems;
       const existingIds = new Set(mapResultsItems.map((item) => String(item?.id || "")));
       const uniqueItems = pageItems.filter((item) => {
@@ -415,12 +455,17 @@ export function createUniversitiesMapController(ctx) {
       mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
       syncMapResultsOrder();
       mapResultsPage = nextPage;
-      mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
-      mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
+      mapResultsTotal = clientFiltered ? mapResultsItems.length : Number(data.total || 0);
+      mapResultsHasMore = !clientFiltered && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
       setLastRenderedItems(mapResultsItems);
       state.lastCatalogTotal = mapResultsTotal;
       if (el.total) el.total.textContent = String(mapResultsTotal);
       updateUnifitWarningBanner();
+
+      if (reset && !activeMapUniId && !getFocusUniId() && state.viewMode === "map" && mapInstance) {
+        frameMapToVisibleResults();
+        needsInitialMapFrame = false;
+      }
 
       renderMapResultsPanel(uniqueItems, { append: !reset });
       if (animateResults && uniqueItems.length) {
@@ -458,9 +503,9 @@ export function createUniversitiesMapController(ctx) {
     ["fields", "page", "limit", "sort", "view", "practice_vs_science", "social_vs_hardcore", "budget_vs_prestige", "city_vs_campus"].forEach((key) => params.delete(key));
     if (state.sort === "uni_ai") params.delete("major");
     params.set("west", String(Math.max(-180, bounds.getWest())));
-    params.set("south", String(Math.max(-90, bounds.getSouth())));
+    params.set("south", String(Math.max(MAP_SOUTH_LATITUDE, bounds.getSouth())));
     params.set("east", String(Math.min(180, bounds.getEast())));
-    params.set("north", String(Math.min(90, bounds.getNorth())));
+    params.set("north", String(Math.min(MAP_NORTH_LATITUDE, bounds.getNorth())));
     return params;
   }
 
@@ -510,6 +555,7 @@ export function createUniversitiesMapController(ctx) {
       const north = Number(params.get("north"));
       const points = (Array.isArray(data.items) ? data.items : []).filter((item) => (
         (!state.only_saved || savedUniversityIds.has(String(item?.id || "").trim()))
+        && (!state.only_reviewed || item?.admissions_catalog?.availability === "reviewed")
         && (!profiled || (
           Number(item?.coordinates?.lat) >= south && Number(item?.coordinates?.lat) <= north
           && (west <= east
@@ -787,10 +833,9 @@ export function createUniversitiesMapController(ctx) {
 
     const startWarmup = () => {
       if (disposed) return;
-      initMap()
+      ensureMapLibraries()
         .then(() => {
           if (disposed) return;
-          updateMapMarkers(getLastRenderedItems(), { renderResults: false });
           setViewModesReady(true);
           syncViewModeControls();
         })
@@ -827,13 +872,19 @@ export function createUniversitiesMapController(ctx) {
 
     if (mode === "map") {
       await initMap();
-      if (disposed || state.viewMode !== "map") return;
+      if (disposed || state.viewMode !== "map" || !mapInstance) return;
+      mapInstance.invalidateSize({ pan: false, animate: false });
       const latestItems = getLastRenderedItems();
       if (latestItems.length > 0) {
         updateMapMarkers(latestItems, { renderResults: false });
       }
+      if (needsInitialMapFrame && !getFocusUniId()) {
+        frameMapToVisibleResults();
+        needsInitialMapFrame = false;
+      }
+      refreshMapPoints({ force: true }).catch((error) => console.warn("Map points refresh failed", error));
       window.setTimeout(() => {
-        if (!disposed && mapInstance) mapInstance.invalidateSize();
+        if (!disposed && mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
       }, 100);
     }
 

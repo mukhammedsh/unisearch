@@ -182,3 +182,14 @@ test("only the single route linked to a deliberately chosen program can be appli
   assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [route], context_applicability: { level: "mismatched" } }, {}), null);
   assert.equal(soleCompatibleRoute({ selected_option: option, available_routes: [{ id: "grad", levels: ["masters"] }] }, { study_level: "undergraduate" }), null);
 });
+
+test("both reviewed columns render localized university swap buttons", () => {
+  for (const [language, expected] of [["eng", "Change university"], ["rus", "Заменить вуз"], ["kaz", "ЖОО-ны ауыстыру"]]) {
+    setLanguage(language, { emit: false });
+    const html = renderReviewedComparisonPage([programColumn(), sharedColumn()], {});
+    assert.match(html, /data-compare-swap="imperial"/);
+    assert.match(html, /data-compare-swap="mit"/);
+    assert.equal(html.split(expected).length - 1, 2, `${language}: both columns show swap label`);
+  }
+  setLanguage("eng", { emit: false });
+});

@@ -338,7 +338,6 @@ universities.card.view_details: Толығырақ
 universities.card.metrics: Негізгі көрсеткіштер
 universities.card.photo_unavailable: Кампус фотосы қолжетімсіз
 universities.card.statuses: Университет белгілері
-universities.card.admissions_guide: Түсу нұсқаулығы
 universities.card.per_year: / жыл
 universities.card.compare: Салыстыруға қосу
 universities.card.compare_short: Салыстыру
@@ -3195,8 +3194,6 @@ universities.tip.before_aid: Қаржылық көмек есепке алынб
 universities.tip.requirements_met: Нәтижелеріңіз жарияланған ең төменгі талаптарға сай. Басқа қабылдау шарттарын университет бетінен тексеріңіз.
 universities.tip.below_minimum: Ең төменгі талаптан төмен: {items}.
 universities.tip.minimum_gap: {exam}: {minimum} керек, сізде {provided}
-universities.ux2.legend.aria: Университет карточкаларындағы белгішелер
-universities.ux2.legend.lead: Карточка белгішелері:
 universities.ux2.legend.subject_missing: Бағдарлама жоқ
 universities.ux2.legend.subject_matched: Бағыт бар
 universities.ux2.legend.requirements_below: Талаптан төмен
@@ -3363,3 +3360,24 @@ universities.empty.clear_price: Баға сүзгісін алып тастау
 universities.state.empty_saved_none: Сіз әлі ештеңе сақтаған жоқсыз. Университетті карточкасынан сақтаңыз, ол осында пайда болады.
 profile.unit.per_year: / жыл
 profile.budget_currency_label: Бюджет валютасы
+universities.filter.reviewed_only: Толық қабылдау деректері
+universities.filter.reviewed_only_hint: Тексерілген бағыттары, минимумдары мен құны бар ЖОО-ларды көрсету
+universities.unifit.prefs_button: Қалаулар
+universities.unifit.prefs_summary: UniFit қалаулары
+universities.tip.budget_level_needed: Оқу деңгейіне қарай жылына {cost}. Бюджетіңізбен салыстыру үшін оқу деңгейін таңдаңыз.
+guide.start.nav: Неден бастау керек
+guide.start.title: UniSearch-ті 3 қадаммен қалай қолдану керек
+guide.start.intro: UniSearch ресми бағдарламаларды, ең төменгі талаптарды, мерзімдер мен оқу құнын болжамсыз қарауға көмектеседі. Каталогты бірден анкетасыз қарауға немесе автоматты салыстыру үшін ұпайларыңыз бен бюджетіңізді енгізуге болады.
+guide.start.step1.title: 1. Профильде тек өзіңіз білетін деректерді көрсетіңіз
+guide.start.step1.desc: Оқу деңгейін, бағытты, жылдық бюджетті, GPA немесе емтихандарды (IELTS, SAT, ҰБТ, NUET) таңдаңыз. Барлық өрістер міндетті емес: бос өрістер сәтсіздік болып саналмайды.
+guide.start.step2.title: 2. Сүзгілерді және UniFit сұрыптауын баптаңыз
+guide.start.step2.desc: Карточкаларда бірден түсінікті мәтіндік мәртебелер көрінеді: профиль минимумға сай ма, емтихан керек пе және баға бюджетке сыя ма. UniFit баптауларын тек ғылым, конкурс немесе қала өлшемі маңызды болса ғана қозғаңыз.
+guide.start.step3.title: 3. ЖОО бетін ашыңыз немесе екі ЖОО-ны салыстырыңыз
+guide.start.step3.desc: ЖОО бетінде тапсыру бағыттары, жақын мерзімдер, шығындар құрылымы және ресми дереккөз сілтемелері берілген. Салыстыру режимінде екі ЖОО-ны қатар көруге болады.
+guide.start.cta_catalog: Каталогқа өту
+guide.start.cta_profile: Профильді толтыру
+guide.formula.toggle: Есептеудің нақты формуласын көрсету
+universities.compare.swap_university: ЖОО-ны ауыстыру
+universities.compare.swap_title: ЖОО-ны ауыстыру: {name}
+universities.compare.swap_search: Университетті іздеу...
+universities.compare.swap_empty: Бұл салыстыру тобында сәйкес ЖОО табылмады.

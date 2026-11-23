@@ -338,7 +338,6 @@ universities.card.view_details: View details
 universities.card.metrics: Key metrics
 universities.card.photo_unavailable: Campus photo unavailable
 universities.card.statuses: University status
-universities.card.admissions_guide: Admissions guide
 universities.card.per_year: / year
 universities.card.compare: Add to compare
 universities.card.compare_short: Compare
@@ -3195,8 +3194,6 @@ universities.tip.before_aid: Financial aid is not deducted.
 universities.tip.requirements_met: Your results meet the published minimums. Check the other admission conditions on the university page.
 universities.tip.below_minimum: Below the minimum: {items}.
 universities.tip.minimum_gap: {exam} needs {minimum}, you have {provided}
-universities.ux2.legend.aria: Icons on university cards
-universities.ux2.legend.lead: Card icons:
 universities.ux2.legend.subject_missing: Program not offered
 universities.ux2.legend.subject_matched: Subject offered
 universities.ux2.legend.requirements_below: Below requirements
@@ -3363,3 +3360,24 @@ universities.empty.clear_price: Remove the price filter
 universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
 profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
+universities.filter.reviewed_only: Detailed admissions data
+universities.filter.reviewed_only_hint: Show universities with verified route, minimum, and cost breakdowns
+universities.unifit.prefs_button: Preferences
+universities.unifit.prefs_summary: UniFit preferences
+universities.tip.budget_level_needed: {cost} a year depending on study level. Select a study level to compare against your budget.
+guide.start.nav: Getting started
+guide.start.title: How to use UniSearch in 3 steps
+guide.start.intro: UniSearch helps you explore official university programs, admission minimums, deadlines, and costs without guesswork. Browse freely right away, or add your scores and budget for automatic checks.
+guide.start.step1.title: 1. Add what you already know in Profile
+guide.start.step1.desc: Enter your study level, subject, yearly budget, GPA, or exam scores (IELTS, SAT, UNT, NUET). Every field is optional — missing scores never count as a failure.
+guide.start.step2.title: 2. Filter the catalog and sort with UniFit
+guide.start.step2.desc: Cards show plain-language status tags — whether your profile meets minimums, needs an exam, or fits your budget. Adjust UniFit sliders only if research focus, selectivity, or city size matter to you.
+guide.start.step3.title: 3. Check official details or compare two universities
+guide.start.step3.desc: Open any university for routes, deadlines, cost breakdowns, and official source links, or select two universities in Compare mode to view them side by side.
+guide.start.cta_catalog: Browse universities
+guide.start.cta_profile: Set up profile
+guide.formula.toggle: Show exact calculation formula
+universities.compare.swap_university: Change university
+universities.compare.swap_title: Replace {name}
+universities.compare.swap_search: Search university...
+universities.compare.swap_empty: No matching universities in this comparison group.

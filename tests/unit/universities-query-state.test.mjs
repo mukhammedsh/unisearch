@@ -163,8 +163,9 @@ test("countActiveFilters, buildCatalogParams, buildSectionUrlParams, buildCatalo
     sort: "uni_ai",
     activeTab: "compare",
     only_saved: true,
+    only_reviewed: true,
   };
-  assert.equal(countActiveFilters(aiState, limits), 7);
+  assert.equal(countActiveFilters(aiState, limits), 8);
 
   const apiParams = buildCatalogParams(aiState, {
     forApi: true,
@@ -179,7 +180,7 @@ test("countActiveFilters, buildCatalogParams, buildSectionUrlParams, buildCatalo
   assert.equal(apiParams.get("cost_basis"), "tuition");
   assert.equal(apiParams.get("focus_uni"), null);
 
-  const fallbackParams = buildFallbackListParams(apiParams, { ...aiState, q: "", only_saved: false, page: 3, limit: 24 });
+  const fallbackParams = buildFallbackListParams(apiParams, { ...aiState, q: "", only_saved: false, only_reviewed: false, page: 3, limit: 24 });
   assert.equal(fallbackParams.get("sort"), "name_asc");
   assert.equal(fallbackParams.get("page"), "3");
   assert.equal(fallbackParams.get("limit"), "24");
@@ -192,13 +193,14 @@ test("countActiveFilters, buildCatalogParams, buildSectionUrlParams, buildCatalo
   assert.equal(sectionParams.get("tab"), "compare");
   assert.equal(sectionParams.get("sort"), "uni_ai");
   assert.equal(sectionParams.get("only_saved"), "1");
+  assert.equal(sectionParams.get("only_reviewed"), "1");
   assert.equal(sectionParams.get("focus_uni"), "mit-usa-cambridge");
   assert.equal(sectionParams.get("compare"), null);
   assert.equal(sectionParams.get("ids"), null);
 
   let debugStage = "";
   const aiPayload = buildCatalogAiSortPayload(
-    { ...aiState, only_saved: false, viewMode: "map" },
+    { ...aiState, only_saved: false, only_reviewed: false, viewMode: "map" },
     {
       currentCurrency: "USD",
       currentLimits: limits,

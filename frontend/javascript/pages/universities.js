@@ -122,6 +122,8 @@ function collectUniversitiesElements() {
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         minCostLabel: $("minCostLabel"), maxCostLabel: $("maxCostLabel"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
+        unifitPrefsPanel: $("unifitPreferencesPanel"), unifitPrefsCount: $("unifitPrefsCount"),
+        reviewedOnlyToggle: $("reviewedOnlyToggle"),
         sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
         sortAiTagsHint: $("sortAiTagsHint"),
         focusSlider: $("focusSlider"), focusLabel: $("focusLabel"),
@@ -149,7 +151,7 @@ function collectUniversitiesElements() {
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitBannerTitle: $("unifitBannerTitle"),
         unifitBannerEdit: $("unifitBannerEdit"),
-        unifitLegend: $("unifitLegend"),
+        unifitBannerPrefsBtn: $("unifitBannerPrefsBtn"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
     };
@@ -943,15 +945,21 @@ export function initUniversitiesPage() {
         const rawItems = Array.isArray(data.items) ? data.items : [];
         let items = rawItems;
         let total = data.total || 0;
-        if (state.only_saved) {
+        const clientFiltered = Boolean(state.only_saved || state.only_reviewed);
+        if (clientFiltered) {
             const savedIds = new Set(Array.from(compareController.getSavedUniversityIds()).map((id) => String(id || "").trim()).filter(Boolean));
-            const filteredItems = rawItems.filter((item) => savedIds.has(String(item?.id || "").trim()));
+            const filteredItems = rawItems.filter((item) => (
+                (!state.only_saved || savedIds.has(String(item?.id || "").trim()))
+                && (!state.only_reviewed || item?.admissions_catalog?.availability === "reviewed")
+            ));
             total = filteredItems.length;
             items = state.viewMode === "map"
                 ? filteredItems
                 : filteredItems.slice((state.page - 1) * state.limit, state.page * state.limit);
+            lastRenderedItems = filteredItems;
+        } else {
+            lastRenderedItems = items;
         }
-        lastRenderedItems = state.only_saved ? rawItems : items;
         const warnings = Array.isArray(data.warnings) ? data.warnings : [];
         const mlUnavailable = warnings.some((w) => String(w || "").toLowerCase().includes("machine learning unavailable"));
         const warningText = (mlUnavailable && state.sort === "uni_ai")

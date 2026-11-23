@@ -181,7 +181,7 @@ body[data-page="universities"] {
 .u-filter-card {
   background: var(--surface-solid);
   border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  padding: var(--space-4);
   box-shadow: var(--shadow-card);
   position: relative;
   flex-shrink: 0;
@@ -193,7 +193,7 @@ body[data-page="universities"] {
   align-items: center;
   gap: var(--space-3);
   font-weight: var(--font-weight-medium);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   font-size: var(--text-xl);
   line-height: 1.2;
 }
@@ -251,7 +251,7 @@ body[data-page="universities"] {
 }
 
 .u-field {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .u-field--state {
@@ -334,11 +334,52 @@ body[data-page="universities"] {
   height: 18px;
 }
 
+.u-field--reviewed-only {
+  margin-top: var(--space-2);
+}
+
+.u-reviewed-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.u-reviewed-toggle:has(.u-reviewed-toggle__input:checked) {
+  background: var(--accent-soft);
+  color: var(--interaction-active-text);
+}
+
+.u-reviewed-toggle__input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex: 0 0 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.u-reviewed-toggle__text {
+  min-width: 0;
+}
+
 .u-label {
   display: block;
   font-size: var(--text-sm);
   color: var(--text-muted);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-1-5);
   font-weight: var(--font-weight-medium);
 }
 
@@ -403,8 +444,9 @@ body[data-page="universities"] {
 .u-select,
 .u-filter-card .custom-select-trigger {
   width: 100%;
+  min-height: 40px;
   box-sizing: border-box;
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-base);
   border: none;
   outline: none;
@@ -423,7 +465,7 @@ body[data-page="universities"] {
 .u-sep {
   height: 0;
   background: transparent;
-  margin: var(--space-4) 0;
+  margin: var(--space-2) 0;
 }
 
 .u-sort-ai-hint {
@@ -431,6 +473,89 @@ body[data-page="universities"] {
   font-size: var(--text-xs);
   line-height: 1.35;
   color: var(--text-muted);
+}
+
+.u-unifit-prefs {
+  margin-top: var(--space-3);
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+  padding: 0 var(--space-3);
+}
+
+.u-unifit-prefs[hidden] {
+  display: none;
+}
+
+.u-unifit-prefs__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) 0;
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.u-unifit-prefs__summary::-webkit-details-marker {
+  display: none;
+}
+
+.u-unifit-prefs__summary::after {
+  content: "+";
+  color: var(--text-muted);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+.u-unifit-prefs[open] > .u-unifit-prefs__summary::after {
+  content: "−";
+}
+
+.u-unifit-prefs__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.u-unifit-prefs__label [data-heroicon],
+.u-unifit-prefs__label .ui-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: var(--text-muted);
+}
+
+.u-unifit-prefs__count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-1-5);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: var(--text-inverse);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}
+
+.u-unifit-prefs__count[hidden] {
+  display: none;
+}
+
+.u-unifit-prefs > .u-field {
+  margin-top: 0;
+  padding-top: var(--space-1);
+  padding-bottom: var(--space-3);
 }
 
 .u-content {
@@ -877,49 +1002,15 @@ body[data-page="universities"] {
   font-size: var(--text-xs);
 }
 
-/* Legend of the status icons on the rendered cards: the same icons and tones as the badges, with a short label. */
-.u-unifit-legend {
-  grid-column: 1 / -1;
-  display: flex;
+.u-unifit-warning__actions {
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--space-1-5) var(--space-4);
-  min-width: 0;
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--line-faint);
+  gap: var(--space-2);
+  flex-shrink: 0;
 }
 
-.u-unifit-legend[hidden] {
-  display: none;
-}
-
-.u-unifit-legend__lead {
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-}
-
-.u-unifit-legend__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1-5);
-  min-width: 0;
-  color: var(--text);
-  font-size: var(--text-xs);
-  line-height: 1.3;
-}
-
-.u-unifit-legend .uni-status-trigger {
-  flex: 0 0 auto;
-  width: var(--space-6);
-  height: var(--space-6);
-  cursor: default;
-}
-
-.u-unifit-legend .uni-status-icon {
-  width: var(--space-4);
-  height: var(--space-4);
-}
-
+.u-unifit-warning__prefs,
 .u-unifit-warning__link {
   flex-shrink: 0;
   display: inline-flex;
@@ -931,9 +1022,15 @@ body[data-page="universities"] {
   background: var(--surface-soft);
   box-shadow: var(--shadow-xs);
   color: var(--interaction-active-text);
+  font: inherit;
+  font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .u-unifit-warning__icon {
@@ -993,10 +1090,13 @@ body[data-page="universities"] {
     color: var(--interaction-hover-text);
   }
 
-  .u-saved-filter__btn:not(.is-active):hover {
+  .u-saved-filter__btn:not(.is-active):hover,
+  .u-unifit-prefs__summary:hover {
     color: var(--interaction-hover-text);
   }
 
+  .u-reviewed-toggle:not(:has(.u-reviewed-toggle__input:checked)):hover,
+  .u-unifit-warning__prefs:hover,
   .u-unifit-warning__link:hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);

@@ -6,10 +6,11 @@ import { buildFilterResetPatch } from "../../frontend/javascript/pages/universit
 const defaults = { fundingType: "any", limits: { min: 0, max: 90000 }, onlySaved: false };
 
 test("resetting filters clears the search and filters but keeps the chosen order", () => {
-  const patch = buildFilterResetPatch({ sort: "uni_ai", q: "robotics", country: "US" }, defaults);
+  const patch = buildFilterResetPatch({ sort: "uni_ai", q: "robotics", country: "US", only_reviewed: true }, defaults);
   assert.equal(patch.sort, "uni_ai");
   assert.equal(patch.q, "");
   assert.equal(patch.country, "");
+  assert.equal(patch.only_reviewed, false);
   assert.equal(patch.min_tuition, 0);
   assert.equal(patch.max_tuition, 90000);
   assert.equal(patch.page, 1);

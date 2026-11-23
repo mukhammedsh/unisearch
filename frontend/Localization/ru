@@ -341,7 +341,6 @@ universities.card.view_details: Открыть детали
 universities.card.metrics: Ключевые метрики
 universities.card.photo_unavailable: Фото кампуса недоступно
 universities.card.statuses: Статусы университета
-universities.card.admissions_guide: Гид по поступлению
 universities.card.per_year: в год
 universities.card.compare: Добавить к сравнению
 universities.card.compare_short: Сравнить
@@ -3195,8 +3194,6 @@ universities.tip.before_aid: Финансовая помощь не учтена
 universities.tip.requirements_met: Ваши результаты проходят опубликованные минимумы. Остальные условия поступления проверьте на странице университета.
 universities.tip.below_minimum: Ниже минимума: {items}.
 universities.tip.minimum_gap: {exam} — нужно {minimum}, у вас {provided}
-universities.ux2.legend.aria: Значки на карточках университетов
-universities.ux2.legend.lead: Значки на карточках:
 universities.ux2.legend.subject_missing: Программы нет
 universities.ux2.legend.subject_matched: Направление есть
 universities.ux2.legend.requirements_below: Ниже требований
@@ -3363,3 +3360,24 @@ universities.empty.clear_price: Убрать фильтр цены
 universities.state.empty_saved_none: Вы пока ничего не сохранили. Сохраните вуз на его карточке, и он появится здесь.
 profile.unit.per_year: / год
 profile.budget_currency_label: Валюта бюджета
+universities.filter.reviewed_only: Подробные данные приёма
+universities.filter.reviewed_only_hint: Показать вузы с проверенными маршрутами, минимумами и расчётом стоимости
+universities.unifit.prefs_button: Предпочтения
+universities.unifit.prefs_summary: Предпочтения UniFit
+universities.tip.budget_level_needed: {cost} в год в зависимости от уровня обучения. Выберите уровень обучения, чтобы сравнить с вашим бюджетом.
+guide.start.nav: С чего начать
+guide.start.title: Как пользоваться UniSearch за 3 шага
+guide.start.intro: UniSearch помогает изучать официальные программы, минимальные требования, сроки и стоимость обучения без догадок. Каталог можно смотреть сразу без анкеты — или указать свои баллы и бюджет для автоматической сверки.
+guide.start.step1.title: 1. Укажите в Профиле только то, что уже знаете
+guide.start.step1.desc: Выберите уровень обучения, направление, годовой бюджет, средний балл или экзамены (IELTS, SAT, ЕНТ, NUET). Все поля необязательны: пустые поля никогда не считаются провалом.
+guide.start.step2.title: 2. Настройте фильтры и сортировку UniFit
+guide.start.step2.desc: На карточках сразу видны понятные текстовые статусы: подходит ли профиль по минимумам, нужен ли экзамен и укладывается ли цена в бюджет. Ползунки предпочтений UniFit двигайте только если важны наука, конкурс или размер города.
+guide.start.step3.title: 3. Откройте страницу вуза или сравните два вуза
+guide.start.step3.desc: Внутри карточки вуза собраны маршруты подачи, ближайшие дедлайны, структура расходов и прямые ссылки на официальные сайты. В режиме сравнения можно сопоставить два вуза строка к строке.
+guide.start.cta_catalog: Перейти к каталогу
+guide.start.cta_profile: Заполнить профиль
+guide.formula.toggle: Показать точную формулу расчёта
+universities.compare.swap_university: Заменить вуз
+universities.compare.swap_title: Заменить вуз: {name}
+universities.compare.swap_search: Поиск университета...
+universities.compare.swap_empty: В этой группе сравнения подходящих вузов не найдено.

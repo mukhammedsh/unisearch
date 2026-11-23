@@ -2,8 +2,6 @@
 
 import {
     aiName,
-    escapeHtml,
-    escapeHtmlAttr,
     getExamDisplayName,
     loadProfile,
 } from "../../utils.js";
@@ -11,17 +9,18 @@ import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { formatMoney } from "../../currency.js";
 import { routeProfile } from "../../routes.js";
 import { translateProgramName } from "../../university-translations.js";
-import { cleanDecoratedText, renderInlineIcon } from "../_shared.js";
-import { describeRankingProfile, legendEntries } from "./unifit-explanation.js";
+import { cleanDecoratedText } from "../_shared.js";
+import { describeRankingProfile } from "./unifit-explanation.js";
 import { hasProfileEvidence } from "./query-state.js";
 
 /**
- * Manage the UniFit ranking banner, card badge legend, and localized AI sort label.
+ * Manage the UniFit ranking banner, preferences shortcut, and localized AI sort label.
  * @param {{ el: Record<string, any>, state: Record<string, any> }} options
  */
 export function createUnifitBannerController({ el, state }) {
     let dismissed = false;
     let dismissHandler = null;
+    let prefsHandler = null;
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -33,23 +32,8 @@ export function createUnifitBannerController({ el, state }) {
         }
     };
 
-    // Legend of the icon badges that are on the rendered cards, drawn with the same icons and tones as the badges,
-    // so a first-time visitor learns the mapping once. Called after the banner updates and after each card render.
-    const refreshLegend = () => {
-        const box = el.unifitLegend;
-        if (!box) return;
-        const scope = state.viewMode === "map" ? el.mapResults : el.list;
-        const badges = state.sort === "uni_ai" && scope
-            ? Array.from(scope.querySelectorAll(".uni-card:not(.is-skeleton) .uni-status-trigger[data-legend]"))
-                .map((node) => ({ key: node.dataset.legend, icon: node.dataset.legendIcon, tone: node.dataset.legendTone }))
-            : [];
-        const entries = legendEntries(badges);
-        box.hidden = !entries.length;
-        box.innerHTML = entries.length
-            ? `<span class="u-unifit-legend__lead">${escapeHtml(t("universities.ux2.legend.lead"))}</span>${entries.map(({ icon, tone, labelKey }) =>
-                `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 16, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`).join("")}`
-            : "";
-    };
+    // Card badges now display plain-language text directly inside each card body.
+    const refreshLegend = () => {};
 
     const update = () => {
         if (!el.unifitWarningBanner) return;
@@ -81,7 +65,6 @@ export function createUnifitBannerController({ el, state }) {
             el.unifitBannerEdit.setAttribute("href", routeProfile());
         }
         el.unifitWarningBanner.hidden = false;
-        refreshLegend();
     };
 
     const resetDismissed = () => {
@@ -99,14 +82,32 @@ export function createUnifitBannerController({ el, state }) {
                 el.unifitWarningBanner.hidden = true;
             }
         };
+        prefsHandler = () => {
+            if (window.innerWidth <= 1024 && el.mobileFilterToggle && !el.sidebar?.classList.contains("is-open")) {
+                el.mobileFilterToggle.click();
+            }
+            if (el.unifitPrefsPanel) {
+                el.unifitPrefsPanel.hidden = false;
+                el.unifitPrefsPanel.open = true;
+                el.unifitPrefsPanel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            }
+            window.requestAnimationFrame(() => {
+                el.focusSlider?.focus({ preventScroll: false });
+            });
+        };
         el.unifitWarningDismiss?.addEventListener("click", dismissHandler);
+        el.unifitBannerPrefsBtn?.addEventListener("click", prefsHandler);
     };
 
     const dispose = () => {
         if (dismissHandler && el.unifitWarningDismiss) {
             el.unifitWarningDismiss.removeEventListener("click", dismissHandler);
         }
+        if (prefsHandler && el.unifitBannerPrefsBtn) {
+            el.unifitBannerPrefsBtn.removeEventListener("click", prefsHandler);
+        }
         dismissHandler = null;
+        prefsHandler = null;
     };
 
     return {

@@ -9,10 +9,10 @@
 // value per university, with a compact sticky strip of names while the heads are out of view.
 import { API_BASE, bindImageFallbacks, debounce, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice } from "../../utils.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
-import { t, tFormat } from "../../i18n.js";
+import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { navigateToAppRoute, routeCompareSelection, routeUniversityDetail } from "../../routes.js";
-import { formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource } from "../_shared.js";
+import { COMPARE_UNIVERSITIES_KEY, fetchUniversityDetailCached, formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource, writeIdListStorage } from "../_shared.js";
 import { compareCampusHtml, compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
 import { readForSinglePublishedCycle } from "../university/admissions-cycle.js";
@@ -358,9 +358,12 @@ function headHtml(column, index, photos) {
     : `<button type="button" class="compare-reviewed__button${["choose", "route", "mismatch"].includes(scope) ? " compare-reviewed__button--primary" : ""}" data-compare-pick="${escapeHtmlAttr(column.id)}"${scope === "loading" ? " disabled" : ""}>${heroIcon(column.context.study_option_id ? "pencil-square" : "academic-cap", "ui-icon ui-icon--16")}<span>${escapeHtml(label(scope === "route" ? "action.choose_route" : column.context.study_option_id ? "action.change" : "action.choose"))}</span></button>`;
   return `<article class="compare-reviewed__head" data-uni-id="${escapeHtmlAttr(column.id)}" data-compare-slot="${index + 1}" data-scope="${escapeHtmlAttr(scope)}">
     ${compareCampusHtml(column.id, photos)}
-    <a class="compare-reviewed__identity" href="${escapeHtmlAttr(detailHref(column))}"${linkAttrs()}>
-      <span class="compare-reviewed__identity-text"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(compareLocationText(column.university))}</small></span>
-    </a>
+    <div class="compare-reviewed__identity-bar">
+      <a class="compare-reviewed__identity" href="${escapeHtmlAttr(detailHref(column))}"${linkAttrs()}>
+        <span class="compare-reviewed__identity-text"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(compareLocationText(column.university))}</small></span>
+      </a>
+      <button type="button" class="compare-reviewed__swap" data-compare-swap="${escapeHtmlAttr(column.id)}">${heroIcon("arrows-right-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.swap_university"))}</span></button>
+    </div>
     <div class="compare-reviewed__scope" aria-live="polite">
       <span class="compare-reviewed__scope-label">${escapeHtml(label("scope.label"))}</span>
       <p class="compare-reviewed__scope-title">${escapeHtml(text.title)}</p>
@@ -412,13 +415,159 @@ function loadingHtml() {
   </div>`;
 }
 
-// Program picker: a modal dialog with search, study-level filters and the program list; a program with several
-// application routes asks for the route in the same dialog before the column changes.
-function openPicker({ column, trigger, onApply }) {
+function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   const dialog = document.createElement("dialog");
   dialog.className = "compare-picker";
   dialog.setAttribute("closedby", "any");
-  dialog.setAttribute("aria-labelledby", "comparePickerTitle");
+  dialog.setAttribute("aria-labelledby", labelledBy);
+  if (!("closedBy" in HTMLDialogElement.prototype)) {
+    const outsideDialog = (e) => {
+      const rect = dialog.getBoundingClientRect();
+      return e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
+    };
+    let pressedOutside = false;
+    dialog.addEventListener("pointerdown", (e) => { pressedOutside = outsideDialog(e); });
+    dialog.addEventListener("pointerup", (e) => { if (pressedOutside && outsideDialog(e)) dialog.close(); });
+  }
+  dialog.addEventListener("close", () => {
+    onClose?.();
+    dialog.remove();
+    if (trigger?.isConnected) trigger.focus();
+  });
+  return dialog;
+}
+
+function pickerPanelHtml({ titleId, title, subtitle = "", body }) {
+  const close = label("picker.close");
+  return `<div class="compare-picker__panel">
+    <header class="compare-picker__head">
+      <div class="compare-picker__heading">
+        <h2 id="${escapeHtmlAttr(titleId)}">${escapeHtml(title)}</h2>
+        ${subtitle ? `<p>${escapeHtml(subtitle)}</p>` : ""}
+      </div>
+      <button type="button" class="compare-picker__close" data-picker-close aria-label="${escapeHtmlAttr(close)}" title="${escapeHtmlAttr(close)}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
+    </header>
+    <div class="compare-picker__body">${body}</div>
+  </div>`;
+}
+
+function pickerSearchHtml({ inputId, placeholder, value = "" }) {
+  return `<form class="compare-picker__search" data-picker-search role="search">
+    <label class="sr-only" for="${escapeHtmlAttr(inputId)}">${escapeHtml(placeholder)}</label>
+    ${heroIcon("magnifying-glass", "ui-icon ui-icon--16")}
+    <input id="${escapeHtmlAttr(inputId)}" type="search" maxlength="200" autocomplete="off" placeholder="${escapeHtmlAttr(placeholder)}" value="${escapeHtmlAttr(value)}">
+  </form>`;
+}
+
+function pickerStateHtml(status, retryAttr) {
+  if (status === "error") {
+    return `<div class="compare-picker__state" role="alert"><p>${escapeHtml(catalogLabel("load_error"))}</p><button type="button" class="compare-reviewed__button" ${retryAttr}>${escapeHtml(catalogLabel("retry"))}</button></div>`;
+  }
+  return `<div class="compare-picker__state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(catalogLabel("loading"))}</span></div>`;
+}
+
+// In-place university switcher modal shared by both reviewed and earlier-format comparison views.
+export function openUniversitySwapDialog({ currentUni, otherId = "", trigger, reviewedOnly = true, onChoose }) {
+  let request = null;
+  let search = "";
+  let status = "loading";
+  let items = [];
+  const dialog = createPickerDialog({
+    labelledBy: "compareSwapTitle",
+    trigger,
+    onClose: () => request?.abort(),
+  });
+
+  const matchesQuery = (item, query) => {
+    if (!query) return true;
+    const haystack = [compareUniversityName(item), compareLocationText(item), item.name, item.id].filter(Boolean).join(" ").toLowerCase();
+    return haystack.includes(query);
+  };
+
+  const resultsHtml = () => {
+    if (status === "error" || status === "loading") return pickerStateHtml(status, "data-swap-retry");
+    const query = search.toLowerCase();
+    const filtered = items.filter((item) => matchesQuery(item, query));
+    if (!filtered.length) return `<p class="compare-picker__state">${escapeHtml(t("universities.compare.swap_empty"))}</p>`;
+    return `<ul class="compare-picker__list">${filtered.map((item) => {
+      const location = compareLocationText(item);
+      return `<li><button type="button" class="compare-picker__option" data-swap-option="${escapeHtmlAttr(item.id)}">
+        <span class="compare-picker__option-text"><strong>${escapeHtml(compareUniversityName(item))}</strong>${location ? `<small>${escapeHtml(location)}</small>` : ""}</span>
+      </button></li>`;
+    }).join("")}</ul>`;
+  };
+
+  const renderResults = () => {
+    const results = dialog.querySelector("[data-swap-results]");
+    if (results) results.innerHTML = resultsHtml();
+  };
+
+  async function loadUniversities() {
+    request?.abort();
+    const current = request = new AbortController();
+    status = "loading";
+    renderResults();
+    try {
+      const lang = encodeURIComponent(getCurrentLanguage() || "eng");
+      const response = await fetch(`${API_BASE}/universities?limit=200&lang=${lang}`, { signal: current.signal });
+      if (!response.ok) throw new Error(`Failed to load universities: ${response.status}`);
+      const data = await response.json();
+      if (current !== request) return;
+      const currentId = String(currentUni?.id || "");
+      const excludedId = String(otherId || "");
+      items = (Array.isArray(data?.items) ? data.items : []).filter((item) => {
+        if (!item || item.id == null) return false;
+        const isReviewed = item?.admissions_catalog?.availability === "reviewed";
+        if (reviewedOnly ? !isReviewed : isReviewed) return false;
+        const id = String(item.id);
+        return id !== currentId && id !== excludedId;
+      });
+      status = "ready";
+    } catch (error) {
+      if (current.signal.aborted || current !== request) return;
+      console.error("Failed to load university swap options:", error);
+      status = "error";
+    }
+    renderResults();
+  }
+
+  dialog.addEventListener("click", (event) => {
+    const target = event.target.closest("button");
+    if (!target) return;
+    if (target.matches("[data-picker-close]")) dialog.close();
+    else if (target.matches("[data-swap-retry]")) void loadUniversities();
+    else if (target.matches("[data-swap-option]")) {
+      const selected = items.find((item) => String(item.id) === target.dataset.swapOption);
+      if (selected) {
+        dialog.close();
+        void onChoose?.(selected);
+      }
+    }
+  });
+  dialog.addEventListener("input", (event) => {
+    if (event.target.id !== "compareSwapSearch") return;
+    search = event.target.value.trim();
+    renderResults();
+  });
+  dialog.addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
+
+  document.body.append(dialog);
+  dialog.innerHTML = pickerPanelHtml({
+    titleId: "compareSwapTitle",
+    title: tFormat("universities.compare.swap_title", { name: compareUniversityName(currentUni) }),
+    body: `${pickerSearchHtml({ inputId: "compareSwapSearch", placeholder: t("universities.compare.swap_search") })}<div class="compare-picker__results" data-swap-results>${resultsHtml()}</div>`,
+  });
+  dialog.showModal();
+  dialog.querySelector("#compareSwapSearch")?.focus();
+  void loadUniversities();
+  return dialog;
+}
+
+// Program picker: a modal dialog with search, study-level filters and the program list; a program with several
+// application routes asks for the route in the same dialog before the column changes.
+function openPicker({ column, trigger, onApply }) {
   const suggestions = programProfileSuggestions(loadProfileForApi());
   const offeredLevels = new Set(column.university?.admissions_catalog?.study_levels || []);
   const levels = PICKER_LEVELS.filter((level) => offeredLevels.has(level));
@@ -434,6 +583,11 @@ function openPicker({ column, trigger, onApply }) {
     pendingContext: null,
     request: null,
   };
+  const dialog = createPickerDialog({
+    labelledBy: "comparePickerTitle",
+    trigger,
+    onClose: () => picker.request?.abort(),
+  });
   if (columnScope(column) === "route") {
     picker.step = "routes";
     picker.pending = column.resolved;
@@ -453,8 +607,7 @@ function openPicker({ column, trigger, onApply }) {
   };
 
   const listHtml = () => {
-    if (picker.status === "error") return `<div class="compare-picker__state" role="alert"><p>${escapeHtml(catalogLabel("load_error"))}</p><button type="button" class="compare-reviewed__button" data-picker-retry>${escapeHtml(catalogLabel("retry"))}</button></div>`;
-    if (picker.status === "loading" && !picker.items.length) return `<div class="compare-picker__state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(catalogLabel("loading"))}</span></div>`;
+    if (picker.status === "error" || (picker.status === "loading" && !picker.items.length)) return pickerStateHtml(picker.status, "data-picker-retry");
     if (!picker.items.length) return `<p class="compare-picker__state">${escapeHtml(catalogLabel("no_options"))}</p>`;
     const more = picker.items.length < picker.total
       ? `<button type="button" class="compare-reviewed__button compare-picker__more" data-picker-more${picker.status === "loading" ? " disabled" : ""}>${escapeHtml(label("picker.more"))}</button>` : "";
@@ -466,11 +619,7 @@ function openPicker({ column, trigger, onApply }) {
       <span class="compare-picker__option-text"><strong>${escapeHtml(label("scope.institution"))}</strong><small>${escapeHtml(label("scope.institution_meta"))}</small></span>
       ${usingShared ? heroIcon("check", "ui-icon ui-icon--16") : ""}
     </button>` : ""}
-    <form class="compare-picker__search" data-picker-search role="search">
-      <label class="sr-only" for="comparePickerSearch">${escapeHtml(label("picker.search"))}</label>
-      ${heroIcon("magnifying-glass", "ui-icon ui-icon--16")}
-      <input id="comparePickerSearch" type="search" maxlength="200" autocomplete="off" placeholder="${escapeHtmlAttr(label("picker.search"))}" value="${escapeHtmlAttr(picker.search)}">
-    </form>
+    ${pickerSearchHtml({ inputId: "comparePickerSearch", placeholder: label("picker.search"), value: picker.search })}
     ${levels.length > 1 ? `<div class="compare-picker__levels" role="group" aria-label="${escapeHtmlAttr(catalogLabel("level_label"))}">
       ${["", ...levels].map((level) => `<button type="button" class="compare-picker__level" data-picker-level="${escapeHtmlAttr(level)}" aria-pressed="${picker.level === level ? "true" : "false"}">${escapeHtml(level ? catalogLabel(`level.${level}`) : catalogLabel("all_levels"))}</button>`).join("")}
     </div>` : ""}
@@ -489,18 +638,14 @@ function openPicker({ column, trigger, onApply }) {
 
   const render = ({ keepSearchFocus = false } = {}) => {
     const body = picker.step === "routes" ? routesHtml() : picker.step === "applying"
-      ? `<div class="compare-picker__state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(catalogLabel("loading"))}</span></div>`
+      ? pickerStateHtml("loading", "")
       : programsHtml();
-    dialog.innerHTML = `<div class="compare-picker__panel">
-      <header class="compare-picker__head">
-        <div class="compare-picker__heading">
-          <h2 id="comparePickerTitle">${escapeHtml(label("picker.title"))}</h2>
-          <p>${escapeHtml(compareUniversityName(column.university))}</p>
-        </div>
-        <button type="button" class="compare-picker__close" data-picker-close aria-label="${escapeHtmlAttr(label("picker.close"))}" title="${escapeHtmlAttr(label("picker.close"))}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
-      </header>
-      <div class="compare-picker__body">${body}</div>
-    </div>`;
+    dialog.innerHTML = pickerPanelHtml({
+      titleId: "comparePickerTitle",
+      title: label("picker.title"),
+      subtitle: compareUniversityName(column.university),
+      body,
+    });
     if (keepSearchFocus) {
       const input = dialog.querySelector("#comparePickerSearch");
       input?.focus();
@@ -590,15 +735,6 @@ function openPicker({ column, trigger, onApply }) {
 
   const searchLater = debounce(() => { void loadPrograms(); }, 250);
 
-  if (!("closedBy" in HTMLDialogElement.prototype)) {
-    const outsideDialog = (e) => {
-      const rect = dialog.getBoundingClientRect();
-      return e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
-    };
-    let pressedOutside = false;
-    dialog.addEventListener("pointerdown", (e) => { pressedOutside = outsideDialog(e); });
-    dialog.addEventListener("pointerup", (e) => { if (pressedOutside && outsideDialog(e)) dialog.close(); });
-  }
   dialog.addEventListener("click", (event) => {
     const target = event.target.closest("button");
     if (!target) return;
@@ -626,11 +762,6 @@ function openPicker({ column, trigger, onApply }) {
   dialog.addEventListener("submit", (event) => {
     event.preventDefault();
     void loadPrograms();
-  });
-  dialog.addEventListener("close", () => {
-    picker.request?.abort();
-    dialog.remove();
-    if (trigger?.isConnected) trigger.focus();
   });
 
   document.body.append(dialog);
@@ -744,6 +875,43 @@ export function mountReviewedComparison(container, universities, photos) {
   }
 
   const onClick = (event) => {
+    const swap = event.target.closest("[data-compare-swap]");
+    if (swap) {
+      const colIndex = columns.findIndex((entry) => entry.id === swap.dataset.compareSwap);
+      if (colIndex < 0) return;
+      const column = columns[colIndex];
+      const otherId = columns[1 - colIndex]?.id || "";
+      picker = openUniversitySwapDialog({
+        currentUni: column.university,
+        otherId,
+        trigger: swap,
+        reviewedOnly: true,
+        onChoose: async (picked) => {
+          try {
+            const detail = await fetchUniversityDetailCached(picked.id);
+            if (disposed || !detail) return;
+            column.request?.abort();
+            column.university = detail;
+            column.id = String(detail.id);
+            column.context = readAdmissionContext(new URL(window.location.pathname, window.location.origin), loadProfileForApi(), column.id);
+            column.sharedRoute = null;
+            column.routesLoaded = false;
+            column.resolved = null;
+            const nextIds = columns.map((c) => c.id);
+            writeIdListStorage(COMPARE_UNIVERSITIES_KEY, nextIds);
+            const nextUrl = new URL(window.location.href);
+            nextUrl.searchParams.set("ids", nextIds.join(","));
+            window.history.replaceState(null, "", nextUrl.toString());
+            void reloadColumn(column);
+          } catch (error) {
+            console.error("Failed to swap reviewed comparison university:", error);
+            column.status = "error";
+            render();
+          }
+        },
+      });
+      return;
+    }
     const pick = event.target.closest("[data-compare-pick]");
     if (pick) {
       const column = columns.find((entry) => entry.id === pick.dataset.comparePick);

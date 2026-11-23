@@ -14,6 +14,7 @@ import { t, tFormat } from "../../i18n.js";
  * @property {number} [min_tuition]
  * @property {number} [max_tuition]
  * @property {boolean} [only_saved]
+ * @property {boolean} [only_reviewed]
  */
 
 /**
@@ -53,6 +54,9 @@ export function describeActiveFilters(filters, limits, deps) {
   if (funding && funding !== "any") {
     const fundingLabel = t(`profile.option.funding_${funding}`, funding);
     labels.push(tFormat("universities.empty.filter.funding", { value: fundingLabel }, `funding in your profile: ${fundingLabel}`));
+  }
+  if (filters.only_reviewed) {
+    labels.push(t("universities.filter.reviewed_only", "Detailed admissions data"));
   }
 
   const min = Number(filters.min_tuition);

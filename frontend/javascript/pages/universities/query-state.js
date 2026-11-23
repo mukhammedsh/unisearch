@@ -192,6 +192,7 @@ export function createInitialCatalogState({ pageParams, savedState, currentCurre
         ),
         city_vs_campus: clampPercent(savedState.city_vs_campus, 50),
         only_saved: savedState.only_saved === true || savedState.only_saved === "true" || savedState.only_saved === "1",
+        only_reviewed: savedState.only_reviewed === true || savedState.only_reviewed === "true" || savedState.only_reviewed === "1",
         activeTab: initialTab,
         viewMode: savedState.viewMode || "list",
         page: 1,
@@ -218,6 +219,7 @@ export function countActiveFilters(state, limits) {
     if (state.study_level) count += 1;
     if (state.funding_type && state.funding_type !== "any") count += 1;
     if (state.only_saved) count += 1;
+    if (state.only_reviewed) count += 1;
     return count;
 }
 
@@ -285,9 +287,10 @@ export function buildCatalogParams(state, {
     if (state.funding_type) p.set("funding_type", state.funding_type);
 
     const isAiSort = state.sort === "uni_ai";
+    const clientFiltered = Boolean(state.only_saved || state.only_reviewed);
     if (forApi) p.set("sort", isAiSort ? "name_asc" : state.sort);
 
-    if (forApi && state.only_saved) {
+    if (forApi && clientFiltered) {
         p.set("limit", "2000");
         p.set("page", "1");
     } else if (forApi && state.viewMode === "map") {
@@ -316,6 +319,7 @@ export function buildCatalogParams(state, {
     if (state.viewMode) p.set("view", state.viewMode);
     if (!forApi && state.sort && state.sort !== "name_asc") p.set("sort", state.sort);
     if (!forApi && state.only_saved) p.set("only_saved", "1");
+    if (!forApi && state.only_reviewed) p.set("only_reviewed", "1");
     if (!forApi && focusUniId) p.set("focus_uni", focusUniId);
     return p;
 }
@@ -361,7 +365,7 @@ export function buildCatalogAiSortPayload(state, {
     const profile = loadProfileForApi();
     const uiLang = getCurrentLanguage();
     const isMapMode = state.viewMode === "map";
-    const shouldClientPageSaved = Boolean(state.only_saved);
+    const shouldClientPageSaved = Boolean(state.only_saved || state.only_reviewed);
     const payload = {
         profile,
         lang: uiLang,
@@ -402,9 +406,10 @@ export function buildCatalogAiSortPayload(state, {
  */
 export function buildFallbackListParams(apiParams, state) {
     const fallback = new URLSearchParams(apiParams.toString());
+    const clientFiltered = Boolean(state.only_saved || state.only_reviewed);
     fallback.set("sort", state.q ? "relevance" : "name_asc");
-    fallback.set("page", state.only_saved ? "1" : String(state.page));
-    fallback.set("limit", state.only_saved ? "2000" : String(state.limit));
+    fallback.set("page", clientFiltered ? "1" : String(state.page));
+    fallback.set("limit", clientFiltered ? "2000" : String(state.limit));
     return fallback;
 }
 
@@ -443,6 +448,9 @@ export function applyUrlParamsToState(state, { currentCurrency, currentLimits })
     }
     if (sp.has("only_saved")) {
         state.only_saved = ["1", "true", "yes", "on"].includes(String(sp.get("only_saved") || "").trim().toLowerCase());
+    }
+    if (sp.has("only_reviewed")) {
+        state.only_reviewed = ["1", "true", "yes", "on"].includes(String(sp.get("only_reviewed") || "").trim().toLowerCase());
     }
     if (sp.has("page")) {
         const page = Number(sp.get("page"));

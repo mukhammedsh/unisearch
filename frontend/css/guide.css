@@ -290,6 +290,45 @@
   outline-offset: var(--space-0-5);
 }
 
+.guide-formula-details {
+  margin-block: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-4);
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+}
+
+.guide-formula-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 40px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  list-style: none;
+}
+
+.guide-formula-summary::-webkit-details-marker {
+  display: none;
+}
+
+.guide-formula-summary::after {
+  content: "+";
+  font-weight: var(--font-weight-semibold);
+}
+
+.guide-formula-details[open] > .guide-formula-summary::after {
+  content: "−";
+}
+
+.guide-formula-details .guide-formula {
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-3);
+  background: var(--surface-solid);
+}
+
 /* Lists (tight rhythm without giant gaps between bullets) */
 .guide-list {
   margin: var(--space-2) 0 0;
@@ -348,6 +387,72 @@
   font-family: inherit;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+}
+
+/* --------------------------------------------------------------------------
+   Getting Started Steps & Actions (#guide-start)
+   -------------------------------------------------------------------------- */
+.guide-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-block: var(--space-3);
+}
+
+.guide-step-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+}
+
+.guide-step-card h3 {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
+  color: var(--text);
+}
+
+.guide-step-card p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+.guide-start-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.guide-start-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-base);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.guide-start-cta--primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+.guide-start-cta--secondary {
+  background: var(--surface-soft);
+  color: var(--text);
 }
 
 
@@ -489,6 +594,10 @@ body[data-page="guide"] {
     min-height: 40px;
     padding-block: var(--space-2);
   }
+
+  .guide-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -540,6 +649,15 @@ body[data-page="guide"] {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
+
+  .guide-start-cta--primary:hover {
+    background: var(--accent-strong);
+  }
+
+  .guide-start-cta--secondary:hover {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -547,7 +665,8 @@ body[data-page="guide"] {
   .guide-section,
   .guide-mobile-nav-toggle,
   .guide-mobile-nav-toggle__chevron,
-  .guide-section-navigation__button {
+  .guide-section-navigation__button,
+  .guide-start-cta {
     transition: none;
   }
 }
