@@ -232,66 +232,6 @@
   white-space: nowrap;
 }
 
-.finance-grid-new + .roi-box {
-  margin-top: var(--space-5);
-}
-
-.roi-metrics-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-5);
-}
-
-.roi-metric {
-  flex: 1 1 200px;
-  min-width: 0;
-}
-
-.roi-metric-label {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  font-weight: var(--font-weight-medium);
-}
-
-.roi-metric-value {
-  font-size: var(--text-2xl);
-  font-weight: var(--font-weight-medium);
-  color: var(--text);
-  line-height: 1.2;
-}
-
-.roi-metric-note {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-}
-
-.roi-metric-note--tone {
-  font-weight: var(--font-weight-medium);
-}
-
-.roi-metric-value--accent {
-  font-size: var(--text-3xl);
-  font-weight: var(--font-weight-medium);
-}
-
-.roi-tone-positive {
-  color: var(--color-success);
-}
-
-.roi-tone-warn {
-  color: var(--color-warning);
-}
-
-.roi-tone-neutral {
-  color: var(--text-muted);
-}
-
-.roi-metrics-divider {
-  display: none;
-}
-
 .scholarship-line--muted {
   color: var(--text-muted);
 }
@@ -732,54 +672,6 @@
   line-height: var(--leading-normal);
 }
 
-/* ROI metrics block styled with Calm Academic tokens */
-.roi-box {
-  overflow-wrap: anywhere;
-  background: var(--surface-soft);
-  border-radius: var(--radius-lg, 16px);
-  padding: var(--space-5);
-  box-shadow: none;
-  margin-top: var(--space-6);
-}
-
-.roi-title {
-  margin: 0 0 var(--space-2);
-  color: var(--text);
-  font-size: var(--text-md);
-  font-weight: var(--font-weight-medium);
-}
-
-.roi-description {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  margin-bottom: var(--space-4);
-  line-height: 1.5;
-}
-
-.roi-context {
-  padding: 0 0 var(--space-3);
-  border-radius: 0;
-  border-bottom: 1px solid var(--line-faint);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-  font-weight: var(--font-weight-medium);
-  background: transparent;
-  box-shadow: none;
-  color: var(--text-muted);
-  margin-bottom: var(--space-4);
-}
-
-.roi-context--matched {
-  background: transparent;
-  color: var(--text);
-}
-
-.roi-context--missing,
-.roi-context--neutral {
-  background: transparent;
-  color: var(--text-muted);
-}
-
 /* ===== Finance Policy & Citizenship Awareness ===== */
 .finance-policy-card {
   display: grid;
@@ -1030,14 +922,6 @@
 }
 
 @media (max-width: 640px) {
-  .roi-metrics-row {
-    gap: var(--space-3);
-  }
-
-  .roi-metric {
-    flex-basis: 100%;
-  }
-
   .finance-option-head {
     grid-template-columns: minmax(0, 1fr);
   }

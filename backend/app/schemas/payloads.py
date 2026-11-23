@@ -266,15 +266,10 @@ class UniversitiesAiSortRequest(BaseModel):
     min_tuition: float | None = Field(default=None, ge=0, le=1_000_000)
     max_tuition: float | None = Field(default=None, ge=0, le=1_000_000)
     cost_basis: Literal["annual_total", "tuition"] = "annual_total"
-    min_acceptance: float | None = Field(default=None, ge=0, le=100)
-    max_acceptance: float | None = Field(default=None, ge=0, le=100)
-    size: str | None = Field(default=None, max_length=40)
     practice_vs_science: int = Field(default=50, ge=0, le=100)
     social_vs_hardcore: int = Field(default=50, ge=0, le=100)
     budget_vs_prestige: int = Field(default=50, ge=0, le=100)
     city_vs_campus: int = Field(default=50, ge=0, le=100)
-    ai_balance: int = Field(default=50, ge=0, le=100)
-    admission_bias: int = Field(default=50, ge=0, le=100)
     page: int = Field(default=1, ge=1, le=10_000)
     limit: int = Field(default=200, ge=1, le=2000)
 
@@ -288,7 +283,6 @@ class UniversitiesAiSortRequest(BaseModel):
         "study_level",
         "funding_type",
         "format",
-        "size",
         mode="before",
     )
     @classmethod
@@ -298,40 +292,8 @@ class UniversitiesAiSortRequest(BaseModel):
 
 class ProfiledUniversitiesRequest(UniversitiesAiSortRequest):
     sort: Literal["name_asc", "tuition_asc", "tuition_desc", "acceptance_asc", "acceptance_desc",
-                  "rank_asc", "rank_desc", "gpa_desc", "relevance"] = "name_asc"
+                  "rank_asc", "rank_desc", "relevance"] = "name_asc"
     fields: Literal["card", "full", "map"] = "card"
-    user_budget: float | None = Field(default=None, ge=0, le=1_000_000)
-
-class ProfileOnlyRequest(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
-    profile: ProfilePayload = Field(default_factory=ProfilePayload)
-
-
-class CompareProfilesRequest(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
-    university_ids: list[str] = Field(..., max_length=MAX_LIST_ITEMS)
-    profile: ProfilePayload = Field(default_factory=ProfilePayload)
-
-    @field_validator("university_ids", mode="before")
-    @classmethod
-    def _normalize_university_ids(cls, value: Any) -> list[str]:
-        if not isinstance(value, list):
-            return value
-        out: list[str] = []
-        seen = set()
-        for item in value:
-            uni_id = _strip_or_none(item)
-            if not uni_id:
-                continue
-            if len(uni_id) > 64 or not re.match(r"^[a-zA-Z0-9_-]+$", uni_id):
-                raise ValueError(f"Invalid university ID format: {uni_id[:32]}")
-            if uni_id in seen:
-                continue
-            seen.add(uni_id)
-            out.append(uni_id)
-        return out
 
 
 class ExamValidateRequest(BaseModel):

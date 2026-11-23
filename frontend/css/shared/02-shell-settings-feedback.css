@@ -414,7 +414,7 @@
 }
 
 /* Elevation of parent containers when an open tooltip is inside */
-:is(.d-kv, .track-factors-badges):has(.ui-tooltip-wrap:is(.is-open, .is-closed, .is-closing, :not(.is-closed):hover, :not(.is-closed):focus-within)) {
+.d-kv:has(.ui-tooltip-wrap:is(.is-open, .is-closed, .is-closing, :not(.is-closed):hover, :not(.is-closed):focus-within)) {
   position: relative;
   z-index: var(--z-dropdown);
 }

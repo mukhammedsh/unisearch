@@ -393,10 +393,6 @@
     grid-template-columns: 1fr;
   }
 
-  .compare-config-chance .chance-head {
-    grid-template-columns: 1fr;
-  }
-
   .compare-block-head {
     padding: var(--space-4);
     flex-wrap: wrap;

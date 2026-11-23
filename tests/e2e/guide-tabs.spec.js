@@ -9,7 +9,7 @@ test.describe("guide navigation", () => {
 
   test("shows a single active article with a grouped sidebar", async ({ page }) => {
     await expect(page.locator(".guide-nav-group")).toHaveCount(4);
-    await expect(page.locator(".guide-section")).toHaveCount(11);
+    await expect(page.locator(".guide-section")).toHaveCount(10);
     await expect(page.locator(".guide-section.is-active")).toHaveCount(1);
     await expect(page.locator("#guide-glossary")).toBeHidden();
   });
@@ -73,9 +73,9 @@ test.describe("guide navigation", () => {
   });
 
   test("supports deep links to guide sections", async ({ page }) => {
-    await page.goto("/guide.html#guide-roi");
+    await page.goto("/guide.html#guide-comparison");
     await page.waitForSelector("#guidePage");
-    await expect(page.locator("#guide-roi.is-active")).toBeVisible();
+    await expect(page.locator("#guide-comparison.is-active")).toBeVisible();
     await expect(page.locator("#guide-unifit")).toBeHidden();
   });
 });

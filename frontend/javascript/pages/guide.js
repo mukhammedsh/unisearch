@@ -125,7 +125,6 @@ function glossaryEntries() {
     { term: t("guide.glossary.term.requirements", "Requirements"), desc: t("guide.glossary.requirements", "Published rules and minimums for the selected study option and its application route. Only measurable academic and language minimums count toward the match score; other conditions may need a separate review.") },
     { term: t("guide.glossary.term.stats_avg", "Average (Admitted)"), desc: t("guide.glossary.stats_avg", "The average scores of previously admitted students: historical context, not a cutoff or a guarantee.") },
     { term: t("guide.glossary.term.language_requirements", "Language Requirements"), desc: t("guide.glossary.language_requirements", "The language proofs a route accepts: native language, CEFR level, or exam score.") },
-    { term: t("guide.glossary.term.roi", "ROI"), desc: t("guide.glossary.roi", "Early salary divided by one year of cost: a planning ratio, not a promise.") },
     { term: t("guide.glossary.term.comparison", "Comparison"), desc: t("guide.glossary.comparison", "The side-by-side table that keeps each university's context visible, marks scope differences or missing data, and never names an overall winner.") },
     { term: t("guide.glossary.term.mode_any", "Mode = any"), desc: t("guide.glossary.mode_any", "A single proof from the language list is enough.") },
     { term: t("guide.glossary.term.mode_all", "Mode = all"), desc: t("guide.glossary.mode_all", "Every proof from the language list is required.") },

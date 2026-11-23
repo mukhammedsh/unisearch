@@ -437,21 +437,6 @@ body[data-page="universities"] {
   overflow-anchor: none;
 }
 
-:root {
-  --color-chance-high: var(--color-success);
-  --bg-chance-high: var(--color-success-bg);
-  --border-chance-high: var(--line-grant);
-  --color-chance-good: var(--color-info);
-  --bg-chance-good: var(--color-info-bg);
-  --border-chance-good: var(--line-info);
-  --color-chance-medium: var(--color-warning);
-  --bg-chance-medium: var(--color-warning-bg);
-  --border-chance-medium: var(--line-warning);
-  --color-chance-low: var(--color-danger);
-  --bg-chance-low: var(--color-danger-bg);
-  --border-chance-low: var(--line-danger);
-}
-
 .budget-control-wrapper {
   display: flex;
   flex-direction: column;

@@ -31,34 +31,31 @@ const { EXAM_CONFIG } = await import("../../frontend/javascript/utils/config.js"
 const {
   admissionChoiceKey,
   applyPercentWidths,
-  chanceTone,
+  chanceNoDataHelpNote,
   getAdmissionChoicesFromCategories,
   getGrantsFromCategories,
   getTrackFundingType,
   renderExamGroup,
   renderGroupedExamPairRows,
-  renderRequirementChecks,
-  renderTrackChanceChip,
-  renderTrackFactors,
   renderTrackFundingBadge,
-  renderUniChanceSummary,
   splitExamEntries,
 } = await import("../../frontend/javascript/university-detail-helpers.js");
 
 await initI18n();
 
-test("a route without published minimums explains the unavailable percentage once", () => {
-  const assessment = {
-    scoreMeaning: "published_requirements_met_percent", chancePercent: null,
-    reason: "no_published_requirements",
-    factors: [{ key: "insufficient_data", status: "neutral" }],
-  };
+test("chanceNoDataHelpNote explains unavailable requirements match reasons in eng and rus", () => {
   setLanguage("eng");
-  assert.match(renderTrackChanceChip(assessment), /no measurable published minimums/);
-  assert.doesNotMatch(renderTrackChanceChip(assessment), /profile evidence/);
-  assert.equal(renderTrackFactors(assessment), "");
+  assert.match(chanceNoDataHelpNote(null), /not enough applicable requirements/i);
+  assert.match(chanceNoDataHelpNote({ scoreMeaning: "other" }), /meaning could not be confirmed/i);
+  assert.match(
+    chanceNoDataHelpNote({ scoreMeaning: "published_requirements_met_percent", reason: "no_published_requirements" }),
+    /no measurable published minimums/,
+  );
   setLanguage("rus");
-  assert.match(renderTrackChanceChip(assessment), /нет опубликованных измеримых минимумов/);
+  assert.match(
+    chanceNoDataHelpNote({ scoreMeaning: "published_requirements_met_percent", reason: "no_published_requirements" }),
+    /нет опубликованных измеримых минимумов/,
+  );
   setLanguage("eng");
 });
 
@@ -905,7 +902,7 @@ test("admission funding options keep unknown prices localized instead of renderi
   }
 });
 
-test("requirements fit stays with its profile when paid and grant options are listed", () => {
+test("legacy requirement profiles render funding options without legacy chance chips", () => {
   const container = { innerHTML: "", querySelectorAll: () => [] };
   const university = {
     id: "sample-university",
@@ -925,196 +922,18 @@ test("requirements fit stays with its profile when paid and grant options are li
       }],
     }],
   };
-  const fit = { scoreMeaning: "published_requirements_met_percent", chancePercent: 75, factors: [] };
 
   setLanguage("eng", { persist: false, emit: false });
   renderAdmissionSection({
     annualCostForTrack: () => 42000,
     container,
-    uniChanceByChoiceKey: new Map([
-      [admissionChoiceKey({ id: "bachelor" }, { id: "general" }, null), fit],
-      [admissionChoiceKey({ id: "bachelor" }, { id: "general" }, { id: "paid" }), fit],
-      [admissionChoiceKey({ id: "bachelor" }, { id: "general" }, { id: "grant" }), fit],
-    ]),
     university,
   });
 
-  assert.equal((container.innerHTML.match(/class="chance-track-chip/g) || []).length, 1);
+  assert.doesNotMatch(container.innerHTML, /chance-track-chip/);
+  assert.doesNotMatch(container.innerHTML, /chance-panel/);
   assert.match(container.innerHTML, /Annual cost before any award:<\/strong> \$42,000/);
   assert.equal((container.innerHTML.match(/class="admission-funding-option(?:\s|")/g) || []).length, 2);
-  const fundingMarkup = container.innerHTML.slice(container.innerHTML.indexOf('class="admission-funding-option'));
-  assert.doesNotMatch(fundingMarkup, /chance-track-chip/);
-});
-
-test("chance tones cover all public thresholds", () => {
-  assert.equal(chanceTone(80).cls, "chance-high");
-  assert.equal(chanceTone(60).cls, "chance-good");
-  assert.equal(chanceTone(40).cls, "chance-medium");
-  assert.equal(chanceTone(0).cls, "chance-low");
-  assert.equal(chanceTone("invalid").cls, "chance-low");
-});
-
-test("requirements fit summary requires confirmed semantics and preserves unavailable evidence", () => {
-  setLanguage("eng", { persist: false, emit: false });
-  const empty = renderUniChanceSummary(null);
-  assert.match(empty, /chance-percent chance-low">\?</);
-  assert.match(empty, /data-width-pct="0"/);
-  assert.match(empty, /not enough applicable requirements or profile evidence/);
-
-  const legacyChance = renderUniChanceSummary({ overallChance: 72 });
-  assert.doesNotMatch(legacyChance, /72%/);
-  assert.match(legacyChance, /meaning could not be confirmed/);
-
-  const missing = renderUniChanceSummary({
-    overallChance: null,
-    scoreMeaning: "published_requirements_met_percent",
-    reason: "missing_exam_score",
-    bestChoiceLabel: "SAT route",
-  });
-  assert.match(missing, /Add the required exam data/);
-  assert.match(missing, /SAT route/);
-
-  const selected = renderUniChanceSummary({
-    overallChance: 72,
-    scoreMeaning: "published_requirements_met_percent",
-    bestChoiceLabel: "Paid route",
-    bestChoiceKey: "paid",
-    recommendedChoiceLabel: "Grant route",
-    recommendedChoiceKey: "grant",
-    selectedByUser: true,
-  });
-  assert.match(selected, /Selected:/);
-  assert.match(selected, /Recommended/);
-  assert.match(selected, /Minimum requirements match/);
-  assert.match(selected, /Share of evaluable published numeric academic and language minimums met/);
-  assert.doesNotMatch(selected, /UniChance/);
-  assert.match(selected, /not an admission probability/i);
-  assert.doesNotMatch(selected, /admitted-student|acceptance rate|confidence range/i);
-  assert.doesNotMatch(selected, /affordability|budget/i);
-  assert.match(selected, /data-width-pct="72"/);
-
-  const noNumericMinimum = renderUniChanceSummary({
-    overallChance: "35",
-    scoreMeaning: "unverified_old_probability",
-    bestChoiceLabel: "General",
-  });
-  assert.doesNotMatch(noNumericMinimum, /35%/);
-  assert.match(noNumericMinimum, /meaning could not be confirmed/);
-  assert.doesNotMatch(noNumericMinimum, /Low confidence|Estimated|admitted-student|acceptance rate/i);
-
-  setLanguage("rus", { persist: false, emit: false });
-  const russianProfile = renderUniChanceSummary({
-    overallChance: 72,
-    scoreMeaning: "published_requirements_met_percent",
-    bestChoiceLabel: "SAT route",
-  });
-  const russianNoMeaning = renderUniChanceSummary({ overallChance: 35 });
-  assert.match(russianProfile, /Доля выполненных проверяемых опубликованных числовых академических и языковых минимумов/);
-  assert.match(russianNoMeaning, /смысл этого показателя не подтверждён/);
-  assert.match(russianProfile, /не вероятность зачисления/i);
-  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /UniChance/);
-  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /профилей зачисленных|диапазон уверенности/i);
-  assert.doesNotMatch(`${russianProfile}${russianNoMeaning}`, /бюджет/i);
-  assert.match(russianProfile, /не прогноз финансирования/i);
-  setLanguage("eng", { persist: false, emit: false });
-});
-
-test("chance summary explains distinct no-data reasons", () => {
-  setLanguage("eng", { persist: false, emit: false });
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: "", reason: "requirements_not_met" }), /do not meet a required minimum/);
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "missing_evidence" }), /Add the required exam scores/);
-  const unsupported = renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "unassessed_minimums" });
-  assert.match(unsupported, /evidence or a grading scale that the available profile cannot establish/);
-  assert.doesNotMatch(unsupported, /4\.25\/5\.0|normalized to 4\.0/);
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "funding_selection_separate" }), /Funding selection is separate from admission/);
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "requirements_not_reviewed" }), /minimums have not yet been reviewed/);
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "applicability_unknown" }), /could not be matched to this program, applicant route, and entry cycle/);
-  assert.match(renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, label: "Custom unavailable reason" }), /not enough applicable requirements or profile evidence/i);
-});
-
-test("published requirement checks show exam alternatives and avoid inventing a numeric cutoff", () => {
-  setLanguage("eng", { persist: false, emit: false });
-  const missing = renderRequirementChecks({ details: { checks: [
-    { exam: "SAT or ACT", minimum: null, provided: null, status: "missing" },
-  ] } });
-  assert.match(missing, /SAT or ACT/);
-  assert.match(missing, /Required exam evidence/);
-  assert.match(missing, /Add evidence/);
-  assert.doesNotMatch(missing, /Minimum: No data/);
-
-  const recorded = renderRequirementChecks({ details: { checks: [
-    { exam: "SAT or ACT", minimum: null, provided: "SAT", status: "met" },
-  ] } });
-  assert.match(recorded, /Evidence recorded/);
-  assert.match(recorded, /Your profile: SAT/);
-
-  const gre = renderRequirementChecks({ details: { checks: [
-    { exam: "GMAT_FOCUS or GMAT or GRE", minimum: null, provided: "GRE", status: "met" },
-  ] } });
-  assert.match(gre, /Your profile: GRE General Test/);
-
-  const flexibleWhitespace = renderRequirementChecks({ details: { checks: [
-    { exam: "SAT   or\tACT", minimum: null, provided: null, status: "missing" },
-  ] } });
-  assert.match(flexibleWhitespace, /SAT or ACT/);
-
-  const unassessed = renderRequirementChecks({ details: { checks: [
-    { exam: "IELTS Academic band", examId: "IELTS", minimum: 7, provided: 7.5, status: "unassessed", condition: "International applicants unless exempt" },
-    { exam: "Technical GPA", minimum: 4.25, provided: null, status: "unassessed", condition: "MIT 5.0 scale" },
-  ] } });
-  assert.match(unassessed, /Your profile: 7.5/);
-  assert.match(unassessed, /International applicants unless exempt/);
-  assert.match(unassessed, /MIT 5.0 scale/);
-  assert.doesNotMatch(unassessed, /Not provided/);
-
-  const languageAlternatives = renderRequirementChecks({ details: { checks: [
-    { exam: "IELTS", minimum: 7, provided: 7.5, status: "met", mode: "any" },
-    { exam: "TOEFL", minimum: 100, provided: null, status: "missing", mode: "any" },
-  ] } });
-  assert.match(languageAlternatives, /meeting one listed option satisfies that rule/);
-
-  setLanguage("rus", { persist: false, emit: false });
-  const russian = renderRequirementChecks({ details: { checks: [
-    { exam: "SAT or ACT", minimum: null, provided: null, status: "missing" },
-  ] } });
-  assert.match(russian, /Требуется один из экзаменов/);
-  assert.match(russian, /Добавьте подтверждение/);
-  const russianAlternatives = renderRequirementChecks({ details: { checks: [
-    { exam: "IELTS", minimum: 7, provided: null, status: "missing", mode: "any" },
-    { exam: "TOEFL", minimum: 100, provided: null, status: "missing", mode: "any" },
-  ] } });
-  assert.match(russianAlternatives, /достаточно выполнить один из них/);
-  setLanguage("eng", { persist: false, emit: false });
-});
-
-test("track chance chips handle no data, invalid badges, and numeric zero", () => {
-  assert.match(renderTrackChanceChip(null), /not enough applicable requirements or profile evidence/);
-  assert.match(renderTrackChanceChip({ scoreMeaning: "published_requirements_met_percent", chancePercent: null, reason: "requirements_not_met" }), /required minimum/);
-  assert.match(renderTrackChanceChip({ chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /meaning could not be confirmed/);
-  assert.match(renderTrackChanceChip({ scoreMeaning: "published_requirements_met_percent", chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /Requirements fit 0%/);
-  assert.match(renderTrackChanceChip({ scoreMeaning: "published_requirements_met_percent", chancePercent: 0, badges: ["unknown", "need_aware_penalty"] }), /Need-aware aid/);
-  assert.doesNotMatch(renderTrackChanceChip({ chancePercent: 0, badges: ["unknown"] }), /admission-chance-badge/);
-});
-
-test("requirements fit factor rendering filters invalid rows and maps positive, negative, and neutral tones", () => {
-  assert.equal(renderTrackFactors(null), "");
-  assert.equal(renderTrackFactors({ factors: [{ key: "academic_strength", status: "positive" }] }), "");
-  const html = renderTrackFactors({ scoreMeaning: "published_requirements_met_percent", factors: [
-    null,
-    [],
-    {},
-    { key: "requirements_met", status: "positive", label: "Requirements", message: "Ready" },
-    { key: "requirements_gap", status: "negative", label: "Requirements", impact_text: "Improve" },
-    { key: "insufficient_data", status: "other", message: "Review manually" },
-  ] });
-  assert.match(html, /factor-positive/);
-  assert.match(html, /factor-negative/);
-  assert.match(html, /factor-neutral/);
-  assert.match(html, /not enough applicable requirements or profile evidence to calculate this fit score/i);
-  const applicability = renderTrackFactors({ scoreMeaning: "published_requirements_met_percent", factors: [
-    { key: "applicability_unknown", status: "neutral", label: "Applicability", message: "Scope unknown." },
-  ] });
-  assert.match(applicability, /Applicability not confirmed/);
 });
 
 test("funding badges infer grant or paid semantics", () => {
@@ -1126,77 +945,6 @@ test("funding badges infer grant or paid semantics", () => {
   assert.equal(getTrackFundingType({ funding_type: "paid" }), "paid");
   assert.equal(getTrackFundingType({ track_badge: "Scholarship" }), "grant");
   assert.equal(getTrackFundingType({}), "paid");
-});
-
-test("renderTrackFactors localizes known factor keys in Russian", () => {
-  setLanguage("rus", { persist: false, emit: false });
-
-  const html = renderTrackFactors({
-    scoreMeaning: "published_requirements_met_percent",
-    factors: [
-      {
-        key: "requirements_met",
-        status: "positive",
-        label: "Requirements",
-        message: "All measurable published minimums are met.",
-      },
-    ],
-  });
-
-  assert.match(html, /Требования выполнены/);
-  assert.match(html, /Все измеряемые опубликованные минимумы выполнены\./);
-  assert.doesNotMatch(html, /Requirements/);
-});
-
-test("requirements fit factors suppress legacy acceptance and selectivity factors", () => {
-  setLanguage("rus", { persist: false, emit: false });
-
-  const html = renderTrackFactors({
-    scoreMeaning: "published_requirements_met_percent",
-    factors: [
-      {
-        key: "holistic_review_selectivity",
-        status: "neutral",
-        label: "Holistic review",
-        message: "At colleges with <10% acceptance rate, test scores are a screening baseline. Admission relies heavily on olympiads, essays, and extracurriculars.",
-      },
-    ],
-  });
-
-  assert.equal(html, "");
-});
-
-test("requirements fit factors suppress unsupported factor keys", () => {
-  setLanguage("rus", { persist: false, emit: false });
-
-  const html = renderTrackFactors({
-    scoreMeaning: "published_requirements_met_percent",
-    factors: [
-      {
-        key: "future_signal",
-        status: "neutral",
-        label: "Future signal",
-        message: "Backend fallback stays visible.",
-      },
-    ],
-  });
-
-  assert.equal(html, "");
-});
-
-test("renderTrackChanceChip uses Russian badge labels without mixed English terms", () => {
-  setLanguage("rus", { persist: false, emit: false });
-
-  const html = renderTrackChanceChip({
-    chancePercent: 72,
-    scoreMeaning: "published_requirements_met_percent",
-    badges: ["foundation_required", "need_aware", "need_blind"],
-  });
-
-  assert.match(html, /Может потребоваться подготовительная программа/);
-  assert.match(html, /Финансовая нуждаемость учитывается/);
-  assert.match(html, /Финансовая нуждаемость не учитывается/);
-  assert.doesNotMatch(html, /Need-aware|Need-blind|foundation route/);
 });
 
 test("getAdmissionChoicesFromCategories preserves score profile and funding-specific requirements", () => {
@@ -1274,32 +1022,7 @@ test("getAdmissionChoicesFromCategories preserves score profile and funding-spec
   assert.equal(grant.published_admission.rate_percent, 7);
 });
 
-test("renderTrackChanceChip and renderTrackFactors render accessible ui-tooltip structure", () => {
-  const badgeHtml = renderTrackChanceChip({
-    chancePercent: 85,
-    scoreMeaning: "published_requirements_met_percent",
-    badges: ["need_blind"],
-  });
-  assert.match(badgeHtml, /class="ui-tooltip-wrap admission-chance-badge-wrap"/);
-  assert.match(badgeHtml, /<button type="button" class="ui-tooltip-trigger admission-chance-badge/);
-  assert.match(badgeHtml, /class="ui-tooltip-bubble admission-chance-tooltip__content" role="tooltip"/);
-
-  const factorHtml = renderTrackFactors({
-    scoreMeaning: "published_requirements_met_percent",
-    factors: [
-      {
-        key: "requirements_met",
-        status: "positive",
-        label: "Requirements",
-        message: "All measurable published minimums are met.",
-      },
-    ],
-  });
-  assert.match(factorHtml, /class="ui-tooltip-wrap track-factor-chip-wrap"/);
-  assert.match(factorHtml, /<button type="button" class="ui-tooltip-trigger track-factor-chip factor-positive"/);
-  assert.match(factorHtml, /class="ui-tooltip-bubble track-factor-tooltip__content" role="tooltip"/);
-});
-test("selected admission context puts course conditions first and keeps history separate", () => {
+test("selected admission context puts course conditions first and omits legacy chance panel", () => {
   setLanguage("eng", { persist: false, emit: false });
   window.location.search = "?admission_program=computing&admission_route=first_year&admission_cycle=2027%20entry";
   const university = {
@@ -1307,26 +1030,17 @@ test("selected admission context puts course conditions first and keeps history 
     admission_categories: [{ id: "route", label: "Computing entry", description: "Shared application description", study_level: "Bachelor", applicant_route: "first_year", program_ids: ["computing"], cycle: "2027 entry", source_url: "https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/", deadlines: [{ cycle: "Annual cycle; the official page does not publish an entry year for these dates." }], requirement_profiles: [{ id: "a-level", label: "A-Level", description: "Shared application description", requirements: {}, requirements_note: "A*A*A including Mathematics", requirements_source_url: "https://www.imperial.ac.uk/study/courses/undergraduate/computing-meng/" }] }],
   };
   const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
-  const fit = { scoreMeaning: "published_requirements_met_percent", chancePercent: 100, factors: [] };
-  renderAdmissionSection({ container, university, annualCostForTrack: () => null, uniChanceByChoiceKey: new Map([["route::a-level",fit]]) });
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null });
   assert.match(container.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="computing"/);
   assert.equal((container.innerHTML.match(/Shared application description/g) || []).length, 1);
   assert.match(container.innerHTML, /A\*A\*A including Mathematics/);
-  assert.match(container.innerHTML, /percentage covers numeric minimums only/);
-  assert.ok(container.innerHTML.indexOf("A*A*A including Mathematics") < container.innerHTML.indexOf("Requirements fit and historical statistics"));
+  assert.doesNotMatch(container.innerHTML, /chance-track-chip|chance-panel|mit-admission-analysis/);
   assert.doesNotMatch(container.innerHTML, /<option[^>]+Annual cycle/);
   assert.match(container.innerHTML, /data-admission-open-tab="tab-finance"/);
   assert.match(container.innerHTML, /href="https:\/\/www\.imperial\.ac\.uk\/study\/courses\/undergraduate\/computing-meng\/"/);
   window.location.search = "";
 });
 
-test("no matching assessment avoids exposing an API fallback choice label", () => {
-  setLanguage("ru", { persist: false, emit: false });
-  const html = renderUniChanceSummary({ scoreMeaning: "published_requirements_met_percent", overallChance: null, reason: "no_choices", bestChoiceLabel: "No choices for selected filters" });
-  assert.match(html, /Проверьте выбранный маршрут/);
-  assert.doesNotMatch(html, /No choices|Лучший вариант:/);
-  setLanguage("eng", { persist: false, emit: false });
-});
 test("funding with an explicit first-year route does not leak into transfer", async () => {
   const { getFundingAwardsForSelection } = await import("../../frontend/javascript/pages/university/render-sections.js");
   const finance = { scholarships_and_funding: [{ id: "first-year-aid", study_level: "Bachelor", applicant_routes: ["first_year"] },{ id: "unknown-route-aid", study_level: "Bachelor" }] };

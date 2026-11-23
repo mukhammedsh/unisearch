@@ -12,12 +12,6 @@ class ApiDdosHardeningTests(unittest.TestCase):
     def setUpClass(cls):
         cls.client = TestClient(app)
 
-    def test_compare_profiles_is_in_expensive_request_guard(self):
-        req = MagicMock()
-        req.method = "POST"
-        req.scope = {"path": "/universities/compare-profiles"}
-        self.assertTrue(_is_expensive_request(req))
-
     def test_ai_sort_is_in_expensive_request_guard(self):
         req = MagicMock()
         req.method = "POST"
@@ -32,24 +26,19 @@ class ApiDdosHardeningTests(unittest.TestCase):
 
     def test_university_ids_share_the_same_expensive_route_bucket(self):
         first = MagicMock()
-        first.scope = {"path": "/universities/mit-usa-cambridge/uni-chance"}
+        first.scope = {"path": "/universities/mit-usa-cambridge/admissions-context"}
         second = MagicMock()
-        second.scope = {"path": "/universities/stanford-university-usa-ca/uni-chance"}
-        roi = MagicMock()
-        roi.scope = {"path": "/universities/mit-usa-cambridge/roi"}
+        second.scope = {"path": "/universities/stanford-university-usa-ca/admissions-context"}
 
         self.assertEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(second))
-        self.assertNotEqual(_expensive_rate_limit_path(first), _expensive_rate_limit_path(roi))
 
     def test_expensive_request_guard_normalizes_trailing_slashes(self):
         for path in (
             "/universities/ai-sort/",
-            "/universities/compare-profiles/",
             "/universities/profiled/",
             "/exams/validate/",
             "/languages/validate/",
-            "/universities/mit-usa-cambridge/uni-chance/",
-            "/universities/mit-usa-cambridge/roi/",
+            "/universities/mit-usa-cambridge/admissions-context/",
             "/ops/warmup/",
         ):
             with self.subTest(path=path):
@@ -57,19 +46,6 @@ class ApiDdosHardeningTests(unittest.TestCase):
                 req.method = "POST"
                 req.scope = {"path": path}
                 self.assertTrue(_is_expensive_request(req))
-
-    def test_compare_profiles_caches_results(self):
-        payload = {
-            "university_ids": ["mit-usa-cambridge"],
-            "profile": {"budget": 50000, "gpa": 3.8},
-        }
-        res1 = self.client.post("/universities/compare-profiles", json=payload)
-        self.assertEqual(res1.status_code, 200)
-        self.assertIn("X-Compare-Cache", res1.headers)
-
-        res2 = self.client.post("/universities/compare-profiles", json=payload)
-        self.assertEqual(res2.status_code, 200)
-        self.assertEqual(res2.headers.get("X-Compare-Cache"), "HIT")
 
     def test_client_ip_xff_ignored_when_trust_xff_disabled(self):
         req = MagicMock()

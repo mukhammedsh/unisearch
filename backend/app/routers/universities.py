@@ -8,13 +8,10 @@ from typing import Any, Literal
 from app.core.redis_store import cache_get_json, cache_set_json
 from app.core.settings import (
     AI_SORT_CACHE_TTL_SEC,
-    COMPARE_PROFILES_CACHE_TTL_SEC,
     REDIS_CACHE_TTL_SEC,
 )
 from app.schemas import (
-    CompareProfilesRequest,
     ProfiledUniversitiesRequest,
-    ProfileOnlyRequest,
     UniversitiesAiSortRequest,
 )
 from app.schemas.payloads import to_profile_dict
@@ -28,11 +25,6 @@ _AI_SORT_CACHE_TTL_SEC = max(15.0, float(AI_SORT_CACHE_TTL_SEC))
 _AI_SORT_CACHE_MAX_ITEMS = 512
 _AI_SORT_CACHE: OrderedDict[str, dict[str, Any]] = OrderedDict()
 _AI_SORT_CACHE_LOCK = threading.Lock()
-
-_COMPARE_PROFILES_CACHE_TTL_SEC = max(15.0, float(COMPARE_PROFILES_CACHE_TTL_SEC))
-_COMPARE_PROFILES_CACHE_MAX_ITEMS = 512
-_COMPARE_PROFILES_CACHE: OrderedDict[str, dict[str, Any]] = OrderedDict()
-_COMPARE_PROFILES_CACHE_LOCK = threading.Lock()
 
 
 def _etag_matches(if_none_match: str, etag: str) -> bool:
@@ -96,8 +88,6 @@ def _ai_sort_cache_key(
         "social_vs_hardcore",
         "budget_vs_prestige",
         "city_vs_campus",
-        "ai_balance",
-        "admission_bias",
     ):
         if field in raw:
             raw[field] = _quantize_slider_value(raw[field])
@@ -134,38 +124,13 @@ def _ai_sort_cache_set(key: str, items: list[dict[str, Any]]) -> None:
             _AI_SORT_CACHE.popitem(last=False)
 
 
-def _compare_profiles_cache_get(key: str) -> dict[str, Any] | None:
-    now = time.time()
-    with _COMPARE_PROFILES_CACHE_LOCK:
-        row = _COMPARE_PROFILES_CACHE.get(key)
-        if not row:
-            return None
-        if (now - float(row.get("ts", 0.0))) > _COMPARE_PROFILES_CACHE_TTL_SEC:
-            _COMPARE_PROFILES_CACHE.pop(key, None)
-            return None
-        _COMPARE_PROFILES_CACHE.move_to_end(key)
-        return row.get("results")
-
-
-def _compare_profiles_cache_set(key: str, results: dict[str, Any]) -> None:
-    now = time.time()
-    with _COMPARE_PROFILES_CACHE_LOCK:
-        _COMPARE_PROFILES_CACHE[key] = {
-            "ts": now,
-            "results": results,
-        }
-        _COMPARE_PROFILES_CACHE.move_to_end(key)
-        while len(_COMPARE_PROFILES_CACHE) > _COMPARE_PROFILES_CACHE_MAX_ITEMS:
-            _COMPARE_PROFILES_CACHE.popitem(last=False)
-
-
 def _cache_key(namespace: str, payload: dict[str, Any]) -> str:
     raw = json.dumps(payload, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
     digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
     return f"{namespace}:{digest}"
 
 
-@router.get("/universities", summary="List universities", description="Returns a paginated, filterable list of universities. Supports search, country/city/region filters, budget range, acceptance rate range, study level, funding type, format, and size filters.")
+@router.get("/universities", summary="List universities", description="Returns a paginated, filterable list of universities. Supports search, country/city/region filters, budget range, study level, funding type, and format filters.")
 def list_universities(
     q: str | None = Query(None, max_length=200),
     country: str | None = Query(None, max_length=80),
@@ -175,16 +140,12 @@ def list_universities(
     study_level: str | None = Query(None, max_length=40),
     funding_type: str | None = Query(None, max_length=20),
     format: str | None = Query(None, max_length=32),
-    user_budget: float | None = Query(None, ge=0, le=1_000_000),
     min_tuition: float | None = Query(None, ge=0, le=1_000_000),
     max_tuition: float | None = Query(None, ge=0, le=1_000_000),
     cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
     fee_status_context: Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"] | None = Query(None),
     intended_entry_cycle: str | None = Query(None, max_length=40),
-    min_acceptance: float | None = Query(None, ge=0, le=100),
-    max_acceptance: float | None = Query(None, ge=0, le=100),
-    size: str | None = Query(None, max_length=40),
-    sort: str = Query("name_asc", pattern="^(name_asc|tuition_asc|tuition_desc|acceptance_asc|acceptance_desc|rank_asc|rank_desc|gpa_desc|relevance)$"),
+    sort: str = Query("name_asc", pattern="^(name_asc|tuition_asc|tuition_desc|acceptance_asc|acceptance_desc|rank_asc|rank_desc|relevance)$"),
     page: int = Query(1, ge=1, le=10_000),
     limit: int = Query(200, ge=1, le=2000),
     fields: str = Query("card", pattern="^(card|full)$"),
@@ -203,15 +164,11 @@ def list_universities(
         "study_level": study_level,
         "funding_type": funding_type,
         "format": format,
-        "user_budget": user_budget,
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
         "cost_basis": cost_basis,
         "fee_status_context": fee_status_context,
         "intended_entry_cycle": intended_entry_cycle,
-        "min_acceptance": min_acceptance,
-        "max_acceptance": max_acceptance,
-        "size": size,
         "sort": sort,
         "page": page,
         "limit": limit,
@@ -236,15 +193,11 @@ def list_universities(
         study_level=study_level,
         funding_type=funding_type,
         format=format,
-        user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
         cost_basis=cost_basis,
         fee_status_context=fee_status_context,
         intended_entry_cycle=intended_entry_cycle,
-        min_acceptance=min_acceptance,
-        max_acceptance=max_acceptance,
-        size=size,
         sort=sort,
         page=page,
         limit=limit,
@@ -278,15 +231,11 @@ def list_university_map_points(
     study_level: str | None = Query(None, max_length=40),
     funding_type: str | None = Query(None, max_length=20),
     format: str | None = Query(None, max_length=32),
-    user_budget: float | None = Query(None, ge=0, le=1_000_000),
     min_tuition: float | None = Query(None, ge=0, le=1_000_000),
     max_tuition: float | None = Query(None, ge=0, le=1_000_000),
     cost_basis: Literal["annual_total", "tuition"] = Query("annual_total"),
     fee_status_context: Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"] | None = Query(None),
     intended_entry_cycle: str | None = Query(None, max_length=40),
-    min_acceptance: float | None = Query(None, ge=0, le=100),
-    max_acceptance: float | None = Query(None, ge=0, le=100),
-    size: str | None = Query(None, max_length=40),
     lang: str | None = Query(None, max_length=16),
     request: Request = None,
     response: Response = None,
@@ -309,15 +258,11 @@ def list_university_map_points(
         "study_level": study_level,
         "funding_type": funding_type,
         "format": format,
-        "user_budget": user_budget,
         "min_tuition": min_tuition,
         "max_tuition": max_tuition,
         "cost_basis": cost_basis,
         "fee_status_context": fee_status_context,
         "intended_entry_cycle": intended_entry_cycle,
-        "min_acceptance": min_acceptance,
-        "max_acceptance": max_acceptance,
-        "size": size,
         "search_lang": search_lang,
     }
     redis_cache_key = _cache_key("api:universities:map-points", cache_payload)
@@ -337,15 +282,11 @@ def list_university_map_points(
         study_level=study_level,
         funding_type=funding_type,
         format=format,
-        user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
         cost_basis=cost_basis,
         fee_status_context=fee_status_context,
         intended_entry_cycle=intended_entry_cycle,
-        min_acceptance=min_acceptance,
-        max_acceptance=max_acceptance,
-        size=size,
         sort="rank_asc",
         page=1,
         limit=10_000,
@@ -388,10 +329,8 @@ def list_universities_profiled(payload: ProfiledUniversitiesRequest, request: Re
     return uni_service.list_universities(
         q=payload.q, country=payload.country, city=payload.city, region=payload.region,
         major=payload.major, study_level=payload.study_level, funding_type=payload.funding_type,
-        format=payload.format, user_budget=payload.user_budget,
-        min_tuition=payload.min_tuition, max_tuition=payload.max_tuition, cost_basis=payload.cost_basis,
-        min_acceptance=payload.min_acceptance, max_acceptance=payload.max_acceptance,
-        size=payload.size, sort=payload.sort, page=payload.page, limit=payload.limit,
+        format=payload.format, min_tuition=payload.min_tuition, max_tuition=payload.max_tuition,
+        cost_basis=payload.cost_basis, sort=payload.sort, page=payload.page, limit=payload.limit,
         response_mode=payload.fields, search_lang=_resolve_search_lang(payload.lang, request),
         profile=to_profile_dict(payload.profile),
     )
@@ -410,15 +349,10 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
     fmt = payload.format
     min_tuition = payload.min_tuition
     max_tuition = payload.max_tuition
-    min_acceptance = payload.min_acceptance
-    max_acceptance = payload.max_acceptance
-    size = payload.size
     practice_vs_science = payload.practice_vs_science
     social_vs_hardcore = payload.social_vs_hardcore
     budget_vs_prestige = payload.budget_vs_prestige
     city_vs_campus = payload.city_vs_campus
-    ai_balance = payload.ai_balance
-    admission_bias = payload.admission_bias
     page = payload.page
     limit = payload.limit
 
@@ -449,9 +383,6 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             min_tuition=min_tuition,
             max_tuition=max_tuition,
             cost_basis=payload.cost_basis,
-            min_acceptance=min_acceptance,
-            max_acceptance=max_acceptance,
-            size=size,
             sort="name_asc",
             page=1,
             limit=200,
@@ -468,8 +399,6 @@ def list_universities_ai_sort(payload: UniversitiesAiSortRequest, request: Reque
             social_vs_hardcore=social_vs_hardcore,
             budget_vs_prestige=budget_vs_prestige,
             city_vs_campus=city_vs_campus,
-            ai_balance=ai_balance,
-            admission_bias=admission_bias,
             funding_type=funding_type,
         )
         _ai_sort_cache_set(cache_key, sorted_items)
@@ -553,89 +482,6 @@ def get_university(
     return u
 
 
-@router.post("/universities/{university_id}/uni-chance", summary="Published requirements fit (UniChance)", description="Returns the percentage of measurable published academic and language minimum checks met for the applicable admission choice. This score is not an admission probability.")
-def get_university_uni_chance(
-    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
-    payload: ProfileOnlyRequest = ...,
-    response: Response = None,
-):
-    university = uni_service.get_university_by_id(university_id)
-    if university is None:
-        raise HTTPException(status_code=404, detail="University not found")
-
-    profile = to_profile_dict(payload.profile)
-    if response is not None:
-        response.headers["Cache-Control"] = "private, max-age=30"
-    return ai_scoring_service.estimate_uni_chance(university, profile)
-
-
-@router.post("/universities/{university_id}/roi", summary="ROI estimate", description="Estimates return on investment for a university based on cost, salary outcomes, and the user's profile.")
-def get_university_roi(
-    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
-    payload: ProfileOnlyRequest = ...,
-    response: Response = None,
-):
-    university = uni_service.get_university_by_id(university_id)
-    if university is None:
-        raise HTTPException(status_code=404, detail="University not found")
-
-    profile = to_profile_dict(payload.profile)
-    if response is not None:
-        response.headers["Cache-Control"] = "private, max-age=30"
-    return ai_scoring_service.estimate_university_roi(university, profile)
-
-
-@router.post(
-    "/universities/compare-profiles",
-    summary="Batch compare universities",
-    description="Evaluates admission chance and ROI for multiple universities at once based on user profile.",
-)
-def compare_universities_profiles(
-    payload: CompareProfilesRequest,
-    response: Response = None,
-):
-    profile = to_profile_dict(payload.profile)
-    uni_ids = sorted(str(uid).strip() for uid in payload.university_ids if str(uid).strip())
-    cache_payload = {
-        "ids": uni_ids,
-        "profile": profile,
-        "admissions_revision": admissions_catalog.get_revision(),
-        "assessment_revision": admissions_assessment.get_assessment_revision(),
-    }
-    redis_cache_key = _cache_key("api:compare-profiles", cache_payload)
-    cached = cache_get_json(redis_cache_key)
-    if not isinstance(cached, dict):
-        cached = _compare_profiles_cache_get(redis_cache_key)
-
-    if isinstance(cached, dict):
-        if response is not None:
-            response.headers["Cache-Control"] = "private, max-age=30"
-            response.headers["X-Compare-Cache"] = "HIT"
-        return cached
-
-    results = {}
-    for uni_id in payload.university_ids:
-        uni = uni_service.get_university_by_id(uni_id)
-        if uni:
-            chance = ai_scoring_service.estimate_uni_chance(uni, profile)
-            roi = ai_scoring_service.estimate_university_roi(uni, profile)
-            results[uni_id] = {
-                "uniChance": chance,
-                "roi": roi,
-            }
-        else:
-            results[uni_id] = None
-
-    cache_set_json(redis_cache_key, results, ttl_seconds=int(_COMPARE_PROFILES_CACHE_TTL_SEC))
-    _compare_profiles_cache_set(redis_cache_key, results)
-
-    if response is not None:
-        response.headers["Cache-Control"] = "private, max-age=30"
-        response.headers["X-Compare-Cache"] = "MISS"
-
-    return results
-
-
 @router.get("/locations", summary="Available locations", description="Returns a tree of countries, regions, and cities that have universities in the catalog.")
 def get_locations(response: Response = None):
     cached = cache_get_json("api:locations")
@@ -649,23 +495,5 @@ def get_locations(response: Response = None):
     cache_set_json("api:locations", data if isinstance(data, dict) else {}, ttl_seconds=300)
     if response is not None:
         response.headers["Cache-Control"] = "public, max-age=300"
-        response.headers["X-Redis-Cache"] = "MISS"
-    return data
-
-
-@router.get("/stats", summary="Catalog statistics", description="Returns aggregate statistics about the university catalog: total count, country breakdown, and program coverage.")
-def get_stats(response: Response = None):
-    cache_key = _cache_key("api:stats", {"admissions_revision": admissions_catalog.get_revision()})
-    cached = cache_get_json(cache_key)
-    if isinstance(cached, dict):
-        if response is not None:
-            response.headers["Cache-Control"] = "public, max-age=120"
-            response.headers["X-Redis-Cache"] = "HIT"
-        return cached
-
-    data = uni_service.get_stats()
-    cache_set_json(cache_key, data if isinstance(data, dict) else {}, ttl_seconds=120)
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=120"
         response.headers["X-Redis-Cache"] = "MISS"
     return data

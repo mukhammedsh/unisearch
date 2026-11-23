@@ -80,17 +80,14 @@ class AdmissionsCutoverTests(unittest.TestCase):
                     # Centred sliders express no preference, and nothing else is known here.
                     self.assertIsNone(match["preferenceMismatch"])
                     self.assertEqual(match["finalScore"], 0.0)
-                    self.assertIsNone(ai_scoring.estimate_university_roi(row, profile)["roi_value"])
 
     def test_canonical_discovery_level_aliases_and_unknown_cost_filters(self):
         for level in ("Bachelor", "undergraduate"):
             result = universities.list_universities(study_level=level, paginate=False)
             self.assertTrue(admissions_catalog.INSTITUTION_IDS.issubset({row["id"] for row in result["items"]}))
-        # A price range admits tuition-only universities as partial matches; a budget still needs a full yearly cost.
+        # A price range admits tuition-only universities as partial matches.
         rows = universities.list_universities(paginate=False, max_tuition=1000000)["items"]
         self.assertEqual(admissions_catalog.INSTITUTION_IDS, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
-        rows = universities.list_universities(paginate=False, user_budget=1000000)["items"]
-        self.assertEqual({MIT, STANFORD}, admissions_catalog.INSTITUTION_IDS.intersection(row["id"] for row in rows))
         for filters in ({"funding_type": "grant"}, {"funding_type": "paid"}):
             rows = universities.list_universities(paginate=False, **filters)["items"]
             self.assertTrue(admissions_catalog.INSTITUTION_IDS.issubset(row["id"] for row in rows))
@@ -123,30 +120,14 @@ class AdmissionsCutoverTests(unittest.TestCase):
         self.assertEqual(resolved["context"]["intended_entry_cycle"], "")
         self.assertIsNone(ai_scoring.estimate_uni_chance(universities.get_university_by_id(MIT), profile)["overallChance"])
 
-    def test_compare_keeps_each_saved_university_context_separate(self):
-        profile = {"study_level": "Master", "applicant_route": "graduate", "intended_entry_cycle": "2028",
-                   "selectedAdmissionChoices": {
-                       IMPERIAL: {"studyOptionId": "imperial-option-computing-meng", "applicationRouteId": "procedure-computing-meng",
-                                  "studyLevel": "undergraduate", "applicantRoute": "first_year", "intendedEntryCycle": "2027 entry"},
-                       STANFORD: {"studyOptionId": "stanford-option-cs-bs", "applicationRouteId": "undergraduate-shared-evidence:stanford-transfer",
-                                  "studyLevel": "undergraduate", "applicantRoute": "transfer", "intendedEntryCycle": "Fall 2026"}}}
-        response = self.client.post("/universities/compare-profiles", json={"university_ids": [IMPERIAL, STANFORD], "profile": profile})
-        self.assertEqual(response.status_code, 200)
-        result = response.json()
-        for uid, category, cycle in ((IMPERIAL, "first_year", "2027 entry"), (STANFORD, "transfer", "Fall 2026")):
-            self.assertEqual(result[uid]["uniChance"]["context"]["study_level"], "undergraduate")
-            self.assertEqual(result[uid]["uniChance"]["context"]["applicant_route"], category)
-            self.assertEqual(result[uid]["uniChance"]["context"]["intended_entry_cycle"], cycle)
-            self.assertEqual(result[uid]["roi"]["context"], result[uid]["uniChance"]["context"])
-
     def test_invalid_saved_context_values_return_422(self):
         for key, value in (("studyLevel", "MBA"), ("applicantRoute", "other"), ("feeStatusContext", "home"),
                            ("intendedEntryCycle", "2" * 41), ("applicantRoute", 1)):
-            response = self.client.post(f"/universities/{MIT}/uni-chance", json={"profile": {"selectedAdmissionChoices": {
+            response = self.client.post("/universities/ai-sort", json={"profile": {"selectedAdmissionChoices": {
                 MIT: {"studyOptionId": "mit-course-6-3-bachelor", key: value}}}})
             self.assertEqual(response.status_code, 422, key)
 
-    def test_guest_ai_and_compare_cache_keys_include_assessment_revision(self):
+    def test_guest_ai_cache_key_includes_assessment_revision(self):
         payload = UniversitiesAiSortRequest()
         with patch.object(admissions_assessment, "get_assessment_revision", return_value="first"):
             first = router._ai_sort_cache_key(payload)
@@ -157,16 +138,6 @@ class AdmissionsCutoverTests(unittest.TestCase):
             router._ai_sort_cache_key(payload, "rus"),
             router._ai_sort_cache_key(payload, "eng"),
         )
-        captured = []
-        with patch.object(router, "cache_get_json", side_effect=lambda key: captured.append(key)), \
-             patch.object(router, "cache_set_json"), patch.object(router, "_compare_profiles_cache_get", return_value=None), \
-             patch.object(router, "_compare_profiles_cache_set"):
-            for revision in ("first", "second"):
-                with patch.object(admissions_assessment, "get_assessment_revision", return_value=revision):
-                    response = self.client.post("/universities/compare-profiles", json={"university_ids": [MIT], "profile": {}})
-                    self.assertEqual(response.status_code, 200)
-                    self.assertIsNone(response.json()[MIT]["uniChance"]["overallChance"])
-            self.assertNotEqual(captured[0], captured[1])
 
     def test_snapshot_revision_invalidates_detail_etag_and_cached_list_lookup(self):
         original_path = admissions_catalog.CATALOG_PATH

@@ -1478,47 +1478,6 @@ def _get_university_acceptance_rate(u: dict[str, Any]) -> float | None:
     return None
 
 
-def _get_university_gpa(u: dict[str, Any]) -> float | None:
-    """
-    Extracts the representative minimum GPA requirement for a university.
-    When multiple admission tracks define GPA requirements, returns the maximum
-    required GPA threshold across those tracks.
-    """
-    if not isinstance(u, dict):
-        return None
-    if u.get("id") in admissions_catalog.INSTITUTION_IDS:
-        return None
-    direct_req = _to_float(_get_nested(u, ["requirements", "GPA"]))
-    if direct_req is not None:
-        return direct_req
-
-    vals: list[float] = []
-    categories = u.get("admission_categories")
-    if isinstance(categories, list):
-        for cat in categories:
-            if not isinstance(cat, dict):
-                continue
-            profiles = cat.get("requirement_profiles")
-            if isinstance(profiles, list):
-                for prof in profiles:
-                    if not isinstance(prof, dict):
-                        continue
-                    req = prof.get("requirements")
-                    if isinstance(req, dict):
-                        gpa_val = _to_float(req.get("GPA"))
-                        if gpa_val is not None:
-                            vals.append(gpa_val)
-            cat_req = cat.get("requirements")
-            if isinstance(cat_req, dict):
-                gpa_val = _to_float(cat_req.get("GPA"))
-                if gpa_val is not None:
-                    vals.append(gpa_val)
-
-    if vals:
-        return max(vals)
-    return None
-
-
 def _has_any_aid(u: dict[str, Any]) -> bool:
     finance = u.get("finance")
     if isinstance(finance, dict):
@@ -1730,18 +1689,6 @@ def _project_universities(
     return [_localize_university_payload(u, search_lang=lang) for u in items]
 
 
-def _safe_compare_lte(value: float | None, threshold: float) -> bool:
-    if value is None:
-        return False
-    return value <= threshold
-
-
-def _safe_compare_gte(value: float | None, threshold: float) -> bool:
-    if value is None:
-        return False
-    return value >= threshold
-
-
 def _apply_sort(
     items: list[dict[str, Any]], sort: str, format_preference: Any = "any", cost_basis: str = "annual_total"
 ) -> list[dict[str, Any]]:
@@ -1780,16 +1727,6 @@ def _apply_sort(
     if sort == "rank_desc":
         return sorted(
             items, key=lambda u: (_to_float(u.get("rank")) or 0.0), reverse=True
-        )
-
-    if sort == "gpa_desc":
-        return sorted(
-            items,
-            key=lambda u: (
-                0 if _get_university_gpa(u) is not None else 1,
-                -(_get_university_gpa(u) or 0.0),
-                _safe_lower(u.get("name")),
-            ),
         )
 
     return sorted(items, key=lambda u: _safe_lower(u.get("name")))
@@ -1938,15 +1875,6 @@ def get_locations() -> dict[str, Any]:
     return _LOC_CACHE["data"]
 
 
-def get_stats() -> dict[str, Any]:
-    universities = load_universities()
-    locations = get_locations()
-    return {
-        "universities_total": len(universities),
-        "countries_total": len(locations.keys()) if isinstance(locations, dict) else 0,
-    }
-
-
 def _filter_by_search_query(
     pairs: list[tuple[dict[str, Any], dict[str, Any]]],
     q: str,
@@ -1999,13 +1927,9 @@ def _filter_university_pairs(
     study_level: str | None = None,
     format: str | None = None,
     funding_type: str | None = None,
-    user_budget: float | None = None,
     min_tuition: float | None = None,
     max_tuition: float | None = None,
     cost_basis: str = "annual_total",
-    min_acceptance: float | None = None,
-    max_acceptance: float | None = None,
-    size: str | None = None,
     mode_pref: str = "any",
 ) -> list[tuple[dict[str, Any], dict[str, Any]]]:
     if region or country or city:
@@ -2115,11 +2039,6 @@ def _filter_university_pairs(
         elif ft == "paid":
             pairs = [(u, m) for (u, m) in pairs if m.get("has_paid", False) is not False]
 
-    if user_budget is not None:
-        pairs = [(u, m) for u, m in pairs
-                 if (cost := _catalog_cost_range_usd(u, "annual_total", mode_pref, published_only=True)) is not None
-                 and cost[0] <= user_budget]
-
     if min_tuition is not None or max_tuition is not None:
         filtered = []
         for u, m in pairs:
@@ -2156,27 +2075,6 @@ def _filter_university_pairs(
                 quote["filter_match"] = "partial"
             filtered.append((u, m))
         pairs = filtered
-
-    def acceptance_rate_of(u, m):
-        return m.get("acceptance_rate") if "acceptance_rate" in m else _get_university_acceptance_rate(u)
-
-    if min_acceptance is not None:
-        pairs = [
-            (u, m)
-            for (u, m) in pairs
-            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_gte(acceptance_rate_of(u, m), min_acceptance)
-        ]
-    if max_acceptance is not None:
-        pairs = [
-            (u, m)
-            for (u, m) in pairs
-            if reviewed_unknown(u, acceptance_rate_of(u, m)) or _safe_compare_lte(acceptance_rate_of(u, m), max_acceptance)
-        ]
-
-    if size:
-        ss = _safe_lower(size)
-        # Size is a student-count band; a university without a published count stays visible, as in other filters.
-        pairs = [(u, m) for (u, m) in pairs if m.get("size", "") in ("", ss)]
 
     return pairs
 
@@ -2229,16 +2127,12 @@ def list_universities(
     study_level: str | None = None,
     funding_type: str | None = None,
     format: str | None = None,
-    user_budget: float | None = None,
     min_tuition: float | None = None,
     max_tuition: float | None = None,
     cost_basis: str = "annual_total",
     fee_status_context: str | None = None,
     intended_entry_cycle: str | None = None,
     profile: dict[str, Any] | None = None,
-    min_acceptance: float | None = None,
-    max_acceptance: float | None = None,
-    size: str | None = None,
     sort: str = "name_asc",
     page: int = 1,
     limit: int = 200,
@@ -2268,13 +2162,9 @@ def list_universities(
         study_level=study_level,
         format=format,
         funding_type=funding_type,
-        user_budget=user_budget,
         min_tuition=min_tuition,
         max_tuition=max_tuition,
         cost_basis=cost_basis,
-        min_acceptance=min_acceptance,
-        max_acceptance=max_acceptance,
-        size=size,
         mode_pref=mode_pref,
     )
 

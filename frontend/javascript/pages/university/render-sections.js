@@ -14,16 +14,11 @@ import { getCurrentLanguage, t } from "../../i18n.js";
 import { formatMoney, formatPrice } from "../../currency.js";
 import {
   admissionChoiceKey,
-  applyPercentWidths,
   getAdmissionChoicesFromCategories,
   getGrantsFromCategories,
   getTrackFundingType,
   renderExamGroup,
-  renderTrackChanceChip,
-  renderRequirementChecks,
-  renderTrackFactors,
   renderTrackFundingBadge,
-  renderUniChanceSummary,
   splitExamEntries,
 } from "../../university-detail-helpers.js";
 import { translateAdmissionText, translateFundingAwardField, translateWord } from "../../university-translations.js";
@@ -35,7 +30,6 @@ import {
   modeAwareBreakdown,
   moneyOrUnknown,
   renderAdmissionsOverview,
-  renderRoiBox,
   renderInlineIcon,
   renderScholarshipLine,
   renderTrackLanguageExamGroup,
@@ -1885,11 +1879,9 @@ function renderAdmissionCategoryCard({
   annualCostForTrack,
   category,
   categoryIdx,
-  chanceByChoice,
   compactMode,
   effectiveSelectedChoiceKey,
   hasExplicitProgramSelection,
-  recommendedChoiceKey,
   university,
   universityId,
 }) {
@@ -1917,12 +1909,8 @@ function renderAdmissionCategoryCard({
   const activeProfileLabel = translatedProfileLabel(activeProfile);
   const activeChoiceKey = admissionChoiceKey(category, activeProfile, null);
   const fundingOptions = getFundingOptions(category, activeProfile);
-  const activeChoiceChance = chanceByChoice.get(activeChoiceKey)
-    || fundingOptions.map((funding) => chanceByChoice.get(admissionChoiceKey(category, activeProfile, funding))).find(Boolean);
   const profileHasFundingOptions = fundingOptions.length > 0;
-  const noPublishedMinimums = activeChoiceChance?.reason === "no_published_requirements";
   const profileIsSelected = !profileHasFundingOptions && Boolean(effectiveSelectedChoiceKey && effectiveSelectedChoiceKey === activeChoiceKey);
-  const profileIsRecommended = !profileHasFundingOptions && activeChoiceChance?.chancePercent != null && Boolean(recommendedChoiceKey && recommendedChoiceKey === activeChoiceKey);
 
   const catLevels = getCategoryLevelsList(category);
   const catLevelBadges = catLevels.length
@@ -1976,27 +1964,17 @@ function renderAdmissionCategoryCard({
       ` : ""}
 
       <div class="requirement-profile-panel">
-        ${!noPublishedMinimums && (profileRows.length > 1 || profileIsRecommended || activeChoiceChance) ? `
+        ${profileRows.length > 1 ? `
         <div class="requirement-profile-head">
-          ${profileRows.length > 1 ? `
           <div>
             <div class="requirement-profile-kicker">${escapeHtml(t("admission.profile", "Requirement profile"))}</div>
             <h4 class="requirement-profile-title">${escapeHtml(activeProfileLabel)}</h4>
           </div>
-          ` : `<div></div>`}
-          <div class="requirement-profile-badges">
-            ${profileIsRecommended ? `<span class="track-selection-badge">${escapeHtml(t("admission.choice.recommended", "Recommended"))}</span>` : ""}
-            ${renderTrackChanceChip(activeChoiceChance)}
-          </div>
         </div>
         ` : ""}
-        ${noPublishedMinimums ? renderTrackChanceChip(activeChoiceChance) : ""}
-        ${renderTrackFactors(activeChoiceChance)}
         ${profileDescription && profileDescription !== categoryDescription && profileDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") && profileRows.length === 1 ? `<p class="admission-scope-note">${escapeHtml(profileDescription)}</p>` : ""}
-        ${activeChoiceChance?.chancePercent != null && (activeProfile.requirements_note || category.requirements_note) ? `<p class="admission-scope-note">${escapeHtml(t("admission.requirements_fit.unscored_conditions", "The percentage covers numeric minimums only. Subject, grade, document, and eligibility conditions still need separate review."))}</p>` : ""}
 
         ${renderChoiceRequirements({ category, funding: null, profile: activeProfile, university })}
-        ${!compactMode ? renderRequirementChecks(activeChoiceChance) : ""}
 
         ${profileHasFundingOptions
           ? renderFundingOptions({ annualCostForTrack, category, effectiveSelectedChoiceKey, profile: activeProfile, university })
@@ -2014,13 +1992,11 @@ function renderAdmissionCategoryCard({
 
 function attachAdmissionSectionEventListeners({
   annualCostForTrack,
-  chanceByChoice,
   compactMode,
   container,
   effectiveSelectedChoiceKeyOverride,
   onChoiceSelected,
   onContextChange,
-  uniChance,
   university,
   universityId,
   admissionContext,
@@ -2045,8 +2021,6 @@ function attachAdmissionSectionEventListeners({
       renderAdmissionSection({
         annualCostForTrack,
         container,
-        uniChance,
-        uniChanceByChoiceKey: chanceByChoice,
         university,
         onChoiceSelected,
         effectiveSelectedChoiceKeyOverride,
@@ -2074,8 +2048,6 @@ function attachAdmissionSectionEventListeners({
       renderAdmissionSection({
         annualCostForTrack,
         container,
-        uniChance,
-        uniChanceByChoiceKey: chanceByChoice,
         university,
         onChoiceSelected,
         effectiveSelectedChoiceKeyOverride,
@@ -2094,8 +2066,6 @@ function attachAdmissionSectionEventListeners({
       renderAdmissionSection({
         annualCostForTrack,
         container,
-        uniChance,
-        uniChanceByChoiceKey: chanceByChoice,
         university,
         onChoiceSelected,
         effectiveSelectedChoiceKeyOverride,
@@ -2130,8 +2100,6 @@ function attachAdmissionSectionEventListeners({
 export function renderAdmissionSection({
   annualCostForTrack,
   container,
-  uniChance,
-  uniChanceByChoiceKey,
   university,
   onChoiceSelected,
   effectiveSelectedChoiceKeyOverride,
@@ -2139,11 +2107,7 @@ export function renderAdmissionSection({
   compactMode = false,
 }) {
   if (!container) return;
-  const chanceByChoice = uniChanceByChoiceKey instanceof Map ? uniChanceByChoiceKey : new Map();
 
-  const warningHtml = uniChance?.missingEvidence
-    ? `<div class="chance-warning">${escapeHtml(t("admission.requirements_fit.missing_evidence_note", "Add the evidence listed below to check this route. A percentage is available only when applicable numeric minimums can be assessed."))}</div>`
-    : "";
   const admissionsData = university?.academics?.admissions && typeof university.academics.admissions === "object"
     ? university.academics.admissions
     : null;
@@ -2153,9 +2117,8 @@ export function renderAdmissionSection({
     if (compactMode) {
       container.innerHTML = `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
     } else {
-      container.innerHTML = `${warningHtml}${renderUniChanceSummary(uniChance)}${admissionsOverviewHtml}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
+      container.innerHTML = `${admissionsOverviewHtml}<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.admission_categories", "Admission categories"))}</div>`;
     }
-    applyPercentWidths(container);
     markMotionEnter(container, ".admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 12, staggerMs: 18 });
     return;
   }
@@ -2191,18 +2154,20 @@ export function renderAdmissionSection({
   const selectedChoiceKey = effectiveSelectedChoiceKeyOverride !== undefined
     ? effectiveSelectedChoiceKeyOverride
     : getSelectedAdmissionChoice(university.id);
-  const contextChance = uniChance;
-  const bestChoiceKey = String(contextChance?.bestChoiceKey || "").trim();
-  const recommendedChoiceKey = String(contextChance?.recommendedChoiceKey || bestChoiceKey || "").trim();
-  const effectiveSelectedChoiceKey = selectedChoiceKey || bestChoiceKey;
+  const effectiveSelectedChoiceKey = selectedChoiceKey || "";
 
   const studyLevelFilterHtml = !compactMode && !hasExplicitProgramSelection
     ? renderStudyLevelFilter(availableLevels, activeLevelKey, categories.length) : "";
 
   let html = "";
-  const analysisHtml = `<details class="mit-admission-analysis"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${renderUniChanceSummary(contextChance)}${admissionContext.route !== "transfer" && activeLevelKey === "bachelor" ? admissionsOverviewHtml : ""}</details>`;
+  const overviewDetailsHtml = admissionContext.route !== "transfer" && activeLevelKey === "bachelor"
+    ? admissionsOverviewHtml
+    : "";
+  const analysisHtml = overviewDetailsHtml
+    ? `<details class="mit-admission-analysis"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${overviewDetailsHtml}</details>`
+    : "";
   if (!compactMode) {
-    html += warningHtml + studyLevelFilterHtml;
+    html += studyLevelFilterHtml;
   }
   html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
   if (!compactMode) html += renderAdmissionContextControls(admissionContext.programCategories.length ? admissionContext.programCategories : levelFilteredCategories, admissionContext);
@@ -2220,11 +2185,9 @@ export function renderAdmissionSection({
       annualCostForTrack,
       category,
       categoryIdx,
-      chanceByChoice,
       compactMode,
       effectiveSelectedChoiceKey,
       hasExplicitProgramSelection,
-      recommendedChoiceKey,
       university,
       universityId,
     });
@@ -2236,19 +2199,16 @@ export function renderAdmissionSection({
 
   attachAdmissionSectionEventListeners({
     annualCostForTrack,
-    chanceByChoice,
     compactMode,
     container,
     effectiveSelectedChoiceKeyOverride,
     onChoiceSelected,
     onContextChange,
-    uniChance,
     university,
     universityId,
     admissionContext,
   });
 
-  applyPercentWidths(container);
   markMotionEnter(container, ".admission-category-card, .admission-funding-option, .admissions-summary-card, .admissions-program-card, .admission-empty-state", { limit: 18, staggerMs: 18 });
   refreshFundingAwardsForVisibleAdmission(university);
 }
@@ -2259,7 +2219,6 @@ export function renderFinanceSection({
   priceEl,
   profileStudyMode,
   scholarshipContainer,
-  uniRoi,
   university,
 }) {
   if (university.finance) {
@@ -2530,12 +2489,11 @@ export function renderFinanceSection({
 
       const policyHtml = renderFinancePolicyOverview(policyData);
       const oneTimeCostsHtml = renderOneTimeCosts(university.finance);
-      const roiHtml = renderRoiBox(uniRoi);
       const financeGridHtml = financeHtml
         ? `<div class="finance-grid-new">${financeHtml}</div>`
         : `<div class="admission-empty-state">${escapeHtml(unknownFieldText("placeholder.field.cost_breakdown", "Cost breakdown"))}</div>`;
-      container.innerHTML = `${policyHtml}${oneTimeCostsHtml}${financeGridHtml}${roiHtml}`;
-      markMotionEnter(container, ".finance-policy-card, .finance-one-time-costs, .finance-track-group, .finance-option-card, .roi-box, .admission-empty-state", { limit: 18, staggerMs: 18 });
+      container.innerHTML = `${policyHtml}${oneTimeCostsHtml}${financeGridHtml}`;
+      markMotionEnter(container, ".finance-policy-card, .finance-one-time-costs, .finance-track-group, .finance-option-card, .admission-empty-state", { limit: 18, staggerMs: 18 });
     }
     return;
   }

@@ -205,8 +205,6 @@ _CIRCUIT_LOCK = threading.Lock()
 _MEMORY_CACHE: dict[str, Any] = {}
 _CACHE_LOCK = threading.Lock()
 
-_LAST_FETCH_TIME: float | None = None
-
 
 def _record_success() -> None:
     global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
@@ -245,7 +243,6 @@ def _in_backoff() -> bool:
 
 def _clear_cache_for_testing() -> None:
     global _CONSECUTIVE_FAILURES, _CIRCUIT_STATE, _BACKOFF_UNTIL
-    global _LAST_FETCH_TIME
     with _CIRCUIT_LOCK:
         _CONSECUTIVE_FAILURES = 0
         _CIRCUIT_STATE = "CLOSED"
@@ -253,7 +250,6 @@ def _clear_cache_for_testing() -> None:
     with _CACHE_LOCK:
         _MEMORY_CACHE.clear()
     _load_filter_limits_config_cached.cache_clear()
-    _LAST_FETCH_TIME = None
 
 
 def fetch_rates(base: str = "USD") -> dict[str, Any]:
@@ -348,7 +344,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> dict[str, Any]:
     Returns currency exchange rates using two-tier cache (memory + Redis),
     with fallback to API and static FALLBACK_RATES.
     """
-    global _LAST_FETCH_TIME
     base_code = (base or "USD").strip().upper()
     now = time.time()
     redis_key = f"currency:rates:{base_code}"
@@ -383,7 +378,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> dict[str, Any]:
                         "date": date_str,
                         "ts": now,
                     }
-                _LAST_FETCH_TIME = now
                 return {
                     "rates": dict(parsed_rates),
                     "date": date_str,
@@ -410,7 +404,6 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> dict[str, Any]:
             rates = fetched["rates"]
             date_str = fetched.get("date", "")
             _record_success()
-            _LAST_FETCH_TIME = now
             # Populate in-memory & Redis caches
             with _CACHE_LOCK:
                 _MEMORY_CACHE[base_code] = {
@@ -603,30 +596,4 @@ def get_filter_limits(currency_code: str) -> dict[str, int]:
         "min": min_val,
         "max": max_val,
         "step": step_val,
-    }
-
-
-def get_rates_status() -> dict[str, Any]:
-    """Runtime health and diagnostic probe for currency service."""
-    rates_info = get_rates()
-    now = time.time()
-    with _CACHE_LOCK:
-        mem = _MEMORY_CACHE.get("USD", {})
-        cache_ts = float(mem.get("ts", 0.0)) if mem else 0.0
-
-    staleness = round(now - cache_ts, 2) if cache_ts > 0 else None
-
-    with _CIRCUIT_LOCK:
-        state = _CIRCUIT_STATE
-        failures = _CONSECUTIVE_FAILURES
-
-    return {
-        "enabled": bool(CURRENCY_RATES_ENABLED),
-        "source": rates_info.get("source", "unknown"),
-        "date": rates_info.get("date"),
-        "circuit_state": state,
-        "consecutive_failures": failures,
-        "rates_count": len(rates_info.get("rates") or {}),
-        "last_fetch": _LAST_FETCH_TIME,
-        "staleness_sec": staleness,
     }

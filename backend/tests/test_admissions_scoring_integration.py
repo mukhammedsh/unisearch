@@ -41,9 +41,7 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
         value = profile(route="undergraduate-shared-evidence:stanford-transfer")
         value["applicant_route"] = "transfer"
         value["selectedAdmissionChoices"][STANFORD].update(programId="stanford-bs-computer-science", choiceKey="stanford_standard")
-        response = self.client.post(f"/universities/{STANFORD}/uni-chance", json={"profile": value})
-        self.assertEqual(response.status_code, 200)
-        result = response.json()
+        result = ai_scoring.estimate_uni_chance(universities.get_university_by_id(STANFORD), value)
         self.assertEqual(result["context"]["application_route_id"], "undergraduate-shared-evidence:stanford-transfer")
         self.assertIsNone(result["overallChance"])
         self.assertTrue(result["catalogRevision"])
@@ -182,19 +180,6 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
         self.assertEqual("unknown_cost", known["budgetStatus"])
         self.assertIsNone(known["costYearUSD"])
 
-    def test_compare_uses_each_universitys_selection_and_keeps_roi_unknown(self):
-        value = profile()
-        value["selectedAdmissionChoices"][MIT] = {"studyOptionId": "mit-course-6-3-bachelor", "applicationRouteId": "mit-transfer"}
-        response = self.client.post("/universities/compare-profiles", json={"university_ids": [MIT, STANFORD], "profile": value})
-        self.assertEqual(response.status_code, 200)
-        result = response.json()
-        self.assertEqual(result[MIT]["uniChance"]["context"]["application_route_id"], "mit-transfer")
-        self.assertEqual(result[STANFORD]["uniChance"]["context"]["application_route_id"], "undergraduate-shared-evidence:stanford-first-year")
-        for entry in result.values():
-            self.assertIsNone(entry["roi"]["roi_value"])
-            self.assertIsNone(entry["roi"]["annual_cost_usd"])
-            self.assertEqual(entry["roi"]["context_type"], "scoped_cost_and_outcomes_unassessed")
-
     def test_catalog_revision_invalidates_rank_cache_and_corruption_is_unavailable(self):
         payload = UniversitiesAiSortRequest(profile=ProfilePayload(**profile()))
         with patch.object(admissions_catalog, "get_revision", return_value="revision-one"):
@@ -203,7 +188,7 @@ class AdmissionsScoringIntegrationTests(unittest.TestCase):
             second = router._ai_sort_cache_key(payload)
         self.assertNotEqual(first, second)
         with patch.object(admissions_catalog, "resolve_context", side_effect=admissions_catalog.AdmissionsCatalogError("private internal path")):
-            result = self.client.post(f"/universities/{STANFORD}/uni-chance", json={"profile": profile()})
+            result = self.client.post(f"/universities/{STANFORD}/admissions-context", json={"context": {}})
         self.assertEqual(result.status_code, 503)
         self.assertEqual(result.json(), {"detail": "Admissions catalog is unavailable"})
 

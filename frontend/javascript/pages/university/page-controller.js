@@ -3,7 +3,6 @@ import {
   escapeHtml,
   getFlagImg,
   loadProfile,
-  loadProfileForApi,
   motionPress,
   replayMotion,
 } from "../../utils.js";
@@ -285,17 +284,6 @@ function resolveProgramForProfile(university, universityId, profile, { allowPart
   return resolveProgramByName(programs, targetNames, allowPartial ? { allowPartial: true } : undefined);
 }
 
-async function fetchUniversityProfileMetric(id, endpoint, profile) {
-  const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(id)}/${endpoint}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ profile }),
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data?.detail || `${endpoint} API Error`);
-  return data || null;
-}
-
 function mountOverviewSummaryBlock(options) {
   const container = document.getElementById("detailOverviewSummary");
   if (container) container.hidden = false;
@@ -378,44 +366,6 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   renderDetailLocation(university, translatedCity, translatedCountry);
   bindDetailActions({ id, minPrice, university, universityId });
 
-  let uniChance = null;
-  let uniChanceByChoiceKey = new Map();
-  let uniRoi = null;
-  let uniChanceRequestVersion = 0;
-  let uniRoiRequestVersion = 0;
-  let contextRevision = 0;
-  const contextProfileForApi = () => getAdmissionContextProfile(university, loadProfileForApi());
-
-  const recomputeUniChance = async () => {
-    const requestVersion = ++uniChanceRequestVersion;
-    try {
-      const data = await fetchUniversityProfileMetric(id, "uni-chance", contextProfileForApi());
-      if (requestVersion !== uniChanceRequestVersion) return;
-      uniChance = data;
-    } catch (error) {
-      if (requestVersion !== uniChanceRequestVersion) return;
-      console.error("Failed to compute UniChance on backend:", error);
-      uniChance = null;
-    }
-    if (requestVersion !== uniChanceRequestVersion) return;
-    uniChanceByChoiceKey = new Map((uniChance?.choices || []).map((choice) => [String(choice.choiceKey), choice]));
-  };
-
-  const recomputeUniRoi = async () => {
-    const requestVersion = ++uniRoiRequestVersion;
-    try {
-      const data = await fetchUniversityProfileMetric(id, "roi", contextProfileForApi());
-      if (requestVersion !== uniRoiRequestVersion) return;
-      uniRoi = data;
-    } catch (error) {
-      if (requestVersion !== uniRoiRequestVersion) return;
-      console.error("Failed to compute ROI on backend:", error);
-      uniRoi = null;
-    }
-  };
-
-  await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
-
   const acceptanceMeta = (university?.academics?.acceptance_rate_percent_meta && typeof university.academics.acceptance_rate_percent_meta === "object")
     ? university.academics.acceptance_rate_percent_meta
     : ((university?.academics?.admissions?.university_wide?.provenance && typeof university.academics.admissions.university_wide.provenance === "object")
@@ -464,13 +414,11 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   };
   renderProgramsTab();
 
-  let refreshAdmissionContext = async () => {};
+  let refreshAdmissionContext = () => {};
   const renderAdmissionTab = () => {
     renderAdmissionSection({
       annualCostForTrack,
       container: document.getElementById("detailRequirements"),
-      uniChance,
-      uniChanceByChoiceKey,
       university,
       onContextChange: () => refreshAdmissionContext(),
     });
@@ -496,17 +444,13 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       priceEl,
       profileStudyMode,
       scholarshipContainer: scholarshipEl,
-      uniRoi,
       university,
     });
   };
   renderFinanceTab();
 
-  refreshAdmissionContext = async ({ skipPrograms = false } = {}) => {
-    const revision = ++contextRevision;
+  refreshAdmissionContext = ({ skipPrograms = false } = {}) => {
     profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || "Any");
-    await Promise.all([recomputeUniChance(), recomputeUniRoi()]);
-    if (revision !== contextRevision) return;
     renderAdmissionTab();
     renderDeadlinesTab();
     if (!skipPrograms) renderProgramsTab();

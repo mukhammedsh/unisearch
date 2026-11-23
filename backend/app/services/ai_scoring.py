@@ -364,21 +364,6 @@ def _effective_track_cost_details(
     return max(0.0, total_usd), max(0.0, raw_total), currency, "on-campus_exact"
 
 
-def _effective_track_cost_with_mode(
-    university: dict[str, Any],
-    track: dict[str, Any],
-    preferred_mode: Any = "any",
-) -> tuple[float, str]:
-    cost_usd, _cost_native, _currency, cost_mode = _effective_track_cost_details(
-        university, track, preferred_mode=preferred_mode
-    )
-    return cost_usd, cost_mode
-
-
-def _effective_track_cost(university: dict[str, Any], track: dict[str, Any], preferred_mode: Any = "any") -> float:
-    return _effective_track_cost_with_mode(university, track, preferred_mode=preferred_mode)[0]
-
-
 def _language_config() -> dict[str, Any]:
     cfg = languages_service.get_languages_config()
     return cfg if isinstance(cfg, dict) else {}
@@ -1491,8 +1476,6 @@ def sort_universities_ai(
     social_vs_hardcore: Any = None,
     budget_vs_prestige: Any = None,
     city_vs_campus: Any = None,
-    ai_balance: Any = 50,
-    admission_bias: Any = 50,
     funding_type: Any = "any",
 ) -> list[dict[str, Any]]:
     profile = profile if isinstance(profile, dict) else {}
@@ -1506,14 +1489,8 @@ def sort_universities_ai(
     )
     user_pref = {
         "practice_vs_science": _preference01(practice_vs_science, 50.0),
-        "social_vs_hardcore": _preference01(
-            social_vs_hardcore if social_vs_hardcore is not None else admission_bias,
-            50.0,
-        ),
-        "budget_vs_prestige": _preference01(
-            budget_vs_prestige if budget_vs_prestige is not None else ai_balance,
-            50.0,
-        ),
+        "social_vs_hardcore": _preference01(social_vs_hardcore, 50.0),
+        "budget_vs_prestige": _preference01(budget_vs_prestige, 50.0),
         "city_vs_campus": _preference01(city_vs_campus, 50.0),
     }
     preference_strength = max(_preference_weights(user_pref).values())
@@ -2290,201 +2267,4 @@ def estimate_uni_chance(
         "chanceAvailable": bool(best.get("chanceAvailable")),
         "reason": str(best.get("reason") or ""),
         "label": str(best.get("label") or ""),
-    }
-
-
-def estimate_university_roi(university: dict[str, Any], profile: dict[str, Any] | None = None) -> dict[str, Any]:
-    profile = profile if isinstance(profile, dict) else {}
-    if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
-        resolved = admissions_catalog.resolve_context(str(university.get("id") or ""), profile=profile)
-        return {
-            "title": "Estimated ROI (Return on Investment)", "salary_used_usd": None,
-            "annual_cost_usd": None, "roi_value": None, "roi_label": "No Data", "roi_tone": "neutral",
-            "context_type": "scoped_cost_and_outcomes_unassessed", "context": resolved["context"],
-            "catalogRevision": resolved["revision"], "user_major": str(profile.get("major") or ""),
-            "matched_major": "", "salary_data_points": 0,
-        }
-    user_major = str(profile.get("major") or "").strip()
-    study_level = _normalize_study_level_str(profile.get("studyLevel") or profile.get("study_level"))
-    choices = universities_service.expand_admission_choices(university.get("admission_categories"))
-    target_route = profile.get("applicant_route")
-    target_cycle = profile.get("intended_entry_cycle")
-    selected_program_id = _selected_program_id_for_university(profile, university)
-    has_explicit_admission_context = bool(target_route or target_cycle or selected_program_id)
-    has_graduate_choices = any(
-        isinstance(choice, dict)
-        and any(
-            _choice_matches_study_level(choice, level)
-            for level in ("master", "doctorate", "professional")
-        )
-        for choice in choices
-    )
-    has_undergraduate_choices = any(
-        isinstance(choice, dict) and _choice_matches_study_level(choice, "bachelor")
-        for choice in choices
-    )
-    if study_level in {"master", "mba", "doctorate", "professional"} or (
-        study_level == "any" and has_graduate_choices and not has_undergraduate_choices
-    ):
-        return {
-            "title": "Estimated ROI (Return on Investment)",
-            "salary_used_usd": None,
-            "annual_cost_usd": None,
-            "roi_value": None,
-            "roi_label": "No Data",
-            "roi_tone": "neutral",
-            "context_type": "insufficient_level_data",
-            "user_major": user_major,
-            "matched_major": "",
-            "salary_data_points": 0,
-        }
-    preferred_mode = _normalize_study_mode(
-        profile.get("studyMode")
-        or profile.get("study_mode")
-        or profile.get("format")
-        or "any"
-    )
-
-    outcomes = university.get("outcomes", {}) if isinstance(university, dict) else {}
-    if not isinstance(outcomes, dict):
-        outcomes = {}
-    salaries_by_major_raw = (
-        outcomes.get("salary_by_major")
-        if isinstance(outcomes.get("salary_by_major"), dict)
-        else {}
-    )
-    avg_salary_generic = _to_num(outcomes.get("early_career_salary_usd")) or 0.0
-
-    def normalize_major_key(value: Any) -> str:
-        return re.sub(r"[^a-z0-9]+", " ", str(value or "").strip().lower()).strip()
-
-    salary_entries: list[tuple[str, float]] = []
-    for major_name, salary in salaries_by_major_raw.items():
-        major = str(major_name or "").strip()
-        sal = _to_num(salary)
-        if major and sal is not None and sal > 0:
-            salary_entries.append((major, sal))
-
-    avg_across_majors = (
-        sum(x[1] for x in salary_entries) / float(len(salary_entries))
-        if salary_entries
-        else 0.0
-    )
-    fallback_salary = avg_across_majors if avg_across_majors > 0 else avg_salary_generic
-
-    user_major_norm = normalize_major_key(user_major)
-    exact_match = None
-    for major_name, salary in salary_entries:
-        if normalize_major_key(major_name) == user_major_norm and user_major_norm:
-            exact_match = (major_name, salary)
-            break
-
-    loose_match = exact_match
-    if loose_match is None and user_major_norm:
-        for major_name, salary in salary_entries:
-            major_norm = normalize_major_key(major_name)
-            if major_norm and (major_norm in user_major_norm or user_major_norm in major_norm):
-                loose_match = (major_name, salary)
-                break
-
-    major_matched = ""
-    if not user_major:
-        context_type = "missing_major"
-        salary_used = fallback_salary
-    elif loose_match is not None:
-        context_type = "matched_major"
-        major_matched = str(loose_match[0] or "")
-        salary_used = float(loose_match[1] or 0.0)
-    else:
-        context_type = "fallback_major"
-        salary_used = fallback_salary
-
-    annual_cost = 0.0
-    cost_available = False
-    matching_choices = [
-        choice for choice in choices
-        if isinstance(choice, dict)
-        and _choice_matches_study_level(
-            choice,
-            "bachelor" if study_level == "any" and has_undergraduate_choices else study_level,
-        )
-        and _choice_matches_applicant_route(choice, target_route)
-        and _choice_matches_entry_cycle(choice, target_cycle)
-        and _choice_matches_program(choice, selected_program_id)
-    ]
-    if matching_choices:
-        prices = []
-        for choice in matching_choices:
-            cost_usd, _cost_native, _currency, cost_mode = _effective_track_cost_details(
-                university, choice, preferred_mode=preferred_mode,
-                intended_entry_cycle=target_cycle,
-            )
-            if cost_mode not in {"unavailable", "online_missing_tuition"}:
-                prices.append(cost_usd)
-        if prices:
-            annual_cost = min(prices)
-            cost_available = annual_cost > 0
-    elif not choices and not has_explicit_admission_context:
-        annual_cost = _effective_track_cost(university, {}, preferred_mode=preferred_mode)
-        cost_available = annual_cost > 0
-    elif choices and not has_explicit_admission_context:
-        # Preserve the legacy institution-level cost only when no admission
-        # context was requested and no scoped choice cost is available.
-        annual_cost = _effective_track_cost(university, {}, preferred_mode=preferred_mode)
-        cost_available = annual_cost > 0
-    if annual_cost <= 0:
-        cost_available = False
-
-    if not cost_available:
-        return {
-            "title": "Estimated ROI (Return on Investment)",
-            "salary_used_usd": None,
-            "annual_cost_usd": None,
-            "roi_value": None,
-            "roi_label": "No Data",
-            "roi_tone": "neutral",
-            "context_type": "no_cost_data",
-            "user_major": user_major,
-            "matched_major": "",
-            "salary_data_points": len(salary_entries),
-        }
-
-    if salary_used <= 0:
-        return {
-            "title": "Estimated ROI (Return on Investment)",
-            "salary_used_usd": None,
-            "annual_cost_usd": float(round(annual_cost, 2)),
-            "roi_value": None,
-            "roi_label": "No Data",
-            "roi_tone": "neutral",
-            "context_type": "no_salary_data",
-            "user_major": user_major,
-            "matched_major": "",
-            "salary_data_points": len(salary_entries),
-        }
-
-    roi_value = salary_used / annual_cost if annual_cost > 0 else 0.0
-    roi_value_rounded = round(roi_value, 1)
-
-    if roi_value > 2.0:
-        roi_label = "Excellent Return"
-        roi_tone = "excellent"
-    elif roi_value > 1.0:
-        roi_label = "Positive Return"
-        roi_tone = "good"
-    else:
-        roi_label = "High Investment"
-        roi_tone = "warn"
-
-    return {
-        "title": "Estimated ROI (Return on Investment)",
-        "salary_used_usd": float(round(salary_used, 2)),
-        "annual_cost_usd": float(round(annual_cost, 2)),
-        "roi_value": float(roi_value_rounded),
-        "roi_label": roi_label,
-        "roi_tone": roi_tone,
-        "context_type": context_type,
-        "user_major": user_major,
-        "matched_major": major_matched,
-        "salary_data_points": len(salary_entries),
     }

@@ -92,10 +92,6 @@ TRUSTED_PROXY_IPS = [
     if value.strip()
 ]
 try:
-    COMPARE_PROFILES_CACHE_TTL_SEC = float(os.getenv("COMPARE_PROFILES_CACHE_TTL_SEC", "60") or 60)
-except Exception:
-    COMPARE_PROFILES_CACHE_TTL_SEC = 60.0
-try:
     REQUEST_BODY_MAX_BYTES = int(os.getenv("REQUEST_BODY_MAX_BYTES", "131072") or 131072)
 except Exception:
     REQUEST_BODY_MAX_BYTES = 131072

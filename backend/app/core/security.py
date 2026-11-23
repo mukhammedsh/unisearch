@@ -305,7 +305,7 @@ def is_protected_ops_request(request: Request) -> bool:
     if norm_path == "/ops" or norm_path.startswith("/ops/"):
         return True
     metrics_path = str(METRICS_PATH or "/metrics").rstrip("/") or "/metrics"
-    if norm_path in (metrics_path, "/currency/status"):
+    if norm_path == metrics_path:
         return True
     return norm_path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on", "t", "y"}
 

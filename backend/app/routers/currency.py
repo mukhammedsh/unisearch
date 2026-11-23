@@ -24,13 +24,3 @@ def get_currency_rates(response: Response = None):
         "provider": "ExchangeRate-API",
         "attribution": "Rates provided by ExchangeRate-API (https://www.exchangerate-api.com)",
     }
-
-
-
-@router.get(
-    "/currency/status",
-    summary="Currency service status",
-    description="Returns runtime health and circuit breaker status of the currency service.",
-)
-def get_currency_status():
-    return currency_service.get_rates_status()

@@ -132,136 +132,17 @@
   font-weight: var(--font-weight-medium);
 }
 
-.chance-warning {
-  background: var(--color-warning-bg);
-  color: var(--color-warning);
-  padding: var(--space-3) var(--space-3);
-  margin-bottom: var(--space-3);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.chance-head {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  align-items: flex-start;
-}
-
-.chance-title {
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--text);
-}
-
-.chance-sub {
-  font-size: var(--text-sm);
-  color: var(--text-muted);
-  margin-top: var(--space-1);
-  max-width: 700px;
-}
-
-.chance-percent {
-  font-size: var(--text-xl);
-  font-weight: var(--font-weight-medium);
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.chance-percent-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: var(--space-1);
-  min-width: 0;
-}
-
-.chance-meter {
-  margin-top: var(--space-2);
-  width: 100%;
-  height: 10px;
-  background: var(--surface-solid);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.chance-fill {
-  width: var(--fill-width, 0%);
-  height: 100%;
-  border-radius: var(--radius-full);
-}
-
-.chance-foot {
-  font-size: var(--text-xs);
-  color: var(--text-muted);
-  margin-top: var(--space-2);
-}
-
-.chance-inline-note {
-  line-height: 1.45;
-  background: transparent;
-  padding: var(--space-2) 0 0;
-  margin-top: var(--space-2);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.chance-track-chip {
-  display: inline-flex;
-  align-items: center;
-  border-radius: var(--radius-sm);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
-}
-
-.chance-high {
-  color: var(--color-success);
-  background: var(--color-success-bg);
-}
-
-.chance-good {
-  color: var(--color-info);
-  background: var(--color-info-bg);
-}
-
-.chance-medium {
-  color: var(--color-warning);
-  background: var(--color-warning-bg);
-}
-
-.chance-low {
-  color: var(--color-danger);
-  background: var(--color-danger-bg);
-}
-
-.chance-percent:is(.chance-high, .chance-good, .chance-medium, .chance-low) {
-  background: transparent;
-  padding: 0;
-}
-
-.chance-fill.chance-high {
-  background: var(--color-success);
-}
-
-.chance-fill.chance-good {
-  background: var(--color-info);
-}
-
-.chance-fill.chance-medium {
-  background: var(--color-warning);
-}
-
-.chance-fill.chance-low {
-  background: var(--color-danger);
-}
-
 .track-funding-badge {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
+  min-height: 24px;
+  padding: var(--space-1) var(--space-2);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-xs);
 }
@@ -323,11 +204,6 @@
   color: var(--interaction-hover-text);
 }
 
-.chance-warning,
-.chance-inline-note {
-  border-radius: var(--radius-base);
-}
-
 .admissions-section-title,
 .admissions-summary-value,
 .admissions-program-title {
@@ -340,16 +216,6 @@
 .admissions-program-note,
 .admissions-summary-meta {
   color: var(--muted);
-}
-
-.track-funding-badge,
-.chance-track-chip {
-  max-width: 100%;
-  min-height: 24px;
-  padding: var(--space-1) var(--space-2);
-  line-height: 1.15;
-  white-space: normal;
-  overflow-wrap: anywhere;
 }
 
 /* ====================================================================
@@ -371,49 +237,6 @@
   background: var(--surface-soft);
   padding: var(--space-5);
   box-shadow: none;
-}
-
-.admission-check-assessments {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.admission-check-assessments h4 {
-  margin: 0;
-  color: var(--text);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.admission-check-assessments p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.45;
-}
-
-.admission-check-assessments ul {
-  display: grid;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.admission-check-assessments__row {
-  display: grid;
-  grid-template-columns: minmax(120px, 1.2fr) repeat(2, minmax(100px, 1fr)) minmax(100px, 0.8fr);
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.45;
-}
-
-.admission-check-assessments__row strong,
-.admission-check-assessments__status {
-  color: var(--text);
-  font-weight: var(--font-weight-medium);
 }
 
 .admissions-programs-block {
@@ -438,14 +261,6 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4);
-}
-
-.chance-panel {
-  border-radius: var(--radius-lg, 16px);
-  background: var(--surface-soft);
-  padding: var(--space-5) var(--space-5);
-  margin-bottom: var(--space-5);
-  box-shadow: none;
 }
 
 /* ===== Deadlines & Application Rounds ===== */
@@ -948,42 +763,10 @@
   }
 }
 
-@media (max-width: 768px) {
-  .admission-check-assessments__row {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 640px) {
   .admissions-summary-grid,
   .admissions-program-grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .chance-head {
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .chance-percent {
-    font-size: var(--text-2xl);
-  }
-
-  .chance-percent-wrap {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-  }
-
-  .chance-sub {
-    overflow-wrap: anywhere;
-  }
-
-  .chance-panel {
-    padding: var(--space-4);
-    margin-bottom: var(--space-4);
   }
 }
 

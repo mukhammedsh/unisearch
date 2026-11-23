@@ -3,7 +3,6 @@ import unittest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.routers import universities as universities_router
 from app.services import admissions_catalog
 
 
@@ -20,16 +19,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertTrue(items)
         return str((items[0] or {}).get("id") or "")
 
-    def _first_university_ids(self, limit: int = 2):
-        response = self.client.get(f"/universities?limit={limit}&fields=card")
-        self.assertEqual(response.status_code, 200)
-        items = response.json().get("items") or []
-        ids = [str((row or {}).get("id") or "") for row in items]
-        ids = [uni_id for uni_id in ids if uni_id]
-        self.assertGreaterEqual(len(ids), limit)
-        return ids[:limit]
-
-    def test_list_locations_and_stats_contracts(self):
+    def test_list_and_locations_contracts(self):
         list_response = self.client.get("/universities?limit=5&fields=card&sort=name_asc")
         self.assertEqual(list_response.status_code, 200)
         self.assertIn("Cache-Control", list_response.headers)
@@ -42,12 +32,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         locations = self.client.get("/locations")
         self.assertEqual(locations.status_code, 200)
         self.assertIsInstance(locations.json(), dict)
-
-        stats = self.client.get("/stats")
-        self.assertEqual(stats.status_code, 200)
-        stats_data = stats.json()
-        self.assertGreater(int(stats_data.get("universities_total", 0)), 0)
-        self.assertGreater(int(stats_data.get("countries_total", 0)), 0)
 
     def test_university_detail_supports_etag(self):
         university_id = self._first_university_id()
@@ -312,7 +296,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(95134, cost_range.get("min_usd"))
         self.assertEqual(100134, cost_range.get("max_usd"))
 
-    def test_size_filter_uses_student_count_bands(self):
+    def test_student_size_band_uses_student_count_thresholds(self):
         from app.services.universities import student_size_band
 
         self.assertEqual("small", student_size_band({"student_count": 9999}))
@@ -320,16 +304,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual("medium", student_size_band({"student_count": 30000}))
         self.assertEqual("large", student_size_band({"student_count": 30001}))
         self.assertEqual("", student_size_band({"student_count": None}))
-        listed = self.client.get("/universities", params={"limit": 100}).json().get("items") or []
-        counts = {item["id"]: self.client.get(f"/universities/{item['id']}").json().get("student_count") for item in listed}
-        for band in ("small", "medium", "large"):
-            response = self.client.get("/universities", params={"size": band, "limit": 100})
-            self.assertEqual(response.status_code, 200)
-            ids = [item.get("id") for item in response.json().get("items") or []]
-            # A university without a published student count is unknown, not excluded.
-            expected = sorted(uid for uid, count in counts.items() if student_size_band({"student_count": count}) in ("", band))
-            self.assertTrue(expected, band)
-            self.assertEqual(expected, sorted(ids), band)
 
     def test_university_detail_localizes_campus_size_group_by_lang(self):
         response = self.client.get("/universities/mit-usa-cambridge?lang=rus")
@@ -522,8 +496,7 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual(program["name"], "Компьютерные науки")
         self.assertEqual(program["source_name"], "Computer Science")
 
-    def test_ai_sort_uni_chance_and_roi_contracts(self):
-        university_id = self._first_university_id()
+    def test_ai_sort_contract(self):
         profile = {
             "locale": "eng",
             "budget": 30000,
@@ -555,171 +528,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertIsInstance(ai_data.get("items"), list)
         self.assertLessEqual(int(ai_data.get("count", 0)), 10)
 
-        uni_chance = self.client.post(
-            f"/universities/{university_id}/uni-chance",
-            json={"profile": profile},
-        )
-        self.assertEqual(uni_chance.status_code, 200)
-        chance_data = uni_chance.json()
-        self.assertIn("overallChance", chance_data)
-        self.assertIn("choices", chance_data)
-        self.assertEqual("published_requirements_met_percent", chance_data.get("scoreMeaning"))
-        self.assertNotIn("confidence", chance_data)
-        self.assertNotIn("rangeLowPercent", chance_data)
-        self.assertNotIn("rangeHighPercent", chance_data)
-        self.assertTrue(all(
-            choice.get("scoreMeaning") == "published_requirements_met_percent"
-            for choice in chance_data.get("choices", [])
-        ))
-        overall_chance = chance_data.get("overallChance")
-        if overall_chance is not None:
-            self.assertTrue(0 <= float(overall_chance) <= 100)
-        route = next(
-            route for route in universities_router.router.routes
-            if getattr(route, "path", "") == "/universities/{university_id}/uni-chance"
-        )
-        self.assertIn("not an admission probability", route.description.lower())
-
-        roi = self.client.post(
-            f"/universities/{university_id}/roi",
-            json={"profile": profile},
-        )
-        self.assertEqual(roi.status_code, 200)
-        roi_data = roi.json()
-        for key in ("roi_value", "roi_label", "roi_tone", "context_type"):
-            self.assertIn(key, roi_data)
-        if roi_data.get("roi_value") is not None:
-            self.assertGreaterEqual(float(roi_data["roi_value"]), 0.0)
-        else:
-            self.assertEqual("no_salary_data", roi_data.get("context_type"))
-            self.assertEqual("neutral", roi_data.get("roi_tone"))
-            self.assertEqual("No Data", roi_data.get("roi_label"))
-
-    def test_compare_profiles_batch_contract_matches_single_endpoints(self):
-        university_ids = self._first_university_ids(2)
-        profile = {
-            "locale": "eng",
-            "budget": 30000,
-            "gpa": 3.68,
-            "major": "Computer Science",
-            "fundingType": "any",
-            "exams": [{"exam": "SAT", "score": 1420}],
-            "languages": [{"code": "en", "kind": "exam", "exam": "IELTS", "score": 7.0}],
-        }
-
-        batch = self.client.post(
-            "/universities/compare-profiles",
-            json={"university_ids": university_ids, "profile": profile},
-        )
-        self.assertEqual(batch.status_code, 200)
-        self.assertIn("private, max-age=30", batch.headers.get("Cache-Control", ""))
-        data = batch.json()
-        self.assertEqual(university_ids, list(data.keys()))
-
-        for university_id in university_ids:
-            with self.subTest(university_id=university_id):
-                row = data.get(university_id)
-                self.assertIsInstance(row, dict)
-                self.assertIn("uniChance", row)
-                self.assertIn("roi", row)
-
-                single_chance = self.client.post(
-                    f"/universities/{university_id}/uni-chance",
-                    json={"profile": profile},
-                )
-                single_roi = self.client.post(
-                    f"/universities/{university_id}/roi",
-                    json={"profile": profile},
-                )
-                self.assertEqual(single_chance.status_code, 200)
-                self.assertEqual(single_roi.status_code, 200)
-                self.assertEqual(single_chance.json().get("overallChance"), row["uniChance"].get("overallChance"))
-                self.assertEqual(single_chance.json().get("bestChoiceKey"), row["uniChance"].get("bestChoiceKey"))
-                self.assertEqual(single_roi.json().get("roi_value"), row["roi"].get("roi_value"))
-                self.assertEqual(single_roi.json().get("roi_tone"), row["roi"].get("roi_tone"))
-
-    def test_compare_profiles_batch_handles_unknown_empty_and_duplicate_ids(self):
-        university_id = self._first_university_id()
-        response = self.client.post(
-            "/universities/compare-profiles",
-            json={"university_ids": ["", university_id, university_id, "missing-university-id"], "profile": {}},
-        )
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual([university_id, "missing-university-id"], list(data.keys()))
-        self.assertIsInstance(data.get(university_id), dict)
-        self.assertIsNone(data.get("missing-university-id"))
-
-    def test_compare_profiles_batch_rejects_too_many_ids(self):
-        ids = [f"u-{idx}" for idx in range(51)]
-        response = self.client.post(
-            "/universities/compare-profiles",
-            json={"university_ids": ids, "profile": {}},
-        )
-        self.assertEqual(response.status_code, 422)
-
-    def test_roi_uses_official_salary_data_for_supported_universities(self):
-        supported_ids = [
-            "national-university-of-singapore-sg-singapore",
-            "cuhk-hk-shatin",
-        ]
-
-        for university_id in supported_ids:
-            with self.subTest(university_id=university_id):
-                response = self.client.post(
-                    f"/universities/{university_id}/roi",
-                    json={"profile": {"locale": "eng", "studyMode": "On-campus"}},
-                )
-                self.assertEqual(response.status_code, 200)
-                data = response.json()
-                self.assertNotEqual("no_salary_data", str(data.get("context_type", "")))
-                self.assertGreater(float(data.get("salary_used_usd", 0.0)), 0.0)
-
-    def test_roi_endpoint_returns_neutral_no_data_state_when_salary_missing(self):
-        no_salary_ids = [
-            "eth-zurich-ch-zurich",
-            "delft-university-of-technology-nl-delft",
-            "al-farabi-kazakh-national-university-kaz-almaty",
-            "stanford-university-usa-ca",
-            "technical-university-of-munich-de-munich",
-            "university-of-toronto-ca-toronto",
-            "caltech-usa-pasadena",
-            "uc-berkeley-usa-berkeley",
-            "columbia-university-usa-new-york",
-            "ucla-usa-los-angeles",
-            "princeton-university-usa-princeton",
-        ]
-
-        for university_id in no_salary_ids:
-            with self.subTest(university_id=university_id):
-                response = self.client.post(
-                    f"/universities/{university_id}/roi",
-                    json={"profile": {"locale": "eng", "major": "Computer Science"}},
-                )
-                self.assertEqual(response.status_code, 200)
-                data = response.json()
-                if university_id in admissions_catalog.INSTITUTION_IDS:
-                    self.assertEqual(data.get("context_type"), "scoped_cost_and_outcomes_unassessed")
-                    self.assertTrue(data.get("catalogRevision"))
-                else:
-                    self.assertIn(data.get("context_type"), {"no_salary_data", "insufficient_level_data"})
-                self.assertIsNone(data.get("salary_used_usd"))
-                self.assertIsNone(data.get("roi_value"))
-                self.assertEqual("No Data", data.get("roi_label"))
-                self.assertEqual("neutral", data.get("roi_tone"))
-                if data.get("context_type") == "no_salary_data":
-                    self.assertGreater(float(data.get("annual_cost_usd", 0.0)), 0.0)
-                else:
-                    self.assertIsNone(data.get("annual_cost_usd"))
-
-    def test_compare_profiles_batch_empty_list(self):
-        response = self.client.post(
-            "/universities/compare-profiles",
-            json={"university_ids": [], "profile": {}},
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual({}, response.json())
-
     def test_nu_support_context_keeps_sources_without_an_admission_percentage(self):
         uid = "nazarbayev-university-kaz-astana"
         response = self.client.post(f"/universities/{uid}/admissions-context", json={"context": {
@@ -732,32 +540,6 @@ class UniversitiesEndpointsContractTests(unittest.TestCase):
         self.assertEqual("funding_selection_separate", data["assessment"]["reason"])
         self.assertIn("nu-a-fact-financial-sequence", {row["id"] for row in data["facts"]})
         self.assertTrue(data["sources"])
-
-    def test_list_universities_sort_gpa_desc(self):
-        response = self.client.get("/universities?sort=gpa_desc&limit=50&fields=card")
-        self.assertEqual(response.status_code, 200)
-        data = response.json()
-        self.assertEqual(data.get("sort"), "gpa_desc")
-        items = data.get("items") or []
-        self.assertEqual(len(items), 50)
-
-        # Retrieve raw universities to verify GPA values
-        from app.services.universities import load_universities, _get_university_gpa
-        raw_by_id = {u["id"]: u for u in load_universities()}
-
-        item_ids = [item.get("id") for item in items]
-        item_gpas = [_get_university_gpa(raw_by_id.get(uid, {})) for uid in item_ids]
-
-        # Universities with a published GPA appear first in descending order.
-        present_gpas = [g for g in item_gpas if g is not None]
-        self.assertTrue(present_gpas)
-        self.assertEqual(item_gpas, present_gpas + [None] * (len(item_gpas) - len(present_gpas)))
-        for i in range(len(present_gpas) - 1):
-            self.assertGreaterEqual(present_gpas[i], present_gpas[i + 1])
-
-        # Universities without GPA must be sorted alphabetically by name
-        none_names = [str(item.get("name") or "").lower() for item in items[len(present_gpas):]]
-        self.assertEqual(none_names, sorted(none_names))
 
 
 if __name__ == "__main__":

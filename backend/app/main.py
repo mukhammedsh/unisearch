@@ -92,7 +92,6 @@ _EXPENSIVE_RATE_LIMITER = build_rate_limiter(
 )
 _EXPENSIVE_POST_PATHS = {
     "/universities/ai-sort",
-    "/universities/compare-profiles",
     "/universities/profiled",
     "/exams/validate",
     "/languages/validate",
@@ -158,14 +157,14 @@ def _is_expensive_request(request: Request) -> bool:
     path = request_scope_path(request, strip_root=True).rstrip("/") or "/"
     if path in _EXPENSIVE_POST_PATHS:
         return True
-    return path.endswith(("/uni-chance", "/roi", "/admissions-context")) or path == "/ops/warmup"
+    return path.endswith("/admissions-context") or path == "/ops/warmup"
 
 
 def _expensive_rate_limit_path(request: Request) -> str:
     # Strip root_path so that parameterized buckets are shared consistently
     path = request_scope_path(request, strip_root=True).rstrip("/") or "/"
     parts = path.strip("/").split("/")
-    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] in {"uni-chance", "roi", "admissions-context"}:
+    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] == "admissions-context":
         return "/" + "/".join([*parts[:-2], "{id}", parts[-1]])
     return path
 
@@ -399,7 +398,6 @@ app.add_middleware(
         "Retry-After",
         "X-Redis-Cache",
         "X-AI-Sort-Cache",
-        "X-Compare-Cache",
     ],
 )
 

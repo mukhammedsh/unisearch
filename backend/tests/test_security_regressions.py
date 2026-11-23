@@ -14,7 +14,7 @@ from starlette.requests import Request
 from app.main import app, _is_expensive_request
 from app.core.security import RedisSlidingWindowRateLimiter, is_protected_ops_request, ops_request_is_authorized
 from app.core.settings import REQUEST_BODY_MAX_BYTES
-from app.schemas.payloads import LanguageValidateRequest, ProfileOnlyRequest, UniversitiesAiSortRequest
+from app.schemas.payloads import LanguageValidateRequest, ProfilePayload, UniversitiesAiSortRequest
 from scripts import audit_universities_data
 
 
@@ -32,13 +32,10 @@ class SecurityRegressionTests(unittest.TestCase):
         root = "/api"
         endpoints = (
             "/api/universities/ai-sort",
-            "/api/universities/compare-profiles",
             "/api/universities/profiled",
             "/api/exams/validate",
             "/api/languages/validate",
             "/api/ops/warmup",
-            "/api/universities/mit-usa-cambridge/uni-chance",
-            "/api/universities/mit-usa-cambridge/roi",
             "/api/universities/mit-usa-cambridge/admissions-context",
         )
         for path in endpoints:
@@ -84,14 +81,10 @@ class SecurityRegressionTests(unittest.TestCase):
         cases = (
             ("/universities/ai-sort", "/universities/ai-sort"),
             ("/universities/ai-sort/", "/universities/ai-sort"),
-            ("/universities/mit-usa-cambridge/uni-chance", "/universities/{id}/uni-chance"),
-            ("/universities/mit-usa-cambridge/uni-chance/", "/universities/{id}/uni-chance"),
-            ("/universities/mit-usa-cambridge/roi", "/universities/{id}/roi"),
-            ("/universities/mit-usa-cambridge/roi/", "/universities/{id}/roi"),
             ("/universities/mit-usa-cambridge/admissions-context", "/universities/{id}/admissions-context"),
             ("/universities/mit-usa-cambridge/admissions-context/", "/universities/{id}/admissions-context"),
             ("/api/universities/ai-sort", "/universities/ai-sort"),
-            ("/api/universities/mit-usa-cambridge/uni-chance", "/universities/{id}/uni-chance"),
+            ("/api/universities/mit-usa-cambridge/admissions-context", "/universities/{id}/admissions-context"),
         )
         for path, expected in cases:
             with self.subTest(path=path):
@@ -148,8 +141,6 @@ class SecurityRegressionTests(unittest.TestCase):
 
     def test_is_protected_ops_request_normalizes_trailing_slashes(self):
         cases = (
-            ("/currency/status", {}, True),
-            ("/currency/status/", {}, True),
             ("/metrics", {}, True),
             ("/metrics/", {}, True),
             ("/health/", {"warmup": "1"}, True),
@@ -167,19 +158,6 @@ class SecurityRegressionTests(unittest.TestCase):
             req = Request({"type": "http", "path": path, "query_string": query})
             with self.subTest(path=path, params=params):
                 self.assertEqual(is_protected_ops_request(req), expected)
-
-    def test_currency_status_is_protected_ops_endpoint(self):
-        client = TestClient(app)
-        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
-            res_unauth = client.get("/currency/status")
-            self.assertEqual(res_unauth.status_code, 401)
-
-            res_auth = client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
-            self.assertEqual(res_auth.status_code, 200)
-
-        with patch("app.core.security.OPS_ADMIN_TOKEN", ""):
-            res_no_token = client.get("/currency/status")
-            self.assertEqual(res_no_token.status_code, 404)
 
     def test_health_warmup_boolean_representations_are_protected_ops_requests(self):
         client = TestClient(app)
@@ -221,7 +199,7 @@ class SecurityRegressionTests(unittest.TestCase):
         }
 
         with self.assertRaises(ValueError):
-            ProfileOnlyRequest.model_validate(payload)
+            ProfilePayload.model_validate(payload["profile"])
 
     def test_language_validate_request_rejects_non_finite_scores(self):
         for score in (float("nan"), float("inf"), float("-inf")):

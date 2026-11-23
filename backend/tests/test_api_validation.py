@@ -92,12 +92,8 @@ class ApiValidationTests(unittest.TestCase):
         response = self.client.get(f"/universities?q={'x' * 201}")
         self.assertEqual(response.status_code, 422)
 
-    def test_list_universities_rejects_out_of_bounds_budget(self):
-        response = self.client.get("/universities?user_budget=1000001")
-        self.assertEqual(response.status_code, 422)
-
-    def test_list_universities_rejects_out_of_bounds_acceptance(self):
-        response = self.client.get("/universities?min_acceptance=101")
+    def test_list_universities_rejects_out_of_bounds_tuition(self):
+        response = self.client.get("/universities?max_tuition=1000001")
         self.assertEqual(response.status_code, 422)
 
     def test_list_universities_rejects_page_over_max(self):
@@ -121,33 +117,6 @@ class ApiValidationTests(unittest.TestCase):
 
     def test_get_university_rejects_slug_with_special_characters(self):
         response = self.client.get("/universities/slug!with*invalid?chars")
-        self.assertEqual(response.status_code, 422)
-
-    def test_get_university_uni_chance_rejects_malformed_slug(self):
-        response = self.client.post(
-            "/universities/invalid%20slug/uni-chance",
-            json={"profile": {}},
-        )
-        self.assertEqual(response.status_code, 422)
-
-    def test_compare_profiles_rejects_malformed_university_ids(self):
-        response = self.client.post(
-            "/universities/compare-profiles",
-            json={
-                "university_ids": ["<script>bad</script>", "mit-usa-cambridge"],
-                "profile": {},
-            },
-        )
-        self.assertEqual(response.status_code, 422)
-
-    def test_compare_profiles_rejects_oversized_university_id(self):
-        response = self.client.post(
-            "/universities/compare-profiles",
-            json={
-                "university_ids": ["a" * 65],
-                "profile": {},
-            },
-        )
         self.assertEqual(response.status_code, 422)
 
     def test_request_guard_rejects_null_byte_in_query(self):

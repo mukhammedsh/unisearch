@@ -281,10 +281,6 @@ class CurrencyServiceTests(unittest.TestCase):
             self.assertEqual(currency_service._CIRCUIT_STATE, "OPEN")
             self.assertTrue(currency_service._in_backoff())
 
-            status = currency_service.get_rates_status()
-            self.assertEqual(status["circuit_state"], "OPEN")
-            self.assertEqual(status["consecutive_failures"], 2)
-
     def test_security_input_validation_and_malicious_inputs(self):
         # 1. Non-finite amounts (NaN, Infinity, overflow)
         with self.assertRaises(ValueError):
@@ -397,22 +393,6 @@ class CurrencyApiEndpointsTests(unittest.TestCase):
         self.assertEqual(data["source"], "fallback")
         self.assertEqual(data["date"], currency_service.FALLBACK_RATES_DATE)
 
-    def test_get_currency_status_endpoint(self):
-        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
-            resp = self.client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
-            self.assertEqual(resp.status_code, 200)
-            data = resp.json()
-            self.assertIn("enabled", data)
-            self.assertIn("circuit_state", data)
-            self.assertIn("source", data)
-
-    def test_get_currency_status_does_not_expose_last_error(self):
-        with patch("app.core.security.OPS_ADMIN_TOKEN", "test-ops-token"):
-            resp = self.client.get("/currency/status", headers={"X-UniSearch-Ops-Token": "test-ops-token"})
-            self.assertEqual(resp.status_code, 200)
-            self.assertNotIn("last_error", resp.json())
-            self.assertNotIn("error", resp.json())
-
 
 class CurrencyNormalizationBackendTests(unittest.TestCase):
 
@@ -454,18 +434,6 @@ class CurrencyNormalizationBackendTests(unittest.TestCase):
                 positions["seoul-national-university-kr-seoul"],
                 positions["columbia-university-usa-new-york"],
             )
-
-    def test_roi_normalizes_annual_cost_usd_for_non_usd_universities(self):
-        from app.services.universities import get_university_by_id
-        from app.services.ai_scoring import estimate_university_roi
-
-        tokyo = get_university_by_id("university-of-tokyo-jp-tokyo")
-        self.assertIsNotNone(tokyo)
-        roi = estimate_university_roi(tokyo, {"major": "Computer Science"})
-
-        # annual_cost_usd must be converted to USD (~$16,110), NOT raw JPY (2,484,960)
-        self.assertLess(roi["annual_cost_usd"], 30000.0)
-        self.assertGreater(roi["annual_cost_usd"], 10000.0)
 
 
 if __name__ == "__main__":
