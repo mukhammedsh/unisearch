@@ -2,6 +2,30 @@
 
 All notable project changes should be recorded here.
 
+## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
+
+Patch release: harden API rate-limiting and error-response security headers, and update backend and CI dependencies.
+
+### Security
+- Strip ASGI `root_path` prefixes before classifying expensive POST endpoints and building rate-limit bucket keys, closing a rate-limiter bypass when the backend runs under a path prefix (PR #183).
+- Apply standard API security headers to admissions catalog 404/503 error responses returned by `admissions_catalog_error_handler` (PR #184).
+
+### Removed
+- Retire unused backend API routes (`POST /universities/{id}/uni-chance`, `POST /universities/{id}/roi`, `POST /universities/compare-profiles`, `GET /stats`, `GET /currency/status`) alongside unused list/map/ai-sort filter parameters (`min_acceptance`, `max_acceptance`, `size`), dead helper functions, and legacy ROI / UniChance frontend UI code (`backend/app/`, `frontend/`).
+
+### Performance
+- Precompile regex patterns, cache stems, precompute deduplicated search candidate tables with branch-and-bound pruning, and replace dict-based Damerau-Levenshtein DP with a 3-row array and an `O(n)` edit-distance `<= 1` fast path in `backend/app/services/search.py`.
+- Add identity-validated lookup caches for expanded admission choices (`backend/app/services/scoring_requirements.py`), language exam metadata (`backend/app/services/scoring_profile.py`), admission text/track translations, and localized search query aliases (`backend/app/services/university_localization.py`).
+
+### Maintenance
+- Update backend Python dependencies in `backend/requirements.txt` and `backend/requirements-dev.txt` (PR #191).
+- Update GitHub Actions workflow dependencies across `.github/workflows/` (PR #210).
+- Configure backend linting with Ruff (`backend/pyproject.toml`), `npm run lint:backend` in `package.json`, and CI lint enforcement in `.github/workflows/tests.yml`.
+- Configure backend static type checking with `mypy` (`backend/pyproject.toml`, `scripts/typecheck-backend.mjs`, `npm run typecheck:backend`, and `.github/workflows/tests.yml`) across all of `backend/app/`, and resolve type-narrowing, cache-annotation, and Redis/Sentry typing issues in `core/`, `routers/`, and `services/`.
+- Deduplicate backend router parameters (`UniversityFilterDep` in `backend/app/routers/_params.py` using FastAPI `Annotated` dependencies) and HTTP cache helpers (`backend/app/core/http_cache.py`), standardize Python 3.12+ syntax, reduce `Any` annotations, and narrow broad `except Exception` catches.
+- Decompose `backend/app/services/ai_scoring.py` into `scoring_profile.py`, `scoring_costs.py`, and `scoring_requirements.py`; decompose `backend/app/services/universities.py` into `university_costs.py`, `university_localization.py`, and `university_projection.py`; decompose `backend/app/services/university_coverage.py` (`university_level_coverage.py`) and `backend/app/services/university_tracks.py` (`university_majors.py`, `university_track_scores.py`).
+- Synchronize `README.md`, `docs/architecture.md`, `docs/admissions-runtime-contract.md`, and `docs/admissions-product-model.md` with the cleaned backend endpoints and modular service structure.
+
 ## 10.7.0 (2026-11-21) - Name universities on the map and search every name
 
 Minor release: map markers now say which university they mark, and search matches every name a university goes by in any language.

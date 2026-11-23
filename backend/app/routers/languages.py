@@ -1,16 +1,13 @@
-from fastapi import APIRouter, HTTPException, Response
-
-from app.services import languages as lang_service
 from app.schemas import LanguageValidateRequest
-
+from app.services import languages as lang_service
+from fastapi import APIRouter, HTTPException, Response
 
 router = APIRouter()
 
 
 @router.get("/languages/config", summary="Language configuration", description="Returns the list of supported languages with their CEFR levels, exam mappings, and display labels.")
-def get_languages_config(response: Response = None):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=300"
+def get_languages_config(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=300"
     return lang_service.get_languages_config()
 
 
@@ -22,6 +19,6 @@ def validate_language(payload: LanguageValidateRequest):
             result["language"]["taken_on"] = payload.taken_on
         return result
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid language payload")
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except (TypeError, KeyError, ArithmeticError) as exc:
+        raise HTTPException(status_code=400, detail="Invalid language payload") from exc

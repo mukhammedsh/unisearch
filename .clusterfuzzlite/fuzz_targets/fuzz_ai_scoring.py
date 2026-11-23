@@ -3,15 +3,16 @@
 
 Fuzzes the core ranking and evaluation logic:
 - sort_universities_ai: multi-factor ranking against real university dataset
-- estimate_uni_chance: chance probability calculations
-- estimate_university_roi: return-on-investment calculations
+- estimate_uni_chance: requirements-fit evaluation
 - finance_modes: tuition, breakdown, and mode normalizers
 """
 import os
 import sys
 
-# Ensure backend modules can be imported
+# Ensure fuzz helpers and backend modules can be imported
 current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 backend_dir = os.path.abspath(os.path.join(current_dir, "..", "..", "backend"))
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
@@ -76,7 +77,7 @@ def TestOneInput(data: bytes) -> None:
         fdp = atheris.FuzzedDataProvider(data)
     except ImportError:
         # Fallback provider for standalone / test runs without atheris
-        from app.core.fuzz_helpers import SimpleFuzzedDataProvider
+        from helpers import SimpleFuzzedDataProvider
         fdp = SimpleFuzzedDataProvider(data)
 
     profile = _generate_fuzzed_profile(fdp)
@@ -86,8 +87,6 @@ def TestOneInput(data: bytes) -> None:
     social_vs_hardcore = fdp.ConsumeIntInRange(-50, 150)
     budget_vs_prestige = fdp.ConsumeIntInRange(-50, 150)
     city_vs_campus = fdp.ConsumeIntInRange(-50, 150)
-    ai_balance = fdp.ConsumeIntInRange(-50, 150)
-    admission_bias = fdp.ConsumeIntInRange(-50, 150)
 
     # 1. Exercise AI university ranking with real university data
     try:
@@ -98,11 +97,9 @@ def TestOneInput(data: bytes) -> None:
             social_vs_hardcore=social_vs_hardcore,
             budget_vs_prestige=budget_vs_prestige,
             city_vs_campus=city_vs_campus,
-            ai_balance=ai_balance,
-            admission_bias=admission_bias,
         )
         assert isinstance(ranked, list)
-    except (TypeError, ValueError, KeyError) as e:
+    except (TypeError, ValueError, KeyError):
         # Expected safe rejections for non-conforming inputs
         pass
 
@@ -115,16 +112,7 @@ def TestOneInput(data: bytes) -> None:
             # Expected: malformed fuzz profile data is safely rejected by UniChance scoring
             pass
 
-    # 3. Exercise ROI calculation
-    for uni in SAMPLE_UNIVERSITIES[:2]:
-        try:
-            roi_res = ai_scoring.estimate_university_roi(uni, profile=profile)
-            assert isinstance(roi_res, dict)
-        except (TypeError, ValueError, KeyError):
-            # Expected: malformed fuzz profile data is safely rejected by ROI estimation
-            pass
-
-    # 4. Exercise finance mode parsing and breakdown extraction
+    # 3. Exercise finance mode parsing and breakdown extraction
     test_mode = profile.get("study_mode")
     for uni in SAMPLE_UNIVERSITIES[:2]:
         fin = uni.get("finance")

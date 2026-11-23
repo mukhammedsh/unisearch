@@ -29,7 +29,6 @@ const { initI18n, setLanguage } = await import('../../frontend/javascript/i18n.j
 const {
   cleanDecoratedText,
   formatFundingOptionsCount,
-  localizeRoiLabel,
   modeAwareAnnualCost,
   modeAwareBreakdown,
   modeBreakdownFromFinance,
@@ -38,7 +37,6 @@ const {
   normalizeUrl,
   renderAdmissionsOverview,
   renderProgramAdmissionsSignals,
-  renderRoiBox,
   resolveUniversityCardPrice,
   splitPriceDisplay,
   safeUrl,
@@ -452,86 +450,6 @@ test('splitPriceDisplay', async (t) => {
       splitPriceDisplay('$95,134'),
       { primary: '$95,134', secondary: '' },
     );
-  });
-});
-
-test('localizeRoiLabel', async (t) => {
-  await t.test('formats English ROI labels', () => {
-    setLanguage('eng', { persist: false, emit: false });
-    assert.strictEqual(localizeRoiLabel('Excellent Return', 'excellent'), 'Excellent Return');
-    assert.strictEqual(localizeRoiLabel('Positive Return', 'good'), 'Positive Return');
-    assert.strictEqual(localizeRoiLabel('High Investment', 'warn'), 'High Investment');
-    assert.strictEqual(localizeRoiLabel('No Data', 'neutral'), 'Insufficient Data');
-    assert.strictEqual(localizeRoiLabel('Insufficient Data', 'neutral'), 'Insufficient Data');
-    assert.strictEqual(localizeRoiLabel('', 'neutral'), 'Insufficient Data');
-    assert.strictEqual(localizeRoiLabel(null), 'Insufficient Data');
-  });
-
-  await t.test('formats Russian ROI labels', () => {
-    setLanguage('rus', { persist: false, emit: false });
-    assert.strictEqual(localizeRoiLabel('Excellent Return', 'excellent'), 'Отличная отдача');
-    assert.strictEqual(localizeRoiLabel('Positive Return', 'good'), 'Положительная отдача');
-    assert.strictEqual(localizeRoiLabel('High Investment', 'warn'), 'Большие вложения');
-    assert.strictEqual(localizeRoiLabel('No Data', 'neutral'), 'Недостаточно данных');
-    assert.strictEqual(localizeRoiLabel('Недостаточно данных', 'neutral'), 'Недостаточно данных');
-    assert.strictEqual(localizeRoiLabel('', 'neutral'), 'Недостаточно данных');
-    setLanguage('eng', { persist: false, emit: false });
-  });
-});
-
-test('renderRoiBox', async (t) => {
-  await t.test('returns empty string when ROI is missing or invalid', () => {
-    assert.strictEqual(renderRoiBox(null), '');
-    assert.strictEqual(renderRoiBox(undefined), '');
-    assert.strictEqual(renderRoiBox({}), '');
-  });
-
-  await t.test('hides ROI markup in English when salary data is missing', () => {
-    setLanguage('eng', { persist: false, emit: false });
-    const markup = renderRoiBox({
-      context_type: 'no_salary_data',
-      salary_used_usd: null,
-      roi_value: null,
-      annual_cost_usd: 35000,
-      roi_label: 'No Data',
-      roi_tone: 'neutral',
-    });
-
-    assert.strictEqual(markup, '');
-  });
-
-  await t.test('hides ROI markup in Russian when salary data is missing', () => {
-    setLanguage('rus', { persist: false, emit: false });
-    const markup = renderRoiBox({
-      context_type: 'no_salary_data',
-      salary_used_usd: null,
-      roi_value: null,
-      annual_cost_usd: 25000,
-      roi_label: 'No Data',
-      roi_tone: 'neutral',
-    });
-
-    assert.strictEqual(markup, '');
-    setLanguage('eng', { persist: false, emit: false });
-  });
-
-  await t.test('renders ROI markup when valid salary data is provided', () => {
-    setLanguage('eng', { persist: false, emit: false });
-    const markup = renderRoiBox({
-      context_type: 'default',
-      salary_used_usd: 95000,
-      annual_cost_usd: 40000,
-      roi_value: 2.375,
-      roi_label: 'Excellent Return',
-      roi_tone: 'excellent',
-    });
-
-    assert.ok(markup.includes('roi-box'), 'Should contain roi-box section');
-    assert.ok(markup.includes('2.4x'), 'Should contain formatted ROI score (2.4x)');
-    assert.ok(markup.includes('$95,000'), 'Should contain salary');
-    assert.ok(markup.includes('$40,000'), 'Should contain annual cost');
-    assert.ok(markup.includes('roi-tone-positive'), 'Should contain positive tone class');
-    assert.ok(markup.includes('Excellent Return'), 'Should contain localized label');
   });
 });
 

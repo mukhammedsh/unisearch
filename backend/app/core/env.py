@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 
 def load_local_env() -> None:
@@ -22,5 +22,5 @@ def load_local_env() -> None:
             v = value.strip().strip('"').strip("'")
             if k and k not in os.environ:
                 os.environ[k] = v
-    except Exception:
+    except OSError:
         return

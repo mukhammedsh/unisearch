@@ -49,7 +49,7 @@ function normalizeRatesMap(rawRates) {
 
 export function extractFallbackFromPython(source) {
   const dateMatch = source.match(/FALLBACK_RATES_DATE(?:\s*:\s*str)?\s*=\s*["']([^"']+)["']/);
-  const blockMatch = source.match(/FALLBACK_RATES(?:\s*:\s*Dict\[[^\]]+\])?\s*=\s*\{([\s\S]*?)\n\}/);
+  const blockMatch = source.match(/FALLBACK_RATES(?:\s*:\s*(?:dict|Dict)\[[^\]]+\])?\s*=\s*\{([\s\S]*?)\n\}/);
   if (!dateMatch || !blockMatch) {
     throw new Error("Could not parse FALLBACK_RATES_DATE / FALLBACK_RATES in backend/app/services/currency.py");
   }
@@ -124,7 +124,7 @@ function renderPythonFallbackBlock(dateStr, utcLabel, rates) {
   );
   return [
     `FALLBACK_RATES_DATE: str = "${dateStr}"  # ExchangeRate-API time_last_update_utc: ${utcLabel}`,
-    "FALLBACK_RATES: Dict[str, float] = {",
+    "FALLBACK_RATES: dict[str, float] = {",
     ...lines,
     "}",
   ].join("\n");
@@ -168,7 +168,7 @@ async function syncFromApi() {
 
   const pySource = fs.readFileSync(BACKEND_PATH, "utf8");
   const pyEol = pySource.includes("\r\n") ? "\r\n" : "\n";
-  const pyPattern = /(?:FALLBACK_RATES_DATE[^\n]*\r?\n)?FALLBACK_RATES(?:\s*:\s*Dict\[[^\]]+\])?\s*=\s*\{[\s\S]*?\r?\n\}/;
+  const pyPattern = /(?:FALLBACK_RATES_DATE[^\n]*\r?\n)?FALLBACK_RATES(?:\s*:\s*(?:dict|Dict)\[[^\]]+\])?\s*=\s*\{[\s\S]*?\r?\n\}/;
   if (!pyPattern.test(pySource)) {
     throw new Error("Could not locate FALLBACK_RATES block in backend/app/services/currency.py");
   }

@@ -816,36 +816,6 @@ const compareDecisionSource = (meta) => {
 
 const compareDecisionFact = (label, value, source = null) => ({ label, value, source });
 
-const selectedChanceForUniversity = (university, context = {}) => {
-    if (hasReviewedAdmissions(university)) return null;
-    const id = String(university?.id || "");
-    const universityChance = context?.chances?.get?.(id) || null;
-    const selection = context?.choices?.get?.(id) || null;
-    const selectedKey = String(selection?.choiceKey || selection?.choice_key || selection || "").trim();
-    const choices = Array.isArray(universityChance?.choices) ? universityChance.choices : [];
-    return choices.find((choice) => String(choice?.choiceKey || "") === selectedKey)
-        || choices[0]
-        || universityChance;
-};
-
-const compareChanceFactText = (chance) => {
-    if (String(chance?.scoreMeaning || "").trim() !== "published_requirements_met_percent") {
-        return t("admission.requirements_fit.unavailable_method", "Requirements fit score is unavailable because its meaning could not be confirmed.");
-    }
-    const value = toFiniteNumber(chance?.chancePercent ?? chance?.overallChance);
-    if (value !== null && chance?.chanceAvailable !== false) {
-        return comparePercentText(value);
-    }
-    const reason = String(chance?.reason || "").trim().toLowerCase();
-    if (reason === "requirements_not_met") {
-        return t("admission.chance.requirements_not_met", "A required minimum is not met");
-    }
-    return t(
-        "admission.requirements_fit.insufficient_data",
-        "There is not enough applicable requirements or profile evidence to calculate this fit score."
-    );
-};
-
 const compareAdmissionTheme = (universities, context) => {
     const published = universities.map((university) => comparePublishedAdmission(university, context?.choices));
     const publishedAvailable = published.every((row) => (
@@ -869,7 +839,6 @@ const compareAdmissionTheme = (universities, context) => {
         status,
         summary,
         universities: universities.map((university, index) => {
-            const chance = selectedChanceForUniversity(university, context);
             const admission = published[index];
             const scopeKey = admission.scope === "program"
                 ? "universities.compare.scope.program"
@@ -882,7 +851,6 @@ const compareAdmissionTheme = (universities, context) => {
                 id: String(university?.id || ""),
                 name: compareUniversityName(university),
                 facts: [
-                    compareDecisionFact(t("universities.compare.requirements_fit_score", "Requirements fit score"), compareChanceFactText(chance)),
                     compareDecisionFact(
                         t("universities.compare.published_rate", "Published selectivity"),
                         publishedValue,

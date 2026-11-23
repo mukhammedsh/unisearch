@@ -1,7 +1,7 @@
 import json
 import threading
 import time
-from typing import Any, Dict, Optional
+from typing import Any, Protocol, TypedDict, cast
 
 from app.core.settings import (
     REDIS_CONNECT_TIMEOUT_SEC,
@@ -12,14 +12,44 @@ from app.core.settings import (
 
 try:
     import redis
-except Exception:  # pragma: no cover - optional dependency
+except ImportError:  # pragma: no cover - optional dependency
     redis = None  # type: ignore[assignment]
 
+REDIS_ERRORS: tuple[type[Exception], ...] = (
+    (redis.RedisError, OSError, RuntimeError, ValueError, TypeError)
+    if redis is not None
+    else (OSError, RuntimeError, ValueError, TypeError)
+)
+REDIS_JSON_ERRORS: tuple[type[Exception], ...] = (*REDIS_ERRORS, json.JSONDecodeError)
 
-_REDIS_CLIENT = None
+
+class RedisClientProtocol(Protocol):
+    def ping(self) -> object:
+        pass
+
+    def get(self, name: str) -> object:
+        pass
+
+    def setex(self, name: str, time: int, value: str) -> object:
+        pass
+
+    def delete(self, *names: str) -> object:
+        pass
+
+    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object:
+        pass
+
+
+class _RedisPingState(TypedDict):
+    ts: float
+    ok: bool
+    reason: str
+
+
+_REDIS_CLIENT: RedisClientProtocol | None = None
 _REDIS_CLIENT_LOCK = threading.Lock()
 _REDIS_PING_CACHE_TTL_SEC = 5.0
-_REDIS_PING_STATE = {
+_REDIS_PING_STATE: _RedisPingState = {
     "ts": 0.0,
     "ok": False,
     "reason": "unknown",
@@ -37,22 +67,23 @@ def is_redis_configured() -> bool:
     return bool(REDIS_URL)
 
 
-def _build_redis_client():
+def _build_redis_client() -> RedisClientProtocol | None:
     if redis is None or not REDIS_URL:
         return None
     try:
-        return redis.Redis.from_url(
+        client: Any = redis.Redis.from_url(
             REDIS_URL,
             decode_responses=True,
             socket_connect_timeout=max(0.05, float(REDIS_CONNECT_TIMEOUT_SEC)),
             socket_timeout=max(0.05, float(REDIS_OPERATION_TIMEOUT_SEC)),
             retry_on_timeout=False,
         )
-    except Exception:
+        return cast(RedisClientProtocol, client)
+    except REDIS_ERRORS:
         return None
 
 
-def get_redis_client():
+def get_redis_client() -> RedisClientProtocol | None:
     global _REDIS_CLIENT
     if redis is None or not REDIS_URL:
         return None
@@ -64,19 +95,19 @@ def get_redis_client():
     return _REDIS_CLIENT
 
 
-def redis_runtime_status(force_check: bool = False) -> Dict[str, Any]:
+def redis_runtime_status(force_check: bool = False) -> dict[str, bool | str]:
     if not REDIS_URL:
         return {"configured": False, "available": False, "reason": "not_configured"}
     if redis is None:
         return {"configured": True, "available": False, "reason": "dependency_missing"}
 
     now = time.time()
-    age = now - float(_REDIS_PING_STATE.get("ts", 0.0))
+    age = now - float(_REDIS_PING_STATE["ts"])
     if not force_check and age <= _REDIS_PING_CACHE_TTL_SEC:
         return {
             "configured": True,
-            "available": bool(_REDIS_PING_STATE.get("ok")),
-            "reason": str(_REDIS_PING_STATE.get("reason") or "unknown"),
+            "available": bool(_REDIS_PING_STATE["ok"]),
+            "reason": _REDIS_PING_STATE["reason"] or "unknown",
         }
 
     client = get_redis_client()
@@ -89,7 +120,7 @@ def redis_runtime_status(force_check: bool = False) -> Dict[str, Any]:
     try:
         pong = client.ping()
         ok = bool(pong)
-    except Exception:
+    except REDIS_ERRORS:
         ok = False
 
     _REDIS_PING_STATE["ts"] = now
@@ -98,23 +129,23 @@ def redis_runtime_status(force_check: bool = False) -> Dict[str, Any]:
     return {"configured": True, "available": ok, "reason": _REDIS_PING_STATE["reason"]}
 
 
-def cache_get_json(key: str) -> Optional[Dict[str, Any]]:
+def cache_get_json(key: str) -> dict[str, object] | None:
     client = get_redis_client()
     if client is None:
         return None
     try:
         raw = client.get(_redis_key(key))
-        if raw is None:
+        if not isinstance(raw, (str, bytes)):
             return None
         obj = json.loads(raw)
         if isinstance(obj, dict):
             return obj
         return None
-    except Exception:
+    except REDIS_JSON_ERRORS:
         return None
 
 
-def cache_set_json(key: str, value: Dict[str, Any], ttl_seconds: int) -> bool:
+def cache_set_json(key: str, value: dict[str, object], ttl_seconds: int) -> bool:
     client = get_redis_client()
     if client is None:
         return False
@@ -125,7 +156,7 @@ def cache_set_json(key: str, value: Dict[str, Any], ttl_seconds: int) -> bool:
         ttl = max(1, int(ttl_seconds))
         client.setex(_redis_key(key), ttl, payload)
         return True
-    except Exception:
+    except REDIS_ERRORS:
         return False
 
 
@@ -136,5 +167,5 @@ def cache_del(key: str) -> bool:
     try:
         client.delete(_redis_key(key))
         return True
-    except Exception:
+    except REDIS_ERRORS:
         return False

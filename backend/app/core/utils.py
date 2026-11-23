@@ -7,10 +7,9 @@ from __future__ import annotations
 
 import math
 import re
-from typing import Optional
 
 
-def to_float(x: object) -> Optional[float]:
+def to_float(x: object) -> float | None:
     """Convert a value to float, returning None if not possible or not finite."""
     try:
         if x is None or x == "":
@@ -52,3 +51,13 @@ def norm_space(value: object) -> str:
 def norm_tag_key(value: object) -> str:
     """Convert *value* to a normalised key suitable for tag lookups."""
     return re.sub(r"[^a-z0-9]+", "_", safe_lower(value)).strip("_")
+
+
+def normalize_search_lang(value: object) -> str:
+    """Map an interface or Accept-Language locale token to rus, kaz, or eng."""
+    raw = safe_lower(value)
+    if raw.startswith("ru") or raw == "rus":
+        return "rus"
+    if raw.startswith("kk") or raw == "kaz":
+        return "kaz"
+    return "eng"

@@ -1,10 +1,9 @@
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from app.core.paths import DATA_PATH
-from app.services import admissions_catalog
 from app.core.settings import (
     ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE,
     ML_SEMANTIC_EMBEDDINGS_DEVICE,
@@ -12,11 +11,12 @@ from app.core.settings import (
     ML_SEMANTIC_EMBEDDINGS_ENABLED,
     ML_SEMANTIC_EMBEDDINGS_MODEL,
 )
+from app.services import admissions_catalog
 
-SentenceTransformer = None  # type: ignore[assignment]
-_SENTENCE_TRANSFORMERS_AVAILABLE: Optional[bool] = None
-np = None  # type: ignore[assignment]
-_NUMPY_AVAILABLE: Optional[bool] = None
+SentenceTransformer: Any = None
+_SENTENCE_TRANSFORMERS_AVAILABLE: bool | None = None
+np: Any = None
+_NUMPY_AVAILABLE: bool | None = None
 
 def _load_numpy():
     global np, _NUMPY_AVAILABLE
@@ -27,11 +27,11 @@ def _load_numpy():
     try:
         import numpy as numpy_module
 
-        np = numpy_module  # type: ignore[assignment]
+        np = numpy_module
         _NUMPY_AVAILABLE = True
         return np
     except Exception:
-        np = None  # type: ignore[assignment]
+        np = None
         _NUMPY_AVAILABLE = False
         return None
 
@@ -45,11 +45,11 @@ def _load_sentence_transformer_class():
     try:
         from sentence_transformers import SentenceTransformer as SentenceTransformerClass
 
-        SentenceTransformer = SentenceTransformerClass  # type: ignore[assignment]
+        SentenceTransformer = SentenceTransformerClass
         _SENTENCE_TRANSFORMERS_AVAILABLE = True
         return SentenceTransformer
     except Exception:
-        SentenceTransformer = None  # type: ignore[assignment]
+        SentenceTransformer = None
         _SENTENCE_TRANSFORMERS_AVAILABLE = False
         return None
 
@@ -210,7 +210,7 @@ def _normalize_ml_text(value: Any, for_query: bool = True) -> str:
         return ""
 
     tokens = text.split(" ")
-    expanded: List[str] = []
+    expanded: list[str] = []
     for tok in tokens:
         t = tok.strip().lower()
         if not t:
@@ -243,10 +243,10 @@ class MLRecommender:
 
         self.data_path = Path(data_path)
         self._data_mtime: float = -1.0
-        self._university_ids: List[str] = []
+        self._university_ids: list[str] = []
 
-        self._semantic_model = None
-        self._semantic_embeddings = None
+        self._semantic_model: Any = None
+        self._semantic_embeddings: Any = None
         self._semantic_ready = False
         self._semantic_error = ""
 
@@ -254,7 +254,7 @@ class MLRecommender:
         self._runtime_reason = "not_ready"
         self._load_and_fit()
 
-    def _read_universities(self) -> List[Dict[str, Any]]:
+    def _read_universities(self) -> list[dict[str, Any]]:
         try:
             data = json.loads(self.data_path.read_text(encoding="utf-8"))
         except Exception:
@@ -281,9 +281,9 @@ class MLRecommender:
             return f"query: {text}"
         return text
 
-    def prepare_text_features(self, universities: List[Dict[str, Any]]) -> List[str]:
+    def prepare_text_features(self, universities: list[dict[str, Any]]) -> list[str]:
         """Build corpus text from university metadata for semantic matching."""
-        docs: List[str] = []
+        docs: list[str] = []
         for uni in universities:
             name = _safe_text(uni.get("name"))
 
@@ -292,7 +292,7 @@ class MLRecommender:
             country = _safe_text(location.get("country")) if isinstance(location, dict) else ""
             location_text = " ".join(part for part in (city, country) if part)
 
-            program_names: List[str] = []
+            program_names: list[str] = []
             academics = uni.get("academics", {})
             if isinstance(academics, dict):
                 programs = academics.get("programs", [])
@@ -324,7 +324,7 @@ class MLRecommender:
             elif isinstance(major_focus, str):
                 major_focus_text = _safe_text(major_focus)
 
-            admission_bits: List[str] = []
+            admission_bits: list[str] = []
             categories = uni.get("admission_categories", [])
             if isinstance(categories, list):
                 for category in categories:
@@ -367,7 +367,7 @@ class MLRecommender:
             docs.append(" ".join(part for part in (soup, normalized) if part).strip() or "university")
         return docs
 
-    def _fit_semantic(self, docs: List[str]) -> None:
+    def _fit_semantic(self, docs: list[str]) -> None:
         self._semantic_ready = False
         self._semantic_embeddings = None
         self._semantic_error = ""
@@ -392,7 +392,7 @@ class MLRecommender:
 
             passages = [self._format_semantic_passage(text) for text in docs]
             batch_size = max(1, int(ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE or 32))
-            embeddings = self._semantic_model.encode(  # type: ignore[union-attr]
+            embeddings = self._semantic_model.encode(
                 passages,
                 batch_size=batch_size,
                 show_progress_bar=False,
@@ -447,7 +447,7 @@ class MLRecommender:
         has_ids = len([uid for uid in self._university_ids if uid]) > 0
         return bool(has_ids and self._semantic_ready)
 
-    def _predict_semantic(self, query: str) -> Optional[Dict[str, float]]:
+    def _predict_semantic(self, query: str) -> dict[str, float] | None:
         if (
             not self._semantic_ready
             or self._semantic_model is None
@@ -457,7 +457,7 @@ class MLRecommender:
             return None
         try:
             q = self._format_semantic_query(query)
-            query_vec = self._semantic_model.encode(  # type: ignore[union-attr]
+            query_vec = self._semantic_model.encode(
                 [q],
                 show_progress_bar=False,
                 convert_to_numpy=True,
@@ -465,12 +465,12 @@ class MLRecommender:
             )
             if query_vec is None or len(query_vec) == 0:
                 return None
-            sims = self._semantic_embeddings @ query_vec[0]  # type: ignore[operator]
+            sims = self._semantic_embeddings @ query_vec[0]
             # Rescale cosine similarities to expand contrast between relevant programs and background noise.
             sims01 = np.clip((sims - 0.55) / 0.35, 0.0, 1.0)
 
-            out: Dict[str, float] = {}
-            for uid, score in zip(self._university_ids, sims01):
+            out: dict[str, float] = {}
+            for uid, score in zip(self._university_ids, sims01, strict=False):
                 if not uid:
                     continue
                 out[uid] = float(score)
@@ -478,7 +478,7 @@ class MLRecommender:
         except Exception:
             return None
 
-    def predict_relevance(self, user_interests: str) -> Dict[str, float]:
+    def predict_relevance(self, user_interests: str) -> dict[str, float]:
         """Match interests to universities via sentence embeddings."""
         self._ensure_fresh()
         query_raw = _safe_text(user_interests)
@@ -488,15 +488,15 @@ class MLRecommender:
         if not ids:
             return {}
         if not query:
-            return {uid: 0.0 for uid in ids}
+            return dict.fromkeys(ids, 0.0)
 
         semantic = self._predict_semantic(query)
         if semantic is not None:
             return semantic
 
-        return {uid: 0.0 for uid in ids}
+        return dict.fromkeys(ids, 0.0)
 
-    def runtime_status(self) -> Dict[str, Any]:
+    def runtime_status(self) -> dict[str, Any]:
         self._ensure_fresh()
         available = self.is_ready()
         mode = "semantic" if self._semantic_ready else "unavailable"
@@ -528,7 +528,7 @@ def get_ml_recommender() -> MLRecommender:
     return MLRecommender()
 
 
-def get_ml_runtime_status() -> Dict[str, Any]:
+def get_ml_runtime_status() -> dict[str, Any]:
     """Expose ML runtime availability for API/UI warnings."""
     try:
         return get_ml_recommender().runtime_status()

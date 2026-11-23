@@ -1,8 +1,6 @@
 import logging
 from typing import Any
 
-from fastapi import FastAPI
-
 from app.core.settings import (
     METRICS_ENABLED,
     METRICS_PATH,
@@ -10,16 +8,20 @@ from app.core.settings import (
     SENTRY_DSN,
     SENTRY_TRACES_SAMPLE_RATE,
 )
+from fastapi import FastAPI
+
+Instrumentator: Any
+sentry_sdk: Any
 
 try:
     from prometheus_fastapi_instrumentator import Instrumentator
-except Exception:  # pragma: no cover - optional dependency
-    Instrumentator = None  # type: ignore[assignment]
+except ImportError:  # pragma: no cover - optional dependency
+    Instrumentator = None
 
 try:
     import sentry_sdk
-except Exception:  # pragma: no cover - optional dependency
-    sentry_sdk = None  # type: ignore[assignment]
+except ImportError:  # pragma: no cover - optional dependency
+    sentry_sdk = None
 
 
 logger = logging.getLogger("unisearch.observability")
@@ -43,9 +45,9 @@ _SENSITIVE_KEYS = {
 }
 
 
-def _scrub_sensitive(value: Any) -> Any:
+def _scrub_sensitive(value: object) -> object:
     if isinstance(value, dict):
-        out = {}
+        out: dict[object, object] = {}
         for key, item in value.items():
             key_text = str(key or "").strip().lower()
             if key_text in _SENSITIVE_KEYS or key_text == OPS_ADMIN_HEADER.lower() or any(
@@ -75,7 +77,7 @@ def _scrub_sensitive(value: Any) -> Any:
     return value
 
 
-def _before_send(event: Any, hint: Any) -> Any:
+def _before_send(event: Any, hint: Any = None) -> Any:
     return _scrub_sensitive(event)
 
 
@@ -96,7 +98,7 @@ def setup_observability(app: FastAPI) -> None:
 
     if METRICS_ENABLED and Instrumentator is not None:
         try:
-            instrumentator: Any = Instrumentator(
+            instrumentator = Instrumentator(
                 should_group_status_codes=True,
                 should_ignore_untemplated=True,
                 excluded_handlers=["/metrics"],

@@ -3,7 +3,6 @@
 
 Fuzzes JSON decoding, Pydantic model validation, and schema coercion for:
 - UniversitiesAiSortRequest
-- CompareProfilesRequest
 - ProfilePayload
 - ExamValidateRequest
 - LanguageValidateRequest
@@ -12,8 +11,10 @@ import os
 import sys
 import json
 
-# Ensure backend modules can be imported
+# Ensure fuzz helpers and backend modules can be imported
 current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 backend_dir = os.path.abspath(os.path.join(current_dir, "..", "..", "backend"))
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
@@ -21,7 +22,6 @@ if backend_dir not in sys.path:
 from pydantic import ValidationError
 from app.schemas.payloads import (
     UniversitiesAiSortRequest,
-    CompareProfilesRequest,
     ProfilePayload,
     ExamValidateRequest,
     LanguageValidateRequest,
@@ -44,7 +44,6 @@ def TestOneInput(data: bytes) -> None:
         if isinstance(parsed, dict):
             for model_cls in (
                 UniversitiesAiSortRequest,
-                CompareProfilesRequest,
                 ProfilePayload,
                 ExamValidateRequest,
                 LanguageValidateRequest,
@@ -64,7 +63,7 @@ def TestOneInput(data: bytes) -> None:
         import atheris
         fdp = atheris.FuzzedDataProvider(data)
     except ImportError:
-        from app.core.fuzz_helpers import SimpleFuzzedDataProvider
+        from helpers import SimpleFuzzedDataProvider
         fdp = SimpleFuzzedDataProvider(data)
 
     synth_dict = {
@@ -92,8 +91,6 @@ def TestOneInput(data: bytes) -> None:
         "social_vs_hardcore": fdp.ConsumeIntInRange(-100, 200),
         "budget_vs_prestige": fdp.ConsumeIntInRange(-100, 200),
         "city_vs_campus": fdp.ConsumeIntInRange(-100, 200),
-        "ai_balance": fdp.ConsumeIntInRange(-100, 200),
-        "admission_bias": fdp.ConsumeIntInRange(-100, 200),
         "page": fdp.ConsumeIntInRange(-10, 100),
         "page_size": fdp.ConsumeIntInRange(-10, 200),
     }

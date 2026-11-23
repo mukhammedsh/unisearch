@@ -255,48 +255,6 @@
   font-weight: var(--font-weight-medium);
 }
 
-.compare-uni-card__chance {
-  min-width: 0;
-}
-
-.compare-uni-card__chance .chance-track-chip {
-  box-sizing: border-box;
-  width: fit-content;
-  max-width: 100%;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-md);
-  background: var(--surface-soft);
-  color: var(--text);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: var(--space-2);
-  font-size: var(--text-xs);
-  line-height: 1;
-  font-weight: var(--font-weight-medium);
-}
-
-.compare-uni-card__chance .chance-track-chip.chance-high {
-  background: var(--bg-chance-high);
-  color: var(--color-chance-high);
-}
-
-.compare-uni-card__chance .chance-track-chip.chance-good {
-  background: var(--bg-chance-good);
-  color: var(--color-chance-good);
-}
-
-.compare-uni-card__chance .chance-track-chip.chance-medium {
-  background: var(--bg-chance-medium);
-  color: var(--color-chance-medium);
-}
-
-.compare-uni-card__chance .chance-track-chip.chance-low {
-  background: var(--bg-chance-low);
-  color: var(--color-chance-low);
-}
-
 .compare-uni-card__track {
   display: flex;
   flex-direction: column;
@@ -479,121 +437,6 @@
   gap: var(--component-control-gap);
   flex-wrap: wrap;
   justify-content: flex-end;
-}
-
-.compare-config-chance {
-  margin: 0;
-  padding: 0;
-}
-
-.compare-config-chance .chance-panel {
-  box-sizing: border-box;
-  min-width: 0;
-  padding: var(--space-3) var(--space-3);
-  border-radius: var(--radius-lg);
-  background: var(--accent-panel);
-  display: grid;
-  gap: var(--space-2);
-}
-
-.compare-config-chance .chance-head {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-3);
-}
-
-.compare-config-chance .chance-title {
-  color: var(--text);
-  font-size: var(--text-sm);
-  line-height: 1.25;
-  font-weight: var(--font-weight-medium);
-}
-
-.compare-config-chance .chance-sub,
-.compare-config-chance .chance-foot,
-.compare-config-chance .chance-inline-note {
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  line-height: 1.35;
-  font-weight: var(--font-weight-medium);
-}
-
-.compare-config-chance .chance-sub {
-  margin-top: var(--space-0-5);
-}
-
-.compare-config-chance .chance-percent-wrap {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-1);
-}
-
-.compare-config-chance .chance-percent {
-  min-width: 50px;
-  min-height: 38px;
-  padding: var(--space-2) var(--space-2);
-  border-radius: var(--radius-base);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--surface-solid);
-  color: var(--text);
-  font-size: var(--text-md);
-  line-height: 1;
-  font-weight: var(--font-weight-medium);
-}
-
-.compare-config-chance .chance-meter {
-  height: 7px;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  background: color-mix(in srgb, var(--line) 78%, transparent);
-}
-
-.compare-config-chance .chance-fill {
-  display: block;
-  width: var(--fill-width, 0%);
-  height: 100%;
-  border-radius: inherit;
-  background: var(--accent);
-}
-
-.compare-config-chance .chance-high {
-  background: var(--bg-chance-high);
-  color: var(--color-chance-high);
-}
-
-.compare-config-chance .chance-good {
-  background: var(--bg-chance-good);
-  color: var(--color-chance-good);
-}
-
-.compare-config-chance .chance-medium {
-  background: var(--bg-chance-medium);
-  color: var(--color-chance-medium);
-}
-
-.compare-config-chance .chance-low {
-  background: var(--bg-chance-low);
-  color: var(--color-chance-low);
-}
-
-.compare-config-chance .chance-fill.chance-high {
-  background: var(--color-chance-high);
-}
-
-.compare-config-chance .chance-fill.chance-good {
-  background: var(--color-chance-good);
-}
-
-.compare-config-chance .chance-fill.chance-medium {
-  background: var(--color-chance-medium);
-}
-
-.compare-config-chance .chance-fill.chance-low {
-  background: var(--color-chance-low);
 }
 
 .compare-results-action {
@@ -1070,14 +913,6 @@
   padding: var(--space-5) 0;
   display: grid;
   gap: var(--space-4);
-}
-
-.compare-uni-card__chance > small {
-  display: block;
-  margin-bottom: var(--space-1);
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
 }
 
 .compare-decision-list {

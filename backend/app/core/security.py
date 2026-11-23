@@ -1,14 +1,13 @@
 import hmac
 import ipaddress
+import logging
 import threading
 import time
 import uuid
 from collections import OrderedDict, deque
-from typing import Any, Deque, Optional, Tuple
+from typing import Protocol
 
-from fastapi import Request
-from fastapi.responses import JSONResponse
-
+from app.core.redis_store import REDIS_ERRORS, get_redis_client, is_redis_configured
 from app.core.settings import (
     METRICS_PATH,
     OPS_ADMIN_HEADER,
@@ -19,7 +18,22 @@ from app.core.settings import (
     TRUST_X_FORWARDED_FOR,
     TRUSTED_PROXY_IPS,
 )
-from app.core.redis_store import get_redis_client, is_redis_configured
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+_LOGGER = logging.getLogger("unisearch.security")
+
+TrustedProxyEntry = (
+    ipaddress.IPv4Address
+    | ipaddress.IPv6Address
+    | ipaddress.IPv4Network
+    | ipaddress.IPv6Network
+)
+
+
+class _RedisEvalClient(Protocol):
+    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object:
+        pass
 
 
 class SlidingWindowRateLimiter:
@@ -27,7 +41,7 @@ class SlidingWindowRateLimiter:
         self.limit = max(1, int(limit))
         self.window_seconds = max(1, int(window_seconds))
         self.max_keys = max(16, int(max_keys))
-        self._events: OrderedDict[str, Deque[float]] = OrderedDict()
+        self._events: OrderedDict[str, deque[float]] = OrderedDict()
         self._lock = threading.Lock()
 
     def _evict_stale(self, now: float) -> None:
@@ -41,7 +55,7 @@ class SlidingWindowRateLimiter:
         for key in stale_keys:
             self._events.pop(key, None)
 
-    def check(self, key: str, now: Optional[float] = None) -> Tuple[bool, int, float]:
+    def check(self, key: str, now: float | None = None) -> tuple[bool, int, float]:
         current = float(now if now is not None else time.time())
         with self._lock:
             self._evict_stale(current)
@@ -94,7 +108,7 @@ local count_after = redis.call('ZCARD', key)
 return {1, math.max(0, limit - count_after), 0}
 """
 
-    def __init__(self, limit: int, window_seconds: int, redis_client: Any, key_prefix: str = "rate-limit"):
+    def __init__(self, limit: int, window_seconds: int, redis_client: _RedisEvalClient | None, key_prefix: str = "rate-limit"):
         self.limit = max(1, int(limit))
         self.window_seconds = max(1, int(window_seconds))
         self.key_prefix = str(key_prefix or "rate-limit").strip() or "rate-limit"
@@ -104,7 +118,7 @@ return {1, math.max(0, limit - count_after), 0}
     def _key(self, key: str) -> str:
         return f"{self.key_prefix}:{str(key or 'global').strip() or 'global'}"
 
-    def check(self, key: str, now: Optional[float] = None) -> Tuple[bool, int, float]:
+    def check(self, key: str, now: float | None = None) -> tuple[bool, int, float]:
         current = float(now if now is not None else time.time())
         if self._redis is None:
             return self._fallback.check(key, now=current)
@@ -123,9 +137,17 @@ return {1, math.max(0, limit - count_after), 0}
                 self.window_seconds,
                 member,
             )
-            allowed, remaining, retry_after = result or [0, 0, self.window_seconds]
-            return bool(int(allowed)), int(remaining or 0), float(retry_after or 0.0)
-        except Exception:
+            if isinstance(result, (list, tuple)) and len(result) == 3:
+                allowed, remaining, retry_after = result
+            else:
+                allowed, remaining, retry_after = 0, 0, self.window_seconds
+            return (
+                bool(int(allowed) if isinstance(allowed, (int, float, str)) else 0),
+                int(remaining or 0) if isinstance(remaining, (int, float, str)) else 0,
+                float(retry_after or 0.0) if isinstance(retry_after, (int, float, str)) else 0.0,
+            )
+        except REDIS_ERRORS as exc:
+            _LOGGER.warning("redis_rate_limit_fallback error=%s", exc)
             return self._fallback.check(key, now=current)
 
 
@@ -134,7 +156,7 @@ def build_rate_limiter(
     window_seconds: int,
     max_keys: int = 2048,
     redis_key_prefix: str = "rate-limit",
-):
+) -> SlidingWindowRateLimiter | RedisSlidingWindowRateLimiter:
     redis_client = get_redis_client() if is_redis_configured() else None
     if redis_client is None:
         return SlidingWindowRateLimiter(limit=limit, window_seconds=window_seconds, max_keys=max_keys)
@@ -146,7 +168,7 @@ def build_rate_limiter(
     )
 
 
-def _validate_and_normalize_ip(value: Optional[str]) -> Optional[str]:
+def _validate_and_normalize_ip(value: str | None) -> str | None:
     if not value:
         return None
     raw = str(value).strip()
@@ -181,7 +203,7 @@ def _validate_and_normalize_ip(value: Optional[str]) -> Optional[str]:
         return None
 
 
-def _parse_trusted_proxy_entry(entry: str) -> Optional[Any]:
+def _parse_trusted_proxy_entry(entry: str) -> TrustedProxyEntry | None:
     raw = str(entry).strip()
     if not raw:
         return None
@@ -193,8 +215,8 @@ def _parse_trusted_proxy_entry(entry: str) -> Optional[Any]:
         return None
 
 
-def _get_trusted_proxy_entries() -> list[Any]:
-    entries: list[Any] = []
+def _get_trusted_proxy_entries() -> list[TrustedProxyEntry]:
+    entries: list[TrustedProxyEntry] = []
     for item in TRUSTED_PROXY_IPS:
         parsed = _parse_trusted_proxy_entry(item)
         if parsed is not None:
@@ -203,17 +225,15 @@ def _get_trusted_proxy_entries() -> list[Any]:
 
 
 def _is_trusted_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
-    if TRUST_PRIVATE_NETWORK_PROXIES:
-        if _is_private_or_local_proxy_ip(ip_obj):
-            return True
+    if TRUST_PRIVATE_NETWORK_PROXIES and _is_private_or_local_proxy_ip(ip_obj):
+        return True
 
     for entry in _get_trusted_proxy_entries():
         if isinstance(entry, (ipaddress.IPv4Network, ipaddress.IPv6Network)):
             if ip_obj.version == entry.version and ip_obj in entry:
                 return True
-        elif isinstance(entry, (ipaddress.IPv4Address, ipaddress.IPv6Address)):
-            if ip_obj == entry:
-                return True
+        elif isinstance(entry, (ipaddress.IPv4Address, ipaddress.IPv6Address)) and ip_obj == entry:
+            return True
 
     return False
 
@@ -231,18 +251,7 @@ def _is_private_or_local_proxy_ip(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6
     return (packed[0] & 0xFE) == 0xFC
 
 
-def _is_trusted_proxy_host(direct_host: str) -> bool:
-    normalized = _validate_and_normalize_ip(direct_host)
-    if not normalized:
-        return False
-    try:
-        ip_obj = ipaddress.ip_address(normalized)
-        return _is_trusted_proxy_ip(ip_obj)
-    except ValueError:
-        return False
-
-
-def request_client_ip(request: Optional[Request]) -> str:
+def request_client_ip(request: Request | None) -> str:
     if request is None:
         return "unknown"
 
@@ -300,7 +309,7 @@ def request_client_ip(request: Optional[Request]) -> str:
     return normalized_direct
 
 
-def request_scope_path(request: Optional[Request], strip_root: bool = False) -> str:
+def request_scope_path(request: Request | None, strip_root: bool = False) -> str:
     if request is None:
         return ""
     scope = getattr(request, "scope", {}) or {}
@@ -319,11 +328,9 @@ def is_protected_ops_request(request: Request) -> bool:
     if norm_path == "/ops" or norm_path.startswith("/ops/"):
         return True
     metrics_path = str(METRICS_PATH or "/metrics").rstrip("/") or "/metrics"
-    if norm_path in (metrics_path, "/currency/status"):
+    if norm_path == metrics_path:
         return True
-    if norm_path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on", "t", "y"}:
-        return True
-    return False
+    return norm_path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on", "t", "y"}
 
 
 def ops_request_is_authorized(request: Request) -> bool:

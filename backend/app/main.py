@@ -1,18 +1,13 @@
-import threading
 import logging
 import mimetypes
+import threading
 import time
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
-
+from app.core.files import RequiredDataUnavailable
 from app.core.observability import setup_observability
 from app.core.paths import UNIVERSITY_ASSETS_DIR
-from app.core.files import RequiredDataUnavailable
 from app.core.security import (
     build_rate_limiter,
     is_protected_ops_request,
@@ -21,7 +16,6 @@ from app.core.security import (
     request_client_ip,
     request_scope_path,
 )
-from app.core.version import APP_VERSION
 from app.core.settings import (
     AUTO_WARMUP_ON_STARTUP,
     BACKEND_HOST,
@@ -36,10 +30,14 @@ from app.core.settings import (
     RATE_LIMIT_ENABLED,
     REQUEST_BODY_MAX_BYTES,
 )
-from app.routers import root, universities, exams, languages, currency, admissions
+from app.core.version import APP_VERSION
+from app.routers import admissions, currency, exams, languages, root, universities
 from app.services.admissions_catalog import AdmissionsCatalogError, InstitutionNotFoundError
 from app.services.background_tasks import warmup_runtime
-
+from fastapi import FastAPI, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 logging.basicConfig(
     level=logging.INFO,
@@ -94,7 +92,6 @@ _EXPENSIVE_RATE_LIMITER = build_rate_limiter(
 )
 _EXPENSIVE_POST_PATHS = {
     "/universities/ai-sort",
-    "/universities/compare-profiles",
     "/universities/profiled",
     "/exams/validate",
     "/languages/validate",
@@ -160,16 +157,14 @@ def _is_expensive_request(request: Request) -> bool:
     path = request_scope_path(request, strip_root=True).rstrip("/") or "/"
     if path in _EXPENSIVE_POST_PATHS:
         return True
-    if path.endswith(("/uni-chance", "/roi", "/admissions-context")) or path == "/ops/warmup":
-        return True
-    return False
+    return path.endswith("/admissions-context") or path == "/ops/warmup"
 
 
 def _expensive_rate_limit_path(request: Request) -> str:
     # Strip root_path so that parameterized buckets are shared consistently
     path = request_scope_path(request, strip_root=True).rstrip("/") or "/"
     parts = path.strip("/").split("/")
-    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] in {"uni-chance", "roi", "admissions-context"}:
+    if len(parts) >= 3 and parts[-3] == "universities" and parts[-1] == "admissions-context":
         return "/" + "/".join([*parts[:-2], "{id}", parts[-1]])
     return path
 
@@ -403,7 +398,6 @@ app.add_middleware(
         "Retry-After",
         "X-Redis-Cache",
         "X-AI-Sort-Cache",
-        "X-Compare-Cache",
     ],
 )
 

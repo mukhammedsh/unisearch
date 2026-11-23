@@ -39,7 +39,6 @@ import {
   compareSelectedCostContext,
   compareCostContextText,
   compareUniversityName,
-  fetchCompareProfiles,
   formatCompareCostRange,
   loadCompareUniversities,
   readCompareAdmissionChoices,
@@ -52,11 +51,6 @@ import {
   compareRowsHtml,
   compareSlotLabel,
 } from "./universities/compare-specs.js";
-import {
-  applyPercentWidths,
-  renderTrackChanceChip,
-  renderUniChanceSummary,
-} from "../university-detail-helpers.js";
 import { getFinanceForChoice, renderAdmissionSection } from "./university/render-sections.js";
 import { loadPhotoCredits } from "./university/cover-credit.js";
 import { mountReviewedComparison } from "./universities/compare-reviewed.js";
@@ -67,7 +61,6 @@ const COMPARE_UNIVERSITIES_KEY = "unisearch_compare_university_ids_v1";
 
 let activeUniversities = [];
 let comparePhotos = null;
-let compareChancesByUniId = new Map();
 let compareAdmissionChoices = new Map();
 let isDiffOnly = false;
 let currentStage = "results";
@@ -149,12 +142,6 @@ function compareCardsHtml(universities) {
           <span><small>${escapeHtml([t("universities.compare.sticker_cost", "Sticker cost"), costContext].filter(Boolean).join(" · "))}</small><strong>${escapeHtml(formatCompareCostRange(cost))}</strong></span>
           <span><small>${escapeHtml([t("universities.compare.published_rate", "Published selectivity"), admissionContext].filter(Boolean).join(" · "))}</small><strong>${escapeHtml(publishedAdmission.value === null ? t("common.na", "N/A") : comparePercentText(publishedAdmission.value))}</strong></span>
         </div>
-        ${(() => {
-          const uniChance = compareChancesByUniId.get(id);
-          const selectedKey = compareChoiceKey(compareAdmissionChoices.get(id));
-          const trackChance = (uniChance?.choices || []).find((x) => String(x.choiceKey) === selectedKey);
-          return trackChance ? `<div class="compare-uni-card__chance"><small>${escapeHtml(t("universities.compare.requirements_fit_score", "Requirements fit score"))}</small>${renderTrackChanceChip(trackChance)}</div>` : "";
-        })()}
         ${(() => {
           const entries = compareAdmissionOptionEntries(u);
           if (entries.length <= 1) return "";
@@ -250,9 +237,6 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
               <p class="admissions-context__note">${escapeHtml(t("universities.compare.legacy_unreviewed"))}</p>
               <p class="compare-config-column__status">${escapeHtml(selected ? t("universities.compare.configure.selected", "Admission choice selected") : t("universities.compare.configure.required", "Select one option before comparing"))}</p>
             </div>
-            <div class="compare-config-chance">
-              ${renderUniChanceSummary(compareChancesByUniId.get(id))}
-            </div>
             <div class="compare-config-options" id="compare-options-${escapeHtmlAttr(id)}">
             </div>
           </article>
@@ -265,16 +249,12 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
     const id = String(u?.id || "");
     const optContainer = container.querySelector(`#compare-options-${id}`);
     if (optContainer) {
-      const uniChance = compareChancesByUniId.get(id);
-      const uniChanceByChoiceKey = new Map((uniChance?.choices || []).map((choice) => [String(choice.choiceKey), choice]));
       const profileStudyMode = normalizeStudyModeForCost(loadProfile()?.studyMode || loadProfile()?.study_mode || "");
       const annualCostForTrack = (track) => modeAwareAnnualCost(getFinanceForChoice(track, u.finance), profileStudyMode);
 
       renderAdmissionSection({
         annualCostForTrack,
         container: optContainer,
-        uniChance,
-        uniChanceByChoiceKey,
         university: u,
         effectiveSelectedChoiceKeyOverride: compareChoiceKey(compareAdmissionChoices.get(id)),
         compactMode: true,
@@ -290,7 +270,6 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
     }
   });
 
-  applyPercentWidths(container);
   bindImageFallbacks(container);
   markMotionEnter(container, ".compare-config-column, .admission-category-card", { limit: 16, staggerMs: 18 });
   replayMotion(container, "motion-panel-enter", { timeoutMs: 420 });
@@ -305,7 +284,6 @@ async function renderCompareResults(container, { pushState = false } = {}) {
   const rowsHtml = compareRowsHtml(activeUniversities, metrics);
   const decisionSupportHtml = buildCompareDecisionSupportHtml(activeUniversities, {
     choices: compareAdmissionChoices,
-    chances: compareChancesByUniId,
     budgetUsd: loadProfileForApi()?.budget,
   });
 
@@ -520,13 +498,8 @@ export async function initComparePage() {
   `;
 
   try {
-    const [universities, compareProfiles, photoCredits] = await Promise.all([
+    const [universities, photoCredits] = await Promise.all([
       loadCompareUniversities(ids, { fetchUniversityDetailCached }),
-      fetchCompareProfiles(ids, {
-        apiBase: API_BASE,
-        fetchImpl: fetch,
-        loadProfileForApi,
-      }),
       loadPhotoCredits(),
     ]);
     if (loadRun !== compareLoadRun || !container.isConnected) return;
@@ -555,7 +528,6 @@ export async function initComparePage() {
       renderMixedState(container, universities);
       return;
     }
-    compareChancesByUniId = compareProfiles.chances;
 
     const urlChoices = getChoicesFromUrl();
     activeUniversities.forEach((u, idx) => {
@@ -565,12 +537,7 @@ export async function initComparePage() {
       const storedKey = compareChoiceKey(compareAdmissionChoices.get(id));
       const targetKey = urlChoiceKey || storedKey;
       let matchedEntry = targetKey ? entries.find((e) => e.key === targetKey) : null;
-      if (!matchedEntry && entries.length) {
-        const uniChance = compareChancesByUniId.get(id);
-        const recKey = String(uniChance?.selectedChoiceKey || uniChance?.recommendedChoiceKey || uniChance?.bestChoiceKey || "").trim();
-        matchedEntry = recKey ? entries.find((e) => e.key === recKey) : null;
-        if (!matchedEntry) matchedEntry = entries[0];
-      }
+      if (!matchedEntry && entries.length) matchedEntry = entries[0];
       if (matchedEntry) {
         compareAdmissionChoices.set(id, compareAdmissionSelectionFromEntry(matchedEntry));
       }

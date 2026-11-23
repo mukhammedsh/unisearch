@@ -1,8 +1,6 @@
-from fastapi import APIRouter, HTTPException, Response
-
-from app.services import exams as exams_service
 from app.schemas import ExamValidateRequest
-
+from app.services import exams as exams_service
+from fastapi import APIRouter, HTTPException, Response
 
 router = APIRouter()
 
@@ -12,9 +10,8 @@ router = APIRouter()
     summary="Exam configuration",
     description="Returns the map of supported exams with their score ranges, input modes, and level bands.",
 )
-def get_exam_config(response: Response = None):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=300"
+def get_exam_config(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=300"
     exams_service.ensure_exams_cache()
     return exams_service.EXAMS_CONFIG
 
@@ -37,8 +34,8 @@ def validate_exam(payload: ExamValidateRequest):
             taken_on=payload.taken_on,
         )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid score format")
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except (TypeError, KeyError, ArithmeticError) as exc:
+        raise HTTPException(status_code=400, detail="Invalid score format") from exc
 
     return {"ok": True, **result}

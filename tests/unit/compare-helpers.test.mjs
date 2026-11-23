@@ -21,7 +21,6 @@ globalThis.localStorage = globalThis.localStorage || {
 };
 
 const {
-  fetchCompareProfiles,
   compareBachelorProgramNames,
   compareProgramSummary,
   compareProgramTitle,
@@ -83,70 +82,7 @@ function response(body, ok = true, status = ok ? 200 : 500) {
   };
 }
 
-test("fetchCompareProfiles maps batch chances and rois", async () => {
-  const calls = [];
-  const result = await fetchCompareProfiles([" u-a ", "u-b"], {
-    apiBase: "/api",
-    loadProfileForApi: () => ({ gpa: 3.8 }),
-    fetchImpl: async (url, options) => {
-      calls.push({ url, body: JSON.parse(options.body) });
-      assert.equal(url, "/api/universities/compare-profiles");
-      return response({
-        "u-a": { uniChance: { overallChance: 70 }, roi: { roi_value: 1.2 } },
-        "u-b": { uniChance: { overallChance: 40 }, roi: { roi_value: 0.8 } },
-      });
-    },
-  });
-
-  assert.equal(calls.length, 1);
-  assert.deepEqual(calls[0].body, { university_ids: ["u-a", "u-b"], profile: { gpa: 3.8 } });
-  assert.equal(result.chances.get("u-a").overallChance, 70);
-  assert.equal(result.rois.get("u-b").roi_value, 0.8);
-});
-
-test("fetchCompareProfiles keeps nulls for missing batch rows", async () => {
-  const result = await fetchCompareProfiles(["u-a", "missing"], {
-    apiBase: "/api",
-    loadProfileForApi: () => ({}),
-    fetchImpl: async () => response({
-      "u-a": { uniChance: { overallChance: 70 }, roi: { roi_value: 1.2 } },
-      missing: null,
-    }),
-  });
-
-  assert.equal(result.chances.get("u-a").overallChance, 70);
-  assert.equal(result.chances.get("missing"), null);
-  assert.equal(result.rois.get("missing"), null);
-});
-
-test("fetchCompareProfiles falls back to individual endpoints when batch fails", async () => {
-  const urls = [];
-  const result = await fetchCompareProfiles(["u-a", "u-b"], {
-    apiBase: "/api",
-    loadProfileForApi: () => ({ budget: 20000 }),
-    fetchImpl: async (url) => {
-      urls.push(url);
-      if (url === "/api/universities/compare-profiles") return response({}, false, 500);
-      if (url === "/api/universities/u-a/uni-chance") return response({ overallChance: 80 });
-      if (url === "/api/universities/u-a/roi") return response({ roi_value: 1.4 });
-      if (url === "/api/universities/u-b/uni-chance") return response({ overallChance: 35 });
-      if (url === "/api/universities/u-b/roi") return response({ roi_value: 0.7 });
-      throw new Error(`unexpected url ${url}`);
-    },
-  });
-
-  assert.deepEqual(urls, [
-    "/api/universities/compare-profiles",
-    "/api/universities/u-a/uni-chance",
-    "/api/universities/u-a/roi",
-    "/api/universities/u-b/uni-chance",
-    "/api/universities/u-b/roi",
-  ]);
-  assert.equal(result.chances.get("u-a").overallChance, 80);
-  assert.equal(result.rois.get("u-b").roi_value, 0.7);
-});
-
-test("reviewed comparison does not reuse legacy choices, costs, rates or failed batch scores", async () => {
+test("reviewed comparison does not reuse legacy choices, costs, or rates", async () => {
   const reviewed = {
     id: "mit-usa-cambridge", admissions_catalog: { availability: "reviewed" },
     finance: { total_cost_year_usd: 999 }, academics: { acceptance_rate_percent: 5 },
@@ -157,14 +93,6 @@ test("reviewed comparison does not reuse legacy choices, costs, rates or failed 
   assert.equal(compareSelectedAnnualCost(reviewed), null);
   assert.equal(comparePublishedAdmission(reviewed).value, null);
   assert.equal(compareSpecRawValue({ type: "number", section: "finance", getter: () => 999 }, reviewed), null);
-  const urls = [];
-  const result = await fetchCompareProfiles([reviewed.id, "legacy"], {
-    apiBase: "/api", loadProfileForApi: () => ({}),
-    fetchImpl: async url => { urls.push(url); return url.endsWith("compare-profiles") ? response({}, false) : response({ overallChance: 12 }); },
-  });
-  assert.deepEqual(urls, ["/api/universities/compare-profiles", "/api/universities/legacy/uni-chance", "/api/universities/legacy/roi"]);
-  assert.equal(result.chances.has(reviewed.id), false);
-  assert.equal(result.chances.get("legacy").overallChance, 12);
 });
 
 test("comparison study options use search, canonical level and pagination without projecting legacy programs", async () => {
@@ -739,22 +667,16 @@ test("comparison context validators reject missing fields and accept normalized 
   ]), true);
 });
 
-test("decision support separates requirements fit from published acceptance rates", () => {
+test("decision support shows published selectivity and requirements separately", () => {
   const universities = [richUniversity("alpha"), richUniversity("beta")];
   const context = {
-    chances: new Map([
-      ["alpha", { choices: [{ choiceKey: "grant", chancePercent: 70, scoreMeaning: "published_requirements_met_percent", confidence: "medium" }] }],
-      ["beta", { overallChance: null, scoreMeaning: "published_requirements_met_percent", reason: "requirements_not_met" }],
-    ]),
     choices: new Map([["alpha", { choiceKey: "grant" }]]),
   };
   const themes = buildCompareDecisionSignals(universities, context);
   assert.deepEqual(themes.map((theme) => theme.key), ["admissions", "finance", "academics", "outcomes"]);
-  assert.match(themes[0].universities[0].facts[0].value, /70%/);
-  assert.match(themes[0].universities[0].facts[0].label, /Requirements fit score/);
-  assert.doesNotMatch(themes[0].universities[0].facts[0].value, /confidence|probability|odds/i);
-  assert.match(themes[0].universities[1].facts[0].value, /required minimum/i);
-  assert.match(themes[0].summary, /separate from your requirements fit score/i);
+  assert.match(themes[0].universities[0].facts[0].label, /Published selectivity/);
+  assert.match(themes[0].universities[0].facts[1].label, /Requirements/);
+  assert.doesNotMatch(JSON.stringify(themes[0]), /Requirements fit score/);
   assert.equal(themes[1].status, "tradeoff");
   assert.equal(themes[2].status, "tradeoff");
   assert.equal(themes[3].status, "tradeoff");
@@ -763,22 +685,6 @@ test("decision support separates requirements fit from published acceptance rate
   assert.match(html, /What matters for your choice/);
   assert.match(html, /data-theme-key="finance"/);
   assert.match(html, /target="_blank"/);
-});
-
-test("comparison hides numeric UniChance values unless score meaning is confirmed", () => {
-  const universities = [richUniversity("alpha"), richUniversity("beta")];
-  const context = {
-    chances: new Map([
-      ["alpha", { overallChance: 81 }],
-      ["beta", { overallChance: 50, scoreMeaning: "admission_probability" }],
-    ]),
-    choices: new Map(),
-  };
-  const theme = buildCompareDecisionSignals(universities, context)[0];
-  for (const row of theme.universities) {
-    assert.match(row.facts[0].value, /meaning could not be confirmed/i);
-    assert.doesNotMatch(row.facts[0].value, /81%|50%/);
-  }
 });
 
 test("decision support classifies absent rates and costs as missing rather than zero", () => {

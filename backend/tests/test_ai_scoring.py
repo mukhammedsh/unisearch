@@ -6,7 +6,6 @@ from app.services.ai_scoring import (
     _build_user_context,
     _effective_track_cost_details,
     estimate_uni_chance as _estimate_uni_chance,
-    estimate_university_roi as _estimate_university_roi,
     sort_universities_ai as _sort_universities_ai,
     _choice_matches_study_level,
     _normalize_study_level_str,
@@ -311,67 +310,6 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual({"procedure-computing-meng"}, {row["routeId"] for row in result["choices"]})
         self.assertEqual(result["context"]["study_level"], "undergraduate")
 
-    def test_roi_uses_selected_route_program_and_entry_cycle_for_cost(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        university = {
-            "id": "roi-context-u",
-            "academics": {"programs": [
-                {"id": "course-a", "name": "Course A", "study_levels": ["Bachelor"]},
-                {"id": "course-b", "name": "Course B", "study_levels": ["Bachelor"]},
-            ]},
-            "finance": {"total_cost_year_usd": 50000, "academic_year": "2027-28"},
-            "outcomes": {"early_career_salary_usd": 100000},
-            "admission_categories": [
-                _admission_category(
-                    "course-a-route", "Course A", [{"id": "general", "label": "General"}],
-                    applicant_route="first_year", study_level="Bachelor", cycle="Fall 2027",
-                    program_ids=["course-a"], finance_override={"total_cost_year_usd": 70000, "academic_year": "2027-28"},
-                ),
-                _admission_category(
-                    "course-b-route", "Course B", [{"id": "general", "label": "General"}],
-                    applicant_route="transfer", study_level="Bachelor", cycle="Fall 2027",
-                    program_ids=["course-b"], finance_override={"total_cost_year_usd": 20000, "academic_year": "2027-28"},
-                ),
-            ],
-        }
-
-        result = estimate_university_roi(university, {
-            "study_level": "Bachelor",
-            "applicant_route": "first_year",
-            "intended_entry_cycle": "Fall 2027",
-            "selectedAdmissionChoices": {"roi-context-u": {"programId": "course-a"}},
-        })
-
-        self.assertEqual(70000.0, result["annual_cost_usd"])
-
-    def test_roi_does_not_fall_back_to_stale_university_cost_for_new_cycle(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        university = {
-            "id": "roi-cycle-context-u",
-            "academics": {"programs": [{"id": "course-a", "study_levels": ["Bachelor"]}]},
-            "finance": {"total_cost_year_usd": 50000, "academic_year": "2026–27"},
-            "outcomes": {"early_career_salary_usd": 100000},
-            "admission_categories": [
-                _admission_category(
-                    "course-a-route", "Course A", [{"id": "general", "label": "General"}],
-                    applicant_route="first_year", study_level="Bachelor", cycle="2027 entry",
-                    program_ids=["course-a"],
-                ),
-            ],
-        }
-
-        result = estimate_university_roi(university, {
-            "study_level": "Bachelor",
-            "applicant_route": "first_year",
-            "intended_entry_cycle": "2027 entry",
-            "selectedAdmissionChoices": {"roi-cycle-context-u": {"programId": "course-a"}},
-        })
-
-        self.assertEqual("no_cost_data", result["context_type"])
-        self.assertIsNone(result["annual_cost_usd"])
-
     def test_legacy_general_program_scopes_remain_bachelor_only(self):
         for scope in ("general", "program", "program_group"):
             with self.subTest(scope=scope):
@@ -382,42 +320,6 @@ class AiScoringTests(unittest.TestCase):
 
         self.assertFalse(_choice_matches_study_level({"scope": "graduate_business"}, "bachelor"))
         self.assertFalse(_choice_matches_study_level({"scope": "doctoral_research"}, "bachelor"))
-
-    def test_graduate_roi_requires_level_specific_cost_and_outcomes(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        university = {
-            "finance": {"total_cost_year_usd": 85960},
-            "outcomes": {"early_career_salary_usd": 120000},
-        }
-        result = estimate_university_roi(university, {"studyLevel": "MBA", "major": "Business"})
-
-        self.assertIsNone(result["annual_cost_usd"])
-        self.assertIsNone(result["roi_value"])
-        self.assertEqual("insufficient_level_data", result["context_type"])
-
-    def test_professional_program_roi_does_not_reuse_undergraduate_salary_outcomes(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        university = {
-            "id": "professional-roi-u",
-            "finance": {"total_cost_year_usd": 85960},
-            "outcomes": {"early_career_salary_usd": 120000},
-            "admission_categories": [
-                _admission_category(
-                    "jd", "Juris Doctor", [{"id": "general", "label": "General"}],
-                    applicant_route="graduate", study_level="Professional",
-                    program_ids=["jd"], finance_override={"total_cost_year_usd": 70000},
-                ),
-            ],
-        }
-
-        for profile in ({"study_level": "Professional"}, {"study_level": "Any"}):
-            with self.subTest(profile=profile):
-                result = estimate_university_roi(university, profile)
-                self.assertEqual("insufficient_level_data", result["context_type"])
-                self.assertIsNone(result["annual_cost_usd"])
-                self.assertIsNone(result["roi_value"])
 
     def test_graduate_track_without_own_price_does_not_inherit_undergraduate_cost(self):
         university = {
@@ -446,9 +348,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertIsNone(match_data["costYearUSD"])
         self.assertIsNone(match_data["costYearNative"])
 
-    def test_missing_bachelor_cost_stays_unknown_in_sort_and_roi(self):
-        from app.services.ai_scoring import estimate_university_roi
-
+    def test_missing_bachelor_cost_stays_unknown_in_sort(self):
         university = {
             "id": "missing-cost-u",
             "name": "Missing Cost University",
@@ -459,77 +359,12 @@ class AiScoringTests(unittest.TestCase):
         }
 
         match = sort_universities_ai([university], profile={"studyLevel": "Bachelor"})[0]["matchData"]
-        roi = estimate_university_roi(university, {"studyLevel": "Bachelor"})
 
         self.assertEqual("unavailable", match["costMode"])
         self.assertIsNone(match["finalPrice"])
         self.assertIsNone(match["finalPriceUSD"])
         self.assertIsNone(match["costYearUSD"])
         self.assertIsNone(match["costYearNative"])
-        self.assertEqual("no_cost_data", roi["context_type"])
-        self.assertIsNone(roi["annual_cost_usd"])
-        self.assertIsNone(roi["roi_value"])
-
-    def test_bachelor_roi_does_not_use_a_graduate_track_price(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        university = {
-            "id": "level-specific-roi-u",
-            "name": "Level Specific ROI University",
-            "finance": {"total_cost_year_usd": 50000},
-            "admission_categories": [
-                _admission_category(
-                    "bachelor",
-                    "Bachelor",
-                    [{"id": "general", "label": "Bachelor"}],
-                    study_levels=["Bachelor"],
-                    scope="undergraduate",
-                    finance_override={"total_cost_year_usd": 50000, "currency": "USD"},
-                ),
-                _admission_category(
-                    "mba",
-                    "MBA",
-                    [{"id": "general", "label": "MBA"}],
-                    study_levels=["MBA"],
-                    scope="graduate_business",
-                    finance_override={"total_cost_year_usd": 20000, "currency": "USD"},
-                )
-            ],
-            "outcomes": {"early_career_salary_usd": 100000},
-        }
-
-        result = estimate_university_roi(university, {"studyLevel": "Bachelor"})
-        any_level_result = estimate_university_roi(university, {"studyLevel": "Any"})
-
-        self.assertEqual(50000.0, result["annual_cost_usd"])
-        self.assertEqual(2.0, result["roi_value"])
-        self.assertEqual(50000.0, any_level_result["annual_cost_usd"])
-        self.assertEqual(2.0, any_level_result["roi_value"])
-
-    def test_any_level_roi_is_unknown_when_only_graduate_costs_exist(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        university = {
-            "id": "graduate-only-roi-u",
-            "name": "Graduate Only ROI University",
-            "admission_categories": [
-                _admission_category(
-                    "mba",
-                    "MBA",
-                    [{"id": "general", "label": "MBA"}],
-                    study_levels=["MBA"],
-                    scope="graduate_business",
-                    finance_override={"total_cost_year_usd": 20000, "currency": "USD"},
-                )
-            ],
-            "outcomes": {"early_career_salary_usd": 100000},
-        }
-
-        result = estimate_university_roi(university, {"studyLevel": "Any"})
-
-        self.assertEqual("insufficient_level_data", result["context_type"])
-        self.assertIsNone(result["annual_cost_usd"])
-        self.assertIsNone(result["roi_value"])
 
     def test_grant_route_does_not_claim_verified_aid_eligibility(self):
         university = {
@@ -622,7 +457,7 @@ class AiScoringTests(unittest.TestCase):
         self.assertEqual("master::general", result["bestChoiceKey"])
         self.assertFalse(result["selectedByUser"])
 
-    def test_russian_masters_label_preserves_mit_sloan_mba_route_across_scoring_and_roi(self):
+    def test_russian_masters_label_preserves_mit_sloan_mba_route_in_scoring(self):
         mit = uni_service.get_university_by_id("mit-usa-cambridge")
         self.assertIsNotNone(mit)
         profile = {
@@ -644,10 +479,6 @@ class AiScoringTests(unittest.TestCase):
         ranked = sort_universities_ai([mit], profile=profile)[0]["matchData"]
         self.assertEqual("mit_sloan_mba_admissions", ranked["admissionsContext"]["application_route_id"])
         self.assertEqual("matched", ranked["applicability"]["option"])
-
-        roi = _estimate_university_roi(mit, profile)
-        self.assertEqual("scoped_cost_and_outcomes_unassessed", roi["context_type"])
-        self.assertIsNone(roi["annual_cost_usd"])
 
     def test_mit_top_five_result_ignores_saved_off_level_choice(self):
         mit = uni_service.get_university_by_id("mit-usa-cambridge")
@@ -2880,80 +2711,6 @@ class AiScoringTests(unittest.TestCase):
         self.assertIsNone(res.get("overallChance"))
         self.assertEqual(res.get("reason"), "missing_evidence")
         self.assertEqual(res.get("scoreMeaning"), "published_requirements_met_percent")
-
-    def test_estimate_university_roi_with_valid_salary_data(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        uni_general = {
-            "id": "test-uni-salary",
-            "finance": {"total_cost_year_usd": 50000},
-            "outcomes": {"early_career_salary_usd": 100000},
-            "admission_categories": [],
-        }
-        res = estimate_university_roi(uni_general, {"major": "Physics", "studyMode": "On-campus"})
-        self.assertEqual(res["context_type"], "fallback_major")
-        self.assertEqual(res["salary_used_usd"], 100000.0)
-        self.assertEqual(res["annual_cost_usd"], 50000.0)
-        self.assertEqual(res["roi_value"], 2.0)
-        self.assertEqual(res["roi_label"], "Positive Return")
-        self.assertEqual(res["roi_tone"], "good")
-
-        uni_major = {
-            "id": "test-uni-major-salary",
-            "finance": {"total_cost_year_usd": 40000},
-            "outcomes": {
-                "salary_by_major": {
-                    "Computer Science": 120000,
-                    "Biology": 60000,
-                },
-                "early_career_salary_usd": 80000,
-            },
-            "admission_categories": [],
-        }
-        res_matched = estimate_university_roi(uni_major, {"major": "computer-science"})
-        self.assertEqual(res_matched["context_type"], "matched_major")
-        self.assertEqual(res_matched["matched_major"], "Computer Science")
-        self.assertEqual(res_matched["salary_used_usd"], 120000.0)
-        self.assertEqual(res_matched["roi_value"], 3.0)
-        self.assertEqual(res_matched["roi_label"], "Excellent Return")
-        self.assertEqual(res_matched["roi_tone"], "excellent")
-
-    def test_estimate_university_roi_without_salary_returns_neutral_no_data(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        uni_no_salary = {
-            "id": "test-uni-no-salary",
-            "finance": {"total_cost_year_usd": 30000},
-            "outcomes": {},
-            "admission_categories": [],
-        }
-        res = estimate_university_roi(uni_no_salary, {"major": "Computer Science"})
-        self.assertEqual(res["context_type"], "no_salary_data")
-        self.assertIsNone(res["salary_used_usd"])
-        self.assertIsNone(res["roi_value"])
-        self.assertEqual(res["roi_label"], "No Data")
-        self.assertEqual(res["roi_tone"], "neutral")
-        self.assertEqual(res["annual_cost_usd"], 30000.0)
-        self.assertEqual(res["matched_major"], "")
-        self.assertEqual(res["salary_data_points"], 0)
-
-    def test_estimate_university_roi_with_median_10yr_earnings_returns_neutral_no_data(self):
-        from app.services.ai_scoring import estimate_university_roi
-
-        uni_10yr_earnings = {
-            "id": "caltech-usa-pasadena",
-            "finance": {"total_cost_year_usd": 85000},
-            "outcomes": {"median_earnings_10yr_usd": 128566},
-            "admission_categories": [],
-        }
-        res = estimate_university_roi(uni_10yr_earnings, {"major": "Computer Science"})
-        self.assertEqual(res["context_type"], "no_salary_data")
-        self.assertIsNone(res["salary_used_usd"])
-        self.assertIsNone(res["roi_value"])
-        self.assertEqual(res["roi_label"], "No Data")
-        self.assertEqual(res["roi_tone"], "neutral")
-        self.assertEqual(res["annual_cost_usd"], 85000.0)
-        self.assertEqual(res["salary_data_points"], 0)
 
     def test_mba_keeps_distinct_admission_level(self):
         self.assertEqual("mba", _normalize_study_level_str("MBA"))

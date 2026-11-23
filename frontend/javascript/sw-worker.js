@@ -12,7 +12,6 @@ const MAX_STATIC_ENTRIES = 80;
 const API_PATH_PREFIXES = [
   "/universities",
   "/locations",
-  "/stats",
   "/exams/config",
   "/languages/config",
 ];

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from typing import Annotated
 
 from app.core.redis_store import redis_runtime_status
 from app.core.version import APP_VERSION
@@ -6,6 +6,7 @@ from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services import universities as universities_service
 from app.services.background_tasks import warmup_runtime
+from fastapi import APIRouter, HTTPException, Query
 
 router = APIRouter()
 
@@ -16,8 +17,8 @@ def root():
 
 
 @router.get("/health", summary="Health check", description="Lightweight liveness probe. Pass ?warmup=true to trigger a synchronous warmup and include its result.")
-def health(warmup: bool = Query(False)):
-    payload = {"status": "ok", "version": APP_VERSION}
+def health(warmup: Annotated[bool, Query()] = False):
+    payload: dict[str, object] = {"status": "ok", "version": APP_VERSION}
     if warmup:
         payload["warmup"] = warmup_runtime(trigger="health")
     return payload

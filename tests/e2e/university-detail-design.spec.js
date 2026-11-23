@@ -183,8 +183,6 @@ for (const scenario of cases) {
       const firstExamGroupStyle = visibleExamGroups[0] ? getComputedStyle(visibleExamGroups[0]) : null;
       const admissionPanel = document.querySelector("#tab-admission .d-box");
       const admissionPanelStyle = admissionPanel ? getComputedStyle(admissionPanel) : null;
-      const chanceWrap = document.querySelector("#tab-admission .chance-percent-wrap");
-      const chanceWrapStyle = chanceWrap ? getComputedStyle(chanceWrap) : null;
 
       return {
         cardCount: visibleCards.length,
@@ -192,7 +190,6 @@ for (const scenario of cases) {
         fundingOptionCount: visibleFundingOptions.length,
         examGroupCount: visibleExamGroups.length,
         panelRadius: admissionPanelStyle ? parseFloat(admissionPanelStyle.borderTopLeftRadius) : -1,
-        chanceDirection: chanceWrapStyle ? chanceWrapStyle.flexDirection : "",
         cardRadius: firstCardStyle ? parseFloat(firstCardStyle.borderTopLeftRadius) : -1,
         cardBackground: firstCardStyle ? firstCardStyle.backgroundColor : "",
         cardBackgroundImage: firstCardStyle ? firstCardStyle.backgroundImage : "",
@@ -208,7 +205,6 @@ for (const scenario of cases) {
 
     expect(admissionSurfaces.cardCount).toBeGreaterThan(0);
     expect(admissionSurfaces.panelRadius).toBe(0);
-    expect(admissionSurfaces.chanceDirection).toBe(scenario.width <= 640 ? "row" : "column");
     expect(admissionSurfaces.cardRadius).toBe(0);
     expect(admissionSurfaces.cardBackground).toBe("rgba(0, 0, 0, 0)");
     expect(admissionSurfaces.cardBackgroundImage).toBe("none");

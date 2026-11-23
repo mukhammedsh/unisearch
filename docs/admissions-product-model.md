@@ -221,7 +221,7 @@ UniFit should compare preferences, subject fit, affordability, and applicable ro
 
 ### Discovery, application choices and requirements match
 
-The English applicant-facing name is **Minimum requirements match**. Its descriptive meaning is translated in the existing Russian and Kazakh language packs. UniFit remains the discovery/ranking name. Existing `uni-chance`, `chancePercent` and other API/storage identifiers remain supported; their spelling does not change the meaning of the result.
+The English applicant-facing name is **Minimum requirements match**. Its descriptive meaning is translated in the existing Russian and Kazakh language packs. UniFit remains the discovery/ranking name. Existing `chancePercent`, `overallChance`, and saved-choice identifiers remain supported; their spelling does not change the meaning of the result.
 
 Catalog indicators explain the evidence actually used: preference alignment, catalogued subject/level availability, scoped costs and, after a usable application choice, published minimum checks. A missing catalog match is not proof that an institution offers no such program. An unavailable assessment is not an applicant failure. Published reference or tuition-only prices do not establish a complete personal budget, and potential funding is not an award.
 

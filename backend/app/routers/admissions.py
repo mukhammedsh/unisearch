@@ -2,34 +2,22 @@
 
 import hashlib
 import json
-from typing import Literal, Optional
+from typing import Annotated, Literal
 
-from fastapi import APIRouter, HTTPException, Path, Query, Request, Response
-
+from app.core.http_cache import apply_etag_or_not_modified, resolve_search_lang
+from app.routers._params import LangQuery, UniversityIdPath
 from app.schemas.admissions import AdmissionsContextRequest
-from app.services import admissions_catalog, admissions_assessment, admissions_editorial, universities as university_service
-from app.routers.universities import _resolve_search_lang
-
+from app.services import admissions_assessment, admissions_catalog, admissions_editorial
+from app.services import universities as university_service
+from fastapi import APIRouter, HTTPException, Query, Request, Response
 
 router = APIRouter()
 
 
-def _etag_matches(if_none_match: str, etag: str) -> bool:
-    raw = str(if_none_match or "").strip()
-    if raw == "*":
-        return True
-    target = etag.strip()
-    return target in [part.strip() for part in raw.split(",") if part.strip()] or f"W/{target}" in [
-        part.strip() for part in raw.split(",") if part.strip()
-    ]
-
-
-def _catalog_error(error: Exception) -> HTTPException:
+def _catalog_error(error: admissions_catalog.AdmissionsCatalogError) -> HTTPException:
     if isinstance(error, admissions_catalog.InstitutionNotFoundError):
         return HTTPException(status_code=404, detail="Admissions catalog not found")
-    if isinstance(error, admissions_catalog.AdmissionsCatalogError):
-        return HTTPException(status_code=503, detail="Admissions catalog is unavailable")
-    raise error
+    return HTTPException(status_code=503, detail="Admissions catalog is unavailable")
 
 
 @router.get(
@@ -38,18 +26,21 @@ def _catalog_error(error: Exception) -> HTTPException:
     description="Returns a paginated index of reviewed study options from the accepted admissions catalog.",
 )
 def list_study_options(
-    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
-    search: str = Query("", max_length=200),
-    major: Optional[str] = Query(None, max_length=120),
-    study_level: Optional[Literal["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]] = Query(None),
-    page: int = Query(1, ge=1, le=10_000),
-    limit: int = Query(30, ge=1, le=100),
-    lang: Optional[str] = Query(None, max_length=16),
-    request: Request = None,
-    response: Response = None,
+    university_id: UniversityIdPath,
+    request: Request,
+    response: Response,
+    search: Annotated[str, Query(max_length=200)] = "",
+    major: Annotated[str | None, Query(max_length=120)] = None,
+    study_level: Annotated[
+        Literal["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"] | None,
+        Query(),
+    ] = None,
+    page: Annotated[int, Query(ge=1, le=10_000)] = 1,
+    limit: Annotated[int, Query(ge=1, le=100)] = 30,
+    lang: LangQuery = None,
 ):
     try:
-        language = _resolve_search_lang(lang, request)
+        language = resolve_search_lang(lang, request)
         major = (major or "").strip() or None
         result = admissions_catalog.list_study_options(
             university_id,
@@ -61,13 +52,14 @@ def list_study_options(
             [revision, admissions_catalog.RESPONSE_SHAPE, admissions_editorial.revision(), university_id, search.strip(), study_level, major, page, limit, language],
             ensure_ascii=True, separators=(",", ":"),
         ).encode("utf-8")).hexdigest() + '"'
-        cache_control = "public, max-age=300, stale-while-revalidate=60"
-        if response is not None:
-            response.headers["Cache-Control"] = cache_control
-            response.headers["ETag"] = etag
-            response.headers["Vary"] = "Accept-Language"
-        if _etag_matches(request.headers.get("if-none-match", "") if request else "", etag):
-            return Response(status_code=304, headers={"Cache-Control": cache_control, "ETag": etag, "Vary": "Accept-Language"})
+        not_modified = apply_etag_or_not_modified(
+            request,
+            response,
+            etag=etag,
+            cache_control="public, max-age=300, stale-while-revalidate=60",
+        )
+        if not_modified is not None:
+            return not_modified
         return admissions_editorial.strip_applicant_payload(admissions_catalog.public_study_options(result))
     except HTTPException:
         raise
@@ -81,12 +73,11 @@ def list_study_options(
     description="Resolves one selected study option and route against reviewed facts and exposes source-backed assessment states. Unsupported conditions do not produce a percentage.",
 )
 def resolve_admissions_context(
+    university_id: UniversityIdPath,
     payload: AdmissionsContextRequest,
-    university_id: str = Path(..., min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_-]+$"),
-    response: Response = None,
+    response: Response,
 ):
-    if response is not None:
-        response.headers["Cache-Control"] = "private, no-store"
+    response.headers["Cache-Control"] = "private, no-store"
     try:
         profile = payload.profile.model_dump(exclude_none=True)
         resolved = admissions_catalog.resolve_context(

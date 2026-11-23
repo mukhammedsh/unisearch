@@ -63,8 +63,7 @@ UniFit may show a dismissible note about the profile evidence available for rank
 ## How to read estimates
 
 - **UniFit** sorts the catalog using profile preferences and available university data. Some factors are estimates; unknown costs and possible aid are not treated as zero cost or a guaranteed discount.
-- **Minimum requirements match** shows the share of measurable, published academic and language minimums met for the selected admission path. Missing evidence or a path with no measurable minimums produces no score. Even 100% does not establish that all admission conditions are satisfied. The API retains its existing `uni-chance` identifiers; the result is not an admission probability or a funding prediction.
-- **ROI** is a simplified ratio of annual graduate salary to annual study cost. It is not a degree payback period or a forecast of personal earnings. If major-specific salary data is unavailable, the estimate may use general university salary data.
+- **Minimum requirements match** shows the share of measurable, published academic and language minimums met for the selected admission path. Missing evidence or a path with no measurable minimums produces no score. Even 100% does not establish that all admission conditions are satisfied. The result is not an admission probability or a funding prediction.
 
 Admission checks show the published requirement alongside available profile evidence. A missing value means UniSearch has no applicable catalog fact; it does not mean the university has no such program, requirement, deadline, cost, or funding option. Historical admitted-score ranges and acceptance rates are separate facts, not predictions.
 
@@ -153,8 +152,6 @@ Core API routes include:
 - GET /universities/{id}/study-options for reviewed study options
 - POST /universities/{id}/admissions-context to resolve a selected study option and application route against reviewed facts
 - POST /universities/ai-sort for personalized ordering
-- POST /universities/compare-profiles for comparison
-- POST /universities/{id}/uni-chance and POST /universities/{id}/roi for estimates
 - GET /currency/rates for currency conversion rates
 
 Enable DOCS_ENABLED=1 locally to inspect request and response schemas at /docs. For architecture and admissions contracts, see [the architecture overview](docs/architecture.md), [the admissions product model](docs/admissions-product-model.md), and [the runtime API contract](docs/admissions-runtime-contract.md).
@@ -167,6 +164,8 @@ Run the quick repository checks from the root. Activate backend/.venv before run
     npm run check:encoding
     npm run check:tokens
     npm run check:i18n
+    npm run lint:backend
+    npm run typecheck:backend
     npm run audit:data
 
 For tests, install the development dependencies and the required Playwright browser:

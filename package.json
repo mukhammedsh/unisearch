@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "10.7.0",
+  "version": "10.7.1",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -22,6 +22,7 @@
     "check:inline-styles": "node scripts/check-inline-styles.mjs --strict",
     "fix:encoding": "node scripts/check-encoding.mjs --fix",
     "fix:i18n": "node scripts/i18n-pack-revision.mjs --fix",
+    "lint:backend": "uvx --no-build --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app",
     "sync:heroicons": "node scripts/sync-heroicons.mjs",
     "test:backend": "node scripts/test-backend.mjs",
     "test:unit": "node scripts/test-unit.mjs",
@@ -31,6 +32,7 @@
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
     "test:e2e:nightly": "npx playwright test --project=chromium --project=firefox --project=webkit",
     "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:stylelint && npm run audit:css && npm run check:hardcoded-text && npm run check:inline-styles && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
+    "typecheck:backend": "node scripts/typecheck-backend.mjs",
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {

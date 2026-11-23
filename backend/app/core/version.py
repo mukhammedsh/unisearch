@@ -14,7 +14,7 @@ def _read_package_version() -> str:
             continue
         try:
             payload = json.loads(package_path.read_text(encoding="utf-8"))
-        except Exception:
+        except (OSError, json.JSONDecodeError, TypeError, ValueError):
             continue
 
         version = str(payload.get("version") or "").strip()

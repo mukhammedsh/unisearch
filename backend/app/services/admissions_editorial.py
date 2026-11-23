@@ -155,7 +155,7 @@ def strip_payload(value, clauses, rewrites=()):
         return {key: item if key in OFFICIAL_TEXT_KEYS else strip_payload(item, clauses, rewrites) for key, item in value.items()}
     if isinstance(value, list):
         items = [strip_payload(item, clauses, rewrites) for item in value]
-        return [item for item, original in zip(items, value) if not (isinstance(original, str) and original and item == "")]
+        return [item for item, original in zip(items, value, strict=True) if not (isinstance(original, str) and original and item == "")]
     if isinstance(value, str):
         return clean_text(value, clauses, rewrites)
     return value
