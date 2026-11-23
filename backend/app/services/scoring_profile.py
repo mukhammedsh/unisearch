@@ -2,6 +2,7 @@
 
 import math
 import re
+from functools import lru_cache
 from typing import Any
 
 from app.core.utils import clamp as _clamp
@@ -11,20 +12,93 @@ from app.services import exams as exams_service
 from app.services import languages as languages_service
 from app.services.finance_modes import normalize_study_mode as _normalize_study_mode
 
+_NON_ALNUM_UPPER_RE = re.compile(r"[^A-Z0-9]")
+
+_LANGUAGE_INDEX_LOOKUP_CACHE: dict[str, Any] = {
+    "index": None,
+    "by_lang": {},
+    "any_map": {},
+    "toefl_ranges": {},
+    "parents": {},
+}
+_LANG_CODE_LOOKUP_CACHE: dict[str, Any] = {
+    "cfg": None,
+    "lookup": {},
+}
+
+
+@lru_cache(maxsize=1024)
+def _canonical_exam_key_str(raw: str) -> str:
+    return _NON_ALNUM_UPPER_RE.sub("", raw.strip().upper())
+
 
 def _canonical_exam_key(key: Any) -> str:
-    return re.sub(r"[^A-Z0-9]", "", str(key or "").strip().upper())
+    if key is None:
+        return ""
+    return _canonical_exam_key_str(str(key))
+
+
+def _get_language_exam_lookup() -> dict[str, Any]:
+    index = languages_service.get_languages_index()
+    if _LANGUAGE_INDEX_LOOKUP_CACHE["index"] is index:
+        return _LANGUAGE_INDEX_LOOKUP_CACHE
+
+    exams_by_lang = index.get("exams_by_lang", {}) if isinstance(index, dict) else {}
+    by_lang: dict[str, dict[str, str]] = {}
+    any_map: dict[str, str] = {}
+    toefl_ranges: dict[str, list[tuple[str, float, float]]] = {}
+    parents: dict[str, dict[str, str]] = {}
+
+    if isinstance(exams_by_lang, dict):
+        for lang_code, exams in exams_by_lang.items():
+            if not isinstance(exams, list):
+                continue
+            code_str = str(lang_code)
+            lang_map: dict[str, str] = {}
+            lang_toefl: list[tuple[str, float, float]] = []
+            lang_parents: dict[str, str] = {}
+            for exam in exams:
+                if not isinstance(exam, dict):
+                    continue
+                raw_id = exam.get("id")
+                exam_id_str = str(raw_id or "")
+                canon = _canonical_exam_key(raw_id)
+                if canon not in lang_map:
+                    lang_map[canon] = exam_id_str
+                if canon and canon not in any_map:
+                    any_map[canon] = exam_id_str
+                if (
+                    canon.startswith("TOEFL")
+                    and (min_bound := _to_num(exam.get("min"))) is not None
+                    and (max_bound := _to_num(exam.get("max"))) is not None
+                ):
+                    lang_toefl.append((exam_id_str, float(min_bound), float(max_bound)))
+                scheme = exam.get("breakdown_scheme")
+                if isinstance(scheme, dict):
+                    for component in scheme.get("fixed_components", []):
+                        if isinstance(component, dict) and "exam" in component and "id" in exam:
+                            lang_parents[component["exam"]] = exam["id"]
+            by_lang[code_str] = lang_map
+            toefl_ranges[code_str] = lang_toefl
+            parents[code_str] = lang_parents
+
+    _LANGUAGE_INDEX_LOOKUP_CACHE["index"] = index
+    _LANGUAGE_INDEX_LOOKUP_CACHE["by_lang"] = by_lang
+    _LANGUAGE_INDEX_LOOKUP_CACHE["any_map"] = any_map
+    _LANGUAGE_INDEX_LOOKUP_CACHE["toefl_ranges"] = toefl_ranges
+    _LANGUAGE_INDEX_LOOKUP_CACHE["parents"] = parents
+    return _LANGUAGE_INDEX_LOOKUP_CACHE
 
 
 def _configured_language_exam_id(code: str, exam_id: Any, minimum: Any) -> str:
     """Resolve an exact configured exam or an unambiguous legacy TOEFL total key."""
     exam_key = _canonical_exam_key(exam_id)
-    exams = languages_service.get_languages_index().get("exams_by_lang", {}).get(code, [])
-    if not isinstance(exams, list):
+    lookup = _get_language_exam_lookup()
+    lang_map = lookup["by_lang"].get(code)
+    if lang_map is None:
         return ""
-    for exam in exams:
-        if isinstance(exam, dict) and _canonical_exam_key(exam.get("id")) == exam_key:
-            return str(exam.get("id") or "")
+    if exam_key in lang_map:
+        return lang_map[exam_key]
 
     # Older catalog rows used "TOEFL" for numeric totals. Accept that key only
     # when exactly one configured TOEFL total has a range containing its floor.
@@ -34,30 +108,18 @@ def _configured_language_exam_id(code: str, exam_id: Any, minimum: Any) -> str:
     if floor is None:
         return ""
     compatible = [
-        exam for exam in exams
-        if isinstance(exam, dict)
-        and _canonical_exam_key(exam.get("id")).startswith("TOEFL")
-        and (minimum_bound := _to_num(exam.get("min"))) is not None
-        and (maximum_bound := _to_num(exam.get("max"))) is not None
-        and minimum_bound <= floor <= maximum_bound
+        exam_id_str
+        for exam_id_str, minimum_bound, maximum_bound in lookup["toefl_ranges"].get(code, ())
+        if minimum_bound <= floor <= maximum_bound
     ]
-    return str(compatible[0].get("id") or "") if len(compatible) == 1 else ""
+    return compatible[0] if len(compatible) == 1 else ""
 
 
 def _configured_language_exam_id_any(exam_id: Any) -> str:
     exam_key = _canonical_exam_key(exam_id)
     if not exam_key:
         return ""
-    exams_by_lang = languages_service.get_languages_index().get("exams_by_lang", {})
-    if not isinstance(exams_by_lang, dict):
-        return ""
-    for exams in exams_by_lang.values():
-        if not isinstance(exams, list):
-            continue
-        for exam in exams:
-            if isinstance(exam, dict) and _canonical_exam_key(exam.get("id")) == exam_key:
-                return str(exam.get("id") or "")
-    return ""
+    return _get_language_exam_lookup()["any_map"].get(exam_key, "")
 
 
 def _normalize_funding_preference(value: Any) -> str:
@@ -100,19 +162,23 @@ def _normalize_lang_code(value: Any, lang_cfg: dict[str, Any]) -> str:
     raw = str(value or "").strip().lower()
     if not raw:
         return ""
-    languages = lang_cfg.get("languages", [])
-    if not isinstance(languages, list):
-        return raw
-    for row in languages:
-        if not isinstance(row, dict):
-            continue
-        code = str(row.get("code", "")).strip().lower()
-        name = str(row.get("name", "")).strip().lower()
-        label = str(row.get("label", "")).strip().lower()
-        native_name = str(row.get("native_name", "")).strip().lower()
-        if raw in (code, name, label, native_name) and code:
-            return code
-    return raw
+    if _LANG_CODE_LOOKUP_CACHE["cfg"] is not lang_cfg:
+        lookup: dict[str, str] = {}
+        languages = lang_cfg.get("languages", []) if isinstance(lang_cfg, dict) else []
+        if isinstance(languages, list):
+            for row in languages:
+                if not isinstance(row, dict):
+                    continue
+                code = str(row.get("code", "")).strip().lower()
+                if not code:
+                    continue
+                for field in ("code", "name", "label", "native_name"):
+                    alias = str(row.get(field, "")).strip().lower()
+                    if alias and alias not in lookup:
+                        lookup[alias] = code
+        _LANG_CODE_LOOKUP_CACHE["cfg"] = lang_cfg
+        _LANG_CODE_LOOKUP_CACHE["lookup"] = lookup
+    return _LANG_CODE_LOOKUP_CACHE["lookup"].get(raw, raw)
 
 
 def _is_language_exam_key(exam_id: Any) -> bool:
@@ -406,11 +472,7 @@ def _score_single_language_rule(lang_rule: dict[str, Any], user_languages: dict[
     if not isinstance(avg, dict):
         avg = {}
 
-    parent_exams = {}
-    for exam in languages_service.get_languages_index().get("exams_by_lang", {}).get(code, []):
-        scheme = exam.get("breakdown_scheme", {})
-        for component in scheme.get("fixed_components", []):
-            parent_exams[component["exam"]] = exam["id"]
+    parent_exams = _get_language_exam_lookup()["parents"].get(code, {})
     exam_groups: dict[str, list[tuple[Any, dict[str, Any]]]] = {}
     for exam_id, min_val in req.items():
         # Do not infer exam-equivalent score from CEFR/native evidence.

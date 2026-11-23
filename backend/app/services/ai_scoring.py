@@ -44,6 +44,7 @@ from app.services.scoring_requirements import (
     _choice_matches_program,
     _choice_matches_study_level,
     _choice_result_by_key,
+    _get_cached_admission_choices,
     _known_program_ids,
     estimate_uni_chance,
     has_admissions_selection,
@@ -280,9 +281,8 @@ def _resolve_choice_selection_for_sort(
     choices = (
         []
         if canonical_context
-        else universities_service.expand_admission_choices(row.get("admission_categories"))
+        else _get_cached_admission_choices(row, include_funding=True)
     )
-    choices = [t for t in choices if isinstance(t, dict)]
     target_level = _normalize_study_level_str(
         chance_general["context"].get("study_level")
         if canonical_context
@@ -354,9 +354,10 @@ def _resolve_choice_selection_for_sort(
             active_idx, active_raw_choice = eligible_choices[0]
             active_choice_key = _admission_choice_key(active_raw_choice, active_idx)
 
-    base_choices = universities_service.expand_admission_choices(
-        row.get("admission_categories"),
-        include_funding=False,
+    base_choices = (
+        []
+        if canonical_context
+        else _get_cached_admission_choices(row, include_funding=False)
     )
     base_raw_choice = next(
         (

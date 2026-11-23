@@ -1,4 +1,5 @@
 import re
+from functools import lru_cache
 from typing import Any
 
 TEXT_FIELD_WEIGHTS: tuple[tuple[str, float], ...] = (
@@ -42,6 +43,26 @@ QWERTY_TO_JCUKEN: dict[str, str] = {
 }
 JCUKEN_TO_QWERTY: dict[str, str] = {v: k for k, v in QWERTY_TO_JCUKEN.items()}
 
+_RU_VOWEL_RE = re.compile(r"[аеиоуыэюя]")
+_RU_R1_RE = re.compile(r"[аеиоуыэюя][^аеиоуыэюя]")
+_RU_PG1_RE = re.compile(r"([ая])(в|вши|вшись)$")
+_RU_PG2_RE = re.compile(r"(ив|ивши|ившись|ыв|ывши|ывшись)$")
+_RU_REFL_RE = re.compile(r"(ся|сь)$")
+_RU_ADJ_RE = re.compile(
+    r"(ее|ие|ые|ое|ими|ыми|ей|ий|ый|ой|ем|им|ым|ом|его|ого|ему|ому|их|ых|ую|юю|ая|яя|ою|ею)$"
+)
+_RU_PART_RE = re.compile(r"([ая])(ем|нн|вш|ющ|щ)$")
+_RU_VERB1_RE = re.compile(r"([ая])(ла|на|ете|йте|ли|й|л|ем|н|ло|но|ет|ют|ны|ть|ешь|нно)$")
+_RU_VERB2_RE = re.compile(
+    r"(ила|ыла|ена|ейте|уйте|ите|или|ыли|ей|уй|ил|ыл|им|ым|ен|ило|ыло|ено|ят|ует|уют|ит|ыт|ены|ить|ыть|ишь|ую|ю)$"
+)
+_RU_NOUN_RE = re.compile(
+    r"(а|ев|ов|е|ями|ами|еи|ии|ия|и|ией|ей|ой|ий|й|иям|ям|ием|ем|ам|ом|о|у|ах|иях|ях|ы|ь|ию|ью|ю|ья|ьям|ьями)$"
+)
+
+_NON_WORD_RE = re.compile(r"[^\w]+", flags=re.UNICODE)
+_MULTI_SPACE_RE = re.compile(r"\s+")
+
 
 def flip_keyboard_layout(text: str) -> str:
     res: list[str] = []
@@ -57,58 +78,46 @@ def flip_keyboard_layout(text: str) -> str:
 
 def stem_ru(word: str) -> str:
     word = word.lower().replace("ё", "е")
-    rv_match = re.search(r"[аеиоуыэюя]", word)
+    rv_match = _RU_VOWEL_RE.search(word)
     if not rv_match:
         return word
     rv_start = rv_match.end()
-    r1_match = re.search(r"[аеиоуыэюя][^аеиоуыэюя]", word)
+    r1_match = _RU_R1_RE.search(word)
     r1_start = r1_match.end() if r1_match else len(word)
-    r2_match = re.search(r"[аеиоуыэюя][^аеиоуыэюя]", word[r1_start:])
+    r2_match = _RU_R1_RE.search(word[r1_start:])
     r2_start = (r1_start + r2_match.end()) if r2_match else len(word)
 
     pre = word[:rv_start]
     rv = word[rv_start:]
 
     # Step 1: Perfective gerund, reflexive, adjectival, verb, noun
-    m = re.search(r"([ая])(в|вши|вшись)$", rv)
+    m = _RU_PG1_RE.search(rv)
     if m:
         rv = rv[: m.start() + 1]
     else:
-        m = re.search(r"(ив|ивши|ившись|ыв|ывши|ывшись)$", rv)
+        m = _RU_PG2_RE.search(rv)
         if m:
             rv = rv[: m.start()]
         else:
-            m = re.search(r"(ся|сь)$", rv)
+            m = _RU_REFL_RE.search(rv)
             if m:
                 rv = rv[: m.start()]
-            adj_m = re.search(
-                r"(ее|ие|ые|ое|ими|ыми|ей|ий|ый|ой|ем|им|ым|ом|его|ого|ему|ому|их|ых|ую|юю|ая|яя|ою|ею)$",
-                rv,
-            )
+            adj_m = _RU_ADJ_RE.search(rv)
             if adj_m:
                 rv = rv[: adj_m.start()]
-                part_m = re.search(r"([ая])(ем|нн|вш|ющ|щ)$", rv)
+                part_m = _RU_PART_RE.search(rv)
                 if part_m:
                     rv = rv[: part_m.start() + 1]
             else:
-                verb_m1 = re.search(
-                    r"([ая])(ла|на|ете|йте|ли|й|л|ем|н|ло|но|ет|ют|ны|ть|ешь|нно)$",
-                    rv,
-                )
+                verb_m1 = _RU_VERB1_RE.search(rv)
                 if verb_m1:
                     rv = rv[: verb_m1.start() + 1]
                 else:
-                    verb_m2 = re.search(
-                        r"(ила|ыла|ена|ейте|уйте|ите|или|ыли|ей|уй|ил|ыл|им|ым|ен|ило|ыло|ено|ят|ует|уют|ит|ыт|ены|ить|ыть|ишь|ую|ю)$",
-                        rv,
-                    )
+                    verb_m2 = _RU_VERB2_RE.search(rv)
                     if verb_m2:
                         rv = rv[: verb_m2.start()]
                     else:
-                        noun_m = re.search(
-                            r"(а|ев|ов|е|ями|ами|еи|ии|ия|и|ией|ей|ой|ий|й|иям|ям|ием|ем|ам|ом|о|у|ах|иях|ях|ы|ь|ию|ью|ю|ья|ьям|ьями)$",
-                            rv,
-                        )
+                        noun_m = _RU_NOUN_RE.search(rv)
                         if noun_m:
                             rv = rv[: noun_m.start()]
 
@@ -193,6 +202,7 @@ def stem_en(word: str) -> str:
     return w
 
 
+@lru_cache(maxsize=16384)
 def stem(token: str) -> str:
     if not token:
         return ""
@@ -201,35 +211,91 @@ def stem(token: str) -> str:
     return stem_en(token)
 
 
-def damerau_levenshtein_distance(s1: str, s2: str) -> int:
+def damerau_levenshtein_distance(s1: str, s2: str, max_dist: int | None = None) -> int:
     len1 = len(s1)
     len2 = len(s2)
-    if abs(len1 - len2) > 2:
-        return 999
-    d: dict[tuple[int, int], int] = {}
-    for i in range(-1, len1 + 1):
-        d[(i, -1)] = i + 1
-    for j in range(-1, len2 + 1):
-        d[(-1, j)] = j + 1
+    limit = 2 if max_dist is None else max_dist
+    if abs(len1 - len2) > limit:
+        return 999 if max_dist is None else max_dist + 1
+
+    if len1 == 0:
+        return len2
+    if len2 == 0:
+        return len1
+
+    prev1 = list(range(len2 + 1))
+    prev2 = [len1 + len2 + 2] * (len2 + 1)
+    curr = [0] * (len2 + 1)
+    prev1_min = 0
 
     for i in range(len1):
-        for j in range(len2):
-            cost = 0 if s1[i] == s2[j] else 1
-            d[(i, j)] = min(
-                d[(i - 1, j)] + 1,
-                d[(i, j - 1)] + 1,
-                d[(i - 1, j - 1)] + cost,
-            )
-            if i > 0 and j > 0 and s1[i] == s2[j - 1] and s1[i - 1] == s2[j]:
-                d[(i, j)] = min(d[(i, j)], d[(i - 2, j - 2)] + 1)
+        curr[0] = i + 1
+        row_min = i + 1
+        ch1 = s1[i]
+        prev_ch1 = s1[i - 1] if i > 0 else ""
 
-    return d[(len1 - 1, len2 - 1)]
+        for j in range(len2):
+            col = j + 1
+            ch2 = s2[j]
+            cost = 0 if ch1 == ch2 else 1
+            val = prev1[col] + 1
+            ins = curr[col - 1] + 1
+            sub = prev1[col - 1] + cost
+            if ins < val:
+                val = ins
+            if sub < val:
+                val = sub
+            if i > 0 and j > 0 and ch1 == s2[j - 1] and prev_ch1 == ch2:
+                trans = prev2[col - 2] + 1
+                if trans < val:
+                    val = trans
+            curr[col] = val
+            if val < row_min:
+                row_min = val
+
+        # Early cutoff preserves OSA exactness when bounded: rows i and i+1 cannot produce <= max_dist.
+        if max_dist is not None and row_min > max_dist and prev1_min >= max_dist:
+            return max_dist + 1
+
+        prev1_min = row_min
+        prev2, prev1, curr = prev1, curr, prev2
+
+    return prev1[len2]
+
+
+def _damerau_leq_one(a: str, b: str) -> bool:
+    """Exact Optimal String Alignment distance <= 1 check (including single adjacent transposition)."""
+    la = len(a)
+    lb = len(b)
+    if abs(la - lb) > 1:
+        return False
+    if a == b:
+        return True
+    if la > lb:
+        a, b = b, a
+        la, lb = lb, la
+
+    limit = la
+    i = 0
+    while i < limit and a[i] == b[i]:
+        i += 1
+
+    if la == lb:
+        if a[i + 1 :] == b[i + 1 :]:
+            return True
+        return (
+            i + 1 < la
+            and a[i] == b[i + 1]
+            and a[i + 1] == b[i]
+            and a[i + 2 :] == b[i + 2 :]
+        )
+    return a[i:] == b[i + 1 :]
 
 
 def _normalize(value: Any) -> str:
     text = str(value or "").strip().lower()
-    text = re.sub(r"[^\w]+", " ", text, flags=re.UNICODE)
-    return re.sub(r"\s+", " ", text).strip()
+    text = _NON_WORD_RE.sub(" ", text)
+    return _MULTI_SPACE_RE.sub(" ", text).strip()
 
 
 def _edit_distance_leq_one(a: str, b: str) -> bool:
@@ -273,6 +339,7 @@ def prepare_query(query: Any) -> dict[str, Any] | None:
         "q_norm": q_norm,
         "q_tokens": mapped_tokens,
         "core_tokens": core_tokens,
+        "core_tokens_set": frozenset(core_tokens),
     }
 
 
@@ -328,23 +395,109 @@ def prepare_search_meta(meta_row: dict[str, Any]) -> dict[str, Any] | None:
 
     token_weights_exact: dict[str, float] = {}
     token_stems_exact: dict[str, float] = {}
-    for _, weight, tokens in weighted_token_sets:
+    alias_weights: dict[str, float] = {}
+    for field, weight, tokens in weighted_token_sets:
+        is_alias = field == "search_aliases"
         for t in tokens:
+            if not t:
+                continue
             if t not in token_weights_exact or weight > token_weights_exact[t]:
                 token_weights_exact[t] = weight
+            if is_alias and (t not in alias_weights or weight > alias_weights[t]):
+                alias_weights[t] = weight
             st = stem(t)
             if st and (st not in token_stems_exact or weight > token_stems_exact[st]):
                 token_stems_exact[st] = weight
+
+    unique_candidates = sorted(
+        ((t, weight, stem(t), len(t)) for t, weight in token_weights_exact.items()),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+    alias_candidates = sorted(
+        ((t, weight, len(t)) for t, weight in alias_weights.items()),
+        key=lambda item: item[1],
+        reverse=True,
+    )
 
     name_norm = _normalize(meta_row.get("name", ""))
     return {
         "weighted_token_sets": weighted_token_sets,
         "token_weights_exact": token_weights_exact,
         "token_stems_exact": token_stems_exact,
+        "unique_candidates": unique_candidates,
+        "alias_candidates": alias_candidates,
         "exact_aliases": exact_aliases,
         "full_text": " ".join(full_chunks),
         "name_text": name_norm,
     }
+
+
+def _best_token_score_from_indexed_candidates(
+    token: str,
+    st: str,
+    q_len: int,
+    unique_candidates: list[tuple[str, float, str, int]],
+    alias_candidates: list[tuple[str, float, int]],
+) -> tuple[float, float]:
+    best_weight = 0.0
+    best_mult = 0.0
+    best_score = 0.0
+
+    if q_len == 2:
+        for cand, weight, c_len in alias_candidates:
+            if weight * 0.85 <= best_score:
+                break
+            if c_len > 2 and cand.startswith(token):
+                return weight, 0.85
+        return 0.0, 0.0
+
+    stem_enabled = q_len >= 4 and len(st) >= 4
+    typo_enabled = q_len >= 4
+    substr_enabled = q_len >= 5
+
+    for cand, weight, cand_st, c_len in unique_candidates:
+        if weight * 0.85 <= best_score:
+            break
+
+        if c_len > q_len and weight * 0.85 > best_score and cand.startswith(token):
+            best_weight, best_mult = weight, 0.85
+            best_score = weight * 0.85
+            continue
+
+        if (
+            stem_enabled
+            and c_len >= 4
+            and weight * 0.75 > best_score
+            and len(cand_st) >= 4
+            and (cand_st.startswith(st) or st.startswith(cand_st))
+        ):
+            best_weight, best_mult = weight, 0.75
+            best_score = weight * 0.75
+            continue
+
+        if typo_enabled and c_len >= 4 and weight * 0.60 > best_score:
+            max_d = 2 if (q_len >= 7 and c_len >= 7) else 1
+            if abs(q_len - c_len) <= max_d:
+                if max_d == 1 or weight * 0.45 <= best_score:
+                    if _damerau_leq_one(token, cand):
+                        best_weight, best_mult = weight, 0.60
+                        best_score = weight * 0.60
+                        continue
+                else:
+                    dist = damerau_levenshtein_distance(token, cand, max_dist=2)
+                    if dist <= 2:
+                        mult = 0.60 if dist == 1 else 0.45
+                        if weight * mult > best_score:
+                            best_weight, best_mult = weight, mult
+                            best_score = weight * mult
+                        continue
+
+        if substr_enabled and weight * 0.35 > best_score and token in cand and not cand.startswith(token):
+            best_weight, best_mult = weight, 0.35
+            best_score = weight * 0.35
+
+    return best_weight, best_mult
 
 
 def _best_token_score(
@@ -361,9 +514,19 @@ def _best_token_score(
     if st and st in stem_map and len(st) >= 3:
         return stem_map[st], 0.80
 
+    q_len = len(token)
+    if q_len < 2:
+        return 0.0, 0.0
+
+    unique_candidates = prepared_meta.get("unique_candidates")
+    if unique_candidates is not None:
+        alias_candidates = prepared_meta.get("alias_candidates") or []
+        return _best_token_score_from_indexed_candidates(
+            token, st, q_len, unique_candidates, alias_candidates
+        )
+
     best_weight = 0.0
     best_mult = 0.0
-    q_len = len(token)
 
     for field, weight, bucket in prepared_meta.get("weighted_token_sets", []):
         is_alias = (field == "search_aliases")
@@ -391,7 +554,7 @@ def _best_token_score(
             # Typo match (Damerau-Levenshtein)
             if q_len >= 4 and c_len >= 4:
                 max_d = 2 if (q_len >= 7 and c_len >= 7) else 1
-                dist = damerau_levenshtein_distance(token, cand)
+                dist = damerau_levenshtein_distance(token, cand, max_dist=max_d)
                 if dist <= max_d:
                     mult = 0.60 if dist == 1 else 0.45
                     if weight * mult > best_weight * best_mult:
@@ -410,6 +573,9 @@ def score_prepared(prepared_meta: dict[str, Any], prepared_query: dict[str, Any]
     q_norm = prepared_query["q_norm"]
     q_tokens = prepared_query["q_tokens"]
     core_tokens = prepared_query.get("core_tokens", q_tokens)
+    core_tokens_set = prepared_query.get("core_tokens_set")
+    if core_tokens_set is None:
+        core_tokens_set = frozenset(core_tokens)
 
     full_text = prepared_meta.get("full_text", "")
     name_text = prepared_meta.get("name_text", "")
@@ -437,7 +603,7 @@ def score_prepared(prepared_meta: dict[str, Any], prepared_query: dict[str, Any]
         w, mult = _best_token_score(t, prepared_meta)
         if mult > 0:
             token_score += w * TOKEN_MATCH_MULTIPLIER * mult
-            if t in core_tokens:
+            if t in core_tokens_set:
                 matched_core += 1
 
     # Disqualification criteria:

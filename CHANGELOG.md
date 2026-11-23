@@ -13,6 +13,10 @@ Patch release: harden API rate-limiting and error-response security headers, and
 ### Removed
 - Retire unused backend API routes (`POST /universities/{id}/uni-chance`, `POST /universities/{id}/roi`, `POST /universities/compare-profiles`, `GET /stats`, `GET /currency/status`) alongside unused list/map/ai-sort filter parameters (`min_acceptance`, `max_acceptance`, `size`), dead helper functions, and legacy ROI / UniChance frontend UI code (`backend/app/`, `frontend/`).
 
+### Performance
+- Precompile regex patterns, cache stems, precompute deduplicated search candidate tables with branch-and-bound pruning, and replace dict-based Damerau-Levenshtein DP with a 3-row array and an `O(n)` edit-distance `<= 1` fast path in `backend/app/services/search.py`.
+- Add identity-validated lookup caches for expanded admission choices (`backend/app/services/scoring_requirements.py`), language exam metadata (`backend/app/services/scoring_profile.py`), admission text/track translations, and localized search query aliases (`backend/app/services/university_localization.py`).
+
 ### Maintenance
 - Update backend Python dependencies in `backend/requirements.txt` and `backend/requirements-dev.txt` (PR #191).
 - Update GitHub Actions workflow dependencies across `.github/workflows/` (PR #210).

@@ -5,6 +5,7 @@ import json
 import logging
 import re
 from collections.abc import Callable
+from functools import lru_cache
 from typing import Any
 
 from app.core.files import file_mtime
@@ -146,8 +147,21 @@ def _full_name_from_variants(uid: str, lang: str, fallback: str) -> str:
     return _names_in_language(uid, lang)["official"] or fallback
 
 
+_NON_ALNUM_LOWER_RE = re.compile(r"[^a-z0-9]+")
+_SMART_QUOTES_RE = re.compile(r"[\u2018\u2019`]")
+
+_ADMISSION_TEXT_CACHE: dict[str, tuple[Any, dict[str, str]]] = {}
+_TRACK_LABEL_CACHE: dict[str, tuple[Any, dict[str, str]]] = {}
+_QUERY_ALIAS_CACHE: dict[str, tuple[Any, dict[str, str], dict[str, list[str]], list[tuple[str, str]]]] = {}
+
+
+@lru_cache(maxsize=4096)
+def _keyify_text(text: str) -> str:
+    return _NON_ALNUM_LOWER_RE.sub("_", text).strip("_")
+
+
 def _keyify(value: Any) -> str:
-    return re.sub(r"[^a-z0-9]+", "_", _safe_lower(value)).strip("_")
+    return _keyify_text(_safe_lower(value))
 
 
 def _load_university_translations_raw() -> dict[str, Any]:
@@ -187,14 +201,20 @@ def _translation_group(search_lang: Any, group: str) -> dict[str, str]:
     return group_map if isinstance(group_map, dict) else {}
 
 
+@lru_cache(maxsize=2048)
+def _compiled_word_pattern(src: str) -> re.Pattern[str]:
+    escaped = rf"(?<![A-Za-z]){re.escape(src)}(?![A-Za-z])"
+    return re.compile(escaped, flags=re.IGNORECASE)
+
+
 def _replace_insensitive(text: str, search: str, replacement: str) -> str:
     src = str(search or "")
-    if not src:
-        return str(text or "")
-    escaped = rf"(?<![A-Za-z]){re.escape(src)}(?![A-Za-z])"
-    return re.sub(
-        escaped, lambda _: str(replacement or ""), str(text or ""), flags=re.IGNORECASE
-    )
+    text_str = str(text or "")
+    if not src or not text_str:
+        return text_str
+    if src.isascii() and text_str.isascii() and src.lower() not in text_str.lower():
+        return text_str
+    return _compiled_word_pattern(src).sub(lambda _: str(replacement or ""), text_str)
 
 
 def _translate_group_value(group: str, value: Any, search_lang: Any) -> str:
@@ -228,19 +248,32 @@ def _translate_admission_text(value: Any, search_lang: Any) -> str:
     raw = str(value or "").strip()
     if not raw:
         return raw
-    if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
+    lang = _normalize_search_lang(search_lang)
+    if lang == SEARCH_LANG_ENG:
         return raw
-    pack = _translation_lang_pack(search_lang)
+    pack = _translation_lang_pack(lang)
+    cached_entry = _ADMISSION_TEXT_CACHE.get(lang)
+    if cached_entry is None or cached_entry[0] is not pack:
+        cached_entry = (pack, {})
+        _ADMISSION_TEXT_CACHE[lang] = cached_entry
+    memo = cached_entry[1]
+    if raw in memo:
+        return memo[raw]
+
     exact = (
         pack.get("admission_exact")
         if isinstance(pack.get("admission_exact"), dict)
         else {}
     )
     if raw in exact:
-        return str(exact[raw])
-    norm_quotes = re.sub(r"[\u2018\u2019`]", "'", raw)
+        res = str(exact[raw])
+        memo[raw] = res
+        return res
+    norm_quotes = _SMART_QUOTES_RE.sub("'", raw)
     if norm_quotes in exact:
-        return str(exact[norm_quotes])
+        res = str(exact[norm_quotes])
+        memo[raw] = res
+        return res
     rules = (
         pack.get("admission_replace")
         if isinstance(pack.get("admission_replace"), list)
@@ -251,6 +284,7 @@ def _translate_admission_text(value: Any, search_lang: Any) -> str:
         if not isinstance(rule, (list, tuple)) or len(rule) < 2:
             continue
         out = _replace_insensitive(out, str(rule[0]), str(rule[1]))
+    memo[raw] = out
     return out
 
 
@@ -258,18 +292,31 @@ def _translate_track_label(value: Any, search_lang: Any) -> str:
     raw = str(value or "").strip()
     if not raw:
         return raw
-    if _normalize_search_lang(search_lang) == SEARCH_LANG_ENG:
+    lang = _normalize_search_lang(search_lang)
+    if lang == SEARCH_LANG_ENG:
         return raw
-    pack = _translation_lang_pack(search_lang)
+    pack = _translation_lang_pack(lang)
+    cached_entry = _TRACK_LABEL_CACHE.get(lang)
+    if cached_entry is None or cached_entry[0] is not pack:
+        cached_entry = (pack, {})
+        _TRACK_LABEL_CACHE[lang] = cached_entry
+    memo = cached_entry[1]
+    if raw in memo:
+        return memo[raw]
+
     table = (
         pack.get("track_labels") if isinstance(pack.get("track_labels"), dict) else {}
     )
     direct = table.get(_keyify(raw))
     if direct:
-        return str(direct)
+        res = str(direct)
+        memo[raw] = res
+        return res
     if raw in table:
-        return str(table[raw])
-    out = _translate_admission_text(raw, search_lang)
+        res = str(table[raw])
+        memo[raw] = res
+        return res
+    out = _translate_admission_text(raw, lang)
     fallback_rules = (
         pack.get("track_label_fallback_replace")
         if isinstance(pack.get("track_label_fallback_replace"), list)
@@ -279,6 +326,7 @@ def _translate_track_label(value: Any, search_lang: Any) -> str:
         if not isinstance(rule, (list, tuple)) or len(rule) < 2:
             continue
         out = _replace_insensitive(out, str(rule[0]), str(rule[1]))
+    memo[raw] = out
     return out
 
 
@@ -686,24 +734,18 @@ def _load_localized_university_names(search_lang: str) -> dict[str, str]:
     return out
 
 
-def _search_query_candidates(
-    query: Any, search_lang: str = SEARCH_LANG_ENG, match_name_words: bool = False
-) -> list[str]:
-    raw = str(query or "").strip()
-    if not raw:
-        return []
-    candidates = _uniq_non_empty([raw])
+def _get_query_alias_index(
+    lang: str,
+) -> tuple[dict[str, str], dict[str, list[str]], list[tuple[str, str]]]:
+    pack = _translation_lang_pack(lang)
+    cached = _QUERY_ALIAS_CACHE.get(lang)
+    if cached is not None and cached[0] is pack:
+        return cached[1], cached[2], cached[3]
 
-    lang = _normalize_search_lang(search_lang)
-    flipped = search_service.flip_keyboard_layout(raw)
-    if flipped and flipped.lower() != raw.lower():
-        candidates.append(flipped)
-
-    if lang == SEARCH_LANG_ENG:
-        return _uniq_non_empty(candidates)
-
-    norm_query = _norm_space(raw)
     alias_map: dict[str, str] = {}
+    program_exact_map: dict[str, list[str]] = {}
+    program_paren_prefixes: list[tuple[str, str]] = []
+
     for source in (
         _COUNTRY_LOCALIZED_BY_LANG.get(lang, {}),
         _CITY_LOCALIZED_BY_LANG.get(lang, {}),
@@ -716,8 +758,8 @@ def _search_query_candidates(
             ck = _norm_space(canonical)
             if lk and ck:
                 alias_map[lk] = ck
+
     if lang == SEARCH_LANG_KAZ:
-        pack = _translation_lang_pack(lang)
         groups = pack.get("groups") if isinstance(pack.get("groups"), dict) else {}
         for group_name in (
             "country",
@@ -736,17 +778,16 @@ def _search_query_candidates(
                 ck = _norm_space(str(key).replace("_", " "))
                 if lk and ck:
                     alias_map[lk] = ck
-    pack = _translation_lang_pack(lang)
+
     program_names = pack.get("program_names") if isinstance(pack.get("program_names"), dict) else {}
     for key, localized in program_names.items():
         lk = _norm_space(localized)
         ck = _norm_space(str(key).replace("_", " "))
         if lk and ck:
             alias_map[lk] = ck
-            if lk == norm_query:
-                candidates.append(ck)
-            elif norm_query.startswith(lk + " (") and norm_query.endswith(")"):
-                candidates.append(ck + norm_query[len(lk):])
+            program_exact_map.setdefault(lk, []).append(ck)
+            program_paren_prefixes.append((lk + " (", ck))
+
     for localized, canonical in (
         _MAJOR_QUERY_ALIASES_BY_LANG.get(lang, {}) or {}
     ).items():
@@ -754,6 +795,35 @@ def _search_query_candidates(
         ck = _norm_space(canonical)
         if lk and ck:
             alias_map[lk] = ck
+
+    _QUERY_ALIAS_CACHE[lang] = (pack, alias_map, program_exact_map, program_paren_prefixes)
+    return alias_map, program_exact_map, program_paren_prefixes
+
+
+def _search_query_candidates(
+    query: Any, search_lang: str = SEARCH_LANG_ENG, match_name_words: bool = False
+) -> list[str]:
+    raw = str(query or "").strip()
+    if not raw:
+        return []
+    candidates = _uniq_non_empty([raw])
+
+    lang = _normalize_search_lang(search_lang)
+    flipped = search_service.flip_keyboard_layout(raw)
+    if flipped and flipped.lower() != raw.lower():
+        candidates.append(flipped)
+
+    if lang == SEARCH_LANG_ENG:
+        return _uniq_non_empty(candidates)
+
+    norm_query = _norm_space(raw)
+    alias_map, program_exact_map, program_paren_prefixes = _get_query_alias_index(lang)
+    if norm_query in program_exact_map:
+        candidates.extend(program_exact_map[norm_query])
+    elif norm_query.endswith(")"):
+        for lk_paren, ck in program_paren_prefixes:
+            if norm_query.startswith(lk_paren):
+                candidates.append(ck + norm_query[len(lk_paren) - 2 :])
 
     full_alias = alias_map.get(norm_query)
     if full_alias:

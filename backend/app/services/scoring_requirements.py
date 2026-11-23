@@ -29,7 +29,29 @@ from app.services.scoring_profile import (
 )
 from app.services.university_tracks import _has_explicit_empty_program_mapping, expand_admission_choices
 
-_CHOICES_CACHE: dict[str, list[dict[str, Any]]] = {}
+_EXPANDED_CHOICES_CACHE: dict[tuple[str, bool], tuple[Any, list[dict[str, Any]]]] = {}
+
+
+def _get_cached_admission_choices(
+    university: dict[str, Any],
+    *,
+    include_funding: bool = True,
+) -> list[dict[str, Any]]:
+    """Expand and cache admission choices while validating raw list identity to stay safe on test mutations."""
+    raw_categories = university.get("admission_categories") if isinstance(university, dict) else None
+    uid = str(university.get("id") or "").strip() if isinstance(university, dict) else ""
+    cache_key = (uid, include_funding)
+    cached = _EXPANDED_CHOICES_CACHE.get(cache_key) if uid else None
+    if cached is not None and cached[0] is raw_categories:
+        return cached[1]
+    choices = [
+        choice
+        for choice in expand_admission_choices(raw_categories, include_funding=include_funding)
+        if isinstance(choice, dict)
+    ]
+    if uid and raw_categories is not None:
+        _EXPANDED_CHOICES_CACHE[cache_key] = (raw_categories, choices)
+    return choices
 
 
 def has_admissions_selection(profile: dict[str, Any], university_id: str = "") -> bool:
@@ -611,15 +633,9 @@ def _choice_matches_study_level(choice: dict[str, Any], target_level: str) -> bo
 
 
 def _load_university_admission_choices(university: dict[str, Any]) -> list[dict[str, Any]]:
-    uid = str(university.get("id") or "").strip()
-    choices = _CHOICES_CACHE.get(uid) if uid else None
-    if choices is None:
-        choices = expand_admission_choices(university.get("admission_categories"))
-        if not choices:
-            choices = [{"id": "default", "choice_key": "default", "label": "General admission", "requirements": {}, "stats_avg": {}}]
-        choices = [choice for choice in choices if isinstance(choice, dict)]
-        if uid:
-            _CHOICES_CACHE[uid] = choices
+    choices = _get_cached_admission_choices(university, include_funding=True)
+    if not choices:
+        return [{"id": "default", "choice_key": "default", "label": "General admission", "requirements": {}, "stats_avg": {}}]
     return choices
 
 
