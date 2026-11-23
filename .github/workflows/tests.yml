@@ -46,6 +46,9 @@ jobs:
         run: |
           uv pip install --system --require-hashes --only-binary=:all: -r backend/requirements-dev.lock
 
+      - name: Lint backend with Ruff
+        run: uvx --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app
+
       - name: Run backend tests
         working-directory: backend
         shell: bash

@@ -110,12 +110,14 @@ The following tree lists the main request, admissions, and scoring modules; it i
 ```
 backend/app/
 ├── core/
+│   ├── http_cache.py     # HTTP ETag and cache-control helpers
 │   ├── security.py       # Sliding-window rate limiter, proxy resolution, CSP headers
 │   ├── redis_store.py    # Robust Redis client with automatic fallback suppression
 │   ├── settings.py       # Environment variable settings and parsing
 │   └── observability.py   # Metrics collection, request duration tracking, structured logging
 ├── routers/
-│   ├── universities.py   # Catalog, search, UniFit, requirements match, ROI, and comparisons
+│   ├── _params.py        # Shared Annotated FastAPI filter dependency
+│   ├── universities.py   # Catalog, search, map points, and UniFit ranking
 │   ├── admissions.py     # Reviewed study-option and selected-context APIs
 │   ├── exams.py          # Standardized exam validation & scoring bounds
 │   ├── languages.py      # Language proficiency framework mappings
@@ -129,10 +131,17 @@ backend/app/
     ├── admissions_catalog.py     # Reviewed catalog, study options, and context resolution
     ├── admissions_assessment.py  # Source-backed requirements assessment
     ├── admissions_editorial.py   # Applicant-facing admissions copy and localization
-    ├── ai_scoring.py     # UniFit composite personalized ranking & Minimum requirements match algorithms
-    ├── ml_scoring.py     # Multilingual neural embeddings & semantic vector search
-    ├── search.py         # Multi-criteria filtering, fuzzy normalization & sorting
-    └── background_tasks.py # Async startup sync, currency warmup, ML model initialization
+    ├── ai_scoring.py             # UniFit composite personalized ranking orchestrator
+    ├── scoring_profile.py        # Profile context, exam/language normalization, and choice selection
+    ├── scoring_costs.py          # Track costs, currency conversion, and budget comparisons
+    ├── scoring_requirements.py   # Published minimum-requirements fit estimation (`estimate_uni_chance`)
+    ├── universities.py           # Catalog loading, filtering, search, and sorting orchestrator
+    ├── university_costs.py       # University cost quotes, financial aid, acceptance rate, and size bands
+    ├── university_localization.py # Localized names, translation packs, and multilingual search aliases
+    ├── university_projection.py  # Schema normalization, public source URL sanitization, card and map projections
+    ├── ml_scoring.py             # Multilingual neural embeddings & semantic vector search
+    ├── search.py                 # Multi-criteria filtering, fuzzy normalization & sorting
+    └── background_tasks.py       # Async startup sync, currency warmup, ML model initialization
 ```
 
 ### Request Lifecycle & Defense-in-Depth Pipeline
@@ -188,7 +197,7 @@ Implemented in `backend/app/services/ai_scoring.py`, UniFit ranks catalog option
 
 Minimum requirements match reports the percentage of evaluable, published academic and language minimum checks met for the applicable admission choice. Its denominator excludes evidence-presence checks, funding conditions, and nonnumeric or holistic requirements. It is a requirements-fit measure, not a probability of admission, overall eligibility decision, or funding prediction.
 
-The user-facing name has changed; existing API and saved-state identifiers remain supported. For reviewed institutions, `POST /universities/{university_id}/admissions-context` returns a source-backed assessment for the selected study option, application route, and applicant context. The existing `POST /universities/{university_id}/uni-chance` identifier remains available for compatibility. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
+The user-facing name has changed; internal scoring and saved-state identifiers remain supported. For reviewed institutions, `POST /universities/{university_id}/admissions-context` returns a source-backed assessment for the selected study option, application route, and applicant context. UniFit ranking evaluates requirements fit internally via `ai_scoring.py` and `scoring_requirements.py` (`estimate_uni_chance`); the standalone `/uni-chance` HTTP route is retired. Missing required evidence, unresolved numeric applicability, an unsupported numeric minimum, an unreviewed route, or a route with no measurable published minimums produces no percentage. A known unmet measurable minimum may produce zero. Published admitted-score ranges and acceptance rates remain separate context and do not generate or adjust this percentage. See the [admissions product model](admissions-product-model.md#scoring-meaning-and-unresolved-decisions) and [runtime contract](admissions-runtime-contract.md) for its evidence and response contract.
 
 ### C. ML Semantic Matching (`multilingual-e5`)
 Implemented in `backend/app/services/ml_scoring.py`:

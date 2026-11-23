@@ -10,9 +10,16 @@ Patch release: harden API rate-limiting and error-response security headers, and
 - Strip ASGI `root_path` prefixes before classifying expensive POST endpoints and building rate-limit bucket keys, closing a rate-limiter bypass when the backend runs under a path prefix (PR #183).
 - Apply standard API security headers to admissions catalog 404/503 error responses returned by `admissions_catalog_error_handler` (PR #184).
 
+### Removed
+- Retire unused backend API routes (`POST /universities/{id}/uni-chance`, `POST /universities/{id}/roi`, `POST /universities/compare-profiles`, `GET /stats`, `GET /currency/status`) alongside unused list/map/ai-sort filter parameters (`min_acceptance`, `max_acceptance`, `size`), dead helper functions, and legacy ROI / UniChance frontend UI code (`backend/app/`, `frontend/`).
+
 ### Maintenance
 - Update backend Python dependencies in `backend/requirements.txt` and `backend/requirements-dev.txt` (PR #191).
 - Update GitHub Actions workflow dependencies across `.github/workflows/` (PR #210).
+- Configure backend linting with Ruff (`backend/pyproject.toml`), `npm run lint:backend` in `package.json`, and CI lint enforcement in `.github/workflows/tests.yml`.
+- Deduplicate backend router parameters (`UniversityFilterDep` in `backend/app/routers/_params.py` using FastAPI `Annotated` dependencies) and HTTP cache helpers (`backend/app/core/http_cache.py`), standardize Python 3.12+ syntax, reduce `Any` annotations, and narrow broad `except Exception` catches.
+- Decompose `backend/app/services/ai_scoring.py` into `scoring_profile.py`, `scoring_costs.py`, and `scoring_requirements.py`, and decompose `backend/app/services/universities.py` into `university_costs.py`, `university_localization.py`, and `university_projection.py`.
+- Synchronize `README.md`, `docs/architecture.md`, `docs/admissions-runtime-contract.md`, and `docs/admissions-product-model.md` with the cleaned backend endpoints and modular service structure.
 
 ## 10.7.0 (2026-11-21) - Name universities on the map and search every name
 
