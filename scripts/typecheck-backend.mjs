@@ -23,7 +23,11 @@ function detectUvx(env = process.env) {
           ...(env.LOCALAPPDATA ? [path.join(env.LOCALAPPDATA, "uv", exe)] : []),
           ...(env.ProgramFiles ? [path.join(env.ProgramFiles, "uv", exe)] : []),
         ]
-      : ["/usr/local/bin/uvx", "/usr/bin/uvx", "/opt/homebrew/bin/uvx"]),
+      : [
+          path.join(path.sep, "usr", "local", "bin", exe),
+          path.join(path.sep, "usr", "bin", exe),
+          path.join(path.sep, "opt", "homebrew", "bin", exe),
+        ]),
     ...pathDirs.map((dir) => path.join(dir, exe)),
   ].filter(Boolean);
 
