@@ -1,0 +1,46 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "off",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "no-empty": "warn",
+    "no-console": [
+      "warn",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    "no-var": "error",
+    "prefer-const": "warn",
+    "no-unreachable": "error",
+    "no-duplicate-imports": "error"
+  },
+  "overrides": [
+    {
+      "files": ["frontend/sw.js", "frontend/javascript/sw-worker.js"],
+      "env": {
+        "serviceworker": true
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "frontend/env.js",
+    "frontend/javascript/data/region-currency.js"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "threshold": null,
+  "minLines": 8,
+  "minTokens": 60,
+  "reporters": ["console"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/data/**",
+    "frontend/env.js"
+  ],
+  "path": ["frontend/javascript"],
+  "gitignore": true
+}

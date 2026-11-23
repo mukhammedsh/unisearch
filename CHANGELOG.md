@@ -2,6 +2,13 @@
 
 All notable project changes should be recorded here.
 
+## 10.7.2 (2026-11-23) - Frontend code quality and modularization
+
+Patch release: add frontend JavaScript static analysis tooling, remove dead code and duplicates, and modularize large frontend page controllers.
+
+### Maintenance
+- Configure frontend JavaScript static analysis with Oxlint (`.oxlintrc.json`), Knip (`knip.json`), and jscpd (`.jscpd.json`) alongside `npm run lint:frontend`, `npm run audit:dead-code`, and `npm run audit:duplicates` scripts in `package.json`.
+
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 
 Patch release: harden API rate-limiting and error-response security headers, and update backend and CI dependencies.
