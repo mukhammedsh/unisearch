@@ -1,7 +1,6 @@
 import json
 import threading
 import time
-from typing import Any
 
 from app.core.settings import (
     REDIS_CONNECT_TIMEOUT_SEC,
@@ -12,8 +11,14 @@ from app.core.settings import (
 
 try:
     import redis
-except Exception:  # pragma: no cover - optional dependency
+except ImportError:  # pragma: no cover - optional dependency
     redis = None  # type: ignore[assignment]
+
+REDIS_ERRORS: tuple[type[Exception], ...] = (
+    (redis.RedisError, OSError, RuntimeError, ValueError, TypeError)
+    if redis is not None
+    else (OSError, RuntimeError, ValueError, TypeError)
+)
 
 
 _REDIS_CLIENT = None
@@ -37,7 +42,7 @@ def is_redis_configured() -> bool:
     return bool(REDIS_URL)
 
 
-def _build_redis_client():
+def _build_redis_client() -> object | None:
     if redis is None or not REDIS_URL:
         return None
     try:
@@ -48,11 +53,11 @@ def _build_redis_client():
             socket_timeout=max(0.05, float(REDIS_OPERATION_TIMEOUT_SEC)),
             retry_on_timeout=False,
         )
-    except Exception:
+    except REDIS_ERRORS:
         return None
 
 
-def get_redis_client():
+def get_redis_client() -> object | None:
     global _REDIS_CLIENT
     if redis is None or not REDIS_URL:
         return None
@@ -64,7 +69,7 @@ def get_redis_client():
     return _REDIS_CLIENT
 
 
-def redis_runtime_status(force_check: bool = False) -> dict[str, Any]:
+def redis_runtime_status(force_check: bool = False) -> dict[str, bool | str]:
     if not REDIS_URL:
         return {"configured": False, "available": False, "reason": "not_configured"}
     if redis is None:
@@ -89,16 +94,16 @@ def redis_runtime_status(force_check: bool = False) -> dict[str, Any]:
     try:
         pong = client.ping()
         ok = bool(pong)
-    except Exception:
+    except REDIS_ERRORS:
         ok = False
 
     _REDIS_PING_STATE["ts"] = now
     _REDIS_PING_STATE["ok"] = ok
     _REDIS_PING_STATE["reason"] = "ok" if ok else "ping_failed"
-    return {"configured": True, "available": ok, "reason": _REDIS_PING_STATE["reason"]}
+    return {"configured": True, "available": ok, "reason": str(_REDIS_PING_STATE["reason"])}
 
 
-def cache_get_json(key: str) -> dict[str, Any] | None:
+def cache_get_json(key: str) -> dict[str, object] | None:
     client = get_redis_client()
     if client is None:
         return None
@@ -110,11 +115,11 @@ def cache_get_json(key: str) -> dict[str, Any] | None:
         if isinstance(obj, dict):
             return obj
         return None
-    except Exception:
+    except (*REDIS_ERRORS, json.JSONDecodeError):
         return None
 
 
-def cache_set_json(key: str, value: dict[str, Any], ttl_seconds: int) -> bool:
+def cache_set_json(key: str, value: dict[str, object], ttl_seconds: int) -> bool:
     client = get_redis_client()
     if client is None:
         return False
@@ -125,7 +130,7 @@ def cache_set_json(key: str, value: dict[str, Any], ttl_seconds: int) -> bool:
         ttl = max(1, int(ttl_seconds))
         client.setex(_redis_key(key), ttl, payload)
         return True
-    except Exception:
+    except REDIS_ERRORS:
         return False
 
 
@@ -136,5 +141,5 @@ def cache_del(key: str) -> bool:
     try:
         client.delete(_redis_key(key))
         return True
-    except Exception:
+    except REDIS_ERRORS:
         return False

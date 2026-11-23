@@ -9,9 +9,8 @@ router = APIRouter(tags=["currency"])
     summary="Currency exchange rates and filter limits",
     description="Returns current exchange rates relative to USD, date, data source, and filter limits per currency.",
 )
-def get_currency_rates(response: Response = None):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=3600"
+def get_currency_rates(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=3600"
 
     rates_info = currency_service.get_rates()
     filter_limits = currency_service.load_filter_limits_config()

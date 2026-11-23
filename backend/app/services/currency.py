@@ -421,7 +421,7 @@ def get_rates(base: str = "USD", force_refresh: bool = False) -> dict[str, Any]:
                 "date": date_str,
                 "source": "api",
             }
-        except Exception:
+        except (URLError, HTTPError, TimeoutError, OSError, ValueError, RuntimeError):
             _record_failure()
             _LOGGER.warning("Failed to fetch currency rates from the configured API")
 
@@ -545,7 +545,7 @@ def _load_filter_limits_config_cached() -> dict[str, dict[str, int]]:
             if "default" not in cleaned:
                 cleaned["default"] = {"min": 0, "max": 100000, "step": 100}
             return cleaned
-    except Exception as e:
+    except (OSError, json.JSONDecodeError, ValueError, TypeError) as e:
         _LOGGER.warning("Failed to load currency filter limits from %s: %s", CURRENCY_FILTER_LIMITS_PATH, e)
 
     return {

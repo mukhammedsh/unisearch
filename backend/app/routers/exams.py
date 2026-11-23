@@ -10,9 +10,8 @@ router = APIRouter()
     summary="Exam configuration",
     description="Returns the map of supported exams with their score ranges, input modes, and level bands.",
 )
-def get_exam_config(response: Response = None):
-    if response is not None:
-        response.headers["Cache-Control"] = "public, max-age=300"
+def get_exam_config(response: Response):
+    response.headers["Cache-Control"] = "public, max-age=300"
     exams_service.ensure_exams_cache()
     return exams_service.EXAMS_CONFIG
 
@@ -36,7 +35,7 @@ def validate_exam(payload: ExamValidateRequest):
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
-    except Exception as exc:
+    except (TypeError, KeyError, ArithmeticError) as exc:
         raise HTTPException(status_code=400, detail="Invalid score format") from exc
 
     return {"ok": True, **result}

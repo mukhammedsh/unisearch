@@ -1,13 +1,13 @@
 import math
 import re
-from typing import Any, Literal
+from typing import Annotated, Literal, Self
 
 from app.schemas.admission_evidence import (
     InstitutionalEvidenceInput,
     LanguageEvidence,
     validate_admission_date,
 )
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, field_validator, model_validator
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, StrictInt, field_validator, model_validator
 
 MAX_LIST_ITEMS = 50
 MAX_DETAILS_KEYS = 32
@@ -18,24 +18,24 @@ MAX_SELECTED_ADMISSION_CHOICES = 100
 MAX_SELECTED_CHOICE_KEYS = 16
 
 
-def _strip_or_none(value: Any) -> str | None:
+def strip_or_none(value: object) -> str | None:
     if value is None:
         return None
     out = str(value).strip()
     return out or None
 
 
-def _strip_or_empty(value: Any) -> str:
+def strip_or_empty(value: object) -> str:
     if value is None:
         return ""
     return str(value).strip()
 
 
-def _bounded_dict(value: Any, *, max_keys: int, max_depth: int, field_name: str) -> dict[str, Any]:
+def _bounded_dict(value: object, *, max_keys: int, max_depth: int, field_name: str) -> dict[str, object]:
     if not isinstance(value, dict):
         return {}
 
-    def visit(node: Any, depth: int) -> None:
+    def visit(node: object, depth: int) -> None:
         if depth > max_depth:
             raise ValueError(f"{field_name} is too deeply nested")
         if isinstance(node, dict):
@@ -60,34 +60,46 @@ def _bounded_dict(value: Any, *, max_keys: int, max_depth: int, field_name: str)
     return value
 
 
+def _validate_details_dict(value: object) -> dict[str, object]:
+    return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
+
+
+def _validate_score_value(value: object) -> float | int | str | None:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        val = strip_or_none(value)
+        if val is not None and len(val) > 128:
+            raise ValueError("score text exceeds maximum allowed length (128 chars)")
+        return val
+    if isinstance(value, (int, float)):
+        if value < 0 or value > 10000 or (isinstance(value, float) and not math.isfinite(value)):
+            raise ValueError("numeric score is out of range")
+        return value
+    raise ValueError("score must be a number or string")
+
+
+OptionalStrippedStr = Annotated[str | None, BeforeValidator(strip_or_none)]
+RequiredStrippedStr = Annotated[str, BeforeValidator(strip_or_empty)]
+NonEmptyStrippedStr = Annotated[str, BeforeValidator(strip_or_none)]
+BoundedDetails = Annotated[dict[str, object] | None, BeforeValidator(_validate_details_dict)]
+AdmissionDate = Annotated[str | None, BeforeValidator(validate_admission_date)]
+ScoreValue = Annotated[float | int | str | None, BeforeValidator(_validate_score_value)]
+
+
 class ProfileExamInput(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    id: str | None = Field(default=None, max_length=64)
-    exam: str | None = Field(default=None, max_length=64)
+    id: OptionalStrippedStr = Field(default=None, max_length=64)
+    exam: OptionalStrippedStr = Field(default=None, max_length=64)
     score: float | None = Field(default=None, ge=0, le=10000)
-    raw_value: str | None = Field(default=None, max_length=128)
-    display_value: str | None = Field(default=None, max_length=128)
-    details: dict[str, Any] | None = None
-    taken_on: str | None = Field(default=None, max_length=10)
-
-    @field_validator("id", "exam", "raw_value", "display_value", mode="before")
-    @classmethod
-    def _validate_exam_keys(cls, value: Any) -> str | None:
-        return _strip_or_none(value)
-
-    @field_validator("details", mode="before")
-    @classmethod
-    def _validate_details(cls, value: Any) -> dict[str, Any]:
-        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
-
-    @field_validator("taken_on", mode="before")
-    @classmethod
-    def _validate_taken_on(cls, value: Any) -> str | None:
-        return validate_admission_date(value)
+    raw_value: OptionalStrippedStr = Field(default=None, max_length=128)
+    display_value: OptionalStrippedStr = Field(default=None, max_length=128)
+    details: BoundedDetails = None
+    taken_on: AdmissionDate = Field(default=None, max_length=10)
 
     @model_validator(mode="after")
-    def _ensure_exam_id(self) -> "ProfileExamInput":
+    def _ensure_exam_id(self) -> Self:
         from app.services.exams import coerce_exam_submission, resolve_exam_key
 
         if not self.id and not self.exam:
@@ -104,33 +116,18 @@ class ProfileExamInput(BaseModel):
 class ProfileLanguageInput(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    code: str | None = Field(default=None, max_length=16)
+    code: OptionalStrippedStr = Field(default=None, max_length=16)
     kind: Literal["native", "cefr", "exam"]
     level: int | None = Field(default=None, ge=1, le=6)
-    exam: str | None = Field(default=None, max_length=64)
+    exam: OptionalStrippedStr = Field(default=None, max_length=64)
     score: float | None = Field(default=None, ge=0, le=10000)
-    raw_value: str | None = Field(default=None, max_length=128)
-    display_value: str | None = Field(default=None, max_length=128)
-    details: dict[str, Any] | None = None
-    taken_on: str | None = Field(default=None, max_length=10)
-
-    @field_validator("code", "exam", "raw_value", "display_value", mode="before")
-    @classmethod
-    def _validate_lang_fields(cls, value: Any) -> str | None:
-        return _strip_or_none(value)
-
-    @field_validator("details", mode="before")
-    @classmethod
-    def _validate_details(cls, value: Any) -> dict[str, Any]:
-        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
-
-    @field_validator("taken_on", mode="before")
-    @classmethod
-    def _validate_taken_on(cls, value: Any) -> str | None:
-        return validate_admission_date(value)
+    raw_value: OptionalStrippedStr = Field(default=None, max_length=128)
+    display_value: OptionalStrippedStr = Field(default=None, max_length=128)
+    details: BoundedDetails = None
+    taken_on: AdmissionDate = Field(default=None, max_length=10)
 
     @model_validator(mode="after")
-    def _ensure_language_shape(self) -> "ProfileLanguageInput":
+    def _ensure_language_shape(self) -> Self:
         from app.services.languages import validate_language
 
         if self.kind != "exam" and self.taken_on is not None:
@@ -154,43 +151,31 @@ class ProfilePayload(BaseModel):
     budget: StrictInt | None = Field(default=None, ge=0, le=1_000_000)
     gpa: float | None = Field(default=None, ge=0, le=5.0)
     gpa_scale: float | None = Field(default=None, ge=1.0, le=5.0)
-    major: str = Field(default="", max_length=120)
-    interests: str | None = Field(default=None, max_length=1200)
-    locale: str | None = Field(default=None, max_length=16)
-    studyMode: str = Field(default="", max_length=40)
-    fundingType: str = Field(default="", max_length=20)
+    major: RequiredStrippedStr = Field(default="", max_length=120)
+    interests: OptionalStrippedStr = Field(default=None, max_length=1200)
+    locale: OptionalStrippedStr = Field(default=None, max_length=16)
+    studyMode: RequiredStrippedStr = Field(default="", max_length=40)
+    fundingType: RequiredStrippedStr = Field(default="", max_length=20)
     applicant_route: Literal["first_year", "transfer", "graduate"] | None = None
-    intended_entry_cycle: str | None = Field(default=None, max_length=40)
+    intended_entry_cycle: OptionalStrippedStr = Field(default=None, max_length=40)
     fee_status_context: Literal[
         "unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"
     ] = "unknown"
-    study_level: str | None = Field(default=None, max_length=40)
+    study_level: OptionalStrippedStr = Field(default=None, max_length=40)
     selectedAdmissionChoices: dict[str, dict[str, str]] = Field(default_factory=dict)
     exams: list[ProfileExamInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     languages: list[ProfileLanguageInput] = Field(default_factory=list, max_length=MAX_LIST_ITEMS)
     language_evidence: list[LanguageEvidence] = Field(default_factory=list, max_length=10)
     institutional_evidence: list[InstitutionalEvidenceInput] = Field(default_factory=list, max_length=20)
 
-    @field_validator("major", "studyMode", "fundingType", mode="before")
-    @classmethod
-    def _normalize_text_fields(cls, value: Any) -> str:
-        return _strip_or_empty(value)
-
-    @field_validator(
-        "interests", "locale", "study_level", "intended_entry_cycle", mode="before"
-    )
-    @classmethod
-    def _normalize_optional_text(cls, value: Any) -> str | None:
-        return _strip_or_none(value)
-
     @model_validator(mode="after")
-    def _validate_gpa_scale(self) -> "ProfilePayload":
+    def _validate_gpa_scale(self) -> Self:
         if self.gpa is not None and self.gpa_scale is not None and self.gpa > self.gpa_scale:
             raise ValueError("GPA cannot exceed its declared scale")
         return self
 
     @model_validator(mode="after")
-    def _validate_route_matches_target_level(self) -> "ProfilePayload":
+    def _validate_route_matches_target_level(self) -> Self:
         graduate_levels = {"master", "masters", "doctorate", "doctoral", "mba", "graduate", "phd", "professional", "residency"}
         level = str(self.study_level or "").strip().lower()
         if level in graduate_levels and self.applicant_route in {"first_year", "transfer"}:
@@ -201,14 +186,14 @@ class ProfilePayload(BaseModel):
 
     @field_validator("selectedAdmissionChoices", mode="before")
     @classmethod
-    def _normalize_selected_choices(cls, value: Any) -> dict[str, dict[str, str]]:
+    def _normalize_selected_choices(cls, value: object) -> dict[str, dict[str, str]]:
         if not isinstance(value, dict):
             return {}
         if len(value) > MAX_SELECTED_ADMISSION_CHOICES:
             raise ValueError("selectedAdmissionChoices has too many entries")
         out: dict[str, dict[str, str]] = {}
         for uni_id, selection in value.items():
-            uni = _strip_or_none(uni_id)
+            uni = strip_or_none(uni_id)
             if not uni or not isinstance(selection, dict):
                 continue
             if len(uni) > 64 or not re.match(r"^[a-zA-Z0-9_-]+$", uni):
@@ -216,14 +201,14 @@ class ProfilePayload(BaseModel):
             if len(selection) > MAX_SELECTED_CHOICE_KEYS:
                 raise ValueError("selectedAdmissionChoices entry has too many keys")
             fields = {
-                "programId": (128, _strip_or_empty(selection.get("programId"))),
-                "studyOptionId": (128, _strip_or_empty(selection.get("studyOptionId"))),
-                "applicationRouteId": (256, _strip_or_empty(selection.get("applicationRouteId"))),
-                "programName": (200, _strip_or_empty(selection.get("programName"))),
-                "categoryId": (128, _strip_or_empty(selection.get("categoryId"))),
-                "requirementProfileId": (128, _strip_or_empty(selection.get("requirementProfileId"))),
-                "fundingOptionId": (128, _strip_or_empty(selection.get("fundingOptionId"))),
-                "choiceKey": (128, _strip_or_empty(selection.get("choiceKey"))),
+                "programId": (128, strip_or_empty(selection.get("programId"))),
+                "studyOptionId": (128, strip_or_empty(selection.get("studyOptionId"))),
+                "applicationRouteId": (256, strip_or_empty(selection.get("applicationRouteId"))),
+                "programName": (200, strip_or_empty(selection.get("programName"))),
+                "categoryId": (128, strip_or_empty(selection.get("categoryId"))),
+                "requirementProfileId": (128, strip_or_empty(selection.get("requirementProfileId"))),
+                "fundingOptionId": (128, strip_or_empty(selection.get("fundingOptionId"))),
+                "choiceKey": (128, strip_or_empty(selection.get("choiceKey"))),
             }
             for field, (max_length, text) in fields.items():
                 if len(text) > max_length:
@@ -250,11 +235,9 @@ class ProfilePayload(BaseModel):
         return out
 
 
-class UniversitiesAiSortRequest(BaseModel):
+class UniversityFilterQuery(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    profile: ProfilePayload = Field(default_factory=ProfilePayload)
-    lang: str | None = Field(default=None, max_length=16)
     q: str | None = Field(default=None, max_length=200)
     country: str | None = Field(default=None, max_length=80)
     city: str | None = Field(default=None, max_length=80)
@@ -266,6 +249,29 @@ class UniversitiesAiSortRequest(BaseModel):
     min_tuition: float | None = Field(default=None, ge=0, le=1_000_000)
     max_tuition: float | None = Field(default=None, ge=0, le=1_000_000)
     cost_basis: Literal["annual_total", "tuition"] = "annual_total"
+    fee_status_context: (
+        Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"] | None
+    ) = None
+    intended_entry_cycle: str | None = Field(default=None, max_length=40)
+    lang: str | None = Field(default=None, max_length=16)
+
+
+class UniversitiesAiSortRequest(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    profile: ProfilePayload = Field(default_factory=ProfilePayload)
+    lang: OptionalStrippedStr = Field(default=None, max_length=16)
+    q: OptionalStrippedStr = Field(default=None, max_length=200)
+    country: OptionalStrippedStr = Field(default=None, max_length=80)
+    city: OptionalStrippedStr = Field(default=None, max_length=80)
+    region: OptionalStrippedStr = Field(default=None, max_length=80)
+    major: OptionalStrippedStr = Field(default=None, max_length=120)
+    study_level: OptionalStrippedStr = Field(default=None, max_length=40)
+    funding_type: OptionalStrippedStr = Field(default=None, max_length=20)
+    format: OptionalStrippedStr = Field(default=None, max_length=32)
+    min_tuition: float | None = Field(default=None, ge=0, le=1_000_000)
+    max_tuition: float | None = Field(default=None, ge=0, le=1_000_000)
+    cost_basis: Literal["annual_total", "tuition"] = "annual_total"
     practice_vs_science: int = Field(default=50, ge=0, le=100)
     social_vs_hardcore: int = Field(default=50, ge=0, le=100)
     budget_vs_prestige: int = Field(default=50, ge=0, le=100)
@@ -273,76 +279,32 @@ class UniversitiesAiSortRequest(BaseModel):
     page: int = Field(default=1, ge=1, le=10_000)
     limit: int = Field(default=200, ge=1, le=2000)
 
-    @field_validator(
-        "q",
-        "lang",
-        "country",
-        "city",
-        "region",
-        "major",
-        "study_level",
-        "funding_type",
-        "format",
-        mode="before",
-    )
-    @classmethod
-    def _normalize_optional_text(cls, value: Any) -> str | None:
-        return _strip_or_none(value)
-
 
 class ProfiledUniversitiesRequest(UniversitiesAiSortRequest):
-    sort: Literal["name_asc", "tuition_asc", "tuition_desc", "acceptance_asc", "acceptance_desc",
-                  "rank_asc", "rank_desc", "relevance"] = "name_asc"
+    sort: Literal[
+        "name_asc",
+        "tuition_asc",
+        "tuition_desc",
+        "acceptance_asc",
+        "acceptance_desc",
+        "rank_asc",
+        "rank_desc",
+        "relevance",
+    ] = "name_asc"
     fields: Literal["card", "full", "map"] = "card"
 
 
 class ExamValidateRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    exam: str = Field(min_length=1, max_length=64)
-    score: float | int | str | None = None
-    raw_value: str | None = Field(default=None, max_length=128)
-    details: dict[str, Any] | None = None
-    taken_on: str | None = Field(default=None, max_length=10)
-
-    @field_validator("score", mode="before")
-    @classmethod
-    def _validate_score(cls, value: Any) -> Any:
-        if value is None:
-            return None
-        if isinstance(value, str):
-            val = _strip_or_none(value)
-            if val is not None and len(val) > 128:
-                raise ValueError("score text exceeds maximum allowed length (128 chars)")
-            return val
-        if isinstance(value, (int, float)):
-            if value < 0 or value > 10000 or (isinstance(value, float) and not math.isfinite(value)):
-                raise ValueError("numeric score is out of range")
-            return value
-        raise ValueError("score must be a number or string")
-
-    @field_validator("exam", "raw_value", mode="before")
-    @classmethod
-    def _normalize_exam(cls, value: Any) -> str | None:
-        if value is None:
-            return None
-        out = _strip_or_empty(value)
-        if not out:
-            return None
-        return out
-
-    @field_validator("details", mode="before")
-    @classmethod
-    def _validate_details(cls, value: Any) -> dict[str, Any]:
-        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
-
-    @field_validator("taken_on", mode="before")
-    @classmethod
-    def _validate_taken_on(cls, value: Any) -> str | None:
-        return validate_admission_date(value)
+    exam: NonEmptyStrippedStr = Field(min_length=1, max_length=64)
+    score: ScoreValue = None
+    raw_value: OptionalStrippedStr = Field(default=None, max_length=128)
+    details: BoundedDetails = None
+    taken_on: AdmissionDate = Field(default=None, max_length=10)
 
     @model_validator(mode="after")
-    def _ensure_exam_validate_shape(self) -> "ExamValidateRequest":
+    def _ensure_exam_validate_shape(self) -> Self:
         if not self.exam:
             raise ValueError("exam is required")
         if self.score is None and not self.raw_value and not self.details:
@@ -353,49 +315,18 @@ class ExamValidateRequest(BaseModel):
 class LanguageValidateRequest(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
-    code: str = Field(min_length=1, max_length=16)
+    code: NonEmptyStrippedStr = Field(min_length=1, max_length=16)
     kind: Literal["native", "cefr", "exam"]
     level: int | None = Field(default=None, ge=1, le=6)
-    label: str | None = Field(default=None, max_length=8)
-    exam: str | None = Field(default=None, max_length=64)
-    score: float | int | str | None = None
-    raw_value: str | None = Field(default=None, max_length=128)
-    details: dict[str, Any] | None = None
-    taken_on: str | None = Field(default=None, max_length=10)
-
-    @field_validator("score", mode="before")
-    @classmethod
-    def _validate_score(cls, value: Any) -> Any:
-        if value is None:
-            return None
-        if isinstance(value, str):
-            val = _strip_or_none(value)
-            if val is not None and len(val) > 128:
-                raise ValueError("score text exceeds maximum allowed length (128 chars)")
-            return val
-        if isinstance(value, (int, float)):
-            if value < 0 or value > 10000 or (isinstance(value, float) and not math.isfinite(value)):
-                raise ValueError("numeric score is out of range")
-            return value
-        raise ValueError("score must be a number or string")
-
-    @field_validator("code", "exam", "label", "raw_value", mode="before")
-    @classmethod
-    def _normalize_language_fields(cls, value: Any) -> str | None:
-        return _strip_or_none(value)
-
-    @field_validator("details", mode="before")
-    @classmethod
-    def _validate_details(cls, value: Any) -> dict[str, Any]:
-        return _bounded_dict(value, max_keys=MAX_DETAILS_KEYS, max_depth=MAX_DETAILS_DEPTH, field_name="details")
-
-    @field_validator("taken_on", mode="before")
-    @classmethod
-    def _validate_taken_on(cls, value: Any) -> str | None:
-        return validate_admission_date(value)
+    label: OptionalStrippedStr = Field(default=None, max_length=8)
+    exam: OptionalStrippedStr = Field(default=None, max_length=64)
+    score: ScoreValue = None
+    raw_value: OptionalStrippedStr = Field(default=None, max_length=128)
+    details: BoundedDetails = None
+    taken_on: AdmissionDate = Field(default=None, max_length=10)
 
     @model_validator(mode="after")
-    def _ensure_language_validation_shape(self) -> "LanguageValidateRequest":
+    def _ensure_language_validation_shape(self) -> Self:
         if self.kind != "exam" and self.taken_on is not None:
             raise ValueError("taken_on is only valid for language exam entries")
         if self.kind == "cefr" and self.level is None and not self.label:
@@ -408,5 +339,5 @@ class LanguageValidateRequest(BaseModel):
         return self
 
 
-def to_profile_dict(profile: ProfilePayload) -> dict[str, Any]:
+def to_profile_dict(profile: ProfilePayload) -> dict[str, object]:
     return profile.model_dump(exclude_none=True)

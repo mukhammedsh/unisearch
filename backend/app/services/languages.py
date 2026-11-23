@@ -314,7 +314,7 @@ def validate_language(payload: dict[str, Any]) -> dict[str, Any]:
 
         try:
             level_i = int(level_str)
-        except Exception as exc:
+        except (ValueError, TypeError) as exc:
             raise ValueError("CEFR level must be integer 1..6") from exc
 
         if level_i < 1 or level_i > 6:

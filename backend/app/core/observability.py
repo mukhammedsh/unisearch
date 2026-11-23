@@ -1,5 +1,4 @@
 import logging
-from typing import Any
 
 from app.core.settings import (
     METRICS_ENABLED,
@@ -12,12 +11,12 @@ from fastapi import FastAPI
 
 try:
     from prometheus_fastapi_instrumentator import Instrumentator
-except Exception:  # pragma: no cover - optional dependency
+except ImportError:  # pragma: no cover - optional dependency
     Instrumentator = None  # type: ignore[assignment]
 
 try:
     import sentry_sdk
-except Exception:  # pragma: no cover - optional dependency
+except ImportError:  # pragma: no cover - optional dependency
     sentry_sdk = None  # type: ignore[assignment]
 
 
@@ -42,7 +41,7 @@ _SENSITIVE_KEYS = {
 }
 
 
-def _scrub_sensitive(value: Any) -> Any:
+def _scrub_sensitive(value: object) -> object:
     if isinstance(value, dict):
         out = {}
         for key, item in value.items():
@@ -74,7 +73,7 @@ def _scrub_sensitive(value: Any) -> Any:
     return value
 
 
-def _before_send(event: Any, hint: Any) -> Any:
+def _before_send(event: object, hint: object) -> object:
     return _scrub_sensitive(event)
 
 
@@ -95,7 +94,7 @@ def setup_observability(app: FastAPI) -> None:
 
     if METRICS_ENABLED and Instrumentator is not None:
         try:
-            instrumentator: Any = Instrumentator(
+            instrumentator = Instrumentator(
                 should_group_status_codes=True,
                 should_ignore_untemplated=True,
                 excluded_handlers=["/metrics"],

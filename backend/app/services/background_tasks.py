@@ -1,5 +1,5 @@
+import logging
 import time
-from typing import Any
 
 from app.core.settings import WARMUP_ML_ON_STARTUP
 from app.services import currency as currency_service
@@ -8,10 +8,12 @@ from app.services import languages as languages_service
 from app.services import universities as universities_service
 from app.services.ml_scoring import get_ml_recommender
 
+_LOGGER = logging.getLogger("unisearch.warmup")
 
-def warmup_runtime(trigger: str = "manual") -> dict[str, Any]:
+
+def warmup_runtime(trigger: str = "manual") -> dict[str, object]:
     started = time.perf_counter()
-    result: dict[str, Any] = {
+    result: dict[str, object] = {
         "trigger": str(trigger or "manual"),
         "ok": True,
     }
@@ -19,28 +21,32 @@ def warmup_runtime(trigger: str = "manual") -> dict[str, Any]:
     try:
         universities = universities_service.load_universities()
         result["universities_total"] = len(universities)
-    except Exception:
+    except Exception as exc:
+        _LOGGER.warning("warmup_step_failed step=universities error=%s", exc)
         result["ok"] = False
         result["universities_total"] = 0
 
     try:
         locations = universities_service.get_locations()
         result["countries_total"] = len(locations.keys()) if isinstance(locations, dict) else 0
-    except Exception:
+    except Exception as exc:
+        _LOGGER.warning("warmup_step_failed step=locations error=%s", exc)
         result["ok"] = False
         result["countries_total"] = 0
 
     try:
         cfg = languages_service.get_languages_config()
         result["languages_total"] = len((cfg or {}).get("languages", []))
-    except Exception:
+    except Exception as exc:
+        _LOGGER.warning("warmup_step_failed step=languages error=%s", exc)
         result["ok"] = False
         result["languages_total"] = 0
 
     try:
         exams_service.ensure_exams_cache()
         result["exams_total"] = len(exams_service.EXAMS_CONFIG.keys())
-    except Exception:
+    except Exception as exc:
+        _LOGGER.warning("warmup_step_failed step=exams error=%s", exc)
         result["ok"] = False
         result["exams_total"] = 0
 
@@ -48,7 +54,8 @@ def warmup_runtime(trigger: str = "manual") -> dict[str, Any]:
         rates_data = currency_service.get_rates()
         result["currency_rates_loaded"] = bool(rates_data.get("rates"))
         result["currency_rates_source"] = rates_data.get("source")
-    except Exception:
+    except Exception as exc:
+        _LOGGER.warning("warmup_step_failed step=currency error=%s", exc)
         result["ok"] = False
         result["currency_rates_loaded"] = False
 
@@ -57,7 +64,8 @@ def warmup_runtime(trigger: str = "manual") -> dict[str, Any]:
     if should_warm_ml:
         try:
             result["ml_ready"] = bool(get_ml_recommender().is_ready())
-        except Exception:
+        except Exception as exc:
+            _LOGGER.warning("warmup_step_failed step=ml error=%s", exc)
             result["ok"] = False
             result["ml_ready"] = False
     else:

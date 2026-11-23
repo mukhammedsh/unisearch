@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from app.schemas.payloads import ProfilePayload
+from app.schemas.payloads import OptionalStrippedStr, ProfilePayload
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 _STUDY_LEVEL_ALIASES = {
@@ -23,24 +23,16 @@ _STUDY_LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "profess
 class AdmissionContextInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    study_option_id: str | None = Field(default=None, max_length=128)
-    application_route_id: str | None = Field(default=None, max_length=256)
+    study_option_id: OptionalStrippedStr = Field(default=None, max_length=128)
+    application_route_id: OptionalStrippedStr = Field(default=None, max_length=256)
     study_level: str | None = Field(default=None, max_length=40)
     applicant_route: Literal["first_year", "transfer", "graduate"] | None = None
-    intended_entry_cycle: str | None = Field(default=None, max_length=40)
+    intended_entry_cycle: OptionalStrippedStr = Field(default=None, max_length=40)
     fee_status_context: Literal["unknown", "self_reported_home_domestic", "self_reported_international_overseas", "other"] | None = None
-
-    @field_validator("study_option_id", "application_route_id", "intended_entry_cycle", mode="before")
-    @classmethod
-    def _strip_optional_text(cls, value):
-        if value is None:
-            return None
-        text = str(value).strip()
-        return text or None
 
     @field_validator("study_level", mode="before")
     @classmethod
-    def _normalize_study_level(cls, value):
+    def _normalize_study_level(cls, value: object) -> str | None:
         if value is None:
             return None
         level = str(value).strip().lower()
@@ -53,7 +45,7 @@ class AdmissionContextInput(BaseModel):
 
     @field_validator("fee_status_context", mode="before")
     @classmethod
-    def _normalize_fee_status(cls, value):
+    def _normalize_fee_status(cls, value: object) -> str | None:
         return str(value).strip().lower() if value is not None else None
 
 

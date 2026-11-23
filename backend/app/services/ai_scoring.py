@@ -146,7 +146,7 @@ def _cost_to_usd(amount: float | None, currency_code: str) -> float:
     try:
         from app.services.currency import convert
         return max(0.0, float(convert(amount, code, "USD")))
-    except Exception:
+    except (ValueError, TypeError, LookupError):
         return max(0.0, float(amount))
 
 

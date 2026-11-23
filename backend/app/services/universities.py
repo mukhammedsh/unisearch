@@ -16,6 +16,9 @@ from app.core.utils import (
     norm_tag_key as _norm_tag_key,
 )
 from app.core.utils import (
+    normalize_search_lang as _normalize_search_lang,
+)
+from app.core.utils import (
     safe_lower as _safe_lower,
 )
 from app.core.utils import (
@@ -177,15 +180,6 @@ def _map_label_for_university(uid: str, lang: str) -> str | None:
     return None
 
 
-def _normalize_search_lang(value: Any) -> str:
-    raw = _safe_lower(value)
-    if raw.startswith("ru") or raw == "rus":
-        return SEARCH_LANG_RUS
-    if raw.startswith("kk") or raw == "kaz":
-        return SEARCH_LANG_KAZ
-    return SEARCH_LANG_ENG
-
-
 _NAME_LANGS = (SEARCH_LANG_ENG, SEARCH_LANG_RUS, SEARCH_LANG_KAZ)
 
 
@@ -240,7 +234,7 @@ def _load_university_translations_raw() -> dict[str, Any]:
                 data = json.load(f)
             if not isinstance(data, dict):
                 data = {}
-        except Exception:
+        except (OSError, json.JSONDecodeError, ValueError):
             data = {}
         _UNI_TRANSLATIONS_CACHE["mtime"] = mtime
         _UNI_TRANSLATIONS_CACHE["data"] = data
@@ -1869,7 +1863,7 @@ def get_locations() -> dict[str, Any]:
             with open(CITIES_PATH, encoding="utf-8") as f:
                 data = json.load(f)
             _LOC_CACHE["data"] = data if isinstance(data, dict) else {}
-        except Exception:
+        except (OSError, json.JSONDecodeError, ValueError):
             _LOC_CACHE["data"] = {}
         _LOC_CACHE["mtime"] = mtime
     return _LOC_CACHE["data"]

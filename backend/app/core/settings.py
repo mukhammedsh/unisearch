@@ -34,36 +34,42 @@ def _parse_frontend_origins() -> list[str]:
     return origins or [str(_LOCAL_FRONTEND_ORIGINS[0])]
 
 
-FRONTEND_ORIGINS = _parse_frontend_origins()
-BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
-try:
-    BACKEND_PORT = int(os.getenv("BACKEND_PORT") or os.getenv("PORT") or 8000)
-except Exception:
-    BACKEND_PORT = 8000
-
-
 def _env_bool(name: str, default: str = "0") -> bool:
     return os.getenv(name, default).strip().lower() not in ("0", "false", "no", "")
 
 
+def _env_int(name: str, default: int, *, fallback_env: str | None = None) -> int:
+    raw = os.getenv(name)
+    if not (raw and raw.strip()) and fallback_env:
+        raw = os.getenv(fallback_env)
+    if not raw or not raw.strip():
+        return default
+    try:
+        return int(raw.strip())
+    except (ValueError, TypeError):
+        return default
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.getenv(name)
+    if not raw or not raw.strip():
+        return default
+    try:
+        return float(raw.strip())
+    except (ValueError, TypeError):
+        return default
+
+
+FRONTEND_ORIGINS = _parse_frontend_origins()
+BACKEND_HOST = os.getenv("BACKEND_HOST", "127.0.0.1").strip() or "127.0.0.1"
+BACKEND_PORT = _env_int("BACKEND_PORT", 8000, fallback_env="PORT")
+
 REDIS_URL = os.getenv("REDIS_URL", "").strip()
 REDIS_PREFIX = os.getenv("REDIS_PREFIX", "unisearch").strip() or "unisearch"
-try:
-    REDIS_CACHE_TTL_SEC = int(os.getenv("REDIS_CACHE_TTL_SEC", "60") or 60)
-except Exception:
-    REDIS_CACHE_TTL_SEC = 60
-try:
-    AI_SORT_CACHE_TTL_SEC = float(os.getenv("AI_SORT_CACHE_TTL_SEC", "300") or 300)
-except Exception:
-    AI_SORT_CACHE_TTL_SEC = 300.0
-try:
-    REDIS_CONNECT_TIMEOUT_SEC = float(os.getenv("REDIS_CONNECT_TIMEOUT_SEC", "0.35") or 0.35)
-except Exception:
-    REDIS_CONNECT_TIMEOUT_SEC = 0.35
-try:
-    REDIS_OPERATION_TIMEOUT_SEC = float(os.getenv("REDIS_OPERATION_TIMEOUT_SEC", "0.35") or 0.35)
-except Exception:
-    REDIS_OPERATION_TIMEOUT_SEC = 0.35
+REDIS_CACHE_TTL_SEC = _env_int("REDIS_CACHE_TTL_SEC", 60)
+AI_SORT_CACHE_TTL_SEC = _env_float("AI_SORT_CACHE_TTL_SEC", 300.0)
+REDIS_CONNECT_TIMEOUT_SEC = _env_float("REDIS_CONNECT_TIMEOUT_SEC", 0.35)
+REDIS_OPERATION_TIMEOUT_SEC = _env_float("REDIS_OPERATION_TIMEOUT_SEC", 0.35)
 
 AUTO_WARMUP_ON_STARTUP = _env_bool("AUTO_WARMUP_ON_STARTUP", "1")
 WARMUP_ML_ON_STARTUP = _env_bool("WARMUP_ML_ON_STARTUP", "0")
@@ -71,10 +77,7 @@ WARMUP_ML_ON_STARTUP = _env_bool("WARMUP_ML_ON_STARTUP", "0")
 METRICS_ENABLED = _env_bool("METRICS_ENABLED", "0")
 METRICS_PATH = os.getenv("METRICS_PATH", "/metrics").strip() or "/metrics"
 SENTRY_DSN = os.getenv("SENTRY_DSN", "").strip()
-try:
-    SENTRY_TRACES_SAMPLE_RATE = float(os.getenv("SENTRY_TRACES_SAMPLE_RATE", "0.0"))
-except Exception:
-    SENTRY_TRACES_SAMPLE_RATE = 0.0
+SENTRY_TRACES_SAMPLE_RATE = _env_float("SENTRY_TRACES_SAMPLE_RATE", 0.0)
 
 
 OPS_ADMIN_TOKEN = os.getenv("OPS_ADMIN_TOKEN", "").strip()
@@ -91,27 +94,12 @@ TRUSTED_PROXY_IPS = [
     for value in os.getenv("TRUSTED_PROXY_IPS", "").split(",")
     if value.strip()
 ]
-try:
-    REQUEST_BODY_MAX_BYTES = int(os.getenv("REQUEST_BODY_MAX_BYTES", "131072") or 131072)
-except Exception:
-    REQUEST_BODY_MAX_BYTES = 131072
+REQUEST_BODY_MAX_BYTES = _env_int("REQUEST_BODY_MAX_BYTES", 131072)
 RATE_LIMIT_ENABLED = _env_bool("RATE_LIMIT_ENABLED", "1")
-try:
-    GLOBAL_RATE_LIMIT_REQUESTS = int(os.getenv("GLOBAL_RATE_LIMIT_REQUESTS", "600") or 600)
-except Exception:
-    GLOBAL_RATE_LIMIT_REQUESTS = 600
-try:
-    GLOBAL_RATE_LIMIT_WINDOW_SEC = int(os.getenv("GLOBAL_RATE_LIMIT_WINDOW_SEC", "60") or 60)
-except Exception:
-    GLOBAL_RATE_LIMIT_WINDOW_SEC = 60
-try:
-    EXPENSIVE_RATE_LIMIT_REQUESTS = int(os.getenv("EXPENSIVE_RATE_LIMIT_REQUESTS", "120") or 120)
-except Exception:
-    EXPENSIVE_RATE_LIMIT_REQUESTS = 120
-try:
-    EXPENSIVE_RATE_LIMIT_WINDOW_SEC = int(os.getenv("EXPENSIVE_RATE_LIMIT_WINDOW_SEC", "60") or 60)
-except Exception:
-    EXPENSIVE_RATE_LIMIT_WINDOW_SEC = 60
+GLOBAL_RATE_LIMIT_REQUESTS = _env_int("GLOBAL_RATE_LIMIT_REQUESTS", 600)
+GLOBAL_RATE_LIMIT_WINDOW_SEC = _env_int("GLOBAL_RATE_LIMIT_WINDOW_SEC", 60)
+EXPENSIVE_RATE_LIMIT_REQUESTS = _env_int("EXPENSIVE_RATE_LIMIT_REQUESTS", 120)
+EXPENSIVE_RATE_LIMIT_WINDOW_SEC = _env_int("EXPENSIVE_RATE_LIMIT_WINDOW_SEC", 60)
 
 
 ML_SEMANTIC_EMBEDDINGS_ENABLED = _env_bool("ML_SEMANTIC_EMBEDDINGS_ENABLED", "1")
@@ -120,10 +108,7 @@ ML_SEMANTIC_EMBEDDINGS_MODEL = os.getenv(
     "intfloat/multilingual-e5-base",
 ).strip() or "intfloat/multilingual-e5-base"
 ML_SEMANTIC_EMBEDDINGS_DEVICE = os.getenv("ML_SEMANTIC_EMBEDDINGS_DEVICE", "cpu").strip().lower() or "cpu"
-try:
-    ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE = int(os.getenv("ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE", "32"))
-except Exception:
-    ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE = 32
+ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE = _env_int("ML_SEMANTIC_EMBEDDINGS_BATCH_SIZE", 32)
 ML_SEMANTIC_EMBEDDINGS_E5_PREFIX = os.getenv("ML_SEMANTIC_EMBEDDINGS_E5_PREFIX", "auto").strip().lower() or "auto"
 
 CURRENCY_RATES_ENABLED = _env_bool("CURRENCY_RATES_ENABLED", "1")
@@ -131,15 +116,6 @@ CURRENCY_RATES_API_URL = (
     os.getenv("CURRENCY_RATES_API_URL", "https://open.er-api.com/v6/latest/USD").strip()
     or "https://open.er-api.com/v6/latest/USD"
 )
-try:
-    CURRENCY_RATES_CACHE_TTL_SEC = int(os.getenv("CURRENCY_RATES_CACHE_TTL_SEC", "43200") or 43200)
-except Exception:
-    CURRENCY_RATES_CACHE_TTL_SEC = 43200
-try:
-    CURRENCY_RATES_TIMEOUT_SEC = float(os.getenv("CURRENCY_RATES_TIMEOUT_SEC", "5.0") or 5.0)
-except Exception:
-    CURRENCY_RATES_TIMEOUT_SEC = 5.0
-try:
-    CURRENCY_RATES_BACKOFF_SEC = int(os.getenv("CURRENCY_RATES_BACKOFF_SEC", "300") or 300)
-except Exception:
-    CURRENCY_RATES_BACKOFF_SEC = 300
+CURRENCY_RATES_CACHE_TTL_SEC = _env_int("CURRENCY_RATES_CACHE_TTL_SEC", 43200)
+CURRENCY_RATES_TIMEOUT_SEC = _env_float("CURRENCY_RATES_TIMEOUT_SEC", 5.0)
+CURRENCY_RATES_BACKOFF_SEC = _env_int("CURRENCY_RATES_BACKOFF_SEC", 300)

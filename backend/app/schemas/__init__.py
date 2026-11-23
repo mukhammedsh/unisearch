@@ -4,6 +4,7 @@ from app.schemas.payloads import (
     ProfiledUniversitiesRequest,
     ProfilePayload,
     UniversitiesAiSortRequest,
+    UniversityFilterQuery,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "ProfiledUniversitiesRequest",
     "ProfilePayload",
     "UniversitiesAiSortRequest",
+    "UniversityFilterQuery",
 ]

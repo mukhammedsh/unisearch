@@ -1,12 +1,13 @@
 import hmac
 import ipaddress
+import logging
 import threading
 import time
 import uuid
 from collections import OrderedDict, deque
-from typing import Any
+from typing import Protocol
 
-from app.core.redis_store import get_redis_client, is_redis_configured
+from app.core.redis_store import REDIS_ERRORS, get_redis_client, is_redis_configured
 from app.core.settings import (
     METRICS_PATH,
     OPS_ADMIN_HEADER,
@@ -19,6 +20,19 @@ from app.core.settings import (
 )
 from fastapi import Request
 from fastapi.responses import JSONResponse
+
+_LOGGER = logging.getLogger("unisearch.security")
+
+TrustedProxyEntry = (
+    ipaddress.IPv4Address
+    | ipaddress.IPv6Address
+    | ipaddress.IPv4Network
+    | ipaddress.IPv6Network
+)
+
+
+class _RedisEvalClient(Protocol):
+    def eval(self, script: str, numkeys: int, *keys_and_args: object) -> object: ...
 
 
 class SlidingWindowRateLimiter:
@@ -93,7 +107,7 @@ local count_after = redis.call('ZCARD', key)
 return {1, math.max(0, limit - count_after), 0}
 """
 
-    def __init__(self, limit: int, window_seconds: int, redis_client: Any, key_prefix: str = "rate-limit"):
+    def __init__(self, limit: int, window_seconds: int, redis_client: _RedisEvalClient | None, key_prefix: str = "rate-limit"):
         self.limit = max(1, int(limit))
         self.window_seconds = max(1, int(window_seconds))
         self.key_prefix = str(key_prefix or "rate-limit").strip() or "rate-limit"
@@ -124,7 +138,8 @@ return {1, math.max(0, limit - count_after), 0}
             )
             allowed, remaining, retry_after = result or [0, 0, self.window_seconds]
             return bool(int(allowed)), int(remaining or 0), float(retry_after or 0.0)
-        except Exception:
+        except REDIS_ERRORS as exc:
+            _LOGGER.warning("redis_rate_limit_fallback error=%s", exc)
             return self._fallback.check(key, now=current)
 
 
@@ -133,7 +148,7 @@ def build_rate_limiter(
     window_seconds: int,
     max_keys: int = 2048,
     redis_key_prefix: str = "rate-limit",
-):
+) -> SlidingWindowRateLimiter | RedisSlidingWindowRateLimiter:
     redis_client = get_redis_client() if is_redis_configured() else None
     if redis_client is None:
         return SlidingWindowRateLimiter(limit=limit, window_seconds=window_seconds, max_keys=max_keys)
@@ -180,7 +195,7 @@ def _validate_and_normalize_ip(value: str | None) -> str | None:
         return None
 
 
-def _parse_trusted_proxy_entry(entry: str) -> Any | None:
+def _parse_trusted_proxy_entry(entry: str) -> TrustedProxyEntry | None:
     raw = str(entry).strip()
     if not raw:
         return None
@@ -192,8 +207,8 @@ def _parse_trusted_proxy_entry(entry: str) -> Any | None:
         return None
 
 
-def _get_trusted_proxy_entries() -> list[Any]:
-    entries: list[Any] = []
+def _get_trusted_proxy_entries() -> list[TrustedProxyEntry]:
+    entries: list[TrustedProxyEntry] = []
     for item in TRUSTED_PROXY_IPS:
         parsed = _parse_trusted_proxy_entry(item)
         if parsed is not None:

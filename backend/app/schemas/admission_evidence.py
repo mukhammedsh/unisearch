@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 from datetime import date
-from typing import Annotated, Literal
+from typing import Annotated, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -42,16 +42,18 @@ class LanguageEvidence(EvidenceModel):
 
     @field_validator("country", mode="before")
     @classmethod
-    def normalize_country(cls, value):
-        return value.strip() or None if isinstance(value, str) else value
+    def normalize_country(cls, value: object) -> str | None:
+        if isinstance(value, str):
+            return value.strip() or None
+        return value  # type: ignore[return-value]
 
     @field_validator("started_on", "completed_on", mode="before")
     @classmethod
-    def validate_dates(cls, value):
+    def validate_dates(cls, value: object) -> str | None:
         return validate_admission_date(value)
 
     @model_validator(mode="after")
-    def validate_interval(self):
+    def validate_interval(self) -> Self:
         if self.started_on and self.completed_on and self.started_on > self.completed_on:
             raise ValueError("started_on must be on or before completed_on")
         return self
@@ -72,7 +74,7 @@ class EnrollmentEvidence(InstitutionalEvidence):
 
     @field_validator("expected_completion_on", mode="before")
     @classmethod
-    def validate_completion_date(cls, value):
+    def validate_completion_date(cls, value: object) -> str | None:
         return validate_admission_date(value, allow_future=True)
 
 
@@ -86,18 +88,18 @@ class GpaEvidence(InstitutionalEvidence):
 
     @field_validator("value", "scale", mode="before")
     @classmethod
-    def validate_finite_number(cls, value):
+    def validate_finite_number(cls, value: object) -> object:
         if isinstance(value, bool):
             raise ValueError("GPA values must be finite numbers")
         try:
-            if not math.isfinite(float(value)):
+            if not math.isfinite(float(value)):  # type: ignore[arg-type]
                 raise ValueError("GPA values must be finite numbers")
         except (TypeError, ValueError) as error:
             raise ValueError("GPA values must be finite numbers") from error
         return value
 
     @model_validator(mode="after")
-    def value_within_scale(self):
+    def value_within_scale(self) -> Self:
         if self.value > self.scale:
             raise ValueError("GPA value cannot exceed its scale")
         return self
@@ -112,18 +114,18 @@ class CredentialEvidence(InstitutionalEvidence):
 
     @field_validator("completed_on", mode="before")
     @classmethod
-    def validate_completed_date(cls, value):
+    def validate_completed_date(cls, value: object) -> str | None:
         return validate_admission_date(value)
 
     @field_validator("score_percent", mode="before")
     @classmethod
-    def validate_score_percent(cls, value):
+    def validate_score_percent(cls, value: object) -> object:
         if value is None:
             return None
         if isinstance(value, bool):
             raise ValueError("score_percent must be a finite number")
         try:
-            if not math.isfinite(float(value)):
+            if not math.isfinite(float(value)):  # type: ignore[arg-type]
                 raise ValueError("score_percent must be a finite number")
         except (TypeError, ValueError) as error:
             raise ValueError("score_percent must be a finite number") from error
