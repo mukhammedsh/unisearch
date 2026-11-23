@@ -439,8 +439,6 @@ export function initUniversitiesPage() {
         if (el.workspaceLayout) el.workspaceLayout.hidden = false;
         if (el.catalogPane) el.catalogPane.hidden = false;
         document.body.classList.toggle("universities-compare-mode", compareController.isCompareSelectionMode());
-        document.body.classList.remove("universities-compare-configure-mode");
-        document.body.classList.remove("universities-compare-results-mode");
         if (el.viewToggles) el.viewToggles.hidden = false;
         if (el.total) {
             el.total.textContent = String(state.lastCatalogTotal ?? el.total.textContent ?? "0");
@@ -895,7 +893,7 @@ export function initUniversitiesPage() {
 
     hideSearchSuggestions();
     syncSectionVisibility({
-        shouldFetch: !compareController.isCompareResultsMode(),
+        shouldFetch: true,
         updateUrl: true,
         replaceUrl: true,
     }).catch((err) => console.error(err));
@@ -904,9 +902,7 @@ export function initUniversitiesPage() {
         state.funding_type = getProfileFundingQueryValue();
         state.page = 1;
         saveFilters(state);
-        if (!compareController.isCompareResultsMode()) {
-            fetchAndRender();
-        }
+        fetchAndRender();
     });
     bindWindowListener("languageChangeVisualPending", showLanguageCardSkeletons);
     bindWindowListener("languageChangeFinished", clearLanguageCardSkeletons);
@@ -917,7 +913,7 @@ export function initUniversitiesPage() {
             filterControls.applyToForm();
             filterControls.updateTradeoffLabels();
             await syncSectionVisibility({
-                shouldFetch: !compareController.isCompareResultsMode(),
+                shouldFetch: true,
                 updateUrl: true,
                 replaceUrl: true,
                 fetchOptions: {
@@ -931,21 +927,15 @@ export function initUniversitiesPage() {
     });
     bindWindowListener("settingsChanged", () => renderRecentlyViewedBar());
     bindWindowListener("app:online-reconnect", () => {
-        if (!compareController.isCompareResultsMode()) {
-            fetchAndRender();
-        }
+        fetchAndRender();
     });
     // Live rates that arrive after the first render redraw the cards and slider bounds; filters stay as they are.
     bindWindowListener("currencyRatesUpdated", () => {
-        if (!compareController.isCompareResultsMode()) {
-            fetchAndRender().catch((err) => console.error(err));
-        }
+        fetchAndRender().catch((err) => console.error(err));
     });
     bindWindowListener("currencyChanged", (e) => {
         filterControls.handleCurrencyChanged(e);
-        if (!compareController.isCompareResultsMode()) {
-            fetchAndRender();
-        }
+        fetchAndRender();
     });
 
     function renderFetchedData(data, options = {}) {

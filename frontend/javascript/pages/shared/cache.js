@@ -84,6 +84,11 @@ export function consumeUniversitiesTourSkipOnce() {
   return requested;
 }
 
+/**
+ * Read a deduplicated string ID list from local storage.
+ * @param {string} key
+ * @returns {string[]}
+ */
 export function readIdListStorage(key) {
   const parsed = safeLocalStorage.getJson(key, []);
   return Array.isArray(parsed)
@@ -91,6 +96,11 @@ export function readIdListStorage(key) {
     : [];
 }
 
+/**
+ * Persist a deduplicated list of non-empty IDs to local storage.
+ * @param {string} key
+ * @param {Array<unknown>} ids
+ */
 export function writeIdListStorage(key, ids) {
   const normalized = Array.from(new Set(
     (Array.isArray(ids) ? ids : [])
@@ -118,6 +128,12 @@ export function writeDetailCache(cache) {
   safeLocalStorage.setJson(DETAIL_CACHE_KEY, cache || {});
 }
 
+/**
+ * Look up a valid cached university detail entry by ID and UI language.
+ * @param {string} universityId
+ * @param {string} [lang]
+ * @returns {{ key: string, data: Record<string, any>, etag: string, ts: number } | null}
+ */
 export function getDetailCacheEntry(universityId, lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
   const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
@@ -133,6 +149,13 @@ export function getDetailCacheEntry(universityId, lang = getCurrentLanguage()) {
   };
 }
 
+/**
+ * Store a university detail response and optional ETag in bounded local storage cache.
+ * @param {string} universityId
+ * @param {Record<string, any>} data
+ * @param {string} [etag=""]
+ * @param {string} [lang]
+ */
 export function setDetailCacheEntry(universityId, data, etag = "", lang = getCurrentLanguage()) {
   const key = String(universityId || "").trim();
   const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
@@ -164,6 +187,12 @@ export function touchDetailCacheEntry(universityId, lang = getCurrentLanguage())
   writeDetailCache(cache);
 }
 
+/**
+ * Fetch a university detail payload with ETag revalidation, TTL caching, and single retry.
+ * @param {string} universityId
+ * @param {{ requireReviewedCatalog?: boolean }} [options]
+ * @returns {Promise<Record<string, any>>}
+ */
 export async function fetchUniversityDetailCached(universityId, { requireReviewedCatalog = false } = {}) {
   const key = String(universityId || "").trim();
   const lang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";

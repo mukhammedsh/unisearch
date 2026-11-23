@@ -73,9 +73,6 @@ export function createCompareController({
             ? initialCompareIds
             : normalizeCompareIdList(readIdListStorage(COMPARE_UNIVERSITIES_KEY))
     );
-    if (initialCompareIds.length !== MAX_COMPARE_UNIVERSITIES) {
-        state.compareResultIds.forEach((id) => compareUniversityIds.add(id));
-    }
     compareUniversityIds = new Set(normalizeCompareIdList(Array.from(compareUniversityIds)));
 
     const compareAdmissionChoices = readCompareAdmissionChoices();
@@ -89,7 +86,6 @@ export function createCompareController({
     let trayClickHandler = null;
     let compareModeBtnHandler = null;
 
-    const isCompareResultsMode = () => false;
     const isCompareSelectionMode = () => state.activeTab === "compare";
 
     const getRenderedUniversityById = (id) => {
@@ -172,7 +168,7 @@ export function createCompareController({
         if (!el.compareTray) return;
         if (isCompareSelectionMode()) syncCompareSelectionFromStorage();
         const ids = comparePairIds();
-        if (!ids.length || !isCompareSelectionMode() || isCompareResultsMode()) {
+        if (!ids.length || !isCompareSelectionMode()) {
             el.compareTray.hidden = true;
             el.compareTray.replaceChildren();
             return;
@@ -344,14 +340,8 @@ export function createCompareController({
     const setCompareSelectionMode = (enabled, { replaceUrl = false } = {}) => {
         onHideSearchSuggestions?.();
         const nextTab = enabled ? "compare" : "catalog";
-        if (nextTab === state.activeTab && !(nextTab === "compare" && isCompareResultsMode())) return;
+        if (nextTab === state.activeTab) return;
         state.activeTab = nextTab;
-        if (nextTab !== "compare") {
-            state.compareStage = "select";
-            state.compareResultIds = [];
-        } else if (state.compareStage !== "results") {
-            state.compareStage = "select";
-        }
         saveFilters(state);
         const items = getLastRenderedItems?.() || [];
         onSyncSectionVisibility?.({
@@ -403,17 +393,11 @@ export function createCompareController({
             const actionButton = e.target instanceof Element ? e.target.closest("[data-action]") : null;
             if (actionButton) motionPress(actionButton);
             if (action === "clear-compare") {
-                const wasCompareResults = isCompareResultsMode();
                 compareTrayNotice = "";
                 compareUniversityIds.clear();
                 compareAdmissionChoices.clear();
-                state.compareResultIds = [];
-                state.compareStage = "select";
                 persistSavedAndCompare();
                 syncCardActionState();
-                if (wasCompareResults) {
-                    onSyncSectionVisibility?.({ shouldFetch: false, replaceUrl: true }).catch((err) => console.error(err));
-                }
             }
             if (action === "remove-compare-slot") {
                 const slotUniId = String(actionButton?.getAttribute("data-uni-id") || "").trim();
@@ -451,7 +435,6 @@ export function createCompareController({
 
     return {
         isCompareSelectionMode,
-        isCompareResultsMode,
         getSavedUniversityIds: () => savedUniversityIds,
         getCompareUniversityIds: () => compareUniversityIds,
         getUniversityDisplayNameById,

@@ -29,6 +29,26 @@ export function initTranslationDebugLogger() {
   return logTranslationDebug;
 }
 
+/**
+ * Mutable request-lifecycle and in-memory response cache state for catalog fetches.
+ * @typedef {{
+ *   cacheTtlMs: number,
+ *   universitiesFetchCache: Map<string, { payload: { items: Array<Record<string, any>>, total: number }, timestamp: number }>,
+ *   profiledEndpointUnavailableUntil: number,
+ *   legacyPricesWarningShown: boolean,
+ *   lastAiFetchKey: string,
+ *   lastAiFetchPayload: { items: Array<Record<string, any>>, total: number, warnings: string[] } | null,
+ *   lastAiFetchAt: number,
+ *   listFetchController: AbortController | null,
+ *   aiFetchController: AbortController | null,
+ * }} UniversitiesApiState
+ */
+
+/**
+ * Create a fresh catalog API state container with in-memory TTL caching.
+ * @param {{ cacheTtlMs?: number }} [options]
+ * @returns {UniversitiesApiState}
+ */
 export function createUniversitiesApiState({ cacheTtlMs = DEFAULT_CACHE_TTL_MS } = {}) {
   return {
     cacheTtlMs,
@@ -43,6 +63,10 @@ export function createUniversitiesApiState({ cacheTtlMs = DEFAULT_CACHE_TTL_MS }
   };
 }
 
+/**
+ * Abort any in-flight catalog list or AI-sort network requests.
+ * @param {UniversitiesApiState | null | undefined} apiState
+ */
 export function abortUniversitiesApiRequests(apiState) {
   if (!apiState) return;
   apiState.listFetchController?.abort();
@@ -51,6 +75,12 @@ export function abortUniversitiesApiRequests(apiState) {
   apiState.aiFetchController = null;
 }
 
+/**
+ * Fetch a filtered page of universities using POST /universities/profiled with fallback to GET /universities.
+ * @param {URLSearchParams} apiParams
+ * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void }} [options]
+ * @returns {Promise<{ items: Array<Record<string, any>>, total: number, __aborted?: boolean }>}
+ */
 export async function fetchUniversitiesList(apiParams, { apiState, logTranslationDebug = () => {} } = {}) {
   const state = apiState || createUniversitiesApiState();
   const profile = loadProfileForApi();
@@ -125,6 +155,12 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
   return payload;
 }
 
+/**
+ * Fetch UniFit AI-sorted universities from POST /universities/ai-sort with TTL caching.
+ * @param {Record<string, any>} payload
+ * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void }} [options]
+ * @returns {Promise<{ items: Array<Record<string, any>>, total: number, warnings?: string[], __aborted?: boolean }>}
+ */
 export async function fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug = () => {} } = {}) {
   const state = apiState || createUniversitiesApiState();
   const key = JSON.stringify(payload);
