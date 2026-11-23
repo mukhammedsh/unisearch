@@ -6,7 +6,7 @@ import { translateAdmissionText } from "../../university-translations.js";
 import { formatPublishedDate } from "./admissions-presentation.js";
 import { isReviewedPublished } from "./admissions-status.js";
 
-export const MAX_FUNDING_LINES = 5;
+const MAX_FUNDING_LINES = 5;
 const isText = value => typeof value === "string" && value.trim() !== "";
 const published = text => translateAdmissionText(text.trim(), text.trim());
 // A discount for paying in one payment is not an award for need or merit, so it is not listed among the funding options.

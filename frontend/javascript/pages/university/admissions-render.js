@@ -3,7 +3,7 @@ import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { formatExamValue, getExamConfig, getExamDisplayName } from "../../utils/config.js";
 import { translateAdmissionSummary, translateAdmissionText, translateFactSource, translateProgramName } from "../../university-translations.js";
-import { localizeDuration, trProgramLanguage, trStudyMode } from "../_shared.js";
+import { localizeDuration, safeUrl as safeSharedUrl, trProgramLanguage, trStudyMode } from "../_shared.js";
 import { hasReviewWarning, isPublished, needsResolution, publicationState, PUBLICATION_LABEL_KEYS, reviewState, REVIEW_LABEL_KEYS } from "./admissions-status.js";
 
 const PREFIX = "university.admissions.catalog.";
@@ -110,14 +110,7 @@ const humanizeCode = code => { const words = code.replaceAll("_", " "); return w
 const codeLabel = code => t(`${PREFIX}enum.${code}`, humanizeCode(code));
 const localizeCodeTokens = text => String(text).replace(CODE_IN_TEXT, code => codeLabel(code));
 
-function safeUrl(value) {
-  try {
-    const parsed = new URL(String(value || ""));
-    return ["https:", "http:"].includes(parsed.protocol) && !parsed.username && !parsed.password ? parsed.href : "";
-  } catch {
-    return "";
-  }
-}
+const safeUrl = (value) => safeSharedUrl(value, { allowImplicitHttps: false });
 
 function sourceLink(url, title = label("source")) {
   const safe = safeUrl(url);

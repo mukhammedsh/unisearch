@@ -18,7 +18,7 @@ const QUERY_KEYS = {
   study_level: "admission_level",
   intended_entry_cycle: "admission_cycle", fee_status_context: "admission_fee",
 };
-export const ADMISSION_LEVELS = ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"];
+const ADMISSION_LEVELS = ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"];
 const LEVEL_ALIASES = { bachelor: "undergraduate", master: "masters", doctorate: "doctoral", phd: "doctoral" };
 const label = (key) => t(`university.admissions.catalog.${key}`);
 const routeName = (route) => admissionsRouteName(route, { presentation: "simple" });
@@ -81,7 +81,7 @@ export function normalizeAdmissionCycle(value) {
 }
 
 // The same published cycle forms the context field accepts without a warning.
-export function isRecognizedAdmissionCycle(value) {
+function isRecognizedAdmissionCycle(value) {
   return /^(?:20\d{2}(?:[/-](?:\d{2}|20\d{2}))?(?: entry)?|(?:Fall|Autumn|Spring) 20\d{2}(?: entry)?|20\d{2} (?:Fall|Autumn|Spring))$/i.test(normalizeAdmissionCycle(value));
 }
 

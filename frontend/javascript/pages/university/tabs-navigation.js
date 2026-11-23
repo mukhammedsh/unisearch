@@ -69,7 +69,7 @@ export function mountTabsNavigation(card) {
     const visibleEnd = tabs.scrollLeft + tabs.clientWidth - zone;
     const target = direction > 0
       ? allTabs().find((tab) => tab.offsetLeft + tab.offsetWidth > visibleEnd + EDGE_TOLERANCE)
-      : allTabs().reverse().find((tab) => tab.offsetLeft < visibleStart - EDGE_TOLERANCE);
+      : allTabs().toReversed().find((tab) => tab.offsetLeft < visibleStart - EDGE_TOLERANCE);
     const left = !target ? tabs.scrollLeft + direction * tabs.clientWidth / 2
       : direction > 0 ? target.offsetLeft - zone : target.offsetLeft + target.offsetWidth - (tabs.clientWidth - zone);
     tabs.scrollTo({ left: Math.max(0, left), behavior: scrollBehavior() });

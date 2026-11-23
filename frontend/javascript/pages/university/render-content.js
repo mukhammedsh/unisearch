@@ -9,6 +9,7 @@ import {
   admissionsDataTypeLabel,
   admissionsFactChips,
   campusAreaFact,
+  formatStudyLevelCounts,
   formatUiNumber,
   localizeDuration,
   renderAdmissionsChipRow,
@@ -370,13 +371,13 @@ export function resolveProgramCoverage({ coverageByProgram = [], program = null 
   if (!program || typeof program !== "object") return null;
   const rows = Array.isArray(coverageByProgram) ? coverageByProgram : [];
   const programId = String(program.id || program.program_id || program.course_number || "").trim();
-  const programNames = [program.source_name, program.name, program.program_name]
-    .map(normalizedProgramCoverageText).filter(Boolean);
+  const programNames = new Set([program.source_name, program.name, program.program_name]
+    .map(normalizedProgramCoverageText).filter(Boolean));
   return rows.find((row) => {
     if (!row || typeof row !== "object") return false;
     const rowId = String(row.program_id || "").trim();
     if (programId && rowId && rowId === programId) return true;
-    return programNames.includes(normalizedProgramCoverageText(row.program_name));
+    return programNames.has(normalizedProgramCoverageText(row.program_name));
   }) || null;
 }
 
@@ -692,21 +693,10 @@ function getAvailableProgramLevels(programs) {
     });
   });
 
-  const order = ["bachelor", "master", "doctorate", "professional", "mba"];
-  const out = [];
-  order.forEach((k) => {
-    if (counts.has(k)) {
-      let label = "";
-      if (k === "bachelor") label = t("profile.option.study_level_bachelor", "Bachelor's");
-      else if (k === "master") label = t("profile.option.study_level_master", "Master's");
-      else if (k === "doctorate") label = t("profile.option.study_level_doctorate", "Doctorate / PhD");
-      else if (k === "mba") label = t("university.coverage.level.mba", "MBA");
-      else if (k === "professional") label = t("university.coverage.level.professional", "Professional");
-      else label = trStudyLevel(k);
-      out.push({ key: k, label, count: counts.get(k) });
-    }
+  return formatStudyLevelCounts(counts, {
+    mbaKey: "university.coverage.level.mba",
+    professionalKey: "university.coverage.level.professional",
   });
-  return out;
 }
 
 const hiddenProgramMetadata = new Set([

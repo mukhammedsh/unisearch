@@ -130,7 +130,7 @@ function _hydratePacksFromSession() {
       if (!cached) return;
       const parsed = _parseLocalizationFile(cached);
       if (!parsed || typeof parsed !== "object" || Object.keys(parsed).length === 0) return;
-      DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+      DICT[lang] = { ...DICT[lang], ...parsed };
       __loadedPacks.add(lang);
 
       const code = String(parsed["meta.code"] || "").trim();
@@ -160,7 +160,7 @@ function _loadLocalizationPack(lang) {
       if (!raw) return false;
       const parsed = _parseLocalizationFile(raw);
       if (Object.keys(parsed).length === 0) return false;
-      DICT[lang] = { ...(DICT[lang] || {}), ...parsed };
+      DICT[lang] = { ...DICT[lang], ...parsed };
       __loadedPacks.add(lang);
       safeSessionStorage.set(`${I18N_SESSION_CACHE_PREFIX}${lang}`, raw);
 
@@ -226,6 +226,7 @@ function isSafeI18nHref(rawUrl) {
     .replace(/&colon;/gi, ":")
     .replace(/&tab;/gi, "\t")
     .replace(/&newline;/gi, "\n");
+  // oxlint-disable-next-line no-control-regex -- intentionally strips ASCII control characters when sanitizing URLs
   const trimmed = decoded.trim().replace(/[\x00-\x1f\x7f]/g, "");
   if (!trimmed || trimmed.startsWith("//")) return false;
 

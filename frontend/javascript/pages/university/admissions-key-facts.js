@@ -105,7 +105,7 @@ function providedText(provided) {
 }
 
 // A profile link that opens the language editor at one English test, so a missing result or section score is entered in place.
-export const profileLanguageExamHref = exam => `/profile.html?language_exam=${encodeURIComponent(exam)}`;
+const profileLanguageExamHref = exam => `/profile.html?language_exam=${encodeURIComponent(exam)}`;
 
 // The published English-test names of a recommendation record, as the profile's language exam ids.
 const RECOMMENDED_ENGLISH_EXAMS = {

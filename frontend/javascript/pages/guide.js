@@ -6,32 +6,11 @@ import {
   escapeHtml,
   getExamDisplayName,
   replayMotion,
+  setManualScrollRestoration,
 } from "../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { heroIcon } from "../icons.js";
-
-let guideExternalUpdateHandler = null;
-let guideHashChangeHandler = null;
-
-function bindGuideExternalUpdates(handler) {
-  if (guideExternalUpdateHandler) {
-    window.removeEventListener("languageChanged", guideExternalUpdateHandler);
-    window.removeEventListener("examConfigLoaded", guideExternalUpdateHandler);
-    window.removeEventListener("languageConfigLoaded", guideExternalUpdateHandler);
-  }
-  guideExternalUpdateHandler = handler;
-  window.addEventListener("languageChanged", guideExternalUpdateHandler);
-  window.addEventListener("examConfigLoaded", guideExternalUpdateHandler);
-  window.addEventListener("languageConfigLoaded", guideExternalUpdateHandler);
-}
-
-function bindGuideHashChange(handler) {
-  if (guideHashChangeHandler) {
-    window.removeEventListener("hashchange", guideHashChangeHandler);
-  }
-  guideHashChangeHandler = handler;
-  window.addEventListener("hashchange", guideHashChangeHandler);
-}
+import { bindGuideExternalUpdates, bindGuideHashChange } from "./shared/cache.js";
 
 function normalizeExamId(value) {
   return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -482,11 +461,7 @@ export function initGuidePage() {
     { updateHash: false, scroll: false }
   );
 
-  if (window.history && "scrollRestoration" in window.history) {
-    try {
-      window.history.scrollRestoration = "manual";
-    } catch {}
-  }
+  setManualScrollRestoration();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
   window.addEventListener("resize", () => {

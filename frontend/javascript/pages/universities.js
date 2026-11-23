@@ -24,6 +24,7 @@ import {
   replayMotion,
   setupSlidingIndicator,
   safeSessionStorage,
+  setManualScrollRestoration,
   showToast,
 } from "../utils.js";
 
@@ -69,7 +70,6 @@ import {
   trCity,
   trState,
   trUniversityName,
-  unknownFieldText,
   textOrUnknown,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
@@ -349,9 +349,11 @@ function initTranslationDebugLogger() {
     const logTranslationDebug = (stage, details = {}) => {
         if (!isTranslationDebugEnabled) return;
         try {
+            // oxlint-disable no-console -- guarded by APP_DEBUG runtime flag
             console.groupCollapsed(`[UniSearch Translation Debug] ${stage}`);
             Object.entries(details || {}).forEach(([k, v]) => console.log(`${k}:`, v));
             console.groupEnd();
+            // oxlint-enable no-console
         } catch {
             // ignore logging errors
         }
@@ -437,11 +439,7 @@ export function initUniversitiesPage() {
     const COMPARE_PAIR_SIZE = MAX_COMPARE_UNIVERSITIES;
     const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
 
-    if (window.history && "scrollRestoration" in window.history) {
-        try {
-            window.history.scrollRestoration = "manual";
-        } catch {}
-    }
+    setManualScrollRestoration();
 
     const saveCurrentScrollPosition = () => {
         if (state.activeTab !== "catalog" || state.viewMode !== "list") return;
@@ -716,7 +714,7 @@ export function initUniversitiesPage() {
     let lastMapPointsBounds = null;
     let pendingMapFocusId = "";
     let viewModesReady = false;
-    let savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
+    const savedUniversityIds = new Set(readIdListStorage(SAVED_UNIVERSITIES_KEY));
     let compareUniversityIds = new Set(
         initialCompareIds.length === COMPARE_PAIR_SIZE
             ? initialCompareIds

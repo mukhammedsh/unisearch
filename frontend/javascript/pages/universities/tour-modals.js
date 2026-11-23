@@ -7,7 +7,7 @@ import { heroIcon } from "../../icons.js";
 
 let universitiesTourModal = null;
 
-export function ensureUniversitiesTourModal() {
+function ensureUniversitiesTourModal() {
     if (universitiesTourModal && universitiesTourModal.parentElement) return universitiesTourModal;
     const existing = document.getElementById("uTourModal");
     if (existing) {

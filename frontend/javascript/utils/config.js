@@ -1,4 +1,4 @@
-import { API_BASE, debounce } from "./runtime.js";
+import { API_BASE } from "./runtime.js";
 import { formatPlural } from "./format.js";
 import { getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { createSafeStorage } from "./safe-storage.js";
@@ -719,24 +719,3 @@ export function clampNumberToLimits(value, limits) {
   }
   return out;
 }
-
-export function applyNumberInputLimits(inputEl, limits) {
-  if (!inputEl) return;
-  if (!limits) {
-    inputEl.removeAttribute("min");
-    inputEl.removeAttribute("max");
-    inputEl.removeAttribute("step");
-    return;
-  }
-  if (limits.min !== undefined) inputEl.min = String(limits.min);
-  if (limits.max !== undefined) inputEl.max = String(limits.max);
-  if (limits.step !== undefined) inputEl.step = String(limits.step);
-}
-
-export function applyLanguageExamInputLimits(inputEl, examId) {
-  const limits = getLangExamLimits(examId, LANG_CONFIG) || FALLBACK_LANG_LIMITS[examId] || null;
-  applyNumberInputLimits(inputEl, limits);
-  return limits;
-}
-
-export { debounce };

@@ -17,6 +17,7 @@ import {
   getAdmissionChoicesFromCategories,
   getGrantsFromCategories,
   getTrackFundingType,
+  isPlainObject,
   renderExamGroup,
   renderTrackFundingBadge,
   splitExamEntries,
@@ -26,6 +27,7 @@ import { parseExactDeadlineDate } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 import {
   costBreakdownCoverageNote,
+  formatStudyLevelCounts,
   modeAwareAnnualCost,
   modeAwareBreakdown,
   moneyOrUnknown,
@@ -208,7 +210,7 @@ export function getAdmissionContextProfile(university, baseProfile = loadProfile
       const legacyChoiceApplies = !previousChoice.programId && Boolean(previousChoice.choiceKey || previousChoice.choice_key)
         && applicableCategories.some((category) => String(category.id || "") === savedChoiceCategoryId);
       profile.selectedAdmissionChoices = {
-        ...(profile.selectedAdmissionChoices || {}),
+        ...(isPlainObject(profile.selectedAdmissionChoices) ? profile.selectedAdmissionChoices : null),
         [id]: sameProgram || legacyChoiceApplies
           ? { ...previousChoice, ...(selectedId ? { programId: selectedId } : { programName: selectedName }) }
           : selectedId ? { programId: selectedId } : { programName: selectedName },
@@ -296,7 +298,7 @@ function normalizeAwardLevels(award) {
     ? award.study_levels
     : [award?.study_level || ""];
   return rawLevels
-    .flatMap((value) => String(value || "").split(/[\/,&]+/))
+    .flatMap((value) => String(value || "").split(/[/,&]+/))
     .map((value) => normalizeLevelKey(value))
     .filter((value) => value && value !== "general");
 }
@@ -1199,21 +1201,10 @@ function getAvailableStudyLevels(categories) {
     if (categoryIsMba(cat)) counts.set("mba", (counts.get("mba") || 0) + 1);
   });
 
-  const order = ["bachelor", "master", "doctorate", "professional", "mba"];
-  const out = [];
-  order.forEach((k) => {
-    if (counts.has(k)) {
-      let label = "";
-      if (k === "bachelor") label = t("profile.option.study_level_bachelor", "Bachelor's");
-      else if (k === "master") label = t("profile.option.study_level_master", "Master's");
-      else if (k === "doctorate") label = t("profile.option.study_level_doctorate", "Doctorate / PhD");
-      else if (k === "professional") label = t("profile.option.study_level_professional", "Professional");
-      else if (k === "mba") label = t("profile.option.study_level_mba", "MBA");
-      else label = trStudyLevel(k);
-      out.push({ key: k, label, count: counts.get(k) });
-    }
+  return formatStudyLevelCounts(counts, {
+    mbaKey: "profile.option.study_level_mba",
+    professionalKey: "profile.option.study_level_professional",
   });
-  return out;
 }
 
 function renderStudyLevelFilter(availableLevels, activeLevelKey, totalCategories) {
@@ -1243,7 +1234,7 @@ export function resolveFeeStatusAndAid({ university, profile, studyLevel }) {
   const isUsUni = country.includes("united states") || country.includes("usa") || country.includes("сша") || country === "us";
 
   let feeStatusBadge = "";
-  let feeStatusTone = "neutral";
+  const feeStatusTone = "neutral";
   let feeStatusSummary = "";
 
   if (isUkUni || isUsUni) {
@@ -1467,10 +1458,6 @@ function renderFinancePolicyOverview(policy) {
 }
 
 
-function isPlainObject(value) {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
 function normalizeProgramToken(value) {
   const token = String(value || "").trim().toLowerCase().replaceAll("&", " and ")
     .replace(/[^\p{L}\p{N}]+/gu, "_");
@@ -1665,7 +1652,7 @@ function renderChoiceRequirements({ category, funding, profile, university }) {
   const languageChoice = {
     ...category,
     ...profile,
-    ...(funding || {}),
+    ...funding,
     requirements,
     stats_avg: statsAvg,
     language_requirements: funding?.language_requirements || profile?.language_requirements || category?.language_requirements || [],
@@ -1879,7 +1866,6 @@ function renderAdmissionCategoryCard({
   annualCostForTrack,
   category,
   categoryIdx,
-  compactMode,
   effectiveSelectedChoiceKey,
   hasExplicitProgramSelection,
   university,
@@ -2185,7 +2171,6 @@ export function renderAdmissionSection({
       annualCostForTrack,
       category,
       categoryIdx,
-      compactMode,
       effectiveSelectedChoiceKey,
       hasExplicitProgramSelection,
       university,

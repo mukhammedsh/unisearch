@@ -180,8 +180,7 @@ export const stableProfileSignature = (raw) => {
     });
 };
 
-export const formatExamValidationToast = (examId, detailRaw, examConfigFor) => {
-    const examLabel = getExamDisplayName(examId, { locale: getCurrentLanguage() });
+export const parseValidationErrorDetail = (detailRaw) => {
     let detail = "";
     if (typeof detailRaw === "string") {
         detail = detailRaw.trim();
@@ -192,11 +191,20 @@ export const formatExamValidationToast = (examId, detailRaw, examConfigFor) => {
         detail = String(detailRaw.msg || detailRaw.message || detailRaw.detail || "").trim();
     }
     detail = detail.replace(/^Value error,\s*/i, "").trim();
+    return {
+        detail,
+        rangeMatch: detail.match(/Score must be between\s+([0-9.]+)\s+and\s+([0-9.]+)$/i),
+        stepMatch: detail.match(/step=?([0-9.]+)/i),
+    };
+};
+
+export const formatExamValidationToast = (examId, detailRaw, examConfigFor) => {
+    const examLabel = getExamDisplayName(examId, { locale: getCurrentLanguage() });
+    const { detail, rangeMatch, stepMatch } = parseValidationErrorDetail(detailRaw);
     if (!detail) {
         return tFormat("profile.exam_error_generic", { exam: examLabel }, `Could not save ${examLabel}`);
     }
 
-    const rangeMatch = detail.match(/Score must be between\s+([0-9.]+)\s+and\s+([0-9.]+)$/i);
     if (rangeMatch) {
         return tFormat(
             "profile.exam_error_range",
@@ -205,7 +213,6 @@ export const formatExamValidationToast = (examId, detailRaw, examConfigFor) => {
         );
     }
 
-    const stepMatch = detail.match(/step=?([0-9.]+)/i);
     if (stepMatch) {
         return tFormat(
             "profile.exam_error_step",

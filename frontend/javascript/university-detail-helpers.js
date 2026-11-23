@@ -101,20 +101,29 @@ function normalizeCompositeDefs(items = []) {
     .filter(Boolean);
 }
 
-function getCompositeParentExam(examId, opts = {}) {
-  const target = String(examId || "").trim();
-  if (!target) return "";
-  const academicEntries = Object.entries(EXAM_CONFIG || {});
-  for (const [parentId, cfg] of academicEntries) {
-    const scheme = cfg?.breakdown_scheme;
+function findParentBreakdownExam(entries, getId, target) {
+  for (const entry of entries) {
+    const scheme = entry?.scheme;
     if (!scheme || typeof scheme !== "object") continue;
     const defs = [
       ...normalizeCompositeDefs(scheme.fixed_components),
       ...normalizeCompositeDefs(scheme.selectable_components),
       ...normalizeCompositeDefs(scheme.extra_scores),
     ];
-    if (defs.some((row) => String(row.exam || "").trim() === target)) return String(parentId || "").trim();
+    if (defs.some((row) => String(row.exam || "").trim() === target)) return getId(entry);
   }
+  return "";
+}
+
+function getCompositeParentExam(examId, opts = {}) {
+  const target = String(examId || "").trim();
+  if (!target) return "";
+  const academicParent = findParentBreakdownExam(
+    Object.entries(EXAM_CONFIG || {}).map(([parentId, cfg]) => ({ parentId, scheme: cfg?.breakdown_scheme })),
+    (entry) => String(entry.parentId || "").trim(),
+    target
+  );
+  if (academicParent) return academicParent;
 
   const groups = LANG_CONFIG?.language_exams || {};
   const langCode = String(opts?.langCode || "").trim().toLowerCase();
@@ -122,16 +131,12 @@ function getCompositeParentExam(examId, opts = {}) {
     ? [groups[langCode]]
     : Object.values(groups).filter((row) => Array.isArray(row));
   for (const arr of lists) {
-    for (const cfg of arr) {
-      const scheme = cfg?.breakdown_scheme;
-      if (!scheme || typeof scheme !== "object") continue;
-      const defs = [
-        ...normalizeCompositeDefs(scheme.fixed_components),
-        ...normalizeCompositeDefs(scheme.selectable_components),
-        ...normalizeCompositeDefs(scheme.extra_scores),
-      ];
-      if (defs.some((row) => String(row.exam || "").trim() === target)) return String(cfg?.id || "").trim();
-    }
+    const langParent = findParentBreakdownExam(
+      arr.map((cfg) => ({ id: cfg?.id, scheme: cfg?.breakdown_scheme })),
+      (entry) => String(entry.id || "").trim(),
+      target
+    );
+    if (langParent) return langParent;
   }
 
   return "";
@@ -332,7 +337,7 @@ export function getAdmissionChoicesFromCategories(categories) {
         const choice = {
           ...category,
           ...profile,
-          ...(funding || {}),
+          ...funding,
           id: key || String(profile.id || category.id || `choice:${fundingIdx}`),
           choice_key: key,
           category_id: String(category.id || "").trim(),
@@ -430,7 +435,7 @@ export function getTrackFundingType(track) {
   return /grant|scholar/.test(badgeRaw) ? "grant" : "paid";
 }
 
-function isPlainObject(value) {
+export function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 

@@ -3,6 +3,7 @@ import {
   EXAM_CONFIG,
   MAJOR_OPTIONS,
   animateElementOut,
+  bindDialogLightDismiss,
   canonicalizeExamId,
   clearProfile,
   escapeHtml,
@@ -66,7 +67,7 @@ export function requestProfileNavigationClose() {
     return activeProfileNavigationClose ? activeProfileNavigationClose() : true;
 }
 
-export const queryProfileElements = (modal) => {
+const queryProfileElements = (modal) => {
     const unsavedModal = document.getElementById("profileUnsavedModal");
     const resetModal = document.getElementById("profileResetModal");
     const budgetInput = document.getElementById("budgetInput");
@@ -119,16 +120,16 @@ export const queryProfileElements = (modal) => {
     };
 };
 
-export const initCommonSelects = (selectIds = []) => {
+const initCommonSelects = (selectIds = []) => {
     if (typeof initCustomSelect !== "function") return;
     selectIds.forEach((id) => {
         if (id) initCustomSelect(id);
     });
 };
 
-export const isProfileDirty = (state) => !!(state.examEditorDirty || state.languageEditorDirty) || stableProfileSignature(state.profile) !== state.savedSignature;
+const isProfileDirty = (state) => !!(state.examEditorDirty || state.languageEditorDirty) || stableProfileSignature(state.profile) !== state.savedSignature;
 
-export const setProfileDraft = (state, els, next, options = {}) => {
+const setProfileDraft = (state, els, next, options = {}) => {
     state.profile = ensureProfileShape(next);
     if (options.markAsSaved) {
         state.savedSignature = stableProfileSignature(state.profile);
@@ -136,7 +137,7 @@ export const setProfileDraft = (state, els, next, options = {}) => {
     refreshSaveState(els, state);
 };
 
-export const populateMajors = (select) => {
+const populateMajors = (select) => {
     if (!select) return;
     select.innerHTML = `<option value="">${escapeHtml(t("profile.option.major_any", "Undecided / Any"))}</option>`;
     MAJOR_OPTIONS.forEach((m) => {
@@ -151,7 +152,7 @@ export const populateMajors = (select) => {
 const ENGLISH_TEST_SHORTCUTS = ["IELTS", "TOEFL_iBT_0_120", "DET", "PTE"];
 const LANGUAGE_EXAM_PREFIX = "language:";
 
-export const populateExamSelect = (els, state) => {
+const populateExamSelect = (els, state) => {
     if (!els.examNameSelect) return;
     const selectedExam = els.examNameSelect.value;
     els.examNameSelect.innerHTML = `<option value="" disabled selected>${escapeHtml(t("profile.option.select_exam", "Select Exam"))}</option>`;
@@ -185,7 +186,7 @@ export const populateExamSelect = (els, state) => {
     refreshExamActionButton(els, state);
 };
 
-export const parseBudgetDraftValue = (els, state) => {
+const parseBudgetDraftValue = (els, state) => {
     const raw = String(els.budgetInput?.value || state.profile?.budget || "").trim();
     if (!raw) return null;
     if (raw.includes(".") || raw.includes(",")) return null;
@@ -194,7 +195,7 @@ export const parseBudgetDraftValue = (els, state) => {
     return value;
 };
 
-export const shouldShowLowBudgetGrantHint = (els, state) => {
+const shouldShowLowBudgetGrantHint = (els, state) => {
     const budgetValue = parseBudgetDraftValue(els, state);
     if (budgetValue === null) return false;
     const currency = getBudgetCurrency();
@@ -204,7 +205,7 @@ export const shouldShowLowBudgetGrantHint = (els, state) => {
     return fundingType !== "grant";
 };
 
-export const renderLowBudgetGrantHint = (els, state) => {
+const renderLowBudgetGrantHint = (els, state) => {
     if (!els.lowBudgetGrantHint) return;
 
     const shouldShow = shouldShowLowBudgetGrantHint(els, state);
@@ -244,7 +245,7 @@ export const renderLowBudgetGrantHint = (els, state) => {
     els.lowBudgetGrantHint.hidden = false;
 };
 
-export const updateBudgetUI = (els, state) => {
+const updateBudgetUI = (els, state) => {
     const currency = getBudgetCurrency();
     const maxBudget = getMaxBudgetForCurrency(currency);
     if (els.profileBudgetUnit) els.profileBudgetUnit.textContent = t("profile.unit.per_year", "/ year");
@@ -266,7 +267,7 @@ export const updateBudgetUI = (els, state) => {
 
 const SUMMARY_STATE_ICONS = { used: "check-circle", partial: "adjustments-horizontal", not_used: "x-mark" };
 
-export const renderProfileSummary = (els, state) => {
+const renderProfileSummary = (els, state) => {
     if (!els.profileSummaryList) return;
     const ctx = {
         t,
@@ -313,7 +314,7 @@ export const renderProfileSummary = (els, state) => {
     });
 };
 
-export const refreshSaveState = (els, state) => {
+const refreshSaveState = (els, state) => {
     const dirty = isProfileDirty(state);
     if (els.profileSaveState) {
         els.profileSaveState.removeAttribute("data-i18n");
@@ -335,7 +336,7 @@ export const refreshSaveState = (els, state) => {
 
 const sectionIdOf = (node) => String(node?.getAttribute("data-profile-section") || "");
 
-export const setActiveProfileSection = (els, section) => {
+const setActiveProfileSection = (els, section) => {
     const active = String(section || "basics");
     els.profileSectionTabs.forEach((tab) => {
         const isActive = String(tab.dataset.profileTab || "") === active;
@@ -346,7 +347,7 @@ export const setActiveProfileSection = (els, section) => {
 };
 
 // All sections stay visible; the outline only scrolls to one of them and marks it as current.
-export const goToProfileSection = (els, state, section, { focusHeading = true } = {}) => {
+const goToProfileSection = (els, state, section, { focusHeading = true } = {}) => {
     const node = els.profileSectionNodes.find((candidate) => sectionIdOf(candidate) === section);
     if (!node) return;
     setActiveProfileSection(els, section);
@@ -356,7 +357,7 @@ export const goToProfileSection = (els, state, section, { focusHeading = true } 
     if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
 };
 
-export const findExistingExamEntry = (examId, els, state) => {
+const findExistingExamEntry = (examId, els, state) => {
     const selected = canonicalizeExamId(examId);
     const takenOn = String(els.examTakenOnInput?.value || "").trim();
     if (!selected || !Array.isArray(state.profile.exams)) return null;
@@ -367,18 +368,18 @@ export const findExistingExamEntry = (examId, els, state) => {
 const examDraftControls = (els) => [els.examScoreInput, els.examTakenOnInput,
     ...Array.from(els.examSpecialInputContainer?.querySelectorAll("input, select") || [])].filter(Boolean);
 
-export const readSubjectBreakdownDraft = (examId, els, state, options = {}) =>
+const readSubjectBreakdownDraft = (examId, els, state, options = {}) =>
     readSubjectBreakdownDraftFromModule(examId, els.examSpecialInputContainer, {
         ...options,
         findExistingExamEntry: (id) => findExistingExamEntry(id, els, state),
     });
 
-export const renderSpecialExamInput = (examId, els, state) =>
+const renderSpecialExamInput = (examId, els, state) =>
     renderSpecialExamInputFromModule(examId, els.examSpecialInputContainer, {
         findExistingExamEntry: (id) => findExistingExamEntry(id, els, state),
     });
 
-export const syncExamScoreInputState = (els, state) => {
+const syncExamScoreInputState = (els, state) => {
     if (!els.examScoreInput) return;
 
     const selectedExam = canonicalizeExamId(els.examNameSelect?.value);
@@ -553,7 +554,7 @@ export const readSelectedExamPayload = (examId, els, state) => {
     return { score, raw_input_score: rawScore };
 };
 
-export const refreshExamActionButton = (els, state) => {
+const refreshExamActionButton = (els, state) => {
     if (!els.addExamBtn || !els.examNameSelect) return;
     const selected = canonicalizeExamId(els.examNameSelect.value);
     if (els.clearExamDraftBtn) els.clearExamDraftBtn.hidden = !selected;
@@ -566,9 +567,9 @@ export const refreshExamActionButton = (els, state) => {
     els.addExamBtn.textContent = t(key, fallback);
 };
 
-export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
+const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);
 
-export const syncInputsToDraft = (els, state) => {
+const syncInputsToDraft = (els, state) => {
     if (els.budgetInput) {
         state.profile = applyBudgetEntry(state.profile, normalizeAmountRaw(els.budgetInput.value), state.budgetInputCurrency || getBudgetCurrency());
     }
@@ -584,13 +585,13 @@ export const syncInputsToDraft = (els, state) => {
     state.profile = ensureProfileShape(state.profile);
 };
 
-export const reportFieldValidationError = (inputEl, message) => {
+const reportFieldValidationError = (inputEl, message) => {
     setFieldInvalid(inputEl, true, message);
     inputEl?.focus();
     return { ok: false, value: "" };
 };
 
-export const validateBudgetInput = (els) => {
+const validateBudgetInput = (els) => {
     const rawVal = normalizeAmountRaw(els.budgetInput?.value);
     if (!rawVal) {
         setFieldInvalid(els.budgetInput, false);
@@ -616,7 +617,7 @@ export const validateBudgetInput = (els) => {
     return { ok: true, value: val };
 };
 
-export const updateGpaScaleUI = (els, state, scale) => {
+const updateGpaScaleUI = (els, state, scale) => {
     const s = scale === 5 ? 5 : 4;
     state.profile.gpaScale = s;
     if (els.gpaInput) {
@@ -642,7 +643,7 @@ export const updateGpaScaleUI = (els, state, scale) => {
 };
 
 // Warns while typing when a 5-point grade is entered on the 4.0 scale, instead of only failing on save.
-export const renderGpaHint = (els, state) => {
+const renderGpaHint = (els, state) => {
     if (!els.gpaHint) return;
     const scale = Number(state.profile.gpaScale) === 5 ? 5 : 4;
     const value = Number(normalizeGpaRaw(els.gpaInput?.value || ""));
@@ -660,7 +661,7 @@ export const renderGpaHint = (els, state) => {
         }, "");
 };
 
-export const validateGpaInput = (els, state) => {
+const validateGpaInput = (els, state) => {
     const rawVal = normalizeGpaRaw(els.gpaInput?.value || "");
     if (!rawVal) {
         setFieldInvalid(els.gpaInput, false);
@@ -683,7 +684,7 @@ export const validateGpaInput = (els, state) => {
     return { ok: true, value: Number(Math.round(val * 100) / 100) };
 };
 
-export const renderProfileData = (els, state) => {
+const renderProfileData = (els, state) => {
     if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
     if (els.examList) {
         els.examList.innerHTML = state.profile.exams.map((ex, i) => `
@@ -703,7 +704,7 @@ export const renderProfileData = (els, state) => {
     refreshExamActionButton(els, state);
 };
 
-export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
+const applyDraftToInputs = (els, state, { preserveExam = false } = {}) => {
     setFieldInvalid(els.budgetInput, false);
     setFieldInvalid(els.gpaInput, false);
     setFieldInvalid(els.examScoreInput, false);
@@ -754,14 +755,14 @@ export const applyDraftToInputs = (els, state, { preserveExam = false } = {}) =>
     refreshSaveState(els, state);
 };
 
-export const resetFields = (els, state) => {
+const resetFields = (els, state) => {
     state.gpaScaleAutoSwitched = false;
     const savedProfile = ensureProfileShape(loadProfile());
     setProfileDraft(state, els, savedProfile, { markAsSaved: true });
     applyDraftToInputs(els, state);
 };
 
-export const saveAllProfileChanges = (els, state) => {
+const saveAllProfileChanges = (els, state) => {
     if (state.examEditorDirty || state.languageEditorDirty) {
         goToProfileSection(els, state, state.examEditorDirty ? "scores" : "languages", { focusHeading: false });
         (state.examEditorDirty ? els.addExamBtn : document.getElementById("langAddBtn"))?.focus();
@@ -847,7 +848,7 @@ export const closeResetDialog = (els, state, focusResetButton = false) => {
     }, focusResetButton ? els.resetProfileBtn : null);
 };
 
-export const closeImmediately = (els, state) => {
+const closeImmediately = (els, state) => {
     if (!els.modal.classList.contains("is-open") && !state.isDedicatedPage) return;
     state.isDiscarding = true;
 
@@ -874,7 +875,9 @@ export const closeImmediately = (els, state) => {
                         }
                         return;
                     }
-                } catch {}
+                } catch {
+                    safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
+                }
             }
 
             if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
@@ -939,7 +942,7 @@ export const openResetDialog = (els, state) => {
     els.resetCancelBtn?.focus();
 };
 
-export const requestClose = (els, state) => {
+const requestClose = (els, state) => {
     if (!els.modal.classList.contains("is-open") && !state.isDedicatedPage) return;
     syncInputsToDraft(els, state);
     if (!refreshSaveState(els, state)) {
@@ -949,7 +952,7 @@ export const requestClose = (els, state) => {
     openUnsavedDialog(els, state);
 };
 
-export const resetProfileData = (els, state) => {
+const resetProfileData = (els, state) => {
     state.lowBudgetGrantHintDismissed = false;
     safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
     state.profileStoragePersistent = clearProfile();
@@ -962,7 +965,7 @@ export const resetProfileData = (els, state) => {
     showToast(t("profile.reset.done", "Profile data reset"), "success");
 };
 
-export const retranslateProfileUi = (els, state) => {
+const retranslateProfileUi = (els, state) => {
     const selectedExam = els.examNameSelect ? String(els.examNameSelect.value || "") : "";
     const examValues = examDraftControls(els).map(control => control.value);
     const selectedLangCode = document.getElementById("langCode");
@@ -1005,14 +1008,14 @@ export const retranslateProfileUi = (els, state) => {
     ]);
 };
 
-export const setGpaScale = (els, state, scale) => {
+const setGpaScale = (els, state, scale) => {
     const nextScale = scale === 5 ? 5 : 4;
     if (Number(state.profile.gpaScale) === nextScale) return;
     updateGpaScaleUI(els, state, nextScale);
     refreshSaveState(els, state);
 };
 
-export const openProfile = (els, state) => {
+const openProfile = (els, state) => {
     state.isDiscarding = false;
     resetFields(els, state);
     retranslateProfileUi(els, state);
@@ -1040,13 +1043,13 @@ export const openProfile = (els, state) => {
     }
 };
 
-export const showExamScoreError = (inputEl, message) => {
+const showExamScoreError = (inputEl, message) => {
     setFieldInvalid(inputEl, true, message);
     inputEl?.focus();
     showToast(message, "error");
 };
 
-export const handleAddExam = async (els, state) => {
+const handleAddExam = async (els, state) => {
     if (!els.addExamBtn || !els.examNameSelect || state.examValidationPending) return;
     motionPress(els.addExamBtn);
     const name = canonicalizeExamId(els.examNameSelect.value);
@@ -1230,7 +1233,7 @@ export const handleAddExam = async (els, state) => {
     }
 };
 
-export const handleExamListClick = (e, els, state) => {
+const handleExamListClick = (e, els, state) => {
     const editBtn = e.target instanceof Element ? e.target.closest("button[data-edit-idx]") : null;
     if (editBtn) {
         motionPress(editBtn);
@@ -1264,7 +1267,7 @@ export const handleExamListClick = (e, els, state) => {
     });
 };
 
-export const bindProfileEvents = (els, state) => {
+const bindProfileEvents = (els, state) => {
     const globalListenerDisposers = [];
     const listenGlobal = (target, type, handler) => {
         target.addEventListener(type, handler);
@@ -1571,23 +1574,6 @@ export const bindProfileEvents = (els, state) => {
         }
         closeImmediately(els, state);
     });
-    const bindDialogLightDismiss = (modal, card, onDismiss) => {
-        if (!modal) return;
-        modal.addEventListener("cancel", (event) => {
-            event.preventDefault();
-            onDismiss();
-        });
-        let pressedBackdrop = false;
-        modal.addEventListener("pointerdown", (event) => {
-            pressedBackdrop = Boolean((modal.open || modal.classList.contains("is-open")) && card && event.target === modal);
-        });
-        modal.addEventListener("pointerup", (event) => {
-            if (pressedBackdrop && (modal.open || modal.classList.contains("is-open")) && card && event.target === modal) {
-                onDismiss();
-            }
-            pressedBackdrop = false;
-        });
-    };
     bindDialogLightDismiss(els.unsavedModal, els.unsavedCard, () => {
         closeUnsavedDialog(els, state, true);
         settleNavigationClose(false);

@@ -1,8 +1,10 @@
+import { safeBlur, safeFocus } from "./utils/runtime.js";
+
 const __boundTooltipKeys = new Set();
 
-export const DEFAULT_TOOLTIP_WRAP_SELECTOR = ".ui-tooltip-wrap, .u-info-wrap, .uni-status-tooltip, .d-info-wrap, .profile-info-wrap, .uni-metric-tooltip";
-export const DEFAULT_TOOLTIP_BUTTON_SELECTOR = ".ui-tooltip-trigger, .u-info, .uni-status-trigger, .d-info, .profile-info, .uni-metric-trigger";
-export const DEFAULT_TOOLTIP_BUBBLE_SELECTOR = ".ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content";
+const DEFAULT_TOOLTIP_WRAP_SELECTOR = ".ui-tooltip-wrap, .u-info-wrap, .uni-status-tooltip, .d-info-wrap, .profile-info-wrap, .uni-metric-tooltip";
+const DEFAULT_TOOLTIP_BUTTON_SELECTOR = ".ui-tooltip-trigger, .u-info, .uni-status-trigger, .d-info, .profile-info, .uni-metric-trigger";
+const DEFAULT_TOOLTIP_BUBBLE_SELECTOR = ".ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content";
 
 /**
  * Compute horizontal pixel translation needed to keep a tooltip bubble inside the viewport.
@@ -39,7 +41,7 @@ export function computeViewportHorizontalShift(rect, viewportWidth, gutter = 12)
  * @param {string} [bubbleSelector=DEFAULT_TOOLTIP_BUBBLE_SELECTOR]
  * @returns {HTMLElement | null}
  */
-export function findTooltipBubble(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
+function findTooltipBubble(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
   if (!(wrap instanceof Element)) return null;
   for (const child of wrap.children) {
     if (child.matches(bubbleSelector) && child instanceof HTMLElement) {
@@ -56,7 +58,7 @@ export function findTooltipBubble(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_
  * @param {string} [bubbleSelector=DEFAULT_TOOLTIP_BUBBLE_SELECTOR]
  * @returns {void}
  */
-export function resetTooltipShift(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
+function resetTooltipShift(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
   const bubble = findTooltipBubble(wrap, bubbleSelector);
   if (bubble) {
     bubble.style.removeProperty("--tooltip-shift-x");
@@ -70,7 +72,7 @@ export function resetTooltipShift(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_
  * @param {string} [bubbleSelector=DEFAULT_TOOLTIP_BUBBLE_SELECTOR]
  * @returns {number}
  */
-export function clampTooltipToViewport(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
+function clampTooltipToViewport(wrap, bubbleSelector = DEFAULT_TOOLTIP_BUBBLE_SELECTOR) {
   const bubble = findTooltipBubble(wrap, bubbleSelector);
   if (!bubble || typeof window === "undefined") return 0;
   const viewportWidth = document.documentElement?.clientWidth || window.innerWidth || 0;
@@ -148,7 +150,7 @@ export function bindInfoTooltips(options = {}) {
         wrap.classList.add(closedClass);
         resetTooltipShift(wrap, bubbleSelector);
         btn.setAttribute("aria-expanded", "false");
-        try { btn.blur(); } catch {}
+        safeBlur(btn);
       }
       return;
     }
@@ -172,23 +174,19 @@ export function bindInfoTooltips(options = {}) {
     }
   };
 
-  root.addEventListener("pointerover", (evt) => {
+  const clampActiveTooltip = (evt) => {
     const target = evt.target;
     if (!(target instanceof Element)) return;
     const wrap = target.closest(wrapSelector);
     if (!wrap || wrap.classList.contains(closedClass)) return;
     clampTooltipToViewport(wrap, bubbleSelector);
-  });
+  };
+
+  root.addEventListener("pointerover", clampActiveTooltip);
 
   root.addEventListener("pointerout", clearClosed);
 
-  root.addEventListener("focusin", (evt) => {
-    const target = evt.target;
-    if (!(target instanceof Element)) return;
-    const wrap = target.closest(wrapSelector);
-    if (!wrap || wrap.classList.contains(closedClass)) return;
-    clampTooltipToViewport(wrap, bubbleSelector);
-  });
+  root.addEventListener("focusin", clampActiveTooltip);
 
   root.addEventListener("focusout", (evt) => {
     const target = evt.target;
@@ -212,7 +210,7 @@ export function bindInfoTooltips(options = {}) {
       closeAll();
       lastOpen.classList.add(closedClass);
       if (btn) {
-        try { btn.focus(); } catch {}
+        safeFocus(btn);
       }
     }
   });
@@ -250,7 +248,7 @@ export function bindInfoTooltips(options = {}) {
   root.addEventListener("touchcancel", clearHold, { passive: true });
 }
 
-export function initGlobalTooltips(root = document) {
+function initGlobalTooltips(root = document) {
   bindInfoTooltips({
     root,
     wrapSelector: DEFAULT_TOOLTIP_WRAP_SELECTOR,

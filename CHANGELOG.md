@@ -8,6 +8,7 @@ Patch release: add frontend JavaScript static analysis tooling, remove dead code
 
 ### Maintenance
 - Configure frontend JavaScript static analysis with Oxlint (`.oxlintrc.json`), Knip (`knip.json`), and jscpd (`.jscpd.json`) alongside `npm run lint:frontend`, `npm run audit:dead-code`, and `npm run audit:duplicates` scripts in `package.json`.
+- Resolve all frontend Oxlint errors, empty `catch` blocks, unused imports/variables, Knip-detected dead code and unused exports (plus the duplicate recent-universities setting constant in `frontend/javascript/settings.js`), and cross-file helper/validation/persistence duplicates (`jscpd` clones reduced to zero); remove the stale `#profileBudgetUnit:focus-visible` allowlist entry from `scripts/audit-css.mjs`, and enforce `lint:frontend` and `audit:dead-code` in `test:all` and `.github/workflows/repository-hygiene.yml`.
 
 ## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
 

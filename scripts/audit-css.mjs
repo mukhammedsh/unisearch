@@ -218,10 +218,6 @@ export function extractSelectorIds(selectorPart) {
  */
 export const ALLOWED_ID_SELECTORS = new Map([
   [
-    "frontend/css/profile/02-page.css::#profileBudgetUnit:focus-visible",
-    "Explicitly targeted focus-visible selector for the currency unit toggle (verified by interaction-states E2E tests).",
-  ],
-  [
     "frontend/css/universities/01-shell-controls.css::.u-compare-mode-btn #compareModeLabel",
     "Classless compare-mode label span inside .u-compare-mode-btn (frontend/index.html).",
   ],

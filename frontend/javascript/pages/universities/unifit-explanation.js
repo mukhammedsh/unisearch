@@ -5,7 +5,7 @@ import { parseSummaryBudget, studyLevelLabel } from "../../components/profile/pr
 
 // Legend entry per card status icon, in display order: the key is the `data-legend` value written on each icon
 // badge (addStatusIndicator in universities.js) and the value is the localization key of its short label.
-export const LEGEND_LABEL_KEYS = {
+const LEGEND_LABEL_KEYS = {
   subject_missing: "universities.ux2.legend.subject_missing",
   subject_matched: "universities.ux2.legend.subject_matched",
   requirements_below: "universities.ux2.legend.requirements_below",
@@ -69,7 +69,7 @@ export const legendEntries = (badges) => {
 };
 
 // Preference sliders in banner/tooltip order: [UniFit factor key, `universities.tradeoff.*` label key].
-export const PREFERENCE_DIMENSIONS = [
+const PREFERENCE_DIMENSIONS = [
   ["practice_vs_science", "focus"], ["social_vs_hardcore", "atmosphere"],
   ["city_vs_campus", "location"], ["budget_vs_prestige", "finance"],
 ];

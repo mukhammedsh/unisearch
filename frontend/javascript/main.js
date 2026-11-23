@@ -77,12 +77,9 @@ function applyAINameConfig(root = document) {
 
 function maybeWakeBackend() {
   const now = Date.now();
-  try {
-    const lastRaw = sessionStorage.getItem(BACKEND_WAKE_PING_KEY);
-    const last = Number(lastRaw || 0);
-    if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
-    sessionStorage.setItem(BACKEND_WAKE_PING_KEY, String(now));
-  } catch {}
+  const last = Number(safeSessionStorage.get(BACKEND_WAKE_PING_KEY, "0") || 0);
+  if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
+  safeSessionStorage.set(BACKEND_WAKE_PING_KEY, String(now));
 
   const pingUrl = `${API_BASE}/health?t=${now}`;
   fetch(pingUrl, {
@@ -503,7 +500,9 @@ export function prefetchRoute(href) {
     if (!isAppRouteUrl(url)) return;
     if (getCachedRouteHtml(url.href)) return;
     fetchRouteHtml(url.href).catch(() => {});
-  } catch {}
+  } catch {
+    return;
+  }
 }
 
 function shouldPrefetchLink(link) {
@@ -599,8 +598,12 @@ async function loadAppRoute(rawHref, options = {}) {
 
   if (appRouteNavigationInFlight) {
     try {
-      appRouteNavigationInFlight.abort();
-    } catch {}
+      if (!appRouteNavigationInFlight.signal?.aborted) {
+        appRouteNavigationInFlight.abort();
+      }
+    } catch {
+      appRouteNavigationInFlight = null;
+    }
   }
 
   const controller = new AbortController();

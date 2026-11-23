@@ -13,6 +13,7 @@ import {
   motionPress,
 } from "./utils.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
+import { parseValidationErrorDetail } from "./components/profile/profile-utils.js";
 
 const KIND_NATIVE = "native";
 const KIND_CEFR = "cefr";
@@ -243,21 +244,11 @@ function formatLanguageExamValue(cfg, entry) {
 
 function formatLanguageValidationToast(code, examId, detailRaw) {
   const examLabel = getExamDisplayName(examId, { langCode: code, locale: getCurrentLanguage() });
-  let detail = "";
-  if (typeof detailRaw === "string") {
-    detail = detailRaw.trim();
-  } else if (Array.isArray(detailRaw) && detailRaw.length > 0) {
-    const first = detailRaw[0];
-    detail = String((typeof first === "object" && first !== null) ? (first.msg || first.message || first.detail || "") : first).trim();
-  } else if (typeof detailRaw === "object" && detailRaw !== null) {
-    detail = String(detailRaw.msg || detailRaw.message || detailRaw.detail || "").trim();
-  }
-  detail = detail.replace(/^Value error,\s*/i, "").trim();
+  const { detail, rangeMatch, stepMatch } = parseValidationErrorDetail(detailRaw);
   if (!detail) {
     return tFormat("languages.error.generic", { exam: examLabel }, `Could not save ${examLabel}`);
   }
 
-  const rangeMatch = detail.match(/Score must be between\s+([0-9.]+)\s+and\s+([0-9.]+)$/i);
   if (rangeMatch) {
     return tFormat(
       "languages.error.range",
@@ -266,7 +257,6 @@ function formatLanguageValidationToast(code, examId, detailRaw) {
     );
   }
 
-  const stepMatch = detail.match(/step=?([0-9.]+)/i);
   if (stepMatch) {
     return tFormat(
       "languages.error.step",
@@ -781,7 +771,7 @@ export function initLanguagesPanel() {
       if (exam && !getExam(cfg, lang, exam)) return;
       const languages = loadEditableProfile().languages;
       const entries = (Array.isArray(languages) ? languages : []).map(normalizeLangEntry).filter(Boolean);
-      const saved = exam ? entries.filter(entry => entry.code === lang && entry.kind === KIND_EXAM && entry.exam === exam).at(-1) : null;
+      const saved = exam ? entries.findLast(entry => entry.code === lang && entry.kind === KIND_EXAM && entry.exam === exam) || null : null;
       loadIntoEditor(saved || (exam ? { code: lang, kind: KIND_EXAM, exam } : { code: langCode.value, kind: KIND_NATIVE }));
       const target = !exam ? langCode
         : [...langExamSpecialContainer.querySelectorAll("[data-lang-breakdown-input]")].find(input => saved && !input.value) || langExamScore;

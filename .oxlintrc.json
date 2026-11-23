@@ -12,24 +12,31 @@
   },
   "rules": {
     "no-unused-vars": [
-      "warn",
+      "error",
       {
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_",
         "caughtErrorsIgnorePattern": "^_"
       }
     ],
-    "no-empty": "warn",
+    "no-empty": "error",
     "no-console": [
-      "warn",
+      "error",
       {
         "allow": ["warn", "error"]
       }
     ],
     "no-var": "error",
-    "prefer-const": "warn",
+    "prefer-const": "error",
     "no-unreachable": "error",
-    "no-duplicate-imports": "error"
+    "no-duplicate-imports": "error",
+    "no-underscore-dangle": "off",
+    "no-shadow": "off",
+    "unicorn/prefer-add-event-listener": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/no-array-sort": "off",
+    "unicorn/no-array-reverse": "off",
+    "oxc/no-map-spread": "off"
   },
   "overrides": [
     {

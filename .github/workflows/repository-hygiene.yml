@@ -40,6 +40,12 @@ jobs:
       - name: Check inline styles and CSS custom properties
         run: npm run check:inline-styles
 
+      - name: Lint frontend JavaScript
+        run: npm run lint:frontend
+
+      - name: Check frontend dead code
+        run: npm run audit:dead-code
+
       - name: Check localization parity
         run: npm run check:i18n
 

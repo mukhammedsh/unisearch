@@ -1,4 +1,5 @@
 import { escapeHtml, getFlagImg } from "./format.js";
+import { safeFocus } from "./runtime.js";
 import { heroIcon } from "../icons.js";
 
 let customSelectGlobalClickBound = false;
@@ -412,7 +413,7 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
     if (searchInput) searchInput.value = "";
     highlightedIndex = -1;
     if (restoreFocus) {
-      try { trigger.focus(); } catch {}
+      safeFocus(trigger);
     }
   };
 

@@ -1,5 +1,4 @@
 import {
-  API_BASE,
   bindImageFallbacks,
   escapeHtml,
   escapeHtmlAttr,

@@ -3,8 +3,11 @@ import { t } from "../i18n.js";
 const inferredApiBase = `${window.location?.protocol || "http:"}//${window.location?.hostname || "127.0.0.1"}:8000`;
 
 export const API_BASE = window.API_BASE_URL || inferredApiBase;
-export const AI_DEFAULTS = { fit: "UniFit", chance: "Minimum requirements match" };
-export const AI_FUNCTIONS = { ...AI_DEFAULTS, ...(window.AI_FUNCTIONS || {}) };
+const AI_DEFAULTS = { fit: "UniFit", chance: "Minimum requirements match" };
+const AI_FUNCTIONS = {
+  ...AI_DEFAULTS,
+  ...(window.AI_FUNCTIONS && typeof window.AI_FUNCTIONS === "object" ? window.AI_FUNCTIONS : null),
+};
 export const $ = (id) => document.getElementById(id);
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -290,4 +293,59 @@ export function initGlobalApiLoadingIndicator() {
       if (tracked) onGlobalApiRequestEnd();
     }
   };
+}
+
+export function clamp(value, min, max) {
+  return Math.max(min, Math.min(value, max));
+}
+
+export function bindDialogLightDismiss(modal, card, onDismiss) {
+  if (!modal) return;
+  modal.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    onDismiss();
+  });
+  let pressedBackdrop = false;
+  modal.addEventListener("pointerdown", (event) => {
+    pressedBackdrop = Boolean((modal.open || modal.classList.contains("is-open")) && card && event.target === modal);
+  });
+  modal.addEventListener("pointerup", (event) => {
+    if (pressedBackdrop && (modal.open || modal.classList.contains("is-open")) && card && event.target === modal) {
+      onDismiss();
+    }
+    pressedBackdrop = false;
+  });
+}
+
+export function setManualScrollRestoration() {
+  if (typeof window === "undefined" || !window.history || !("scrollRestoration" in window.history)) {
+    return false;
+  }
+  try {
+    window.history.scrollRestoration = "manual";
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function safeFocus(element, options) {
+  if (!element || typeof element.focus !== "function") return false;
+  try {
+    if (options !== undefined) element.focus(options);
+    else element.focus();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function safeBlur(element) {
+  if (!element || typeof element.blur !== "function") return false;
+  try {
+    element.blur();
+    return true;
+  } catch {
+    return false;
+  }
 }

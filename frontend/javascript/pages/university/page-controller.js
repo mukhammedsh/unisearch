@@ -1,5 +1,4 @@
 import {
-  API_BASE,
   escapeHtml,
   getFlagImg,
   loadProfile,
