@@ -1,1321 +1,85 @@
-import math
-import re
+"""UniFit composite personalized ranking and admissions scoring orchestrator."""
+
 from typing import Any
 
-from app.core.utils import clamp as _clamp
-from app.core.utils import clamp01 as _clamp01
-from app.core.utils import to_float as _to_num
-from app.core.utils import to_float_default as _to_num_default
-from app.services import admissions_assessment, admissions_catalog, preference_factors
-from app.services import exams as exams_service
-from app.services import languages as languages_service
+from app.core.utils import (
+    clamp01 as _clamp01,
+)
+from app.core.utils import (
+    to_float as _to_num,
+)
+from app.core.utils import (
+    to_float_default as _to_num_default,
+)
+from app.services import admissions_catalog, preference_factors
 from app.services import universities as universities_service
-from app.services.finance_modes import (
-    extract_tuition_cost as _extract_tuition_cost,
-)
-from app.services.finance_modes import (
-    mode_breakdown_from_finance as _mode_breakdown_from_finance,
-)
-from app.services.finance_modes import (
-    mode_total_from_finance as _mode_total_from_finance,
-)
-from app.services.finance_modes import (
-    normalize_study_mode as _normalize_study_mode,
-)
+from app.services.finance_modes import normalize_study_mode as _normalize_study_mode
 from app.services.ml_scoring import get_ml_recommender, get_ml_runtime_status
-from app.services.university_tracks import (
-    _canonical_major,
-    _has_explicit_empty_program_mapping,
-    _iter_programs,
-    _normalize_major_text,
+from app.services.scoring_costs import (
+    _cost_cycle_mismatch,
+    _cost_to_usd,
+    _effective_track_cost_details,
+    _finance_cost_range,
+    _track_cost_range_payload,
+    _university_matches_major,
 )
+from app.services.scoring_profile import (
+    _admission_choice_key,
+    _build_user_context,
+    _get_track_funding_type,
+    _language_config,
+    _normalize_funding_preference,
+    _normalize_gpa_score,
+    _normalize_selected_admission_choices,
+    _normalize_study_level_str,
+    _selected_choice_key_for_university,
+    _selected_program_id_for_university,
+)
+from app.services.scoring_requirements import (
+    _assess_admissions_selection,
+    _chance_locale,
+    _chance_percent_value,
+    _choice_matches_applicant_route,
+    _choice_matches_entry_cycle,
+    _choice_matches_program,
+    _choice_matches_study_level,
+    _choice_result_by_key,
+    _known_program_ids,
+    estimate_uni_chance,
+    has_admissions_selection,
+)
+
+__all__ = [
+    "_assess_admissions_selection",
+    "_build_ui_badge_hints",
+    "_build_user_context",
+    "_chance_locale",
+    "_choice_matches_study_level",
+    "_cost_cycle_mismatch",
+    "_cost_to_usd",
+    "_effective_track_cost_details",
+    "_extract_university_factors",
+    "_finance_cost_range",
+    "_normalize_funding_preference",
+    "_normalize_gpa_score",
+    "_normalize_selected_admission_choices",
+    "_normalize_study_level_str",
+    "_preference_mismatch",
+    "_selected_choice_key_for_university",
+    "_selected_program_id_for_university",
+    "_track_cost_range_payload",
+    "_university_matches_major",
+    "estimate_uni_chance",
+    "has_admissions_selection",
+    "sort_universities_ai",
+]
 
 _UI_BADGE_THRESHOLDS = {
     "your_vibe_max_mismatch": 0.14,
     "top_match_max_mismatch": 0.22,
 }
 
-
-def has_admissions_selection(profile: dict[str, Any], university_id: str = "") -> bool:
-    selections = profile.get("selectedAdmissionChoices") or {}
-    rows = [selections.get(university_id, {})] if university_id else selections.values()
-    return any(isinstance(row, dict) and (row.get("studyOptionId") or row.get("applicationRouteId")) for row in rows)
-
-
-def _assess_admissions_selection(university_id: str, profile: dict[str, Any]) -> dict[str, Any]:
-    resolved = admissions_catalog.resolve_context(university_id, profile=profile)
-    result = admissions_assessment.assess_resolved_context(resolved, profile)
-    choice = result["choices"][0]
-    percent = result.get("overallChance")
-    level = _chance_level(percent) if percent is not None else _no_data_chance_level(profile)
-    choice["level"] = level
-    result.update({
-        "bestChoiceKey": choice["choiceKey"], "bestChoiceId": choice["choiceId"],
-        "bestChoiceLabel": choice["choiceLabel"], "selectedChoiceKey": choice["choiceKey"],
-        "selectedByUser": has_admissions_selection(profile, university_id), "level": level,
-        "catalogRevision": resolved["revision"],
-    })
-    return result
-
-
-def _canonical_exam_key(key: Any) -> str:
-    return re.sub(r"[^A-Z0-9]", "", str(key or "").strip().upper())
-
-
-def _configured_language_exam_id(code: str, exam_id: Any, minimum: Any) -> str:
-    """Resolve an exact configured exam or an unambiguous legacy TOEFL total key."""
-    exam_key = _canonical_exam_key(exam_id)
-    exams = languages_service.get_languages_index().get("exams_by_lang", {}).get(code, [])
-    if not isinstance(exams, list):
-        return ""
-    for exam in exams:
-        if isinstance(exam, dict) and _canonical_exam_key(exam.get("id")) == exam_key:
-            return str(exam.get("id") or "")
-
-    # Older catalog rows used "TOEFL" for numeric totals. Accept that key only
-    # when exactly one configured TOEFL total has a range containing its floor.
-    if exam_key != "TOEFL":
-        return ""
-    floor = _to_num(minimum)
-    if floor is None:
-        return ""
-    compatible = [
-        exam for exam in exams
-        if isinstance(exam, dict)
-        and _canonical_exam_key(exam.get("id")).startswith("TOEFL")
-        and (minimum_bound := _to_num(exam.get("min"))) is not None
-        and (maximum_bound := _to_num(exam.get("max"))) is not None
-        and minimum_bound <= floor <= maximum_bound
-    ]
-    return str(compatible[0].get("id") or "") if len(compatible) == 1 else ""
-
-
-def _configured_language_exam_id_any(exam_id: Any) -> str:
-    exam_key = _canonical_exam_key(exam_id)
-    if not exam_key:
-        return ""
-    exams_by_lang = languages_service.get_languages_index().get("exams_by_lang", {})
-    if not isinstance(exams_by_lang, dict):
-        return ""
-    for exams in exams_by_lang.values():
-        if not isinstance(exams, list):
-            continue
-        for exam in exams:
-            if isinstance(exam, dict) and _canonical_exam_key(exam.get("id")) == exam_key:
-                return str(exam.get("id") or "")
-    return ""
-
-
-def _normalize_funding_preference(value: Any) -> str:
-    raw = str(value or "").strip().lower()
-    if raw in ("grant", "paid"):
-        return raw
-    return "any"
-
-
-def _get_track_funding_type(track: dict[str, Any]) -> str:
-    raw_type = str(track.get("funding_type", "")).strip().lower()
-    if raw_type in ("grant", "paid"):
-        return raw_type
-    badge = str(track.get("track_badge", "")).strip().lower()
-    return "grant" if re.search(r"grant|scholar", badge) else "paid"
-
-
-def _track_study_mode(university: dict[str, Any], track: dict[str, Any]) -> str:
-    mode = track.get("study_mode")
-    if isinstance(mode, list):
-        mode = next((x for x in mode if x), "")
-    normalized = _normalize_study_mode(mode)
-    if normalized != "any":
-        return normalized
-
-    formats = ((university.get("academics") or {}).get("formats")) if isinstance(university, dict) else None
-    if isinstance(formats, list) and formats:
-        one = _normalize_study_mode(formats[0] if len(formats) == 1 else "")
-        if one != "any":
-            return one
-    return "any"
-
-
-def _cost_to_usd(amount: float | None, currency_code: str) -> float:
-    if amount is None or amount <= 0:
-        return 0.0
-    code = str(currency_code or "USD").strip().upper()
-    if not code or code == "USD":
-        return max(0.0, float(amount))
-    try:
-        from app.services.currency import convert
-        return max(0.0, float(convert(amount, code, "USD")))
-    except (ValueError, TypeError, LookupError):
-        return max(0.0, float(amount))
-
-
-def _university_matches_major(university: dict[str, Any], major: str) -> bool:
-    target_major = str(major or "").strip()
-    if not target_major or not isinstance(university, dict):
-        return True
-    m_exact = _canonical_major(target_major)
-    m_raw = _normalize_major_text(target_major)
-    academics = university.get("academics") if isinstance(university.get("academics"), dict) else {}
-    programs = _iter_programs(university)
-
-    for p in programs:
-        if not isinstance(p, dict):
-            continue
-        p_name = _normalize_major_text(p.get("name"))
-        if m_raw and (p_name == m_raw or m_raw in p_name):
-            return True
-        p_tags = p.get("major_tags") or []
-        if isinstance(p_tags, list):
-            for tag in p_tags:
-                tag_exact = _canonical_major(tag)
-                if m_exact and tag_exact == m_exact:
-                    return True
-                if m_raw and _normalize_major_text(tag) == m_raw:
-                    return True
-
-    majors = academics.get("majors") or []
-    if isinstance(majors, list):
-        for m in majors:
-            m_tag = _canonical_major(m)
-            if m_exact and m_tag == m_exact:
-                return True
-            if m_raw and _normalize_major_text(m) == m_raw:
-                return True
-
-    major_tags = academics.get("major_tags") or []
-    if isinstance(major_tags, list):
-        for m in major_tags:
-            m_tag = _canonical_major(m)
-            if m_exact and m_tag == m_exact:
-                return True
-            if m_raw and _normalize_major_text(m) == m_raw:
-                return True
-
-    return False
-
-
-def _finance_cost_range(finance: dict[str, Any]) -> dict[str, Any] | None:
-    minimum = _to_num(finance.get("total_cost_year_min"))
-    maximum = _to_num(finance.get("total_cost_year_max"))
-    if minimum is None or maximum is None or minimum < 0 or maximum < minimum:
-        return None
-    return {
-        "min": float(minimum),
-        "max": float(maximum),
-        "currency": str(finance.get("currency") or "").strip().upper() or None,
-        "academic_year": finance.get("academic_year"),
-        "source": finance.get("source"),
-        "source_url": finance.get("source_url"),
-        "source_urls": finance.get("source_urls"),
-        "fee_status": finance.get("fee_status"),
-        "scope": finance.get("scope"),
-    }
-
-
-def _finance_for_cost(university: dict[str, Any], track: dict[str, Any]) -> dict[str, Any]:
-    track_fin = track.get("finance_override") if isinstance(track.get("finance_override"), dict) else {}
-    uni_fin = university.get("finance") if isinstance(university.get("finance"), dict) else {}
-    levels = track.get("study_levels") if isinstance(track.get("study_levels"), list) else []
-    raw_scope = track.get("scope")
-    scope = (
-        " ".join(str(value or "") for value in raw_scope.values()).strip().lower()
-        if isinstance(raw_scope, dict)
-        else str(raw_scope or "").strip().lower()
-    )
-    scope_level = (
-        _normalize_study_level_str(raw_scope.get("level"))
-        if isinstance(raw_scope, dict)
-        else _normalize_study_level_str(raw_scope)
-    )
-    graduate_track = (
-        any(_normalize_study_level_str(level) in {"master", "mba", "doctorate"} for level in levels)
-        or scope_level in {"master", "mba", "doctorate"}
-        or scope.startswith(("graduate", "postgraduate", "doctoral"))
-    )
-    track_range = _finance_cost_range(track_fin)
-    university_range = _finance_cost_range(uni_fin)
-    total = _to_num(track_fin.get("total_cost_year_usd"))
-    cost_range = track_range if total is None else None
-    cost_cycle_source = track_fin if total is not None or cost_range is not None else {}
-    if total is None and cost_range is None and not graduate_track:
-        total = _to_num(uni_fin.get("total_cost_year_usd"))
-        if total is None:
-            cost_range = university_range
-        if total is not None or cost_range is not None:
-            cost_cycle_source = uni_fin
-    known_currency = (
-        track_fin.get("currency")
-        or (track_range or {}).get("currency")
-        or uni_fin.get("currency")
-        or (university_range or {}).get("currency")
-    )
-    currency = str(known_currency or "USD").strip().upper()
-    if cost_range and not cost_range.get("currency") and known_currency:
-        cost_range = {**cost_range, "currency": currency}
-    total_usd = _cost_to_usd(total, currency)
-    breakdown = track_fin.get("costs_breakdown_year_usd")
-    if not isinstance(breakdown, dict) and not graduate_track:
-        breakdown = uni_fin.get("costs_breakdown_year_usd")
-    if not isinstance(breakdown, dict):
-        breakdown = {}
-    return {
-        "total": total_usd,
-        "raw_total": total,
-        "breakdown": breakdown,
-        "track_finance": track_fin,
-        "university_finance": uni_fin,
-        "currency": currency,
-        "unavailable": total is None and cost_range is None,
-        "cost_range": cost_range,
-        "cost_cycle_source": cost_cycle_source,
-    }
-
-
-def _track_cost_range_payload(university: dict[str, Any], track: dict[str, Any]) -> dict[str, Any] | None:
-    finance = _finance_for_cost(university, track)
-    cost_range = finance.get("cost_range")
-    if not isinstance(cost_range, dict):
-        return None
-    currency = str(cost_range.get("currency") or "").strip().upper() or None
-    minimum = float(cost_range["min"])
-    maximum = float(cost_range["max"])
-    minimum_usd = maximum_usd = None
-    if currency == "USD":
-        minimum_usd, maximum_usd = minimum, maximum
-    elif currency:
-        try:
-            from app.services.currency import convert
-            minimum_usd = max(0.0, float(convert(minimum, currency, "USD")))
-            maximum_usd = max(0.0, float(convert(maximum, currency, "USD")))
-        except ValueError:
-            minimum_usd = maximum_usd = None
-    return {
-        "minNative": minimum,
-        "maxNative": maximum,
-        "currency": currency,
-        "minUSD": minimum_usd,
-        "maxUSD": maximum_usd,
-        "academicYear": cost_range.get("academic_year"),
-        "feeStatus": cost_range.get("fee_status"),
-        "scope": cost_range.get("scope"),
-        "source": cost_range.get("source"),
-        "sourceUrl": cost_range.get("source_url"),
-        "sourceUrls": cost_range.get("source_urls"),
-    }
-
-
-def _effective_cost_mode(preferred_mode: Any, track_mode: Any) -> str:
-    pref = _normalize_study_mode(preferred_mode)
-    if pref != "any":
-        return pref
-    mode = _normalize_study_mode(track_mode)
-    return mode if mode != "any" else "on-campus"
-
-
-def _effective_track_cost_details(
-    university: dict[str, Any],
-    track: dict[str, Any],
-    preferred_mode: Any = "any",
-    intended_entry_cycle: Any = None,
-) -> tuple[float, float, str, str]:
-    """
-    Returns (cost_usd, cost_native, currency, cost_mode)
-    """
-    finance = _finance_for_cost(university, track)
-    total_usd = float(finance.get("total") or 0.0)
-    raw_total = float(_to_num(finance.get("raw_total")) or 0.0)
-    breakdown = finance.get("breakdown") if isinstance(finance.get("breakdown"), dict) else {}
-    tuition = _extract_tuition_cost(breakdown)
-    mode = _effective_cost_mode(preferred_mode, _track_study_mode(university, track))
-    track_fin = finance.get("track_finance") if isinstance(finance.get("track_finance"), dict) else {}
-    uni_fin = finance.get("university_finance") if isinstance(finance.get("university_finance"), dict) else {}
-    currency = str(finance.get("currency") or "USD").strip().upper()
-
-    if _cost_cycle_mismatch(finance.get("cost_cycle_source"), intended_entry_cycle):
-        return 0.0, 0.0, currency, "unavailable"
-
-    if mode == "on-campus":
-        cost_range = finance.get("cost_range")
-        if isinstance(cost_range, dict):
-            max_native = float(cost_range["max"])
-            return _cost_to_usd(max_native, currency), max_native, currency, "on-campus_range"
-        if finance.get("unavailable"):
-            return 0.0, 0.0, currency, "unavailable"
-        return max(0.0, total_usd), max(0.0, raw_total), currency, "on-campus_exact"
-
-    if mode == "online":
-        for source in (track_fin, uni_fin):
-            mode_breakdown = _mode_breakdown_from_finance(source, "online")
-            mode_tuition = _extract_tuition_cost(mode_breakdown if isinstance(mode_breakdown, dict) else {})
-            if mode_tuition is not None and mode_tuition >= 0:
-                cost_native = float(mode_tuition)
-                return _cost_to_usd(cost_native, currency), cost_native, currency, "online_tuition_only"
-        if tuition is not None and tuition >= 0:
-            cost_native = float(tuition)
-            return _cost_to_usd(cost_native, currency), cost_native, currency, "online_tuition_only"
-        for source in (track_fin, uni_fin):
-            mode_total = _mode_total_from_finance(source, "online")
-            if mode_total is not None and mode_total >= 0:
-                cost_native = float(mode_total)
-                return _cost_to_usd(cost_native, currency), cost_native, currency, "online_mode_total"
-        return 0.0, 0.0, currency, "online_missing_tuition"
-
-    return max(0.0, total_usd), max(0.0, raw_total), currency, "on-campus_exact"
-
-
-def _language_config() -> dict[str, Any]:
-    cfg = languages_service.get_languages_config()
-    return cfg if isinstance(cfg, dict) else {}
-
-
-def _normalize_lang_code(value: Any, lang_cfg: dict[str, Any]) -> str:
-    raw = str(value or "").strip().lower()
-    if not raw:
-        return ""
-    languages = lang_cfg.get("languages", [])
-    if not isinstance(languages, list):
-        return raw
-    for row in languages:
-        if not isinstance(row, dict):
-            continue
-        code = str(row.get("code", "")).strip().lower()
-        name = str(row.get("name", "")).strip().lower()
-        label = str(row.get("label", "")).strip().lower()
-        native_name = str(row.get("native_name", "")).strip().lower()
-        if raw in (code, name, label, native_name) and code:
-            return code
-    return raw
-
-
-def _is_language_exam_key(exam_id: Any) -> bool:
-    key = str(exam_id or "").upper()
-    if not key:
-        return False
-    return any(
-        marker in key
-        for marker in (
-            "IELTS",
-            "TOEFL",
-            "DET",
-            "DUOLINGO",
-            "PTE",
-            "CAMBRIDGE",
-            "TESTDAF",
-            "DSH",
-            "DELF",
-            "DALF",
-            "TCF",
-            "TEF",
-            "NT2",
-            "HSK",
-            "JLPT",
-            "TOPIK",
-        )
-    )
-
-
-def _is_higher_better(exam_id: Any) -> bool:
-    return "JLPT" not in str(exam_id or "").upper()
-
-
-def _set_best_score(dst: dict[str, float], exam_id: Any, score: Any) -> None:
-    raw = str(exam_id or "").strip()
-    val = _to_num(score)
-    if not raw or val is None:
-        return
-    higher_is_better = _is_higher_better(raw)
-    for key in (raw, raw.upper(), _canonical_exam_key(raw)):
-        if not key:
-            continue
-        prev = _to_num(dst.get(key))
-        if prev is None:
-            dst[key] = val
-        else:
-            dst[key] = max(prev, val) if higher_is_better else min(prev, val)
-
-
-def _normalize_gpa_score(val: Any, scale: Any = None) -> float | None:
-    num = _to_num(val)
-    if num is None or num < 0.0 or num > 5.0:
-        return None
-    scale_num = _to_num(scale)
-    if scale_num is not None and math.isclose(scale_num, 5.0):
-        return round((num / 5.0) * 4.0, 2)
-    if num <= 4.0:
-        return round(float(num), 2)
-    return round((num / 5.0) * 4.0, 2)
-
-
-def _build_user_context(profile: dict[str, Any], lang_cfg: dict[str, Any]) -> dict[str, Any]:
-    user_scores: dict[str, float] = {}
-    valid_exam_ids: set[str] = set()
-    user_languages: dict[str, dict[str, Any]] = {}
-
-    scale = profile.get("gpa_scale")
-    normalized_gpa = _normalize_gpa_score(profile.get("gpa"), scale=scale)
-    if normalized_gpa is not None:
-        _set_best_score(user_scores, "GPA", normalized_gpa)
-
-    for row in profile.get("exams", []) or []:
-        if not isinstance(row, dict):
-            continue
-        exam_id = row.get("id") or row.get("exam")
-        raw_score = row.get("score")
-        raw_value = row.get("raw_value")
-        details = row.get("details")
-        try:
-            parsed = exams_service.coerce_exam_submission(
-                exam_id,
-                score_raw=raw_score,
-                raw_value=raw_value,
-                details=details,
-                taken_on=row.get("taken_on"),
-            )
-            if exams_service._config_entry(parsed["exam"]).get("type") == "bool" and not parsed.get("score"):
-                continue
-            _set_best_score(user_scores, parsed.get("exam", exam_id), parsed.get("score"))
-            if parsed.get("exam"):
-                valid_exam_ids.add(str(parsed["exam"]).strip().upper())
-            parsed_details = parsed.get("details")
-            if isinstance(parsed_details, dict):
-                for bucket_name in ("components", "extra_scores"):
-                    bucket = parsed_details.get(bucket_name)
-                    if not isinstance(bucket, list):
-                        continue
-                    for item in bucket:
-                        if not isinstance(item, dict):
-                            continue
-                        nested_exam = item.get("exam") or item.get("id")
-                        _set_best_score(user_scores, nested_exam, item.get("score"))
-                        if nested_exam:
-                            valid_exam_ids.add(str(nested_exam).strip().upper())
-        except (ValueError, TypeError):
-            continue
-
-    for row in profile.get("languages", []) or []:
-        if not isinstance(row, dict):
-            continue
-        code = _normalize_lang_code(row.get("code"), lang_cfg)
-        kind = str(row.get("kind", "")).strip().lower()
-        if not code or not kind:
-            continue
-        if code not in user_languages:
-            user_languages[code] = {"native": False, "cefr": None, "exams": {}}
-
-        if kind == "native":
-            user_languages[code]["native"] = True
-            continue
-
-        if kind == "cefr":
-            level = _to_num(row.get("level"))
-            if level is not None:
-                prev = _to_num(user_languages[code].get("cefr"))
-                user_languages[code]["cefr"] = level if prev is None else max(prev, level)
-            continue
-
-        if kind == "exam":
-            exam_id = str(row.get("exam") or "").strip()
-            raw_score = row.get("score")
-            raw_value = row.get("raw_value")
-            details = row.get("details")
-            if not exam_id:
-                continue
-            try:
-                parsed_lang = languages_service.validate_language(
-                    {
-                        "code": code,
-                        "kind": "exam",
-                        "exam": exam_id,
-                        "score": raw_score,
-                        "raw_value": raw_value,
-                        "details": details,
-                    }
-                ).get("language", {})
-                parsed_exam_id = str(parsed_lang.get("exam") or exam_id).strip()
-                parsed_score = _to_num(parsed_lang.get("score"))
-                if parsed_exam_id and parsed_score is not None:
-                    _set_best_score(user_languages[code]["exams"], parsed_exam_id, parsed_score)
-                    _set_best_score(user_scores, parsed_exam_id, parsed_score)
-                    valid_exam_ids.add(parsed_exam_id.upper())
-                parsed_details = parsed_lang.get("details")
-                if isinstance(parsed_details, dict):
-                    bucket = parsed_details.get("components")
-                    if isinstance(bucket, list):
-                        for item in bucket:
-                            if not isinstance(item, dict):
-                                continue
-                            nested_exam = item.get("exam") or item.get("id")
-                            nested_score = item.get("score")
-                            _set_best_score(user_languages[code]["exams"], nested_exam, nested_score)
-                            _set_best_score(user_scores, nested_exam, nested_score)
-                            if nested_exam:
-                                valid_exam_ids.add(str(nested_exam).strip().upper())
-                continue
-            except (ValueError, TypeError):
-                continue
-
-    return {
-        "userScores": user_scores,
-        "validExamIds": valid_exam_ids,
-        "userLanguages": user_languages,
-        "budget": _to_num(profile.get("budget")),
-    }
-
-
-def _get_user_score(user_scores: dict[str, Any], exam_id: Any, user_languages: dict[str, Any] | None = None) -> float | None:
-    raw = str(exam_id or "").strip()
-    if not raw:
-        return None
-
-    direct_keys = [raw, raw.upper(), _canonical_exam_key(raw)]
-    for key in direct_keys:
-        val = _to_num(user_scores.get(key))
-        if val is not None:
-            return val
-
-    # Infer exam score from language evidence if explicit score is missing.
-    if isinstance(user_languages, dict) and _is_language_exam_key(raw):
-        for state in user_languages.values():
-            if not isinstance(state, dict):
-                continue
-            if state.get("native"):
-                return 1.0
-            cefr = _to_num(state.get("cefr"))
-            if cefr is not None:
-                return cefr
-    return None
-
-
-def _score_requirement(user: Any, min_val: Any, avg_val: Any, higher_is_better: bool = True, mode: str = "sort") -> dict[str, Any]:
-    u = _to_num(user)
-    mn = _to_num(min_val)
-    av = _to_num(avg_val)
-
-    if mn is None:
-        return {"score": 0.60 if mode == "sort" else 0.65, "pass": True, "gap": 0.0, "conditional": False}
-    if u is None:
-        if mode == "sort":
-            return {"score": 0.42, "pass": True, "gap": 0.0, "conditional": True}
-        return {"score": 0.55, "pass": True, "gap": 0.0, "conditional": True}
-
-    uu = u if higher_is_better else (-u)
-    mm = mn if higher_is_better else (-mn)
-    aa_raw = av if (av is not None and higher_is_better) else ((-av) if av is not None else None)
-    aa = aa_raw if (aa_raw is not None and aa_raw >= mm) else mm
-
-    if uu < mm:
-        denom = max(abs(mm), 1e-9)
-        ratio = _clamp01(uu / denom)
-        if mode == "sort":
-            return {"score": 0.5 * ratio, "pass": False, "gap": _clamp01((mm - uu) / denom), "conditional": False}
-        return {"score": _clamp(0.05 + 0.45 * ratio, 0.02, 0.5), "pass": False, "gap": _clamp01((mm - uu) / denom), "conditional": False}
-
-    if uu <= aa:
-        t = _clamp01((uu - mm) / max(aa - mm, 1e-9))
-        return {"score": (0.50 + 0.25 * t) if mode == "sort" else (0.55 + 0.25 * t), "pass": True, "gap": 0.0, "conditional": False}
-
-    t = _clamp01((uu - aa) / max(abs(aa) * (0.15 if mode == "sort" else 0.2), 1e-9))
-    return {"score": (0.75 + 0.25 * t) if mode == "sort" else (0.80 + 0.20 * t), "pass": True, "gap": 0.0, "conditional": False}
-
-
-def _collect_language_requirements(track: dict[str, Any]) -> dict[str, Any]:
-    raw = track.get("language_requirements")
-    mode_raw = str(track.get("language_requirements_mode", track.get("language_mode", "all"))).strip().lower()
-    mode = "any" if mode_raw == "any" else "all"
-
-    if not raw:
-        return {"mode": mode, "items": []}
-
-    if isinstance(raw, dict) and isinstance(raw.get("items"), list):
-        nested_mode = str(raw.get("mode", mode)).strip().lower()
-        return {
-            "mode": "any" if nested_mode == "any" else "all",
-            "items": [x for x in raw.get("items", []) if x],
-        }
-
-    if isinstance(raw, list):
-        return {"mode": mode, "items": [x for x in raw if x]}
-
-    if isinstance(raw, dict):
-        out = []
-        for code, cfg in raw.items():
-            if not isinstance(cfg, dict):
-                continue
-            item = {"code": code}
-            item.update(cfg)
-            out.append(item)
-        return {"mode": mode, "items": out}
-
-    return {"mode": mode, "items": []}
-
-
-def _score_single_language_rule(lang_rule: dict[str, Any], user_languages: dict[str, Any], lang_cfg: dict[str, Any], mode: str = "sort") -> dict[str, Any]:
-    code = _normalize_lang_code(lang_rule.get("code"), lang_cfg)
-    state = user_languages.get(code) if code else None
-    if not isinstance(state, dict):
-        state = {}
-
-    if bool(lang_rule.get("accept_native")) and bool(state.get("native")):
-        return {"score": 1.0, "pass": True, "gap": 0.0, "conditional": False}
-
-    candidates: list[dict[str, Any]] = []
-
-    min_cefr = _to_num(lang_rule.get("min_cefr"))
-    avg_cefr = _to_num(lang_rule.get("recommended_cefr", lang_rule.get("avg_cefr", lang_rule.get("stats_avg_cefr"))))
-    cefr_user = _to_num(state.get("cefr"))
-    if min_cefr is not None and cefr_user is not None:
-        candidates.append(_score_requirement(cefr_user, min_cefr, avg_cefr, higher_is_better=True, mode=mode))
-
-    req = lang_rule.get("requirements", {})
-    if not isinstance(req, dict):
-        req = lang_rule.get("exams", {})
-    if not isinstance(req, dict):
-        req = {}
-
-    avg = lang_rule.get("stats_avg", {})
-    if not isinstance(avg, dict):
-        avg = lang_rule.get("exams_avg", {})
-    if not isinstance(avg, dict):
-        avg = {}
-
-    parent_exams = {}
-    for exam in languages_service.get_languages_index().get("exams_by_lang", {}).get(code, []):
-        scheme = exam.get("breakdown_scheme", {})
-        for component in scheme.get("fixed_components", []):
-            parent_exams[component["exam"]] = exam["id"]
-    exam_groups: dict[str, list[tuple[Any, dict[str, Any]]]] = {}
-    for exam_id, min_val in req.items():
-        # Do not infer exam-equivalent score from CEFR/native evidence.
-        # Language exam thresholds (IELTS/TestDaF/DSH/etc.) must be met by
-        # explicit exam evidence in this language rule.
-        configured_exam_id = _configured_language_exam_id(code, exam_id, min_val)
-        if not configured_exam_id or _to_num(min_val) is None:
-            continue
-        user = _get_user_score(state.get("exams", {}), configured_exam_id, None)
-        if user is None and configured_exam_id != exam_id:
-            user = _get_user_score(state.get("exams", {}), exam_id, None)
-        avg_val = avg.get(exam_id) if exam_id in avg else None
-        higher = _is_higher_better(exam_id)
-        family = parent_exams.get(configured_exam_id, configured_exam_id)
-        exam_groups.setdefault(family, []).append((user, _score_requirement(user, min_val, avg_val, higher_is_better=higher, mode=mode)))
-
-    # A test's total and required sections are conjunctive; different tests are alternatives.
-    for rows in exam_groups.values():
-        if not any(user is not None for user, _ in rows):
-            continue
-        results = [result for _, result in rows]
-        candidates.append({
-            "score": min(result["score"] for result in results),
-            "pass": all(result["pass"] for result in results),
-            "gap": max(result["gap"] for result in results),
-            "conditional": any(result["conditional"] for result in results),
-        })
-
-    if not candidates:
-        has_thresholds = (min_cefr is not None) or bool(req)
-        if has_thresholds:
-            if mode == "chance":
-                return {"score": 0.55, "pass": True, "gap": 0.0, "conditional": True}
-            return {"score": 0.15, "pass": False, "gap": 1.0, "conditional": True}
-        return {
-            "score": 0.55 if mode == "sort" else 0.30,
-            "pass": mode == "sort",
-            "gap": 1.0 if mode != "sort" else 0.0,
-            "conditional": False,
-        }
-
-    best = max(candidates, key=lambda row: (bool(row["pass"]) and not row["conditional"], bool(row["conditional"]), row["score"]))
-    return {
-        "score": _clamp01(float(best["score"])),
-        "pass": bool(best["pass"]),
-        "gap": float(best["gap"]),
-        "conditional": bool(best["conditional"]),
-    }
-
-
-def _language_rule_assessments(
-    rule: dict[str, Any], user_languages: dict[str, Any], lang_cfg: dict[str, Any], mode: str
-) -> list[dict[str, Any]]:
-    code = _normalize_lang_code(rule.get("code"), lang_cfg)
-    state = user_languages.get(code) if code else None
-    state = state if isinstance(state, dict) else {}
-    rows: list[dict[str, Any]] = []
-
-    def add(exam: str, minimum: Any, provided: Any) -> None:
-        passed = bool(_score_requirement(provided, minimum, None, higher_is_better=_is_higher_better(exam), mode="chance").get("pass")) if provided is not None else False
-        rows.append({
-            "exam": exam, "minimum": minimum, "provided": provided,
-            "status": "missing" if provided is None else "met" if passed else "unmet",
-            "mode": mode,
-        })
-
-    if bool(rule.get("accept_native")):
-        rows.append({
-            "exam": f"Native {code or 'language'}", "minimum": None,
-            "provided": "native" if state.get("native") else None,
-            "status": "met" if state.get("native") else "missing", "mode": mode,
-        })
-
-    min_cefr = _to_num(rule.get("min_cefr"))
-    if min_cefr is not None:
-        add(f"CEFR ({code or 'language'})", min_cefr, _to_num(state.get("cefr")))
-
-    requirements = rule.get("requirements")
-    if not isinstance(requirements, dict):
-        requirements = rule.get("exams")
-    if isinstance(requirements, dict):
-        user_exam_scores = state.get("exams") if isinstance(state.get("exams"), dict) else {}
-        for exam_id, raw_minimum in requirements.items():
-            minimum = _to_num(raw_minimum)
-            configured_exam_id = _configured_language_exam_id(code, exam_id, raw_minimum)
-            if minimum is None or not configured_exam_id:
-                rows.append({"exam": str(exam_id), "minimum": raw_minimum, "provided": None, "status": "unassessed", "mode": mode})
-            else:
-                provided = _get_user_score(user_exam_scores, configured_exam_id)
-                if provided is None and configured_exam_id != exam_id:
-                    provided = _get_user_score(user_exam_scores, exam_id)
-                add(str(exam_id), minimum, provided)
-    return rows
-
-
-def _admission_choice_key(choice: dict[str, Any], idx: int) -> str:
-    explicit = str(choice.get("choice_key", "")).strip()
-    if explicit:
-        return explicit
-    category_id = str(choice.get("category_id", "")).strip()
-    profile_id = str(choice.get("requirement_profile_id", "")).strip()
-    funding_id = str(choice.get("funding_option_id", "")).strip()
-    parts = [part for part in (category_id, profile_id, funding_id) if part]
-    if parts:
-        return "::".join(parts)
-    cid = str(choice.get("id", "")).strip()
-    if cid:
-        return cid
-    label = str(choice.get("label", "")).strip()
-    if label:
-        return f"label:{label}"
-    return f"choice:{idx}"
-
-
-def _normalize_selected_admission_choices(profile: dict[str, Any]) -> dict[str, dict[str, str]]:
-    if not isinstance(profile, dict):
-        return {}
-    raw = profile.get("selectedAdmissionChoices")
-    if not isinstance(raw, dict):
-        return {}
-    out: dict[str, dict[str, str]] = {}
-    for uni_id, selection in raw.items():
-        uni = str(uni_id or "").strip()
-        if not isinstance(selection, dict):
-            continue
-        normalized = {
-            key: str(selection.get(key) or "").strip()
-            for key in ("choiceKey", "programId", "programName", "categoryId", "requirementProfileId", "fundingOptionId")
-            if str(selection.get(key) or "").strip()
-        }
-        if uni and normalized:
-            out[uni] = normalized
-    return out
-
-
-def _selected_choice_key_for_university(profile: dict[str, Any], university: dict[str, Any]) -> str:
-    selections = _normalize_selected_admission_choices(profile)
-    uni_id = str((university or {}).get("id") or "").strip()
-    if not uni_id:
-        return ""
-    return str(selections.get(uni_id, {}).get("choiceKey") or "").strip()
-
-
-def _selected_program_id_for_university(profile: dict[str, Any], university: dict[str, Any]) -> str:
-    selections = _normalize_selected_admission_choices(profile)
-    uni_id = str((university or {}).get("id") or "").strip()
-    return str(selections.get(uni_id, {}).get("programId") or "").strip() if uni_id else ""
-
-
-def _choice_matches_applicant_route(choice: dict[str, Any], target_route: Any) -> bool:
-    expected = str(target_route or "").strip().lower()
-    actual = str(choice.get("applicant_route") or "").strip().lower()
-    return not expected or not actual or actual == expected
-
-
-def _choice_matches_program(choice: dict[str, Any], program_id: str) -> bool:
-    if not program_id:
-        return True
-    if _has_explicit_empty_program_mapping(choice):
-        return False
-    raw_ids = choice.get("program_ids")
-    ids = [str(value or "").strip().casefold() for value in raw_ids] if isinstance(raw_ids, list) else []
-    ids = [value for value in ids if value]
-    return not ids or program_id.casefold() in ids
-
-
-def _choice_matches_entry_cycle(choice: dict[str, Any], target_cycle: Any) -> bool:
-    expected = _entry_cycle_parts(target_cycle)
-    actual = _entry_cycle_parts(choice.get("cycle"))
-    if not expected or not actual:
-        return True
-    if expected[0] is None or actual[0] is None:
-        return True
-    if expected[0] != actual[0]:
-        return False
-    return not (expected[1] and actual[1] and expected[1] != actual[1])
-
-
-def _choice_applicability(
-    choice: dict[str, Any], target_route: Any, target_cycle: Any, program_id: str, program_is_known: bool = True
-) -> dict[str, str]:
-    """Describe whether the selected applicant context is supported by route metadata."""
-    actual_route = str(choice.get("applicant_route") or "").strip().lower()
-    expected_route = str(target_route or "").strip().lower()
-    actual_cycle = _entry_cycle_parts(choice.get("cycle"))
-    expected_cycle = _entry_cycle_parts(target_cycle)
-    raw_program_ids = choice.get("program_ids")
-    program_ids = {
-        str(value or "").strip().casefold()
-        for value in raw_program_ids if str(value or "").strip()
-    } if isinstance(raw_program_ids, list) else set()
-
-    return {
-        "route": (
-            "not_selected" if not expected_route else
-            "unknown" if not actual_route else "matched"
-        ),
-        "cycle": (
-            "not_selected" if not expected_cycle else
-            "unknown" if not actual_cycle or actual_cycle[0] is None or expected_cycle[0] is None else "matched"
-        ),
-        "program": (
-            "not_selected" if not program_id else
-            "unknown" if not program_is_known else
-            "unknown" if not program_ids else
-            "matched" if program_id.casefold() in program_ids else "mismatched"
-        ),
-    }
-
-
-def _applicability_unknown_reason(applicability: dict[str, str]) -> str:
-    return "applicability_unknown" if "unknown" in applicability.values() else ""
-
-
-def _entry_cycle_parts(value: Any) -> tuple[int | None, str | None] | None:
-    text = " ".join(str(value or "").strip().casefold().replace("–", "-").replace("—", "-").split())
-    if not text:
-        return None
-    if re.search(r"\b20\d{2}\s*[-/]\s*\d{2,4}\b", text):
-        return (None, None)
-    years = re.findall(r"(?<!\d)(20\d{2})(?!\d)", text)
-    # Academic-year ranges can refer to an application cycle or an entry year;
-    # without a more specific schema field their relationship is unknown.
-    if len(set(years)) != 1:
-        return (None, None)
-    year = int(years[0]) if years else None
-    seasons = [
-        season for season, pattern in (
-            ("spring", r"\bspring\b"),
-            ("summer", r"\b(?:summer)\b"),
-            ("fall", r"\b(?:fall|autumn)\b"),
-            ("winter", r"\bwinter\b"),
-        ) if re.search(pattern, text)
-    ]
-    if len(seasons) > 1:
-        return (None, None)
-    if year is None and not seasons:
-        return (None, None)
-    return (year, seasons[0] if seasons else None)
-
-
-def _cost_cycle_mismatch(cost_source: Any, intended_entry_cycle: Any) -> bool:
-    target = _entry_cycle_parts(intended_entry_cycle)
-    if not isinstance(cost_source, dict) or not target or target[0] is None:
-        return False
-    cycle = cost_source.get("academic_year") or cost_source.get("cycle") or cost_source.get("tuition_cycle")
-    if not cycle:
-        cost_range = cost_source.get("cost_range")
-        cycle = cost_range.get("academic_year") if isinstance(cost_range, dict) else None
-    text = " ".join(str(cycle or "").strip().casefold().replace("–", "-").replace("—", "-").split())
-    if not text:
-        return False
-    range_match = re.search(r"\b(20\d{2})\s*[-/]\s*(\d{2}|20\d{2})\b", text)
-    if range_match:
-        start = int(range_match.group(1))
-        end_text = range_match.group(2)
-        end = int(end_text) if len(end_text) == 4 else (start // 100) * 100 + int(end_text)
-        if end < start:
-            end += 100
-        target_year, target_season = target
-        if target_season == "spring":
-            return target_year != end
-        if target_season == "summer":
-            return target_year not in {start, end}
-        if target_season == "winter":
-            return False
-        return target_year != start
-    years = re.findall(r"(?<!\d)(20\d{2})(?!\d)", text)
-    return len(set(years)) == 1 and int(years[0]) != target[0]
-
-
-def _known_program_ids(university: dict[str, Any], choices: list[dict[str, Any]]) -> set[str]:
-    ids = {
-        str(value or "").strip().casefold()
-        for choice in choices
-        for value in (choice.get("program_ids") if isinstance(choice.get("program_ids"), list) else [])
-    }
-    academics = university.get("academics") if isinstance(university, dict) else None
-    programs = academics.get("programs") if isinstance(academics, dict) else None
-    if isinstance(programs, list):
-        ids.update(
-            str(program.get("id") or "").strip().casefold()
-            for program in programs if isinstance(program, dict) and program.get("id")
-        )
-    ids.discard("")
-    return ids
-
-
-def _choice_result_by_key(rows: list[dict[str, Any]], choice_key: Any) -> dict[str, Any] | None:
-    wanted = str(choice_key or "").strip()
-    if not wanted:
-        return None
-    for row in rows:
-        if not isinstance(row, dict):
-            continue
-        if str(row.get("choiceKey") or "").strip() == wanted:
-            return row
-    return None
-
-
-def _chance_level(chance_pct: float) -> dict[str, str]:
-    if chance_pct >= 100:
-        return {"id": "all_met", "label": "All published requirements met"}
-    if chance_pct >= 80:
-        return {"id": "mostly_met", "label": "Most published requirements met"}
-    if chance_pct > 0:
-        return {"id": "some_met", "label": "Some published requirements met"}
-    return {"id": "none_met", "label": "No published requirements met"}
-
-
-def _chance_locale(profile: dict[str, Any]) -> str:
-    raw = str((profile or {}).get("locale") or "").strip().lower()
-    if raw.startswith("kk") or raw == "kaz":
-        return "kaz"
-    return "rus" if raw.startswith("ru") else "eng"
-
-
-def _chance_no_data_label(reason: str, profile: dict[str, Any]) -> str:
-    labels = {
-        "eng": {
-            "missing_evidence": "Add exam scores or language evidence",
-            "requirements_not_met": "A required minimum is not met",
-            "missing_exam_score": "Need exam data to see the chance for this track",
-            "unsupported_exam_normalization": "Track score data is not yet comparable",
-            "no_score_profile": "No admitted-score data",
-            "no_published_requirements": "No measurable published minimums for this route",
-            "unassessed_minimums": "Published minimums cannot be assessed from the available profile evidence",
-            "requirements_not_reviewed": "Published minimums have not yet been reviewed for this route",
-            "applicability_unknown": "This route is not confirmed for the selected applicant, program, or entry cycle",
-        },
-        "rus": {
-            "missing_evidence": "Добавьте результаты экзаменов или языковые данные",
-            "requirements_not_met": "Не выполнен обязательный минимум",
-            "missing_exam_score": "Нужны данные по экзамену, чтобы оценить шанс по этому варианту поступления",
-            "unsupported_exam_normalization": "Пока нельзя корректно сопоставить ваш экзамен с этим вариантом поступления",
-            "no_score_profile": "Нет данных о баллах зачисленных",
-            "no_published_requirements": "Для этого варианта нет измеримых опубликованных минимумов",
-            "unassessed_minimums": "Опубликованные минимумы нельзя оценить по имеющимся данным профиля",
-            "requirements_not_reviewed": "Опубликованные минимумы для этого маршрута ещё не проверены",
-            "applicability_unknown": "Применимость этого маршрута к выбранному типу заявителя, программе или циклу не подтверждена",
-        },
-        "kaz": {
-            "missing_evidence": "Емтихан нәтижесін немесе тіл деңгейін қосыңыз",
-            "requirements_not_met": "Міндетті ең төменгі талапқа сай емессіз",
-            "missing_exam_score": "Осы түсу жолын бағалау үшін емтихан нәтижесі керек",
-            "unsupported_exam_normalization": "Бұл емтихан нәтижесін әзірге осы түсу жолымен салыстыру мүмкін емес",
-            "no_score_profile": "Оқуға қабылданғандар ұпайы туралы дерек жоқ",
-            "no_published_requirements": "Бұл түсу жолы бойынша өлшенетін жарияланған ең төменгі талап жоқ",
-            "unassessed_minimums": "Профильдегі дерекпен жарияланған ең төменгі талаптарды бағалау мүмкін емес",
-            "requirements_not_reviewed": "Бұл түсу жолының жарияланған ең төменгі талаптары әлі тексерілмеген",
-            "applicability_unknown": "Бұл жолдың таңдалған талапкерге, бағдарламаға не қабылдау цикліне сай екені расталмаған",
-        },
-    }
-    locale = _chance_locale(profile)
-    if locale == "rus" and reason == "missing_exam_score":
-        return "Нужны данные по экзаменам, чтобы оценить шанс по этому варианту поступления"
-    if locale == "kaz" and reason == "missing_exam_score":
-        return "Осы түсу жолын бағалау үшін емтихан нәтижелері керек"
-    return str((labels.get(locale) or labels["eng"]).get(reason) or (labels.get(locale) or labels["eng"])["no_score_profile"])
-
-
-def _no_data_chance_level(profile: dict[str, Any]) -> dict[str, str]:
-    return {
-        "id": "no_data",
-        "label": {"rus": "Нет данных", "kaz": "Дерек жоқ"}.get(_chance_locale(profile), "No data"),
-    }
-
-
-def _published_requirements_for_choice(
-    university: dict[str, Any], choice: dict[str, Any]
-) -> tuple[dict[str, Any], list[dict[str, Any]], str]:
-    """Return scored requirements and published minimums the profile cannot assess."""
-    categories = university.get("admission_categories")
-    if not isinstance(categories, list):
-        return {}, [], ""
-    category_id = str(choice.get("category_id") or "")
-    profile_id = str(choice.get("requirement_profile_id") or "")
-    for category in categories:
-        if not isinstance(category, dict) or str(category.get("id") or "") != category_id:
-            continue
-        profiles = category.get("requirement_profiles")
-        profile_rows = [row for row in profiles if isinstance(row, dict)] if isinstance(profiles, list) else []
-        if not profile_rows:
-            profile_rows = [{"id": "general"}]
-        for profile_row in profile_rows:
-            if str(profile_row.get("id") or "") != profile_id:
-                continue
-            requirements: dict[str, Any] = {}
-            for source in (category, profile_row):
-                raw = source.get("requirements")
-                if isinstance(raw, dict):
-                    requirements.update(raw)
-            unassessed = profile_row.get("unassessed_published_minimums")
-            review_status = str(profile_row.get("requirements_review_status") or "")
-            return requirements, [row for row in unassessed if isinstance(row, dict)] if isinstance(unassessed, list) else [], review_status
-    return {}, [], ""
-
-
-def _assess_academic_requirements(
-    requirements: dict[str, Any],
-    has_language_rules: bool,
-    user_scores: dict[str, Any],
-    user_languages: dict[str, Any],
-) -> tuple[list[bool], int, list[dict[str, Any]], list[dict[str, Any]]]:
-    checks: list[bool] = []
-    measurable_checks = 0
-    assessments: list[dict[str, Any]] = []
-    missing_evidence: list[dict[str, Any]] = []
-
-    for exam_id, raw_minimum in requirements.items():
-        if has_language_rules and _is_language_exam_key(exam_id):
-            continue
-        minimum = _normalize_gpa_score(raw_minimum) if str(exam_id).strip().upper() == "GPA" else _to_num(raw_minimum)
-        if minimum is None:
-            assessments.append({"exam": str(exam_id), "minimum": raw_minimum, "provided": None, "status": "unassessed"})
-            continue
-        exam_key = str(exam_id).strip()
-        is_language_exam = _is_language_exam_key(exam_id)
-        exam_config = (
-            exams_service._config_entry(exam_key)
-            if exam_key.upper() != "GPA" and not is_language_exam
-            else {"min": 0, "max": 5}
-        )
-        if not exam_config:
-            assessments.append({"exam": exam_key, "minimum": minimum, "provided": None, "status": "unassessed"})
-            continue
-        measurable_checks += 1
-        user_value = _get_user_score(
-            user_scores, exam_id, None if _is_language_exam_key(exam_id) else user_languages
-        )
-        if user_value is None:
-            missing_evidence.append({"type": "academic_exam", "id": str(exam_id), "minimum": minimum})
-            assessments.append({"exam": exam_key, "minimum": minimum, "provided": None, "status": "missing"})
-            continue
-        result = _score_requirement(
-            user_value,
-            minimum,
-            None,
-            higher_is_better=_is_higher_better(exam_id),
-            mode="chance",
-        )
-        passed = bool(result.get("pass"))
-        checks.append(passed)
-        assessments.append({"exam": exam_key, "minimum": minimum, "provided": user_value, "status": "met" if passed else "unmet"})
-
-    return checks, measurable_checks, assessments, missing_evidence
-
-
-def _assess_required_exam_alternatives(
-    choice: dict[str, Any],
-    user_scores: dict[str, Any],
-    valid_exam_ids: set[str],
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    assessments: list[dict[str, Any]] = []
-    missing_evidence: list[dict[str, Any]] = []
-
-    raw_exam_alternatives = choice.get("required_exam_alternatives")
-    if isinstance(raw_exam_alternatives, list):
-        for group in raw_exam_alternatives:
-            if not isinstance(group, list):
-                continue
-            exam_ids = [str(value or "").strip() for value in group if str(value or "").strip()]
-            if not exam_ids:
-                continue
-            unsupported_ids = [exam_id for exam_id in exam_ids if not exams_service._config_entry(exam_id)]
-            supplied = next((
-                exam_id for exam_id in exam_ids
-                if exams_service._config_entry(exam_id)
-                and (
-                    exams_service.resolve_exam_key(exam_id).upper() in valid_exam_ids
-                    or _get_user_score(user_scores, exam_id) is not None
-                )
-            ), None)
-            assessments.append({
-                "exam": " or ".join(exam_ids), "minimum": None, "provided": supplied,
-                "status": "met" if supplied else "unassessed" if unsupported_ids else "missing",
-            })
-            if not supplied and not unsupported_ids:
-                missing_evidence.append({"type": "required_exam_alternative", "ids": exam_ids})
-
-    return assessments, missing_evidence
-
-
-def _assess_language_rules(
-    choice: dict[str, Any],
-    user_languages: dict[str, Any],
-    lang_cfg: dict[str, Any],
-) -> tuple[list[bool], int, list[dict[str, Any]], list[dict[str, Any]]]:
-    checks: list[bool] = []
-    measurable_checks = 0
-    assessments: list[dict[str, Any]] = []
-    missing_evidence: list[dict[str, Any]] = []
-
-    language_rules = _collect_language_requirements(choice)
-    measurable_language_rules = []
-    for rule in language_rules.get("items", []):
-        if not isinstance(rule, dict):
-            continue
-        raw_requirements = rule.get("requirements")
-        if not isinstance(raw_requirements, dict):
-            raw_requirements = rule.get("exams")
-        measurable = bool(rule.get("accept_native")) or _to_num(rule.get("min_cefr")) is not None
-        measurable = measurable or (
-            isinstance(raw_requirements, dict)
-            and bool(raw_requirements)
-        )
-        if measurable:
-            measurable_language_rules.append(rule)
-
-    if language_rules.get("mode") == "any" and measurable_language_rules:
-        measurable_checks += 1
-        results = [
-            _score_single_language_rule(rule, user_languages, lang_cfg, mode="chance")
-            for rule in measurable_language_rules
-        ]
-        rule_assessments = [
-            _language_rule_assessments(rule, user_languages, lang_cfg, "any")
-            for rule in measurable_language_rules
-        ]
-        if any(bool(result.get("pass")) and not bool(result.get("conditional")) for result in results):
-            checks.append(True)
-            assessments.extend(item for rows in rule_assessments for item in rows)
-        elif any(bool(result.get("conditional")) for result in results):
-            missing_evidence.extend(
-                {"type": "language_requirement", "code": str(rule.get("code") or ""), "exam": row.get("exam"), "minimum": row.get("minimum")}
-                for rule, result, rows in zip(measurable_language_rules, results, rule_assessments, strict=True)
-                if bool(result.get("conditional"))
-                for row in rows if row.get("status") == "missing"
-            )
-            assessments.extend(item for rows in rule_assessments for item in rows)
-        else:
-            checks.append(False)
-            assessments.extend(item for rows in rule_assessments for item in rows)
-    else:
-        for rule in measurable_language_rules:
-            measurable_checks += 1
-            rows = _language_rule_assessments(rule, user_languages, lang_cfg, "all")
-            result = _score_single_language_rule(rule, user_languages, lang_cfg, mode="chance")
-            if bool(result.get("conditional")):
-                missing_evidence.extend(
-                    {"type": "language_requirement", "code": str(rule.get("code") or ""), "exam": row.get("exam"), "minimum": row.get("minimum")}
-                    for row in rows if row.get("status") == "missing"
-                )
-                assessments.extend(rows)
-            else:
-                passed = bool(result.get("pass"))
-                checks.append(passed)
-                assessments.extend(rows)
-
-    return checks, measurable_checks, assessments, missing_evidence
-
-
-def _assess_unassessed_minimums(
-    unassessed_minimums: list[dict[str, Any]],
-    user_scores: dict[str, Any],
-) -> list[dict[str, Any]]:
-    assessments: list[dict[str, Any]] = []
-    for row in unassessed_minimums:
-        source_exam_id = str(row.get("exam_id") or "").strip()
-        configured_exam_id = _configured_language_exam_id_any(source_exam_id) if source_exam_id else ""
-        provided = _get_user_score(user_scores, configured_exam_id) if configured_exam_id else None
-        assessment = {
-            "exam": str(row.get("label") or row.get("id") or "Published minimum"),
-            "minimum": row.get("minimum"), "provided": provided, "status": "unassessed",
-        }
-        condition = str(row.get("scale") or "").strip()
-        if condition:
-            assessment["condition"] = condition
-        if configured_exam_id:
-            assessment["examId"] = configured_exam_id
-        assessments.append(assessment)
-    return assessments
-
-
-def _published_requirements_fit(
-    *,
-    university: dict[str, Any],
-    choice: dict[str, Any],
-    user_scores: dict[str, Any],
-    valid_exam_ids: set[str],
-    user_languages: dict[str, Any],
-    lang_cfg: dict[str, Any],
-) -> tuple[int | None, str, int, list[dict[str, Any]], list[dict[str, Any]]]:
-    """Score the share of measurable published minimum checks that are met."""
-    requirements, unassessed_minimums, review_status = _published_requirements_for_choice(university, choice)
-    if review_status == "not_reviewed":
-        return None, "requirements_not_reviewed", 0, [], []
-
-    language_rules = _collect_language_requirements(choice)
-    has_language_rules = bool(language_rules.get("items"))
-
-    checks, measurable_checks, assessments, missing_evidence = _assess_academic_requirements(
-        requirements, has_language_rules, user_scores, user_languages
-    )
-
-    alt_assessments, alt_missing = _assess_required_exam_alternatives(
-        choice, user_scores, valid_exam_ids
-    )
-    assessments.extend(alt_assessments)
-    missing_evidence.extend(alt_missing)
-
-    lang_checks, lang_measurable, lang_assessments, lang_missing = _assess_language_rules(
-        choice, user_languages, lang_cfg
-    )
-    checks.extend(lang_checks)
-    measurable_checks += lang_measurable
-    assessments.extend(lang_assessments)
-    missing_evidence.extend(lang_missing)
-
-    unassessed_assessments = _assess_unassessed_minimums(
-        unassessed_minimums, user_scores
-    )
-    assessments.extend(unassessed_assessments)
-
-    if missing_evidence:
-        return None, "missing_evidence", measurable_checks, assessments, missing_evidence
-
-    if unassessed_minimums:
-        return None, "unassessed_minimums", measurable_checks, assessments, missing_evidence
-
-    if any(row.get("status") == "unassessed" for row in assessments):
-        return None, "unassessed_minimums", measurable_checks, assessments, missing_evidence
-    if not checks:
-        return None, "no_published_requirements", 0, assessments, missing_evidence
-    return int(round(100 * sum(checks) / len(checks))), "", measurable_checks, assessments, missing_evidence
-
-
-def _chance_percent_value(value: Any) -> float | None:
-    parsed = _to_num(value)
-    if parsed is None:
-        return None
-    return _clamp(float(parsed), 0.0, 100.0)
+_FACTORS_CACHE: dict[str, dict[str, float | None]] = {}
 
 
 def _preference01(value: Any, fallback: float = 50.0) -> float:
@@ -1329,10 +93,6 @@ def _factor01(value: Any, fallback: float = 0.5) -> float:
     if parsed > 1.0:
         parsed = parsed / 100.0
     return _clamp01(float(parsed))
-
-
-_FACTORS_CACHE: dict[str, dict[str, float]] = {}
-_CHOICES_CACHE: dict[str, list[dict[str, Any]]] = {}
 
 
 def _extract_university_factors(university: dict[str, Any], study_level: Any = "any") -> dict[str, float | None]:
@@ -1351,15 +111,18 @@ def _extract_university_factors(university: dict[str, Any], study_level: Any = "
     raw = university.get("factors")
     raw = raw if isinstance(raw, dict) else {}
 
-    def stored_or(key: str, compute) -> float | None:
+    def stored_or(key: str, compute: Any) -> float | None:
         if key in raw:
             return None if raw[key] is None else _factor01(raw[key])
         return compute()
 
     res = {
         "practice_vs_science": stored_or("practice_vs_science", lambda: preference_factors.research_intensity(university)),
-        "social_vs_hardcore": None if target_level in preference_factors.GRADUATE_LEVELS
-        else stored_or("social_vs_hardcore", lambda: preference_factors.selectivity(university, target_level)),
+        "social_vs_hardcore": (
+            None
+            if target_level in preference_factors.GRADUATE_LEVELS
+            else stored_or("social_vs_hardcore", lambda: preference_factors.selectivity(university, target_level))
+        ),
         "budget_vs_prestige": stored_or("budget_vs_prestige", lambda: preference_factors.cost_vs_prestige(university)),
         "city_vs_campus": stored_or("city_vs_campus", lambda: preference_factors.location(university)),
     }
@@ -1374,7 +137,8 @@ def _preference_weights(user_pref: dict[str, float]) -> dict[str, float]:
 
 
 def _preference_mismatch(
-    user_pref: dict[str, float], uni_factors: dict[str, float | None]
+    user_pref: dict[str, float],
+    uni_factors: dict[str, float | None],
 ) -> tuple[float | None, dict[str, float | None]]:
     """Weighted mean distance over the sliders the user moved.
 
@@ -1407,7 +171,7 @@ def _build_ui_badge_hints(
     meets_min_requirements: bool = False,
     below_requirements: bool = False,
     budget_status: str = "not_set",
-    aid_any: bool = False,
+    aid_any: bool | None = False,
     missing_program: bool = False,
 ) -> dict[str, Any]:
     mismatch01 = _clamp01(_to_num_default(preference_mismatch, 1.0))
@@ -1469,6 +233,590 @@ def _build_ui_badge_hints(
     }
 
 
+def _resolve_ml_relevance(
+    interest_text: str,
+) -> tuple[dict[str, float], dict[str, Any], bool, str, bool, str, bool]:
+    """Query semantic ML recommender when interests text is present, returning explicit unavailable status on error."""
+    ml_scores_by_id: dict[str, float] = {}
+    ml_status: dict[str, Any] = (
+        get_ml_runtime_status()
+        if interest_text
+        else {"available": False, "message": "", "mode": "disabled", "reason": "empty_interest"}
+    )
+    ml_available = bool(ml_status.get("available"))
+    ml_runtime_mode = str(ml_status.get("mode") or "unavailable")
+    ml_unavailable_warning = bool(interest_text) and not ml_available
+    ml_warning_message = str(ml_status.get("message") or "") if ml_unavailable_warning else ""
+    use_ml = bool(interest_text) and ml_available
+    if use_ml:
+        try:
+            ml_scores_by_id = get_ml_recommender().predict_relevance(interest_text)
+        except Exception:
+            # Semantic embeddings are optional runtime enhancement; expose unavailable state cleanly.
+            ml_scores_by_id = {}
+            use_ml = False
+            ml_available = False
+            ml_runtime_mode = "unavailable"
+            ml_unavailable_warning = bool(interest_text)
+            ml_warning_message = "Machine Learning unavailable"
+    return (
+        ml_scores_by_id,
+        ml_status,
+        ml_available,
+        ml_runtime_mode,
+        ml_unavailable_warning,
+        ml_warning_message,
+        use_ml,
+    )
+
+
+def _resolve_choice_selection_for_sort(
+    row: dict[str, Any],
+    canonical_context: bool,
+    profile: dict[str, Any],
+    chance_general: dict[str, Any],
+) -> dict[str, Any]:
+    """Resolve eligible choices, user selection state, and active choice metadata for a university."""
+    choices = (
+        []
+        if canonical_context
+        else universities_service.expand_admission_choices(row.get("admission_categories"))
+    )
+    choices = [t for t in choices if isinstance(t, dict)]
+    target_level = _normalize_study_level_str(
+        chance_general["context"].get("study_level")
+        if canonical_context
+        else profile.get("studyLevel") or profile.get("study_level") or ""
+    )
+    target_route = profile.get("applicant_route")
+    target_cycle = profile.get("intended_entry_cycle")
+    selected_program_id = _selected_program_id_for_university(profile, row)
+    selected_program_is_known = (
+        not selected_program_id
+        or selected_program_id.casefold() in _known_program_ids(row, choices)
+    )
+    eligible_choices = [
+        (idx, choice)
+        for idx, choice in enumerate(choices)
+        if (target_level == "any" or _choice_matches_study_level(choice, target_level))
+        and _choice_matches_applicant_route(choice, target_route)
+        and _choice_matches_entry_cycle(choice, target_cycle)
+        and (
+            not selected_program_id
+            or not selected_program_is_known
+            or _choice_matches_program(choice, selected_program_id)
+        )
+    ]
+    selected_choice_key = (
+        str(chance_general.get("activeChoiceKey") or "")
+        if canonical_context
+        else _selected_choice_key_for_university(profile, row)
+    )
+
+    general_choice_results = (
+        chance_general.get("choices") if isinstance(chance_general.get("choices"), list) else []
+    )
+    selected_general_choice = _choice_result_by_key(general_choice_results, selected_choice_key)
+    selected_actual_chance = _chance_percent_value(chance_general.get("overallChance"))
+    selected_by_user = bool(chance_general.get("selectedByUser")) and selected_general_choice is not None
+
+    selected_raw_choice = None
+    if selected_choice_key and eligible_choices:
+        for idx, choice in eligible_choices:
+            if _admission_choice_key(choice, idx) == selected_choice_key:
+                selected_raw_choice = choice
+                break
+    if selected_by_user and selected_raw_choice is not None:
+        selected_actual_chance = _chance_percent_value((selected_general_choice or {}).get("chancePercent"))
+
+    recommended_choice_key = str(
+        chance_general.get("recommendedChoiceKey") or chance_general.get("bestChoiceKey") or ""
+    )
+    recommended_choice_id = str(
+        chance_general.get("recommendedChoiceId") or chance_general.get("bestChoiceId") or ""
+    )
+    recommended_choice_label = str(
+        chance_general.get("recommendedChoiceLabel") or chance_general.get("bestChoiceLabel") or ""
+    )
+    active_choice_key = (
+        selected_choice_key
+        if (selected_by_user and selected_choice_key)
+        else str(chance_general.get("bestChoiceKey") or recommended_choice_key)
+    )
+
+    active_raw_choice: dict[str, Any] = {}
+    if eligible_choices:
+        for idx, choice in eligible_choices:
+            if _admission_choice_key(choice, idx) == active_choice_key:
+                active_raw_choice = choice
+                break
+        if not active_raw_choice:
+            active_idx, active_raw_choice = eligible_choices[0]
+            active_choice_key = _admission_choice_key(active_raw_choice, active_idx)
+
+    base_choices = universities_service.expand_admission_choices(
+        row.get("admission_categories"),
+        include_funding=False,
+    )
+    base_raw_choice = next(
+        (
+            choice
+            for choice in base_choices
+            if choice.get("category_id") == active_raw_choice.get("category_id")
+            and choice.get("requirement_profile_id") == active_raw_choice.get("requirement_profile_id")
+        ),
+        active_raw_choice,
+    )
+
+    active_choice_meta = _choice_result_by_key(general_choice_results, active_choice_key) or {}
+    if canonical_context:
+        active_raw_choice = {
+            "id": active_choice_meta.get("choiceId"),
+            "label": active_choice_meta.get("choiceLabel"),
+            "category_id": active_choice_meta.get("categoryId"),
+        }
+
+    return {
+        "target_level": target_level,
+        "target_route": target_route,
+        "target_cycle": target_cycle,
+        "selected_program_id": selected_program_id,
+        "eligible_choices": eligible_choices,
+        "selected_actual_chance": selected_actual_chance,
+        "selected_by_user": selected_by_user,
+        "recommended_choice_key": recommended_choice_key,
+        "recommended_choice_id": recommended_choice_id,
+        "recommended_choice_label": recommended_choice_label,
+        "active_choice_key": active_choice_key,
+        "active_raw_choice": active_raw_choice,
+        "base_raw_choice": base_raw_choice,
+        "active_choice_meta": active_choice_meta,
+    }
+
+
+def _compute_sort_budget_outcome(
+    *,
+    row: dict[str, Any],
+    row_id: str,
+    canonical_context: bool,
+    profile: dict[str, Any],
+    budget: float | None,
+    preferred_mode: str,
+    selection_state: dict[str, Any],
+) -> dict[str, Any]:
+    """Compute tuition/living cost numbers, budget status, and affordability gap."""
+    target_level = selection_state["target_level"]
+    target_route = selection_state["target_route"]
+    target_cycle = selection_state["target_cycle"]
+    selected_program_id = selection_state["selected_program_id"]
+    eligible_choices = selection_state["eligible_choices"]
+    active_raw_choice = selection_state["active_raw_choice"]
+    base_raw_choice = selection_state["base_raw_choice"]
+
+    if canonical_context or (
+        not eligible_choices
+        and (target_level != "any" or target_route or target_cycle or selected_program_id)
+    ):
+        finance = row.get("finance") if isinstance(row.get("finance"), dict) else {}
+        cost_usd, cost_native = 0.0, 0.0
+        cost_currency = str(finance.get("currency") or "USD").strip().upper()
+        cost_mode = "unavailable"
+    else:
+        cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
+            row,
+            base_raw_choice,
+            preferred_mode=preferred_mode,
+            intended_entry_cycle=target_cycle,
+        )
+    aid_any = None if canonical_context else _get_track_funding_type(active_raw_choice) == "grant"
+
+    cost_range_payload = (
+        _track_cost_range_payload(row, base_raw_choice)
+        if cost_mode == "on-campus_range"
+        else None
+    )
+    cost_unavailable = cost_mode in {
+        "unavailable",
+        "online_missing_tuition",
+        "on-campus_range",
+    }
+    final_price_native: float | None = None if cost_unavailable else cost_native
+    final_price_usd: float | None = (
+        None if final_price_native is None else _cost_to_usd(final_price_native, cost_currency)
+    )
+
+    affordability_gap: float | None = None
+    budget_status = "not_set"
+    if budget is not None and budget > 0:
+        budget_status = "unknown_cost"
+        if cost_mode == "on-campus_range" and isinstance(cost_range_payload, dict):
+            min_usd = _to_num(cost_range_payload.get("minUSD"))
+            max_usd = _to_num(cost_range_payload.get("maxUSD"))
+            if min_usd is not None and min_usd > budget:
+                affordability_gap = _clamp01(1.0 - (budget / min_usd))
+                budget_status = "over_budget"
+            elif max_usd is not None and max_usd <= budget:
+                affordability_gap = 0.0
+                budget_status = "within_budget"
+            elif min_usd is not None and max_usd is not None:
+                budget_status = "uncertain_range"
+        elif not cost_unavailable and final_price_usd is not None:
+            affordability_gap = (
+                _clamp01(1.0 - (budget / final_price_usd))
+                if final_price_usd > budget
+                else 0.0
+            )
+            budget_status = "over_budget" if final_price_usd > budget else "within_budget"
+
+    cost_quote = None
+    budget_assessment = None
+    projected_costs = None
+    if canonical_context:
+        projected_costs = admissions_catalog.catalog_costs(row_id, target_level, preferred_mode, profile=profile)
+        # Preserve price-band annotations from the same scoped catalog projection.
+        for basis_key in ("annual_total", "tuition"):
+            previous = (row.get("catalog_costs") or {}).get(basis_key) or {}
+            if projected_costs.get(basis_key) and previous.get("filter_match"):
+                projected_costs[basis_key]["filter_match"] = previous["filter_match"]
+        annual_total = projected_costs.get("annual_total")
+        basis = (
+            "annual_total"
+            if annual_total and annual_total.get("calculation") != "tuition_plus_living_range"
+            else "tuition"
+        )
+        quote = projected_costs.get(basis)
+        evidence = "unavailable"
+        status = "not_set" if budget is None or budget <= 0 else "unknown_cost"
+        affordability_gap = None
+        bounds: tuple[float, float] | None = None
+        if quote:
+            bounds = universities_service._catalog_cost_range_usd({"catalog_costs": projected_costs}, basis)
+            cost_quote = {
+                **quote,
+                "basis": basis,
+                "minUSD": bounds[0] if bounds else None,
+                "maxUSD": bounds[1] if bounds else None,
+            }
+            evidence = (
+                "period_not_annual"
+                if quote.get("annual_comparable") is False
+                else "fee_status_unknown"
+                if quote["fee_status_match"] == "unknown"
+                else "scope_unknown"
+                if target_level == "any" and not projected_costs.get("scope", {}).get("study_level")
+                else "applicable"
+                if quote["cycle_status"] == "matched"
+                else "dated_reference"
+            )
+            if bounds and budget is not None and budget > 0 and evidence not in {"fee_status_unknown", "scope_unknown"}:
+                low, high = bounds
+                if low > budget:
+                    status, affordability_gap = "over_budget", _clamp01(1.0 - budget / low)
+                elif high <= budget:
+                    status, affordability_gap = "within_budget", 0.0
+                else:
+                    status = "uncertain_range"
+        full_budget = basis == "annual_total" and quote is not None
+        budget_assessment = {
+            "status": status,
+            "basis": basis if quote else None,
+            "evidence": evidence,
+            "full_budget": full_budget,
+            "exclusions": quote["exclusions"] if quote else [],
+        }
+        budget_status = (
+            status
+            if full_budget and evidence == "applicable"
+            else "not_set"
+            if budget is None or budget <= 0
+            else "unknown_cost"
+        )
+        cost_mode = (
+            "published_annual_total"
+            if full_budget and evidence == "applicable"
+            else "published_reference"
+            if quote
+            else "unavailable"
+        )
+        cost_unavailable = not (
+            full_budget and evidence == "applicable" and bounds is not None and quote["min"] == quote["max"]
+        )
+        if not cost_unavailable and quote is not None and cost_quote is not None:
+            cost_native, cost_currency = quote["min"], quote["currency"]
+            cost_usd = cost_quote["minUSD"]
+            final_price_native, final_price_usd = cost_native, cost_usd
+
+    return {
+        "aid_any": aid_any,
+        "cost_usd": cost_usd,
+        "cost_native": cost_native,
+        "cost_currency": cost_currency,
+        "cost_mode": cost_mode,
+        "cost_range_payload": cost_range_payload,
+        "cost_unavailable": cost_unavailable,
+        "final_price_native": final_price_native,
+        "final_price_usd": final_price_usd,
+        "affordability_gap": affordability_gap,
+        "budget_status": budget_status,
+        "cost_quote": cost_quote,
+        "budget_assessment": budget_assessment,
+        "projected_costs": projected_costs,
+    }
+
+
+def _score_university_for_ai(
+    row: dict[str, Any],
+    *,
+    profile: dict[str, Any],
+    profile_any: dict[str, Any],
+    ctx: dict[str, Any],
+    lang_cfg: dict[str, Any],
+    preferred_mode: str,
+    user_pref: dict[str, float],
+    preference_strength: float,
+    interest_text: str,
+    profile_major: str,
+    ml_scores_by_id: dict[str, float],
+    ml_status: dict[str, Any],
+    ml_available: bool,
+    ml_runtime_mode: str,
+    ml_unavailable_warning: bool,
+    ml_warning_message: str,
+    use_ml: bool,
+) -> dict[str, Any]:
+    row_id = str(row.get("id") or "").strip()
+    canonical_context = row_id in admissions_catalog.INSTITUTION_IDS
+    chance_general = estimate_uni_chance(row, profile_any, user_context=ctx, lang_cfg=lang_cfg)
+    selection_state = _resolve_choice_selection_for_sort(
+        row,
+        canonical_context,
+        profile,
+        chance_general,
+    )
+    target_level = selection_state["target_level"]
+
+    uni_factors = _extract_university_factors(row, target_level)
+    preference_mismatch, distance_deltas = _preference_mismatch(user_pref, uni_factors)
+
+    matching_options: list[dict[str, Any]] = []
+    unknown_option = False
+    if canonical_context:
+        matching_options = admissions_catalog.matching_study_options(row_id, profile_major, target_level)
+        selected_option_id = chance_general["context"].get("study_option_id")
+        selected_option = (chance_general.get("selectedContext") or {}).get("option") or {}
+        applicability = chance_general.get("applicability") or {}
+        unknown_option = bool(selected_option_id) and (
+            not selected_option.get("id") or "mismatched" in applicability.values()
+        )
+        if selected_option_id:
+            matching_options = [
+                option
+                for option in matching_options
+                if option["id"] == selected_option_id and not unknown_option
+            ]
+        missing_program = bool(profile_major) and not matching_options and not unknown_option
+    else:
+        missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
+    program_missing_penalty = 0.25 if missing_program else 0.0
+
+    row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
+    preference_fit = None if preference_mismatch is None else _clamp01(1.0 - preference_mismatch)
+
+    budget_outcome = _compute_sort_budget_outcome(
+        row=row,
+        row_id=row_id,
+        canonical_context=canonical_context,
+        profile=profile,
+        budget=ctx["budget"],
+        preferred_mode=preferred_mode,
+        selection_state=selection_state,
+    )
+
+    selected_actual_chance = selection_state["selected_actual_chance"]
+    affordability_gap = budget_outcome["affordability_gap"]
+    requirements_gap = (
+        _clamp01(1.0 - selected_actual_chance / 100.0)
+        if selected_actual_chance is not None
+        else None
+    )
+    # The preference component counts as much as the strongest slider was moved: centred sliders leave it out.
+    components: list[tuple[float, float]] = []
+    if preference_mismatch is not None:
+        components.append(((0.35 if use_ml else 0.60) * preference_strength, preference_mismatch))
+    if requirements_gap is not None:
+        components.append((0.30 if use_ml else 0.40, requirements_gap))
+    if use_ml:
+        components.append((0.35, _clamp01(1.0 - row_ml_score)))
+    if affordability_gap is not None:
+        components.append((0.20, affordability_gap))
+    major_penalty = (
+        0.20 * _clamp01((0.05 - row_ml_score) / 0.05)
+        if use_ml and interest_text and row_ml_score < 0.05
+        else 0.0
+    )
+    final_score = _clamp01(
+        # No component at all (centred sliders and no budget, minimums or interests): every university ties
+        # and the sort below falls back to its later keys, such as rank.
+        (sum(weight * value for weight, value in components) / sum(weight for weight, _ in components) if components else 0.0)
+        + major_penalty
+        + program_missing_penalty
+    )
+
+    active_choice_meta = selection_state["active_choice_meta"]
+    active_raw_choice = selection_state["active_raw_choice"]
+    active_choice_key = selection_state["active_choice_key"]
+    recommended_choice_key = selection_state["recommended_choice_key"]
+    selected_by_user = selection_state["selected_by_user"]
+    aid_any = budget_outcome["aid_any"]
+    budget_status = budget_outcome["budget_status"]
+
+    active_fit_percent = _chance_percent_value(active_choice_meta.get("chancePercent"))
+    below_req = active_fit_percent is not None and active_fit_percent < 100
+    meet_min_req = active_fit_percent == 100
+    is_conditional = active_choice_meta.get("reason") == "missing_evidence"
+    conditional_count = 1 if is_conditional else 0
+    active_choice_details = (
+        active_choice_meta.get("details") if isinstance(active_choice_meta.get("details"), dict) else {}
+    )
+    requirement_checks = (
+        active_choice_details.get("checks") if isinstance(active_choice_details.get("checks"), list) else []
+    )
+    missing_evidence = (
+        active_choice_meta.get("missingEvidence")
+        if isinstance(active_choice_meta.get("missingEvidence"), list)
+        else []
+    )
+
+    effective_selected_by_user = (
+        selected_by_user
+        if canonical_context
+        else selected_by_user and active_choice_key != recommended_choice_key
+    )
+    ui_badge_hints = _build_ui_badge_hints(
+        preference_mismatch=preference_mismatch,
+        conditional=is_conditional,
+        conditional_requirements=conditional_count,
+        meets_min_requirements=meet_min_req,
+        below_requirements=below_req,
+        budget_status=budget_status,
+        aid_any=aid_any,
+        missing_program=missing_program,
+    )
+
+    choice_id = str(active_raw_choice.get("id") or active_choice_meta.get("choiceId") or "default")
+    choice_label = str(active_raw_choice.get("label") or active_choice_meta.get("choiceLabel") or "General admission")
+    cost_unavailable = budget_outcome["cost_unavailable"]
+
+    match_data: dict[str, Any] = {
+        "choiceKey": active_choice_key,
+        "choiceId": choice_id,
+        "choiceLabel": choice_label,
+        "categoryId": str(active_raw_choice.get("category_id") or ""),
+        "requirementProfileId": str(active_raw_choice.get("requirement_profile_id") or ""),
+        "fundingOptionId": str(active_raw_choice.get("funding_option_id") or ""),
+        "finalPrice": budget_outcome["final_price_native"],
+        "finalPriceUSD": budget_outcome["final_price_usd"],
+        "currency": budget_outcome["cost_currency"],
+        "aidAny": aid_any,
+        "aidEligible": None,
+        "grantName": str(active_raw_choice.get("funding_program") or "") if aid_any else "",
+        "admitChance": None,
+        "requirementsFitPercent": selected_actual_chance,
+        "scoreMeaning": "published_requirements_met_percent",
+        "requirementsReason": str(active_choice_meta.get("reason") or ""),
+        "requirementChecks": requirement_checks,
+        "missingEvidence": missing_evidence,
+        "applicability": (
+            active_choice_meta.get("applicability")
+            if isinstance(active_choice_meta.get("applicability"), dict)
+            else {}
+        ),
+        "meetMinRequirements": meet_min_req,
+        "missingRequiredEvidence": is_conditional,
+        "missingProgram": missing_program,
+        "conditional": is_conditional,
+        "conditionalRequirements": conditional_count,
+        "costYearUSD": None if cost_unavailable else budget_outcome["cost_usd"],
+        "costYearNative": None if cost_unavailable else budget_outcome["cost_native"],
+        "grantPotential": None,
+        "grantEligible": None,
+        "hardScore": preference_fit,
+        "distanceScore": preference_fit,
+        "distanceDeltas": distance_deltas,
+        "preferenceMismatch": preference_mismatch,
+        "admissionRisk": None,
+        "requirementsGap": requirements_gap,
+        "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
+        "selectedChanceType": "requirements_fit",
+        "grantChance": None,
+        "generalChance": None,
+        "uiBadgeHints": ui_badge_hints,
+        "factors": uni_factors,
+        "userPreferences": user_pref,
+        "mlScore": row_ml_score,
+        "mlMode": ml_runtime_mode if use_ml else "disabled",
+        "mlSemanticScore": row_ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
+        "finalScore": final_score,
+        "budgetStatus": budget_status,
+        "affordabilityGap": affordability_gap,
+        "interestScope": "university" if use_ml else "unavailable",
+        "mlEnabled": bool(interest_text),
+        "mlApplied": use_ml,
+        "mlAvailable": ml_available,
+        "mlUnavailable": ml_unavailable_warning,
+        "mlWarning": ml_warning_message,
+        "mlReason": str(ml_status.get("reason") or ""),
+        "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
+        "costMode": budget_outcome["cost_mode"],
+        "costRange": budget_outcome["cost_range_payload"],
+        "recommendedChoiceKey": recommended_choice_key,
+        "recommendedChoiceId": selection_state["recommended_choice_id"],
+        "recommendedChoiceLabel": selection_state["recommended_choice_label"],
+        "selectedChoiceKey": active_choice_key,
+        "selectedChoiceId": choice_id,
+        "selectedChoiceLabel": choice_label,
+        "selectedByUser": effective_selected_by_user,
+        "choiceSelectionSource": "user" if effective_selected_by_user else "recommended",
+    }
+    if canonical_context:
+        budget_assessment = budget_outcome["budget_assessment"]
+        match_data["admissionsContext"] = chance_general.get("context")
+        selection = chance_general.get("selectedContext") or {}
+        match_data["admissionsSelection"] = {
+            key: {"id": item["id"], "title": item["title"]} if item and item.get("id") else None
+            for key in ("option", "route")
+            for item in (selection.get(key),)
+        }
+        match_data["catalogRevision"] = chance_general.get("catalogRevision")
+        match_data["assessmentRevision"] = chance_general.get("assessmentRevision")
+        match_data["costQuote"] = budget_outcome["cost_quote"]
+        match_data["budgetAssessment"] = budget_assessment
+        match_data["subjectMatch"] = {
+            "status": (
+                "unknown"
+                if unknown_option
+                else "missing"
+                if missing_program
+                else "matched"
+                if profile_major
+                else "not_set"
+            ),
+            "option_ids": [option["id"] for option in matching_options] if profile_major else [],
+            "study_level": target_level,
+        }
+        match_data["costReason"] = budget_assessment["evidence"]
+
+    item = dict(row)
+    if canonical_context and budget_outcome["projected_costs"] is not None:
+        item["catalog_costs"] = budget_outcome["projected_costs"]
+    item["matchData"] = match_data
+    item["__ai_score"] = final_score
+    item["__distance"] = 1.0 if preference_mismatch is None else preference_mismatch
+    # With moved sliders, a university without data for any of them follows those whose fit is known.
+    item["__preference_unknown"] = preference_strength > 0 and preference_mismatch is None
+    return item
+
+
 def sort_universities_ai(
     items: list[dict[str, Any]],
     profile: dict[str, Any] | None = None,
@@ -1478,6 +826,7 @@ def sort_universities_ai(
     city_vs_campus: Any = None,
     funding_type: Any = "any",
 ) -> list[dict[str, Any]]:
+    del funding_type  # Kept in signature for caller compatibility; UniFit evaluates all funding routes.
     profile = profile if isinstance(profile, dict) else {}
     lang_cfg = _language_config()
     ctx = _build_user_context(profile, lang_cfg)
@@ -1500,369 +849,39 @@ def sort_universities_ai(
     interest_text = str(profile.get("interests") or "").strip()
     profile_major = str(profile.get("major") or "").strip()
 
-    ml_scores_by_id: dict[str, float] = {}
-    ml_status = (
-        get_ml_runtime_status()
-        if interest_text
-        else {"available": False, "message": "", "mode": "disabled", "reason": "empty_interest"}
-    )
-    ml_available = bool(ml_status.get("available"))
-    ml_runtime_mode = str(ml_status.get("mode") or "unavailable")
-    ml_unavailable_warning = bool(interest_text) and not ml_available
-    ml_warning_message = str(ml_status.get("message") or "") if ml_unavailable_warning else ""
-    use_ml = bool(interest_text) and ml_available
-    if use_ml:
-        try:
-            ml_scores_by_id = get_ml_recommender().predict_relevance(interest_text)
-        except Exception:
-            ml_scores_by_id = {}
-            use_ml = False
-            ml_available = False
-            ml_runtime_mode = "unavailable"
-            ml_unavailable_warning = bool(interest_text)
-            ml_warning_message = "Machine Learning unavailable"
+    (
+        ml_scores_by_id,
+        ml_status,
+        ml_available,
+        ml_runtime_mode,
+        ml_unavailable_warning,
+        ml_warning_message,
+        use_ml,
+    ) = _resolve_ml_relevance(interest_text)
 
-    enriched: list[dict[str, Any]] = []
-    for row in items:
-        if not isinstance(row, dict):
-            continue
-        row_id = str(row.get("id") or "").strip()
-        canonical_context = row_id in admissions_catalog.INSTITUTION_IDS
-        chance_general = estimate_uni_chance(row, profile_any, user_context=ctx, lang_cfg=lang_cfg)
-        choices = [] if canonical_context else universities_service.expand_admission_choices(row.get("admission_categories"))
-        choices = [t for t in choices if isinstance(t, dict)]
-        target_level = _normalize_study_level_str(
-            chance_general["context"].get("study_level") if canonical_context
-            else profile.get("studyLevel") or profile.get("study_level") or ""
+    enriched = [
+        _score_university_for_ai(
+            row,
+            profile=profile,
+            profile_any=profile_any,
+            ctx=ctx,
+            lang_cfg=lang_cfg,
+            preferred_mode=preferred_mode,
+            user_pref=user_pref,
+            preference_strength=preference_strength,
+            interest_text=interest_text,
+            profile_major=profile_major,
+            ml_scores_by_id=ml_scores_by_id,
+            ml_status=ml_status,
+            ml_available=ml_available,
+            ml_runtime_mode=ml_runtime_mode,
+            ml_unavailable_warning=ml_unavailable_warning,
+            ml_warning_message=ml_warning_message,
+            use_ml=use_ml,
         )
-        target_route = profile.get("applicant_route")
-        target_cycle = profile.get("intended_entry_cycle")
-        selected_program_id = _selected_program_id_for_university(profile, row)
-        selected_program_is_known = (
-            not selected_program_id
-            or selected_program_id.casefold() in _known_program_ids(row, choices)
-        )
-        eligible_choices = [
-            (idx, choice)
-            for idx, choice in enumerate(choices)
-            if (target_level == "any" or _choice_matches_study_level(choice, target_level))
-            and _choice_matches_applicant_route(choice, target_route)
-            and _choice_matches_entry_cycle(choice, target_cycle)
-            and (not selected_program_id or not selected_program_is_known or _choice_matches_program(choice, selected_program_id))
-        ]
-        selected_choice_key = "" if canonical_context else _selected_choice_key_for_university(profile, row)
-
-        uni_factors = _extract_university_factors(row, target_level)
-        preference_mismatch, distance_deltas = _preference_mismatch(user_pref, uni_factors)
-
-        if canonical_context:
-            selected_choice_key = str(chance_general.get("activeChoiceKey") or "")
-        active_chance_bundle = chance_general
-        general_choice_results = chance_general.get("choices") if isinstance(chance_general.get("choices"), list) else []
-        selected_general_choice = _choice_result_by_key(general_choice_results, selected_choice_key)
-        selected_actual_chance = _chance_percent_value(chance_general.get("overallChance"))
-
-        # Check if user explicitly chose a track for this university
-        selected_by_user = bool(chance_general.get("selectedByUser")) and selected_general_choice is not None
-        selected_raw_choice = None
-        if selected_choice_key and eligible_choices:
-            for idx, c in eligible_choices:
-                if _admission_choice_key(c, idx) == selected_choice_key:
-                    selected_raw_choice = c
-                    break
-
-        if selected_by_user and selected_raw_choice is not None:
-            selected_actual_chance = _chance_percent_value((selected_general_choice or {}).get("chancePercent"))
-
-        if canonical_context:
-            matching_options = admissions_catalog.matching_study_options(row_id, profile_major, target_level)
-            selected_option_id = chance_general["context"].get("study_option_id")
-            selected_option = (chance_general.get("selectedContext") or {}).get("option") or {}
-            applicability = chance_general.get("applicability") or {}
-            unknown_option = bool(selected_option_id) and (
-                not selected_option.get("id") or "mismatched" in applicability.values()
-            )
-            if selected_option_id:
-                matching_options = [option for option in matching_options if option["id"] == selected_option_id and not unknown_option]
-            missing_program = bool(profile_major) and not matching_options and not unknown_option
-        else:
-            missing_program = bool(profile_major) and not _university_matches_major(row, profile_major)
-        program_missing_penalty = 0.25 if missing_program else 0.0
-
-        row_ml_score = _clamp01(float(ml_scores_by_id.get(row_id, 0.0))) if use_ml else 0.0
-        preference_fit = None if preference_mismatch is None else _clamp01(1.0 - preference_mismatch)
-
-        # Resolve the active admission choice
-        recommended_choice_key = str(chance_general.get("recommendedChoiceKey") or chance_general.get("bestChoiceKey") or "")
-        recommended_choice_id = str(chance_general.get("recommendedChoiceId") or chance_general.get("bestChoiceId") or "")
-        recommended_choice_label = str(chance_general.get("recommendedChoiceLabel") or chance_general.get("bestChoiceLabel") or "")
-
-        active_choice_key = selected_choice_key if (selected_by_user and selected_choice_key) else (
-            str(active_chance_bundle.get("bestChoiceKey") or recommended_choice_key)
-        )
-
-        active_raw_choice: dict[str, Any] = {}
-        if eligible_choices:
-            for idx, c in eligible_choices:
-                if _admission_choice_key(c, idx) == active_choice_key:
-                    active_raw_choice = c
-                    break
-            if not active_raw_choice:
-                active_idx, active_raw_choice = eligible_choices[0]
-                active_choice_key = _admission_choice_key(active_raw_choice, active_idx)
-
-        base_choices = universities_service.expand_admission_choices(
-            row.get("admission_categories"), include_funding=False
-        )
-        base_raw_choice = next(
-            (
-                choice for choice in base_choices
-                if choice.get("category_id") == active_raw_choice.get("category_id")
-                and choice.get("requirement_profile_id") == active_raw_choice.get("requirement_profile_id")
-            ),
-            active_raw_choice,
-        )
-
-        # Active choice chance metadata
-        choice_meta_list = active_chance_bundle.get("choices") if isinstance(active_chance_bundle.get("choices"), list) else []
-        active_choice_meta = _choice_result_by_key(choice_meta_list, active_choice_key) or {}
-
-        if canonical_context:
-            active_raw_choice = {
-                "id": active_choice_meta.get("choiceId"), "label": active_choice_meta.get("choiceLabel"),
-                "category_id": active_choice_meta.get("categoryId"),
-            }
-
-        if canonical_context or (not eligible_choices and (target_level != "any" or target_route or target_cycle or selected_program_id)):
-            finance = row.get("finance") if isinstance(row.get("finance"), dict) else {}
-            cost_usd, cost_native = 0.0, 0.0
-            cost_currency, cost_mode = str(finance.get("currency") or "USD").strip().upper(), "unavailable"
-        else:
-            cost_usd, cost_native, cost_currency, cost_mode = _effective_track_cost_details(
-                row, base_raw_choice, preferred_mode=preferred_mode,
-                intended_entry_cycle=target_cycle,
-            )
-        aid_any = None if canonical_context else _get_track_funding_type(active_raw_choice) == "grant"
-
-        cost_range_payload = (
-            _track_cost_range_payload(row, base_raw_choice)
-            if cost_mode == "on-campus_range"
-            else None
-        )
-        cost_unavailable = cost_mode in {
-            "unavailable",
-            "online_missing_tuition",
-            "on-campus_range",
-        }
-        final_price_native = None if cost_unavailable else cost_native
-
-        final_price_usd = None if final_price_native is None else _cost_to_usd(final_price_native, cost_currency)
-
-        budget = ctx["budget"]
-        affordability_gap = None
-        budget_status = "not_set"
-        if budget is not None and budget > 0:
-            budget_status = "unknown_cost"
-            if cost_mode == "on-campus_range" and isinstance(cost_range_payload, dict):
-                min_usd = _to_num(cost_range_payload.get("minUSD"))
-                max_usd = _to_num(cost_range_payload.get("maxUSD"))
-                if min_usd is not None and min_usd > budget:
-                    affordability_gap = _clamp01(1.0 - (budget / min_usd))
-                    budget_status = "over_budget"
-                elif max_usd is not None and max_usd <= budget:
-                    affordability_gap = 0.0
-                    budget_status = "within_budget"
-                elif min_usd is not None and max_usd is not None:
-                    budget_status = "uncertain_range"
-            elif not cost_unavailable and final_price_usd is not None:
-                affordability_gap = (
-                    _clamp01(1.0 - (budget / final_price_usd))
-                    if final_price_usd > budget else 0.0
-                )
-                budget_status = "over_budget" if final_price_usd > budget else "within_budget"
-
-        cost_quote = None
-        budget_assessment = None
-        if canonical_context:
-            projected_costs = admissions_catalog.catalog_costs(row_id, target_level, preferred_mode, profile=profile)
-            # Preserve price-band annotations from the same scoped catalog projection.
-            for basis in ("annual_total", "tuition"):
-                previous = (row.get("catalog_costs") or {}).get(basis) or {}
-                if projected_costs.get(basis) and previous.get("filter_match"):
-                    projected_costs[basis]["filter_match"] = previous["filter_match"]
-            annual_total = projected_costs.get("annual_total")
-            basis = "annual_total" if annual_total and annual_total.get("calculation") != "tuition_plus_living_range" else "tuition"
-            quote = projected_costs.get(basis)
-            evidence = "unavailable"
-            status = "not_set" if budget is None or budget <= 0 else "unknown_cost"
-            affordability_gap = None
-            if quote:
-                bounds = universities_service._catalog_cost_range_usd({"catalog_costs": projected_costs}, basis)
-                cost_quote = {**quote, "basis": basis, "minUSD": bounds[0] if bounds else None, "maxUSD": bounds[1] if bounds else None}
-                evidence = ("period_not_annual" if quote.get("annual_comparable") is False
-                            else "fee_status_unknown" if quote["fee_status_match"] == "unknown"
-                            else "scope_unknown" if target_level == "any" and not projected_costs.get("scope", {}).get("study_level")
-                            else "applicable" if quote["cycle_status"] == "matched" else "dated_reference")
-                if bounds and budget is not None and budget > 0 and evidence not in {"fee_status_unknown", "scope_unknown"}:
-                    low, high = bounds
-                    if low > budget:
-                        status, affordability_gap = "over_budget", _clamp01(1.0 - budget / low)
-                    elif high <= budget:
-                        status, affordability_gap = "within_budget", 0.0
-                    else:
-                        status = "uncertain_range"
-            full_budget = basis == "annual_total" and quote is not None
-            budget_assessment = {"status": status, "basis": basis if quote else None, "evidence": evidence,
-                                 "full_budget": full_budget, "exclusions": quote["exclusions"] if quote else []}
-            budget_status = status if full_budget and evidence == "applicable" else "not_set" if budget is None or budget <= 0 else "unknown_cost"
-            cost_mode = "published_annual_total" if full_budget and evidence == "applicable" else "published_reference" if quote else "unavailable"
-            cost_unavailable = not (full_budget and evidence == "applicable" and bounds is not None and quote["min"] == quote["max"])
-            if not cost_unavailable:
-                cost_native, cost_currency = quote["min"], quote["currency"]
-                cost_usd = cost_quote["minUSD"]
-                final_price_native, final_price_usd = cost_native, cost_usd
-
-        requirements_gap = (
-            _clamp01(1.0 - selected_actual_chance / 100.0)
-            if selected_actual_chance is not None else None
-        )
-        # The preference component counts as much as the strongest slider was moved: centred sliders leave it out.
-        components = []
-        if preference_mismatch is not None:
-            components.append(((0.35 if use_ml else 0.60) * preference_strength, preference_mismatch))
-        if requirements_gap is not None:
-            components.append((0.30 if use_ml else 0.40, requirements_gap))
-        if use_ml:
-            components.append((0.35, _clamp01(1.0 - row_ml_score)))
-        if affordability_gap is not None:
-            components.append((0.20, affordability_gap))
-        major_penalty = (
-            0.20 * _clamp01((0.05 - row_ml_score) / 0.05)
-            if use_ml and interest_text and row_ml_score < 0.05 else 0.0
-        )
-        final_score = _clamp01(
-            # No component at all (centred sliders and no budget, minimums or interests): every university ties
-            # and the sort below falls back to its later keys, such as rank.
-            (sum(weight * value for weight, value in components) / sum(weight for weight, _ in components) if components else 0.0)
-            + major_penalty + program_missing_penalty
-        )
-
-        active_fit_percent = _chance_percent_value(active_choice_meta.get("chancePercent"))
-        below_req = active_fit_percent is not None and active_fit_percent < 100
-        meet_min_req = active_fit_percent == 100
-        is_conditional = active_choice_meta.get("reason") == "missing_evidence"
-        conditional_count = 1 if is_conditional else 0
-        active_choice_details = active_choice_meta.get("details") if isinstance(active_choice_meta.get("details"), dict) else {}
-        requirement_checks = active_choice_details.get("checks") if isinstance(active_choice_details.get("checks"), list) else []
-        missing_evidence = active_choice_meta.get("missingEvidence") if isinstance(active_choice_meta.get("missingEvidence"), list) else []
-
-        effective_selected_by_user = selected_by_user if canonical_context else selected_by_user and active_choice_key != recommended_choice_key
-        ui_badge_hints = _build_ui_badge_hints(
-            preference_mismatch=preference_mismatch,
-            conditional=is_conditional,
-            conditional_requirements=conditional_count,
-            meets_min_requirements=meet_min_req,
-            below_requirements=below_req,
-            budget_status=budget_status,
-            aid_any=aid_any,
-            missing_program=missing_program,
-        )
-
-        choice_id = str(active_raw_choice.get("id") or active_choice_meta.get("choiceId") or "default")
-        choice_label = str(active_raw_choice.get("label") or active_choice_meta.get("choiceLabel") or "General admission")
-
-        match_data = {
-            "choiceKey": active_choice_key,
-            "choiceId": choice_id,
-            "choiceLabel": choice_label,
-            "categoryId": str(active_raw_choice.get("category_id") or ""),
-            "requirementProfileId": str(active_raw_choice.get("requirement_profile_id") or ""),
-            "fundingOptionId": str(active_raw_choice.get("funding_option_id") or ""),
-            "finalPrice": final_price_native,
-            "finalPriceUSD": final_price_usd,
-            "currency": cost_currency,
-            "aidAny": aid_any,
-            "aidEligible": None,
-            "grantName": str(active_raw_choice.get("funding_program") or "") if aid_any else "",
-            "admitChance": None,
-            "requirementsFitPercent": selected_actual_chance,
-            "scoreMeaning": "published_requirements_met_percent",
-            "requirementsReason": str(active_choice_meta.get("reason") or ""),
-            "requirementChecks": requirement_checks,
-            "missingEvidence": missing_evidence,
-            "applicability": active_choice_meta.get("applicability") if isinstance(active_choice_meta.get("applicability"), dict) else {},
-            "meetMinRequirements": meet_min_req,
-            "missingRequiredEvidence": is_conditional,
-            "missingProgram": missing_program,
-            "conditional": is_conditional,
-            "conditionalRequirements": conditional_count,
-            "costYearUSD": None if cost_unavailable else cost_usd,
-            "costYearNative": None if cost_unavailable else cost_native,
-            "grantPotential": None,
-            "grantEligible": None,
-            "hardScore": preference_fit,
-            "distanceScore": preference_fit,
-            "distanceDeltas": distance_deltas,
-            "preferenceMismatch": preference_mismatch,
-            "admissionRisk": None,
-            "requirementsGap": requirements_gap,
-            "selectedChance": int(round(selected_actual_chance)) if selected_actual_chance is not None else None,
-            "selectedChanceType": "requirements_fit",
-            "grantChance": None,
-            "generalChance": None,
-            "uiBadgeHints": ui_badge_hints,
-            "factors": uni_factors,
-            "userPreferences": user_pref,
-            "mlScore": row_ml_score,
-            "mlMode": ml_runtime_mode if use_ml else "disabled",
-            "mlSemanticScore": row_ml_score if (use_ml and ml_runtime_mode == "semantic") else 0.0,
-            "finalScore": final_score,
-            "budgetStatus": budget_status,
-            "affordabilityGap": affordability_gap,
-            "interestScope": "university" if use_ml else "unavailable",
-            "mlEnabled": bool(interest_text),
-            "mlApplied": use_ml,
-            "mlAvailable": ml_available,
-            "mlUnavailable": ml_unavailable_warning,
-            "mlWarning": ml_warning_message,
-            "mlReason": str(ml_status.get("reason") or ""),
-            "mlModel": str(ml_status.get("semanticModel") or ml_status.get("semanticModelConfigured") or ""),
-            "costMode": cost_mode,
-            "costRange": cost_range_payload,
-            "recommendedChoiceKey": recommended_choice_key,
-            "recommendedChoiceId": recommended_choice_id,
-            "recommendedChoiceLabel": recommended_choice_label,
-            "selectedChoiceKey": active_choice_key,
-            "selectedChoiceId": choice_id,
-            "selectedChoiceLabel": choice_label,
-            "selectedByUser": effective_selected_by_user,
-            "choiceSelectionSource": "user" if effective_selected_by_user else "recommended",
-        }
-        if canonical_context:
-            match_data["admissionsContext"] = chance_general.get("context")
-            selection = chance_general.get("selectedContext") or {}
-            match_data["admissionsSelection"] = {
-                key: {"id": item["id"], "title": item["title"]} if item and item.get("id") else None
-                for key in ("option", "route") for item in (selection.get(key),)
-            }
-            match_data["catalogRevision"] = chance_general.get("catalogRevision")
-            match_data["assessmentRevision"] = chance_general.get("assessmentRevision")
-            match_data["costQuote"] = cost_quote
-            match_data["budgetAssessment"] = budget_assessment
-            match_data["subjectMatch"] = {"status": "unknown" if unknown_option else "missing" if missing_program else "matched" if profile_major else "not_set",
-                                          "option_ids": [option["id"] for option in matching_options] if profile_major else [],
-                                          "study_level": target_level}
-            match_data["costReason"] = budget_assessment["evidence"]
-
-        item = dict(row)
-        if canonical_context:
-            item["catalog_costs"] = projected_costs
-        item["matchData"] = match_data
-        item["__ai_score"] = final_score
-        item["__distance"] = 1.0 if preference_mismatch is None else preference_mismatch
-        # With moved sliders, a university without data for any of them follows those whose fit is known.
-        item["__preference_unknown"] = preference_strength > 0 and preference_mismatch is None
-        enriched.append(item)
+        for row in items
+        if isinstance(row, dict)
+    ]
 
     enriched.sort(
         key=lambda u: (
@@ -1873,11 +892,17 @@ def sort_universities_ai(
             -float(_to_num((u.get("matchData") or {}).get("selectedChance")) or 0.0),
             float(_to_num(u.get("rank")) or 999999.0),
             -float(_to_num((u.get("matchData") or {}).get("admitChance")) or 0.0),
-            float(_to_num((u.get("matchData") or {}).get("finalPriceUSD") or ((u.get("matchData") or {}).get("finalPrice"))) or 1e18),
+            float(
+                _to_num(
+                    (u.get("matchData") or {}).get("finalPriceUSD")
+                    or ((u.get("matchData") or {}).get("finalPrice"))
+                )
+                or 1e18
+            ),
         )
     )
 
-    out = []
+    out: list[dict[str, Any]] = []
     for row in enriched:
         cleaned = dict(row)
         cleaned.pop("__ai_score", None)
@@ -1885,386 +910,3 @@ def sort_universities_ai(
         cleaned.pop("__preference_unknown", None)
         out.append(cleaned)
     return out
-
-
-def _choice_text_blob(choice: dict[str, Any]) -> str:
-    parts: list[str] = []
-    for key in (
-        "id",
-        "choice_key",
-        "label",
-        "description",
-        "category_label",
-        "requirement_profile_label",
-        "funding_program",
-        "funding_source",
-        "track_badge",
-    ):
-        value = choice.get(key)
-        if isinstance(value, str):
-            parts.append(value)
-    return " ".join(parts).lower()
-
-
-def _track_verified_badges(choice: dict[str, Any]) -> list[str]:
-    blob = _choice_text_blob(choice)
-    badges: list[str] = []
-    if "need-blind" in blob or "need blind" in blob:
-        badges.append("need_blind")
-    return badges
-
-
-def _chance_factor(
-    key: str,
-    status: str,
-    label: str,
-    message: str,
-    severity: str = "medium",
-) -> dict[str, str]:
-    return {
-        "key": key,
-        "status": status,
-        "label": label,
-        "message": message,
-        "severity": severity,
-    }
-
-
-def _build_chance_factors(
-    *,
-    score_percent: int | None,
-    reason: str,
-) -> list[dict[str, str]]:
-    if score_percent is None:
-        if reason in {"unassessed_minimums", "requirements_not_reviewed"}:
-            return []
-        key = "missing_evidence" if reason == "missing_evidence" else "insufficient_data"
-        if reason == "applicability_unknown":
-            key, label = "applicability_unknown", "Route applicability"
-            message = "The route is not confirmed for the selected applicant, program, or entry cycle."
-        else:
-            label = "Required evidence" if key == "missing_evidence" else "Published requirements"
-            message = (
-                "Add the missing evidence required to check this route."
-                if key == "missing_evidence"
-                else "This route has no measurable published minimums."
-            )
-        return [_chance_factor(key, "neutral", label, message, "medium")]
-    if score_percent == 100:
-        return [_chance_factor("requirements_met", "positive", "Requirements", "All measurable published minimums are met.", "low")]
-    return [_chance_factor("requirements_gap", "negative", "Requirements", "Some measurable published minimums are not met.", "medium")]
-
-
-def _normalize_study_level_str(val: Any) -> str:
-    s = str(val or "").strip().lower()
-    if not s or s == "any":
-        return "any"
-    if any(token in s for token in ("магистрат", "магистр")):
-        return "master"
-    if any(token in s for token in ("бакалавр", "бакалавриат")):
-        return "bachelor"
-    if any(token in s for token in ("докторант", "аспирант", "доктор философии")):
-        return "doctorate"
-    tokens = set(re.sub(r"[^a-z0-9]+", " ", s).split())
-    if "mba" in tokens or "master of business administration" in s:
-        return "mba"
-    if tokens.intersection({"master", "masters", "msc", "ma", "meng", "graduate", "postgrad"}):
-        return "master"
-    if tokens.intersection({"undergrad", "undergraduate", "bachelor", "bsc", "ba"}) or "first-year" in s or "first_year" in s:
-        return "bachelor"
-    if tokens.intersection({"doctor", "doctoral", "doctorate", "phd", "dphil"}):
-        return "doctorate"
-    return s
-
-
-def _choice_matches_study_level(choice: dict[str, Any], target_level: str) -> bool:
-    if not target_level or target_level == "any":
-        return True
-    raw_levels = choice.get("study_levels")
-    levels = [_normalize_study_level_str(x) for x in raw_levels] if isinstance(raw_levels, list) else []
-    if not levels and choice.get("study_level"):
-        levels = [_normalize_study_level_str(choice.get("study_level"))]
-    raw_scope = choice.get("scope")
-    if isinstance(raw_scope, dict):
-        scope_values = [str(value or "") for value in raw_scope.values()]
-        scope_level = _normalize_study_level_str(raw_scope.get("level"))
-    else:
-        scope_values = [str(raw_scope or "")]
-        scope_text = str(raw_scope or "").strip().lower()
-        if scope_text.startswith(("doctoral", "doctorate", "postgraduate_research", "postgraduate research")):
-            scope_level = "doctorate"
-        elif scope_text.startswith(("graduate", "postgraduate_taught", "postgraduate taught")):
-            scope_level = "master"
-        else:
-            scope_level = _normalize_study_level_str(raw_scope)
-    scope = " ".join(scope_values).strip().lower()
-    if scope_level not in {"bachelor", "master", "mba", "doctorate"}:
-        scope_level = "any"
-
-    if target_level == "mba":
-        if "mba" in levels:
-            return True
-        if levels and not {"master", "mba"}.intersection(levels):
-            return False
-        description = " ".join(str(choice.get(key) or "") for key in (
-            "category_id", "category_label", "label", "program_name", "description", "scope",
-        ))
-        return bool(re.search(r"\bmba\b|master of business administration", description, re.IGNORECASE))
-
-    # Explicitly scoped levels are authoritative. Use scope only for legacy
-    # categories that predate study_levels, where it is the remaining signal.
-    if levels:
-        if target_level == "master":
-            return bool({"master", "mba"}.intersection(levels))
-        return target_level in levels
-
-    if scope_level != "any":
-        if target_level == "master" and scope_level == "mba":
-            return True
-        return scope_level == target_level
-
-    if target_level == "bachelor":
-        if any(value.strip().lower() in {"general", "program", "program_group"} for value in scope_values):
-            return True
-        return scope.startswith(("undergraduate", "bachelor", "first-year", "first year"))
-
-    if target_level == "master":
-        return scope.startswith(("graduate", "postgraduate_taught", "postgraduate taught"))
-
-    if target_level == "doctorate":
-        return scope.startswith(("doctoral", "doctorate", "postgraduate_research", "postgraduate research"))
-
-    return bool(scope and _normalize_study_level_str(scope) == target_level)
-
-
-def _load_university_admission_choices(university: dict[str, Any]) -> list[dict[str, Any]]:
-    uid = str(university.get("id") or "").strip()
-    choices = _CHOICES_CACHE.get(uid) if uid else None
-    if choices is None:
-        choices = universities_service.expand_admission_choices(university.get("admission_categories"))
-        if not choices:
-            choices = [{"id": "default", "choice_key": "default", "label": "General admission", "requirements": {}, "stats_avg": {}}]
-        choices = [choice for choice in choices if isinstance(choice, dict)]
-        if uid:
-            _CHOICES_CACHE[uid] = choices
-    return choices
-
-
-def _filter_admission_entries(
-    choices: list[dict[str, Any]],
-    university: dict[str, Any],
-    profile: dict[str, Any],
-) -> list[dict[str, Any]]:
-    entries = [{"choice": choice, "idx": idx} for idx, choice in enumerate(choices)]
-    target_level = _normalize_study_level_str(
-        profile.get("studyLevel") or profile.get("study_level") or ""
-    )
-    target_route = profile.get("applicant_route")
-    target_cycle = profile.get("intended_entry_cycle")
-    selected_program_id = _selected_program_id_for_university(profile, university)
-    selected_program_is_known = (
-        not selected_program_id
-        or selected_program_id.casefold() in _known_program_ids(university, choices)
-    )
-
-    return [
-        row for row in entries
-        if (target_level == "any" or _choice_matches_study_level(row["choice"], target_level))
-        and _choice_matches_applicant_route(row["choice"], target_route)
-        and _choice_matches_entry_cycle(row["choice"], target_cycle)
-        and (not selected_program_id or not selected_program_is_known or _choice_matches_program(row["choice"], selected_program_id))
-    ]
-
-
-def _has_profile_evidence(ctx: dict[str, Any]) -> bool:
-    return bool(ctx["userScores"]) or any(
-        isinstance(v, dict) and (bool(v.get("native")) or _to_num(v.get("cefr")) is not None or bool(v.get("exams")))
-        for v in (ctx.get("userLanguages") or {}).values()
-    )
-
-
-def _build_no_choices_chance_response(
-    profile: dict[str, Any],
-    funding_type: str,
-    has_evidence: bool,
-) -> dict[str, Any]:
-    return {
-        "overallChance": None,
-        "scoreMeaning": "published_requirements_met_percent",
-        "level": _no_data_chance_level(profile),
-        "bestChoiceKey": "none",
-        "bestChoiceId": "",
-        "bestChoiceLabel": "No choices for selected filters",
-        "recommendedChoiceKey": "none",
-        "recommendedChoiceId": "",
-        "recommendedChoiceLabel": "No choices for selected filters",
-        "selectedChoiceKey": "none",
-        "selectedChoiceId": "",
-        "selectedChoiceLabel": "No choices for selected filters",
-        "choices": [],
-        "missingEvidence": not has_evidence,
-        "conditional": False,
-        "fundingType": funding_type,
-        "selectedByUser": False,
-        "choiceSelectionSource": "recommended",
-        "chanceAvailable": False,
-        "reason": "no_choices",
-        "label": "Нет вариантов для выбранных фильтров"
-        if _chance_locale(profile) == "rus"
-        else "No choices for the selected filters",
-    }
-
-
-def _evaluate_per_choice_chance(
-    university: dict[str, Any],
-    profile: dict[str, Any],
-    entries: list[dict[str, Any]],
-    choices: list[dict[str, Any]],
-    ctx: dict[str, Any],
-    lang_cfg: dict[str, Any],
-) -> list[dict[str, Any]]:
-    target_route = profile.get("applicant_route")
-    target_cycle = profile.get("intended_entry_cycle")
-    selected_program_id = _selected_program_id_for_university(profile, university)
-    selected_program_is_known = (
-        not selected_program_id
-        or selected_program_id.casefold() in _known_program_ids(university, choices)
-    )
-
-    per_choice = []
-    for row in entries:
-        choice = row["choice"]
-        idx = int(row["idx"])
-        applicability = _choice_applicability(
-            choice, target_route, target_cycle, selected_program_id, selected_program_is_known
-        )
-        no_data_reason = _applicability_unknown_reason(applicability)
-        chance_pct, fit_reason, measurable_checks, check_assessments, missing_evidence = _published_requirements_fit(
-            university=university,
-            choice=choice,
-            user_scores=ctx["userScores"],
-            valid_exam_ids=ctx.get("validExamIds", set()),
-            user_languages=ctx["userLanguages"],
-            lang_cfg=lang_cfg,
-        )
-        if no_data_reason:
-            chance_pct = None
-            no_data_reason = "applicability_unknown"
-            missing_evidence = []
-            for assessment in check_assessments:
-                if assessment.get("status") != "unassessed":
-                    assessment["status"] = "unassessed"
-        else:
-            no_data_reason = fit_reason
-        track_badges = _track_verified_badges(choice)
-        factors = _build_chance_factors(
-            score_percent=chance_pct,
-            reason=no_data_reason,
-        )
-
-        per_choice.append(
-            {
-                "choiceKey": _admission_choice_key(choice, idx),
-                "assessmentKey": "::".join(
-                    part for part in (str(choice.get("category_id") or ""), str(choice.get("requirement_profile_id") or "")) if part
-                ),
-                "choiceId": str(choice.get("id") or ""),
-                "choiceLabel": str(choice.get("requirement_profile_label") or choice.get("category_label") or f"Choice {idx + 1}"),
-                "categoryId": str(choice.get("category_id") or ""),
-                "requirementProfileId": str(choice.get("requirement_profile_id") or ""),
-                "fundingOptionId": str(choice.get("funding_option_id") or ""),
-                "chancePercent": chance_pct,
-                "scoreMeaning": "published_requirements_met_percent",
-                "level": _chance_level(chance_pct) if chance_pct is not None else _no_data_chance_level(profile),
-                "badges": track_badges,
-                "factors": factors,
-                "conditional": no_data_reason == "missing_evidence",
-                "chanceAvailable": chance_pct is not None,
-                "reason": no_data_reason,
-                "label": _chance_no_data_label(no_data_reason, profile) if chance_pct is None else "",
-                "applicability": applicability,
-                "missingEvidence": missing_evidence,
-                "details": {
-                    "measurableRequirements": measurable_checks,
-                    "checks": check_assessments,
-                },
-            }
-        )
-
-    per_choice.sort(
-        key=lambda x: (
-            x.get("chancePercent") is None,
-            -float(_to_num(x.get("chancePercent")) or 0.0),
-            str(x.get("choiceLabel") or ""),
-        )
-    )
-    return per_choice
-
-
-def estimate_uni_chance(
-    university: dict[str, Any],
-    profile: dict[str, Any] | None = None,
-    *,
-    user_context: dict[str, Any] | None = None,
-    lang_cfg: dict[str, Any] | None = None,
-) -> dict[str, Any]:
-    profile = profile if isinstance(profile, dict) else {}
-    if str(university.get("id") or "") in admissions_catalog.INSTITUTION_IDS:
-        return _assess_admissions_selection(str(university.get("id") or ""), profile)
-
-    lang_cfg = lang_cfg if isinstance(lang_cfg, dict) else _language_config()
-    ctx = user_context if isinstance(user_context, dict) else _build_user_context(profile, lang_cfg)
-    funding_type = _normalize_funding_preference(profile.get("fundingType") or profile.get("funding_type") or "any")
-
-    choices = _load_university_admission_choices(university)
-    selected_choice_key = _selected_choice_key_for_university(profile, university)
-    entries = _filter_admission_entries(choices, university, profile)
-
-    has_evidence = _has_profile_evidence(ctx)
-
-    if not entries:
-        return _build_no_choices_chance_response(profile, funding_type, has_evidence)
-
-    per_choice = _evaluate_per_choice_chance(university, profile, entries, choices, ctx, lang_cfg)
-
-    recommended = per_choice[0] if per_choice else {
-        "choiceKey": "default",
-        "choiceId": "default",
-        "choiceLabel": "General admission",
-        "chancePercent": None,
-        "scoreMeaning": "published_requirements_met_percent",
-        "level": _no_data_chance_level(profile),
-        "chanceAvailable": False,
-        "reason": "no_published_requirements",
-        "label": _chance_no_data_label("no_published_requirements", profile),
-    }
-    user_selected = _choice_result_by_key(per_choice, selected_choice_key)
-    selected_by_user = user_selected is not None and str(user_selected.get("choiceKey") or "") != str(recommended.get("choiceKey") or "")
-    best = user_selected if selected_by_user else recommended
-
-    return {
-        "overallChance": best.get("chancePercent"),
-        "scoreMeaning": "published_requirements_met_percent",
-        "level": best.get("level", _no_data_chance_level(profile)),
-        "bestChoiceKey": best.get("choiceKey"),
-        "bestChoiceId": best.get("choiceId"),
-        "bestChoiceLabel": best.get("choiceLabel"),
-        "recommendedChoiceKey": recommended.get("choiceKey"),
-        "recommendedChoiceId": recommended.get("choiceId"),
-        "recommendedChoiceLabel": recommended.get("choiceLabel"),
-        "selectedChoiceKey": best.get("choiceKey"),
-        "selectedChoiceId": best.get("choiceId"),
-        "selectedChoiceLabel": best.get("choiceLabel"),
-        "categoryId": best.get("categoryId"),
-        "requirementProfileId": best.get("requirementProfileId"),
-        "fundingOptionId": best.get("fundingOptionId"),
-        "choices": per_choice,
-        "missingEvidence": best.get("reason") == "missing_evidence",
-        "conditional": bool(best.get("conditional")),
-        "fundingType": funding_type,
-        "selectedByUser": selected_by_user,
-        "choiceSelectionSource": "user" if selected_by_user else "recommended",
-        "chanceAvailable": bool(best.get("chanceAvailable")),
-        "reason": str(best.get("reason") or ""),
-        "label": str(best.get("label") or ""),
-    }
