@@ -338,6 +338,7 @@ universities.card.view_details: View details
 universities.card.metrics: Key metrics
 universities.card.photo_unavailable: Campus photo unavailable
 universities.card.statuses: University status
+universities.card.admissions_guide: Admissions guide
 universities.card.per_year: / year
 universities.card.compare: Add to compare
 universities.card.compare_short: Compare
@@ -415,6 +416,8 @@ universities.map_popup.loading: Loading university card
 universities.map_popup.failed: Could not load the university card.
 universities.pagination.next: Next
 universities.pagination.prev: Prev
+universities.pagination.first: First page
+universities.pagination.last: Last page
 universities.reset: Reset
 universities.empty.reset_filters: Reset filters
 universities.search_placeholder: Search university...

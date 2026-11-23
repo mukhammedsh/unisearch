@@ -63,6 +63,11 @@
           <div id="mobileRecentSlot" class="u-mobile-recent-slot">
             <div id="recentlyViewedBar" class="u-recent" hidden></div>
           </div>
+          <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button" aria-controls="uSidebar" aria-expanded="false">
+            <span data-heroicon="funnel" data-icon-size="18"></span>
+            <span data-i18n="universities.filter_mobile">Filter</span>
+            <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
+          </button>
           <div id="viewToggles" class="view-toggles" role="group" aria-label="View mode" data-i18n-aria-label="universities.view_toggles.aria">
             <button id="viewListBtn" class="view-btn active" type="button" title="List View" data-i18n-title="universities.view_list" aria-label="List View" data-i18n-aria-label="universities.view_list" aria-pressed="true" disabled>
               <span aria-hidden="true" data-heroicon="bars-3-bottom-left" data-icon-size="16"></span>
@@ -328,12 +333,6 @@
         <div id="pagination" class="u-pagination"></div>
       </div>
     </div>
-
-    <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button" aria-controls="uSidebar" aria-expanded="false">
-      <span data-heroicon="funnel" data-icon-size="20"></span>
-      <span data-i18n="universities.filter_mobile">Filter</span>
-      <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
-    </button>
   </main>
 
   <div id="compareTray" class="compare-tray" aria-live="polite" hidden></div>

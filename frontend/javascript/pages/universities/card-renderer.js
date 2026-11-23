@@ -327,6 +327,9 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
     <span class="uni-metric-label">${rankLabel}:</span>
     <span class="uni-metric-value">${rankValueText}</span>
   `;
+  const guideCueHtml = reviewedAdmissions && !mapVariant
+    ? `<span class="uni-reviewed-cue"><span aria-hidden="true">${renderInlineIcon("document-check", 14, "uni-reviewed-cue__icon")}</span><span>${escapeHtml(t("universities.card.admissions_guide", "Admissions guide"))}</span></span>`
+    : "";
   const metricsHtml = `
     <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
       ${sourceTooltip ? `
@@ -344,6 +347,7 @@ ${rankInnerHtml}
 ${rankInnerHtml}
       </span>
       `}
+      ${guideCueHtml}
     </div>
   `;
   const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
@@ -375,7 +379,7 @@ ${rankInnerHtml}
     ? ""
     : `<a class="uni-card-link-overlay" href="${detailHref}"${linkAttrs} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
   return `
-    <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
+    <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" data-compare-selected="${isCompared ? "true" : "false"}">
       ${mediaHtml}${backdropHtml}
       ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
       <div class="uni-body">
@@ -401,13 +405,22 @@ export function renderCatalogPagination(container, { total, currentPage, pageSiz
   let html = "";
   const p = currentPage;
   const maxVisible = 5;
-  const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
+  const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false, ariaLabel = "") => {
     const activeClass = isActive ? "page-btn--active" : "";
     const disabledClass = isDisabled ? "page-btn--disabled" : "";
     const classes = ["page-btn", activeClass, disabledClass, extraClass].filter(Boolean).join(" ");
-    return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ""}${isDisabled ? " disabled" : ""}>${content}</button>`;
+    const safeLabel = ariaLabel ? escapeHtmlAttr(ariaLabel) : "";
+    const ariaAttrs = safeLabel ? ` aria-label="${safeLabel}" title="${safeLabel}"` : "";
+    return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ""}${isDisabled ? " disabled" : ""}${ariaAttrs}>${content}</button>`;
   };
-  html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first", p <= 1);
+  html += createBtn(
+    1,
+    heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }),
+    false,
+    "page-btn--nav page-btn--first",
+    p <= 1,
+    t("universities.pagination.first", "First page")
+  );
   html += createBtn(
     Math.max(1, p - 1),
     `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`,
@@ -446,7 +459,14 @@ export function renderCatalogPagination(container, { total, currentPage, pageSiz
     "page-btn--nav page-btn--next",
     p >= totalPages
   );
-  html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last", p >= totalPages);
+  html += createBtn(
+    totalPages,
+    heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }),
+    false,
+    "page-btn--nav page-btn--last",
+    p >= totalPages,
+    t("universities.pagination.last", "Last page")
+  );
   container.innerHTML = html;
   container.querySelectorAll("button").forEach((b) => {
     b.onclick = () => {

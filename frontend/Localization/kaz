@@ -338,6 +338,7 @@ universities.card.view_details: Толығырақ
 universities.card.metrics: Негізгі көрсеткіштер
 universities.card.photo_unavailable: Кампус фотосы қолжетімсіз
 universities.card.statuses: Университет белгілері
+universities.card.admissions_guide: Түсу нұсқаулығы
 universities.card.per_year: / жыл
 universities.card.compare: Салыстыруға қосу
 universities.card.compare_short: Салыстыру
@@ -415,6 +416,8 @@ universities.map_popup.loading: Университет карточкасы жү
 universities.map_popup.failed: Университет карточкасын жүктеу мүмкін болмады.
 universities.pagination.next: Келесі
 universities.pagination.prev: Алдыңғы
+universities.pagination.first: Бірінші бет
+universities.pagination.last: Соңғы бет
 universities.reset: Тазарту
 universities.empty.reset_filters: Фильтрлерді тазарту
 universities.search_placeholder: Университетті іздеу...

@@ -377,7 +377,7 @@
 
 .map-point-popup__copy strong,
 .map-point-popup__copy span {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .map-point-popup__copy span {
@@ -439,7 +439,7 @@
 
 .map-card-wrapper .uni-title {
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .leaflet-container .custom-map-popup a.leaflet-popup-close-button {
@@ -587,7 +587,7 @@
   }
 
   :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
-    background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
+    background: var(--surface-solid);
   }
 
   .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
