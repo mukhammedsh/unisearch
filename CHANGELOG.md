@@ -2,6 +2,18 @@
 
 All notable project changes should be recorded here.
 
+## 10.7.1 (2026-11-23) - Security hardening and dependency maintenance
+
+Patch release: harden API rate-limiting and error-response security headers, and update backend and CI dependencies.
+
+### Security
+- Strip ASGI `root_path` prefixes before classifying expensive POST endpoints and building rate-limit bucket keys, closing a rate-limiter bypass when the backend runs under a path prefix (PR #183).
+- Apply standard API security headers to admissions catalog 404/503 error responses returned by `admissions_catalog_error_handler` (PR #184).
+
+### Maintenance
+- Update backend Python dependencies in `backend/requirements.txt` and `backend/requirements-dev.txt` (PR #191).
+- Update GitHub Actions workflow dependencies across `.github/workflows/` (PR #210).
+
 ## 10.7.0 (2026-11-21) - Name universities on the map and search every name
 
 Minor release: map markers now say which university they mark, and search matches every name a university goes by in any language.
