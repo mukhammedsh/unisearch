@@ -6,6 +6,12 @@ All notable project changes should be recorded here.
 
 Patch release: add frontend JavaScript static analysis tooling, remove dead code and duplicates, and modularize large frontend page controllers.
 
+### Changed
+- Add automated Playwright geometric layout and Axe WCAG accessibility audit pipeline (`scripts/audit-layout.mjs`, `npm run audit:layout`) with `@axe-core/playwright`.
+- Refine the 4-tier neutral surface ladder, Indigo accent palette (`#4F46E5` light / `#5850EC` dark), WCAG AA status contrast (`--color-success`, `--color-warning`, `--color-danger`), wrapping defaults (`break-word`, `balance`, `pretty`), brand logos (`whitelogo.svg`, `minilogo.svg`, `darklogo.svg`), and `docs/design-system.md`.
+- Upgrade shell navigation bar and profile sticky action dock with frosted surfaces (`backdrop-filter: blur(12px)` and `scroll-padding-bottom`), inline mobile catalog filter action, reviewed admissions guide indicator (`universities.card.admissions_guide`), `tabular-nums` alignment on tables and pricing, and readable map card scrims.
+- Resolve all layout overlaps, non-overlapping 3-track scrollable university tabs, top-right single-line hero photo credits, keyboard-focusable guide formula scroll regions (`tabindex="0"`), valid `data-compare-selected` card attributes, and mobile touch target compliance (`<= 768px`) across all pages (verified 0 layout/accessibility errors across 72 page loads and 288 viewport checks).
+
 ### Maintenance
 - Configure frontend JavaScript static analysis with Oxlint (`.oxlintrc.json`), Knip (`knip.json`), and jscpd (`.jscpd.json`) alongside `npm run lint:frontend`, `npm run audit:dead-code`, and `npm run audit:duplicates` scripts in `package.json`.
 - Resolve all frontend Oxlint errors, empty `catch` blocks, unused imports/variables, Knip-detected dead code and unused exports (plus the duplicate recent-universities setting constant in `frontend/javascript/settings.js`), and cross-file helper/validation/persistence duplicates (`jscpd` clones reduced to zero); remove the stale `#profileBudgetUnit:focus-visible` allowlist entry from `scripts/audit-css.mjs`, and enforce `lint:frontend` and `audit:dead-code` in `test:all` and `.github/workflows/repository-hygiene.yml`.
