@@ -268,9 +268,11 @@ export function mountUniversityGallery(cover, universityId) {
   function renderPreview() {
     preview.hidden = false;
     placeholder.hidden = true;
+    cover.classList.remove("is-photo-missing");
     displayPhoto(previewMedia, photos[current], "", {
       onUnavailable: () => {
         placeholder.hidden = false;
+        cover.classList.toggle("is-photo-missing", photos.length === 1);
         if (photos.length === 1 && !photos[0].credit) preview.hidden = true;
       },
     });

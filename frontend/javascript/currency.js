@@ -1,6 +1,6 @@
 import { API_BASE } from "./utils/runtime.js";
 import { safeLocalStorage, safeSessionStorage } from "./utils/safe-storage.js";
-import { formatCurrency } from "./utils/format.js";
+import { formatCurrency, numberLocale } from "./utils/format.js";
 import {
   SETTING_PREFERRED_CURRENCY,
   SETTING_CURRENCY_DISPLAY,
@@ -624,14 +624,15 @@ export function getFilterLimits(code) {
 }
 
 const _numberFormatCache = new Map();
-function getNumberFormatter(maxDigits) {
-  let fmt = _numberFormatCache.get(maxDigits);
+function getNumberFormatter(maxDigits, locale = numberLocale()) {
+  const cacheKey = `${locale}:${maxDigits}`;
+  let fmt = _numberFormatCache.get(cacheKey);
   if (!fmt) {
-    fmt = new Intl.NumberFormat("en-US", {
+    fmt = new Intl.NumberFormat(locale, {
       maximumFractionDigits: maxDigits,
       minimumFractionDigits: 0,
     });
-    _numberFormatCache.set(maxDigits, fmt);
+    _numberFormatCache.set(cacheKey, fmt);
   }
   return fmt;
 }

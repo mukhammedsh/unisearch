@@ -42,8 +42,10 @@ function hasLabel(key) {
   return Boolean(t(`${PREFIX}${key}`));
 }
 
-export function admissionsRouteName(route, { presentation } = {}) {
-  const localized = presentation === "simple" && route?.id ? t(`${PREFIX}route_name.${route.id.replaceAll(":", ".")}`) : "";
+// A route serving two levels (NU's Foundation-or-first-year application) can name the level being read.
+export function admissionsRouteName(route, { presentation, level = "" } = {}) {
+  const key = route?.id ? `${PREFIX}route_name.${route.id.replaceAll(":", ".")}` : "";
+  const localized = presentation === "simple" && key ? (level && t(`${key}.${level}`)) || t(key) : "";
   if (localized) return localized;
   if (presentation === "simple" && !route?.title && !route?.target && route?.classification) {
     const key = `route_class.${route.classification}`;
@@ -624,7 +626,7 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
         const lines = group.map(row => sources(row, resolved));
         const shared = lines[0] && lines.every(line => line === lines[0]);
         return `<details class="admissions-catalog__fact admissions-catalog__fact-group" data-admissions-group="${escapeHtmlAttr(domain)}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
-          <summary class="admissions-catalog__heading"><span>${escapeHtml(item)}</span><span class="admissions-catalog__status">${escapeHtml(label("record_count").replace("{count}", String(group.length)))}</span>${renderStatusBadges(warnings)}</summary>
+          <summary class="admissions-catalog__heading"><span>${escapeHtml(item)}</span>${renderStatusBadges(warnings)}</summary>
           <div class="admissions-catalog__body"><div class="admissions-catalog__group-list">${group.map(row => renderGroupedFact(row, resolved, domain, { withSources: !shared })).join("")}</div>${shared ? sourcesBlock(lines[0]) : ""}</div>
         </details>`;
       }).join("");

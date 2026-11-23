@@ -9,10 +9,12 @@ import { translateAdmissionSummary } from "../../university-translations.js";
 
 const label = key => t(`university.deadlines.${key}`);
 
-export function renderDeadlineCalendar(deadlines, state = {}) {
+export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true } = {}) {
   const dated = deadlines.map((item, index) => ({ item, index, date: item.approximate || item.is_approximate ? null : parseExactDeadlineDate(item.deadline) }))
     .filter(entry => entry.date).sort((left, right) => left.date.localeCompare(right.date));
-  // Without an exportable date the calendar is one quiet note, not a titled empty section.
+  // Without an exportable date the calendar is one quiet note, not a titled empty section; a page that already states its
+  // dates in words leaves it out.
+  if (!dated.length && !emptyNote) return "";
   if (!dated.length) return `<section class="deadline-calendar deadline-calendar--empty" aria-label="${escapeHtmlAttr(label("calendar_title"))}"><p class="admissions-reading__note">${escapeHtml(label("calendar_no_exact"))}</p></section>`;
   const language = getCurrentLanguage();
   const locale = { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[language];
@@ -54,9 +56,9 @@ export function renderDeadlineCalendar(deadlines, state = {}) {
     </div>${deadlines.length > dated.length ? `<p class="deadline-calendar__note">${escapeHtml(label("calendar_partial_note"))}</p>` : ""}</section>`;
 }
 
-export function mountDeadlineCalendar(host, deadlines, state = {}) {
+export function mountDeadlineCalendar(host, deadlines, state = {}, options = {}) {
   if (!host) return;
-  const render = () => { host.innerHTML = renderDeadlineCalendar(deadlines, state); };
+  const render = () => { host.innerHTML = renderDeadlineCalendar(deadlines, state, options); };
   render();
   host.onclick = event => {
     const button = event.target.closest("button");

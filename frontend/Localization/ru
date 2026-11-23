@@ -24,7 +24,7 @@ about.role.planning: Сооснователь и ведущий разработ
 about.team_kicker: Наша команда
 about.title: UniSearch – сервис, созданный абитуриентами для абитуриентов.
 footer.copyright: © 2026 UniSearch
-footer.qs_attribution: Глобальный рейтинг: Source: QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). With permission from QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
+footer.qs_attribution: Глобальный рейтинг: источник — QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). С разрешения QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
 filter_any: Любой
 filter_grant: Грант
 filter_paid: Платно
@@ -243,6 +243,7 @@ profile.budget_saved: Бюджет сохранен!
 profile.cefr: CEFR
 profile.delete: Удалить
 profile.exam: Экзамен
+profile.exam_option.language: {exam} — откроется раздел «Языки»
 profile.exam_added: Добавлен {exam}
 profile.exam_ielts_step: Балл IELTS должен оканчиваться на .0 или .5
 profile.exam_integer_required: Баллы {exam} должны быть целыми (например, 1400)
@@ -367,7 +368,8 @@ ranking.source_status.not_published: Недоступно
 ranking.source_status.curated: Проверено вручную
 ranking.source_status.derived: Оценка модели
 ranking.source_status.derived_prestige_order: Оценка модели
-ranking.source_tooltip: Источник: {source} | Тип: {status} | Последняя проверка: {verified_at}
+ranking.source_tooltip: {source} · Проверено: {verified_at}
+ranking.source_tooltip_unranked: Нет позиции ({source}) · Проверено: {verified_at}
 title.about: О нас | UniSearch
 title.profile: Профиль абитуриента | UniSearch
 title.guide: Гайд | UniSearch
@@ -430,7 +432,16 @@ universities.cost.full_budget_unavailable: Нет сопоставимого п�
 universities.cost.reference: Справочная цена, до финансовой помощи.
 universities.cost.legacy_server_warning: API ещё работает на старой версии. До его перезапуска показаны справочные цены.
 universities.cost.before_aid: До стипендий и финансовой помощи.
-universities.cost.fee_scope: Диапазон зависит от программы и тарифа: Home — местный, Overseas — международный. Категорию определяет вуз.
+universities.cost.fee_scope: Категорию Home/Overseas определяет вуз.
+universities.cost.all_levels: Все уровни
+universities.cost.fee_status.home: тариф Home (местный)
+universities.cost.fee_status.overseas: тариф Overseas (международный)
+universities.cost.fee_status.resident: резидент
+universities.cost.fee_status.non_resident: нерезидент
+universities.cost.fee_status.company_payer: оплата от компании
+universities.cost.fee_status.individual_payer: личная оплата
+universities.cost.fee_status.full_tuition: полная оплата
+universities.cost.fee_status.self_paying: платное обучение
 universities.cost.exclusion.insurance: Страховка отдельно.
 universities.cost.exclusion.travel: Проезд отдельно.
 universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
@@ -443,11 +454,11 @@ universities.cost.fee_status_unknown: Категория оплаты не по�
 universities.cost.filter_partial: Частичное совпадение по цене
 universities.cost.tooltip_open: Как рассчитана цена
 universities.cost.tooltip_title: О диапазоне цен
-universities.cost.tooltip_range: Это диапазон от минимальной до максимальной известной цены. Заполненный профиль (уровень, категория оплаты, программа) может сузить его до более конкретного варианта.
-universities.cost.tooltip_living_range: Это справочный диапазон: опубликованная стоимость обучения плюс оценка расходов на проживание. Оценка проживания может относиться к другому году. Заполненный профиль (уровень, категория оплаты, программа) может сузить диапазон, но итоговая сумма не гарантирована.
-universities.cost.tooltip_single: Это одна известная цена для текущего выбора. Уточните программу, категорию оплаты и год.
-universities.cost.tooltip_filter_variants: Фильтр проверяет каждый известный вариант. Вуз показывается, если хотя бы один вариант пересекает ваши границы, даже когда весь диапазон шире их. Цены между крайними значениями могут отсутствовать.
-universities.cost.tooltip_filter_reference: Общий справочный диапазон может пересекать ваши границы без подтверждённой подходящей программы. Уточните её цену в вузе.
+universities.cost.tooltip_range: От минимальной до максимальной известной цены, до финпомощи. Точную сумму смотрите по программе на странице вуза.
+universities.cost.tooltip_living_range: Обучение плюс оценка проживания, до финпомощи. Точная сумма зависит от программы и тарифа.
+universities.cost.tooltip_single: Известная цена до финпомощи для текущего выбора. Уточните программу и год на странице вуза.
+universities.cost.tooltip_filter_variants: Показано, так как хотя бы один вариант попадает в фильтр цены.
+universities.cost.tooltip_filter_reference: Диапазон пересекается с фильтром цены — уточните цену своей программы.
 universities.cost.tooltip_living_year: Оценка проживания: {year} год.
 universities.country: Страна
 universities.filter: Фильтр
@@ -2399,9 +2410,10 @@ profile.evidence.error.credential_score: Укажите опубликованн
 profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
 university.admissions.catalog.simple_title: Как поступить
 university.admissions.catalog.browse_note: Ищите по направлению или программе. Откройте результат, чтобы узнать об учёбе и поступлении.
-university.admissions.catalog.advanced_note: Эти фильтры сужают сведения источников по указанной категории абитуриентов, циклу поступления или типу оплаты. Оставьте их пустыми, чтобы просмотреть все сведения для программы и пути.
-university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть опубликованные пути поступления.
-university.admissions.catalog.select_program: Выбрать программу
+university.admissions.catalog.advanced_note: Нужно, только если университет публикует разные условия для разных лет поступления или статусов оплаты.
+university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть, как на неё поступают.
+university.admissions.catalog.choose_program_profile: Условия поступления здесь свои у каждой программы. Подходят по направлению из вашего профиля:
+university.admissions.catalog.select_program: Смотреть поступление на программу
 university.admissions.catalog.requirements_tab_hint: Условия поступления — во вкладке «Поступление».
 university.admissions.catalog.study_info: О программе
 university.admissions.catalog.program_detail.study: Обучение
@@ -2412,7 +2424,7 @@ university.admissions.catalog.source_note_simple: Текст официальн�
 university.admissions.catalog.route_class.ucas_course_choice: Выбор программы через UCAS
 university.admissions.catalog.route_class.postgraduate_course_choice: Подача на последипломную программу
 university.admissions.catalog.source_scope_details: Источник и условия
-university.admissions.catalog.check_details: Необязательная сверка профиля с опубликованными минимумами
+university.admissions.catalog.check_details: Как проверялось каждое условие
 university.admissions.catalog.publication: Статус публикации
 university.admissions.catalog.topic.eligibility: Условия для заявителей
 university.admissions.catalog.topic.academic: Академические квалификации
@@ -2431,8 +2443,8 @@ university.admissions.catalog.topic.support: Поддержка студенто
 university.admissions.catalog.choose_program: Выбрать программу
 university.admissions.catalog.no_program_selected: Программа ещё не выбрана
 university.admissions.catalog.route_label: Опубликованный путь подачи
-university.admissions.catalog.choose_route: Выбрать путь поступления
-university.admissions.catalog.route_required: Выберите один из опубликованных путей выше, чтобы прочитать требования и порядок подачи.
+university.admissions.catalog.choose_route: Выбрать, как вы поступаете
+university.admissions.catalog.route_required: Выберите один из вариантов выше, чтобы увидеть требования и порядок подачи.
 university.admissions.catalog.unspecified: Не указана
 university.admissions.catalog.applicant.first_year: Поступление на первый курс
 university.admissions.catalog.applicant.transfer: Перевод из другого вуза
@@ -2463,17 +2475,19 @@ university.admissions.catalog.previous: Назад
 university.admissions.catalog.next: Далее
 university.admissions.catalog.results: {from}–{to} из {total} программ
 university.admissions.catalog.study_options_title: Программы обучения
-university.admissions.catalog.admission_title: Требования и опубликованные пути поступления
-university.admissions.catalog.finance_intro: Опубликованные цены и финансирование для выбранной программы и пути с исходными периодами, валютами и условиями.
+university.admissions.catalog.admission_title: Требования и способы поступления
+university.admissions.catalog.finance_intro: Сколько стоит год учёбы и какая есть финансовая помощь.
 university.admissions.catalog.deadlines_title: Даты и сроки
-university.admissions.catalog.deadlines_intro: Здесь собраны даты подачи, финансирования, ответа и внесения депозита для выбранной программы и пути. У каждой записи сохранены исходный период и официальный источник.
-university.admissions.catalog.route_intro: Выберите путь поступления — требования и порядок подачи откроются сразу. Профиль не нужен.
-university.admissions.catalog.reference_scope: Вы смотрите
+university.admissions.catalog.deadlines_intro: Когда подавать заявку и другие важные даты.
+university.admissions.catalog.route_intro: Выберите, как вы поступаете, — требования и порядок подачи откроются сразу. Профиль не нужен.
+university.admissions.catalog.reference_scope: Как вы поступаете
 university.admissions.catalog.route_not_selected: Выберите, как поступать
 university.admissions.catalog.browse_programs: Смотреть программы
 university.admissions.catalog.change_program: Сменить программу
-university.admissions.catalog.reference_filters: Уточнить контекст (необязательно)
-university.admissions.catalog.selected_route: Выбранный путь
+university.admissions.catalog.reference_filters: Год поступления и статус оплаты
+university.admissions.catalog.reference_filters_fee: Статус оплаты
+university.admissions.catalog.reference_filters_cycle: Год поступления
+university.admissions.catalog.selected_route: Ваш вариант
 university.admissions.catalog.official_course_page: Официальная страница курса
 university.admissions.catalog.application_class.post_admission_major: Сначала поступают в университет; основное направление выбирают после зачисления.
 university.admissions.catalog.application_class.direct_program: Заявление подаётся на выбранную программу.
@@ -2484,7 +2498,6 @@ university.admissions.catalog.application_class.external_and_coterm: Внешн�
 university.admissions.catalog.application_class.department_or_program: Путь подачи через факультет или программу.
 university.admissions.catalog.published_qualification_table: Опубликованные таблицы языковых квалификаций
 university.admissions.catalog.qualification_count: Квалификаций: {count}
-university.admissions.catalog.record_count: Записей: {count}
 university.admissions.catalog.full_source_text: Полный текст источника
 university.admissions.catalog.full_source_record: Полная запись источника
 university.admissions.catalog.source_text_note: Официальные формулировки сохранены на языке источника. У каждой записи свои область применения, период и условия; разверните её, чтобы увидеть подробности и источник.
@@ -2494,7 +2507,7 @@ university.admissions.catalog.matched: Соответствует выбранн
 university.admissions.catalog.unknown: Неизвестно
 university.admissions.catalog.published: Опубликовано
 university.admissions.catalog.partly_published: Опубликовано частично
-university.admissions.catalog.limited_publication: Опубликовано с ограниченной или неуточнённой областью применения
+university.admissions.catalog.limited_publication: Условия уточняйте на сайте вуза
 university.admissions.catalog.conflicting: Официальные источники противоречат друг другу
 university.admissions.catalog.review: Проверка сведений
 university.admissions.catalog.review.verified: Проверено
@@ -2515,13 +2528,13 @@ university.admissions.catalog.needs_review: Требует проверки
 university.admissions.catalog.historical: Исторические сведения
 university.admissions.catalog.checked: Официальная страница проверена
 university.admissions.catalog.period: Период публикации
-university.admissions.catalog.scope: Область применения источника
+university.admissions.catalog.scope: К чему относится
 university.admissions.catalog.conditions: Условия и исключения
 university.admissions.catalog.exceptions: Исключения
 university.admissions.catalog.source: Официальный источник
 university.admissions.catalog.no_facts: В этом разделе нет сведений источников для выбранного контекста. Проверьте официальные страницы программы и поступления.
 university.admissions.catalog.no_context: Выберите программу и связанный с ней маршрут поступления, чтобы увидеть сведения с подходящей областью применения.
-university.admissions.catalog.unknowns: Неуточнённые сведения источников
+university.admissions.catalog.unknowns: Вуз пока не опубликовал
 university.admissions.catalog.next_step: Следующий шаг по официальным сведениям
 university.admissions.catalog.history: Исторические сведения
 university.admissions.catalog.history_note: Эти сведения сохранены как исторический контекст и не являются актуальными требованиями или ценами для выбранного набора.
@@ -2553,8 +2566,8 @@ university.admissions.catalog.domain.career: Карьера и результа�
 university.admissions.catalog.domain.student_support: Поддержка студентов
 university.admissions.catalog.domain.other: Другие сведения источников
 university.admissions.catalog.reason.applicability_unknown: Выбранный контекст или применимость условий к заявителю пока не установлены.
-university.admissions.catalog.reason.missing_evidence: Не хватает необходимых сведений заявителя.
-university.admissions.catalog.reason.unassessed_minimums: Некоторые опубликованные минимальные требования или условия их применения пока нельзя оценить.
+university.admissions.catalog.reason.missing_evidence: Добавьте свои результаты в профиль, чтобы сверить их с минимумами.
+university.admissions.catalog.reason.unassessed_minimums: Часть условий нельзя сравнить с вашим профилем — прочитайте их ниже.
 university.admissions.catalog.reason.entry_cycle_required: Укажите год поступления, например «осень 2027», чтобы проверить ваши баллы по этим минимумам.
 university.admissions.catalog.reason.no_published_requirements: Для этого контекста нет опубликованного числового минимума, который можно оценить.
 university.admissions.catalog.reason.requirements_not_met: Как минимум одно оценённое опубликованное минимальное требование не выполнено.
@@ -2648,12 +2661,13 @@ university.admissions.catalog.enum.paper: Бумажный
 university.admissions.catalog.enum.digital: Цифровой
 university.admissions.reading.tests: Академические экзамены
 university.admissions.reading.or: или
-university.admissions.reading.no_numeric_cutoff: В этой записи нет числового порога. Необходимость сдать экзамен и решение о зачислении — разные вещи.
+university.admissions.reading.no_numeric_cutoff: Проходного балла нет: результат нужен, а решение принимают по всему заявлению.
 university.admissions.reading.language: Английский язык
 university.admissions.reading.english_condition: Настоятельная рекомендация относится к тем, для кого английский не родной и кто использует его менее пяти лет либо не говорит на нём дома или в школе. Это отдельное условие от обязательного SAT или ACT.
 university.admissions.reading.language_scores: Опубликованные баллы по английскому
 university.admissions.reading.exam: Экзамен
 university.admissions.reading.minimum: Минимум
+university.admissions.reading.minimum_if_taken: Минимум, если сдаёте
 university.admissions.reading.recommended: Рекомендовано
 university.admissions.reading.test_before: Сдан до
 university.admissions.reading.test_from: Сдан начиная с
@@ -2682,23 +2696,24 @@ university.admissions.reading.food_estimate: Питание, оценка
 university.admissions.reading.materials_estimate: Учебные материалы
 university.admissions.reading.personal_estimate: Личные расходы
 university.admissions.reading.insurance_extra: Страховка и ограничения расчёта:
-university.admissions.reading.cost_scope: Стоимость сохраняет опубликованный охват программы, категорию поступающего и период.
 university.admissions.reading.tuition_budget_note: Обучение — лишь часть бюджета; проживание и другие расходы оплачиваются отдельно.
 university.admissions.reading.exclusion.insurance: Страховка оплачивается отдельно.
 university.admissions.reading.exclusion.one_time_fees: Разовые сборы оплачиваются отдельно.
 university.admissions.reading.degree.MEng: Магистр инженерии
 university.admissions.reading.degree.MEng_ucas_note: Это интегрированная программа бакалавриата, ведущая к степени Master of Engineering.
 university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
-university.admissions.reading.no_budget: Сопоставимый бюджет для этого выбора не подтверждён. Ниже каждая сумма сохраняет свой период, валюту и условия.
-university.admissions.reading.full_records: Полные записи источников и условия
+university.admissions.reading.full_records: Полные записи на языке источника
+university.admissions.reading.sources_disclosure_count: Источники ({count})
+university.admissions.reading.sources_disclosure: Источники
 university.admissions.reading.general_references: Дополнительные справочные сведения
 university.admissions.reading.general_reference_note: Эти записи относятся к общим или особым ситуациям. Их применимость к вашему выбору не установлена; проверьте область действия, прежде чем считать запись требованием.
-university.admissions.reading.update_selection: Обновить выбор
+university.admissions.reading.update_selection: Изменить
 university.admissions.catalog.route_name.mit-first-year: Первый курс после школы
 university.admissions.catalog.route_name.mit-transfer: Перевод из другого вуза
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-first-year: Первый курс после школы
 university.admissions.catalog.route_name.undergraduate-shared-evidence.stanford-transfer: Перевод из другого вуза
 university.admissions.reading.mid_month: Середина {month}
+university.admissions.reading.early_month: Начало {month}
 university.admissions.reading.month.1: января
 university.admissions.reading.month.2: февраля
 university.admissions.reading.month.3: марта
@@ -2711,10 +2726,10 @@ university.admissions.reading.month.9: сентября
 university.admissions.reading.month.10: октября
 university.admissions.reading.month.11: ноября
 university.admissions.reading.month.12: декабря
-university.admissions.reading.early_action: Early Action · ранняя подача
-university.admissions.reading.regular_action: Regular Action · обычная подача
-university.admissions.reading.restrictive_early_action: Restrictive Early Action · ранняя необязывающая подача
-university.admissions.reading.regular_decision: Regular Decision · обычная подача
+university.admissions.reading.early_action: Ранняя подача (Early Action)
+university.admissions.reading.regular_action: Обычная подача (Regular Action)
+university.admissions.reading.restrictive_early_action: Ранняя подача с ограничением (Restrictive Early Action)
+university.admissions.reading.regular_decision: Обычная подача (Regular Decision)
 university.admissions.reading.transfer_application: Подача на перевод
 university.admissions.reading.priority_deadline: Приоритетный срок
 university.admissions.reading.application_deadline: Срок подачи заявления
@@ -2876,8 +2891,8 @@ university.admissions.catalog.enum.to_be_announced: Будет объявлен�
 university.admissions.catalog.enum.per_option_key_facts: ключевые факты по варианту программы
 university.admissions.catalog.enum.tests_scores_selection_interview_and_portfolio: тесты, баллы, отбор, собеседование и портфолио
 university.admissions.catalog.reset_notice: Прежний выбор поступления относился к предыдущему каталогу и сброшен. Выберите программу и путь подачи заново. Остальные данные профиля сохранены.
-university.admissions.catalog.save_choice: Сохранить выбор поступления
-university.admissions.catalog.choice_saved: Контекст поступления сохранён для этого вуза.
+university.admissions.catalog.save_choice: Запомнить этот вариант
+university.admissions.catalog.choice_saved: Вариант запомнен на этом устройстве.
 university.admissions.catalog.choice_session_only: Выбор доступен только в этой сессии. Сохранить его на устройстве не удалось.
 university.admissions.catalog.apply_before_save: Примените изменённый контекст перед сохранением выбора.
 universities.cost.budget_within_reference: Бюджет покрывает этот ориентир.
@@ -2891,7 +2906,7 @@ university.admissions.reading.summary_translation_missing: Краткий пер
 university.admissions.reading.source_and_date: Источник и дата
 university.admissions.reading.official_sources_count: Официальные источники ({count})
 university.admissions.reading.source_marker: Источник {number}: {title}
-university.admissions.reading.reference_scope_note: Подробные записи приведены на языке источника. В каждой записи доступны условия, период и область действия.
+university.admissions.reading.reference_scope_note: Подробности приведены на языке университета.
 university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
 university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан
 university.admissions.reading.source_period: Период и формулировка источника
@@ -2911,7 +2926,7 @@ university.admissions.reading.aid_finances_title: Для CSS Profile подго�
 university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи
 university.programs.all_levels: Все уровни обучения
 university.programs.search_clear: Очистить поиск
-university.admissions.reading.summary_requirements: Основные опубликованные требования
+university.admissions.reading.summary_requirements: Чего ждёт университет
 university.admissions.reading.summary_application: Как подать заявку
 university.admissions.reading.summary_deadlines: Даты курса и раунды подачи
 university.admissions.reading.summary_costs: Опубликованная стоимость и условия оплаты
@@ -2928,8 +2943,8 @@ university.admissions.reading.living_twelve_months: 12 месяцев · ори�
 university.admissions.reading.different_cost_periods: Этот ориентир проживания относится к другому периоду, чем обучение 2027 года. Суммы показаны отдельно и не складываются в подтверждённый годовой бюджет.
 university.admissions.reading.scholarship_rounds: Раунды President’s PhD Scholarships
 university.admissions.reading.scholarship_dates_separate: Это сроки рассмотрения стипендии. Кафедра может требовать более ранней заявки PhD; поступление и назначение стипендии — отдельные решения.
-university.admissions.reading.ucas_medicine: UCAS · срок для Medicine
-university.admissions.reading.ucas_equal_consideration: UCAS · равное рассмотрение заявок
+university.admissions.reading.ucas_medicine: Срок UCAS для медицины
+university.admissions.reading.ucas_equal_consideration: Основной срок UCAS
 university.admissions.reading.submission_opens: Начало подачи заявок
 university.admissions.reading.date: Дата
 university.admissions.reading.local_time: Опубликованное местное время
@@ -2946,8 +2961,8 @@ university.admissions.reading.month_standalone.10: октябрь
 university.admissions.reading.month_standalone.11: ноябрь
 university.admissions.reading.month_standalone.12: декабрь
 university.admissions.catalog.route_name.procedure-computing-phd: Computing Research PhD · подача на кафедру
-university.admissions.entry.institution_wide: На бакалавриат поступают в университет в целом. Читайте правила первого курса или перевода без выбора будущей специальности; изучить направления можно в разделе «Программы».
-university.admissions.entry.route_situations: Выберите опубликованный путь для своей ситуации или оставьте выбор открытым. Общие правила университета показаны внутри пути, а не как отдельная заявка.
+university.admissions.entry.institution_wide: На бакалавриат подают одну общую заявку, требования одинаковы для всех программ. Выберите свой случай; направления можно посмотреть в разделе «Программы».
+university.admissions.entry.route_situations: Выберите свой случай поступления.
 university.admissions.entry.route_help.directory-evidence.stanford-graduate-cs-ms: Внешние абитуриенты подают заявку на CS MS. Общие правила graduate-поступления и кафедры включены в этот путь.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-coterm: Для нынешних бакалавров Stanford, поступающих на coterminal CS MS; действуют требования кафедры и сроки по учебным периодам.
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-current-regular-admission: Для нынешних студентов Stanford, поступающих на дополнительную или другую степень CS через обычный приём. Отличается от coterm и запроса промежуточной MS внутри CS PhD.
@@ -3266,7 +3281,7 @@ university.deadlines.test_for_funding: Последняя дата сдачи {e
 university.deadlines.kind.test_submission: Срок предоставления результата теста
 university.deadlines.dated_reference: Ориентир прошлого цикла
 universities.cost.study_years: Годы обучения: {years}
-university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Обычное поступление на подготовительную программу или бакалавриат
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate: Обычный приём: первый курс или Foundation
 university.admissions.catalog.route_name.nu-a-route-financial-support: Отбор на финансирование после предложения о зачислении
 university.admissions.catalog.route_name.nu-a-route-midyear-2026-27: Платный набор на бакалавриат в середине учебного года
 university.admissions.catalog.route_name.nu-a-route-transfer: Перевод на бакалавриат из другого вуза
@@ -3313,46 +3328,53 @@ university.admissions.catalog.route_name.nu-c-residency-route: Общая зая
 university.admissions.catalog.route_name.nu-residency-unconditional: Резидентура: безусловное зачисление
 university.admissions.catalog.route_name.nu-residency-conditional-umc: Резидентура: условное зачисление по рекомендации UMC
 university.admissions.reading.formats_vary: Зависит от программы — посмотреть форматы
-university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Начните здесь: требования и подача заявления. Требования к английскому и допустимая академическая квалификация проверяются отдельно. Отбор на финансирование проходит после предложения места и имеет свои условия.
+university.admissions.entry.route_help.nu-a-route-regular-foundation-undergraduate: Для выпускников школ и колледжей, поступающих на первый курс. Здесь минимум по IELTS или TOEFL и принимаемые академические результаты (SAT, ACT, GPA, ЕНТ, IB или A-level). Грант — отдельная заявка после предложения о зачислении.
 university.admissions.entry.route_help.nu-a-route-financial-support: Для получивших предложение о зачислении: категории грантов, дополнительные экзамены и сроки финансирования. Выполнение минимума не подтверждает получение гранта.
 university.admissions.entry.route_help.nu-a-route-transfer: Для перевода из другого университета. Предыдущее обучение, зачёт кредитов и возможное освобождение от языкового экзамена требуют индивидуальной проверки.
 university.admissions.entry.route_help.nu-a-route-nufyp-progression: Для действующих студентов NUFYP, переходящих на бакалавриат. Завершение Foundation само по себе не гарантирует место: действуют условия перехода.
 university.admissions.entry.route_help.nu-residency-unconditional: Обычные условия поступления в резидентуру, включая клинические экзамены и предыдущее медицинское образование.
 university.admissions.entry.route_help.nu-residency-conditional-umc: Отдельный условный путь для рекомендованных UMC. Проверьте требования к рекомендации и зачислению: это не общее освобождение от экзаменов.
 university.admissions.reading.structured_study: Опубликованные сведения об учёбе доступны ниже. Краткого текстового обзора нет.
-university.admissions.key_facts.title: Главное по этому пути
+university.admissions.key_facts.title: Главное для поступления
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Ещё условий, которые нужно сверить с официальными правилами: {count}
+university.admissions.key_facts.requirements_manual: Документы и другие условия здесь не проверяются; опубликованные университетом записи — в разделе «Источники».
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
 university.admissions.key_facts.deadline_today: {title}: {date}, сегодня
 university.admissions.key_facts.deadline_passed: Опубликованные сроки уже прошли. Последний: {title}, {date}
-university.admissions.key_facts.deadline_none: Для этого пути сроки не опубликованы
+university.admissions.key_facts.deadline_none: Сроки для этого варианта не опубликованы
 university.admissions.key_facts.deadline_yearless: Сроки опубликованы без указания года: {dates}
 university.admissions.key_facts.deadline_period: Период подачи заявок: {period}
 university.admissions.key_facts.deadline_described: Точная дата с годом не указана; опубликованные сроки — на вкладке «Сроки»
 university.admissions.key_facts.open_deadlines: Все сроки
 university.admissions.key_facts.cost: Стоимость в год
-university.admissions.key_facts.cost_total: Опубликованный бюджет: {amount}
+university.admissions.key_facts.cost_total: Годовой бюджет по данным вуза: {amount}
+university.admissions.key_facts.cost_breakdown: Обучение {tuition} + проживание ≈ {living} за 9 месяцев учёбы
+university.admissions.key_facts.cost_tuition_share: Из них обучение — {tuition}, остальное — жильё, питание и другие расходы.
+university.admissions.key_facts.cost_estimate: Обучение и проживание: ≈ {amount} в год
 university.admissions.key_facts.cost_tuition: Обучение: {amount}. Проживание не включено
-university.admissions.key_facts.cost_period: Период источника: {period}
+university.admissions.key_facts.cost_period: Цены: {period}
 university.admissions.key_facts.cost_calculated_reference: Расчётный ориентир: обучение плюс оценка расходов на проживание.
-university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas); его можно указать в дополнительных параметрах выше
+university.admissions.key_facts.cost_fee_status: Зависит от статуса оплаты (Home или Overseas)
 university.admissions.key_facts.cost_not_annual: Цена опубликована не за год; подробности на вкладке «Стоимость»
 university.admissions.key_facts.cost_unknown: Для этого выбора цена не опубликована
-university.admissions.key_facts.budget_over: Выше вашего бюджета {budget}
-university.admissions.key_facts.budget_within: В пределах вашего бюджета {budget}
-university.admissions.key_facts.budget_tuition_within: Обучение укладывается в бюджет {budget}, но проживание оплачивается отдельно
-university.admissions.key_facts.budget_partial: Часть диапазона выше вашего бюджета {budget}
+university.admissions.key_facts.budget_over: Дороже вашего бюджета ({budget})
+university.admissions.key_facts.budget_within: В пределах вашего бюджета ({budget})
+university.admissions.key_facts.budget_tuition_within: Обучение укладывается в ваш бюджет ({budget}), но проживание оплачивается отдельно
+university.admissions.key_facts.budget_partial: Часть диапазона дороже вашего бюджета ({budget})
 university.admissions.key_facts.budget_missing: Укажите годовой бюджет в профиле, чтобы сравнить
 university.admissions.key_facts.open_finance: Стоимость и финансирование
+university.admissions.key_facts.open_funding_route: Условия гранта (отдельный раздел)
+university.admissions.key_facts.funding_route_viewing: Это условия гранта: на грант подают отдельно, после предложения о зачислении. Это не путь поступления.
+university.admissions.key_facts.back_to_route: Вернуться к вашему варианту: {route}
 university.admissions.key_facts.funding: Финансирование
 university.admissions.key_facts.funding_route: Оформляется отдельной заявкой: {route}
-university.admissions.key_facts.funding_records: Записей о финансировании для этого пути: {count}. Грант не гарантирован
-university.admissions.key_facts.funding_none: Для этого пути финансирование не каталогизировано; проверьте официальную страницу о финансировании
+university.admissions.key_facts.funding_records: Записи о финансировании — в официальных источниках на вкладке «Стоимость и финансирование». Грант не гарантирован.
+university.admissions.key_facts.funding_records_here: Записи о финансировании по этому пути — в официальных источниках ниже, в разделе «Источники». Финансирование не гарантировано и из стоимости не вычитается.
+university.admissions.key_facts.funding_none: Финансирование для этого варианта в каталоге не указано; проверьте официальную страницу о финансировании
 university.admissions.catalog.domain.reference: Связанные сопоставления источников
 university.admissions.entry.shared_path_alternative: Другие общие пути поступления можно прочитать отдельно. При открытии такого пути выбор программы сбросится: это не подтверждает, что данная программа доступна по нему.
 profile.clear_report_draft: Очистить черновик
@@ -3370,9 +3392,9 @@ university.admissions.catalog.field.timezone: Часовой пояс
 university.admissions.catalog.field.scope: Относится к
 university.admissions.catalog.record_link: Показать полную запись источника
 profile.change_budget_currency: Изменить валюту бюджета в настройках (сейчас {currency})
-university.admissions.entry.browsing_not_saved: Этот выбор не сохранён для UniFit.
-university.admissions.entry.saved_context: Этот выбор сохранён для UniFit.
-university.admissions.entry.saved_other: Сохранено для UniFit: {details}.
+university.admissions.entry.browsing_not_saved: Если запомнить этот вариант, каталог и сравнение будут сверять ваши результаты с его минимумами. В университет ничего не отправляется.
+university.admissions.entry.saved_context: Вариант запомнен: каталог и сравнение сверяют ваши результаты с его минимумами. В университет ничего не отправляется.
+university.admissions.entry.saved_other: Запомнен другой вариант: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Подайте заявление на выбранную программу бакалавриата через UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Подайте заявление на выбранную программу последипломного обучения.
 university.admissions.entry.route_class_help.department_or_program: Подавайте через соответствующий департамент или программу; условия конкретного пути указаны ниже.
@@ -3386,17 +3408,20 @@ university.admissions.entry.route_help.mit-first-year: Подайте заявл
 university.admissions.entry.route_help.mit-transfer: Подайте заявление в MIT как кандидат на перевод из другого вуза.
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-first-year: Подайте заявление в Stanford как абитуриент первого курса бакалавриата.
 university.admissions.entry.route_help.undergraduate-shared-evidence.stanford-transfer: Подайте заявление в Stanford как абитуриент бакалавриата, переводящийся из другого вуза.
-university.admissions.entry.route_help_generic: Откройте этот путь, чтобы изучить опубликованные условия и способ подачи заявления.
+university.admissions.entry.route_help_generic: Откройте этот вариант, чтобы увидеть условия и способ подачи заявления.
+university.admissions.entry.preparation_help: Подготовительный год перед бакалавриатом со своими минимумами. Посмотрите его, если ваши результаты пока не дотягивают до минимумов первого курса.
+university.admissions.entry.route_help.nu-a-route-midyear-2026-27: Платный набор с началом учёбы в середине учебного года. Проверьте, открыт ли он в нужном вам году.
 university.admissions.entry.how_to_apply: Как поступить
 university.admissions.catalog.assessment_count: Среди оценённых числовых минимумов выполнено: {met} из {total}
 university.admissions.catalog.assessment_limits: Здесь не оцениваются остальные условия поступления и право на подачу. Это не вероятность зачисления и не прогноз финансирования.
-university.admissions.catalog.assessment_no_route: Выберите путь поступления для проверки требований.
+university.admissions.catalog.assessment_no_route: Выберите, как вы поступаете, чтобы проверить требования.
+university.admissions.catalog.check_route: Проверить для «{route}»
 university.admissions.catalog.assessment_next_missing: Добавьте недостающие данные в профиль, затем просмотрите проверки ниже.
 university.admissions.catalog.assessment_next_unassessed: Некоторые опубликованные условия нельзя проверить автоматически. Ознакомьтесь с официальными требованиями ниже.
-university.admissions.catalog.assessment_next_no_numeric: В наших данных нет числового минимума для этого пути, который можно автоматически сравнить. Ознакомьтесь с официальными требованиями ниже.
+university.admissions.catalog.assessment_next_no_numeric: Университет не публикует числовой минимум, который можно сравнить автоматически. Официальные требования — ниже.
 university.admissions.catalog.assessment_next_applicability: Проверьте программу, путь подачи и год поступления. Ознакомьтесь с официальными условиями ниже.
 university.admissions.catalog.assessment_profile: Изменить профиль
-university.admissions.catalog.saved: Сохранено
+university.admissions.catalog.saved: Вариант запомнен
 university.admissions.catalog.check_next_missing: Раскройте проверку, чтобы увидеть, каких данных не хватает.
 university.admissions.catalog.check_next_unassessed: Эта проверка не выполнена автоматически. Сверьте опубликованные условия и источник.
 university.admissions.catalog.check_group_count: Правил из источников: {count}
@@ -3414,19 +3439,19 @@ universities.match.budget_within: В пределах бюджета
 universities.match.budget_uncertain: Уточните стоимость
 university.admissions.entry.route_help.mit_sloan_mba_early_deferred: Для подходящих студентов выпускного курса: подайте заявку сейчас и начните MBA после двух–пяти лет работы. Это поступление с отложенным началом, а не ранний раунд обычной подачи на MBA.
 university.admissions.catalog.route_name.mit_sloan_mba_early_deferred: MBA Early — поступление с отложенным началом
-university.admissions.glossary.restrictive_early_action.title: Restrictive Early Action (REA)
+university.admissions.glossary.restrictive_early_action.title: Ранняя подача с ограничением (REA)
 university.admissions.glossary.restrictive_early_action.text: Restrictive Early Action — ранний раунд без обязательства поступить, но с ограничениями на ранние заявки в другие вузы; прочитайте правила вуза до выбора.
-university.admissions.glossary.early_action.title: Early Action
+university.admissions.glossary.early_action.title: Ранняя подача (Early Action)
 university.admissions.glossary.early_action.text: Early Action — ранний раунд подачи: срок и ответ раньше, а обязательства поступить обычно нет, поэтому после зачисления вы не обязаны принимать место.
-university.admissions.glossary.regular_action.title: Regular Action
+university.admissions.glossary.regular_action.title: Обычная подача (Regular Action)
 university.admissions.glossary.regular_action.text: Regular Action — основной, более поздний раунд подачи: срок и ответ позже, чем в раннем раунде.
-university.admissions.glossary.regular_decision.title: Regular Decision (RD)
+university.admissions.glossary.regular_decision.title: Обычная подача (RD)
 university.admissions.glossary.regular_decision.text: Regular Decision — основной раунд подачи: срок и ответ позже, чем в ранних раундах.
 university.admissions.glossary.ucas.title: UCAS
 university.admissions.glossary.ucas.text: UCAS — единая онлайн-служба подачи заявок в бакалавриат вузов Великобритании: заявку подают через неё, а не в каждый вуз отдельно.
 university.admissions.glossary.tmua.title: TMUA
 university.admissions.glossary.tmua.text: TMUA (Test of Mathematics for University Admission) — вступительный тест по математике, который требуют некоторые британские вузы; он сдаётся отдельно от школьных экзаменов.
-university.admissions.glossary.foundation.title: Foundation / NUFYP
+university.admissions.glossary.foundation.title: Подготовительный год (Foundation)
 university.admissions.glossary.foundation.text: Foundation — подготовительный год перед бакалавриатом, а NUFYP — Foundation Year Program Назарбаев Университета; узнайте в правилах вуза, ведёт ли его завершение к месту на программе.
 university.admissions.glossary.css_profile.title: CSS Profile
 university.admissions.glossary.css_profile.text: CSS Profile — онлайн-анкета College Board, по которой некоторые американские вузы оценивают финансовую нуждаемость семьи; её подают дополнительно к заявке на поступление.
@@ -3435,13 +3460,13 @@ university.admissions.glossary.fee_status.text: Статус оплаты опр
 university.admissions.glossary.what_is: Что такое {term}?
 university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
 university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
-university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили. Записей о финансировании для этого пути: {count}.
-university.admissions.key_facts.deadline_earlier: Раньше: {text}
-university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date}, через {days} дн. (ежегодная дата; год уточните на официальной странице)
-university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date}, сегодня (ежегодная дата; год уточните на официальной странице)
+university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили.
+university.admissions.key_facts.deadline_earlier: Но сначала, раньше этого срока: {text}
+university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date} (год университет не указывает), примерно через {days} дн.; уточните на официальной странице
+university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date} (год университет не указывает), сегодня; уточните на официальной странице
 university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
-university.admissions.key_facts.requirements_kind_academic: Академическое требование
-university.admissions.key_facts.requirements_kind_language: Требование по английскому
+university.admissions.key_facts.requirements_kind_academic: Академический результат
+university.admissions.key_facts.requirements_kind_language: Английский язык
 university.admissions.key_facts.requirements_kind_exam: Обязательный экзамен
 university.admissions.key_facts.requirements_need_one: {requirement}: добавьте {items}
 university.admissions.key_facts.requirements_need_any: {requirement}: добавьте что-то одно из: {items}
@@ -3450,7 +3475,35 @@ university.admissions.key_facts.requirements_add_date: дату сдачи {exam
 university.admissions.key_facts.requirements_add_sections: баллы {exam} по разделам
 university.admissions.key_facts.requirements_add_date_sections: дату сдачи {exam} и баллы по разделам
 university.admissions.key_facts.requirements_add_gpa: средний балл (GPA)
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.preparation: Обычный приём на Foundation
+university.admissions.catalog.route_name.nu-a-route-regular-foundation-undergraduate.undergraduate: Обычный приём на первый курс
+university.admissions.key_facts.apply: Где подать
+university.admissions.key_facts.credential: Документы из Казахстана
+university.admissions.key_facts.credential_unlisted: Университет не публикует решения по аттестату или диплому из Казахстана. Это не отказ: спросите в приёмной комиссии, подходит ли ваш документ.
+university.admissions.key_facts.credential_source: Официальные условия
+university.admissions.key_facts.apply_text: Заявка подаётся на официальном сайте университета.
+university.admissions.key_facts.apply_text_ucas: Заявку подают через UCAS — общую систему подачи в вузы Великобритании, а не на сайте университета. Шаги описаны в официальной инструкции.
+university.admissions.key_facts.minimum_add: Добавьте: {items}
+university.admissions.key_facts.minimum_any: {requirement}, одно из: {items}
+university.admissions.key_facts.minimum_gpa: GPA {minimum}
+university.admissions.key_facts.minimum_gpa_scale: GPA {minimum} из {scale}
+university.admissions.key_facts.minimum_have: У вас: {result}
+university.admissions.key_facts.minimum_have_add: У вас: {result}. Чтобы проверить полностью, добавьте: {items}
+university.admissions.key_facts.minimum_have_overall_add: Проверено частично. У вас: {result}; общий балл подходит. Чтобы завершить проверку, добавьте: {items}
+university.admissions.key_facts.minimum_have_below: У вас: {result}, ниже минимума
+university.admissions.key_facts.minimum_have_below_sections: У вас: {result}. Ниже минимума: {sections}
+university.admissions.key_facts.minimum_below_section: {name} {score} (нужно не ниже {minimum})
+university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; засчитывается ли он, зависит от условий ниже
+university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
+university.admissions.key_facts.requirements_checklist_lead: Ваши результаты и опубликованные минимумы:
+university.admissions.key_facts.recommended_english: Рекомендуемый тест по английскому: {minimum}
+university.admissions.key_facts.recommended_english_better: Рекомендуемый тест по английскому: {minimum} (лучше {better})
+university.admissions.key_facts.recommended_english_condition: Не обязательно: университет настоятельно советует сдать тест, если английский для вас не родной и вы пользуетесь им меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_condition_not_native: Не обязательно: относится к вам, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_native_hint: Английский — ваш родной язык? Укажите это в профиле, и эта строка будет показываться, только когда она к вам относится.
+university.ux2.needs.mark_recommended: Рекомендация, а не требование
+languages.exam_sections_label: Баллы по секциям (если они есть в сертификате)
 profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать
 profile.ux2.section.study.desc: Уровень обучения сужает список. Специальность и темы меняют порядок.
@@ -3470,8 +3523,13 @@ profile.ux2.hint.budget: Известная годовая стоимость в
 profile.ux2.hint.funding: Скрывает университеты, где такого варианта точно нет; с неизвестным финансированием остаются.
 profile.ux2.hint.gpa: Сравнивается с минимальным GPA, который публикуют университеты.
 profile.ux2.hint.exams: Сравниваются с опубликованными минимумами; нужные университету экзамены дают соответствие минимальным требованиям.
-profile.ux2.gpa.scale_hint: Шкала: {scale}. Другая шкала? Нажмите «{unit}» рядом с полем.
-profile.ux2.gpa.over_scale: {value} больше 4.0. Если у вас пятибалльная шкала, нажмите «/ 4.0» рядом с полем, чтобы переключить на 5.0.
+profile.ux2.gpa.scale_hint: Выберите, из скольки ваш балл: в школах Казахстана и СНГ обычно из 5.0.
+profile.ux2.gpa.over_scale: {value} больше 4.0. Проверьте шкалу выше: в школах Казахстана и СНГ балл из 5.0.
+profile.ux2.gpa.auto_switched: Поставили шкалу из 5.0: балл выше 4 бывает только в пятибалльной системе. Проверьте выбор выше.
+profile.ux2.gpa.scale_chosen_5: Балл считается из 5.0, как в школах Казахстана и СНГ.
+profile.gpa_scale.legend: Ваш балл из
+profile.gpa_scale.option_4: 4.0 — США и международные школы
+profile.gpa_scale.option_5: 5.0 — школы Казахстана и СНГ
 profile.ux2.hint.exams_language: Языковые тесты, например IELTS и TOEFL, добавляются в разделе «Языки».
 profile.ux2.nav.filled: есть ответы
 profile.ux2.nav.empty: ответов пока нет
@@ -3497,7 +3555,7 @@ profile.ux2.summary.subject.unused: Специальность не выбран
 profile.ux2.summary.budget.title: Годовой бюджет
 profile.ux2.summary.budget.value: {amount} в год
 profile.ux2.summary.budget.used: Известная годовая стоимость выше этой суммы понижает позицию. Гранты не вычитаются.
-profile.ux2.summary.budget.zero: Бюджет 0 игнорируется. Укажите сумму, чтобы сравнить цены.
+profile.ux2.summary.budget.zero: Нулевой бюджет не учитывается. Оставьте поле пустым, если бюджет вас не ограничивает, или укажите сумму, чтобы сравнить цены.
 profile.ux2.summary.budget.unused: Цены не сравниваются с бюджетом. Укажите сумму, чтобы сравнить их.
 profile.ux2.summary.format.title: Финансирование и формат обучения
 profile.ux2.summary.format.mode: Формат определяет, с какой ценой сравнивается бюджет: очной или онлайн.
@@ -3549,7 +3607,8 @@ profile.ux2.evidence.language_title: Опыт использования анг�
 profile.ux2.evidence.language_fixed: Записывается только опыт английского: именно о нём спрашивают требования к английскому.
 profile.ux2.evidence.entirely: Полностью на английском?
 university.ux2.title: Главное для поступления
-university.ux2.intro_route: Показано для пути: {route}. Одна заявка подходит для всех программ бакалавриата.
+university.ux2.intro_route: Показано для варианта «{route}». Одна заявка подходит для всех программ бакалавриата.
+university.ux2.intro_selected_program: Показано для выбранной программы «{program}».
 university.ux2.intro_program: У каждой программы они свои. Выберите программу, чтобы их увидеть.
 university.ux2.intro_legacy: Опубликованные данные вуза о бакалавриате.
 university.ux2.note: Это краткая сводка официальных данных, а не решение о поступлении. Источники и подробности — на вкладках.
@@ -3561,7 +3620,7 @@ university.ux2.or: или
 university.ux2.card.deadline: Когда подавать
 university.ux2.card.cost: Сколько это стоит
 university.ux2.card.needs: Что понадобится
-university.ux2.card.people: Кто здесь учится
+university.ux2.card.people: Конкурс и студенты
 university.ux2.card.program: Сроки, стоимость и требования
 university.ux2.link.deadlines: Все сроки
 university.ux2.link.cost: Стоимость и финансирование
@@ -3570,7 +3629,7 @@ university.ux2.link.choose: Выбрать программу
 university.ux2.choose.headline: Зависит от программы
 university.ux2.deadline.headline: До {date} · через {days} дн.
 university.ux2.deadline.headline_today: Крайний срок сегодня · {date}
-university.ux2.deadline.closed: Приём «{name}» ({date}) уже закрыт.
+university.ux2.deadline.closed: {name}, {date}: срок уже прошёл.
 university.ux2.deadline.annual: Университет повторяет эту дату каждый год, не называя год. Сверьте её на официальной странице.
 university.ux2.deadline.legacy: Сроки подачи — во вкладке «Даты и сроки».
 university.ux2.cost.headline: {amount} в год
@@ -3624,6 +3683,7 @@ university.ux2.people.selectivity_first_year: Зачисляют около {rat
 university.ux2.people.selectivity_undergraduate: Зачисляют около {rate}% подавших заявку на бакалавриат
 university.ux2.people.selectivity_offers: Предложение места получают около {rate}% заявок на бакалавриат
 university.ux2.people.selectivity_counts_admitted: Зачислено: {admitted} · подали заявку: {applicants}
+university.ux2.people.selectivity_not_chance: Это доля всех подавших, а не ваш личный шанс.
 university.ux2.people.selectivity_counts_offers: Предложений места: {admitted} · заявок: {applicants}
 university.ux2.people.selectivity_international: Иностранцы: зачислено {admitted} · подали заявку {applicants} (около {rate}%)
 university.ux2.people.selectivity_preparation: Ещё {rate}% по той же заявке приняли на подготовительный год {name}
@@ -3641,3 +3701,59 @@ university.ux2.overview.numbers_title: Ключевые факты
 university.ux2.prompt.shared_routes: На бакалавриат подают одну заявку для всех программ. Выберите, как вы поступаете:
 university.ux2.sources.one: Источник
 university.ux2.sources.many: Источники
+university.admissions.key_facts.minimum_with_sections: {minimum} ({sections})
+university.admissions.key_facts.minimum_sections_all: каждая часть — не ниже {value}
+university.admissions.key_facts.minimum_sections_other: остальные части — не ниже {value}
+university.admissions.key_facts.minimum_sections_named: {names} — не ниже {value}
+university.admissions.key_facts.section_writing: письмо
+university.admissions.key_facts.section_reading: чтение
+university.admissions.key_facts.section_listening: аудирование
+university.admissions.key_facts.section_speaking: говорение
+university.admissions.key_facts.section_mathematical_literacy: математическая грамотность
+university.admissions.key_facts.section_reading_literacy: грамотность чтения
+university.admissions.key_facts.requirements_add_sections_named: {exam}: баллы за части — {sections}
+university.admissions.key_facts.requirements_add_date_sections_named: {exam}: дата экзамена и баллы за части — {sections}
+university.admissions.key_facts.recommended_english_if_not_native: если английский — не родной язык
+university.ux2.needs.if_not_native: если английский — не родной язык
+university.ux2.needs.mark_partial: Проверено частично: добавьте недостающее
+university.ux2.needs.mark_note: К сведению
+university.admissions.key_facts.english_not_required: Тест по английскому: не требуется. Университет ожидает свободного владения английским; результат можно указать по желанию.
+university.admissions.key_facts.english_bands: IELTS {overall}, не ниже {section} в каждой части
+university.admissions.key_facts.english_overall: IELTS {overall}
+university.admissions.key_facts.english_level: Английский, уровень {level} для этого курса: {bands}
+university.admissions.key_facts.english_levels: Английский по уровням курса: Standard — {standard}; Higher — {higher}. Какой уровень нужен, указано на странице курса.
+university.admissions.key_facts.english_level_standard: Standard
+university.admissions.key_facts.english_level_higher: Higher
+university.admissions.key_facts.english_other_tests: Другие принимаемые экзамены (TOEFL, PTE, Duolingo и др.) — в официальной таблице университета, в разделе «Источники».
+university.admissions.key_facts.funding_lines_lead: Что публикует университет по этому пути. Финансирование не гарантировано и из стоимости не вычитается:
+university.admissions.key_facts.funding_apply_by: Подать заявку до {date}, {time}
+university.admissions.key_facts.funding_coverage: {percent}% оплаты обучения: {group}
+university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: социально уязвимые категории граждан Казахстана
+university.admissions.key_facts.coverage_second_and_later_fee_paying_sibling: второй и последующие братья и сёстры на платном обучении
+university.admissions.key_facts.coverage_kazakhstan_government_institution_or_enterprise_employee: сотрудники государственных учреждений и предприятий Казахстана
+university.admissions.key_facts.coverage_full_annual_tuition_single_payment: оплата обучения за весь год одним платежом (скидка за оплату, не грант)
+university.admissions.key_facts.application_fee: Сбор за подачу заявки
+university.admissions.key_facts.application_fee_amount: {amount}
+university.admissions.key_facts.application_fee_late: Поздний сбор: {amount}.
+university.admissions.key_facts.application_fee_late_window: Поздний сбор: {amount}, если подаёте заявку в последние две недели до срока.
+university.admissions.key_facts.set_fee_status: Указать статус оплаты
+university.ux2.deadline.headline_yearless: До {date} (год университет не указывает) · примерно через {days} дн.
+university.admissions.key_facts.deadline_rolling: Заявки принимают по мере поступления.
+university.admissions.key_facts.deadline_international_tba: Сроки для части иностранных абитуриентов пока не опубликованы.
+university.admissions.key_facts.requirements_published_lead: Что публикует университет:
+tour.close: Закрыть обучение
+universities.empty.filters_intro: Ничего не найдено из-за фильтров: {filters}
+universities.empty.filter.search: поиск «{value}»
+universities.empty.filter.country: страна: {value}
+universities.empty.filter.region: штат / регион: {value}
+universities.empty.filter.city: город: {value}
+universities.empty.filter.study_level: уровень обучения: {value}
+universities.empty.filter.funding: финансирование в профиле: {value}
+universities.empty.filter.price_max: цена до {amount}
+universities.empty.filter.price_min: цена от {amount}
+universities.empty.filter.price_range: цена от {min} до {max}
+universities.empty.show_above_budget: Показать вузы дороже моего бюджета
+universities.empty.clear_price: Убрать фильтр цены
+universities.state.empty_saved_none: Вы пока ничего не сохранили. Сохраните вуз на его карточке, и он появится здесь.
+profile.unit.per_year: / год
+profile.budget_currency_label: Валюта бюджета

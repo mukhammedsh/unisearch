@@ -91,10 +91,23 @@ export function initials(name) {
   return parts.map((part) => (part[0] || "").toUpperCase()).join("") || "U";
 }
 
+const NUMBER_LOCALE_BY_HTML_LANG = { ru: "ru-RU", kk: "kk-KZ" };
+
+/**
+ * Locale for formatting numbers in the current interface language: Russian and Kazakh group digits
+ * with a no-break space and use a decimal comma, English uses commas and a decimal point.
+ * Reads the page language that the i18n module keeps on the document element.
+ * @returns {"en-US"|"ru-RU"|"kk-KZ"}
+ */
+export function numberLocale() {
+  const htmlLang = String(globalThis.document?.documentElement?.lang || "").slice(0, 2).toLowerCase();
+  return NUMBER_LOCALE_BY_HTML_LANG[htmlLang] || "en-US";
+}
+
 export function moneyUSD(value) {
   const amount = Number(value);
   if (!Number.isFinite(amount)) return "—";
-  return `$${new Intl.NumberFormat("en-US").format(amount)}`;
+  return `$${new Intl.NumberFormat(numberLocale()).format(amount)}`;
 }
 
 export function formatCurrency(amount, code = "USD", options = {}) {
@@ -102,14 +115,14 @@ export function formatCurrency(amount, code = "USD", options = {}) {
   if (!Number.isFinite(num)) return "—";
   const currencyCode = String(code || "USD").trim().toUpperCase();
   try {
-    return new Intl.NumberFormat(options.locale || "en-US", {
+    return new Intl.NumberFormat(options.locale || numberLocale(), {
       style: "currency",
       currency: currencyCode,
       maximumFractionDigits: options.maximumFractionDigits ?? 0,
       ...options,
     }).format(num);
   } catch {
-    const formattedNum = new Intl.NumberFormat("en-US", {
+    const formattedNum = new Intl.NumberFormat(options.locale || numberLocale(), {
       maximumFractionDigits: options.maximumFractionDigits ?? 0,
     }).format(num);
     return `${currencyCode} ${formattedNum}`;

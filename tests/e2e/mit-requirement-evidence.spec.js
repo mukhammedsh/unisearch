@@ -58,9 +58,12 @@ async function openFact(page, tab, id) {
 }
 
 async function openAssessment(page) {
+  // How each condition was checked sits inside the tab's closed "Sources" disclosure, below the key-facts answer.
+  const sources = page.locator("#detailRequirements details[data-all-records]");
+  if (await sources.count() && !(await sources.evaluate((node) => node.open))) await sources.locator(":scope > summary").click();
   const details = page.locator("#detailRequirements details.admissions-catalog__assessment-detail");
   if (await details.count() && !(await details.evaluate((node) => node.open))) await details.locator(":scope > summary").click();
-  return page.locator("#detailRequirements [data-requirements-match]");
+  return page.locator("#detailRequirements");
 }
 
 async function openAdvanced(page) {
@@ -118,7 +121,7 @@ test("MIT AeroAstro preserves English waiver, test-age, source conflict, and an 
   await expect(conflict).toContainText("Cambridge 190");
   await expect(conflict).toContainText(/Confirm accepted exam\/scale/i);
   await expect(page.locator("#admissionsCycle")).toHaveValue("");
-  await expect((await openAssessment(page)).locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
 });
 
 test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an invented score", async ({ page }) => {
@@ -148,7 +151,7 @@ test("MIT Sloan MBA keeps its published GMAT/GRE rule unassessed without an inve
   await expect(fact).toContainText("GRE");
   const assessment = await openAssessment(page);
   await expect(assessment).toContainText(/No requirements-match percentage is available|Our data has no numeric minimum/i);
-  await expect(assessment.locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect(assessment.locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   await expect(page.locator("#admissionsCycle")).toHaveValue("2027 entry");
 });
 
@@ -226,6 +229,6 @@ test("saved GRE evidence persists while Sloan's unassessed rule and cleared cycl
   expect(cleared.assessment.chancePercent).toBeNull();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(cycle).toHaveValue("");
-  await expect((await openAssessment(page)).locator(".admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
+  await expect((await openAssessment(page)).locator("[data-key-fact='requirements'] .admissions-key-facts__value")).not.toContainText(/\d+(?:\.\d+)?\s*%/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });

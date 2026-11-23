@@ -32,9 +32,12 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   await foundation.locator(`[data-select-study-option='${FOUNDATION}']`).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await showTab(page, "admission");
-  await page.locator(`[data-read-route='${REGULAR}']`).click();
+  // Foundation has one way in (the funding application follows an offer), so that path opens directly.
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first()).toBeVisible();
+  expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe(REGULAR);
+  const languageGroup = page.locator('#detailRequirements [data-admissions-domain="requirements"] summary').filter({ hasText: "Language requirements" }).first();
+  await openDisclosureParents(languageGroup);
+  await expect(languageGroup).toBeVisible();
   await showTab(page, "finance");
   const tuition = page.locator("#detailFinance [data-course-tuition]");
   await expect(tuition).toContainText("12,000");
@@ -155,14 +158,13 @@ test("NU program readers can discover the separate institution-wide mid-year pat
   expect(new URL(page.url()).searchParams.get("admission_option")).toBe("");
   await expect(page.locator("#admissionsStudyDetails")).toBeHidden();
   await expect(page.locator("#detailRequirements")).toContainText("130");
+  // The mid-year path is read for its single published intake without asking for a year.
   await openAdmissionSelectionEditor(page);
-  await page.locator("#admissionsAdvanced > summary").click();
-  await page.locator("#admissionsCycle").fill("2027/28");
-  await expect(page.locator("#admissionsCycleNotice")).toBeHidden();
-  await page.locator("#admissionsContextApply").click();
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#admissionsAdvanced")).toBeHidden();
+  expect(new URL(page.url()).searchParams.get("admission_cycle")).toBe("Spring 2027");
   await showTab(page, "deadlines");
-  await expect(page.locator("#detailDeadlines")).not.toContainText(/2026[-‑]11[-‑]28/);
+  // The Dates tab answers first with the path's own application period.
+  await expect(page.locator('#detailDeadlines [data-tab-answers="deadlines"]')).toContainText(/2026[-‑–]11[-‑]28/);
 });
 
 test("comparison language changes keep its stage and the two independent saved contexts", async ({ page }) => {
@@ -203,7 +205,9 @@ async function seed(page, profile = {}, { language = "eng", theme = "light", mob
 async function openContext(page, option, route, level, { cycle = "2027/28", applicant = "first_year" } = {}) {
   const params = new URLSearchParams({ id: NU, admission_option: option || "", admission_application_route: route,
     admission_level: level, admission_route: applicant, admission_cycle: cycle, admission_fee: "unknown" });
-  const response = page.waitForResponse(item => item.url().includes(`/universities/${NU}/admissions-context`) && item.request().method() === "POST");
+  // The Overview reads NU's shared first-year path too, so wait for this selection's own request.
+  const response = page.waitForResponse(item => item.url().includes(`/universities/${NU}/admissions-context`) && item.request().method() === "POST"
+    && item.request().postDataJSON()?.context?.application_route_id === route && (item.request().postDataJSON()?.context?.study_option_id || "") === (option || ""));
   await page.goto(`/university.html?${params}`);
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).toHaveText(/^(Nazarbayev University|Назарбаев [Уу]ниверситет(?:і)?)$/);
@@ -267,7 +271,7 @@ test("NU Foundation exposes a failed NUET section while regular UG does not borr
 test("NU total-only reports keep missing sections unassessed on a Russian phone", async ({ page }, testInfo) => {
   await seed(page, { languages: [english], exams: [{ id: "NUET", exam: "NUET", score: 120 }] }, { language: "rus", theme: "dark", mobile: true });
   const { result } = await openContext(page, FOUNDATION, REGULAR, "preparation");
-  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Обычное поступление");
+  await expect(page.locator("#admissionsReferenceSummary")).toContainText("Обычный приём");
   expect(result.assessment.chancePercent).toBeNull();
   const missing = page.locator("#detailRequirements [data-minimum-exam='NUET_MATH'][data-minimum-status='missing']");
   await reveal(missing);
@@ -352,7 +356,7 @@ test("NU residency keeps unconditional reports distinct from UMC conditional adm
   await expect(page.locator("#detailRequirements")).toContainText(/first.*year|first enrollment year/i);
   await openAdmissionSelectionEditor(page);
   await page.locator("#admissionsSaveChoice").click();
-  await expect(page.locator("#admissionsSaveStatus")).toContainText("saved");
+  await expect(page.locator("#admissionsSaveStatus")).toContainText("remembered");
   await page.reload();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("#admissionsRoute")).toHaveValue(conditional);
@@ -423,13 +427,17 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
     sessionStorage.setItem("nu-cache-seeded", "1");
     localStorage.setItem("unisearch_detail_cache_v4", JSON.stringify({ [`${id}::eng`]: { data: { id, name: "STALE NU LEGACY DETAIL" }, etag: "legacy", ts: Date.now() } }));
   }, NU);
-  await page.route(`**/universities/${NU}/admissions-context`, route => route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Temporarily unavailable"}' }), { times: 1 });
+  // The outage lasts until Retry: the tab reads its default path in a second request, which must fail too.
+  let outage = true;
+  await page.route(`**/universities/${NU}/admissions-context`, route => outage
+    ? route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Temporarily unavailable"}' }) : route.fallback());
   await page.goto(`/university.html?id=${NU}`);
   await expect(page.locator("#detailName")).toHaveText("Nazarbayev University");
   await showTab(page, "admission");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
   await expect(page.locator("#detailRequirements").getByRole("alert")).toHaveCount(1);
   await expect(page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true })).toHaveCount(1);
+  outage = false;
   await page.locator("#detailRequirements").getByRole("button", { name: "Retry", exact: true }).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await expect(page.locator("[data-admission-reset-notice]")).toBeVisible();
@@ -439,8 +447,8 @@ test("NU refreshes a legacy cache, resets only its old choice, retries an outage
   expect(profile.budget).toBe(24000);
   expect(profile.selectedAdmissionChoices[NU]).toBeUndefined();
   expect(profile.selectedAdmissionChoices[other].programId).toBe("preserve-oxford-choice");
-  await page.locator("#admissionsChooseProgram").click();
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  // The tab reads the default first-year path, so programs are browsed from their own tab.
+  await showTab(page, "programs");
   for (const level of ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"]) {
     const selected = page.locator(".custom-select-wrapper:has(#admissionsStudyLevel)");
     await selected.locator(".custom-select-trigger").click();

@@ -1,7 +1,7 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, admissionContextIsSaved, programProfileSuggestions, programRestriction } from "../../frontend/javascript/pages/university/admissions-controller.js";
+import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, admissionContextIsSaved, programProfileSuggestions, programRestriction, singlePublishedCycle, admissionContextFields } from "../../frontend/javascript/pages/university/admissions-controller.js";
 
 test("browsing is saved only when every application context field matches", () => {
   const saved = { studyOptionId: "course", applicationRouteId: "route", studyLevel: "undergraduate", applicantRoute: "first_year", intendedEntryCycle: "2027", feeStatusContext: "unknown" };
@@ -131,4 +131,31 @@ test("only deliberately saved or URL-selected scope filters the public reference
   assert.equal(saved.study_level, "Master");
   url.searchParams.set("admission_cycle", "Fall 2028 entry");
   assert.equal(readAdmissionContext(url, saved, uid).intended_entry_cycle, "Fall 2028 entry");
+});
+
+test("a path's single requirement cycle is used for the minimums check; fee years and several intakes are not", () => {
+  const fact = (id, cycle) => ({ id, scope: { cycle } });
+  const resolved = (facts, requirements) => ({ facts, fact_groups: { requirements } });
+  assert.equal(singlePublishedCycle(resolved([fact("english", "Fall 2027"), fact("academic", "2027/28"), fact("fees", "2026/27")], ["english", "academic"])), "");
+  assert.equal(singlePublishedCycle(resolved([fact("english", "Fall 2027"), fact("academic", "Fall 2027"), fact("fees", "2026/27"), fact("policy", "current yearless policy")], ["english", "academic", "policy"])), "Fall 2027");
+  assert.equal(singlePublishedCycle(resolved([fact("english", "Fall 2027"), fact("spring", "Spring 2028")], ["english", "spring"])), "");
+  assert.equal(singlePublishedCycle(resolved([fact("english", null)], ["english"])), "");
+});
+test("entry-year and fee-status fields appear only when the path needs them", () => {
+  const fact = (id, cycle, fee_status = []) => ({ id, scope: { cycle, fee_status } });
+  const resolved = (facts, requirements, extra = {}) => ({ facts, fact_groups: { requirements }, ...extra });
+  const notRequired = { selected_costs: { tuition: { fee_statuses: [], fee_status_match: "not_required" } } };
+  // One published intake (NU, MIT): nothing to choose.
+  assert.deepEqual(admissionContextFields(resolved([fact("english", "Fall 2027")], ["english"], notRequired), { intended_entry_cycle: "Fall 2027", fee_status_context: "unknown" }), { cycle: false, fee: false });
+  // Several intakes, a missing required intake or a reader's own other year keep the field.
+  assert.equal(admissionContextFields(resolved([fact("a", "Fall 2027"), fact("b", "Spring 2028")], ["a", "b"]), {}).cycle, true);
+  assert.equal(admissionContextFields({ ...resolved([], []), assessment: { reason: "entry_cycle_required" } }, {}).cycle, true);
+  assert.equal(admissionContextFields(resolved([fact("a", "Fall 2027")], ["a"]), { intended_entry_cycle: "Fall 2028" }).cycle, true);
+  // MIT transfer publishes Spring and Fall windows.
+  const windows = { id: "windows", scope: {}, value: { windows: [{ entry: "Spring 2027 (February)" }, { entry: "Fall 2027 (September)" }] } };
+  assert.equal(admissionContextFields({ facts: [windows], fact_groups: { deadlines: ["windows"] } }, {}).cycle, true);
+  // UK fee classes (Imperial) or a reader's chosen status keep the fee field.
+  assert.equal(admissionContextFields(resolved([fact("fee", "2027 entry", ["Home/Overseas only where the page labels it"])], []), {}).fee, true);
+  assert.equal(admissionContextFields(resolved([], [], { selected_costs: { tuition: { fee_statuses: ["Home", "Overseas"], fee_status_match: "unknown" } } }), {}).fee, true);
+  assert.equal(admissionContextFields(resolved([], [], notRequired), { fee_status_context: "self_reported_home_domestic" }).fee, true);
 });

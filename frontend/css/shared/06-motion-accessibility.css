@@ -492,14 +492,14 @@ body.route-loading main {
 .error-icon-wrap {
   width: 90px;
   height: 90px;
-  background: var(--surface-soft);
-  color: var(--accent);
+  background: var(--surface-solid);
+  color: var(--interaction-hover-text);
   border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: var(--space-6);
-  box-shadow: none;
+  box-shadow: var(--shadow-xs);
 }
 
 .error-icon-wrap .ui-icon {
@@ -615,7 +615,7 @@ body.route-loading main {
 }
 
 .network-status-banner--online .network-status-banner__icon {
-  color: var(--accent);
+  color: var(--color-success);
 }
 
 .network-status-banner__text {

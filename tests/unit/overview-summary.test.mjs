@@ -47,7 +47,19 @@ test("the checklist names tests, the English test and documents, and drops a doc
     "Two teacher recommendations",
     "Portfolio of work",
   ]);
-  assert.ok(items.every(item => item.mark === "todo"));
+  // A recommendation is never listed as something still to prepare, and the condition that applies to it is not hidden.
+  assert.deepEqual(items.map(item => item.mark), ["todo", "recommended", "todo", "todo", "todo"]);
+});
+
+test("a recommended English test shows the applicant's own result instead of a test still to prepare", () => {
+  const english = fact("english", "language_tests", { presence: "strongly_recommended", minima_and_recommendations: [{ exam: "IELTS Academic", minimum: 7, recommended: 7.5 }] },
+    { conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)" }] });
+  const profile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] };
+  const item = checklistItems(resolvedWith([english]), profile).find(row => row.factId === "english");
+  assert.equal(item.mark, "recommended");
+  assert.match(item.text, /IELTS Academic 7\.0.*You have: IELTS Academic 6\.5/);
+  // Without a profile the published wording stays.
+  assert.equal(checklistItems(resolvedWith([english]))[0].mark, "recommended");
 });
 
 test("checklist marks follow the applicant's evidence: met, to add, or below a published minimum", () => {
@@ -86,9 +98,9 @@ test("the date card leads with the next date and its countdown, and says that th
   const resolved = resolvedWith([recurring()], [], { fact_groups: { deadlines: ["rounds"] } });
   const card = deadlineCard(deadlineFact(resolved, NOW));
   // The count and its unit are joined by a no-break space so they never wrap apart.
-  assert.equal(card.headline, "By January 4, 2027 · in 52 days");
-  assert.equal(card.lines[0], "Regular Action · regular application");
-  assert.match(card.lines[1], /^Early Action · early application \(November 1\) has already closed\. The university repeats this date every year/);
+  assert.match(card.headline, /^By January 4 \(the university does not state the year\) · in about\s+52\s+days$/);
+  assert.equal(card.lines[0], "Regular application (Regular Action)");
+  assert.match(card.lines[1], /^Early application \(Early Action\), November 1: this deadline has passed\. The university repeats this date every year/);
   // A date with a year and a nearer deadline within 30 days is flagged.
   const soon = deadlineCard(deadlineFact(resolvedWith([recurring()], [], { fact_groups: { deadlines: ["rounds"] } }), new Date(2026, 11, 20, 12, 0)));
   assert.equal(soon.tone, "warning");
@@ -102,7 +114,7 @@ test("the cost card states the price before aid, names tuition-only prices and c
   const resolved = { selected_costs: { annual_total: quote() } };
   const card = costCard(costFact(resolved, 50000), "MIT meets full demonstrated need");
   assert.match(card.headline, /^\$92,760 a year$/);
-  assert.match(card.lines[0], /^Before financial aid\. Source period: 2026.2027$/);
+  assert.match(card.lines[0], /^Before financial aid\. Prices: 2026.2027$/);
   const calculated = costCard(costFact({ selected_costs: { annual_total: quote({ calculation: "tuition_plus_living_range", living_period: "9 months" }) } }, 50000));
   assert.equal(calculated.lines[1], "Calculated reference: tuition plus a living-cost estimate.");
   assert.deepEqual(card.aside.map(line => line.tone), ["danger", undefined]);
@@ -242,13 +254,15 @@ test("official admission statistics name who was counted, the intake and the sou
   const mit = selectivityItem({ scope: "first_year_undergraduate", measure: "admitted", entry_year: 2025, applicants: 29281, admitted: 1334, rate_percent: 4.6,
     international: { applicants: 6926, admitted: 136 }, source: "MIT Admissions Statistics", source_url: "https://mitadmissions.org/apply/process/stats/", checked_at: "2026-11-13" }, source);
   assert.equal(mit.text, "About 4.6% of first-year applicants are admitted");
-  assert.deepEqual(mit.details, ["1,334 admitted out of 29,281 applicants", "International applicants: 136 of 6,926 admitted (about 2%)"]);
+  assert.deepEqual(mit.details, ["1,334 admitted out of 29,281 applicants", "International applicants: 136 of 6,926 admitted (about 2%)",
+    "This is the share of all applicants, not your personal chance."]);
   assert.equal(mit.source.label, "MIT Admissions Statistics · 2025 intake");
   assert.equal(mit.source.checkedAt, "2026-11-13");
   assert.match(renderSummary([{ id: "people", items: [mit], headline: "" }]), /Last checked: 2026.11-13/);
   const imperial = selectivityItem({ scope: "undergraduate_applications", measure: "offers", entry_year: 2025, applicants: 33923, admitted: 8143, rate_percent: 24 }, source);
   assert.equal(imperial.text, "About 24% of undergraduate applications receive an offer");
-  assert.match(imperial.details.at(-1), /not the share of people admitted/);
+  assert.match(imperial.details.at(-2), /not the share of people admitted/);
+  assert.match(imperial.details.at(-1), /not your personal chance/);
   const nu = selectivityItem({ scope: "undergraduate_and_foundation_pool", measure: "admitted", applicants: 6911, admitted: 1480, rate_percent: 21,
     preparation: { name: "NUFYP", admitted: 671, rate_percent: 10 } }, source);
   assert.equal(nu.text, "About 21% of undergraduate applicants are admitted");

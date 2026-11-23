@@ -56,10 +56,14 @@ body[data-page="universities"] {
 
 .u-page {
   background: var(--bg);
-  padding: var(--space-4) 0 var(--space-16);
+  padding: var(--space-5) 0 var(--space-16);
 }
 
 .u-section-bar {
+  --u-toolbar-height: 36px;
+  --u-toolbar-radius: var(--radius-md);
+  --u-toolbar-pad: var(--space-3);
+  container: catalog-toolbar / inline-size;
   max-width: 100%;
   box-sizing: border-box;
   margin: 0 auto var(--space-5);
@@ -68,32 +72,52 @@ body[data-page="universities"] {
   align-items: center;
 }
 
-/* Count and level filter sit together on the left; view and compare actions on the right. */
+/* Result count sits on the left; recent, view, and compare actions sit on the right. */
 .u-section-meta {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  align-items: safe center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
   width: 100%;
-  margin-left: 0;
-  padding-bottom: 0;
-  align-self: flex-end;
+  min-width: 0;
 }
 
 .u-section-actions {
   display: inline-flex;
-  align-items: center;
+  align-items: safe center;
   justify-content: flex-end;
   gap: var(--space-2);
   min-width: 0;
   margin-left: auto;
 }
 
+.u-found {
+  white-space: nowrap;
+  min-width: 0;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-muted);
+  line-height: var(--leading-tight);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.u-found > span {
+  text-box: trim-both cap alphabetic;
+}
+
+.u-found-count {
+  color: var(--text);
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
 .u-compare-mode-btn {
-  height: 36px;
-  min-height: 36px;
+  min-block-size: var(--u-toolbar-height);
   box-sizing: border-box;
-  border-radius: var(--radius-md);
+  border-radius: var(--u-toolbar-radius);
   font: inherit;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
@@ -102,101 +126,36 @@ body[data-page="universities"] {
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-standard);
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: 0 var(--space-4);
+  padding: 0 var(--u-toolbar-pad);
   background: var(--surface-solid);
   color: var(--text-muted);
   white-space: nowrap;
   box-shadow: var(--shadow-xs);
+  flex-shrink: 0;
 }
 
 .u-compare-mode-btn [data-heroicon],
 .u-compare-mode-btn .ui-icon {
   width: 18px;
   height: 18px;
+  flex: 0 0 auto;
 }
 
-.u-compare-mode-btn.is-active {
+.u-compare-mode-btn.is-active,
+.u-compare-mode-btn[aria-pressed="true"] {
   background: var(--accent-active-surface);
-  color: var(--accent);
+  color: var(--interaction-active-text);
   box-shadow: var(--shadow-xs);
 }
 
 .u-compare-mode-btn #compareModeLabel {
   display: block;
-}
-
-.u-section-meta .u-found {
-  white-space: nowrap;
-  font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-muted);
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-1);
-}
-
-.u-section-meta .u-found-count {
-  font-weight: var(--font-weight-medium);
-  color: var(--text);
-  font-size: var(--text-md);
-}
-
-/* Same 36px height as the view toggles and compare button, so the bar stays one compact row. */
-.catalog-level-filter {
-  width: min(100%, 14rem);
-  min-width: 0;
-}
-
-.catalog-level-filter .custom-select-trigger {
-  min-height: 36px;
-  height: 36px;
-  padding-block: 0;
-  background: var(--surface-solid);
-}
-
-@media (max-width: 1024px) {
-  .u-section-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-4);
-  }
-
-  .u-section-meta {
-    width: 100%;
-    justify-content: space-between;
-    margin-left: 0;
-    gap: var(--space-4);
-  }
-}
-
-@media (max-width: 768px) {
-  .u-section-bar {
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    padding-bottom: var(--space-2);
-  }
-}
-
-@media (max-width: 480px) {
-  .u-section-actions {
-    width: auto;
-    flex-wrap: nowrap;
-    gap: var(--space-2);
-    flex-shrink: 0;
-  }
-
-  .u-section-meta .u-found {
-    min-width: 0;
-    white-space: nowrap;
-  }
+  text-box: trim-both cap alphabetic;
 }
 
 .u-layout[hidden],
@@ -217,12 +176,6 @@ body[data-page="universities"] {
 
 .u-sidebar {
   min-width: 0;
-  align-self: start;
-  position: sticky;
-  top: 90px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
 }
 
 .u-filter-card {
@@ -248,7 +201,7 @@ body[data-page="universities"] {
 .u-filter-icon {
   width: 22px;
   height: 22px;
-  color: var(--accent);
+  color: var(--interaction-hover-text);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -424,8 +377,8 @@ body[data-page="universities"] {
 }
 
 .u-info:focus-visible {
-  background: var(--accent-panel);
-  color: var(--accent);
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .u-tooltip {
@@ -482,24 +435,6 @@ body[data-page="universities"] {
   align-self: start;
   --u-loading-top: 86px;
   overflow-anchor: none;
-}
-
-.u-found {
-  white-space: nowrap;
-  font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-muted);
-  line-height: 1.4;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.u-found-count {
-  color: var(--text);
-  font-weight: var(--font-weight-medium);
-  font-variant-numeric: tabular-nums;
-  font-size: var(--text-md);
 }
 
 :root {
@@ -772,14 +707,13 @@ body[data-page="universities"] {
   align-items: center;
   background: var(--surface-solid);
   color: var(--text);
-  border-radius: var(--radius-md);
+  border-radius: var(--u-toolbar-radius);
   padding: 0;
   gap: 0;
   box-shadow: var(--shadow-xs);
   flex-shrink: 0;
-  height: 36px;
+  min-block-size: var(--u-toolbar-height);
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .view-toggles[hidden] {
@@ -789,8 +723,8 @@ body[data-page="universities"] {
 .view-btn {
   background: transparent;
   border-radius: 0;
-  width: 36px;
-  height: 100%;
+  min-inline-size: var(--space-10);
+  min-block-size: var(--u-toolbar-height);
   padding: 0;
   cursor: pointer;
   color: var(--text-muted);
@@ -805,28 +739,33 @@ body[data-page="universities"] {
 }
 
 .view-btn:first-child {
-  border-top-left-radius: var(--radius-md);
-  border-bottom-left-radius: var(--radius-md);
+  border-start-start-radius: var(--u-toolbar-radius);
+  border-end-start-radius: var(--u-toolbar-radius);
 }
 
 .view-btn:last-child {
-  border-top-right-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
+  border-start-end-radius: var(--u-toolbar-radius);
+  border-end-end-radius: var(--u-toolbar-radius);
+}
+
+.view-btn:focus-visible {
+  position: relative;
+  z-index: 1;
 }
 
 .view-btn .ui-icon,
 .view-btn [data-heroicon] {
-  width: 18px;
-  height: 18px;
+  width: var(--space-5);
+  height: var(--space-5);
 }
 
-.view-btn.active {
+.view-btn.active,
+.view-btn[aria-pressed="true"] {
   background: var(--accent-active-surface);
   color: var(--interaction-active-text);
   box-shadow: none;
 }
 
-.view-btn:focus-visible,
 .page-btn:focus-visible,
 .u-reset:focus-visible {
   outline: none;
@@ -867,6 +806,43 @@ body[data-page="universities"] {
   line-height: 1.5;
 }
 
+.u-state-card__filters {
+  margin-top: var(--space-2);
+  color: var(--text);
+}
+
+.u-state-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.u-state-card__action {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-base);
+  background: var(--surface-soft);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.u-state-card__action:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+@media (hover: hover) {
+  .u-state-card__action:hover {
+    background: var(--accent-panel);
+  }
+}
+
 .u-unifit-warning {
   display: flex;
   flex-wrap: wrap;
@@ -876,7 +852,8 @@ body[data-page="universities"] {
   padding: var(--space-3) var(--space-4);
   margin-bottom: var(--space-5);
   border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-card);
   color: var(--text-muted);
   font-size: var(--text-sm);
   line-height: 1.4;
@@ -1005,14 +982,14 @@ body[data-page="universities"] {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :is(.u-compare-mode-btn:not(.is-active), .u-reset, .view-btn:not(.active)):hover {
+  :is(.u-compare-mode-btn:not(.is-active):not([aria-pressed="true"]), .u-reset, .view-btn:not(.active):not([aria-pressed="true"])):hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
   :is(.u-filter-close, .u-info):hover {
-    background: var(--accent-panel);
-    color: var(--accent);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .u-saved-filter__btn:not(.is-active):hover {
@@ -1020,7 +997,8 @@ body[data-page="universities"] {
   }
 
   .u-unifit-warning__link:hover {
-    background: var(--surface-solid);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .u-unifit-warning__dismiss:hover {

@@ -15,8 +15,9 @@ import { navigateToAppRoute, routeCompareSelection, routeUniversityDetail } from
 import { formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource } from "../_shared.js";
 import { compareCampusHtml, compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
+import { readForSinglePublishedCycle } from "../university/admissions-cycle.js";
 import { admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
-import { costFact, deadlineFact, fundingFact, requirementsFact } from "../university/admissions-key-facts.js";
+import { costFact, deadlineFact, fundingFact, MARK_ICONS, requirementsFact } from "../university/admissions-key-facts.js";
 import { isEvidenceReviewed, isPublished } from "../university/admissions-status.js";
 import { billingPeriodLabel } from "../university/admissions-presentation.js";
 import { translateAdmissionText } from "../../university-translations.js";
@@ -24,8 +25,12 @@ import { checklistItems, costCard, deadlineCard, firstYearSharedRoute, peopleIte
 
 const label = (key) => t(`universities.compare.reviewed.${key}`);
 const catalogLabel = (key) => t(`university.admissions.catalog.${key}`);
-const MARK_ICONS = { met: "check-circle", below: "exclamation-triangle" };
 const PICKER_LEVELS = ["preparation", "undergraduate", "masters", "doctoral", "professional"];
+
+// One column read. A path that publishes a single entry cycle is read for it, as on the university page, so its minimums
+// are compared with the reader's results; the cycle is used only for this read and is never saved.
+const readColumnContext = async (id, context, signal) => (await readForSinglePublishedCycle(
+  (next) => fetchCompareAdmissionContext(id, next, loadProfileForApi(), { apiBase: API_BASE, signal }), context)).resolved;
 
 const isMismatched = (resolved) => Object.values(resolved?.context_applicability || {}).includes("mismatched");
 const hasSelection = (context) => Boolean(context?.study_option_id || context?.application_route_id);
@@ -177,7 +182,7 @@ function admissionRows(columns, profileExamIds) {
       keepEmpty: true,
       value: (column) => {
         if (!readsFacts(column)) return scopePlaceholder(column);
-        const items = checklistItems(column.resolved);
+        const items = checklistItems(column.resolved, loadProfileForApi());
         const link = { href: detailHref(column, "tab-admission"), label: t("university.ux2.link.needs") };
         return items.length ? { items, link } : { main: t("university.ux2.needs.empty"), kind: "text", link };
       },
@@ -541,12 +546,12 @@ function openPicker({ column, trigger, onApply }) {
       study_level: option.levels.length === 1 ? option.levels[0] : picker.level || column.context.study_level || "",
     };
     try {
-      let resolved = await fetchCompareAdmissionContext(column.id, context, loadProfileForApi(), { apiBase: API_BASE });
+      let resolved = await readColumnContext(column.id, context);
       if (!dialog.open) return;
       const sole = soleCompatibleRoute(resolved, context);
       if (sole) {
         context.application_route_id = sole.id;
-        resolved = await fetchCompareAdmissionContext(column.id, context, loadProfileForApi(), { apiBase: API_BASE });
+        resolved = await readColumnContext(column.id, context);
         if (!dialog.open) return;
       }
       if (!resolved.selected_route && resolved.available_routes?.length > 1 && !isMismatched(resolved)) {
@@ -572,7 +577,7 @@ function openPicker({ column, trigger, onApply }) {
     picker.step = "applying";
     render();
     try {
-      const resolved = await fetchCompareAdmissionContext(column.id, context, loadProfileForApi(), { apiBase: API_BASE });
+      const resolved = await readColumnContext(column.id, context);
       if (!dialog.open) return;
       onApply(context, resolved);
       dialog.close();
@@ -663,7 +668,7 @@ export function mountReviewedComparison(container, universities, photos) {
         column.routesLoaded = true;
       }
       const context = readableContext(column);
-      const resolved = context ? await fetchCompareAdmissionContext(column.id, context, loadProfileForApi(), { apiBase: API_BASE, signal: request.signal }) : null;
+      const resolved = context ? await readColumnContext(column.id, context, request.signal) : null;
       if (request !== column.request || disposed) return;
       column.resolved = resolved;
       column.status = "ready";

@@ -25,9 +25,11 @@
   flex-direction: column;
   gap: var(--space-2);
   min-width: 0;
-  padding: var(--space-3);
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--line-faint);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .finance-award-head {
@@ -52,7 +54,8 @@
   flex: 0 0 auto;
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
-  background: var(--surface-solid);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text-muted);
   font-size: var(--text-xs);
   line-height: var(--leading-tight);
@@ -677,7 +680,7 @@
   height: var(--space-2);
   border-radius: var(--radius-full);
   overflow: hidden;
-  background: var(--surface-soft);
+  background: var(--surface-solid);
   gap: 0;
 }
 
@@ -754,28 +757,26 @@
 }
 
 .roi-context {
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm, 8px);
+  padding: 0 0 var(--space-3);
+  border-radius: 0;
+  border-bottom: 1px solid var(--line-faint);
   font-size: var(--text-sm);
-  line-height: 1.45;
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-xs);
-  color: var(--text);
-  margin-bottom: var(--space-3);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-weight-medium);
+  background: transparent;
+  box-shadow: none;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
 }
 
 .roi-context--matched {
-  background: var(--surface-solid);
+  background: transparent;
   color: var(--text);
 }
 
-.roi-context--missing {
-  background: var(--surface-solid);
-  color: var(--text);
-}
-
+.roi-context--missing,
 .roi-context--neutral {
-  background: var(--surface-solid);
+  background: transparent;
   color: var(--text-muted);
 }
 
@@ -783,10 +784,17 @@
 .finance-policy-card {
   display: grid;
   gap: var(--space-4);
-  margin: 0 0 var(--space-4);
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
-  background: var(--surface-soft);
+  margin: 0 0 var(--space-6);
+  padding: 0 0 var(--space-6);
+  border-radius: 0;
+  border-bottom: 1px solid var(--line-faint);
+  background: transparent;
+}
+
+.finance-policy-card:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .finance-policy-head {
@@ -813,10 +821,10 @@
   justify-content: space-between;
   gap: var(--space-4);
   flex-wrap: wrap;
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-micro);
+  box-shadow: none;
 }
 
 .finance-fee-status-left {
@@ -867,26 +875,28 @@
   font-weight: var(--font-weight-semibold);
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
-  background: var(--surface-soft);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text);
 }
 
 .finance-aid-badge--positive {
   background: var(--color-success-bg);
   color: var(--color-success);
+  box-shadow: none;
 }
 
 .finance-aid-description-box {
-  background: var(--surface-solid);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-micro);
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .finance-aid-description-box p {
   margin: 0;
-  font-size: var(--text-xs);
-  color: var(--text);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
   line-height: var(--leading-normal);
 }
 
@@ -916,9 +926,9 @@
   flex-direction: column;
   gap: var(--space-1);
   padding: var(--space-3);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-micro);
+  box-shadow: none;
 }
 
 .finance-threshold-label {
@@ -929,7 +939,7 @@
 
 .finance-threshold-value {
   font-size: var(--text-sm);
-  color: var(--accent);
+  color: var(--text);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -945,9 +955,9 @@
   flex-direction: column;
   gap: var(--space-1);
   padding: var(--space-3) var(--space-4);
-  background: var(--surface-solid);
+  background: var(--surface-soft);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-micro);
+  box-shadow: none;
 }
 
 .finance-phd-title {

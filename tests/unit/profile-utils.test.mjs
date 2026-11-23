@@ -2,6 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { FALLBACK_RATES } from "../../frontend/javascript/currency.js";
+import { reinterpretBudgetCurrency } from "../../frontend/javascript/components/profile/budget-currency.js";
 
 const {
   GPA_MAX_CHARS,
@@ -171,4 +172,14 @@ test("a budget keeps the amount and currency it was entered in when the display 
   assert.deepEqual(applyBudgetEntry(entered, "25000", "USD"), { budget: "25000", budgetCurrency: "USD" });
   assert.deepEqual(applyBudgetEntry(entered, "", "USD"), { budget: "", budgetCurrency: "USD" });
   assert.equal(budgetInCurrency({ budget: "", budgetCurrency: "KZT" }, "USD"), "");
+});
+
+test("picking a currency next to the budget field keeps the typed number and reads it in that currency", () => {
+  const saved = { budget: "10000000", budgetCurrency: "KZT", gpa: "4.5" };
+  assert.deepEqual(reinterpretBudgetCurrency(saved, "45 000", "gbp"), { ...saved, budget: "45000", budgetCurrency: "GBP" });
+  assert.deepEqual(reinterpretBudgetCurrency(saved, "", "USD"), { ...saved, budget: "", budgetCurrency: "USD" });
+  // Not a plain whole number: the profile stays as it was and validation reports the field.
+  assert.equal(reinterpretBudgetCurrency(saved, "12.5", "USD"), saved);
+  assert.equal(reinterpretBudgetCurrency(saved, "100", ""), saved);
+  assert.equal(budgetInCurrency(reinterpretBudgetCurrency(saved, "45000", "GBP"), "GBP"), 45000);
 });

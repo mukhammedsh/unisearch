@@ -17,8 +17,8 @@ test.describe("Profile Budget Multi-Currency", () => {
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-    const budgetUnit = page.locator("#profileBudgetUnit");
-    await expect(budgetUnit).toContainText("USD / year");
+    const budgetCurrency = page.locator("#profileBudgetCurrency");
+    await expect(budgetCurrency).toHaveValue("USD");
 
     const budgetInput = page.locator(selectors.budgetInput);
     await expect(budgetInput).toBeVisible();
@@ -59,7 +59,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-    await expect(budgetUnit).toContainText("KZT / year");
+    await expect(budgetCurrency).toHaveValue("KZT");
 
     // Stored 20,000 USD converted to KZT (~9,000,000 - 10,000,000 KZT)
     const convertedBudgetVal = await budgetInput.inputValue();
@@ -98,5 +98,22 @@ test.describe("Profile Budget Multi-Currency", () => {
     await budgetInput.dispatchEvent("input");
     await page.click(selectors.saveProfileBtn);
     await expect(budgetError).not.toBeVisible();
+  });
+
+  test("choosing the budget currency after typing the amount keeps the number", async ({ page }) => {
+    await page.goto("/index.html");
+    await page.click(selectors.profileBtn);
+    await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+    const budgetInput = page.locator(selectors.budgetInput);
+    await budgetInput.fill("45000");
+    await budgetInput.dispatchEvent("input");
+    await setNativeSelect(page, "profileBudgetCurrency", "GBP");
+    await expect(page.locator("#profileBudgetCurrency")).toHaveValue("GBP");
+    await expect(budgetInput).toHaveValue("45000");
+    await page.click(selectors.saveProfileBtn);
+    const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile")));
+    expect(saved.budgetCurrency).toBe("GBP");
+    expect(Number(saved.budget)).toBe(45000);
+    await expect(page.locator("#settingPreferredCurrency")).toHaveValue("GBP");
   });
 });

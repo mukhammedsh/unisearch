@@ -52,10 +52,11 @@ import {
 import {
   showUniversitiesTour,
 } from "./universities/tour-modals.js";
+import { describeActiveFilters, buildEmptyStateModel, renderEmptyStateCard } from "./universities/empty-state.js";
+import { buildFilterResetPatch } from "./universities/filter-reset.js";
 import {
   translateUniversityName,
   translateWord,
-  translateFactSource,
   translateProgramName,
 } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
@@ -70,8 +71,6 @@ import {
   trUniversityName,
   unknownFieldText,
   textOrUnknown,
-  moneyOrUnknown,
-  splitPriceDisplay,
   normalizeSortMode,
   fundingPreferenceToQueryValue,
   uniThumbnailSrc,
@@ -90,15 +89,18 @@ import {
   fetchUniversityDetailCached,
   getDetailCacheEntry,
   toFiniteNumber,
-  resolveUniversityCardPrice,
-  rankingStatusLabel,
 } from './_shared.js';
 
-import { billingPeriodLabel } from "./university/admissions-presentation.js";
+import {
+  universityCardPriceInfo,
+  renderUniversityCardCosts,
+  buildRankSourceTooltip,
+} from "./universities/card-tooltips.js";
 import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
   budgetTooltip,
   closePreferenceLabels,
+  exactBudgetMoney,
   describeRankingProfile,
   legendEntries,
   missingExamNames,
@@ -112,7 +114,8 @@ const tooltipMoney = (usd) => {
     const amount = convert(Number(usd), "USD", code);
     return Number.isFinite(amount) ? formatMoney(amount, code) : formatMoney(Number(usd), "USD");
 };
-const tooltipHelpers = { money: tooltipMoney, tr: t, trf: tFormat };
+const tooltipBudgetMoney = (usd) => exactBudgetMoney(usd, loadProfile(), { convert, formatMoney, fallback: tooltipMoney });
+const tooltipHelpers = { money: tooltipMoney, budgetMoney: tooltipBudgetMoney, tr: t, trf: tFormat };
 const cardExamLabel = (id) => getExamDisplayName(id, { locale: getCurrentLanguage() });
 const preferenceTooltip = (match, fallbackKey) => {
     const labels = closePreferenceLabels(match).map((label) => t(`universities.tradeoff.${label}`).toLocaleLowerCase());
@@ -173,109 +176,7 @@ export function reviewedCardIndicators(match, budget) {
     return indicators.sort((a, b) => a.priority - b.priority);
 }
 
-export function universityCardPriceInfo(university, basis = "annual_total") {
-    const quote = university?.catalog_costs?.[basis];
-    const minimum = toFiniteNumber(quote?.min);
-    const maximum = toFiniteNumber(quote?.max);
-    const currency = String(quote?.currency || "").trim().toUpperCase();
-    if (minimum !== null && maximum !== null && minimum >= 0 && maximum >= minimum && currency) {
-        return { ...quote, amount: minimum, currency, amountUSD: convert(minimum, currency, "USD"), min: minimum, max: maximum, basis };
-    }
-    if (basis === "tuition" || university?.admissions_catalog?.availability === "reviewed") {
-        return { amount: null, currency: "", amountUSD: null };
-    }
-    return resolveUniversityCardPrice(university);
-}
-
-export function renderUniversityCardCosts(university, basis = "annual_total", scope = "catalog") {
-    let price = universityCardPriceInfo(university, basis);
-    if (basis === "annual_total" && price.amount === null && university?.admissions_catalog?.availability === "reviewed") {
-        const tuition = universityCardPriceInfo(university, "tuition");
-        if (tuition.amount !== null) price = tuition;
-    }
-    const known = price.amount !== null && Number.isFinite(price.amount);
-    const range = known && price.max > price.min;
-    const reference = known && (university?.catalog_costs?.reference || price.cycle_status === "dated_reference"
-        || price.calculation === "tuition_plus_living_range");
-    const money = value => splitPriceDisplay(moneyOrUnknown(value, "placeholder.field.cost", "Cost", price.currency, {
-        presentation: "summary", locale: { eng: "en-US", rus: "ru-RU", kaz: "kk-KZ" }[getCurrentLanguage()] || "en-US",
-    }));
-    const minimum = known ? money(range ? price.min : price.amount) : { primary: t("universities.cost.price_unavailable"), secondary: "" };
-    const maximum = range ? money(price.max) : minimum;
-    const primary = range ? `${minimum.primary} – ${maximum.primary.replace(/^≈ /, "")}` : minimum.primary;
-    const secondary = minimum.secondary
-        ? range ? `(${minimum.secondary.slice(1, -1)} – ${maximum.secondary.slice(1, -1)})` : minimum.secondary
-        : "";
-    const priceBasis = price.basis || basis;
-    const title = t(`universities.cost.${priceBasis}`);
-    const showsTuitionReference = basis === "annual_total" && priceBasis === "tuition";
-    const entry = String(price.period || "").match(/^(20\d{2}) entry$/);
-    const period = entry ? tFormat("universities.cost.entry", { year: entry[1] })
-        : price.period === "Whole program" ? billingPeriodLabel("whole_program") : price.period === "Year not stated" ? t("universities.cost.cycle_unspecified") : price.period;
-    const levels = Array.isArray(price.levels) ? price.levels : price.study_level ? [price.study_level] : [];
-    const feeStatuses = Array.isArray(price.fee_statuses) ? price.fee_statuses : [];
-    const cycleStatus = price.cycle_status === "dated_reference"
-        ? t(university?.catalog_costs?.reference ? "universities.cost.cycle_unconfirmed" : "universities.cost.dated_reference")
-        : price.cycle_status === "unspecified" ? t("universities.cost.cycle_unspecified") : "";
-    const context = [
-        levels.map(level => t(`university.admissions.catalog.level.${level}`)).join(", "),
-        period,
-        feeStatuses.join(", "),
-        (price.campuses || []).join(", "),
-        cycleStatus,
-        price.fee_status_match === "unknown" ? t("universities.cost.fee_status_unknown") : "",
-        price.filter_match === "partial" ? t("universities.cost.filter_partial") : "",
-    ].filter(Boolean).join(" · ");
-    const tooltipText = price.calculation === "tuition_plus_living_range"
-        ? t("universities.cost.tooltip_living_range")
-        : range ? t("universities.cost.tooltip_range") : t("universities.cost.tooltip_single");
-    const filterText = Array.isArray(price.amounts) || Array.isArray(price.intervals)
-        ? t("universities.cost.tooltip_filter_variants")
-        : t("universities.cost.tooltip_filter_reference");
-    const livingYear = String(price.living_reference || "").match(/\b20\d{2}\b/)?.[0];
-    const exclusions = priceBasis === "annual_total" ? university?.catalog_costs?.annual_total?.exclusions || [] : [];
-    const note = [
-        reference ? t("universities.cost.reference") : known ? t("universities.cost.before_aid") : "",
-        showsTuitionReference ? t("universities.cost.full_budget_unavailable") : "",
-        priceBasis === "tuition" ? t("universities.cost.tuition_scope_note") : "",
-        feeStatuses.length > 1 ? t("universities.cost.fee_scope") : "",
-        ...exclusions.map(key => t(`universities.cost.exclusion.${key}`)),
-    ].filter(Boolean).join(" · ");
-    const assessment = university?.matchData?.budgetAssessment;
-    const budgetKey = { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment?.status];
-    const budgetNote = budgetKey
-        ? [
-            t(budgetKey === "uncertain" ? "universities.cost.budget_uncertain_range"
-                : `universities.cost.budget_${budgetKey}_${assessment.evidence === "applicable" ? "applicable" : "reference"}`),
-            assessment.basis === "tuition" ? t("universities.cost.budget_tuition_only") : "",
-        ].filter(Boolean).join(" · ")
-        : "";
-    if (!known) {
-        return `<div class="uni-price uni-price--unknown"><span class="uni-price-val">${escapeHtml(note || t("universities.cost.unavailable"))}</span>${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}</div>`;
-    }
-    const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
-    const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
-    const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
-    // Qualifiers of the price (what it covers, the second currency) form one quiet line below it,
-    // so every card shows its price on the same first line.
-    const metaHtml = showsTuitionReference || secondary
-        ? `<span class="uni-cost-meta">${showsTuitionReference ? `<span class="uni-cost-meta__label">${escapeHtml(title)}</span>` : ""}${secondary ? `<span class="uni-cost-secondary">${escapeHtml(secondary)}</span>` : ""}</span>`
-        : "";
-    return `<span class="ui-tooltip-wrap uni-cost-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-cost-trigger uni-price" data-cost-basis="${escapeHtmlAttr(priceBasis)}" aria-label="${escapeHtmlAttr(`${t("universities.cost.tooltip_open")}: ${priceLabel}`)}" aria-describedby="${escapeHtmlAttr(tooltipId)}" aria-expanded="false">
-            <span class="uni-price-line"><span class="uni-price-val">${escapeHtml(primary)}</span>&nbsp;<span class="uni-price-tail"><span class="uni-price-period">${escapeHtml(billingPeriod)}</span>${heroIcon("information-circle", "uni-cost-tooltip__icon", { "stroke-width": 2 })}</span></span>
-        </button>
-        <span id="${escapeHtmlAttr(tooltipId)}" class="ui-tooltip-bubble uni-cost-tooltip__content" role="tooltip">
-            <strong class="ui-tooltip-title">${escapeHtml(t("universities.cost.tooltip_title"))} · ${escapeHtml(title)}${reference ? ` · ${escapeHtml(t("universities.cost.reference_short"))}` : ""}</strong>
-            ${context ? `<span class="uni-cost-context" data-cost-context>${escapeHtml(context)}</span>` : ""}
-            <span class="ui-tooltip-text">${escapeHtml(tooltipText)}</span>
-            <span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(filterText)}</span>
-            ${note ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(note)}</span>` : ""}
-            ${livingYear ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(tFormat("universities.cost.tooltip_living_year", { year: livingYear }))}</span>` : ""}
-            ${budgetNote ? `<span class="uni-cost-context" data-budget-assessment>${escapeHtml(budgetNote)}</span>` : ""}
-        </span>
-    </span>${metaHtml}`;
-}
+export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip };
 
 let __universitiesProfileUpdatedHandler = null;
 let __universitiesLanguageChangedHandler = null;
@@ -289,7 +190,6 @@ let __universitiesBeforeunloadHandler = null;
 let __universitiesCurrencyChangedHandler = null;
 let __universitiesRatesUpdatedHandler = null;
 let __universitiesMobileFilterKeydownHandler = null;
-let __universitiesRecentRelocationHandler = null;
 let __universitiesResizeHandler = null;
 let __universitiesResizeObserver = null;
 let __universitiesOnlineReconnectHandler = null;
@@ -353,10 +253,6 @@ export function disposeUniversitiesPage() {
     if (__universitiesMobileFilterKeydownHandler) {
         document.removeEventListener("keydown", __universitiesMobileFilterKeydownHandler);
         __universitiesMobileFilterKeydownHandler = null;
-    }
-    if (__universitiesRecentRelocationHandler) {
-        window.removeEventListener("resize", __universitiesRecentRelocationHandler);
-        __universitiesRecentRelocationHandler = null;
     }
     if (__universitiesResizeHandler) {
         window.removeEventListener("resize", __universitiesResizeHandler);
@@ -861,10 +757,17 @@ export function initUniversitiesPage() {
     };
 
     const syncViewModeControls = () => {
-        [el.btnList, el.btnMap].forEach((button) => {
-            if (!button) return;
-            button.disabled = !viewModesReady;
-        });
+        const isMap = state.viewMode === "map";
+        if (el.btnList) {
+            el.btnList.disabled = !viewModesReady;
+            el.btnList.classList.toggle("active", !isMap);
+            el.btnList.setAttribute("aria-pressed", !isMap ? "true" : "false");
+        }
+        if (el.btnMap) {
+            el.btnMap.disabled = !viewModesReady;
+            el.btnMap.classList.toggle("active", isMap);
+            el.btnMap.setAttribute("aria-pressed", isMap ? "true" : "false");
+        }
     };
 
     syncViewModeControls();
@@ -1239,10 +1142,17 @@ export function initUniversitiesPage() {
         });
     };
 
-    const renderRecentlyViewedBar = () => {
+    const renderRecentlyViewedBar = ({ keepOpen = false } = {}) => {
         if (!el.recentlyViewedBar) return;
+        const existingPopover = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
+        const wasOpen = Boolean(
+            keepOpen
+            || existingPopover?.matches?.(":popover-open")
+            || existingPopover?.classList.contains("is-open")
+        );
         const recentIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).slice(0, 6);
         if (!recentIds.length) {
+            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
@@ -1252,52 +1162,109 @@ export function initUniversitiesPage() {
             .map((id) => ({ id, label: getUniversityDisplayNameById(id) }))
             .filter((row) => row.label);
         if (!rows.length) {
+            if (existingPopover?.matches?.(":popover-open")) existingPopover.hidePopover?.();
             el.recentlyViewedBar.hidden = true;
             el.recentlyViewedBar.replaceChildren();
             scheduleSyncWorkspaceDepth();
             return;
         }
+        const titleText = t("universities.recent.title", "Recently viewed");
+        const clearAllText = t("universities.recent.clear_all", "Clear all");
         el.recentlyViewedBar.hidden = false;
         el.recentlyViewedBar.innerHTML = `
-            <div class="u-recent__head">
-                <span class="u-recent__label">${escapeHtml(t("universities.recent.title", "Recently viewed"))}</span>
-                <button class="u-recent__clear" type="button" data-action="clear-recent">
-                    ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-                    <span>${escapeHtml(t("universities.recent.clear_all", "Clear all"))}</span>
-                </button>
-            </div>
-            <div class="u-recent__items">
-                ${rows.map((row) => {
-                    const removeLabel = tFormat(
-                        "universities.recent.remove",
-                        { university: row.label },
-                        `Remove ${row.label} from recently viewed`
-                    );
-                    return `
-                        <span class="u-recent__chip">
-                            <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
-                            <button
-                                class="u-recent__remove"
-                                type="button"
-                                data-action="remove-recent"
-                                data-uni-id="${escapeHtmlAttr(row.id)}"
-                                aria-label="${escapeHtmlAttr(removeLabel)}"
-                                title="${escapeHtmlAttr(removeLabel)}"
-                            >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
-                        </span>
-                    `;
-                }).join("")}
+            <button
+                id="recentlyViewedBtn"
+                class="u-recent-trigger"
+                type="button"
+                popovertarget="recentlyViewedPopover"
+                aria-controls="recentlyViewedPopover"
+                aria-expanded="false"
+                title="${escapeHtmlAttr(titleText)}"
+                aria-label="${escapeHtmlAttr(`${titleText} (${rows.length})`)}"
+            >
+                ${renderInlineIcon("clock", 16, "u-recent-trigger__icon")}
+                <span class="u-recent-trigger__label">${escapeHtml(titleText)}</span>
+                <span class="u-recent-trigger__count" aria-hidden="true">${rows.length}</span>
+                ${renderInlineIcon("chevron-down", 14, "u-recent-trigger__chevron")}
+            </button>
+            <div
+                id="recentlyViewedPopover"
+                class="u-recent-popover"
+                popover="auto"
+                aria-labelledby="recentlyViewedTitle"
+            >
+                <div class="u-recent__head">
+                    <span id="recentlyViewedTitle" class="u-recent__label">${escapeHtml(titleText)}</span>
+                    <button class="u-recent__clear" type="button" data-action="clear-recent">
+                        ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
+                        <span>${escapeHtml(clearAllText)}</span>
+                    </button>
+                </div>
+                <div class="u-recent__items">
+                    ${rows.map((row) => {
+                        const removeLabel = tFormat(
+                            "universities.recent.remove",
+                            { university: row.label },
+                            `Remove ${row.label} from recently viewed`
+                        );
+                        return `
+                            <span class="u-recent__chip">
+                                <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
+                                <button
+                                    class="u-recent__remove"
+                                    type="button"
+                                    data-action="remove-recent"
+                                    data-uni-id="${escapeHtmlAttr(row.id)}"
+                                    aria-label="${escapeHtmlAttr(removeLabel)}"
+                                    title="${escapeHtmlAttr(removeLabel)}"
+                                >${renderInlineIcon("x-mark", 14, "u-recent__remove-icon")}</button>
+                            </span>
+                        `;
+                    }).join("")}
+                </div>
             </div>
         `;
         lockRecentChipWidths(el.recentlyViewedBar);
         scheduleSyncWorkspaceDepth();
+
+        const triggerBtn = el.recentlyViewedBar.querySelector("#recentlyViewedBtn");
+        const popoverEl = el.recentlyViewedBar.querySelector("#recentlyViewedPopover");
+        const supportsNativePopover = Boolean(popoverEl && typeof popoverEl.showPopover === "function");
+        const syncTriggerExpanded = (isOpen) => {
+            triggerBtn?.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            triggerBtn?.classList.toggle("is-active", isOpen);
+        };
+
+        if (supportsNativePopover) {
+            popoverEl.addEventListener("toggle", (event) => {
+                syncTriggerExpanded(event.newState === "open");
+            });
+            if (wasOpen) {
+                try {
+                    popoverEl.showPopover();
+                } catch (err) {
+                    console.warn("Unable to reopen recently viewed popover", err);
+                }
+            }
+        } else if (triggerBtn && popoverEl) {
+            triggerBtn.addEventListener("click", () => {
+                const nextOpen = !popoverEl.classList.contains("is-open");
+                popoverEl.classList.toggle("is-open", nextOpen);
+                syncTriggerExpanded(nextOpen);
+            });
+            if (wasOpen) {
+                popoverEl.classList.add("is-open");
+                syncTriggerExpanded(true);
+            }
+        }
+
         el.recentlyViewedBar.querySelector('[data-action="clear-recent"]')?.addEventListener("click", () => {
             const clearBtn = el.recentlyViewedBar.querySelector('[data-action="clear-recent"]');
             motionPress(clearBtn);
             replayMotion(clearBtn?.querySelector(".u-recent__clear-icon") || clearBtn, "motion-icon-clear", { timeoutMs: 240 });
-            animateElementOut(el.recentlyViewedBar, () => {
+            animateElementOut(popoverEl || el.recentlyViewedBar, () => {
                 writeIdListStorage(RECENT_UNIVERSITIES_KEY, []);
-                renderRecentlyViewedBar();
+                renderRecentlyViewedBar({ keepOpen: false });
             }, { className: "motion-row-exit", timeoutMs: 280 });
         });
         el.recentlyViewedBar.querySelectorAll('[data-action="remove-recent"]').forEach((button) => {
@@ -1312,7 +1279,7 @@ export function initUniversitiesPage() {
                 animateElementOut(chip, () => {
                     const nextIds = readIdListStorage(RECENT_UNIVERSITIES_KEY).filter((id) => id !== uniId);
                     writeIdListStorage(RECENT_UNIVERSITIES_KEY, nextIds);
-                    renderRecentlyViewedBar();
+                    renderRecentlyViewedBar({ keepOpen: nextIds.length > 0 });
                 }, { className: "motion-chip-remove", timeoutMs: 260 });
             });
         });
@@ -1356,16 +1323,10 @@ export function initUniversitiesPage() {
         if (!sidebar || !content) return;
 
         const filterCard = el.filterCard || sidebar.querySelector(".u-filter-card");
-        const recentBar = el.recentlyViewedBar;
 
         let leftColHeight = 0;
         if (filterCard) {
             leftColHeight += filterCard.offsetHeight;
-        }
-        if (recentBar && !recentBar.hidden && recentBar.offsetHeight > 0) {
-            const cs = window.getComputedStyle(sidebar);
-            const gap = Number.parseFloat(cs.rowGap || cs.gap) || 24;
-            leftColHeight += gap + recentBar.offsetHeight;
         }
         leftColHeight = Math.max(leftColHeight, sidebar.scrollHeight || 0);
 
@@ -1401,12 +1362,18 @@ export function initUniversitiesPage() {
         }
 
         // Independent panels invariant: sidebar geometry must never depend on
-        // the live scroll position. Derive the height from the sticky `top`
-        // offset only (stable across scrolls), so scrolling the catalog can
-        // neither resize nor shift the filter column.
+        // the live scroll position. Derive the height from offsets that do not
+        // change while scrolling: the sticky `top` and the layout's document
+        // offset (where the unscrolled sidebar starts). Using the larger of the
+        // two keeps the panel's bottom inside the viewport before the page is
+        // scrolled, so the end of the filters is never hidden below the fold.
         const computedTop = Number.parseFloat(window.getComputedStyle(sidebar).top) || 90;
+        const layoutTop = el.workspaceLayout
+            ? el.workspaceLayout.getBoundingClientRect().top + window.scrollY
+            : 0;
+        const startTop = Math.max(computedTop, layoutTop);
         const bottomGap = 16;
-        const availableHeight = Math.max(200, Math.floor(window.innerHeight - computedTop - bottomGap));
+        const availableHeight = Math.max(200, Math.floor(window.innerHeight - startTop - bottomGap));
         if (lastAppliedSidebarMaxHeight !== availableHeight) {
             lastAppliedSidebarMaxHeight = availableHeight;
             sidebar.style.setProperty("--sidebar-max-height", `${availableHeight}px`);
@@ -1475,10 +1442,28 @@ export function initUniversitiesPage() {
         }
     };
 
+    /** Visible text of the selected option of a filter dropdown, or the raw value when it is not listed. */
+    function selectedFilterOptionLabel(field, value) {
+        const selectId = { country: "countrySelect", region: "stateSelect", city: "citySelect", study_level: "studyLevelSelect" }[field];
+        const option = Array.from($(selectId)?.options || []).find((item) => item.value === value);
+        return String(option?.textContent || value || "").trim();
+    }
+
+    /** Empty-result card that names the filters hiding results and offers a way out. */
+    function buildCatalogEmptyState() {
+        const summary = describeActiveFilters(state, currentLimits, {
+            currency: currentCurrency || getPreferredCurrency(),
+            formatMoney,
+            optionLabel: selectedFilterOptionLabel,
+        });
+        return renderEmptyStateCard(buildEmptyStateModel({ onlySaved: state.only_saved, summary }), { keepSaved: state.only_saved });
+    }
+
     function renderUniversitiesState(options = {}) {
         if (!el.state) return;
         const warningText = String(options.warningText || "").trim();
         const emptyText = String(options.emptyText || "").trim();
+        const emptyHtml = String(options.emptyHtml || "").trim();
         const blocks = [];
 
         if (warningText) {
@@ -1490,7 +1475,9 @@ export function initUniversitiesPage() {
             `.trim());
         }
 
-        if (emptyText) {
+        if (emptyHtml) {
+            blocks.push(emptyHtml);
+        } else if (emptyText) {
             blocks.push(`
                 <div class="u-state-card u-state-card--empty" role="status">
                     <div class="u-state-card__title">${escapeHtml(t("universities.state.empty_title", "No results for current filters"))}</div>
@@ -1923,24 +1910,11 @@ export function initUniversitiesPage() {
 
         const resetDraft = () => {
             clearSavedScrollPosition();
-            Object.assign(state, {
-                q: "",
-                country: "",
-                region: "",
-                city: "",
-                study_level: "",
-                cost_basis: "annual_total",
-                funding_type: getProfileFundingQueryValue(),
-                min_tuition: currentLimits.min,
-                max_tuition: currentLimits.max,
-                sort: "name_asc",
-                practice_vs_science: 50,
-                social_vs_hardcore: 50,
-                budget_vs_prestige: 50,
-                city_vs_campus: 50,
-                only_saved: false,
-                page: 1,
-            });
+            Object.assign(state, buildFilterResetPatch(state, {
+                fundingType: getProfileFundingQueryValue(),
+                limits: currentLimits,
+                onlySaved: false,
+            }));
             applyToForm();
             if (el.stateDiv) el.stateDiv.style.display = "none";
             updateCityDropdown([]);
@@ -2040,20 +2014,6 @@ export function initUniversitiesPage() {
         };
     };
     const mobileFilters = setupMobileFilters();
-
-    const recentDesktopAnchor = document.createComment("recently viewed desktop position");
-    el.recentlyViewedBar?.parentNode?.insertBefore(recentDesktopAnchor, el.recentlyViewedBar);
-    const relocateRecentlyViewedBar = () => {
-        if (!el.recentlyViewedBar || !recentDesktopAnchor.parentNode) return;
-        if (window.innerWidth <= 1024 && el.mobileRecentSlot) {
-            el.mobileRecentSlot.append(el.recentlyViewedBar);
-            return;
-        }
-        recentDesktopAnchor.parentNode.insertBefore(el.recentlyViewedBar, recentDesktopAnchor.nextSibling);
-    };
-    relocateRecentlyViewedBar();
-    __universitiesRecentRelocationHandler = relocateRecentlyViewedBar;
-    window.addEventListener("resize", __universitiesRecentRelocationHandler);
 
     function handleSortChange(nextSort) {
         if (el.sortSelect) el.sortSelect.value = nextSort;
@@ -2216,26 +2176,13 @@ export function initUniversitiesPage() {
         el.locationLabel
     );
 
-    function handleResetAllFilters() {
+    function handleResetAllFilters({ keepSaved = false } = {}) {
         clearSavedScrollPosition();
-        Object.assign(state, {
-            q: "",
-            country: "",
-            region: "",
-            city: "",
-            study_level: "",
-            cost_basis: "annual_total",
-            funding_type: getProfileFundingQueryValue(),
-            min_tuition: currentLimits.min,
-            max_tuition: currentLimits.max,
-            sort: "name_asc",
-            practice_vs_science: 50,
-            social_vs_hardcore: 50,
-            budget_vs_prestige: 50,
-            city_vs_campus: 50,
-            only_saved: false,
-            page: 1
-        });
+        Object.assign(state, buildFilterResetPatch(state, {
+            fundingType: getProfileFundingQueryValue(),
+            limits: currentLimits,
+            onlySaved: keepSaved ? state.only_saved : false,
+        }));
         saveFilters(state);
         applyToForm();
         if (el.stateDiv) el.stateDiv.style.display = "none"; 
@@ -2246,16 +2193,32 @@ export function initUniversitiesPage() {
         fetchAndRender();
     }
 
+    /** Drop only the price range; every other filter stays as the visitor set it. */
+    function handleClearPriceFilter() {
+        clearSavedScrollPosition();
+        Object.assign(state, { min_tuition: currentLimits.min, max_tuition: currentLimits.max, page: 1 });
+        saveFilters(state);
+        applyToForm();
+        fetchAndRender();
+    }
+
     el.resetBtn?.addEventListener("click", () => {
         motionPress(el.resetBtn);
         handleResetAllFilters();
     });
 
     el.state?.addEventListener("click", (e) => {
-        const btn = e.target instanceof Element ? e.target.closest('[data-action="reset-filters"]') : null;
+        const target = e.target instanceof Element ? e.target : null;
+        const clearPriceBtn = target?.closest('[data-action="clear-price-filter"]');
+        if (clearPriceBtn) {
+            motionPress(clearPriceBtn);
+            handleClearPriceFilter();
+            return;
+        }
+        const btn = target?.closest('[data-action="reset-filters"]');
         if (!btn) return;
         motionPress(btn);
-        handleResetAllFilters();
+        handleResetAllFilters({ keepSaved: btn.hasAttribute("data-keep-saved") });
     });
 
     el.list.addEventListener("click", (e) => {
@@ -2650,8 +2613,7 @@ export function initUniversitiesPage() {
     async function switchView(mode, shouldFetch = false) {
         state.viewMode = mode;
         saveFilters(state);
-        el.btnList?.classList.toggle("active", mode === "list");
-        el.btnMap?.classList.toggle("active", mode === "map");
+        syncViewModeControls();
 
         if (mode === "map" && Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0) {
             renderMapResultsPanel(lastRenderedItems);
@@ -2707,16 +2669,22 @@ export function initUniversitiesPage() {
                 zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
             }).addTo(mapInstance);
 
+            // The cluster radius (px between marker centres) is kept wider than a
+            // label pill, so clustering also keeps unclustered labels from overlapping.
             markersLayer = L.markerClusterGroup({
                 showCoverageOnHover: false, zoomToBoundsOnClick: false, spiderfyOnMaxZoom: true, animate: true, animationDuration: 1000,
+                maxClusterRadius: 100,
                 chunkedLoading: true, chunkInterval: 30, chunkDelay: 30,
                 iconCreateFunction: function(cluster) {
-                    const count = cluster.getChildCount();
+                    const label = mapClusterLabel(cluster);
                     return L.divIcon({
-                        html: `<span class="map-cluster-count">${count}</span>`,
+                        html: label
+                            ? `<span class="map-cluster-pill" aria-hidden="true"><span class="map-cluster-pill__place">${escapeHtml(label.text)}</span><span class="map-cluster-pill__count">${escapeHtml(label.count)}</span></span>`
+                            : `<span class="map-cluster-count" aria-hidden="true">${cluster.getChildCount()}</span>`,
                         className: "cluster-icon-container",
-                        iconSize: [44, 44],
-                        iconAnchor: [22, 22],
+                        // No fixed size: the pill is as wide as its label and is
+                        // centred on the point with CSS.
+                        iconSize: null,
                     });
                 }
             });
@@ -2771,6 +2739,28 @@ export function initUniversitiesPage() {
         } else {
             window.setTimeout(startWarmup, 0);
         }
+    }
+
+    // Where each university stands in the results list the user is looking at
+    // (the selected sort, UniFit included). The list holds every matching
+    // university, so this is the order a group is labelled by.
+    let mapResultsOrder = new Map();
+
+    function syncMapResultsOrder() {
+        mapResultsOrder = new Map(mapResultsItems.map((item, index) => [String(item?.id || "").trim(), index]));
+        if (markersLayer && typeof markersLayer.refreshClusters === "function") markersLayer.refreshClusters();
+    }
+
+    // A group is named like a single marker: by the university that comes
+    // first in the selected sort, plus how many others it holds ("КазНУ +3").
+    // Without any label to show it is just the count.
+    function mapClusterLabel(cluster) {
+        const markers = cluster.getAllChildMarkers();
+        const orderOf = (marker) => mapResultsOrder.get(marker.options.uniId) ?? Number.MAX_SAFE_INTEGER;
+        const top = markers
+            .filter((marker) => marker.options.mapLabel)
+            .sort((a, b) => (orderOf(a) - orderOf(b)) || (a.options.mapRank - b.options.mapRank))[0];
+        return top ? { text: top.options.mapLabel, count: `+${markers.length - 1}` } : null;
     }
 
     function updateMapResultsSelection(uniId) {
@@ -3066,6 +3056,7 @@ export function initUniversitiesPage() {
             mapResultsTotal = 0;
             mapResultsHasMore = true;
             mapResultsLoadFailed = false;
+            syncMapResultsOrder();
         }
 
         mapResultsLoadingMore = true;
@@ -3087,6 +3078,7 @@ export function initUniversitiesPage() {
             });
 
             mapResultsItems = reset ? uniqueItems : mapResultsItems.concat(uniqueItems);
+            syncMapResultsOrder();
             mapResultsPage = nextPage;
             mapResultsTotal = state.only_saved ? mapResultsItems.length : Number(data.total || 0);
             mapResultsHasMore = !state.only_saved && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
@@ -3283,22 +3275,31 @@ export function initUniversitiesPage() {
             autoPanPaddingBottomRight: L.point(20, 20)
         };
         const newMarkers = [];
-        items.forEach(u => {
+        items.forEach((u, index) => {
             const latitude = Number(u?.coordinates?.lat);
             const longitude = Number(u?.coordinates?.lon);
             if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
                 const uniId = String(u.id || "");
+                // The short label (abbreviation or distinctive name) comes from the
+                // API; without one the marker stays icon-only rather than guessing.
+                const mapLabel = String(u.map_label || "").trim();
                 const customIcon = L.divIcon({
                     className: "custom-div-icon",
-                    html: '<span class="map-university-dot" aria-hidden="true"></span>',
-                    iconSize: [44, 44],
-                    iconAnchor: [22, 22],
+                    html: `<span class="map-university-marker" aria-hidden="true">${heroIcon("academic-cap", "map-university-marker__icon", { "stroke-width": 2 })}${mapLabel ? `<span class="map-university-marker__label">${escapeHtml(mapLabel)}</span>` : ""}</span>`,
+                    iconSize: null,
                     popupAnchor: [0, -24],
                 });
                 const marker = L.marker([latitude, longitude], {
                     icon: customIcon,
                     title: trUniversityName(u),
-                    uniId: uniId
+                    uniId: uniId,
+                    mapLabel,
+                    mapRank: index,
+                });
+                marker.bindTooltip(escapeHtml(trUniversityName(u)), {
+                    direction: "top",
+                    offset: [0, -18],
+                    className: "map-university-tooltip",
                 });
                 const loadedCard = findLoadedMapCard(uniId);
                 const cardHTML = loadedCard ? renderFullMapPopup(loadedCard) : renderMapPointPopup(u, "loading");
@@ -3834,9 +3835,7 @@ export function initUniversitiesPage() {
                 warmMapMode();
                 renderUniversitiesState({
                     warningText,
-                    emptyText: state.only_saved
-                        ? t("universities.state.empty_saved", "No favorite universities match these filters.")
-                        : t("universities.state.empty", "No universities found."),
+                    emptyHtml: buildCatalogEmptyState(),
                 });
                 renderCompareTray();
                 renderRecentlyViewedBar();
@@ -3873,9 +3872,7 @@ export function initUniversitiesPage() {
             if (animateResults) markMotionEnter(el.mapResults, ".u-map-results-list .uni-card", { limit: 12, staggerMs: 18 });
             renderUniversitiesState({
                 warningText,
-                emptyText: items.length
-                    ? ""
-                    : (state.only_saved ? t("universities.state.empty_saved", "No favorite universities match these filters.") : t("universities.state.empty", "No universities found.")),
+                emptyHtml: items.length ? "" : buildCatalogEmptyState(),
             });
             renderCompareTray();
             syncCardActionState();
@@ -3915,6 +3912,7 @@ export function initUniversitiesPage() {
             if (mapInstance) mapInstance.invalidateSize({ pan: false, animate: false });
             if (state.only_saved && savedUniversityIds.size === 0) {
                 mapResultsItems = [];
+                syncMapResultsOrder();
                 mapResultsPage = 0;
                 mapResultsTotal = 0;
                 mapResultsHasMore = false;
@@ -3937,9 +3935,7 @@ export function initUniversitiesPage() {
             viewModesReady = true;
             syncViewModeControls();
             renderUniversitiesState({
-                emptyText: mapResultsItems.length
-                    ? ""
-                    : (state.only_saved ? t("universities.state.empty_saved", "No favorite universities match these filters.") : t("universities.state.empty", "No universities found.")),
+                emptyHtml: mapResultsItems.length ? "" : buildCatalogEmptyState(),
             });
             return;
         }
@@ -4181,18 +4177,7 @@ export function initUniversitiesPage() {
         const detailLabel = escapeHtml(isCompareSelectionMode()
             ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
             : t("universities.card.view_details", "View details"));
-        const rankMeta = (u && typeof u.rank_meta === "object" && u.rank_meta) ? u.rank_meta : {};
-        const rankSourceValue = String(rankMeta.source || "").trim();
-        const rankSource = rankSourceValue ? translateFactSource(rankSourceValue, rankSourceValue) : "";
-        const rankStatusRaw = String(rankMeta.status || "").trim().toLowerCase();
-        const statusLabel = rankStatusRaw
-            ? rankingStatusLabel(rankStatusRaw)
-            : translateWord("global_rank", "Global Rank");
-        const rankVerifiedAt = String(rankMeta.verified_at || "").trim()
-            || t("university.admissions.check_date_unrecorded", "Check date not recorded");
-        const sourceTooltip = rankSource
-            ? tFormat("ranking.source_tooltip", { source: rankSource, status: statusLabel, verified_at: rankVerifiedAt }, `Source: ${rankSource} | Type: ${statusLabel} | Last checked: ${rankVerifiedAt}`)
-            : "";
+        const sourceTooltip = buildRankSourceTooltip(u);
         const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
         const rankAriaLabel = sourceTooltip
             ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
@@ -4222,15 +4207,22 @@ ${rankInnerHtml}
             </div>
         `;
         const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
-        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"));
+        const priceFilterActive = Number(state.min_tuition) > currentLimits.min || Number(state.max_tuition) < currentLimits.max;
+        const priceHtml = renderUniversityCardCosts(u, state.cost_basis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), { priceFilterActive, studyLevel: state.study_level });
+        // The catalog API flags universities that have no campus photo; those cards show the placeholder
+        // without requesting an image that does not exist (older API responses omit the flag).
+        const hasCover = u?.cover_available !== false;
         const mediaHtml = hideMedia ? "" : `
             <div class="uni-media">
-                <img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">
+                ${hasCover ? `<img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">` : ""}
                 <div class="uni-media-empty">
                     ${renderInlineIcon("building-office-2", 24)}
                     <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
                 </div>
             </div>`;
+        const backdropHtml = hideMedia && mapVariant && hasCover
+            ? `<div class="uni-card-backdrop" aria-hidden="true"><img src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 360px, 100vw" alt="" loading="${loadingAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1"></div>`
+            : "";
         const headHtml = hideMedia
             ? `<div class="uni-head"><div class="uni-head-copy"><h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}</div></div>`
             : `<h3 class="uni-title" title="${safeName}">${safeName}</h3>${locHtml}`;
@@ -4242,7 +4234,7 @@ ${rankInnerHtml}
             : `<a class="uni-card-link-overlay" href="${detailHref}"${universityLinkAttrs()} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
         return `
         <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
-            ${mediaHtml}
+            ${mediaHtml}${backdropHtml}
             ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
             <div class="uni-body">
             ${headHtml}
@@ -4302,7 +4294,7 @@ ${rankInnerHtml}
                 if (newPage && newPage !== state.page) {
                     state.page = newPage;
                     clearSavedScrollPosition();
-                    fetchAndRender();
+                    void fetchAndRender();
                     window.scrollTo({top: 0, behavior: 'smooth'});
                 }
             };

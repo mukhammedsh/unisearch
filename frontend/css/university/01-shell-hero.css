@@ -98,6 +98,13 @@
   overflow: hidden;
 }
 
+/* Without a photo the cover is a slim band that still holds the back button and the notice, not a tall empty block. */
+.d-cover.is-photo-missing {
+  aspect-ratio: auto;
+  min-height: 0;
+  height: var(--space-24);
+}
+
 .d-cover-placeholder:not([hidden]) {
   position: absolute;
   inset: 0;
@@ -235,7 +242,7 @@
   position: fixed;
   inset: 0;
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
   height: 100%;
   max-width: none;
   max-height: none;
@@ -621,7 +628,7 @@ a.d-cover-credit:hover {
 }
 
 .d-tooltip a {
-  color: var(--accent);
+  color: var(--tooltip-text);
   font-weight: var(--font-weight-medium);
   text-decoration: underline;
 }
@@ -659,6 +666,11 @@ a.d-cover-credit:hover {
   color: var(--muted);
   box-shadow: none;
   justify-content: center;
+}
+
+/* The tab bar clips overflow, so the focus ring is drawn inside the tab instead of outside it. */
+.d-tab-btn:focus-visible {
+  outline-offset: calc(var(--space-1) * -1);
 }
 
 .d-tab-btn .icon {
@@ -759,6 +771,94 @@ a.d-cover-credit:hover {
   display: none; /* Chrome, Safari, Opera */
 }
 
+/* Tabs that do not fit scroll sideways. The previous/next buttons sit over the bar edges, so they take no width. */
+.d-tabs-nav {
+  position: relative;
+  min-width: 0;
+  scroll-margin-top: var(--space-20);
+}
+
+.d-tabs-nav > button {
+  display: none;
+}
+
+.d-tabs-nav > .d-tabs {
+  min-width: 0;
+  scroll-padding-inline: var(--space-12);
+}
+
+.d-tabs-nav[data-scrollable] > button {
+  position: absolute;
+  inset-block: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-12);
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--text);
+  cursor: pointer;
+  transition: opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+/* The bar's own colour fills the button and fades into the labels, so an arrow never sits on top of readable text. */
+.d-tabs-nav > [data-tabs-previous] {
+  inset-inline-start: 0;
+  background: linear-gradient(to right, var(--card) 60%, transparent);
+}
+
+.d-tabs-nav > [data-tabs-next] {
+  inset-inline-end: 0;
+  background: linear-gradient(to left, var(--card) 60%, transparent);
+}
+
+/* An edge with nothing more to reveal drops its button; it stays in the tree so the edges never shift. */
+.d-tabs-nav > button:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Edge fades hint at more tabs beyond each side and fade out once that end is reached. */
+@supports (animation-timeline: scroll()) {
+  @property --d-tabs-fade-start {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+  }
+
+  @property --d-tabs-fade-end {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px; /* spacing-exception: registered length must carry a unit */
+  }
+
+  .d-tabs-nav[data-scrollable] > .d-tabs {
+    mask:
+      linear-gradient(var(--surface-solid), var(--surface-solid)) no-clip subtract,
+      linear-gradient(to right, var(--surface-solid), transparent) 0 0 / var(--d-tabs-fade-start) 100% no-repeat no-clip,
+      linear-gradient(to right, transparent, var(--surface-solid)) 100% 0 / var(--d-tabs-fade-end) 100% no-repeat no-clip;
+    animation-name: d-tabs-fade-start, d-tabs-fade-end;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(self inline);
+    animation-range: 0 var(--space-12), calc(100% - var(--space-12)) 100%;
+  }
+
+  @keyframes d-tabs-fade-start {
+    to {
+      --d-tabs-fade-start: var(--space-12);
+    }
+  }
+
+  @keyframes d-tabs-fade-end {
+    from {
+      --d-tabs-fade-end: var(--space-12);
+    }
+  }
+}
+
 .d-head,
 .d-tabs,
 .d-tab-content {
@@ -834,14 +934,14 @@ body[data-page="university"],
 .d-info:focus-visible,
 .d-info-wrap.is-open .d-info {
   background: var(--accent-panel);
-  color: var(--accent);
+  color: var(--interaction-active-text);
 }
 
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
   :is(.d-site-link, .d-info):hover {
-    background: var(--accent-panel);
-    color: var(--accent);
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .d-site-link.is-saved:hover {
@@ -856,7 +956,7 @@ body[data-page="university"],
   }
 
   .d-tooltip a:hover {
-    color: var(--interaction-hover-text);
+    color: var(--tooltip-text);
   }
 }
 
@@ -1042,7 +1142,6 @@ body[data-page="university"],
   .d-container {
     padding-left: var(--space-2);
     padding-right: var(--space-2);
-    overflow-x: clip;
   }
 
   .d-gallery-viewer-credit {

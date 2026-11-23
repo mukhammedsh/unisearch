@@ -17,6 +17,8 @@ const TERMS = [
   ["fee_status", /\b(?:Home|Overseas) fees?\b|\bfee status\b/i],
 ];
 const RESTRICTIVE = TERMS[0][1];
+// Application rounds of a first-year application; a transfer or graduate application has none of them.
+const FIRST_YEAR_ROUNDS = new Set(["restrictive_early_action", "early_action", "regular_action", "regular_decision"]);
 let sequence = 0;
 
 const flatten = values => values.flat(Infinity).filter(value => typeof value === "string" && value);
@@ -27,6 +29,16 @@ export function glossaryTerms(...values) {
   const withoutRestrictive = text.replace(new RegExp(RESTRICTIVE.source, "g"), " ");
   return TERMS.filter(([term, matcher]) => matcher.test(term === "restrictive_early_action" ? text : withoutRestrictive)).map(([term]) => term);
 }
+
+/**
+ * Keeps only the terms that belong to the path being read: a transfer path is not explained with first-year rounds, even
+ * when a university-wide record (aid dates) names them.
+ * @param {string[]} terms Terms found in the published wording.
+ * @param {{applicant_route?: string}|null|undefined} route The selected application route.
+ * @returns {string[]}
+ */
+export const termsForRoute = (terms, route) => route?.applicant_route && route.applicant_route !== "first_year"
+  ? terms.filter(term => !FIRST_YEAR_ROUNDS.has(term)) : terms;
 
 // A keyboard- and touch-operable term explanation built on the shared tooltip system.
 export function renderTermHelp(term) {

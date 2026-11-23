@@ -539,6 +539,25 @@ body[data-page="profile"] {
   max-width: 360px;
 }
 
+/* Budget amount and its currency choice sit side by side; they stack on narrow screens. */
+.profile-budget-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 560px;
+}
+
+.profile-budget-row > .profile-budget {
+  flex: 1 1 11rem;
+  max-width: none;
+}
+
+.profile-budget-row > :is(.profile-budget-currency, .custom-select-wrapper) {
+  flex: 1 1 13rem;
+  min-width: 0;
+}
+
 .profile-budget--with-unit {
   position: relative;
   display: flex;
@@ -632,7 +651,7 @@ body[data-page="profile"] {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--accent);
+  color: var(--interaction-active-text);
   min-width: 0;
 }
 
@@ -734,6 +753,55 @@ body[data-page="profile"] {
   border-radius: 0;
 }
 
+/* The GPA scale is an explicit choice: a value alone cannot tell 3.6 out of 4 from 3.6 out of 5. */
+.profile-gpa-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+/* A rendered legend sits outside the flex gap, so its spacing is padding rather than a stacked margin. */
+.profile-gpa-scale legend {
+  width: 100%;
+  padding: 0 0 var(--space-1);
+  margin: 0;
+}
+
+.profile-gpa-scale__option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-8);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--control-bg);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.profile-gpa-scale__option:has(input:checked) {
+  background: var(--accent-soft);
+  color: var(--interaction-active-text);
+}
+
+.profile-gpa-scale__option input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.profile-gpa-scale__option:has(input:focus-visible) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .profile-field--gpa .profile-hint-row {
   display: flex;
   align-items: center;
@@ -754,11 +822,11 @@ body[data-page="profile"] {
 }
 
 .profile-tooltip {
+  --tooltip-display: flex;
   width: min(280px, calc(100vw - 48px));
   max-width: min(280px, calc(100vw - 48px));
   padding: var(--space-3);
   font-size: var(--text-sm);
-  display: flex;
   flex-direction: column;
   gap: var(--space-1);
 }
@@ -965,7 +1033,7 @@ textarea.profile-input,
   padding: 0 var(--space-4);
   border-radius: var(--radius-base);
   color: var(--text-muted);
-  background: var(--bg-soft);
+  background: var(--surface-soft);
 }
 
 .profile-exam-form .profile-add {
@@ -1024,6 +1092,21 @@ textarea.profile-input,
   grid-column: 1 / -1;
   flex: 1 1 100%;
   width: 100%;
+}
+
+/* The section scores of one language test: a labelled group directly under its overall score. */
+.profile-lang-sections {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.profile-lang-sections > legend {
+  padding: 0;
+  margin-bottom: var(--space-2);
 }
 
 .lang-list {
@@ -1088,8 +1171,8 @@ textarea.profile-input,
   min-height: 32px;
   padding: 0 var(--space-3);
   border-radius: var(--radius-sm);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-xs);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text-muted);
   font-family: inherit;
   font-size: var(--text-sm);
@@ -1138,8 +1221,8 @@ textarea.profile-input,
   border-radius: var(--radius-sm);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-xs);
+  background: var(--control-bg);
+  box-shadow: var(--control-shadow);
   color: var(--text-muted);
   cursor: pointer;
   white-space: nowrap;
@@ -1295,6 +1378,11 @@ textarea.profile-input,
   min-width: 0;
 }
 
+.profile-admission-evidence-group + .profile-admission-evidence-group {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line-faint);
+}
+
 .profile-subsection-head {
   display: flex;
   flex-direction: column;
@@ -1311,7 +1399,7 @@ textarea.profile-input,
 .profile-confirm-modal {
   position: fixed;
   inset: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
   max-width: none;
@@ -1467,13 +1555,13 @@ textarea.profile-input,
   }
 
   .profile-delete.profile-delete--danger-soft:hover {
-    background: color-mix(in srgb, var(--color-danger) 18%, var(--surface-solid));
+    background: var(--color-danger-bg);
     color: var(--color-danger);
   }
 
   .profile-delete--danger:hover {
-    background: var(--color-danger);
-    color: var(--text-inverse);
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
     box-shadow: var(--shadow-xs);
   }
 }
@@ -1543,18 +1631,6 @@ textarea.profile-input,
 
 .profile-shell [hidden] {
   display: none;
-}
-
-.profile-unit--currency {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  min-height: 36px;
-}
-
-#profileBudgetUnit:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
 }
 
 /* --------------------------------------------------------------------------
@@ -1715,7 +1791,8 @@ textarea.profile-input,
 
   .profile-exam-form--with-special,
   .profile-exam-form--with-special.profile-exam-form--grades,
-  .profile-exam-form--with-special.profile-exam-form--breakdown {
+  .profile-exam-form--with-special.profile-exam-form--breakdown,
+  .profile-applicant-context-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1727,12 +1804,6 @@ textarea.profile-input,
 
   .profile-confirm-modal.is-closing .profile-confirm-card {
     animation-name: motion-sheet-out;
-  }
-}
-
-@media (max-width: 600px) {
-  .profile-applicant-context-grid {
-    grid-template-columns: 1fr;
   }
 }
 

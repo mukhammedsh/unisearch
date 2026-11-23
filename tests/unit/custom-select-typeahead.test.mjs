@@ -595,6 +595,58 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '100px');
   });
 
+  it('measures clipping ancestors before opening and panel height after display becomes visible', () => {
+    const { select } = createSelectWithOptgroups();
+    docElements.set(select.id, select);
+
+    initCustomSelect(select.id);
+
+    const wrapper = select.parentNode;
+    const trigger = wrapper.querySelector('.custom-select-trigger');
+    const panel = wrapper.querySelector('.custom-options');
+
+    let parentMeasuredWhileClosed = false;
+    const scrollParent = {
+      parentElement: null,
+      clientTop: 0,
+      get clientHeight() {
+        parentMeasuredWhileClosed = !wrapper.classList.has('open');
+        return 400;
+      },
+      getBoundingClientRect: () => ({ top: 100, bottom: 500, left: 0, right: 320, width: 320, height: 400 }),
+    };
+    wrapper.parentElement = scrollParent;
+
+    trigger.getBoundingClientRect = () => ({
+      top: 400,
+      bottom: 440,
+      left: 10,
+      right: 200,
+      width: 190,
+      height: 40,
+    });
+
+    Object.defineProperty(panel, 'offsetHeight', {
+      configurable: true,
+      get() {
+        return wrapper.classList.has('open') ? 160 : 0;
+      },
+    });
+
+    global.window.innerHeight = 900;
+    global.window.getComputedStyle = (node) => (node === scrollParent ? { overflowY: 'auto' } : { marginBlockStart: '0px' });
+
+    trigger.dispatchEvent({
+      type: 'click',
+      stopPropagation: () => {},
+    });
+
+    assert.equal(parentMeasuredWhileClosed, true);
+    assert.ok(wrapper.classList.has('open'));
+    assert.ok(wrapper.classList.has('open-up'));
+    assert.equal(panel.style.getPropertyValue('--dropdown-available-height'), '300px');
+  });
+
   it('ignores Enter in searchable select while IME composition is active', () => {
     const { select } = createSelectWithOptgroups();
     select.dataset.searchable = 'true';

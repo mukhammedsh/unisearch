@@ -168,11 +168,19 @@ for (const scenario of cases) {
       const visibleCards = Array.from(document.querySelectorAll("#tab-admission .admission-category-card")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
+      const visibleStatsBoxes = Array.from(document.querySelectorAll("#tab-admission .track-stats-box")).filter(
+        (el) => el instanceof HTMLElement && el.offsetParent !== null
+      );
       const visibleFundingOptions = Array.from(document.querySelectorAll("#tab-admission .admission-funding-option")).filter(
         (el) => el instanceof HTMLElement && el.offsetParent !== null
       );
+      const visibleExamGroups = Array.from(document.querySelectorAll("#tab-admission .track-exam-group")).filter(
+        (el) => el instanceof HTMLElement && el.offsetParent !== null
+      );
       const firstCardStyle = visibleCards[0] ? getComputedStyle(visibleCards[0]) : null;
+      const firstStatsBoxStyle = visibleStatsBoxes[0] ? getComputedStyle(visibleStatsBoxes[0]) : null;
       const firstFundingOptionStyle = visibleFundingOptions[0] ? getComputedStyle(visibleFundingOptions[0]) : null;
+      const firstExamGroupStyle = visibleExamGroups[0] ? getComputedStyle(visibleExamGroups[0]) : null;
       const admissionPanel = document.querySelector("#tab-admission .d-box");
       const admissionPanelStyle = admissionPanel ? getComputedStyle(admissionPanel) : null;
       const chanceWrap = document.querySelector("#tab-admission .chance-percent-wrap");
@@ -180,20 +188,43 @@ for (const scenario of cases) {
 
       return {
         cardCount: visibleCards.length,
+        statsBoxCount: visibleStatsBoxes.length,
+        fundingOptionCount: visibleFundingOptions.length,
+        examGroupCount: visibleExamGroups.length,
         panelRadius: admissionPanelStyle ? parseFloat(admissionPanelStyle.borderTopLeftRadius) : -1,
         chanceDirection: chanceWrapStyle ? chanceWrapStyle.flexDirection : "",
-        cardRadius: firstCardStyle ? parseFloat(firstCardStyle.borderTopLeftRadius) : 0,
+        cardRadius: firstCardStyle ? parseFloat(firstCardStyle.borderTopLeftRadius) : -1,
+        cardBackground: firstCardStyle ? firstCardStyle.backgroundColor : "",
         cardBackgroundImage: firstCardStyle ? firstCardStyle.backgroundImage : "",
+        statsBoxRadius: firstStatsBoxStyle ? parseFloat(firstStatsBoxStyle.borderTopLeftRadius) : -1,
+        statsBoxBackground: firstStatsBoxStyle ? firstStatsBoxStyle.backgroundColor : "",
+        fundingOptionRadius: firstFundingOptionStyle ? parseFloat(firstFundingOptionStyle.borderTopLeftRadius) : -1,
+        fundingOptionBackground: firstFundingOptionStyle ? firstFundingOptionStyle.backgroundColor : "",
         fundingBackgroundImage: firstFundingOptionStyle ? firstFundingOptionStyle.backgroundImage : "none",
+        examGroupRadius: firstExamGroupStyle ? parseFloat(firstExamGroupStyle.borderTopLeftRadius) : -1,
+        examGroupBackground: firstExamGroupStyle ? firstExamGroupStyle.backgroundColor : "",
       };
     });
 
     expect(admissionSurfaces.cardCount).toBeGreaterThan(0);
     expect(admissionSurfaces.panelRadius).toBe(0);
     expect(admissionSurfaces.chanceDirection).toBe(scenario.width <= 640 ? "row" : "column");
-    expect(admissionSurfaces.cardRadius).toBeGreaterThanOrEqual(16);
+    expect(admissionSurfaces.cardRadius).toBe(0);
+    expect(admissionSurfaces.cardBackground).toBe("rgba(0, 0, 0, 0)");
     expect(admissionSurfaces.cardBackgroundImage).toBe("none");
+    if (admissionSurfaces.statsBoxCount > 0) {
+      expect(admissionSurfaces.statsBoxRadius).toBeGreaterThanOrEqual(12);
+      expect(admissionSurfaces.statsBoxBackground).not.toBe("rgba(0, 0, 0, 0)");
+    }
+    if (admissionSurfaces.fundingOptionCount > 0) {
+      expect(admissionSurfaces.fundingOptionRadius).toBeGreaterThanOrEqual(12);
+      expect(admissionSurfaces.fundingOptionBackground).not.toBe("rgba(0, 0, 0, 0)");
+    }
     expect(admissionSurfaces.fundingBackgroundImage).toBe("none");
+    if (admissionSurfaces.examGroupCount > 0) {
+      expect(admissionSurfaces.examGroupRadius).toBe(0);
+      expect(admissionSurfaces.examGroupBackground).toBe("rgba(0, 0, 0, 0)");
+    }
 
     await page.click(".d-tab-btn[data-tab='tab-finance']");
     await expect(page.locator("#tab-finance")).toHaveClass(/active/);
