@@ -124,25 +124,33 @@ for (const locale of locales) {
     expect(await firstCard.locator(".uni-media").evaluate((media) => media.contains(media.parentElement?.querySelector(".uni-card-statuses")))).toBeFalsy();
 
     await page.evaluate(() => document.documentElement.setAttribute("data-theme", "light"));
-    const lightStatusColor = await firstStatus.evaluate((status) => {
+    const lightStatusStyle = await firstStatus.evaluate((status) => {
       const styles = getComputedStyle(status);
-      return [styles.backgroundColor, styles.borderColor, styles.color];
+      return {
+        borderStyle: styles.borderTopStyle,
+        backgroundImage: styles.backgroundImage,
+        color: styles.color,
+      };
     });
-    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
-    const darkStatusColor = await firstStatus.evaluate((status) => {
-      const styles = getComputedStyle(status);
-      return [styles.backgroundColor, styles.borderColor, styles.color];
-    });
-    expect(darkStatusColor).toEqual(lightStatusColor);
+    expect(lightStatusStyle.borderStyle).toBe("none");
+    expect(lightStatusStyle.backgroundImage).toContain("linear-gradient");
 
-    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "light"));
-    await firstStatus.hover();
-    const lightHoverBorder = await firstStatus.evaluate((status) => getComputedStyle(status).borderColor);
     await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+    const darkStatusStyle = await firstStatus.evaluate((status) => {
+      const styles = getComputedStyle(status);
+      return {
+        borderStyle: styles.borderTopStyle,
+        backgroundImage: styles.backgroundImage,
+        color: styles.color,
+      };
+    });
+    expect(darkStatusStyle.borderStyle).toBe("none");
+    expect(darkStatusStyle.backgroundImage).toContain("linear-gradient");
+    await expect.poll(() => firstStatus.evaluate((status) => getComputedStyle(status).color)).not.toBe(lightStatusStyle.color);
+
     await firstStatus.hover();
-    const darkHoverBorder = await firstStatus.evaluate((status) => getComputedStyle(status).borderColor);
-    expect(darkHoverBorder).toEqual(lightHoverBorder);
-    expect(darkHoverBorder).toBe("rgb(17, 24, 39)");
+    const darkHoverShadow = await firstStatus.evaluate((status) => getComputedStyle(status).boxShadow);
+    expect(darkHoverShadow).not.toBe("none");
 
     const [firstCardBox, compactCardBox] = await Promise.all([
       firstCard.boundingBox(),

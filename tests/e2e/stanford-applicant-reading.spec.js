@@ -65,6 +65,8 @@ async function program(page, id, search = "Computer Science") {
   await option.click();
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await ready(page);
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await tab(page, "programs");
   await expect(option).toHaveAttribute("aria-expanded", "true");
 }
 
@@ -297,6 +299,7 @@ test("Stanford retries failures and keeps selection through an empty search", as
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await page.locator('[data-select-study-option="stanford-option-cs-ms"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
+  await tab(page, "programs");
   await page.locator('[data-study-option="stanford-option-cs-ms"]').click();
   await page.locator('#admissionsStudyOverview [data-admissions-retry="context"]').click();
   await ready(page);

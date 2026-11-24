@@ -43,7 +43,7 @@
   /* Russian legal labels deliberately share two lines for a balanced footer
      grid; shorter locales keep their natural single-line labels. */
   html[lang="ru"] .footer-legal-links:not(.footer-product-links) a {
-    max-width: 136px;
+    max-width: 146px;
   }
 
   .social-links {

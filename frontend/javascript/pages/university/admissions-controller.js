@@ -274,11 +274,11 @@ export function mountAdmissionsCatalog(institutionId) {
     context.study_level = "undergraduate";
     return true;
   };
-  const openTab = (id) => {
+  const openTab = (id, { replace = false } = {}) => {
     const nextUrl = new URL(window.location.href);
     if (nextUrl.hash !== `#${id}`) {
       nextUrl.hash = `#${id}`;
-      window.history.pushState({}, "", nextUrl);
+      window.history[replace ? "replaceState" : "pushState"]({}, "", nextUrl);
     }
     document.querySelector(`[data-tab="${id}"]`)?.click();
   };
@@ -967,8 +967,9 @@ export function mountAdmissionsCatalog(institutionId) {
     if (selectButton) {
       const option = items.find(row => row.id === selectButton.dataset.selectStudyOption);
       if (!option) return;
-      if (option.id !== context.study_option_id) selectStudyOption(option, { expand: openProgramIds.has(option.id) });
-      openTab("tab-admission");
+      const changedOption = option.id !== context.study_option_id;
+      if (changedOption) selectStudyOption(option, { expand: openProgramIds.has(option.id) });
+      openTab("tab-admission", { replace: changedOption });
       (selectionSummary && !selectionSummary.hidden ? selectionSummary : root).scrollIntoView({ block: "start" });
       return;
     }

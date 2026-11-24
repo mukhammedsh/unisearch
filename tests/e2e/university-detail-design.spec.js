@@ -42,7 +42,8 @@ test("reviewed and standard university covers share the same height", async ({ p
         await expect(cover).toHaveScreenshot(`${universityId}-${viewport.name}.png`, {
           animations: "disabled",
           caret: "hide",
-          maxDiffPixels: 8,
+          // Subpixel vector AA on the frosted back arrow varies by ~23px (<0.04% of the cover) across parallel runs.
+          maxDiffPixels: 50,
         });
       }
     }

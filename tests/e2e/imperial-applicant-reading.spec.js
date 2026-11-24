@@ -66,6 +66,8 @@ async function program(page, id, search = "Computing", level = "") {
   await option.click();
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await ready(page);
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await tab(page, "programs");
   await expect(option).toHaveAttribute("aria-expanded", "true");
 }
 
@@ -294,6 +296,7 @@ test("Imperial retries a context failure and keeps the selected program through 
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await page.locator('[data-select-study-option="imperial-option-computing-meng"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
+  await tab(page, "programs");
   await page.locator('[data-study-option="imperial-option-computing-meng"]').click();
   await page.locator('#admissionsStudyOverview [data-admissions-retry="context"]').click();
   await ready(page);

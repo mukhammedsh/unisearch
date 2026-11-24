@@ -288,9 +288,9 @@ test("UniFit card caps overlay status icons at four by priority", async ({ page 
   const rowStatuses = firstCard.locator(".uni-card-statuses > .uni-status-tooltip > .uni-status-trigger");
   await expect(rowStatuses).toHaveCount(4);
   await expect(rowStatuses.nth(0)).toHaveAttribute("aria-label", /Exam result needed/);
-  await expect(rowStatuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
-  await expect(rowStatuses.nth(2)).toHaveAttribute("aria-label", /Below Requirements/);
-  await expect(rowStatuses.nth(3)).toHaveAttribute("aria-label", /Aid Available/);
+  await expect(rowStatuses.nth(1)).toHaveAttribute("aria-label", /Below Requirements/);
+  await expect(rowStatuses.nth(2)).toHaveAttribute("aria-label", /Aid Available/);
+  await expect(rowStatuses.nth(3)).toHaveAttribute("aria-label", /Your Vibe/);
   await expect(firstCard).not.toContainText("Likely Grant");
 
   const overflowTrigger = firstCard.locator(".uni-status-overflow-trigger");

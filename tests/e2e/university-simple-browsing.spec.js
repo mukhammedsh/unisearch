@@ -146,6 +146,9 @@ async function chooseOption(page, item) {
   expect(page.url()).toBe(browseUrl);
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   const card = option.locator("xpath=..");
   await expect(card).toHaveClass(/program-card/);
   await expect(option).toHaveAttribute("aria-expanded", "true");
@@ -305,6 +308,8 @@ test("program cards expand independently, including after one is selected", asyn
   expect(await first.locator(".program-card__body").evaluate(body => body.getBoundingClientRect().height)).toBe(firstHeight);
   await first.locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(first.locator("#admissionsStudyDetails")).toBeVisible();
   await expect(second.locator(".program-card__body")).toBeVisible();
   await first.locator("[data-study-option]").click();
@@ -315,6 +320,8 @@ test("program cards expand independently, including after one is selected", asyn
   await expect(first.locator("#admissionsStudyDetails")).toBeVisible();
   await second.locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(first.locator(".program-card__body")).toBeVisible();
   await expect(second.locator("#admissionsStudyDetails")).toBeVisible();
 });
@@ -331,6 +338,8 @@ test("the selected program leads the list after search and page reload", async (
   await expect(selected).toBeVisible();
   await selected.locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await page.locator("#admissionsSearchSubmit").click();
   await expect(page.locator("#admissionsProgramCount")).not.toBeEmpty();
   await expect(page.locator("#admissionsProgramList [data-study-option]").first()).toHaveAttribute("data-study-option", selectedId);
@@ -351,6 +360,8 @@ test("Imperial's selected card is compact without changing its outer button offs
   await page.locator("#admissionsSearchSubmit").click();
   const card = page.locator(`#admissionsProgramList [data-study-option="${item.option}"]`).locator("xpath=..");
   await card.locator("[data-select-study-option]").click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(card.locator("[data-selected-study-option]")).toBeVisible();
   const distances = await card.evaluate(element => {
     const original = element.querySelector(".admissions-programs__original").getBoundingClientRect();
@@ -488,6 +499,8 @@ for (const item of [journeys[0], journeys[1], journeys[2]]) {
     await expectAccessibleTextContrast(selectProgram);
     await selectProgram.click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+    await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
     await expect(page.locator("#tab-programs")).toHaveClass(/active/);
     await expect(page.locator("#tab-admission")).not.toHaveClass(/active/);
     await expect(card.locator("[data-selected-study-option]")).toBeVisible();
@@ -673,7 +686,10 @@ test("a saved MIT choice survives reload while Back and Forward restore manual r
   await expect.poll(saved).toMatchObject({ studyOptionId: item.option, applicationRouteId: item.route });
 });
 
-test("the study-option list can recover from an error and report an empty search", async ({ page }) => {
+test.describe("study-option and detail error recovery with route interception", () => {
+  test.use({ serviceWorkers: "block" });
+
+  test("the study-option list can recover from an error and report an empty search", async ({ page }) => {
   const item = journeys[0];
   let failed = false;
   await page.route((url) => new URL(url).pathname.endsWith("/study-options"), async (route) => {
@@ -704,39 +720,40 @@ test("the study-option list can recover from an error and report an empty search
   await expect(page.locator('#admissionsProgramList [role="alert"]')).toHaveCount(0);
 });
 
-test("a failed earlier detail request cannot replace the newly opened university", async ({ page }) => {
-  await openGuestUniversity(page, journeys[0]);
-  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  let releaseEarlier;
-  let earlierStarted;
-  const gate = new Promise((resolve) => { releaseEarlier = resolve; });
-  const started = new Promise((resolve) => { earlierStarted = resolve; });
-  await page.route((url) => url.pathname === "/universities/imperial-college-london-uk", async (route) => {
-    earlierStarted();
-    await gate;
-    await route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ detail: "Unavailable" }) });
-  });
-  try {
-    await page.evaluate(async () => {
-      const { initUniversityPage } = await import("/javascript/pages/university.js");
-      history.pushState({}, "", "/university.html?id=imperial-college-london-uk");
-      window.__earlierDetailRequest = initUniversityPage();
-    });
-    await started;
-    await page.evaluate(async () => {
-      const { initUniversityPage } = await import("/javascript/pages/university.js");
-      history.pushState({}, "", "/university.html?id=stanford-university-usa-ca");
-      await initUniversityPage();
-    });
-    await expect(page.locator("#detailName")).toHaveText("Stanford University");
-    releaseEarlier();
-    await page.evaluate(() => window.__earlierDetailRequest);
-    await expect(page.locator("#detailState")).toBeEmpty();
-    await expect(page.locator("#detailName")).toHaveText("Stanford University");
+  test("a failed earlier detail request cannot replace the newly opened university", async ({ page }) => {
+    await openGuestUniversity(page, journeys[0]);
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  } finally {
-    releaseEarlier();
-  }
+    let releaseEarlier;
+    let earlierStarted;
+    const gate = new Promise((resolve) => { releaseEarlier = resolve; });
+    const started = new Promise((resolve) => { earlierStarted = resolve; });
+    await page.route((url) => url.pathname === "/universities/imperial-college-london-uk", async (route) => {
+      earlierStarted();
+      await gate;
+      await route.fulfill({ status: 503, contentType: "application/json", body: JSON.stringify({ detail: "Unavailable" }) });
+    });
+    try {
+      await page.evaluate(async () => {
+        const { initUniversityPage } = await import("/javascript/pages/university.js");
+        history.pushState({}, "", "/university.html?id=imperial-college-london-uk");
+        window.__earlierDetailRequest = initUniversityPage();
+      });
+      await started;
+      await page.evaluate(async () => {
+        const { initUniversityPage } = await import("/javascript/pages/university.js");
+        history.pushState({}, "", "/university.html?id=stanford-university-usa-ca");
+        await initUniversityPage();
+      });
+      await expect(page.locator("#detailName")).toHaveText("Stanford University");
+      releaseEarlier();
+      await page.evaluate(() => window.__earlierDetailRequest);
+      await expect(page.locator("#detailState")).toBeEmpty();
+      await expect(page.locator("#detailName")).toHaveText("Stanford University");
+      await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    } finally {
+      releaseEarlier();
+    }
+  });
 });
 
 test("Kazakh browsing keeps all three reviewed catalogs usable and searches a translated subject", async ({ page }) => {

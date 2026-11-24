@@ -147,6 +147,9 @@ for (const { university, option, search, hasEssentials } of [
     await expect(toggle).toBeVisible();
     await toggle.click();
     await toggle.locator("xpath=..").locator("[data-select-study-option]").click();
+    await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+    await page.locator('[data-tab="tab-programs"]').click();
+    await expect(page.locator("#tab-programs")).toHaveClass(/active/);
     const overview = page.locator("#admissionsStudyOverview");
     const description = overview.locator(":scope > .program-card__description");
     const essentials = overview.locator(":scope > .admissions-programs__essentials");

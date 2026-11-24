@@ -609,6 +609,21 @@ export function createUniversitiesMapController(ctx) {
     return mapResultsItems.find((item) => String(item?.id || "").trim() === uniId) || null;
   }
 
+  function ensurePopupFitsInMap(marker) {
+    const popupEl = marker?.getPopup()?.getElement?.();
+    if (!popupEl || !el.mapContainer || !mapInstance) return;
+    const popupRect = popupEl.getBoundingClientRect();
+    const mapRect = el.mapContainer.getBoundingClientRect();
+    const pad = 20;
+    let dx = 0;
+    let dy = 0;
+    if (popupRect.left < mapRect.left + pad) dx = popupRect.left - (mapRect.left + pad);
+    else if (popupRect.right > mapRect.right - pad) dx = popupRect.right - (mapRect.right - pad);
+    if (popupRect.top < mapRect.top + pad) dy = popupRect.top - (mapRect.top + pad);
+    else if (popupRect.bottom > mapRect.bottom - pad) dy = popupRect.bottom - (mapRect.bottom - pad);
+    if (dx !== 0 || dy !== 0) mapInstance.panBy([dx, dy], { animate: false });
+  }
+
   async function hydrateMapMarkerPopup(marker, point) {
     const uniId = String(point?.id || "").trim();
     if (!uniId || !marker || disposed) return;
@@ -617,6 +632,7 @@ export function createUniversitiesMapController(ctx) {
     if (loadedCard) {
       marker.setPopupContent(renderFullMapPopup(loadedCard));
       marker.getPopup()?.update();
+      ensurePopupFitsInMap(marker);
       syncCardActionState();
       return;
     }
@@ -637,6 +653,7 @@ export function createUniversitiesMapController(ctx) {
       if (disposed || markersByUniId.get(uniId) !== marker) return;
       marker.setPopupContent(renderFullMapPopup({ ...detail, catalog_costs: point.catalog_costs || detail.catalog_costs }));
       marker.getPopup()?.update();
+      ensurePopupFitsInMap(marker);
       syncCardActionState();
     } catch (error) {
       if (disposed || markersByUniId.get(uniId) !== marker) return;

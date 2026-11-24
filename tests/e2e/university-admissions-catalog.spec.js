@@ -299,6 +299,8 @@ test("program search resolves its sole route from applicant context without chan
   await expect(program).toBeVisible();
   await program.click();
   await program.locator("xpath=..").locator("[data-select-study-option]").click();
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();

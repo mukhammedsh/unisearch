@@ -113,8 +113,11 @@ async function searchAndChooseMitCourse(page) {
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
 }
 
-test("profile v2 migration resets only reviewed legacy choices and an explicit MIT save preserves global defaults", async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 });
+test.describe("profile v2 migration with route interception", () => {
+  test.use({ serviceWorkers: "block" });
+
+  test("profile v2 migration resets only reviewed legacy choices and an explicit MIT save preserves global defaults", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
   const savedProfile = legacyProfile();
   await seedApp(page, { profile: savedProfile });
   await page.goto(`/university.html?id=${MIT}&admission_program=mit-bs-6-3`);
@@ -207,6 +210,7 @@ test("profile v2 migration resets only reviewed legacy choices and an explicit M
   await expect(page.locator("#detailState").getByRole("button", { name: "Retry" })).toBeVisible();
   expect(rejectedDetailRequests).toBe(2);
   await expect(page.locator("#detailState")).not.toContainText("STALE REVIEWED V4 CACHE MUST NOT RENDER");
+  });
 });
 
 test("comparison purges only old reviewed pointers, keeps an unreviewed choice, and saves a selected Stanford context", async ({ page }, testInfo) => {

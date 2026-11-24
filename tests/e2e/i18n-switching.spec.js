@@ -26,7 +26,7 @@ async function startLanguageSwitch(page, value) {
   }, value);
 }
 
-async function delayRussianUniversityTranslations(page, delayMs = 400) {
+async function delayRussianUniversityTranslations(page, delayMs = 1200) {
   await page.route("**/universities/translations?*", async (route) => {
     const lang = new URL(route.request().url()).searchParams.get("lang");
     if (lang === "rus") {
@@ -55,7 +55,10 @@ test("language switch updates UI labels for eng and ru locales", async ({ page }
   await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText("Гайд");
 });
 
-test("catalog keeps media visible and replaces only text during a slow language switch", async ({ page }) => {
+test.describe("slow language switch with route interception", () => {
+  test.use({ serviceWorkers: "block" });
+
+  test("catalog keeps media visible and replaces only text during a slow language switch", async ({ page }) => {
   await seedLanguageAndTheme(page);
   await markTourAsSeen(page);
   await delayRussianUniversityTranslations(page);
@@ -105,4 +108,5 @@ test("detail keeps its cover visible while translated text is pending on mobile 
   await expect(page.locator("#languageSelect")).not.toBeDisabled();
   await expect(page.locator("html")).toHaveAttribute("lang", "ru");
   await expect(card.locator(".d-language-text-skeleton")).toHaveCount(0);
+  });
 });

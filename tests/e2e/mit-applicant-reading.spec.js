@@ -67,6 +67,8 @@ for (const item of cases) {
     await cs.click();
     await cs.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+    await tab(page, "programs");
     await expect(page.locator("#admissionsStudySources .admissions-programs__references")).toBeVisible();
     await expect(page.locator("#admissionsReferenceSummary strong")).toHaveText(title);
     const essentials = { eng: ["4 years", "On-campus", "English"], rus: ["4 года", "Очно (кампус)", "Английский"], kaz: ["4 жыл", "Кампуста", "Ағылшын"] }[item.language];
@@ -159,6 +161,8 @@ test("changing language preserves program search, browsing level and admission s
   await cs.click();
   await cs.locator("xpath=..").locator("[data-select-study-option]").click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await tab(page, "programs");
   const url = page.url();
   for (const [language, code] of [["kaz", "kk"], ["eng", "en"], ["rus", "ru"]]) {
     const select = page.locator("#languageSelect");

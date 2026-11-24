@@ -40,6 +40,9 @@ for (const program of programs) for (const language of ["eng", "rus", "kaz"]) {
     await option.click();
     await option.locator("xpath=..").locator("[data-select-study-option]").click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+    await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+    await page.locator('[data-tab="tab-programs"]').click();
+    await expect(page.locator("#tab-programs")).toHaveClass(/active/);
     await expect(page.locator("#admissionsStudyTitle")).toHaveText(title);
     await expect(page.locator("#admissionsReferenceSummary strong")).toHaveText(title);
     await page.locator("#admissionsSearch").fill("no such published program");
