@@ -15,6 +15,7 @@ frontend/env.js
 scripts
 backend/venv
 backend/.venv
+backend/data/drafts
 backend/.env
 backend/.env.*
 **/__pycache__
