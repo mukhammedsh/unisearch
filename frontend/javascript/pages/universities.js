@@ -683,7 +683,7 @@ export function initUniversitiesPage() {
         linkAttrs: compareController.universityLinkAttrs(),
     });
     const fetchUniversities = (apiParams, extra = {}) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug, ...extra });
-    const fetchAiSort = (payload) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug });
+    const fetchAiSort = (payload, extra = {}) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug, ...extra });
 
     const mapController = createUniversitiesMapController({
         el,
@@ -1056,6 +1056,13 @@ export function initUniversitiesPage() {
 
         const savedIds = compareController.getSavedUniversityIds();
         let staleShown = false;
+        // A sleeping backend: show this browser's last result for the same request until the fresh one arrives.
+        const showStaleResult = (staleData) => {
+            if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            staleShown = true;
+            renderFetchedData(staleData, { animateResults: false });
+            setUniversitiesLoading(false, { preserveResults: true });
+        };
 
         try {
             if (state.viewMode === "map") {
@@ -1090,7 +1097,7 @@ export function initUniversitiesPage() {
                 await resolveAiSortResult({
                     canUseFastFallback: state.viewMode === "list" && !hasInitialListPaint && state.page === 1,
                     fastFallbackMs: AI_FAST_FALLBACK_MS,
-                    fetchAi: () => fetchAiSort(buildAiSortPayload()),
+                    fetchAi: () => fetchAiSort(buildAiSortPayload(), { onStale: showStaleResult }),
                     fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams, state)),
                     isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
                     renderData: (data) => renderFetchedData(data, { animateResults }),
@@ -1104,15 +1111,7 @@ export function initUniversitiesPage() {
                 return;
             }
 
-            const data = await fetchUniversities(apiParams, {
-                // A sleeping backend: show this browser's last result for the same request until the fresh one arrives.
-                onStale: (staleData) => {
-                    if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
-                    staleShown = true;
-                    renderFetchedData(staleData, { animateResults: false });
-                    setUniversitiesLoading(false, { preserveResults: true });
-                },
-            });
+            const data = await fetchUniversities(apiParams, { onStale: showStaleResult });
             if (data?.__aborted) return;
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
             renderFetchedData(data, { animateResults });

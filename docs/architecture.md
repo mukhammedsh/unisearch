@@ -231,7 +231,7 @@ Implemented in `backend/app/services/ml_scoring.py`:
 The backend can run on a free host that sleeps when idle and needs up to a minute to wake. The frontend softens this without a second data source:
 * **Wake-up probe (`components/backend-wake.js`):** Pages that use the API call `GET /health` once per session window (4 minutes). If the API has not answered after 3.5 seconds, a status banner explains the wait; it retries every 15 seconds up to six probes and asks the active page to refetch once the API recovers.
 * **Service worker (`sw.js`, `javascript/sw-worker.js`):** Stale-while-revalidate for `GET` API reads, including a backend on another origin. The page registers the worker as `sw.js?api=<backend origin>&v=<app version>`, so each release has its own caches. `POST` requests, which carry the visitor profile, are never cached.
-* **Last catalog result (`pages/universities/stale-list-cache.js`):** The catalog list is a `POST`, so the worker cannot hold it. The browser keeps the last four successful results (keyed by a hash, tied to the app version, valid for seven days). When a catalog request takes longer than 1.5 seconds, the saved result is shown until the fresh one arrives. UniFit-sorted lists are not covered.
+* **Last catalog result (`pages/universities/stale-list-cache.js`):** The catalog list is a `POST`, so the worker cannot hold it. The browser keeps the last four successful results (keyed by a hash, tied to the app version, valid for seven days). When a catalog request takes longer than 1.5 seconds, the saved result is shown until the fresh one arrives. UniFit-sorted requests (`POST /universities/ai-sort`) use the same mechanism, and only the ranked list is stored, not its warnings.
 
 ---
 

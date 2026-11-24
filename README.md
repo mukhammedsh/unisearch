@@ -18,6 +18,8 @@ UniSearch is an open-source university discovery catalog for applicants. Browse 
 
 Facts can vary by program, applicant category, and entry cycle. UniSearch keeps those scopes visible where the source data supports them; catalog coverage varies by institution.
 
+The hosted app at [unisearch.web.app](https://unisearch.web.app/) is the primary way to use UniSearch. The code is open so anyone can inspect it, contribute, or run a fork. Running it locally is meant for contributors and for people who host their own copy.
+
 <p align="center">
   <a href="https://unisearch.web.app/"><strong>Open the app</strong></a>
   &nbsp; · &nbsp;
@@ -79,6 +81,8 @@ Use Add or Enter in a score editor to add a report to the profile draft, then Sa
 
 ## Run locally
 
+This section is for contributors and self-hosting; applicants only need the hosted app.
+
 The CI baseline is **Python 3.12** and **Node.js 20**. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) before installing the backend dependencies. Run commands from the repository root.
 
 ### 1. Install dependencies
@@ -131,6 +135,8 @@ The development scripts detect backend/.venv automatically. On Windows, the back
 ## Configuration and deployment
 
 Set backend options in backend/.env. Start with [backend/.env.example](backend/.env.example); defaults and supported settings are defined in [settings.py](backend/app/core/settings.py). Frontend API URLs come from the existing runtime configuration, not hard-coded page addresses.
+
+The hosted app runs on free tiers: Firebase Hosting serves the frontend, a Render web service runs the API, and Upstash provides Redis. The free API instance sleeps when idle and needs up to a minute to wake, so the frontend probes `/health` early, explains the wait, and shows the last catalog result saved in the browser (see [the architecture overview](docs/architecture.md#browser-side-resilience-for-a-sleeping-backend)). Render's 750 free instance hours per month cover one always-on service, so keep other free services out of the same workspace.
 
 Docker Compose starts the backend and Redis; serve the static frontend separately. See [deployment and API security](docs/deployment_security.md) for hosting, reverse-proxy, CORS, and secret-handling guidance. Redis is optional for a basic local setup.
 

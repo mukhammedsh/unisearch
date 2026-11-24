@@ -10,6 +10,7 @@ import {
 import {
   STALE_LIST_AFTER_MS,
   createUniversitiesApiState,
+  fetchUniversitiesAiSort,
   fetchUniversitiesList,
 } from "../../frontend/javascript/pages/universities/api-client.js";
 
@@ -100,6 +101,43 @@ describe("stale-list-cache.js", () => {
     finish();
     assert.deepEqual(await pending, payload("fresh"));
     assert.deepEqual(shown, [payload("last-visit")], "the stale callback fires once");
+  });
+
+  it("covers UniFit-sorted requests and leaves moment-specific warnings out of the saved copy", async () => {
+    const request = { sort: "uni_ai", profile: { interests: "physics" } };
+    global.fetch = async () => ({
+      ok: true,
+      status: 200,
+      async json() { return { ...payload("ranked"), warnings: ["Machine learning unavailable"] }; },
+    });
+    await fetchUniversitiesAiSort(request, { apiState: createUniversitiesApiState() });
+
+    mock.timers.enable({ apis: ["setTimeout"] });
+    let finish;
+    global.fetch = () => new Promise((resolve) => {
+      finish = () => resolve({ ok: true, status: 200, async json() { return { ...payload("fresh-ranked"), warnings: [] }; } });
+    });
+    const shown = [];
+    const pending = fetchUniversitiesAiSort(request, { apiState: createUniversitiesApiState(), onStale: (data) => shown.push(data) });
+
+    mock.timers.tick(STALE_LIST_AFTER_MS);
+    assert.deepEqual(shown, [payload("ranked")]);
+    finish();
+    assert.deepEqual((await pending).items, payload("fresh-ranked").items);
+    assert.equal(shown.length, 1);
+  });
+
+  it("does not offer a saved UniFit list to a different profile", async () => {
+    global.fetch = async () => ({ ok: true, status: 200, async json() { return payload("ranked"); } });
+    await fetchUniversitiesAiSort({ sort: "uni_ai", profile: { interests: "physics" } }, { apiState: createUniversitiesApiState() });
+
+    mock.timers.enable({ apis: ["setTimeout"] });
+    global.fetch = () => new Promise(() => {});
+    const shown = [];
+    fetchUniversitiesAiSort({ sort: "uni_ai", profile: { interests: "biology" } }, { apiState: createUniversitiesApiState(), onStale: (data) => shown.push(data) });
+    mock.timers.tick(STALE_LIST_AFTER_MS * 2);
+
+    assert.deepEqual(shown, []);
   });
 
   it("stays quiet when the backend answers before the slow-request threshold", async () => {
