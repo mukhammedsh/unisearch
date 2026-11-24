@@ -2,9 +2,9 @@
 
 All notable project changes should be recorded here.
 
-## 10.8.1 (2026-11-24) - Split reviewed admissions storage, deploy-time static snapshot, and floating-layer and catalog motion
+## 10.8.1 (2026-11-24) - Split reviewed admissions storage, deploy-time static snapshot, and site motion (floating layers, catalog, transitions)
 
-Patch release: split the monolithic reviewed admissions catalog into a compact index plus lazy-loaded per-institution files to keep backend memory bounded, and add a deploy-time static snapshot pipeline so Firebase Hosting serves public catalog, map, university detail, and campus media reads without waking the sleeping backend. Also start the site-wide motion pass with calm enter/exit motion for floating layers and catalog controls.
+Patch release: split the monolithic reviewed admissions catalog into a compact index plus lazy-loaded per-institution files to keep backend memory bounded, and add a deploy-time static snapshot pipeline so Firebase Hosting serves public catalog, map, university detail, and campus media reads without waking the sleeping backend. Also start the site-wide motion pass with calm enter/exit motion for floating layers, catalog controls, and page transitions.
 
 ### Added
 - Add a stdlib-only deploy-time static snapshot builder (`backend/scripts/build_static_snapshot.py`, `scripts/build-static-snapshot.mjs`, `npm run build:snapshot`) and wire it into `.github/workflows/firebase-hosting.yml`, `firebase.json`, and `scripts/build-firebase-env.mjs` (`APP_STATIC_SNAPSHOT=1`) to export public catalog lists, map metadata, localized per-university detail JSONs (`eng`/`rus`/`kaz`), translation packs, reference configs (`locations`, `exams-config`, `languages-config`), reviewed `study-options`, and credited campus photos (`--include-assets`) into git-ignored `frontend/snapshot/`.
@@ -13,6 +13,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Add calm enter/exit motion to floating layers: native dialogs and popovers (photo viewer, compare program picker, recently viewed) fade out instead of vanishing via a shared `.motion-top-layer` pattern, custom select panels unfold from the edge they are attached to, and tooltips fade in after a short hover intent delay while keyboard focus and neighbouring tooltips open at once (`frontend/css/shared/06-motion-accessibility.css`, `frontend/css/shared/02-shell-settings-feedback.css`, `frontend/javascript/tooltip.js`, `frontend/javascript/pages/universities/compare-reviewed.js`, `frontend/javascript/pages/universities/recently-viewed.js`, `frontend/javascript/pages/university/gallery.js`).
 - Add a design lint rule that reports raw durations and easings in transitions and animations, plus browser coverage for floating-layer motion and its reduced-motion fallback (`scripts/check-design-lint.mjs`, `tests/unit/design-lint.test.mjs`, `tests/e2e/motion-layers.spec.js`).
 - Add catalog motion: dependent filters, the UniFit notice and its preferences panel grow and shrink in height instead of jumping, catalog disclosures open smoothly, list and map views crossfade in place, the compare tray enters and leaves once while only the changed chip animates, and the results count settles with a quiet fade; page-load restores stay instant (`frontend/javascript/utils/motion-reveal.js`, `frontend/javascript/pages/universities/compare-tray-motion.js`, `frontend/javascript/pages/universities/filter-controls.js`, `frontend/javascript/pages/universities/unifit-banner.js`, `frontend/javascript/pages/universities/map-controller.js`, `frontend/css/shared/06-motion-accessibility.css`, `tests/unit/motion-reveal.test.mjs`, `tests/e2e/motion-catalog.spec.js`).
+- Add transition motion: university tabs and comparison steps come in from the side the user moved toward, and opening a university from a catalog card carries the card photo into the page cover through the existing route View Transition (`frontend/javascript/components.js`, `frontend/javascript/pages/compare.js`, `frontend/javascript/components/cover-transition.js`, `frontend/javascript/main.js`, `frontend/javascript/pages/university/gallery.js`, `tests/e2e/motion-transitions.spec.js`).
 
 ### Changed
 - Split `backend/data/admissions/catalog.json` (16.5 MB) into a compact `backend/data/admissions/index.json` (~391 KB) and per-institution files under `backend/data/admissions/institutions/<id>.json` (`backend/app/services/admissions_index.py`, `backend/app/services/admissions_catalog.py`, `backend/scripts/prepare_admissions_catalog.py`, `backend/scripts/audit_universities_data.py`).
@@ -23,6 +24,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 ### Fixed
 - Keep navbar search suggestions filled while they fade out instead of collapsing to an empty panel, and keep an upward-opening select panel leaving toward its trigger instead of jumping below it (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/utils/selects.js`, `frontend/css/shared/08-device-responsive.css`).
 - Stop the compare tray from replaying its entrance on every selection change (`frontend/javascript/pages/universities/compare-controller.js`).
+- Keep the university loading skeleton cover the same height as the real cover at every breakpoint, and stop re-animating every comparison column on each track choice (`frontend/css/university/01-shell-hero.css`, `frontend/javascript/pages/compare.js`).
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 

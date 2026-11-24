@@ -328,6 +328,8 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 - Elements that JS shows or hides inside a column (dependent filters, notices) use `setRevealed()` from `frontend/javascript/utils/motion-reveal.js`: height and opacity grow or shrink, collapsing content is `inert`, and restores on page load pass `{ instant: true }`. `<details>` disclosures opt into `.motion-disclosure` (`::details-content` with `interpolate-size`; other browsers open instantly).
 - View switches (catalog list ↔ map) crossfade the incoming view in place with `fadeIn()`; nothing moves. Changing counts use `setTextWithFade()`.
 - In multi-item containers move only what changed: the compare tray enters and leaves once, a new chip enters on its own, a removed chip fades before the re-render. Card grids never replay their entrance as a side effect.
+- Panel switchers (university tabs, comparison steps) use `.motion-tab-forward` / `.motion-tab-back`: a fade with an 8px offset from the side the user moved toward. Re-rendering the same panel (a choice changed) plays no motion.
+- Opening a university from a catalog card names the card photo and a stand-in in the loading cover `uni-cover` for the router View Transition (`frontend/javascript/components/cover-transition.js`); the gallery replaces the stand-in when the full photo loads. The loading skeleton cover mirrors the real cover box so the swap never changes height. Back navigation keeps the plain fade.
 - `npm run check:design-lint` reports raw durations and easings in `transition`/`animation` declarations (`animation-raw-timing`), including fallbacks such as `var(--motion-fast, 160ms)`.
 
 ## Responsive Rules
