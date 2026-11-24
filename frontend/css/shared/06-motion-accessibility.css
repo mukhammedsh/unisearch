@@ -336,6 +336,14 @@
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
+@keyframes motion-anchored-tray-exit {
+  to { opacity: 0; transform: translateX(-50%) translateY(var(--motion-offset-sm)); }
+}
+
+@keyframes motion-tray-exit-mobile {
+  to { opacity: 0; transform: translateY(var(--motion-offset-sm)); }
+}
+
 @keyframes motion-tray-enter-mobile {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -430,6 +438,7 @@ body[data-page="guide"] {
   .motion-list-item-enter,
   .motion-row-exit,
   .motion-chip-remove,
+  .motion-tray-exit,
   .settings-modal.is-open::backdrop,
   .settings-modal.is-open .settings-card,
   .settings-modal.is-closing::backdrop,

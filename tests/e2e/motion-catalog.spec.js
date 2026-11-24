@@ -1,7 +1,7 @@
 // Catalog motion (stage 2 of docs/superpowers/specs/2026-11-25-motion-system-design.md).
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { setNativeSelect } = require("./helpers/selectors");
-const { expectAnimating, expectInstant, openCatalog } = require("./helpers/motion");
+const { expectAnimating, expectInstant, installMotionRecorder, motionSeen, openCatalog } = require("./helpers/motion");
 
 test("choosing a country with states reveals the state field in height", async ({ page }) => {
   await openCatalog(page, "no-preference");
@@ -82,4 +82,52 @@ test("view switches are instant with reduced motion", async ({ page }) => {
   await expect(page.locator("#viewMapBtn")).toBeEnabled();
   const toMap = await switchViewAndSample(page, "viewMapBtn", "mapStage");
   expect(toMap.properties).toEqual([]);
+});
+
+async function resetMotionLog(page) {
+  await page.evaluate(() => { window.__motionSeen = []; });
+}
+
+async function chipMotionCount(page, className) {
+  return page.evaluate((name) => document.querySelectorAll(`#compareTray .compare-tray__chip.${name}`).length, className);
+}
+
+test("compare tray animates only what changed", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  await page.locator("#compareModeBtn").click();
+  await expect(page.locator("body")).toHaveClass(/universities-compare-mode/);
+  const cards = page.locator("#universitiesList .uni-card:not(.is-skeleton)");
+  await installMotionRecorder(page);
+
+  await cards.nth(0).click();
+  await expect(page.locator("#compareTray")).toBeVisible();
+  await expect.poll(() => motionSeen(page, "motion-panel-enter")).toBe(true);
+  await expect(page.locator("#compareTray")).not.toHaveClass(/motion-panel-enter/);
+
+  await resetMotionLog(page);
+  await cards.nth(1).click();
+  await expect(page.locator("#compareTray .compare-tray__chip")).toHaveCount(2);
+  // Only the new chip enters; the tray itself stays put.
+  expect(await chipMotionCount(page, "motion-list-item-enter")).toBe(1);
+  expect(await motionSeen(page, "motion-panel-enter")).toBe(false);
+
+  await resetMotionLog(page);
+  await cards.nth(1).click();
+  await expect.poll(() => motionSeen(page, "motion-chip-remove")).toBe(true);
+  await expect(page.locator("#compareTray .compare-tray__chip")).toHaveCount(1);
+  expect(await motionSeen(page, "motion-panel-enter")).toBe(false);
+
+  await page.locator('#compareTray [data-action="clear-compare"]').click();
+  await expect.poll(() => motionSeen(page, "motion-tray-exit")).toBe(true);
+  await expect(page.locator("#compareTray")).toBeHidden();
+});
+
+test("compare tray appears and leaves instantly with reduced motion", async ({ page }) => {
+  await openCatalog(page, "reduce");
+  await page.locator("#compareModeBtn").click();
+  const cards = page.locator("#universitiesList .uni-card:not(.is-skeleton)");
+  await cards.nth(0).click();
+  await expect(page.locator("#compareTray")).toBeVisible();
+  await page.locator('#compareTray [data-action="clear-compare"]').click();
+  expect(await page.locator("#compareTray").evaluate((el) => el.hidden)).toBe(true);
 });

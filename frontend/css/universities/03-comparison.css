@@ -21,6 +21,11 @@
   animation: motion-anchored-tray-enter var(--motion-medium) var(--motion-ease-enter) both;
 }
 
+.compare-tray.motion-tray-exit {
+  animation: motion-anchored-tray-exit var(--motion-snappy) var(--motion-ease-exit) forwards;
+  pointer-events: none;
+}
+
 /* Badge */
 
 .compare-tray__badge {

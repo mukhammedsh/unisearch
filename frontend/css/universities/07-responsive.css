@@ -371,6 +371,10 @@
     animation: motion-tray-enter-mobile var(--motion-medium) var(--motion-ease-enter) both;
   }
 
+  .compare-tray.motion-tray-exit {
+    animation-name: motion-tray-exit-mobile;
+  }
+
   .compare-results-head {
     flex-direction: column;
     align-items: stretch;
