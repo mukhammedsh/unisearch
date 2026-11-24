@@ -545,7 +545,6 @@
 
 .compare-picker[open] {
   display: flex;
-  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
 }
 
 .compare-picker::backdrop {

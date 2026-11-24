@@ -72,6 +72,77 @@
   --motion-ring-color: color-mix(in srgb, var(--accent) 34%, transparent);
 }
 
+/* ===== Top-layer motion (opt-in on <dialog> and [popover]) =====
+   Enter timing lives on the open rule, exit timing on the closed rule, so exits are shorter.
+   `display` and `overlay` transition discretely so the layer stays painted while it fades out;
+   browsers without `overlay` support close instantly. */
+.motion-top-layer {
+  opacity: 0;
+  translate: 0 var(--motion-offset-sm);
+  scale: 0.98;
+  transition:
+    opacity var(--motion-snappy) var(--motion-ease-exit),
+    translate var(--motion-snappy) var(--motion-ease-exit),
+    scale var(--motion-snappy) var(--motion-ease-exit),
+    display var(--motion-snappy) allow-discrete,
+    overlay var(--motion-snappy) allow-discrete;
+}
+
+.motion-top-layer--fade {
+  translate: none;
+  scale: none;
+}
+
+.motion-top-layer:is([open], :popover-open, .is-open) {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-enter),
+    translate var(--motion-fast) var(--motion-ease-enter),
+    scale var(--motion-fast) var(--motion-ease-enter),
+    display var(--motion-fast) allow-discrete,
+    overlay var(--motion-fast) allow-discrete;
+}
+
+.motion-top-layer--fade:is([open], :popover-open, .is-open) {
+  translate: none;
+  scale: none;
+}
+
+.motion-top-layer::backdrop {
+  opacity: 0;
+  transition:
+    opacity var(--motion-snappy) var(--motion-ease-exit),
+    display var(--motion-snappy) allow-discrete,
+    overlay var(--motion-snappy) allow-discrete;
+}
+
+.motion-top-layer:is([open], :popover-open, .is-open)::backdrop {
+  opacity: 1;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-enter),
+    display var(--motion-fast) allow-discrete,
+    overlay var(--motion-fast) allow-discrete;
+}
+
+@starting-style {
+  .motion-top-layer:is([open], :popover-open, .is-open) {
+    opacity: 0;
+    translate: 0 var(--motion-offset-sm);
+    scale: 0.98;
+  }
+
+  .motion-top-layer--fade:is([open], :popover-open, .is-open) {
+    translate: none;
+    scale: none;
+  }
+
+  .motion-top-layer:is([open], :popover-open, .is-open)::backdrop {
+    opacity: 0;
+  }
+}
+
 .motion-state-pulse {
   position: relative;
   isolation: isolate;
@@ -328,6 +399,8 @@ body[data-page="guide"] {
     animation: none !important;
   }
 
+  .motion-top-layer,
+  .motion-top-layer::backdrop,
   .global-loading-overlay,
   .custom-options,
   .custom-select-trigger,

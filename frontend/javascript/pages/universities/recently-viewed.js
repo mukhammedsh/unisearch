@@ -86,7 +86,7 @@ export function createRecentlyViewedController({
       </button>
       <div
         id="recentlyViewedPopover"
-        class="u-recent-popover"
+        class="u-recent-popover motion-top-layer"
         popover="auto"
         aria-labelledby="recentlyViewedTitle"
       >

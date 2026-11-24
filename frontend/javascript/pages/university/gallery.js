@@ -233,7 +233,7 @@ export function mountUniversityGallery(cover, universityId) {
     <div class="d-gallery-cover-credit"></div>
     ${navigationHtml()}
     <span class="d-gallery-status sr-only" role="status"></span>`);
-  cover.insertAdjacentHTML("afterend", `<dialog id="${VIEWER_DIALOG_ID}" class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
+  cover.insertAdjacentHTML("afterend", `<dialog id="${VIEWER_DIALOG_ID}" class="d-photo-viewer motion-top-layer motion-top-layer--fade" closedby="any" aria-label="${escapeHtmlAttr(label)}">
       ${galleryButton("close", "arrow-left", t("common.close", "Close"))}
       <div class="d-gallery-viewer-credit"></div>
       <div class="d-photo-zoom-controls">

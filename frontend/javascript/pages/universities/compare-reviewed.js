@@ -418,7 +418,7 @@ function loadingHtml() {
 
 function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   const dialog = document.createElement("dialog");
-  dialog.className = "compare-picker";
+  dialog.className = "compare-picker motion-top-layer";
   dialog.setAttribute("closedby", "any");
   dialog.setAttribute("aria-labelledby", labelledBy);
   if (!("closedBy" in HTMLDialogElement.prototype)) {
