@@ -230,7 +230,7 @@ function evaluateTuitionFilter(card, catalogCosts, { minTuition, maxTuition, cos
   if (!range || !quote) return { matched: false };
 
   const currency = String(quote.currency || "USD").trim().toUpperCase();
-  let filterMatch = "full";
+  let filterMatch;
   if (Array.isArray(quote.intervals) && quote.intervals.length || Array.isArray(quote.amounts) && quote.amounts.length) {
     const rawRanges = Array.isArray(quote.intervals) && quote.intervals.length
       ? quote.intervals
