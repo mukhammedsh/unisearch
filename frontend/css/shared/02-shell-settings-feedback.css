@@ -1103,14 +1103,38 @@ select:not(.u-select-hidden) {
   overflow-y: auto;
   overscroll-behavior-y: contain;
   padding: var(--space-1);
+  /* The panel unfolds from the trigger edge it is attached to; the closed rule carries exit timing. */
+  opacity: 0;
+  scale: 1 0.96;
+  transform-origin: top center;
+  pointer-events: none;
+  transition:
+    opacity var(--motion-instant) var(--motion-ease-exit),
+    scale var(--motion-instant) var(--motion-ease-exit),
+    display var(--motion-instant) allow-discrete;
 }
 
 .custom-select-wrapper.open .custom-options {
   display: block;
+  opacity: 1;
+  scale: 1;
+  pointer-events: auto;
+  transition:
+    opacity var(--motion-snappy) var(--motion-ease-enter),
+    scale var(--motion-snappy) var(--motion-ease-enter),
+    display var(--motion-snappy) allow-discrete;
+}
+
+@starting-style {
+  .custom-select-wrapper.open .custom-options {
+    opacity: 0;
+    scale: 1 0.96;
+  }
 }
 
 .custom-select-wrapper.open-up .custom-options {
   inset-block: auto 100%;
+  transform-origin: bottom center;
 }
 
 .custom-select-wrapper:not(.custom-select-wrapper--language, .open-up) .custom-options {

@@ -72,3 +72,50 @@ test("photo viewer dialog closes instantly with reduced motion", async ({ page }
   const sample = await closeAndSample(viewer);
   expect(sample).toEqual({ open: false, display: "none", animations: 0 });
 });
+
+async function openCatalog(page, reducedMotion) {
+  await page.emulateMedia({ reducedMotion });
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+  });
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+}
+
+function sortSelect(page) {
+  const wrapper = page.locator(".custom-select-wrapper").filter({ has: page.locator("#sortSelect") });
+  return {
+    wrapper,
+    trigger: wrapper.locator(".custom-select-trigger"),
+    panel: wrapper.locator(".custom-options"),
+  };
+}
+
+test("catalog select unfolds with motion and survives a rapid reopen", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  const { trigger, panel } = sortSelect(page);
+  await trigger.click();
+  await expectAnimating(panel);
+
+  // Close and reopen inside one frame: the panel must end open, opaque and interactive.
+  await trigger.evaluate((button) => { button.click(); button.click(); });
+  await expect(panel).toBeVisible();
+  await expect.poll(() => panel.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+  await expect(panel.locator(".custom-option").first()).toBeVisible();
+  await expect(panel).toHaveCSS("pointer-events", "auto");
+
+  await page.keyboard.press("Escape");
+  await expect(panel).toHaveCSS("pointer-events", "none");
+  await expect(panel).toBeHidden();
+});
+
+test("catalog select opens and closes instantly with reduced motion", async ({ page }) => {
+  await openCatalog(page, "reduce");
+  const { trigger, panel } = sortSelect(page);
+  await trigger.click();
+  await expectInstant(panel);
+  await page.keyboard.press("Escape");
+  const display = await panel.evaluate((el) => getComputedStyle(el).display);
+  expect(display).toBe("none");
+});
