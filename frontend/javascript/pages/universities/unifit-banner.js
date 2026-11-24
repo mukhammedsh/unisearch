@@ -14,6 +14,7 @@ import { translateProgramName } from "../../university-translations.js";
 import { cleanDecoratedText, renderInlineIcon } from "../_shared.js";
 import { describeRankingProfile, legendEntries } from "./unifit-explanation.js";
 import { hasProfileEvidence } from "./query-state.js";
+import { setRevealed } from "../../utils/motion-reveal.js";
 
 /**
  * Manage the UniFit ranking banner, preferences shortcut, and localized AI sort label.
@@ -54,14 +55,21 @@ export function createUnifitBannerController({ el, state }) {
             : "";
     };
 
+    // The first paint after load places the banner without motion; later changes grow or shrink it.
+    let bannerMotionReady = false;
+    const revealBanner = (visible) => {
+        setRevealed(el.unifitWarningBanner, visible, { instant: !bannerMotionReady });
+        bannerMotionReady = true;
+    };
+
     const update = () => {
         if (!el.unifitWarningBanner) return;
         if (state.sort !== "uni_ai") {
-            el.unifitWarningBanner.hidden = true;
+            revealBanner(false);
             return;
         }
         if (dismissed) {
-            el.unifitWarningBanner.hidden = true;
+            revealBanner(false);
             return;
         }
         // The banner states which profile answers the ranking uses, so the list never looks unexplained.
@@ -83,31 +91,27 @@ export function createUnifitBannerController({ el, state }) {
             el.unifitBannerEdit.textContent = t(parts.length || hasEvidence ? "universities.ux2.banner.edit" : "universities.ux2.banner.set_up");
             el.unifitBannerEdit.setAttribute("href", routeProfile());
         }
-        el.unifitWarningBanner.hidden = false;
+        revealBanner(true);
         refreshLegend();
     };
 
     const resetDismissed = () => {
         dismissed = false;
-        if (el.unifitWarningBanner) {
-            el.unifitWarningBanner.hidden = true;
-        }
+        if (el.unifitWarningBanner) setRevealed(el.unifitWarningBanner, false, { instant: true });
     };
 
     const bindEvents = () => {
         applyAISortOptionLabel();
         dismissHandler = () => {
             dismissed = true;
-            if (el.unifitWarningBanner) {
-                el.unifitWarningBanner.hidden = true;
-            }
+            if (el.unifitWarningBanner) revealBanner(false);
         };
         prefsHandler = () => {
             if (window.innerWidth <= 1024 && el.mobileFilterToggle && !el.sidebar?.classList.contains("is-open")) {
                 el.mobileFilterToggle.click();
             }
             if (el.unifitPrefsPanel) {
-                el.unifitPrefsPanel.hidden = false;
+                setRevealed(el.unifitPrefsPanel, true);
                 el.unifitPrefsPanel.open = true;
                 el.unifitPrefsPanel.scrollIntoView({ block: "nearest", behavior: "smooth" });
             }

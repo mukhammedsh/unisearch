@@ -141,9 +141,45 @@
   }
 }
 
+/* Opt-in <details> disclosure that grows and shrinks; browsers without ::details-content or
+   interpolate-size open and close instantly. */
+@supports selector(::details-content) {
+  .motion-disclosure {
+    interpolate-size: allow-keywords;
+  }
+
+  .motion-disclosure::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+    transition:
+      block-size var(--motion-snappy) var(--motion-ease-exit),
+      opacity var(--motion-snappy) var(--motion-ease-exit),
+      content-visibility var(--motion-snappy) allow-discrete;
+  }
+
+  .motion-disclosure[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+    transition:
+      block-size var(--motion-fast) var(--motion-ease-enter),
+      opacity var(--motion-fast) var(--motion-ease-enter),
+      content-visibility var(--motion-fast) allow-discrete;
+  }
+}
+
 /* Set by utils/motion-reveal.js while an element grows or shrinks in height. */
 .motion-revealing {
   overflow: clip;
+}
+
+/* Kept apart from the shared reduced-motion list: an unknown pseudo-element would void that whole rule. */
+@media (prefers-reduced-motion: reduce) {
+  @supports selector(::details-content) {
+    .motion-disclosure::details-content {
+      transition: none !important;
+    }
+  }
 }
 
 .motion-state-pulse {

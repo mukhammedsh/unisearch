@@ -16,6 +16,7 @@ import {
     getPreferredCurrency,
 } from "../../currency.js";
 import { buildFilterResetPatch } from "./filter-reset.js";
+import { setRevealed } from "../../utils/motion-reveal.js";
 import {
     clampPercent,
     clampTuition,
@@ -111,6 +112,10 @@ export function createFilterControls({
     let citiesLoadedHandler = null;
     let mobileFilterKeydownHandler = null;
     let initialPrefsSyncDone = false;
+    // Restoring filters on load, after cities arrive or on a language change must not animate;
+    // only changes the user makes after that do.
+    let revealMotionReady = false;
+    const reveal = (node, visible, options = {}) => setRevealed(node, visible, { ...options, instant: !revealMotionReady });
 
     const countActiveTradeoffs = () => TRADEOFF_CONFIGS.reduce(
         (acc, config) => acc + (clampPercent(state[config.sliderKey], 50) !== 50 ? 1 : 0),
@@ -247,11 +252,11 @@ export function createFilterControls({
         }
         if (el.sortAiTagsHint) {
             const showAiTagsHint = state.sort !== "uni_ai";
-            el.sortAiTagsHint.style.display = showAiTagsHint ? "" : "none";
+            reveal(el.sortAiTagsHint, showAiTagsHint, { mode: "display" });
             el.sortAiTagsHint.setAttribute("aria-hidden", showAiTagsHint ? "false" : "true");
         }
         if (el.unifitPrefsPanel) {
-            el.unifitPrefsPanel.hidden = state.sort !== "uni_ai";
+            reveal(el.unifitPrefsPanel, state.sort === "uni_ai");
         }
         updateUnifitPrefsCount();
         if (!el.sliderContainer) return;
@@ -304,16 +309,16 @@ export function createFilterControls({
         if (!el.stateDiv) return;
         const countryData = CITY_OPTIONS_BY_COUNTRY[country];
         if (!country || !countryData) {
-            el.stateDiv.style.display = "none";
+            reveal(el.stateDiv, false, { mode: "display" });
             updateCityDropdown([]);
             return;
         }
         if (Array.isArray(countryData)) {
-            el.stateDiv.style.display = "none";
+            reveal(el.stateDiv, false, { mode: "display" });
             updateCityDropdown(countryData);
             return;
         }
-        el.stateDiv.style.display = "block";
+        reveal(el.stateDiv, true, { mode: "display", display: "block" });
         const states = Object.keys(countryData).sort((a, b) => a.localeCompare(b));
         el.stateSelect.innerHTML = `<option value="">${escapeHtml(t("universities.any_state", "Any State"))}</option>`;
         states.forEach((s) => {
@@ -396,14 +401,25 @@ export function createFilterControls({
     };
 
     const initLocations = () => {
+        revealMotionReady = false;
         updateCountryOptions();
         if (state.country) {
             applySelectedCountryCascade();
         }
         applyToForm();
+        revealMotionReady = true;
     };
 
     const refreshLocationFilterLabels = () => {
+        revealMotionReady = false;
+        try {
+            refreshLocationFilterLabelsNow();
+        } finally {
+            revealMotionReady = true;
+        }
+    };
+
+    const refreshLocationFilterLabelsNow = () => {
         updateCountryOptions();
         if (!state.country) {
             if (el.countrySelect) el.countrySelect.value = "";
@@ -425,7 +441,7 @@ export function createFilterControls({
         }));
         if (persistAndFetch) saveFilters(state);
         applyToForm();
-        if (el.stateDiv) el.stateDiv.style.display = "none";
+        if (el.stateDiv) reveal(el.stateDiv, false, { mode: "display" });
         updateCityDropdown([]);
         updateSliderVisibility();
         updateMobileFilterUi();

@@ -43,7 +43,12 @@ function ignoreCancel(error) {
  * @returns {boolean}
  */
 function isShown(node, options) {
-  return options.mode === "display" ? node.style.display !== "none" : !node.hidden;
+  if (options.mode !== "display") return !node.hidden;
+  // Stylesheets may hide the element before any inline display is set (e.g. `.u-field--state`).
+  const computed = typeof window.getComputedStyle === "function" && node instanceof window.HTMLElement
+    ? window.getComputedStyle(node).display
+    : node.style.display;
+  return computed !== "none";
 }
 
 /**
