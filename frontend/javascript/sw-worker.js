@@ -1,9 +1,19 @@
-const SW_VERSION = "2026-11-19-1";
+const SW_VERSION = "2026-11-24-1";
 const CACHE_PREFIX = "unisearch";
 
-const IMAGE_CACHE = `${CACHE_PREFIX}-images-${SW_VERSION}`;
-const API_CACHE = `${CACHE_PREFIX}-api-${SW_VERSION}`;
-const STATIC_CACHE = `${CACHE_PREFIX}-static-${SW_VERSION}`;
+// The page registers this worker as sw.js?api=<backend origin>&v=<app version>.
+// `api` lets the worker cache a backend hosted on another origin (production uses one);
+// `v` gives every release its own caches, so a stale response never outlives the frontend that expects it.
+const REGISTRATION_PARAMS = new URLSearchParams(String(self.location?.search || ""));
+const API_ORIGIN = parseHttpOrigin(REGISTRATION_PARAMS.get("api"));
+const CACHE_VERSION = [SW_VERSION, REGISTRATION_PARAMS.get("v")]
+  .filter(Boolean)
+  .join("-")
+  .replace(/[^\w.-]/g, "_");
+
+const IMAGE_CACHE = `${CACHE_PREFIX}-images-${CACHE_VERSION}`;
+const API_CACHE = `${CACHE_PREFIX}-api-${CACHE_VERSION}`;
+const STATIC_CACHE = `${CACHE_PREFIX}-static-${CACHE_VERSION}`;
 
 const MAX_IMAGE_ENTRIES = 260;
 const MAX_API_ENTRIES = 90;
@@ -25,12 +35,23 @@ self.addEventListener("activate", (event) => {
     const keys = await caches.keys();
     await Promise.all(
       keys
-        .filter((key) => key.startsWith(`${CACHE_PREFIX}-`) && !key.endsWith(SW_VERSION))
+        .filter((key) => key.startsWith(`${CACHE_PREFIX}-`) && !key.endsWith(`-${CACHE_VERSION}`))
         .map((key) => caches.delete(key))
     );
     await self.clients.claim();
   })());
 });
+
+function parseHttpOrigin(value) {
+  if (!value) return "";
+  try {
+    const parsed = new URL(value);
+    return /^https?:$/.test(parsed.protocol) ? parsed.origin : "";
+  } catch {
+    // A malformed registration parameter only disables cross-origin API caching.
+    return "";
+  }
+}
 
 function isImageRequest(request, url) {
   const path = url.pathname.toLowerCase();
@@ -64,7 +85,7 @@ function isDocumentOrHtmlRequest(request) {
 function isApiRequest(request, url) {
   if (request.method !== "GET") return false;
   if (!/^https?:$/i.test(url.protocol)) return false;
-  if (url.origin !== self.location.origin) return false;
+  if (url.origin !== self.location.origin && url.origin !== API_ORIGIN) return false;
   if (isDocumentOrHtmlRequest(request)) return false;
   return isKnownApiPath(url.pathname);
 }

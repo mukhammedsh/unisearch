@@ -1,4 +1,5 @@
 import { addFooterProductLinks, loadGlobalLayout, renderErrorScreen } from "./components.js";
+import { wakeBackend } from "./components/backend-wake.js";
 import { classifyError, initNetworkStatusMonitor } from "./components/network-status.js";
 import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensureLanguageConfig, ensureCityDatabase, initGlobalApiLoadingIndicator, frontendStaticAsset, prefersReducedMotion } from "./utils.js";
 import { applyTranslations, initI18n } from "./i18n.js";
@@ -39,10 +40,28 @@ function loadRouteModule(routeName) {
   return routeModulePromises.get(key);
 }
 
+/**
+ * Tells the worker which cross-origin backend to cache and which release it belongs to.
+ * @param {string} scriptPath
+ * @returns {string}
+ */
+function serviceWorkerScriptUrl(scriptPath) {
+  const params = new URLSearchParams();
+  try {
+    const apiOrigin = new URL(API_BASE, window.location.href).origin;
+    if (apiOrigin !== window.location.origin) params.set("api", apiOrigin);
+  } catch (error) {
+    console.warn("Service worker cannot cache the API origin:", error);
+  }
+  if (window.APP_VERSION) params.set("v", window.APP_VERSION);
+  const query = params.toString();
+  return query ? `${scriptPath}?${query}` : scriptPath;
+}
+
 async function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
   try {
-    const swScriptUrl = frontendStaticAsset("sw.js");
+    const swScriptUrl = serviceWorkerScriptUrl(frontendStaticAsset("sw.js"));
     const swScope = frontendStaticAsset("");
     await navigator.serviceWorker.register(swScriptUrl, {
       scope: swScope.endsWith("/") ? swScope : `${swScope}/`,
@@ -80,14 +99,7 @@ function maybeWakeBackend() {
   const last = Number(safeSessionStorage.get(BACKEND_WAKE_PING_KEY, "0") || 0);
   if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
   safeSessionStorage.set(BACKEND_WAKE_PING_KEY, String(now));
-
-  const pingUrl = `${API_BASE}/health?t=${now}`;
-  fetch(pingUrl, {
-    method: "GET",
-    cache: "no-store",
-    keepalive: true,
-    headers: { Accept: "application/json" },
-  }).catch(() => {});
+  wakeBackend().catch((error) => console.warn("Backend wake-up failed:", error));
 }
 
 function getUniversitiesSkeletonCount({ listEl, skeletonEl, limit = 24 } = {}) {
@@ -272,8 +284,11 @@ async function initRoutePage(ctx = currentRouteContext()) {
 
   if (document.body.dataset.page === "error-404") return;
 
-  if (ctx.isComparePage) {
+  if (ctx.isUniversitiesPage || ctx.isComparePage || ctx.isUniversityPage || ctx.isProfilePage || ctx.isGuidePage) {
     maybeWakeBackend();
+  }
+
+  if (ctx.isComparePage) {
     const [module] = await Promise.all([
       loadRouteModule("compare"),
       ensureExamConfig(),
@@ -283,7 +298,6 @@ async function initRoutePage(ctx = currentRouteContext()) {
   }
 
   if (ctx.isUniversitiesPage) {
-    maybeWakeBackend();
     const [module] = await Promise.all([
       loadRouteModule("universities"),
       ensureExamConfig(),

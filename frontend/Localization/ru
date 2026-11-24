@@ -418,6 +418,8 @@ universities.map_popup.loading: Загружаем карточку универ
 universities.map_popup.failed: Не удалось загрузить карточку университета.
 universities.pagination.next: Далее
 universities.pagination.prev: Назад
+universities.pagination.first: Первая страница
+universities.pagination.last: Последняя страница
 universities.reset: Сброс
 universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
@@ -929,10 +931,14 @@ languages.added_value: Добавлен {language} {exam}: {value}
 languages.updated_value: Обновлён {language} {exam}: {value}
 network.offline.banner: Нет подключения к интернету. Работаем в офлайн-режиме.
 network.online.banner: Подключение восстановлено.
+network.waking.banner: Сервер просыпается после паузы. Это может занять до минуты.
+network.ready.banner: Сервер готов.
+network.unavailable.banner: Сервер сейчас не отвечает. Попробуйте ещё раз через несколько минут.
 navbar.search.offline_notice: Поиск недоступен в офлайн-режиме.
 navbar.search.open: Открыть поиск
 navbar.search.back: Назад к навигации
 universities.offline_action_warning: Не удалось обновить каталог без подключения к интернету. Показаны сохраненные результаты.
+universities.stale_refresh_failed: Сервер не ответил. Показаны последние результаты, сохранённые на этом устройстве.
 error.no_connection.title: Нет подключения к интернету
 error.no_connection.desc: Мы не смогли связаться с сервером. Пожалуйста, проверьте подключение и повторите попытку.
 error.server_error.title: Сервер временно недоступен
@@ -984,6 +990,7 @@ privacy.local_storage.li1: Академические баллы (GPA, резу�
 privacy.local_storage.li2: Текстовое описание ваших интересов для подбора рекомендаций.
 privacy.local_storage.li3: Сохраненный шортлист университетов и история недавно просмотренных вузов.
 privacy.local_storage.li4: Пользовательские настройки интерфейса (светлая или темная тема, язык).
+privacy.local_storage.li5: Последние результаты каталога и кэшированные данные университетов, чтобы страницы открывались быстрее, пока сервер просыпается.
 privacy.local_storage.p2: Данные профиля можно удалить кнопкой сброса профиля. Чтобы удалить все данные UniSearch в браузере, очистите хранилище или данные сайта для UniSearch в настройках браузера.
 privacy.google_auth.status_notice: UniSearch сейчас не предоставляет регистрацию, вход в аккаунт или синхронизацию данных между устройствами.
 privacy.google_auth.p1: Google Sign-In / OAuth 2.0 не активен в текущей версии сайта.
@@ -3106,6 +3113,8 @@ university.admissions.key_facts.recommended_english_condition: Не обязат
 university.admissions.key_facts.recommended_english_condition_not_native: Не обязательно: относится к вам, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
 university.admissions.key_facts.recommended_english_native_hint: Английский — ваш родной язык? Укажите это в профиле, и эта строка будет показываться, только когда она к вам относится.
 university.ux2.needs.mark_recommended: Рекомендация, а не требование
+languages.exam_overall_score_label: Общий балл
+languages.exam_overall_score_hint: Общий балл по всему экзамену — можно указать только его, если не знаете баллы по секциям.
 languages.exam_sections_label: Баллы по секциям (если они есть в сертификате)
 profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать
@@ -3360,3 +3369,24 @@ universities.empty.clear_price: Убрать фильтр цены
 universities.state.empty_saved_none: Вы пока ничего не сохранили. Сохраните вуз на его карточке, и он появится здесь.
 profile.unit.per_year: / год
 profile.budget_currency_label: Валюта бюджета
+universities.filter.reviewed_only: Подробные данные приёма
+universities.filter.reviewed_only_hint: Показать вузы с проверенными маршрутами, минимумами и расчётом стоимости
+universities.unifit.prefs_button: Предпочтения
+universities.unifit.prefs_summary: Предпочтения UniFit
+universities.tip.budget_level_needed: {cost} в год в зависимости от уровня обучения. Выберите уровень обучения, чтобы сравнить с вашим бюджетом.
+guide.start.nav: С чего начать
+guide.start.title: Как пользоваться UniSearch за 3 шага
+guide.start.intro: UniSearch помогает изучать официальные программы, минимальные требования, сроки и стоимость обучения без догадок. Каталог можно смотреть сразу без анкеты — или указать свои баллы и бюджет для автоматической сверки.
+guide.start.step1.title: 1. Укажите в Профиле только то, что уже знаете
+guide.start.step1.desc: Выберите уровень обучения, направление, годовой бюджет, средний балл или экзамены (IELTS, SAT, ЕНТ, NUET). Все поля необязательны: пустые поля никогда не считаются провалом.
+guide.start.step2.title: 2. Настройте фильтры и сортировку UniFit
+guide.start.step2.desc: На карточках сразу видны понятные текстовые статусы: подходит ли профиль по минимумам, нужен ли экзамен и укладывается ли цена в бюджет. Ползунки предпочтений UniFit двигайте только если важны наука, конкурс или размер города.
+guide.start.step3.title: 3. Откройте страницу вуза или сравните два вуза
+guide.start.step3.desc: Внутри карточки вуза собраны маршруты подачи, ближайшие дедлайны, структура расходов и прямые ссылки на официальные сайты. В режиме сравнения можно сопоставить два вуза строка к строке.
+guide.start.cta_catalog: Перейти к каталогу
+guide.start.cta_profile: Заполнить профиль
+guide.formula.toggle: Показать точную формулу расчёта
+universities.compare.swap_university: Заменить вуз
+universities.compare.swap_title: Заменить вуз: {name}
+universities.compare.swap_search: Поиск университета...
+universities.compare.swap_empty: В этой группе сравнения подходящих вузов не найдено.

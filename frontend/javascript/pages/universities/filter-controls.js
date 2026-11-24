@@ -110,6 +110,20 @@ export function createFilterControls({
     let mobileFiltersApi = null;
     let citiesLoadedHandler = null;
     let mobileFilterKeydownHandler = null;
+    let initialPrefsSyncDone = false;
+
+    const countActiveTradeoffs = () => TRADEOFF_CONFIGS.reduce(
+        (acc, config) => acc + (clampPercent(state[config.sliderKey], 50) !== 50 ? 1 : 0),
+        0
+    );
+
+    const updateUnifitPrefsCount = () => {
+        const count = countActiveTradeoffs();
+        if (el.unifitPrefsCount) {
+            el.unifitPrefsCount.hidden = count <= 0;
+            el.unifitPrefsCount.textContent = String(count);
+        }
+    };
 
     const updateMobileFilterUi = () => {
         const count = countActiveFilters(state, getCurrentLimits());
@@ -236,6 +250,10 @@ export function createFilterControls({
             el.sortAiTagsHint.style.display = showAiTagsHint ? "" : "none";
             el.sortAiTagsHint.setAttribute("aria-hidden", showAiTagsHint ? "false" : "true");
         }
+        if (el.unifitPrefsPanel) {
+            el.unifitPrefsPanel.hidden = state.sort !== "uni_ai";
+        }
+        updateUnifitPrefsCount();
         if (!el.sliderContainer) return;
         if (state.sort === "uni_ai") {
             el.sliderContainer.style.display = "block";
@@ -347,6 +365,13 @@ export function createFilterControls({
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
         if (el.minInput) el.minInput.value = state.min_tuition;
         if (el.maxInput) el.maxInput.value = state.max_tuition;
+        if (el.reviewedOnlyToggle) el.reviewedOnlyToggle.checked = Boolean(state.only_reviewed);
+        if (!initialPrefsSyncDone) {
+            initialPrefsSyncDone = true;
+            if (el.unifitPrefsPanel && countActiveTradeoffs() > 0) {
+                el.unifitPrefsPanel.open = true;
+            }
+        }
         syncSavedFilterButtons();
 
         fillTrack();
@@ -616,6 +641,10 @@ export function createFilterControls({
             state.cost_basis = $("costBasisSelect").value;
             refetch();
         });
+        el.reviewedOnlyToggle?.addEventListener("change", () => {
+            state.only_reviewed = Boolean(el.reviewedOnlyToggle.checked);
+            refetch();
+        });
 
         TRADEOFF_CONFIGS.forEach((config) => {
             const sliderEl = el[config.sliderProp];
@@ -624,10 +653,12 @@ export function createFilterControls({
             sliderEl.addEventListener("input", () => {
                 state[config.sliderKey] = clampPercent(sliderEl.value, 50);
                 updateTradeoffLabel(labelEl, state[config.sliderKey], config);
+                updateUnifitPrefsCount();
             });
             sliderEl.addEventListener("change", () => {
                 state[config.sliderKey] = clampPercent(sliderEl.value, 50);
                 updateTradeoffLabel(labelEl, state[config.sliderKey], config);
+                updateUnifitPrefsCount();
                 refetch();
             });
         });

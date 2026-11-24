@@ -33,7 +33,12 @@ test.describe("UniFit Tradeoff Sliders Interaction", () => {
     // 5. Switch sort strategy to "UniFit: AI Smart Sort" (uni_ai)
     await setNativeSelect(page, "sortSelect", "uni_ai");
 
-    // 6. Ensure slider container becomes visible
+    // 6. Open the UniFit preferences disclosure and ensure slider container becomes visible
+    const prefsPanel = page.locator("#unifitPreferencesPanel");
+    await expect(prefsPanel).toBeVisible();
+    if (!(await prefsPanel.evaluate((node) => node.open))) {
+      await prefsPanel.locator(":scope > summary").click();
+    }
     await expect(aiSliderContainer).toBeVisible();
 
     // 7. A centred Focus slider means the factor does not matter

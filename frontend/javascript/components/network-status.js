@@ -126,8 +126,20 @@ function ensureBannerElement() {
 }
 
 /**
+ * Banner states. Problem states stay until the state changes; positive ones dismiss themselves.
+ * @type {Record<string, { icon: string, key: string, fallback: string, autoDismiss: boolean }>}
+ */
+const BANNER_STATES = {
+  offline: { icon: "signal-slash", key: "network.offline.banner", fallback: "You are offline. Showing cached workspace data.", autoDismiss: false },
+  online: { icon: "check-circle", key: "network.online.banner", fallback: "Connection restored.", autoDismiss: true },
+  waking: { icon: "clock", key: "network.waking.banner", fallback: "The server is waking up. This can take up to a minute.", autoDismiss: false },
+  unavailable: { icon: "exclamation-triangle", key: "network.unavailable.banner", fallback: "The server is not responding right now. Please try again in a few minutes.", autoDismiss: false },
+  ready: { icon: "check-circle", key: "network.ready.banner", fallback: "The server is ready.", autoDismiss: true },
+};
+
+/**
  * Shows the network status banner.
- * @param {'offline' | 'online'} status
+ * @param {'offline' | 'online' | 'waking' | 'unavailable' | 'ready'} status
  */
 export function showNetworkStatusBanner(status) {
   const banner = ensureBannerElement();
@@ -138,15 +150,14 @@ export function showNetworkStatusBanner(status) {
     dismissTimer = 0;
   }
 
-  const isOfflineStatus = status === "offline";
-  banner.classList.remove("network-status-banner--offline", "network-status-banner--online");
-  banner.classList.add(isOfflineStatus ? "network-status-banner--offline" : "network-status-banner--online");
+  const stateName = Object.hasOwn(BANNER_STATES, status) ? status : "online";
+  const state = BANNER_STATES[stateName];
+  banner.classList.remove(...Object.keys(BANNER_STATES).map((name) => `network-status-banner--${name}`));
+  banner.classList.add(`network-status-banner--${stateName}`);
 
-  const iconName = isOfflineStatus ? "signal-slash" : "check-circle";
+  const iconName = state.icon;
   const iconClass = "ui-icon ui-icon--16";
-  const text = isOfflineStatus
-    ? t("network.offline.banner", "You are offline. Showing cached workspace data.")
-    : t("network.online.banner", "Connection restored.");
+  const text = t(state.key, state.fallback);
 
   const iconSpan = document.createElement("span");
   iconSpan.className = "network-status-banner__icon";
@@ -162,7 +173,7 @@ export function showNetworkStatusBanner(status) {
   // Trigger smooth enter animation
   banner.classList.add("is-visible");
 
-  if (!isOfflineStatus) {
+  if (state.autoDismiss) {
     dismissTimer = window.setTimeout(() => {
       dismissTimer = 0;
       banner.classList.remove("is-visible");

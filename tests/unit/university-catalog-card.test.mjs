@@ -254,14 +254,19 @@ test("reviewed cards name what to add, how many programs match and which prefere
   assert.equal(indicators[2].detail, "Close to your settings: focus.");
 });
 
-test("a price that depends on fee status asks for the fee status instead of hiding the budget", () => {
+test("a price that depends on fee status or study level asks to narrow scope instead of hiding the budget", () => {
   setLanguage("eng", { emit: false });
   const [check] = reviewedCardIndicators({ finalScore: 0.4,
     budgetAssessment: { status: "unknown_cost", evidence: "fee_status_unknown", basis: "tuition" },
     costQuote: { minUSD: 13000, maxUSD: 63000 } }, 30000);
   assert.equal(check.legend, "budget_check");
   assert.match(check.detail, /^\$13,000 to \$63,000 a year, depending on your fee status\. Set it on the university page\./);
-  // Without a price or a fee-status reason there is still nothing to compare.
+  const [levelCheck] = reviewedCardIndicators({ finalScore: 0.4,
+    budgetAssessment: { status: "unknown_cost", evidence: "scope_unknown", basis: "annual_total" },
+    costQuote: { minUSD: 9600, maxUSD: 33600 } }, 30000);
+  assert.equal(levelCheck.legend, "budget_check");
+  assert.match(levelCheck.detail, /^\$9,600 – \$33,600 a year depending on study level\. Select a study level to compare against your budget\./);
+  // Without a price or a fee-status/study-level reason there is still nothing to compare.
   assert.deepEqual(reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "unknown_cost" } }, 30000), []);
 });
 

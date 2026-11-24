@@ -87,7 +87,7 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 var(--space-6);
   border-radius: var(--radius-md);
   font-size: var(--text-base);

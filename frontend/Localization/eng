@@ -415,6 +415,8 @@ universities.map_popup.loading: Loading university card
 universities.map_popup.failed: Could not load the university card.
 universities.pagination.next: Next
 universities.pagination.prev: Prev
+universities.pagination.first: First page
+universities.pagination.last: Last page
 universities.reset: Reset
 universities.empty.reset_filters: Reset filters
 universities.search_placeholder: Search university...
@@ -929,10 +931,14 @@ languages.added_value: Added {language} {exam}: {value}
 languages.updated_value: Updated {language} {exam}: {value}
 network.offline.banner: You are offline. Showing cached workspace data.
 network.online.banner: Connection restored.
+network.waking.banner: The server is waking up after a pause. This can take up to a minute.
+network.ready.banner: The server is ready.
+network.unavailable.banner: The server is not responding right now. Please try again in a few minutes.
 navbar.search.offline_notice: Search is unavailable while offline.
 navbar.search.open: Open search
 navbar.search.back: Back to navigation
 universities.offline_action_warning: Cannot refresh catalog while offline. Showing cached results.
+universities.stale_refresh_failed: The server did not answer. Showing the last results saved on this device.
 error.no_connection.title: No Internet Connection
 error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.
 error.server_error.title: Server Unavailable
@@ -984,6 +990,7 @@ privacy.local_storage.li1: Academic metrics (GPA, test scores such as SAT, ACT, 
 privacy.local_storage.li2: Declared academic fields of interest for personalized recommendations.
 privacy.local_storage.li3: Shortlisted universities and recently viewed history.
 privacy.local_storage.li4: Display preferences (light or dark mode, UI language).
+privacy.local_storage.li5: The last catalog results and cached university data, so pages open faster while the server wakes up.
 privacy.local_storage.p2: You can remove profile data with the profile reset control. To remove all UniSearch data stored in your browser, clear this site's storage or site data in your browser settings.
 privacy.google_auth.status_notice: UniSearch does not currently provide account registration, sign-in, or cross-device synchronization.
 privacy.google_auth.p1: Google Sign-In / OAuth 2.0 is not active in the current release.
@@ -3106,6 +3113,8 @@ university.admissions.key_facts.recommended_english_condition: Not required: the
 university.admissions.key_facts.recommended_english_condition_not_native: Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.
 university.admissions.key_facts.recommended_english_native_hint: Is English your native language? Say so in your profile, and this line will show only when it applies to you.
 university.ux2.needs.mark_recommended: Recommendation, not a requirement
+languages.exam_overall_score_label: Overall score
+languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.
 languages.exam_sections_label: Section scores (if your report shows them)
 profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study
@@ -3360,3 +3369,24 @@ universities.empty.clear_price: Remove the price filter
 universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
 profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
+universities.filter.reviewed_only: Detailed admissions data
+universities.filter.reviewed_only_hint: Show universities with verified route, minimum, and cost breakdowns
+universities.unifit.prefs_button: Preferences
+universities.unifit.prefs_summary: UniFit preferences
+universities.tip.budget_level_needed: {cost} a year depending on study level. Select a study level to compare against your budget.
+guide.start.nav: Getting started
+guide.start.title: How to use UniSearch in 3 steps
+guide.start.intro: UniSearch helps you explore official university programs, admission minimums, deadlines, and costs without guesswork. Browse freely right away, or add your scores and budget for automatic checks.
+guide.start.step1.title: 1. Add what you already know in Profile
+guide.start.step1.desc: Enter your study level, subject, yearly budget, GPA, or exam scores (IELTS, SAT, UNT, NUET). Every field is optional — missing scores never count as a failure.
+guide.start.step2.title: 2. Filter the catalog and sort with UniFit
+guide.start.step2.desc: Cards show plain-language status tags — whether your profile meets minimums, needs an exam, or fits your budget. Adjust UniFit sliders only if research focus, selectivity, or city size matter to you.
+guide.start.step3.title: 3. Check official details or compare two universities
+guide.start.step3.desc: Open any university for routes, deadlines, cost breakdowns, and official source links, or select two universities in Compare mode to view them side by side.
+guide.start.cta_catalog: Browse universities
+guide.start.cta_profile: Set up profile
+guide.formula.toggle: Show exact calculation formula
+universities.compare.swap_university: Change university
+universities.compare.swap_title: Replace {name}
+universities.compare.swap_search: Search university...
+universities.compare.swap_empty: No matching universities in this comparison group.

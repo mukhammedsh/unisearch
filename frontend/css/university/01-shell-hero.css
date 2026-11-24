@@ -339,6 +339,13 @@
   pointer-events: none;
 }
 
+.d-gallery-cover-credit {
+  inset-inline-start: var(--space-16);
+  inset-inline-end: var(--space-3);
+  justify-content: flex-end;
+  text-align: right;
+}
+
 .d-gallery-viewer-credit {
   top: calc(var(--photo-vertical-inset) + var(--space-3));
   inset-inline: calc(var(--space-24) + var(--space-4));
@@ -346,8 +353,11 @@
 
 /* Photo credit: the photo license requires a visible author and license next to the photograph. */
 .d-cover-credit {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   min-width: 0;
+  min-height: 24px;
+  max-width: 100%;
   padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-sm);
   background: var(--media-caption-bg);
@@ -355,7 +365,9 @@
   font-size: var(--text-xs);
   line-height: var(--leading-tight);
   text-decoration: none;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   pointer-events: auto;
 }
 
@@ -435,16 +447,23 @@ a.d-cover-credit:hover {
   width: 62%;
 }
 
+.d-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .d-title {
   margin: 0;
   color: var(--text);
   line-height: 1.2;
   max-width: min(100%, 760px);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   word-break: break-word;
   font-size: clamp(22px, 5vw, 38px);
   font-weight: var(--font-weight-regular);
-  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -455,7 +474,6 @@ a.d-cover-credit:hover {
   align-items: center;
   gap: var(--space-2);
   flex-wrap: wrap;
-  margin-top: var(--space-1-5);
   font-size: var(--text-base);
   color: var(--text-muted);
 }
@@ -494,7 +512,7 @@ a.d-cover-credit:hover {
   font-size: var(--text-sm);
   line-height: 1.45;
   color: var(--muted);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .d-box-text {
@@ -503,104 +521,14 @@ a.d-cover-credit:hover {
   font-weight: var(--font-weight-regular);
 }
 
-.d-kv {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-3) 0;
-}
-
-/* The last row hands its trailing space to the box padding so the gap before the next section is not doubled. */
-.d-kv.d-kv--last {
-  padding-bottom: 0;
-}
-
-.d-kv > span:first-child {
-  color: var(--muted);
-  font-weight: var(--font-weight-regular);
-  flex: 1 1 55%;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.d-kv > span:last-child {
-  color: var(--text);
-  font-weight: var(--font-weight-regular);
-  text-align: right;
-  flex: 1 1 45%;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.d-kv-value {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-1);
-}
-
-.d-fact-source {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--leading-normal);
-}
-
-.d-fact-source a {
-  color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: var(--space-1);
-}
-
-/* The source scope stays collapsed so a row shows only the link and check date until the reader asks for it. */
-.d-fact-scope {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-2);
-}
-
-.d-fact-scope > summary {
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  cursor: pointer;
-  list-style: none;
-}
-
-.d-fact-scope > summary::-webkit-details-marker {
-  display: none;
-}
-
-.d-fact-scope > summary:hover {
-  color: var(--text);
-}
-
-.d-rank-emphasis {
-  color: var(--text);
-  font-weight: var(--font-weight-regular);
-}
-
-.d-kv-label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
 :is(.d-kv-label, .d-kv):has(.d-info-wrap:is(:hover, :focus-within, .is-open, .is-closed, .is-closing)) {
   position: relative;
   z-index: var(--z-dropdown);
 }
 
 .d-info {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: var(--radius-md);
 }
 
@@ -775,11 +703,13 @@ a.d-cover-credit:hover {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Tabs that do not fit scroll sideways. The previous/next buttons sit over the bar edges, so they take no width. */
+/* Tabs that do not fit scroll sideways; previous/next buttons occupy their own grid columns so they never overlap tabs. */
 .d-tabs-nav {
   position: relative;
   min-width: 0;
   scroll-margin-top: var(--space-20);
+  background: var(--card);
+  border-bottom: 1px solid var(--line-faint);
 }
 
 .d-tabs-nav > button {
@@ -788,34 +718,41 @@ a.d-cover-credit:hover {
 
 .d-tabs-nav > .d-tabs {
   min-width: 0;
-  scroll-padding-inline: var(--space-12);
+  scroll-padding-inline: var(--space-4);
+}
+
+.d-tabs-nav[data-scrollable] {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+}
+
+.d-tabs-nav[data-scrollable] > [data-tabs-previous] {
+  grid-column: 1;
+}
+
+.d-tabs-nav[data-scrollable] > .d-tabs {
+  grid-column: 2;
+}
+
+.d-tabs-nav[data-scrollable] > [data-tabs-next] {
+  grid-column: 3;
 }
 
 .d-tabs-nav[data-scrollable] > button {
-  position: absolute;
-  inset-block: 0;
-  z-index: 2;
+  position: static;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-12);
+  width: var(--space-10);
+  min-height: 44px;
   padding: 0;
   border-radius: 0;
   box-shadow: none;
+  background: var(--card);
   color: var(--text);
   cursor: pointer;
   transition: opacity var(--motion-fast) var(--motion-ease-standard);
-}
-
-/* The bar's own colour fills the button and fades into the labels, so an arrow never sits on top of readable text. */
-.d-tabs-nav > [data-tabs-previous] {
-  inset-inline-start: 0;
-  background: linear-gradient(to right, var(--card) 60%, transparent);
-}
-
-.d-tabs-nav > [data-tabs-next] {
-  inset-inline-end: 0;
-  background: linear-gradient(to left, var(--card) 60%, transparent);
 }
 
 /* An edge with nothing more to reveal drops its button; it stays in the tree so the edges never shift. */
@@ -875,7 +812,7 @@ a.d-cover-credit:hover {
   min-width: 0;
   width: 100%;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: nowrap;
   gap: var(--space-3);
@@ -1014,6 +951,14 @@ body[data-page="university"],
     padding: 0 var(--space-3);
   }
 
+  .d-gallery-cover-credit {
+    inset-inline-start: calc(var(--space-16) + var(--space-2));
+  }
+
+  .d-cover-credit {
+    min-height: 36px;
+  }
+
   .d-loading-cover {
     height: 210px;
   }
@@ -1024,6 +969,11 @@ body[data-page="university"],
 
   .d-cover {
     aspect-ratio: 16 / 9;
+  }
+
+  .d-info {
+    width: 36px;
+    height: 36px;
   }
 
   .d-head {
@@ -1095,19 +1045,6 @@ body[data-page="university"],
   .d-box {
     padding: var(--space-4);
   }
-
-  .d-kv {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
-  }
-
-  .d-kv > span:first-child,
-  .d-kv > span:last-child {
-    flex: 0 0 100%;
-    width: 100%;
-    text-align: left;
-  }
 }
 
 @media (max-width: 768px), (max-height: 480px) {
@@ -1125,6 +1062,18 @@ body[data-page="university"],
     min-height: 0;
     height: clamp(174px, 54vw, 230px);
     aspect-ratio: auto;
+  }
+
+  .d-cover-credit {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    line-height: var(--leading-tight);
+    text-align: left;
+    white-space: normal;
   }
 
   .d-head {

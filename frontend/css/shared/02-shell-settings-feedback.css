@@ -6,7 +6,7 @@
   left: 0;
   right: 0;
 
-  height: 72px;
+  height: var(--nav-height);
   width: 100%;
 
   display: flex;
@@ -16,28 +16,31 @@
   padding: 0 var(--space-6);
   box-sizing: border-box;
 
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-sm);
+  background: var(--surface);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-faint);
+  box-shadow: var(--shadow-xs);
   z-index: var(--z-nav);
   view-transition-name: main-navbar;
 }
 
 .navbar-left,
-
-.navbar-right{
+.navbar-right {
   display: flex;
   align-items: center;
+  gap: var(--space-2);
 }
 
 .navbar-logo-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  min-height: 40px;
 }
 
 .lang-control {
   display: flex;
   align-items: center;
-  margin-right: var(--space-2);
 }
 
 .logo{
@@ -126,10 +129,6 @@
   background: var(--accent-panel);
   box-shadow: var(--shadow-sm);
   color: var(--interaction-active-text);
-}
-
-.settings-trigger-btn {
-  margin-right: var(--space-2);
 }
 
 .navbar-right .lang-control .custom-select-trigger::after {
@@ -579,8 +578,10 @@
 }
 
 .settings-close {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
   border-radius: var(--radius-md);
   background: var(--surface-soft);
   color: var(--text-muted);
@@ -944,10 +945,10 @@
   color: inherit;
   opacity: 0.72;
   padding: 0;
-  min-width: 24px;
-  min-height: 24px;
-  width: 28px;
-  height: 28px;
+  min-width: 36px;
+  min-height: 36px;
+  width: 36px;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1278,7 +1279,8 @@ select:not(.u-select-hidden) {
 /* Footer block: slim single-line footer, vertical rhythm owned by .site-footer only */
 .site-footer {
     background: var(--surface);
-    padding: var(--space-3) 0;
+    border-top: 1px solid var(--line-faint);
+    padding: var(--space-4) 0;
     margin-top: auto;
     width: 100%;
     flex-shrink: 0;
@@ -1324,9 +1326,10 @@ select:not(.u-select-hidden) {
 }
 
 .footer-legal-links {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-1-5) var(--space-3);
 }
 
 .footer-legal-links a {

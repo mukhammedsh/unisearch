@@ -27,7 +27,7 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 - Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
 - Spacing uses shared `--space-*` primitives from 1px to 96px and semantic aliases (`--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, `--component-card-gap`, and `--component-control-gap`) for repeated roles and responsive changes.
-- Accent: `--accent` (`#5D17EB`, shared by light and dark themes, reserved for solid fills and indicators), `--accent-text` (`#5D17EB` light / `#a78bfa` dark, for foreground text and icons), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel` (all automatically derived via `color-mix(in srgb, var(--accent) ...)`). Browser chrome reads `--accent` through `theme-init.js`; external SVG logos mirror it with their fill value because they do not inherit CSS custom properties.
+- Accent: `--accent` (`#4F46E5` light / `#5850EC` dark, reserved for solid fills and indicators), `--accent-text` (`#4338CA` light / `#A5B4FC` dark, for foreground text and icons), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel`. Browser chrome reads `--accent` through `theme-init.js`; external SVG logos mirror `#4F46E5` (`whitelogo.svg`, `minilogo.svg`) and `#818CF8` (`darklogo.svg`) because they do not inherit CSS custom properties.
 - Interaction states: `--interaction-hover-text`, `--interaction-hover-surface`, `--interaction-active-text`, `--interaction-active-surface`, and `--interaction-disabled-opacity`. Reusable links, tabs, buttons, and icon controls must use these tokens instead of choosing local hover or selected colors. Semantic danger, warning, and success controls keep their matching status tokens.
 - Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`, plus context-scoped `--control-bg` and `--control-shadow` (defaulting to `--surface-soft` / `--shadow-micro` on `--surface-solid` and flipping automatically to `--surface-solid` / `--shadow-xs` inside soft containers).
 - Text: `--text`, `--text-muted`.
@@ -46,24 +46,25 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 
 | Semantic Token | Light (`:root`) | Dark (`:root[data-theme="dark"]`) | Purpose |
 | :--- | :--- | :--- | :--- |
-| `--bg` | `#f4f5f7` | `#0c0d0e` | Page body background |
-| `--bg-soft` | `#edf0f4` | `#141517` | Toolbar, filter bar, secondary background |
-| `--surface-solid` (`--card`) | `#ffffff` | `#18191b` | Main cards, modals, lists, dropdown panels |
-| `--surface` | `rgba(255, 255, 255, 0.88)` | `rgba(24, 25, 27, 0.88)` | Translucent header, floating docked bars |
-| `--surface-soft` | `#f1f3f7` | `#222427` | Form inputs, chip/tag pills, table row hover |
-| `--text` | `#111827` | `#f3f4f6` | Primary high-contrast typography |
-| `--text-muted` | `#5f6b7d` | `#94a3b8` | Secondary labels, descriptions, captions |
-| `--line` | `rgba(15, 23, 42, 0.20)` | `rgba(255, 255, 255, 0.20)` | Focus ring or structural separator, never a default component box |
-| `--line-strong` | `rgba(15, 23, 42, 0.30)` | `rgba(255, 255, 255, 0.30)` | Prominent structural separator or non-box state ring |
-| `--line-faint` | `rgba(15, 23, 42, 0.10)` | `rgba(255, 255, 255, 0.10)` | Subtle separator where whitespace alone cannot express structure |
-| `--accent` | `#5D17EB` | `#5D17EB` | Primary action button fill, active indicator, focus ring (exact logo brand purple) |
-| `--accent-text` | `#5D17EB` | `#a78bfa` | Accent foreground text and icons on light or dark surfaces |
-| `--accent-soft` | `color-mix(var(--accent) 12%)` | `color-mix(var(--accent) 18%)` | Active row highlight, soft badge background |
-| `--color-success` | `#15803d` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA 5.02:1) |
+| `--bg` | `#F5F6F8` | `#0B0C0E` | Page body background |
+| `--bg-soft` | `#ECEEF3` | `#111317` | Toolbar, filter bar, secondary background |
+| `--surface-solid` (`--card`) | `#FFFFFF` | `#15181D` | Main cards, modals, lists, dropdown panels |
+| `--surface` | `rgba(255, 255, 255, 0.90)` | `rgba(21, 24, 29, 0.88)` | Translucent header, floating docked bars |
+| `--surface-soft` | `#ECEFF4` | `#20242B` | Form inputs, chip/tag pills, nested controls |
+| `--text` | `#111827` | `#F3F4F6` | Primary high-contrast typography |
+| `--text-muted` | `#525D70` | `#9AA4B4` | Secondary labels, descriptions, captions |
+| `--interaction-hover-surface` | `#E6E9F0` | `#282C34` | Neutral hover fill without accent color stain |
+| `--line` | `rgba(15, 23, 42, 0.16)` | `rgba(255, 255, 255, 0.16)` | Focus ring or structural separator, never a default component box |
+| `--line-strong` | `rgba(15, 23, 42, 0.28)` | `rgba(255, 255, 255, 0.28)` | Prominent structural separator or non-box state ring |
+| `--line-faint` | `rgba(15, 23, 42, 0.08)` | `rgba(255, 255, 255, 0.08)` | Subtle separator where whitespace alone cannot express structure |
+| `--accent` | `#4F46E5` | `#5850EC` | Primary action button fill, active indicator, focus ring |
+| `--accent-text` | `#4338CA` | `#A5B4FC` | Accent foreground text and icons on light or dark surfaces |
+| `--accent-soft` | `color-mix(in oklab, var(--accent) 12%, transparent)` | `color-mix(in oklab, var(--accent) 22%, transparent)` | Active row highlight, soft badge background |
+| `--color-success` | `#166534` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA >= 6.1:1 on light soft/subtle surfaces) |
 | `--color-success-bg` | `#f0fdf4` | `rgba(16, 185, 129, 0.14)` | Success badge/banner background |
-| `--color-warning` | `#b45309` | `#fde68a` | Alert note, partial match, impending deadline |
+| `--color-warning` | `#92400e` | `#fde68a` | Alert note, partial match, impending deadline (WCAG AA >= 6.1:1 on light soft/subtle surfaces) |
 | `--color-warning-bg` | `#fff7ed` | `rgba(245, 158, 11, 0.12)` | Warning badge/banner background |
-| `--color-danger` | `#dc2626` | `#fca5a5` | Critical error, missing requirement, closed |
+| `--color-danger` | `#B91C1C` | `#fca5a5` | Critical error, missing requirement, closed (WCAG AA >= 5.6:1 on light soft/danger surfaces) |
 | `--color-danger-bg` | `#fef2f2` | `rgba(239, 68, 68, 0.14)` | Error badge/banner background |
 | `--color-info` | `#1d4ed8` | `#93c5fd` | Informational note, exam group badge |
 | `--color-info-bg` | `#eff6ff` | `rgba(59, 130, 246, 0.14)` | Info badge/banner background |

@@ -60,6 +60,7 @@
           <nav class="guide-nav" id="guideNav" aria-label="Guide navigation" data-i18n-aria-label="guide.nav_aria">
           <div class="guide-nav-group" data-guide-group="unifit">
             <h2 class="guide-nav-title" data-i18n="guide.group.discovery">Discovery &amp; comparison</h2>
+            <a href="#guide-start" class="is-active" data-i18n="guide.start.nav">Getting started</a>
             <a href="#guide-unifit" data-ai-template="{fit}">UniFit</a>
             <a href="#guide-ml" data-i18n="guide.nav.interests">Interests</a>
             <a href="#guide-unichance" data-ai-template="{chance}">minimum requirements match</a>
@@ -85,13 +86,41 @@
       </aside>
 
       <div class="guide-content">
+        <section id="guide-start" class="guide-section">
+          <h2 data-i18n="guide.start.title">How to use UniSearch in 3 steps</h2>
+          <div class="guide-doc">
+            <p data-i18n="guide.start.intro">UniSearch helps you explore official university programs, admission minimums, deadlines, and costs without guesswork. Browse freely right away, or add your scores and budget for automatic checks.</p>
+            <div class="guide-steps">
+              <div class="guide-step-card">
+                <h3 data-i18n="guide.start.step1.title">1. Add what you already know in Profile</h3>
+                <p data-i18n="guide.start.step1.desc">Enter your study level, subject, yearly budget, GPA, or exam scores (IELTS, SAT, UNT, NUET). Every field is optional — missing scores never count as a failure.</p>
+              </div>
+              <div class="guide-step-card">
+                <h3 data-i18n="guide.start.step2.title">2. Filter the catalog and sort with UniFit</h3>
+                <p data-i18n="guide.start.step2.desc">Cards show plain-language status tags — whether your profile meets minimums, needs an exam, or fits your budget. Adjust UniFit sliders only if research focus, selectivity, or city size matter to you.</p>
+              </div>
+              <div class="guide-step-card">
+                <h3 data-i18n="guide.start.step3.title">3. Check official details or compare two universities</h3>
+                <p data-i18n="guide.start.step3.desc">Open any university for routes, deadlines, cost breakdowns, and official source links, or select two universities in Compare mode to view them side by side.</p>
+              </div>
+            </div>
+            <div class="guide-start-actions">
+              <a class="guide-start-cta guide-start-cta--primary" href="index.html" data-route="universities" data-i18n="guide.start.cta_catalog">Browse universities</a>
+              <a class="guide-start-cta guide-start-cta--secondary" href="profile.html" data-route="profile" data-i18n="guide.start.cta_profile">Set up profile</a>
+            </div>
+          </div>
+        </section>
+
         <section id="guide-unifit" class="guide-section">
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from minimum requirements match, which is only the requirements fit component:</p>
-            <pre class="guide-formula" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
+            <details class="guide-formula-details">
+              <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Show exact calculation formula</summary>
+              <pre class="guide-formula" tabindex="0" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
 with semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35
 affordability_gap × 0.20 is added when annual cost and profile budget are known; available components are normalized by their total weight</pre>
+            </details>
             <p data-i18n="guide.unifit.p2">Change anything in the profile — an exam score, the budget, a slider — and the list is recomputed from scratch, so what you see always reflects your current data. Each ingredient is scaled from 0 to 1.</p>
             <p data-i18n="guide.unifit.p3">Focus, Selectivity, Cost vs Prestige, and Location are preference sliders. A centred slider means "doesn't matter" and is ignored; the further you move it, the more that axis counts. Focus compares research intensity (publications per student), Selectivity compares how competitive first-year admission is (applicants per place), and Location compares the size of the university's city. If a university has no data for a slider you moved, it counts as a typical university, so missing data neither wins a perfect match nor reads as a failure. Cost vs Prestige expresses a preference between budget and prestige; it is not your budget amount and does not estimate admission outcomes or funding awards.</p>
             <p data-i18n="guide.unifit.p4">Preference badges describe slider alignment. Requirement badges describe whether the current profile meets applicable published minimums. Neither predicts an admission decision or funding award.</p>
@@ -104,8 +133,11 @@ affordability_gap × 0.20 is added when annual cost and profile budget are known
           <h2 data-i18n="guide.ml.title">How your interests are used</h2>
           <div class="guide-doc">
             <p data-i18n="guide.ml.p1">Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors and compares their cosine similarity, rescaled into a 0–1 score:</p>
-            <pre class="guide-formula" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
+            <details class="guide-formula-details">
+              <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Show exact calculation formula</summary>
+              <pre class="guide-formula" tabindex="0" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
 mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
+            </details>
             <p data-i18n="guide.ml.p2">That similarity becomes the semantic third of the UniFit score. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching.</p>
             <p data-i18n="guide.ml.p3">The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off, while every extra filler word dilutes the signal.</p>
             <p data-i18n="guide.ml.p4">Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion.</p>
@@ -117,7 +149,10 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
           <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">minimum requirements match</span> (fit to published requirements, 0–100)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">minimum requirements match</span> is a 0–100 score for the share of evaluable published academic and language minimums met in the applicable admissions context. On reviewed pages, it uses the selected study option and application route within the applicant context. It is not an admission probability or funding prediction.</p>
-            <pre class="guide-formula" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
+            <details class="guide-formula-details">
+              <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Show exact calculation formula</summary>
+              <pre class="guide-formula" tabindex="0" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
+            </details>
             <p data-i18n="guide.unichance.p2">The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.</p>
             <p data-i18n="guide.unichance.p3">The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.</p>
             <p data-i18n="guide.unichance.p4">If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, minimum requirements match shows no score and explains what is missing. Missing evidence is not treated as zero.</p>

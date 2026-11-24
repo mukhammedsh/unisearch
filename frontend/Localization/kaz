@@ -415,6 +415,8 @@ universities.map_popup.loading: Университет карточкасы жү
 universities.map_popup.failed: Университет карточкасын жүктеу мүмкін болмады.
 universities.pagination.next: Келесі
 universities.pagination.prev: Алдыңғы
+universities.pagination.first: Бірінші бет
+universities.pagination.last: Соңғы бет
 universities.reset: Тазарту
 universities.empty.reset_filters: Фильтрлерді тазарту
 universities.search_placeholder: Университетті іздеу...
@@ -929,10 +931,14 @@ languages.added_value: Қосылған {language} {exam}: {value}
 languages.updated_value: Жаңартылған {language} {exam}: {value}
 network.offline.banner: Интернетке қосылу жоқ. Офлайн-режимде жұмыс істейміз.
 network.online.banner: Қосу қалпына келтірілді.
+network.waking.banner: Сервер үзілістен кейін оянып жатыр. Бұл бір минутқа дейін созылуы мүмкін.
+network.ready.banner: Сервер дайын.
+network.unavailable.banner: Сервер қазір жауап бермейді. Бірнеше минуттан кейін қайта көріңіз.
 navbar.search.offline_notice: Офлайн-режимде іздеу мүмкін емес.
 navbar.search.open: Іздеуді ашу
 navbar.search.back: Навигацияға қарай
 universities.offline_action_warning: Каталогты интернетке қосылмай жаңарту мүмкін болмады. Сақталған нәтижелер көрсетілген.
+universities.stale_refresh_failed: Сервер жауап бермеді. Осы құрылғыда сақталған соңғы нәтижелер көрсетілді.
 error.no_connection.title: Интернетке қосылу жоқ
 error.no_connection.desc: Біз сервермен байланыса алмадық. Қосылымды тексеріп, әрекетті қайталаңыз.
 error.server_error.title: Сервер уақытша қолжетімсіз
@@ -984,6 +990,7 @@ privacy.local_storage.li1: Оқу көрсеткіштері (GPA, SAT, ACT, IEL
 privacy.local_storage.li2: Жеке ұсыныстар үшін көрсеткен оқу бағыттарыңыз.
 privacy.local_storage.li3: Сақталған университеттер мен жуырда қаралған беттер тарихы.
 privacy.local_storage.li4: Көрініс баптаулары (ашық немесе қараңғы режим, интерфейс тілі).
+privacy.local_storage.li5: Каталогтың соңғы нәтижелері мен кэштелген университет деректері: сервер оянып жатқанда беттер жылдамырақ ашылады.
 privacy.local_storage.p2: Профиль деректерін профильді тазалау батырмасымен жоя аласыз. Браузерде сақталған барлық UniSearch деректерін жою үшін браузер баптауларынан осы сайттың деректерін тазалаңыз.
 privacy.google_auth.status_notice: Қазір UniSearch жүйесінде тіркелу, аккаунтқа кіру және деректерді құрылғылар арасында синхрондау мүмкін емес.
 privacy.google_auth.p1: Google арқылы кіру (OAuth 2.0) қазіргі нұсқада қосылмаған.
@@ -3106,6 +3113,8 @@ university.admissions.key_facts.recommended_english_condition: Міндетті 
 university.admissions.key_facts.recommended_english_condition_not_native: Міндетті емес: ағылшын тілін бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, бұл сізге қатысты.
 university.admissions.key_facts.recommended_english_native_hint: Ағылшын тілі — ана тіліңіз бе? Мұны профильде көрсетіңіз, сонда бұл жол тек сізге қатысты болғанда ғана көрсетіледі.
 university.ux2.needs.mark_recommended: Талап емес, ұсыныс
+languages.exam_overall_score_label: Жалпы балл
+languages.exam_overall_score_hint: Бүкіл емтихан бойынша жалпы балл — секциялар бойынша баллды білмесеңіз, тек осыны енгізуге болады.
 languages.exam_sections_label: Секциялар бойынша балл (сертификатта болса)
 profile.ux2.intro: Тек білетініңізге ғана жауап беріңіз. Ештеңе міндетті емес, жауаптар осы құрылғыда сақталады.
 profile.ux2.section.study.title: Нені оқығыңыз келеді
@@ -3360,3 +3369,24 @@ universities.empty.clear_price: Баға сүзгісін алып тастау
 universities.state.empty_saved_none: Сіз әлі ештеңе сақтаған жоқсыз. Университетті карточкасынан сақтаңыз, ол осында пайда болады.
 profile.unit.per_year: / жыл
 profile.budget_currency_label: Бюджет валютасы
+universities.filter.reviewed_only: Толық қабылдау деректері
+universities.filter.reviewed_only_hint: Тексерілген бағыттары, минимумдары мен құны бар ЖОО-ларды көрсету
+universities.unifit.prefs_button: Қалаулар
+universities.unifit.prefs_summary: UniFit қалаулары
+universities.tip.budget_level_needed: Оқу деңгейіне қарай жылына {cost}. Бюджетіңізбен салыстыру үшін оқу деңгейін таңдаңыз.
+guide.start.nav: Неден бастау керек
+guide.start.title: UniSearch-ті 3 қадаммен қалай қолдану керек
+guide.start.intro: UniSearch ресми бағдарламаларды, ең төменгі талаптарды, мерзімдер мен оқу құнын болжамсыз қарауға көмектеседі. Каталогты бірден анкетасыз қарауға немесе автоматты салыстыру үшін ұпайларыңыз бен бюджетіңізді енгізуге болады.
+guide.start.step1.title: 1. Профильде тек өзіңіз білетін деректерді көрсетіңіз
+guide.start.step1.desc: Оқу деңгейін, бағытты, жылдық бюджетті, GPA немесе емтихандарды (IELTS, SAT, ҰБТ, NUET) таңдаңыз. Барлық өрістер міндетті емес: бос өрістер сәтсіздік болып саналмайды.
+guide.start.step2.title: 2. Сүзгілерді және UniFit сұрыптауын баптаңыз
+guide.start.step2.desc: Карточкаларда бірден түсінікті мәтіндік мәртебелер көрінеді: профиль минимумға сай ма, емтихан керек пе және баға бюджетке сыя ма. UniFit баптауларын тек ғылым, конкурс немесе қала өлшемі маңызды болса ғана қозғаңыз.
+guide.start.step3.title: 3. ЖОО бетін ашыңыз немесе екі ЖОО-ны салыстырыңыз
+guide.start.step3.desc: ЖОО бетінде тапсыру бағыттары, жақын мерзімдер, шығындар құрылымы және ресми дереккөз сілтемелері берілген. Салыстыру режимінде екі ЖОО-ны қатар көруге болады.
+guide.start.cta_catalog: Каталогқа өту
+guide.start.cta_profile: Профильді толтыру
+guide.formula.toggle: Есептеудің нақты формуласын көрсету
+universities.compare.swap_university: ЖОО-ны ауыстыру
+universities.compare.swap_title: ЖОО-ны ауыстыру: {name}
+universities.compare.swap_search: Университетті іздеу...
+universities.compare.swap_empty: Бұл салыстыру тобында сәйкес ЖОО табылмады.

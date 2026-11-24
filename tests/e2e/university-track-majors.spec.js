@@ -72,7 +72,8 @@ async function chooseOption(page, id, query, level) {
   const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
   await option.locator("xpath=..").locator("[data-select-study-option]").click();
   expect((await response).ok()).toBe(true);
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await openTab(page, "programs");
   await expect(page.locator("#admissionsStudyDetails")).toBeVisible();
   await expect(page.locator("#admissionsStudyDetails > .admissions-context__heading > h3")).toHaveText(title);
   await expect(page.locator("#admissionsViewRequirements")).toHaveCount(0);

@@ -93,7 +93,7 @@
 .finance-award-row dd {
   min-width: 0;
   margin: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .finance-award-details {
@@ -370,7 +370,7 @@
 
 .scholarship-line > span:last-child {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .price-inline-row {
@@ -389,7 +389,7 @@
   color: var(--text);
   line-height: var(--leading-tight);
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .price-context {
@@ -416,7 +416,7 @@
   font-weight: var(--font-weight-medium);
   color: var(--text);
   line-height: var(--leading-tight);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .finance-track-group-head p {
@@ -424,7 +424,7 @@
   font-size: var(--text-sm);
   color: var(--text-muted);
   line-height: var(--leading-normal);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .finance-track-options-title {
@@ -455,7 +455,7 @@
   font-size: var(--text-md);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .finance-option-head .track-funding-badge {
@@ -490,7 +490,7 @@
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-tight);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .finance-option-total__value {
@@ -600,7 +600,8 @@
   color: var(--text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: break-word;
 }
 
 .cost-breakdown-list {
@@ -653,7 +654,7 @@
   color: var(--text-muted);
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .cost-legend-single {
@@ -833,6 +834,7 @@
   font-size: var(--text-sm);
   color: var(--text);
   font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
 }
 
 .finance-threshold-note {
@@ -910,6 +912,13 @@
 }
 
 @media (max-width: 768px) {
+  .finance-award-details summary,
+  .finance-award-details a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+  }
+
   .finance-summary-container {
     flex-direction: column;
     grid-template-columns: minmax(0, 1fr);

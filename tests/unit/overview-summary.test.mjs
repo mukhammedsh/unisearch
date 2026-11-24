@@ -209,9 +209,9 @@ test("the rendered block escapes published text, states the one footnote once an
   assert.ok(!html.includes("<img"));
   assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt; is required\./);
   assert.equal(html.split("A summary of official facts, not an admission decision.").length, 2);
-  // Cards stack in two columns: the deadline and requirements cards on the left, the cost card on the right.
-  assert.deepEqual([...html.matchAll(/data-open-tab="([^"]+)"/g)].map(match => match[1]), ["tab-deadlines", "tab-admission", "tab-finance"]);
-  assert.equal([...html.matchAll(/class="overview-summary__column"/g)].length, 2);
+  // Cards render in natural reading order inside one flat grid (deadline, cost, needs).
+  assert.deepEqual([...html.matchAll(/data-open-tab="([^"]+)"/g)].map(match => match[1]), ["tab-deadlines", "tab-finance", "tab-admission"]);
+  assert.equal([...html.matchAll(/class="overview-summary__column"/g)].length, 0);
   assert.equal([...html.matchAll(/data-summary-card="/g)].length, 3);
 });
 

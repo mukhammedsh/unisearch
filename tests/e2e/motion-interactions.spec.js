@@ -102,7 +102,7 @@ test("universities compare motion preserves pressed states", async ({ page }) =>
   await expect(compareModeCard).toBeVisible();
   await compareModeCard.click();
   await expect(compareModeCard).toHaveClass(/uni-card--compare-selected/);
-  await expect(compareModeCard).toHaveAttribute("aria-selected", "true");
+  await expect(compareModeCard).toHaveAttribute("data-compare-selected", "true");
   await expect(page.locator("#compareTray")).toBeVisible();
   await expect(recentTrigger).toBeVisible();
 

@@ -10,6 +10,7 @@ from app.core.observability import setup_observability
 from app.core.paths import UNIVERSITY_ASSETS_DIR
 from app.core.security import (
     build_rate_limiter,
+    is_plain_health_probe,
     is_protected_ops_request,
     ops_request_is_authorized,
     protected_ops_response,
@@ -251,6 +252,10 @@ def _rate_limit_headers(limit: int, remaining: int, window_sec: int) -> dict[str
 
 def _rate_limit_result(request: Request) -> tuple[Response | None, dict[str, str]]:
     if not RATE_LIMIT_ENABLED:
+        return None, {}
+    # Platform health checks and uptime monitors poll /health constantly; counting them
+    # would exhaust a metered Redis quota without protecting anything.
+    if is_plain_health_probe(request):
         return None, {}
 
     client_key = request_client_ip(request)

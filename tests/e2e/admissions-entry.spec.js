@@ -73,6 +73,8 @@ test("Imperial reads a course with one application route directly, on selection 
   // The only route is selected like a manual choice: in the URL and the selection bar, but not saved.
   await expect(page.locator("#admissionsRoute")).toHaveValue("procedure-computing-meng");
   expect(new URL(page.url()).searchParams.get("admission_application_route")).toBe("procedure-computing-meng");
+  await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await page.locator('[data-tab="tab-programs"]').click();
   await expect(page.locator("#admissionsStudyOverview [data-award-explanation]")).toBeVisible();
   await page.locator('[data-tab="tab-admission"]').click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);

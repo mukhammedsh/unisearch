@@ -333,6 +333,12 @@ def is_protected_ops_request(request: Request) -> bool:
     return norm_path == "/health" and str(request.query_params.get("warmup", "")).strip().lower() in {"1", "true", "yes", "on", "t", "y"}
 
 
+def is_plain_health_probe(request: Request) -> bool:
+    """Return True for the cheap liveness probe, not for the protected warmup variant."""
+    norm_path = request_scope_path(request, strip_root=True).rstrip("/") or "/"
+    return norm_path == "/health" and not is_protected_ops_request(request)
+
+
 def ops_request_is_authorized(request: Request) -> bool:
     token = str(OPS_ADMIN_TOKEN or "").strip()
     if not token:

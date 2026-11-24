@@ -79,7 +79,8 @@ test("comparison keeps cards, values, and pinned names aligned on desktop and ph
       return {
         left: bounds(root).x,
         heads: columns(root.querySelectorAll(".compare-reviewed__head")),
-        titles: columns(root.querySelectorAll(".compare-reviewed__identity")),
+        titles: columns(root.querySelectorAll(".compare-reviewed__identity-bar")),
+        titleStarts: Array.from(root.querySelectorAll(".compare-reviewed__identity"), (node) => bounds(node).x),
         names: columns(root.querySelectorAll(".compare-reviewed__strip-name")).map(({ x }) => x),
         values: columns(element.querySelectorAll("dd")),
         labelAboveValues: bounds(element.querySelector("dt")).bottom <= bounds(element.querySelector("dd")).top,
@@ -88,7 +89,7 @@ test("comparison keeps cards, values, and pinned names aligned on desktop and ph
     expect(grid.heads[0].x).toBe(grid.left);
     expect(grid.heads[0].width).toBeCloseTo(grid.heads[1].width, 1);
     expect(grid.values).toEqual(grid.titles);
-    expect(grid.names).toEqual(grid.titles.map(({ x }) => x));
+    expect(grid.names).toEqual(grid.titleStarts);
     expect(grid.labelAboveValues).toBe(true);
   }
 });
@@ -308,7 +309,7 @@ test("catalog comparison mode navigates to the dedicated compare page", async ({
   await expect(page).toHaveURL(/tab=compare/);
   await expect(page.locator("#universitiesCatalogPane")).toBeVisible();
   await expect(page.locator(".compare-tray")).toBeVisible();
-  await expect(page.locator("#universitiesList .uni-card--compare-selected[aria-selected='true']")).toHaveCount(2);
+  await expect(page.locator("#universitiesList .uni-card--compare-selected[data-compare-selected='true']")).toHaveCount(2);
 });
 
 test("catalog keeps a comparison pair within one data group", async ({ page }) => {
@@ -380,7 +381,7 @@ test("compare mode keeps exactly two universities and shows tray after client ro
   await expect(cards.nth(2)).toBeVisible();
   await cards.nth(2).click();
 
-  await expect(page.locator("#universitiesList .uni-card--compare-selected[aria-selected='true']")).toHaveCount(2);
+  await expect(page.locator("#universitiesList .uni-card--compare-selected[data-compare-selected='true']")).toHaveCount(2);
   await expect.poll(async () => page.evaluate(() =>
     JSON.parse(localStorage.getItem("unisearch_compare_university_ids_v1") || "[]").length
   )).toBe(2);
@@ -794,8 +795,8 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
     { name: "tablet", width: 1024, height: 800, expectSingleRow: true },
     { name: "tablet-portrait", width: 768, height: 800, expectSingleRow: true },
     { name: "wide-phone", width: 607, height: 911, expectSingleRow: true },
-    { name: "mid-phone", width: 503, height: 918, expectSingleRow: true },
-    { name: "phone", width: 390, height: 844, expectSingleRow: true },
+    { name: "mid-phone", width: 503, height: 918, expectSingleRow: false },
+    { name: "phone", width: 390, height: 844, expectSingleRow: false },
     { name: "narrow", width: 320, height: 568, expectSingleRow: false },
   ]) {
     await page.setViewportSize({ width: viewport.width, height: viewport.height });
@@ -832,7 +833,9 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
         bottomGap: Math.round(layout.top - bar.bottom),
         foundLeft: Math.round(found.left),
         contentLeft: Math.round(content.left),
+        actionsRight: Math.round(actions.right),
         compareRight: Math.round(compare.right),
+        actionsSingleRow: Math.abs(toggles.top - compare.top) <= 2,
         layoutRight: Math.round(layout.right - Number.parseFloat(style(".u-layout").paddingRight)),
         heights: [Math.round(recent.height), Math.round(toggles.height), Math.round(compare.height)],
         radii: [recentStyle.borderTopLeftRadius, togglesStyle.borderTopLeftRadius, compareStyle.borderTopLeftRadius],
@@ -859,7 +862,10 @@ test("catalog toolbar keeps uniform control geometry, symmetric spacing, and gri
     expect(metrics.viewBtnSizes[0][0], `${viewport.name}: view button fills segment width`).toBeGreaterThanOrEqual(metrics.viewBtnSizes[0][1]);
     expect(Math.abs(metrics.topGap - metrics.bottomGap), `${viewport.name}: vertical rhythm`).toBeLessThanOrEqual(1);
     expect(Math.abs(metrics.foundLeft - metrics.contentLeft), `${viewport.name}: left grid edge`).toBeLessThanOrEqual(1);
-    expect(Math.abs(metrics.compareRight - metrics.layoutRight), `${viewport.name}: right grid edge`).toBeLessThanOrEqual(1);
+    expect(Math.abs(metrics.actionsRight - metrics.layoutRight), `${viewport.name}: right grid edge`).toBeLessThanOrEqual(1);
+    if (metrics.actionsSingleRow) {
+      expect(Math.abs(metrics.compareRight - metrics.layoutRight), `${viewport.name}: compare button right edge`).toBeLessThanOrEqual(1);
+    }
     expect(metrics.overlaps, `${viewport.name}: no found/actions overlap`).toBe(false);
     if (viewport.expectSingleRow) {
       expect(metrics.singleRow, `${viewport.name}: single row`).toBe(true);

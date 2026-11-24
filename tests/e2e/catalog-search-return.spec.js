@@ -43,3 +43,30 @@ for (const query of ["Nazarbayev", "Nazarbayev University"]) {
     await expect(card).toBeVisible();
   });
 }
+
+test("catalog persists detailed admissions data filter across clean reload and uncheck", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  const toggle = page.locator("#reviewedOnlyToggle");
+  await expect(toggle).not.toBeChecked();
+  await toggle.check();
+  await expect(toggle).toBeChecked();
+  await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_filters") || "{}").only_reviewed)).toBe(true);
+  await expect(page).toHaveURL(/only_reviewed=1/);
+
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(toggle).toBeChecked();
+  await expect(page).toHaveURL(/only_reviewed=1/);
+
+  await toggle.uncheck();
+  await expect(toggle).not.toBeChecked();
+  await expect.poll(async () => page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_filters") || "{}").only_reviewed)).toBe(false);
+
+  await page.goto("/index.html");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(toggle).not.toBeChecked();
+});

@@ -6,6 +6,7 @@ This document covers the deployment guardrails that matter most when UniSearch i
 
 - Keep Redis private. In Docker, Redis should stay on the internal compose network and should not publish a host port.
 - Never expose the backend port directly to the public internet when running behind a reverse proxy. Bind the backend port to localhost (e.g. `127.0.0.1:8000:8000` in Docker) or keep it on an internal network to prevent direct bypass of proxy protections.
+- Plain `GET /health` is not rate limited, so health checks and uptime monitors do not consume a metered Redis quota (for example Upstash free plan, 500,000 commands per month). Other routes and `/health?warmup=1` are still limited.
 - Set a long random `OPS_ADMIN_TOKEN` before exposing the backend to the internet.
 - Keep `/ops/*`, `/metrics`, and `/health?warmup=1` private. The backend also requires `OPS_ADMIN_TOKEN`, but the proxy should hide these paths unless you intentionally operate them through a private network or SSH tunnel.
 - Prefer same-domain API routing with `UNISEARCH_API_BASE_URL=/api`. This avoids broad CORS rules and keeps browser deployment simpler.

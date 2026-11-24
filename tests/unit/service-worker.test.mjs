@@ -28,7 +28,7 @@ class TestResponse {
   }
 }
 
-function loadWorker(fetchImpl = async () => new TestResponse("network")) {
+function loadWorker(fetchImpl = async () => new TestResponse("network"), { search = "" } = {}) {
   const listeners = new Map();
   const data = new Map();
   let skippedWaiting = 0;
@@ -48,13 +48,13 @@ function loadWorker(fetchImpl = async () => new TestResponse("network")) {
     async delete(name) { return data.delete(name); },
   };
   const self = {
-    location: { origin },
+    location: { origin, search },
     clients: { claim: async () => { claimedClients += 1; } },
     skipWaiting: async () => { skippedWaiting += 1; },
     addEventListener(type, listener) { listeners.set(type, listener); },
   };
 
-  new vm.Script(workerSource, { filename: workerPath }).runInNewContext({ self, caches, fetch: fetchImpl, Response: TestResponse, URL });
+  new vm.Script(workerSource, { filename: workerPath }).runInNewContext({ self, caches, fetch: fetchImpl, Response: TestResponse, URL, URLSearchParams });
   return {
     listeners,
     cacheNames: () => caches.keys(),
@@ -98,7 +98,7 @@ function request(pathname, options = {}) {
 
 test("activating the worker removes old UniSearch caches and claims clients", async () => {
   const worker = loadWorker();
-  const currentCache = "unisearch-api-2026-11-19-1";
+  const currentCache = "unisearch-api-2026-11-24-1";
   await worker.seedCache("unisearch-api-old");
   await worker.seedCache(currentCache);
   await worker.seedCache("unrelated-cache");
@@ -138,7 +138,7 @@ test("API cache never stores unexpected text/html responses", async () => {
 
   const result = await worker.dispatchFetch(htmlFallbackRequest);
   assert.equal(await result.response.text(), "<!DOCTYPE html>");
-  assert.equal(worker.cached("unisearch-api-2026-11-19-1", htmlFallbackRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-api-2026-11-24-1", htmlFallbackRequest.url), undefined);
 });
 
 test("university assets try the network first and fall back to their cached copy", async () => {
@@ -160,12 +160,12 @@ test("localization cache ignores failed and no-store responses", async () => {
   const failedRequest = request("/Localization/eng");
 
   assert.equal((await worker.dispatchFetch(failedRequest)).response.status, 503);
-  assert.equal(worker.cached("unisearch-static-2026-11-19-1", failedRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-24-1", failedRequest.url), undefined);
 
   response = new TestResponse("private", { headers: { "cache-control": "no-store" } });
   const privateRequest = request("/Localization/ru");
   await worker.dispatchFetch(privateRequest);
-  assert.equal(worker.cached("unisearch-static-2026-11-19-1", privateRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-24-1", privateRequest.url), undefined);
 });
 
 test("image cache evicts the oldest entry when it exceeds its configured limit", async () => {
@@ -179,8 +179,46 @@ test("image cache evicts the oldest entry when it exceeds its configured limit",
   }
 
   const keys = await worker.cacheNames();
-  const imageCache = "unisearch-images-2026-11-19-1";
+  const imageCache = "unisearch-images-2026-11-24-1";
   assert.equal(keys.includes(imageCache), true);
   assert.equal(worker.cached(imageCache, firstUrl), undefined);
   assert.equal(worker.cached(imageCache, lastUrl).body, "network");
+});
+
+test("a backend on another origin is cached when the page registers the worker with its origin", async () => {
+  const backend = "https://api.unisearch.test";
+  let online = true;
+  const worker = loadWorker(async () => {
+    if (!online) throw new Error("offline");
+    return new TestResponse("catalog page", { type: "cors", headers: { "content-type": "application/json" } });
+  }, { search: `?api=${encodeURIComponent(backend)}&v=10.8.0` });
+  const catalog = request(`${backend}/universities?limit=24&lang=en`);
+
+  assert.equal(await (await worker.dispatchFetch(catalog)).response.text(), "catalog page");
+  online = false;
+  const offline = await worker.dispatchFetch(catalog);
+  assert.equal(await offline.response.text(), "catalog page");
+  await offline.settled();
+  assert.equal(worker.cached("unisearch-api-2026-11-24-1-10.8.0", catalog.url).body, "catalog page");
+
+  assert.equal((await worker.dispatchFetch(request(`${backend}/universities`, { method: "POST" }))).response, undefined);
+  assert.equal((await worker.dispatchFetch(request("https://other.test/universities"))).response, undefined);
+  assert.equal((await worker.dispatchFetch(request(`${backend}/health`))).response, undefined);
+});
+
+test("a cross-origin backend is ignored when the registration names no usable origin", async () => {
+  for (const search of ["", "?api=not-a-url", "?api=ftp%3A%2F%2Fapi.unisearch.test"]) {
+    const worker = loadWorker(undefined, { search });
+    const result = await worker.dispatchFetch(request("https://api.unisearch.test/universities"));
+    assert.equal(result.response, undefined, `search ${JSON.stringify(search)} must not enable cross-origin caching`);
+  }
+});
+
+test("each app version gets its own caches and activation drops the previous release", async () => {
+  const worker = loadWorker(undefined, { search: "?v=10.9.0" });
+  await worker.seedCache("unisearch-api-2026-11-24-1-10.8.0");
+  await worker.seedCache("unisearch-api-2026-11-24-1-10.9.0");
+  await worker.lifecycle("activate");
+
+  assert.deepEqual(await worker.cacheNames(), ["unisearch-api-2026-11-24-1-10.9.0"]);
 });

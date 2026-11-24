@@ -102,20 +102,30 @@ test("map results rail loads the next 100 universities at the end of the list", 
   expect(mobileOverflow.scrollWidth).toBeLessThanOrEqual(mobileOverflow.clientWidth + 1);
 });
 
-test("map marker opens the complete university card and responds to zoom controls", async ({ page }) => {
-  await markTourAsSeen(page);
-  const railUniversity = makeUniversity(1);
-  const markerUniversity = {
-    ...makeUniversity(999),
-    id: "marker-only-university",
-    name: "Marker Only University",
-    coordinates: { lat: 0, lon: 0 },
-    admissions_catalog: { availability: "reviewed" },
-    catalog_costs: { reference: true,
-      annual_total: { min: 9000, max: 9000, currency: "USD", period: "2026-2027", study_level: "undergraduate", exclusions: [] },
-      tuition: { min: 7000, max: 7000, currency: "USD", period: "2026-2027", study_level: "undergraduate" },
-    },
-  };
+function makeWorldRail() {
+  return Array.from({ length: 13 }, (_, index) => ({
+    ...makeUniversity(index + 1),
+    coordinates: { lat: 20 + (index % 5) * 8, lon: -150 + index * 25 },
+  }));
+}
+
+test.describe("map interactions with route interception", () => {
+  test.use({ serviceWorkers: "block" });
+
+  test("map marker opens the complete university card and responds to zoom controls", async ({ page }) => {
+    await markTourAsSeen(page);
+    const railItems = makeWorldRail();
+    const markerUniversity = {
+      ...makeUniversity(999),
+      id: "marker-only-university",
+      name: "Marker Only University",
+      coordinates: { lat: 0, lon: 0 },
+      admissions_catalog: { availability: "reviewed" },
+      catalog_costs: { reference: true,
+        annual_total: { min: 9000, max: 9000, currency: "USD", period: "2026-2027", study_level: "undergraduate", exclusions: [] },
+        tuition: { min: 7000, max: 7000, currency: "USD", period: "2026-2027", study_level: "undergraduate" },
+      },
+    };
   let detailRequests = 0;
 
   await page.route("**/universities/map-points?*", async (route) => {
@@ -128,7 +138,7 @@ test("map marker opens the complete university card and responds to zoom control
 
   await page.route("**/universities/profiled", async (route) => {
     const payload = route.request().postDataJSON();
-    const items = payload.fields === "map" ? [markerUniversity] : [railUniversity];
+    const items = payload.fields === "map" ? [markerUniversity] : railItems;
     await route.fulfill({ status: 200, contentType: "application/json",
       body: JSON.stringify({ items, total: items.length, page: 1, limit: payload.limit || 100 }) });
   });
@@ -152,7 +162,7 @@ test("map marker opens the complete university card and responds to zoom control
     await route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ items: [railUniversity], count: 1, total: 1, page: 1, limit: 100 }),
+      body: JSON.stringify({ items: railItems, count: railItems.length, total: railItems.length, page: 1, limit: 100 }),
     });
   });
 
@@ -234,14 +244,15 @@ test("map marker opens the complete university card and responds to zoom control
   await expect(zoomOut).not.toHaveClass(/leaflet-disabled/);
 });
 
-test("repeated click on the focused marker does not recenter the map", async ({ page }) => {
-  await markTourAsSeen(page);
-  const markerUniversity = {
-    ...makeUniversity(999),
-    id: "stable-focus-university",
-    name: "Stable Focus University",
-    coordinates: { lat: 0, lon: 0 },
-  };
+  test("repeated click on the focused marker does not recenter the map", async ({ page }) => {
+    await markTourAsSeen(page);
+    const railItems = makeWorldRail();
+    const markerUniversity = {
+      ...makeUniversity(999),
+      id: "stable-focus-university",
+      name: "Stable Focus University",
+      coordinates: { lat: 0, lon: 0 },
+    };
 
   await page.route("**/universities/map-points?*", async (route) => {
     await route.fulfill({
@@ -253,7 +264,7 @@ test("repeated click on the focused marker does not recenter the map", async ({ 
 
   await page.route("**/universities/profiled", async (route) => {
     const payload = route.request().postDataJSON();
-    const items = payload.fields === "map" ? [markerUniversity] : [makeUniversity(1)];
+    const items = payload.fields === "map" ? [markerUniversity] : railItems;
     await route.fulfill({ status: 200, contentType: "application/json",
       body: JSON.stringify({ items, total: items.length, page: 1, limit: payload.limit || 100 }) });
   });
@@ -276,7 +287,7 @@ test("repeated click on the focused marker does not recenter the map", async ({ 
     await route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({ items: [makeUniversity(1)], count: 1, total: 1, page: 1, limit: 100 }),
+      body: JSON.stringify({ items: railItems, count: railItems.length, total: railItems.length, page: 1, limit: 100 }),
     });
   });
 
@@ -344,4 +355,5 @@ test("repeated click on the focused marker does not recenter the map", async ({ 
   expect(Math.abs(boxAfter.x - boxBefore.x)).toBeLessThan(5);
   expect(Math.abs(boxAfter.y - boxBefore.y)).toBeLessThan(5);
   await expect(popupCard).toBeVisible();
+  });
 });

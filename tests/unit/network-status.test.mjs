@@ -239,7 +239,26 @@ describe("network-status.js", () => {
 
         showNetworkStatusBanner("online");
         assert.ok(banner.classList.contains("network-status-banner--online"));
+        assert.equal(banner.classList.contains("network-status-banner--offline"), false);
         assert.equal(banner.classList.contains("is-visible"), false);
+
+        // Server wake-up states: problems stay visible, the positive state dismisses itself.
+        showNetworkStatusBanner("waking");
+        assert.ok(banner.classList.contains("network-status-banner--waking"));
+        assert.equal(banner.classList.contains("network-status-banner--online"), false);
+        assert.ok(banner.classList.contains("is-visible"));
+
+        showNetworkStatusBanner("unavailable");
+        assert.ok(banner.classList.contains("network-status-banner--unavailable"));
+        assert.equal(banner.classList.contains("network-status-banner--waking"), false);
+        assert.ok(banner.classList.contains("is-visible"));
+
+        showNetworkStatusBanner("ready");
+        assert.ok(banner.classList.contains("network-status-banner--ready"));
+        assert.equal(banner.classList.contains("is-visible"), false);
+
+        showNetworkStatusBanner("not-a-state");
+        assert.ok(banner.classList.contains("network-status-banner--online"));
       } finally {
         global.document = origDoc;
         global.window.setTimeout = origTimeout;

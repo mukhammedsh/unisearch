@@ -122,12 +122,13 @@ export function reviewedCardIndicators(match, budget) {
     );
   }
   const assessment = match.budgetAssessment || {};
-  // Prices that differ by fee status (Home / Overseas) cannot be compared until the reader sets one.
+  // Prices that differ by fee status (Home / Overseas) or study level cannot be compared until narrowed.
   const feeStatusUnknown = assessment.status === "unknown_cost" && assessment.evidence === "fee_status_unknown";
-  if (Number(budget) > 0 && match.costQuote && (feeStatusUnknown || ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status))) {
-    const state = feeStatusUnknown ? "uncertain" : { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
+  const scopeUnknown = assessment.status === "unknown_cost" && assessment.evidence === "scope_unknown";
+  if (Number(budget) > 0 && match.costQuote && (feeStatusUnknown || scopeUnknown || ["within_budget", "over_budget", "uncertain_range"].includes(assessment.status))) {
+    const state = (feeStatusUnknown || scopeUnknown) ? "uncertain" : { within_budget: "within", over_budget: "over", uncertain_range: "uncertain" }[assessment.status];
     const detail = budgetTooltip({
-      status: feeStatusUnknown ? "fee_status" : { within: "within", over: "over", uncertain: "range" }[state],
+      status: feeStatusUnknown ? "fee_status" : scopeUnknown ? "level_needed" : { within: "within", over: "over", uncertain: "range" }[state],
       costMin: match.costQuote.minUSD,
       costMax: match.costQuote.maxUSD,
       budget,
@@ -190,7 +191,7 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
     statusIndicators.push(`
       <span class="uni-status-tooltip">
         <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}" data-legend-icon="${escapeHtmlAttr(iconName)}" data-legend-tone="${escapeHtmlAttr(tone)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
-          <span aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
+          <span class="uni-status-icon-wrap" aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
         </button>
         <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
       </span>
@@ -257,11 +258,6 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
     if (hasConditionalExamWarning) {
       addStatusIndicator("clipboard-document-list", "warning", t("universities.badge.conditional_exam_needed", "Exam result needed"), examNeededDetail, "", "exam_needed");
     }
-    if (hasVeryHighVibeMatch) {
-      addStatusIndicator("heart", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceTooltip(match, "universities.why.your_vibe"), "", "vibe");
-    } else if (hasHighVibeMatch) {
-      addStatusIndicator("heart", "match", t("universities.badge.top_match", "Good Match"), preferenceTooltip(match, "universities.why.top_match"), "", "vibe");
-    }
     if (belowRequirements) {
       addStatusIndicator("exclamation-triangle", "warning", t("universities.badge.below_requirements", "Below Requirements"), belowDetail, "", "requirements_below");
     } else if (meetsMinRequirements) {
@@ -276,9 +272,14 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
     } else if (showAidAvailable) {
       addStatusIndicator("banknotes", "aid", t("universities.badge.aid_available", "Aid Available"), "", "", "aid");
     }
+    if (hasVeryHighVibeMatch) {
+      addStatusIndicator("heart", "match", t("universities.badge.your_vibe", "Your Vibe"), preferenceTooltip(match, "universities.why.your_vibe"), "", "vibe");
+    } else if (hasHighVibeMatch) {
+      addStatusIndicator("heart", "match", t("universities.badge.top_match", "Good Match"), preferenceTooltip(match, "universities.why.top_match"), "", "vibe");
+    }
   }
 
-  const MAX_VISIBLE_BADGES = reviewedAdmissions ? 3 : 4;
+  const MAX_VISIBLE_BADGES = 4;
   let statusHtml = "";
   if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
     statusHtml = statusIndicators.join("");
@@ -375,7 +376,7 @@ ${rankInnerHtml}
     ? ""
     : `<a class="uni-card-link-overlay" href="${detailHref}"${linkAttrs} aria-label="${safeName}" title="${escapeHtml(overlayTitle)}"></a>`;
   return `
-    <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" aria-selected="${isCompared ? "true" : "false"}">
+    <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" data-compare-selected="${isCompared ? "true" : "false"}">
       ${mediaHtml}${backdropHtml}
       ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
       <div class="uni-body">
@@ -401,13 +402,22 @@ export function renderCatalogPagination(container, { total, currentPage, pageSiz
   let html = "";
   const p = currentPage;
   const maxVisible = 5;
-  const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false) => {
+  const createBtn = (page, content, isActive = false, extraClass = "", isDisabled = false, ariaLabel = "") => {
     const activeClass = isActive ? "page-btn--active" : "";
     const disabledClass = isDisabled ? "page-btn--disabled" : "";
     const classes = ["page-btn", activeClass, disabledClass, extraClass].filter(Boolean).join(" ");
-    return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ""}${isDisabled ? " disabled" : ""}>${content}</button>`;
+    const safeLabel = ariaLabel ? escapeHtmlAttr(ariaLabel) : "";
+    const ariaAttrs = safeLabel ? ` aria-label="${safeLabel}" title="${safeLabel}"` : "";
+    return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ""}${isDisabled ? " disabled" : ""}${ariaAttrs}>${content}</button>`;
   };
-  html += createBtn(1, heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--first", p <= 1);
+  html += createBtn(
+    1,
+    heroIcon("chevron-double-left", "page-btn__icon", { "stroke-width": 2 }),
+    false,
+    "page-btn--nav page-btn--first",
+    p <= 1,
+    t("universities.pagination.first", "First page")
+  );
   html += createBtn(
     Math.max(1, p - 1),
     `${heroIcon("chevron-left", "page-btn__icon", { "stroke-width": 2 })}<span class="page-btn__text">${escapeHtml(t("universities.pagination.prev", "Prev"))}</span>`,
@@ -446,7 +456,14 @@ export function renderCatalogPagination(container, { total, currentPage, pageSiz
     "page-btn--nav page-btn--next",
     p >= totalPages
   );
-  html += createBtn(totalPages, heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }), false, "page-btn--nav page-btn--last", p >= totalPages);
+  html += createBtn(
+    totalPages,
+    heroIcon("chevron-double-right", "page-btn__icon", { "stroke-width": 2 }),
+    false,
+    "page-btn--nav page-btn--last",
+    p >= totalPages,
+    t("universities.pagination.last", "Last page")
+  );
   container.innerHTML = html;
   container.querySelectorAll("button").forEach((b) => {
     b.onclick = () => {

@@ -43,7 +43,7 @@
   /* Russian legal labels deliberately share two lines for a balanced footer
      grid; shorter locales keep their natural single-line labels. */
   html[lang="ru"] .footer-legal-links:not(.footer-product-links) a {
-    max-width: 136px;
+    max-width: 146px;
   }
 
   .social-links {
@@ -566,7 +566,7 @@ body.route-loading main {
 /* Floating Network Status Banner (Calm Academic Workspace) */
 .network-status-banner {
   position: fixed;
-  top: 16px;
+  top: calc(var(--nav-height) + var(--space-3));
   left: 50%;
   transform: translateX(-50%) translateY(-16px);
   z-index: var(--z-toast);
@@ -609,13 +609,25 @@ body.route-loading main {
   color: var(--text-muted);
 }
 
-.network-status-banner--online {
+.network-status-banner--online,
+.network-status-banner--ready,
+.network-status-banner--waking,
+.network-status-banner--unavailable {
   background: var(--surface-solid);
   color: var(--text);
 }
 
-.network-status-banner--online .network-status-banner__icon {
+.network-status-banner--online .network-status-banner__icon,
+.network-status-banner--ready .network-status-banner__icon {
   color: var(--color-success);
+}
+
+.network-status-banner--waking .network-status-banner__icon {
+  color: var(--color-warning);
+}
+
+.network-status-banner--unavailable .network-status-banner__icon {
+  color: var(--color-danger);
 }
 
 .network-status-banner__text {
@@ -639,7 +651,7 @@ body.route-loading main {
   }
 
   .network-status-banner {
-    top: 12px;
+    top: calc(var(--nav-height) + var(--space-2));
     max-width: calc(100vw - 24px);
     padding: var(--space-2) var(--space-3);
     font-size: var(--text-xs);

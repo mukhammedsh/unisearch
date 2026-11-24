@@ -140,6 +140,8 @@ export const budgetTooltip = ({ status, costMin, costMax = costMin, budget, tuit
     notes.push(trf("universities.tip.budget_range", { min: money(min), max: money(max) }));
   } else if (status === "fee_status") {
     notes.push(trf("universities.tip.budget_fee_status", { min: money(min), max: money(max) }));
+  } else if (status === "level_needed") {
+    notes.push(trf("universities.tip.budget_level_needed", { cost }));
   } else {
     return "";
   }

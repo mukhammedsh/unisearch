@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "10.7.2",
+  "version": "10.8.0",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -12,6 +12,7 @@
     "audit:dead-code": "knip",
     "audit:duplicates": "jscpd --config .jscpd.json",
     "audit:css": "node scripts/audit-css.mjs --strict",
+    "audit:layout": "node scripts/audit-layout.mjs",
     "audit:images": "node scripts/audit-university-images.mjs && python scripts/audit-university-webp-visual.py",
     "audit:performance": "node scripts/performance-audit.mjs",
     "check:i18n": "node scripts/i18n-check.mjs && node scripts/i18n-pack-revision.mjs",
@@ -39,6 +40,7 @@
     "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@heroicons/react": "^2.2.0",
     "@playwright/test": "^1.64.1",
     "@projectwallace/css-analyzer": "^9.9.9",

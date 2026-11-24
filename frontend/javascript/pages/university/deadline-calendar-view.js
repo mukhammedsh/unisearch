@@ -29,6 +29,12 @@ export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true
   const monthEvents = dated.filter(entry => entry.date.startsWith(monthKey));
   const activeDay = state.day?.startsWith(monthKey) ? state.day : monthEvents[0]?.date || "";
   const activeEvents = monthEvents.filter(entry => entry.date === activeDay);
+  const allDatesStrip = dated.length > 1 && new Set(dated.map(entry => entry.date.slice(0, 7))).size > 1
+    ? `<ul class="deadline-calendar__all-dates" role="list">${dated.map(({ item, date }) => {
+      const current = date === activeDay;
+      return `<li><button type="button" class="deadline-calendar__jump${current ? " is-active" : ""}" data-calendar-jump="${date}" aria-pressed="${current}"><span>${escapeHtml(formatDate(date))}</span><span aria-hidden="true">·</span><span>${escapeHtml(admissionDeadlineTitle(item))}</span></button></li>`;
+    }).join("")}</ul>`
+    : "";
   const cells = getCalendarCells(year, month - 1).map(day => {
     if (day === null) return '<span class="deadline-calendar__blank" aria-hidden="true"></span>';
     const date = `${monthKey}-${String(day).padStart(2, "0")}`;
@@ -41,7 +47,7 @@ export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true
       <button type="button" data-calendar-month="previous" aria-label="${escapeHtmlAttr(label("calendar_previous"))}">${heroIcon("chevron-left", "ui-icon ui-icon--16")}</button>
       <strong aria-live="polite">${escapeHtml(monthTitle)}</strong>
       <button type="button" data-calendar-month="next" aria-label="${escapeHtmlAttr(label("calendar_next"))}">${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>
-    </div></div>
+    </div></div>${allDatesStrip}
     <div class="deadline-calendar__grid" role="group" aria-label="${escapeHtmlAttr(monthTitle)}" data-calendar-month-key="${monthKey}">
       ${["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(day => `<span class="deadline-calendar__weekday">${escapeHtml(label(`weekday.${day}`))}</span>`).join("")}${cells}
     </div><div class="deadline-calendar__details" aria-live="polite">
@@ -76,6 +82,12 @@ export function mountDeadlineCalendar(host, deadlines, state = {}, options = {})
       state.day = button.dataset.calendarDay;
       render();
       host.querySelector(`[data-calendar-day="${state.day}"]`).focus();
+    } else if (button.dataset.calendarJump) {
+      const jumpIndex = [...host.querySelectorAll("[data-calendar-jump]")].indexOf(button);
+      state.monthKey = button.dataset.calendarJump.slice(0, 7);
+      state.day = button.dataset.calendarJump;
+      render();
+      (host.querySelectorAll("[data-calendar-jump]")[jumpIndex] || host.querySelector(`[data-calendar-jump="${state.day}"]`))?.focus();
     } else if (button.dataset.calendarExport !== undefined) {
       const item = deadlines[Number(button.dataset.calendarExport)];
       if (!item) return;

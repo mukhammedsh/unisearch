@@ -1,7 +1,26 @@
 import { API_BASE, loadProfileForApi, showToast } from "../../utils.js";
 import { t } from "../../i18n.js";
+import { readStaleCatalogList, saveStaleCatalogList } from "./stale-list-cache.js";
 
 const DEFAULT_CACHE_TTL_MS = 30000;
+// A catalog request slower than this is a sleeping backend, not a normal round trip.
+export const STALE_LIST_AFTER_MS = 1500;
+
+/**
+ * Hands the last saved result for this request to `onStale` when the request is still pending after
+ * STALE_LIST_AFTER_MS. Returns the timer so the caller can cancel it when the request settles.
+ * @param {string} key
+ * @param {AbortController} controller
+ * @param {((payload: { items: Array<Record<string, any>>, total: number }) => void) | undefined} onStale
+ * @returns {ReturnType<typeof setTimeout> | 0}
+ */
+function scheduleStaleResult(key, controller, onStale) {
+  const stale = typeof onStale === "function" ? readStaleCatalogList(key) : null;
+  if (!stale) return 0;
+  return setTimeout(() => {
+    if (!controller.signal.aborted) onStale(stale);
+  }, STALE_LIST_AFTER_MS);
+}
 
 export function initTranslationDebugLogger() {
   const isTranslationDebugEnabled = (() => {
@@ -78,10 +97,12 @@ export function abortUniversitiesApiRequests(apiState) {
 /**
  * Fetch a filtered page of universities using POST /universities/profiled with fallback to GET /universities.
  * @param {URLSearchParams} apiParams
- * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void }} [options]
+ * When the request is slow and this browser holds the last result for the same request, `onStale` receives it
+ * so the page can show something while the backend wakes; the fresh result is still returned afterwards.
+ * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void, onStale?: (payload: { items: Array<Record<string, any>>, total: number }) => void }} [options]
  * @returns {Promise<{ items: Array<Record<string, any>>, total: number, __aborted?: boolean }>}
  */
-export async function fetchUniversitiesList(apiParams, { apiState, logTranslationDebug = () => {} } = {}) {
+export async function fetchUniversitiesList(apiParams, { apiState, logTranslationDebug = () => {}, onStale } = {}) {
   const state = apiState || createUniversitiesApiState();
   const profile = loadProfileForApi();
   const requestPayload = { ...Object.fromEntries(apiParams), profile };
@@ -104,6 +125,8 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
   }
   const controller = new AbortController();
   state.listFetchController = controller;
+
+  const staleTimer = scheduleStaleResult(key, controller, onStale);
 
   let res;
   try {
@@ -131,6 +154,7 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
     }
     throw err;
   } finally {
+    clearTimeout(staleTimer);
     if (state.listFetchController === controller) {
       state.listFetchController = null;
     }
@@ -142,6 +166,7 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
     items: data.items || [],
     total: data.total || 0,
   };
+  saveStaleCatalogList(key, payload);
   logTranslationDebug("non-ai response received", {
     httpStatus: res.status,
     apiItems: payload.items.length,
@@ -157,11 +182,12 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
 
 /**
  * Fetch UniFit AI-sorted universities from POST /universities/ai-sort with TTL caching.
+ * Like `fetchUniversitiesList`, a slow request hands this browser's last result for the same request to `onStale`.
  * @param {Record<string, any>} payload
- * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void }} [options]
+ * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void, onStale?: (payload: { items: Array<Record<string, any>>, total: number }) => void }} [options]
  * @returns {Promise<{ items: Array<Record<string, any>>, total: number, warnings?: string[], __aborted?: boolean }>}
  */
-export async function fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug = () => {} } = {}) {
+export async function fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug = () => {}, onStale } = {}) {
   const state = apiState || createUniversitiesApiState();
   const key = JSON.stringify(payload);
   const now = Date.now();
@@ -182,6 +208,7 @@ export async function fetchUniversitiesAiSort(payload, { apiState, logTranslatio
   }
   const controller = new AbortController();
   state.aiFetchController = controller;
+  const staleTimer = scheduleStaleResult(key, controller, onStale);
 
   let res;
   try {
@@ -197,6 +224,7 @@ export async function fetchUniversitiesAiSort(payload, { apiState, logTranslatio
     }
     throw err;
   } finally {
+    clearTimeout(staleTimer);
     if (state.aiFetchController === controller) {
       state.aiFetchController = null;
     }
@@ -209,6 +237,8 @@ export async function fetchUniversitiesAiSort(payload, { apiState, logTranslatio
     total: data.total || 0,
     warnings: Array.isArray(data.warnings) ? data.warnings : [],
   };
+  // Warnings describe a moment (for example, ML unavailable), so only the ranked list is kept.
+  saveStaleCatalogList(key, { items: parsed.items, total: parsed.total });
   const probe = parsed.items[0] || {};
   const match = (probe && typeof probe === "object") ? (probe.matchData || {}) : {};
   logTranslationDebug("response received", {

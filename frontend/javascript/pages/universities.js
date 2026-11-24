@@ -122,6 +122,8 @@ function collectUniversitiesElements() {
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         minCostLabel: $("minCostLabel"), maxCostLabel: $("maxCostLabel"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
+        unifitPrefsPanel: $("unifitPreferencesPanel"), unifitPrefsCount: $("unifitPrefsCount"),
+        reviewedOnlyToggle: $("reviewedOnlyToggle"),
         sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
         sortAiTagsHint: $("sortAiTagsHint"),
         focusSlider: $("focusSlider"), focusLabel: $("focusLabel"),
@@ -149,6 +151,8 @@ function collectUniversitiesElements() {
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitBannerTitle: $("unifitBannerTitle"),
         unifitBannerEdit: $("unifitBannerEdit"),
+        unifitBannerPrefsBtn: $("unifitBannerPrefsBtn"),
+        unifitLegendDetails: $("unifitLegendDetails"),
         unifitLegend: $("unifitLegend"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
@@ -379,6 +383,7 @@ export function initUniversitiesPage() {
 
     const refetch = (...args) => {
         if (filterControls.isMobileEditing()) return;
+        saveFilters(state);
         scheduleRefetch(...args);
     };
 
@@ -677,8 +682,8 @@ export function initUniversitiesPage() {
         compareUniversityIds: compareController.getCompareUniversityIds(),
         linkAttrs: compareController.universityLinkAttrs(),
     });
-    const fetchUniversities = (apiParams) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug });
-    const fetchAiSort = (payload) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug });
+    const fetchUniversities = (apiParams, extra = {}) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug, ...extra });
+    const fetchAiSort = (payload, extra = {}) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug, ...extra });
 
     const mapController = createUniversitiesMapController({
         el,
@@ -943,15 +948,21 @@ export function initUniversitiesPage() {
         const rawItems = Array.isArray(data.items) ? data.items : [];
         let items = rawItems;
         let total = data.total || 0;
-        if (state.only_saved) {
+        const clientFiltered = Boolean(state.only_saved || state.only_reviewed);
+        if (clientFiltered) {
             const savedIds = new Set(Array.from(compareController.getSavedUniversityIds()).map((id) => String(id || "").trim()).filter(Boolean));
-            const filteredItems = rawItems.filter((item) => savedIds.has(String(item?.id || "").trim()));
+            const filteredItems = rawItems.filter((item) => (
+                (!state.only_saved || savedIds.has(String(item?.id || "").trim()))
+                && (!state.only_reviewed || item?.admissions_catalog?.availability === "reviewed")
+            ));
             total = filteredItems.length;
             items = state.viewMode === "map"
                 ? filteredItems
                 : filteredItems.slice((state.page - 1) * state.limit, state.page * state.limit);
+            lastRenderedItems = filteredItems;
+        } else {
+            lastRenderedItems = items;
         }
-        lastRenderedItems = state.only_saved ? rawItems : items;
         const warnings = Array.isArray(data.warnings) ? data.warnings : [];
         const mlUnavailable = warnings.some((w) => String(w || "").toLowerCase().includes("machine learning unavailable"));
         const warningText = (mlUnavailable && state.sort === "uni_ai")
@@ -1044,6 +1055,14 @@ export function initUniversitiesPage() {
         setUrlParams(urlParams);
 
         const savedIds = compareController.getSavedUniversityIds();
+        let staleShown = false;
+        // A sleeping backend: show this browser's last result for the same request until the fresh one arrives.
+        const showStaleResult = (staleData) => {
+            if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            staleShown = true;
+            renderFetchedData(staleData, { animateResults: false });
+            setUniversitiesLoading(false, { preserveResults: true });
+        };
 
         try {
             if (state.viewMode === "map") {
@@ -1078,7 +1097,7 @@ export function initUniversitiesPage() {
                 await resolveAiSortResult({
                     canUseFastFallback: state.viewMode === "list" && !hasInitialListPaint && state.page === 1,
                     fastFallbackMs: AI_FAST_FALLBACK_MS,
-                    fetchAi: () => fetchAiSort(buildAiSortPayload()),
+                    fetchAi: () => fetchAiSort(buildAiSortPayload(), { onStale: showStaleResult }),
                     fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams, state)),
                     isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
                     renderData: (data) => renderFetchedData(data, { animateResults }),
@@ -1092,7 +1111,7 @@ export function initUniversitiesPage() {
                 return;
             }
 
-            const data = await fetchUniversities(apiParams);
+            const data = await fetchUniversities(apiParams, { onStale: showStaleResult });
             if (data?.__aborted) return;
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
             renderFetchedData(data, { animateResults });
@@ -1100,6 +1119,11 @@ export function initUniversitiesPage() {
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
             if (err?.name === "AbortError") return;
             console.error(err);
+            if (staleShown) {
+                // The saved list stays on screen; replacing it with an error screen would lose what the visitor can still use.
+                showToast(t("universities.stale_refresh_failed", "The server did not answer. Showing the last results saved on this device."), "warning");
+                return;
+            }
             const classified = classifyError(err);
             if (el.list) {
                 const hasExistingCards = (Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0)

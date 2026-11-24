@@ -16,12 +16,13 @@ import { describeRankingProfile, legendEntries } from "./unifit-explanation.js";
 import { hasProfileEvidence } from "./query-state.js";
 
 /**
- * Manage the UniFit ranking banner, card badge legend, and localized AI sort label.
+ * Manage the UniFit ranking banner, preferences shortcut, and localized AI sort label.
  * @param {{ el: Record<string, any>, state: Record<string, any> }} options
  */
 export function createUnifitBannerController({ el, state }) {
     let dismissed = false;
     let dismissHandler = null;
+    let prefsHandler = null;
 
     const applyAISortOptionLabel = () => {
         if (!el.sortSelect) return;
@@ -33,10 +34,10 @@ export function createUnifitBannerController({ el, state }) {
         }
     };
 
-    // Legend of the icon badges that are on the rendered cards, drawn with the same icons and tones as the badges,
-    // so a first-time visitor learns the mapping once. Called after the banner updates and after each card render.
+    // On-demand legend of the mini status icons visible on rendered cards, collapsed by default to keep the header compact.
     const refreshLegend = () => {
         const box = el.unifitLegend;
+        const disclosure = el.unifitLegendDetails;
         if (!box) return;
         const scope = state.viewMode === "map" ? el.mapResults : el.list;
         const badges = state.sort === "uni_ai" && scope
@@ -44,10 +45,12 @@ export function createUnifitBannerController({ el, state }) {
                 .map((node) => ({ key: node.dataset.legend, icon: node.dataset.legendIcon, tone: node.dataset.legendTone }))
             : [];
         const entries = legendEntries(badges);
+        if (disclosure) disclosure.hidden = !entries.length;
         box.hidden = !entries.length;
         box.innerHTML = entries.length
-            ? `<span class="u-unifit-legend__lead">${escapeHtml(t("universities.ux2.legend.lead"))}</span>${entries.map(({ icon, tone, labelKey }) =>
-                `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 16, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`).join("")}`
+            ? entries.map(({ icon, tone, labelKey }) =>
+                `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 14, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`
+            ).join("")
             : "";
     };
 
@@ -99,14 +102,32 @@ export function createUnifitBannerController({ el, state }) {
                 el.unifitWarningBanner.hidden = true;
             }
         };
+        prefsHandler = () => {
+            if (window.innerWidth <= 1024 && el.mobileFilterToggle && !el.sidebar?.classList.contains("is-open")) {
+                el.mobileFilterToggle.click();
+            }
+            if (el.unifitPrefsPanel) {
+                el.unifitPrefsPanel.hidden = false;
+                el.unifitPrefsPanel.open = true;
+                el.unifitPrefsPanel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+            }
+            window.requestAnimationFrame(() => {
+                el.focusSlider?.focus({ preventScroll: false });
+            });
+        };
         el.unifitWarningDismiss?.addEventListener("click", dismissHandler);
+        el.unifitBannerPrefsBtn?.addEventListener("click", prefsHandler);
     };
 
     const dispose = () => {
         if (dismissHandler && el.unifitWarningDismiss) {
             el.unifitWarningDismiss.removeEventListener("click", dismissHandler);
         }
+        if (prefsHandler && el.unifitBannerPrefsBtn) {
+            el.unifitBannerPrefsBtn.removeEventListener("click", prefsHandler);
+        }
         dismissHandler = null;
+        prefsHandler = null;
     };
 
     return {

@@ -217,9 +217,9 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to bottom in oklab,
-    color-mix(in oklab, var(--uni-card-bg) 55%, transparent),
-    var(--uni-card-bg) 80%
+    to bottom in srgb,
+    color-mix(in srgb, var(--uni-card-bg) 78%, transparent),
+    var(--uni-card-bg) 68%
   );
 }
 
@@ -248,7 +248,7 @@
   gap: var(--space-1);
 }
 
-/* Status badges stack vertically downwards into available vertical space instead of encroaching horizontally on the title */
+/* Status badges stack vertically on the right edge of map cards without encroaching on the title or stretching height. */
 .u-map-results-list .uni-card-statuses {
   flex-direction: column;
   align-items: flex-end;
@@ -266,27 +266,25 @@
 .u-map-results-list .uni-status-trigger {
   width: 28px;
   height: 28px;
+  min-height: 28px;
 }
 
 .u-map-results-list .uni-status-trigger--score {
   width: auto;
 }
 
-.u-map-results-list .uni-status-trigger > span,
+.u-map-results-list .uni-status-icon-wrap,
 .u-map-results-list .uni-status-icon {
+  flex: 0 0 14px;
   width: 14px;
   height: 14px;
-}
-
-.u-map-results-list .uni-status-trigger > .uni-status-value {
-  width: auto;
-  height: auto;
 }
 
 .u-map-results-list .uni-status-overflow-trigger {
   width: 28px;
   height: 28px;
-  font-size: var(--text-xs);
+  min-width: 28px;
+  min-height: 28px;
 }
 
 .u-map-results-list .uni-status-overflow-popover {
@@ -297,10 +295,7 @@
   padding: var(--space-1);
 }
 
-.u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head {
-  padding-right: var(--space-8);
-}
-
+.u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head,
 .u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-metrics {
   padding-right: var(--space-8);
 }
@@ -377,7 +372,7 @@
 
 .map-point-popup__copy strong,
 .map-point-popup__copy span {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .map-point-popup__copy span {
@@ -439,7 +434,7 @@
 
 .map-card-wrapper .uni-title {
   white-space: normal;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .leaflet-container .custom-map-popup a.leaflet-popup-close-button {
@@ -587,7 +582,7 @@
   }
 
   :root .custom-map-popup:has(.map-card-wrapper .uni-card:not(.uni-card--compare-selected):hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
-    background: color-mix(in srgb, var(--accent) 3%, var(--surface-soft));
+    background: var(--surface-solid);
   }
 
   .custom-map-popup:has(.map-card-wrapper .uni-card.uni-card--compare-selected:hover) :is(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {

@@ -1,7 +1,9 @@
 import unittest
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
+from app import main as app_main
 from app.main import app
 from app.core.settings import FRONTEND_ORIGINS
 
@@ -32,6 +34,27 @@ class RootAndOpsApiTests(unittest.TestCase):
         self.assertGreater(int(ready_data.get("languages_total", 0)), 0)
         self.assertGreater(int(ready_data.get("exams_total", 0)), 0)
         self.assertIsInstance(ready_data.get("redis"), dict)
+
+    def test_plain_health_probe_skips_rate_limiter_but_other_routes_do_not(self):
+        calls: list[str] = []
+
+        def fake_check(key: str, now: float | None = None) -> tuple[bool, int, float]:
+            calls.append(key)
+            return True, 10, 0.0
+
+        with patch.object(app_main, "RATE_LIMIT_ENABLED", True), \
+             patch.object(app_main._GLOBAL_RATE_LIMITER, "check", side_effect=fake_check):
+            for path in ("/health", "/health/", "/health?warmup=false"):
+                with self.subTest(path=path):
+                    self.assertEqual(self.client.get(path).status_code, 200)
+            self.assertEqual(calls, [], "plain /health must not consume rate-limit storage")
+
+            self.assertEqual(self.client.get("/").status_code, 200)
+            self.assertEqual(len(calls), 1, "other routes must still be rate limited")
+
+            warmup = self.client.get("/health?warmup=1", headers=self.OPS_HEADERS)
+            self.assertEqual(warmup.status_code, 200)
+            self.assertEqual(len(calls), 2, "authorized warmup health must still be rate limited")
 
     def test_ops_runtime_and_warmup(self):
         unauthorized = self.client.get("/ops/runtime")

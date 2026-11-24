@@ -1,6 +1,6 @@
 /* ===== 2026 Device UX Hardening ===== */
 :root {
-  --nav-height: 72px;
+  --nav-height: 64px;
   --mobile-safe-gutter: clamp(var(--space-3), 4vw, var(--space-5));
 }
 
@@ -193,10 +193,10 @@ body .has-sliding-indicator .active::after {
 .navbar-search-clear {
   position: absolute;
   top: 50%;
-  right: 8px;
+  right: var(--space-1);
   display: inline-flex;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -585,20 +585,20 @@ body .has-sliding-indicator .active::after {
   .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn {
-    flex: 0 0 36px;
-    width: 36px;
-    min-width: 36px;
-    height: 36px;
-    min-height: 36px;
+    flex: 0 0 40px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
     border-radius: var(--radius-md);
   }
 
   .navbar-right .lang-control .custom-select-wrapper,
   .navbar-right .lang-control .custom-select-trigger {
-    width: 64px;
-    min-width: 64px;
-    height: 36px;
-    min-height: 36px;
+    width: 68px;
+    min-width: 68px;
+    height: 40px;
+    min-height: 40px;
   }
 
   .navbar-right .lang-control .custom-select-trigger--language::after {
@@ -637,26 +637,26 @@ body .has-sliding-indicator .active::after {
   }
 
   .navbar-right {
-    gap: var(--space-1);
+    gap: var(--space-1-5);
     margin-left: auto;
   }
 
   .navbar-search-toggle,
   .settings-trigger-btn,
   .profile-trigger-btn {
-    flex-basis: 34px;
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
-    min-height: 34px;
+    flex-basis: 40px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
   }
 
   .navbar-right .lang-control .custom-select-wrapper,
   .navbar-right .lang-control .custom-select-trigger {
-    width: 58px;
-    min-width: 58px;
-    height: 34px;
-    min-height: 34px;
+    width: 62px;
+    min-width: 62px;
+    height: 40px;
+    min-height: 40px;
   }
 
   .navbar-right .lang-control .custom-select-trigger--language img {

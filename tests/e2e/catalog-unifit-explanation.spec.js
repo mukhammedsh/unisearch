@@ -56,7 +56,11 @@ test("cards stay compact and the banner legend explains only the icons on screen
   // No reason text on the cards: the icons carry the meaning, the legend teaches them.
   await expect(page.locator("#universitiesList .uni-reasons")).toHaveCount(0);
 
+  const legendDetails = page.locator("#unifitLegendDetails");
   const legend = page.locator("#unifitLegend");
+  await expect(legendDetails).toBeVisible();
+  await expect(legend).toBeHidden();
+  await legendDetails.locator(":scope > summary").click();
   await expect(legend).toBeVisible();
   const badges = await page.locator("#universitiesList .uni-card .uni-status-trigger[data-legend]").evaluateAll((nodes) =>
     Array.from(new Set(nodes.map((node) => `${node.dataset.legend}|${node.dataset.legendIcon}|${node.dataset.legendTone}`))));
@@ -82,6 +86,7 @@ test("cards stay compact and the banner legend explains only the icons on screen
 
   // The legend belongs to the banner: dismissing the banner hides it.
   await page.locator("#dismissUnifitWarningBanner").click();
+  await expect(legendDetails).toBeHidden();
   await expect(legend).toBeHidden();
 
   await page.goto("/index.html?sort=name_asc");
@@ -114,6 +119,9 @@ test("on a phone the legend wraps inside the banner without sideways scrolling",
   await page.goto("/index.html?sort=uni_ai&study_level=bachelor");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  const legendDetails = page.locator("#unifitLegendDetails");
+  await expect(legendDetails).toBeVisible();
+  await legendDetails.locator(":scope > summary").click();
   await expect(page.locator("#unifitLegend")).toBeVisible();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);

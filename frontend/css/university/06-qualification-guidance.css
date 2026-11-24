@@ -136,3 +136,12 @@
   color: var(--text);
   font-size: var(--text-sm);
 }
+
+@media (max-width: 768px) {
+  .qualification-guidance__source,
+  .program-coverage__source {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+  }
+}

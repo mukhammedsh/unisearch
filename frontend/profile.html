@@ -318,7 +318,7 @@
                     <select id="langKind" class="profile-input"></select>
                   </div>
 
-                  <div id="cefrContainer" class="profile-lang-conditional lang-control-item">
+                  <div id="cefrContainer" class="profile-lang-conditional lang-control-item" hidden>
                     <label class="profile-form-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
                     <select id="langCefr" class="profile-input">
                       <option value="1">A1</option>
@@ -330,13 +330,13 @@
                     </select>
                   </div>
 
-                  <div id="examContainer" class="profile-lang-conditional lang-control-item">
+                  <div id="examContainer" class="profile-lang-conditional lang-control-item" hidden>
                     <label class="profile-form-label" for="langExam" data-i18n="profile.exam">Exam</label>
                     <select id="langExam" class="profile-input" data-flags="off"></select>
                   </div>
 
-                  <div id="scoreContainer" class="profile-lang-conditional lang-control-item">
-                    <label class="profile-form-label" for="langExamScore" data-i18n="profile.score">Score</label>
+                  <div id="scoreContainer" class="profile-lang-conditional lang-control-item" hidden>
+                    <label class="profile-form-label" id="langExamScoreLabel" for="langExamScore" data-i18n="profile.score">Score</label>
                     <input
                       id="langExamScore"
                       type="text"
@@ -345,6 +345,7 @@
                       placeholder="Score (e.g. 7.5)"
                       data-i18n-placeholder="profile.placeholder.lang_score"
                     />
+                    <p id="langExamScoreHint" class="profile-hint" hidden data-i18n="languages.exam_overall_score_hint">Overall score for the whole exam — you can enter this alone if you do not know the section scores.</p>
                   </div>
 
                   <!-- Section scores sit right below the overall score they add up to. -->

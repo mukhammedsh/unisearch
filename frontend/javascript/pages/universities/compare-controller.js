@@ -218,7 +218,7 @@ export function createCompareController({
             const compareBtn = card.querySelector("[data-card-action='compare']");
             card.classList.toggle("uni-card--compare-selected", compared);
             card.classList.toggle("uni-card--compare-unavailable", otherGroup);
-            card.setAttribute("aria-selected", compared ? "true" : "false");
+            card.setAttribute("data-compare-selected", compared ? "true" : "false");
             if (saveBtn) {
                 saveBtn.classList.toggle("is-active", saved);
                 saveBtn.setAttribute("aria-pressed", saved ? "true" : "false");
