@@ -563,23 +563,27 @@
 .compare-diff-toggle__track {
   position: relative;
   display: inline-block;
+  flex: 0 0 36px;
   width: 36px;
   height: 20px;
-  border-radius: var(--radius-md);
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-micro);
-  transition: background-color var(--motion-fast);
+  border-radius: var(--radius-full);
+  background: var(--line-strong);
+  transition: background-color var(--motion-medium) var(--motion-ease-standard);
 }
 
 .compare-diff-toggle__thumb {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  transition: transform var(--motion-fast), background-color var(--motion-fast);
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-circle);
+  background: var(--text-inverse);
+  box-shadow: var(--shadow-xs);
+  transform: translateX(0);
+  transition:
+    transform var(--motion-medium) var(--motion-ease-enter),
+    background-color var(--motion-medium) var(--motion-ease-standard);
 }
 
 .compare-diff-toggle input:checked + .compare-diff-toggle__track {
@@ -1247,6 +1251,14 @@
   :root .compare-uni-card:hover .compare-uni-card__link,
   .compare-diff-toggle:hover {
     color: var(--interaction-hover-text);
+  }
+
+  .compare-diff-toggle:hover input:not(:checked) + .compare-diff-toggle__track {
+    background: color-mix(in srgb, var(--text-muted) 56%, transparent);
+  }
+
+  .compare-diff-toggle:hover input:checked + .compare-diff-toggle__track {
+    background: var(--accent-strong);
   }
 
   :root .compare-uni-card:hover {

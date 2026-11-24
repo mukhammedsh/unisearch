@@ -689,23 +689,30 @@ dialog::backdrop {
   .profile-input,
   .u-input,
   .settings-switch-track,
-  .compare-diff-toggle__track {
+  .compare-diff-toggle__track,
+  .u-reviewed-toggle__input,
+  .profile-gpa-scale__option input {
     outline: 1px solid CanvasText;
   }
 
   .settings-switch-thumb,
-  .compare-diff-toggle__thumb {
+  .compare-diff-toggle__thumb,
+  .u-reviewed-toggle__input::before {
     background: CanvasText;
   }
 
   .settings-switch-input:checked + .settings-switch-track,
-  .compare-diff-toggle input:checked + .compare-diff-toggle__track {
+  .compare-diff-toggle input:checked + .compare-diff-toggle__track,
+  .u-reviewed-toggle__input:checked,
+  .profile-gpa-scale__option input:checked {
     background: Highlight;
     outline: 2px solid Highlight;
   }
 
   .settings-switch-input:checked + .settings-switch-track .settings-switch-thumb,
-  .compare-diff-toggle input:checked + .compare-diff-toggle__track .compare-diff-toggle__thumb {
+  .compare-diff-toggle input:checked + .compare-diff-toggle__track .compare-diff-toggle__thumb,
+  .u-reviewed-toggle__input:checked::before,
+  .profile-gpa-scale__option input:checked::before {
     background: HighlightText;
     outline: 1px solid CanvasText;
   }

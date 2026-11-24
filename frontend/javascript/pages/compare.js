@@ -314,8 +314,8 @@ async function renderCompareResults(container, { pushState = false } = {}) {
         </div>
         <div class="compare-block-tools">
           <label class="compare-diff-toggle" title="${escapeHtmlAttr(t("universities.compare.diff_only", "Differences only"))}">
-            <input type="checkbox" data-action="toggle-diff-only"${isDiffOnly ? " checked" : ""}>
-            <span class="compare-diff-toggle__track"><span class="compare-diff-toggle__thumb"></span></span>
+            <input type="checkbox" role="switch" data-action="toggle-diff-only"${isDiffOnly ? " checked" : ""}>
+            <span class="compare-diff-toggle__track" aria-hidden="true"><span class="compare-diff-toggle__thumb"></span></span>
             <span class="compare-diff-toggle__label">${escapeHtml(t("universities.compare.diff_only", "Differences only"))}</span>
           </label>
         </div>

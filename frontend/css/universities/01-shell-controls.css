@@ -335,21 +335,24 @@ body[data-page="universities"] {
 }
 
 .u-field--reviewed-only {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .u-reviewed-toggle {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  min-height: 40px;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 44px;
+  box-sizing: border-box;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-base);
   background: var(--surface-soft);
+  box-shadow: var(--shadow-micro);
   color: var(--text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-  line-height: 1.3;
+  line-height: var(--leading-tight);
   cursor: pointer;
   user-select: none;
   transition:
@@ -363,12 +366,55 @@ body[data-page="universities"] {
 }
 
 .u-reviewed-toggle__input {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--line-strong);
+  cursor: pointer;
+  transition: background-color var(--motion-medium) var(--motion-ease-standard);
+}
+
+.u-reviewed-toggle__input::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
   width: 16px;
   height: 16px;
-  margin: 0;
-  flex: 0 0 16px;
-  accent-color: var(--accent);
-  cursor: pointer;
+  border-radius: var(--radius-circle);
+  background: var(--text-inverse);
+  box-shadow: var(--shadow-xs);
+  transform: translateX(0);
+  transition:
+    transform var(--motion-medium) var(--motion-ease-enter),
+    background-color var(--motion-medium) var(--motion-ease-standard);
+}
+
+.u-reviewed-toggle__input:checked {
+  background: var(--accent);
+}
+
+.u-reviewed-toggle__input:checked::before {
+  transform: translateX(16px);
+}
+
+.u-reviewed-toggle__input:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.u-reviewed-toggle__input:disabled {
+  opacity: var(--interaction-disabled-opacity);
+  cursor: not-allowed;
 }
 
 .u-reviewed-toggle__text {
@@ -1182,6 +1228,14 @@ body[data-page="universities"] {
   .u-unifit-warning__link:hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
+  }
+
+  .u-reviewed-toggle:hover .u-reviewed-toggle__input:not(:checked) {
+    background: color-mix(in srgb, var(--text-muted) 56%, transparent);
+  }
+
+  .u-reviewed-toggle:hover .u-reviewed-toggle__input:checked {
+    background: var(--accent-strong);
   }
 
   .u-unifit-warning__dismiss:hover {
