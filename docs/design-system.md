@@ -325,6 +325,9 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 - Native `<dialog>` and `[popover]` layers opt into `.motion-top-layer` (add `.motion-top-layer--fade` for full-screen layers); it also transitions `overlay` so the layer stays painted while it fades out.
 - Custom select panels unfold from the edge they are attached to (`scale: 1 0.96` with `transform-origin` on that edge); `open-up` stays on a closed panel until the next open recalculates it.
 - Tooltips opened by hover wait `--motion-tooltip-delay` (200ms); keyboard focus, clicks and a pointer arriving from a neighbouring tooltip (`html.tooltips-warm`) open at once; explicit dismissal (`.is-closed`) hides instantly.
+- Elements that JS shows or hides inside a column (dependent filters, notices) use `setRevealed()` from `frontend/javascript/utils/motion-reveal.js`: height and opacity grow or shrink, collapsing content is `inert`, and restores on page load pass `{ instant: true }`. `<details>` disclosures opt into `.motion-disclosure` (`::details-content` with `interpolate-size`; other browsers open instantly).
+- View switches (catalog list ↔ map) crossfade the incoming view in place with `fadeIn()`; nothing moves. Changing counts use `setTextWithFade()`.
+- In multi-item containers move only what changed: the compare tray enters and leaves once, a new chip enters on its own, a removed chip fades before the re-render. Card grids never replay their entrance as a side effect.
 - `npm run check:design-lint` reports raw durations and easings in `transition`/`animation` declarations (`animation-raw-timing`), including fallbacks such as `var(--motion-fast, 160ms)`.
 
 ## Responsive Rules
