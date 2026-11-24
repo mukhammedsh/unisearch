@@ -24,6 +24,9 @@ Minor release: redesign the frontend surface ladder and Indigo visual system, re
 - Redesign Overview key facts on university detail pages (`frontend/css/university/02-overview-programs.css`, `frontend/css/university/01-shell-hero.css`, `frontend/css/university/05-admissions-reviewed.css`, `frontend/javascript/pages/university/render-content.js`) as a single borderless stat strip (`.d-facts-strip`) with semantic icons, hairline dividers, and aligned emphasized metrics, moving all verified source links, check dates, and scopes into one full-width `<details class="d-facts-sources">` disclosure below the strip so expanding sources never stretches KPI cells.
 - Flatten the Overview admissions summary grid (`frontend/javascript/pages/university/overview-summary.js`, `frontend/css/university/02-overview-programs.css`, `frontend/css/university/05-admissions-reviewed.css`) so "When to apply" and "What it costs" sit side by side at equal height while denser or standalone cards ("What you'll need", "Selectivity and students", program-choice card) span the full row without staggered columns or half-empty gaps.
 
+### Fixed
+- Exempt the plain `GET /health` liveness probe from the global rate limiter (`is_plain_health_probe` in `backend/app/core/security.py`, `backend/app/main.py`) so platform health checks and uptime monitors no longer consume the metered Redis quota (about 20,000 requests per day exhausted a 500,000-command monthly limit and forced the in-memory fallback); `/health?warmup=...` stays protected by the ops token and the rate limiter, and a regression test in `backend/tests/test_root_health_ready_ops.py` covers both cases.
+
 ## 10.7.2 (2026-11-23) - Frontend code quality and modularization
 
 Patch release: add frontend JavaScript static analysis tooling, remove dead code and duplicates, and modularize large frontend page controllers.
