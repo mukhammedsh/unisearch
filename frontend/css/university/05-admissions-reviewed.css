@@ -1705,14 +1705,6 @@ details[open] > summary > .admissions-disclosure-icon {
   gap: var(--space-4);
 }
 
-/* Answer cards keep their own height and stack tightly in two columns, so no card leaves an empty gap beside another. */
-.overview-summary__column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  min-width: 0;
-}
-
 @media (max-width: 768px) {
   .admissions-reading__source a.admissions-reading__ref {
     min-width: 36px;
@@ -1855,16 +1847,6 @@ details[open] > summary > .admissions-disclosure-icon {
     content: attr(data-label);
     color: var(--text-muted);
   }
-
-  /* One column on narrow screens: the column wrappers step aside and the cards keep the reading order of the answers. */
-  .overview-summary__column {
-    display: contents;
-  }
-
-  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="deadline"] { order: 1; }
-  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="cost"] { order: 2; }
-  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="needs"] { order: 3; }
-  .overview-summary__grid--columns > .overview-summary__column > [data-summary-card="people"] { order: 4; }
 }
 
 @media (max-width: 480px) {

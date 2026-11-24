@@ -696,11 +696,16 @@
 .overview-summary__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
+  align-items: stretch;
   gap: var(--space-3);
 }
 
-.overview-summary__card[data-summary-card="program"] {
+.overview-summary__card:is(
+  [data-summary-card="program"],
+  [data-summary-card="needs"],
+  [data-summary-card="people"],
+  :only-child
+) {
   grid-column: 1 / -1;
 }
 
@@ -823,6 +828,15 @@
   font-weight: var(--font-weight-medium);
   line-height: var(--leading-normal);
   overflow-wrap: break-word;
+}
+
+.overview-summary__card[data-summary-card="people"] .overview-summary__list {
+  gap: var(--space-3);
+}
+
+.overview-summary__card[data-summary-card="people"] .overview-summary__fact + .overview-summary__fact {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line-faint);
 }
 
 .overview-summary__fact-detail {

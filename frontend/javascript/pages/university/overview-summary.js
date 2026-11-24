@@ -342,13 +342,9 @@ function renderCard(card) {
     ${answer}${lines}${items}${aside}${levels}${action}</section>`;
 }
 
-// Answer cards stack in two independent columns (odd and even positions), so a short card never leaves an empty
-// gap beside a long one. A full-width program card or a single card uses one plain column.
+// Short top cards (when to apply, what it costs) sit side by side; denser or standalone cards span the full row.
 function renderCardGrid(cards) {
-  if (cards.length < 2 || cards.some(card => card.id === "program")) return `<div class="overview-summary__grid">${cards.map(renderCard).join("")}</div>`;
-  const columns = [cards.filter((_, index) => index % 2 === 0), cards.filter((_, index) => index % 2 === 1)];
-  return `<div class="overview-summary__grid overview-summary__grid--columns">${columns.map(column =>
-    `<div class="overview-summary__column">${column.map(renderCard).join("")}</div>`).join("")}</div>`;
+  return `<div class="overview-summary__grid">${cards.map(renderCard).join("")}</div>`;
 }
 
 export function renderSummary(cards, intro = "") {
