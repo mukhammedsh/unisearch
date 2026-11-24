@@ -122,7 +122,7 @@ a browser check of the changed screens, and a local commit.
    popover), network banner, toasts.
 2. **Catalog.** Dependent filters (state/region, price range, UniFit legend
    `<details>`, UniFit warning banner) expand in height; list/map crossfade;
-   saved-tab removal with gap closing; compare tray exit and chip
+   saved-tab removal as fade + instant re-layout; compare tray exit and chip
    add/remove; results counter update; "reset filters" feedback.
 3. **Transitions.** Card → detail cover shared transition (cached only);
    university detail tabs, profile sections and compare steps get a short
