@@ -14,11 +14,14 @@ for (const { theme, viewport } of [
     await expect(page.locator("#detailExtra .uni-tag").first()).toBeVisible();
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
 
-    const factMetrics = await page.locator("#detailRecommendations .d-kv").evaluateAll((cards) =>
+    const strip = page.locator("#detailRecommendations .d-facts-strip");
+    await expect(strip).toBeVisible();
+    const stripHeightBefore = Math.round((await strip.boundingBox()).height);
+
+    const factMetrics = await strip.locator(".d-kv").evaluateAll((cards) =>
       cards.map((card) => {
-        const label = card.children[0];
-        const valueWrap = card.children[1];
-        const valueNode = valueWrap?.firstElementChild || valueWrap;
+        const label = card.querySelector(".d-kv-label");
+        const valueNode = card.querySelector(".d-kv-metric");
         const cardRect = card.getBoundingClientRect();
         const valueRect = valueNode ? valueNode.getBoundingClientRect() : null;
         return {
@@ -35,11 +38,22 @@ for (const { theme, viewport } of [
       expect(metric.labelWeight).toBe("500");
       expect(metric.valueWeight).toBe("600");
     }
-    // Cards on the same grid row must align their primary values near the top instead of leaving a gap under the label.
+    // Cells on the same grid row must align their primary values at the top with no vertical gap.
     const sameRowOffsets = factMetrics
       .filter((metric) => Math.abs(metric.cardTop - factMetrics[0].cardTop) <= 2)
       .map((metric) => metric.valueOffsetFromCardTop);
     expect(Math.max(...sameRowOffsets) - Math.min(...sameRowOffsets)).toBeLessThanOrEqual(4);
+
+    // Expanding the shared sources disclosure must reveal verified links without stretching the stat strip.
+    const sourcesSummary = page.locator("#detailRecommendations .d-facts-sources__summary");
+    await expect(sourcesSummary).toBeVisible();
+    await sourcesSummary.click();
+    await expect(page.locator("#detailRecommendations .d-facts-sources")).toHaveAttribute("open", "");
+    await expect(page.locator("#detailRecommendations .d-fact-source__link").first()).toBeVisible();
+    const stripHeightAfter = Math.round((await strip.boundingBox()).height);
+    expect(Math.abs(stripHeightAfter - stripHeightBefore)).toBeLessThanOrEqual(2);
+    await sourcesSummary.click();
+    await expect(page.locator("#detailRecommendations .d-facts-sources")).not.toHaveAttribute("open", "");
 
     const tag = page.locator("#detailExtra .uni-tag").first();
     const resting = await tag.evaluate((node) => ({
@@ -52,6 +66,6 @@ for (const { theme, viewport } of [
       color: getComputedStyle(node).color,
     }));
     expect(hovered.background).not.toBe(resting.background);
-    expect(hovered.color).not.toBe(resting.color);
+    expect(hovered.color).toBe(resting.color);
   });
 }

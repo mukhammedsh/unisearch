@@ -521,154 +521,6 @@ a.d-cover-credit:hover {
   font-weight: var(--font-weight-regular);
 }
 
-.d-kv {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-3) 0;
-}
-
-/* The last row hands its trailing space to the box padding so the gap before the next section is not doubled. */
-.d-kv.d-kv--last {
-  padding-bottom: 0;
-}
-
-.d-kv > span:first-child {
-  color: var(--muted);
-  font-weight: var(--font-weight-regular);
-  flex: 1 1 55%;
-  min-width: 0;
-  overflow-wrap: break-word;
-}
-
-.d-kv > span:last-child {
-  color: var(--text);
-  font-weight: var(--font-weight-regular);
-  text-align: right;
-  flex: 1 1 45%;
-  min-width: 0;
-  overflow-wrap: break-word;
-}
-
-.d-kv-value {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-1);
-}
-
-.d-fact-source {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--leading-normal);
-}
-
-.d-fact-source a {
-  color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: var(--space-1);
-  overflow-wrap: anywhere;
-}
-
-/* The source scope stays collapsed so a row shows only the link and check date until the reader asks for it. */
-.d-fact-scope {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--space-2);
-}
-
-.d-fact-scope > summary {
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  cursor: pointer;
-  list-style: none;
-}
-
-.d-fact-scope > summary::-webkit-details-marker {
-  display: none;
-}
-
-.d-fact-scope > summary:hover {
-  color: var(--text);
-}
-
-.d-box-text:has(~ .university-coverage-section) {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  gap: var(--space-3);
-}
-
-.d-box-text:has(~ .university-coverage-section) > .d-kv {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: var(--space-1-5);
-  min-width: 0;
-  padding: var(--space-4);
-  border-top: 0;
-  border-bottom: 0;
-  border-radius: var(--radius-md);
-  background: var(--surface-soft);
-}
-
-.d-box-text:has(~ .university-coverage-section) > .d-kv > span:first-child {
-  flex: 0 0 auto;
-  width: 100%;
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  line-height: var(--leading-normal);
-}
-
-.d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  gap: var(--space-1-5);
-  width: 100%;
-  text-align: left;
-  align-items: flex-start;
-}
-
-.d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child > :first-child:not(.d-fact-source):not(.d-fact-scope) {
-  color: var(--text);
-  font-size: var(--text-md);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--leading-tight);
-}
-
-.d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child > :is(.d-fact-source, .d-fact-scope) {
-  margin-block-start: auto;
-  padding-block-start: var(--space-2);
-}
-
-.d-box-text:has(~ .university-coverage-section) .d-fact-source,
-.d-box-text:has(~ .university-coverage-section) .d-fact-scope {
-  align-items: flex-start;
-  text-align: left;
-}
-
-.d-rank-emphasis {
-  color: var(--text);
-  font-weight: var(--font-weight-regular);
-}
-
-.d-kv-label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
 :is(.d-kv-label, .d-kv):has(.d-info-wrap:is(:hover, :focus-within, .is-open, .is-closed, .is-closing)) {
   position: relative;
   z-index: var(--z-dropdown);
@@ -1124,16 +976,6 @@ body[data-page="university"],
     height: 36px;
   }
 
-  .d-fact-scope > summary {
-    min-height: 38px;
-  }
-
-  .d-fact-source a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 38px;
-  }
-
   .d-head {
     flex-direction: column;
     align-items: stretch;
@@ -1202,19 +1044,6 @@ body[data-page="university"],
 
   .d-box {
     padding: var(--space-4);
-  }
-
-  .d-kv {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-1);
-  }
-
-  .d-kv > span:first-child,
-  .d-kv > span:last-child {
-    flex: 0 0 100%;
-    width: 100%;
-    text-align: left;
   }
 }
 

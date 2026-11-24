@@ -4,15 +4,6 @@
   min-width: 0;
 }
 
-.d-study-formats {
-  color: var(--text);
-  flex: 1 1 45%;
-  min-width: 0;
-  line-height: var(--leading-normal);
-  overflow-wrap: break-word;
-  text-align: right;
-}
-
 .admissions-context {
   display: grid;
   gap: var(--space-4);
