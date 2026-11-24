@@ -2,6 +2,7 @@
 
 import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
+import { loadStaticSnapshotManifest, staticSnapshotAssetUrl } from "../../utils/static-snapshot.js";
 import { buildApiUrl, safeUrl } from "../_shared.js";
 
 let creditsPromise = null;
@@ -9,7 +10,12 @@ let creditsPromise = null;
 // The credits file lives next to the photographs and is served by the same static asset route.
 export function loadPhotoCredits() {
   if (!creditsPromise) {
-    creditsPromise = fetch(buildApiUrl("universities/assets/credits.json"), { credentials: "omit" })
+    creditsPromise = loadStaticSnapshotManifest()
+      .then(() => {
+        const snapshotUrl = staticSnapshotAssetUrl("credits.json");
+        const url = snapshotUrl || buildApiUrl("universities/assets/credits.json");
+        return fetch(url, { credentials: snapshotUrl ? "same-origin" : "omit" });
+      })
       .then((response) => {
         if (!response.ok) throw new Error(`credits.json responded ${response.status}`);
         return response.json();

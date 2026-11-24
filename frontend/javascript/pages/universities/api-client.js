@@ -1,5 +1,8 @@
 import { API_BASE, loadProfileForApi, showToast } from "../../utils.js";
 import { t } from "../../i18n.js";
+import { convert } from "../../currency.js";
+import { isStaticSnapshotEnabled, loadStaticCatalog } from "../../utils/static-snapshot.js";
+import { profileRequiresServerCatalogCosts, queryStaticCatalog } from "./snapshot-filter.js";
 import { readStaleCatalogList, saveStaleCatalogList } from "./stale-list-cache.js";
 
 const DEFAULT_CACHE_TTL_MS = 30000;
@@ -128,6 +131,40 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
 
   const staleTimer = scheduleStaleResult(key, controller, onStale);
 
+  let snapshotPayload = null;
+  if (isStaticSnapshotEnabled()) {
+    const paramsObj = Object.fromEntries(apiParams);
+    const needsServerCosts = profileRequiresServerCatalogCosts(profile, paramsObj);
+    try {
+      const staticCatalog = await loadStaticCatalog(paramsObj.lang || "eng", { signal: controller.signal });
+      if (staticCatalog) {
+        const result = queryStaticCatalog(staticCatalog, paramsObj, {
+          convertToUsd: (amount, currency) => convert(amount, currency, "USD"),
+        });
+        snapshotPayload = { items: result.items, total: result.total };
+        if (!needsServerCosts) {
+          clearTimeout(staleTimer);
+          if (state.listFetchController === controller) state.listFetchController = null;
+          if (state.universitiesFetchCache.size >= 50) {
+            const oldestKey = state.universitiesFetchCache.keys().next().value;
+            if (oldestKey !== undefined) state.universitiesFetchCache.delete(oldestKey);
+          }
+          state.universitiesFetchCache.set(key, { payload: snapshotPayload, timestamp: now });
+          return snapshotPayload;
+        }
+        if (typeof onStale === "function" && !controller.signal.aborted) {
+          onStale(snapshotPayload);
+        }
+      }
+    } catch (err) {
+      if (err?.name === "AbortError") {
+        clearTimeout(staleTimer);
+        if (state.listFetchController === controller) state.listFetchController = null;
+        return { items: [], total: 0, __aborted: true };
+      }
+    }
+  }
+
   let res;
   try {
     if (Date.now() < state.profiledEndpointUnavailableUntil) {
@@ -152,6 +189,7 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
     if (err?.name === "AbortError") {
       return { items: [], total: 0, __aborted: true };
     }
+    if (snapshotPayload) return snapshotPayload;
     throw err;
   } finally {
     clearTimeout(staleTimer);
@@ -160,7 +198,10 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
     }
   }
 
-  if (!res.ok) throw new Error("API Error");
+  if (!res.ok) {
+    if (snapshotPayload) return snapshotPayload;
+    throw new Error("API Error");
+  }
   const data = await res.json();
   const payload = {
     items: data.items || [],

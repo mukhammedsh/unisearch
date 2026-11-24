@@ -21,6 +21,8 @@ import {
   campusAreaFact,
 } from "../_shared.js";
 import { coverCreditHtml } from "../university/cover-credit.js";
+import { loadStaticStudyOptions } from "../../utils/static-snapshot.js";
+import { queryStaticStudyOptions } from "./snapshot-filter.js";
 
 export function compareCampusHtml(id, photos) {
   const credit = photos?.[id];
@@ -171,6 +173,21 @@ export function hasReviewedAdmissions(u) {
 }
 
 export async function fetchCompareStudyOptions(id, query = {}, options = {}) {
+  if (!options.fetchImpl) {
+    const staticPayload = await loadStaticStudyOptions(id, { signal: options.signal }).catch((err) => {
+      if (err?.name === "AbortError") throw err;
+      return null;
+    });
+    if (staticPayload) {
+      return queryStaticStudyOptions(staticPayload, {
+        search: query.search || "",
+        study_level: query.study_level || "",
+        page: query.page || 1,
+        limit: 24,
+        translateTitle: trProgramName,
+      });
+    }
+  }
   const params = new URLSearchParams({ search: query.search || "", page: query.page || 1, limit: 24 });
   if (query.study_level) params.set("study_level", query.study_level);
   const response = await (options.fetchImpl || fetch)(`${options.apiBase || ""}/universities/${encodeURIComponent(id)}/study-options?${params}`, { signal: options.signal });

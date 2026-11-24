@@ -19,6 +19,7 @@ export function generateFrontendEnvFile({ rootDir = defaultRootDir } = {}) {
   const apiPort = String(env.UNISEARCH_API_PORT || env.BACKEND_PORT || "8000").trim() || "8000";
   const prettyRaw = String(env.UNISEARCH_USE_PRETTY_URLS || "").trim();
   const debugRaw = String(env.UNISEARCH_APP_DEBUG || "").trim();
+  const snapshotRaw = String(env.UNISEARCH_STATIC_SNAPSHOT || "").trim();
   const appVersion = readProjectVersion(rootDir);
 
   const payload = {
@@ -27,6 +28,7 @@ export function generateFrontendEnvFile({ rootDir = defaultRootDir } = {}) {
     APP_VERSION: appVersion,
     APP_USE_PRETTY_URLS: prettyRaw,
     APP_DEBUG: debugRaw,
+    APP_STATIC_SNAPSHOT: snapshotRaw,
   };
 
   const target = path.resolve(rootDir, "frontend", "env.js");

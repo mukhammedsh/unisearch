@@ -2,6 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { readAdmissionsCatalog } from "./admissions-catalog-fixture.mjs";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage, t } = await import("../../frontend/javascript/i18n.js");
@@ -314,7 +315,7 @@ test("a selected route without deadline records explains the empty section", () 
 
 test("a known NU dates announcement replaces the generic empty state and retains its source and cycle", async () => {
   setLanguage("eng", { emit: false });
-  const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+  const catalog = await readAdmissionsCatalog();
   const stack = [catalog];
   let unknown;
   while (stack.length && !unknown) {

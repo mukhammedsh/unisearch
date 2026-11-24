@@ -1,6 +1,7 @@
 import { getCurrentLanguage, t } from "./i18n.js";
 import { API_BASE } from "./utils.js";
 import { normalizeTranslationKey } from "./utils/text.js";
+import { loadStaticTranslations } from "./utils/static-snapshot.js";
 
 const CACHE = {
   byLang: new Map(),
@@ -87,10 +88,13 @@ export async function loadUniversityTranslationsForLanguage(language, force = fa
   }
 
   const qs = new URLSearchParams({ lang }).toString();
-  const inFlight = fetch(`${API_BASE}/universities/translations?${qs}`, { cache: "no-cache" })
-    .then((res) => {
-      if (!res.ok) throw new Error(`universities/translations http ${res.status}`);
-      return res.json();
+  const inFlight = loadStaticTranslations(lang)
+    .then((staticPayload) => {
+      if (staticPayload) return staticPayload;
+      return fetch(`${API_BASE}/universities/translations?${qs}`, { cache: "no-cache" }).then((res) => {
+        if (!res.ok) throw new Error(`universities/translations http ${res.status}`);
+        return res.json();
+      });
     })
     .then((payload) => {
       const payloadLang = normalizeLang(payload?.lang || lang);

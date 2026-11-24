@@ -2,6 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { readAdmissionsCatalog } from "./admissions-catalog-fixture.mjs";
 
 const { renderOverviewSection, universityStudyFormats } = await import("../../frontend/javascript/pages/university/render-content.js");
 
@@ -17,7 +18,7 @@ test("program formats group into campus, hybrid and online without schedule word
 });
 
 test("MIT's reviewed program formats do not describe the university as an evening school", async () => {
-  const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+  const catalog = await readAdmissionsCatalog();
   const mit = catalog.institutions.find(row => row.institution.id === "mit-usa-cambridge");
   const modes = mit.study_options.map(option => option.attributes?.format).map(format => (format && typeof format === "object" ? format.mode : format)).flat().filter(value => typeof value === "string");
   const formats = universityStudyFormats(modes);

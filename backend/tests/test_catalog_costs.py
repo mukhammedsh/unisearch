@@ -5,7 +5,7 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.services import admissions_catalog, universities
+from app.services import admissions_catalog, admissions_index, universities
 
 
 MIT = "mit-usa-cambridge"
@@ -43,7 +43,8 @@ class CatalogCostTests(unittest.TestCase):
                      value={"period": "month", "amount": 4000, "currency": "USD", "year": 2026}),
             ],
         }
-        with patch.object(admissions_catalog, "get_institution", return_value=institution):
+        summary = admissions_index.build_institution_summary(institution, file_relpath="", file_sha256="")
+        with patch.object(admissions_catalog, "get_institution_summary", return_value=summary):
             costs = admissions_catalog.catalog_costs("test-university", "undergraduate")
 
         self.assertEqual([{"min": 30000, "max": 30000}, {"min": 58000, "max": 58000}], costs["annual_total"]["intervals"])
@@ -58,7 +59,10 @@ class CatalogCostTests(unittest.TestCase):
                     "currency": "USD", "billing_period": "whole_program", "period_label": "Whole program"}]}}}
         institution = {"study_options": [{"id": "finance", "title": "Master of Science in Finance", "levels": ["masters"]}],
                        "application_routes": [], "facts": [fact], "sources": [{"id": "official", "url": "https://nu.edu.kz/"}]}
-        with patch.object(admissions_catalog, "get_institution", return_value=institution):
+        def mock_summary(_institution_id):
+            return admissions_index.build_institution_summary(institution, file_relpath="", file_sha256="")
+
+        with patch.object(admissions_catalog, "get_institution_summary", side_effect=mock_summary):
             costs = admissions_catalog.catalog_costs("nu", "masters", study_option_id="finance")
         self.assertEqual(14000, costs["tuition"]["min"])
         self.assertFalse(costs["tuition"]["annual_comparable"])
@@ -66,7 +70,7 @@ class CatalogCostTests(unittest.TestCase):
         self.assertIsNone(costs["annual_total"])
         self.assertIsNone(universities._catalog_cost_range_usd({"catalog_costs": costs}, "tuition"))
         fact["attributes"]["catalog_costs"]["quotes"][0].update(billing_period="academic_year", period_label="Academic year")
-        with patch.object(admissions_catalog, "get_institution", return_value=institution):
+        with patch.object(admissions_catalog, "get_institution_summary", side_effect=mock_summary):
             self.assertIsNone(admissions_catalog.catalog_costs("nu", "masters", study_mode="online")["tuition"])
             fact["attributes"]["catalog_costs"]["quotes"][0]["study_modes"] = ["online"]
             online = admissions_catalog.catalog_costs("nu", "masters", study_mode="online")

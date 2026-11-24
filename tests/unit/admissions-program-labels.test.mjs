@@ -2,8 +2,9 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { readAdmissionsCatalog } from "./admissions-catalog-fixture.mjs";
 
-const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+const catalog = await readAdmissionsCatalog();
 const packs = JSON.parse(await readFile(new URL("../../backend/data/universities_translations.json", import.meta.url), "utf8"));
 global.fetch = async url => {
   if (String(url).includes("/universities/translations?")) {

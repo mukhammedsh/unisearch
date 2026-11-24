@@ -62,11 +62,13 @@ export async function wakeBackend({
   fetchImpl = globalThis.fetch,
   notify = showNetworkStatusBanner,
   onRecovered = dispatchReconnect,
+  silent = false,
 } = {}) {
   if (typeof fetchImpl !== "function") return false;
 
   let noticeShown = false;
   const showNotice = (status) => {
+    if (silent) return;
     noticeShown = true;
     notify(status);
   };

@@ -2,6 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { readAdmissionsCatalog } from "./admissions-catalog-fixture.mjs";
 
 global.fetch = async (url) => {
   const target = String(url || "").split("?")[0];
@@ -561,7 +562,7 @@ test("UK and US universities always show the fee status as unconfirmed", () => {
 
 test("accepted Stanford aid source remains scoped to its shared route and does not promise an award", async () => {
   setLanguage("eng", { persist: false, emit: false });
-  const catalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+  const catalog = await readAdmissionsCatalog();
   const stanford = catalog.institutions.find((row) => row.institution.id === "stanford-university-usa-ca");
   const selected_option = stanford.study_options.find((row) => row.id === "stanford-option-cs-bs");
   const selected_route = stanford.application_routes.find((row) => row.id === "undergraduate-shared-evidence:stanford-first-year");

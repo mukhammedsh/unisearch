@@ -272,7 +272,7 @@ class NuAdmissionsTests(unittest.TestCase):
         for award, expected in (("Master of Business Administration", True), ("Executive Master of Business Administration", True),
                                 ("MBA", True), ("PhD in Business Administration", False), ("Doctor of Business Administration", False)):
             institution = {"study_options": [{"title": award, "awards": [award], "levels": ["masters"] if expected else ["doctoral"]}]}
-            with patch.object(admissions_catalog, "get_institution", return_value=institution):
+            with patch.object(admissions_catalog, "get_institution_summary", return_value=institution):
                 metadata = universities._build_university_meta({"id": "qualification-test"})
             self.assertEqual(expected, "mba" in metadata["study_levels"], award)
 

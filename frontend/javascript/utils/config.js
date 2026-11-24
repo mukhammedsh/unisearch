@@ -2,6 +2,7 @@ import { API_BASE } from "./runtime.js";
 import { formatPlural } from "./format.js";
 import { getUiLanguageForApi, normalizeUiLanguageForApi } from "./locale.js";
 import { createSafeStorage } from "./safe-storage.js";
+import { loadStaticConfig } from "./static-snapshot.js";
 import { t } from "../i18n.js";
 
 const DEFAULT_EXAM_CONFIG = {
@@ -371,7 +372,11 @@ function writeConfigCache(key, data) {
   });
 }
 
-async function fetchJsonWithConfigCache(key, url) {
+async function fetchJsonWithConfigCache(key, url, staticName = "") {
+  if (staticName) {
+    const staticData = await loadStaticConfig(staticName).catch(() => null);
+    if (staticData) return staticData;
+  }
   const cached = readConfigCache(key);
   if (cached) return cached;
 
@@ -449,7 +454,7 @@ export async function ensureExamConfig() {
   if (!examConfigPromise) {
     examConfigPromise = (async () => {
       try {
-        const raw = await fetchJsonWithConfigCache("exams_v3", `${API_BASE}/exams/config`);
+        const raw = await fetchJsonWithConfigCache("exams_v3", `${API_BASE}/exams/config`, "exams-config");
         const loaded = raw?.exams ? raw.exams : raw;
         Object.keys(EXAM_CONFIG).forEach((k) => delete EXAM_CONFIG[k]);
         if (loaded && typeof loaded === "object") Object.assign(EXAM_CONFIG, loaded);
@@ -469,7 +474,7 @@ export async function ensureLanguageConfig() {
   if (!langConfigPromise) {
     langConfigPromise = (async () => {
       try {
-        const loadedLang = await fetchJsonWithConfigCache("languages", `${API_BASE}/languages/config`);
+        const loadedLang = await fetchJsonWithConfigCache("languages", `${API_BASE}/languages/config`, "languages-config");
         Object.keys(LANG_CONFIG).forEach((k) => delete LANG_CONFIG[k]);
         if (loadedLang && typeof loadedLang === "object") Object.assign(LANG_CONFIG, loadedLang);
         window.dispatchEvent(new Event("languageConfigLoaded"));
@@ -487,7 +492,7 @@ export async function ensureCityDatabase() {
   if (!cityDbPromise) {
     cityDbPromise = (async () => {
       try {
-        const loadedCities = await fetchJsonWithConfigCache("locations", `${API_BASE}/locations`);
+        const loadedCities = await fetchJsonWithConfigCache("locations", `${API_BASE}/locations`, "locations");
         Object.keys(CITY_OPTIONS_BY_COUNTRY).forEach((k) => delete CITY_OPTIONS_BY_COUNTRY[k]);
         if (loadedCities && typeof loadedCities === "object") Object.assign(CITY_OPTIONS_BY_COUNTRY, loadedCities);
         window.dispatchEvent(new Event("citiesLoaded"));

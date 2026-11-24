@@ -25,7 +25,8 @@ SKIPPED_KEYS = {"provenance", "id", "source_ids", "url", "sources", "inputs", "s
 
 
 def catalog_strings():
-    catalog = json.loads((DATA_DIR / "admissions" / "catalog.json").read_text(encoding="utf-8"))
+    admissions_dir = DATA_DIR / "admissions"
+    index = json.loads((admissions_dir / "index.json").read_text(encoding="utf-8"))
 
     def walk(value):
         if isinstance(value, dict):
@@ -38,8 +39,9 @@ def catalog_strings():
         elif isinstance(value, str):
             yield value
 
-    research = json.loads((DATA_DIR / "admissions" / "research.json").read_text(encoding="utf-8"))
-    for institution in catalog["institutions"]:
+    research = json.loads((admissions_dir / "research.json").read_text(encoding="utf-8"))
+    for entry in index["institutions"]:
+        institution = json.loads((admissions_dir / entry["file"]).read_text(encoding="utf-8"))
         for collection in ("facts", "unknowns", "study_options", "application_routes"):
             yield from walk(institution[collection])
     for institution in research["institutions"]:

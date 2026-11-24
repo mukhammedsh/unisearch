@@ -27,7 +27,7 @@ from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_DATA_PATH = ROOT / "backend" / "data" / "universities.json"
-DEFAULT_ADMISSIONS_CATALOG_PATH = ROOT / "backend" / "data" / "admissions" / "catalog.json"
+DEFAULT_ADMISSIONS_CATALOG_PATH = ROOT / "backend" / "data" / "admissions" / "index.json"
 DEFAULT_ADMISSIONS_HISTORY_PATH = ROOT / "backend" / "data" / "history" / "admissions-cutover-2026-10-13.json"
 NU_ADMISSIONS_HISTORY_PATH = ROOT / "backend" / "data" / "history" / "admissions-cutover-2026-10-25.json"
 ACCEPTED_ADMISSIONS_IDS = {
@@ -790,13 +790,13 @@ def _audit_active_admissions_catalog(errors: List[str]) -> None:
 
         admissions_catalog.CATALOG_PATH = DEFAULT_ADMISSIONS_CATALOG_PATH
         admissions_catalog.clear_cache()
-        cached = admissions_catalog._load()
+        indexes = admissions_catalog.validate_all_institutions()
     except Exception as exc:
         errors.append(f"Admissions catalog failed runtime validation: {exc}")
         return
 
     totals = {
-        key: sum(len(institution[key]) for institution in cached["indexes"].values())
+        key: sum(len(institution[key]) for institution in indexes.values())
         for key in EXPECTED_ADMISSIONS_TOTALS
     }
     if totals != EXPECTED_ADMISSIONS_TOTALS:

@@ -8,6 +8,7 @@
 // Layout follows the familiar product-comparison pattern: identity heads, topic sections, a label per row and one
 // value per university, with a compact sticky strip of names while the heads are out of view.
 import { API_BASE, bindImageFallbacks, debounce, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice } from "../../utils.js";
+import { loadStaticCatalog } from "../../utils/static-snapshot.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
@@ -508,14 +509,24 @@ export function openUniversitySwapDialog({ currentUni, otherId = "", trigger, re
     status = "loading";
     renderResults();
     try {
-      const lang = encodeURIComponent(getCurrentLanguage() || "eng");
-      const response = await fetch(`${API_BASE}/universities?limit=200&lang=${lang}`, { signal: current.signal });
-      if (!response.ok) throw new Error(`Failed to load universities: ${response.status}`);
-      const data = await response.json();
+      const lang = getCurrentLanguage() || "eng";
+      const staticCatalog = await loadStaticCatalog(lang, { signal: current.signal }).catch((err) => {
+        if (err?.name === "AbortError") throw err;
+        return null;
+      });
+      let rawItems;
+      if (staticCatalog) {
+        rawItems = staticCatalog.items.map((entry) => entry.card);
+      } else {
+        const response = await fetch(`${API_BASE}/universities?limit=200&lang=${encodeURIComponent(lang)}`, { signal: current.signal });
+        if (!response.ok) throw new Error(`Failed to load universities: ${response.status}`);
+        const data = await response.json();
+        rawItems = Array.isArray(data?.items) ? data.items : [];
+      }
       if (current !== request) return;
       const currentId = String(currentUni?.id || "");
       const excludedId = String(otherId || "");
-      items = (Array.isArray(data?.items) ? data.items : []).filter((item) => {
+      items = rawItems.filter((item) => {
         if (!item || item.id == null) return false;
         const isReviewed = item?.admissions_catalog?.availability === "reviewed";
         if (reviewedOnly ? !isReviewed : isReviewed) return false;

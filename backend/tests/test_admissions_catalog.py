@@ -6,6 +6,7 @@ import unittest
 from unittest.mock import patch
 
 from app.services import admissions_catalog as service
+from app.services import admissions_index
 
 
 PRODUCTION_PATH = service.CATALOG_PATH
@@ -57,7 +58,7 @@ CONTEXT = {"study_option_id": "computing", "application_route_id": "first-year",
 class AdmissionsCatalogTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
-        self.path = Path(self.temporary.name) / "catalog.json"
+        self.path = Path(self.temporary.name) / "index.json"
         self.data = snapshot()
         self.write()
         self.path_patch = patch.object(service, "CATALOG_PATH", self.path)
@@ -70,7 +71,13 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.temporary.cleanup()
 
     def write(self):
-        self.path.write_text(json.dumps(self.data), encoding="utf-8")
+        admissions_index.write_split_catalog(
+            Path(self.temporary.name),
+            self.data["institutions"],
+            schema_version=self.data["schema_version"],
+            runtime_active=self.data["runtime_active"],
+            overwrite=True,
+        )
         service.clear_cache()
 
     def mit(self):
@@ -336,7 +343,7 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.mit()["facts"][0]["source_ids"] = ["broken"]
         self.write()
         with self.assertRaisesRegex(service.AdmissionsCatalogError, "reference"):
-            service.get_revision()
+            self.resolve()
         self.path.unlink()
         with self.assertRaises(service.AdmissionsCatalogError):
             service.get_revision()
@@ -369,13 +376,45 @@ class AdmissionsCatalogTests(unittest.TestCase):
         self.mit()["facts"][0]["normalized_status"] = {"publication": "published_somewhere", "review": "verified"}
         self.write()
         with self.assertRaisesRegex(service.AdmissionsCatalogError, "status"):
-            service.get_revision()
+            self.resolve()
         self.mit()["facts"][0]["normalized_status"] = {"publication": "published", "review": "verified"}
         self.mit()["application_routes"][0]["entry"] = "open"
         self.write()
         service.clear_cache()
         with self.assertRaisesRegex(service.AdmissionsCatalogError, "entry"):
-            service.get_revision()
+            self.resolve()
+
+    def test_lazy_loading_lru_eviction_and_checksum_validation(self):
+        # Index-only reads must never load full per-institution files.
+        self.assertEqual(service.loaded_institution_ids(), [])
+        self.assertTrue(service.get_revision())
+        self.assertEqual(service.get_public_contract(MIT)["availability"], "reviewed")
+        self.assertTrue(service.matching_study_options(MIT, "Computer Science", "undergraduate"))
+        self.assertIsInstance(service.catalog_costs(MIT), dict)
+        self.assertEqual(service.resolve_unselected_context(MIT)["facts"], [])
+        self.assertEqual(service.loaded_institution_ids(), [])
+
+        # Resolving one institution loads only that institution.
+        self.resolve()
+        self.assertEqual(service.loaded_institution_ids(), [MIT])
+
+        # Bounded LRU evicts the least-recently-used institution when the cap is exceeded.
+        ordered = sorted(service.INSTITUTION_IDS)
+        with patch.object(service, "MAX_LOADED_INSTITUTIONS", 2):
+            service.clear_cache()
+            service.get_institution(ordered[0])
+            service.get_institution(ordered[1])
+            self.assertEqual(service.loaded_institution_ids(), [ordered[0], ordered[1]])
+            # Touch ordered[0] so ordered[1] becomes least recently used.
+            service.get_institution(ordered[0])
+            service.get_institution(ordered[2])
+            self.assertEqual(service.loaded_institution_ids(), [ordered[0], ordered[2]])
+
+        # Tampering with an institution file without updating index.json fails loudly.
+        mit_file = Path(self.temporary.name) / "institutions" / f"{MIT}.json"
+        mit_file.write_text(mit_file.read_text(encoding="utf-8") + " ", encoding="utf-8")
+        with self.assertRaisesRegex(service.AdmissionsCatalogError, "checksum"):
+            self.resolve()
 
     def test_real_historical_research_labels_leave_current_facts(self):
         with patch.object(service, "CATALOG_PATH", PRODUCTION_PATH):

@@ -138,7 +138,7 @@ def _build_university_meta(
     formats = _get_list(u, ["academics", "formats"])
 
     program_names = [p.get("name") for p in programs]
-    reviewed = admissions_catalog.get_institution(str(u.get("id") or ""))
+    reviewed = admissions_catalog.get_institution_summary(str(u.get("id") or ""))
     if reviewed:
         program_names = [option["title"] for option in reviewed["study_options"]]
         study_levels = [level for option in reviewed["study_options"] for level in option["levels"]]

@@ -5,6 +5,7 @@ import {
   escapeHtml,
   escapeHtmlAttr,
 } from "../utils.js";
+import { staticSnapshotAssetUrl } from "../utils/static-snapshot.js";
 import { convert, formatPrice } from "../currency.js";
 
 import {
@@ -977,7 +978,8 @@ export function uniThumbnailSrc(universityId, opts = {}) {
     : size === "medium"
       ? "thumbnails-medium"
       : "thumbnails-small";
-  return buildApiUrl(`universities/assets/${folder}/${safeId}.${format}`);
+  const relPath = `${folder}/${safeId}.${format}`;
+  return staticSnapshotAssetUrl(relPath) || buildApiUrl(`universities/assets/${relPath}`);
 }
 
 // Formatting & Price Resolution Helpers
