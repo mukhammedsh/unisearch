@@ -18,6 +18,19 @@ for (const { theme, viewport } of [
     await expect(strip).toBeVisible();
     const stripHeightBefore = Math.round((await strip.boundingBox()).height);
 
+    // Overview admission summary renders header actions and a collapsible people-sources panel without stretching facts.
+    const peopleCard = page.locator('#detailOverviewSummary [data-summary-card="people"]');
+    await expect(peopleCard).toBeVisible();
+    const peopleFacts = peopleCard.locator(".overview-summary__fact");
+    expect(await peopleFacts.count()).toBeGreaterThanOrEqual(2);
+    const peopleSourcesSummary = peopleCard.locator(".overview-summary__sources-summary");
+    await expect(peopleSourcesSummary).toBeVisible();
+    await peopleSourcesSummary.click();
+    await expect(peopleCard.locator(".overview-summary__sources")).toHaveAttribute("open", "");
+    await expect(peopleCard.locator(".overview-summary__source-link").first()).toBeVisible();
+    await peopleSourcesSummary.click();
+    await expect(peopleCard.locator(".overview-summary__sources")).not.toHaveAttribute("open", "");
+
     const factMetrics = await strip.locator(".d-kv").evaluateAll((cards) =>
       cards.map((card) => {
         const label = card.querySelector(".d-kv-label");

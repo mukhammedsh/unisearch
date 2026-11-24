@@ -310,12 +310,29 @@ export function legacyCards({ university, minPrice, acceptanceRate, acceptanceMe
   return [legacyDeadline, legacyCostCard(university, minPrice), needsCard, ...(people.length ? [{ id: "people", icon: "users", items: people, headline: "" }] : [])];
 }
 
-function renderSource(source) {
-  if (!source) return "";
-  const text = escapeHtml(source.label);
-  const checked = ` · ${source.checkedAt ? `${escapeHtml(t("university.admissions.checked", "Last checked"))}: ${escapeHtml(source.checkedAt)}` : escapeHtml(t("university.admissions.check_date_unrecorded", "Check date not recorded"))}`;
-  return `<span class="overview-summary__source">${source.unnamed ? "" : `${t("university.ux2.source")} `}${source.url
-    ? `<a href="${escapeHtmlAttr(source.url)}" target="_blank" rel="noopener noreferrer">${text}</a>` : text}${checked}</span>`;
+function renderPeopleSources(items) {
+  const entries = (items || []).map(entry => entry.source).filter(Boolean);
+  if (!entries.length) return "";
+  const summaryLabel = t(entries.length > 1 ? "university.ux2.sources.many" : "university.ux2.sources.one");
+  const rows = entries.map(source => {
+    const text = escapeHtml(source.label);
+    const checked = source.checkedAt
+      ? `${escapeHtml(t("university.admissions.checked", "Last checked"))}: ${escapeHtml(source.checkedAt)}`
+      : escapeHtml(t("university.admissions.check_date_unrecorded", "Check date not recorded"));
+    const link = source.url
+      ? `<a class="overview-summary__source-link" href="${escapeHtmlAttr(source.url)}" target="_blank" rel="noopener noreferrer"><span>${text}</span>${heroIcon("arrow-up-right", "ui-icon ui-icon--12 overview-summary__source-ext")}</a>`
+      : `<span class="overview-summary__source-text">${text}</span>`;
+    return `<li class="overview-summary__source-row">${link}<span class="overview-summary__source-date">${checked}</span></li>`;
+  });
+  return `<details class="overview-summary__sources">
+    <summary class="overview-summary__sources-summary">
+      ${heroIcon("document-check", "ui-icon ui-icon--16")}
+      <span>${escapeHtml(summaryLabel)}</span>
+      <span class="overview-summary__sources-count">${entries.length}</span>
+      ${heroIcon("chevron-down", "ui-icon ui-icon--14 overview-summary__sources-chevron")}
+    </summary>
+    <ul class="overview-summary__sources-list">${rows.join("")}</ul>
+  </details>`;
 }
 
 function renderItem(card, entry) {
@@ -325,26 +342,38 @@ function renderItem(card, entry) {
       <span class="sr-only">${escapeHtml(label(`needs.mark_${entry.mark}`))}: </span><span class="overview-summary__item-text"${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span></li>`;
   }
   const details = (entry.details || []).map(text => `<span class="overview-summary__fact-detail">${escapeHtml(text)}</span>`).join("");
-  return `<li class="overview-summary__fact"><span>${escapeHtml(entry.text)}</span>${details}${renderSource(entry.source)}</li>`;
+  return `<li class="overview-summary__fact"><span class="overview-summary__fact-headline">${escapeHtml(entry.text)}</span>${details}</li>`;
 }
 
 function renderCard(card) {
   const tone = card.tone ? ` data-tone="${escapeHtmlAttr(card.tone)}"` : "";
-  const answer = card.headline ? `<p class="overview-summary__answer"${tone}${card.answerKind ? ` data-kind="${card.answerKind}"` : ""}>${escapeHtml(card.headline)}</p>` : "";
+  const answerKind = card.answerKind || (card.id === "needs" && card.items?.length ? "hint" : "");
+  const answer = card.headline ? `<p class="overview-summary__answer"${tone}${answerKind ? ` data-kind="${answerKind}"` : ""}>${escapeHtml(card.headline)}</p>` : "";
   const lines = (card.lines || []).map(text => `<p class="overview-summary__detail">${escapeHtml(text)}</p>`).join("");
-  const aside = (card.aside || []).map(entry => `<p class="overview-summary__detail"${entry.tone ? ` data-tone="${escapeHtmlAttr(entry.tone)}"` : ""}>${escapeHtml(entry.text)}</p>`).join("");
-  const items = card.items?.length ? `<ul class="overview-summary__list">${card.items.map(entry => renderItem(card, entry)).join("")}</ul>` : "";
+  const aside = card.aside?.length
+    ? `<div class="overview-summary__aside">${card.aside.map(entry => `<p class="overview-summary__detail"${entry.tone ? ` data-tone="${escapeHtmlAttr(entry.tone)}"` : ""}>${escapeHtml(entry.text)}</p>`).join("")}</div>`
+    : "";
+  const items = card.items?.length
+    ? card.id === "people"
+      ? `<ul class="overview-summary__facts-grid" data-count="${card.items.length}">${card.items.map(entry => renderItem(card, entry)).join("")}</ul>${renderPeopleSources(card.items)}`
+      : `<ul class="overview-summary__list" data-count="${card.items.length}">${card.items.map(entry => renderItem(card, entry)).join("")}</ul>`
+    : "";
   const levels = card.levels?.length ? `<div class="overview-summary__levels">${card.levels.map(level => `<button type="button" class="overview-summary__link" data-open-level="${escapeHtmlAttr(level)}">${escapeHtml(t(`university.admissions.catalog.level.${level}`))}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>`).join("")}</div>` : "";
   const action = card.link ? `<button type="button" class="overview-summary__link" data-open-tab="${escapeHtmlAttr(card.link.tab)}">${escapeHtml(card.link.label)}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>`
     : card.external ? `<a class="overview-summary__link" href="${escapeHtmlAttr(card.external.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(card.external.label)}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>` : "";
-  return `<section class="overview-summary__card" data-summary-card="${card.id}"${card.state ? ` data-state="${card.state}"` : ""}>
-    <h3 class="overview-summary__label">${heroIcon(card.icon, "ui-icon ui-icon--18")}<span>${escapeHtml(label(`card.${card.id}`))}</span></h3>
-    ${answer}${lines}${items}${aside}${levels}${action}</section>`;
+  return `<section class="overview-summary__card" data-summary-card="${card.id}"${card.state ? ` data-state="${card.state}"` : ""}${card.items?.length ? ' data-has-list="true"' : ""}>
+    <div class="overview-summary__head">
+      <h3 class="overview-summary__label">${heroIcon(card.icon, "ui-icon ui-icon--18")}<span>${escapeHtml(label(`card.${card.id}`))}</span></h3>
+      ${action}
+    </div>
+    ${answer}${lines}${items}${aside}${levels}</section>`;
 }
 
 // Short top cards (when to apply, what it costs) sit side by side; denser or standalone cards span the full row.
 function renderCardGrid(cards) {
-  return `<div class="overview-summary__grid">${cards.map(renderCard).join("")}</div>`;
+  const needsCard = cards.find(card => card.id === "needs");
+  const compactRow = Boolean(needsCard && !(needsCard.items?.length) && cards.some(card => card.id === "deadline") && cards.some(card => card.id === "cost"));
+  return `<div class="overview-summary__grid"${compactRow ? ' data-compact-row="true"' : ""}>${cards.map(renderCard).join("")}</div>`;
 }
 
 export function renderSummary(cards, intro = "") {
