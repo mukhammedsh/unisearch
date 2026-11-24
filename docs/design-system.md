@@ -320,6 +320,12 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 - Calm academic motion over "video game" playfulness: Strictly avoid gratuitous, exaggerated, or gamified animations (no bouncy springs, cartoon squashes like `scale(0.95)`, wobbly button presses, or playful bobbing). Transitions must remain smooth, understated, and functional—focusing on opacity, subtle background color changes, and precise translate enters/exits.
 - Do not use `transition-all`, hardcoded duration/easing values, decorative hover lifts on scanning surfaces, or animated `box-shadow` pulses. Use opacity/transform ring motion for state confirmation.
 - Always include or preserve `prefers-reduced-motion` fallbacks; reduced motion must leave final UI state visible and usable.
+- Move only what the user acted on and its immediate neighbours. Never animate many cards at once, slide whole views in, or shift layout; see `docs/superpowers/specs/2026-11-25-motion-system-design.md`.
+- Floating layers keep enter timing on the open rule and exit timing on the closed rule: enter with `--motion-snappy`/`--motion-fast` and `--motion-ease-enter`, exit one step shorter with `--motion-ease-exit`, offset `--motion-offset-sm` (4px). Show/hide through `display` uses `@starting-style` and `transition-behavior: allow-discrete`; the closed state sets `pointer-events: none`.
+- Native `<dialog>` and `[popover]` layers opt into `.motion-top-layer` (add `.motion-top-layer--fade` for full-screen layers); it also transitions `overlay` so the layer stays painted while it fades out.
+- Custom select panels unfold from the edge they are attached to (`scale: 1 0.96` with `transform-origin` on that edge); `open-up` stays on a closed panel until the next open recalculates it.
+- Tooltips opened by hover wait `--motion-tooltip-delay` (200ms); keyboard focus, clicks and a pointer arriving from a neighbouring tooltip (`html.tooltips-warm`) open at once; explicit dismissal (`.is-closed`) hides instantly.
+- `npm run check:design-lint` reports raw durations and easings in `transition`/`animation` declarations (`animation-raw-timing`), including fallbacks such as `var(--motion-fast, 160ms)`.
 
 ## Responsive Rules
 

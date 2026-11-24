@@ -2,19 +2,25 @@
 
 All notable project changes should be recorded here.
 
-## 10.8.1 (2026-11-24) - Split reviewed admissions storage and deploy-time static snapshot
+## 10.8.1 (2026-11-24) - Split reviewed admissions storage, deploy-time static snapshot, and floating-layer motion
 
-Patch release: split the monolithic reviewed admissions catalog into a compact index plus lazy-loaded per-institution files to keep backend memory bounded, and add a deploy-time static snapshot pipeline so Firebase Hosting serves public catalog, map, university detail, and campus media reads without waking the sleeping backend.
+Patch release: split the monolithic reviewed admissions catalog into a compact index plus lazy-loaded per-institution files to keep backend memory bounded, and add a deploy-time static snapshot pipeline so Firebase Hosting serves public catalog, map, university detail, and campus media reads without waking the sleeping backend. Also start the site-wide motion pass with calm enter/exit motion for floating layers.
 
 ### Added
 - Add a stdlib-only deploy-time static snapshot builder (`backend/scripts/build_static_snapshot.py`, `scripts/build-static-snapshot.mjs`, `npm run build:snapshot`) and wire it into `.github/workflows/firebase-hosting.yml`, `firebase.json`, and `scripts/build-firebase-env.mjs` (`APP_STATIC_SNAPSHOT=1`) to export public catalog lists, map metadata, localized per-university detail JSONs (`eng`/`rus`/`kaz`), translation packs, reference configs (`locations`, `exams-config`, `languages-config`), reviewed `study-options`, and credited campus photos (`--include-assets`) into git-ignored `frontend/snapshot/`.
 - Add a frontend static snapshot client and client-side public filter/sort engine (`frontend/javascript/utils/static-snapshot.js`, `frontend/javascript/pages/universities/snapshot-filter.js`) wired into catalog listing, map markers/popups, navbar search, university detail/compare pages, translation packs, reference configs, campus media URLs, silent background backend wake probes, and service worker caching (`sw-worker.js` `2026-11-24-2`), keeping all applicant-profile calculations (UniFit, profile-scoped catalog costs, reviewed admissions-context assessments, exam/language validation, and live currency) on the FastAPI backend.
 - Add regression tests for the static snapshot builder and client filtering/loading/service-worker snapshot caching (`backend/tests/test_static_snapshot_builder.py`, `tests/unit/static-snapshot.test.mjs`, `tests/unit/service-worker.test.mjs`).
+- Add calm enter/exit motion to floating layers: native dialogs and popovers (photo viewer, compare program picker, recently viewed) fade out instead of vanishing via a shared `.motion-top-layer` pattern, custom select panels unfold from the edge they are attached to, and tooltips fade in after a short hover intent delay while keyboard focus and neighbouring tooltips open at once (`frontend/css/shared/06-motion-accessibility.css`, `frontend/css/shared/02-shell-settings-feedback.css`, `frontend/javascript/tooltip.js`, `frontend/javascript/pages/universities/compare-reviewed.js`, `frontend/javascript/pages/universities/recently-viewed.js`, `frontend/javascript/pages/university/gallery.js`).
+- Add a design lint rule that reports raw durations and easings in transitions and animations, plus browser coverage for floating-layer motion and its reduced-motion fallback (`scripts/check-design-lint.mjs`, `tests/unit/design-lint.test.mjs`, `tests/e2e/motion-layers.spec.js`).
 
 ### Changed
 - Split `backend/data/admissions/catalog.json` (16.5 MB) into a compact `backend/data/admissions/index.json` (~391 KB) and per-institution files under `backend/data/admissions/institutions/<id>.json` (`backend/app/services/admissions_index.py`, `backend/app/services/admissions_catalog.py`, `backend/scripts/prepare_admissions_catalog.py`, `backend/scripts/audit_universities_data.py`).
 - Serve startup metadata, catalog listing, map points, university detail contracts, subject matching, reference cost projections, ML program names, and unselected UniFit evaluations directly from `index.json` without loading full per-institution files (`universities.py`, `university_projection.py`, `ml_scoring.py`, `scoring_requirements.py`).
 - Load full per-institution admissions files lazily on demand with LF-normalized SHA-256 verification and a bounded LRU cache (`MAX_LOADED_INSTITUTIONS = 6`), failing explicitly on checksum or index drift and covering the contract with unit and HTTP regression tests (`test_admissions_catalog.py`, `test_admissions_cutover.py`, `test_admissions_catalog_preparation.py`, `test_admissions_editorial.py`).
+- Unify motion timing on the shared tokens: drop conflicting hardcoded fallbacks such as `var(--motion-medium, 260ms)` across stylesheets and add `--motion-ease-linear`, `--motion-offset-sm`, and `--motion-tooltip-delay` (`frontend/css/**`, `docs/design-system.md`).
+
+### Fixed
+- Keep navbar search suggestions filled while they fade out instead of collapsing to an empty panel, and keep an upward-opening select panel leaving toward its trigger instead of jumping below it (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/utils/selects.js`, `frontend/css/shared/08-device-responsive.css`).
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 
