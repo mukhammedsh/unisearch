@@ -50,9 +50,19 @@
   pointer-events: none;
 }
 
+/* Mirrors the .d-cover box at every breakpoint, so the skeleton → page swap (and the card photo the
+   route transition carries into it) does not change the cover height. */
 .d-loading-cover {
-  height: 260px;
+  position: relative;
+  height: auto;
+  aspect-ratio: 16 / 5.4;
+  min-height: 180px;
+  max-height: 420px;
   border-radius: 0;
+}
+
+.d-loading-cover.has-cover-handoff::after {
+  display: none;
 }
 
 .d-loading-head {
@@ -956,7 +966,7 @@ body[data-page="university"],
   }
 
   .d-loading-cover {
-    height: 210px;
+    aspect-ratio: 16 / 9;
   }
 
   .d-loading-grid {
@@ -1054,7 +1064,8 @@ body[data-page="university"],
     padding-top: var(--space-3);
   }
 
-  .d-cover {
+  .d-cover,
+  .d-loading-cover {
     min-height: 0;
     height: clamp(174px, 54vw, 230px);
     aspect-ratio: auto;

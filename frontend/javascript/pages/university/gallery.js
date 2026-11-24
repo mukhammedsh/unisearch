@@ -2,6 +2,7 @@ import { heroIcon } from "../../icons.js";
 import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
 import { buildApiUrl, safePathSegment, uniThumbnailSrc } from "../_shared.js";
+import { adoptCoverHandoff, removeCoverHandoff } from "../../components/cover-transition.js";
 import { staticSnapshotAssetUrl } from "../../utils/static-snapshot.js";
 import { coverCreditHtml, loadPhotoCredits } from "./cover-credit.js";
 import { bindGalleryZoom, isPointInVisiblePhoto } from "./gallery-zoom.js";
@@ -222,6 +223,7 @@ export function mountUniversityGallery(cover, universityId) {
   }];
   let current = 0;
   const listeners = new AbortController();
+  adoptCoverHandoff(cover);
 
   cover.insertAdjacentHTML("beforeend", `<div class="d-cover-placeholder" hidden role="status">
     ${heroIcon("building-office-2", "ui-icon ui-icon--24")}
@@ -271,7 +273,10 @@ export function mountUniversityGallery(cover, universityId) {
     placeholder.hidden = true;
     cover.classList.remove("is-photo-missing");
     displayPhoto(previewMedia, photos[current], "", {
+      // The card photo carried in by the route transition stays underneath until the cover photo is ready.
+      onLoad: () => removeCoverHandoff(cover),
       onUnavailable: () => {
+        removeCoverHandoff(cover);
         placeholder.hidden = false;
         cover.classList.toggle("is-photo-missing", photos.length === 1);
         if (photos.length === 1 && !photos[0].credit) preview.hidden = true;
