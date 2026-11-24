@@ -145,5 +145,8 @@ describe("motion-reveal", () => {
     setTextWithFade(node, "7");
     assert.equal(node.textContent, "7");
     assert.equal(node.animations.length, 1);
+    setTextWithFade(node, "9", { instant: true });
+    assert.equal(node.textContent, "9");
+    assert.equal(node.animations.length, 1);
   });
 });

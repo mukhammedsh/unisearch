@@ -131,3 +131,18 @@ test("compare tray appears and leaves instantly with reduced motion", async ({ p
   await page.locator('#compareTray [data-action="clear-compare"]').click();
   expect(await page.locator("#compareTray").evaluate((el) => el.hidden)).toBe(true);
 });
+
+test("results count fades when filters change", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  const count = page.locator("#totalCount");
+  const before = await count.textContent();
+  await page.evaluate(() => {
+    const node = document.getElementById("totalCount");
+    window.__countAnimations = 0;
+    new MutationObserver(() => { window.__countAnimations += node.getAnimations().length; })
+      .observe(node, { childList: true, characterData: true, subtree: true });
+  });
+  await setNativeSelect(page, "countrySelect", "USA");
+  await expect(count).not.toHaveText(before);
+  expect(await page.evaluate(() => window.__countAnimations)).toBeGreaterThan(0);
+});

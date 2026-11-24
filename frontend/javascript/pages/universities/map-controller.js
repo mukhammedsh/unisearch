@@ -23,7 +23,7 @@ import {
   trUniversityName,
 } from "../_shared.js";
 import { ensureMapLibraries } from "./map-assets.js";
-import { fadeIn } from "../../utils/motion-reveal.js";
+import { fadeIn, setTextWithFade } from "../../utils/motion-reveal.js";
 
 const MAP_OVERVIEW_CENTER = [30, 15];
 const MAP_MIN_ZOOM = 2;
@@ -463,7 +463,7 @@ export function createUniversitiesMapController(ctx) {
       mapResultsHasMore = !clientFiltered && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
       setLastRenderedItems(mapResultsItems);
       state.lastCatalogTotal = mapResultsTotal;
-      if (el.total) el.total.textContent = String(mapResultsTotal);
+      setTextWithFade(el.total, String(mapResultsTotal));
       updateUnifitWarningBanner();
 
       if (reset && !activeMapUniId && !getFocusUniId() && state.viewMode === "map" && mapInstance) {

@@ -142,13 +142,14 @@ export function fadeIn(node, options = {}) {
  * Updates a short text (such as a count) and lets it settle with a quiet fade when it changed.
  * @param {HTMLElement} node
  * @param {string} text
+ * @param {{ instant?: boolean }} [options]
  */
-export function setTextWithFade(node, text) {
+export function setTextWithFade(node, text, options = {}) {
   if (!node) return;
   const next = String(text);
   if (node.textContent === next) return;
   node.textContent = next;
-  if (!canAnimate(node)) return;
+  if (options.instant || !canAnimate(node)) return;
   node.animate([{ opacity: 0.4 }, { opacity: 1 }], { duration: FADE_MS, easing: EASE_STANDARD })
     .finished.catch(ignoreCancel);
 }

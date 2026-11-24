@@ -20,6 +20,7 @@ import {
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
 import { hideGlobalSearchSuggestions } from "../components/navbar-search.js";
+import { setTextWithFade } from "../utils/motion-reveal.js";
 import { t } from "../i18n.js";
 import {
     getPreferredCurrency,
@@ -968,7 +969,8 @@ export function initUniversitiesPage() {
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
-            if (el.total) el.total.textContent = String(total);
+            // The first count after load is placed as is; later changes settle with a fade.
+            setTextWithFade(el.total, String(total), { instant: !hasInitialListPaint });
             hasInitialListPaint = true;
 
             if (!items.length) {
@@ -1003,7 +1005,7 @@ export function initUniversitiesPage() {
 
         if (state.viewMode === "map") {
             state.lastCatalogTotal = items.length;
-            if (el.total) el.total.textContent = String(items.length);
+            setTextWithFade(el.total, String(items.length), { instant: !hasInitialListPaint });
             updateMapMarkers(items);
             const profile = loadProfileForApi();
             const userBudget = Number.parseFloat(profile.budget);
