@@ -931,10 +931,14 @@ languages.added_value: Қосылған {language} {exam}: {value}
 languages.updated_value: Жаңартылған {language} {exam}: {value}
 network.offline.banner: Интернетке қосылу жоқ. Офлайн-режимде жұмыс істейміз.
 network.online.banner: Қосу қалпына келтірілді.
+network.waking.banner: Сервер үзілістен кейін оянып жатыр. Бұл бір минутқа дейін созылуы мүмкін.
+network.ready.banner: Сервер дайын.
+network.unavailable.banner: Сервер қазір жауап бермейді. Бірнеше минуттан кейін қайта көріңіз.
 navbar.search.offline_notice: Офлайн-режимде іздеу мүмкін емес.
 navbar.search.open: Іздеуді ашу
 navbar.search.back: Навигацияға қарай
 universities.offline_action_warning: Каталогты интернетке қосылмай жаңарту мүмкін болмады. Сақталған нәтижелер көрсетілген.
+universities.stale_refresh_failed: Сервер жауап бермеді. Осы құрылғыда сақталған соңғы нәтижелер көрсетілді.
 error.no_connection.title: Интернетке қосылу жоқ
 error.no_connection.desc: Біз сервермен байланыса алмадық. Қосылымды тексеріп, әрекетті қайталаңыз.
 error.server_error.title: Сервер уақытша қолжетімсіз
@@ -986,6 +990,7 @@ privacy.local_storage.li1: Оқу көрсеткіштері (GPA, SAT, ACT, IEL
 privacy.local_storage.li2: Жеке ұсыныстар үшін көрсеткен оқу бағыттарыңыз.
 privacy.local_storage.li3: Сақталған университеттер мен жуырда қаралған беттер тарихы.
 privacy.local_storage.li4: Көрініс баптаулары (ашық немесе қараңғы режим, интерфейс тілі).
+privacy.local_storage.li5: Каталогтың соңғы нәтижелері мен кэштелген университет деректері: сервер оянып жатқанда беттер жылдамырақ ашылады.
 privacy.local_storage.p2: Профиль деректерін профильді тазалау батырмасымен жоя аласыз. Браузерде сақталған барлық UniSearch деректерін жою үшін браузер баптауларынан осы сайттың деректерін тазалаңыз.
 privacy.google_auth.status_notice: Қазір UniSearch жүйесінде тіркелу, аккаунтқа кіру және деректерді құрылғылар арасында синхрондау мүмкін емес.
 privacy.google_auth.p1: Google арқылы кіру (OAuth 2.0) қазіргі нұсқада қосылмаған.

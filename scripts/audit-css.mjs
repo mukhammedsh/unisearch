@@ -594,6 +594,7 @@ async function analyzeDeadCssWithPurgeCss(cssFiles) {
         /^h[1-6]$/,
         /^video$/,
         /^uni-status-trigger--/,
+        /^network-status-banner--/,
         /^compare-cell--/,
         /^compare-decision-status--/,
         /^qualification-guidance__status--/,

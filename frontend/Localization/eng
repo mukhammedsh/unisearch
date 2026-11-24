@@ -931,10 +931,14 @@ languages.added_value: Added {language} {exam}: {value}
 languages.updated_value: Updated {language} {exam}: {value}
 network.offline.banner: You are offline. Showing cached workspace data.
 network.online.banner: Connection restored.
+network.waking.banner: The server is waking up after a pause. This can take up to a minute.
+network.ready.banner: The server is ready.
+network.unavailable.banner: The server is not responding right now. Please try again in a few minutes.
 navbar.search.offline_notice: Search is unavailable while offline.
 navbar.search.open: Open search
 navbar.search.back: Back to navigation
 universities.offline_action_warning: Cannot refresh catalog while offline. Showing cached results.
+universities.stale_refresh_failed: The server did not answer. Showing the last results saved on this device.
 error.no_connection.title: No Internet Connection
 error.no_connection.desc: We couldn't reach the server. Please check your internet connection and try again.
 error.server_error.title: Server Unavailable
@@ -986,6 +990,7 @@ privacy.local_storage.li1: Academic metrics (GPA, test scores such as SAT, ACT, 
 privacy.local_storage.li2: Declared academic fields of interest for personalized recommendations.
 privacy.local_storage.li3: Shortlisted universities and recently viewed history.
 privacy.local_storage.li4: Display preferences (light or dark mode, UI language).
+privacy.local_storage.li5: The last catalog results and cached university data, so pages open faster while the server wakes up.
 privacy.local_storage.p2: You can remove profile data with the profile reset control. To remove all UniSearch data stored in your browser, clear this site's storage or site data in your browser settings.
 privacy.google_auth.status_notice: UniSearch does not currently provide account registration, sign-in, or cross-device synchronization.
 privacy.google_auth.p1: Google Sign-In / OAuth 2.0 is not active in the current release.

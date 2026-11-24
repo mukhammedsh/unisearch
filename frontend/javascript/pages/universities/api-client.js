@@ -1,7 +1,10 @@
 import { API_BASE, loadProfileForApi, showToast } from "../../utils.js";
 import { t } from "../../i18n.js";
+import { readStaleCatalogList, saveStaleCatalogList } from "./stale-list-cache.js";
 
 const DEFAULT_CACHE_TTL_MS = 30000;
+// A catalog request slower than this is a sleeping backend, not a normal round trip.
+export const STALE_LIST_AFTER_MS = 1500;
 
 export function initTranslationDebugLogger() {
   const isTranslationDebugEnabled = (() => {
@@ -78,10 +81,12 @@ export function abortUniversitiesApiRequests(apiState) {
 /**
  * Fetch a filtered page of universities using POST /universities/profiled with fallback to GET /universities.
  * @param {URLSearchParams} apiParams
- * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void }} [options]
+ * When the request is slow and this browser holds the last result for the same request, `onStale` receives it
+ * so the page can show something while the backend wakes; the fresh result is still returned afterwards.
+ * @param {{ apiState?: UniversitiesApiState, logTranslationDebug?: (stage: string, details?: Record<string, unknown>) => void, onStale?: (payload: { items: Array<Record<string, any>>, total: number }) => void }} [options]
  * @returns {Promise<{ items: Array<Record<string, any>>, total: number, __aborted?: boolean }>}
  */
-export async function fetchUniversitiesList(apiParams, { apiState, logTranslationDebug = () => {} } = {}) {
+export async function fetchUniversitiesList(apiParams, { apiState, logTranslationDebug = () => {}, onStale } = {}) {
   const state = apiState || createUniversitiesApiState();
   const profile = loadProfileForApi();
   const requestPayload = { ...Object.fromEntries(apiParams), profile };
@@ -104,6 +109,13 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
   }
   const controller = new AbortController();
   state.listFetchController = controller;
+
+  const stale = typeof onStale === "function" ? readStaleCatalogList(key) : null;
+  const staleTimer = stale
+    ? setTimeout(() => {
+      if (!controller.signal.aborted) onStale(stale);
+    }, STALE_LIST_AFTER_MS)
+    : 0;
 
   let res;
   try {
@@ -131,6 +143,7 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
     }
     throw err;
   } finally {
+    clearTimeout(staleTimer);
     if (state.listFetchController === controller) {
       state.listFetchController = null;
     }
@@ -142,6 +155,7 @@ export async function fetchUniversitiesList(apiParams, { apiState, logTranslatio
     items: data.items || [],
     total: data.total || 0,
   };
+  saveStaleCatalogList(key, payload);
   logTranslationDebug("non-ai response received", {
     httpStatus: res.status,
     apiItems: payload.items.length,

@@ -931,10 +931,14 @@ languages.added_value: Добавлен {language} {exam}: {value}
 languages.updated_value: Обновлён {language} {exam}: {value}
 network.offline.banner: Нет подключения к интернету. Работаем в офлайн-режиме.
 network.online.banner: Подключение восстановлено.
+network.waking.banner: Сервер просыпается после паузы. Это может занять до минуты.
+network.ready.banner: Сервер готов.
+network.unavailable.banner: Сервер сейчас не отвечает. Попробуйте ещё раз через несколько минут.
 navbar.search.offline_notice: Поиск недоступен в офлайн-режиме.
 navbar.search.open: Открыть поиск
 navbar.search.back: Назад к навигации
 universities.offline_action_warning: Не удалось обновить каталог без подключения к интернету. Показаны сохраненные результаты.
+universities.stale_refresh_failed: Сервер не ответил. Показаны последние результаты, сохранённые на этом устройстве.
 error.no_connection.title: Нет подключения к интернету
 error.no_connection.desc: Мы не смогли связаться с сервером. Пожалуйста, проверьте подключение и повторите попытку.
 error.server_error.title: Сервер временно недоступен
@@ -986,6 +990,7 @@ privacy.local_storage.li1: Академические баллы (GPA, резу�
 privacy.local_storage.li2: Текстовое описание ваших интересов для подбора рекомендаций.
 privacy.local_storage.li3: Сохраненный шортлист университетов и история недавно просмотренных вузов.
 privacy.local_storage.li4: Пользовательские настройки интерфейса (светлая или темная тема, язык).
+privacy.local_storage.li5: Последние результаты каталога и кэшированные данные университетов, чтобы страницы открывались быстрее, пока сервер просыпается.
 privacy.local_storage.p2: Данные профиля можно удалить кнопкой сброса профиля. Чтобы удалить все данные UniSearch в браузере, очистите хранилище или данные сайта для UniSearch в настройках браузера.
 privacy.google_auth.status_notice: UniSearch сейчас не предоставляет регистрацию, вход в аккаунт или синхронизацию данных между устройствами.
 privacy.google_auth.p1: Google Sign-In / OAuth 2.0 не активен в текущей версии сайта.

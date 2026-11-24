@@ -682,7 +682,7 @@ export function initUniversitiesPage() {
         compareUniversityIds: compareController.getCompareUniversityIds(),
         linkAttrs: compareController.universityLinkAttrs(),
     });
-    const fetchUniversities = (apiParams) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug });
+    const fetchUniversities = (apiParams, extra = {}) => fetchUniversitiesList(apiParams, { apiState, logTranslationDebug, ...extra });
     const fetchAiSort = (payload) => fetchUniversitiesAiSort(payload, { apiState, logTranslationDebug });
 
     const mapController = createUniversitiesMapController({
@@ -1055,6 +1055,7 @@ export function initUniversitiesPage() {
         setUrlParams(urlParams);
 
         const savedIds = compareController.getSavedUniversityIds();
+        let staleShown = false;
 
         try {
             if (state.viewMode === "map") {
@@ -1103,7 +1104,15 @@ export function initUniversitiesPage() {
                 return;
             }
 
-            const data = await fetchUniversities(apiParams);
+            const data = await fetchUniversities(apiParams, {
+                // A sleeping backend: show this browser's last result for the same request until the fresh one arrives.
+                onStale: (staleData) => {
+                    if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+                    staleShown = true;
+                    renderFetchedData(staleData, { animateResults: false });
+                    setUniversitiesLoading(false, { preserveResults: true });
+                },
+            });
             if (data?.__aborted) return;
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
             renderFetchedData(data, { animateResults });
@@ -1111,6 +1120,11 @@ export function initUniversitiesPage() {
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
             if (err?.name === "AbortError") return;
             console.error(err);
+            if (staleShown) {
+                // The saved list stays on screen; replacing it with an error screen would lose what the visitor can still use.
+                showToast(t("universities.stale_refresh_failed", "The server did not answer. Showing the last results saved on this device."), "warning");
+                return;
+            }
             const classified = classifyError(err);
             if (el.list) {
                 const hasExistingCards = (Array.isArray(lastRenderedItems) && lastRenderedItems.length > 0)
