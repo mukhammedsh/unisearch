@@ -36,6 +36,7 @@ Minor release: redesign the frontend surface ladder and Indigo visual system, re
 - Fix the Russian mobile/tablet legal footer link wrap (`html[lang="ru"] .footer-legal-links:not(.footer-product-links) a` in `frontend/css/shared/06-motion-accessibility.css`) by setting `max-width: 146px` so long legal labels wrap into two balanced lines without breaking words on narrow viewports or collapsing to a single line on tablets.
 - Keep a single browser history entry when selecting a study option on university detail pages switches directly to `#tab-admission` (`openTab` `{ replace }` option in `frontend/javascript/pages/university/admissions-controller.js`), so Browser Back returns cleanly to the previous page/state.
 - Pan expanded Leaflet map marker popups back into the map viewport (`ensurePopupFitsInMap` in `frontend/javascript/pages/universities/map-controller.js`) when `hydrateMapMarkerPopup` replaces the compact loading popup with the full university card, preventing top-edge popup clipping and second-click jumps.
+- Switch the `README.md` header logo to a theme-aware `<picture>` (`darklogo.svg` for dark mode and `whitelogo.svg` for light mode, removing the obsolete white-backed purple `frontend/images/whitelogo-readme.svg`), and link the OpenSSF Scorecard badge directly to `img.shields.io`.
 
 ## 10.7.2 (2026-11-23) - Frontend code quality and modularization
 

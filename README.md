@@ -1,6 +1,10 @@
 <h1 align="center">
   <a href="https://unisearch.web.app/">
-    <img src="frontend/images/whitelogo-readme.svg" alt="UniSearch" width="360">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="frontend/images/darklogo.svg">
+      <source media="(prefers-color-scheme: light)" srcset="frontend/images/whitelogo.svg">
+      <img src="frontend/images/whitelogo.svg" alt="UniSearch" width="360">
+    </picture>
   </a>
 </h1>
 
@@ -9,7 +13,7 @@
   <a href="https://app.codecov.io/github/mukhammedsh/unisearch"><img src="https://codecov.io/github/mukhammedsh/unisearch/graph/badge.svg" alt="Codecov"></a>
   <a href="https://www.bestpractices.dev/projects/14732"><img src="https://www.bestpractices.dev/projects/14732/badge" alt="OpenSSF Best Practices"></a>
   <a href="https://www.bestpractices.dev/projects/14732"><img src="https://www.bestpractices.dev/projects/14732/baseline" alt="OpenSSF Baseline"></a>
-  <a href="https://securityscorecards.dev/viewer/?uri=github.com/mukhammedsh/unisearch"><img src="https://api.securityscorecards.dev/projects/github.com/mukhammedsh/unisearch/badge" alt="OpenSSF Scorecard"></a>
+  <a href="https://securityscorecards.dev/viewer/?uri=github.com/mukhammedsh/unisearch"><img src="https://img.shields.io/ossf-scorecard/github.com/mukhammedsh/unisearch?label=openssf+scorecard&style=flat" alt="OpenSSF Scorecard"></a>
   <a href="package.json"><img src="https://img.shields.io/github/package-json/v/mukhammedsh/unisearch?filename=package.json" alt="Version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
 </p>
