@@ -7,6 +7,7 @@ import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
 import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, resolveAppBasePath, resolveAppBaseUrl, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
+import { isStaticSnapshotReady, loadStaticSnapshotManifest } from "./utils/static-snapshot.js";
 import { startRatesLoading } from "./currency.js";
 import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
 
@@ -94,12 +95,12 @@ function applyAINameConfig(root = document) {
   });
 }
 
-function maybeWakeBackend() {
+function maybeWakeBackend({ silent = false } = {}) {
   const now = Date.now();
   const last = Number(safeSessionStorage.get(BACKEND_WAKE_PING_KEY, "0") || 0);
   if (Number.isFinite(last) && (now - last) < BACKEND_WAKE_PING_INTERVAL_MS) return;
   safeSessionStorage.set(BACKEND_WAKE_PING_KEY, String(now));
-  wakeBackend().catch((error) => console.warn("Backend wake-up failed:", error));
+  wakeBackend({ silent }).catch((error) => console.warn("Backend wake-up failed:", error));
 }
 
 function getUniversitiesSkeletonCount({ listEl, skeletonEl, limit = 24 } = {}) {
@@ -274,6 +275,9 @@ function hydrateRouteShell(ctx = currentRouteContext()) {
 }
 
 async function initRoutePage(ctx = currentRouteContext()) {
+  if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isComparePage || ctx.isProfilePage || ctx.isGuidePage) {
+    await loadStaticSnapshotManifest();
+  }
   if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isComparePage) {
     try {
       await initUniversityTranslations();
@@ -285,7 +289,9 @@ async function initRoutePage(ctx = currentRouteContext()) {
   if (document.body.dataset.page === "error-404") return;
 
   if (ctx.isUniversitiesPage || ctx.isComparePage || ctx.isUniversityPage || ctx.isProfilePage || ctx.isGuidePage) {
-    maybeWakeBackend();
+    // When the static snapshot serves public browsing, wake the backend quietly in the background
+    // so UniFit and requirements checks are warm without showing a sleep banner over instant catalog pages.
+    maybeWakeBackend({ silent: isStaticSnapshotReady() && !ctx.isProfilePage });
   }
 
   if (ctx.isComparePage) {

@@ -18,6 +18,7 @@ import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName } fro
 import { costFact, deadlineFact, englishRecommendationItem, fundingPolicyStatement, MARK_ICONS, minimumChecklist, NON_NATIVE_ENGLISH } from "./admissions-key-facts.js";
 import { isReviewedPublished } from "./admissions-status.js";
 import { extractUniversityDeadlines, getUndergraduateCategories } from "./render-sections.js";
+import { loadStaticStudyOptions } from "../../utils/static-snapshot.js";
 
 const label = (key, fallback = "") => t(`university.ux2.${key}`, fallback);
 const MAX_CHECKLIST_ITEMS = 5;
@@ -470,7 +471,12 @@ export function mountOverviewSummary({ container, university, universityId, revi
     if (!hasContent()) show(renderLoading());
     try {
       if (!routeLoaded) {
-        const options = await fetchJson(`study-options?${new URLSearchParams({ limit: "1", lang: getCurrentLanguage() })}`, { signal: request.signal });
+        const staticOptions = await loadStaticStudyOptions(universityId, { signal: request.signal }).catch((err) => {
+          if (err?.name === "AbortError") throw err;
+          return null;
+        });
+        const options = staticOptions
+          || await fetchJson(`study-options?${new URLSearchParams({ limit: "1", lang: getCurrentLanguage() })}`, { signal: request.signal });
         if (current !== version) return;
         route = firstYearSharedRoute(options.shared_routes);
         routeLoaded = true;

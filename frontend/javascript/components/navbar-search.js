@@ -14,6 +14,8 @@ import {
 } from "../routes.js";
 import { shouldOpenUniversitiesInNewTab } from "../settings.js";
 import { classifyError, isOnline } from "./network-status.js";
+import { loadStaticCatalog } from "../utils/static-snapshot.js";
+import { queryStaticNavbarSearch } from "../pages/universities/snapshot-filter.js";
 
 const searchCache = new Map();
 let activeAbortController = null;
@@ -76,6 +78,13 @@ export async function fetchUniversitySearchResults(query, signal) {
   const cacheKey = `${lang}:${trimmed.toLowerCase()}`;
   if (searchCache.has(cacheKey)) {
     return searchCache.get(cacheKey);
+  }
+
+  const staticCatalog = await loadStaticCatalog(lang, { signal }).catch(() => null);
+  if (staticCatalog) {
+    const items = queryStaticNavbarSearch(staticCatalog, trimmed, 5);
+    searchCache.set(cacheKey, items);
+    return items;
   }
 
   const url = `${API_BASE}/universities?q=${encodeURIComponent(trimmed)}&limit=5&fields=card&lang=${encodeURIComponent(lang)}`;

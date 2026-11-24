@@ -98,7 +98,7 @@ function request(pathname, options = {}) {
 
 test("activating the worker removes old UniSearch caches and claims clients", async () => {
   const worker = loadWorker();
-  const currentCache = "unisearch-api-2026-11-24-1";
+  const currentCache = "unisearch-api-2026-11-24-2";
   await worker.seedCache("unisearch-api-old");
   await worker.seedCache(currentCache);
   await worker.seedCache("unrelated-cache");
@@ -138,7 +138,7 @@ test("API cache never stores unexpected text/html responses", async () => {
 
   const result = await worker.dispatchFetch(htmlFallbackRequest);
   assert.equal(await result.response.text(), "<!DOCTYPE html>");
-  assert.equal(worker.cached("unisearch-api-2026-11-24-1", htmlFallbackRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-api-2026-11-24-2", htmlFallbackRequest.url), undefined);
 });
 
 test("university assets try the network first and fall back to their cached copy", async () => {
@@ -160,12 +160,12 @@ test("localization cache ignores failed and no-store responses", async () => {
   const failedRequest = request("/Localization/eng");
 
   assert.equal((await worker.dispatchFetch(failedRequest)).response.status, 503);
-  assert.equal(worker.cached("unisearch-static-2026-11-24-1", failedRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-24-2", failedRequest.url), undefined);
 
   response = new TestResponse("private", { headers: { "cache-control": "no-store" } });
   const privateRequest = request("/Localization/ru");
   await worker.dispatchFetch(privateRequest);
-  assert.equal(worker.cached("unisearch-static-2026-11-24-1", privateRequest.url), undefined);
+  assert.equal(worker.cached("unisearch-static-2026-11-24-2", privateRequest.url), undefined);
 });
 
 test("image cache evicts the oldest entry when it exceeds its configured limit", async () => {
@@ -179,7 +179,7 @@ test("image cache evicts the oldest entry when it exceeds its configured limit",
   }
 
   const keys = await worker.cacheNames();
-  const imageCache = "unisearch-images-2026-11-24-1";
+  const imageCache = "unisearch-images-2026-11-24-2";
   assert.equal(keys.includes(imageCache), true);
   assert.equal(worker.cached(imageCache, firstUrl), undefined);
   assert.equal(worker.cached(imageCache, lastUrl).body, "network");
@@ -199,7 +199,7 @@ test("a backend on another origin is cached when the page registers the worker w
   const offline = await worker.dispatchFetch(catalog);
   assert.equal(await offline.response.text(), "catalog page");
   await offline.settled();
-  assert.equal(worker.cached("unisearch-api-2026-11-24-1-10.8.0", catalog.url).body, "catalog page");
+  assert.equal(worker.cached("unisearch-api-2026-11-24-2-10.8.0", catalog.url).body, "catalog page");
 
   assert.equal((await worker.dispatchFetch(request(`${backend}/universities`, { method: "POST" }))).response, undefined);
   assert.equal((await worker.dispatchFetch(request("https://other.test/universities"))).response, undefined);
@@ -216,9 +216,32 @@ test("a cross-origin backend is ignored when the registration names no usable or
 
 test("each app version gets its own caches and activation drops the previous release", async () => {
   const worker = loadWorker(undefined, { search: "?v=10.9.0" });
-  await worker.seedCache("unisearch-api-2026-11-24-1-10.8.0");
-  await worker.seedCache("unisearch-api-2026-11-24-1-10.9.0");
+  await worker.seedCache("unisearch-api-2026-11-24-2-10.8.0");
+  await worker.seedCache("unisearch-api-2026-11-24-2-10.9.0");
   await worker.lifecycle("activate");
 
-  assert.deepEqual(await worker.cacheNames(), ["unisearch-api-2026-11-24-1-10.9.0"]);
+  assert.deepEqual(await worker.cacheNames(), ["unisearch-api-2026-11-24-2-10.9.0"]);
+});
+
+test("static snapshot JSON and campus assets use the static and image caches", async () => {
+  let online = true;
+  const worker = loadWorker(async (req) => {
+    if (!online) throw new Error("offline");
+    if (req.url.includes("/snapshot/assets/")) {
+      return new TestResponse("snapshot-webp", { headers: { "content-type": "image/webp" } });
+    }
+    return new TestResponse('{"items":[]}', { headers: { "content-type": "application/json" } });
+  });
+
+  const catalogReq = request("/snapshot/catalog/eng.json");
+  const assetReq = request("/snapshot/assets/thumbnails-small/mit-usa-cambridge.webp");
+
+  assert.equal(await (await worker.dispatchFetch(catalogReq)).response.text(), '{"items":[]}');
+  assert.equal(await (await worker.dispatchFetch(assetReq)).response.text(), "snapshot-webp");
+  assert.equal(worker.cached("unisearch-static-2026-11-24-2", catalogReq.url).body, '{"items":[]}');
+  assert.equal(worker.cached("unisearch-images-2026-11-24-2", assetReq.url).body, "snapshot-webp");
+
+  online = false;
+  assert.equal(await (await worker.dispatchFetch(catalogReq)).response.text(), '{"items":[]}');
+  assert.equal(await (await worker.dispatchFetch(assetReq)).response.text(), "snapshot-webp");
 });

@@ -8,12 +8,14 @@ const productionConfig = {
   API_PORT: "8000",
   APP_USE_PRETTY_URLS: "1",
   APP_DEBUG: "",
+  APP_STATIC_SNAPSHOT: "1",
 };
 
 process.env.UNISEARCH_API_BASE_URL = productionConfig.API_BASE_URL;
 process.env.UNISEARCH_API_PORT = productionConfig.API_PORT;
 process.env.UNISEARCH_USE_PRETTY_URLS = productionConfig.APP_USE_PRETTY_URLS;
 process.env.UNISEARCH_APP_DEBUG = productionConfig.APP_DEBUG;
+process.env.UNISEARCH_STATIC_SNAPSHOT = productionConfig.APP_STATIC_SNAPSHOT;
 
 const target = generateFrontendEnvFile();
 const generated = fs.readFileSync(target, "utf8");

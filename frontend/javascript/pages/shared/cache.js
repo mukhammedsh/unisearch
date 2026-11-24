@@ -1,6 +1,7 @@
 import { API_BASE, createSafeStorage } from "../../utils.js";
 import { getCurrentLanguage } from "../../i18n.js";
 import { shouldOpenUniversitiesInNewTab, shouldStoreRecentUniversities } from "../../settings.js";
+import { loadStaticUniversityDetail } from "../../utils/static-snapshot.js";
 
 const safeLocalStorage = createSafeStorage("local");
 const safeSessionStorage = createSafeStorage("session");
@@ -197,6 +198,13 @@ export async function fetchUniversityDetailCached(universityId, { requireReviewe
   const key = String(universityId || "").trim();
   const lang = String(getCurrentLanguage() || "eng").trim().toLowerCase() || "eng";
   if (!key) throw new Error("University ID is required");
+
+  const staticDetail = await loadStaticUniversityDetail(key, lang);
+  if (staticDetail) {
+    if (!requireReviewedCatalog || staticDetail?.admissions_catalog?.availability === "reviewed") {
+      return staticDetail;
+    }
+  }
 
   const cached = getDetailCacheEntry(key, lang);
   const reviewed = cached?.data?.admissions_catalog?.availability === "reviewed";

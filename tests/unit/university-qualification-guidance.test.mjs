@@ -2,6 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
+import { readAdmissionsCatalog } from "./admissions-catalog-fixture.mjs";
 
 global.fetch = async (url) => {
   const target = String(url || "").split("?")[0];
@@ -17,7 +18,7 @@ await initI18n();
 
 const rows = JSON.parse(await readFile(new URL("../../backend/data/universities.json", import.meta.url), "utf8"));
 const universities = Object.fromEntries(rows.map((row) => [row.id, row]));
-const admissionsCatalog = JSON.parse(await readFile(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
+const admissionsCatalog = await readAdmissionsCatalog();
 const acceptedInstitutions = Object.fromEntries(admissionsCatalog.institutions.map(row => [row.institution.id, row]));
 
 function acceptedContext(institutionId, optionId, routeId, factId) {

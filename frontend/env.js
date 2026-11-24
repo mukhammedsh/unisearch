@@ -4,5 +4,6 @@ window.__UNISEARCH_ENV__ = {
   "API_PORT": "8000",
   "APP_VERSION": "10.8.1",
   "APP_USE_PRETTY_URLS": "",
-  "APP_DEBUG": ""
+  "APP_DEBUG": "",
+  "APP_STATIC_SNAPSHOT": ""
 };

@@ -5,6 +5,7 @@
  * @property {string}  APP_VERSION        - Semantic version from package.json (e.g. "5.8.0").
  * @property {boolean} APP_DEBUG          - Whether debug logging is enabled.
  * @property {boolean} APP_USE_PRETTY_URLS - Whether to use clean URLs (/) vs file-based (index.html).
+ * @property {boolean} APP_STATIC_SNAPSHOT - Whether public catalog/detail/asset reads use the deployed static snapshot.
  * @property {boolean} IS_LOCAL_DEV       - Whether the app is running on a local development server.
  * @property {{fit: string, chance: string}} AI_FUNCTIONS - Display names for AI features.
  */
@@ -43,6 +44,14 @@
     // Plain local static servers (localhost or LAN IP on dev ports) do not
     // rewrite pretty URLs like /guide -> /guide.html; the catalog stays at the root.
     else w.APP_USE_PRETTY_URLS = !w.IS_LOCAL_DEV;
+  }
+
+  const snapshotRaw = env.APP_STATIC_SNAPSHOT;
+  if (typeof snapshotRaw === "boolean") {
+    w.APP_STATIC_SNAPSHOT = snapshotRaw;
+  } else {
+    const snapshotText = String(snapshotRaw ?? "").trim().toLowerCase();
+    w.APP_STATIC_SNAPSHOT = ["1", "true", "yes", "on"].includes(snapshotText);
   }
 })(window);
 

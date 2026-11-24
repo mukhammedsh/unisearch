@@ -9,6 +9,8 @@ import { renderAdmissionsKeyFacts, renderTabAnswers, requirementsCheckDetails } 
 import { glossaryTerms, renderTermHelp, renderTermList, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
+import { loadStaticStudyOptions } from "../../utils/static-snapshot.js";
+import { queryStaticStudyOptions } from "../universities/snapshot-filter.js";
 
 export const REVIEWED_ADMISSIONS_IDS = new Set([
   "mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana",
@@ -1043,12 +1045,28 @@ export function mountAdmissionsCatalog(institutionId) {
     list.innerHTML = loading();
     previous.disabled = next.disabled = submit.disabled = true;
     try {
-      const query = new URLSearchParams({ search, page, limit, lang: searchLanguage });
-      if (!search && suggestedMajor) query.set("major", suggestedMajor);
-      if (filterLevel) query.set("study_level", filterLevel);
-      const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(institutionId)}/study-options?${query}`, { signal: request.signal });
-      if (!response.ok) throw new Error(`Study options HTTP ${response.status}`);
-      const data = await response.json();
+      let data = null;
+      const staticPayload = await loadStaticStudyOptions(institutionId, { signal: request.signal }).catch((err) => {
+        if (err?.name === "AbortError") throw err;
+        return null;
+      });
+      if (staticPayload) {
+        data = queryStaticStudyOptions(staticPayload, {
+          search,
+          major: !search ? suggestedMajor : "",
+          study_level: filterLevel,
+          page,
+          limit,
+          translateTitle: translateProgramName,
+        });
+      } else {
+        const query = new URLSearchParams({ search, page, limit, lang: searchLanguage });
+        if (!search && suggestedMajor) query.set("major", suggestedMajor);
+        if (filterLevel) query.set("study_level", filterLevel);
+        const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(institutionId)}/study-options?${query}`, { signal: request.signal });
+        if (!response.ok) throw new Error(`Study options HTTP ${response.status}`);
+        data = await response.json();
+      }
       if (request !== catalogAbort || !currentPage()) return;
       items = data.items;
       total = data.total;

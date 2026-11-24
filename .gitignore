@@ -206,6 +206,7 @@ Desktop.ini
 
 # Local temp artifacts
 .tmp_test/
+frontend/snapshot/
 
 # Ruff stuff:
 .ruff_cache/

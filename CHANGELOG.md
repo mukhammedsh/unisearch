@@ -2,9 +2,14 @@
 
 All notable project changes should be recorded here.
 
-## 10.8.1 (2026-11-24) - Split reviewed admissions storage and lazy LRU loading
+## 10.8.1 (2026-11-24) - Split reviewed admissions storage and deploy-time static snapshot
 
-Patch release: split the monolithic reviewed admissions catalog into a compact index plus per-institution files loaded lazily into a bounded LRU cache so backend memory stays low as more universities move to the reviewed admissions format.
+Patch release: split the monolithic reviewed admissions catalog into a compact index plus lazy-loaded per-institution files to keep backend memory bounded, and add a deploy-time static snapshot pipeline so Firebase Hosting serves public catalog, map, university detail, and campus media reads without waking the sleeping backend.
+
+### Added
+- Add a stdlib-only deploy-time static snapshot builder (`backend/scripts/build_static_snapshot.py`, `scripts/build-static-snapshot.mjs`, `npm run build:snapshot`) and wire it into `.github/workflows/firebase-hosting.yml`, `firebase.json`, and `scripts/build-firebase-env.mjs` (`APP_STATIC_SNAPSHOT=1`) to export public catalog lists, map metadata, localized per-university detail JSONs (`eng`/`rus`/`kaz`), translation packs, reference configs (`locations`, `exams-config`, `languages-config`), reviewed `study-options`, and credited campus photos (`--include-assets`) into git-ignored `frontend/snapshot/`.
+- Add a frontend static snapshot client and client-side public filter/sort engine (`frontend/javascript/utils/static-snapshot.js`, `frontend/javascript/pages/universities/snapshot-filter.js`) wired into catalog listing, map markers/popups, navbar search, university detail/compare pages, translation packs, reference configs, campus media URLs, silent background backend wake probes, and service worker caching (`sw-worker.js` `2026-11-24-2`), keeping all applicant-profile calculations (UniFit, profile-scoped catalog costs, reviewed admissions-context assessments, exam/language validation, and live currency) on the FastAPI backend.
+- Add regression tests for the static snapshot builder and client filtering/loading/service-worker snapshot caching (`backend/tests/test_static_snapshot_builder.py`, `tests/unit/static-snapshot.test.mjs`, `tests/unit/service-worker.test.mjs`).
 
 ### Changed
 - Split `backend/data/admissions/catalog.json` (16.5 MB) into a compact `backend/data/admissions/index.json` (~391 KB) and per-institution files under `backend/data/admissions/institutions/<id>.json` (`backend/app/services/admissions_index.py`, `backend/app/services/admissions_catalog.py`, `backend/scripts/prepare_admissions_catalog.py`, `backend/scripts/audit_universities_data.py`).

@@ -10,7 +10,10 @@ import {
 } from "../../utils.js";
 import { heroIcon } from "../../icons.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { convert } from "../../currency.js";
 import { routeUniversityDetail } from "../../routes.js";
+import { loadStaticCatalog } from "../../utils/static-snapshot.js";
+import { profileRequiresServerCatalogCosts, queryStaticMapPoints } from "./snapshot-filter.js";
 import {
   fetchUniversityDetailCached,
   rememberRecentUniversity,
@@ -522,12 +525,39 @@ export function createUniversitiesMapController(ctx) {
     mapPointsFetchController = controller;
 
     try {
+      const paramsObj = Object.fromEntries(params);
+      const profile = loadProfileForApi();
+      const west = Number(params.get("west"));
+      const east = Number(params.get("east"));
+      const south = Number(params.get("south"));
+      const north = Number(params.get("north"));
+
+      if (!profileRequiresServerCatalogCosts(profile, paramsObj)) {
+        const staticCatalog = await loadStaticCatalog(paramsObj.lang || getCurrentLanguage() || "eng", { signal: controller.signal });
+        if (staticCatalog) {
+          if (disposed || requestSeq !== mapPointsRunSeq || state.viewMode !== "map") return;
+          const staticData = queryStaticMapPoints(
+            staticCatalog,
+            paramsObj,
+            { west, south, east, north },
+            { convertToUsd: (amount, currency) => convert(amount, currency, "USD") },
+          );
+          const points = staticData.items.filter((item) => (
+            (!state.only_saved || savedUniversityIds.has(String(item?.id || "").trim()))
+            && (!state.only_reviewed || item?.admissions_catalog?.availability === "reviewed")
+          ));
+          lastMapPointsBounds = requestBounds;
+          updateMapMarkers(points, { renderResults: false });
+          return;
+        }
+      }
+
       let response;
       let profiled = Date.now() >= apiState.profiledEndpointUnavailableUntil;
       if (profiled) {
         const payload = {
-          ...Object.fromEntries(params),
-          profile: loadProfileForApi(),
+          ...paramsObj,
+          profile,
           fields: "map",
           sort: "rank_asc",
           page: 1,
@@ -549,10 +579,6 @@ export function createUniversitiesMapController(ctx) {
       if (!response.ok) throw new Error("Map points API error");
       const data = await response.json();
       if (disposed || requestSeq !== mapPointsRunSeq || state.viewMode !== "map") return;
-      const west = Number(params.get("west"));
-      const east = Number(params.get("east"));
-      const south = Number(params.get("south"));
-      const north = Number(params.get("north"));
       const points = (Array.isArray(data.items) ? data.items : []).filter((item) => (
         (!state.only_saved || savedUniversityIds.has(String(item?.id || "").trim()))
         && (!state.only_reviewed || item?.admissions_catalog?.availability === "reviewed")

@@ -1,8 +1,8 @@
 import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFileSync } from "node:fs";
 import { createDeadlineIcs, getReviewedDeadlineEvents } from "../../frontend/javascript/pages/university/deadline-calendar.js";
+import { readAdmissionsCatalogSync } from "./admissions-catalog-fixture.mjs";
 
 const fact = (id, value, extra = {}) => ({ id, value, publication_status: "published", review_status: "reviewed",
   normalized_status: { publication: "published", review: "verified" }, topic: "deadlines", source_ids: ["official"], scope: { option_ids: ["computing"], route_ids: [], levels: ["undergraduate"], applicant_categories: [] }, ...extra });
@@ -11,9 +11,10 @@ const context = facts => ({ institution_id: "university", context: { intended_en
   selected_route: { id: "ucas", title: "UCAS", shared_policy_context_ids: [] },
   facts, fact_groups: { deadlines: facts.map(row => row.id) }, sources: [{ id: "official", url: "https://example.edu/apply" }] });
 
+const admissionsCatalog = readAdmissionsCatalogSync();
+
 function catalogRecord(id) {
-  const root = JSON.parse(readFileSync(new URL("../../backend/data/admissions/catalog.json", import.meta.url), "utf8"));
-  const stack = [root];
+  const stack = [admissionsCatalog];
   while (stack.length) {
     const item = stack.pop();
     if (!item || typeof item !== "object") continue;

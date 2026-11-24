@@ -2,6 +2,7 @@ import { heroIcon } from "../../icons.js";
 import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
 import { buildApiUrl, safePathSegment, uniThumbnailSrc } from "../_shared.js";
+import { staticSnapshotAssetUrl } from "../../utils/static-snapshot.js";
 import { coverCreditHtml, loadPhotoCredits } from "./cover-credit.js";
 import { bindGalleryZoom, isPointInVisiblePhoto } from "./gallery-zoom.js";
 
@@ -349,7 +350,8 @@ export function mountUniversityGallery(cover, universityId) {
     photos[0].credit = credits.photos?.[universityId];
     for (const [filename, credit] of Object.entries(credits.gallery?.[universityId] || {})) {
       if (!/^[a-z0-9-]+\.jpg$/.test(filename) || !credit?.license) continue;
-      const src = buildApiUrl(`universities/assets/gallery/${safePathSegment(universityId)}/${filename}`);
+      const relPath = `gallery/${safePathSegment(universityId)}/${filename}`;
+      const src = staticSnapshotAssetUrl(relPath) || buildApiUrl(`universities/assets/${relPath}`);
       photos.push({ src, credit });
     }
     if (photos.length > 1) {

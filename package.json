@@ -5,6 +5,7 @@
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
+    "build:snapshot": "node scripts/build-static-snapshot.mjs",
     "bump:version": "node scripts/bump-version.mjs",
     "dev:backend": "node scripts/dev-backend.mjs",
     "dev:frontend": "node scripts/dev-frontend.mjs",

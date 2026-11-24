@@ -1,4 +1,4 @@
-const SW_VERSION = "2026-11-24-1";
+const SW_VERSION = "2026-11-24-2";
 const CACHE_PREFIX = "unisearch";
 
 // The page registers this worker as sw.js?api=<backend origin>&v=<app version>.
@@ -104,11 +104,20 @@ function normalizeApiPath(pathname) {
   return path;
 }
 
+function isSnapshotAssetImageRequest(url) {
+  if (url.origin !== self.location.origin) return false;
+  const path = url.pathname.toLowerCase();
+  return path.startsWith("/snapshot/assets/") || path.startsWith("/frontend/snapshot/assets/");
+}
+
 function isStaticRequest(request, url) {
   if (url.origin !== self.location.origin) return false;
-  // Keep localization packs cached for instant language switching,
-  // but avoid caching core HTML/JS/CSS to reduce startup fragility.
-  return url.pathname.startsWith("/Localization/") || url.pathname.startsWith("/frontend/Localization/");
+  // Keep localization packs and public static snapshots cached for instant loads,
+  // while avoiding caching core HTML/JS/CSS to reduce startup fragility.
+  return url.pathname.startsWith("/Localization/")
+    || url.pathname.startsWith("/frontend/Localization/")
+    || url.pathname.startsWith("/snapshot/")
+    || url.pathname.startsWith("/frontend/snapshot/");
 }
 
 self.addEventListener("fetch", (event) => {
@@ -122,7 +131,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (isImageRequest(request, url)) {
+  if (isSnapshotAssetImageRequest(url) || isImageRequest(request, url)) {
     event.respondWith(staleWhileRevalidate(event, request, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
     return;
   }
