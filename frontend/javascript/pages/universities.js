@@ -885,10 +885,10 @@ export function initUniversitiesPage() {
     });
 
     el.btnList?.addEventListener("click", () => {
-        switchView("list", true).catch((err) => console.error(err));
+        switchView("list", true, { animate: true }).catch((err) => console.error(err));
     });
     el.btnMap?.addEventListener("click", () => {
-        switchView("map", true).catch((err) => console.error(err));
+        switchView("map", true, { animate: true }).catch((err) => console.error(err));
     });
 
     hideSearchSuggestions();

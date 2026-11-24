@@ -23,6 +23,7 @@ import {
   trUniversityName,
 } from "../_shared.js";
 import { ensureMapLibraries } from "./map-assets.js";
+import { fadeIn } from "../../utils/motion-reveal.js";
 
 const MAP_OVERVIEW_CENTER = [30, 15];
 const MAP_MIN_ZOOM = 2;
@@ -891,16 +892,22 @@ export function createUniversitiesMapController(ctx) {
     }
   }
 
-  function applyViewVisibility(mode) {
+  /**
+   * @param {"list" | "map"} mode
+   * @param {{ animate?: boolean }} [options] `animate` crossfades the incoming view in place (user switches only).
+   */
+  function applyViewVisibility(mode, { animate = false } = {}) {
     if (el.list) el.list.style.display = mode === "list" ? "grid" : "none";
     if (el.pagination) el.pagination.style.display = mode === "list" ? "flex" : "none";
     if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
+    if (animate) fadeIn(mode === "map" ? el.mapStage : el.list);
     if (mode !== "map" && mapResultsObserver) {
       mapResultsObserver.disconnect();
     }
   }
 
-  async function switchView(mode, shouldFetch = false) {
+  async function switchView(mode, shouldFetch = false, { animate = false } = {}) {
+    const changed = state.viewMode !== mode;
     state.viewMode = mode;
     saveFilters(state);
     syncViewModeControls();
@@ -910,7 +917,7 @@ export function createUniversitiesMapController(ctx) {
       renderMapResultsPanel(lastRenderedItems);
     }
 
-    applyViewVisibility(mode);
+    applyViewVisibility(mode, { animate: animate && changed });
     scheduleSyncWorkspaceDepth();
 
     if (mode === "map") {

@@ -53,3 +53,33 @@ test("catalog disclosures grow open instead of jumping", async ({ page }) => {
   expect(sizes.early).toBeLessThan(sizes.final);
   await expect(help.locator("p")).toBeVisible();
 });
+
+/** Clicks a view button and reports the incoming container's animations and position right away. */
+async function switchViewAndSample(page, buttonId, containerId) {
+  await page.locator(`#${buttonId}`).click();
+  return page.locator(`#${containerId}`).evaluate((el) => ({
+    properties: el.getAnimations().map((animation) => Object.keys(animation.effect.getKeyframes()[0] || {})).flat(),
+    top: Math.round(el.getBoundingClientRect().top),
+  }));
+}
+
+test("switching between list and map crossfades without movement", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  await expect(page.locator("#viewMapBtn")).toBeEnabled();
+
+  const toMap = await switchViewAndSample(page, "viewMapBtn", "mapStage");
+  expect(toMap.properties).toContain("opacity");
+  expect(toMap.properties).not.toContain("transform");
+  await page.waitForTimeout(300);
+  expect(Math.round(await page.locator("#mapStage").evaluate((el) => el.getBoundingClientRect().top))).toBe(toMap.top);
+
+  const toList = await switchViewAndSample(page, "viewListBtn", "universitiesList");
+  expect(toList.properties).toContain("opacity");
+});
+
+test("view switches are instant with reduced motion", async ({ page }) => {
+  await openCatalog(page, "reduce");
+  await expect(page.locator("#viewMapBtn")).toBeEnabled();
+  const toMap = await switchViewAndSample(page, "viewMapBtn", "mapStage");
+  expect(toMap.properties).toEqual([]);
+});
