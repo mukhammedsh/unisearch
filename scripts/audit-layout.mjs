@@ -55,6 +55,12 @@ const AUDIT_PROFILE = {
   languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 7.5 }],
 };
 
+function trimTrailingSlashes(value) {
+  let end = value.length;
+  while (end > 0 && value[end - 1] === "/") end--;
+  return value.slice(0, end);
+}
+
 function parseArgs(argv) {
   const opts = {
     baseUrl: "",
@@ -74,7 +80,7 @@ function parseArgs(argv) {
   for (const arg of argv) {
     if (arg === "--strict") opts.strict = true;
     else if (arg === "--all-screenshots") opts.allScreenshots = true;
-    else if (arg.startsWith("--base-url=")) opts.baseUrl = arg.slice("--base-url=".length).trim().replace(/\/+$/, "");
+    else if (arg.startsWith("--base-url=")) opts.baseUrl = trimTrailingSlashes(arg.slice("--base-url=".length).trim());
     else if (arg.startsWith("--pages=")) opts.pages = arg.slice("--pages=".length).split(",").map((s) => s.trim()).filter(Boolean);
     else if (arg.startsWith("--viewports=")) opts.viewports = arg.slice("--viewports=".length).split(",").map((s) => Number(s.trim())).filter((n) => Number.isFinite(n) && n > 0);
     else if (arg.startsWith("--themes=")) opts.themes = arg.slice("--themes=".length).split(",").map((s) => s.trim()).filter(Boolean);
@@ -135,8 +141,14 @@ function spawnQuietProcess(cmd, args, cwd, extraEnv = {}) {
 async function killProcessTree(proc) {
   if (!proc || proc.killed || proc.exitCode !== null) return;
   if (process.platform === "win32") {
+    const systemRoot = process.env.SystemRoot || process.env.WINDIR || "";
+    const taskkillBin = systemRoot ? path.join(systemRoot, "System32", "taskkill.exe") : "";
+    if (!taskkillBin || !fs.existsSync(taskkillBin)) {
+      proc.kill();
+      return;
+    }
     await new Promise((resolve) => {
-      const killer = spawn("taskkill", ["/pid", String(proc.pid), "/t", "/f"], { stdio: "ignore" });
+      const killer = spawn(taskkillBin, ["/pid", String(proc.pid), "/t", "/f"], { stdio: "ignore" });
       killer.on("exit", () => resolve());
       killer.on("error", () => resolve());
     });
@@ -447,8 +459,8 @@ async function runGeometryAudit(page, stepLabel, viewportWidth) {
       if (!isTrulyVisible(parent) || parent.matches(JOINED_GROUPS) || parent.closest(JOINED_GROUPS)) continue;
       const cs = getComputedStyle(parent);
       if (!cs.display.includes("flex") && !cs.display.includes("grid")) continue;
-      const rowGap = parseFloat(cs.rowGap) || 0;
-      const colGap = parseFloat(cs.columnGap) || 0;
+      const rowGap = Number.parseFloat(cs.rowGap) || 0;
+      const colGap = Number.parseFloat(cs.columnGap) || 0;
       const children = [...parent.children].filter((c) => isTrulyVisible(c) && !c.classList.contains("uni-card-link-overlay") && c.tagName !== "BR");
       if (children.length < 2) continue;
 
@@ -456,15 +468,15 @@ async function runGeometryAudit(page, stepLabel, viewportWidth) {
       const gapAxis = isRow ? colGap : rowGap;
       if (gapAxis > 0 && stackCount < 12) {
         const pRect = parent.getBoundingClientRect();
-        const pBottom = pRect.bottom - (parseFloat(cs.paddingBottom) || 0);
-        const pRight = pRect.right - (parseFloat(cs.paddingRight) || 0);
+        const pBottom = pRect.bottom - (Number.parseFloat(cs.paddingBottom) || 0);
+        const pRight = pRect.right - (Number.parseFloat(cs.paddingRight) || 0);
         for (let idx = 0; idx < children.length; idx++) {
           const ch = children[idx];
           const chCs = getComputedStyle(ch);
           const chRect = ch.getBoundingClientRect();
           if (isRow) {
-            const mr = parseFloat(chCs.marginRight) || 0;
-            const ml = parseFloat(chCs.marginLeft) || 0;
+            const mr = Number.parseFloat(chCs.marginRight) || 0;
+            const ml = Number.parseFloat(chCs.marginLeft) || 0;
             const autoRightPush = idx === children.length - 1 && Math.abs(chRect.right - pRight) < 2 && ml > 1;
             if (!autoRightPush && ((idx < children.length - 1 && mr > 1 && mr <= 40) || (idx > 0 && ml > 1 && ml <= 40))) {
               stackCount++;
@@ -472,8 +484,8 @@ async function runGeometryAudit(page, stepLabel, viewportWidth) {
               break;
             }
           } else {
-            const mt = parseFloat(chCs.marginTop) || 0;
-            const mb = parseFloat(chCs.marginBottom) || 0;
+            const mt = Number.parseFloat(chCs.marginTop) || 0;
+            const mb = Number.parseFloat(chCs.marginBottom) || 0;
             const autoBottomPush = idx === children.length - 1 && Math.abs(chRect.bottom - pBottom) < 2 && mt > 1;
             if (!autoBottomPush && ((idx > 0 && mt > 1 && mt <= 40) || (idx < children.length - 1 && mb > 1 && mb <= 40))) {
               stackCount++;
