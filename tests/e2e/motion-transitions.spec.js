@@ -105,17 +105,27 @@ test("a card without a photo opens with the plain page fade", async ({ page }) =
   expect(await page.evaluate(() => window.__vtNames || [])).not.toContain("::view-transition-group(uni-cover)");
 });
 
-test("the loading cover has the same height as the university cover", async ({ page }) => {
+test("the loading cover has the same box as the university cover", async ({ page }) => {
   for (const viewport of [{ width: 1280, height: 800 }, { width: 900, height: 900 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     await openUniversity(page, "reduce");
     const heights = await page.evaluate(() => {
       const loading = document.getElementById("detailLoading");
       loading.classList.add("is-visible");
-      const skeleton = Math.round(loading.querySelector(".d-loading-cover").getBoundingClientRect().height);
+      const skeletonNode = loading.querySelector(".d-loading-cover");
+      const skeleton = Math.round(skeletonNode.getBoundingClientRect().height);
+      const skeletonRadius = getComputedStyle(skeletonNode).borderTopLeftRadius;
       loading.classList.remove("is-visible");
-      return { skeleton, cover: Math.round(document.getElementById("detailCover").getBoundingClientRect().height) };
+      const coverNode = document.getElementById("detailCover");
+      return {
+        skeleton,
+        cover: Math.round(coverNode.getBoundingClientRect().height),
+        skeletonRadius,
+        coverRadius: getComputedStyle(coverNode).borderTopLeftRadius,
+      };
     });
     expect(Math.abs(heights.skeleton - heights.cover), `${viewport.width}px`).toBeLessThanOrEqual(1);
+    // The carried photo lands with the cover's corners, so nothing snaps when the page mounts.
+    expect(heights.skeletonRadius, `${viewport.width}px`).toBe(heights.coverRadius);
   }
 });

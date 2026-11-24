@@ -58,7 +58,7 @@
   aspect-ratio: 16 / 5.4;
   min-height: 180px;
   max-height: 420px;
-  border-radius: 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
 .d-loading-cover.has-cover-handoff::after {
