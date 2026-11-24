@@ -1,5 +1,5 @@
 import './setup.mjs';
-import { describe, it } from 'node:test';
+import { describe, it, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   fetchUniversitySearchResults,
@@ -217,10 +217,27 @@ describe('Global Navbar Search Component', () => {
       assert.ok(container.classList.contains('is-open'));
       assert.ok(container.innerHTML.includes('mit-usa-cambridge'));
 
+      mock.timers.enable({ apis: ['setTimeout'] });
       hideGlobalSearchSuggestions();
+      // Items stay while the panel fades out, then are cleared.
       assert.equal(container.classList.contains('is-open'), false);
+      assert.ok(container.innerHTML.includes('mit-usa-cambridge'));
+      mock.timers.tick(120);
       assert.equal(container.innerHTML, '');
+
+      renderGlobalSearchSuggestions(host, mockItems, 'mit');
+      hideGlobalSearchSuggestions();
+      mock.timers.tick(50);
+      const nextItems = [
+        { id: 'stanford-usa-ca', name: 'Stanford University', location: { city: 'Stanford', country: 'USA' } },
+      ];
+      renderGlobalSearchSuggestions(host, nextItems, 'stan');
+      mock.timers.tick(200);
+      // A render during the exit cancels the pending clear.
+      assert.ok(container.classList.contains('is-open'));
+      assert.ok(container.innerHTML.includes('stanford-usa-ca'));
     } finally {
+      mock.timers.reset();
       global.document.querySelector = origQuerySelector;
     }
   });

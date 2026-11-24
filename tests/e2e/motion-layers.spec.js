@@ -119,3 +119,30 @@ test("catalog select opens and closes instantly with reduced motion", async ({ p
   const display = await panel.evaluate((el) => getComputedStyle(el).display);
   expect(display).toBe("none");
 });
+
+async function showSearchSuggestions(page) {
+  await page.locator("#qInput").fill("Harvard");
+  const container = page.locator(".navbar-search-suggestions");
+  await expect(container.locator(".navbar-search-suggestion").first()).toBeVisible();
+  await expect.poll(() => container.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+  return container;
+}
+
+test("closed search suggestions fade out without catching clicks", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  const container = await showSearchSuggestions(page);
+  const box = await container.locator(".navbar-search-suggestion").first().boundingBox();
+
+  await page.locator("#qInput").fill("");
+  await expect(container).toHaveCSS("pointer-events", "none");
+  const hit = await page.evaluate(({ x, y }) => Boolean(document.elementFromPoint(x, y)?.closest(".navbar-search-suggestions")),
+    { x: box.x + box.width / 2, y: box.y + box.height / 2 });
+  expect(hit).toBe(false);
+  await expect(container).toBeHidden();
+});
+
+test("search suggestions appear instantly with reduced motion", async ({ page }) => {
+  await openCatalog(page, "reduce");
+  const container = await showSearchSuggestions(page);
+  await expectInstant(container);
+});

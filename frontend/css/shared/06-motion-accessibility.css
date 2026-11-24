@@ -399,6 +399,7 @@ body[data-page="guide"] {
     animation: none !important;
   }
 
+  .navbar-search-suggestions,
   .motion-top-layer,
   .motion-top-layer::backdrop,
   .global-loading-overlay,

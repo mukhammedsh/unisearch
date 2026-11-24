@@ -235,11 +235,11 @@ body .has-sliding-indicator .active::after {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateY(-6px);
+  transform: translateY(calc(-1 * var(--motion-offset-sm)));
   transition:
-    opacity var(--motion-fast) var(--motion-ease-standard),
-    visibility var(--motion-fast) var(--motion-ease-standard),
-    transform var(--motion-fast) var(--motion-ease-enter);
+    opacity var(--motion-snappy) var(--motion-ease-exit),
+    visibility var(--motion-snappy) allow-discrete,
+    transform var(--motion-snappy) var(--motion-ease-exit);
 }
 
 .navbar-search-suggestions.is-open {
@@ -247,6 +247,10 @@ body .has-sliding-indicator .active::after {
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-enter),
+    visibility var(--motion-fast) allow-discrete,
+    transform var(--motion-fast) var(--motion-ease-enter);
 }
 
 .navbar-search-suggestion {

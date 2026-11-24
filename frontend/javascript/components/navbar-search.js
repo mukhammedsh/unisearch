@@ -48,11 +48,34 @@ function ensureSuggestionsContainer(host) {
   return container;
 }
 
+// Matches --motion-snappy: suggestions keep their content until the fade-out has finished.
+const SUGGESTIONS_EXIT_MS = 120;
+let pendingSuggestionsClear = null;
+
+function cancelPendingSuggestionsClear() {
+  if (pendingSuggestionsClear === null) return;
+  clearTimeout(pendingSuggestionsClear);
+  pendingSuggestionsClear = null;
+}
+
+/**
+ * Marks the container open with fresh content, cancelling a clear left by a previous hide.
+ * @param {HTMLElement} container
+ */
+function showSuggestionsContainer(container) {
+  cancelPendingSuggestionsClear();
+  container.classList.add("is-open");
+}
+
 export function hideGlobalSearchSuggestions() {
   const container = document.querySelector(".navbar-search-suggestions");
   if (container) {
     container.classList.remove("is-open");
-    container.replaceChildren();
+    cancelPendingSuggestionsClear();
+    pendingSuggestionsClear = setTimeout(() => {
+      pendingSuggestionsClear = null;
+      if (!container.classList.contains("is-open")) container.replaceChildren();
+    }, SUGGESTIONS_EXIT_MS);
   }
   highlightedIndex = -1;
 }
@@ -175,14 +198,14 @@ export function renderGlobalSearchOfflineNotice(host) {
   const container = ensureSuggestionsContainer(host);
   if (!container) return;
   container.innerHTML = generateOfflineNoticeHtml();
-  container.classList.add("is-open");
+  showSuggestionsContainer(container);
 }
 
 export function renderGlobalSearchSuggestions(host, items, query) {
   const container = ensureSuggestionsContainer(host);
   if (!container) return;
   container.innerHTML = generateSuggestionsHtml(items, highlightedIndex, query);
-  container.classList.add("is-open");
+  showSuggestionsContainer(container);
   bindImageFallbacks(container);
 }
 
