@@ -383,6 +383,7 @@ export function initUniversitiesPage() {
 
     const refetch = (...args) => {
         if (filterControls.isMobileEditing()) return;
+        saveFilters(state);
         scheduleRefetch(...args);
     };
 

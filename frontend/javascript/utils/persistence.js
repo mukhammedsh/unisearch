@@ -827,6 +827,7 @@ export function saveFilters(state) {
     city: state.city,
     study_level: state.study_level,
     only_saved: !!state.only_saved,
+    only_reviewed: !!state.only_reviewed,
     min_tuition: state.min_tuition,
     max_tuition: state.max_tuition,
     cost_basis: state.cost_basis === "tuition" ? "tuition" : "annual_total",

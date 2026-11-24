@@ -423,6 +423,7 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
         cost_basis: 'tuition',
         sort: 'uni_ai',
         only_saved: true,
+        only_reviewed: true,
         viewMode: 'list',
       };
 
@@ -437,6 +438,10 @@ describe('persistence.js - Profile & Filters Storage Contracts', () => {
       assert.strictEqual(loaded.cost_basis, 'tuition');
       assert.strictEqual(loaded.sort, 'uni_ai');
       assert.strictEqual(loaded.only_saved, true);
+      assert.strictEqual(loaded.only_reviewed, true);
+
+      saveFilters({ ...filters, only_reviewed: false });
+      assert.strictEqual(loadFilters().only_reviewed, false);
     });
   });
 

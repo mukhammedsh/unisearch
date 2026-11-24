@@ -8,7 +8,7 @@ Minor release: redesign the frontend surface ladder and Indigo visual system, re
 
 ### Added
 - Add automated Playwright geometric layout and Axe WCAG accessibility audit pipeline (`scripts/audit-layout.mjs`, `npm run audit:layout`) with `@axe-core/playwright`.
-- Add a `Detailed admissions data` (`only_reviewed`) filter in the catalog and map views (`frontend/index.html`, `query-state.js`, `filter-controls.js`, `map-controller.js`, `universities.js`).
+- Add a `Detailed admissions data` (`only_reviewed`) filter in the catalog and map views (`frontend/index.html`, `query-state.js`, `filter-controls.js`, `map-controller.js`, `universities.js`, `persistence.js`).
 - Add a 3-step `Getting started` overview section (`#guide-start`) with direct catalog/profile CTAs on `frontend/guide.html`.
 - Add in-place searchable `Change university` (`universities.compare.swap_university`) picker dialogs on both reviewed and legacy comparison column headers (`compare-reviewed.js`, `compare.js`, `09-reviewed-comparison.css`, `03-comparison.css`).
 - Add live debounced program search on reviewed university pages (`#admissionsSearch`), study-level labels on profile program quick-pick chips, and a multi-month quick-jump deadline strip above a compact side-by-side deadline calendar (`admissions-controller.js`, `deadline-calendar-view.js`, `03-admissions.css`).
