@@ -64,6 +64,22 @@ let comparePhotos = null;
 let compareAdmissionChoices = new Map();
 let isDiffOnly = false;
 let currentStage = "results";
+// Null until the first stage paints; the first paint keeps the panel entrance, later switches are directional.
+let renderedStage = null;
+
+/**
+ * Motion for a stage render: none when the same stage re-renders (a choice changed), the panel entrance
+ * on the first paint, and a directional slide when the user moves between configure and results.
+ * @param {"configure" | "results"} stage
+ * @returns {{ panelClass: string | null, staggerItems: boolean }}
+ */
+function stageMotion(stage) {
+  const from = renderedStage;
+  renderedStage = stage;
+  if (from === stage) return { panelClass: null, staggerItems: false };
+  if (from === null) return { panelClass: "motion-panel-enter", staggerItems: true };
+  return { panelClass: stage === "results" ? "motion-tab-forward" : "motion-tab-back", staggerItems: false };
+}
 // Two rechecked universities use the reviewed comparison; this file keeps the earlier-format pairs only.
 let reviewedView = null;
 let ignoreProfileUpdates = false;
@@ -274,8 +290,9 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
   });
 
   bindImageFallbacks(container);
-  markMotionEnter(container, ".compare-config-column, .admission-category-card", { limit: 16, staggerMs: 18 });
-  replayMotion(container, "motion-panel-enter", { timeoutMs: 420 });
+  const motion = stageMotion("configure");
+  if (motion.staggerItems) markMotionEnter(container, ".compare-config-column, .admission-category-card", { limit: 16, staggerMs: 18 });
+  if (motion.panelClass) replayMotion(container, motion.panelClass, { timeoutMs: 420 });
 }
 
 async function renderCompareResults(container, { pushState = false } = {}) {
@@ -341,8 +358,9 @@ async function renderCompareResults(container, { pushState = false } = {}) {
     updateDiffOnlySections(tableWrap, true);
   }
   bindImageFallbacks(container);
-  markMotionEnter(container, ".compare-analysis-block, .compare-uni-card", { limit: 12, staggerMs: 18 });
-  replayMotion(container, "motion-panel-enter", { timeoutMs: 420 });
+  const motion = stageMotion("results");
+  if (motion.staggerItems) markMotionEnter(container, ".compare-analysis-block, .compare-uni-card", { limit: 12, staggerMs: 18 });
+  if (motion.panelClass) replayMotion(container, motion.panelClass, { timeoutMs: 420 });
 }
 
 function bindCompareEvents(container) {
@@ -477,6 +495,7 @@ function renderMixedState(container, universities) {
 
 export function disposeComparePage() {
   compareLoadRun++;
+  renderedStage = null;
   disposeReviewedView();
   window.removeEventListener("popstate", comparePopStateHandler);
   window.removeEventListener("profileUpdated", compareProfileUpdatedHandler);

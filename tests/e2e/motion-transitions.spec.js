@@ -28,3 +28,24 @@ test("university tabs switch instantly with reduced motion", async ({ page }) =>
   const running = await page.locator(".d-tab-pane.active").evaluate((el) => el.getAnimations().length);
   expect(running).toBe(0);
 });
+
+test("comparison steps move in their direction and re-renders stay still", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+  });
+  await page.goto("/compare.html?lang=eng&ids=university-of-oxford-uk-oxford,kimep-university-kaz-almaty");
+  const back = page.locator('[data-action="back-to-tracks"]');
+  await expect(back).toBeVisible();
+  await installMotionRecorder(page);
+
+  await back.click();
+  await expect(page.locator(".compare-config-column").first()).toBeVisible();
+  await expect.poll(() => motionSeen(page, "motion-tab-back")).toBe(true);
+
+  await page.evaluate(() => { window.__motionSeen = []; });
+  await page.goBack();
+  await expect(back).toBeVisible();
+  await expect.poll(() => motionSeen(page, "motion-tab-forward")).toBe(true);
+});
