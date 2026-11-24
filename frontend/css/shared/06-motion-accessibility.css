@@ -350,6 +350,25 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Directional panel switch: tabs and steps come in from the side the user moved toward. */
+.motion-tab-forward {
+  animation: motion-tab-forward var(--motion-fast) var(--motion-ease-enter) both;
+}
+
+.motion-tab-back {
+  animation: motion-tab-back var(--motion-fast) var(--motion-ease-enter) both;
+}
+
+@keyframes motion-tab-forward {
+  from { opacity: 0; transform: translateX(calc(2 * var(--motion-offset-sm))); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-tab-back {
+  from { opacity: 0; transform: translateX(calc(-2 * var(--motion-offset-sm))); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 @keyframes motion-slide-forward {
   from { opacity: 0; transform: translateX(12px); }
   to { opacity: 1; transform: translateX(0); }
@@ -439,6 +458,8 @@ body[data-page="guide"] {
   .motion-list-item-enter,
   .motion-row-exit,
   .motion-chip-remove,
+  .motion-tab-forward,
+  .motion-tab-back,
   .motion-tray-exit,
   .settings-modal.is-open::backdrop,
   .settings-modal.is-open .settings-card,

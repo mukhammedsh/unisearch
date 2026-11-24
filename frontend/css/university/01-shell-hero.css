@@ -623,10 +623,6 @@ a.d-cover-credit:hover {
   display: block;
 }
 
-.d-tab-pane.active.motion-panel-enter {
-  animation: motion-fade-lift-enter var(--motion-medium)
-  var(--motion-ease-enter) both;
-}
 
 .d-tab-content {
   min-width: 0;
