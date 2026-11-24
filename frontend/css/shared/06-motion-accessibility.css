@@ -141,6 +141,11 @@
   }
 }
 
+/* Set by utils/motion-reveal.js while an element grows or shrinks in height. */
+.motion-revealing {
+  overflow: clip;
+}
+
 .motion-state-pulse {
   position: relative;
   isolation: isolate;
