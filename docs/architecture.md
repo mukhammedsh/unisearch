@@ -216,7 +216,7 @@ Implemented in `backend/app/services/ml_scoring.py`:
 
 ### Data Storage Model
 * **Catalog (`backend/data/`):**
-  Stored as structured JSON files under source control. The active `backend/data/admissions/catalog.json` snapshot contains four reviewed institutions; the other 46 retain their earlier admissions presentation until their own dataset is accepted. Coverage varies by institution and program; missing facts remain unknown rather than being inferred. Admission facts are scoped to their source, program, applicant route, and cycle where published. Research drafts stay outside runtime.
+  Stored as structured JSON files under source control. The active split admissions snapshot (`backend/data/admissions/index.json` plus lazy-loaded per-institution files in `backend/data/admissions/institutions/`) contains four reviewed institutions; the other 46 retain their earlier admissions presentation until their own dataset is accepted. Coverage varies by institution and program; missing facts remain unknown rather than being inferred. Admission facts are scoped to their source, program, applicant route, and cycle where published. Research drafts stay outside runtime.
 * **Asset Directory (`backend/data/university_assets/`):**
   - Campus thumbnails: 16:9 WebP and JPEG images generated in multiple responsive resolutions.
 * **Data Auditing (`npm run audit:data`):**

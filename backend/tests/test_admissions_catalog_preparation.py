@@ -93,12 +93,16 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
         self.assertEqual(mirror["admission_exact"][fact["conditions"][0]], translations["kaz"]["admission_exact"][fact["conditions"][0]])
 
     def test_mit_mba_early_is_a_separate_deferred_application(self):
-        from app.services import admissions_catalog
+        from app.services import admissions_catalog, admissions_index
 
-        snapshot = {**self.batch, "runtime_active": True}
         with tempfile.TemporaryDirectory() as temporary:
-            path = Path(temporary) / "catalog.json"
-            path.write_text(json.dumps(snapshot, ensure_ascii=False), encoding="utf-8")
+            path = admissions_index.write_split_catalog(
+                Path(temporary),
+                self.batch["institutions"],
+                schema_version=self.batch["schema_version"],
+                runtime_active=True,
+                overwrite=True,
+            )
             with patch.object(admissions_catalog, "CATALOG_PATH", path):
                 admissions_catalog.clear_cache()
                 try:
@@ -136,12 +140,14 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             self.assertTrue(any("priority" in note for note in examples["published_requirement_or_structure_notes"]))
 
     def test_backend_snapshot_preserves_all_prepared_entities(self):
-        snapshot = read(REPO / "backend/data/admissions/catalog.json")
+        admissions_dir = REPO / "backend/data/admissions"
+        snapshot = read(admissions_dir / "index.json")
         self.assertEqual(snapshot["schema_version"], self.batch["schema_version"])
         self.assertIs(snapshot["runtime_active"], True)
-        research = read(REPO / "backend/data/admissions/research.json")
+        research = read(admissions_dir / "research.json")
         self.assertEqual(research["schema_version"], preparation.RESEARCH_VERSION)
-        for original, stored, notes in zip(self.batch["institutions"], snapshot["institutions"], research["institutions"]):
+        for original, index_entry, notes in zip(self.batch["institutions"], snapshot["institutions"], research["institutions"]):
+            stored = read(admissions_dir / index_entry["file"])
             for key in ("institution", "snapshot", "study_options", "application_routes", "facts", "unknowns", "sources"):
                 self.assertEqual(stored[key], original[key], key)
             self.assertEqual([row["path"] for row in stored["inputs"]], [row["path"] for row in original["inputs"]])
@@ -333,6 +339,7 @@ class AdmissionsCatalogPreparationTests(unittest.TestCase):
             prepared = {"schema_version": preparation.VERSION, "runtime_active": False, "institutions": []}
             path = preparation.write_output(prepared, destination, repo)
             runtime, research = preparation.split_maintainer_records(prepared)
+            self.assertEqual(path, destination / "index.json")
             self.assertEqual(read(path), runtime)
             self.assertEqual(read(destination / "admissions-research.json"), research)
             with self.assertRaisesRegex(preparation.PreparationError, "already exists"):

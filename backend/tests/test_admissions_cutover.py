@@ -139,20 +139,33 @@ class AdmissionsCutoverTests(unittest.TestCase):
             router._ai_sort_cache_key(payload, "eng"),
         )
 
+    def _load_split_institutions(self):
+        index = json.loads(admissions_catalog.CATALOG_PATH.read_text(encoding="utf-8"))
+        base_dir = admissions_catalog.CATALOG_PATH.parent
+        return (
+            index["schema_version"],
+            index["runtime_active"],
+            [json.loads((base_dir / entry["file"]).read_text(encoding="utf-8")) for entry in index["institutions"]],
+        )
+
     def test_snapshot_revision_invalidates_detail_etag_and_cached_list_lookup(self):
-        original_path = admissions_catalog.CATALOG_PATH
-        data = json.loads(original_path.read_text(encoding="utf-8"))
+        from app.services import admissions_index
+
+        schema_version, runtime_active, institutions = self._load_split_institutions()
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "catalog.json"
-            path.write_text(json.dumps(data), encoding="utf-8")
+            path = admissions_index.write_split_catalog(
+                Path(directory), institutions, schema_version=schema_version, runtime_active=runtime_active, overwrite=True
+            )
             with patch.object(admissions_catalog, "CATALOG_PATH", path), \
                  patch.object(router, "cache_get_json", return_value=None) as cached, patch.object(router, "cache_set_json"):
                 first = self.client.get(f"/universities/{MIT}")
                 self.assertEqual(first.status_code, 200)
                 self.client.get("/universities", params={"fields": "card"})
                 first_key = cached.call_args.args[0]
-                data["institutions"][0]["study_options"][0]["title"] += " reviewed"
-                path.write_text(json.dumps(data), encoding="utf-8")
+                institutions[0]["study_options"][0]["title"] += " reviewed"
+                admissions_index.write_split_catalog(
+                    Path(directory), institutions, schema_version=schema_version, runtime_active=runtime_active, overwrite=True
+                )
                 second = self.client.get(f"/universities/{MIT}", headers={"If-None-Match": first.headers["ETag"]})
                 self.assertEqual(second.status_code, 200)
                 self.assertNotEqual(first.headers["ETag"], second.headers["ETag"])
@@ -161,20 +174,25 @@ class AdmissionsCutoverTests(unittest.TestCase):
         admissions_catalog.clear_cache()
 
     def test_detail_etag_keeps_the_captured_body_revision_during_snapshot_refresh(self):
-        data = json.loads(admissions_catalog.CATALOG_PATH.read_text(encoding="utf-8"))
+        from app.services import admissions_index
+
+        schema_version, runtime_active, institutions = self._load_split_institutions()
         produce = universities.get_university_by_id
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "catalog.json"
-            path.write_text(json.dumps(data), encoding="utf-8")
+            path = admissions_index.write_split_catalog(
+                Path(directory), institutions, schema_version=schema_version, runtime_active=runtime_active, overwrite=True
+            )
             with patch.object(admissions_catalog, "CATALOG_PATH", path):
                 original = self.client.get(f"/universities/{MIT}")
                 self.assertEqual(original.status_code, 200)
 
                 def refresh_after_producing_body(*args, **kwargs):
                     body = produce(*args, **kwargs)
-                    institution = next(row for row in data["institutions"] if row["institution"]["id"] == MIT)
+                    institution = next(row for row in institutions if row["institution"]["id"] == MIT)
                     institution["study_options"][0]["title"] += " reviewed"
-                    path.write_text(json.dumps(data), encoding="utf-8")
+                    admissions_index.write_split_catalog(
+                        Path(directory), institutions, schema_version=schema_version, runtime_active=runtime_active, overwrite=True
+                    )
                     return body
 
                 with patch.object(universities, "get_university_by_id", side_effect=refresh_after_producing_body):
@@ -190,9 +208,24 @@ class AdmissionsCutoverTests(unittest.TestCase):
                 self.assertEqual(unchanged.status_code, 304)
         admissions_catalog.clear_cache()
 
+    def test_catalog_browsing_and_unselected_unifit_never_load_full_institution_files(self):
+        admissions_catalog.clear_cache()
+        universities._UNI_CACHE["mtime"] = None
+        self.assertEqual(self.client.get("/universities", params={"fields": "card"}).status_code, 200)
+        self.assertEqual(
+            self.client.get("/universities/map-points", params={"west": -180, "south": -58, "east": 180, "north": 83}).status_code,
+            200,
+        )
+        self.assertEqual(self.client.get(f"/universities/{MIT}").status_code, 200)
+        self.assertEqual(self.client.post("/universities/ai-sort", json={"profile": {"major": "Computer Science"}}).status_code, 200)
+        self.assertEqual(admissions_catalog.loaded_institution_ids(), [])
+        # Opening one institution's study options loads only that institution.
+        self.assertEqual(self.client.get(f"/universities/{MIT}/study-options").status_code, 200)
+        self.assertEqual(admissions_catalog.loaded_institution_ids(), [MIT])
+
     def test_inactive_or_corrupt_catalog_is_unavailable_before_cached_response(self):
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "catalog.json"
+            path = Path(directory) / "index.json"
             for raw in ('{"schema_version":"admissions-storage-1.0","runtime_active":false}', 'broken'):
                 path.write_text(raw, encoding="utf-8")
                 with patch.object(admissions_catalog, "CATALOG_PATH", path), patch.object(router, "cache_get_json", return_value={"items": []}) as cached:

@@ -100,8 +100,8 @@ def _normalize_university_schema(u: dict[str, Any]) -> dict[str, Any]:
     u["cover_available"] = cover_available(uid)
     u["admissions_catalog"] = admissions_catalog.get_public_contract(uid)
     if uid in admissions_catalog.INSTITUTION_IDS:
-        institution = admissions_catalog.get_institution(uid)
-        options = institution["study_options"]
+        summary = admissions_catalog.get_institution_summary(uid)
+        options = summary["study_options"] if summary else []
         for key in (
             "admission_categories",
             "finance",
@@ -118,19 +118,10 @@ def _normalize_university_schema(u: dict[str, Any]) -> dict[str, Any]:
                 for key, value in provenance["facts"].items()
                 if key not in {"acceptance_rate_percent", "tuition_total_cost_year_usd"}
             }
-        formats: list[str] = []
-        for option in options:
-            declared = option.get("attributes", {}).get("format")
-            if isinstance(declared, dict):
-                declared = declared.get("mode")
-            if isinstance(declared, str):
-                formats.append(declared)
-            elif isinstance(declared, list):
-                formats.extend(value for value in declared if isinstance(value, str))
         u["academics"] = {
             "majors": _uniq_non_empty([option["title"] for option in options]),
             "study_levels": u["admissions_catalog"]["study_levels"],
-            "formats": _uniq_non_empty(formats),
+            "formats": list(summary["formats"]) if summary else [],
         }
         return u
 

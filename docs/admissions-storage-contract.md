@@ -2,7 +2,7 @@
 
 This contract defines the active `admissions-storage-1.0` representation for the accepted Massachusetts Institute of Technology, Imperial College London, Stanford University, and Nazarbayev University datasets. Offline preparation still emits inactive candidates for review; [snapshot maintenance](../backend/data/admissions/README.md) documents activation, and the [runtime contract](admissions-runtime-contract.md) documents the live APIs. This contract follows [the product model](admissions-product-model.md).
 
-Preparation does not activate a catalog or migrate a saved selection. The accepted four-institution runtime reads the activated snapshot in `backend/data/admissions/catalog.json`, through the APIs and consumers documented in [the runtime contract](admissions-runtime-contract.md). The coordinated cutover removes their earlier policy fields from `universities.json`, preserves retired records outside runtime, and deliberately resets earlier selections with a visible explanation. Track remaining verification and later batches in [todo.md](../todo.md).
+Preparation does not activate a catalog or migrate a saved selection. The accepted four-institution runtime reads the activated split snapshot in `backend/data/admissions/index.json` and `backend/data/admissions/institutions/<university_id>.json`, through the APIs and consumers documented in [the runtime contract](admissions-runtime-contract.md). The coordinated cutover removes their earlier policy fields from `universities.json`, preserves retired records outside runtime, and deliberately resets earlier selections with a visible explanation. Track remaining verification and later batches in [todo.md](../todo.md).
 
 ## Prepare and check the accepted batch
 
@@ -21,7 +21,7 @@ To inspect a generated catalog, choose a new directory below `.tmp_test`:
 .\backend\.venv\Scripts\python.exe -X utf8 backend/scripts/prepare_admissions_catalog.py --output-dir .tmp_test/admissions-preparation
 ```
 
-The command writes `admissions-catalog.json` only after validating the complete batch. An output outside `.tmp_test` or an existing output directory is rejected. Keep generated catalogs out of version control; the accepted drafts, preparation command, and input hashes reproduce them. Preparation never writes `universities.json`, official synchronization inputs, or application code.
+The command writes `index.json` and `institutions/<university_id>.json` only after validating the complete batch. An output outside `.tmp_test` or an existing output directory is rejected. Keep generated catalogs out of version control; the accepted drafts, preparation command, and input hashes reproduce them. Preparation never writes `universities.json`, official synchronization inputs, or application code.
 
 The [JSON Schema](../backend/data/drafts/integration/schema.json) describes the prepared representation. The backend uses compact and context-selected projections of that representation; the complete storage envelope is not a default HTTP response. See [snapshot maintenance](../backend/data/admissions/README.md) for the reviewed refresh procedure.
 

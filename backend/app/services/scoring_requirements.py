@@ -61,7 +61,10 @@ def has_admissions_selection(profile: dict[str, Any], university_id: str = "") -
 
 
 def _assess_admissions_selection(university_id: str, profile: dict[str, Any]) -> dict[str, Any]:
-    resolved = admissions_catalog.resolve_context(university_id, profile=profile)
+    if has_admissions_selection(profile, university_id):
+        resolved = admissions_catalog.resolve_context(university_id, profile=profile)
+    else:
+        resolved = admissions_catalog.resolve_unselected_context(university_id, profile=profile)
     result = admissions_assessment.assess_resolved_context(resolved, profile)
     choice = result["choices"][0]
     percent = result.get("overallChance")

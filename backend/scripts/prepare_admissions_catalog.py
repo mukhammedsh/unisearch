@@ -528,19 +528,22 @@ def prepare_batch(drafts=DRAFTS):
     return {"schema_version": VERSION, "runtime_active": False, "institutions": institutions}
 
 
+def _admissions_index():
+    backend_dir = str(REPO / "backend")
+    if backend_dir not in sys.path:
+        sys.path.insert(0, backend_dir)
+    from app.services import admissions_index
+
+    return admissions_index
+
+
 def dump_records(value, depth=4, level=0):
     """Serialize JSON with one line per record (institutions[i].facts[j], ...) and compact content inside it.
 
     Indentation and spacing were about a quarter of the snapshot, while a single-line file would make every
     review diff unreadable; one line per record keeps diffs per fact and loads the same through json.loads.
     """
-    if level >= depth or not isinstance(value, (dict, list)) or not value:
-        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
-    pad = " " * (level + 1)
-    if isinstance(value, dict):
-        rows = [f"{pad}{json.dumps(key, ensure_ascii=False)}:{dump_records(item, depth, level + 1)}" for key, item in value.items()]
-        return "{\n" + ",\n".join(rows) + "\n" + " " * level + "}"
-    return "[\n" + ",\n".join(pad + dump_records(item, depth, level + 1) for item in value) + "\n" + " " * level + "]"
+    return _admissions_index().dump_records(value, depth=depth, level=level)
 
 
 def split_maintainer_records(prepared):
@@ -564,10 +567,14 @@ def write_output(prepared, directory, repo=REPO):
     require(destination.is_relative_to(allowed) and destination != allowed, "Output must be a new directory below repository .tmp_test")
     require(not destination.exists(), "Output directory already exists; refusing to overwrite")
     destination.mkdir(parents=True, exist_ok=False)
-    path = destination / "admissions-catalog.json"
     runtime, research = split_maintainer_records(prepared)
-    with path.open("x", encoding="utf-8", newline="\n") as stream:
-        stream.write(dump_records(runtime) + "\n")
+    path = _admissions_index().write_split_catalog(
+        destination,
+        runtime["institutions"],
+        schema_version=runtime["schema_version"],
+        runtime_active=runtime["runtime_active"],
+        overwrite=False,
+    )
     with (destination / "admissions-research.json").open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(dump_records(research, depth=2) + "\n")
     nu = next((row for row in prepared["institutions"] if row["institution"]["id"] == "nazarbayev-university-kaz-astana"), None)

@@ -305,8 +305,8 @@ class MLRecommender:
                             program_names.append(p_name)
 
             if uni.get("id") in admissions_catalog.INSTITUTION_IDS:
-                institution = admissions_catalog.get_institution(uni["id"])
-                program_names = [option["title"] for option in institution["study_options"]]
+                summary = admissions_catalog.get_institution_summary(uni["id"])
+                program_names = [option["title"] for option in (summary["study_options"] if summary else [])]
             program_text = " ".join(program_names)
             description = _safe_text(uni.get("description"))
 

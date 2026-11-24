@@ -2,6 +2,15 @@
 
 All notable project changes should be recorded here.
 
+## 10.8.1 (2026-11-24) - Split reviewed admissions storage and lazy LRU loading
+
+Patch release: split the monolithic reviewed admissions catalog into a compact index plus per-institution files loaded lazily into a bounded LRU cache so backend memory stays low as more universities move to the reviewed admissions format.
+
+### Changed
+- Split `backend/data/admissions/catalog.json` (16.5 MB) into a compact `backend/data/admissions/index.json` (~391 KB) and per-institution files under `backend/data/admissions/institutions/<id>.json` (`backend/app/services/admissions_index.py`, `backend/app/services/admissions_catalog.py`, `backend/scripts/prepare_admissions_catalog.py`, `backend/scripts/audit_universities_data.py`).
+- Serve startup metadata, catalog listing, map points, university detail contracts, subject matching, reference cost projections, ML program names, and unselected UniFit evaluations directly from `index.json` without loading full per-institution files (`universities.py`, `university_projection.py`, `ml_scoring.py`, `scoring_requirements.py`).
+- Load full per-institution admissions files lazily on demand with LF-normalized SHA-256 verification and a bounded LRU cache (`MAX_LOADED_INSTITUTIONS = 6`), failing explicitly on checksum or index drift and covering the contract with unit and HTTP regression tests (`test_admissions_catalog.py`, `test_admissions_cutover.py`, `test_admissions_catalog_preparation.py`, `test_admissions_editorial.py`).
+
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 
 Minor release: redesign the frontend surface ladder and Indigo visual system, refine compact UniFit card status badges and collapsible preferences/legend controls, upgrade reviewed university detail pages across Overview, Programs, Admission, and Deadlines tabs, fix initial map framing, add a 3-step guide overview and in-place comparison university switcher, and enforce automated layout and accessibility checks.

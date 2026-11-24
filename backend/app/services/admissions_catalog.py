@@ -2,19 +2,20 @@
 
 import copy
 import functools
-import hashlib
 import json
-import math
 import re
 import threading
+from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
 from app.core.paths import DATA_DIR
+from app.services import admissions_index
 from app.services import search as search_service
 from app.services.university_tracks import _canonical_major, _major_tags_from_text, _normalize_major_text
 
-CATALOG_PATH = DATA_DIR / "admissions" / "catalog.json"
+CATALOG_PATH = DATA_DIR / "admissions" / "index.json"
+MAX_LOADED_INSTITUTIONS = 6
 INSTITUTION_IDS = {"mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana"}
 LEVELS = {"preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"}
 # Closed values prepared from backend/data/drafts/integration/vocabulary.json.
@@ -24,8 +25,16 @@ REVIEW_STATES = {"verified", "verified_with_limits", "partially_verified", "carr
 RESEARCH_SUPERSEDED_STATUS = "superseded_by_completed_research"
 ENTRY_VALUES = {"external", "external_restricted", "internal", "no_admission", "closed", "unresolved"}
 LEVEL_ALIASES = {"bachelor": "undergraduate", "master": "masters", "doctorate": "doctoral", "phd": "doctoral", "foundation": "preparation", "non-degree": "non_degree"}
+_SHA256_RE = re.compile(r"[a-f0-9]{64}")
 _LOCK = threading.Lock()
-_CACHE: dict[str, Any] = {"signature": None, "revision": None, "institutions": {}, "indexes": {}}
+_CACHE: dict[str, Any] = {
+    "signature": None,
+    "revision": None,
+    "base_dir": None,
+    "summaries": {},
+    "file_paths": {},
+    "loaded": OrderedDict(),
+}
 DOMAINS = {
     "program_details": ("reference",), "admission_requirement": ("requirements",),
     "admission_requirement_and_cost": ("requirements", "costs"), "preparatory_program_status": ("study", "application"),
@@ -89,16 +98,29 @@ class InstitutionNotFoundError(AdmissionsCatalogError):
     """The requested institution is outside the reviewed normalized batch."""
 
 
-def clear_cache():
+def clear_cache() -> None:
     global _CACHE
     with _LOCK:
-        _CACHE = {"signature": None, "revision": None, "institutions": {}, "indexes": {}}
+        _CACHE = {
+            "signature": None,
+            "revision": None,
+            "base_dir": None,
+            "summaries": {},
+            "file_paths": {},
+            "loaded": OrderedDict(),
+        }
 
 
-def _records(rows, label):
+def loaded_institution_ids() -> list[str]:
+    """Return institution IDs currently held in the bounded full-record LRU cache."""
+    with _LOCK:
+        return list(_CACHE["loaded"].keys())
+
+
+def _records(rows: object, label: str) -> dict[str, dict[str, Any]]:
     if not isinstance(rows, list):
         raise AdmissionsCatalogError(f"Invalid normalized {label}")
-    indexed = {}
+    indexed: dict[str, dict[str, Any]] = {}
     for row in rows:
         if not isinstance(row, dict) or not isinstance(row.get("id"), str) or not row["id"] or row["id"] in indexed:
             raise AdmissionsCatalogError(f"Invalid or duplicate normalized {label} ID")
@@ -106,70 +128,203 @@ def _records(rows, label):
     return indexed
 
 
-def _load():
+def _validate_and_index_institution(
+    institution_id: str,
+    file_path: Path,
+    expected_sha256: str,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    try:
+        raw = file_path.read_bytes()
+        if admissions_index.content_sha256(raw) != expected_sha256:
+            raise AdmissionsCatalogError("Admissions institution file checksum mismatch")
+        institution = json.loads(raw.decode("utf-8"))
+    except AdmissionsCatalogError:
+        raise
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AdmissionsCatalogError("Normalized admissions institution is unavailable") from error
+    if not isinstance(institution, dict):
+        raise AdmissionsCatalogError("Invalid normalized admissions entity structure")
+    try:
+        declared_id = institution["institution"]["id"]
+        if declared_id != institution_id or declared_id not in INSTITUTION_IDS:
+            raise AdmissionsCatalogError("Invalid normalized institution membership")
+        entities: dict[str, Any] = {
+            key: _records(institution[key], key)
+            for key in ("study_options", "application_routes", "facts", "unknowns", "sources")
+        }
+        for option in entities["study_options"].values():
+            if not isinstance(option["levels"], list) or not set(option["levels"]).issubset(LEVELS):
+                raise AdmissionsCatalogError("Invalid normalized study levels")
+            if option["entry"] not in ENTRY_VALUES:
+                raise AdmissionsCatalogError("Invalid normalized study option entry")
+            _references(option["route_ids"], entities["application_routes"])
+            _references(option["fact_ids"], entities["facts"])
+            _references(option["source_ids"], entities["sources"])
+            if option["parent_option_id"]:
+                _references([option["parent_option_id"]], entities["study_options"])
+        for route in entities["application_routes"].values():
+            if route["entry"] not in ENTRY_VALUES:
+                raise AdmissionsCatalogError("Invalid normalized application route entry")
+            _references(route["option_ids"], entities["study_options"])
+            _references(route["fact_ids"], entities["facts"])
+            _references(route["source_ids"], entities["sources"])
+            _references(route["shared_policy_context_ids"], entities["application_routes"])
+            _references(_route_metadata(route).get("policy_for_route_ids", []), entities["application_routes"])
+        for key in ("facts", "unknowns"):
+            for fact in entities[key].values():
+                status = fact["normalized_status"]
+                if status["publication"] not in PUBLICATION_STATES or status["review"] not in REVIEW_STATES:
+                    raise AdmissionsCatalogError("Invalid normalized publication or review status")
+                _references(fact["scope"]["option_ids"], entities["study_options"])
+                _references(fact["scope"]["route_ids"], entities["application_routes"])
+                _references(fact["source_ids"], entities["sources"])
+                if key == "facts":
+                    _references(fact["related_fact_ids"], entities["facts"])
+        entities["search"] = {
+            option["id"]: search_service.prepare_search_meta({
+                "name": option["title"],
+                "program_names": [option["title"], *option["awards"]],
+                "study_levels": option["levels"],
+                "search_aliases": option.get("attributes", {}).get("search_aliases", []),
+            })
+            for option in entities["study_options"].values()
+        }
+    except (KeyError, TypeError) as error:
+        raise AdmissionsCatalogError("Invalid normalized admissions entity structure") from error
+    return institution, entities
+
+
+def _validate_index_entry(entry: object, base_dir: Path) -> tuple[str, dict[str, Any], Path]:
+    if not isinstance(entry, dict):
+        raise AdmissionsCatalogError("Invalid normalized admissions index entry")
+    institution_id = entry.get("id")
+    if not isinstance(institution_id, str) or institution_id not in INSTITUTION_IDS:
+        raise AdmissionsCatalogError("Invalid normalized institution membership")
+    relpath = entry.get("file")
+    sha256 = entry.get("sha256")
+    if not isinstance(relpath, str) or not relpath or not isinstance(sha256, str) or not _SHA256_RE.fullmatch(sha256):
+        raise AdmissionsCatalogError("Invalid normalized admissions index reference")
+    file_path = (base_dir / relpath).resolve()
+    if not file_path.is_relative_to(base_dir) or not file_path.is_file():
+        raise AdmissionsCatalogError("Normalized admissions institution file is unavailable")
+    levels = entry.get("study_levels")
+    options = entry.get("study_options")
+    routes = entry.get("routes")
+    quotes = entry.get("cost_quotes")
+    living = entry.get("living_estimates")
+    source_urls = entry.get("source_urls")
+    formats = entry.get("formats")
+    if (
+        not isinstance(levels, list)
+        or not set(levels).issubset(LEVELS)
+        or not isinstance(options, list)
+        or not isinstance(routes, list)
+        or not isinstance(quotes, list)
+        or not isinstance(living, list)
+        or not isinstance(source_urls, dict)
+        or not isinstance(formats, list)
+    ):
+        raise AdmissionsCatalogError("Invalid normalized admissions index structure")
+    for option in options:
+        if (
+            not isinstance(option, dict)
+            or not isinstance(option.get("id"), str)
+            or not isinstance(option.get("title"), str)
+            or not isinstance(option.get("levels"), list)
+            or not set(option["levels"]).issubset(LEVELS)
+            or not isinstance(option.get("awards"), list)
+        ):
+            raise AdmissionsCatalogError("Invalid normalized study levels")
+    return institution_id, entry, file_path
+
+
+def _load_index_unlocked() -> dict[str, Any]:
     global _CACHE
     path = Path(CATALOG_PATH)
+    try:
+        stat = path.stat()
+        resolved_path = path.resolve()
+        signature = (str(resolved_path), stat.st_mtime_ns, stat.st_ctime_ns, stat.st_size)
+        if _CACHE["signature"] == signature:
+            return _CACHE
+        raw = path.read_bytes()
+        data = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as error:
+        raise AdmissionsCatalogError("Normalized admissions catalog is unavailable") from error
+    if not isinstance(data, dict) or data.get("schema_version") != "admissions-storage-1.0" or data.get("runtime_active") is not True:
+        raise AdmissionsCatalogError("Unsupported normalized admissions catalog contract")
+    raw_institutions = data.get("institutions")
+    if not isinstance(raw_institutions, list):
+        raise AdmissionsCatalogError("Invalid normalized admissions entity structure")
+    base_dir = resolved_path.parent
+    summaries: dict[str, dict[str, Any]] = {}
+    file_paths: dict[str, Path] = {}
+    for entry in raw_institutions:
+        institution_id, summary, file_path = _validate_index_entry(entry, base_dir)
+        if institution_id in summaries:
+            raise AdmissionsCatalogError("Invalid normalized institution membership")
+        summaries[institution_id] = summary
+        file_paths[institution_id] = file_path
+    if set(summaries) != INSTITUTION_IDS:
+        raise AdmissionsCatalogError("Normalized admissions catalog must contain every accepted institution")
+    _CACHE = {
+        "signature": signature,
+        "revision": admissions_index.content_sha256(raw),
+        "base_dir": base_dir,
+        "summaries": summaries,
+        "file_paths": file_paths,
+        "loaded": OrderedDict(),
+    }
+    return _CACHE
+
+
+def _load_index() -> dict[str, Any]:
     with _LOCK:
+        return _load_index_unlocked()
+
+
+def _load_institution(institution_id: str) -> tuple[str, dict[str, Any], dict[str, Any]]:
+    with _LOCK:
+        cached = _load_index_unlocked()
+        summary = cached["summaries"].get(institution_id)
+        if summary is None:
+            raise InstitutionNotFoundError("Reviewed admissions institution not found")
+        file_path = cached["file_paths"][institution_id]
         try:
-            stat = path.stat()
-            signature = (str(path.resolve()), stat.st_mtime_ns, stat.st_ctime_ns, stat.st_size)
-            if _CACHE["signature"] == signature:
-                return _CACHE
-            raw = path.read_bytes()
-            data = json.loads(raw.decode("utf-8"))
-        except (OSError, UnicodeError, json.JSONDecodeError) as error:
-            raise AdmissionsCatalogError("Normalized admissions catalog is unavailable") from error
-        if not isinstance(data, dict) or data.get("schema_version") != "admissions-storage-1.0" or data.get("runtime_active") is not True:
-            raise AdmissionsCatalogError("Unsupported normalized admissions catalog contract")
-        institutions = {}
-        indexes = {}
-        try:
-            for institution in data["institutions"]:
-                institution_id = institution["institution"]["id"]
-                if institution_id in institutions or institution_id not in INSTITUTION_IDS:
-                    raise AdmissionsCatalogError("Invalid normalized institution membership")
-                entities = {key: _records(institution[key], key) for key in ("study_options", "application_routes", "facts", "unknowns", "sources")}
-                for option in entities["study_options"].values():
-                    if not isinstance(option["levels"], list) or not set(option["levels"]).issubset(LEVELS):
-                        raise AdmissionsCatalogError("Invalid normalized study levels")
-                    if option["entry"] not in ENTRY_VALUES:
-                        raise AdmissionsCatalogError("Invalid normalized study option entry")
-                    _references(option["route_ids"], entities["application_routes"])
-                    _references(option["fact_ids"], entities["facts"])
-                    _references(option["source_ids"], entities["sources"])
-                    if option["parent_option_id"]:
-                        _references([option["parent_option_id"]], entities["study_options"])
-                for route in entities["application_routes"].values():
-                    if route["entry"] not in ENTRY_VALUES:
-                        raise AdmissionsCatalogError("Invalid normalized application route entry")
-                    _references(route["option_ids"], entities["study_options"])
-                    _references(route["fact_ids"], entities["facts"])
-                    _references(route["source_ids"], entities["sources"])
-                    _references(route["shared_policy_context_ids"], entities["application_routes"])
-                    _references(_route_metadata(route).get("policy_for_route_ids", []), entities["application_routes"])
-                for key in ("facts", "unknowns"):
-                    for fact in entities[key].values():
-                        status = fact["normalized_status"]
-                        if status["publication"] not in PUBLICATION_STATES or status["review"] not in REVIEW_STATES:
-                            raise AdmissionsCatalogError("Invalid normalized publication or review status")
-                        _references(fact["scope"]["option_ids"], entities["study_options"])
-                        _references(fact["scope"]["route_ids"], entities["application_routes"])
-                        _references(fact["source_ids"], entities["sources"])
-                        if key == "facts":
-                            _references(fact["related_fact_ids"], entities["facts"])
-                entities["search"] = {option["id"]: search_service.prepare_search_meta({
-                    "name": option["title"], "program_names": [option["title"], *option["awards"]],
-                    "study_levels": option["levels"], "search_aliases": option.get("attributes", {}).get("search_aliases", []),
-                }) for option in entities["study_options"].values()}
-                institutions[institution_id] = institution
-                indexes[institution_id] = entities
-        except (KeyError, TypeError) as error:
-            raise AdmissionsCatalogError("Invalid normalized admissions entity structure") from error
-        if set(institutions) != INSTITUTION_IDS:
-            raise AdmissionsCatalogError("Normalized admissions catalog must contain every accepted institution")
-        _CACHE = {"signature": signature, "revision": hashlib.sha256(raw).hexdigest(),
-                  "institutions": institutions, "indexes": indexes}
-        return _CACHE
+            stat = file_path.stat()
+        except OSError as error:
+            raise AdmissionsCatalogError("Normalized admissions institution is unavailable") from error
+        file_sig = (str(file_path), stat.st_mtime_ns, stat.st_ctime_ns, stat.st_size)
+        loaded: OrderedDict[str, tuple[tuple[str, int, int, int], dict[str, Any], dict[str, Any]]] = cached["loaded"]
+        existing = loaded.get(institution_id)
+        if existing is not None and existing[0] == file_sig:
+            loaded.move_to_end(institution_id)
+            return cached["revision"], existing[1], existing[2]
+        institution, entities = _validate_and_index_institution(institution_id, file_path, summary["sha256"])
+        loaded[institution_id] = (file_sig, institution, entities)
+        loaded.move_to_end(institution_id)
+        cap = max(1, int(MAX_LOADED_INSTITUTIONS))
+        while len(loaded) > cap:
+            loaded.popitem(last=False)
+        return cached["revision"], institution, entities
+
+
+def validate_all_institutions() -> dict[str, dict[str, Any]]:
+    """Validate every split institution file and confirm index.json matches each record."""
+    cached = _load_index()
+    indexes: dict[str, dict[str, Any]] = {}
+    for institution_id, summary in cached["summaries"].items():
+        file_path = cached["file_paths"][institution_id]
+        institution, entities = _validate_and_index_institution(institution_id, file_path, summary["sha256"])
+        expected_summary = admissions_index.build_institution_summary(
+            institution,
+            file_relpath=summary["file"],
+            file_sha256=summary["sha256"],
+        )
+        if summary != expected_summary:
+            raise AdmissionsCatalogError(f"Admissions index entry out of sync for {institution_id}")
+        indexes[institution_id] = entities
+    return indexes
 
 
 def _references(values, index):
@@ -177,12 +332,21 @@ def _references(values, index):
         raise AdmissionsCatalogError("Broken normalized admissions reference")
 
 
-def get_revision():
-    return _load()["revision"]
+def get_revision() -> str:
+    return _load_index()["revision"]
 
 
-def get_institution(institution_id):
-    return _load()["institutions"].get(institution_id)
+def get_institution_summary(institution_id: str) -> dict[str, Any] | None:
+    """Return the lightweight index entry for an accepted institution without loading its full file."""
+    return _load_index()["summaries"].get(institution_id)
+
+
+def get_institution(institution_id: str) -> dict[str, Any] | None:
+    cached = _load_index()
+    if institution_id not in cached["summaries"]:
+        return None
+    _, institution, _ = _load_institution(institution_id)
+    return institution
 
 
 @functools.lru_cache(maxsize=2048)
@@ -191,26 +355,38 @@ def _title_major_tags(title):
     return _major_tags_from_text(title)
 
 
-def matching_study_options(institution_id, major=None, study_level=None):
-    """Use the catalog subject taxonomy without choosing an application target."""
-    institution = get_institution(institution_id)
-    if institution is None:
-        return []
+def _filter_study_options(options, major=None, study_level=None):
     level = _normalized_level(study_level)
     subject = _canonical_major(major) if major else None
-    return [option for option in institution["study_options"]
-            if (not level or level == "any" or level in option["levels"])
-            and (not major or (subject in _title_major_tags(option["title"]) if subject
-                 else _normalize_major_text(major) == _normalize_major_text(option["title"]))) ]
+    return [
+        option for option in options
+        if (not level or level == "any" or level in option["levels"])
+        and (
+            not major
+            or (
+                subject in _title_major_tags(option["title"])
+                if subject
+                else _normalize_major_text(major) == _normalize_major_text(option["title"])
+            )
+        )
+    ]
+
+
+def matching_study_options(institution_id, major=None, study_level=None):
+    """Use the catalog subject taxonomy without choosing an application target."""
+    summary = get_institution_summary(institution_id)
+    if summary is None:
+        return []
+    return _filter_study_options(summary["study_options"], major=major, study_level=study_level)
 
 
 def catalog_costs(institution_id, study_level=None, study_mode="any", profile=None, *, major=None,
                   fee_status_context=None, intended_entry_cycle=None, study_option_id=None,
                   application_route_id=None):
     """Return published reference prices without claiming personal affordability."""
-    institution = get_institution(institution_id)
+    inst_summary = get_institution_summary(institution_id)
     summary = {"annual_total": None, "tuition": None, "reference": True}
-    if institution is None:
+    if inst_summary is None:
         return summary
     profile = profile if isinstance(profile, dict) else None
     choice = (profile or {}).get("selectedAdmissionChoices", {}).get(institution_id, {}) if profile is not None else {}
@@ -218,7 +394,7 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
     level = LEVEL_ALIASES.get(str(level_value or "").lower(), str(level_value or "").lower())
     if level == "any":
         level = ""
-    options = {option["id"]: option for option in institution["study_options"]}
+    options = {option["id"]: option for option in inst_summary["study_options"]}
     selected_option = study_option_id or choice.get("studyOptionId")
     selected_route = application_route_id or choice.get("applicationRouteId")
     selected = options.get(selected_option)
@@ -231,9 +407,11 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
     if selected_option:
         candidate_ids.intersection_update([selected_option])
     elif major:
-        candidate_ids.intersection_update(option["id"] for option in matching_study_options(institution_id, major, level))
+        candidate_ids.intersection_update(
+            option["id"] for option in _filter_study_options(inst_summary["study_options"], major, level)
+        )
     if selected_route:
-        route = next((route for route in institution["application_routes"] if route["id"] == selected_route), None)
+        route = next((route for route in inst_summary["routes"] if route["id"] == selected_route), None)
         candidate_ids.intersection_update(route["option_ids"] if route else [])
     application_route_id = selected_route
     fee_context = (fee_status_context if fee_status_context is not None else choice.get("feeStatusContext", (profile or {}).get("fee_status_context"))) or None
@@ -247,77 +425,46 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                         "fee_status_context": fee_context or "unknown",
                         "intended_entry_cycle": intended_entry_cycle}
 
-    def add(row, basis, amount, currency, period, fee_status="", exclusions=(), *, billing_period="academic_year", study_modes=(), campus=None, source_year=None, option_ids=None):
-        if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount) or amount < 0:
-            return
-        if not isinstance(currency, str) or not re.fullmatch(r"[A-Z]{3}", currency) or not period:
-            return
+    candidate_levels = {value for option_id in candidate_ids for value in options[option_id]["levels"]}
+    for raw_quote in inst_summary["cost_quotes"]:
+        study_modes = raw_quote["study_modes"]
         if study_mode == "online" and (not study_modes or "online" not in study_modes):
-            return
+            continue
         if study_mode not in (None, "any", "online") and study_modes and study_mode not in study_modes:
-            return
-        scoped_options = set(option_ids if option_ids is not None else row["scope"]["option_ids"])
+            continue
+        scoped_options = set(raw_quote["option_ids"])
         if not candidate_ids or (scoped_options and not candidate_ids.intersection(scoped_options)):
-            return
-        if application_route_id and row["scope"]["route_ids"] and application_route_id not in row["scope"]["route_ids"]:
-            return
-        levels = sorted({value for option_id in scoped_options for value in options[option_id]["levels"]}) if option_ids is not None else row["scope"]["levels"]
-        levels = levels or sorted({value for option_id in scoped_options for value in options[option_id]["levels"]})
+            continue
+        if application_route_id and raw_quote["route_ids"] and application_route_id not in raw_quote["route_ids"]:
+            continue
+        levels = raw_quote["levels"]
         if level and level not in levels:
-            return
-        if not set(levels).intersection(value for option_id in candidate_ids for value in options[option_id]["levels"]):
-            return
+            continue
+        if not set(levels).intersection(candidate_levels):
+            continue
+        fee_status = raw_quote["fee_status"]
         if fee_status and fee_context not in (None, "unknown") and fee_status != selected_fee:
-            return
-        quotes.append({"basis": basis, "amount": amount, "currency": currency, "period": period,
-                       "billing_period": billing_period, "annual_comparable": billing_period == "academic_year",
-                       "campus": campus, "source_year": source_year,
-                       "levels": levels, "fee_status": fee_status, "exclusions": list(exclusions),
-                       "option_ids": sorted(option_id for option_id in candidate_ids
-                                            if (not scoped_options or option_id in scoped_options) and set(levels).intersection(options[option_id]["levels"])),
-                       "fact_id": row["id"], "source_ids": row["source_ids"]})
-
-    for row in institution["facts"]:
-        status = row["normalized_status"]
-        if (status["publication"] != "published" and not row.get("attributes", {}).get("catalog_costs")) or status["review"] not in {"verified", "verified_with_limits", "carried_forward"}:
             continue
-        value = row.get("attributes", {}).get("catalog_costs") or row.get("value")
-        if not isinstance(value, dict):
-            continue
-        for quote in value.get("quotes", []):
-            if quote.get("reference_only"):
-                continue
-            if quote.get("basis") not in {"tuition", "annual_total"} or quote.get("billing_period") not in {"academic_year", "whole_program", "per_credit"}:
-                continue
-            add(row, quote["basis"], quote.get("amount"), quote.get("currency"), quote.get("period_label"), quote.get("fee_status", ""),
-                quote.get("exclusions", []), billing_period=quote["billing_period"], study_modes=quote.get("study_modes", []),
-                campus=quote.get("campus"), source_year=quote.get("source_year"), option_ids=quote.get("option_ids"))
-        period = value.get("academic_year") or (row.get("period") or {}).get("label")
-        if value.get("period") == "Academic year":
-            add(row, "tuition", value.get("tuition"), value.get("currency"), period)
-            add(row, "annual_total", value.get("total_before_aid"), value.get("currency"), period,
-                exclusions=value.get("exclusions", ["insurance", "travel"] if value.get("health_insurance") else []))
-        # Published budget tables: only the nine-month column matches an academic-year comparison.
-        for budget in value.get("budgets") or []:
-            if isinstance(budget, dict) and budget.get("months") == 9 and "tuition" in budget and "total" in budget:
-                add(row, "tuition", budget["tuition"], value.get("currency"), period)
-                add(row, "annual_total", budget["total"], value.get("currency"), period)
-        # Quarterly full-time graduate rates cover three academic quarters (Autumn, Winter, Spring).
-        quarterly = (value.get("graduate_engineering_quarterly_tuition") or {}).get("11-18_units")
-        if isinstance(quarterly, (int, float)) and not isinstance(quarterly, bool):
-            add(row, "tuition", quarterly * 3, value.get("currency"), value.get("academic_year"))
-        panels = value.get("course_page_tuition_fees")
-        if not isinstance(panels, dict):
-            continue
-        for status in ("Home fee", "Overseas fee"):
-            for panel in panels.get(status, []):
-                if panel.get("panel_status") != "published":
-                    continue
-                for text in panel.get("amounts_and_periods", []):
-                    annual = re.fullmatch(r"£([\d,]+(?:\.\d+)?) per year", text)
-                    one_year = re.fullmatch(r"£([\d,]+(?:\.\d+)?)", text) if value.get("duration") == "1 year" and value.get("mode") == "Full-time" else None
-                    if annual or one_year:
-                        add(row, "tuition", float((annual or one_year)[1].replace(",", "")), panel.get("currency"), panel.get("panel_cycle_label"), status)
+        billing_period = raw_quote["billing_period"]
+        quotes.append({
+            "basis": raw_quote["basis"],
+            "amount": raw_quote["amount"],
+            "currency": raw_quote["currency"],
+            "period": raw_quote["period"],
+            "billing_period": billing_period,
+            "annual_comparable": billing_period == "academic_year",
+            "campus": raw_quote["campus"],
+            "source_year": raw_quote["source_year"],
+            "levels": levels,
+            "fee_status": fee_status,
+            "exclusions": list(raw_quote["exclusions"]),
+            "option_ids": sorted(
+                option_id for option_id in candidate_ids
+                if (not scoped_options or option_id in scoped_options) and set(levels).intersection(options[option_id]["levels"])
+            ),
+            "fact_id": raw_quote["fact_id"],
+            "source_ids": raw_quote["source_ids"],
+        })
 
     def period_matches(quote):
         actual = re.fullmatch(r"(20\d{2})-(?:\d{2}|20\d{2})", quote["period"])
@@ -329,7 +476,7 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
         return period_matches(quote), (re.findall(r"20\d{2}", quote["period"]) or [""])[0]
 
     # Every priced variant without a published full budget gains the applicable living-cost range.
-    living = _living_estimates(institution)
+    living = inst_summary["living_estimates"]
     published_budgets = [quote for quote in quotes if quote["basis"] == "annual_total"]
     for quote in [quote for quote in quotes if quote["basis"] == "tuition" and quote["billing_period"] == "academic_year"]:
         option_ids = set(quote["option_ids"])
@@ -357,6 +504,7 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                        "living_reference": next(iter(living_references)) if len(living_references) == 1 else "",
                        "source_ids": sorted({*quote["source_ids"], *(value for estimate in matches for value in estimate["source_ids"])})})
 
+    source_urls_map = inst_summary["source_urls"]
     for basis in ("annual_total", "tuition"):
         candidates = [quote for quote in quotes if quote["basis"] == basis]
         if not candidates:
@@ -396,7 +544,7 @@ def catalog_costs(institution_id, study_level=None, study_mode="any", profile=No
                          "exclusions": sorted({item for quote in candidates for item in quote["exclusions"]}),
                          "fact_ids": sorted({quote["fact_id"] for quote in evidence} |
                                             {fact_id for quote in evidence for fact_id in quote.get("living_fact_ids", [])}),
-                         "source_urls": [source["url"] for source in institution["sources"] if source["id"] in source_ids]}
+                         "source_urls": [url for sid, url in source_urls_map.items() if sid in source_ids]}
         if basis == "annual_total":
             published_quotes = [quote for quote in candidates if not quote.get("living")]
             quote_summary["published_intervals"] = [
@@ -442,55 +590,23 @@ def selected_costs(institution_id, context):
 
 
 def _living_estimates(institution):
-    """Read published non-tuition estimates and express them for one nine-month academic year."""
-    estimates = []
-    for row in institution["facts"]:
-        if (not str(row.get("publication_status") or "").startswith("published")
-                or not re.search(r"verified|reviewed", row.get("review_status") or "")
-                or re.search(r"superseded|conflict|partial|pending", row.get("review_status") or "")):
-            continue
-        value = row.get("value")
-        if not isinstance(value, dict):
-            continue
-        if isinstance(value.get("average_9months"), dict):
-            low, high, exclusions = value["average_9months"].get("min"), value["average_9months"].get("max"), ["insurance", "travel"]
-        elif "three_quarter_non_tuition_total" in value:
-            low = high = value["three_quarter_non_tuition_total"]
-            exclusions = ["travel"]
-        elif "living" in str(row.get("topic") or "") and value.get("period") == "month" and isinstance(value.get("amount"), (int, float)):
-            low = high = value["amount"] * 9
-            exclusions = ["travel"]
-        else:
-            continue
-        if (any(isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(amount) for amount in (low, high))
-                or not 0 <= low <= high or not re.fullmatch(r"[A-Z]{3}", str(value.get("currency") or ""))):
-            continue
-        reference = value.get("cycle") or value.get("year") or value.get("academic_year")
-        if not reference:
-            period = row.get("period")
-            reference = period.get("label") if isinstance(period, dict) else period
-        estimates.append({"min": low, "max": high, "currency": value["currency"], "exclusions": exclusions,
-                          "levels": row["scope"]["levels"], "option_ids": row["scope"]["option_ids"],
-                          "fact_id": row["id"], "source_ids": row["source_ids"], "reference": str(reference or "")})
-    return estimates
+    return admissions_index.extract_living_estimates(institution)
 
 
 def get_public_contract(institution_id):
-    cached = _load()
-    institution = cached["institutions"].get(institution_id)
-    if institution is None:
+    cached = _load_index()
+    summary = cached["summaries"].get(institution_id)
+    if summary is None:
         return {"availability": "legacy_unreviewed", "schema_version": "admissions-storage-1.0", "revision": None,
                 "study_option_count": None, "study_levels": []}
     return {"availability": "reviewed", "schema_version": "admissions-storage-1.0", "revision": cached["revision"],
-            "study_option_count": len(institution["study_options"]),
-            "study_levels": sorted({level for option in institution["study_options"] for level in option["levels"]})}
+            "study_option_count": summary["study_option_count"],
+            "study_levels": list(summary["study_levels"])}
 
 
 def _institution(institution_id):
-    cached = _load()
-    if institution_id not in cached["institutions"]:
-        raise InstitutionNotFoundError("Reviewed admissions institution not found")
-    return cached, cached["institutions"][institution_id], cached["indexes"][institution_id]
+    revision, institution, indexed = _load_institution(institution_id)
+    return {"revision": revision}, institution, indexed
 
 
 def _option_summary(option):
@@ -603,7 +719,7 @@ def list_study_options(institution_id, search_candidates=(), study_level=None, p
     queries = [query for candidate in search_candidates
                if (query := search_service.prepare_query(candidate))]
     items = []
-    for option in matching_study_options(institution_id, major=major, study_level=study_level):
+    for option in _filter_study_options(institution["study_options"], major=major, study_level=study_level):
         scores = [search_service.score_prepared(indexed["search"][option["id"]], query, require_all_terms=True) for query in queries]
         score = max((score for score in scores if score is not None), default=None) if queries else 0
         if score is not None:
@@ -744,19 +860,27 @@ def _fact_applicability(row, context, context_status, shared_route_ids):
     return {**axes, "status": status}
 
 
-def resolve_context(institution_id, profile=None, context=None):
-    cached, institution, indexed = _institution(institution_id)
+def _effective_context(
+    institution_id: str,
+    profile: dict[str, Any] | None = None,
+    context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     profile = profile or {}
     context = context or {}
     selection = profile.get("selectedAdmissionChoices", {}).get(institution_id, {})
     effective = {
-        "study_option_id": selection.get("studyOptionId"), "application_route_id": selection.get("applicationRouteId"),
-        "study_level": _normalized_level(profile.get("study_level") or profile.get("studyLevel")), "applicant_route": profile.get("applicant_route"),
-        "intended_entry_cycle": profile.get("intended_entry_cycle"), "fee_status_context": profile.get("fee_status_context", "unknown"),
+        "study_option_id": selection.get("studyOptionId"),
+        "application_route_id": selection.get("applicationRouteId"),
+        "study_level": _normalized_level(profile.get("study_level") or profile.get("studyLevel")),
+        "applicant_route": profile.get("applicant_route"),
+        "intended_entry_cycle": profile.get("intended_entry_cycle"),
+        "fee_status_context": profile.get("fee_status_context", "unknown"),
     }
     for selected_key, context_key in (
-        ("studyLevel", "study_level"), ("applicantRoute", "applicant_route"),
-        ("intendedEntryCycle", "intended_entry_cycle"), ("feeStatusContext", "fee_status_context"),
+        ("studyLevel", "study_level"),
+        ("applicantRoute", "applicant_route"),
+        ("intendedEntryCycle", "intended_entry_cycle"),
+        ("feeStatusContext", "fee_status_context"),
     ):
         if selected_key in selection:
             effective[context_key] = selection[selected_key]
@@ -764,6 +888,43 @@ def resolve_context(institution_id, profile=None, context=None):
         if key in context:
             effective[key] = context[key]
     effective["study_level"] = _normalized_level(effective["study_level"])
+    return effective
+
+
+def resolve_unselected_context(institution_id: str, profile: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Return an unresolved context from index.json without loading the institution's full file."""
+    cached = _load_index()
+    if institution_id not in cached["summaries"]:
+        raise InstitutionNotFoundError("Reviewed admissions institution not found")
+    effective = _effective_context(institution_id, profile=profile)
+    statuses = {
+        "option": "unknown",
+        "route": "unknown",
+        "level": "matched" if effective["study_level"] and effective["study_level"] in LEVELS else "unknown",
+    }
+    return {
+        "institution_id": institution_id,
+        "revision": cached["revision"],
+        "context": effective,
+        "reading_scope": "study_option",
+        "context_applicability": statuses,
+        "selected_option": None,
+        "selected_route": None,
+        "available_routes": [],
+        "facts": [],
+        "unknowns": [],
+        "fact_groups": {},
+        "sources": [],
+        "reference_labels": {},
+        "history": {"fact_ids": [], "unknown_ids": [], "facts": [], "unknowns": []},
+        "excluded": {"facts": [], "unknowns": []},
+    }
+
+
+def resolve_context(institution_id, profile=None, context=None):
+    cached, institution, indexed = _institution(institution_id)
+    context = context or {}
+    effective = _effective_context(institution_id, profile=profile, context=context)
     option = indexed["study_options"].get(effective["study_option_id"])
     if effective["study_level"] == "mba" and option and len(option["levels"]) == 1:
         effective["study_level"] = option["levels"][0]
