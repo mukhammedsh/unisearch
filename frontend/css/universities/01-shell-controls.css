@@ -7,7 +7,7 @@
 
 .uni-card .ui-tooltip-wrap {
   z-index: 2;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 .uni-card .ui-tooltip-wrap:is(.is-open, .is-closed, .is-closing, :not(.is-closed):hover, :not(.is-closed):focus-within) {

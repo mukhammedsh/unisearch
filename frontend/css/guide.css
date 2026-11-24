@@ -101,7 +101,7 @@
   line-height: 1.45;
   font-weight: var(--font-weight-medium);
   transition:
-    color var(--motion-fast, 0.15s) ease;
+    color var(--motion-fast) ease;
 }
 
 .guide-nav a::before {

@@ -49,7 +49,7 @@
         linear-gradient(to bottom, var(--surface-solid), transparent) 0 0 / 100% var(--u-sidebar-fade-top) no-repeat no-clip,
         linear-gradient(to bottom, transparent, var(--surface-solid)) 0 100% / 100% var(--u-sidebar-fade-bottom) no-repeat no-clip;
       animation-name: u-sidebar-fade-top, u-sidebar-fade-bottom;
-      animation-timing-function: linear;
+      animation-timing-function: var(--motion-ease-linear);
       animation-fill-mode: both;
       animation-timeline: scroll(self block);
       animation-range: 0 var(--space-10), calc(100% - var(--space-10)) 100%;

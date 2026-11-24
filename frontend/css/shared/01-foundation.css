@@ -475,7 +475,7 @@ p, li {
   border-radius: 0 var(--radius-full) var(--radius-full) 0;
   background: var(--accent);
   box-shadow: none;
-  animation: global-loading-slide var(--motion-loading-loop, 1.1s) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: global-loading-slide var(--motion-loading-loop) var(--motion-ease-standard) infinite;
 }
 
 @keyframes global-loading-slide {
@@ -525,16 +525,16 @@ p, li {
   animation: none;
   opacity: 0;
   transform: translateY(-4px);
-  transition: opacity var(--motion-fast, 120ms) var(--motion-ease-standard, ease),
-              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease);
+  transition: opacity var(--motion-fast) var(--motion-ease-standard),
+              transform var(--motion-fast) var(--motion-ease-standard);
   pointer-events: none;
 }
 
 /* View Transitions API (Chrome 111+, Edge, Safari 18+) */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: var(--motion-fast, 160ms);
-  animation-timing-function: var(--motion-ease-standard, ease);
+  animation-duration: var(--motion-fast);
+  animation-timing-function: var(--motion-ease-standard);
 }
 
 ::view-transition-old(main-navbar),

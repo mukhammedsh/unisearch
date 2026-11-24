@@ -66,6 +66,9 @@
   --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-linear: linear;
+  --motion-offset-sm: 4px;
+  --motion-tooltip-delay: 200ms;
   --motion-ring-color: color-mix(in srgb, var(--accent) 34%, transparent);
 }
 
@@ -463,7 +466,7 @@ body.route-loading main {
     var(--skeleton-highlight) 50%,
     transparent 100%
   );
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
   pointer-events: none;
   will-change: transform;
 }
@@ -559,7 +562,7 @@ body.route-loading main {
 }
 
 .error-btn.is-loading .ui-icon {
-  animation: center-loading-spin var(--motion-spinner-loop, 900ms) linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
   transform-origin: center;
 }
 

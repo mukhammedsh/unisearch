@@ -96,7 +96,7 @@ body[data-page="error-404"] main.error-page:not(.page-exit) {
   cursor: pointer;
   color: var(--text-inverse);
   background: var(--accent);
-  transition: background-color var(--motion-fast, 0.15s) ease;
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {

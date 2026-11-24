@@ -4,7 +4,7 @@
   gap: var(--space-5);
   align-items: stretch;
   overflow-anchor: none;
-  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
 .u-grid > .error-screen {
@@ -32,7 +32,7 @@
   min-height: 350px;
   overflow-anchor: none;
   opacity: 1;
-  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
 .u-skeleton-grid.is-fading-out {
@@ -61,7 +61,7 @@
     var(--skeleton-highlight) 50%,
     transparent 100%
   );
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
   pointer-events: none;
   will-change: transform;
 }
@@ -231,7 +231,7 @@
   var(--surface-soft);
   background-size: auto, auto, auto, auto, 220% 100%, auto, auto, auto;
   opacity: 0.92;
-  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
 }
 
 .u-map-stage.is-loading .u-map-container::after {
@@ -242,7 +242,7 @@
   linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight) 46%, transparent 58%, transparent 100%),
   var(--surface-solid);
   background-size: 220% 100%, auto;
-  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
 }
 
 @keyframes skeleton-bg-shimmer {
@@ -515,7 +515,7 @@
   display: inline-flex;
   max-width: 100%;
   z-index: 2;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 .uni-metric-tooltip:is(:hover, :focus-within, .is-open, .is-closed, .is-closing) {
@@ -969,7 +969,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   z-index: 1;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 /* In the card's top-right row every tooltip aligns to the row's right edge so it stays inside card bounds. */

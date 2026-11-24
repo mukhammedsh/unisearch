@@ -32,7 +32,7 @@
 
 .d-loading.is-visible {
   display: block;
-  animation: d-loading-fade-in var(--motion-fast, 160ms) var(--motion-ease-standard, ease) forwards;
+  animation: d-loading-fade-in var(--motion-fast) var(--motion-ease-standard) forwards;
 }
 
 @keyframes d-loading-fade-in {
@@ -781,7 +781,7 @@ a.d-cover-credit:hover {
       linear-gradient(to right, var(--surface-solid), transparent) 0 0 / var(--d-tabs-fade-start) 100% no-repeat no-clip,
       linear-gradient(to right, transparent, var(--surface-solid)) 100% 0 / var(--d-tabs-fade-end) 100% no-repeat no-clip;
     animation-name: d-tabs-fade-start, d-tabs-fade-end;
-    animation-timing-function: linear;
+    animation-timing-function: var(--motion-ease-linear);
     animation-fill-mode: both;
     animation-timeline: scroll(self inline);
     animation-range: 0 var(--space-12), calc(100% - var(--space-12)) 100%;

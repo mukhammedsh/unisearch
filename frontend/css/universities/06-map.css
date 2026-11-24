@@ -342,7 +342,7 @@
   border: 2px solid var(--line);
   border-top-color: var(--accent);
   border-radius: var(--radius-circle);
-  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) var(--motion-ease-linear) infinite;
 }
 
 .u-map-results-complete {

@@ -142,6 +142,37 @@ export function spacingValueViolations(property, value) {
     .map(({ text, value: px }) => ({ text, suggestion: spacingTokenFor(px) }));
 }
 
+const MOTION_TOKEN_FILES = new Set([
+  "frontend/css/shared/01-foundation.css",
+  "frontend/css/shared/06-motion-accessibility.css",
+]);
+const RAW_EASING_RE = /(?<![\w-])(?:ease(?:-in-out|-in|-out)?|linear|step-start|step-end)(?![\w-])|(?:cubic-bezier|steps|linear)\(/gi;
+const RAW_DURATION_RE = /(?<![\w.-])(\d*\.?\d+)(ms|s)(?![\w-])/gi;
+
+export function isMotionTokenFile(relPath) {
+  return MOTION_TOKEN_FILES.has(String(relPath || "").replace(/\\/g, "/"));
+}
+
+/**
+ * Raw durations and easings in transition/animation declarations. Token references without a
+ * fallback are allowed; a fallback such as `var(--motion-fast, 160ms)` still counts as raw.
+ * @param {string} property
+ * @param {string} value
+ * @returns {string[]} offending fragments in source order
+ */
+export function motionTimingViolations(property, value) {
+  if (!/^(?:transition|animation)(?:-[a-z-]+)?$/i.test(String(property || ""))) return [];
+  const source = String(value || "").replace(/var\(--[\w-]+\)/g, " ");
+  const found = [];
+  for (const match of source.matchAll(RAW_DURATION_RE)) {
+    if (Number.parseFloat(match[1]) !== 0) found.push({ index: match.index, text: match[0] });
+  }
+  for (const match of source.matchAll(RAW_EASING_RE)) {
+    found.push({ index: match.index, text: match[0] });
+  }
+  return found.sort((a, b) => a.index - b.index).map(({ text }) => text);
+}
+
 function listCssFiles(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const entryPath = path.join(dir, entry.name);
@@ -357,6 +388,21 @@ export function scanCssFile(filePath) {
           message: `transition: all is forbidden (triggers heavy reflows/repaints)`,
           code: rawLine.trim(),
           suggestion: "Animate only opacity and transform, or specific properties (e.g. background-color, color, box-shadow)",
+        });
+      }
+    }
+
+    // 8b. Motion timing must come from the shared motion tokens
+    if (!isMotionTokenFile(relPath)) {
+      for (const { property, value } of cssDeclarations(line)) {
+        const raw = motionTimingViolations(property, value);
+        if (!raw.length) continue;
+        violations.push({
+          line: i + 1,
+          type: "animation-raw-timing",
+          message: `Raw motion timing ${raw.join(", ")} in ${property}`,
+          code: rawLine.trim(),
+          suggestion: "Use --motion-* duration and --motion-ease-* easing tokens from shared/06-motion-accessibility.css",
         });
       }
     }

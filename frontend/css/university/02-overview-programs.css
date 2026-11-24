@@ -207,7 +207,7 @@
   flex-direction: column;
   gap: 0;
   box-sizing: border-box;
-  transition: box-shadow var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: box-shadow var(--motion-fast) var(--motion-ease-standard);
 }
 
 .program-card[hidden] {

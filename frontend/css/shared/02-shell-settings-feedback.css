@@ -168,7 +168,7 @@
   border-top-color: var(--accent);
   box-shadow: none;
   transform: none;
-  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) var(--motion-ease-linear) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -324,7 +324,7 @@
   align-items: center;
   max-width: 100%;
   z-index: 1;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 .ui-tooltip-wrap:is(:not(.is-closed):hover, :not(.is-closed):focus-within, .is-open, .is-closed, .is-closing) {
@@ -424,7 +424,7 @@
   display: inline-flex;
   align-items: center;
   z-index: 1;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 :where(.u-info-wrap, .profile-info-wrap, .d-info-wrap):is(:hover, :focus-within, .is-open, .is-closed, .is-closing) {
@@ -889,7 +889,7 @@
   font-weight: var(--font-weight-medium);
   min-width: 250px;
   max-width: 350px;
-  animation: motion-toast-in var(--motion-medium, 260ms) var(--motion-ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+  animation: motion-toast-in var(--motion-medium) var(--motion-ease-enter) forwards;
   pointer-events: auto;
   will-change: transform, opacity;
 }
@@ -906,7 +906,7 @@
 
 .toast.is-leaving {
   pointer-events: none;
-  animation: motion-toast-out var(--motion-medium, 260ms) var(--motion-ease-exit, cubic-bezier(0.4, 0, 0.2, 1)) forwards;
+  animation: motion-toast-out var(--motion-medium) var(--motion-ease-exit) forwards;
   will-change: transform, opacity;
 }
 
@@ -1338,7 +1338,7 @@ select:not(.u-select-hidden) {
     color: var(--text-muted);
     line-height: 1.4;
     text-decoration: none;
-    transition: color var(--motion-fast, 0.15s) ease;
+    transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .footer-divider {
