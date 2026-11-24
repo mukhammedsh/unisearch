@@ -21,8 +21,6 @@ const LEGEND_LABEL_KEYS = {
 };
 const LEGEND_ORDER = Object.keys(LEGEND_LABEL_KEYS);
 
-export const statusLabelKey = (key) => LEGEND_LABEL_KEYS[key] || "";
-
 const text = (value) => String(value ?? "").trim();
 const isAny = (value) => !text(value) || text(value).toLowerCase() === "any";
 

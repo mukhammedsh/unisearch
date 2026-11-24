@@ -815,14 +815,6 @@
   overflow-wrap: break-word;
 }
 
-.overview-summary__item-text[data-prose] {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
-
 .overview-summary__fact {
   display: flex;
   flex-direction: column;

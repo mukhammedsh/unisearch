@@ -952,26 +952,27 @@
 }
 
 .uni-card-statuses {
-  position: relative;
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
   z-index: var(--z-card-badge);
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: var(--space-1-5);
-  width: 100%;
+  max-width: calc(100% - var(--space-6));
 }
 
 .uni-status-tooltip {
   position: relative;
   display: inline-flex;
-  flex: 0 1 auto;
-  max-width: 100%;
+  flex: 0 0 auto;
   z-index: 1;
   transition: z-index 0s linear var(--motion-fast, 160ms);
 }
 
-/* Tooltips inside the card status row anchor to the row's left edge so they stay inside card bounds. */
+/* In the card's top-right row every tooltip aligns to the row's right edge so it stays inside card bounds. */
 .uni-card-statuses > .uni-status-tooltip {
   position: static;
 }
@@ -983,23 +984,22 @@
 
 .uni-status-trigger {
   display: inline-flex;
-  width: auto;
-  min-height: 26px;
-  max-width: 100%;
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
   align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-1-5);
-  padding: var(--space-1) var(--space-2);
+  justify-content: center;
+  padding: 0;
   border: none;
-  border-radius: var(--radius-sm);
-  background: var(--surface-soft);
+  border-radius: var(--radius-circle);
+  background: var(--surface-solid);
   color: var(--text);
+  box-shadow: var(--shadow-sm);
   cursor: help;
   font: inherit;
   font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard),
@@ -1009,54 +1009,56 @@
 .uni-status-icon-wrap,
 .uni-status-icon {
   display: block;
-  flex: 0 0 14px;
-  width: 14px;
-  height: 14px;
-}
-
-.uni-status-label {
-  min-width: 0;
-  overflow-wrap: break-word;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
 }
 
 .uni-status-trigger--score {
+  width: auto;
+  gap: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-full);
   font-variant-numeric: tabular-nums;
 }
 
+.uni-status-trigger > .uni-status-value {
+  width: auto;
+  height: auto;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
 .uni-status-trigger--match {
-  border-color: var(--uni-status-match-border);
-  background: var(--uni-status-match-bg);
+  background: linear-gradient(var(--uni-status-match-bg), var(--uni-status-match-bg)), var(--surface-solid);
   color: var(--uni-status-match-text);
 }
 
 .uni-status-trigger--warning,
 .uni-status-trigger--budget {
-  border-color: var(--uni-status-warning-border);
-  background: var(--uni-status-warning-bg);
+  background: linear-gradient(var(--uni-status-warning-bg), var(--uni-status-warning-bg)), var(--surface-solid);
   color: var(--uni-status-warning-text);
 }
 
 .uni-status-trigger--grant,
 .uni-status-trigger--requirements,
 .uni-status-trigger--aid {
-  border-color: var(--uni-status-success-border);
-  background: var(--uni-status-success-bg);
+  background: linear-gradient(var(--uni-status-success-bg), var(--uni-status-success-bg)), var(--surface-solid);
   color: var(--uni-status-success-text);
 }
 
 .uni-status-trigger--finance {
-  border-color: var(--uni-status-info-border);
-  background: var(--uni-status-info-bg);
+  background: linear-gradient(var(--uni-status-info-bg), var(--uni-status-info-bg)), var(--surface-solid);
   color: var(--uni-status-info-text);
 }
 
 .uni-status-tooltip__content {
   --tooltip-display: flex;
-  left: 0;
-  right: auto;
+  left: auto;
+  right: 0;
   z-index: var(--z-card-tooltip);
   width: max-content;
-  max-width: min(260px, 100%);
+  max-width: min(260px, calc(100vw - 48px));
   flex-direction: column;
   gap: var(--space-1);
 }
@@ -1084,7 +1086,7 @@
 }
 
 .uni-status-overflow {
-  position: static;
+  position: relative;
   display: inline-flex;
   flex: 0 0 auto;
   z-index: 1;
@@ -1096,14 +1098,17 @@
 
 .uni-status-overflow-trigger {
   display: inline-flex;
-  min-width: 28px;
-  min-height: 26px;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
   align-items: center;
   justify-content: center;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
-  background: var(--surface-soft);
-  color: var(--text-muted);
+  padding: 0;
+  border-radius: var(--radius-circle);
+  background: var(--uni-status-overflow-bg);
+  color: var(--uni-status-overflow-text);
+  box-shadow: var(--uni-status-overflow-shadow);
   font-family: inherit;
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
@@ -1118,19 +1123,18 @@
 .uni-status-overflow-popover {
   position: absolute;
   top: calc(100% + var(--space-1-5));
-  left: 0;
-  right: auto;
+  right: 0;
+  left: auto;
   z-index: var(--z-card-popover);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   gap: var(--space-1-5);
-  max-width: 100%;
-  padding: var(--space-2);
+  padding: var(--space-1-5);
   background: var(--surface-solid);
-  border-radius: var(--radius-base);
+  border-radius: var(--radius-full);
   box-shadow: var(--shadow-md);
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .uni-status-overflow-popover[hidden] {

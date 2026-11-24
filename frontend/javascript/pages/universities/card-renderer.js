@@ -37,7 +37,6 @@ import {
   exactBudgetMoney,
   missingExamNames,
   reviewedMissingInputs,
-  statusLabelKey,
   unmetMinimums,
 } from "./unifit-explanation.js";
 
@@ -181,22 +180,18 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
   const uniCurrency = priceInfo.currency;
 
   const statusIndicators = [];
-  // `legend` maps each badge to its short plain-language card pill label (LEGEND_LABEL_KEYS).
+  // `legend` is the meaning key the UniFit banner legend lists for this icon (LEGEND_LABEL_KEYS).
   const addStatusIndicator = (iconName, tone, label, detail = "", value = "", legend = "") => {
     const cleanLabel = String(label || "").trim();
     const cleanDetail = String(detail || "").trim();
     const ariaText = cleanDetail ? `${cleanLabel}: ${cleanDetail}` : cleanLabel;
-    const useRawLabel = reviewedAdmissions && legend === "subject_missing";
-    const shortKey = (!useRawLabel && legend) ? statusLabelKey(legend) : "";
-    const baseLabel = shortKey ? t(shortKey, cleanLabel) : cleanLabel;
-    const pillText = value ? `${baseLabel} · ${value}` : baseLabel;
     const tooltipHtml = cleanDetail
       ? `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong><span class="uni-status-tooltip__text">${escapeHtml(cleanDetail)}</span>`
       : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
     statusIndicators.push(`
       <span class="uni-status-tooltip">
         <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}" data-legend-icon="${escapeHtmlAttr(iconName)}" data-legend-tone="${escapeHtmlAttr(tone)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
-          <span class="uni-status-icon-wrap" aria-hidden="true">${renderInlineIcon(iconName, 14, "uni-status-icon")}</span><span class="uni-status-label" aria-hidden="true">${escapeHtml(pillText)}</span>
+          <span class="uni-status-icon-wrap" aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
         </button>
         <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>
       </span>
@@ -284,13 +279,13 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
     }
   }
 
-  const MAX_INLINE_PILLS = 2;
+  const MAX_VISIBLE_BADGES = 4;
   let statusHtml = "";
-  if (statusIndicators.length <= MAX_INLINE_PILLS) {
+  if (statusIndicators.length <= MAX_VISIBLE_BADGES) {
     statusHtml = statusIndicators.join("");
   } else {
-    const visible = statusIndicators.slice(0, MAX_INLINE_PILLS);
-    const hidden = statusIndicators.slice(MAX_INLINE_PILLS);
+    const visible = statusIndicators.slice(0, MAX_VISIBLE_BADGES - 1);
+    const hidden = statusIndicators.slice(MAX_VISIBLE_BADGES - 1);
     const hiddenCount = hidden.length;
     const overflowLabel = tFormat("universities.badge.overflow_more", { count: String(hiddenCount) }, `+${hiddenCount} more badges`);
     const overflowAria = t("universities.badge.overflow_label", "Additional status indicators");
@@ -383,10 +378,10 @@ ${rankInnerHtml}
   return `
     <article class="uni-card${statusClass}${isCompared ? " uni-card--compare-selected" : ""}${hideMedia ? " uni-card--no-media" : ""}${mapVariant ? " uni-card--map" : ""}${cardIsActive ? " is-active" : ""}" data-uni-id="${escapeHtmlAttr(id)}" data-compare-selected="${isCompared ? "true" : "false"}">
       ${mediaHtml}${backdropHtml}
+      ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
       <div class="uni-body">
         ${headHtml}
         ${metricsHtml}
-        ${statusHtml ? `<div class="uni-card-statuses" aria-label="${escapeHtmlAttr(t("universities.card.statuses", "University status"))}">${statusHtml}</div>` : ""}
         <div class="uni-footer">
           ${priceHtml}
           ${detailsHtml}

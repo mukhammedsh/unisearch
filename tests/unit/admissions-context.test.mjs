@@ -36,6 +36,7 @@ test("only explicit institution-route projection permits reading without a major
 
 test("profile suggestions use the declared target without inferring the next level", () => {
   assert.deepEqual(programProfileSuggestions({ study_level: "Bachelor", major: "Computer Science", education_level: "masters" }), { major: "Computer Science", level: "undergraduate" });
+  assert.deepEqual(programProfileSuggestions({ studyLevel: "Bachelor", major: "Computer Science" }), { major: "Computer Science", level: "undergraduate" });
   assert.deepEqual(programProfileSuggestions({ education_level: "undergraduate" }), { major: "", level: "" });
   assert.deepEqual(programProfileSuggestions({ study_level: "unknown" }), { major: "", level: "" });
 });

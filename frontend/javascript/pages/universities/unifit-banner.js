@@ -2,6 +2,8 @@
 
 import {
     aiName,
+    escapeHtml,
+    escapeHtmlAttr,
     getExamDisplayName,
     loadProfile,
 } from "../../utils.js";
@@ -9,8 +11,8 @@ import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { formatMoney } from "../../currency.js";
 import { routeProfile } from "../../routes.js";
 import { translateProgramName } from "../../university-translations.js";
-import { cleanDecoratedText } from "../_shared.js";
-import { describeRankingProfile } from "./unifit-explanation.js";
+import { cleanDecoratedText, renderInlineIcon } from "../_shared.js";
+import { describeRankingProfile, legendEntries } from "./unifit-explanation.js";
 import { hasProfileEvidence } from "./query-state.js";
 
 /**
@@ -32,8 +34,25 @@ export function createUnifitBannerController({ el, state }) {
         }
     };
 
-    // Card badges now display plain-language text directly inside each card body.
-    const refreshLegend = () => {};
+    // On-demand legend of the mini status icons visible on rendered cards, collapsed by default to keep the header compact.
+    const refreshLegend = () => {
+        const box = el.unifitLegend;
+        const disclosure = el.unifitLegendDetails;
+        if (!box) return;
+        const scope = state.viewMode === "map" ? el.mapResults : el.list;
+        const badges = state.sort === "uni_ai" && scope
+            ? Array.from(scope.querySelectorAll(".uni-card:not(.is-skeleton) .uni-status-trigger[data-legend]"))
+                .map((node) => ({ key: node.dataset.legend, icon: node.dataset.legendIcon, tone: node.dataset.legendTone }))
+            : [];
+        const entries = legendEntries(badges);
+        if (disclosure) disclosure.hidden = !entries.length;
+        box.hidden = !entries.length;
+        box.innerHTML = entries.length
+            ? entries.map(({ icon, tone, labelKey }) =>
+                `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 14, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`
+            ).join("")
+            : "";
+    };
 
     const update = () => {
         if (!el.unifitWarningBanner) return;
@@ -65,6 +84,7 @@ export function createUnifitBannerController({ el, state }) {
             el.unifitBannerEdit.setAttribute("href", routeProfile());
         }
         el.unifitWarningBanner.hidden = false;
+        refreshLegend();
     };
 
     const resetDismissed = () => {

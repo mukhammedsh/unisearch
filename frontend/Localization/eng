@@ -3194,6 +3194,8 @@ universities.tip.before_aid: Financial aid is not deducted.
 universities.tip.requirements_met: Your results meet the published minimums. Check the other admission conditions on the university page.
 universities.tip.below_minimum: Below the minimum: {items}.
 universities.tip.minimum_gap: {exam} needs {minimum}, you have {provided}
+universities.ux2.legend.aria: Icons on university cards
+universities.ux2.legend.lead: Card icons:
 universities.ux2.legend.subject_missing: Program not offered
 universities.ux2.legend.subject_matched: Subject offered
 universities.ux2.legend.requirements_below: Below requirements

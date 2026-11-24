@@ -3194,6 +3194,8 @@ universities.tip.before_aid: Қаржылық көмек есепке алынб
 universities.tip.requirements_met: Нәтижелеріңіз жарияланған ең төменгі талаптарға сай. Басқа қабылдау шарттарын университет бетінен тексеріңіз.
 universities.tip.below_minimum: Ең төменгі талаптан төмен: {items}.
 universities.tip.minimum_gap: {exam}: {minimum} керек, сізде {provided}
+universities.ux2.legend.aria: Университет карточкаларындағы белгішелер
+universities.ux2.legend.lead: Карточка белгішелері:
 universities.ux2.legend.subject_missing: Бағдарлама жоқ
 universities.ux2.legend.subject_matched: Бағыт бар
 universities.ux2.legend.requirements_below: Талаптан төмен

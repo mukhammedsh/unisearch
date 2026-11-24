@@ -21,6 +21,7 @@
   border-radius: 0;
 }
 
+.admissions-context[hidden],
 .admissions-context [hidden] {
   display: none;
 }
@@ -311,18 +312,6 @@
   color: var(--color-warning);
 }
 
-/* A note that asks for a missing result opens that field in the profile. */
-a.admissions-key-facts__checklist-note {
-  width: fit-content;
-  color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: var(--space-1);
-}
-
-a.admissions-key-facts__checklist-note:hover {
-  color: var(--interaction-hover-text);
-}
-
 .admissions-key-facts__checklist-text {
   display: block;
   overflow-wrap: break-word;
@@ -332,6 +321,27 @@ a.admissions-key-facts__checklist-note:hover {
   display: block;
   font-size: var(--text-sm);
   color: var(--text-muted);
+}
+
+/* A note that asks for a missing result opens that field in the profile. */
+a.admissions-key-facts__checklist-note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: fit-content;
+  margin-top: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--interaction-active-text);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+
+a.admissions-key-facts__checklist-note:hover {
+  background: var(--accent-active-surface);
+  color: var(--interaction-active-text);
 }
 
 /* Short funding lines: award type, coverage and deadline, as the university publishes them. */
@@ -1500,6 +1510,9 @@ details[open] > summary > .admissions-disclosure-icon {
   display: grid;
   gap: var(--space-2);
   min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
 }
 
 .admissions-reading__excerpt > p,
@@ -1680,6 +1693,12 @@ details[open] > summary > .admissions-disclosure-icon {
 /* Each route's note sits close to its own button; separate routes keep a larger gap, so notes never look shared. */
 .admissions-route-option {
   gap: var(--space-1-5);
+}
+
+.admissions-route-option button:is(.is-active, [aria-pressed="true"]),
+.admissions-route-option button:is(.is-active, [aria-pressed="true"]):hover:not(:disabled) {
+  background: var(--accent-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .admissions-entry {

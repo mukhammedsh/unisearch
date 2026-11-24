@@ -152,6 +152,8 @@ function collectUniversitiesElements() {
         unifitBannerTitle: $("unifitBannerTitle"),
         unifitBannerEdit: $("unifitBannerEdit"),
         unifitBannerPrefsBtn: $("unifitBannerPrefsBtn"),
+        unifitLegendDetails: $("unifitLegendDetails"),
+        unifitLegend: $("unifitLegend"),
         unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
     };

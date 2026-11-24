@@ -248,19 +248,56 @@
   gap: var(--space-1);
 }
 
-/* Status badges sit inside .uni-body as an inline wrapping row of text pills. */
+/* Status badges stack vertically on the right edge of map cards without encroaching on the title or stretching height. */
 .u-map-results-list .uni-card-statuses {
+  flex-direction: column;
+  align-items: flex-end;
+  top: var(--space-3);
+  right: var(--space-3);
   gap: var(--space-1);
+  width: auto;
+  max-width: none;
+}
+
+.u-map-results-list .uni-card-statuses > .uni-status-tooltip {
+  position: relative;
 }
 
 .u-map-results-list .uni-status-trigger {
-  min-height: 24px;
-  padding: var(--space-0-5) var(--space-2);
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+}
+
+.u-map-results-list .uni-status-trigger--score {
+  width: auto;
+}
+
+.u-map-results-list .uni-status-icon-wrap,
+.u-map-results-list .uni-status-icon {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
 }
 
 .u-map-results-list .uni-status-overflow-trigger {
-  min-height: 24px;
-  padding: var(--space-0-5) var(--space-2);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+}
+
+.u-map-results-list .uni-status-overflow-popover {
+  top: 0;
+  right: calc(100% + var(--space-1));
+  flex-direction: row;
+  gap: var(--space-1);
+  padding: var(--space-1);
+}
+
+.u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-head,
+.u-map-results-list .uni-card--no-media:has(.uni-card-statuses) .uni-metrics {
+  padding-right: var(--space-8);
 }
 
 .u-map-results-footer {

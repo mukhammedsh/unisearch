@@ -470,14 +470,15 @@
   .uni-status-overflow-trigger,
   .u-map-results-list .uni-status-trigger,
   .u-map-results-list .uni-status-overflow-trigger {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
     min-height: 38px;
-    width: auto;
-    height: auto;
   }
 
-  .uni-status-overflow-trigger,
-  .u-map-results-list .uni-status-overflow-trigger {
-    min-width: 38px;
+  .uni-status-trigger--score,
+  .u-map-results-list .uni-status-trigger--score {
+    width: auto;
   }
 
   .uni-metric-trigger,

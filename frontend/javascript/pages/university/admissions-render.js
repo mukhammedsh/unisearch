@@ -588,6 +588,8 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
       return true;
     });
     if (!rows.length) return "";
+    const sectionHeading = label(programOnly && domain === "study" ? "program_detail.study" : `domain.${domain}`);
+    let omitHeading = false;
     const content = presentation === "simple" ? (() => {
       const genericGroups = new Map();
       const groupPositions = new Set();
@@ -610,6 +612,8 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
         const group = genericGroups.get(title);
         group.push(row);
       }
+      omitHeading = output.length === 1 && groupPositions.has(0)
+        && String(output[0] || "").trim().toLowerCase() === String(sectionHeading || "").trim().toLowerCase();
       return output.map((item, index) => {
         if (!groupPositions.has(index)) return item;
         const group = genericGroups.get(item);
@@ -624,7 +628,8 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
         </details>`;
       }).join("");
     })() : rows.map(row => renderFact(row, resolved, domain, false, false)).join("");
-    return `<section class="admissions-catalog__section" data-admissions-domain="${escapeHtmlAttr(domain)}"><h3>${escapeHtml(label(programOnly && domain === "study" ? "program_detail.study" : `domain.${domain}`))}</h3><div class="admissions-catalog__list">${content}</div></section>`;
+    const headingHtml = omitHeading ? "" : `<h3>${escapeHtml(sectionHeading)}</h3>`;
+    return `<section class="admissions-catalog__section" data-admissions-domain="${escapeHtmlAttr(domain)}">${headingHtml}<div class="admissions-catalog__list">${content}</div></section>`;
   }).filter(Boolean);
   return sections.length ? `${presentation === "simple" && includeReferenceScopeNote ? `<p class="admissions-catalog__meta">${escapeHtml(t("university.admissions.reading.reference_scope_note"))}</p>` : ""}${sections.join("")}`
     : emptyMessage ? `<p class="admissions-catalog__meta">${escapeHtml(label("no_facts"))}</p>` : "";

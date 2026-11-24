@@ -594,8 +594,45 @@
   gap: var(--space-1);
 }
 
+.deadline-calendar__all-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.deadline-calendar__jump {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-1-5);
+  min-height: 36px;
+  padding: var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  text-align: left;
+  cursor: pointer;
+}
+
+.deadline-calendar__jump:hover {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+.deadline-calendar__jump:is(.is-active, [aria-pressed="true"]) {
+  background: var(--accent-active-surface);
+  color: var(--interaction-active-text);
+}
+
 .deadline-calendar__weekday {
-  padding: var(--space-2);
+  padding: var(--space-1) var(--space-1-5);
   color: var(--text-muted);
   font-size: var(--text-xs);
   text-align: center;
@@ -603,12 +640,13 @@
 
 .deadline-calendar__day,
 .deadline-calendar__blank {
-  min-height: 48px;
-  padding: var(--space-2);
+  min-height: 38px;
+  padding: var(--space-1-5);
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   color: var(--text-muted);
   font: inherit;
+  font-size: var(--text-sm);
   text-align: left;
 }
 
@@ -620,7 +658,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-1);
+  gap: var(--space-0-5);
   color: var(--text);
   cursor: pointer;
 }
@@ -634,8 +672,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  min-height: 20px;
+  min-width: 18px;
+  min-height: 18px;
   border-radius: var(--radius-circle);
   background: var(--surface-solid);
   color: var(--text);
@@ -755,6 +793,30 @@
   margin-block: 0;
 }
 
+@media (min-width: 860px) {
+  .deadline-calendar:not(.deadline-calendar--empty) {
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-3) var(--space-5);
+  }
+
+  .deadline-calendar__head,
+  .deadline-calendar__all-dates,
+  .deadline-calendar__note {
+    grid-column: 1 / -1;
+  }
+
+  .deadline-calendar__grid {
+    grid-column: 1;
+    max-width: 380px;
+  }
+
+  .deadline-calendar__details {
+    grid-column: 2;
+  }
+}
+
 @media (max-width: 1024px) {
   .admissions-program-grid {
     grid-template-columns: 1fr;
@@ -772,6 +834,12 @@
     display: inline-flex;
     align-items: center;
     min-height: 40px;
+  }
+
+  .deadline-calendar__day,
+  .deadline-calendar__blank {
+    min-height: 40px;
+    padding: var(--space-1);
   }
 }
 
@@ -821,7 +889,7 @@
 
   .deadline-calendar__day,
   .deadline-calendar__blank {
-    min-height: 44px;
+    min-height: 40px;
     padding: var(--space-1);
   }
 }

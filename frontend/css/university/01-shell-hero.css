@@ -601,6 +601,48 @@ a.d-cover-credit:hover {
   color: var(--text);
 }
 
+.d-box-text:has(~ .university-coverage-section) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: var(--space-3);
+}
+
+.d-box-text:has(~ .university-coverage-section) > .d-kv {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-4);
+  border-top: 0;
+  border-bottom: 0;
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+}
+
+.d-box-text:has(~ .university-coverage-section) > .d-kv > span:first-child {
+  flex: 0 0 auto;
+  width: 100%;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-normal);
+}
+
+.d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child {
+  flex: 0 0 auto;
+  width: 100%;
+  text-align: left;
+  align-items: flex-start;
+}
+
+.d-box-text:has(~ .university-coverage-section) .d-fact-source,
+.d-box-text:has(~ .university-coverage-section) .d-fact-scope {
+  align-items: flex-start;
+  text-align: left;
+}
+
 .d-rank-emphasis {
   color: var(--text);
   font-weight: var(--font-weight-regular);
@@ -1176,6 +1218,18 @@ body[data-page="university"],
     min-height: 0;
     height: clamp(174px, 54vw, 230px);
     aspect-ratio: auto;
+  }
+
+  .d-cover-credit {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    line-height: var(--leading-tight);
+    text-align: left;
+    white-space: normal;
   }
 
   .d-head {
