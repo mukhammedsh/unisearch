@@ -399,6 +399,11 @@ body[data-page="guide"] {
     animation: none !important;
   }
 
+  .ui-tooltip-bubble,
+  .u-tooltip,
+  .profile-tooltip,
+  .d-tooltip,
+  .uni-status-tooltip__content,
   .navbar-search-suggestions,
   .motion-top-layer,
   .motion-top-layer::backdrop,

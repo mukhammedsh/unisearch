@@ -146,3 +146,42 @@ test("search suggestions appear instantly with reduced motion", async ({ page })
   const container = await showSearchSuggestions(page);
   await expectInstant(container);
 });
+
+function filterTooltips(page) {
+  const wraps = page.locator(":is(.u-info-wrap, .ui-tooltip-wrap, .uni-status-tooltip):visible");
+  return { first: wraps.nth(0), second: wraps.nth(1) };
+}
+
+function bubbleOf(wrap) {
+  return wrap.locator(":scope > :is(.u-tooltip, .ui-tooltip-bubble, .uni-status-tooltip__content)");
+}
+
+async function bubbleDelay(wrap) {
+  return bubbleOf(wrap).evaluate((el) => getComputedStyle(el).transitionDelay.split(",")[0].trim());
+}
+
+test("tooltip hover waits for intent while focus and warm hover open at once", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  const { first, second } = filterTooltips(page);
+
+  await first.locator("button").first().hover();
+  expect(await bubbleDelay(first)).toBe("0.2s");
+  await expect(bubbleOf(first)).toBeVisible();
+
+  // Moving straight to a neighbouring tooltip skips the intent delay.
+  await second.locator("button").first().hover();
+  expect(await bubbleDelay(second)).toBe("0s");
+
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(500);
+  await second.locator("button").first().focus();
+  expect(await bubbleDelay(second)).toBe("0s");
+  await expect(bubbleOf(second)).toBeVisible();
+});
+
+test("tooltips appear instantly with reduced motion", async ({ page }) => {
+  await openCatalog(page, "reduce");
+  const { first } = filterTooltips(page);
+  await first.locator("button").first().focus();
+  await expectInstant(bubbleOf(first));
+});
