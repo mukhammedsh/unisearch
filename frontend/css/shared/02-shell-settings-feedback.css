@@ -400,8 +400,10 @@
   transition-delay: 0s;
 }
 
+/* `:root` + `:not(.is-closed)` outrank the open rules (including the later hover media rule),
+   otherwise their final values would override these starting values. */
 @starting-style {
-  :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):is(:hover, :focus-within, .is-open) > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
+  :root :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-closed):is(:hover, :focus-within, .is-open) > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
     opacity: 0;
     transform: translateY(calc(-1 * var(--motion-offset-sm)));
   }

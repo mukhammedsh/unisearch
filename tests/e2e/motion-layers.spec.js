@@ -175,6 +175,7 @@ test("tooltip hover waits for intent while focus and warm hover open at once", a
   await page.mouse.move(0, 0);
   await page.waitForTimeout(500);
   await second.locator("button").first().focus();
+  await expectAnimating(bubbleOf(second));
   expect(await bubbleDelay(second)).toBe("0s");
   await expect(bubbleOf(second)).toBeVisible();
 });
