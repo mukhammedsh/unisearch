@@ -123,7 +123,7 @@ export function renderOverviewSection({
         ${escapeHtml(acceptanceLabel)}
         ${acceptanceTooltip}
       </span>
-      <span>${escapeHtml(acceptanceDisplay)}</span>
+      <span class="d-kv-value"><span>${escapeHtml(acceptanceDisplay)}</span></span>
     </div>
   `;
 
@@ -194,7 +194,7 @@ export function renderOverviewSection({
   const formats = formatSources.length && formatValues.length
     ? formatValues.length > 3
       ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map((value) => `<li>${value}</li>`).join("")}</ul></details>`
-      : formatValues.join(", ")
+      : `<span>${formatValues.join(", ")}</span>`
     : "";
   // Sources and the availability note share one collapsed disclosure, so the row stays a value plus one line.
   const formatSourcesBlock = formatSources.length
@@ -206,7 +206,7 @@ export function renderOverviewSection({
   const rows = [
     `<div class="d-kv">
       <span class="d-kv-label">
-        ${escapeHtml(translateWord("global_rank", "Global Rank"))}:
+        ${escapeHtml(translateWord("global_rank", "Global Rank"))}
         ${rankTooltip}
       </span>
       ${rankHtml}

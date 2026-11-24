@@ -611,8 +611,8 @@ a.d-cover-credit:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-2);
+  justify-content: flex-start;
+  gap: var(--space-1-5);
   min-width: 0;
   padding: var(--space-4);
   border-top: 0;
@@ -631,10 +631,25 @@ a.d-cover-credit:hover {
 }
 
 .d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child {
-  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: var(--space-1-5);
   width: 100%;
   text-align: left;
   align-items: flex-start;
+}
+
+.d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child > :first-child:not(.d-fact-source):not(.d-fact-scope) {
+  color: var(--text);
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+.d-box-text:has(~ .university-coverage-section) > .d-kv > :last-child > :is(.d-fact-source, .d-fact-scope) {
+  margin-block-start: auto;
+  padding-block-start: var(--space-2);
 }
 
 .d-box-text:has(~ .university-coverage-section) .d-fact-source,
