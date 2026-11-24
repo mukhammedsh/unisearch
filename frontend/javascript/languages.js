@@ -66,6 +66,8 @@ export function initLanguagesPanel() {
     const langCefr = document.getElementById("langCefr");
     const langExam = document.getElementById("langExam");
     const langExamScore = document.getElementById("langExamScore");
+    const langExamScoreLabel = document.getElementById("langExamScoreLabel");
+    const langExamScoreHint = document.getElementById("langExamScoreHint");
     const langExamTakenOn = document.getElementById("langExamTakenOn");
     const langExamTakenOnContainer = document.getElementById("langExamTakenOnContainer");
     if (langExamTakenOn) langExamTakenOn.max = new Date().toISOString().slice(0, 10);
@@ -264,7 +266,6 @@ export function initLanguagesPanel() {
       const examObj = selectedExamObject();
       if (!examObj || getExamInputMode(examObj) !== "subject_breakdown") {
         langExamSpecialContainer.hidden = true;
-        langExamSpecialContainer.style.display = "none";
         langExamSpecialContainer.replaceChildren();
         return;
       }
@@ -272,7 +273,6 @@ export function initLanguagesPanel() {
       const defs = normalizeBreakdownDefs(getBreakdownScheme(examObj).fixed_components);
       if (!defs.length) {
         langExamSpecialContainer.hidden = true;
-        langExamSpecialContainer.style.display = "none";
         langExamSpecialContainer.replaceChildren();
         return;
       }
@@ -291,7 +291,6 @@ export function initLanguagesPanel() {
       );
 
       langExamSpecialContainer.hidden = false;
-      langExamSpecialContainer.style.display = "block";
       langExamSpecialContainer.dataset.examId = String(examObj.id || "");
       const lang = String(langCode.value || "").trim().toLowerCase();
       // One labelled group of short section fields under the overall score, as on a score report.
@@ -336,21 +335,39 @@ export function initLanguagesPanel() {
       const examObj = selectedExamObject();
       const examMode = getExamInputMode(examObj);
       const usesParentScore = examMode === "number" || usesOverallScoreInput(examObj);
+      const showScoreField = kind === KIND_EXAM && !!examObj && usesParentScore;
+      const hasSectionBreakdown = showScoreField && examMode === "subject_breakdown";
 
-      if (cefrContainer) cefrContainer.style.display = kind === KIND_CEFR ? "block" : "none";
-      if (examContainer) examContainer.style.display = kind === KIND_EXAM ? "block" : "none";
-      if (scoreContainer) {
-        scoreContainer.style.display = kind === KIND_EXAM && !!examObj && usesParentScore ? "block" : "none";
-      }
+      if (cefrContainer) cefrContainer.hidden = kind !== KIND_CEFR;
+      if (examContainer) examContainer.hidden = kind !== KIND_EXAM;
+      if (scoreContainer) scoreContainer.hidden = !showScoreField;
       if (langExamTakenOnContainer) {
         langExamTakenOnContainer.hidden = kind !== KIND_EXAM;
-        langExamTakenOnContainer.style.display = kind === KIND_EXAM ? "block" : "none";
         if (kind !== KIND_EXAM && langExamTakenOn) langExamTakenOn.value = "";
       }
 
-      if (kind === KIND_EXAM && examObj && usesParentScore) {
+      if (langExamScoreLabel) {
+        const labelKey = hasSectionBreakdown ? "languages.exam_overall_score_label" : "profile.score";
+        const labelFallback = hasSectionBreakdown ? "Overall score" : "Score";
+        langExamScoreLabel.setAttribute("data-i18n", labelKey);
+        langExamScoreLabel.textContent = t(labelKey, labelFallback);
+      }
+
+      if (langExamScoreHint) {
+        langExamScoreHint.hidden = !hasSectionBreakdown;
+      }
+
+      if (hasSectionBreakdown && langExamScoreHint) {
+        langExamScore.setAttribute("aria-describedby", "langExamScoreHint");
+      } else {
+        langExamScore.removeAttribute("aria-describedby");
+      }
+
+      if (showScoreField) {
         setNumericInputLimits(langExamScore, examObj);
-        langExamScore.placeholder = t("profile.placeholder.lang_score", "Score (e.g. 7.5)");
+        langExamScore.placeholder = hasSectionBreakdown
+          ? t("profile.exam_total_placeholder", "Overall total")
+          : t("profile.placeholder.lang_score", "Score (e.g. 7.5)");
       } else {
         clearNumericInputLimits(langExamScore);
         langExamScore.placeholder = t("profile.placeholder.lang_score", "Score (e.g. 7.5)");
@@ -388,7 +405,6 @@ export function initLanguagesPanel() {
       if (langExamSpecialContainer) {
         langExamSpecialContainer.replaceChildren();
         langExamSpecialContainer.hidden = true;
-        langExamSpecialContainer.style.display = "none";
       }
       initCustomSelect("langExam");
       syncExamUi();

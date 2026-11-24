@@ -273,7 +273,8 @@ body[data-page="profile"] {
 
 .profile-section-fields .profile-hint,
 .profile-hint-row .profile-hint,
-.profile-admission-evidence .profile-hint {
+.profile-admission-evidence .profile-hint,
+.lang-control-item .profile-hint {
   margin: 0;
   max-width: 64ch;
   font-size: var(--text-sm);
@@ -968,18 +969,13 @@ textarea.profile-input,
   grid-template-columns: repeat(4, minmax(96px, 1fr));
   column-gap: var(--space-3);
   row-gap: var(--space-2);
+  align-items: end;
 }
 
 .profile-exam-special-grid--grades .profile-input {
   min-height: 45px;
   padding-top: var(--space-3);
   padding-bottom: var(--space-3);
-}
-
-.profile-exam-special-grid--grades .mini-label {
-  min-height: 32px;
-  display: flex;
-  align-items: end;
 }
 
 .profile-exam-special-field {
@@ -1076,10 +1072,6 @@ textarea.profile-input,
   min-width: 0;
 }
 
-.profile-lang-conditional {
-  display: none;
-}
-
 .lang-control-btn-wrap {
   display: flex;
   align-items: flex-end;
@@ -1092,6 +1084,7 @@ textarea.profile-input,
   grid-column: 1 / -1;
   flex: 1 1 100%;
   width: 100%;
+  padding-top: var(--space-2);
 }
 
 /* The section scores of one language test: a labelled group directly under its overall score. */
@@ -1106,7 +1099,7 @@ textarea.profile-input,
 
 .profile-lang-sections > legend {
   padding: 0;
-  margin-bottom: var(--space-2);
+  margin-bottom: 0;
 }
 
 .lang-list {

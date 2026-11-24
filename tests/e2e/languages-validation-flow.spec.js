@@ -127,3 +127,52 @@ test("Cambridge C2 remains a distinct certificate after profile save and reload"
   await expect(page.locator("#langList")).toContainText("220");
   expect(await page.evaluate(() => window.__unisearchProfileDraft.get().languages[0].exam)).toBe("Cambridge_C2_Proficiency");
 });
+
+test("language exam labels keep consistent control spacing and explain overall vs section scores", async ({ page }) => {
+  const { openProfileTab } = require("./helpers/selectors");
+  await markTourAsSeen(page);
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "ru");
+  });
+  await page.goto("/profile.html");
+  await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "languages");
+  await page.waitForFunction(() => document.getElementById("langCode")?.options.length > 1);
+
+  await setNativeSelect(page, "langCode", "en");
+  await setNativeSelect(page, "langKind", "exam");
+  await page.waitForFunction(() => document.getElementById("langExam")?.options.length > 1);
+  await setNativeSelect(page, "langExam", "IELTS");
+
+  await expect(page.locator("#langExamScoreLabel")).toHaveText("Общий балл");
+  await expect(page.locator("#langExamScoreHint")).toBeVisible();
+  await expect(page.locator("#langExamScoreHint")).toContainText("Общий балл по всему экзамену");
+  await expect(page.locator("#langExamScore")).toHaveAttribute("aria-describedby", "langExamScoreHint");
+
+  const labelGap = (labelSelector, controlSelector) => page.evaluate(([lSel, cSel]) => {
+    const labelRect = document.querySelector(lSel).getBoundingClientRect();
+    const controlRect = document.querySelector(cSel).getBoundingClientRect();
+    return Math.round(controlRect.top - labelRect.bottom);
+  }, [labelSelector, controlSelector]);
+
+  expect(await labelGap('label[for="langCode"]', '.lang-control-item:has(#langCode) .custom-select-trigger')).toBeGreaterThanOrEqual(4);
+  expect(await labelGap('label[for="langExam"]', '.lang-control-item:has(#langExam) .custom-select-trigger')).toBeGreaterThanOrEqual(4);
+  expect(await labelGap("#langExamScoreLabel", "#langExamScore")).toBeGreaterThanOrEqual(4);
+  expect(await labelGap('label[for="langExamTakenOn"]', "#langExamTakenOn")).toBeGreaterThanOrEqual(4);
+
+  const spacingCheck = await page.evaluate(() => {
+    const hint = document.getElementById("langExamScoreHint").getBoundingClientRect();
+    const legend = document.querySelector(".profile-lang-sections legend").getBoundingClientRect();
+    const firstSectionLabel = document.querySelector('[data-lang-breakdown-row="IELTS_LISTENING"] .mini-label').getBoundingClientRect();
+    return {
+      hintToLegend: legend.top - hint.bottom,
+      legendToSectionLabel: firstSectionLabel.top - legend.bottom,
+    };
+  });
+  expect(spacingCheck.hintToLegend).toBeGreaterThan(spacingCheck.legendToSectionLabel);
+
+  await setNativeSelect(page, "langExam", "Cambridge_C2_Proficiency");
+  await expect(page.locator("#langExamScoreLabel")).toHaveText("Балл");
+  await expect(page.locator("#langExamScoreHint")).toBeHidden();
+  await expect(page.locator("#langExamScore")).not.toHaveAttribute("aria-describedby", "langExamScoreHint");
+});

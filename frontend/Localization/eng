@@ -3108,6 +3108,8 @@ university.admissions.key_facts.recommended_english_condition: Not required: the
 university.admissions.key_facts.recommended_english_condition_not_native: Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.
 university.admissions.key_facts.recommended_english_native_hint: Is English your native language? Say so in your profile, and this line will show only when it applies to you.
 university.ux2.needs.mark_recommended: Recommendation, not a requirement
+languages.exam_overall_score_label: Overall score
+languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.
 languages.exam_sections_label: Section scores (if your report shows them)
 profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study

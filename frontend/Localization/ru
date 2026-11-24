@@ -3108,6 +3108,8 @@ university.admissions.key_facts.recommended_english_condition: Не обязат
 university.admissions.key_facts.recommended_english_condition_not_native: Не обязательно: относится к вам, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
 university.admissions.key_facts.recommended_english_native_hint: Английский — ваш родной язык? Укажите это в профиле, и эта строка будет показываться, только когда она к вам относится.
 university.ux2.needs.mark_recommended: Рекомендация, а не требование
+languages.exam_overall_score_label: Общий балл
+languages.exam_overall_score_hint: Общий балл по всему экзамену — можно указать только его, если не знаете баллы по секциям.
 languages.exam_sections_label: Баллы по секциям (если они есть в сертификате)
 profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать
