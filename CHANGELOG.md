@@ -20,7 +20,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Unify motion timing on the shared tokens: drop conflicting hardcoded fallbacks such as `var(--motion-medium, 260ms)` across stylesheets and add `--motion-ease-linear`, `--motion-offset-sm`, and `--motion-tooltip-delay` (`frontend/css/**`, `docs/design-system.md`).
 
 ### Fixed
-- Keep navbar search suggestions filled while they fade out instead of collapsing to an empty panel, and keep an upward-opening select panel leaving toward its trigger instead of jumping below it (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/utils/selects.js`, `frontend/css/shared/08-device-responsive.css`).
+- Keep navbar search suggestions filled while they fade out instead of collapsing to an empty panel, and keep an upward-opening select panel leaving toward its trigger instead of jumping below it (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/utils/selects.js`, `frontend/css/shared/08-device-responsive.css`).
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 

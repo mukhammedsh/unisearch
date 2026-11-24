@@ -19,6 +19,7 @@ import {
 
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
+import { hideGlobalSearchSuggestions } from "../components/navbar-search.js";
 import { t } from "../i18n.js";
 import {
     getPreferredCurrency,
@@ -310,14 +311,8 @@ export function initUniversitiesPage() {
         });
     };
 
-    const hideSearchSuggestions = () => {
-        const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
-        const node = host?.querySelector(".navbar-search-suggestions");
-        if (node) {
-            node.replaceChildren();
-            node.classList.remove("is-open");
-        }
-    };
+    // Shared hide path keeps the items painted while the panel fades out.
+    const hideSearchSuggestions = () => hideGlobalSearchSuggestions();
 
     const syncSearchClearButton = () => {
         if (!el.searchClearBtn) return;

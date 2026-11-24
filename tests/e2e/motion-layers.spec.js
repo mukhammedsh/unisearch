@@ -52,6 +52,7 @@ async function closeAndSample(locator) {
       open: dialog.open,
       display: getComputedStyle(dialog).display,
       animations: dialog.getAnimations().length,
+      pointerEvents: getComputedStyle(dialog).pointerEvents,
     };
   });
 }
@@ -62,6 +63,8 @@ test("photo viewer dialog fades out after close", async ({ page }) => {
   expect(sample.open).toBe(false);
   expect(sample.display).not.toBe("none");
   expect(sample.animations).toBeGreaterThan(0);
+  // A click right after closing must reach the page, not the fading layer.
+  expect(sample.pointerEvents).toBe("none");
   await expect.poll(() => viewer.evaluate((el) => getComputedStyle(el).display), { timeout: 1000 }).toBe("none");
 });
 
@@ -70,7 +73,7 @@ test("photo viewer dialog closes instantly with reduced motion", async ({ page }
   await page.waitForTimeout(50);
   await expectInstant(viewer);
   const sample = await closeAndSample(viewer);
-  expect(sample).toEqual({ open: false, display: "none", animations: 0 });
+  expect(sample).toMatchObject({ open: false, display: "none", animations: 0 });
 });
 
 async function openCatalog(page, reducedMotion) {
@@ -185,4 +188,94 @@ test("tooltips appear instantly with reduced motion", async ({ page }) => {
   const { first } = filterTooltips(page);
   await first.locator("button").first().focus();
   await expectInstant(bubbleOf(first));
+});
+
+test("hover intent delays the fade but not display, so viewport clamping can measure the bubble", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  const { first } = filterTooltips(page);
+  await first.locator("button").first().hover();
+  const delays = await bubbleOf(first).evaluate((el) => {
+    const styles = getComputedStyle(el);
+    const props = styles.transitionProperty.split(",").map((value) => value.trim());
+    const values = styles.transitionDelay.split(",").map((value) => value.trim());
+    return Object.fromEntries(props.map((prop, index) => [prop, values[index % values.length]]));
+  });
+  expect(delays).toMatchObject({ opacity: "0.2s", visibility: "0.2s", display: "0s" });
+});
+
+test("clearing the catalog search keeps suggestions filled while they fade out", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  const container = await showSearchSuggestions(page);
+  const afterClear = await page.locator("#qInput").evaluate((input) => {
+    input.value = "";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    const node = document.querySelector(".navbar-search-suggestions");
+    return { open: node.classList.contains("is-open"), items: node.querySelectorAll(".navbar-search-suggestion").length };
+  });
+  expect(afterClear.open).toBe(false);
+  expect(afterClear.items).toBeGreaterThan(0);
+  await expect(container).toBeHidden();
+  await expect(container.locator(".navbar-search-suggestion")).toHaveCount(0);
+});
+
+test("removing a recently viewed university does not replay the popover entrance", async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_recent_university_ids_v1", JSON.stringify([
+      "stanford-university-usa-ca",
+      "nazarbayev-university-kaz-astana",
+    ]));
+  });
+  await openCatalog(page, "no-preference");
+  await page.locator("#recentlyViewedBtn").click();
+  const popover = page.locator("#recentlyViewedPopover");
+  await expect(popover).toBeVisible();
+  await expect.poll(() => popover.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
+
+  await page.evaluate(() => {
+    window.__popoverTransitions = 0;
+    document.addEventListener("transitionrun", (event) => {
+      if (event.target.id === "recentlyViewedPopover") window.__popoverTransitions += 1;
+    });
+  });
+  await popover.locator('[data-action="remove-recent"]').first().click();
+  await expect(page.locator('#recentlyViewedPopover [data-action="remove-recent"]')).toHaveCount(1);
+  await expect(page.locator("#recentlyViewedPopover")).toBeVisible();
+  expect(await page.evaluate(() => window.__popoverTransitions)).toBe(0);
+});
+
+test("compare program picker fades out before it is removed", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+  });
+  await page.goto("/compare.html?ids=stanford-university-usa-ca,nazarbayev-university-kaz-astana");
+  await page.locator('[data-compare-pick="stanford-university-usa-ca"]').click();
+  const dialog = page.locator("dialog.compare-picker");
+  await expect(dialog).toBeVisible();
+  const sample = await closeAndSample(dialog);
+  expect(sample.open).toBe(false);
+  expect(sample.animations).toBeGreaterThan(0);
+  // The `close` event fires on the next task; the dialog must survive it until the fade ends.
+  const midExit = await dialog.evaluate(async (el) => {
+    await new Promise((resolve) => setTimeout(resolve, 40));
+    return { connected: el.isConnected, display: getComputedStyle(el).display };
+  });
+  expect(midExit.connected).toBe(true);
+  expect(midExit.display).not.toBe("none");
+  await expect(dialog).toHaveCount(0);
+  await expect(page.locator('[data-compare-pick="stanford-university-usa-ca"]')).toBeFocused();
+});
+
+test("compare program picker keeps its bottom-sheet entrance on phones", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => {
+    localStorage.setItem("unisearch_ui_language_v1", "eng");
+    localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
+  });
+  await page.goto("/compare.html?ids=stanford-university-usa-ca,nazarbayev-university-kaz-astana");
+  await page.locator('[data-compare-pick="stanford-university-usa-ca"]').click();
+  const names = await page.locator("dialog.compare-picker").evaluate((el) => el.getAnimations().map((a) => a.animationName || a.transitionProperty));
+  expect(names).toContain("motion-sheet-in");
 });

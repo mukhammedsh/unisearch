@@ -78,6 +78,7 @@
    browsers without `overlay` support close instantly. */
 .motion-top-layer {
   opacity: 0;
+  pointer-events: none;
   translate: 0 var(--motion-offset-sm);
   scale: 0.98;
   transition:
@@ -95,19 +96,16 @@
 
 .motion-top-layer:is([open], :popover-open, .is-open) {
   opacity: 1;
-  translate: 0 0;
-  scale: 1;
+  pointer-events: auto;
+  /* `none`, not `0 0`/`1`: an element opting in while already open then has nothing to transition. */
+  translate: none;
+  scale: none;
   transition:
     opacity var(--motion-fast) var(--motion-ease-enter),
     translate var(--motion-fast) var(--motion-ease-enter),
     scale var(--motion-fast) var(--motion-ease-enter),
     display var(--motion-fast) allow-discrete,
     overlay var(--motion-fast) allow-discrete;
-}
-
-.motion-top-layer--fade:is([open], :popover-open, .is-open) {
-  translate: none;
-  scale: none;
 }
 
 .motion-top-layer::backdrop {
@@ -395,7 +393,8 @@ body[data-page="guide"] {
   .settings-modal.is-open .settings-card,
   .settings-modal.is-closing::backdrop,
   .settings-modal.is-closing .settings-card,
-  .fadeIn {
+  .fadeIn,
+  .compare-picker[open] {
     animation: none !important;
   }
 

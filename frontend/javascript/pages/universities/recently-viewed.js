@@ -86,7 +86,7 @@ export function createRecentlyViewedController({
       </button>
       <div
         id="recentlyViewedPopover"
-        class="u-recent-popover motion-top-layer"
+        class="u-recent-popover${wasOpen ? "" : " motion-top-layer"}"
         popover="auto"
         aria-labelledby="recentlyViewedTitle"
       >
@@ -142,6 +142,10 @@ export function createRecentlyViewedController({
         } catch (err) {
           console.warn("Unable to reopen recently viewed popover", err);
         }
+        // Re-rendering an open popover must not replay its entrance: settle the open style first,
+        // then opt into motion so only the later close animates.
+        void popoverEl.offsetWidth;
+        popoverEl.classList.add("motion-top-layer");
       }
     } else if (triggerBtn && popoverEl) {
       triggerBtn.addEventListener("click", () => {
@@ -151,6 +155,8 @@ export function createRecentlyViewedController({
       });
       if (wasOpen) {
         popoverEl.classList.add("is-open");
+        void popoverEl.offsetWidth;
+        popoverEl.classList.add("motion-top-layer");
         syncTriggerExpanded(true);
       }
     }

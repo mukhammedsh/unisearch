@@ -393,7 +393,9 @@
 /* Hover waits briefly so a pointer passing over a trigger does not flash a tooltip. Keyboard focus,
    explicit clicks and a pointer arriving from a neighbouring tooltip (`.tooltips-warm`) open at once. */
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-open, .is-closed, :focus-within):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
-  transition-delay: var(--motion-tooltip-delay);
+  /* Order follows the hover rule's transition-property list: opacity, visibility, display, transform.
+     `display` flips at once so viewport clamping can measure the bubble during the delay. */
+  transition-delay: var(--motion-tooltip-delay), var(--motion-tooltip-delay), 0s, var(--motion-tooltip-delay);
 }
 
 :root.tooltips-warm :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {

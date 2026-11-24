@@ -416,6 +416,22 @@ function loadingHtml() {
   </div>`;
 }
 
+/**
+ * Removes a closed `.motion-top-layer` dialog once its fade-out has finished (at once with reduced
+ * motion or when nothing is running), so the exit transition is not cut off.
+ * @param {HTMLDialogElement} dialog
+ */
+function removeAfterExitTransition(dialog) {
+  const running = typeof dialog.getAnimations === "function" ? dialog.getAnimations() : [];
+  if (!running.length) {
+    dialog.remove();
+    return;
+  }
+  Promise.allSettled(running.map((animation) => animation.finished)).then(() => {
+    if (!dialog.open) dialog.remove();
+  });
+}
+
 function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   const dialog = document.createElement("dialog");
   dialog.className = "compare-picker motion-top-layer";
@@ -432,7 +448,7 @@ function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   }
   dialog.addEventListener("close", () => {
     onClose?.();
-    dialog.remove();
+    removeAfterExitTransition(dialog);
     if (trigger?.isConnected) trigger.focus();
   });
   return dialog;
