@@ -18,12 +18,15 @@ function chipSelector(id) {
  *   deferForRemovedChips: (nextIds: string[], rerender: () => void) => boolean,
  *   show: (nextIds: string[], renderContent: () => void) => void,
  *   hide: () => void,
+ *   dispose: () => void,
  * }}
  */
 export function createCompareTrayMotion(tray) {
   /** @type {string[]} */
   let shownIds = [];
   let exitToken = 0;
+  // Bumped on dispose so fades scheduled by a previous page never touch the shared tray again.
+  let generation = 0;
 
   return {
     /**
@@ -38,11 +41,12 @@ export function createCompareTrayMotion(tray) {
         .filter((chip) => chip && !chip.classList.contains("motion-chip-remove"));
       if (!leaving.length) return false;
       let pending = leaving.length;
+      const scheduledIn = generation;
       leaving.forEach((chip) => {
         animateElementOut(chip, () => {
           chip.remove();
           pending -= 1;
-          if (pending === 0) rerender();
+          if (pending === 0 && scheduledIn === generation) rerender();
         }, { className: "motion-chip-remove", timeoutMs: 220 });
       });
       return true;
@@ -72,11 +76,19 @@ export function createCompareTrayMotion(tray) {
         return;
       }
       const token = ++exitToken;
+      const scheduledIn = generation;
       animateElementOut(tray, () => {
-        if (token !== exitToken) return;
+        if (token !== exitToken || scheduledIn !== generation) return;
         tray.hidden = true;
         tray.replaceChildren();
       }, { className: "motion-tray-exit", timeoutMs: 200 });
+    },
+
+    /** Drops pending chip and tray callbacks; the page that owned the tray is going away. */
+    dispose() {
+      generation += 1;
+      exitToken += 1;
+      shownIds = [];
     },
   };
 }

@@ -425,6 +425,7 @@ export function createCompareController({
     };
 
     const dispose = () => {
+        trayMotion?.dispose();
         if (mapCardActionHandler) {
             document.removeEventListener("click", mapCardActionHandler, true);
             mapCardActionHandler = null;

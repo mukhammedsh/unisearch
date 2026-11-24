@@ -34,7 +34,8 @@ function ignoreCancel(error) {
 }
 
 /**
- * @typedef {{ mode?: "hidden" | "display", display?: string, instant?: boolean }} RevealOptions
+ * @typedef {{ mode?: "hidden" | "display", display?: string, instant?: boolean, retarget?: boolean }} RevealOptions
+ * `retarget` restarts a running reveal toward the element's current full size (its content changed).
  */
 
 /**
@@ -61,6 +62,27 @@ function applyVisibility(node, visible, options) {
   else node.hidden = !visible;
 }
 
+const SPACING_KEYS = ["paddingTop", "paddingBottom", "marginTop", "marginBottom"];
+
+/**
+ * Border-box height plus the vertical spacing that must travel with it, so nothing snaps at the ends.
+ * @param {HTMLElement} node
+ * @returns {Record<string, string>}
+ */
+function measureBox(node) {
+  const box = { height: `${node.getBoundingClientRect().height}px` };
+  const computed = typeof window.getComputedStyle === "function" && node instanceof window.HTMLElement
+    ? window.getComputedStyle(node)
+    : null;
+  SPACING_KEYS.forEach((key) => { box[key] = computed ? computed[key] : "0px"; });
+  return box;
+}
+
+/** @returns {Record<string, string>} */
+function collapsedBox() {
+  return Object.fromEntries(["height", ...SPACING_KEYS].map((key) => [key, "0px"]));
+}
+
 /**
  * Shows or hides an element, growing or shrinking its height. Hidden content is `inert` while it
  * collapses; a later call interrupts a running one and continues from the current height.
@@ -71,9 +93,10 @@ function applyVisibility(node, visible, options) {
 export function setRevealed(node, visible, options = {}) {
   if (!node) return;
   const running = runningReveals.get(node);
-  if (running ? running.visible === visible : isShown(node, options) === visible) return;
+  const sameTarget = running ? running.visible === visible && !(options.retarget && visible) : isShown(node, options) === visible;
+  if (sameTarget) return;
 
-  const startHeight = node.getBoundingClientRect().height;
+  const startBox = isShown(node, options) ? measureBox(node) : collapsedBox();
   if (running) {
     runningReveals.delete(node);
     running.animation.cancel();
@@ -90,18 +113,14 @@ export function setRevealed(node, visible, options = {}) {
   if (visible) {
     applyVisibility(node, true, options);
     node.inert = false;
-    const targetHeight = node.scrollHeight;
-    const startOpacity = targetHeight > 0 ? Math.min(1, startHeight / targetHeight) : 0;
-    keyframes = [
-      { height: `${startHeight}px`, opacity: startOpacity },
-      { height: `${targetHeight}px`, opacity: 1 },
-    ];
+    node.classList.remove(REVEALING_CLASS);
+    const targetBox = measureBox(node);
+    const targetHeight = Number.parseFloat(targetBox.height);
+    const startOpacity = targetHeight > 0 ? Math.min(1, Number.parseFloat(startBox.height) / targetHeight) : 0;
+    keyframes = [{ ...startBox, opacity: startOpacity }, { ...targetBox, opacity: 1 }];
   } else {
     node.inert = true;
-    keyframes = [
-      { height: `${startHeight}px`, opacity: 1 },
-      { height: "0px", opacity: 0 },
-    ];
+    keyframes = [{ ...startBox, opacity: 1 }, { ...collapsedBox(), opacity: 0 }];
   }
 
   node.classList.add(REVEALING_CLASS);
@@ -119,6 +138,14 @@ export function setRevealed(node, visible, options = {}) {
       node.inert = false;
     }
   }).catch(ignoreCancel);
+}
+
+/**
+ * @param {HTMLElement} node
+ * @returns {boolean} True while a show or hide animation started by `setRevealed` is running.
+ */
+export function isRevealing(node) {
+  return runningReveals.has(node);
 }
 
 /**

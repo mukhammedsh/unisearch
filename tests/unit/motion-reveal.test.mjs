@@ -2,7 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
-import { fadeIn, setRevealed, setTextWithFade } from "../../frontend/javascript/utils/motion-reveal.js";
+import { fadeIn, isRevealing, setRevealed, setTextWithFade } from "../../frontend/javascript/utils/motion-reveal.js";
 
 /** Minimal element double: records animate() calls and lets the test settle them. */
 function createNode({ hidden = false, display = "", height = 40 } = {}) {
@@ -110,6 +110,17 @@ describe("motion-reveal", () => {
     await settle();
     assert.equal(node.hidden, false);
     assert.equal(node.classList.contains("motion-revealing"), false);
+  });
+
+  it("retarget restarts a running reveal toward the new full size", () => {
+    const node = createNode({ hidden: true, height: 40 });
+    setRevealed(node, true);
+    assert.equal(isRevealing(node), true);
+    setRevealed(node, true);
+    assert.equal(node.animations.length, 1);
+    setRevealed(node, true, { retarget: true });
+    assert.equal(node.animations[0].cancelled, true);
+    assert.equal(node.animations.length, 2);
   });
 
   it("instant and reduced motion skip animate()", () => {

@@ -170,6 +170,7 @@
 
 /* Set by utils/motion-reveal.js while an element grows or shrinks in height. */
 .motion-revealing {
+  box-sizing: border-box;
   overflow: clip;
 }
 

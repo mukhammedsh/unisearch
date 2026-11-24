@@ -146,3 +146,38 @@ test("results count fades when filters change", async ({ page }) => {
   await expect(count).not.toHaveText(before);
   expect(await page.evaluate(() => window.__countAnimations)).toBeGreaterThan(0);
 });
+
+async function recordBannerKeyframes(page) {
+  await page.evaluate(() => {
+    window.__bannerFrames = [];
+    const original = Element.prototype.animate;
+    Element.prototype.animate = function animate(keyframes, options) {
+      if (this.id === "unifitWarningBanner") window.__bannerFrames.push(keyframes);
+      return original.call(this, keyframes, options);
+    };
+  });
+}
+
+test("UniFit notice grows to its final size, spacing included, and collapses when leaving UniFit sort", async ({ page }) => {
+  await openCatalog(page, "no-preference");
+  await recordBannerKeyframes(page);
+  const banner = page.locator("#unifitWarningBanner");
+  await setNativeSelect(page, "sortSelect", "uni_ai");
+  await expect(banner).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.__bannerFrames.length)).toBeGreaterThan(0);
+  await expect(banner).not.toHaveClass(/motion-revealing/);
+  const reveal = await page.evaluate(() => {
+    const firstCall = window.__bannerFrames[0];
+    const lastCall = window.__bannerFrames[window.__bannerFrames.length - 1];
+    const node = document.getElementById("unifitWarningBanner");
+    return { first: firstCall[0], last: lastCall[lastCall.length - 1], finalHeight: node.getBoundingClientRect().height };
+  });
+  // Padding and margins travel with the height, so nothing snaps when the reveal ends.
+  expect(reveal.first).toMatchObject({ paddingTop: "0px", paddingBottom: "0px", marginBottom: "0px" });
+  expect(Math.abs(Number.parseFloat(reveal.last.height) - reveal.finalHeight)).toBeLessThan(1);
+
+  await page.evaluate(() => { window.__bannerFrames = []; });
+  await setNativeSelect(page, "sortSelect", "name_asc");
+  await expect.poll(() => page.evaluate(() => window.__bannerFrames.length)).toBeGreaterThan(0);
+  await expect(banner).toBeHidden();
+});
