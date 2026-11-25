@@ -58,9 +58,9 @@ test("key facts carry the single requirements-match summary and the Sources disc
   assert.doesNotMatch(keyFacts, /admissions-catalog__assessment-detail/);
   assert.ok(keyFacts.indexOf('data-key-fact="requirements"') < keyFacts.indexOf('data-key-fact="deadline"'));
   const reading = renderApplicantSection(resolved, ["requirements", "application"], { checkDetails: requirementsCheckDetails(resolved) });
-  const sources = reading.split("<details class=\"admissions-reading__references admissions-reading__provenance\" data-all-records>")[1];
+  const sources = reading.split("<details class=\"admissions-reading__references admissions-reading__provenance motion-disclosure\" data-all-records>")[1];
   assert.ok(sources, "the check details open a closed Sources disclosure even without source pages");
-  const detail = sources.split('<details class="admissions-catalog__assessment-detail">')[1];
+  const detail = sources.split('<details class="admissions-catalog__assessment-detail motion-disclosure">')[1];
   assert.match(detail, /not an admission probability/);
   assert.doesNotMatch(detail, /<strong>100%|evaluated numeric minimum checks met/);
   assert.doesNotMatch(reading.split("data-all-records")[0], /data-requirements-match|100%/);
@@ -100,7 +100,7 @@ test("excerpts cite numbered sources that match one de-duplicated list with real
     { id: "c", title: "Application copy", url: "https://example.edu/apply" },
     { id: "unsafe", title: "Unsafe", url: "https://user:pass@example.edu/private" },
   ] };
-  const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   assert.ok(!html.includes(`>${t("university.admissions.reading.official_source")}<`));
   const refs = [...html.matchAll(/<a class="admissions-reading__ref" href="([^"]+)"[^>]*aria-label="([^"]+)"[^>]*data-source-ref="(\d)">(\d)<\/a>/g)];
   assert.deepEqual(refs.map(match => [match[1], match[3]]), [["https://example.edu/tests", "1"], ["https://example.edu/apply", "2"], ["https://example.edu/apply", "2"]]);
@@ -114,7 +114,7 @@ test("excerpts cite numbered sources that match one de-duplicated list with real
   assert.doesNotMatch(html, /user:pass|private/);
   // A check date shared by every listed source is stated once for the list, not on each line.
   const sameDate = { ...resolved, sources: resolved.sources.map(source => ({ ...source, checked_at: "2026-10-01" })) };
-  const sharedList = renderApplicantSection(sameDate, ["requirements"]).split('<details class="admissions-reading__references"')[0].split("data-reading-sources")[1];
+  const sharedList = renderApplicantSection(sameDate, ["requirements"]).split('<details class="admissions-reading__references motion-disclosure"')[0].split("data-reading-sources")[1];
   assert.equal((sharedList.match(/data-source-checked/g) || []).length, 1);
   assert.match(sharedList, /<\/h3><span class="admissions-reading__note" data-source-checked>Последняя проверка: 2026[-‑–]10-01<\/span><ol/);
   setLanguage("eng", { emit: false });
@@ -126,7 +126,7 @@ test("source lists fall back to a fact check date and identify an unrecorded dat
     const row = fact("test-policy", { presence: "required", alternatives: ["SAT"] }, { source_ids: ["sat-policy"], checked_at: checkedAt });
     const resolved = context([row], { requirements: [row.id] });
     resolved.sources = [{ id: "sat-policy", title: "SAT policy", url: "https://example.edu/tests" }];
-    return renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
+    return renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   };
   assert.match(render("2026-10-01"), /Last checked: 2026[-‑–]10-01/);
   assert.match(render(undefined), /Check date not recorded/);
@@ -152,7 +152,7 @@ test("official pages that share a title get a short URL hint in the numbered lis
     { id: "other", title: "Financial aid", url: "https://example.edu/aid" },
     { id: "same-host", title: "Financial aid", url: "https://aid.example.edu/aid?year=2027" },
   ] };
-  const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references"')[0];
+  const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   const list = html.split("data-reading-sources")[1];
   const item = number => list.match(new RegExp(`<li value="${number}" data-source-number="${number}">.*?</li>`))[0];
   assert.match(item(1), /Stanford Undergraduate Admission<\/a><span class="admissions-reading__note" data-source-hint>first-year<\/span>/);
@@ -193,7 +193,7 @@ test("official sources, full records, additional references and unresolved infor
   const rows = [fact("tests", { presence: "required", alternatives: ["SAT", "ACT"] }), fact("internal", "Graduate residence policy", { scope: { option_ids: [], route_ids: [] }, topic: "funding" })];
   const resolved = { ...context(rows, { requirements: ["tests", "internal"] }), unknowns: [{ id: "gap", reason: "Interview policy is not published.", scope: {}, source_ids: ["official"] }] };
   const html = renderApplicantSection(resolved, ["requirements"]);
-  const disclosures = html.split('<details class="admissions-reading__references admissions-reading__provenance" data-all-records');
+  const disclosures = html.split('<details class="admissions-reading__references admissions-reading__provenance motion-disclosure" data-all-records');
   assert.equal(disclosures.length, 2);
   // Closed, named for its official pages, with no record count; the full records are one level further in.
   assert.match(disclosures[1], /^><summary>Sources(?: \(\d+\))?<\/summary>/);
@@ -216,7 +216,7 @@ test("normalized tuition keeps campus-specific whole-program and credit prices i
   const resolved = context([row], { costs: [row.id] });
   for (const [language, totalLabel] of [["eng", "for the whole program"], ["rus", "за всю программу"], ["kaz", "толық бағдарлама үшін"]]) {
     setLanguage(language, { emit: false });
-    const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
+    const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
     for (const text of [totalLabel, "$24,000", "≈ $", "Astana", "Hong Kong", "2025", 'href="https://example.edu/admissions"']) assert.ok(primary.includes(text), `${language}: ${text}`);
     assert.ok(primary.includes({ eng: "Years of study: 1, 2", rus: "Годы обучения: 1, 2", kaz: "Оқу жылдары: 1, 2" }[language]), language);
     assert.match(primary, /<th scope="row"[^>]*>Astana/);
@@ -230,7 +230,7 @@ test("an undated whole-program quote never gains an invented entry or source yea
   const row = fact("finance-price", "The source gives no price year.", { topic: "costs", attributes: { catalog_costs: { quotes: [
     { basis: "tuition", amount: 14000, currency: "USD", period_label: "Whole program", source_year: null, billing_period: "whole_program" },
   ] } } });
-  const primary = renderApplicantSection(context([row], { costs: [row.id] }), ["costs"]).split('<details class="admissions-reading__references"')[0];
+  const primary = renderApplicantSection(context([row], { costs: [row.id] }), ["costs"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   assert.match(primary, /\$14,000 for the whole program/);
   assert.match(primary, /data-label="Source period and wording">Not stated here/);
   assert.doesNotMatch(primary, /Whole program|2026|2027|per year/);
@@ -258,7 +258,7 @@ test("published support test projections appear in dates even when the original 
   const resolved = context([row], { funding: [row.id] });
   for (const [language, text] of [["eng", "Last SAT test date for funding consideration"], ["rus", "Последняя дата сдачи SAT для отбора на финансирование"], ["kaz", "Қаржыландыруға іріктеу үшін SAT тапсырудың соңғы күні"]]) {
     setLanguage(language, { emit: false });
-    const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references"')[0];
+    const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
     assert.ok(primary.includes(text), language);
     assert.match(primary, /2026/);
     assert.ok(primary.includes('href="https://example.edu/admissions"'));
@@ -283,8 +283,8 @@ test("program-keyed dates require a resolved exact program label and do not borr
     reference_labels: { "source-ms": "Computer Science (MS)", "source-phd": "Computer Science (PhD)" } };
   const html = renderApplicantSection(resolved, ["deadlines"]);
   assert.match(html, /data-program-deadlines/);
-  assert.match(html.split('<details class="admissions-reading__references"')[0], /December 8, 2026/);
-  assert.doesNotMatch(html.split('<details class="admissions-reading__references"')[0], /December 1, 2026/);
+  assert.match(html.split('<details class="admissions-reading__references motion-disclosure"')[0], /December 8, 2026/);
+  assert.doesNotMatch(html.split('<details class="admissions-reading__references motion-disclosure"')[0], /December 1, 2026/);
   assert.doesNotMatch(renderApplicantSection({ ...resolved, reference_labels: {} }, ["deadlines"]), /data-program-deadlines/);
 });
 
@@ -339,7 +339,7 @@ test("scholarship consideration dates are not labelled general application dates
   setLanguage("eng", { emit: false });
   const row = fact("scholarship", { deadline_kind: "admissions_for_scholarship_consideration", deadlines: { source: "2027-04-28" } }, { topic: "funding" });
   const resolved = { ...context([row], { deadlines: [row.id] }), reference_labels: { source: "Computer Science" } };
-  const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references"')[0];
+  const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   assert.match(primary, /Application deadline for scholarship consideration/);
   assert.doesNotMatch(primary, /Application dates/);
 });
@@ -350,7 +350,7 @@ test("identical yearless caveats appear once in primary dates", () => {
   for (const language of ["eng", "rus", "kaz"]) {
     setLanguage(language, { emit: false });
     const html = renderApplicantSection(context(rows, { deadlines: rows.map(row => row.id) }), ["deadlines"]);
-    const primary = html.split('<details class="admissions-reading__references"')[0];
+    const primary = html.split('<details class="admissions-reading__references motion-disclosure"')[0];
     assert.equal(primary.split(t("university.admissions.reading.recurring_dates")).length - 1, 1);
     assert.doesNotMatch(primary, new RegExp(t("university.admissions.reading.yearless_period")));
     assert.ok(primary.includes(formatPublishedDate("November 1")));
@@ -374,7 +374,7 @@ test("identical source versions share a summary without losing scope, conditions
     { id: "a", url: "https://example.edu/policy" }, { id: "b", url: "https://example.edu/policy" },
   ] };
   const html = renderApplicantSection(resolved, ["requirements"]);
-  const summary = html.split('<details class="admissions-reading__references"')[0];
+  const summary = html.split('<details class="admissions-reading__references motion-disclosure"')[0];
   // Identical visible excerpts (same text, source URL, period and status) print once; a different period stays separate.
   assert.equal((summary.match(/data-summary-fact=/g) || []).length, 2);
   assert.match(summary, /data-summary-fact="one"/);
@@ -435,7 +435,7 @@ test("UCAS Medicine and other courses retain separate published deadlines", () =
     const resolved = context([row], { deadlines: [row.id] });
     resolved.selected_option.id = id;
     const html = renderApplicantSection(resolved, ["deadlines"]);
-    const summary = html.split('<details class="admissions-reading__references"')[0];
+    const summary = html.split('<details class="admissions-reading__references motion-disclosure"')[0];
     assert.ok(summary.includes(date));
     assert.ok(!summary.includes(other));
     assert.match(summary, /Europe\/London/);
