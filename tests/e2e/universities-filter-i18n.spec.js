@@ -156,7 +156,7 @@ test("open selected custom select keeps readable text in dark mode", async ({ pa
   const selected = wrapper.locator(".custom-option.selected");
   await expect(selected).toBeVisible();
 
-  const contrasts = await page.evaluate(() => {
+  const { contrasts, sidebarBg, triggerBg, menuBg } = await page.evaluate(() => {
     const ratio = (element) => {
       const channels = (value) => value.match(/[\d.]+/g).slice(0, 3).map(Number);
       const luminance = (color) => channels(color).map((value) => {
@@ -167,12 +167,21 @@ test("open selected custom select keeps readable text in dark mode", async ({ pa
       const [lighter, darker] = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => b - a);
       return (lighter + 0.05) / (darker + 0.05);
     };
-    return [
-      ratio(document.querySelector("#countrySelect + .custom-select-trigger")),
-      ratio(document.querySelector("#countrySelect ~ .custom-options .custom-option.selected")),
-    ];
+    const triggerEl = document.querySelector("#countrySelect + .custom-select-trigger");
+    const menuEl = document.querySelector("#countrySelect ~ .custom-options");
+    return {
+      contrasts: [
+        ratio(triggerEl),
+        ratio(document.querySelector("#countrySelect ~ .custom-options .custom-option.selected")),
+      ],
+      sidebarBg: getComputedStyle(document.getElementById("uSidebar")).backgroundColor,
+      triggerBg: getComputedStyle(triggerEl).backgroundColor,
+      menuBg: getComputedStyle(menuEl).backgroundColor,
+    };
   });
   for (const contrast of contrasts) expect(contrast).toBeGreaterThanOrEqual(4.5);
+  expect(triggerBg).not.toBe(sidebarBg);
+  expect(menuBg).not.toBe(sidebarBg);
 });
 
 test("city filter is available after selecting a country without choosing a state", async ({ page }) => {

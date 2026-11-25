@@ -48,7 +48,8 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 | :--- | :--- | :--- | :--- |
 | `--bg` | `#F5F6F8` | `#0B0C0E` | Page body background |
 | `--bg-soft` | `#ECEEF3` | `#111317` | Toolbar, filter bar, secondary background |
-| `--surface-solid` (`--card`) | `#FFFFFF` | `#15181D` | Main cards, modals, lists, dropdown panels |
+| `--surface-solid` (`--card`) | `#FFFFFF` | `#15181D` | Main cards, modals, lists |
+| `--dropdown-surface` | `var(--surface-solid)` | `var(--surface-soft)` | Open select triggers and dropdown panels (with `--shadow-dropdown-trigger` / `--shadow-dropdown` so they stay separated from cards) |
 | `--surface` | `rgba(255, 255, 255, 0.90)` | `rgba(21, 24, 29, 0.88)` | Translucent header, floating docked bars |
 | `--surface-soft` | `#ECEFF4` | `#20242B` | Form inputs, chip/tag pills, nested controls |
 | `--text` | `#111827` | `#F3F4F6` | Primary high-contrast typography |

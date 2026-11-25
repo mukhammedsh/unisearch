@@ -206,15 +206,6 @@
   overflow: clip;
 }
 
-/* Kept apart from the shared reduced-motion list: an unknown pseudo-element would void that whole rule. */
-@media (prefers-reduced-motion: reduce) {
-  @supports selector(::details-content) {
-    .motion-disclosure::details-content {
-      transition: none !important;
-    }
-  }
-}
-
 .motion-state-pulse {
   position: relative;
   isolation: isolate;
@@ -573,6 +564,13 @@ body[data-page="guide"] {
 
   .skip-link {
     transition: none;
+  }
+
+  /* Kept in its own @supports block so an unknown pseudo-element cannot void sibling rules. */
+  @supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+    .motion-disclosure::details-content {
+      transition: none !important;
+    }
   }
 }
 

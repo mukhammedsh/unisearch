@@ -36,6 +36,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Stop re-animating every profile exam and language row on each change (`frontend/javascript/components/profile/profile-exam-editor.js`, `frontend/javascript/languages.js`).
 - Restore browser-history navigation from the Guide and keep the homepage as the Back link's fallback when a visitor opens a Guide article directly.
 - Preserve the dropdown surface while a menu is open (`frontend/css/shared/02-shell-settings-feedback.css`).
+- Keep open custom select triggers and menus visually elevated above card backgrounds in both dark and light themes via `--dropdown-surface`, `--shadow-dropdown-trigger`, and `--shadow-dropdown` (`frontend/css/shared/01-foundation.css`, `frontend/css/shared/02-shell-settings-feedback.css`).
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 
