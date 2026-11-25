@@ -88,9 +88,11 @@ async function applyContext(page, route, cycle = "", fee = "unknown") {
   if (await page.locator("#admissionsAdvanced").isVisible()) {
     await openAdvanced(page);
     if (await page.locator("select#admissionsFee").count()) await setNativeSelect(page, "admissionsFee", fee);
-    if (await page.locator("#admissionsCycle").isVisible()) await page.locator("#admissionsCycle").fill(cycle);
-    // A single published intake is read on its own (possibly filled in by the page), not typed.
-    else cycle = null;
+    const cycleField = page.locator("#admissionsCycle");
+    if (await cycleField.getAttribute("type") === "text") {
+      await expect(cycleField).toBeVisible();
+      await cycleField.fill(cycle);
+    } else cycle = null;
     const response = page.waitForResponse((response) => response.url().endsWith("/admissions-context") && response.request().method() === "POST");
     await page.locator("#admissionsContextApply").click();
     expect((await response).ok()).toBe(true);

@@ -311,7 +311,7 @@
       transition-behavior: allow-discrete;
     }
 
-    details[open]::details-content {
+    details:has(.custom-select-wrapper.open)::details-content {
       overflow: visible;
     }
 

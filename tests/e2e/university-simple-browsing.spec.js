@@ -495,7 +495,7 @@ for (const item of [journeys[0], journeys[1], journeys[2]]) {
     expect(resting.right).toBeGreaterThanOrEqual(12);
     expect(resting.bottom).toBeGreaterThanOrEqual(12);
     await selectProgram.hover();
-    expect(await selectProgram.evaluate(button => getComputedStyle(button).backgroundColor)).not.toBe(resting.background);
+    await expect.poll(() => selectProgram.evaluate(button => getComputedStyle(button).backgroundColor)).not.toBe(resting.background);
     await expectAccessibleTextContrast(selectProgram);
     await selectProgram.click();
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
