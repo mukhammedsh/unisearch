@@ -187,6 +187,11 @@
   border-radius: var(--radius-circle);
 }
 
+.d-cover-back {
+  background: var(--surface-solid);
+  color: var(--text);
+}
+
 .d-photo-zoom-controls {
   position: absolute;
   top: var(--space-3);
@@ -234,8 +239,13 @@
   line-height: var(--leading-tight);
 }
 
-:is(.d-gallery-button, .d-cover-back):active {
+.d-gallery-button:active {
   background: var(--media-viewer-bg);
+}
+
+.d-cover-back:active {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .d-gallery-preview:focus-visible {
@@ -835,7 +845,7 @@ a.d-cover-credit:hover {
   gap: var(--space-2);
   flex: 0 0 auto;
   width: auto;
-  align-self: center;
+  align-self: flex-start;
   margin-left: auto;
 }
 
@@ -892,8 +902,13 @@ body[data-page="university"],
 
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
-  :is(.d-gallery-button, .d-cover-back):hover:not(:active) {
+  .d-gallery-button:hover:not(:active) {
     background-color: color-mix(in srgb, var(--media-caption-bg), var(--media-viewer-bg));
+  }
+
+  .d-cover-back:hover:not(:active) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .d-gallery-preview:hover:not(:active)::after {
