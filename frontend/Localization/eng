@@ -33,20 +33,20 @@ about.team_kicker: Our Team
 about.title: UniSearch is a service created by applicants for applicants.
 footer.copyright: © 2026 UniSearch
 footer.qs_attribution: Global ranks: Source: QS Quacquarelli Symonds (<a href="https://www.qs.com" target="_blank">www.qs.com</a>). With permission from QS Quacquarelli Symonds. Copyright © QS Quacquarelli Symonds Ltd.
-guide.academic_exams.title: Academic Exams
-guide.admission.p1: Admissions requirements are tied to the selected study option and application route, and may depend on applicant category, entry cycle, or fee-status context. Funding opportunities are listed separately; an award does not change the admission assessment, and displayed annual costs are before aid. Check the context shown on the page.
-guide.admission.p2: Published minimums and conditions apply to a specific study option and application route. Applicant category, fee status, and entry cycle may affect which facts apply; exceptions or holistic review may also apply. Admitted-student score ranges are historical context, not cutoffs or guarantees.
-guide.admission.p3: Language proof follows the same logic with one extra switch. Mode any means a single proof from the list is enough; mode all means every listed proof is required. A native language counts wherever the route accepts it, and a single language rule can freely mix CEFR levels with exam scores.
-guide.admission.p4: UniFit can normalize exam scores to compare profiles. A published admission minimum is checked only against evidence in the stated scale; a converted GPA is not an official equivalent. Most exam scales reward higher scores; JLPT levels run in the opposite direction.
-guide.admission.title: How application routes work
-guide.exam_basics.p1: Academic and language minimums are separate when a route publishes both: meeting one does not offset missing evidence or an unmet minimum for the other. Routes may also include prerequisites, documents, or conditions that score checks cannot assess. Published information remains available when your profile is incomplete.
-guide.exam_basics.p2: Requirements and conditions can differ by study option, application route, applicant category, and entry cycle. Read the route and context attached to the selected option; university-wide figures are orientation, not requirements.
-guide.exam_basics.p3: Check published minimums for the selected study option and route, within the applicable applicant and entry context. Compare admitted-student ranges only as historical context; they are not requirements and do not predict an individual result.
-guide.exam_basics.title: What admissions check
+guide.academic_exams.title: Academic exams and grades
+guide.admission.p1: Open Admission on the university page. Check the study option and its application route, which is how the university accepts applications for that option. Requirements may depend on applicant category, entry year, and fee category.
+guide.admission.p2: Universities may make exceptions or review the application as a whole. Funding opportunities are listed separately. Published annual costs are shown before potential aid.
+guide.admission.p3: Language requirements may call for any one of the accepted forms of proof or for all listed forms. Depending on the university's rules, it may accept an exam result, a CEFR proficiency level, or a first language.
+guide.admission.p4: Enter scores on the scale on which they were issued. <a href="guide.html#guide-unifit">UniFit</a> may convert your grade average for sorting. Checking a published minimum requires the university's specified scale. For JLPT, N1 is the highest level and N5 is the introductory level.
+guide.admission.title: How to check admission requirements
+guide.exam_basics.p1: Academic and language requirements are checked separately. If the university sets a minimum score for each, you need to meet both.
+guide.exam_basics.p2: Besides scores, a university may require specific school subjects, documents, an interview, or a portfolio. Check these conditions on the official page for the application route you selected.
+guide.exam_basics.p3: If the university publishes a range of admitted students' scores, it describes previous intakes. Look up minimum scores for the current intake in the published requirements.
+guide.exam_basics.title: Academic and language requirements
 guide.exam_desc_with_label: {exam} — {desc}
 guide.glossary.title: Glossary
 guide.language_exams.title: Language Exams
-guide.loading_language_config: Loading language exam config
+guide.loading_language_config: Loading language exams
 guide.next_section: Continue to {section}
 guide.next_section_label: Next section
 guide.previous_section: Back to {section}
@@ -54,63 +54,67 @@ guide.previous_section_label: Previous section
 guide.section_navigation: Section navigation
 guide.contents: Contents
 guide.contents_current: Contents: {section}
-guide.ml.p1: Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors with the multilingual-e5 model and compares their cosine similarity, rescaled into a 0–1 score:
+guide.ml.p1: Use the Interests field to enter subjects or fields of study. <a href="guide.html#guide-unifit">UniFit</a> looks for related topics in the information about each university.
 guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim - 0.55) / 0.35, 0, 1)
-guide.ml.p2: That similarity becomes the semantic third of the {fit} score, which is why universities described the way you think float upward. Each university is represented by its name, programs, tags, description, and admission labels, and everyday abbreviations are expanded before matching — gamedev counts as game development, ML as machine learning — so you can write the way you speak.
-guide.ml.p3: The query works best as short terms separated by commas: computer science, robotics, game development. Specificity pays off — "game development" outranks a vague "IT" — while every extra filler word dilutes the signal.
-guide.ml.p4: Full sentences add noise, and negations fail completely: "no biology" still matches biology, because the model has no notion of exclusion. Write what you want, never what you want to avoid.
-guide.ml.p5: Interests only reorder the list; they never override requirements or the minimum requirements match. If the model is unavailable, interests change nothing: there is no keyword fallback, and the page says so openly.
+guide.ml.p2: Matching uses the university name, programs, descriptions, and other catalog information. UniFit recognizes some common abbreviations, such as ML for machine learning.
+guide.ml.p3: Enter specific topics separated by commas. For example, “robotics, game development, computer science.”
+guide.ml.p4: Enter topics you want to study. The field does not support exclusions, so “no biology” can still match biology programs.
+guide.ml.p5: Interests affect the catalog order only. The site checks admission requirements separately. When interest matching is unavailable, the catalog reports it and uses the remaining profile information.
 guide.ml.title: How your interests are used
 guide.nav.interests: Interests
 guide.nav.comparison: Comparison
-guide.nav.academic_exams: Academic Exams
+guide.nav.academic_exams: Academic exams and grades
 guide.nav.admission: Admission
-guide.nav.exam_basics: Exam Basics
+guide.nav.exam_basics: Checking requirements
 guide.nav.glossary: Glossary
 guide.nav.language_exams: Language Exams
-guide.nav.tags: Tags
-guide.nav_aria: Guide navigation
+guide.nav.tags: Catalog badges
+guide.nav_aria: User guide navigation
 guide.group.admission: Admission
 guide.group.discovery: Discovery & comparison
 guide.group.exams: Exams
-guide.group.glossary: Glossary
-guide.back_home: Back to homepage
-guide.tags.title: Tags
-guide.tags.intro: Tags summarize catalog information and price context on each card. Profile-based tags appear in UniFit sorting and describe how available evidence matches your preferences or published minimums. A missing tag can mean its condition did not apply or the available data could not establish a result.
-guide.tags.icons_note: Cards for universities with reviewed admissions data show some tags as compact icons. In UniFit sorting the catalog banner lists the icons on the current page, and each icon's tooltip names what it means.
-guide.tags.standard_title: Standard Tags
-guide.tags.standard.acceptance: Acceptance Rate carries the official selectivity figure wherever the university publishes one, so you can feel the competition before doing any math.
-guide.tags.standard.aid_available: Aid Available means the catalog includes a published funding opportunity; it does not confirm your eligibility or an award.
-guide.tags.standard.over_budget: Over Budget warns that the estimated year cost runs above the budget in your profile — the option stays visible, but the gap is explicit.
-guide.tags.standard.over_budget_aid: Over Budget • Aid Available means the published cost exceeds your budget and a funding option exists. Its award and amount are not confirmed.
-guide.tags.standard.check_cost: Check the cost marks a price that depends on a fee status (such as Home or Overseas) that is not set yet, so the price shown may not be the one that applies to you.
-guide.tags.ai_note: AI tags appear only under {fit} sorting, because only that mode computes the numbers behind them.
-guide.tags.ai_title: AI Tags
-guide.tags.ai.conditional: Exam result needed marks a choice where a required exam has no result in your profile yet: add it to see whether you meet the minimum.
-guide.tags.ai.your_vibe: Your Vibe marks near-perfect preference alignment — a mismatch of 0.14 or less across the sliders you moved.
-guide.tags.ai.top_match: Good Match is its looser sibling: a mismatch of 0.22 or less, a solid fit that stops short of Your Vibe.
-guide.tags.ai.requirements_met: Requirements Met means all evaluable published academic and language minimums pass on your current data; other admission conditions may still apply.
-guide.tags.ai.below_requirements: Below Requirements means at least one evaluable published minimum is unmet; see the requirements fit section for details.
+guide.group.glossary: Reference
+guide.back: Back
+guide.tags.title: What catalog badges mean
+guide.tags.intro: Badges summarize cost, funding, and admissions information on university cards. A missing badge can mean the condition does not apply or there is insufficient information.
+guide.tags.icons_note: Cards with reviewed data display some badges as icons with explanations. With <a href="guide.html#guide-unifit">UniFit</a> selected, the icon legend is available above the catalog.
+guide.tags.standard_title: Cost and admissions information
+guide.tags.standard.acceptance: The admission rate is the share of applicants admitted according to the university's published figures.
+guide.tags.standard.aid_available: “Aid Available” means the university lists a funding opportunity. Check the eligibility rules and amount separately.
+guide.tags.standard.over_budget: “Over Budget” means the known annual cost exceeds the budget in your profile. The university stays in the catalog.
+guide.tags.standard.over_budget_aid: “Over Budget • Aid Available” means the cost exceeds your budget and the university lists a funding opportunity. Check eligibility and award amounts separately.
+guide.tags.standard.check_cost: Check the cost if it depends on a fee category you have not selected. For example, UK Home and Overseas rates may differ.
+guide.tags.ai_note: These badges appear when you sort with <a href="guide.html#guide-unifit">{fit}</a>. They depend on the information in your profile.
+guide.tags.ai_title: Profile-based badges
+guide.tags.ai.conditional: “Exam result needed” means UniSearch needs a result in your profile to check a minimum score.
+guide.tags.ai.your_vibe: “Your Vibe” indicates a very close match to the preferences you set.
+guide.tags.ai.top_match: “Good Match” indicates that the university closely matches the preferences you set.
+guide.tags.ai.requirements_met: “Requirements Met” means your profile meets all academic and language minimums the site checked. Review other admission conditions separately.
+guide.tags.ai.below_requirements: “Below Requirements” means your profile falls short of at least one minimum the site checked. Open the admission requirements to see which one.
 guide.title: Guide
 guide.comparison.title: University comparison
-guide.comparison.p1: Comparing lives on the Universities page. Press Compare on a card or a map pin to add a university to the pair; the tray holds two universities, and a click on a picked card removes it. A pair must use one data group: universities with reviewed admissions data, or universities still using the earlier format. Mixed groups cannot be compared.
-guide.comparison.p2: Each column keeps its selected study option and applicant context visible. The comparison labels differences in program, entry cycle, fee status, or scope, and marks incomparable or missing data instead of treating unlike figures as equivalent. It never names an overall winner. For earlier-format pairs, rows may show an advantage, trade-off, parity, incomparable data, or missing data.
-guide.comparison.columns: On reviewed pages, each column reuses the university context selected on its overview and lets you choose a study option when needed. It shows dates, applicable requirements, costs before aid, funding, and published statistics with source links. Each figure keeps its program and applicant context; differences in entry cycle or fee status remain visible.
-guide.comparison.p3: Published acceptance rates are institution or course statistics, depending on their source. They are separate from the {chance} score, which compares your profile with evaluable published academic and language minimums. Follow each figure back to its cited official source.
-guide.unichance.p1: {chance} is a 0–100 score for the share of evaluable published academic and language minimums met in the applicable admissions context. On reviewed pages, it uses the selected study option and application route within the applicant context. 100% means all assessed numeric minimums are met; it does not confirm subject prerequisites, documents, eligibility, or other admission conditions. It is not an admission probability or a funding prediction.
+guide.comparison.p1: On the Universities page, select Compare from a card or map marker. Choose two universities. Select a university again to remove it. You can compare two universities with reviewed admissions data or two whose data uses the earlier format.
+guide.comparison.p2: The table highlights differences that matter, such as different programs, entry years, or fee categories. Each row indicates when data is missing or values cannot be compared directly.
+guide.comparison.columns: For universities with reviewed data, each column uses the selections made on the university overview. Choose a study option in that column if needed. The table shows deadlines, requirements, costs before aid, funding options, and official sources.
+guide.comparison.p3: The published admission rate may cover the whole university or an individual program. Check the official source to see which applicants the figure covers. The “<a href="guide.html#guide-unichance">{chance}</a>” score is calculated separately using your profile.
+guide.unichance.p1: The “{chance}” score shows the percentage of published academic and language minimums you meet among those the site can check. On pages with reviewed data, the score applies to the selected study option, application route, and applicant category.
 guide.unichance.formula: requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100
-guide.unichance.p2: The score counts applicable published minimum checks that can be evaluated from your profile. Official acceptance rates and admitted-student averages are separate statistics; they do not turn this fit score into admission odds.
-guide.unichance.p3: The score is a checklist fit index, not a calibrated probability or confidence range. A higher value means more of the evaluable published minimum checks are met; it does not mean that admission is more likely by the same percentage.
-guide.unichance.p4: If requirements or profile evidence are insufficient to evaluate a meaningful set of checks, the score is unavailable and the page explains what is missing. Missing evidence is not treated as zero.
-guide.unichance.title: {chance} (fit to published requirements, 0–100)
-guide.unifit.p1: {fit} sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from the {chance} score, which reflects only the requirements component:
+guide.unichance.p2: For example, if the site can check four minimums and you meet three, your score is 75%. Published admission rates and average scores of admitted students are separate figures and do not affect the calculation.
+guide.unichance.p3: A score of 100% means you meet every minimum the site checked. Review application eligibility, documents, and other conditions separately. The score cannot tell you how likely you are to be admitted or receive aid.
+guide.unichance.p4: When published requirements or profile details are insufficient, the site leaves the score unavailable and explains what is missing.
+guide.unichance.title: {chance}
+guide.unifit.p1: {fit} orders universities using your preferences, interests, budget, and available information about whether you meet admission requirements. The “<a href="guide.html#guide-unichance">{chance}</a>” score covers published minimum requirements only.
+guide.unifit.budget: Annual budget
+guide.unifit.preferences: Preference sliders
+guide.unifit.missing_results: Missing exam or language results
+guide.unifit.explanation: How to see what affected the order
 guide.unifit.formula: without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40\nwith semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35\naffordability_gap × 0.20 is added when annual cost and profile budget are known; available components are normalized by their total weight
-guide.unifit.p2: Requirements gap is derived from the requirements fit score and is omitted when that score is unavailable. Known annual cost and profile budget add an affordability gap; potential awards do not reduce the cost. The ranking renormalizes the weights of available components.
-guide.unifit.p3: Focus, Selectivity, Cost vs Prestige, and Location are preference sliders. A centred slider means "doesn't matter" and is ignored; the further you move it, the more that axis counts. Focus compares research intensity (publications per student), Selectivity compares how competitive first-year admission is (applicants per place), and Location compares the size of the university's city. If a university has no data for a slider you moved, it counts as a typical university, so missing data neither wins a perfect match nor reads as a failure. Cost vs Prestige expresses a preference between budget and prestige; it is not your budget amount and does not estimate admission outcomes or funding awards.
-guide.unifit.p4: Preference badges describe slider alignment. Requirement badges describe whether the current profile meets applicable published minimums. Neither predicts an admission decision or funding award.
-guide.unifit.p5: Missing exam or language evidence can make a requirements fit score unavailable. The university remains in the catalog, and the missing evidence is shown separately.
-guide.unifit.p6: The profile page shows which of your answers UniFit uses and which it does not, and in UniFit sorting the catalog banner lists the answers behind the current ranking.
-guide.unifit.title: {fit} (smart sorting)
+guide.unifit.p2: When you provide an annual budget and the applicable cost is available, UniFit factors in how far the cost exceeds your budget. Potential aid is shown separately from cost. If information is missing for a criterion, UniFit uses the information it has.
+guide.unifit.p3: The preference sliders cover research activity, competition for first-year places, cost versus prestige, and city size. Leave a slider in the center if the criterion does not matter to you. Moving it farther from the center gives it more influence. Set your annual budget separately in Profile.
+guide.unifit.p4: If data is missing for one of your active sliders, UniFit uses an average estimate for that criterion. If a university has no data for any active slider, its score omits the preference component.
+guide.unifit.p5: A university stays in the catalog if an exam result or proof of language proficiency is missing. When the site can identify what is missing, it shows what to add.
+guide.unifit.p6: Profile shows which answers UniFit uses. With UniFit selected, the top of the catalog shows the information used for the current order.
+guide.unifit.title: {fit}: personalized sorting
 nav.about: About Us
 nav.guide: Guide
 nav.lang.eng: English (US)
@@ -311,7 +315,7 @@ ranking.source_tooltip: {source} · Checked: {verified_at}
 ranking.source_tooltip_unranked: No position in {source} · Checked: {verified_at}
 title.about: About Us | UniSearch
 title.profile: Applicant Profile | UniSearch
-title.guide: Guide | UniSearch
+title.guide: User Guide | UniSearch
 title.universities: Universities | UniSearch
 title.university: University | UniSearch
 universities.page_heading: Universities
@@ -722,54 +726,54 @@ placeholder.field.best_track: Best track
 placeholder.field.verification_date: Verification date
 placeholder.field.universities_count: Universities count
 placeholder.field.countries_count: Countries count
-guide.academic.act: Its counterpart, covering English, math, reading, and science reasoning.
-guide.academic.aptotal: Combined performance across AP subjects, for systems that recognize them.
-guide.academic.default: An academic result requested by at least one published admission requirement.
-guide.academic.gpa: Your reported grade average and its original scale. UniFit may normalize it for comparison; published admission minimums need a matching scale.
-guide.academic.ibdiploma: The IB Diploma total, accepted by universities worldwide.
-guide.academic.alevelcert: British A-Level subject grades — enter them as A*AA, and the best three are converted into a comparable score.
-guide.academic.hkdselevel: Hong Kong secondary-school levels, converted internally with 5* counting as 6 and 5** as 7.
-guide.academic.swissmaturitycert: The Swiss Matura, the general certificate that opens the country's universities.
-guide.academic.germanabiturcert: The German Abitur, the general certificate that opens the country's universities.
-guide.academic.ossdcert: Completion of the Ontario Secondary School Diploma for Canadian admissions.
-guide.academic.intro: These are academic exam types UniSearch can match against published admission requirements. Add your results to the profile; on reviewed pages, assessment uses the selected route and applicant context:
-guide.academic.nuettotal: The combined score of a single university's own entrance exam, valid only on its routes.
-guide.academic.sat: The American admission test of reading, writing, and math, recognized far beyond the US.
-guide.academic.unt: Kazakhstan's national test and the main road to a bachelor's seat at home.
-guide.glossary.admission_track: The selected study option and its application route. Applicant category, entry cycle, and fee-status context are included when the published facts depend on them; funding is shown separately.
-guide.glossary.chance: {chance} is a 0–100 match score for evaluable published academic and language minimums. A 100% score does not confirm every admission condition or eligibility; it is not an admission probability or funding prediction.
-guide.glossary.fit: {fit} is the sorting mode that ranks the catalog by your profile, where a lower score ranks higher.
-guide.glossary.intro: The working vocabulary of the site — the same meanings the calculations rely on, one line per term.
-guide.glossary.language_requirements: The language proofs a route accepts: native language, CEFR level, or exam score.
-guide.glossary.match_score: The internal {fit} ranking number that orders the list.
-guide.glossary.comparison: The side-by-side table that keeps each university's selected context visible, marks scope differences or missing data, and never names an overall winner.
-guide.glossary.mode_all: Every proof from the language list is required.
-guide.glossary.mode_any: A single proof from the language list is enough.
-guide.glossary.requirements: Published rules and minimums for the selected study option and its application route. Only measurable academic and language minimums count toward the match score; other conditions may need a separate review.
-guide.glossary.stats_avg: The average scores of previously admitted students: historical context, not a cutoff or a guarantee.
+guide.academic.act: An admissions test that assesses academic skills, including English and mathematics.
+guide.academic.aptotal: The combined score for Advanced Placement (AP) exams. It applies when the published requirements call for a combined score.
+guide.academic.default: An academic result listed in published admission requirements.
+guide.academic.gpa: Your grade average. Enter the value and its original scale, such as out of 4 or out of 5.
+guide.academic.ibdiploma: The total score for the International Baccalaureate Diploma.
+guide.academic.alevelcert: A-Level subject grades. Enter them in a format such as A*AA. UniSearch converts the three highest grades to a combined score.
+guide.academic.hkdselevel: Grades from Hong Kong's secondary school examination. On the UniSearch scale, 5* corresponds to 6 and 5** corresponds to 7.
+guide.academic.swissmaturitycert: The Swiss upper-secondary certificate (Matura), which can be used for university admission.
+guide.academic.germanabiturcert: The German Abitur qualification, which can be used for university admission.
+guide.academic.ossdcert: The secondary school diploma awarded in Ontario, Canada.
+guide.academic.intro: Add your grades and exam results in Profile. To find out which results a university accepts, check the application requirements for your study option.
+guide.academic.nuettotal: The total score for the Nazarbayev University Entrance Test (NUET).
+guide.academic.sat: An admissions test covering reading, writing, and mathematics. Check whether your chosen university accepts it.
+guide.academic.unt: Kazakhstan's Unified National Testing exam. Its results are used for undergraduate admissions where UNT is listed as a requirement.
+guide.glossary.admission_track: A study option and the way the university accepts applications for it. Requirements may depend on applicant category, entry year, and fee category.
+guide.glossary.chance: {chance} is the share of academic and language minimums your profile meets among those the site can check.
+guide.glossary.fit: {fit} sorts universities using your profile and the available catalog information.
+guide.glossary.intro: These terms appear in the catalog and on university pages.
+guide.glossary.language_requirements: The university's rules for confirming proficiency in the language of instruction. Accepted evidence may include an exam result, a CEFR level, or a first language.
+guide.glossary.match_score: The score {fit} uses to order universities. Universities with a smaller gap from your profile appear higher.
+guide.glossary.comparison: A table that shows information for two universities side by side and identifies differences and missing data.
+guide.glossary.mode_all: Provide all listed forms of language evidence.
+guide.glossary.mode_any: Provide any one of the listed forms of language evidence.
+guide.glossary.requirements: Published conditions for admission to the selected study option. These may include minimum scores, prerequisites, and documents.
+guide.glossary.stats_avg: The average score of students admitted in the period shown. It gives you a reference point from previous intakes.
 guide.glossary.term.admission_track: Study option and application route
 guide.glossary.term.language_requirements: Language Requirements
-guide.glossary.term.match_score: Match Score
+guide.glossary.term.match_score: UniFit ranking score
 guide.glossary.term.comparison: Comparison
-guide.glossary.term.mode_all: Mode = all
-guide.glossary.term.mode_any: Mode = any
+guide.glossary.term.mode_all: All forms of evidence required
+guide.glossary.term.mode_any: Any one form of evidence accepted
 guide.glossary.term.requirements: Requirements
-guide.glossary.term.stats_avg: Average (Admitted)
-guide.language.by_code: A language proof accepted on {code}-taught routes.
-guide.language.cambridge: Cambridge English qualifications, pegged to CEFR levels and valid for years.
-guide.language.default: A language proof accepted by at least one application route.
-guide.language.det: The online adaptive English test: taken at home and accepted by a growing list of universities.
-guide.language.dutch: NT2 Dutch, the proof that Dutch-taught programs ask for.
-guide.language.french: DELF, DALF, TCF, and TEF open French-taught tracks, depending on the route.
-guide.language.german: TestDaF and DSH open German-taught tracks — most routes ask for one of the two.
-guide.language.hsk: The official ladder of Chinese proficiency, climbed level by level.
-guide.language.ielts: The English test of listening, reading, writing, and speaking, accepted almost everywhere.
-guide.language.jlpt: The five levels of Japanese, running backwards: a lower number means stronger language, so N1 beats N5.
-guide.language.pte: The fully computer-based English test with fast results.
-guide.language.toefl: Academic English testing, strongest in American admissions.
-guide.language.topik: The Korean proficiency scale used for Korean-taught admission.
-guide.loading_exam_config: Loading exam config
-guide.scale_text: In UniSearch, this score is entered on a {min}‑{max} scale.
+guide.glossary.term.stats_avg: Average score of admitted students
+guide.language.by_code: Proof of proficiency in the language with code {code}. Check whether your chosen university accepts it.
+guide.language.cambridge: Cambridge English qualifications certify an English level on the CEFR scale. Check which qualification and score the university accepts.
+guide.language.default: Proof of language proficiency. Check the application requirements for accepted options.
+guide.language.det: The Duolingo English Test assesses English proficiency online. Check whether your chosen university accepts it.
+guide.language.dutch: The NT2 exam assesses Dutch proficiency.
+guide.language.french: DELF, DALF, TCF, and TEF assess French proficiency. Accepted exams and minimum results depend on the program.
+guide.language.german: TestDaF and DSH assess German proficiency. Check which exam and result the university accepts.
+guide.language.hsk: The HSK exam assesses Chinese proficiency.
+guide.language.ielts: An English proficiency test covering listening, reading, writing, and speaking.
+guide.language.jlpt: A Japanese proficiency test with five levels. N5 is the introductory level and N1 is the highest.
+guide.language.pte: A computer-based English proficiency test.
+guide.language.toefl: A test of English proficiency for academic study.
+guide.language.topik: A Korean proficiency test. If the university accepts TOPIK, check its admission requirements for the required level.
+guide.loading_exam_config: Loading academic exams
+guide.scale_text: Enter a score from {min} to {max}.
 languages.error.choose_cefr: Choose CEFR level
 languages.error.choose_exam: Choose exam
 languages.error.choose_language_type: Choose language and type
@@ -3375,17 +3379,17 @@ universities.unifit.prefs_button: Preferences
 universities.unifit.prefs_summary: UniFit preferences
 universities.tip.budget_level_needed: {cost} a year depending on study level. Select a study level to compare against your budget.
 guide.start.nav: Getting started
-guide.start.title: How to use UniSearch in 3 steps
-guide.start.intro: UniSearch helps you explore official university programs, admission minimums, deadlines, and costs without guesswork. Browse freely right away, or add your scores and budget for automatic checks.
-guide.start.step1.title: 1. Add what you already know in Profile
-guide.start.step1.desc: Enter your study level, subject, yearly budget, GPA, or exam scores (IELTS, SAT, UNT, NUET). Every field is optional — missing scores never count as a failure.
-guide.start.step2.title: 2. Filter the catalog and sort with UniFit
-guide.start.step2.desc: Cards show plain-language status tags — whether your profile meets minimums, needs an exam, or fits your budget. Adjust UniFit sliders only if research focus, selectivity, or city size matter to you.
-guide.start.step3.title: 3. Check official details or compare two universities
-guide.start.step3.desc: Open any university for routes, deadlines, cost breakdowns, and official source links, or select two universities in Compare mode to view them side by side.
+guide.start.title: How to use UniSearch
+guide.start.intro: Browse UniSearch to find study programs, admission requirements, application deadlines, and costs. You can use the catalog without completing a profile.
+guide.start.step1.title: 1. Add your details in Profile
+guide.start.step1.desc: For personalized results, enter your study level and subject, annual budget, grade average, and exam results such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.
+guide.start.step2.title: 2. Set filters and select UniFit sorting
+guide.start.step2.desc: Filters narrow the list. <a href="guide.html#guide-unifit">UniFit</a> orders it using your profile. <a href="guide.html#guide-tags">Card badges</a> show which minimums you meet, which results are missing, and whether the known cost fits your budget.
+guide.start.step3.title: 3. Review a university or compare two options
+guide.start.step3.desc: Open a university page to check application requirements, deadlines, costs, and official sources. To review two universities side by side, select both on the Universities page.
 guide.start.cta_catalog: Browse universities
 guide.start.cta_profile: Set up profile
-guide.formula.toggle: Show exact calculation formula
+guide.formula.toggle: Calculation formula
 universities.compare.swap_university: Change university
 universities.compare.swap_title: Replace {name}
 universities.compare.swap_search: Search university...

@@ -92,6 +92,8 @@ Good references:
 - `frontend/css/ranking.css` ranking list.
 - `frontend/css/guide.css` guide sidebar and content sections.
 
+Guide articles use a constrained reading column and mark the current contents link with a selected surface and a stronger font weight. Underline links to related articles in the body text so they remain identifiable without color.
+
 ### Information Pages
 
 Use a large title, muted lead copy, and clean sections. Keep sections full-width within the page shell. Avoid stacked card-in-card layouts unless the cards are repeated items.
