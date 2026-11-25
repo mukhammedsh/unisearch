@@ -7,7 +7,8 @@ async function installMotionRecorder(page) {
     window.__motionSeen = [];
     window.__motionAnimations = [];
     document.addEventListener("animationstart", (event) => {
-      window.__motionAnimations.push(`${event.pseudoElement || event.target.id}:${event.animationName}`);
+      const target = event.pseudoElement || event.target.id || event.target.classList[0];
+      window.__motionAnimations.push(`${target}:${event.animationName}`);
     });
     window.__motionObserver?.disconnect?.();
     window.__motionObserver = new MutationObserver((mutations) => {
@@ -406,6 +407,56 @@ test("Guide disclosures preserve keyboard access and honor reduced motion", asyn
     expect(await details.evaluate((element) => getComputedStyle(element, "::details-content").transitionDuration))
       .toBe("0s");
   }
+});
+
+test("calendar month changes animate the grid and keep keyboard focus", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-transfer&admission_level=undergraduate&admission_route=transfer&admission_cycle=Fall+2027");
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await page.locator('[data-tab="tab-deadlines"]').click();
+
+  const grid = page.locator(".deadline-calendar__grid");
+  await expect(grid).toBeVisible();
+  const initialMonth = await grid.getAttribute("data-calendar-month-key");
+  const next = page.locator('[data-calendar-month="next"]');
+  const previous = page.locator('[data-calendar-month="previous"]');
+  await installMotionRecorder(page);
+
+  await next.press("Enter");
+  await expect(grid).not.toHaveAttribute("data-calendar-month-key", initialMonth);
+  await expect(next).toBeFocused();
+  await expectAnimationStarted(page, "deadline-calendar__grid", "motion-fade-lift-enter");
+  await expectAnimationStarted(page, "deadline-calendar__details", "motion-fade-lift-enter");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await previous.press("Enter");
+  await expect(grid).toHaveAttribute("data-calendar-month-key", initialMonth);
+  await expect(grid).not.toHaveClass(/motion-panel-enter/);
+  await expect(previous).toBeFocused();
+});
+
+test("comparison picker animates study levels and route steps while retaining focus", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/compare.html?ids=stanford-university-usa-ca,mit-usa-cambridge");
+  await page.locator('[data-compare-pick="stanford-university-usa-ca"]').click();
+  const dialog = page.locator("dialog.compare-picker[open]");
+  await expect(dialog.locator("[data-picker-option]").first()).toBeVisible();
+  await installMotionRecorder(page);
+
+  const masters = dialog.locator('[data-picker-level="masters"]');
+  await masters.press("Enter");
+  await expect(masters).toHaveAttribute("aria-pressed", "true");
+  await expect(masters).toBeFocused();
+  await expectAnimationStarted(page, "compare-picker__results", "motion-fade-lift-enter");
+
+  const search = dialog.locator("#comparePickerSearch");
+  await search.fill("Computer Science");
+  await dialog.locator('[data-picker-option="stanford-option-cs-ms"]').click();
+  await expect(dialog.locator("[data-picker-route]").first()).toBeFocused();
+  await expectAnimationStarted(page, "compare-picker__body", "motion-fade-lift-enter");
+  await dialog.locator("[data-picker-back]").press("Enter");
+  await expect(search).toBeFocused();
+  await expect(search).toHaveValue("Computer Science");
 });
 
 test("tab sliding indicators use a unified 2px full-pill line across filters and pages", async ({ page }) => {

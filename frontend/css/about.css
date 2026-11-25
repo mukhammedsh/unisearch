@@ -155,6 +155,7 @@ body[data-page="about"] {
   text-decoration-color: var(--line-strong);
   text-underline-offset: var(--space-1);
   overflow-wrap: anywhere;
+  transition: text-decoration-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {

@@ -129,6 +129,9 @@
   font: inherit;
   cursor: pointer;
   align-self: flex-start;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .program-card__admission-action:hover {
@@ -342,6 +345,11 @@
   line-height: 1.35;
   color: var(--text);
   overflow-wrap: break-word;
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.program-card__toggle:active {
+  background-color: var(--interaction-active-surface);
 }
 
 .program-card__summary {
@@ -1664,6 +1672,10 @@
   .program-card:not(.is-open):hover {
     transform: none;
     box-shadow: var(--shadow-micro);
+  }
+
+  .program-card__toggle:hover .program-card__title {
+    color: var(--accent-text);
   }
 
   .program-search__clear:hover {

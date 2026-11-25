@@ -570,6 +570,16 @@ a {
 }
 
 /* ===== Global Component State Baseline ===== */
+:where(details) > summary {
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+:where(details) > summary:active {
+  color: var(--interaction-active-text);
+  text-decoration: underline;
+}
+
 button:disabled,
 input:disabled,
 select:disabled,
@@ -589,6 +599,10 @@ textarea:disabled,
 
   :where(a[href]:not([class])):hover {
     color: var(--interaction-hover-text);
+  }
+
+  :where(details) > summary:not(:active):hover {
+    color: var(--accent-text);
   }
 }
 

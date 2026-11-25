@@ -1,4 +1,5 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
+import { replayMotion } from "../../utils/runtime.js";
 import { getCurrentLanguage, t } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
 import { safeUrl } from "../_shared.js";
@@ -64,11 +65,15 @@ export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true
 
 export function mountDeadlineCalendar(host, deadlines, state = {}, options = {}) {
   if (!host) return;
-  const render = () => { host.innerHTML = renderDeadlineCalendar(deadlines, state, options); };
+  const render = ({ monthChanged = false, dayChanged = false } = {}) => {
+    host.innerHTML = renderDeadlineCalendar(deadlines, state, options);
+    if (monthChanged) replayMotion(host.querySelector(".deadline-calendar__grid"), "motion-panel-enter");
+    if (monthChanged || dayChanged) replayMotion(host.querySelector(".deadline-calendar__details"), "motion-panel-enter");
+  };
   render();
   host.onclick = event => {
     const button = event.target.closest("button");
-    if (!button || !host.contains(button) || button.disabled) return;
+    if (!button || !host.contains(button) || button.disabled || button.getAttribute("aria-pressed") === "true") return;
     if (button.dataset.calendarMonth) {
       const monthKey = host.querySelector("[data-calendar-month-key]").dataset.calendarMonthKey;
       const [year, month] = monthKey.split("-").map(Number);
@@ -76,17 +81,18 @@ export function mountDeadlineCalendar(host, deadlines, state = {}, options = {})
       state.monthKey = date.toISOString().slice(0, 7);
       state.day = "";
       const direction = button.dataset.calendarMonth;
-      render();
+      render({ monthChanged: true });
       host.querySelector(`[data-calendar-month="${direction}"]`).focus();
     } else if (button.dataset.calendarDay) {
       state.day = button.dataset.calendarDay;
-      render();
+      render({ dayChanged: true });
       host.querySelector(`[data-calendar-day="${state.day}"]`).focus();
     } else if (button.dataset.calendarJump) {
       const jumpIndex = [...host.querySelectorAll("[data-calendar-jump]")].indexOf(button);
+      const previousMonth = host.querySelector("[data-calendar-month-key]").dataset.calendarMonthKey;
       state.monthKey = button.dataset.calendarJump.slice(0, 7);
       state.day = button.dataset.calendarJump;
-      render();
+      render({ monthChanged: previousMonth !== state.monthKey, dayChanged: true });
       (host.querySelectorAll("[data-calendar-jump]")[jumpIndex] || host.querySelector(`[data-calendar-jump="${state.day}"]`))?.focus();
     } else if (button.dataset.calendarExport !== undefined) {
       const item = deadlines[Number(button.dataset.calendarExport)];

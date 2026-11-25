@@ -455,6 +455,12 @@ body[data-page="profile"] {
   font-weight: var(--font-weight-medium);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+:is(.profile-summary__link, .profile-inline-link):active {
+  color: var(--interaction-active-text);
+  text-decoration-thickness: 2px;
 }
 
 :is(.profile-summary__link, .profile-inline-link):focus-visible {
@@ -1565,7 +1571,7 @@ html:has(body[data-page="profile"]) {
   }
 
   :is(.profile-summary__link, .profile-inline-link):hover {
-    color: var(--interaction-hover-text);
+    color: var(--accent-text);
   }
 
   .profile-input:hover:not(:disabled),
@@ -1588,9 +1594,8 @@ html:has(body[data-page="profile"]) {
     color: var(--color-danger);
   }
 
-  .profile-delete.profile-delete--danger-soft:hover {
-    background: var(--color-danger-bg);
-    color: var(--color-danger);
+  .profile-delete.profile-delete--danger-soft:hover:not(:active) {
+    background-color: color-mix(in srgb, var(--color-danger) 8%, var(--color-danger-bg));
   }
 
   .profile-delete--danger:hover {
@@ -1598,6 +1603,10 @@ html:has(body[data-page="profile"]) {
     color: var(--color-danger);
     box-shadow: var(--shadow-xs);
   }
+}
+
+.profile-delete.profile-delete--danger-soft:active {
+  background-color: color-mix(in srgb, var(--color-danger) 14%, var(--color-danger-bg));
 }
 
 /* --------------------------------------------------------------------------

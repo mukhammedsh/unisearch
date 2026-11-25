@@ -138,6 +138,20 @@
   pointer-events: none;
 }
 
+.d-gallery-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--media-viewer-bg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.d-gallery-preview:active::after {
+  opacity: 0.22;
+}
+
 .d-gallery-preview-media {
   display: grid;
   grid-template: minmax(0, 1fr) / minmax(0, 1fr);
@@ -220,8 +234,7 @@
   line-height: var(--leading-tight);
 }
 
-.d-gallery-button:is(:hover, :active),
-.d-cover-back:is(:hover, :active) {
+:is(.d-gallery-button, .d-cover-back):active {
   background: var(--media-viewer-bg);
 }
 
@@ -879,6 +892,14 @@ body[data-page="university"],
 
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
+  :is(.d-gallery-button, .d-cover-back):hover:not(:active) {
+    background-color: color-mix(in srgb, var(--media-caption-bg), var(--media-viewer-bg));
+  }
+
+  .d-gallery-preview:hover:not(:active)::after {
+    opacity: 0.12;
+  }
+
   :is(.d-site-link, .d-info):hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
@@ -901,6 +922,14 @@ body[data-page="university"],
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .d-gallery-preview::after {
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+  }
+
+  :is(.d-gallery-button, .d-cover-back) {
+    transition: background-color var(--motion-fast) var(--motion-ease-standard);
+  }
+
   .d-tab-btn.active::after {
     animation: motion-underline-snap var(--motion-fast)
     var(--motion-ease-emphasized) both;

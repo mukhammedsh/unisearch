@@ -98,11 +98,12 @@ body[data-page="terms"] {
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: var(--font-weight-medium);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .legal-doc a:hover {
-    color: var(--interaction-hover-text);
+    color: var(--accent-text);
   }
 }
 

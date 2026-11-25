@@ -59,6 +59,7 @@
   color: var(--text-muted);
   text-decoration: none;
   margin-bottom: var(--space-3);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .guide-back::before {
