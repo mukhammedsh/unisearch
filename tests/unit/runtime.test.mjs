@@ -42,7 +42,7 @@ class TestElement extends global.HTMLElement {
   }
 
   emit(type, event = {}) {
-    this.listeners.get(type)?.(event);
+    this.listeners.get(type)?.({ target: this, ...event });
   }
 }
 
@@ -125,9 +125,13 @@ describe("runtime.js", () => {
       replayMotion(node, "pulse", { timeoutMs: 90 });
       assert.equal(node.classList.contains("pulse"), true);
       assert.equal(timeouts[0].delay, 90);
+      replayMotion(node, "pulse", { timeoutMs: 90 });
+      timeouts[0].callback();
+      node.emit("animationend", { target: new TestElement() });
+      assert.equal(node.classList.contains("pulse"), true);
       node.emit("animationend");
       assert.equal(node.classList.contains("pulse"), false);
-      timeouts[0].callback();
+      timeouts[1].callback();
       assert.equal(node.classList.contains("pulse"), false);
     } finally {
       window.setTimeout = originalTimeout;

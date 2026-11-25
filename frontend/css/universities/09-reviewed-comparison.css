@@ -545,7 +545,6 @@
 
 .compare-picker[open] {
   display: flex;
-  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
 }
 
 .compare-picker::backdrop {
@@ -1037,8 +1036,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .compare-reviewed__strip,
-  .compare-reviewed__swap,
-  .compare-picker[open] {
+  .compare-reviewed__swap {
     transition: none;
     animation: none;
   }

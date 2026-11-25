@@ -19,6 +19,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Improve Guide readability with a narrower article column, a clearer current-article indicator, a shorter sidebar title, and softer body text in both themes.
 - Organize the UniFit article with subheadings and put the calculation formula after the main explanation. Add links between related articles, including from Catalog badges to UniFit.
 - Keep the Guide title and contents in a sticky sidebar and align previous and next links with the Back link's visual style.
+- Use consistent, short transitions for page navigation, theme changes, Guide articles, catalog list and map views, disclosures, and campus photos. Honor the device's reduced-motion preference.
 
 ### Fixed
 - Restore browser-history navigation from the Guide and keep the homepage as the Back link's fallback when a visitor opens a Guide article directly.

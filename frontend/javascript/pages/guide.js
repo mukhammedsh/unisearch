@@ -5,6 +5,7 @@ import {
   canonicalizeExamId,
   escapeHtml,
   getExamDisplayName,
+  prefersReducedMotion,
   replayMotion,
   setManualScrollRestoration,
 } from "../utils.js";
@@ -243,7 +244,6 @@ function setupGuideSectionNavigation({
   mobileNavToggle,
   guideNav,
 }) {
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const sectionById = new Map(sections.map((section) => [section.id, section]));
   const guideLayout = page.querySelector(".guide-layout");
   const guideContent = page.querySelector(".guide-content");
@@ -327,7 +327,7 @@ function setupGuideSectionNavigation({
       section.classList.toggle("is-active", active);
       section.setAttribute("aria-hidden", active ? "false" : "true");
       section.hidden = !active;
-      if (active && !wasActive) replayMotion(section, "motion-state-pulse", { timeoutMs: 520 });
+      if (active && !wasActive) replayMotion(section, "motion-panel-enter", { timeoutMs: 420 });
     });
 
     navLinks.forEach((link) => {
@@ -352,7 +352,7 @@ function setupGuideSectionNavigation({
     updateSectionNavigation(nextId);
 
     if (scroll && targetSection) {
-      const behavior = scrollBehavior || (prefersReducedMotion ? "auto" : "smooth");
+      const behavior = scrollBehavior || (prefersReducedMotion() ? "auto" : "smooth");
       const isMobileLayout = window.innerWidth <= 1024;
       if (isMobileLayout && guideLayout) {
         const navbar = document.querySelector(".navbar");

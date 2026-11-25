@@ -276,14 +276,14 @@
   margin-bottom: 0;
 }
 
-.guide-doc a[href^="guide.html#guide-"] {
+.guide-doc p a {
   color: var(--accent-text);
   text-decoration: underline;
   text-underline-offset: var(--space-0-5);
 }
 
 .guide-nav a:focus-visible,
-.guide-doc a[href^="guide.html#guide-"]:focus-visible {
+.guide-doc p a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: var(--space-0-5);
 }
@@ -598,6 +598,10 @@ body[data-page="guide"] {
 
   .guide-nav.is-mobile-open {
     display: grid;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards;
+    }
   }
 
   .guide-mobile-nav-shell {
@@ -674,7 +678,7 @@ body[data-page="guide"] {
 @media (hover: hover) and (pointer: fine) {
   .guide-back:hover,
   .guide-nav a:not([aria-current="page"]):hover,
-  .guide-doc a[href^="guide.html#guide-"]:hover,
+  .guide-doc p a:hover,
   .guide-section-navigation__button:hover {
     color: var(--interaction-hover-text);
     text-decoration: underline;

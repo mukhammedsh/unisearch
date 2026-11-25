@@ -992,16 +992,6 @@
   transform: rotate(180deg);
 }
 
-.overview-summary__sources::details-content {
-  interpolate-size: allow-keywords;
-  overflow: clip;
-  contain: layout;
-}
-
-.overview-summary__sources:not([open])::details-content {
-  block-size: 0;
-}
-
 .overview-summary__sources-list {
   display: flex;
   flex-direction: column;
@@ -1327,16 +1317,6 @@
   transform: rotate(180deg);
 }
 
-.d-facts-sources::details-content {
-  interpolate-size: allow-keywords;
-  overflow: clip;
-  contain: layout;
-}
-
-.d-facts-sources:not([open])::details-content {
-  block-size: 0;
-}
-
 .d-facts-sources__panel {
   margin-block-start: var(--space-2);
   padding: var(--space-4) var(--space-5);
@@ -1452,16 +1432,6 @@
 /* Gap-owning containers already space these children; their own margins doubled it. */
 .program-signal__row > .admissions-source-link {
   margin-block: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .d-facts-sources::details-content,
-  .overview-summary__sources::details-content {
-    transition: block-size var(--motion-medium) var(--motion-ease-standard),
-      content-visibility var(--motion-medium) var(--motion-ease-standard),
-      display var(--motion-medium) var(--motion-ease-standard);
-    transition-behavior: allow-discrete;
-  }
 }
 
 @media (min-width: 900px) {

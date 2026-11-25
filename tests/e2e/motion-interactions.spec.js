@@ -5,6 +5,10 @@ const { selectors, setNativeSelect } = require("./helpers/selectors");
 async function installMotionRecorder(page) {
   await page.evaluate(() => {
     window.__motionSeen = [];
+    window.__motionAnimations = [];
+    document.addEventListener("animationstart", (event) => {
+      window.__motionAnimations.push(`${event.pseudoElement || event.target.id}:${event.animationName}`);
+    });
     window.__motionObserver?.disconnect?.();
     window.__motionObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
@@ -27,6 +31,13 @@ async function expectMotionSeen(page, className) {
   await expect.poll(async () =>
     page.evaluate((name) => window.__motionSeen?.includes(name) === true, className)
   ).toBe(true);
+}
+
+async function expectAnimationStarted(page, target, animation) {
+  await expect.poll(() => page.evaluate(
+    (prefix) => window.__motionAnimations.some((key) => key.startsWith(prefix)),
+    `${target}:${animation}`,
+  )).toBe(true);
 }
 
 async function expectNoLingeringMotionClasses(page) {
@@ -168,19 +179,22 @@ test("mobile settings layer uses sheet motion without breaking reduced motion", 
   ).toBe(0);
 });
 
-test("view mode toggle changes views without a content transition", async ({ page }) => {
+test("view mode fades in the map and list while preserving their layout", async ({ page }) => {
   await markTourAsSeen(page);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   // The map results rail is populated only when map mode is selected.
   await expect(page.locator("#viewMapBtn")).toBeEnabled();
+  await installMotionRecorder(page);
 
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
   await page.click("#viewMapBtn");
   await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewListBtn")).not.toHaveClass(/active/);
   await expect(page.locator("#mapStage")).toBeVisible();
+  await expectAnimationStarted(page, "mapStage", "motion-fade-lift-enter");
 
   const mapCard = page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first();
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
@@ -231,6 +245,7 @@ test("view mode toggle changes views without a content transition", async ({ pag
   ).toBe(0);
 
   await page.click("#viewListBtn");
+  await expectAnimationStarted(page, "universitiesList", "motion-fade-lift-enter");
   await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewMapBtn")).not.toHaveClass(/active/);
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
@@ -297,12 +312,15 @@ test("map results rail renders status badges in vertical column without overlapp
 });
 
 test("university detail category switching leaves one active pane", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/university.html?id=mit-usa-cambridge");
   await expect(page.locator("#detailCard")).toBeVisible();
+  await installMotionRecorder(page);
 
   await page.click(".d-tab-btn[data-tab='tab-admission']");
   await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+  await expectAnimationStarted(page, "tab-admission", "motion-fade-lift-enter");
   await expect(page.locator(".d-tab-pane.active")).toHaveCount(1);
 
   await page.click(".d-tab-btn[data-tab='tab-finance']");
@@ -313,18 +331,81 @@ test("university detail category switching leaves one active pane", async ({ pag
 
 test("university detail tabs stay clickable after client-side route", async ({ page }) => {
   await markTourAsSeen(page);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/index.html");
 
   const mitCard = page.locator(".uni-card[data-uni-id='mit-usa-cambridge']").first();
   await expect(mitCard).toBeVisible();
+  await installMotionRecorder(page);
+  const supportsViewTransition = await page.evaluate(() => typeof document.startViewTransition === "function");
   await mitCard.locator(".uni-card-link-overlay").click();
 
   await expect(page).toHaveURL(/\/university\.html\?id=mit-usa-cambridge/);
   await expect(page.locator("#detailCard")).toBeVisible();
+  if (supportsViewTransition) await expectAnimationStarted(page, "::view-transition-new(root)", "");
+  else await expect(page.locator("main")).toHaveClass(/route-enter/);
 
   await page.click(".d-tab-btn[data-tab='tab-admission']");
   await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
+});
+
+test("settings cross-fade the palette and apply reduced-motion changes immediately", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light", reducedMotion: "no-preference" });
+  await page.goto("/about.html");
+  await expect(page.locator("#siteInitialLoader")).toBeHidden();
+  await page.locator("#settingsBtn").click();
+  const settings = page.locator("#settingsModal");
+  await expect(settings).toBeVisible();
+  await installMotionRecorder(page);
+  const supportsViewTransition = await page.evaluate(() => typeof document.startViewTransition === "function");
+  const theme = settings.getByRole("combobox", { name: "Theme", exact: true });
+
+  await theme.click();
+  await settings.getByRole("option", { name: "Dark", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  if (supportsViewTransition) await expectAnimationStarted(page, "::view-transition-new(root)", "");
+  await expect(page.locator("html")).not.toHaveAttribute("data-theme-switching", /.+/);
+  await expect(settings).toBeVisible();
+  const rootAnimations = () => page.evaluate(() => window.__motionAnimations.filter((key) => key.startsWith("::view-transition-new(root):")));
+  const animatedTheme = await rootAnimations();
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await theme.click();
+  await settings.getByRole("option", { name: "Light", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  expect(await rootAnimations()).toEqual(animatedTheme);
+});
+
+test("Guide disclosures preserve keyboard access and honor reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/guide.html#guide-unifit");
+  await expect(page.locator("#siteInitialLoader")).toBeHidden();
+  const details = page.locator("#guide-unifit .guide-formula-details");
+  const summary = details.locator("summary");
+  await summary.press("Enter");
+  await expect(details).toHaveAttribute("open", "");
+
+  const supportsMotion = await page.evaluate(() => CSS.supports(
+    "(interpolate-size: allow-keywords) and selector(details::details-content)",
+  ));
+  if (supportsMotion) {
+    expect(await details.evaluate((element) => getComputedStyle(element, "::details-content").transitionProperty))
+      .toContain("block-size");
+    await expect.poll(() => details.evaluate((element) => getComputedStyle(element, "::details-content").contentVisibility))
+      .toBe("visible");
+  }
+  await details.locator(".guide-formula").focus();
+  await expect(details.locator(".guide-formula")).toBeFocused();
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await summary.press("Enter");
+  await expect(details).not.toHaveAttribute("open", "");
+  await expect(summary).toBeFocused();
+  if (supportsMotion) {
+    expect(await details.evaluate((element) => getComputedStyle(element, "::details-content").transitionDuration))
+      .toBe("0s");
+  }
 });
 
 test("tab sliding indicators use a unified 2px full-pill line across filters and pages", async ({ page }) => {

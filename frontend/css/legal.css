@@ -107,16 +107,6 @@ body[data-page="terms"] {
 }
 
 /* --------------------------------------------------------------------------
-   Microfade Entry Motion
-   -------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  .legal-hero,
-  .legal-card {
-    animation: motion-fade-lift-soft var(--motion-slow) var(--motion-ease-enter) both;
-  }
-}
-
-/* --------------------------------------------------------------------------
    Responsive Breakpoints
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
