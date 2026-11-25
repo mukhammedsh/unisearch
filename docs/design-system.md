@@ -330,6 +330,9 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 - In multi-item containers move only what changed: the compare tray enters and leaves once, a new chip enters on its own, a removed chip fades before the re-render. Card grids never replay their entrance as a side effect.
 - Panel switchers (university tabs, comparison steps) use `.motion-tab-forward` / `.motion-tab-back`: a fade with an 8px offset from the side the user moved toward. Re-rendering the same panel (a choice changed) plays no motion.
 - Opening a university from a catalog card names the card photo and a stand-in in the loading cover `uni-cover` for the router View Transition (`frontend/javascript/components/cover-transition.js`); the gallery replaces the stand-in when the full photo loads. The loading skeleton cover mirrors the real cover box so the swap never changes height. Back navigation keeps the plain fade.
+- Re-rendered lists give rows a `data-row-key` and use `readRowKeys()` / `enterNewRows()` so only new or changed rows enter; a removed row collapses with `setRevealed(row, false, { onHidden })` before the data changes. The first render after load is still.
+- Content `<details>` opt into `.motion-disclosure`. Leave it off disclosures inside containers that animate their own height (program cards) and off route/context controls that code opens and reads at once.
+- Guide sections switch with the directional panel classes; the section shown on load is still.
 - `npm run check:design-lint` reports raw durations and easings in `transition`/`animation` declarations (`animation-raw-timing`), including fallbacks such as `var(--motion-fast, 160ms)`.
 
 ## Responsive Rules
