@@ -311,6 +311,10 @@
       transition-behavior: allow-discrete;
     }
 
+    details[open]::details-content {
+      overflow: visible;
+    }
+
     details:not([open])::details-content {
       block-size: 0;
       opacity: 0;

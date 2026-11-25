@@ -52,7 +52,7 @@ test("language switch updates UI labels for eng and ru locales", async ({ page }
   await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText("Guide");
 
   await switchLanguage(page, "rus");
-  await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText("Гайд");
+  await expect(page.locator(".footer-product-links a[data-route='guide']")).toContainText("Руководство");
 });
 
 test.describe("slow language switch with route interception", () => {

@@ -25,6 +25,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 
 ### Fixed
 - Restore browser-history navigation from the Guide and keep the homepage as the Back link's fallback when a visitor opens a Guide article directly.
+- Keep open disclosure contents and custom dropdowns interactive, and preserve the dropdown surface while a menu is open.
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 

@@ -9,7 +9,7 @@ const LOCALES = {
     totalPrefix: "Found",
   },
   rus: {
-    guide: "Гайд",
+    guide: "Руководство",
     filter: "Фильтр",
     reset: "Сброс",
     searchPlaceholder: "Поиск университета...",

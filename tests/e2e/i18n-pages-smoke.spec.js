@@ -12,7 +12,7 @@ const LOCALES = [
   },
   {
     code: "rus",
-    guide: "Гайд",
+    guide: "Руководство",
     filter: "Фильтр",
     searchPlaceholder: "Поиск университета...",
     backToList: "Назад",
