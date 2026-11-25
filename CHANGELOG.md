@@ -21,12 +21,21 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Serve startup metadata, catalog listing, map points, university detail contracts, subject matching, reference cost projections, ML program names, and unselected UniFit evaluations directly from `index.json` without loading full per-institution files (`universities.py`, `university_projection.py`, `ml_scoring.py`, `scoring_requirements.py`).
 - Load full per-institution admissions files lazily on demand with LF-normalized SHA-256 verification and a bounded LRU cache (`MAX_LOADED_INSTITUTIONS = 6`), failing explicitly on checksum or index drift and covering the contract with unit and HTTP regression tests (`test_admissions_catalog.py`, `test_admissions_cutover.py`, `test_admissions_catalog_preparation.py`, `test_admissions_editorial.py`).
 - Unify motion timing on the shared tokens: drop conflicting hardcoded fallbacks such as `var(--motion-medium, 260ms)` across stylesheets and add `--motion-ease-linear`, `--motion-offset-sm`, and `--motion-tooltip-delay` (`frontend/css/**`, `docs/design-system.md`).
+- Rewrite the Guide in English, Russian, and Kazakh to explain catalog browsing, UniFit, admissions requirements, comparisons, and exams in plain language.
+- Improve Guide readability with a narrower article column, a clearer current-article indicator, a shorter sidebar title, and softer body text in both themes.
+- Organize the UniFit article with subheadings and put the calculation formula after the main explanation. Add links between related articles, including from Catalog badges to UniFit.
+- Keep the Guide title and contents in a sticky sidebar and align previous and next links with the Back link's visual style.
+- Align university header actions with the top of the title and adapt the cover back button to the selected theme.
+- Use consistent 240 ms crossfades for page navigation and theme changes (initializing routes on `updateCallbackDone`) and animate campus photo switches while honoring `prefers-reduced-motion`.
+- Make hover and press feedback visible on navigation, dropdowns, source links, profile actions, program cards, and campus photo controls. Fade in updated calendar dates and comparison picker results while retaining keyboard focus.
 
 ### Fixed
 - Keep navbar search suggestions filled while they fade out instead of collapsing to an empty panel, and keep an upward-opening select panel leaving toward its trigger instead of jumping below it (`frontend/javascript/components/navbar-search.js`, `frontend/javascript/pages/universities.js`, `frontend/javascript/utils/selects.js`, `frontend/css/shared/08-device-responsive.css`).
 - Stop the compare tray from replaying its entrance on every selection change (`frontend/javascript/pages/universities/compare-controller.js`).
 - Keep the university loading skeleton cover the same height as the real cover at every breakpoint, and stop re-animating every comparison column on each track choice (`frontend/css/university/01-shell-hero.css`, `frontend/javascript/pages/compare.js`).
 - Stop re-animating every profile exam and language row on each change (`frontend/javascript/components/profile/profile-exam-editor.js`, `frontend/javascript/languages.js`).
+- Restore browser-history navigation from the Guide and keep the homepage as the Back link's fallback when a visitor opens a Guide article directly.
+- Preserve the dropdown surface while a menu is open (`frontend/css/shared/02-shell-settings-feedback.css`).
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 

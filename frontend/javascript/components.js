@@ -597,7 +597,7 @@ export function setupTabs() {
   let updateIndicator = null;
 
   const activateTab = (btn, { animate = true } = {}) => {
-    if (!btn) return;
+    if (!btn || (animate && btn.classList.contains("active"))) return;
     const previousIndex = buttons.findIndex((b) => b.classList.contains("active"));
     const targetId = btn.getAttribute("data-tab");
     buttons.forEach((b) => {
@@ -613,7 +613,7 @@ export function setupTabs() {
     });
     const targetPane = targetId ? document.getElementById(targetId) : null;
     if (animate) {
-      if (targetPane && previousIndex !== buttons.indexOf(btn)) {
+      if (targetPane && previousIndex >= 0 && previousIndex !== buttons.indexOf(btn)) {
         // The pane comes in from the side of the tab the user moved toward.
         const forward = buttons.indexOf(btn) > previousIndex;
         replayMotion(targetPane, forward ? "motion-tab-forward" : "motion-tab-back", { timeoutMs: 320 });

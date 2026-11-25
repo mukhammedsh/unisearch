@@ -7,7 +7,7 @@
 // program is chosen in the picker. A choice made here is the same saved choice the university page uses.
 // Layout follows the familiar product-comparison pattern: identity heads, topic sections, a label per row and one
 // value per university, with a compact sticky strip of names while the heads are out of view.
-import { API_BASE, bindImageFallbacks, debounce, loadProfile, loadProfileForApi, markMotionEnter, saveSelectedAdmissionChoice } from "../../utils.js";
+import { API_BASE, bindImageFallbacks, debounce, loadProfile, loadProfileForApi, markMotionEnter, replayMotion, saveSelectedAdmissionChoice } from "../../utils.js";
 import { loadStaticCatalog } from "../../utils/static-snapshot.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
@@ -663,7 +663,7 @@ function openPicker({ column, trigger, onApply }) {
       </button></li>`).join("")}</ul>`;
   };
 
-  const render = ({ keepSearchFocus = false } = {}) => {
+  const render = ({ keepSearchFocus = false, animate = false } = {}) => {
     const body = picker.step === "routes" ? routesHtml() : picker.step === "applying"
       ? pickerStateHtml("loading", "")
       : programsHtml();
@@ -673,6 +673,7 @@ function openPicker({ column, trigger, onApply }) {
       subtitle: compareUniversityName(column.university),
       body,
     });
+    if (animate) replayMotion(dialog.querySelector(".compare-picker__body"), "motion-panel-enter");
     if (keepSearchFocus) {
       const input = dialog.querySelector("#comparePickerSearch");
       input?.focus();
@@ -688,7 +689,7 @@ function openPicker({ column, trigger, onApply }) {
     if (count) count.textContent = picker.status === "ready" ? tFormat("universities.compare.reviewed.picker.count", { total: formatUiNumber(picker.total) }) : "";
   };
 
-  async function loadPrograms({ append = false } = {}) {
+  async function loadPrograms({ append = false, animate = false } = {}) {
     picker.request?.abort();
     const request = picker.request = new AbortController();
     picker.status = "loading";
@@ -704,7 +705,10 @@ function openPicker({ column, trigger, onApply }) {
       if (request.signal.aborted || request !== picker.request) return;
       picker.status = "error";
     }
-    if (picker.step === "programs") renderResults();
+    if (picker.step === "programs") {
+      renderResults();
+      if (animate) replayMotion(dialog.querySelector("[data-picker-results]"), "motion-panel-enter");
+    }
   }
 
   async function chooseProgram(option) {
@@ -730,7 +734,7 @@ function openPicker({ column, trigger, onApply }) {
         picker.pending = resolved;
         picker.pendingContext = context;
         picker.step = "routes";
-        render();
+        render({ animate: true });
         dialog.querySelector("[data-picker-route]")?.focus();
         return;
       }
@@ -768,12 +772,16 @@ function openPicker({ column, trigger, onApply }) {
     if (target.matches("[data-picker-close]")) dialog.close();
     else if (target.matches("[data-picker-shared]")) { onApply(null, null); dialog.close(); }
     else if (target.matches("[data-picker-level]")) {
+      const levelChanged = picker.level !== target.dataset.pickerLevel;
       picker.level = target.dataset.pickerLevel;
       dialog.querySelectorAll("[data-picker-level]").forEach((button) => button.setAttribute("aria-pressed", String(button === target)));
-      void loadPrograms();
+      void loadPrograms({ animate: levelChanged });
     } else if (target.matches("[data-picker-more]")) { picker.page += 1; void loadPrograms({ append: true }); }
     else if (target.matches("[data-picker-retry]")) void loadPrograms();
-    else if (target.matches("[data-picker-back]")) { picker.step = "programs"; render(); renderResults(); }
+    else if (target.matches("[data-picker-back]")) {
+      picker.step = "programs";
+      render({ keepSearchFocus: true, animate: true });
+    }
     else if (target.matches("[data-picker-route]")) void chooseRoute(target.dataset.pickerRoute);
     else if (target.matches("[data-picker-option]")) {
       const option = picker.items.find((item) => item.id === target.dataset.pickerOption);

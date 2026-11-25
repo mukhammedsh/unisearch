@@ -633,6 +633,7 @@ async function loadAppRoute(rawHref, options = {}) {
 
   try {
     const html = await fetchRouteHtml(url.href, controller.signal);
+    controller.signal.throwIfAborted();
     const nextDoc = new DOMParser().parseFromString(html, "text/html");
 
     applyTranslations(nextDoc);
@@ -660,8 +661,10 @@ async function loadAppRoute(rawHref, options = {}) {
     }
 
     await syncDocumentHeadFromRoute(nextDoc, url.href);
+    controller.signal.throwIfAborted();
 
     const updateDomAndState = () => {
+      controller.signal.throwIfAborted();
       replaceRouteDom(nextDoc);
 
       clearSidebarFiltersState();
@@ -681,33 +684,29 @@ async function loadAppRoute(rawHref, options = {}) {
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     };
 
-    const supportsViewTransition = typeof document.startViewTransition === "function" && !prefersReducedMotion();
-
+    const animate = !prefersReducedMotion();
     // Always consumed so a remembered card photo never leaks into a later navigation.
     const coverHandoff = takeCoverHandoff(url);
 
-    if (supportsViewTransition) {
+    if (animate && typeof document.startViewTransition === "function") {
       coverHandoff?.markSource();
       const transition = document.startViewTransition(() => {
         updateDomAndState();
         coverHandoff?.inject();
       });
-      await transition.finished.catch(() => {});
-      coverHandoff?.settle();
-    } else if (!prefersReducedMotion()) {
-      const currentMain = document.querySelector("main");
-      if (currentMain) {
-        currentMain.classList.add("page-exit");
-        await new Promise((resolve) => window.setTimeout(resolve, 110));
-      }
-      updateDomAndState();
+      const settleCover = () => coverHandoff?.settle();
+      void transition.finished.then(settleCover, settleCover);
+      // Initialize the new route while its snapshot is fading in.
+      await transition.updateCallbackDone;
     } else {
       updateDomAndState();
+      if (animate) document.querySelector("main")?.classList.add("route-enter");
     }
 
+    controller.signal.throwIfAborted();
     await initializeCurrentRoute();
     window.requestAnimationFrame(() => {
-      focusRouteDestination(url.hash);
+      if (!controller.signal.aborted && lastLoadedAppRouteUrl === url.href) focusRouteDestination(url.hash);
     });
     return true;
   } catch (error) {
@@ -717,8 +716,10 @@ async function loadAppRoute(rawHref, options = {}) {
     else window.location.href = url.href;
     return false;
   } finally {
-    if (appRouteNavigationInFlight === controller) appRouteNavigationInFlight = null;
-    document.body.classList.remove("route-loading");
+    if (appRouteNavigationInFlight === controller) {
+      appRouteNavigationInFlight = null;
+      document.body.classList.remove("route-loading");
+    }
   }
 }
 

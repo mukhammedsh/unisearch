@@ -77,13 +77,14 @@ async function selectAdmissionRoute(page, value) {
 
   const publishedRoute = page.locator(`[data-read-route="${value}"]`);
   await openDisclosureParents(publishedRoute);
+  const sharedRoute = page.locator(`[data-shared-route="${value}"]`);
+  if (await publishedRoute.count()) await publishedRoute.waitFor({ state: "visible", timeout: 10000 });
   if (await publishedRoute.isVisible()) {
     await publishedRoute.click();
     await page.locator('#admissionsContext[data-state="ready"]').waitFor();
     return;
   }
 
-  const sharedRoute = page.locator(`[data-shared-route="${value}"]`);
   if (await sharedRoute.isVisible()) {
     await sharedRoute.click();
     await page.locator('#admissionsContext[data-state="ready"]').waitFor();

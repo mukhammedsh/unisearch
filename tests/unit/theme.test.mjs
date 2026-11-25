@@ -29,6 +29,9 @@ describe('theme.js', () => {
       setAttribute: (name, val) => {
         docAttributes[name] = String(val);
       },
+      removeAttribute: (name) => {
+        delete docAttributes[name];
+      },
       style: {
         get colorScheme() {
           return styleColorScheme;
@@ -156,9 +159,6 @@ describe('theme.js', () => {
     const frames = [];
     const origRaf = global.window.requestAnimationFrame;
     const origCreateElement = global.document.createElement;
-    global.document.documentElement.removeAttribute = (name) => {
-      delete docAttributes[name];
-    };
     global.window.requestAnimationFrame = (cb) => {
       frames.push(cb);
       return frames.length;
@@ -193,9 +193,6 @@ describe('theme.js', () => {
     let nextFrame = 0;
     global.window.requestAnimationFrame = () => ++nextFrame;
     global.window.cancelAnimationFrame = (id) => cancelled.push(id);
-    global.document.documentElement.removeAttribute = (name) => {
-      delete docAttributes[name];
-    };
 
     try {
       applyTheme('dark', { persist: true });
@@ -215,6 +212,37 @@ describe('theme.js', () => {
     } finally {
       global.window.requestAnimationFrame = origRaf;
       global.window.cancelAnimationFrame = origCancel;
+    }
+  });
+
+  test('a pending theme animation cannot override a newer choice', async () => {
+    let update;
+    let finish;
+    let skipped = false;
+    global.document.startViewTransition = (callback) => {
+      update = callback;
+      return {
+        finished: new Promise((resolve) => { finish = resolve; }),
+        skipTransition() { skipped = true; },
+      };
+    };
+
+    try {
+      applyTheme('dark', { persist: true });
+      assert.strictEqual(docAttributes['data-theme-switching'], 'fade');
+      assert.strictEqual(mockLocalStorage['unisearch_theme'], 'dark');
+      applyTheme('light', { persist: true });
+      update();
+      finish();
+      await Promise.resolve();
+
+      assert.strictEqual(skipped, true);
+      assert.strictEqual(getCurrentTheme(), 'light');
+      assert.strictEqual(mockLocalStorage['unisearch_theme'], 'light');
+      assert.strictEqual(docAttributes['data-theme-switching'], undefined);
+      assert.deepStrictEqual(dispatchedEvents.map((event) => event.detail.theme), ['light']);
+    } finally {
+      delete global.document.startViewTransition;
     }
   });
 });

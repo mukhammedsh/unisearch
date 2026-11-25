@@ -1,4 +1,5 @@
 import { safeLocalStorage } from "./safe-storage.js";
+import { prefersReducedMotion } from "./runtime.js";
 
 const THEME_STORAGE_KEY = "unisearch_theme";
 const THEME_LIGHT = "light";
@@ -7,6 +8,8 @@ const THEME_SYSTEM = "system";
 
 let themeWatchBound = false;
 let disableTransitionsFrame = 0;
+let themeChangeSequence = 0;
+let themeTransition = null;
 
 function disableTransitionsTemporarily() {
   if (typeof document === "undefined") return;
@@ -21,7 +24,7 @@ function disableTransitionsTemporarily() {
   if (typeof window !== "undefined" && typeof window.requestAnimationFrame === "function") {
     disableTransitionsFrame = window.requestAnimationFrame(() => {
       disableTransitionsFrame = window.requestAnimationFrame(() => {
-        root.removeAttribute("data-theme-switching");
+        if (root.getAttribute("data-theme-switching") === "1") root.removeAttribute("data-theme-switching");
         disableTransitionsFrame = 0;
       });
     });
@@ -73,21 +76,37 @@ function resolveTheme(preference) {
 export function applyTheme(theme, options = {}) {
   const preference = normalizeThemePreference(theme);
   const nextTheme = resolveTheme(preference);
-  const persist = Boolean(options.persist);
   const root = document.documentElement;
+  const sequence = ++themeChangeSequence;
+  const animate = options.animate !== false && nextTheme !== getCurrentTheme();
 
-  if (options.animate !== false) {
-    disableTransitionsTemporarily();
+  if (options.persist) safeLocalStorage.set(THEME_STORAGE_KEY, preference);
+  themeTransition?.skipTransition();
+  themeTransition = null;
+
+  const updateTheme = () => {
+    if (sequence !== themeChangeSequence) return;
+    root.setAttribute("data-theme", nextTheme);
+    root.style.colorScheme = nextTheme;
+    window.dispatchEvent(new CustomEvent("themeChanged", { detail: { theme: nextTheme, preference } }));
+  };
+
+  if (animate && !prefersReducedMotion() && typeof document.startViewTransition === "function") {
+    root.setAttribute("data-theme-switching", "fade");
+    const transition = document.startViewTransition(updateTheme);
+    themeTransition = transition;
+    const finish = () => {
+      if (themeTransition !== transition) return;
+      themeTransition = null;
+      root.removeAttribute("data-theme-switching");
+    };
+    void transition.finished.then(finish, finish);
+  } else {
+    if (root.getAttribute("data-theme-switching") === "fade") root.removeAttribute("data-theme-switching");
+    if (animate) disableTransitionsTemporarily();
+    updateTheme();
   }
-  root.classList.remove("theme-animating");
-  root.setAttribute("data-theme", nextTheme);
-  root.style.colorScheme = nextTheme;
 
-  if (persist) {
-    safeLocalStorage.set(THEME_STORAGE_KEY, preference);
-  }
-
-  window.dispatchEvent(new CustomEvent("themeChanged", { detail: { theme: nextTheme, preference } }));
   return nextTheme;
 }
 

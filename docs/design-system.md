@@ -92,6 +92,8 @@ Good references:
 - `frontend/css/ranking.css` ranking list.
 - `frontend/css/guide.css` guide sidebar and content sections.
 
+Guide articles use a constrained reading column and mark the current contents link with a selected surface and a stronger font weight. Underline links to related articles in the body text so they remain identifiable without color.
+
 ### Information Pages
 
 Use a large title, muted lead copy, and clean sections. Keep sections full-width within the page shell. Avoid stacked card-in-card layouts unless the cards are repeated items.
@@ -317,6 +319,9 @@ Raw numeric z-indices outside `[-1, 0, 1, 2]` are strictly forbidden and guarded
 - Use the shared tokens in `frontend/css/shared/06-motion-accessibility.css`: `--motion-instant`, `--motion-snappy`, `--motion-fast`, `--motion-medium`, `--motion-slow`, and the shared easing variables.
 - Use global motion classes before adding component-specific keyframes: `.motion-panel-enter`, `.motion-list-item-enter`, `.motion-row-exit`, `.motion-chip-remove`, `.motion-card-remove`, `.motion-icon-*`, and `.motion-state-pulse`.
 - Page and panel motion should be short fade/lift transitions. Lists may use limited stagger for the first visible items only. Save, compare, remove, and switch feedback should target the icon, thumb, or removed node.
+- Use the shared 240 ms crossfade for page navigation and theme changes. Initialize each route as soon as its markup is replaced. Keep the navbar steady during navigation and include it in the palette change when switching themes.
+- Use the shared panel entrance for the changed content when a user navigates the deadline calendar or switches steps or study levels in the comparison picker. Keep the trigger focus visible during updates.
+- Check that hover changes the actual computed surface, text, or decoration in both themes. Use pointer hover only on devices with a fine hovering pointer, and give touch and keyboard users their own press and focus feedback.
 - Calm academic motion over "video game" playfulness: Strictly avoid gratuitous, exaggerated, or gamified animations (no bouncy springs, cartoon squashes like `scale(0.95)`, wobbly button presses, or playful bobbing). Transitions must remain smooth, understated, and functional—focusing on opacity, subtle background color changes, and precise translate enters/exits.
 - Do not use `transition-all`, hardcoded duration/easing values, decorative hover lifts on scanning surfaces, or animated `box-shadow` pulses. Use opacity/transform ring motion for state confirmation.
 - Always include or preserve `prefers-reduced-motion` fallbacks; reduced motion must leave final UI state visible and usable.

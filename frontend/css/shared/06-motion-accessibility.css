@@ -143,7 +143,7 @@
 
 /* Opt-in <details> disclosure that grows and shrinks; browsers without ::details-content or
    interpolate-size open and close instantly. */
-@supports selector(::details-content) {
+@supports (interpolate-size: allow-keywords) and selector(details::details-content) {
   .motion-disclosure {
     interpolate-size: allow-keywords;
   }
@@ -151,6 +151,7 @@
   .motion-disclosure::details-content {
     block-size: 0;
     overflow: clip;
+    overflow-clip-margin: var(--space-1);
     opacity: 0;
     transition:
       block-size var(--motion-snappy) var(--motion-ease-exit),
@@ -268,7 +269,7 @@
 }
 
 .motion-panel-enter {
-  animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) both;
+  animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards;
   transform-origin: center top;
 }
 
@@ -436,6 +437,36 @@
   transition: none;
 }
 
+:root[data-theme-switching="fade"] .navbar {
+  view-transition-name: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: var(--motion-medium);
+    animation-timing-function: var(--motion-ease-standard);
+  }
+
+  ::view-transition-old(main-navbar) {
+    display: none;
+  }
+
+  ::view-transition-new(main-navbar) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  .route-enter {
+    animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-enter) backwards;
+  }
+
+  :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]) {
+    animation: motion-backdrop-in var(--motion-fast) var(--motion-ease-enter) backwards;
+  }
+}
+
 body[data-page="about"],
 body[data-page="guide"] {
   background: var(--bg);
@@ -513,6 +544,7 @@ body[data-page="guide"] {
   .custom-options,
   .custom-select-trigger,
   .custom-option,
+  .sliding-indicator,
   .settings-switch-track,
   .settings-switch-thumb {
     transition: none !important;
@@ -537,10 +569,6 @@ body[data-page="guide"] {
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
-  }
-
-  .page-exit {
-    transition: none !important;
   }
 
   .skip-link {

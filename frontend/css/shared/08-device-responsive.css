@@ -276,6 +276,10 @@ body .has-sliding-indicator .active::after {
   outline: 0;
 }
 
+.navbar-search-suggestion:active {
+  background-color: var(--interaction-active-surface);
+}
+
 .navbar-search-suggestion__body {
   display: flex;
   flex-direction: column;
@@ -360,7 +364,7 @@ body .has-sliding-indicator .active::after {
     color: var(--interaction-hover-text);
   }
 
-  .navbar-search-suggestion:hover {
+  .navbar-search-suggestion:hover:not(:active) {
     background: var(--surface-soft);
   }
 }

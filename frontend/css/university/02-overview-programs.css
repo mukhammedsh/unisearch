@@ -129,6 +129,9 @@
   font: inherit;
   cursor: pointer;
   align-self: flex-start;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .program-card__admission-action:hover {
@@ -342,6 +345,11 @@
   line-height: 1.35;
   color: var(--text);
   overflow-wrap: break-word;
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.program-card__toggle:active {
+  background-color: var(--interaction-active-surface);
 }
 
 .program-card__summary {
@@ -992,16 +1000,6 @@
   transform: rotate(180deg);
 }
 
-.overview-summary__sources::details-content {
-  interpolate-size: allow-keywords;
-  overflow: clip;
-  contain: layout;
-}
-
-.overview-summary__sources:not([open])::details-content {
-  block-size: 0;
-}
-
 .overview-summary__sources-list {
   display: flex;
   flex-direction: column;
@@ -1327,16 +1325,6 @@
   transform: rotate(180deg);
 }
 
-.d-facts-sources::details-content {
-  interpolate-size: allow-keywords;
-  overflow: clip;
-  contain: layout;
-}
-
-.d-facts-sources:not([open])::details-content {
-  block-size: 0;
-}
-
 .d-facts-sources__panel {
   margin-block-start: var(--space-2);
   padding: var(--space-4) var(--space-5);
@@ -1452,16 +1440,6 @@
 /* Gap-owning containers already space these children; their own margins doubled it. */
 .program-signal__row > .admissions-source-link {
   margin-block: 0;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .d-facts-sources::details-content,
-  .overview-summary__sources::details-content {
-    transition: block-size var(--motion-medium) var(--motion-ease-standard),
-      content-visibility var(--motion-medium) var(--motion-ease-standard),
-      display var(--motion-medium) var(--motion-ease-standard);
-    transition-behavior: allow-discrete;
-  }
 }
 
 @media (min-width: 900px) {
@@ -1694,6 +1672,10 @@
   .program-card:not(.is-open):hover {
     transform: none;
     box-shadow: var(--shadow-micro);
+  }
+
+  .program-card__toggle:hover .program-card__title {
+    color: var(--accent-text);
   }
 
   .program-search__clear:hover {

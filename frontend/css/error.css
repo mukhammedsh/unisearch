@@ -7,12 +7,6 @@ body[data-page="error-404"] {
   background: var(--bg);
 }
 
-body[data-page="error-404"] main.error-page:not(.page-exit) {
-  animation: none;
-  opacity: 1;
-  transform: none;
-}
-
 /* --------------------------------------------------------------------------
    Page Container — Centered vertically between navbar and sticky footer
    -------------------------------------------------------------------------- */
