@@ -129,3 +129,17 @@ test("the loading cover has the same box as the university cover", async ({ page
     expect(heights.skeletonRadius, `${viewport.width}px`).toBe(heights.coverRadius);
   }
 });
+
+test("guide sections come in from their direction", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
+  await page.goto("/guide.html");
+  const next = page.locator(".guide-section-navigation__button--next");
+  await expect(next).toBeVisible();
+  await installMotionRecorder(page);
+  await next.click();
+  await expect.poll(() => motionSeen(page, "motion-tab-forward")).toBe(true);
+  await page.locator(".guide-section-navigation__button--previous").click();
+  await expect.poll(() => motionSeen(page, "motion-tab-back")).toBe(true);
+  expect(await motionSeen(page, "motion-state-pulse")).toBe(false);
+});

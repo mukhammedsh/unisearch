@@ -318,6 +318,9 @@ function setupGuideSectionNavigation({
     const targetSection = sectionById.get(nextId);
 
     let sectionChanged = false;
+    // Sections come in from the side the reader moved toward; the first section shown stays still.
+    const previousIndex = sections.findIndex((section) => section.classList.contains("is-active"));
+    const forward = sections.findIndex((section) => section.id === nextId) > previousIndex;
     sections.forEach((section) => {
       const active = section.id === nextId;
       const wasActive = section.classList.contains("is-active");
@@ -327,7 +330,9 @@ function setupGuideSectionNavigation({
       section.classList.toggle("is-active", active);
       section.setAttribute("aria-hidden", active ? "false" : "true");
       section.hidden = !active;
-      if (active && !wasActive) replayMotion(section, "motion-state-pulse", { timeoutMs: 520 });
+      if (active && !wasActive && previousIndex >= 0) {
+        replayMotion(section, forward ? "motion-tab-forward" : "motion-tab-back", { timeoutMs: 320 });
+      }
     });
 
     navLinks.forEach((link) => {
