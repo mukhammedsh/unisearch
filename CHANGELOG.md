@@ -51,6 +51,7 @@ Minor release: split admissions storage for lazy loading, add a deploy-time stat
 - Restore browser-history navigation from the Guide and fall back to the homepage when a Guide article is opened directly.
 - Preserve open dropdown trigger surfaces and keep custom select menus visibly elevated above card backgrounds in both themes.
 - Fix hover and active surface feedback on catalog filter reset buttons and program search clear controls.
+- Keep the navigation search icon clear of the placeholder text.
 
 ### Maintenance
 - Add a design lint rule flagging raw transition durations and easings alongside unit and E2E tests for static snapshots, lazy admissions loading, motion layers, and cross-page interaction states.
