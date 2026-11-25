@@ -1,17 +1,17 @@
 import {
   API_BASE,
   EXAM_CONFIG,
-  animateElementOut,
   canonicalizeExamId,
   escapeHtml,
+  escapeHtmlAttr,
   formatExamValue,
   getExamConfig,
   getExamDisplayName,
   getExamInputMode,
-  markMotionEnter,
   motionPress,
   showToast,
 } from "../../utils.js";
+import { enterNewRows, readRowKeys, setRevealed } from "../../utils/motion-reveal.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import {
   breakdownAllowsTotalOnly,
@@ -279,19 +279,25 @@ export const populateExamSelect = (els, state) => {
 export const renderProfileData = (els, state) => {
     if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
     if (els.examList) {
-        els.examList.innerHTML = state.profile.exams.map((ex, i) => `
-            <div class="profile-exam-item">
+        const previousKeys = readRowKeys(els.examList);
+        els.examList.innerHTML = state.profile.exams.map((ex, i) => {
+            const value = formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() });
+            // The key lets a re-render animate only rows that are new or changed.
+            const rowKey = JSON.stringify([ex.exam, value, ex.taken_on || ""]);
+            return `
+            <div class="profile-exam-item" data-row-key="${escapeHtmlAttr(rowKey)}">
                 <div class="profile-exam-meta">
                     <span class="profile-exam-name">${escapeHtml(getExamDisplayName(ex.exam, { locale: getCurrentLanguage() }))}</span>
-                    <span class="profile-exam-score">${escapeHtml([formatExamValue(ex.exam, ex, { context: "profile", locale: getCurrentLanguage() }), ex.taken_on].filter(Boolean).join(" · "))}</span>
+                    <span class="profile-exam-score">${escapeHtml([value, ex.taken_on].filter(Boolean).join(" · "))}</span>
                 </div>
                 <div class="profile-list-actions">
                     <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
                     <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
                 </div>
             </div>
-        `).join("");
-        markMotionEnter(els.examList, ".profile-exam-item", { limit: 8, staggerMs: 18 });
+        `;
+        }).join("");
+        enterNewRows(els.examList, ".profile-exam-item", previousKeys);
     }
     refreshExamActionButton(els, state);
 };
@@ -511,11 +517,16 @@ export const handleExamListClick = (e, els, state) => {
     if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
 
     const row = btn.closest(".profile-exam-item");
-    animateElementOut(row, () => {
-        state.profile.exams.splice(idx, 1);
+    // Resolve the entry now: another row may be removed while this one collapses.
+    const entry = state.profile.exams[idx];
+    if (!entry || !row) return;
+    setRevealed(row, false, { onHidden: () => {
+        const at = state.profile.exams.indexOf(entry);
+        if (at < 0) return;
+        state.profile.exams.splice(at, 1);
         state.profile = ensureProfileShape(state.profile);
         refreshSaveState(els, state);
         renderProfileData(els, state);
         showToast(t("profile.exam_removed", "Exam removed"), "success");
-    });
+    } });
 };

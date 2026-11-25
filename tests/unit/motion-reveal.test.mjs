@@ -2,7 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
-import { fadeIn, isRevealing, setRevealed, setTextWithFade } from "../../frontend/javascript/utils/motion-reveal.js";
+import { enterNewRows, fadeIn, isRevealing, readRowKeys, setRevealed, setTextWithFade } from "../../frontend/javascript/utils/motion-reveal.js";
 
 /** Minimal element double: records animate() calls and lets the test settle them. */
 function createNode({ hidden = false, display = "", height = 40 } = {}) {
@@ -159,5 +159,50 @@ describe("motion-reveal", () => {
     setTextWithFade(node, "9", { instant: true });
     assert.equal(node.textContent, "9");
     assert.equal(node.animations.length, 1);
+  });
+
+  it("onHidden runs after the collapse and at once on the instant path", async () => {
+    const node = createNode();
+    let calls = 0;
+    setRevealed(node, false, { onHidden: () => { calls += 1; } });
+    assert.equal(calls, 0);
+    node.animations[0].finish();
+    await settle();
+    assert.equal(calls, 1);
+
+    const instantNode = createNode();
+    setRevealed(instantNode, false, { instant: true, onHidden: () => { calls += 1; } });
+    assert.equal(calls, 2);
+  });
+
+  it("onHidden is skipped when a show interrupts the hide", async () => {
+    const node = createNode();
+    let calls = 0;
+    setRevealed(node, false, { onHidden: () => { calls += 1; } });
+    setRevealed(node, true);
+    await settle();
+    node.animations[1].finish();
+    await settle();
+    assert.equal(calls, 0);
+  });
+
+  it("enterNewRows animates only rows with unseen keys and nothing on the first render", () => {
+    global.CSS = global.CSS || { escape: (value) => String(value) };
+    const makeRow = (key) => Object.assign(new global.HTMLElement(), { dataset: { rowKey: key }, classList: createNode().classList, style: {}, addEventListener() {} });
+    const rows = [makeRow("a"), makeRow("b")];
+    const list = {
+      dataset: {},
+      querySelectorAll: (selector) => (selector.includes("data-row-key=") ? rows.filter((row) => selector.includes(`"${row.dataset.rowKey}"`)) : rows),
+    };
+    assert.equal(readRowKeys(list), null);
+    enterNewRows(list, ".row", null);
+    assert.equal(list.dataset.rowsRendered, "1");
+    assert.ok(rows.every((row) => !row.classList.contains("motion-list-item-enter")));
+
+    const previous = readRowKeys(list);
+    assert.deepEqual([...previous], ["a", "b"]);
+    rows.push(makeRow("c"));
+    enterNewRows(list, ".row", previous);
+    assert.deepEqual(rows.map((row) => row.classList.contains("motion-list-item-enter")), [false, false, true]);
   });
 });

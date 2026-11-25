@@ -1,7 +1,7 @@
 // Small Web Animations helpers for catalog motion (stage 2 of
 // docs/superpowers/specs/2026-11-25-motion-system-design.md). Height reveals are used for existing
 // multi-child elements that are toggled from JS, where a CSS grid 0fr/1fr wrapper would mean new markup.
-import { prefersReducedMotion } from "./runtime.js";
+import { markMotionEnter, prefersReducedMotion } from "./runtime.js";
 
 // Mirrors --motion-fast / --motion-snappy and the enter/exit easing tokens in 06-motion-accessibility.css.
 const REVEAL_ENTER_MS = 160;
@@ -34,8 +34,9 @@ function ignoreCancel(error) {
 }
 
 /**
- * @typedef {{ mode?: "hidden" | "display", display?: string, instant?: boolean, retarget?: boolean }} RevealOptions
+ * @typedef {{ mode?: "hidden" | "display", display?: string, instant?: boolean, retarget?: boolean, onHidden?: () => void }} RevealOptions
  * `retarget` restarts a running reveal toward the element's current full size (its content changed).
+ * `onHidden` runs once a hide has completed (at once on the instant path), never after an interrupted hide.
  */
 
 /**
@@ -106,6 +107,7 @@ export function setRevealed(node, visible, options = {}) {
     node.classList.remove(REVEALING_CLASS);
     node.inert = false;
     applyVisibility(node, visible, options);
+    if (!visible) options.onHidden?.();
     return;
   }
 
@@ -136,8 +138,37 @@ export function setRevealed(node, visible, options = {}) {
     if (!visible) {
       applyVisibility(node, false, options);
       node.inert = false;
+      options.onHidden?.();
     }
   }).catch(ignoreCancel);
+}
+
+/**
+ * Keys of the rows a list rendered last time, or null before its first render.
+ * @param {HTMLElement} list
+ * @returns {Set<string> | null}
+ */
+export function readRowKeys(list) {
+  if (!list || list.dataset.rowsRendered !== "1") return null;
+  return new Set(Array.from(list.querySelectorAll("[data-row-key]"), (row) => row.dataset.rowKey));
+}
+
+/**
+ * After a list re-render, lets only rows whose `data-row-key` is new enter; the first render is still.
+ * @param {HTMLElement} list
+ * @param {string} rowSelector
+ * @param {Set<string> | null} previousKeys result of `readRowKeys` taken before the re-render
+ */
+export function enterNewRows(list, rowSelector, previousKeys) {
+  if (!list) return;
+  list.dataset.rowsRendered = "1";
+  if (!previousKeys) return;
+  const fresh = Array.from(list.querySelectorAll(rowSelector))
+    .map((row) => row.dataset.rowKey)
+    .filter((key) => key && !previousKeys.has(key));
+  if (!fresh.length) return;
+  const selector = fresh.map((key) => `${rowSelector}[data-row-key="${CSS.escape(key)}"]`).join(", ");
+  markMotionEnter(list, selector, { limit: fresh.length });
 }
 
 /**

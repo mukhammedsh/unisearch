@@ -1,13 +1,13 @@
 import {
   API_BASE,
-  animateElementOut,
   escapeHtml,
+  escapeHtmlAttr,
   getExamDisplayName,
   initCustomSelect,
-  markMotionEnter,
   motionPress,
   showToast,
 } from "./utils.js";
+import { enterNewRows, readRowKeys, setRevealed } from "./utils/motion-reveal.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import {
   CEFR_LABEL,
@@ -223,6 +223,7 @@ export function initLanguagesPanel() {
         saveEditableProfile(prof);
       }
 
+      const previousKeys = readRowKeys(langList);
       langList.innerHTML = arr.map((entry, idx) => {
         const langName = escapeHtml(getLangLabel(cfg, entry.code));
         const kindName = escapeHtml(getKindLabel(cfg, entry.kind));
@@ -239,7 +240,7 @@ export function initLanguagesPanel() {
         }
 
         return `
-          <div class="lang-item">
+          <div class="lang-item" data-row-key="${escapeHtmlAttr(JSON.stringify(entry))}">
             <div class="lang-item__main">
               <strong>${langName}</strong>
               <small>${kindName}${meta}</small>
@@ -251,7 +252,7 @@ export function initLanguagesPanel() {
           </div>
         `;
       }).join("");
-      markMotionEnter(langList, ".lang-item", { limit: 8, staggerMs: 18 });
+      enterNewRows(langList, ".lang-item", previousKeys);
 
       refreshLangActionButton();
     }
@@ -772,12 +773,19 @@ export function initLanguagesPanel() {
         .filter(Boolean);
 
       const row = btn.closest(".lang-item");
-      animateElementOut(row, () => {
-        prof.languages.splice(idx, 1);
-        saveEditableProfile(prof);
+      const removedKey = JSON.stringify(prof.languages[idx]);
+      if (!row || removedKey === undefined) return;
+      // Re-read on completion and remove by content: another row may have been removed meanwhile.
+      setRevealed(row, false, { onHidden: () => {
+        const latest = loadEditableProfile();
+        latest.languages = (Array.isArray(latest.languages) ? latest.languages : []).map(normalizeLangEntry).filter(Boolean);
+        const at = latest.languages.findIndex((entry) => JSON.stringify(entry) === removedKey);
+        if (at < 0) return;
+        latest.languages.splice(at, 1);
+        saveEditableProfile(latest);
         renderList();
         showToast(t("languages.removed", "Removed"), "success");
-      });
+      } });
     });
 
     // The profile opens after this panel boots and rebuilds its selects, so a link to a test is followed once it is open.
