@@ -125,7 +125,7 @@ export function initSettingsUI() {
       setSettingValue(key, nextValue);
       syncSettingsInputs();
       if (input.type === "checkbox") {
-        replayMotion(input.closest(".settings-switch")?.querySelector(".settings-switch-track"), "motion-switch-toggle", { timeoutMs: 260 });
+        replayMotion(input, "motion-switch-toggle", { timeoutMs: 260 });
       }
       if (key === SETTING_PREFERRED_CURRENCY || key === SETTING_CURRENCY_DISPLAY) {
         try {

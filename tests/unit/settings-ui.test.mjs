@@ -40,7 +40,6 @@ class FakeElement extends global.HTMLElement {
   emit(type, event = {}) { this.listeners.get(type)?.({ preventDefault() {}, ...event }); }
   focus() { this.focusCalls += 1; }
   getClientRects() { return [{}]; }
-  closest() { return { querySelector: () => this.track }; }
 }
 
 test("settings modal synchronizes controls, persists changes, and closes accessibly", async () => {
@@ -65,9 +64,7 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
   const openButton = new FakeElement();
   const closeButton = new FakeElement();
   const recent = new FakeElement({ tagName: "INPUT", type: "checkbox", settingKey: "disable_recent_universities" });
-  recent.track = new FakeElement();
   const newTab = new FakeElement({ tagName: "INPUT", type: "checkbox", settingKey: "open_universities_new_tab" });
-  newTab.track = new FakeElement();
   const currency = new FakeElement({ tagName: "SELECT", settingKey: "preferred_currency" });
   const display = new FakeElement({ tagName: "SELECT", settingKey: "currency_display_mode" });
   const theme = new FakeElement({ tagName: "SELECT", theme: true });
@@ -119,11 +116,13 @@ test("settings modal synchronizes controls, persists changes, and closes accessi
     recent.checked = false;
     recent.emit("change");
     assert.equal(recent.checked, false, "the inverse privacy switch remains enabled when unchecked");
-    assert.equal(recent.track.classList.contains("motion-switch-toggle"), false, "reduced motion avoids animation classes");
+    assert.equal(recent.classList.contains("motion-switch-toggle"), false, "reduced motion avoids animation classes");
 
+    window.matchMedia = () => ({ matches: false });
     newTab.checked = true;
     newTab.emit("change");
     assert.equal(newTab.checked, true);
+    assert.equal(newTab.classList.contains("motion-switch-toggle"), true, "switch input receives motion class when motion is enabled");
 
     currency.value = "EUR";
     currency.emit("change");

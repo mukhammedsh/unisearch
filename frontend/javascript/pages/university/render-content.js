@@ -1,23 +1,19 @@
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
 import { t } from "../../i18n.js";
-import { humanizeMachineLabel, translateWord } from "../../university-translations.js";
+import { translateWord } from "../../university-translations.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import {
   campusAreaFact,
   formatUiNumber,
-  rankingStatusLabel,
   renderInlineIcon,
   safeUrl,
   toFiniteNumber,
   trFactSource,
   trStudyMode,
-  trTag,
   trUniversityDescription,
-  unknownFieldText,
 } from "../_shared.js";
 import {
   getProgramLevelKeys,
-  renderCoverageSection,
   renderProgramCoverage,
   resolveDisplayedCoverageProgram,
   resolveProgramByIdentifier,
@@ -29,7 +25,6 @@ import { renderQualificationGuidance, resolveQualificationGuidance } from "./qua
 
 export {
   getProgramLevelKeys,
-  renderCoverageSection,
   renderProgramCoverage,
   resolveDisplayedCoverageProgram,
   resolveProgramByIdentifier,
@@ -120,7 +115,6 @@ export function renderOverviewSection({
   container,
   includeAdmissionRate = true,
   officialRank,
-  rankStatus,
   university,
 }) {
   if (!container) return;
@@ -129,49 +123,43 @@ export function renderOverviewSection({
   const facts = [];
   const sourceGroups = [];
 
-  const rankLabel = translateWord("global_rank", "Global Rank");
-  const rankMeta = university && typeof university.rank_meta === "object" ? university.rank_meta : {};
-  const rankSourceValue = String(rankMeta.source || "").trim();
-  const rankSource = rankSourceValue ? trFactSource(rankSourceValue) : "";
-  const rankSourceUrl = safeUrl(rankMeta.source_url);
-  const rankVerifiedAt = String(rankMeta.verified_at || "").trim();
-  const rankInfoTitle = escapeHtml(rankLabel);
-  const rankTooltip = rankSource && !rankSourceUrl ? `
-    <span class="d-info-wrap">
-      <button type="button" class="d-info" aria-label="${rankInfoTitle}" title="${rankInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
-      <span class="d-tooltip" role="tooltip">
-        <strong>${rankInfoTitle}</strong>
-        <span>${escapeHtml(rankSource)}</span>
-        ${!officialRank && rankStatus ? `<span>${escapeHtml(rankingStatusLabel(rankStatus))}</span>` : ""}
-        ${rankVerifiedAt ? `<span>${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(rankVerifiedAt)}</span>` : ""}
+  const rankValue = toFiniteNumber(university?.rank);
+  if (officialRank && rankValue !== null && rankValue > 0) {
+    const rankLabel = translateWord("global_rank", "Global Rank");
+    const rankMeta = university && typeof university.rank_meta === "object" ? university.rank_meta : {};
+    const rankSourceValue = String(rankMeta.source || "").trim();
+    const rankSource = rankSourceValue ? trFactSource(rankSourceValue) : "";
+    const rankSourceUrl = safeUrl(rankMeta.source_url);
+    const rankVerifiedAt = String(rankMeta.verified_at || "").trim();
+    const rankInfoTitle = escapeHtml(rankLabel);
+    const rankTooltip = rankSource && !rankSourceUrl ? `
+      <span class="d-info-wrap">
+        <button type="button" class="d-info" aria-label="${rankInfoTitle}" title="${rankInfoTitle}">${renderInlineIcon("information-circle", 14, "d-info-icon")}</button>
+        <span class="d-tooltip" role="tooltip">
+          <strong>${rankInfoTitle}</strong>
+          <span>${escapeHtml(rankSource)}</span>
+          ${rankVerifiedAt ? `<span>${escapeHtml(t("university.admissions.checked", "Checked"))}: ${escapeHtml(rankVerifiedAt)}</span>` : ""}
+        </span>
       </span>
-    </span>
-  ` : "";
+    ` : "";
 
-  let rankValueHtml = `<span class="d-kv-metric d-kv-metric--muted">${escapeHtml(t("common.no_data", "No data"))}</span>`;
-  if (officialRank) {
-    rankValueHtml = `<span class="d-kv-metric d-rank-emphasis">#${university.rank}</span>`;
-  } else if (rankStatus) {
-    rankValueHtml = `<span class="d-kv-metric d-kv-metric--text">${escapeHtml(rankingStatusLabel(rankStatus))}</span>`;
-  }
-  facts.push({
-    icon: "trophy",
-    label: rankLabel,
-    tooltipHtml: rankTooltip,
-    valueHtml: rankValueHtml,
-    subHtml: rankSource ? `<span class="d-kv-sub">${escapeHtml(rankSource)}</span>` : "",
-  });
-  if (rankSourceUrl) {
-    sourceGroups.push({
+    facts.push({
+      icon: "trophy",
       label: rankLabel,
-      entries: [{ url: rankSourceUrl, label: rankSource || officialSourceLabel, checkedAt: rankVerifiedAt }],
+      tooltipHtml: rankTooltip,
+      valueHtml: `<span class="d-kv-metric d-rank-emphasis">#${rankValue}</span>`,
+      subHtml: rankSource ? `<span class="d-kv-sub">${escapeHtml(rankSource)}</span>` : "",
     });
+    if (rankSourceUrl) {
+      sourceGroups.push({
+        label: rankLabel,
+        entries: [{ url: rankSourceUrl, label: rankSource || officialSourceLabel, checkedAt: rankVerifiedAt }],
+      });
+    }
   }
 
-  if (includeAdmissionRate) {
-    const acceptanceDisplay = acceptanceRate === null
-      ? t("common.no_data", "No data")
-      : `${Math.round(acceptanceRate * 100) / 100}%`;
+  if (includeAdmissionRate && acceptanceRate !== null && acceptanceRate !== undefined) {
+    const acceptanceDisplay = `${Math.round(acceptanceRate * 100) / 100}%`;
     const acceptanceSourceUrl = safeUrl(acceptanceMeta?.source_url);
     const acceptanceSource = String(acceptanceMeta?.source || "").trim();
     const acceptanceSourceLabel = acceptanceSource ? trFactSource(acceptanceSource) : officialSourceLabel;
@@ -203,30 +191,31 @@ export function renderOverviewSection({
       icon: "chart-bar",
       label: acceptanceLabel,
       tooltipHtml: acceptanceTooltip,
-      valueHtml: `<span class="d-kv-metric${acceptanceRate === null ? " d-kv-metric--muted" : ""}">${escapeHtml(acceptanceDisplay)}</span>`,
+      valueHtml: `<span class="d-kv-metric">${escapeHtml(acceptanceDisplay)}</span>`,
     });
   }
 
-  const studentsLabel = translateWord("total_students", "Total Students");
   const studentCountValue = toFiniteNumber(university?.student_count);
-  const studentCount = studentCountValue !== null ? formatUiNumber(studentCountValue) : t("common.no_data", "No data");
-  const studentCountFact = university?.fact_provenance?.facts?.student_count;
-  const studentCountScope = String(studentCountFact?.basis?.scope || "").trim();
-  facts.push({
-    icon: "users",
-    label: studentsLabel,
-    valueHtml: `<span class="d-kv-metric${studentCountValue === null ? " d-kv-metric--muted" : ""}">${escapeHtml(studentCount)}</span>`,
-  });
-  if (safeUrl(studentCountFact?.source_url)) {
-    sourceGroups.push({
+  if (studentCountValue !== null && studentCountValue > 0) {
+    const studentsLabel = translateWord("total_students", "Total Students");
+    const studentCountFact = university?.fact_provenance?.facts?.student_count;
+    const studentCountScope = String(studentCountFact?.basis?.scope || "").trim();
+    facts.push({
+      icon: "users",
       label: studentsLabel,
-      entries: [{
-        url: studentCountFact.source_url,
-        label: trFactSource(studentCountFact.source) || officialSourceLabel,
-        checkedAt: studentCountFact.verified_at,
-        scope: studentCountScope,
-      }],
+      valueHtml: `<span class="d-kv-metric">${escapeHtml(formatUiNumber(studentCountValue))}</span>`,
     });
+    if (safeUrl(studentCountFact?.source_url)) {
+      sourceGroups.push({
+        label: studentsLabel,
+        entries: [{
+          url: studentCountFact.source_url,
+          label: trFactSource(studentCountFact.source) || officialSourceLabel,
+          checkedAt: studentCountFact.verified_at,
+          scope: studentCountScope,
+        }],
+      });
+    }
   }
 
   const rawFormats = Array.isArray(university.academics?.formats) ? university.academics.formats : [];
@@ -304,7 +293,22 @@ export function renderOverviewSection({
     }
   }
 
+  const syncAboutBox = (node) => {
+    const box = node?.closest?.(".d-box");
+    if (!box) return;
+    const panels = typeof box.querySelectorAll === "function" ? [...box.querySelectorAll(".d-box-text")] : [];
+    if (panels.length) box.hidden = panels.every((panel) => panel.hidden);
+  };
+
+  if (!facts.length) {
+    container.innerHTML = "";
+    container.hidden = true;
+    syncAboutBox(container);
+    return;
+  }
+  container.hidden = false;
   container.innerHTML = `${renderFactsStrip(facts)}${renderFactSources(sourceGroups)}`;
+  syncAboutBox(container);
   bindInfoTooltips({ wrapSelector: ".d-info-wrap", buttonSelector: ".d-info" });
 }
 
@@ -314,33 +318,17 @@ export function renderExtraSection({ container, university }) {
   const translatedDescription = trUniversityDescription(university);
   const description = translatedDescription
     ? `<p class="uni-description">${escapeHtml(String(translatedDescription)).replace(/\n/g, "<br>")}</p>`
-    : `<p class="uni-description uni-description--placeholder">${escapeHtml(unknownFieldText("placeholder.field.description", "Description"))}</p>`;
-  const tags = Array.isArray(university.tags)
-    ? university.tags.map((tag) => String(tag || "").trim()).filter(Boolean)
-    : (typeof university.tags === "string" ? university.tags.split(",").map((tag) => tag.trim()).filter(Boolean) : []);
-  const tagsHtml = tags.length
-    ? `
-      <div class="uni-tags-wrap">
-        <div class="uni-tags-title">${escapeHtml(translateWord("focus_tags", "Focus Tags"))}</div>
-        <div class="uni-tags-list">
-          ${tags.map((tag) => {
-            const translated = trTag(tag);
-            const display = translated === tag ? humanizeMachineLabel(tag, tag) : translated;
-            return `<span class="uni-tag">${escapeHtml(display)}</span>`;
-          }).join("")}
-        </div>
-      </div>
-    `
-    : `
-      <div class="uni-tags-wrap">
-        <div class="uni-tags-title">${escapeHtml(translateWord("focus_tags", "Focus Tags"))}</div>
-        <div class="uni-tags-list">
-          <span class="uni-tag uni-tag--placeholder">${escapeHtml(t("common.no_data", "No data"))}</span>
-        </div>
-      </div>
-    `;
-  container.innerHTML = `
-    ${description}
-    ${tagsHtml}
-  `;
+    : "";
+  const box = container.closest?.(".d-box");
+  if (!description) {
+    container.innerHTML = "";
+    container.hidden = true;
+  } else {
+    container.hidden = false;
+    container.innerHTML = description;
+  }
+  if (box && typeof box.querySelectorAll === "function") {
+    const panels = [...box.querySelectorAll(".d-box-text")];
+    if (panels.length) box.hidden = panels.every((panel) => panel.hidden);
+  }
 }

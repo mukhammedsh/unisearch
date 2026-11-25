@@ -12,10 +12,7 @@ async function openUniversity(page, id) {
   await page.goto(`/university.html?id=${id}`);
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("#detailName")).not.toBeEmpty();
-  const coverage = page.locator(".university-coverage-section");
-  await expect(coverage).not.toHaveAttribute("open", "");
-  await coverage.locator("summary").click();
-  await expect(page.locator("#detailCoverage .university-coverage__level").first()).toBeVisible();
+  await expect(page.locator(".university-coverage-section")).toHaveCount(0);
 }
 
 async function openReviewedUniversity(page, university) {
@@ -69,38 +66,9 @@ test("reviewed catalog metadata and optional browsing use the accepted study opt
 
   for (const universityId of legacyCoverageUniversities) {
     await openUniversity(page, universityId);
-    const levels = page.locator("#detailCoverage .university-coverage__level");
-    const levelCount = await levels.count();
-    expect(levelCount).toBeGreaterThanOrEqual(4);
-    const bachelorLevelCount = await levels.evaluateAll((nodes) => nodes.filter((node) => node.querySelector("h4")?.textContent === "Bachelor's").length);
-    expect(bachelorLevelCount).toBe(1);
-    const levelNames = await levels.locator("h4").allTextContents();
-    expect(new Set(levelNames).size).toBe(levelNames.length);
-    await expect(page.locator("#detailCoverage .university-coverage__row")).toHaveCount(levelCount * 6 + 1);
-    await expect(page.locator("#detailCoverage .university-coverage__state").filter({ hasText: "Catalogued" }).first()).toBeVisible();
-    await expect(page.locator("#detailCoverage .university-coverage__state").filter({ hasText: "Not catalogued" }).first()).toBeVisible();
   }
 
   await openUniversity(page, "eth-zurich-ch-zurich");
-  await expect(page.locator("#detailCoverage .university-coverage__level")).toHaveCount(1);
-  await expect(page.locator("#detailCoverage .university-coverage__level h4")).toHaveText("Bachelor's");
-  await expect(page.locator("#detailCoverage")).toContainText("University-wide undergraduate cost data");
-
-  const languageControl = page.locator('.custom-select-wrapper:has(#languageSelect)');
-  await languageControl.locator(".custom-select-trigger").click();
-  await languageControl.locator('.custom-option[data-value="rus"]').click();
-  await expect(page.locator("#universityCoverageTitle")).toHaveText("Данные UniSearch");
-  await expect(page.locator("#detailCoverage .university-coverage__level h4")).toHaveText("Бакалавриат");
-  await expect(page.locator("#detailCoverage")).toContainText("Общие данные о стоимости бакалавриата");
-
-  await page.setViewportSize({ width: 375, height: 812 });
-  await page.locator(".university-coverage__level").first().evaluate((node) => document.documentElement.setAttribute("data-theme", "light"));
-  const lightSurface = await page.locator(".university-coverage__level").first().evaluate((node) => getComputedStyle(node).backgroundColor);
-  await page.locator(".university-coverage__level").first().evaluate((node) => document.documentElement.setAttribute("data-theme", "dark"));
-  const darkSurface = await page.locator(".university-coverage__level").first().evaluate((node) => getComputedStyle(node).backgroundColor);
-  expect(darkSurface).not.toBe(lightSurface);
-  const coverageFitsMobile = await page.locator("#detailCoverage").evaluate((node) => node.scrollWidth <= node.clientWidth);
-  expect(coverageFitsMobile).toBe(true);
 });
 
 test("MBA study options use canonical levels for reviewed universities and retain Oxford's legacy filter", async ({ page }) => {

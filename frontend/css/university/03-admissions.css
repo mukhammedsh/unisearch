@@ -117,8 +117,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   :is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export):hover:not(:active, :disabled, [aria-pressed="true"]),
-  .admissions-deadline-source:hover,
-  .deadline-guidance-item a:hover {
+  .admissions-deadline-source:hover:not(:active),
+  .deadline-guidance-item a:hover:not(:active) {
     background-color: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
@@ -191,24 +191,6 @@
 .admissions-deadline-scope {
   color: var(--text-muted);
   font-size: var(--text-sm);
-}
-
-.mit-admission-context__action {
-  flex: 0 0 auto;
-  min-height: 44px;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-base);
-  background: var(--surface-soft);
-  box-shadow: var(--shadow-xs);
-  color: var(--text);
-  font: inherit;
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-}
-
-.mit-admission-context__action:hover {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
 }
 
 .admissions-section-title,
@@ -499,9 +481,14 @@
   display: none;
 }
 
-.track-collapsible-summary:hover {
+.track-collapsible-summary:hover:not(:active) {
   color: var(--interaction-hover-text);
   background: var(--interaction-hover-surface);
+}
+
+.track-collapsible-summary:active {
+  color: var(--text);
+  background: var(--interaction-press-surface);
 }
 
 .track-collapsible-summary:focus-visible {
@@ -581,11 +568,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: var(--control-height-md);
+  height: var(--control-height-md);
   background: var(--surface-soft);
   color: var(--text);
-  border-radius: var(--radius-sm);
+  border-radius: var(--control-radius-md);
   cursor: pointer;
 }
 
@@ -660,8 +647,9 @@
 }
 
 .deadline-calendar__day--event.is-active {
-  background: var(--accent-panel);
+  background: var(--accent-active-surface);
   color: var(--interaction-active-text);
+  cursor: default;
 }
 
 .deadline-calendar__count {
@@ -671,10 +659,10 @@
   min-width: 18px;
   min-height: 18px;
   border-radius: var(--radius-circle);
-  background: var(--surface-solid);
+  background: var(--surface-raised);
   color: var(--text);
   font-size: var(--text-xs);
-  box-shadow: var(--shadow-micro);
+  box-shadow: var(--shadow-xs);
 }
 
 .deadline-calendar__details {
@@ -730,9 +718,9 @@
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-:is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export):active:not(:disabled) {
-  background-color: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
+:is(.deadline-calendar__navigation button, .deadline-calendar__day--event:not(.is-active), .deadline-calendar__jump, .deadline-calendar__export, .admissions-deadline-source, .deadline-guidance-item a):active:not(:disabled) {
+  background-color: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .deadline-guidance-list {

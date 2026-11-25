@@ -313,26 +313,29 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
   const safeName = escapeHtml(name);
   const overlayTitle = String(name || "");
   const rankValue = toFiniteNumber(u?.rank);
+  const hasRank = rankValue !== null && rankValue > 0;
   const rankLabel = escapeHtml(translateWord("global_rank", "Global Rank"));
   const isCompared = isCompareMode && compareUniversityIds.has(String(id));
   const detailLabel = escapeHtml(isCompareMode
     ? (isCompared ? t("universities.card.compare_selected_short", "Selected") : t("universities.card.compare_short", "Compare"))
     : t("universities.card.view_details", "View details"));
-  const sourceTooltip = buildRankSourceTooltip(u);
-  const rankValueText = rankValue !== null && rankValue > 0 ? `#${escapeHtml(String(rankValue))}` : escapeHtml(t("common.na", "N/A"));
-  const rankAriaLabel = sourceTooltip
-    ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
-    : `${rankLabel}: ${rankValueText}`;
-  const rankInnerHtml = `
+  let metricsHtml = "";
+  if (hasRank) {
+    const sourceTooltip = buildRankSourceTooltip(u);
+    const rankValueText = `#${escapeHtml(String(rankValue))}`;
+    const rankAriaLabel = sourceTooltip
+      ? `${rankLabel}: ${rankValueText}: ${sourceTooltip}`
+      : `${rankLabel}: ${rankValueText}`;
+    const rankInnerHtml = `
     <span class="uni-metric-icon" aria-hidden="true">${renderInlineIcon("globe-alt", 14, "uni-metric-svg")}</span>
     <span class="uni-metric-label">${rankLabel}:</span>
     <span class="uni-metric-value">${rankValueText}</span>
   `;
-  const metricsHtml = `
+    metricsHtml = `
     <div class="uni-metrics" aria-label="${escapeHtml(t("universities.card.metrics", "Key metrics"))}">
       ${sourceTooltip ? `
       <span class="ui-tooltip-wrap uni-metric-tooltip">
-        <button type="button" class="ui-tooltip-trigger uni-metric uni-metric--rank uni-metric-trigger${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}" aria-label="${escapeHtmlAttr(rankAriaLabel)}" aria-expanded="false">
+        <button type="button" class="ui-tooltip-trigger uni-metric uni-metric--rank uni-metric-trigger" aria-label="${escapeHtmlAttr(rankAriaLabel)}" aria-expanded="false">
 ${rankInnerHtml}
         </button>
         <span class="ui-tooltip-bubble uni-metric-tooltip__content" role="tooltip">
@@ -341,12 +344,13 @@ ${rankInnerHtml}
         </span>
       </span>
       ` : `
-      <span class="uni-metric uni-metric--rank${rankValue !== null && rankValue > 0 ? "" : " uni-metric--missing"}">
+      <span class="uni-metric uni-metric--rank">
 ${rankInnerHtml}
       </span>
       `}
     </div>
   `;
+  }
   const statusClass = statusHtml ? " uni-card--has-status" : " uni-card--compact";
   const priceHtml = renderUniversityCardCosts(u, costBasis, options.costTooltipScope || (mapVariant ? "map-result" : "catalog"), {
     priceFilterActive,
@@ -358,9 +362,8 @@ ${rankInnerHtml}
   const mediaHtml = hideMedia ? "" : `
     <div class="uni-media">
       ${hasCover ? `<img class="uni-media-img" src="${thumbSrc}" srcset="${escapeHtmlAttr(thumbSrcset)}" sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 100vw" alt="" loading="${loadingAttr}" fetchpriority="${fetchPriorityAttr}" decoding="async" data-fallback-src="${escapeHtmlAttr(thumbSrcFullFallback)}" data-remove-on-error="1">` : ""}
-      <div class="uni-media-empty">
+      <div class="uni-media-empty" aria-hidden="true">
         ${renderInlineIcon("building-office-2", 24)}
-        <span>${escapeHtml(t("universities.card.photo_unavailable"))}</span>
       </div>
     </div>`;
   const backdropHtml = hideMedia && mapVariant && hasCover

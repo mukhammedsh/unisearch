@@ -88,15 +88,8 @@ export function createRecentlyViewedController({
         id="recentlyViewedPopover"
         class="u-recent-popover${wasOpen ? "" : " motion-top-layer"}"
         popover="auto"
-        aria-labelledby="recentlyViewedTitle"
+        aria-label="${escapeHtmlAttr(titleText)}"
       >
-        <div class="u-recent__head">
-          <span id="recentlyViewedTitle" class="u-recent__label">${escapeHtml(titleText)}</span>
-          <button class="u-recent__clear" type="button" data-action="clear-recent">
-            ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-            <span>${escapeHtml(clearAllText)}</span>
-          </button>
-        </div>
         <div class="u-recent__items">
           ${rows.map((row) => {
             const removeLabel = tFormat(
@@ -118,6 +111,12 @@ export function createRecentlyViewedController({
               </span>
             `;
           }).join("")}
+        </div>
+        <div class="u-recent__footer">
+          <button class="u-recent__clear" type="button" data-action="clear-recent">
+            ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
+            <span>${escapeHtml(clearAllText)}</span>
+          </button>
         </div>
       </div>
     `;

@@ -638,6 +638,8 @@ test("compare specs produce complete rows, metrics, sources, and accessible tabl
   assert.ok(["", "best"].includes(cell.tone));
   assert.match(compareCell("Value", { tone: "best", sub: "Context", title: "Title" }), /compare-cell--best/);
   assert.match(compareCell("Value", { subHtml: "<small>Safe</small>" }), /<small>Safe<\/small>/);
+  assert.match(compareCell(""), /compare-cell--empty/);
+  assert.match(compareCell("N/A"), /<span>—<\/span>/);
   assert.match(compareSectionRow("Finance", "finance", universities), /colspan="3"/);
   assert.match(compareDataRow("Same", universities, () => "Equal", "context"), /compare-row--identical/);
   assert.match(compareDataRow("Same", universities, () => "Equal", "context"), /<th scope="row">Same<\/th>/);

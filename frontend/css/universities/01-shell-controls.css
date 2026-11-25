@@ -43,14 +43,12 @@
 
 .u-filter-title,
 
-.u-recent__label,
-
 .u-found {
   font-family: var(--font-display);
 }
 
 body[data-page="universities"] {
-  --slider-track-inactive: color-mix(in srgb, var(--text) 46%, var(--surface-soft));
+  --slider-track-inactive: color-mix(in oklab, var(--text) 46%, var(--surface-soft));
   --slider-track-active: var(--accent);
 }
 
@@ -60,8 +58,8 @@ body[data-page="universities"] {
 }
 
 .u-section-bar {
-  --u-toolbar-height: 36px;
-  --u-toolbar-radius: var(--radius-md);
+  --u-toolbar-height: var(--control-height-md);
+  --u-toolbar-radius: var(--control-radius-md);
   --u-toolbar-pad: var(--space-3);
   container: catalog-toolbar / inline-size;
   max-width: 100%;
@@ -116,26 +114,10 @@ body[data-page="universities"] {
 
 .u-compare-mode-btn {
   min-block-size: var(--u-toolbar-height);
-  box-sizing: border-box;
   border-radius: var(--u-toolbar-radius);
-  font: inherit;
   font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
   line-height: 1;
-  cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
   padding: 0 var(--u-toolbar-pad);
-  background: var(--surface-solid);
-  color: var(--text-muted);
-  white-space: nowrap;
-  box-shadow: var(--shadow-xs);
   flex-shrink: 0;
 }
 
@@ -146,8 +128,7 @@ body[data-page="universities"] {
   flex: 0 0 auto;
 }
 
-.u-compare-mode-btn.is-active,
-.u-compare-mode-btn[aria-pressed="true"] {
+.u-compare-mode-btn.is-active {
   background: var(--accent-active-surface);
   color: var(--interaction-active-text);
   box-shadow: var(--shadow-xs);
@@ -216,22 +197,7 @@ body[data-page="universities"] {
 
 .u-reset {
   margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  padding: 0 var(--space-3);
   box-shadow: var(--shadow-xs);
-  background: var(--surface-soft);
-  color: var(--text-muted);
-  border-radius: var(--radius-base);
-  cursor: pointer;
-  font: inherit;
-  font-weight: var(--font-weight-medium);
-  font-size: var(--text-sm);
-  line-height: 1;
-  transition: background-color var(--motion-fast) var(--motion-ease-standard),
-              color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .u-filter-close {
@@ -361,61 +327,9 @@ body[data-page="universities"] {
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.u-reviewed-toggle:has(.u-reviewed-toggle__input:checked) {
-  background: var(--accent-soft);
+.u-reviewed-toggle:has(.ui-switch:checked) {
+  background: var(--accent-active-surface);
   color: var(--interaction-active-text);
-}
-
-.u-reviewed-toggle__input {
-  -webkit-appearance: none;
-  appearance: none;
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
-  width: 36px;
-  height: 20px;
-  flex: 0 0 36px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-full);
-  background: var(--line-strong);
-  cursor: pointer;
-  transition: background-color var(--motion-medium) var(--motion-ease-standard);
-}
-
-.u-reviewed-toggle__input::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: var(--radius-circle);
-  background: var(--text-inverse);
-  box-shadow: var(--shadow-xs);
-  transform: translateX(0);
-  transition:
-    transform var(--motion-medium) var(--motion-ease-enter),
-    background-color var(--motion-medium) var(--motion-ease-standard);
-}
-
-.u-reviewed-toggle__input:checked {
-  background: var(--accent);
-}
-
-.u-reviewed-toggle__input:checked::before {
-  transform: translateX(16px);
-}
-
-.u-reviewed-toggle__input:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.u-reviewed-toggle__input:disabled {
-  opacity: var(--interaction-disabled-opacity);
-  cursor: not-allowed;
 }
 
 .u-reviewed-toggle__text {
@@ -496,17 +410,14 @@ body[data-page="universities"] {
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-base);
   border: none;
-  outline: none;
   background: var(--surface-soft);
   box-shadow: var(--shadow-micro);
   font-size: var(--text-base);
 }
 
-.u-input:focus,
-.u-select:focus,
-.u-filter-card .custom-select-trigger:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--accent);
+:is(.u-input, .u-select, .u-filter-card .custom-select-trigger):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .u-sep {
@@ -514,7 +425,6 @@ body[data-page="universities"] {
   background: transparent;
   margin: var(--space-2) 0;
 }
-
 
 .u-unifit-prefs {
   margin-top: var(--space-3);
@@ -737,7 +647,7 @@ body[data-page="universities"] {
 }
 
 .dual-slider-container input[type="range"]:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: var(--space-1);
   border-radius: var(--radius-full);
 }
@@ -857,22 +767,13 @@ body[data-page="universities"] {
 }
 
 .tradeoff-slider:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: var(--space-1);
 }
 
 .view-toggles {
-  display: inline-flex;
-  align-items: center;
-  background: var(--surface-solid);
-  color: var(--text);
-  border-radius: var(--u-toolbar-radius);
-  padding: 0;
-  gap: 0;
-  box-shadow: var(--shadow-xs);
-  flex-shrink: 0;
   min-block-size: var(--u-toolbar-height);
-  box-sizing: border-box;
+  border-radius: var(--u-toolbar-radius);
 }
 
 .view-toggles[hidden] {
@@ -880,55 +781,14 @@ body[data-page="universities"] {
 }
 
 .view-btn {
-  background: transparent;
-  border-radius: 0;
-  min-inline-size: var(--space-10);
+  min-inline-size: var(--u-toolbar-height);
   min-block-size: var(--u-toolbar-height);
-  padding: 0;
-  cursor: pointer;
-  color: var(--text-muted);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-}
-
-.view-btn:first-child {
-  border-start-start-radius: var(--u-toolbar-radius);
-  border-end-start-radius: var(--u-toolbar-radius);
-}
-
-.view-btn:last-child {
-  border-start-end-radius: var(--u-toolbar-radius);
-  border-end-end-radius: var(--u-toolbar-radius);
-}
-
-.view-btn:focus-visible {
-  position: relative;
-  z-index: 1;
 }
 
 .view-btn .ui-icon,
 .view-btn [data-heroicon] {
   width: var(--space-5);
   height: var(--space-5);
-}
-
-.view-btn.active,
-.view-btn[aria-pressed="true"] {
-  background: var(--accent-active-surface);
-  color: var(--interaction-active-text);
-  box-shadow: none;
-}
-
-.page-btn:focus-visible,
-.u-reset:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 .u-state:not(:empty) {
@@ -983,9 +843,9 @@ body[data-page="universities"] {
 }
 
 .u-state-card__action {
-  min-height: 36px;
+  min-height: var(--control-height-md);
   padding: 0 var(--space-3);
-  border-radius: var(--radius-base);
+  border-radius: var(--control-radius-md);
   background: var(--surface-soft);
   color: var(--text);
   box-shadow: var(--shadow-xs);
@@ -994,17 +854,6 @@ body[data-page="universities"] {
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   transition: background-color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.u-state-card__action:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--accent);
-}
-
-@media (hover: hover) {
-  .u-state-card__action:hover {
-    background: var(--accent-panel);
-  }
 }
 
 .u-unifit-warning {
@@ -1203,34 +1052,31 @@ body[data-page="universities"] {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :is(.u-compare-mode-btn:not(.is-active):not([aria-pressed="true"]), .u-reset, .view-btn:not(.active):not([aria-pressed="true"])):hover {
+  .u-state-card__action:hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  :is(.u-filter-close, .u-info):hover {
+  :is(.u-filter-close, .u-info):hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .u-saved-filter__btn:not(.is-active):hover,
+  .u-saved-filter__btn:not(.is-active):hover:not(:active),
   .u-unifit-prefs__summary:hover {
     color: var(--interaction-hover-text);
   }
 
-  .u-reviewed-toggle:not(:has(.u-reviewed-toggle__input:checked)):hover,
-  .u-unifit-warning__prefs:hover,
-  .u-unifit-warning__link:hover {
+  .u-reviewed-toggle:not(:has(.ui-switch:checked)):hover:not(:active),
+  .u-unifit-warning__prefs:hover:not(:active),
+  .u-unifit-warning__link:hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .u-reviewed-toggle:hover .u-reviewed-toggle__input:not(:checked) {
-    background: color-mix(in srgb, var(--text-muted) 56%, transparent);
-  }
-
-  .u-reviewed-toggle:hover .u-reviewed-toggle__input:checked {
-    background: var(--accent-strong);
+  .u-reviewed-toggle:has(.ui-switch:checked):hover:not(:active) {
+    background: var(--accent-active-hover-surface);
+    color: var(--interaction-active-text);
   }
 
   .u-unifit-warning__dismiss:hover {
@@ -1238,4 +1084,29 @@ body[data-page="universities"] {
     color: var(--text-muted);
     opacity: 1;
   }
+}
+
+:is(
+  .u-filter-close,
+  .u-info,
+  .u-unifit-warning__prefs,
+  .u-unifit-warning__link,
+  .u-state-card__action
+):active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.u-reviewed-toggle:not(:has(.ui-switch:checked)):active {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.u-reviewed-toggle:has(.ui-switch:checked):active {
+  background: var(--accent-active-press-surface);
+  color: var(--interaction-active-text);
+}
+
+.u-saved-filter__btn:not(.is-active):active {
+  color: var(--interaction-active-text);
 }

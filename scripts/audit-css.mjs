@@ -242,14 +242,6 @@ export const ALLOWED_ID_SELECTORS = new Map([
     "Direct-child layout reset inside the #detailDeadlines container.",
   ],
   [
-    "frontend/css/university/05-admissions-reviewed.css::#admissionsUniversityInfo",
-    "Dynamically created classless section container for institution-level reviewed admissions info (admissions-controller.js).",
-  ],
-  [
-    "frontend/css/university/05-admissions-reviewed.css::#admissionsUniversityInfo[hidden]",
-    "Hidden state override for the classless #admissionsUniversityInfo container.",
-  ],
-  [
     "frontend/css/university/05-admissions-reviewed.css::#admissionsContextApply",
     "Classless submit button inside .admissions-context__actions (admissions-controller.js).",
   ],

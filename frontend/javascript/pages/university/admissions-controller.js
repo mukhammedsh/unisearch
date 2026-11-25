@@ -207,18 +207,13 @@ export function mountAdmissionsCatalog(institutionId) {
     record.scrollIntoView({ block: "center" });
     (record.querySelector(":scope > summary") || record).focus?.({ preventScroll: true });
   };
-  const universityInfo = document.createElement("div");
-  universityInfo.id = "admissionsUniversityInfo";
-  document.getElementById("detailExtra").append(universityInfo);
   const targets = {
     detailRequirements: ["requirements", "application", "offer_enrollment"],
     detailDeadlines: ["deadlines"], detailFinance: ["costs", "funding"],
-    admissionsUniversityInfo: ["institution", "student_support"],
     admissionsStudyInfo: ["study", "degree_completion", "career"],
   };
   card.querySelector(".finance-summary-container").hidden = true;
   card.querySelector(".qualification-guidance").hidden = true;
-  card.querySelector(".university-coverage-section").hidden = true;
   card.querySelector("#tab-admission .d-box-title").hidden = true;
   for (const [selector, key] of [
     ['#tab-programs .d-box-title', "study_options_title"],
@@ -632,17 +627,13 @@ export function mountAdmissionsCatalog(institutionId) {
     for (const [id, domains] of Object.entries(targets)) {
       if (id === "admissionsStudyInfo") continue;
       const target = id === "detailRequirements" ? requirementsContent : document.getElementById(id);
-      const programOnly = ["admissionsStudyInfo", "admissionsUniversityInfo"].includes(id) && !resolved?.selected_route;
-      if (id === "admissionsUniversityInfo") {
-        target.hidden = status !== "ready" || (!readable && !option);
-      }
       if (id === "detailRequirements" && status !== "ready") target.replaceChildren();
       else if (status === "loading") target.innerHTML = loading();
       else if (status === "error") {
         target.innerHTML = failure("context");
         target.querySelector("button").onclick = refreshContext;
       } else if (id === "detailRequirements" && !readable) target.replaceChildren();
-      else if ((!option && !readable) || (!resolved?.selected_route && !programOnly)) {
+      else if ((!option && !readable) || !resolved?.selected_route) {
         const canChooseRoute = option && resolved.available_routes?.length;
         if (!option && sharedRoutes.length) {
           // The university's shared undergraduate application can be read here directly, without a program.
@@ -659,8 +650,7 @@ export function mountAdmissionsCatalog(institutionId) {
           openTab(`tab-${canChooseRoute ? "admission" : "programs"}`);
           (canChooseRoute ? root : programs).scrollIntoView({ block: "start" });
         };
-      }
-      else if (["detailRequirements", "detailDeadlines", "detailFinance"].includes(id)) {
+      } else {
         // Dates and Costs answer their question first, in the same words as the Admission key facts.
         const answers = id === "detailRequirements" ? "" : renderTabAnswers(resolved, id === "detailDeadlines" ? "deadlines" : "finance", {
           budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
@@ -670,12 +660,6 @@ export function mountAdmissionsCatalog(institutionId) {
         bindKeyFacts(target);
         if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState, { emptyNote: false });
       }
-      else target.innerHTML = renderAdmissionsContext(resolved, {
-        domains, includeAssessment: id === "detailRequirements", includeUnknowns: id === "detailRequirements" || programOnly,
-        includeHistory: id === "admissionsUniversityInfo", presentation: "simple", programOnly,
-        includeSourceNote: !["detailFinance", "detailDeadlines", "admissionsStudyInfo"].includes(id),
-        includeReferenceScopeNote: id !== "admissionsUniversityInfo",
-      });
     }
   }
 
@@ -739,10 +723,11 @@ export function mountAdmissionsCatalog(institutionId) {
       resolved = data;
       renderControls();
       renderContextContent("ready");
-      // The Overview of a university without a shared path (Imperial) answers for the program read here.
-      if (data?.selected_option && data?.selected_route) {
-        window.dispatchEvent(new CustomEvent("unisearch:admission-context", { detail: { institutionId, context: { ...context } } }));
-      }
+      // Keep the Overview summary synchronized with whichever readable route or program is active on the page.
+      const readableResolved = hasReadableAdmissionContext(data) ? data : null;
+      window.dispatchEvent(new CustomEvent("unisearch:admission-context", {
+        detail: { institutionId, context: { ...context }, resolved: readableResolved },
+      }));
       if (revealSelection && hasReadableAdmissionContext(data)) selectionSummary?.scrollIntoView({ block: "start" });
     } catch (error) {
       if (request.signal.aborted || request !== contextAbort || !currentPage()) return;

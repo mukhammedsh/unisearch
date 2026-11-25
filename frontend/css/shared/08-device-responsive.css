@@ -229,9 +229,9 @@ body .has-sliding-indicator .active::after {
   z-index: var(--z-dropdown);
   display: grid;
   padding: var(--space-1);
-  border-radius: var(--radius-base);
-  background: var(--surface-solid);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--dropdown-radius);
+  background: var(--dropdown-surface);
+  box-shadow: var(--shadow-dropdown);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -270,14 +270,19 @@ body .has-sliding-indicator .active::after {
     background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.navbar-search-suggestion:focus-visible,
 .navbar-search-suggestion.is-highlighted {
-  background: var(--surface-soft);
+  background: var(--interaction-hover-surface);
   outline: 0;
 }
 
+.navbar-search-suggestion:focus-visible {
+  background: var(--interaction-hover-surface);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
 .navbar-search-suggestion:active {
-  background-color: var(--interaction-active-surface);
+  background-color: var(--interaction-press-surface);
 }
 
 .navbar-search-suggestion__body {
@@ -340,18 +345,18 @@ body .has-sliding-indicator .active::after {
 
 .navbar-search-empty--offline {
   color: var(--text-muted);
-  background: var(--surface-soft);
+  background: var(--control-badge-bg);
   border-radius: var(--radius-sm);
   margin: var(--space-1);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .navbar-search-back:hover,
+  .navbar-search-back:hover:not(:active),
   .navbar-search-field:hover {
     background: var(--interaction-hover-surface);
   }
 
-  .navbar-search-back:hover {
+  .navbar-search-back:hover:not(:active) {
     color: var(--interaction-hover-text);
   }
 
@@ -359,14 +364,19 @@ body .has-sliding-indicator .active::after {
     color: var(--interaction-hover-text);
   }
 
-  .navbar-search-clear:hover {
+  .navbar-search-clear:hover:not(:active) {
     background: var(--interaction-active-surface);
     color: var(--interaction-hover-text);
   }
 
   .navbar-search-suggestion:hover:not(:active) {
-    background: var(--surface-soft);
+    background: var(--interaction-hover-surface);
   }
+}
+
+.navbar-search-back:active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 /* Keep the primary destinations visually independent from the brand and utilities. */

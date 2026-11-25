@@ -285,7 +285,7 @@
 
 .guide-nav a:focus-visible,
 .guide-doc p a:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: var(--space-0-5);
 }
 
@@ -323,7 +323,7 @@
 }
 
 .guide-formula:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--focus-ring);
   outline-offset: var(--space-0-5);
 }
 
@@ -472,31 +472,6 @@
   margin-top: var(--space-3);
 }
 
-.guide-start-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-base);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  text-decoration: none;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.guide-start-cta--primary {
-  background: var(--accent);
-  color: var(--text-inverse);
-}
-
-.guide-start-cta--secondary {
-  background: var(--surface-soft);
-  color: var(--text);
-}
-
 
 /* --------------------------------------------------------------------------
    Theme-specific adjustments
@@ -552,8 +527,8 @@ body[data-page="guide"] {
     width: 100%;
     min-height: 48px;
     padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-lg);
-    background: var(--surface-solid);
+    border-radius: var(--control-radius-md);
+    background: var(--surface-control-on-bg);
     box-shadow: var(--shadow-xs);
     color: var(--text);
     cursor: pointer;
@@ -564,8 +539,8 @@ body[data-page="guide"] {
   }
 
   .guide-mobile-nav-toggle[aria-expanded="true"] {
-    color: var(--interaction-active-text);
-    background: var(--accent-panel);
+    color: var(--text);
+    background: var(--interaction-hover-surface);
   }
 
   .guide-mobile-nav-toggle__label {
@@ -689,19 +664,19 @@ body[data-page="guide"] {
     text-decoration: underline;
   }
 
-  .guide-mobile-nav-toggle:hover {
+  .guide-mobile-nav-toggle:hover:not(:active) {
     color: var(--interaction-hover-text);
     background: var(--interaction-hover-surface);
   }
+}
 
-  .guide-start-cta--primary:hover {
-    background: var(--accent-strong);
-  }
+.guide-mobile-nav-toggle:active {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
 
-  .guide-start-cta--secondary:hover {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
+:is(.guide-back, .guide-nav a:not([aria-current="page"]), .guide-section-navigation__button):active {
+  color: var(--interaction-active-text);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -709,8 +684,7 @@ body[data-page="guide"] {
   .guide-section,
   .guide-mobile-nav-toggle,
   .guide-mobile-nav-toggle__chevron,
-  .guide-section-navigation__button,
-  .guide-start-cta {
+  .guide-section-navigation__button {
     transition: none;
   }
 }

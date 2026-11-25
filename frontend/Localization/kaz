@@ -582,7 +582,7 @@ universities.state_region: Штат / Аймақ
 universities.view_list: Тізім түрінде көру
 universities.view_map: Картада көру
 universities.view_toggles.aria: Көрініс режимі
-university.about_campus: Университет және кампус туралы
+university.about_campus: Университет туралы
 university.action.website: Веб-сайт
 university.action.map: Карта
 university.action.save: Таңдаулыларға сақтау
@@ -655,6 +655,9 @@ university.gallery.position: {total} фотосуреттің {current}-суре
 university.gallery.unavailable: Фотосурет қолжетімсіз
 university.gallery.zoom_in: Масштабты үлкейту
 university.gallery.zoom_out: Масштабты кішірейту
+university.cover.view_switch: Мұқаба көрінісі
+university.cover.photo: Фото
+university.cover.recenter: Кампусқа оралу
 university.entry_requirements: Қабылдау санаттары
 university.error_no_id: Қате: ID көрсетілмеген.
 university.loading_scholarships: Стипендиялар жүктелуде
@@ -1229,24 +1232,8 @@ university.deadlines.doctoral_research: Докторлық зерттеу бағ
 university.deadlines.mba_round: MBA-ға өтінім беру кезеңі
 university.deadlines.interviews_label: Сұхбаттар
 university.deadlines.time_label: Уақыт
-university.coverage.title: UniSearch деректері
-university.coverage.note: Мұнда UniSearch каталогқа қандай мәліметтерді қосқаны көрсетілген. «Каталогқа қосылмаған» университеттің мұндай бағдарламаларды немесе шарттарды ұсынбағанын білдірмейді.
-university.coverage.available: Каталогта бар
-university.coverage.not_catalogued: Каталогқа қосылмаған
-university.coverage.unknown: Қамту туралы деректер қолжетімсіз
-university.coverage.no_levels: Бұл университет үшін оқу деңгейін қамту туралы әзірге мәліметтер жоқ. Бұл университеттің қандай бағдарламалар ұсынып жатқанын көрсетпейді.
-university.coverage.level.bachelor: Бакалавриат
-university.coverage.level.master: Магистратура
-university.coverage.level.doctorate: Докторантура
 university.coverage.level.professional: Кәсіби бағдарламалар
 university.coverage.level.mba: MBA
-university.coverage.programs: Бағдарламалар
-university.coverage.requirements: Түсуге қойылатын талаптар
-university.coverage.deadlines_exact: Нақты күні және жылы бар мерзімдер
-university.coverage.deadlines_approximate: Шамамен алғандағы мерзімдер немесе жылсыз мерзімдер
-university.coverage.costs_program: Жекелеген бағдарламалардың құны
-university.coverage.costs_undergraduate: Бакалавриаттың құны туралы жалпы деректер
-university.coverage.aid: Қаржылық көмек және қаржыландыру
 profile.applicant_context.optional: Көрсетілмеген
 universities.compare.finance.grant_unconfirmed: Таңдалған грант — тек ықтимал қаржыландыру. Университет ресми түрде тағайындалғанға дейін оның сомасы құнмен немесе жеңілдікпен расталған болып саналмайды.
 universities.compare.funding.not_awarded: Мүмкін грант; расталмаған
@@ -3219,10 +3206,10 @@ profile.ux2.evidence.language_fixed: Тек ағылшын тіліндегі т
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
 university.ux2.title: Қабылдаудың негізгі деректері
 university.ux2.intro_route: «{route}» нұсқасы үшін көрсетілген. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.
+university.ux2.intro_selected_route: «{route}» нұсқасы үшін көрсетілген.
 university.ux2.intro_selected_program: Таңдалған «{program}» бағдарламасы үшін көрсетілген.
 university.ux2.intro_program: Әр бағдарламаның өзіндік мерзімі, құны мен талаптары бар. Көру үшін бағдарламаны таңдаңыз.
 university.ux2.intro_legacy: Университеттің бакалавриат туралы жариялаған деректері.
-university.ux2.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім емес. Дереккөздер мен толық ақпарат — қойындыларда.
 university.ux2.loading: Негізгі деректер жүктелуде
 university.ux2.error: Негізгі деректерді жүктеу мүмкін болмады.
 university.ux2.retry: Қайталау

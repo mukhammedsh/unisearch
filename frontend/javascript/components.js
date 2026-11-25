@@ -139,22 +139,20 @@ const LAYOUT_HTML = `
           <option value="dark" data-i18n="theme.opt.dark">Dark</option>
         </select>
       </article>
-      <article class="settings-row" data-setting-key="${SETTING_STORE_RECENT_UNIVERSITIES}">
-        <div class="settings-copy">
-          <h3 data-i18n="settings.option.store_recent.title">Save recently opened</h3>
-        </div>
+      <article class="settings-row settings-row--switch" data-setting-key="${SETTING_STORE_RECENT_UNIVERSITIES}">
         <label class="settings-switch">
-          <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Save recently opened" data-i18n-aria-label="settings.option.store_recent.title" data-setting-input="${SETTING_STORE_RECENT_UNIVERSITIES}" />
-          <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
+          <span class="settings-copy">
+            <span class="settings-copy__title" data-i18n="settings.option.store_recent.title">Save recently opened</span>
+          </span>
+          <input class="ui-switch" type="checkbox" role="switch" data-setting-input="${SETTING_STORE_RECENT_UNIVERSITIES}" />
         </label>
       </article>
-      <article class="settings-row" data-setting-key="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}">
-        <div class="settings-copy">
-          <h3 data-i18n="settings.option.open_universities_new_tab.title">Open universities in a new tab</h3>
-        </div>
+      <article class="settings-row settings-row--switch" data-setting-key="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}">
         <label class="settings-switch">
-          <input class="settings-switch-input" type="checkbox" role="switch" aria-label="Open universities in a new tab" data-i18n-aria-label="settings.option.open_universities_new_tab.title" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
-          <span class="settings-switch-track" aria-hidden="true"><span class="settings-switch-thumb"></span></span>
+          <span class="settings-copy">
+            <span class="settings-copy__title" data-i18n="settings.option.open_universities_new_tab.title">Open universities in a new tab</span>
+          </span>
+          <input class="ui-switch" type="checkbox" role="switch" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
         </label>
       </article>
 

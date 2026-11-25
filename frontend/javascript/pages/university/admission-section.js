@@ -529,9 +529,6 @@ function attachAdmissionSectionEventListeners({
   universityId,
   admissionContext,
 }) {
-  container.querySelectorAll("[data-admission-open-tab]").forEach((button) => {
-    button.addEventListener("click", () => document.querySelector(`.d-tab-btn[data-tab="${button.dataset.admissionOpenTab}"]`)?.click());
-  });
   container.querySelectorAll("[data-admission-context]").forEach((select) => {
     select.addEventListener("change", () => {
       const key = select.getAttribute("data-admission-context");
@@ -697,11 +694,15 @@ export function renderAdmissionSection({
   if (!compactMode) {
     html += studyLevelFilterHtml;
   }
-  html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
+  if (compactMode) {
+    html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
+  }
   if (!compactMode) html += renderAdmissionContextControls(admissionContext.programCategories.length ? admissionContext.programCategories : levelFilteredCategories, admissionContext);
   if (!compactMode && visibleCategories.length) {
     const sourceUrl = safeUrl(visibleCategories[0].source_url);
-    html += `<div class="admission-decision-actions">${sourceUrl ? `<a href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.next_official_step", "Open official application requirements"))}</a>` : ""}<button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-deadlines">${escapeHtml(t("university.tab.deadlines", "Deadlines"))}</button><button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-finance">${escapeHtml(t("university.tab.costs", "Costs"))}</button></div>`;
+    if (sourceUrl) {
+      html += `<div class="admission-decision-actions"><a href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.next_official_step", "Open official application requirements"))}</a></div>`;
+    }
   }
   if (selectedProgramKey !== GENERAL_PROGRAM_KEY && visibleCategories.length && visibleCategories.every((category) => String(category?.scope || "general").toLowerCase() === "general")) {
     html += `<div class="admission-scope-note">${escapeHtml(t("admission.program.using_general_note", "No program-specific score data is published here, so general requirements are shown."))}</div>`;

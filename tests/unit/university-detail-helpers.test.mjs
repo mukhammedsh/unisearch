@@ -70,7 +70,7 @@ const {
   resolveFeeStatusAndAid,
   selectAdmissionProgram,
 } = await import("../../frontend/javascript/pages/university/render-sections.js");
-const { renderOverviewSection } = await import("../../frontend/javascript/pages/university/render-content.js");
+const { renderExtraSection, renderOverviewSection } = await import("../../frontend/javascript/pages/university/render-content.js");
 
 test("finance choices follow the selected degree level", () => {
   const categories = [
@@ -397,6 +397,60 @@ test("reviewed overview shows institution facts without a university-wide admiss
   assert.match(container.innerHTML, /#1/);
   assert.match(container.innerHTML, /12,000/);
   assert.doesNotMatch(container.innerHTML, /Acceptance Rate|Undergraduate acceptance rate|4\.56%|NaN/);
+});
+
+test("overview omits missing rank, acceptance rate, and student count instead of rendering placeholders", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "", hidden: false };
+  const box = { hidden: false, querySelectorAll: () => [container] };
+  container.closest = () => box;
+  renderOverviewSection({
+    container,
+    includeAdmissionRate: true,
+    officialRank: false,
+    acceptanceRate: 25,
+    acceptanceMeta: {},
+    university: {
+      rank: null,
+      rank_meta: { source: "QS World University Rankings 2026", source_url: "https://topuniversities.example/", status: "not_published" },
+      student_count: null,
+      academics: {},
+    },
+  });
+  assert.equal(container.hidden, false);
+  assert.equal(box.hidden, false);
+  assert.match(container.innerHTML, /data-count="1"/);
+  assert.match(container.innerHTML, /25%/);
+  assert.doesNotMatch(container.innerHTML, /Global Rank|Total Students|No data|Unavailable|QS World University Rankings/);
+
+  renderOverviewSection({
+    container,
+    includeAdmissionRate: true,
+    officialRank: false,
+    acceptanceRate: null,
+    acceptanceMeta: {},
+    university: { rank: null, student_count: null, academics: {} },
+  });
+  assert.equal(container.hidden, true);
+  assert.equal(box.hidden, true);
+  assert.equal(container.innerHTML, "");
+});
+
+test("extra section renders only description without focus tags and hides when empty", () => {
+  setLanguage("eng", { persist: false, emit: false });
+  const container = { innerHTML: "", hidden: false };
+  const box = { hidden: false, querySelectorAll: () => [container] };
+  container.closest = () => box;
+  renderExtraSection({ container, university: { description: "Research university.", tags: ["engineering", "research"] } });
+  assert.equal(container.hidden, false);
+  assert.equal(box.hidden, false);
+  assert.match(container.innerHTML, /Research university\./);
+  assert.doesNotMatch(container.innerHTML, /uni-tags-wrap|uni-tag|engineering|No data/);
+
+  renderExtraSection({ container, university: { description: "", tags: ["engineering"] } });
+  assert.equal(container.hidden, true);
+  assert.equal(box.hidden, true);
+  assert.equal(container.innerHTML, "");
 });
 
 test("an institution with many delivery formats names the formats rather than each program's schedule", () => {
@@ -1032,12 +1086,12 @@ test("selected admission context puts course conditions first and omits legacy c
   };
   const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
   renderAdmissionSection({ container, university, annualCostForTrack: () => null });
-  assert.match(container.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="computing"/);
+  assert.match(container.innerHTML, /data-admission-category="route"/);
+  assert.doesNotMatch(container.innerHTML, /admission-program-selector|data-admission-open-tab/);
   assert.equal((container.innerHTML.match(/Shared application description/g) || []).length, 1);
   assert.match(container.innerHTML, /A\*A\*A including Mathematics/);
   assert.doesNotMatch(container.innerHTML, /chance-track-chip|chance-panel|mit-admission-analysis/);
   assert.doesNotMatch(container.innerHTML, /<option[^>]+Annual cycle/);
-  assert.match(container.innerHTML, /data-admission-open-tab="tab-finance"/);
   assert.match(container.innerHTML, /href="https:\/\/www\.imperial\.ac\.uk\/study\/courses\/undergraduate\/computing-meng\/"/);
   window.location.search = "";
 });
@@ -1074,7 +1128,10 @@ test("Russian program names remain distinct when restoring a selected program ID
   renderAdmissionSection({ container, university, annualCostForTrack: () => null });
   assert.match(container.innerHTML, /data-admission-category="cs-route"/);
   assert.doesNotMatch(container.innerHTML, /data-admission-category="physics-route"/);
-  assert.match(container.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="компьютерные_науки"/);
+  assert.doesNotMatch(container.innerHTML, /admission-program-selector/);
+  const compactContainer = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderAdmissionSection({ container: compactContainer, university, annualCostForTrack: () => null, compactMode: true });
+  assert.match(compactContainer.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="компьютерные_науки"/);
   window.location.search = "";
   setLanguage("eng", { persist: false, emit: false });
 });

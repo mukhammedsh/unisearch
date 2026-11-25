@@ -135,14 +135,9 @@ test("NUZYP exposes its source uncertainty without an invented application route
   await expect(page.locator("#admissionsStudyInfo")).toContainText("They do not list a current intake cycle");
   await expect(page.locator("#admissionsStudyInfo .admissions-catalog__unknowns a[href*='nuzyp_instructions']")).toBeVisible();
   await showTab(page, "general");
-  // The legacy funding page is a historical source record, so it stays in the collapsed history list.
-  const general = page.locator("#admissionsUniversityInfo");
-  const historyFact = general.locator("[data-admissions-fact='nu-a-fact-nuzyp-funding-history']");
-  await general.locator("details.admissions-catalog__fact > summary", { hasText: "Historical records" }).click();
-  await historyFact.locator("> summary").click();
-  await expect(historyFact).toContainText("Historical source record");
-  await expect(historyFact).toContainText("Abay Kunanbayev");
-  await expect(historyFact).not.toContainText("Do not display as current scholarship");
+  // Raw institutional/historical dumps stay off the Overview tab, and historical funding is not shown as a current scholarship.
+  await expect(page.locator("#admissionsUniversityInfo")).toHaveCount(0);
+  await expect(page.locator("#tab-general")).not.toContainText("Do not display as current scholarship");
   await showTab(page, "admission");
   await expect(page.locator("#admissionsContext")).toContainText("does not mean that admission is closed");
 });

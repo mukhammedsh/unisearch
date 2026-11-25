@@ -68,15 +68,15 @@
             <span data-i18n="universities.filter_mobile">Filter</span>
             <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
           </button>
-          <div id="viewToggles" class="view-toggles" role="group" aria-label="View mode" data-i18n-aria-label="universities.view_toggles.aria">
-            <button id="viewListBtn" class="view-btn active" type="button" title="List View" data-i18n-title="universities.view_list" aria-label="List View" data-i18n-aria-label="universities.view_list" aria-pressed="true" disabled>
+          <div id="viewToggles" class="ui-segmented view-toggles" role="group" aria-label="View mode" data-i18n-aria-label="universities.view_toggles.aria">
+            <button id="viewListBtn" class="ui-segmented__item view-btn active" type="button" title="List View" data-i18n-title="universities.view_list" aria-label="List View" data-i18n-aria-label="universities.view_list" aria-pressed="true" disabled>
               <span aria-hidden="true" data-heroicon="bars-3-bottom-left" data-icon-size="16"></span>
             </button>
-            <button id="viewMapBtn" class="view-btn" type="button" title="Map View" data-i18n-title="universities.view_map" aria-label="Map View" data-i18n-aria-label="universities.view_map" aria-pressed="false" disabled>
+            <button id="viewMapBtn" class="ui-segmented__item view-btn" type="button" title="Map View" data-i18n-title="universities.view_map" aria-label="Map View" data-i18n-aria-label="universities.view_map" aria-pressed="false" disabled>
               <span aria-hidden="true" data-heroicon="map" data-icon-size="16"></span>
             </button>
           </div>
-          <button id="compareModeBtn" class="u-compare-mode-btn" type="button" aria-pressed="false" title="Compare mode" data-i18n-title="universities.compare.enter" aria-label="Compare mode" data-i18n-aria-label="universities.compare.enter">
+          <button id="compareModeBtn" class="ui-btn ui-btn--on-bg u-compare-mode-btn" type="button" aria-pressed="false" title="Compare mode" data-i18n-title="universities.compare.enter" aria-label="Compare mode" data-i18n-aria-label="universities.compare.enter">
             <span aria-hidden="true" data-heroicon="adjustments-horizontal" data-icon-size="16"></span>
             <span id="compareModeLabel" data-i18n="universities.compare.enter">Compare mode</span>
           </button>
@@ -92,7 +92,7 @@
               <span data-heroicon="funnel" data-icon-size="20"></span>
             </span>
             <span data-i18n="universities.filter">Filter</span>
-            <button id="resetFiltersBtn" class="u-reset" type="button">
+            <button id="resetFiltersBtn" class="ui-btn ui-btn--sm u-reset" type="button">
               <span data-i18n="universities.reset">Reset</span>
             </button>
             <button id="closeMobileFilters" class="u-filter-close" type="button" title="Close filters" data-i18n-title="universities.filter.close" aria-label="Close filters" data-i18n-aria-label="universities.filter.close">
@@ -116,7 +116,7 @@
           <div class="u-field u-field--reviewed-only">
             <label class="u-reviewed-toggle" for="reviewedOnlyToggle" title="Show universities with verified route, minimum, and cost breakdowns" data-i18n-title="universities.filter.reviewed_only_hint">
               <span class="u-reviewed-toggle__text" data-i18n="universities.filter.reviewed_only">Detailed admissions data</span>
-              <input id="reviewedOnlyToggle" class="u-reviewed-toggle__input" type="checkbox" role="switch" />
+              <input id="reviewedOnlyToggle" class="ui-switch" type="checkbox" role="switch" />
             </label>
           </div>
 

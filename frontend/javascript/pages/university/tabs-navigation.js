@@ -70,8 +70,11 @@ export function mountTabsNavigation(card) {
     const target = direction > 0
       ? allTabs().find((tab) => tab.offsetLeft + tab.offsetWidth > visibleEnd + EDGE_TOLERANCE)
       : allTabs().toReversed().find((tab) => tab.offsetLeft < visibleStart - EDGE_TOLERANCE);
-    const left = !target ? tabs.scrollLeft + direction * tabs.clientWidth / 2
+    const fallback = tabs.scrollLeft + direction * tabs.clientWidth / 2;
+    let left = !target ? fallback
       : direction > 0 ? target.offsetLeft - zone : target.offsetLeft + target.offsetWidth - (tabs.clientWidth - zone);
+    if (direction > 0 && left <= tabs.scrollLeft + EDGE_TOLERANCE) left = fallback;
+    if (direction < 0 && left >= tabs.scrollLeft - EDGE_TOLERANCE) left = fallback;
     tabs.scrollTo({ left: Math.max(0, left), behavior: scrollBehavior() });
   };
   previous.onclick = () => stepBy(-1);

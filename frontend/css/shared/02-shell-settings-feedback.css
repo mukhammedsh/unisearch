@@ -41,7 +41,7 @@
 }
 
 .navbar-logo-link:active {
-  background-color: var(--interaction-active-surface);
+  background-color: var(--interaction-press-surface);
 }
 
 .lang-control {
@@ -78,7 +78,6 @@
 
 .navbar-search-toggle {
   display: none;
-  border-radius: var(--radius-md);
 }
 
 .profile-trigger-btn .ui-icon,
@@ -132,9 +131,9 @@
 }
 
 .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger {
-  background: var(--accent-panel);
-  box-shadow: var(--shadow-sm);
-  color: var(--interaction-active-text);
+  background: var(--interaction-hover-surface);
+  box-shadow: var(--shadow-dropdown-trigger);
+  color: var(--text);
 }
 
 .navbar-right .lang-control .custom-select-trigger::after {
@@ -262,7 +261,7 @@
   color: var(--text-muted);
   width: 36px;
   height: 36px;
-  border-radius: var(--radius-md);
+  border-radius: var(--control-radius-md);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -632,7 +631,7 @@
 .settings-list {
   display: flex;
   flex-direction: column;
-  padding: 0 var(--space-6) var(--space-5);
+  padding: 0 var(--space-3) var(--space-5);
   overflow: visible;
 }
 
@@ -642,10 +641,14 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-5);
-  padding: var(--space-3) 0;
+  padding: var(--space-3);
   border-bottom: 1px solid var(--line-faint);
   background: transparent;
   border-radius: 0;
+}
+
+.settings-row--switch {
+  padding: var(--space-1) 0;
 }
 
 .settings-row:has(.custom-select-wrapper.open) {
@@ -665,7 +668,9 @@
   min-width: 0;
 }
 
-.settings-copy h3 {
+.settings-copy h3,
+.settings-copy__title {
+  display: block;
   margin: 0;
   color: var(--text);
   font-size: var(--text-base);
@@ -682,71 +687,21 @@
 }
 
 .settings-switch {
-  position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  flex-shrink: 0;
+  justify-content: space-between;
+  gap: var(--space-5);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
   cursor: pointer;
   user-select: none;
-}
-
-.settings-switch-input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.settings-switch-track {
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  width: 44px;
-  height: 24px;
-  padding: 0;
-  flex: 0 0 44px;
-  border-radius: var(--radius-full);
-  background: var(--line);
-  line-height: 1;
-  font-size: 0;
-  transition:
-    background-color var(--motion-medium) var(--motion-ease-standard);
-}
-
-.settings-switch-thumb {
-  --switch-thumb-x: 0px;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  display: block;
-  width: 20px;
-  height: 20px;
-  border-radius: var(--radius-circle);
-  background: var(--text-inverse);
-  box-shadow: none;
-  transform: translateX(var(--switch-thumb-x));
-  pointer-events: none;
-  transition:
-    transform var(--motion-medium) var(--motion-ease-enter),
-    background-color var(--motion-medium) var(--motion-ease-standard);
-}
-
-.settings-switch-input:checked + .settings-switch-track {
-  background: var(--accent);
-}
-
-.settings-switch-input:checked + .settings-switch-track .settings-switch-thumb {
-  --switch-thumb-x: 20px;
-  background: var(--text-inverse);
-}
-
-.settings-switch-input:focus-visible + .settings-switch-track {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .settings-section-title {
   margin: 0;
-  padding: var(--space-5) 0 var(--space-2);
+  padding: var(--space-5) var(--space-3) var(--space-2);
   color: var(--text-muted);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
@@ -802,7 +757,7 @@
   font-weight: var(--font-weight-regular);
   color: var(--text);
   background: var(--surface-soft);
-  border-radius: var(--radius-md);
+  border-radius: var(--dropdown-radius);
   box-shadow: none;
 }
 
@@ -811,7 +766,7 @@
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
   color: var(--text-muted);
-  padding: var(--space-4) 0 0;
+  padding: var(--space-4) var(--space-3) 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -848,12 +803,28 @@
   }
 
   .settings-list {
-    padding: 0 var(--space-4) var(--space-4);
+    padding: 0 var(--space-2) var(--space-4);
+  }
+
+  .settings-section-title {
+    padding: var(--space-5) var(--space-2) var(--space-2);
   }
 
   .settings-row {
-    padding: var(--space-3) 0;
     gap: var(--space-3);
+  }
+
+  .settings-row:not(.settings-row--switch) {
+    padding: var(--space-3) var(--space-2);
+  }
+
+  .settings-switch {
+    padding: var(--space-2);
+    gap: var(--space-3);
+  }
+
+  .settings-attribution {
+    padding: var(--space-4) var(--space-2) 0;
   }
 
   .settings-row[data-setting-key="theme_preference"],
@@ -1020,19 +991,6 @@
 }
 
 /* --- Dropdowns --- */
-.custom-select-wrapper,
-select:not(.u-select-hidden) {
-  --dropdown-radius: var(--radius-base);
-  --dropdown-row-height: 36px;
-}
-
-@media (pointer: coarse) {
-  .custom-select-wrapper,
-  select:not(.u-select-hidden) {
-    --dropdown-row-height: 44px;
-  }
-}
-
 .custom-select-wrapper {
   position: relative;
   width: 100%;
@@ -1085,8 +1043,8 @@ select:not(.u-select-hidden) {
 }
 
 .custom-select-trigger:active:not(:disabled, .is-disabled) {
-  background-color: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
+  background-color: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .custom-select-chevron,
@@ -1426,14 +1384,19 @@ select:not(.u-select-hidden) {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .profile-trigger-btn:hover,
-  .settings-trigger-btn:hover,
-  .navbar-search-toggle:hover,
-  .lang-switch:hover,
-  .navbar-right .lang-control .custom-select-trigger:hover {
+  .profile-trigger-btn:hover:not(:active),
+  .settings-trigger-btn:hover:not(:active),
+  .navbar-search-toggle:hover:not(:active),
+  .lang-switch:hover:not(:active),
+  .navbar-right .lang-control .custom-select-trigger:hover:not(:active) {
     background: var(--interaction-hover-surface);
     box-shadow: var(--shadow-sm);
     color: var(--interaction-hover-text);
+  }
+
+  .navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger:hover:not(:active) {
+    background: var(--interaction-hover-surface);
+    color: var(--text);
   }
 
   .navbar-right .lang-control .custom-select-trigger:hover::after {
@@ -1441,7 +1404,7 @@ select:not(.u-select-hidden) {
     background-color: currentColor;
   }
 
-  .icon-btn:hover {
+  .icon-btn:hover:not(:active) {
     background: var(--line);
   }
 
@@ -1458,17 +1421,13 @@ select:not(.u-select-hidden) {
     transition-behavior: allow-discrete;
   }
 
-  .settings-close:hover {
+  .settings-close:hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .settings-switch:hover .settings-switch-track {
-    background: var(--line-strong);
-  }
-
-  .settings-switch-input:checked:hover + .settings-switch-track {
-    background: var(--accent-strong);
+  .settings-switch:hover:not(:active) {
+    background: var(--interaction-hover-surface);
   }
 
   .settings-attribution a:hover {
@@ -1488,7 +1447,7 @@ select:not(.u-select-hidden) {
     background-color: var(--interaction-hover-surface);
   }
 
-  .custom-option:hover:not(.is-disabled) {
+  .custom-option:hover:not(.is-disabled, :active) {
     background-color: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
@@ -1497,10 +1456,29 @@ select:not(.u-select-hidden) {
     color: var(--interaction-hover-text);
   }
 
-  .social-links a:hover {
+  .social-links a:hover:not(:active) {
     color: var(--interaction-hover-text);
     background: var(--interaction-hover-surface);
   }
+}
+
+:is(.profile-trigger-btn, .settings-trigger-btn, .navbar-search-toggle, .lang-switch, .settings-close, .icon-btn, .social-links a):active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.settings-switch:active {
+  background: var(--interaction-press-surface);
+}
+
+.navbar-right .lang-control .custom-select-wrapper.open .custom-select-trigger:active {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.custom-option:active:not(.is-disabled, .selected) {
+  background-color: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .social-links img{

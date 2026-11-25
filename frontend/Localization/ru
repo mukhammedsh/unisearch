@@ -585,7 +585,7 @@ universities.state_region: Штат / Регион
 universities.view_list: Список
 universities.view_map: Карта
 universities.view_toggles.aria: Режим отображения
-university.about_campus: О университете и кампусе
+university.about_campus: Об университете
 university.action.website: Сайт
 university.action.map: Карта
 university.action.save: Сохранить в избранное
@@ -658,6 +658,9 @@ university.gallery.position: Фото {current} из {total}
 university.gallery.unavailable: Фото недоступно
 university.gallery.zoom_in: Увеличить масштаб
 university.gallery.zoom_out: Уменьшить масштаб
+university.cover.view_switch: Режим обложки
+university.cover.photo: Фото
+university.cover.recenter: Вернуться к кампусу
 university.entry_requirements: Категории поступления
 university.error_no_id: Ошибка: ID не указан.
 university.loading_scholarships: Загрузка стипендий
@@ -1229,24 +1232,8 @@ university.deadlines.doctoral_research: Исследовательские до�
 university.deadlines.mba_round: Этап подачи заявки на MBA
 university.deadlines.interviews_label: Собеседования
 university.deadlines.time_label: Время
-university.coverage.title: Данные UniSearch
-university.coverage.note: Здесь показано, какие сведения UniSearch добавил в каталог. «Не добавлено в каталог» не означает, что университет не предлагает такие программы или условия.
-university.coverage.available: Есть в каталоге
-university.coverage.not_catalogued: Не добавлено в каталог
-university.coverage.unknown: Данные о покрытии недоступны
-university.coverage.no_levels: Для этого университета пока нет сведений о покрытии по уровням обучения. Это не показывает, какие программы предлагает университет.
-university.coverage.level.bachelor: Бакалавриат
-university.coverage.level.master: Магистратура
-university.coverage.level.doctorate: Докторантура
 university.coverage.level.professional: Профессиональные программы
 university.coverage.level.mba: MBA
-university.coverage.programs: Программы
-university.coverage.requirements: Требования к поступлению
-university.coverage.deadlines_exact: Сроки с точной датой и годом
-university.coverage.deadlines_approximate: Приблизительные сроки или сроки без года
-university.coverage.costs_program: Стоимость для отдельных программ
-university.coverage.costs_undergraduate: Общие данные о стоимости бакалавриата
-university.coverage.aid: Финансовая помощь и финансирование
 profile.applicant_context.optional: Не указано
 universities.compare.finance.grant_unconfirmed: Выбранный грант — лишь возможное финансирование. Его сумма не считается подтверждённой стоимостью или скидкой, пока университет официально не присудит его.
 universities.compare.funding.not_awarded: Возможный грант; не подтверждён
@@ -3219,10 +3206,10 @@ profile.ux2.evidence.language_fixed: Записывается только оп�
 profile.ux2.evidence.entirely: Полностью на английском?
 university.ux2.title: Главное для поступления
 university.ux2.intro_route: Показано для варианта «{route}». Одна заявка подходит для всех программ бакалавриата.
+university.ux2.intro_selected_route: Показано для варианта «{route}».
 university.ux2.intro_selected_program: Показано для выбранной программы «{program}».
 university.ux2.intro_program: У каждой программы они свои. Выберите программу, чтобы их увидеть.
 university.ux2.intro_legacy: Опубликованные данные вуза о бакалавриате.
-university.ux2.note: Это краткая сводка официальных данных, а не решение о поступлении. Источники и подробности — на вкладках.
 university.ux2.loading: Загружаем главное
 university.ux2.error: Не удалось загрузить главное.
 university.ux2.retry: Повторить

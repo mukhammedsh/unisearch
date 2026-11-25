@@ -189,6 +189,7 @@ body[data-page="profile"] {
 .profile-section-tab.is-active {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
+  cursor: default;
 }
 
 .profile-outline__marker {
@@ -677,9 +678,9 @@ body[data-page="profile"] {
 }
 
 .profile-budget-grant-hint__cta {
-  height: 28px;
+  height: var(--control-height-sm);
   padding: 0 var(--space-3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--control-radius-sm);
   background: var(--accent);
   color: var(--text-inverse);
   font-size: var(--text-xs);
@@ -951,7 +952,7 @@ textarea.profile-input,
 .profile-exam-form-actions .profile-button-subtle,
 .lang-control-btn-wrap .profile-button-subtle {
   justify-content: center;
-  height: 44px;
+  height: var(--control-height-lg);
   padding: 0 var(--space-4);
 }
 
@@ -961,9 +962,9 @@ textarea.profile-input,
 }
 
 .profile-add {
-  height: 42px;
+  height: var(--control-height-md);
   padding: 0 var(--space-3);
-  border-radius: var(--radius-md);
+  border-radius: var(--control-radius-md);
   background: var(--accent);
   color: var(--text-inverse);
   font-size: var(--text-sm);
@@ -1200,10 +1201,10 @@ textarea.profile-input,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
-  min-height: 32px;
+  height: var(--control-height-sm);
+  min-height: var(--control-height-sm);
   padding: 0 var(--space-3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--control-radius-sm);
   background: var(--control-bg);
   box-shadow: var(--control-shadow);
   color: var(--text-muted);
@@ -1324,44 +1325,6 @@ html:has(body[data-page="profile"]) {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-}
-
-.profile-action-btn {
-  min-height: 44px;
-  padding: var(--space-1-5) var(--space-4);
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  cursor: pointer;
-  white-space: nowrap;
-  font-family: inherit;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.profile-action-btn:disabled {
-  opacity: var(--interaction-disabled-opacity, 0.5);
-  cursor: not-allowed;
-}
-
-.profile-action-btn--primary {
-  background: var(--accent);
-  color: var(--text-inverse);
-}
-
-.profile-action-btn--secondary {
-  background: var(--surface-soft);
-  color: var(--text);
-}
-
-.profile-action-btn--subtle {
-  background: transparent;
-  color: var(--text-muted);
 }
 
 /* --------------------------------------------------------------------------
@@ -1515,9 +1478,9 @@ html:has(body[data-page="profile"]) {
 }
 
 .profile-confirm-actions :is(.profile-delete, .profile-add) {
-  min-height: 44px;
+  min-height: var(--control-height-lg);
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-base);
+  border-radius: var(--control-radius-md);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1550,7 +1513,7 @@ html:has(body[data-page="profile"]) {
    Hover States (grouped to preserve focus/active/modifier cascade)
    -------------------------------------------------------------------------- */
 @media (hover: hover) and (pointer: fine) {
-  :is(.profile-budget-grant-hint__cta, .profile-add, .profile-action-btn--primary:not(:disabled)):hover {
+  :is(.profile-budget-grant-hint__cta, .profile-add):hover:not(:active) {
     background: var(--accent-strong);
   }
 
@@ -1561,11 +1524,9 @@ html:has(body[data-page="profile"]) {
     .profile-info:not(:focus-visible),
     .profile-list-actions > button,
     .profile-add--secondary:not(:disabled),
-    .profile-action-btn--secondary:not(:disabled),
-    .profile-action-btn--subtle:not(:disabled),
     .profile-admission-evidence > summary,
     .profile-button-subtle
-  ):hover {
+  ):hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
@@ -1595,7 +1556,7 @@ html:has(body[data-page="profile"]) {
   }
 
   .profile-delete.profile-delete--danger-soft:hover:not(:active) {
-    background-color: color-mix(in srgb, var(--color-danger) 8%, var(--color-danger-bg));
+    background-color: color-mix(in oklab, var(--color-danger) 8%, var(--color-danger-bg));
   }
 
   .profile-delete--danger:hover {
@@ -1605,8 +1566,25 @@ html:has(body[data-page="profile"]) {
   }
 }
 
+:is(.profile-budget-grant-hint__cta, .profile-add):active {
+  background: var(--accent-press);
+}
+
+:is(
+  .profile-section-tab:not(.is-active),
+  .profile-budget-grant-hint__dismiss,
+  .profile-info,
+  .profile-list-actions > button:not(.profile-delete),
+  .profile-add--secondary:not(:disabled),
+  .profile-admission-evidence > summary,
+  .profile-button-subtle
+):active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
 .profile-delete.profile-delete--danger-soft:active {
-  background-color: color-mix(in srgb, var(--color-danger) 14%, var(--color-danger-bg));
+  background-color: color-mix(in oklab, var(--color-danger) 14%, var(--color-danger-bg));
 }
 
 /* --------------------------------------------------------------------------
@@ -1664,7 +1642,7 @@ html:has(body[data-page="profile"]) {
   padding: var(--space-2) var(--space-3);
   background: var(--surface-soft);
   color: var(--text);
-  border-radius: var(--radius-sm);
+  border-radius: var(--control-radius-md);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -1680,7 +1658,6 @@ html:has(body[data-page="profile"]) {
    Reduced Motion
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .profile-action-btn,
   .profile-save-state,
   .profile-section-tab,
   .profile-admission-evidence > summary,

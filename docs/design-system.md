@@ -27,9 +27,9 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 - Type Scale: `--text-xs` (11px), `--text-sm` (13px), `--text-base` (14px), `--text-md` (16px), `--text-lg` (18px), `--text-xl` (20px), `--text-2xl` (24px), `--text-3xl` (28px).
 - Line Heights: `--leading-tight` (1.25), `--leading-normal` (1.5), `--leading-loose` (1.7).
 - Spacing uses shared `--space-*` primitives from 1px to 96px and semantic aliases (`--layout-page-gutter`, `--layout-section-gap`, `--component-card-padding`, `--component-card-gap`, and `--component-control-gap`) for repeated roles and responsive changes.
-- Accent: `--accent` (`#4F46E5` light / `#5850EC` dark, reserved for solid fills and indicators), `--accent-text` (`#4338CA` light / `#A5B4FC` dark, for foreground text and icons), `--accent-strong`, `--accent-soft`, `--accent-faint`, `--accent-panel`. Browser chrome reads `--accent` through `theme-init.js`; external SVG logos mirror `#4F46E5` (`whitelogo.svg`, `minilogo.svg`) and `#818CF8` (`darklogo.svg`) because they do not inherit CSS custom properties.
-- Interaction states: `--interaction-hover-text`, `--interaction-hover-surface`, `--interaction-active-text`, `--interaction-active-surface`, and `--interaction-disabled-opacity`. Reusable links, tabs, buttons, and icon controls must use these tokens instead of choosing local hover or selected colors. Semantic danger, warning, and success controls keep their matching status tokens.
-- Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`, plus context-scoped `--control-bg` and `--control-shadow` (defaulting to `--surface-soft` / `--shadow-micro` on `--surface-solid` and flipping automatically to `--surface-solid` / `--shadow-xs` inside soft containers).
+- Accent: `--accent` (`#4F46E5` light / `#5850EC` dark, reserved for solid fills and indicators), `--accent-text` (`#4338CA` light / `#A5B4FC` dark, for foreground text and icons), `--accent-strong`, `--accent-press`, `--accent-soft`, `--accent-faint`, `--accent-panel`, `--accent-active-surface`, `--accent-active-hover-surface`, `--accent-active-press-surface`. Browser chrome reads `--accent` through `theme-init.js`; external SVG logos mirror `#4F46E5` (`whitelogo.svg`, `minilogo.svg`) and `#818CF8` (`darklogo.svg`) because they do not inherit CSS custom properties.
+- Interaction states: `--interaction-hover-text`, `--interaction-hover-surface`, `--interaction-press-surface`, `--interaction-active-text`, `--interaction-active-surface`, `--focus-ring`, and `--interaction-disabled-opacity`. Reusable links, tabs, buttons, and icon controls must use these tokens instead of choosing local hover, press, focus, or disabled values. Semantic danger, warning, and success controls keep their matching status tokens.
+- Backgrounds & Surfaces: `--bg`, `--bg-soft`, `--surface-solid` (alias `--card`), `--surface`, `--surface-soft`, `--surface-raised`, `--surface-raised-hover`, `--surface-raised-press`, plus context-scoped `--control-bg`, `--control-shadow`, `--interaction-hover-surface`, and `--interaction-press-surface` (defaulting to `--surface-soft` / `--shadow-micro` on `--surface-solid` and flipping automatically to `--surface-raised` / `--shadow-xs` / `--surface-raised-hover` / `--surface-raised-press` inside soft containers).
 - Text: `--text`, `--text-muted`.
 - Lines & state rings: `--line`, `--line-strong`, `--line-faint`, `--line-accent`, `--line-grant`, `--line-warning`, `--line-danger`, `--line-info`. These tokens are reserved for focus outlines, separators, and non-box state rings; they must not reintroduce default card or control borders.
 - Statuses:
@@ -52,15 +52,30 @@ Use existing CSS variables instead of new hard-coded palettes. All colors in com
 | `--dropdown-surface` | `var(--surface-solid)` | `var(--surface-soft)` | Open select triggers and dropdown panels (with `--shadow-dropdown-trigger` / `--shadow-dropdown` so they stay separated from cards) |
 | `--surface` | `rgba(255, 255, 255, 0.90)` | `rgba(21, 24, 29, 0.88)` | Translucent header, floating docked bars |
 | `--surface-soft` | `#ECEFF4` | `#20242B` | Form inputs, chip/tag pills, nested controls |
+| `--surface-raised` | `var(--surface-solid)` | `#2B303A` | Nested controls and pills elevated above `--surface-soft` |
+| `--surface-raised-hover` | `var(--interaction-hover-surface)` | `#343A46` | Hover fill for `--surface-raised` controls inside soft containers |
+| `--surface-raised-press` | `var(--interaction-press-surface)` | `#252A33` | Press (`:active`) fill for `--surface-raised` controls inside soft containers |
+| `--surface-control-on-bg` | `var(--surface-solid)` | `var(--surface-soft)` | Neutral interactive buttons and segmented shells sitting directly on `--bg` |
+| `--control-badge-bg` | `var(--surface-soft)` | `var(--surface-raised)` | Count badges inside `--surface-control-on-bg` controls at rest |
+| `--control-badge-hover-bg` | `var(--surface-solid)` | `var(--surface-raised-hover)` | Count badges inside `--surface-control-on-bg` controls on hover or open |
+| `--dropdown-surface` | `var(--surface-solid)` | `var(--surface-soft)` | Floating menu surface shared by `.custom-options`, `.u-recent-popover`, `.navbar-search-suggestions`, and `.uni-status-overflow-popover` |
+| `--dropdown-radius` | `var(--radius-base)` | `var(--radius-base)` | Shared corner radius for floating menus and select triggers (`12px`) |
+| `--dropdown-row-height` | `36px` (`44px` coarse) | `36px` (`44px` coarse) | Shared minimum row block-size inside dropdowns and floating menus |
 | `--text` | `#111827` | `#F3F4F6` | Primary high-contrast typography |
 | `--text-muted` | `#525D70` | `#9AA4B4` | Secondary labels, descriptions, captions |
-| `--interaction-hover-surface` | `#E6E9F0` | `#282C34` | Neutral hover fill without accent color stain |
+| `--interaction-hover-surface` | `#E6E9F0` | `#282C34` | Neutral hover fill and open menu/popover trigger fill |
+| `--interaction-press-surface` | `#DCE0E9` | `#1B1E24` | Neutral deeper press (`:active`) fill |
 | `--line` | `rgba(15, 23, 42, 0.16)` | `rgba(255, 255, 255, 0.16)` | Focus ring or structural separator, never a default component box |
 | `--line-strong` | `rgba(15, 23, 42, 0.28)` | `rgba(255, 255, 255, 0.28)` | Prominent structural separator or non-box state ring |
 | `--line-faint` | `rgba(15, 23, 42, 0.08)` | `rgba(255, 255, 255, 0.08)` | Subtle separator where whitespace alone cannot express structure |
-| `--accent` | `#4F46E5` | `#5850EC` | Primary action button fill, active indicator, focus ring |
+| `--accent` | `#4F46E5` | `#5850EC` | Primary action button fill, active indicator |
 | `--accent-text` | `#4338CA` | `#A5B4FC` | Accent foreground text and icons on light or dark surfaces |
+| `--accent-press` | `#312E81` | `#4338CA` | Primary CTA `:active` press fill |
 | `--accent-soft` | `color-mix(in oklab, var(--accent) 12%, transparent)` | `color-mix(in oklab, var(--accent) 22%, transparent)` | Active row highlight, soft badge background |
+| `--accent-active-surface` | `color-mix(in oklab, var(--accent) 16%, var(--surface-solid))` | `color-mix(in oklab, var(--accent) 26%, var(--surface-solid))` | Persistent selected control fill (toggles, active radio segments) |
+| `--accent-active-hover-surface` | `color-mix(in oklab, var(--accent) 22%, var(--surface-solid))` | `color-mix(in oklab, var(--accent) 33%, var(--surface-solid))` | Hover fill for interactive selected toggles |
+| `--accent-active-press-surface` | `color-mix(in oklab, var(--accent) 28%, var(--surface-solid))` | `color-mix(in oklab, var(--accent) 18%, var(--surface-solid))` | Deeper press (`:active`) fill for interactive selected toggles |
+| `--focus-ring` | `var(--accent)` | `var(--text)` | Keyboard `:focus-visible` outline color (kept distinct in dark theme) |
 | `--color-success` | `#166534` | `#a7f3d0` | Positive trend, grant available, verified state (WCAG AA >= 6.1:1 on light soft/subtle surfaces) |
 | `--color-success-bg` | `#f0fdf4` | `rgba(16, 185, 129, 0.14)` | Success badge/banner background |
 | `--color-warning` | `#92400e` | `#fde68a` | Alert note, partial match, impending deadline (WCAG AA >= 6.1:1 on light soft/subtle surfaces) |
@@ -174,14 +189,18 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 ### Buttons
 
-- Primary: filled accent, white text, 48-50px minimum height, `10-14px` radius, bold label.
-- Secondary: `var(--surface-soft)`, no border, text color `var(--text)`. Add `var(--shadow-xs)` or `var(--shadow-micro)` only when its parent surface would otherwise make the control disappear.
+- Shared primitives & control scale (defined globally in `frontend/css/shared/01-foundation.css`):
+  - Scale tokens: `--control-height-sm` (`32px` / `--control-radius-sm` `8px`), `--control-height-md` (`40px` / `--control-radius-md` `12px`), and `--control-height-lg` (`44px` / `--control-radius-md` `12px`).
+  - Use `.ui-btn` (with optional `.ui-btn--sm` / `.ui-btn--lg` and `.ui-btn--primary`, `.ui-btn--on-bg`, or `.ui-btn--ghost`) for standard buttons/CTAs and `.ui-segmented` + `.ui-segmented__item` for connected segmented toggles; page classes only supply local layout or page-specific rules without redefining the base primitive in page stylesheets.
+- Primary: filled accent (`--accent`), `--text-inverse`, `var(--control-height-lg)` (`44px`) for standalone/footer CTAs or `var(--control-height-md)` (`40px`) in compact toolbars, `var(--control-radius-md)` (`12px`), medium/semibold label.
+- Secondary: `var(--control-bg)` (`--surface-soft`, or `--surface-control-on-bg` when sitting directly on `--bg`), no border, text color `var(--text)`. Add `var(--shadow-xs)` or `var(--shadow-micro)` only when its parent surface would otherwise make the control disappear.
 - Subtle / utility: no border, `background: var(--surface-soft)`, and restrained micro-elevation where necessary. Avoid heavy outlines where soft surface contrast and micro-shadow already define the element cleanly.
 - Icon-only: square `34-40px`, Heroicons only, always with `aria-label`.
-- Hover should be subtle: surface, text/icon-color, or restrained shadow change. Never use `border-color` as a state cue on a borderless component.
-- Hover text and surfaces use `--interaction-hover-text` and `--interaction-hover-surface`; selected controls use `--interaction-active-text` and `--interaction-active-surface`.
-- Active press: subtle background/surface color shift (darker hover/active tokens) without physical depression or movement. Never use downward translation (translate/translateY), bouncy cartoonish depression (`scale(0.95)`), or spring recoil.
+- Hover should be subtle: surface, text/icon-color, or restrained shadow change, gated with `:not(:active)` inside `@media (hover: hover)` so hover never overrides `:active`. Never use `border-color` as a state cue on a borderless component.
+- Hover text and surfaces use `--interaction-hover-text` and `--interaction-hover-surface`; open dropdown and popover triggers (`aria-expanded="true"` / `.open`) stay neutral on `--interaction-hover-surface` with `var(--text)`. Persistent selected controls (mode toggles, active radio segments, selected options, active tabs) use `--interaction-active-text` and `--accent-active-surface` (or `--interaction-active-surface` on transparent/tab-like surfaces). Interactive selected toggles lift slightly on hover (`--accent-active-hover-surface`) and sink deeper on press (`--accent-active-press-surface`); already-selected single-choice radio segments (such as the active view mode or route choice) set `cursor: default`.
+- Active press: neutral controls sink slightly deeper (`--interaction-press-surface`, or `--surface-raised-press` inside soft cards, keeping `var(--text)`) and primary CTA buttons sink to `--accent-press`, without physical depression or movement. Never use downward translation (translate/translateY), bouncy cartoonish depression (`scale(0.95)`), or spring recoil.
 - Disabled controls use `--interaction-disabled-opacity`, a `not-allowed` cursor, and no pointer interaction. Native `disabled`, `aria-disabled="true"`, and `.is-disabled` states must render consistently.
+- Focus rings use `outline: 2px solid var(--focus-ring); outline-offset: 2px;` on `:focus-visible` so light and dark themes (plus Forced Colors Mode) remain high-contrast without `outline: none` + `box-shadow` workarounds on standalone controls.
 
 ### Inputs and Selects
 
@@ -191,6 +210,14 @@ Breakpoints must describe available content space, not a device name. Keep a non
 - Never show raw API/network errors in visible form messages.
 - Composite fields with an embedded icon, unit, clear button, reveal button, or similar action use one `.ui-input-composite` surface. The container owns hover, focus-within, invalid, and disabled states; its input remains transparent. Hovering or focusing an embedded action must preserve the state of the full field, while the action may use `--interaction-active-surface` as a local cue.
 
+### Switches
+
+- Use `.ui-switch` on `<input type="checkbox" role="switch">` exclusively for binary controls whose effect applies immediately without a save or submit step. Never place switches inside deferred submission forms.
+- Geometry and states are standardized globally in `frontend/css/shared/01-foundation.css` (`36×20px` pill track, `16×16px` `--text-inverse` thumb with `--shadow-xs`, `--line-strong` resting track, `--accent` checked track, global `--focus-ring` on `:focus-visible`, and `forced-colors` outlines).
+- Always keep the label on the left and the `.ui-switch` on the right, wrapped in a single `<label>` so the entire label or row is clickable.
+- When a switch is wrapped inside a full-width surface pill (such as `.u-reviewed-toggle`), the checked surface uses `--accent-active-surface` / `--accent-active-hover-surface` / `--accent-active-press-surface` with `--interaction-active-text`.
+- In flat settings lists (`.settings-switch`), rows stay transparent at rest without a persistent checked fill and use `--interaction-hover-surface` on hover and `--interaction-press-surface` on `:active` alongside synchronized `.ui-switch` track feedback.
+
 ### Cards and Sections
 
 - Default data card: `background: var(--surface-solid)`, no border, `16-20px` radius, and no default shadow unless the card is raised above a similarly colored context.
@@ -199,9 +226,9 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 ### Borderless Surface Hierarchy
 
-- Visible box borders are prohibited for cards, panels, inputs, selects, chips, badges, buttons, and their hover, active, or selected states. `border-color` cannot be used as an interaction cue when `border: none` is the base state.
+- Visible box borders are prohibited for cards, panels, inputs, selects, chips, badges, buttons, and their hover, active, or selected states. Standard cards (`--shadow-card`, `--shadow-card-hover`) and nested controls (`--shadow-micro`) use pure soft shadows without `0 0 0 1px` rings; 1px hairlines are reserved strictly for floating overlays (`--shadow-dropdown`, `--shadow-dropdown-trigger`) that cross card boundaries. `border-color` cannot be used as an interaction cue when `border: none` is the base state.
 - The only permitted visible lines are focus outlines, active-tab underlines, table/list separators, range/thumb edges, and a non-box status ring when semantic background, icon, and text cannot make the state clear. Prefer `outline`, `box-shadow`, or a pseudo-element over a component box border.
-- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, return compact controls to `var(--surface-solid)` and give them `var(--shadow-xs)` or `var(--shadow-micro)` — prefer `var(--control-bg)` and `var(--control-shadow)` (scoped in `shared/01-foundation.css`) over one-off `.parent .child` overrides.
+- On `var(--bg)` or `var(--bg-soft)`, use `var(--surface-solid)` for a working surface. Inside `var(--surface-solid)`, use `var(--surface-soft)` for nested controls and grouped data. Inside `var(--surface-soft)`, step compact controls up to `var(--surface-raised)` (with `var(--surface-raised-hover)` on hover) and give them `var(--shadow-xs)` or `var(--shadow-micro)` — prefer `var(--control-bg)` and `var(--control-shadow)` (scoped in `shared/01-foundation.css`) over one-off `.parent .child` overrides.
 - Do not place a child with the same background token beside or inside its visible parent. Change its surface, give the raised item restrained elevation, or remove the unnecessary wrapper. This rule is mandatory in light and dark themes.
 - Status components use the matching semantic background token (`--color-*-bg` or `--accent-panel`) plus text/icon color for compact badges and status banners only. Large data cards, funding option cards (`.admission-funding-option`), and exam/stat groups must use neutral surfaces (`var(--surface-solid)` or `var(--surface-soft)`) with micro-elevation (`var(--shadow-micro)` / `var(--shadow-xs)`), never full-card pastel washes.
 - Documentary source links (`.program-card__source`, `.qualification-guidance__source`, `.admissions-source-link`) use `color: var(--text); text-decoration: underline; text-underline-offset: var(--space-1)` rather than SaaS button or loud accent link styling.

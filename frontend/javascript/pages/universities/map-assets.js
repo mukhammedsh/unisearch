@@ -21,6 +21,7 @@ const MAP_ASSETS = {
   },
 };
 
+let leafletPromise = null;
 let mapLibrariesPromise = null;
 
 function loadStylesheetOnce(id, asset) {
@@ -55,26 +56,48 @@ function loadScriptOnce(id, asset) {
   });
 }
 
+export function ensureLeaflet() {
+  if (window.L && typeof window.L.map === "function") {
+    return Promise.resolve(window.L);
+  }
+  if (!leafletPromise) {
+    leafletPromise = Promise.all([
+      loadStylesheetOnce("leafletCss", MAP_ASSETS.leafletCss),
+      loadScriptOnce("leafletJs", MAP_ASSETS.leafletJs),
+    ]).then(() => {
+      if (!window.L || typeof window.L.map !== "function") {
+        throw new Error("Leaflet is unavailable");
+      }
+      return window.L;
+    }).catch((error) => {
+      leafletPromise = null;
+      throw error;
+    });
+  }
+  return leafletPromise;
+}
+
 export function ensureMapLibraries() {
   if (window.L && typeof window.L.markerClusterGroup === "function") {
     return Promise.resolve(window.L);
   }
   if (!mapLibrariesPromise) {
     mapLibrariesPromise = Promise.all([
-      loadStylesheetOnce("leafletCss", MAP_ASSETS.leafletCss),
+      ensureLeaflet(),
       loadStylesheetOnce("leafletMarkerClusterCss", MAP_ASSETS.markerClusterCss),
       loadStylesheetOnce("leafletMarkerClusterDefaultCss", MAP_ASSETS.markerClusterDefaultCss),
-      loadScriptOnce("leafletJs", MAP_ASSETS.leafletJs)
-        .then(() => loadScriptOnce("leafletMarkerClusterJs", MAP_ASSETS.markerClusterJs)),
-    ]).then(() => {
-      if (!window.L || typeof window.L.markerClusterGroup !== "function") {
-        throw new Error("Leaflet marker cluster is unavailable");
-      }
-      return window.L;
-    }).catch((error) => {
-      mapLibrariesPromise = null;
-      throw error;
-    });
+    ])
+      .then(() => loadScriptOnce("leafletMarkerClusterJs", MAP_ASSETS.markerClusterJs))
+      .then(() => {
+        if (!window.L || typeof window.L.markerClusterGroup !== "function") {
+          throw new Error("Leaflet marker cluster is unavailable");
+        }
+        return window.L;
+      })
+      .catch((error) => {
+        mapLibrariesPromise = null;
+        throw error;
+      });
   }
   return mapLibrariesPromise;
 }

@@ -139,18 +139,23 @@ test("catalog, profile, and detail tabs share the same interaction colors", asyn
   await expectColor(page.locator(".d-tab-btn.active").first(), activeColor);
 });
 
-test("compare mode uses the same neutral control surface in light and dark themes", async ({ page }) => {
+test("catalog toolbar controls use --surface-control-on-bg in light and dark themes", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   const compareMode = page.locator("#compareModeBtn");
-  await expect.poll(() => compareMode.evaluate((node) => getComputedStyle(node).backgroundColor))
-    .toBe(await resolvedBackgroundToken(page, "--surface-solid"));
+  const viewToggles = page.locator(".view-toggles");
+  const lightToolbar = await resolvedBackgroundToken(page, "--surface-control-on-bg");
+  expect(lightToolbar).toBe(await resolvedBackgroundToken(page, "--surface-solid"));
+  await expectBackground(compareMode, lightToolbar);
+  await expectBackground(viewToggles, lightToolbar);
 
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
-  await expect.poll(() => compareMode.evaluate((node) => getComputedStyle(node).backgroundColor))
-    .toBe(await resolvedBackgroundToken(page, "--surface-solid"));
+  const darkToolbar = await resolvedBackgroundToken(page, "--surface-control-on-bg");
+  expect(darkToolbar).toBe(await resolvedBackgroundToken(page, "--surface-soft"));
+  await expectBackground(compareMode, darkToolbar);
+  await expectBackground(viewToggles, darkToolbar);
 });
 
 test("logo, dropdowns, and previously quiet text actions show visible feedback in both themes", async ({ page }) => {
@@ -322,4 +327,278 @@ test("embedded actions preserve their composite field state", async ({ page }) =
   const mobileBounds = await searchComposite.boundingBox();
   expect(mobileBounds.x).toBeGreaterThanOrEqual(0);
   expect(mobileBounds.x + mobileBounds.width).toBeLessThanOrEqual(375);
+});
+
+test("toolbar press, selected toggle feedback, dark focus rings, and borderless card shadows stay consistent", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => localStorage.setItem("unisearch_theme", "dark"));
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+  const controlOnBgSurface = await resolvedBackgroundToken(page, "--surface-control-on-bg");
+  const pressSurface = await resolvedBackgroundToken(page, "--interaction-press-surface");
+  const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
+  const textColor = await resolvedToken(page, "--text");
+  const selectedSurface = await resolvedBackgroundToken(page, "--accent-active-surface");
+  const activeText = await resolvedToken(page, "--interaction-active-text");
+  const selectedHoverSurface = await resolvedBackgroundToken(page, "--accent-active-hover-surface");
+  const selectedPressSurface = await resolvedBackgroundToken(page, "--accent-active-press-surface");
+  const focusColor = await resolvedToken(page, "--focus-ring");
+
+  const lightnessOf = (color) => {
+    const nums = color.match(/-?[\d.]+/g).map(Number);
+    if (color.startsWith("oklab")) return nums[0];
+    const [r, g, b] = nums.slice(0, 3).map((value) => {
+      const channel = value / 255;
+      return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+
+  expect(lightnessOf(pressSurface)).toBeLessThan(lightnessOf(controlOnBgSurface));
+  expect(lightnessOf(hoverSurface)).toBeGreaterThan(lightnessOf(controlOnBgSurface));
+
+  const pressAndCheck = async (locator, expectedBg, expectedText) => {
+    await locator.scrollIntoViewIfNeeded();
+    const box = await locator.boundingBox();
+    expect(box).toBeTruthy();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    try {
+      await expectBackground(locator, expectedBg);
+      if (expectedText) await expectColor(locator, expectedText);
+    } finally {
+      await page.mouse.up();
+    }
+  };
+
+  const viewList = page.locator("#viewListBtn");
+  const viewMap = page.locator("#viewMapBtn");
+  await expect(viewList).toHaveAttribute("aria-pressed", "true");
+  expect(await viewList.evaluate((node) => getComputedStyle(node).cursor)).toBe("default");
+
+  const compareMode = page.locator("#compareModeBtn");
+  // Neutral buttons stay neutral on press, and releasing the mouse toggles compare mode on.
+  await pressAndCheck(compareMode, pressSurface, textColor);
+  await expect(compareMode).toHaveAttribute("aria-pressed", "true");
+  await page.mouse.move(1, 1);
+  await expectBackground(compareMode, selectedSurface);
+  await compareMode.hover();
+  await expectBackground(compareMode, selectedHoverSurface);
+  expect(lightnessOf(selectedHoverSurface)).toBeGreaterThan(lightnessOf(selectedSurface));
+  expect(lightnessOf(selectedPressSurface)).toBeLessThan(lightnessOf(selectedSurface));
+  await pressAndCheck(compareMode, selectedPressSurface, activeText);
+  await expect(compareMode).toHaveAttribute("aria-pressed", "false");
+
+  const langTrigger = page.locator(".navbar-right .lang-control .custom-select-trigger");
+  await langTrigger.click();
+  await expect(page.locator(".navbar-right .lang-control .custom-select-wrapper")).toHaveClass(/open/);
+  await expectBackground(langTrigger, hoverSurface);
+  await expectColor(langTrigger, textColor);
+  await langTrigger.click();
+
+  await expectFocusRing(page.locator("#resetFiltersBtn"), focusColor);
+
+  const cardShadow = await page.locator(".uni-card:not(.is-skeleton)").first().evaluate((node) => getComputedStyle(node).boxShadow);
+  expect(cardShadow).not.toContain("0px 0px 0px 1px");
+
+  await pressAndCheck(viewMap, pressSurface, textColor);
+
+  await page.goto("/guide.html");
+  await expectFocusRing(page.locator('.guide-nav a:not([aria-current="page"])').first(), focusColor);
+
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  const detailShadow = await page.locator("#detailCard").evaluate((node) => getComputedStyle(node).boxShadow);
+  expect(detailShadow).not.toContain("0px 0px 0px 1px");
+});
+
+test("recently viewed popover and search suggestions follow the shared dropdown contract in dark theme", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.addInitScript(() => localStorage.setItem("unisearch_theme", "dark"));
+
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+
+  const dropdownSurface = await resolvedBackgroundToken(page, "--dropdown-surface");
+  const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
+
+  const recentBtn = page.locator("#recentlyViewedBtn");
+  await expect(recentBtn).toBeVisible();
+  await recentBtn.click();
+
+  const popover = page.locator("#recentlyViewedPopover");
+  await expect(popover).toBeVisible();
+  await expect(page.locator("#recentlyViewedTitle")).toHaveCount(0);
+  await expect(popover).toHaveAttribute("aria-label", /.+/);
+  await expectBackground(popover, dropdownSurface);
+
+  await expect.poll(() => popover.evaluate((node) => getComputedStyle(node).boxShadow)).toContain("0px 0px 0px 1px");
+  await expect.poll(() => recentBtn.evaluate((node) => getComputedStyle(node).boxShadow)).toContain("0px 0px 0px 1px");
+
+  const recentChip = popover.locator(".u-recent__chip").first();
+  await recentChip.hover();
+  await expectBackground(recentChip, hoverSurface);
+
+  await page.keyboard.press("Escape");
+
+  await page.locator("#qInput").fill("Harvard");
+  const suggestions = page.locator(".navbar-search-suggestions.is-open");
+  await expect(suggestions.locator(".navbar-search-suggestion").first()).toBeVisible();
+  await expectBackground(suggestions, dropdownSurface);
+  await expect.poll(() => suggestions.evaluate((node) => getComputedStyle(node).boxShadow)).toContain("0px 0px 0px 1px");
+});
+
+test("shared .ui-switch controls unify size, label-left order, full-row clickability, and active pill states", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+
+  const reviewedLabel = page.locator(".u-reviewed-toggle");
+  const reviewedSwitch = page.locator("#reviewedOnlyToggle");
+  await expect(reviewedSwitch).toHaveClass(/ui-switch/);
+  expect(await reviewedSwitch.evaluate((node) => {
+    const rect = node.getBoundingClientRect();
+    return { width: Math.round(rect.width), height: Math.round(rect.height) };
+  })).toEqual({ width: 36, height: 20 });
+
+  for (const theme of ["light", "dark"]) {
+    await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
+    const activeSurface = await resolvedBackgroundToken(page, "--accent-active-surface");
+    const activeHoverSurface = await resolvedBackgroundToken(page, "--accent-active-hover-surface");
+
+    await reviewedLabel.locator(".u-reviewed-toggle__text").click();
+    await expect(reviewedSwitch).toBeChecked();
+    await page.mouse.move(1, 1);
+    await expectBackground(reviewedLabel, activeSurface);
+
+    await reviewedLabel.hover();
+    await expectBackground(reviewedLabel, activeHoverSurface);
+
+    await reviewedLabel.click();
+    await expect(reviewedSwitch).not.toBeChecked();
+    await page.mouse.move(1, 1);
+  }
+
+  await page.click("#settingsBtn");
+  await expect(page.locator("#settingsModal")).toHaveClass(/is-open/);
+  const settingsRow = page.locator(".settings-row--switch").first();
+  const settingsLabel = settingsRow.locator(".settings-switch");
+  const settingsTitle = settingsRow.locator(".settings-copy__title");
+  const settingsSwitch = settingsRow.locator("input.ui-switch");
+  const initialChecked = await settingsSwitch.isChecked();
+  expect(await settingsSwitch.evaluate((node) => {
+    const rect = node.getBoundingClientRect();
+    return { width: Math.round(rect.width), height: Math.round(rect.height) };
+  })).toEqual({ width: 36, height: 20 });
+
+  const selectTitleBox = await page.locator(".settings-row .settings-copy h3").first().boundingBox();
+  const switchTitleBox = await settingsTitle.boundingBox();
+  expect(Math.abs(selectTitleBox.x - switchTitleBox.x)).toBeLessThanOrEqual(1);
+
+  const settingsHoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
+  const settingsPressSurface = await resolvedBackgroundToken(page, "--interaction-press-surface");
+  const switchAccentPress = await resolvedBackgroundToken(page, "--accent-press");
+
+  await settingsTitle.hover();
+  await expectBackground(settingsLabel, settingsHoverSurface);
+
+  await page.mouse.move(switchTitleBox.x + switchTitleBox.width / 2, switchTitleBox.y + switchTitleBox.height / 2);
+  await page.mouse.down();
+  await expectBackground(settingsLabel, settingsPressSurface);
+  if (initialChecked) {
+    await expectBackground(settingsSwitch, switchAccentPress);
+  }
+  await page.mouse.up();
+  await expect(settingsSwitch).toHaveJSProperty("checked", !initialChecked);
+
+  await settingsTitle.click();
+  await expect(settingsSwitch).toHaveJSProperty("checked", initialChecked);
+  await page.keyboard.press("Escape");
+
+  await page.goto("/compare.html?lang=eng&ids=abai-kazakh-national-pedagogical-university-kaz-almaty,al-farabi-kazakh-national-university-kaz-almaty&choices=abai_kaznpu_unt::abai_kaznpu_unt::abai_kaznpu_unt_paid,kaznu_unt::kaznu_unt::kaznu_unt_paid");
+  const diffToggle = page.locator(".compare-diff-toggle");
+  await expect(diffToggle).toBeVisible();
+  const diffLayout = await diffToggle.evaluate((node) => {
+    const labelRect = node.querySelector(".compare-diff-toggle__label").getBoundingClientRect();
+    const switchEl = node.querySelector("input.ui-switch");
+    const switchRect = switchEl.getBoundingClientRect();
+    return {
+      labelLeftOfSwitch: labelRect.right <= switchRect.left + 1,
+      width: Math.round(switchRect.width),
+      height: Math.round(switchRect.height),
+    };
+  });
+  expect(diffLayout).toEqual({ labelLeftOfSwitch: true, width: 36, height: 20 });
+});
+
+test("shared .ui-btn and .ui-segmented primitives unify heights and radii across pages", async ({ page }) => {
+  await markTourAsSeen(page);
+
+  await page.goto("/index.html");
+  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
+  const catalogMetrics = await page.evaluate(() => {
+    const measure = (sel) => {
+      const node = document.querySelector(sel);
+      const rect = node.getBoundingClientRect();
+      const style = getComputedStyle(node);
+      return { height: Math.round(rect.height), radius: style.borderTopLeftRadius };
+    };
+    return {
+      reset: measure("#resetFiltersBtn"),
+      compare: measure("#compareModeBtn"),
+      toggles: measure("#viewToggles"),
+      list: measure("#viewListBtn"),
+    };
+  });
+  expect(catalogMetrics.reset).toEqual({ height: 32, radius: "8px" });
+  expect(catalogMetrics.compare).toEqual({ height: 40, radius: "12px" });
+  expect(catalogMetrics.toggles).toEqual({ height: 40, radius: "12px" });
+  expect(catalogMetrics.list).toEqual({ height: 40, radius: "12px" });
+
+  await page.goto("/guide.html");
+  await expect(page.locator(".guide-start-actions .ui-btn").first()).toBeVisible();
+  const guideMetrics = await page.locator(".guide-start-actions .ui-btn").evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      height: Math.round(node.getBoundingClientRect().height),
+      radius: getComputedStyle(node).borderTopLeftRadius,
+    }))
+  );
+  expect(guideMetrics).toEqual([
+    { height: 44, radius: "12px" },
+    { height: 44, radius: "12px" },
+  ]);
+
+  await page.goto("/profile.html");
+  await expect(page.locator(".profile-shell")).toBeVisible();
+  const profileMetrics = await page.evaluate(() => ["#profileCloseBtn", "#saveProfileBtn", "#profileShowMatchesBtn"].map((sel) => {
+    const node = document.querySelector(sel);
+    return {
+      height: Math.round(node.getBoundingClientRect().height),
+      radius: getComputedStyle(node).borderTopLeftRadius,
+    };
+  }));
+  expect(profileMetrics).toEqual([
+    { height: 44, radius: "12px" },
+    { height: 44, radius: "12px" },
+    { height: 44, radius: "12px" },
+  ]);
+
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  const detailMetrics = await page.locator("#detailWebsite, #detailSaveBtn").evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      height: Math.round(node.getBoundingClientRect().height),
+      radius: getComputedStyle(node).borderTopLeftRadius,
+    }))
+  );
+  expect(detailMetrics).toEqual([
+    { height: 44, radius: "12px" },
+    { height: 44, radius: "12px" },
+  ]);
 });
