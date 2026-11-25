@@ -132,7 +132,9 @@ function openAndPositionSelectPanel(trigger, wrapper, panel) {
 
   panel.style.removeProperty("--dropdown-available-height");
   wrapper.classList.add("open");
-  const gap = Number.parseFloat(window.getComputedStyle(panel).marginBlockStart) || 0;
+  const panelStyle = window.getComputedStyle(panel);
+  const gap = (Number.parseFloat(panelStyle.marginBlockStart) || 0)
+    || (Number.parseFloat(panelStyle.marginBlockEnd) || 0);
   const spaceBelow = bottom - triggerRect.bottom - gap;
   const spaceAbove = triggerRect.top - top - gap;
   const openUp = spaceBelow < panel.offsetHeight && spaceAbove > spaceBelow;

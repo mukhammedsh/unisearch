@@ -172,6 +172,13 @@ test("logo, dropdowns, and previously quiet text actions show visible feedback i
     await expectBackground(dropdown, hoverSurface);
     await expect(dropdown).toHaveCSS("transition-property", /background-color/);
 
+    await dropdown.click();
+    await expect(dropdown).toHaveAttribute("aria-expanded", "true");
+    await dropdown.hover();
+    await expectBackground(dropdown, hoverSurface);
+    await page.keyboard.press("Escape");
+    await expect(dropdown).toHaveAttribute("aria-expanded", "false");
+
     const inlineAction = page.locator(".profile-inline-link").first();
     await inlineAction.hover();
     await expectColor(inlineAction, accentText);
