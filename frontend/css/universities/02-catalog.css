@@ -368,32 +368,6 @@
   font-weight: var(--font-weight-medium);
 }
 
-.catalog-cost-help {
-  display: grid;
-  gap: var(--space-1);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-}
-
-.catalog-cost-help > summary {
-  min-height: 44px;
-  padding-block: var(--space-2);
-  cursor: pointer;
-}
-
-.catalog-cost-help > summary:hover {
-  color: var(--interaction-hover-text);
-}
-
-.catalog-cost-help > summary:active {
-  color: var(--interaction-active-text);
-}
-
-.catalog-cost-help > p {
-  margin: 0;
-  padding-inline-start: var(--space-4);
-}
 
 .uni-body {
   padding: var(--space-4);

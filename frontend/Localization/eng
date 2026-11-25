@@ -377,8 +377,6 @@ universities.cost.fee_status.self_paying: Self-paying
 universities.cost.exclusion.insurance: Insurance is additional.
 universities.cost.exclusion.travel: Travel is additional.
 universities.cost.exclusion.one_time_fees: One-time fees are additional.
-universities.cost.filter_help: Before aid. A range may partly match: check the program and fee category. Unknown prices are excluded when a price limit is active.
-universities.cost.filter_help_summary: Price limits hide unknown prices; your profile budget affects UniFit.
 universities.cost.dated_reference: Dated reference; cycle unconfirmed
 universities.cost.cycle_unconfirmed: Cycle unconfirmed
 universities.cost.cycle_unspecified: Cycle not specified
@@ -426,7 +424,6 @@ universities.empty.reset_filters: Reset filters
 universities.search_placeholder: Search university...
 universities.search_clear: Clear search
 universities.no_matches: No universities found
-universities.select_country_first: Select country first
 universities.compare.enter: Compare mode
 universities.compare.selection: Selected universities
 universities.compare.pair_slot: University {number}
@@ -563,7 +560,6 @@ universities.tradeoff.location.left: City
 universities.tradeoff.location.right: Outside City
 universities.tradeoff.balanced: Doesn't matter
 universities.help.open: Show explanation
-universities.help.sort_strategy: {fit} sorts using your profile. Other modes sort only by name or cost.
 universities.help.tradeoff.focus: Left: fewer research publications per student. Right: research-intensive universities. In the middle this is not used.
 universities.help.tradeoff.atmosphere: Left: a larger share of applicants is admitted. Right: more applicants per place, from the official first-year admission rate. In the middle this is not used.
 universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals. In the middle this is not used.
@@ -575,7 +571,6 @@ universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
 universities.sort_rank_asc: Global Rank
 universities.sort_strategy: Sort by
-universities.sort_hint_ai_tags: AI tags are fully available only when sorting by UniFit.
 accessibility.skip_to_main: Skip to main content
 universities.state.warning_title: Interests unavailable
 universities.state.empty_title: No results for current filters

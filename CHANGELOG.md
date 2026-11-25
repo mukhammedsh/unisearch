@@ -26,6 +26,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Organize the UniFit article with subheadings and put the calculation formula after the main explanation. Add links between related articles, including from Catalog badges to UniFit.
 - Keep the Guide title and contents in a sticky sidebar and align previous and next links with the Back link's visual style.
 - Align university header actions with the top of the title and adapt the cover back button to the selected theme.
+- Simplify the catalog filter sidebar by removing the redundant AI-tags hint, price-filter disclosure, and outdated Sort tooltip, hiding the City filter until a country is chosen, and showing the Relevance sort option only when a search query is active (`frontend/index.html`, `frontend/css/universities/01-shell-controls.css`, `frontend/css/universities/02-catalog.css`, `frontend/javascript/pages/universities.js`, `frontend/javascript/pages/universities/filter-controls.js`, `frontend/Localization/*`).
 - Use consistent 240 ms crossfades for page navigation and theme changes (initializing routes on `updateCallbackDone`) and animate campus photo switches while honoring `prefers-reduced-motion`.
 - Make hover and press feedback visible on navigation, dropdowns, source links, profile actions, program cards, and campus photo controls. Fade in updated calendar dates and comparison picker results while retaining keyboard focus.
 

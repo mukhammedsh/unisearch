@@ -39,9 +39,12 @@ test("dependent filters reveal instantly with reduced motion", async ({ page }) 
 
 test("catalog disclosures grow open instead of jumping", async ({ page }) => {
   await openCatalog(page, "no-preference");
-  const help = page.locator("details.catalog-cost-help");
+  await setNativeSelect(page, "sortSelect", "uni_ai");
+  const prefs = page.locator("details#unifitPreferencesPanel");
+  await expect(prefs).toBeVisible();
+  await expect(prefs).not.toHaveClass(/motion-revealing/);
   // getAnimations() does not report ::details-content transitions, so sample its height instead.
-  const sizes = await help.evaluate(async (el) => {
+  const sizes = await prefs.evaluate(async (el) => {
     const height = () => Number.parseFloat(getComputedStyle(el, "::details-content").blockSize) || 0;
     el.open = true;
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -51,7 +54,7 @@ test("catalog disclosures grow open instead of jumping", async ({ page }) => {
   });
   expect(sizes.final).toBeGreaterThan(0);
   expect(sizes.early).toBeLessThan(sizes.final);
-  await expect(help.locator("p")).toBeVisible();
+  await expect(prefs.locator("#aiSliderContainer")).toBeVisible();
 });
 
 /** Clicks a view button and reports the incoming container's animations and position right away. */

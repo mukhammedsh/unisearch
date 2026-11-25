@@ -9,7 +9,6 @@ import {
     escapeHtml,
     escapeHtmlAttr,
     loadProfileForApi,
-    initCustomSelect,
     CITY_OPTIONS_BY_COUNTRY,
     markMotionEnter,
     motionPress,
@@ -119,15 +118,13 @@ export function disposeUniversitiesPage() {
 function collectUniversitiesElements() {
     const el = {
         qInput: $("qInput"), searchClearBtn: $("searchClearBtn"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
-        stateSelect: $("stateSelect"), citySelect: $("citySelect"),
+        stateSelect: $("stateSelect"), cityDiv: $("cityDiv"), citySelect: $("citySelect"),
         minInput: $("minCostInput"), maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         minCostLabel: $("minCostLabel"), maxCostLabel: $("maxCostLabel"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         unifitPrefsPanel: $("unifitPreferencesPanel"), unifitPrefsCount: $("unifitPrefsCount"),
         reviewedOnlyToggle: $("reviewedOnlyToggle"),
-        sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
-        sortAiTagsHint: $("sortAiTagsHint"),
         focusSlider: $("focusSlider"), focusLabel: $("focusLabel"),
         atmosphereSlider: $("atmosphereSlider"), atmosphereLabel: $("atmosphereLabel"),
         financeSlider: $("financeSlider"), financeLabel: $("financeLabel"),
@@ -756,18 +753,12 @@ export function initUniversitiesPage() {
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
         hideSearchSuggestions();
-        if (!prevQ && state.q && state.sort === "name_asc") {
-            state.sort = "relevance";
-            if (el.sortSelect) {
-                el.sortSelect.value = "relevance";
-                initCustomSelect("sortSelect");
-            }
-        } else if (prevQ && !state.q && state.sort === "relevance") {
-            state.sort = "name_asc";
-            if (el.sortSelect) {
-                el.sortSelect.value = "name_asc";
-                initCustomSelect("sortSelect");
-            }
+        if (!prevQ && state.q) {
+            if (state.sort === "name_asc") state.sort = "relevance";
+            filterControls.syncRelevanceSortOption();
+        } else if (prevQ && !state.q) {
+            if (state.sort === "relevance") state.sort = "name_asc";
+            filterControls.syncRelevanceSortOption();
         }
         if (state.activeTab !== "catalog" && !compareController.isCompareSelectionMode()) return;
         refetch();
@@ -783,11 +774,8 @@ export function initUniversitiesPage() {
         el.qInput.focus();
         if (state.sort === "relevance") {
             state.sort = "name_asc";
-            if (el.sortSelect) {
-                el.sortSelect.value = "name_asc";
-                initCustomSelect("sortSelect");
-            }
         }
+        filterControls.syncRelevanceSortOption();
         if (state.activeTab !== "catalog" && !compareController.isCompareSelectionMode()) return;
         refetch();
     };

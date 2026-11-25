@@ -155,12 +155,12 @@
             </select>
           </div>
 
-          <div class="u-field">
+          <div class="u-field u-field--city" id="cityDiv">
             <label class="u-label" for="citySelect">
               <span class="u-label-icon"><span data-heroicon="building-office-2" data-icon-size="16"></span><span data-i18n="universities.city">City</span></span>
             </label>
             <select id="citySelect" class="u-select" disabled>
-              <option value="" data-i18n="universities.select_country_first">Select country first</option>
+              <option value="" data-i18n="universities.all_cities">All Cities</option>
             </select>
           </div>
 
@@ -172,7 +172,7 @@
             </div>
 
             <div class="budget-control-wrapper">
-                <select id="costBasisSelect" class="u-input" data-flags="off" aria-describedby="catalogCostHelp">
+                <select id="costBasisSelect" class="u-input" data-flags="off">
                     <option value="annual_total" data-i18n="universities.cost.annual_total">Yearly study budget</option>
                     <option value="tuition" data-i18n="universities.cost.tuition">Tuition</option>
                 </select>
@@ -195,32 +195,22 @@
                     <span id="minCostLabel">$0</span>
                     <span id="maxCostLabel">$100,000+</span>
                 </div>
-                <details class="catalog-cost-help motion-disclosure">
-                    <summary id="catalogCostHelp" data-i18n="universities.cost.filter_help_summary">Price limits hide unknown prices; profile budget affects UniFit.</summary>
-                    <p data-i18n="universities.cost.filter_help">Prices are before financial aid. A range may only partly match; confirm the program and fee category. University details show the full breakdown and sources.</p>
-                </details>
             </div>
           </div>
 
           <div class="u-sep u-sep--sort"></div>
 
           <div class="u-field u-field--sort">
-            <div class="u-label u-label-with-help">
-              <label class="u-label-icon" for="sortSelect"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></label>
-              <span class="u-info-wrap">
-                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
-                <span class="u-tooltip" role="tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
-              </span>
-            </div>
+            <label class="u-label" for="sortSelect">
+              <span class="u-label-icon"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></span>
+            </label>
             <select id="sortSelect" class="u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
-              <option value="relevance" data-i18n="universities.sort_relevance">Relevance</option>
               <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: AI Smart Sort</option>
               <option value="rank_asc" data-i18n="universities.sort_rank_asc">Global Rank</option>
               <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
               <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
             </select>
-            <p id="sortAiTagsHint" class="u-sort-ai-hint" data-i18n="universities.sort_hint_ai_tags">AI tags are fully available only when sorting by UniFit.</p>
           </div>
 
           <details id="unifitPreferencesPanel" class="u-unifit-prefs motion-disclosure">

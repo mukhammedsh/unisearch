@@ -380,8 +380,6 @@ universities.cost.fee_status.self_paying: платное обучение
 universities.cost.exclusion.insurance: Страховка отдельно.
 universities.cost.exclusion.travel: Проезд отдельно.
 universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
-universities.cost.filter_help: До финансовой помощи. Диапазон может совпадать частично: уточните программу и категорию оплаты. При ограничении цены вузы с неизвестной суммой не показываются.
-universities.cost.filter_help_summary: Ценовой фильтр скрывает неизвестные цены; бюджет профиля влияет на UniFit.
 universities.cost.dated_reference: Опубликован ориентир; цикл поступления не подтверждён
 universities.cost.cycle_unconfirmed: Цикл поступления не подтверждён
 universities.cost.cycle_unspecified: Цикл не указан
@@ -429,7 +427,6 @@ universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
 universities.search_clear: Очистить поиск
 universities.no_matches: Университеты не найдены
-universities.select_country_first: Сначала выберите страну
 universities.compare.enter: Режим сравнения
 universities.compare.selection: Выбранные университеты
 universities.compare.pair_slot: Университет {number}
@@ -566,7 +563,6 @@ universities.tradeoff.location.left: Город
 universities.tradeoff.location.right: За городом
 universities.tradeoff.balanced: Не важно
 universities.help.open: Показать объяснение
-universities.help.sort_strategy: {fit} подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Слева — меньше научных публикаций на студента, справа — исследовательские университеты. По центру не учитывается.
 universities.help.tradeoff.atmosphere: Слева поступает большая доля подавших, справа больше заявлений на место — по официальному проценту зачисления на первый курс. По центру не учитывается.
 universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные. По центру не учитывается.
@@ -578,7 +574,6 @@ universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
 universities.sort_rank_asc: По мировому рейтингу
 universities.sort_strategy: Сортировка
-universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
 accessibility.skip_to_main: Перейти к основному содержимому
 universities.state.warning_title: Интересы недоступны
 universities.state.empty_title: Нет результатов для текущих фильтров

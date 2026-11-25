@@ -244,17 +244,6 @@ export function createFilterControls({
     };
 
     const updateSliderVisibility = () => {
-        if (el.sortStrategyInfoWrap) {
-            const showSortInfo = state.sort === "uni_ai";
-            el.sortStrategyInfoWrap.style.display = showSortInfo ? "" : "none";
-            el.sortStrategyInfoWrap.setAttribute("aria-hidden", showSortInfo ? "false" : "true");
-            if (!showSortInfo) el.sortStrategyInfoWrap.classList.remove("is-open");
-        }
-        if (el.sortAiTagsHint) {
-            const showAiTagsHint = state.sort !== "uni_ai";
-            reveal(el.sortAiTagsHint, showAiTagsHint, { mode: "display" });
-            el.sortAiTagsHint.setAttribute("aria-hidden", showAiTagsHint ? "false" : "true");
-        }
         if (el.unifitPrefsPanel) {
             reveal(el.unifitPrefsPanel, state.sort === "uni_ai");
         }
@@ -268,11 +257,41 @@ export function createFilterControls({
         }
     };
 
+    /**
+     * Show the "Relevance" sort option only while a search query is active; without a query
+     * it behaves identically to Name A-Z.
+     */
+    const syncRelevanceSortOption = () => {
+        if (!el.sortSelect) return;
+        const hasQuery = Boolean(String(state.q || "").trim());
+        let relOpt = el.sortSelect.querySelector('option[value="relevance"]');
+        if (hasQuery) {
+            if (!relOpt) {
+                relOpt = document.createElement("option");
+                relOpt.value = "relevance";
+                relOpt.dataset.i18n = "universities.sort_relevance";
+                const nameAscOpt = el.sortSelect.querySelector('option[value="name_asc"]');
+                el.sortSelect.insertBefore(relOpt, nameAscOpt ? nameAscOpt.nextSibling : el.sortSelect.firstChild);
+            }
+            relOpt.textContent = t("universities.sort_relevance", "Relevance");
+        } else {
+            if (relOpt) relOpt.remove();
+            if (state.sort === "relevance") state.sort = "name_asc";
+        }
+        el.sortSelect.value = state.sort;
+        if (el.sortSelect.value !== state.sort) {
+            state.sort = defaultSortMode;
+            el.sortSelect.value = state.sort;
+        }
+        initCustomSelect("sortSelect");
+    };
+
     const updateCityDropdown = (cities) => {
         if (!el.citySelect) return;
         if (!cities || cities.length === 0) {
-            el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.select_country_first", "Select country first"))}</option>`;
+            el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
             el.citySelect.disabled = true;
+            if (el.cityDiv) reveal(el.cityDiv, false, { mode: "display" });
         } else {
             el.citySelect.disabled = false;
             el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
@@ -283,6 +302,7 @@ export function createFilterControls({
                 opt.textContent = trCity(value);
                 el.citySelect.appendChild(opt);
             });
+            if (el.cityDiv) reveal(el.cityDiv, true, { mode: "display", display: "block" });
         }
         initCustomSelect("citySelect");
     };
@@ -353,11 +373,7 @@ export function createFilterControls({
         if (el.citySelect) el.citySelect.value = state.city;
         if (el.sortSelect) {
             state.sort = normalizeSortMode(state.sort);
-            el.sortSelect.value = state.sort;
-            if (el.sortSelect.value !== state.sort) {
-                state.sort = defaultSortMode;
-                el.sortSelect.value = state.sort;
-            }
+            syncRelevanceSortOption();
         }
         const studyLevelSelect = $("studyLevelSelect");
         if (studyLevelSelect) studyLevelSelect.value = state.study_level || "";
@@ -744,6 +760,7 @@ export function createFilterControls({
         updateSliderLabels,
         fillTrack,
         updateSliderVisibility,
+        syncRelevanceSortOption,
         updateTradeoffLabels,
         updateMobileFilterUi,
         applyToForm,

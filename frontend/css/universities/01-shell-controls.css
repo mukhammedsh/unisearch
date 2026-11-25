@@ -254,7 +254,8 @@ body[data-page="universities"] {
   margin-top: var(--space-2);
 }
 
-.u-field--state {
+.u-field--state,
+.u-field--city {
   display: none;
 }
 
@@ -514,12 +515,6 @@ body[data-page="universities"] {
   margin: var(--space-2) 0;
 }
 
-.u-sort-ai-hint {
-  margin: var(--space-2) 0 0;
-  font-size: var(--text-xs);
-  line-height: 1.35;
-  color: var(--text-muted);
-}
 
 .u-unifit-prefs {
   margin-top: var(--space-3);

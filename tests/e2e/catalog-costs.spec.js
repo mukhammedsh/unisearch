@@ -178,34 +178,6 @@ test.describe("compact dual-currency price", () => {
   });
 });
 
-test.describe("mobile price filter help", () => {
-  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-
-  test("stays compact and opens by touch and keyboard", async ({ page }) => {
-    await page.addInitScript(() => {
-      localStorage.setItem("unisearch_ui_language_v1", "rus");
-      localStorage.setItem("unisearch_theme", "dark");
-      localStorage.setItem("unisearch_universities_tour_seen_v1", "1");
-    });
-    await page.goto("/index.html");
-    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
-    const details = page.locator("details.catalog-cost-help");
-    const summary = details.locator("summary");
-    const fullHelp = details.locator("p");
-    await page.locator("#mobileFilterToggle").click();
-    await expect(summary).toBeVisible();
-    await expect(summary).toContainText("Ценовой фильтр скрывает неизвестные цены");
-    await expect(fullHelp).toBeHidden();
-    await summary.tap();
-    await expect(fullHelp).toBeVisible();
-    await summary.tap();
-    await expect(fullHelp).toBeHidden();
-    await summary.focus();
-    await page.keyboard.press("Enter");
-    await expect(fullHelp).toBeVisible();
-  });
-});
-
 test("broad multi-level card price tooltip stays compact and unranked tooltip drops redundant type", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "rus");
