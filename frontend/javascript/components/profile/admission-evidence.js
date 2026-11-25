@@ -108,7 +108,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   // The previous render's custom selects hold window listeners; release them before the markup is replaced.
   (container._evidenceSelectCleanups || []).forEach((cleanup) => cleanup?.());
   container.innerHTML = `
-    <details class="profile-admission-evidence">
+    <details class="profile-admission-evidence motion-disclosure">
       <summary><span data-i18n="profile.evidence.title">Add details for specific universities</span>${heroIcon("chevron-down", "ui-icon ui-icon--16")}</summary>
       <div class="profile-admission-evidence__body">
         <p class="profile-hint" data-i18n="profile.evidence.description">Add only if a university page asks. Self-reported; official records are not verified.</p>

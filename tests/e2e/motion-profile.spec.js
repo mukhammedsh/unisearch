@@ -59,3 +59,45 @@ test("exam rows change instantly with reduced motion", async ({ page }) => {
   await page.locator(`${selectors.examList} .profile-exam-item button[data-idx]`).first().click();
   await expect(page.locator(`${selectors.examList} .profile-exam-item`)).toHaveCount(0);
 });
+
+async function openPage(page, path) {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await markTourAsSeen(page);
+  await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
+  await page.goto(path);
+  await expect(page.locator("#siteInitialLoader")).toBeHidden();
+}
+
+test("page disclosures opt into smooth opening", async ({ page }) => {
+  for (const path of ["/university.html?id=mit-usa-cambridge", "/guide.html"]) {
+    await openPage(page, path);
+    await page.waitForTimeout(500);
+    // Excluded on purpose: references inside program cards (their card animates its own height) and the
+    // admissions route and context controls, which code opens and then reads at once.
+    const missing = await page.evaluate(() => Array.from(
+      document.querySelectorAll("details:not(.motion-disclosure, .admissions-programs__references, .admissions-context__advanced, .admissions-special-routes)"),
+      (el) => el.className,
+    ));
+    expect(missing, path).toEqual([]);
+  }
+});
+
+test("a university disclosure grows open", async ({ page }) => {
+  await openPage(page, "/university.html?id=mit-usa-cambridge");
+  await page.waitForTimeout(500);
+  const sizes = await page.evaluate(async () => {
+    const el = Array.from(document.querySelectorAll("details.motion-disclosure:not([open])"))
+      .find((node) => node.getClientRects().length > 0);
+    if (!el) return null;
+    el.scrollIntoView({ block: "center" });
+    const height = () => Number.parseFloat(getComputedStyle(el, "::details-content").blockSize) || 0;
+    el.open = true;
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const early = height();
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return { early, final: height() };
+  });
+  expect(sizes).not.toBeNull();
+  expect(sizes.final).toBeGreaterThan(0);
+  expect(sizes.early).toBeLessThan(sizes.final);
+});

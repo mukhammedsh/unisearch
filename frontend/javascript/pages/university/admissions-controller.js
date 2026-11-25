@@ -1091,7 +1091,7 @@ export function mountAdmissionsCatalog(institutionId) {
       const optionHtml = option => `<article class="program-card" role="listitem">${programToggle(option)}<div class="program-card__select-actions">${programSelectAction(option)}</div></article>`;
       const restricted = items.filter(option => programRestriction(option));
       const standard = items.filter(option => !programRestriction(option));
-      list.innerHTML = items.length ? `${standard.map(optionHtml).join("")}${restricted.length ? `<div role="listitem"><details class="admissions-programs__restricted"><summary>${escapeHtml(t("university.programs.entry.restricted_options"))} (${restricted.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="program-list" role="list">${restricted.map(optionHtml).join("")}</div></details></div>` : ""}` : empty(label("no_options"));
+      list.innerHTML = items.length ? `${standard.map(optionHtml).join("")}${restricted.length ? `<div role="listitem"><details class="admissions-programs__restricted motion-disclosure"><summary>${escapeHtml(t("university.programs.entry.restricted_options"))} (${restricted.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="program-list" role="list">${restricted.map(optionHtml).join("")}</div></details></div>` : ""}` : empty(label("no_options"));
       renderProfileSuggestions();
       renderProgramSelection();
       programs.querySelector("#admissionsProgramCount").textContent = tFormat("university.admissions.catalog.results", { from: total ? (page - 1) * limit + 1 : 0, to: Math.min(page * limit, total), total });

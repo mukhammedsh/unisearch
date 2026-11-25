@@ -101,7 +101,7 @@ function renderFactSources(groups) {
     <dt class="d-facts-sources__metric">${escapeHtml(group.label)}</dt>
     <dd class="d-facts-sources__entries">${group.items.join("")}${group.note ? `<p class="d-fact-source__note">${escapeHtml(group.note)}</p>` : ""}</dd>
   </div>`);
-  return `<details class="d-facts-sources">
+  return `<details class="d-facts-sources motion-disclosure">
     <summary class="d-facts-sources__summary">
       ${renderInlineIcon("document-check", 16, "d-facts-sources__icon")}
       <span>${escapeHtml(summaryLabel)}</span>
@@ -265,7 +265,7 @@ export function renderOverviewSection({
   if (formatEntries.length && formatValues.length) {
     const formatsLabel = translateWord("study_formats", "Study Formats");
     const formatsHtml = formatValues.length > 3
-      ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map((value) => `<li>${value}</li>`).join("")}</ul></details>`
+      ? `<details class="admissions-catalog__evidence motion-disclosure"><summary>${escapeHtml(t("university.admissions.reading.formats_vary"))}${renderInlineIcon("chevron-down", 14, "admissions-disclosure-icon")}</summary><ul class="admissions-catalog__items">${formatValues.map((value) => `<li>${value}</li>`).join("")}</ul></details>`
       : `<span class="d-kv-metric">${formatValues.join(", ")}</span>`;
     facts.push({
       icon: "academic-cap",

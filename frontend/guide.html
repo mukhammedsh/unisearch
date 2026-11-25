@@ -115,7 +115,7 @@
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span> (smart sorting)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unifit.p1"><span data-ai-name="fit">UniFit</span> sorts the catalog using profile preferences, fit with published academic and language requirements, and interest relevance. Its ranking score is separate from minimum requirements match, which is only the requirements fit component:</p>
-            <details class="guide-formula-details">
+            <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Show exact calculation formula</summary>
               <pre class="guide-formula" tabindex="0" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
 with semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35
@@ -133,7 +133,7 @@ affordability_gap × 0.20 is added when annual cost and profile budget are known
           <h2 data-i18n="guide.ml.title">How your interests are used</h2>
           <div class="guide-doc">
             <p data-i18n="guide.ml.p1">Interests is a free-text query, not a set of tags. The system converts your text and the text of every university into vectors and compares their cosine similarity, rescaled into a 0–1 score:</p>
-            <details class="guide-formula-details">
+            <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Show exact calculation formula</summary>
               <pre class="guide-formula" tabindex="0" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
 mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
@@ -149,7 +149,7 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
           <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">minimum requirements match</span> (fit to published requirements, 0–100)</h2>
           <div class="guide-doc">
             <p data-i18n="guide.unichance.p1"><span data-ai-name="chance">minimum requirements match</span> is a 0–100 score for the share of evaluable published academic and language minimums met in the applicable admissions context. On reviewed pages, it uses the selected study option and application route within the applicant context. It is not an admission probability or funding prediction.</p>
-            <details class="guide-formula-details">
+            <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Show exact calculation formula</summary>
               <pre class="guide-formula" tabindex="0" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
             </details>

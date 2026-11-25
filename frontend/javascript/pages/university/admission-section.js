@@ -238,7 +238,7 @@ function renderChoiceRequirements({ category, funding, profile, university }) {
         <div class="track-extra-req">
           <div class="track-extra-req-title">${escapeHtml(translateWord("extra_requirements", "Extra requirements"))}</div>
           <ul class="track-extra-req-list">${firstTwo.map((item) => `<li>${escapeHtml(trTrackDescription(university.id, profile?.id || category?.id, item))}</li>`).join("")}</ul>
-          <details class="track-collapsible-details">
+          <details class="track-collapsible-details motion-disclosure">
             <summary class="track-collapsible-summary">
               <span class="track-collapsible-title">${escapeHtml(t("admission.collapsible.additional_details", "Additional requirements & instructions"))} (+${remaining.length})</span>
               ${chevronIcon}
@@ -692,7 +692,7 @@ export function renderAdmissionSection({
     ? admissionsOverviewHtml
     : "";
   const analysisHtml = overviewDetailsHtml
-    ? `<details class="mit-admission-analysis"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${overviewDetailsHtml}</details>`
+    ? `<details class="mit-admission-analysis motion-disclosure"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${overviewDetailsHtml}</details>`
     : "";
   if (!compactMode) {
     html += studyLevelFilterHtml;
