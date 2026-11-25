@@ -12,6 +12,7 @@ import {
   showToast,
 } from "../../utils.js";
 import { enterNewRows, readRowKeys, setRevealed } from "../../utils/motion-reveal.js";
+import { profileExamIdentity } from "../../utils/persistence.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import {
   breakdownAllowsTotalOnly,
@@ -517,11 +518,13 @@ export const handleExamListClick = (e, els, state) => {
     if (!Array.isArray(state.profile.exams)) state.profile.exams = [];
 
     const row = btn.closest(".profile-exam-item");
-    // Resolve the entry now: another row may be removed while this one collapses.
+    // Resolve the entry now by identity, not by object or index: another row may be removed, and the
+    // profile normalized (new exam objects), while this one collapses.
     const entry = state.profile.exams[idx];
     if (!entry || !row) return;
+    const identity = profileExamIdentity(entry);
     setRevealed(row, false, { onHidden: () => {
-        const at = state.profile.exams.indexOf(entry);
+        const at = state.profile.exams.findIndex((exam) => profileExamIdentity(exam) === identity);
         if (at < 0) return;
         state.profile.exams.splice(at, 1);
         state.profile = ensureProfileShape(state.profile);

@@ -325,7 +325,7 @@ function renderPeopleSources(items) {
       : `<span class="overview-summary__source-text">${text}</span>`;
     return `<li class="overview-summary__source-row">${link}<span class="overview-summary__source-date">${checked}</span></li>`;
   });
-  return `<details class="overview-summary__sources motion-disclosure">
+  return `<details class="overview-summary__sources">
     <summary class="overview-summary__sources-summary">
       ${heroIcon("document-check", "ui-icon ui-icon--16")}
       <span>${escapeHtml(summaryLabel)}</span>

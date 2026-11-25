@@ -101,7 +101,7 @@ function renderFactSources(groups) {
     <dt class="d-facts-sources__metric">${escapeHtml(group.label)}</dt>
     <dd class="d-facts-sources__entries">${group.items.join("")}${group.note ? `<p class="d-fact-source__note">${escapeHtml(group.note)}</p>` : ""}</dd>
   </div>`);
-  return `<details class="d-facts-sources motion-disclosure">
+  return `<details class="d-facts-sources">
     <summary class="d-facts-sources__summary">
       ${renderInlineIcon("document-check", 16, "d-facts-sources__icon")}
       <span>${escapeHtml(summaryLabel)}</span>

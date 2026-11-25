@@ -73,9 +73,10 @@ test("page disclosures opt into smooth opening", async ({ page }) => {
     await openPage(page, path);
     await page.waitForTimeout(500);
     // Excluded on purpose: references inside program cards (their card animates its own height) and the
-    // admissions route and context controls, which code opens and then reads at once.
+    // admissions route and context controls, which code opens and then reads at once, and the two source
+    // disclosures that carry their own ::details-content animation.
     const missing = await page.evaluate(() => Array.from(
-      document.querySelectorAll("details:not(.motion-disclosure, .admissions-programs__references, .admissions-context__advanced, .admissions-special-routes)"),
+      document.querySelectorAll("details:not(.motion-disclosure, .admissions-programs__references, .admissions-context__advanced, .admissions-special-routes, .overview-summary__sources, .d-facts-sources)"),
       (el) => el.className,
     ));
     expect(missing, path).toEqual([]);
@@ -100,4 +101,41 @@ test("a university disclosure grows open", async ({ page }) => {
   expect(sizes).not.toBeNull();
   expect(sizes.final).toBeGreaterThan(0);
   expect(sizes.early).toBeLessThan(sizes.final);
+});
+
+test("deleting two exams quickly removes both", async ({ page }) => {
+  await openProfileScores(page, "no-preference");
+  await addExam(page, "ACT", "33");
+  await addExam(page, "SAT", "1400");
+  const rows = page.locator(`${selectors.examList} .profile-exam-item`);
+  await expect(rows).toHaveCount(2);
+  await page.evaluate(() => {
+    const buttons = document.querySelectorAll("#examList .profile-exam-item button[data-idx]");
+    buttons[0].click();
+    buttons[1].click();
+  });
+  await expect(rows).toHaveCount(0);
+  await page.waitForTimeout(400);
+  await expect(rows).toHaveCount(0);
+});
+
+test("an open disclosure lets popups overflow it", async ({ page }) => {
+  await openPage(page, "/guide.html");
+  const overflow = await page.evaluate(async () => {
+    const el = document.querySelector("details.motion-disclosure");
+    el.open = true;
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    return getComputedStyle(el, "::details-content").overflow;
+  });
+  expect(overflow).toBe("visible");
+});
+
+test("disclosures with their own animation do not take the shared one", async ({ page }) => {
+  await openPage(page, "/university.html?id=mit-usa-cambridge");
+  await page.waitForTimeout(500);
+  const doubled = await page.evaluate(() => Array.from(
+    document.querySelectorAll("details.motion-disclosure:is(.overview-summary__sources, .d-facts-sources)"),
+    (el) => el.className,
+  ));
+  expect(doubled).toEqual([]);
 });

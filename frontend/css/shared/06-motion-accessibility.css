@@ -158,12 +158,17 @@
       content-visibility var(--motion-snappy) allow-discrete;
   }
 
+  /* Open content may overflow (select panels, tooltips). `overflow` flips to visible halfway through
+     the opening, when the box is nearly full height; closing clips at once (the rule above has no
+     overflow transition). */
   .motion-disclosure[open]::details-content {
     block-size: auto;
+    overflow: visible;
     opacity: 1;
     transition:
       block-size var(--motion-fast) var(--motion-ease-enter),
       opacity var(--motion-fast) var(--motion-ease-enter),
+      overflow var(--motion-fast) allow-discrete,
       content-visibility var(--motion-fast) allow-discrete;
   }
 }
