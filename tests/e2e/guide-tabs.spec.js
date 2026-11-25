@@ -78,6 +78,44 @@ test.describe("guide navigation", () => {
     await expect(page.locator("#guide-comparison.is-active")).toBeVisible();
     await expect(page.locator("#guide-start")).toBeHidden();
   });
+
+  test("Back returns to the catalog after opening the Guide from the app", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("unisearch_universities_tour_seen_v1", "1"));
+    await page.goto("/index.html");
+    await page.waitForSelector(".uni-card");
+    await page.locator(".footer-product-links a[data-route='guide']").click();
+    await expect(page.locator("#guidePage")).toBeVisible();
+    await page.locator(".guide-back").click();
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  });
+
+  test("Back falls back to the catalog when the Guide is opened directly", async ({ page }) => {
+    await page.goto("/guide.html");
+    await page.waitForSelector("#guidePage");
+    await page.locator(".guide-back").click();
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+    await expect(page).toHaveURL(/\/index\.html$/);
+  });
+
+  test("keeps the active article in sync with browser history, external updates, and resizing", async ({ page }) => {
+    await page.goto("/guide.html");
+    await page.waitForSelector("#guidePage");
+    await page.evaluate(() => { window.location.hash = "#guide-glossary"; });
+    await expect(page.locator("#guide-glossary.is-active")).toBeVisible();
+    await page.evaluate(() => { window.location.hash = "#not-a-guide-section"; });
+    await expect(page.locator("#guide-glossary.is-active")).toBeVisible();
+    await page.evaluate(() => { window.location.hash = ""; });
+    await expect(page.locator("#guide-start.is-active")).toBeVisible();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    const contents = page.locator("#guideMobileNavToggle");
+    await contents.click();
+    await expect(contents).toHaveAttribute("aria-expanded", "true");
+    await page.setViewportSize({ width: 1280, height: 844 });
+    await expect(contents).toHaveAttribute("aria-expanded", "false");
+    await page.evaluate(() => window.dispatchEvent(new Event("examConfigLoaded")));
+    await expect(page.locator("#guideAcademicExams")).not.toBeEmpty();
+  });
 });
 
 test.describe("Guide article links", () => {

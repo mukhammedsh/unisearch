@@ -422,6 +422,13 @@ test("calendar month changes animate the grid and keep keyboard focus", async ({
   const previous = page.locator('[data-calendar-month="previous"]');
   await installMotionRecorder(page);
 
+  const firstDay = page.locator("[data-calendar-day]").first();
+  await firstDay.press("Enter");
+  await expect(firstDay).toHaveAttribute("aria-pressed", "true");
+  await firstDay.evaluate(node => { window.__selectedCalendarDay = node; });
+  await firstDay.press("Enter");
+  expect(await page.evaluate(() => window.__selectedCalendarDay.isConnected)).toBe(true);
+
   await next.press("Enter");
   await expect(grid).not.toHaveAttribute("data-calendar-month-key", initialMonth);
   await expect(next).toBeFocused();
