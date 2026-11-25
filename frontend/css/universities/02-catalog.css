@@ -1188,6 +1188,11 @@
   flex: 0 0 auto;
   align-self: center;
   color: var(--text-muted);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.uni-cost-trigger:is(:focus-visible, :active) .uni-cost-tooltip__icon {
+  color: var(--accent-text);
 }
 
 .uni-cost-tooltip__content {
@@ -1275,6 +1280,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .uni-cost-trigger:hover .uni-cost-tooltip__icon {
+    color: var(--accent-text);
+  }
+
   .uni-card:hover {
     transform: none;
     box-shadow: var(--shadow-card-hover);

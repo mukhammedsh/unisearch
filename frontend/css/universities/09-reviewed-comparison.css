@@ -464,6 +464,12 @@
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
+.compare-reviewed__link:active,
+.compare-reviewed__identity:active strong {
+  color: var(--interaction-active-text);
+  text-decoration: underline;
+}
+
 .compare-reviewed__section-note {
   margin: 0;
   padding: var(--space-3) 0 var(--space-3);
@@ -545,7 +551,6 @@
 
 .compare-picker[open] {
   display: flex;
-  animation: motion-modal-in var(--motion-medium) var(--motion-ease-enter) both;
 }
 
 .compare-picker::backdrop {
@@ -718,6 +723,11 @@
 
 .compare-picker__option[aria-current="true"] {
   background: var(--accent-faint);
+  color: var(--interaction-active-text);
+}
+
+:is(.compare-picker__option, .compare-picker__level):active {
+  background-color: var(--interaction-active-surface);
   color: var(--interaction-active-text);
 }
 
@@ -897,7 +907,7 @@
     .compare-reviewed__swap:not(:active),
     .compare-reviewed__fee-option:not([aria-pressed="true"]),
     .compare-picker__close,
-    .compare-picker__level:not([aria-pressed="true"])
+    .compare-picker__level:not(:active, [aria-pressed="true"])
   ):hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
@@ -915,10 +925,10 @@
     .compare-mixed__link
   ):hover,
   .compare-reviewed__identity:hover strong {
-    color: var(--interaction-hover-text);
+    color: var(--accent-text);
   }
 
-  .compare-picker__option:not([aria-current="true"]):hover {
+  .compare-picker__option:not(:active, [aria-current="true"]):hover {
     background: var(--interaction-hover-surface);
   }
 }
@@ -1037,8 +1047,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .compare-reviewed__strip,
-  .compare-reviewed__swap,
-  .compare-picker[open] {
+  .compare-reviewed__swap {
     transition: none;
     animation: none;
   }

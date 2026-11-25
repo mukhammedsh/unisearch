@@ -116,6 +116,13 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  :is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export):hover:not(:active, :disabled, [aria-pressed="true"]),
+  .admissions-deadline-source:hover,
+  .deadline-guidance-item a:hover {
+    background-color: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
   .admissions-source-link:hover {
     color: var(--interaction-hover-text);
   }
@@ -582,12 +589,6 @@
   cursor: pointer;
 }
 
-.deadline-calendar__navigation button:hover,
-.deadline-calendar__day--event:hover {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
-}
-
 .deadline-calendar__grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -619,11 +620,6 @@
   line-height: var(--leading-tight);
   text-align: left;
   cursor: pointer;
-}
-
-.deadline-calendar__jump:hover {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
 }
 
 .deadline-calendar__jump:is(.is-active, [aria-pressed="true"]) {
@@ -728,11 +724,15 @@
   cursor: pointer;
 }
 
-.deadline-calendar__export:hover,
-.admissions-deadline-source:hover,
-.deadline-guidance-item a:hover {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
+:is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export) {
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+:is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export):active:not(:disabled) {
+  background-color: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .deadline-guidance-list {

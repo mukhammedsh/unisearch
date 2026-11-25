@@ -490,15 +490,6 @@ p, li {
   }
 }
 
-@keyframes page-enter {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes detail-enter {
   from {
     opacity: 0;
@@ -510,39 +501,6 @@ p, li {
   }
 }
 
-@keyframes page-exit {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-}
-
-.page-exit {
-  animation: none;
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity var(--motion-fast, 120ms) var(--motion-ease-standard, ease),
-              transform var(--motion-fast, 120ms) var(--motion-ease-standard, ease);
-  pointer-events: none;
-}
-
-/* View Transitions API (Chrome 111+, Edge, Safari 18+) */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: var(--motion-fast, 160ms);
-  animation-timing-function: var(--motion-ease-standard, ease);
-}
-
-::view-transition-old(main-navbar),
-::view-transition-new(main-navbar) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
 main {
   flex: 1 0 auto;
   width: 100%;
@@ -551,10 +509,6 @@ main {
 @media (prefers-reduced-motion: no-preference) {
   .center-loading-spinner {
     animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
-  }
-
-  main {
-    animation: page-enter var(--motion-slow) var(--motion-ease-enter) both;
   }
 
   .d-card.is-mounted {
@@ -616,6 +570,16 @@ a {
 }
 
 /* ===== Global Component State Baseline ===== */
+:where(details) > summary {
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+:where(details) > summary:active {
+  color: var(--interaction-active-text);
+  text-decoration: underline;
+}
+
 button:disabled,
 input:disabled,
 select:disabled,
@@ -635,6 +599,10 @@ textarea:disabled,
 
   :where(a[href]:not([class])):hover {
     color: var(--interaction-hover-text);
+  }
+
+  :where(details) > summary:not(:active):hover {
+    color: var(--accent-text);
   }
 }
 

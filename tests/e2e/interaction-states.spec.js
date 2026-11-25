@@ -63,11 +63,11 @@ test("shared controls use one hover, active, focus, pressed, and disabled contra
   const activeColor = await resolvedToken(page, "--interaction-active-text");
   const focusColor = await resolvedToken(page, "--focus-ring");
 
-  const activeGuideLink = page.locator(".guide-nav a.is-active").first();
+  const activeGuideLink = page.locator('.guide-nav a[aria-current="page"]');
   await expect(activeGuideLink).toBeVisible();
   await expectColor(activeGuideLink, activeColor);
 
-  const inactiveGuideLink = page.locator(".guide-nav a:not(.is-active)").first();
+  const inactiveGuideLink = page.locator('.guide-nav a:not([aria-current="page"])').first();
   await inactiveGuideLink.hover();
   await expectColor(inactiveGuideLink, hoverColor);
 
@@ -96,6 +96,7 @@ test("shared controls use one hover, active, focus, pressed, and disabled contra
   });
 
   const pressedProbe = page.locator("#interaction-state-probe");
+  await pressedProbe.scrollIntoViewIfNeeded();
   const box = await pressedProbe.boundingBox();
   expect(box).toBeTruthy();
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
@@ -150,6 +151,65 @@ test("compare mode uses the same neutral control surface in light and dark theme
   await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
   await expect.poll(() => compareMode.evaluate((node) => getComputedStyle(node).backgroundColor))
     .toBe(await resolvedBackgroundToken(page, "--surface-solid"));
+});
+
+test("logo, dropdowns, and previously quiet text actions show visible feedback in both themes", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/profile.html");
+  await expect(page.locator(".profile-shell")).toBeVisible();
+
+  for (const theme of ["light", "dark"]) {
+    await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
+    const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
+    const accentText = await resolvedToken(page, "--accent-text");
+
+    const logo = page.locator(".navbar-logo-link");
+    await logo.hover();
+    await expectBackground(logo, hoverSurface);
+
+    const dropdown = page.locator(".profile-shell .custom-select-trigger").first();
+    await dropdown.hover();
+    await expectBackground(dropdown, hoverSurface);
+    await expect(dropdown).toHaveCSS("transition-property", /background-color/);
+
+    const inlineAction = page.locator(".profile-inline-link").first();
+    await inlineAction.hover();
+    await expectColor(inlineAction, accentText);
+
+    const reset = page.locator(".profile-delete--danger-soft");
+    const baseBackground = await resolvedBackgroundToken(page, "--color-danger-bg");
+    await expectBackground(reset, baseBackground);
+    await reset.hover();
+    await expect.poll(() => reset.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(baseBackground);
+  }
+
+  await page.goto("/guide.html#guide-unifit");
+  const formula = page.locator("#guide-unifit .guide-formula-summary");
+  await formula.hover();
+  await expectColor(formula, await resolvedToken(page, "--accent-text"));
+  await page.mouse.down();
+  await expect(formula).toHaveCSS("text-decoration-line", "underline");
+  await page.mouse.up();
+  await expect(page.locator("#guide-unifit details")).toHaveAttribute("open", "");
+});
+
+test("reviewed program, comparison, and photo controls visibly respond on hover", async ({ page }) => {
+  await page.goto("/university.html?id=mit-usa-cambridge");
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  const photo = page.locator(".d-gallery-preview");
+  await expect(photo.locator("img:not([hidden])")).toBeVisible();
+  await photo.hover({ position: { x: 100, y: 100 } });
+  await expect.poll(() => photo.evaluate((element) => getComputedStyle(element, "::after").opacity)).toBe("0.12");
+
+  await page.locator('[data-tab="tab-programs"]').click();
+  const program = page.locator("#tab-programs .program-card__toggle").first();
+  await program.hover();
+  await expectColor(program.locator(".program-card__title"), await resolvedToken(page, "--accent-text"));
+
+  await page.goto("/compare.html?ids=mit-usa-cambridge,imperial-college-london-uk");
+  const identity = page.locator(".compare-reviewed__identity").first();
+  await identity.hover();
+  await expectColor(identity.locator("strong"), await resolvedToken(page, "--accent-text"));
 });
 
 test("profile controls follow the shared interaction contract in light and dark themes", async ({ page }) => {

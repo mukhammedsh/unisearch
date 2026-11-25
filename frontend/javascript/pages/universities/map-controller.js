@@ -6,6 +6,7 @@ import {
   loadProfileForApi,
   markMotionEnter,
   nested,
+  replayMotion,
   saveFilters,
 } from "../../utils.js";
 import { heroIcon } from "../../icons.js";
@@ -901,6 +902,7 @@ export function createUniversitiesMapController(ctx) {
   }
 
   async function switchView(mode, shouldFetch = false) {
+    const viewChanged = mode !== state.viewMode;
     state.viewMode = mode;
     saveFilters(state);
     syncViewModeControls();
@@ -911,6 +913,9 @@ export function createUniversitiesMapController(ctx) {
     }
 
     applyViewVisibility(mode);
+    if (shouldFetch && viewChanged) {
+      replayMotion(mode === "map" ? el.mapStage : el.list, "motion-panel-enter", { timeoutMs: 420 });
+    }
     scheduleSyncWorkspaceDepth();
 
     if (mode === "map") {

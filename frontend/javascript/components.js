@@ -597,7 +597,7 @@ export function setupTabs() {
   let updateIndicator = null;
 
   const activateTab = (btn, { animate = true } = {}) => {
-    if (!btn) return;
+    if (!btn || (animate && btn.classList.contains("active"))) return;
     const targetId = btn.getAttribute("data-tab");
     buttons.forEach((b) => {
       const isSelected = b === btn;

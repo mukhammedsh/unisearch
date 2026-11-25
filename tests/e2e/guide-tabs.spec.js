@@ -78,4 +78,73 @@ test.describe("guide navigation", () => {
     await expect(page.locator("#guide-comparison.is-active")).toBeVisible();
     await expect(page.locator("#guide-start")).toBeHidden();
   });
+
+  test("Back returns to the catalog after opening the Guide from the app", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem("unisearch_universities_tour_seen_v1", "1"));
+    await page.goto("/index.html");
+    await page.waitForSelector(".uni-card");
+    await page.locator(".footer-product-links a[data-route='guide']").click();
+    await expect(page.locator("#guidePage")).toBeVisible();
+    await page.locator(".guide-back").click();
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  });
+
+  test("Back falls back to the catalog when the Guide is opened directly", async ({ page }) => {
+    await page.goto("/guide.html");
+    await page.waitForSelector("#guidePage");
+    await page.locator(".guide-back").click();
+    await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+    await expect(page).toHaveURL(/\/index\.html$/);
+  });
+
+  test("keeps the active article in sync with browser history, external updates, and resizing", async ({ page }) => {
+    await page.goto("/guide.html");
+    await page.waitForSelector("#guidePage");
+    await page.evaluate(() => { window.location.hash = "#guide-glossary"; });
+    await expect(page.locator("#guide-glossary.is-active")).toBeVisible();
+    await page.evaluate(() => { window.location.hash = "#not-a-guide-section"; });
+    await expect(page.locator("#guide-glossary.is-active")).toBeVisible();
+    await page.evaluate(() => { window.location.hash = ""; });
+    await expect(page.locator("#guide-start.is-active")).toBeVisible();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    const contents = page.locator("#guideMobileNavToggle");
+    await contents.click();
+    await expect(contents).toHaveAttribute("aria-expanded", "true");
+    await page.setViewportSize({ width: 1280, height: 844 });
+    await expect(contents).toHaveAttribute("aria-expanded", "false");
+    await page.evaluate(() => window.dispatchEvent(new Event("examConfigLoaded")));
+    await expect(page.locator("#guideAcademicExams")).not.toBeEmpty();
+  });
+});
+
+test.describe("Guide article links", () => {
+  for (const { language, width, budgetHeading } of [
+    { language: "eng", width: 1519, budgetHeading: "Annual budget" },
+    { language: "rus", width: 390, budgetHeading: "Годовой бюджет" },
+    { language: "kaz", width: 1519, budgetHeading: "Жылдық бюджет" },
+  ]) {
+    test(`opens a linked Guide article and returns to the source in ${language}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.addInitScript((lang) => localStorage.setItem("unisearch_ui_language_v1", lang), language);
+      await page.goto("/guide.html#guide-tags");
+      const badges = page.locator("#guide-tags");
+      const uniFitLink = badges.getByRole("link", { name: "UniFit", exact: true }).first();
+      await expect(uniFitLink).toBeVisible();
+      await uniFitLink.press("Enter");
+
+      const uniFit = page.locator("#guide-unifit");
+      await expect(page).toHaveURL(/#guide-unifit$/);
+      await expect(uniFit.getByRole("heading", { level: 2 })).toBeFocused();
+      await expect(uniFit.getByRole("heading", { name: budgetHeading })).toBeVisible();
+      await expect(page.locator('#guideNav a[aria-current="page"]')).toHaveAttribute("href", /#guide-unifit$/);
+      await expect(uniFit.locator(".guide-doc > details:last-child")).toBeVisible();
+      await expect(uniFit.locator("details[open]")).toHaveCount(0);
+
+      await page.goBack();
+      await expect(page).toHaveURL(/#guide-tags$/);
+      await expect(badges).toBeVisible();
+      await expect(uniFit).toBeHidden();
+    });
+  }
 });

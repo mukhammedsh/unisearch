@@ -102,6 +102,7 @@
   font-size: var(--text-sm);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
+  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .admissions-reading__sources {
@@ -374,6 +375,9 @@ a.admissions-key-facts__checklist-note:hover {
   font: inherit;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
 a.admissions-key-facts__link {
@@ -1669,9 +1673,15 @@ details[open] > summary > .admissions-disclosure-icon {
   color: var(--text-muted);
 }
 
-.admissions-reading__source a.admissions-reading__ref:hover {
-  background: transparent;
-  color: var(--interaction-hover-text);
+.admissions-reading__source a.admissions-reading__ref:active {
+  color: var(--interaction-active-text);
+  text-decoration-thickness: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .admissions-reading__source a.admissions-reading__ref:hover {
+    color: var(--accent-text);
+  }
 }
 
 /* The pointer to the Admission tab is its own quiet line after the study description, not part of the paragraph. */

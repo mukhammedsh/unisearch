@@ -138,6 +138,20 @@
   pointer-events: none;
 }
 
+.d-gallery-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--media-viewer-bg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.d-gallery-preview:active::after {
+  opacity: 0.22;
+}
+
 .d-gallery-preview-media {
   display: grid;
   grid-template: minmax(0, 1fr) / minmax(0, 1fr);
@@ -171,6 +185,11 @@
   left: var(--space-3);
   z-index: 2;
   border-radius: var(--radius-circle);
+}
+
+.d-cover-back {
+  background: var(--surface-solid);
+  color: var(--text);
 }
 
 .d-photo-zoom-controls {
@@ -220,9 +239,13 @@
   line-height: var(--leading-tight);
 }
 
-.d-gallery-button:is(:hover, :active),
-.d-cover-back:is(:hover, :active) {
+.d-gallery-button:active {
   background: var(--media-viewer-bg);
+}
+
+.d-cover-back:active {
+  background: var(--interaction-active-surface);
+  color: var(--interaction-active-text);
 }
 
 .d-gallery-preview:focus-visible {
@@ -623,11 +646,6 @@ a.d-cover-credit:hover {
   display: block;
 }
 
-.d-tab-pane.active.motion-panel-enter {
-  animation: motion-fade-lift-enter var(--motion-medium)
-  var(--motion-ease-enter) both;
-}
-
 .d-tab-content {
   min-width: 0;
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
@@ -827,7 +845,7 @@ a.d-cover-credit:hover {
   gap: var(--space-2);
   flex: 0 0 auto;
   width: auto;
-  align-self: center;
+  align-self: flex-start;
   margin-left: auto;
 }
 
@@ -884,6 +902,19 @@ body[data-page="university"],
 
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
+  .d-gallery-button:hover:not(:active) {
+    background-color: color-mix(in srgb, var(--media-caption-bg), var(--media-viewer-bg));
+  }
+
+  .d-cover-back:hover:not(:active) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .d-gallery-preview:hover:not(:active)::after {
+    opacity: 0.12;
+  }
+
   :is(.d-site-link, .d-info):hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
@@ -906,6 +937,14 @@ body[data-page="university"],
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .d-gallery-preview::after {
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+  }
+
+  :is(.d-gallery-button, .d-cover-back) {
+    transition: background-color var(--motion-fast) var(--motion-ease-standard);
+  }
+
   .d-tab-btn.active::after {
     animation: motion-underline-snap var(--motion-fast)
     var(--motion-ease-emphasized) both;

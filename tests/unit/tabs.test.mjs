@@ -69,6 +69,10 @@ class MockTabNode extends global.HTMLElement {
     this.listeners.get(type).push(handler);
   }
 
+  removeEventListener(type, handler) {
+    this.listeners.set(type, (this.listeners.get(type) || []).filter((item) => item !== handler));
+  }
+
   emit(type, event = {}) {
     const payload = { target: this, preventDefault() {}, ...event };
     for (const handler of this.listeners.get(type) || []) {
@@ -109,6 +113,7 @@ class MockTabNode extends global.HTMLElement {
   click() {
     this.clickCalls += 1;
     this.emit("click", { target: this });
+    this.parentNode?.emit("click", { target: this });
   }
 
   scrollIntoView() {
@@ -181,6 +186,8 @@ test("setupTabs manages WAI-ARIA tab states, panel hidden flags, and keyboard na
     assert.equal(tabs[0].getAttribute("tabindex"), "-1");
     assert.equal(panes[1].hidden, false);
     assert.equal(panes[0].hidden, true);
+    tabs[1].click();
+    assert.equal(tabs[1].scrollIntoViewCalls, 1);
 
     tabsRoot.emit("keydown", { key: "End", target: tabs[1] });
     assert.equal(tabs[2].focusCalls, 1);

@@ -15,6 +15,17 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Split `backend/data/admissions/catalog.json` (16.5 MB) into a compact `backend/data/admissions/index.json` (~391 KB) and per-institution files under `backend/data/admissions/institutions/<id>.json` (`backend/app/services/admissions_index.py`, `backend/app/services/admissions_catalog.py`, `backend/scripts/prepare_admissions_catalog.py`, `backend/scripts/audit_universities_data.py`).
 - Serve startup metadata, catalog listing, map points, university detail contracts, subject matching, reference cost projections, ML program names, and unselected UniFit evaluations directly from `index.json` without loading full per-institution files (`universities.py`, `university_projection.py`, `ml_scoring.py`, `scoring_requirements.py`).
 - Load full per-institution admissions files lazily on demand with LF-normalized SHA-256 verification and a bounded LRU cache (`MAX_LOADED_INSTITUTIONS = 6`), failing explicitly on checksum or index drift and covering the contract with unit and HTTP regression tests (`test_admissions_catalog.py`, `test_admissions_cutover.py`, `test_admissions_catalog_preparation.py`, `test_admissions_editorial.py`).
+- Rewrite the Guide in English, Russian, and Kazakh to explain catalog browsing, UniFit, admissions requirements, comparisons, and exams in plain language.
+- Improve Guide readability with a narrower article column, a clearer current-article indicator, a shorter sidebar title, and softer body text in both themes.
+- Organize the UniFit article with subheadings and put the calculation formula after the main explanation. Add links between related articles, including from Catalog badges to UniFit.
+- Keep the Guide title and contents in a sticky sidebar and align previous and next links with the Back link's visual style.
+- Align university header actions with the top of the title and adapt the cover back button to the selected theme.
+- Use consistent, short transitions for page navigation, theme changes, Guide articles, catalog list and map views, disclosures, and campus photos. Honor the device's reduced-motion preference.
+- Make hover and press feedback visible on navigation, dropdowns, source links, profile actions, program cards, and campus photo controls. Fade in updated calendar dates and comparison picker results while retaining keyboard focus.
+
+### Fixed
+- Restore browser-history navigation from the Guide and keep the homepage as the Back link's fallback when a visitor opens a Guide article directly.
+- Keep custom dropdowns interactive when they open inside disclosures, and preserve the dropdown surface while a menu is open.
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 

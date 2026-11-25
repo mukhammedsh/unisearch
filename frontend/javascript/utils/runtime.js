@@ -15,6 +15,7 @@ export function registerRuntimeTranslator(translator) {
 }
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const motionReplays = new WeakMap();
 const GLOBAL_LOADING_OVERLAY_ID = "globalLoadingOverlay";
 const GLOBAL_LOADING_SHOW_DELAY_MS = 120;
 const GLOBAL_LOADING_MIN_VISIBLE_MS = 220;
@@ -53,12 +54,20 @@ export function prefersReducedMotion() {
 export function replayMotion(node, className, options = {}) {
   if (!node || !className || prefersReducedMotion()) return;
   const timeoutMs = Number(options.timeoutMs || 560);
+  motionReplays.get(node)?.();
   node.classList.remove(className);
   void node.offsetWidth;
   node.classList.add(className);
-  const cleanup = () => node.classList.remove(className);
-  node.addEventListener("animationend", cleanup, { once: true });
-  window.setTimeout(cleanup, timeoutMs);
+  const cleanup = (event) => {
+    if ((event && event.target !== node) || motionReplays.get(node) !== cleanup) return;
+    node.removeEventListener("animationend", cleanup);
+    window.clearTimeout(timer);
+    node.classList.remove(className);
+    motionReplays.delete(node);
+  };
+  const timer = window.setTimeout(cleanup, timeoutMs);
+  motionReplays.set(node, cleanup);
+  node.addEventListener("animationend", cleanup);
 }
 
 export function motionPress() {
