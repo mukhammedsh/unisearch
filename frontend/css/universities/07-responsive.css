@@ -674,6 +674,59 @@
   }
 }
 
+@media (max-width: 360px) {
+  .uni-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .uni-footer:has(.uni-cost-meta) > .uni-details {
+    grid-row: 3;
+  }
+
+  .uni-details {
+    justify-self: end;
+  }
+}
+
+@container catalog-toolbar (max-width: 340px) {
+  .u-section-actions {
+    gap: var(--space-1);
+  }
+
+  .u-recent-trigger {
+    padding: 0 var(--space-1-5);
+    gap: var(--space-1);
+  }
+
+  .u-recent-trigger__count {
+    min-width: var(--space-4);
+    height: var(--space-4);
+    padding: 0 var(--space-1);
+  }
+
+  .u-mobile-filter-btn {
+    padding: 0 var(--space-2);
+    gap: var(--space-1);
+  }
+
+  .u-mobile-filter-btn [data-heroicon],
+  .u-mobile-filter-btn .ui-icon {
+    width: var(--space-4);
+    height: var(--space-4);
+  }
+
+  .u-mobile-filter-count {
+    min-width: var(--space-4);
+    height: var(--space-4);
+    padding: 0 var(--space-1);
+  }
+
+  .view-btn,
+  .u-compare-mode-btn {
+    min-inline-size: 36px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .view-btn,
   .u-compare-mode-btn,

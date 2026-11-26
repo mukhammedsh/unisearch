@@ -124,6 +124,43 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     expect(Math.abs(toolbarLayout.filter.top - toolbarLayout.view.top)).toBeLessThanOrEqual(2);
     expect(Math.abs(toolbarLayout.view.top - toolbarLayout.compare.top)).toBeLessThanOrEqual(2);
     expect(toolbarLayout.view.left).toBeGreaterThan(toolbarLayout.filter.right + 8);
+
+    // At ultra-narrow 320px width, even with active filters badge and recent history,
+    // all toolbar actions stay on one compact row with zero horizontal overflow.
+    await page.setViewportSize({ width: 320, height: 941 });
+    await page.evaluate(() => {
+      const count = document.getElementById("mobileFilterCount");
+      if (count) {
+        count.textContent = "4";
+        count.hidden = false;
+      }
+    });
+    const ultraNarrow = await page.evaluate(() => {
+      const meta = document.querySelector(".u-section-meta").getBoundingClientRect();
+      const found = document.getElementById("uFoundSummary").getBoundingClientRect();
+      const actions = document.querySelector(".u-section-actions").getBoundingClientRect();
+      const recent = document.getElementById("recentlyViewedBtn").getBoundingClientRect();
+      const filter = document.getElementById("mobileFilterToggle").getBoundingClientRect();
+      const view = document.getElementById("viewToggles").getBoundingClientRect();
+      const compare = document.getElementById("compareModeBtn").getBoundingClientRect();
+      return {
+        meta,
+        found,
+        actions,
+        recent,
+        filter,
+        view,
+        compare,
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      };
+    });
+    expect(ultraNarrow.scrollWidth).toBeLessThanOrEqual(ultraNarrow.clientWidth + 1);
+    expect(Math.abs(ultraNarrow.actions.left - ultraNarrow.meta.left)).toBeLessThanOrEqual(2);
+    expect(Math.abs(ultraNarrow.actions.right - ultraNarrow.meta.right)).toBeLessThanOrEqual(2);
+    expect(Math.abs(ultraNarrow.recent.top - ultraNarrow.filter.top)).toBeLessThanOrEqual(2);
+    expect(Math.abs(ultraNarrow.filter.top - ultraNarrow.view.top)).toBeLessThanOrEqual(2);
+    expect(Math.abs(ultraNarrow.view.top - ultraNarrow.compare.top)).toBeLessThanOrEqual(2);
   });
 
   test("keeps university card width <= 550px on desktop when single university is returned", async ({ page }) => {
