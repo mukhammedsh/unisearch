@@ -51,21 +51,21 @@ export function createUnifitBannerController({ el, state }) {
             examName: (id) => getExamDisplayName(id, { locale: getCurrentLanguage() }),
         });
         const hasEvidence = hasProfileEvidence(profile);
-        const hasProfile = Boolean(parts.length || hasEvidence);
+        const hasRankingProfile = parts.length > 0;
         if (el.unifitBannerTitle) {
-            el.unifitBannerTitle.textContent = parts.length
+            el.unifitBannerTitle.textContent = hasRankingProfile
                 ? tFormat("universities.ux2.banner.ranked", { values: summarizeRankingProfile(parts, 2) })
                 : t(hasEvidence ? "universities.ux2.banner.scores_only" : "universities.ux2.banner.generic");
         }
         if (el.unifitTooltipProfile) {
-            el.unifitTooltipProfile.hidden = parts.length === 0;
-            el.unifitTooltipProfile.textContent = parts.length
+            el.unifitTooltipProfile.hidden = !hasRankingProfile;
+            el.unifitTooltipProfile.textContent = hasRankingProfile
                 ? tFormat("universities.ux2.banner.tooltip_profile", { values: parts.join(" · ") })
                 : "";
         }
         if (el.unifitBannerEdit) {
-            el.unifitBannerEdit.hidden = hasProfile;
-            if (!hasProfile) {
+            el.unifitBannerEdit.hidden = hasRankingProfile;
+            if (!hasRankingProfile) {
                 el.unifitBannerEdit.textContent = t("universities.ux2.banner.set_up");
                 el.unifitBannerEdit.setAttribute("href", routeProfile());
             }

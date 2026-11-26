@@ -89,21 +89,22 @@
   }
 
   .u-unifit-context__inner {
-    display: block;
-    line-height: var(--leading-normal);
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: minmax(0, auto);
+    grid-auto-columns: auto;
+    align-items: center;
+    justify-content: start;
+    column-gap: var(--space-1-5);
+    row-gap: var(--space-0-5);
+    width: 100%;
   }
 
   .u-unifit-context__text {
-    display: inline;
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
     overflow-wrap: break-word;
-  }
-
-  .u-unifit-context__tooltip-wrap,
-  .u-unifit-context__link {
-    vertical-align: middle;
   }
 }
 
@@ -129,6 +130,17 @@
   .u-compare-mode-btn {
     min-inline-size: var(--control-height-md);
     padding: 0;
+  }
+
+  .u-unifit-context__inner {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, auto) auto;
+    column-gap: var(--space-1);
+  }
+
+  .u-unifit-context__link {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
 }
 
@@ -503,7 +515,7 @@
   .u-unifit-context__link {
     min-height: 36px;
     min-width: 36px;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 0;
   }
 
