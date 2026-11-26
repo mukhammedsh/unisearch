@@ -97,6 +97,7 @@ function buildStateSelector(selectorList, stateClass) {
 // After the pointer leaves a tooltip, neighbours open without the hover intent delay for a moment.
 const TOOLTIP_WARM_MS = 400;
 let tooltipWarmthBound = false;
+let lastTooltipPointerType = "";
 
 /**
  * Toggles `tooltips-warm` on <html> while the pointer moves between tooltip triggers.
@@ -106,6 +107,11 @@ function bindTooltipWarmth(wrapSelector) {
   if (tooltipWarmthBound) return;
   tooltipWarmthBound = true;
   let coolTimer = null;
+  document.addEventListener("pointerdown", (evt) => {
+    if (typeof evt.pointerType === "string" && evt.pointerType) {
+      lastTooltipPointerType = evt.pointerType;
+    }
+  }, { capture: true, passive: true });
   document.addEventListener("pointerout", (evt) => {
     const wrap = evt.target instanceof Element ? evt.target.closest(wrapSelector) : null;
     if (!wrap || (evt.relatedTarget instanceof Node && wrap.contains(evt.relatedTarget))) return;
@@ -138,6 +144,25 @@ export function shouldPinTooltipOnClick(
   return Boolean(win?.matchMedia?.("(hover: none), (pointer: coarse)")?.matches);
 }
 
+/**
+ * Whether a click on a tooltip trigger inside a clickable university card should be consumed
+ * by the tooltip (touch/stylus taps and keyboard Enter/Space on the focused trigger) instead
+ * of letting desktop mouse clicks activate the card.
+ *
+ * @param {{ pointerType?: string, detail?: number } | null | undefined} evt
+ * @param {string} [fallbackPointerType=lastTooltipPointerType]
+ * @param {{ matchMedia?: (query: string) => { matches: boolean } } | null} [win]
+ * @returns {boolean}
+ */
+export function shouldConsumeCardTooltipClick(
+  evt,
+  fallbackPointerType = lastTooltipPointerType,
+  win = typeof window !== "undefined" ? window : null,
+) {
+  if (evt?.detail === 0) return true;
+  return shouldPinTooltipOnClick(evt, fallbackPointerType, win);
+}
+
 export function bindInfoTooltips(options = {}) {
   if (typeof document === "undefined") return;
 
@@ -155,7 +180,6 @@ export function bindInfoTooltips(options = {}) {
   __boundTooltipKeys.add(key);
   bindTooltipWarmth(wrapSelector);
 
-  let lastPointerType = "";
   const holdTimers = new WeakMap();
   const openWrapsSelector = buildStateSelector(wrapSelector, openClass);
   const closedWrapsSelector = buildStateSelector(wrapSelector, closedClass);
@@ -179,7 +203,7 @@ export function bindInfoTooltips(options = {}) {
 
   root.addEventListener("pointerdown", (evt) => {
     if (typeof evt.pointerType === "string" && evt.pointerType) {
-      lastPointerType = evt.pointerType;
+      lastTooltipPointerType = evt.pointerType;
     }
     // Prevent mouse clicks on tooltip triggers from moving focus onto the button,
     // which would otherwise keep `:focus-within` active after the pointer leaves.
@@ -199,13 +223,13 @@ export function bindInfoTooltips(options = {}) {
     if (btn) {
       const wrap = btn.closest(wrapSelector);
       if (!wrap) return;
-      evt.preventDefault();
-      evt.stopPropagation();
-      if (typeof evt.stopImmediatePropagation === "function") {
-        evt.stopImmediatePropagation();
-      }
-      if (!shouldPinTooltipOnClick(evt, lastPointerType)) {
+      if (!shouldPinTooltipOnClick(evt, lastTooltipPointerType)) {
         if (evt.detail === 0) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          if (typeof evt.stopImmediatePropagation === "function") {
+            evt.stopImmediatePropagation();
+          }
           closeAll();
           wrap.classList.remove(closedClass);
           clampTooltipToViewport(wrap, bubbleSelector);
@@ -215,6 +239,11 @@ export function bindInfoTooltips(options = {}) {
         safeBlur(btn);
         clampTooltipToViewport(wrap, bubbleSelector);
         return;
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (typeof evt.stopImmediatePropagation === "function") {
+        evt.stopImmediatePropagation();
       }
       const willOpen = !wrap.classList.contains(openClass);
       closeAll();

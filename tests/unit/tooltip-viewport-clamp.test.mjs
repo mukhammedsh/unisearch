@@ -4,10 +4,11 @@ import assert from "node:assert/strict";
 import {
   bindInfoTooltips,
   computeViewportHorizontalShift,
+  shouldConsumeCardTooltipClick,
   shouldPinTooltipOnClick,
 } from "../../frontend/javascript/tooltip.js";
 
-describe("shouldPinTooltipOnClick", () => {
+describe("shouldPinTooltipOnClick and shouldConsumeCardTooltipClick", () => {
   const desktopWin = { matchMedia: () => ({ matches: false }) };
   const coarseWin = { matchMedia: () => ({ matches: true }) };
 
@@ -15,17 +16,20 @@ describe("shouldPinTooltipOnClick", () => {
     assert.equal(shouldPinTooltipOnClick({ pointerType: "mouse", detail: 1 }, "", desktopWin), false);
     assert.equal(shouldPinTooltipOnClick({ pointerType: "mouse", detail: 1 }, "touch", coarseWin), false);
     assert.equal(shouldPinTooltipOnClick({ detail: 1 }, "mouse", coarseWin), false);
+    assert.equal(shouldConsumeCardTooltipClick({ pointerType: "mouse", detail: 1 }, "", desktopWin), false);
   });
 
   it("returns true for touch and stylus taps on both mobile and hybrid desktop devices", () => {
     assert.equal(shouldPinTooltipOnClick({ pointerType: "touch", detail: 1 }, "", desktopWin), true);
     assert.equal(shouldPinTooltipOnClick({ pointerType: "pen", detail: 1 }, "", desktopWin), true);
     assert.equal(shouldPinTooltipOnClick({ detail: 1 }, "touch", desktopWin), true);
+    assert.equal(shouldConsumeCardTooltipClick({ pointerType: "touch", detail: 1 }, "", desktopWin), true);
   });
 
-  it("returns false for keyboard activation so focus-driven tooltips close naturally on Tab", () => {
+  it("keeps keyboard Enter/Space activation on the focused tooltip button without pinning .is-open", () => {
     assert.equal(shouldPinTooltipOnClick({ pointerType: "", detail: 0 }, "", desktopWin), false);
     assert.equal(shouldPinTooltipOnClick({ pointerType: "", detail: 0 }, "", coarseWin), false);
+    assert.equal(shouldConsumeCardTooltipClick({ pointerType: "", detail: 0 }, "", desktopWin), true);
   });
 
   it("falls back to coarse/non-hover media queries only when click carries no pointerType", () => {

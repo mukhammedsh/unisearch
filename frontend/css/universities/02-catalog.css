@@ -1243,6 +1243,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .uni-card:not(.map-card-wrapper *) :is(.uni-cost-trigger, .uni-metric--rank, .uni-status-trigger) {
+    cursor: pointer;
+  }
+
   .uni-cost-trigger:hover .uni-cost-tooltip__icon {
     color: var(--accent-text);
   }

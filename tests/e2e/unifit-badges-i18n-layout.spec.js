@@ -102,11 +102,6 @@ for (const locale of locales) {
 
     const firstStatus = firstCard.locator(".uni-status-trigger").first();
     await firstStatus.hover();
-    await expect(firstCard.locator(".uni-status-tooltip__content").first()).toBeVisible();
-    const catalogUrl = page.url();
-    await firstStatus.click();
-    await expect(page).toHaveURL(catalogUrl);
-    await expect(firstCard.locator(".uni-status-tooltip").first()).not.toHaveClass(/is-open/);
     const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await expect(firstTooltip).toBeVisible();
     await expect(firstTooltip).toHaveCSS("z-index", "10");
@@ -181,13 +176,19 @@ for (const locale of locales) {
     expect(mobileOverflow.horizontal).toBeFalsy();
     expect(mobileOverflow.vertical).toBeFalsy();
 
+    const catalogUrl = page.url();
     const mobileStatus = firstCard.locator(".uni-status-trigger").first();
     const mobileTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await mobileStatus.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
     await mobileStatus.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
+    await expect(page).toHaveURL(catalogUrl);
     await expect(mobileTooltip).toBeVisible();
     await mobileStatus.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
     await mobileStatus.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
     await expect(mobileTooltip).not.toBeVisible();
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await firstCard.locator(".uni-cost-trigger").click();
+    await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   });
 }

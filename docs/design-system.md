@@ -245,7 +245,7 @@ Breakpoints must describe available content space, not a device name. Keep a non
 ### Tooltips and Floating UI
 
 - Tooltips use dark neutral surfaces with compact text and `cursor: help` triggers.
-- On mouse pointers (`pointerType === "mouse"`), tooltips open transiently via `:hover` (and `:focus-within` for keyboard navigation) without pinning `.is-open` or pressing on click; touch and stylus taps (`pointerType === "touch" | "pen"`) toggle `.is-open` and dismiss on outside tap or `Escape`.
+- On mouse pointers (`pointerType === "mouse"`), tooltips open transiently via `:hover` (and `:focus-within` for keyboard navigation) without pinning `.is-open` or pressing on click, and clicking a tooltip trigger on a catalog or map-list university card passes through to open or focus that university; touch and stylus taps (`pointerType === "touch" | "pen"`) toggle `.is-open` without navigating and dismiss on outside tap or `Escape`.
 - Modals and drawers are floating layers: they may use stronger shadows and backdrop blur.
 - Floating UI must remain keyboard accessible and respect `prefers-reduced-motion`.
 
