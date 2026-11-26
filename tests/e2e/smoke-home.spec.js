@@ -57,13 +57,12 @@ test("browser theme color and slider follow the shared accent token", async ({ p
   await expect(themeColor).toHaveAttribute("content", "#123456");
 });
 
-test("first-visit tutorial is skipped by its skip button", async ({ page }) => {
+test("first-visit spotlight tour opens on clean entry, skips deep-linked searches, and dismisses cleanly", async ({ page }) => {
   await page.goto("/index.html");
-
   const tour = page.locator("#uTourModal");
   await expect(tour).toHaveClass(/is-open/);
-  await expect(tour.locator(".u-tour-steps__item")).toHaveCount(6);
-  const inactiveStepContrast = await tour.locator(".u-tour-steps__number").nth(1).evaluate((element) => {
+  await expect(tour.locator(".u-tour-steps__item")).toHaveCount(4);
+  const inactiveStepContrast = await tour.locator(".u-tour-steps__item").nth(1).evaluate((element) => {
     const luminance = (color) => {
       const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map((value) => {
         const channel = value / 255;
@@ -77,8 +76,6 @@ test("first-visit tutorial is skipped by its skip button", async ({ page }) => {
   });
   expect(inactiveStepContrast).toBeGreaterThanOrEqual(4.5);
   await expect(tour.locator("[data-action='next']")).toBeFocused();
-  await page.keyboard.press("Shift+Tab");
-  await expect(tour.locator("[data-action='skip']")).toBeFocused();
   await tour.locator("[data-action='skip']").click();
   await expect(tour).toBeHidden();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
@@ -86,9 +83,14 @@ test("first-visit tutorial is skipped by its skip button", async ({ page }) => {
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
   await expect(page.locator("#uTourModal")).toHaveCount(0);
+
+  await page.evaluate(() => localStorage.clear());
+  await page.goto("/index.html?q=MIT");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("#uTourModal")).toHaveCount(0);
 });
 
-test("first-visit tutorial closes with Escape or its close button and is not shown again", async ({ page }) => {
+test("spotlight tour closes with Escape or close button and can be relaunched from the Guide", async ({ page }) => {
   await page.goto("/index.html");
   const tour = page.locator("#uTourModal");
   await expect(tour).toHaveClass(/is-open/);
@@ -96,18 +98,18 @@ test("first-visit tutorial closes with Escape or its close button and is not sho
   await expect(tour).toBeHidden();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
 
-  await page.evaluate(() => localStorage.removeItem("unisearch_universities_tour_seen_v1"));
-  await page.reload();
-  await expect(page.locator("#uTourModal")).toHaveClass(/is-open/);
-  const close = page.locator("#uTourModal [data-action='close']");
+  await page.goto("/guide.html");
+  await page.locator("#guideLaunchTourBtn").click();
+  await expect(page).toHaveURL(/index\.html|\/$/);
+  await expect(tour).toHaveClass(/is-open/);
+  const close = tour.locator("[data-action='close']");
   await expect(close).toBeVisible();
   await expect(close).toHaveAccessibleName("Close tutorial");
   await close.click();
-  await expect(page.locator("#uTourModal")).toBeHidden();
-  await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
+  await expect(tour).toBeHidden();
 });
 
-test("tutorial opens the profile and resumes after saving it", async ({ page }) => {
+test("setting up a profile from the spotlight tour activates UniFit when returning to the catalog", async ({ page }) => {
   await page.goto("/index.html");
 
   const tour = page.locator("#uTourModal");
@@ -120,20 +122,21 @@ test("tutorial opens the profile and resumes after saving it", async ({ page }) 
   await page.locator("#budgetInput").fill("10000");
   await expect(page.locator("#saveProfileBtn")).toBeEnabled();
   await page.locator("#saveProfileBtn").click();
+  await page.locator("#profileHeaderBackBtn").click();
 
-  await expect(page).toHaveURL(/index\.html/);
-  await expect(page.locator("#uTourModal")).toBeVisible();
-  await expect(page.locator("#uTourProgressLabel")).toHaveText("Step 2 of 6");
+  await expect(page).toHaveURL(/index\.html|\/(\?|$)/);
+  await expect(page.locator("#uTourModal")).toBeHidden();
+  await expect(page.locator("#sortSelect")).toHaveValue("uni_ai");
 });
 
-test("first-visit tutorial completes on mobile without horizontal overflow", async ({ page }) => {
+test("spotlight tour completes all 4 steps on mobile without horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 667 });
   await page.goto("/index.html");
 
   const tour = page.locator("#uTourModal");
   await expect(tour).toBeVisible();
-  await expect(tour.locator(".u-tour-steps__item")).toHaveCount(6);
-  for (let step = 1; step <= 6; step += 1) {
+  await expect(tour.locator(".u-tour-steps__item")).toHaveCount(4);
+  for (let step = 1; step <= 4; step += 1) {
     await tour.locator("[data-action='next']").click();
   }
   await expect(tour).toBeHidden();

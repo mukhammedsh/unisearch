@@ -67,10 +67,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     expect(numBudget).toBeGreaterThan(5000000);
     expect(numBudget).toBeLessThan(20000000);
 
-    // The hint states the budget's effect; the converted maximum appears only in the validation message.
-    const budgetHint = page.locator('.profile-field:has(#budgetInput) .profile-hint');
-    await expect(budgetHint).toBeVisible();
-    expect(await budgetHint.textContent()).not.toMatch(/\d{1,3}(,\d{3}){2,}/);
+    // The converted maximum appears in the validation message.
     const keptBudget = await budgetInput.inputValue();
     await budgetInput.fill("99999999999");
     await page.click(selectors.saveProfileBtn);

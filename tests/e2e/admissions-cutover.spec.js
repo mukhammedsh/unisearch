@@ -102,6 +102,7 @@ async function selectCustomOption(page, select, value) {
 async function searchAndChooseMitCourse(page) {
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
+  await setNativeSelect(page, "admissionsMajor", "");
   await setNativeSelect(page, "admissionsStudyLevel", "undergraduate");
   await page.locator("#admissionsSearch").fill("Computer Science and Engineering");
   await page.locator("#admissionsSearchSubmit").click();

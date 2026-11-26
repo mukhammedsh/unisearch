@@ -150,7 +150,7 @@ for (const viewport of viewports) {
       { id: "mit-usa-cambridge", option: "mit-course-6-3-bachelor", route: "mit-first-year", query: "Computer Science and Engineering" },
       { id: "imperial-college-london-uk", option: "imperial-option-computing-meng", route: "", query: "Computing" },
     ]) {
-      await page.locator(`[data-compare-pick="${choice.id}"]`).click();
+      await page.locator(`.compare-reviewed__head [data-compare-pick="${choice.id}"]`).click();
       const dialog = page.locator("dialog.compare-picker[open]");
       await expect(dialog).toBeVisible();
       await expectNoHorizontalOverflow(page, `comparison picker ${viewport.name}`);

@@ -8,6 +8,7 @@ import {
     setUrlParams,
     escapeHtml,
     escapeHtmlAttr,
+    loadProfile,
     loadProfileForApi,
     CITY_OPTIONS_BY_COUNTRY,
     markMotionEnter,
@@ -19,6 +20,7 @@ import {
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
 import { hideGlobalSearchSuggestions } from "../components/navbar-search.js";
+import { isCoverTransitionActive, waitForCoverTransition } from "../components/cover-transition.js";
 import { setTextWithFade } from "../utils/motion-reveal.js";
 import { t } from "../i18n.js";
 import {
@@ -35,15 +37,11 @@ import { bindInfoTooltips } from "../tooltip.js";
 
 import {
     MAX_COMPARE_UNIVERSITIES,
+    consumeUniversitiesTourOpenRequest,
     hasSeenUniversitiesTour,
-    clearUniversitiesTourResumeStep,
-    markUniversitiesTourSeen,
-    readUniversitiesTourResumeStep,
     rememberRecentUniversity,
     shouldOpenUniversitiesInNewTab,
 } from "./_shared.js";
-
-import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
     abortUniversitiesApiRequests,
     createUniversitiesApiState,
@@ -66,6 +64,7 @@ import {
     buildSectionUrlParams,
     createInitialCatalogState,
     getProfileFundingQueryValue,
+    hasProfileForRanking,
     parseCompareIds,
     readPageParams,
 } from "./universities/query-state.js";
@@ -80,7 +79,6 @@ export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTool
 let __universitiesWindowBindings = [];
 let __universitiesSearchCleanup = null;
 let __universitiesLayoutSync = null;
-let __universitiesUnifitBanner = null;
 let __universitiesCompareController = null;
 let __universitiesFilterControls = null;
 let __universitiesMapController = null;
@@ -97,8 +95,6 @@ export function disposeUniversitiesPage() {
     __universitiesSearchCleanup = null;
     __universitiesLayoutSync?.dispose();
     __universitiesLayoutSync = null;
-    __universitiesUnifitBanner?.dispose();
-    __universitiesUnifitBanner = null;
     __universitiesCompareController?.dispose();
     __universitiesCompareController = null;
     __universitiesFilterControls?.dispose();
@@ -147,13 +143,10 @@ function collectUniversitiesElements() {
         savedFilterButtons: Array.from(document.querySelectorAll("[data-saved-filter]")),
         recentlyViewedBar: $("recentlyViewedBar"),
         mobileRecentSlot: $("mobileRecentSlot"),
-        unifitWarningBanner: $("unifitWarningBanner"),
+        unifitContextBar: $("unifitContextBar"),
         unifitBannerTitle: $("unifitBannerTitle"),
+        unifitTooltipProfile: $("unifitTooltipProfile"),
         unifitBannerEdit: $("unifitBannerEdit"),
-        unifitBannerPrefsBtn: $("unifitBannerPrefsBtn"),
-        unifitLegendDetails: $("unifitLegendDetails"),
-        unifitLegend: $("unifitLegend"),
-        unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
     };
     if (!el.compareTray) {
@@ -186,6 +179,8 @@ export function initUniversitiesPage() {
     const logTranslationDebug = initTranslationDebugLogger();
 
     if (!el.list) return;
+    const hydratedFromSnapshot = el.list.dataset.hydratedFromSnapshot === "1";
+    delete el.list.dataset.hydratedFromSnapshot;
     disposeUniversitiesPage();
 
     const pageParams = readPageParams();
@@ -227,13 +222,9 @@ export function initUniversitiesPage() {
     const apiState = createUniversitiesApiState({ cacheTtlMs: CACHE_TTL_MS });
     __universitiesApiState = apiState;
     let fetchRunSeq = 0;
+    let tourOpenRequested = consumeUniversitiesTourOpenRequest();
     let firstVisitTourPending = !hasSeenUniversitiesTour();
-    if (consumeUniversitiesTourSkipOnce()) {
-        // Arrived through "Save and show matches": the visitor already did the tour's main step.
-        firstVisitTourPending = false;
-        markUniversitiesTourSeen();
-    }
-    let hasInitialListPaint = false;
+    let hasInitialListPaint = hydratedFromSnapshot;
     let hasRestoredInitialScroll = false;
     let lastRenderedItems = [];
     let viewModesReady = false;
@@ -342,7 +333,6 @@ export function initUniversitiesPage() {
     __universitiesLayoutSync = layoutSync;
 
     const unifitBanner = createUnifitBannerController({ el, state });
-    __universitiesUnifitBanner = unifitBanner;
 
     const compareController = createCompareController({
         el,
@@ -691,7 +681,6 @@ export function initUniversitiesPage() {
         setViewModesReady: (ready) => { viewModesReady = ready; },
         syncViewModeControls,
         scheduleSyncWorkspaceDepth: layoutSync.scheduleSyncWorkspaceDepth,
-        refreshUnifitLegend: unifitBanner.refreshLegend,
         updateUnifitWarningBanner: unifitBanner.update,
         renderCompareTray: compareController.renderCompareTray,
         syncCardActionState: compareController.syncCardActionState,
@@ -724,7 +713,7 @@ export function initUniversitiesPage() {
         filterControls.initLocations();
     }
 
-    unifitBanner.bindEvents();
+    unifitBanner.applyAISortOptionLabel();
     compareController.bindEvents();
     filterControls.bindEvents();
     layoutSync.bindEvents();
@@ -811,9 +800,6 @@ export function initUniversitiesPage() {
         const nextSort = el.sortSelect.value;
         el.sortSelect.value = nextSort;
         state.sort = nextSort;
-        if (state.sort !== "uni_ai") {
-            unifitBanner.resetDismissed();
-        }
         filterControls.updateSliderVisibility();
         filterControls.updateMobileFilterUi();
         refetch();
@@ -885,6 +871,9 @@ export function initUniversitiesPage() {
         shouldFetch: true,
         updateUrl: true,
         replaceUrl: true,
+        fetchOptions: hydratedFromSnapshot
+            ? { preserveVisibleResults: true, animateResults: false }
+            : undefined,
     }).catch((err) => console.error(err));
 
     bindWindowListener("profileUpdated", () => {
@@ -979,7 +968,6 @@ export function initUniversitiesPage() {
             const profile = loadProfileForApi();
             const userBudget = Number.parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
-            unifitBanner.refreshLegend();
             warmMapMode();
             if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
             renderPagination(total);
@@ -1085,7 +1073,13 @@ export function initUniversitiesPage() {
                     fetchAi: () => fetchAiSort(buildAiSortPayload(), { onStale: showStaleResult }),
                     fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams, state)),
                     isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
-                    renderData: (data) => renderFetchedData(data, { animateResults }),
+                    renderData: async (data) => {
+                        if (preserveVisibleResults && isCoverTransitionActive()) {
+                            await waitForCoverTransition();
+                            if (!isCurrentCatalog() || runSeq !== fetchRunSeq || state.sort !== "uni_ai") return;
+                        }
+                        renderFetchedData(data, { animateResults });
+                    },
                     onAiError: (err, mode) => {
                         const message = mode === "direct"
                             ? "AI sort failed, fallback list is used."
@@ -1099,6 +1093,10 @@ export function initUniversitiesPage() {
             const data = await fetchUniversities(apiParams, { onStale: showStaleResult });
             if (data?.__aborted) return;
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            if (preserveVisibleResults && isCoverTransitionActive()) {
+                await waitForCoverTransition();
+                if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            }
             renderFetchedData(data, { animateResults });
         } catch (err) {
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
@@ -1132,13 +1130,26 @@ export function initUniversitiesPage() {
                     hasRestoredInitialScroll = true;
                     layoutSync.restoreScrollPosition();
                 }
-                if (firstVisitTourPending) {
+                if (tourOpenRequested || firstVisitTourPending) {
+                    const shouldOpen = tourOpenRequested || (
+                        !hasSeenUniversitiesTour()
+                        && !compareController.isCompareSelectionMode()
+                        && !state.q
+                        && !state.country
+                        && !state.region
+                        && !state.city
+                        && !state.study_level
+                        && !state.only_saved
+                        && !state.only_reviewed
+                        && !hasProfileForRanking(loadProfile())
+                    );
+                    tourOpenRequested = false;
                     firstVisitTourPending = false;
-                    window.setTimeout(async () => {
-                        await showUniversitiesTour({ startStep: readUniversitiesTourResumeStep() });
-                        clearUniversitiesTourResumeStep();
-                        markUniversitiesTourSeen();
-                    }, 120);
+                    if (shouldOpen) {
+                        window.setTimeout(() => {
+                            if (isCurrentCatalog()) void showUniversitiesTour();
+                        }, 80);
+                    }
                 }
             }
         }

@@ -1,25 +1,8 @@
-// Plain-language explanation of a UniFit ranking in the catalog: which profile answers the list was ranked for
-// and which card icons are on screen (banner legend). Pure functions; no scoring happens here.
+// Plain-language explanation of a UniFit ranking in the catalog: which profile answers the list was ranked for,
+// how to summarize them on one compact toolbar line, and how card tooltips explain fit and requirements.
+// Pure functions; no scoring happens here.
 
 import { parseSummaryBudget, studyLevelLabel } from "../../components/profile/profile-summary.js";
-
-// Legend entry per card status icon, in display order: the key is the `data-legend` value written on each icon
-// badge (addStatusIndicator in universities.js) and the value is the localization key of its short label.
-const LEGEND_LABEL_KEYS = {
-  subject_missing: "universities.ux2.legend.subject_missing",
-  subject_matched: "universities.ux2.legend.subject_matched",
-  requirements_below: "universities.ux2.legend.requirements_below",
-  exam_needed: "universities.ux2.legend.exam_needed",
-  requirements_met: "universities.ux2.legend.requirements_met",
-  no_data: "universities.ux2.legend.no_data",
-  over_budget_aid: "universities.ux2.legend.over_budget_aid",
-  over_budget: "universities.ux2.legend.over_budget",
-  budget_check: "universities.ux2.legend.budget_check",
-  within_budget: "universities.ux2.legend.within_budget",
-  aid: "universities.ux2.legend.aid",
-  vibe: "universities.ux2.legend.vibe",
-};
-const LEGEND_ORDER = Object.keys(LEGEND_LABEL_KEYS);
 
 const text = (value) => String(value ?? "").trim();
 const isAny = (value) => !text(value) || text(value).toLowerCase() === "any";
@@ -28,13 +11,14 @@ const isAny = (value) => !text(value) || text(value).toLowerCase() === "any";
 // Returns "" when the profile has no level, so the catalog keeps "All levels".
 export const catalogStudyLevelFromProfile = (profile) => (isAny(profile?.studyLevel) ? "" : text(profile.studyLevel).toLowerCase());
 
-// Values of the profile that shape the ranking, in the order the banner lists them.
+// Values of the profile that shape the ranking, in priority order from broad scope to specific evidence.
 export const describeRankingProfile = (profile, ctx) => {
   const p = profile && typeof profile === "object" ? profile : {};
   const { t, tFormat, formatMoney, majorLabel } = ctx;
   const parts = [];
   if (!isAny(p.studyLevel)) parts.push(studyLevelLabel(p.studyLevel, t));
   if (text(p.major)) parts.push(majorLabel ? majorLabel(text(p.major)) : text(p.major));
+  else if (text(p.interests)) parts.push(t("profile.ux2.summary.subject.interests_value"));
   const budget = parseSummaryBudget(p);
   if (budget.state === "set") {
     const currency = text(p.budgetCurrency).toUpperCase() || "USD";
@@ -54,18 +38,13 @@ export const describeRankingProfile = (profile, ctx) => {
   return parts;
 };
 
-// Distinct legend entries for the icon badges found on the rendered cards ({ key, icon, tone } each).
-// The same meaning with the same icon and tone is listed once; unknown keys are ignored.
-export const legendEntries = (badges) => {
-  const seen = new Set();
-  return (Array.isArray(badges) ? badges : [])
-    .filter((badge) => badge && LEGEND_LABEL_KEYS[badge.key] && badge.icon && badge.tone)
-    .filter((badge) => {
-      const id = `${badge.key}|${badge.icon}|${badge.tone}`;
-      return !seen.has(id) && seen.add(id);
-    })
-    .map((badge) => ({ key: badge.key, icon: badge.icon, tone: badge.tone, labelKey: LEGEND_LABEL_KEYS[badge.key] }))
-    .sort((a, b) => LEGEND_ORDER.indexOf(a.key) - LEGEND_ORDER.indexOf(b.key));
+// Short inline summary of the profile answers: shows up to `maxVisible` leading items and collapses any
+// remaining items into `+N`, while the info tooltip keeps the complete list.
+export const summarizeRankingProfile = (parts, maxVisible = 2) => {
+  const list = Array.isArray(parts) ? parts.filter(Boolean) : [];
+  const limit = Math.max(1, Number(maxVisible) || 2);
+  if (list.length <= limit) return list.join(" · ");
+  return `${list.slice(0, limit).join(" · ")} · +${list.length - limit}`;
 };
 
 // Preference sliders in banner/tooltip order: [UniFit factor key, `universities.tradeoff.*` label key].
@@ -85,6 +64,33 @@ export const closePreferenceLabels = (match, tolerance = 0.15) => PREFERENCE_DIM
       && Math.abs(requested - 0.5) > 0.005 && Math.abs(requested - observed) <= tolerance;
   })
   .map(([, label]) => label);
+
+// Qualitative strength tier for a 1..100% centre-origin preference slider displacement.
+export const tradeoffStrengthTier = (percent) => (percent <= 33 ? "slight" : percent <= 66 ? "moderate" : "strong");
+
+// Format a UniFit preference slider caption where 50 is centred ("Doesn't matter") and moving away from centre
+// scales strength from 0 to 100% (`|value - 50| * 2`) alongside a plain-language strength tier.
+export const formatTradeoffCaption = (
+  value,
+  { leftText, rightText, balancedText, tierLabel, formatSelected },
+) => {
+  const numeric = Number(value);
+  const clamped = Number.isFinite(numeric) ? Math.max(0, Math.min(100, Math.round(numeric))) : 50;
+  if (clamped === 50) {
+    return { text: balancedText, percent: 0, side: "center", tier: null };
+  }
+  const percent = Math.abs(clamped - 50) * 2;
+  const side = clamped < 50 ? "left" : "right";
+  const tier = tradeoffStrengthTier(percent);
+  const sideText = side === "left" ? leftText : rightText;
+  const level = tierLabel(tier);
+  return {
+    text: formatSelected({ side: sideText, level, percent }),
+    percent,
+    side,
+    tier,
+  };
+};
 
 // What a reviewed card still needs from the profile: one entry per missing published check, its alternatives
 // joined ("SAT or ACT"). Built from the backend `missingInputs`; checks without them are skipped.

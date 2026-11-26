@@ -35,6 +35,11 @@
   animation: d-loading-fade-in var(--motion-fast) var(--motion-ease-standard) forwards;
 }
 
+.d-loading.is-visible.has-cover-handoff {
+  opacity: 1;
+  animation: none;
+}
+
 @keyframes d-loading-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -293,14 +298,18 @@
 }
 
 .d-cover-map-pin {
+  position: relative;
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
+  padding: 0;
   border-radius: var(--radius-circle);
   background: var(--accent);
   color: var(--text-inverse);
   box-shadow: var(--shadow-md);
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .d-cover-map[hidden],
@@ -350,6 +359,7 @@
   box-shadow: var(--shadow-md);
   transform: translate(calc(var(--recenter-x, 0px) - 50%), calc(var(--recenter-y, 0px) - 50%));
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .d-cover-map-recenter__arrow {
@@ -387,6 +397,20 @@
 
 .d-cover-map-recenter:active {
   --recenter-bg: var(--accent-press);
+}
+
+.d-cover-map-pin:active {
+  background: var(--accent-press);
+}
+
+@media (pointer: coarse) {
+  .d-cover-map-pin::before,
+  .d-cover-map-recenter::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--space-1) * -1);
+    border-radius: var(--radius-circle);
+  }
 }
 
 .d-photo-zoom-controls {
@@ -1098,6 +1122,10 @@ body[data-page="university"],
   display: none;
 }
 
+.d-card.is-mounted.has-cover-handoff {
+  animation: none;
+}
+
 .d-info-wrap.is-open .d-info {
   background: var(--interaction-hover-surface);
   color: var(--text);
@@ -1118,6 +1146,10 @@ body[data-page="university"],
 
   .d-cover-map-recenter:hover:not(:active) {
     --recenter-bg: var(--accent-strong);
+  }
+
+  .d-cover-map-pin:hover:not(:active) {
+    background: var(--accent-strong);
   }
 
   .d-gallery-preview:hover:not(:active)::after {
@@ -1172,7 +1204,7 @@ body[data-page="university"],
     transition: opacity var(--motion-fast) var(--motion-ease-standard);
   }
 
-  :is(.d-gallery-button, .d-cover-back, .d-cover-map-link, .d-cover-map-recenter) {
+  :is(.d-gallery-button, .d-cover-back, .d-cover-map-link, .d-cover-map-recenter, .d-cover-map-pin) {
     transition: background-color var(--motion-fast) var(--motion-ease-standard);
   }
 

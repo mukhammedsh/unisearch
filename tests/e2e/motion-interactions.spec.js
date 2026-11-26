@@ -282,12 +282,10 @@ test("map results rail renders status badges in vertical column without overlapp
       })
     );
   });
-  await page.goto("/index.html");
-  await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
   const aiResponsePromise = page.waitForResponse((r) => r.url().includes("/universities/ai-sort") && r.status() === 200);
-  await setNativeSelect(page, "sortSelect", "uni_ai");
-
+  await page.goto("/index.html");
   await aiResponsePromise;
+  await expect(page.locator("#sortSelect")).toHaveValue("uni_ai");
   await expect(page.locator(".uni-card:not(.is-skeleton)").first()).toBeVisible();
 
   await page.click("#viewMapBtn");

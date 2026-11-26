@@ -1,3 +1,4 @@
+import { initProfileDatePicker } from "../components/profile/date-picker.js";
 import { initProfileUI, requestProfileNavigationClose } from "../components/profile-ui.js";
 import { initLanguagesPanel } from "../languages.js";
 import { hydrateHeroIcons } from "../icons.js";
@@ -6,12 +7,15 @@ import { ensureExamConfig, ensureLanguageConfig } from "../utils.js";
 
 let profilePageGeneration = 0;
 let disposeProfileUi = null;
+let disposeDatePicker = null;
 let disposeLanguagesPanel = null;
 
 export { requestProfileNavigationClose };
 
 export function disposeProfilePage() {
   profilePageGeneration += 1;
+  disposeDatePicker?.();
+  disposeDatePicker = null;
   disposeProfileUi?.();
   disposeProfileUi = null;
   disposeLanguagesPanel?.();
@@ -35,4 +39,5 @@ export async function initProfilePage() {
   if (generation !== profilePageGeneration || !page.isConnected) return;
   disposeLanguagesPanel = initLanguagesPanel();
   disposeProfileUi = initProfileUI();
+  disposeDatePicker = initProfileDatePicker(page);
 }

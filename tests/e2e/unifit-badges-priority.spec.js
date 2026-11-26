@@ -80,35 +80,17 @@ test("UniFit warning returns after a reload or a new UniFit selection", async ({
   });
 
   await page.goto("/index.html", { waitUntil: "domcontentloaded" });
-  const warning = page.locator("#unifitWarningBanner");
-  const dismiss = page.locator("#dismissUnifitWarningBanner");
-  await expect(warning).toBeVisible();
+  const contextBar = page.locator("#unifitContextBar");
+  await expect(contextBar).toBeVisible();
   await page.locator("#compareModeBtn").click();
-  await expect(warning).toBeVisible();
+  await expect(contextBar).toBeVisible();
   await page.locator("#compareModeBtn").click();
-  await expect(dismiss).toHaveCSS("border-radius", "12px");
-  const isDismissIconCentered = await dismiss.evaluate((button) => {
-    const icon = button.querySelector("svg");
-    if (!icon) return false;
-    const buttonBox = button.getBoundingClientRect();
-    const iconBox = icon.getBoundingClientRect();
-    return Math.abs((buttonBox.left + buttonBox.width / 2) - (iconBox.left + iconBox.width / 2)) < 0.1
-      && Math.abs((buttonBox.top + buttonBox.height / 2) - (iconBox.top + iconBox.height / 2)) < 0.1;
-  });
-  expect(isDismissIconCentered).toBe(true);
 
-  await dismiss.click();
-  await expect(warning).toBeHidden();
-
-  await page.reload({ waitUntil: "domcontentloaded" });
-  await expect(warning).toBeVisible();
-
-  await dismiss.click();
   await setNativeSelect(page, "sortSelect", "name_asc");
-  await expect(warning).toBeHidden();
+  await expect(contextBar).toBeHidden();
 
   await setNativeSelect(page, "sortSelect", "uni_ai");
-  await expect(warning).toBeVisible();
+  await expect(contextBar).toBeVisible();
 });
 
 test("UniFit cards show requirement and preference signals without grant odds", async ({ page }) => {
@@ -155,7 +137,7 @@ test("UniFit cards show requirement and preference signals without grant odds", 
   await expect(statuses.nth(0)).toHaveAttribute("aria-label", /Exam result needed/);
   await expect(statuses.nth(1)).toHaveAttribute("aria-label", /Your Vibe/);
   await expect(firstCard).not.toContainText("Likely Grant");
-  await expect(page.locator("#unifitWarningBanner")).toBeVisible();
+  await expect(page.locator("#unifitContextBar")).toBeVisible();
   await expect(firstCard.locator(".uni-why")).toHaveCount(0);
 });
 

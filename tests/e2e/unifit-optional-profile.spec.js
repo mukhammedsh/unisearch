@@ -18,8 +18,6 @@ for (const [label, profile] of [["guest", {}], ["budget-only profile", { budget:
     await expect(page.locator("#sortSelect")).toHaveValue("uni_ai");
     await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
     await expect(page.locator("#unifitWarningModal")).toHaveCount(0);
-    await expect(page.locator("#unifitWarningBanner")).toBeVisible();
-    await page.locator("#dismissUnifitWarningBanner").click();
-    await expect(page.locator("#unifitWarningBanner")).toBeHidden();
+    await expect(page.locator("#unifitContextBar")).toBeVisible();
   });
 }

@@ -849,8 +849,8 @@
   position: fixed;
   top: auto;
   left: auto;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--space-5);
+  right: var(--space-5);
   width: auto;
   height: auto;
   margin: 0;
@@ -876,8 +876,8 @@
 .toast {
   background: var(--surface-solid);
   color: var(--text);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-base);
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   display: flex;
   align-items: center;
@@ -886,19 +886,10 @@
   font-weight: var(--font-weight-medium);
   min-width: 250px;
   max-width: 350px;
+  box-sizing: border-box;
+  line-height: var(--leading-normal);
   animation: motion-toast-in var(--motion-medium) var(--motion-ease-enter) forwards;
   pointer-events: auto;
-  will-change: transform, opacity;
-}
-
-.toast.error {
-  background: var(--color-danger-bg);
-  color: var(--color-danger);
-}
-
-.toast.success {
-  background: var(--color-success-bg);
-  color: var(--color-success);
 }
 
 .toast.is-leaving {
@@ -911,15 +902,20 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-3);
+  flex: 1 1 auto;
   min-width: 0;
 }
 
 .toast-message span:last-child {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .toast-icon {
   flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
 }
 
 .toast.success .toast-icon {
@@ -934,13 +930,16 @@
   color: var(--color-info);
 }
 
+.toast.warning .toast-icon {
+  color: var(--color-warning);
+}
+
 .toast-close {
   margin-left: auto;
   background: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  color: inherit;
-  opacity: 0.72;
+  color: var(--text-muted);
   padding: 0;
   min-width: 36px;
   min-height: 36px;
@@ -957,7 +956,8 @@
 }
 
 .toast-close:focus-visible {
-  opacity: 1;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 @keyframes motion-toast-in {
@@ -1297,7 +1297,7 @@
     row-gap: var(--space-1);
     max-width: none;
     margin: 0 auto;
-    padding: 0 var(--space-6);
+    padding: 0 var(--layout-page-gutter);
 }
 
 .footer-content p,
@@ -1437,7 +1437,8 @@
   }
 
   .toast-close:hover {
-    opacity: 1;
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
   }
 
   .custom-select-trigger:hover:not(:active, .is-disabled) {

@@ -1,55 +1,55 @@
 /* Navbar breakpoints are owned by 08-device-responsive.css. */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .site-footer {
-    padding: var(--space-3) 0;
+    padding: var(--space-4) 0;
   }
 
   .footer-content {
-    flex-direction: column;
-    gap: var(--space-2);
-    text-align: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-2) var(--space-4);
   }
 
   .footer-meta {
-    flex-direction: column;
-    justify-content: center;
+    grid-column: 1;
+    grid-row: 1;
+    gap: var(--space-1-5) var(--space-3);
   }
 
-  /* Footer navigation becomes separate rows on phones, so a separator can
-     never be left at the end of a wrapped row. */
-  .footer-meta > .footer-divider {
+  .footer-copy {
+    flex-basis: 100%;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--space-8);
+  }
+
+  /* Copyright sits on its own top row at <= 768px; keep link dots inline. */
+  .footer-copy + .footer-divider {
     display: none;
   }
 
-  /* Keep every in-row separator on the footer's visual centerline even when
-     the links on either side have different lengths. */
-  .footer-legal-links {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    width: 100%;
-    column-gap: var(--space-3);
-  }
-
-  .footer-legal-links a:first-child {
-    justify-self: end;
-    text-align: right;
-  }
-
-  .footer-legal-links a:last-child {
-    justify-self: start;
-    text-align: left;
-  }
-
-  /* Russian legal labels deliberately share two lines for a balanced footer
-     grid; shorter locales keep their natural single-line labels. */
-  html[lang="ru"] .footer-legal-links:not(.footer-product-links) a {
-    max-width: 146px;
+  .footer-legal-links a {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) 0;
   }
 
   .social-links {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .footer-content .footer-attribution {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Product and legal link groups stack on phones; drop the outer separator. */
+  .footer-meta > .footer-divider {
+    display: none;
   }
 }
 
@@ -174,10 +174,49 @@
   }
 }
 
-/* Card photo → university cover handoff (components/cover-transition.js). The stand-in fills the
-   cover box the static page already lays out, so the morph never shifts layout. */
+/* Card photo ↔ university cover handoff (components/cover-transition.js). The morph stage runs at
+   viewport coordinates inside ::view-transition-new(uni-cover) so clip box, corner radii, zoom,
+   and focal crop (object-position) interpolate smoothly together without distorting the image. */
+@keyframes vt-cover-hold {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+
 .vt-uni-cover {
   view-transition-name: uni-cover;
+}
+
+.vt-uni-cover-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  contain: strict;
+}
+
+.vt-uni-cover-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+.vt-uni-cover-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  max-height: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.vt-uni-cover-hidden,
+.has-cover-morph > img.d-cover-handoff,
+.has-cover-morph .d-gallery-preview-media > img {
+  visibility: hidden;
 }
 
 .d-cover-handoff {
@@ -190,14 +229,16 @@
 }
 
 ::view-transition-group(uni-cover) {
-  animation-duration: var(--motion-medium);
-  animation-timing-function: var(--motion-ease-standard);
+  animation: vt-cover-hold var(--motion-medium) linear both;
 }
 
-::view-transition-old(uni-cover),
+::view-transition-old(uni-cover) {
+  display: none;
+}
+
 ::view-transition-new(uni-cover) {
-  height: 100%;
-  object-fit: cover;
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* Set by utils/motion-reveal.js while an element grows or shrinks in height. */
@@ -453,8 +494,12 @@
     animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-enter) backwards;
   }
 
-  :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]) {
+  :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]):not(.vt-uni-cover) {
     animation: motion-backdrop-in var(--motion-fast) var(--motion-ease-enter) backwards;
+  }
+
+  .d-card.has-cover-handoff .d-gallery-preview-media > img {
+    animation: none;
   }
 }
 
@@ -875,5 +920,14 @@ body.route-loading main {
   .network-status-banner__text {
     white-space: normal;
     text-align: center;
+  }
+
+  /* Hide inner dot separators on compact phones where long legal links wrap. */
+  .footer-divider {
+    display: none;
+  }
+
+  .footer-legal-links {
+    gap: var(--space-1) var(--space-4);
   }
 }

@@ -18,6 +18,7 @@ import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-co
 import { mountTabsNavigation } from "./tabs-navigation.js";
 import { mountOverviewSummary } from "./overview-summary.js";
 import { mountUniversityGallery } from "./gallery.js";
+import { isCoverTransitionActive, waitForCoverTransition } from "../../components/cover-transition.js";
 import { heroIcon } from "../../icons.js";
 import {
   fetchUniversityDetailCached,
@@ -475,6 +476,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
 export async function initUniversityPage(options = {}) {
   const pageVersion = ++detailPageVersion;
   const preserveVisibleContent = options.preserveVisibleContent === true;
+  const skipLoadingSkeleton = options.skipLoadingSkeleton === true;
   const id = extractUniversityIdFromLocation(window.location);
   rememberRecentUniversity(id);
 
@@ -487,7 +489,7 @@ export async function initUniversityPage(options = {}) {
 
   const setDetailLoading = (isLoading) => {
     if (!loadingEl) return;
-    const showFullSkeleton = !!isLoading && !preserveVisibleContent;
+    const showFullSkeleton = !!isLoading && !preserveVisibleContent && !skipLoadingSkeleton;
     loadingEl.classList.toggle("is-visible", showFullSkeleton);
     loadingEl.setAttribute("aria-hidden", showFullSkeleton ? "false" : "true");
   };
@@ -509,6 +511,11 @@ export async function initUniversityPage(options = {}) {
       initUniversityTranslations().catch(() => null),
     ]);
     if (pageVersion !== detailPageVersion) return;
+    if (!skipLoadingSkeleton && isCoverTransitionActive()) {
+      await waitForCoverTransition();
+      if (pageVersion !== detailPageVersion) return;
+      cardEl?.classList.add("has-cover-handoff");
+    }
     const universityId = String(university.id || id);
     document.body.classList.toggle("university--reviewed", REVIEWED_ADMISSIONS_IDS.has(universityId));
     rememberRecentUniversity(universityId);

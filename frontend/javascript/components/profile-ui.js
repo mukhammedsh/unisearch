@@ -7,9 +7,11 @@ import {
   escapeHtml,
   getExamInputMode,
   isFutureProfile,
+  loadFilters,
   loadProfile,
   motionPress,
   replayMotion,
+  saveFilters,
   saveProfile,
   showToast,
   trapFocus,
@@ -19,11 +21,9 @@ import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { hasUniversitiesTourResumeStep, requestUniversitiesTourSkipOnce } from "../pages/shared/cache.js";
-import { isProfilePath, routeGuide, routeUniversities, navigateToAppRoute } from "../routes.js";
+import { isProfilePath, routeGuide } from "../routes.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import { applyBudgetCurrencyChoice, reinterpretBudgetCurrency } from "./profile/budget-currency.js";
-import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
   applyBudgetEntry,
   budgetInCurrency,
@@ -31,6 +31,7 @@ import {
   enforceGpaMaxLength,
   ensureProfileShape,
   getBudgetCurrency,
+  hasProfileForRanking,
   normalizeAmountRaw,
   normalizeFundingType,
   normalizeGpaRaw,
@@ -114,6 +115,7 @@ const queryProfileElements = (modal) => {
         resetConfirmBtn: document.getElementById("profileResetConfirmBtn"),
         openBtn: document.getElementById("profileBtn"),
         closeBtn: document.getElementById("profileCloseBtn"),
+        headerBackBtn: document.getElementById("profileHeaderBackBtn"),
         backdrop: modal.querySelector(".profile-backdrop"),
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
@@ -137,12 +139,9 @@ const queryProfileElements = (modal) => {
         profileMajorSelect: document.getElementById("profileMajorSelect"),
         profileInterestsInput: document.getElementById("profileInterestsInput"),
         saveProfileBtn: document.getElementById("saveProfileBtn"),
-        showMatchesBtn: document.getElementById("profileShowMatchesBtn"),
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
-        profileSummaryList: document.getElementById("profileSummaryList"),
-        profileSummarySentence: document.getElementById("profileSummarySentence"),
         profileGuideLink: document.getElementById("profileUnifitGuideLink"),
         profileSectionTabs: Array.from(modal.querySelectorAll(".profile-section-tab")),
         profileSectionNodes: Array.from(modal.querySelectorAll("[data-profile-section]")),
@@ -255,7 +254,14 @@ const saveAllProfileChanges = (els, state) => {
     if (els.budgetInput) els.budgetInput.value = String(budgetInCurrency(state.profile, state.budgetInputCurrency || getBudgetCurrency()));
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
 
+    const hadRankingProfile = hasProfileForRanking(loadProfile());
     state.profileStoragePersistent = saveProfile(state.profile);
+    if (!hadRankingProfile && hasProfileForRanking(state.profile)) {
+        const savedFilters = loadFilters();
+        if (savedFilters && savedFilters.sort === "name_asc") {
+            saveFilters({ ...savedFilters, sort: "uni_ai" });
+        }
+    }
     state.savedSignature = stableProfileSignature(state.profile);
     refreshSaveState(els, state);
     replayMotion(els.profileSaveState, "motion-state-pulse", { timeoutMs: 520 });
@@ -396,6 +402,7 @@ const bindProfileEvents = (els, state) => {
 
     // Mark the section currently in view; a band near the top of the viewport decides which one it is.
     const visibleSections = new Set();
+    const scrollRegion = els.modal.querySelector(".profile-workspace-layout");
     const lastSectionId = sectionIdOf(els.profileSectionNodes[els.profileSectionNodes.length - 1]);
     const navLocked = () => Date.now() < (state.sectionNavLockUntil || 0);
     let sectionObserver = null;
@@ -409,18 +416,17 @@ const bindProfileEvents = (els, state) => {
             if (navLocked()) return;
             const current = els.profileSectionNodes.find((node) => visibleSections.has(sectionIdOf(node)));
             if (current) setActiveProfileSection(els, sectionIdOf(current));
-        }, { rootMargin: "-20% 0px -65% 0px" });
+        }, { root: scrollRegion, rootMargin: "-20% 0px -65% 0px" });
         els.profileSectionNodes.forEach((node) => sectionObserver.observe(node));
     }
     // The last section can end below the observed band; at the end of the page it is the current one.
     const markLastSectionAtPageEnd = () => {
         if (navLocked() || !lastSectionId) return;
-        const root = document.documentElement;
-        if (window.scrollY > 0 && window.innerHeight + window.scrollY >= root.scrollHeight - 2) {
+        if (scrollRegion && scrollRegion.scrollTop > 0 && scrollRegion.clientHeight + scrollRegion.scrollTop >= scrollRegion.scrollHeight - 2) {
             setActiveProfileSection(els, lastSectionId);
         }
     };
-    listenGlobal(window, "scroll", markLastSectionAtPageEnd);
+    if (scrollRegion) listenGlobal(scrollRegion, "scroll", markLastSectionAtPageEnd);
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect(els, state);
@@ -556,12 +562,7 @@ const bindProfileEvents = (els, state) => {
         els.gpaInput.addEventListener("keydown", handleEnterSave);
     }
 
-    els.gpaUnit?.addEventListener("click", () => {
-        motionPress(els.gpaUnit);
-        state.gpaScaleAutoSwitched = false;
-        setGpaScale(els, state, Number(state.profile.gpaScale) === 5 ? 4 : 5);
-    });
-    // The visible scale choice; the suffix button above stays as a shortcut to the same setting.
+    // The radio options choose the scale shown next to the GPA input.
     document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
         radio.addEventListener("change", () => {
             if (!radio.checked) return;
@@ -595,27 +596,9 @@ const bindProfileEvents = (els, state) => {
     if (els.saveProfileBtn) {
         els.saveProfileBtn.addEventListener("click", () => {
             motionPress(els.saveProfileBtn);
-            if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeModalNow();
+            saveAllProfileChanges(els, state);
         });
     }
-
-    els.showMatchesBtn?.addEventListener("click", () => {
-        if (els.showMatchesBtn.disabled) return;
-        motionPress(els.showMatchesBtn);
-        syncInputsToDraft(els, state);
-        // A failed save (validation error, unfinished report draft) keeps the page open.
-        if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) return;
-        if (hasUniversitiesTourResumeStep()) {
-            closeModalNow();
-            return;
-        }
-        els.showMatchesBtn.disabled = true;
-        els.showMatchesBtn.setAttribute("aria-busy", "true");
-        // Carry the study level so the catalog level filter shows it; the tour must not cover the results.
-        const studyLevel = catalogStudyLevelFromProfile(state.profile);
-        requestUniversitiesTourSkipOnce();
-        navigateToAppRoute(routeUniversities(studyLevel ? { sort: "uni_ai", study_level: studyLevel } : { sort: "uni_ai" }));
-    });
 
     els.resetProfileBtn?.addEventListener("click", () => {
         motionPress(els.resetProfileBtn);
@@ -628,6 +611,7 @@ const bindProfileEvents = (els, state) => {
     if (els.openBtn) els.openBtn.onclick = openProfileHandler;
 
     if (els.closeBtn) els.closeBtn.onclick = requestCloseHandler;
+    if (els.headerBackBtn) els.headerBackBtn.onclick = requestCloseHandler;
     if (els.backdrop) els.backdrop.onclick = requestCloseHandler;
 
     els.discardBtn?.addEventListener("click", () => {
@@ -757,6 +741,7 @@ const bindProfileEvents = (els, state) => {
         if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
         if (els.openBtn?.onclick === openProfileHandler) els.openBtn.onclick = null;
         if (els.closeBtn?.onclick === requestCloseHandler) els.closeBtn.onclick = null;
+        if (els.headerBackBtn?.onclick === requestCloseHandler) els.headerBackBtn.onclick = null;
         if (els.backdrop?.onclick === requestCloseHandler) els.backdrop.onclick = null;
         if (els.addExamBtn?.onclick) els.addExamBtn.onclick = null;
         if (els.examList?.onclick) els.examList.onclick = null;

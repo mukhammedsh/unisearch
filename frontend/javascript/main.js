@@ -5,12 +5,22 @@ import { API_BASE, aiName, bindImageFallbacks, initTheme, ensureExamConfig, ensu
 import { applyTranslations, initI18n } from "./i18n.js";
 import { hydrateHeroIcons } from "./icons.js";
 import { initUniversityTranslations } from "./university-translations.js";
-import { applyRouteLinks, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, resolveAppBasePath, resolveAppBaseUrl, routeGuide } from "./routes.js";
+import { applyRouteLinks, extractUniversityIdFromLocation, isAboutPath, isComparePath, isGuidePath, isPrivacyPath, isProfilePath, isTermsPath, isUniversitiesListPath, isUniversityDetailPath, resolveAppBasePath, resolveAppBaseUrl, routeGuide } from "./routes.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 import { isStaticSnapshotReady, loadStaticSnapshotManifest } from "./utils/static-snapshot.js";
 import { startRatesLoading } from "./currency.js";
 import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
-import { rememberCoverSource, takeCoverHandoff } from "./components/cover-transition.js";
+import {
+  captureCatalogReturnSnapshot,
+  clearCatalogReturnSnapshot,
+  getCatalogReturnHref,
+  registerActiveCoverTransition,
+  rememberCoverSource,
+  takeCoverHandoff,
+  takeReverseCoverHandoff,
+  waitForCoverTransition,
+} from "./components/cover-transition.js";
+import { hasInstantUniversityDetail } from "./pages/shared/cache.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
@@ -166,11 +176,12 @@ function syncBodyPageFromRoute() {
   if (page) document.body.dataset.page = page;
 }
 
-function primeRouteLoadingUi(ctx = currentRouteContext()) {
+function primeRouteLoadingUi(ctx = currentRouteContext(), { skipLoadingSkeleton = false } = {}) {
   if (ctx.isUniversitiesPage) {
     const skeletonEl = document.getElementById("universitiesSkeleton");
     const listEl = document.getElementById("universitiesList");
     const paginationEl = document.getElementById("pagination");
+    if (listEl?.dataset?.hydratedFromSnapshot === "1") return;
     if (skeletonEl && !skeletonEl.innerHTML.trim()) {
       const skeletonCount = getUniversitiesSkeletonCount({ listEl, skeletonEl });
       skeletonEl.dataset.count = String(skeletonCount);
@@ -208,6 +219,7 @@ function primeRouteLoadingUi(ctx = currentRouteContext()) {
   }
 
   if (ctx.isUniversityPage) {
+    if (skipLoadingSkeleton || document.getElementById("detailCard")?.classList.contains("is-mounted")) return;
     const detailLoading = document.getElementById("detailLoading");
     if (detailLoading) {
       detailLoading.classList.add("is-visible");
@@ -263,7 +275,7 @@ function syncSkipLinkTarget() {
   }
 }
 
-function hydrateRouteShell(ctx = currentRouteContext()) {
+function hydrateRouteShell(ctx = currentRouteContext(), options = {}) {
   syncNavbarSearchVisibility(ctx);
   syncSkipLinkTarget();
   applyRouteLinks(document);
@@ -272,10 +284,10 @@ function hydrateRouteShell(ctx = currentRouteContext()) {
   applyAINameConfig();
   addFooterProductLinks();
   applyTranslations(document);
-  primeRouteLoadingUi(ctx);
+  primeRouteLoadingUi(ctx, options);
 }
 
-async function initRoutePage(ctx = currentRouteContext()) {
+async function initRoutePage(ctx = currentRouteContext(), { skipLoadingSkeleton = false } = {}) {
   if (ctx.isUniversitiesPage || ctx.isUniversityPage || ctx.isComparePage || ctx.isProfilePage || ctx.isGuidePage) {
     await loadStaticSnapshotManifest();
   }
@@ -320,7 +332,7 @@ async function initRoutePage(ctx = currentRouteContext()) {
       ensureExamConfig(),
       ensureLanguageConfig(),
     ]);
-    return module?.initUniversityPage?.();
+    return module?.initUniversityPage?.({ skipLoadingSkeleton });
   }
   if (ctx.isGuidePage) {
     const [module] = await Promise.all([
@@ -350,10 +362,10 @@ async function initRoutePage(ctx = currentRouteContext()) {
   return undefined;
 }
 
-async function initializeCurrentRoute() {
+async function initializeCurrentRoute(options = {}) {
   syncBodyPageFromRoute();
   const ctx = currentRouteContext();
-  hydrateRouteShell(ctx);
+  hydrateRouteShell(ctx, options);
 
   const compareTray = document.getElementById("compareTray");
   if (compareTray && !ctx.isUniversitiesPage) {
@@ -371,7 +383,7 @@ async function initializeCurrentRoute() {
     clearSidebarFiltersState();
   }
 
-  await initRoutePage(ctx);
+  await initRoutePage(ctx, options);
 }
 
 function clearSidebarFiltersState() {
@@ -640,31 +652,46 @@ async function loadAppRoute(rawHref, options = {}) {
     applyAINameConfig(nextDoc);
     hydrateHeroIcons(nextDoc);
 
+    const disposeCallbacks = [];
     if (leavingUniversitiesPage) {
+      const catalogUrl = options.history === false ? currentUrl : new URL(window.location.href);
+      captureCatalogReturnSnapshot(catalogUrl, url);
       const universitiesModule = routeModulePromises.get("universities");
       if (universitiesModule) {
         const module = await universitiesModule;
-        module?.disposeUniversitiesPage?.();
+        if (module?.disposeUniversitiesPage) disposeCallbacks.push(() => module.disposeUniversitiesPage());
       }
+    } else if (!isUniversitiesListPath(url.pathname)) {
+      clearCatalogReturnSnapshot();
     }
     if (document.body.dataset.page === "university") {
       const universityModule = routeModulePromises.get("university");
-      if (universityModule) (await universityModule)?.disposeUniversityPage?.();
+      if (universityModule) {
+        const module = await universityModule;
+        if (module?.disposeUniversityPage) disposeCallbacks.push(() => module.disposeUniversityPage());
+      }
     }
     if (document.body.dataset.page === "compare") {
       const compareModule = routeModulePromises.get("compare");
-      if (compareModule) (await compareModule)?.disposeComparePage?.();
+      if (compareModule) {
+        const module = await compareModule;
+        if (module?.disposeComparePage) disposeCallbacks.push(() => module.disposeComparePage());
+      }
     }
     if (document.body.dataset.page === "profile" || document.getElementById("profileModal")?.classList.contains("is-open")) {
       const profileModule = routeModulePromises.get("profile");
-      if (profileModule) (await profileModule)?.disposeProfilePage?.();
+      if (profileModule) {
+        const module = await profileModule;
+        if (module?.disposeProfilePage) disposeCallbacks.push(() => module.disposeProfilePage());
+      }
     }
 
     await syncDocumentHeadFromRoute(nextDoc, url.href);
     controller.signal.throwIfAborted();
 
-    const updateDomAndState = () => {
+    const updateDomAndState = ({ preserveScroll = false } = {}) => {
       controller.signal.throwIfAborted();
+      disposeCallbacks.forEach((dispose) => dispose());
       replaceRouteDom(nextDoc);
 
       clearSidebarFiltersState();
@@ -675,25 +702,55 @@ async function loadAppRoute(rawHref, options = {}) {
         const state = window.history.state && typeof window.history.state === "object" ? window.history.state : {};
         window.history[method]({ ...state, appRoute: true, appRouteHistoryIndex: nextHistoryIndex }, "", url.href);
         activeAppRouteHistoryIndex = nextHistoryIndex;
-        safeSessionStorage.remove("unisearch_universities_scroll");
+        if (!options.preserveCatalogScroll && !preserveScroll) {
+          safeSessionStorage.remove("unisearch_universities_scroll");
+        }
       } else if (Number.isInteger(options.targetAppRouteHistoryIndex)) {
         activeAppRouteHistoryIndex = options.targetAppRouteHistoryIndex;
       }
       lastLoadedAppRouteUrl = url.href;
 
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      if (!preserveScroll) {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
     };
 
     const animate = !prefersReducedMotion();
+    const supportsViewTransition = animate && typeof document.startViewTransition === "function";
     // Always consumed so a remembered card photo never leaks into a later navigation.
-    const coverHandoff = takeCoverHandoff(url);
+    const forwardHandoff = takeCoverHandoff(url);
+    const reverseHandoff = !forwardHandoff && supportsViewTransition
+      ? takeReverseCoverHandoff(currentUrl, url)
+      : null;
+    if (!supportsViewTransition) clearCatalogReturnSnapshot();
+    const coverHandoff = forwardHandoff || reverseHandoff;
+    const canRenderUniversityInTransition = Boolean(
+      forwardHandoff
+      && isUniversityDetailPath(url.pathname)
+      && routeModulePromises.has("university")
+      && hasInstantUniversityDetail(extractUniversityIdFromLocation(url)),
+    );
 
-    if (animate && typeof document.startViewTransition === "function") {
+    let routeInitialized = false;
+    if (supportsViewTransition) {
       coverHandoff?.markSource();
-      const transition = document.startViewTransition(() => {
-        updateDomAndState();
-        coverHandoff?.inject();
+      const transition = document.startViewTransition(async () => {
+        updateDomAndState({ preserveScroll: Boolean(reverseHandoff?.preserveScroll) });
+        if (forwardHandoff) {
+          forwardHandoff.inject({ useLoadingCover: !canRenderUniversityInTransition });
+        } else if (coverHandoff) {
+          await coverHandoff.inject();
+        }
+        if (canRenderUniversityInTransition) {
+          await initializeCurrentRoute({ skipLoadingSkeleton: true });
+          routeInitialized = true;
+          forwardHandoff.ensureMountedTarget();
+        }
       });
+      if (coverHandoff) {
+        coverHandoff.startOnReady?.(transition.ready);
+        registerActiveCoverTransition(transition.finished);
+      }
       const settleCover = () => coverHandoff?.settle();
       void transition.finished.then(settleCover, settleCover);
       // Initialize the new route while its snapshot is fading in.
@@ -704,7 +761,12 @@ async function loadAppRoute(rawHref, options = {}) {
     }
 
     controller.signal.throwIfAborted();
-    await initializeCurrentRoute();
+    if (!routeInitialized) {
+      await initializeCurrentRoute();
+    }
+    if (coverHandoff) {
+      await waitForCoverTransition();
+    }
     window.requestAnimationFrame(() => {
       if (!controller.signal.aborted && lastLoadedAppRouteUrl === url.href) focusRouteDestination(url.hash);
     });
@@ -768,6 +830,15 @@ function installClientRouter() {
     const link = target?.closest("a[href]");
     if (!shouldHandleLinkClick(event, link)) return;
     event.preventDefault();
+    if (link.id === "detailBackBtn") {
+      const returnHref = getCatalogReturnHref(window.location.href);
+      const destHref = returnHref || link.href;
+      loadAppRoute(destHref, returnHref ? { preserveCatalogScroll: true } : undefined).catch((error) => {
+        console.warn("Client-side navigation failed:", error);
+        window.location.href = destHref;
+      });
+      return;
+    }
     rememberCoverSource(link);
     loadAppRoute(link.href).catch((error) => {
       console.warn("Client-side navigation failed:", error);

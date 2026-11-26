@@ -180,7 +180,7 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
   const uniCurrency = priceInfo.currency;
 
   const statusIndicators = [];
-  // `legend` is the meaning key the UniFit banner legend lists for this icon (LEGEND_LABEL_KEYS).
+  // `legend` tags the meaning of the status icon on the card trigger (for example `exam_needed`, `over_budget`).
   const addStatusIndicator = (iconName, tone, label, detail = "", value = "", legend = "") => {
     const cleanLabel = String(label || "").trim();
     const cleanDetail = String(detail || "").trim();
@@ -190,7 +190,7 @@ export function renderUniversityCard(u, myBudget, idx = 99, options = {}, ctx = 
       : `<strong class="uni-status-tooltip__title">${escapeHtml(cleanLabel)}</strong>`;
     statusIndicators.push(`
       <span class="uni-status-tooltip">
-        <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}" data-legend-icon="${escapeHtmlAttr(iconName)}" data-legend-tone="${escapeHtmlAttr(tone)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
+        <button class="uni-status-trigger uni-status-trigger--${tone}${value ? " uni-status-trigger--score" : ""}" type="button"${legend ? ` data-legend="${escapeHtmlAttr(legend)}"` : ""} aria-label="${escapeHtmlAttr(ariaText)}" aria-expanded="false">
           <span class="uni-status-icon-wrap" aria-hidden="true">${renderInlineIcon(iconName, 16, "uni-status-icon")}</span>${value ? `<span class="uni-status-value" aria-hidden="true">${escapeHtml(value)}</span>` : ""}
         </button>
         <span class="u-tooltip uni-status-tooltip__content" role="tooltip">${tooltipHtml}</span>

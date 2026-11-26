@@ -148,15 +148,25 @@ export function englishRecommendationItem(resolved, profile = {}) {
   const own = published.find(row => results.some(result => result.exam === row.examId));
   const shown = own || published.find(row => row.examId === "IELTS") || published[0];
   if (!shown) return null;
-  const result = own ? results.find(row => row.exam === own.examId) : null;
-  const score = value => `${examName(shown.examId)} ${minimumNumber(shown.examId, value)}`;
+  const result = own
+    ? results.filter(entry => entry.exam === own.examId).reduce((best, entry) => (!best || entry.score > best.score ? entry : best), null)
+    : null;
   const text = tFormat(`university.admissions.key_facts.recommended_english${Number.isFinite(shown.recommended) ? "_better" : ""}`, {
-    minimum: score(shown.minimum), better: Number.isFinite(shown.recommended) ? minimumNumber(shown.examId, shown.recommended) : "" });
-  const have = result ? tFormat("university.admissions.key_facts.minimum_have", { result: `${examName(result.exam)} ${minimumNumber(result.exam, result.score)}` }) : "";
-  return { kind: "language_recommendation", factId: fact.id, mark: "recommended", text, note: label(`recommended_english_condition${status === "not_native" ? "_not_native" : ""}`),
+    exam: examName(shown.examId),
+    minimum: minimumNumber(shown.examId, shown.minimum),
+    better: Number.isFinite(shown.recommended) ? minimumNumber(shown.examId, shown.recommended) : "",
+  });
+  const mark = !result ? "recommended" : result.score >= shown.minimum ? "met" : "below";
+  const resultText = result ? `${examName(result.exam)} ${minimumNumber(result.exam, result.score)}` : "";
+  const have = !result ? "" : tFormat(`university.admissions.key_facts.minimum_have${mark === "below" ? "_below" : ""}`, { result: resultText });
+  const hint = result ? null
+    : status === "unknown" ? { text: label("recommended_english_native_hint"), href: "/profile.html?language=en" }
+    : status === "not_native" ? { text: label("recommended_english_add_hint"), href: profileLanguageExamHref(shown.examId) }
+    : null;
+  return { kind: "language_recommendation", factId: fact.id, mark, text, note: label(`recommended_english_condition${status === "not_native" ? "_not_native" : ""}`),
     // A short form of the condition for the Overview, which has no room for the long note; it is not needed once the profile says English is not the first language.
     ...(status === "unknown" ? { condition: label("recommended_english_if_not_native") } : {}), ...(have ? { have } : {}),
-    ...(status === "unknown" ? { hint: { text: label("recommended_english_native_hint"), href: "/profile.html?language=en" } } : {}) };
+    ...(hint ? { hint } : {}) };
 }
 
 // The path's published academic and language minimums as a short checklist, each with the applicant's own status:
@@ -164,6 +174,7 @@ export function englishRecommendationItem(resolved, profile = {}) {
 // A language check that needs a result or section scores links to that test in the profile.
 export function minimumChecklist(resolved) {
   const checks = resolved?.assessment?.activeChoice?.details?.checks || [];
+  const factsById = new Map((resolved?.facts || []).map(row => [row.id, row]));
   return checks.filter(check => REQUIREMENT_KINDS[check.kind]).map(check => {
     // A required test may come with only what to add (Imperial's TMUA), which still names the test.
     const named = ids => [...new Set(ids.filter(Boolean))].map(exam_id => ({ exam_id }));
@@ -186,9 +197,25 @@ export function minimumChecklist(resolved) {
       // A result the check could not count (NU accepts SAT for Foundation only from international applicants) is not a pass.
       : have && belowSections ? tFormat("university.admissions.key_facts.minimum_have_below_sections", { result: have, sections: belowSections })
       : have ? tFormat(`university.admissions.key_facts.minimum_have${{ below: "_below", todo: "_unconfirmed" }[mark] || ""}`, { result: have }) : "";
+    const detail = check.kind === "required_exam_presence" && factsById.get(check.factId)?.value?.cutoff === null
+      ? t("university.admissions.reading.no_numeric_cutoff") : "";
     const languageExam = check.kind === "language_requirement" && adds.length ? (check.missingInputs || []).find(input => input.exam)?.exam : "";
-    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(languageExam ? { href: profileLanguageExamHref(languageExam) } : {}) };
+    const href = !adds.length ? "" : languageExam ? profileLanguageExamHref(languageExam) : "/profile.html";
+    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(detail ? { detail } : {}), ...(href ? { href } : {}) };
   }).filter(Boolean);
+}
+
+/**
+ * Fact ids already summarized in the key-facts requirements checklist, so the reading section below does not repeat them.
+ * @param {object|null} resolved The admissions-context response.
+ * @param {{languages?: Array<object>}} [profile] The API profile.
+ * @returns {Set<string>}
+ */
+export function coveredRequirementFactIds(resolved, profile = {}) {
+  const ids = minimumChecklist(resolved).map(item => item.factId);
+  const recommendationId = englishRecommendationItem(resolved, profile)?.factId;
+  if (recommendationId) ids.push(recommendationId);
+  return new Set(ids.filter(Boolean));
 }
 
 // The same marks as the Overview checklist: a check, a warning, or a dot for something still to add; a recommendation
@@ -205,7 +232,7 @@ function renderMinimumChecklist(items) {
     : `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.note)}</span>`;
   const hint = item => item.hint ? profileLink(item.hint.href, item.hint.text, "admissions-key-facts__checklist-note") : "";
   return `<ul class="admissions-key-facts__checklist">${items.map(item => `<li data-mark="${item.mark}"${item.kind === "language_recommendation" ? " data-recommendation" : ""}><span class="admissions-key-facts__mark" aria-hidden="true">${MARK_ICONS[item.mark] ? heroIcon(MARK_ICONS[item.mark], "ui-icon ui-icon--16") : ""}</span>
-    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${note(item)}${item.have ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.have)}</span>` : ""}${hint(item)}</span></li>`).join("")}</ul>`;
+    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${note(item)}${item.have ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.have)}</span>` : ""}${item.detail ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.detail)}</span>` : ""}${hint(item)}</span></li>`).join("")}</ul>`;
 }
 
 // Keeps a test-specific date only when the applicant has not entered a different test of the same requirement.
@@ -314,12 +341,13 @@ function feeStatusSource(resolved) {
   return source ? safeUrl(source.url) : "";
 }
 
-export function costFact(resolved, budgetUsd) {
+export function costFact(resolved, budgetUsd, { original = false } = {}) {
   const costs = resolved?.selected_costs || {};
   const basis = costs.annual_total ? "annual_total" : costs.tuition ? "tuition" : "";
   if (!basis) return { status: "unknown", tone: "", text: label("cost_unknown"), notes: [] };
   const quote = costs[basis];
-  const amount = formatPriceRange(quote.min, quote.max, quote.currency, summary());
+  const priceOptions = { ...summary(), original };
+  const amount = formatPriceRange(quote.min, quote.max, quote.currency, priceOptions);
   // A total this site adds up (published tuition plus a living estimate) says so and shows both parts,
   // so it is never mistaken for a published figure or contradicted by the tuition shown elsewhere.
   const calculated = quote.calculation === "tuition_plus_living_range" && costs.tuition && Number.isFinite(quote.living_min);
@@ -328,12 +356,12 @@ export function costFact(resolved, budgetUsd) {
   const text = tFormat(`university.admissions.key_facts.${calculated ? "cost_estimate" : basis === "annual_total" ? "cost_total" : "cost_tuition"}`,
     { amount: calculated ? withoutApprox(amount) : amount });
   const breakdown = calculated ? tFormat("university.admissions.key_facts.cost_breakdown", {
-    tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()),
-    living: withoutApprox(formatPriceRange(quote.living_min, quote.living_max, quote.currency, summary())) }) : "";
+    tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, priceOptions),
+    living: withoutApprox(formatPriceRange(quote.living_min, quote.living_max, quote.currency, priceOptions)) }) : "";
   // A published yearly budget names the tuition it includes, so the reader sees what the rest pays for.
   const tuitionShare = !calculated && basis === "annual_total" && costs.tuition && costs.tuition.currency === quote.currency
     && Number.isFinite(costs.tuition.max) && costs.tuition.max < quote.min
-    ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()) }) : "";
+    ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, priceOptions) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
   const parts = { amount, basis, period: quote.period || "" };
   const notes = [breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
@@ -344,7 +372,7 @@ export function costFact(resolved, budgetUsd) {
   // The explanation is general: the university, not the applicant's nationality or residence, sets the classification.
   const feeStatusDepends = quote.fee_status_match === "unknown" && quote.fee_statuses?.length > 1;
   if (feeStatusDepends) notes.push(label("cost_fee_status"), t("university.admissions.glossary.fee_status.text"));
-  const feeStatusPage = feeStatusDepends ? feeStatusSource(resolved) : "";
+  const feeStatusPage = (feeStatusDepends || quote.fee_status_match === "matched") ? feeStatusSource(resolved) : "";
   const links = feeStatusPage ? [{ url: feeStatusPage, label: label("cost_fee_status_source") }] : [];
   if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, feeStatusAction: feeStatusDepends, notes: [...notes, label("cost_not_annual")].filter(Boolean), referenceNote, ...parts };
   if (!quote.usd) return { status: "not_comparable", tone: "", text, links, feeStatusAction: feeStatusDepends, notes: notes.filter(Boolean), referenceNote, ...parts };

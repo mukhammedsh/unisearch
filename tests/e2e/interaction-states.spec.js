@@ -238,7 +238,7 @@ test("profile controls follow the shared interaction contract in light and dark 
     const softSurface = await resolvedBackgroundToken(page, "--surface-soft");
     const hoverSurface = await resolvedBackgroundToken(page, "--interaction-hover-surface");
 
-    const progressContrast = await page.locator(".profile-section-desc").first().evaluate((element) => {
+    const progressContrast = await page.locator(".profile-page-intro").first().evaluate((element) => {
       const channels = (color) => color.match(/[\d.]+/g).slice(0, 3).map(Number);
       const luminance = (color) => channels(color).map((value) => {
         const channel = value / 255;
@@ -258,15 +258,20 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectBackground(fieldComposite, hoverSurface);
     await expectCompositeFocus(field, fieldComposite, focusColor);
 
-    // Save is the secondary action and is only enabled once the draft changed.
+    // Save is the primary action and is only enabled once the draft changed; Back stays subtle.
     await field.fill(theme === "light" ? "15000" : "16000");
-    const secondaryAction = page.locator(".profile-action-btn--secondary");
-    await expect(secondaryAction).toBeEnabled();
-    await expectBackground(secondaryAction, softSurface);
-    await secondaryAction.hover();
-    await expectBackground(secondaryAction, hoverSurface);
-    await expectColor(secondaryAction, hoverColor);
-    await expectFocusRing(secondaryAction, focusColor);
+    const saveAction = page.locator("#saveProfileBtn");
+    await expect(saveAction).toBeEnabled();
+    await expectBackground(saveAction, await resolvedBackgroundToken(page, "--accent"));
+    await saveAction.hover();
+    await expectBackground(saveAction, await resolvedBackgroundToken(page, "--accent-strong"));
+    await expectFocusRing(saveAction, focusColor);
+
+    const backAction = page.locator("#profileCloseBtn");
+    await backAction.hover();
+    await expectBackground(backAction, hoverSurface);
+    await expectColor(backAction, hoverColor);
+    await expectFocusRing(backAction, focusColor);
 
     // The budget unit is a plain "/ year" caption now; the currency choice is a separate select.
     const budgetUnit = page.locator("#profileBudgetUnit");
@@ -276,14 +281,13 @@ test("profile controls follow the shared interaction contract in light and dark 
     await expectBackground(fieldComposite, hoverSurface);
 
     await page.locator('[data-profile-tab="scores"]').click();
-    const unitToggle = page.locator("#gpaUnit");
-    const gpaComposite = unitToggle.locator("xpath=..");
-    await expectColor(unitToggle, mutedColor);
-    await unitToggle.hover();
+    const gpaUnit = page.locator("#gpaUnit");
+    const gpaField = page.locator("#gpaInput");
+    const gpaComposite = gpaUnit.locator("xpath=..");
+    await expectColor(gpaUnit, mutedColor);
+    await gpaUnit.hover({ force: true });
     await expectBackground(gpaComposite, hoverSurface);
-    await expectBackground(unitToggle, await resolvedBackgroundToken(page, "--interaction-active-surface"));
-    await expectColor(unitToggle, hoverColor);
-    await expectCompositeFocus(unitToggle, gpaComposite, focusColor);
+    await expectCompositeFocus(gpaField, gpaComposite, focusColor);
 
     await expect(page.locator('[data-profile-section="scores"]')).toBeVisible();
     const infoButton = page.locator('[data-profile-section="scores"] .profile-info').first();
@@ -572,11 +576,12 @@ test("shared .ui-btn and .ui-segmented primitives unify heights and radii across
   expect(guideMetrics).toEqual([
     { height: 44, radius: "12px" },
     { height: 44, radius: "12px" },
+    { height: 44, radius: "12px" },
   ]);
 
   await page.goto("/profile.html");
   await expect(page.locator(".profile-shell")).toBeVisible();
-  const profileMetrics = await page.evaluate(() => ["#profileCloseBtn", "#saveProfileBtn", "#profileShowMatchesBtn"].map((sel) => {
+  const profileMetrics = await page.evaluate(() => ["#profileCloseBtn", "#saveProfileBtn"].map((sel) => {
     const node = document.querySelector(sel);
     return {
       height: Math.round(node.getBoundingClientRect().height),
@@ -584,7 +589,6 @@ test("shared .ui-btn and .ui-segmented primitives unify heights and radii across
     };
   }));
   expect(profileMetrics).toEqual([
-    { height: 44, radius: "12px" },
     { height: 44, radius: "12px" },
     { height: 44, radius: "12px" },
   ]);

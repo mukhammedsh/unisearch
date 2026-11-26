@@ -1,0 +1,112 @@
+.compare-pdf {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 13mm;
+  }
+
+  body:has(.compare-pdf),
+  body:has(.compare-pdf) :has(.compare-pdf) {
+    display: block;
+    position: static;
+    width: auto;
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    background: Canvas;
+    color-scheme: light;
+    animation: none;
+  }
+
+  body:has(.compare-pdf) > :not(:has(.compare-pdf)),
+  body:has(.compare-pdf) :has(.compare-pdf) > :not(:has(.compare-pdf), .compare-pdf) {
+    display: none;
+  }
+
+  .compare-pdf {
+    --print-ink: CanvasText;
+    --print-link: LinkText;
+
+    display: block;
+    color: var(--print-ink);
+    background: Canvas;
+    font: var(--text-sm)/1.4 system-ui, sans-serif;
+    overflow-wrap: anywhere;
+  }
+
+  .compare-pdf header {
+    margin-bottom: var(--space-4);
+  }
+
+  .compare-pdf h1 {
+    margin: var(--space-1) 0;
+    color: inherit;
+    font: var(--font-weight-semibold) var(--text-2xl)/1.12 system-ui, sans-serif;
+  }
+
+  .compare-pdf p {
+    margin: 0;
+  }
+
+  .compare-pdf p + p {
+    margin-top: var(--space-1);
+  }
+
+  .compare-pdf__brand {
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .compare-pdf table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  .compare-pdf thead {
+    display: table-header-group;
+  }
+
+  .compare-pdf tr {
+    break-inside: avoid;
+  }
+
+  .compare-pdf :is(th, td) {
+    padding: var(--space-2);
+    border-bottom: 0.25mm solid GrayText;
+    vertical-align: top;
+    text-align: start;
+  }
+
+  .compare-pdf thead th:first-child {
+    width: 20%;
+  }
+
+  .compare-pdf th p {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .compare-pdf ul {
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    list-style: disc;
+  }
+
+  .compare-pdf li + li {
+    margin-top: var(--space-1);
+  }
+
+  .compare-pdf a {
+    color: var(--print-link);
+    text-decoration: underline;
+  }
+
+  .compare-pdf .compare-pdf__note {
+    margin-top: var(--space-4);
+    font-size: var(--text-xs);
+  }
+}

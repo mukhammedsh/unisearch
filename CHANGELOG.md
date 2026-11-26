@@ -2,6 +2,42 @@
 
 All notable changes to UniSearch are documented here.
 
+## 10.10.0 (2026-11-26) - Comparison PDF export, spotlight tour, profile calendar, and mobile refinements
+
+Minor release: add comparison PDF export, a live four-step catalog spotlight tour, a localized profile date calendar, editable per-university program subject filtering, and bidirectional cover transitions. Streamline reviewed admissions reading, profile navigation and spacing, inline UniFit toolbar controls, and narrow-viewport responsiveness.
+
+### Added
+- Add a profile back button beside the title, above the window on narrow screens.
+- Morph the university cover photo smoothly back into its catalog card when returning via the back button or browser history while both images are visible on screen.
+- Export reviewed university comparisons to PDF with the selected programs, deadlines, requirements, costs, aid, and official sources.
+- Add a relaunch action in the Getting Started guide to open the interactive catalog tour at any time.
+
+### Changed
+- Replace the six-slide text-only first-visit modal tutorial with a compact four-step spotlight tour anchored to live search, profile, university card, and comparison controls, skipping deep-linked filtered URLs.
+- Activate UniFit catalog sorting automatically when a visitor saves a profile with a subject, budget, GPA, study level, or interests even before adding exam scores.
+- Replace the profile date picker with a localized calendar featuring Clear and Save actions, stable month layout, smooth closing transitions, and clean month-picker controls.
+- Keep the profile header and actions visible while scrolling independently, show additional profile details directly, simplify field descriptions, and use a single GPA scale selector.
+- Move the profile's UniFit matching summary to a guide link in section navigation, simplify actions to Save and Back, place the GPA help button beside the scale label, clarify the English-background prompt, and show MIT evidence options immediately.
+- Lead reviewed university comparisons with deadlines, actionable requirement checklist notes, and costs, showing route, intake cycle, and selected program in headers and adding an inline program picker in dependent cells.
+- Preserve active catalog search, filters, and scroll position when returning via the university cover back button, and mount cached university pages directly without flashing the loading skeleton.
+- Clarify optional English-test recommendations (`minimum` vs `recommended`), shorten the Russian `IELTS` label to `IELTS Academic`, show met or below-minimum status when a score exists, and simplify missing-score prompts.
+- Remove duplicate test, condition, and tab-intro text on reviewed university Admission, Dates, and Costs tabs while shortening heavy admissions labels across all three languages and keeping official sources intact.
+- Simplify legacy university Admission cards by hiding empty average-admitted boxes, single-profile count badges, technical category kickers, and boilerplate funding notes.
+- Shorten catalog filter, sort, UniFit, and card-tooltip copy into plain applicant-friendly wording across English, Russian, and Kazakh.
+- Replace the catalog's UniFit notice card, duplicate Preferences button, and second-row badge legend with a compact inline toolbar status row and info tooltip while keeping the grid aligned with the sidebar.
+- Display UniFit preference slider strength from the centre (`0–100%`) alongside qualitative strength tiers (`slight`, `moderate`, `strong`) and a centre-origin active track fill.
+- Replace temporary profile-suggestion chips on reviewed university Programs tabs with an editable Subject filter alongside Study level, pre-filled from the applicant profile and saved per university.
+- Make the university cover map's campus marker interactive so clicking or activating it centers and zooms the map to the campus like the off-screen recenter button.
+
+### Fixed
+- Fix profile field grouping, spacing, and alignment across additional details, yearly budget, expanded exam breakdowns, language section scores, back button, and mobile action bar, refresh notification styling, and keep profile notifications clear of the bottom action bar.
+- Fix cover transition ghosting, corner clipping, and map popup corner radius.
+- Collapse identical rounded converted price-range endpoints, link missing exam checklist prompts to the profile, show shared route names in comparisons, keep official fee-status links after selection, and clarify the Russian "Both" label.
+- Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
+- Remove inconsistent drop shadows on flat-card subtle buttons and restore transparent ghost styling for the "Browse all official options" button beside program filter chips.
+- Fix mobile and narrow-tablet catalog toolbar wrapping, keep controls on one row down to 320px viewports, wrap inline comparison program-picker buttons without horizontal overflow, keep the Filter button visible while the drawer is open, center wrapped two-row navbars on ultra-narrow screens, and stack card details links below prices.
+- Refine the responsive footer on tablets and phones with a compact left-aligned grid keeping GitHub beside the copyright, inline dot separators, and single-line links.
+
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 
 Minor release: split admissions storage for lazy loading, add a deploy-time static snapshot so public pages run without waking the backend, introduce interactive campus cover maps with a Photo/Map switcher, and streamline university pages and the Guide. Unify UI controls, surfaces, floating layers, and calm site-wide motion across both themes.

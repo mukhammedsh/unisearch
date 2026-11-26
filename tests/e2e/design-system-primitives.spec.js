@@ -48,6 +48,7 @@ test("design system showcase primitives share standardized geometry, states, and
           radius: style.borderTopLeftRadius,
           borderWidth: style.borderTopWidth,
           opacity: style.opacity,
+          backgroundColor: style.backgroundColor,
           boxShadow: style.boxShadow,
         };
       };
@@ -67,8 +68,11 @@ test("design system showcase primitives share standardized geometry, states, and
         btnSm: box("#btnSm"),
         btnMd: box("#btnMd"),
         btnLg: box("#btnLg"),
+        btnSubtle: box("#btnSubtle"),
+        btnGhost: box("#btnGhost"),
         btnIcon: box("#btnIcon"),
         btnDisabled: box("#btnDisabled"),
+        nestedBtn: box("#nestedBtn"),
       };
     });
 
@@ -90,10 +94,19 @@ test("design system showcase primitives share standardized geometry, states, and
     expect(metrics.customLg).toMatchObject({ height: 44, radius: "12px", borderWidth: "0px" });
 
     expect(metrics.btnSm).toMatchObject({ height: 32, radius: "8px", borderWidth: "0px" });
-    expect(metrics.btnMd).toMatchObject({ height: 40, radius: "12px", borderWidth: "0px" });
+    expect(metrics.btnMd).toMatchObject({ height: 40, radius: "12px", borderWidth: "0px", boxShadow: "none" });
     expect(metrics.btnLg).toMatchObject({ height: 44, radius: "12px", borderWidth: "0px" });
+    expect(metrics.btnSubtle).toMatchObject({ height: 40, radius: "12px", borderWidth: "0px", boxShadow: "none" });
+    expect(metrics.btnGhost).toMatchObject({
+      height: 40,
+      radius: "12px",
+      borderWidth: "0px",
+      backgroundColor: "rgba(0, 0, 0, 0)",
+      boxShadow: "none",
+    });
     expect(metrics.btnIcon).toMatchObject({ height: 40, radius: "12px", borderWidth: "0px" });
     expect(metrics.btnDisabled.opacity).toBe("0.52");
+    expect(metrics.nestedBtn.boxShadow).not.toBe("none");
 
     await page.locator("#inputMd").focus();
     if (!await page.locator("#inputMd").evaluate((n) => n.matches(":focus-visible"))) {

@@ -37,7 +37,7 @@ test("invalid NUET sections identify and focus one named field without saving", 
 test("reported five-point GPA survives save and reaches admissions in its original scale", async ({ page }) => {
   await openScores(page);
   await expect(page.locator(selectors.gpaInput)).toHaveValue("");
-  await page.locator("#gpaUnit").click();
+  await page.locator('#gpaScaleChoice input[value="5"]').check();
   await expect(page.locator("#gpaUnit")).toHaveText("/ 5.0");
   await page.fill(selectors.gpaInput, "4.85");
   await page.click(selectors.saveProfileBtn);

@@ -1,4 +1,4 @@
-import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
+import { escapeHtml } from "../../utils.js";
 import { heroIcon } from "../../icons.js";
 import { t } from "../../i18n.js";
 import { ensureLeaflet } from "../universities/map-assets.js";
@@ -122,6 +122,7 @@ export function mountCoverMap(cover, { coordinates, universityName = "", mapHref
   let disposed = false;
   let mapInstance = null;
   let markerInstance = null;
+  let pinButton = null;
   let resizeObserver = null;
   let isHidden = false;
 
@@ -155,6 +156,7 @@ export function mountCoverMap(cover, { coordinates, universityName = "", mapHref
   }
 
   const recenterLabel = t("university.cover.recenter", "Center on campus");
+  const pinLabel = universityName ? `${universityName} — ${recenterLabel}` : recenterLabel;
   const recenterBtn = document.createElement("button");
   recenterBtn.type = "button";
   recenterBtn.className = "d-cover-map-recenter";
@@ -180,15 +182,17 @@ export function mountCoverMap(cover, { coordinates, universityName = "", mapHref
     const placement = computeEdgePointer(point, size.x, size.y);
     if (!placement) {
       recenterBtn.hidden = true;
+      if (pinButton) pinButton.inert = false;
       return;
     }
+    if (pinButton) pinButton.inert = true;
     recenterBtn.style.setProperty("--recenter-x", `${placement.x.toFixed(1)}px`);
     recenterBtn.style.setProperty("--recenter-y", `${placement.y.toFixed(1)}px`);
     recenterBtn.style.setProperty("--recenter-angle", `${placement.angleDeg.toFixed(1)}deg`);
     recenterBtn.hidden = false;
   }
 
-  recenterBtn.addEventListener("click", () => {
+  function recenterOnCampus() {
     if (disposed || !mapInstance) return;
     const target = [coords[0], nearestWrappedLng(coords[1], mapInstance.getCenter().lng)];
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -197,7 +201,9 @@ export function mountCoverMap(cover, { coordinates, universityName = "", mapHref
     } else {
       mapInstance.flyTo(target, COVER_MAP_ZOOM, { duration: 0.55 });
     }
-  });
+  }
+
+  recenterBtn.addEventListener("click", recenterOnCampus);
 
   ensureLeaflet()
     .then((L) => {
@@ -240,18 +246,30 @@ export function mountCoverMap(cover, { coordinates, universityName = "", mapHref
         zoomOutTitle: t("universities.map_controls.zoom_out", "Zoom out"),
       }).addTo(mapInstance);
 
-      const pinHtml = `<span class="d-cover-map-pin" aria-hidden="true">${heroIcon("academic-cap", "ui-icon ui-icon--16")}</span>`;
+      pinButton = document.createElement("button");
+      pinButton.type = "button";
+      pinButton.className = "d-cover-map-pin";
+      pinButton.title = pinLabel;
+      pinButton.setAttribute("aria-label", pinLabel);
+      pinButton.innerHTML = heroIcon("academic-cap", "ui-icon ui-icon--16");
+      pinButton.addEventListener("click", (event) => {
+        if (event.detail !== 0 && mapInstance?.dragging?.moved?.()) return;
+        event.stopPropagation();
+        recenterOnCampus();
+      });
       const pinIcon = L.divIcon({
         className: "d-cover-map-pin-icon",
-        html: pinHtml,
+        html: pinButton,
         iconSize: [36, 36],
         iconAnchor: [18, 18],
       });
       markerInstance = L.marker(coords, {
         icon: pinIcon,
-        interactive: false,
+        interactive: true,
         keyboard: false,
-        title: escapeHtmlAttr(universityName),
+      });
+      markerInstance.on("dblclick", (event) => {
+        L.DomEvent.stopPropagation(event);
       });
       markerInstance.addTo(mapInstance);
       mapInstance.on("move zoom moveend zoomend", syncRecenterPosition);
@@ -304,6 +322,7 @@ export function mountCoverMap(cover, { coordinates, universityName = "", mapHref
         mapInstance = null;
       }
       markerInstance = null;
+      pinButton = null;
       cover.classList.remove("is-cover-map");
       stage.remove();
       mapLink?.remove();

@@ -7,9 +7,11 @@ import {
   catalogStudyLevelFromProfile,
   closePreferenceLabels,
   describeRankingProfile,
-  legendEntries,
+  formatTradeoffCaption,
   missingExamNames,
   reviewedMissingInputs,
+  summarizeRankingProfile,
+  tradeoffStrengthTier,
   unmetMinimums,
 } from "../../frontend/javascript/pages/universities/unifit-explanation.js";
 
@@ -34,6 +36,11 @@ test("the banner lists only the answers that are set", () => {
   );
   // A zero budget is ignored by the ranking, so it is not announced.
   assert.deepEqual(describeRankingProfile({ budget: "0" }, ctx), []);
+  // Topics fill in when no specific subject is picked.
+  assert.deepEqual(
+    describeRankingProfile({ interests: "robotics, ai" }, ctx),
+    ["profile.ux2.summary.subject.interests_value"],
+  );
   // GPA with its scale and each test name, once.
   assert.deepEqual(
     describeRankingProfile({ gpa: "4.6", gpaScale: 5, exams: [{ exam: "UNT" }], languages: [{ code: "en", exam: "IELTS" }, { code: "ru", kind: "native" }] },
@@ -42,24 +49,15 @@ test("the banner lists only the answers that are set", () => {
   );
 });
 
-test("the legend lists each icon meaning once, in a fixed order, and ignores unknown badges", () => {
-  const entries = legendEntries([
-    { key: "within_budget", icon: "banknotes", tone: "finance" },
-    { key: "vibe", icon: "check-badge", tone: "match" },
-    { key: "vibe", icon: "check-badge", tone: "match" },
-    { key: "subject_missing", icon: "academic-cap", tone: "warning" },
-    { key: "requirements_met", icon: "check-circle", tone: "requirements" },
-    { key: "requirements_met", icon: "clipboard-document-list", tone: "finance" },
-    { key: "unknown_thing", icon: "x", tone: "y" },
-    { key: "aid", icon: "", tone: "aid" },
-    null,
-  ]);
-  assert.deepEqual(entries.map((entry) => entry.key), ["subject_missing", "requirements_met", "requirements_met", "within_budget", "vibe"]);
-  assert.equal(entries[0].labelKey, "universities.ux2.legend.subject_missing");
-  // The same meaning drawn with a different icon is kept, so the legend matches what the cards show.
-  assert.deepEqual(entries.filter((entry) => entry.key === "requirements_met").map((entry) => entry.icon), ["check-circle", "clipboard-document-list"]);
-  assert.deepEqual(legendEntries(null), []);
-  assert.deepEqual(legendEntries([]), []);
+test("summarizeRankingProfile keeps leading answers short and collapses any tail into +N", () => {
+  assert.equal(summarizeRankingProfile([]), "");
+  assert.equal(summarizeRankingProfile(null), "");
+  assert.equal(summarizeRankingProfile(["Bachelor"]), "Bachelor");
+  assert.equal(summarizeRankingProfile(["Bachelor", "Computer Science"]), "Bachelor · Computer Science");
+  assert.equal(
+    summarizeRankingProfile(["Bachelor", "Computer Science", "up to $6,000/yr", "GPA 4.5 / 5", "SAT", "IELTS Academic"], 2),
+    "Bachelor · Computer Science · +4",
+  );
 });
 
 test("missing exams are named once, language alternatives as a language test, met or provided ones skipped", () => {
@@ -87,6 +85,57 @@ test("the preference tooltip names only the sliders the university is close to",
   assert.deepEqual(closePreferenceLabels({ ...match, userPreferences: { ...match.userPreferences, practice_vs_science: 0.55 } }), ["focus", "location"]);
   assert.deepEqual(closePreferenceLabels({ userPreferences: { practice_vs_science: 0.8 }, factors: { practice_vs_science: null } }), []);
   assert.deepEqual(closePreferenceLabels(null), []);
+});
+
+test("preference slider captions measure strength from centre (0..100%) with qualitative tiers", () => {
+  const opts = {
+    leftText: "Career & Practice",
+    rightText: "Science & Research",
+    balancedText: "Doesn't matter",
+    tierLabel: (tier) => tier,
+    formatSelected: ({ side, level, percent }) => `${side} · ${level} (${percent}%)`,
+  };
+  assert.deepEqual(formatTradeoffCaption(50, opts), {
+    text: "Doesn't matter",
+    percent: 0,
+    side: "center",
+    tier: null,
+  });
+  assert.deepEqual(formatTradeoffCaption(56, opts), {
+    text: "Science & Research · slight (12%)",
+    percent: 12,
+    side: "right",
+    tier: "slight",
+  });
+  assert.deepEqual(formatTradeoffCaption(17, opts), {
+    text: "Career & Practice · moderate (66%)",
+    percent: 66,
+    side: "left",
+    tier: "moderate",
+  });
+  assert.deepEqual(formatTradeoffCaption(80, opts), {
+    text: "Science & Research · moderate (60%)",
+    percent: 60,
+    side: "right",
+    tier: "moderate",
+  });
+  assert.deepEqual(formatTradeoffCaption(0, opts), {
+    text: "Career & Practice · strong (100%)",
+    percent: 100,
+    side: "left",
+    tier: "strong",
+  });
+  assert.deepEqual(formatTradeoffCaption(100, opts), {
+    text: "Science & Research · strong (100%)",
+    percent: 100,
+    side: "right",
+    tier: "strong",
+  });
+  assert.equal(formatTradeoffCaption("not-a-number", opts).text, "Doesn't matter");
+  assert.equal(tradeoffStrengthTier(33), "slight");
+  assert.equal(tradeoffStrengthTier(34), "moderate");
+  assert.equal(tradeoffStrengthTier(66), "moderate");
+  assert.equal(tradeoffStrengthTier(67), "strong");
 });
 
 test("reviewed missing inputs join alternatives per check and skip checks without inputs", () => {

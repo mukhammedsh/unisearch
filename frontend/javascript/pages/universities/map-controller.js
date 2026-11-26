@@ -52,7 +52,6 @@ export function createUniversitiesMapController(ctx) {
     setViewModesReady,
     syncViewModeControls,
     scheduleSyncWorkspaceDepth,
-    refreshUnifitLegend,
     updateUnifitWarningBanner,
     renderCompareTray,
     syncCardActionState,
@@ -399,7 +398,6 @@ export function createUniversitiesMapController(ctx) {
       bindMapResultCards(Array.from(list.querySelectorAll(".uni-card[data-uni-id]")).filter((card) => appendedIds.has(String(card.getAttribute("data-uni-id") || ""))));
     }
 
-    refreshUnifitLegend();
     bindMapResultsFooter();
   }
 

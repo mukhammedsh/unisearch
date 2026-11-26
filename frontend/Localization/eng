@@ -247,16 +247,12 @@ profile.gpa_range: GPA must be between {min} and {max}
 profile.hint.low_budget_grant: Budget is under {amount}. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
-profile.hint.gpa: Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
 profile.gpa_info_title: How GPA works here
 profile.gpa_info_tooltip: Choose your grading scale: 4.0 or 5.0. Your original value and scale are preserved. Published GPA minimums require matching scales; program-specific academic requirements may need separate evidence.
 profile.label.budget: Yearly budget
 profile.label.exams: Exam results
 profile.label.funding_type: Funding you look for
 profile.label.gpa: GPA (average grade)
-profile.scale.gpa_4: 4.0 (US / International)
-profile.scale.gpa_5: 5.0 (KZ / CIS)
-profile.scale.toggle: Switch GPA scale to {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
 profile.label.interests: Topics you are interested in
@@ -292,7 +288,7 @@ profile.reset.cancel: Cancel
 profile.reset.confirm: Reset data
 profile.reset.done: Profile data reset
 profile.score: Score
-profile.type: How you show it
+profile.type: Level or evidence
 profile.unit.gpa: / 4.0
 profile.sections.aria: Profile sections
 profile.title: Profile
@@ -329,7 +325,6 @@ universities.badge.overflow_label: Additional status indicators
 universities.badge.top_match: Good Match
 universities.badge.your_vibe: Your Vibe
 universities.why.conditional_exam_needed: Add your exam results to the profile to check the requirements.
-universities.unifit_banner.dismiss: Dismiss notice
 universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university closely matches the preferences you set.
 universities.badge.aid_available: Aid Available
@@ -559,12 +554,16 @@ universities.tradeoff.location: Location
 universities.tradeoff.location.left: City
 universities.tradeoff.location.right: Outside City
 universities.tradeoff.balanced: Doesn't matter
+universities.tradeoff.strength.slight: slight
+universities.tradeoff.strength.moderate: moderate
+universities.tradeoff.strength.strong: strong
+universities.tradeoff.selected: {side} · {level} ({percent}%)
 universities.help.open: Show explanation
-universities.help.tradeoff.focus: Left: fewer research publications per student. Right: research-intensive universities. In the middle this is not used.
-universities.help.tradeoff.atmosphere: Left: a larger share of applicants is admitted. Right: more applicants per place, from the official first-year admission rate. In the middle this is not used.
-universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals. In the middle this is not used.
-universities.help.tradeoff.location: Left: large cities of 1.5 million people or more. Right: towns under 50,000. In the middle this is not used.
-universities.sort_ai: {fit}: AI Smart Sort
+universities.help.tradeoff.focus: Left: career-focused study. Right: research-heavy universities. Centered: ignored.
+universities.help.tradeoff.atmosphere: Left: easier to get in. Right: more selective universities. Centered: ignored.
+universities.help.tradeoff.finance: Left: lower cost and grants. Right: prestige even at higher cost. Centered: ignored.
+universities.help.tradeoff.location: Left: big cities (1.5M+). Right: small towns (under 50k). Centered: ignored.
+universities.sort_ai: {fit}: Best for your profile
 universities.sort_relevance: Relevance
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
@@ -691,7 +690,6 @@ university.visit_website: Visit Official Website
 
 # Added localization coverage keys
 common.loading: Loading
-common.ai_short: AI
 common.placeholder_unknown: {field} unknown
 common.no_data: No data
 common.na: N/A
@@ -826,56 +824,24 @@ cost_item_medical_insurance: Medical Insurance
 cost_item_personal_expenses: Personal Expenses
 cost_item_internet_and_phone: Internet and Phone
 tour.back: Back
-tour.finish: Finish
+tour.finish: Done
 tour.next: Next
 tour.open_profile: Open Profile
-tour.heading: Your university search, step by step
-tour.overline: Getting started
 tour.progress: Step {current} of {total}
-tour.skip_all: Skip tutorial
+tour.skip_all: Skip
 tour.steps_label: Tutorial steps
-tour.step1.label: How UniSearch helps
-tour.step1.kicker: Welcome
-tour.step1.title: Start with a clear plan
-tour.step1.desc: UniSearch helps you explore universities and programs that fit your goals. Start with a subject, then check the application requirements that apply to each program.
-tour.step1.point1: Tell us what matters to you in your profile.
-tour.step1.point2: Browse widely, then use filters to narrow the list.
-tour.step1.point3: Open promising universities, compare them, and check the details before you apply.
-tour.step2.label: Build your profile
-tour.step2.kicker: First, tell us about you
-tour.step2.title: Fill in your profile
-tour.step2.desc: Your profile gives the catalog useful context. Add only the information you already know; you can return and improve it later.
-tour.step2.point1: Start with the subject you want to study, your budget, and GPA if you have it.
-tour.step2.point2: Add language and entrance-exam results when available.
-tour.step2.point3: More complete data makes {fit} and {chance} more useful; missing data is never treated as a zero.
-tour.step3.label: Explore choices
-tour.step3.kicker: Then, browse broadly
-tour.step3.title: Search for an idea, not a perfect answer
-tour.step3.desc: Use the search field when you already have a university or city in mind. Otherwise, start with the list: it is normal to explore first and decide later.
-tour.step3.point1: Each result is a university you can open for fuller information.
-tour.step3.point2: Use List to scan names and facts; switch to Map when location is important.
-tour.step3.point3: When your profile is ready, sort by {fit} to see the most relevant options first.
-tour.step4.label: Narrow the list
-tour.step4.kicker: Make the list manageable
-tour.step4.title: Use filters one decision at a time
-tour.step4.desc: Filters update the results so you can focus on realistic choices. Begin with the few constraints that matter most, then add more only when you need them.
-tour.step4.point1: Choose countries or cities you would genuinely consider.
-tour.step4.point2: Set a tuition range and funding preference to keep costs realistic.
-tour.step4.point3: Use subject and other filters after the basics; clear or adjust any filter whenever the list becomes too small.
-tour.step5.label: Check the details
-tour.step5.kicker: Before you shortlist
-tour.step5.title: Open a university and read the evidence
-tour.step5.desc: A card shows the essentials. Open the university to view admission requirements, tuition fees, and available funding options.
-tour.step5.point1: Review admission requirements and choose the relevant admission option.
-tour.step5.point2: Use {chance} to check evaluable published numeric minimums. It does not assess every admission condition or predict admission or funding.
-tour.step5.point3: Compare tuition, scholarships, and other costs with the information shown for that university.
-tour.step6.label: Choose confidently
-tour.step6.kicker: Your final short list
-tour.step6.title: Compare a few realistic options
-tour.step6.desc: Keep several universities in view rather than chasing one perfect choice. Comparison makes the trade-offs between fit, admission requirements, and costs easier to see.
-tour.step6.point1: Use Compare to place promising universities side by side.
-tour.step6.point2: Keep a balanced list: ambitious, realistic, and safer choices.
-tour.step6.point3: Return to your profile or filters whenever your priorities change.
+tour.step1.label: Search & filters
+tour.step1.title: Narrow options by country, level, and budget
+tour.step1.desc: Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Verified admissions to focus on universities with reviewed requirements and costs.
+tour.step2.label: Profile & {fit}
+tour.step2.title: Personalize sorting without an account
+tour.step2.desc: Add what you already know — subject, budget, GPA, or exam scores — saved privately on this device. {fit} ranks matching universities first and never treats missing scores as zero.
+tour.step3.label: Requirements & costs
+tour.step3.title: Check official requirements and real costs
+tour.step3.desc: Open any university to inspect study options, admission routes, deadlines, full annual costs before aid, and official sources. {chance} checks published numeric minimums against your profile.
+tour.step4.label: Compare
+tour.step4.title: Compare two universities side by side
+tour.step4.desc: Turn on Compare mode or use the compare button on cards to place two universities side by side — deadlines, requirements, tuition, scholarships, and PDF export in one view.
 admission.track.select: Select
 admission.track.selected: Selected
 admission.track.recommended: Recommended
@@ -974,7 +940,7 @@ admission.funding_minimum_override: Minimum changes
 admission.funding_average_override: Average admitted changes
 admission.funding_extra_override: Additional requirements
 admission.funding_no_specific_requirements: No separate funding-specific requirements are listed in the data. Use the selected profile requirements above.
-admission.funding_competitive_grant_note: The requirements above are the entry minimums for this profile. The grant is awarded separately through competition or ranking; no separate grant cutoff is listed in the data.
+admission.funding_competitive_grant_note: Grant is awarded separately by competition; no separate grant score cutoff is published.
 admission.choice.select: Select
 admission.choice.selected: Selected
 title.privacy: Privacy Policy | UniSearch
@@ -1936,10 +1902,9 @@ cost_item_housing_and_food: Housing and food
 cost_item_student_fees_allowance: Student fees allowance
 cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
-profile.evidence.title: Add details for specific universities
-profile.evidence.description: Add only if a university page asks. Self-reported; official records are not verified.
 profile.evidence.test_date: Test date (optional)
-profile.evidence.institution_title: Studies at a listed university
+profile.evidence.description: These details are for specific universities.
+profile.evidence.institution_title: Studies at MIT
 profile.evidence.institution: University
 profile.evidence.kind: Evidence type
 profile.evidence.country: Country
@@ -1978,6 +1943,7 @@ profile.evidence.status.on_leave: On leave
 profile.evidence.status.not_enrolled: Not enrolled
 profile.evidence.status.not_completed: Not completed
 profile.evidence.language_kind.primary_language: First language
+profile.evidence.english_first: English as a first language
 profile.evidence.language_kind.education: Education
 profile.evidence.language_kind.employment: Work experience
 profile.evidence.qualification.secondary: Secondary
@@ -2007,7 +1973,7 @@ profile.evidence.error.credential_score: Enter the published credential score pe
 profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
 university.admissions.catalog.simple_title: How to apply
 university.admissions.catalog.browse_note: Search by subject or program. Open a result for study and admission details.
-university.admissions.catalog.advanced_note: Needed only when the university publishes different terms for different entry years or fee statuses.
+university.admissions.catalog.advanced_note: Only needed if costs or rules depend on entry year or fee status.
 university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
 university.admissions.catalog.choose_program_profile: Admission is published for each program. Programs that match the subject in your profile:
 university.admissions.catalog.select_program: See admission for this program
@@ -2048,19 +2014,21 @@ university.admissions.catalog.applicant.transfer: Transfer applicant
 university.admissions.catalog.applicant.graduate: Graduate applicant
 university.admissions.catalog.cycle_label: Intended entry cycle
 university.admissions.catalog.cycle_example: For example: Fall 2027 entry
-university.admissions.catalog.fee_label: Self-reported fee status
+university.admissions.catalog.fee_label: Fee status
 university.admissions.catalog.fee.unknown: Not determined
-university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (self-reported)
-university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (self-reported)
-university.admissions.catalog.fee.other: Other / requires clarification
+university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic
+university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international
+university.admissions.catalog.fee.other: Other
 university.admissions.catalog.apply_context: Apply filters
 university.admissions.catalog.legacy_pending: Your previous program selection has not been mapped to this reviewed catalog. Choose the study option again; your saved profile is preserved.
-university.admissions.catalog.incompatible_context: These selections do not match a linked program, route or study level. Change the context; no university-wide requirements have been substituted.
+university.admissions.catalog.incompatible_context: This combination of program, path, and level doesn't match. Pick another option.
 university.admissions.catalog.loading: Loading reviewed information
 university.admissions.catalog.load_error: Reviewed information could not be loaded. Try again.
 university.admissions.catalog.retry: Retry
 university.admissions.catalog.search_label: Study option or subject
 university.admissions.catalog.search: Search
+university.admissions.catalog.major_label: Subject
+university.admissions.catalog.all_majors: All subjects
 university.admissions.catalog.level_label: Study level
 university.admissions.catalog.all_levels: All study levels
 university.admissions.catalog.level.undergraduate: Undergraduate
@@ -2360,8 +2328,8 @@ university.admissions.catalog.study_level.undergraduate: Undergraduate
 university.admissions.catalog.study_level.masters: Master's
 university.admissions.catalog.study_level.doctoral: Doctoral
 university.admissions.catalog.study_level.professional: Professional
-university.admissions.catalog.fee.home: Self-reported home/domestic status
-university.admissions.catalog.fee.overseas: Self-reported international/overseas status
+university.admissions.catalog.fee.home: Home / domestic
+university.admissions.catalog.fee.overseas: Overseas / international
 university.admissions.catalog.enum.required: Required
 university.admissions.catalog.enum.not_required: Not required
 university.admissions.catalog.enum.recommended: Recommended
@@ -2567,8 +2535,6 @@ university.admissions.entry.route_help.engineering-doerr-evidence.cs-correspondi
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: Joint CS and professional degrees require separate applications and joint consent. Read the published MBA or Law conditions for the intended combination.
 university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — external applicants
 university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm applicants
-university.programs.entry.profile_suggestions: Search suggestions from your profile
-university.programs.entry.remove_suggestion: Remove suggestion: {value}
 university.programs.entry.show_all: Browse all official options
 university.programs.entry.internal: For current students / internal progression
 university.programs.entry.restricted: Published entry restrictions — inspect before applying
@@ -2745,6 +2711,10 @@ universities.compare.reviewed.picker.count: Programs found: {total}
 universities.compare.reviewed.picker.routes_intro: “{program}” has several ways to apply. Choose yours.
 universities.compare.reviewed.picker.back: Another program
 universities.compare.reviewed.picker.close: Close
+universities.compare.pdf.export: Export to PDF
+universities.compare.pdf.date: Exported {date}
+universities.compare.pdf.no_sources: No official links available for this selection.
+universities.compare.pdf.note: Check the official sources before applying. Dates, requirements and costs may change.
 universities.compare.mixed.title: These two universities can't be compared yet
 universities.compare.mixed.text: {reviewed} has rechecked data, while {legacy} doesn't yet. A pair is compared only within one group, so facts of different accuracy never stand side by side. We are rechecking every university in turn.
 universities.compare.mixed.reviewed: Data rechecked
@@ -2933,10 +2903,10 @@ university.admissions.entry.route_help.nu-residency-unconditional: Read the stan
 university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
 university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
 university.admissions.key_facts.title: Key facts for applying
-university.admissions.key_facts.note: A summary of published facts, not an admission decision.
+university.admissions.key_facts.note: Official facts only — not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: Documents and other conditions are not checked here; the university's published records are under “Sources”.
+university.admissions.key_facts.requirements_manual: Documents and other requirements are not checked automatically.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -2988,8 +2958,8 @@ university.admissions.catalog.field.time: Time
 university.admissions.catalog.field.timezone: Time zone
 university.admissions.catalog.field.scope: Applies to
 university.admissions.catalog.record_link: Show full source record
-university.admissions.entry.browsing_not_saved: Remember the path, and the catalog and comparison will check your results against its minimums. Nothing is sent to the university.
-university.admissions.entry.saved_context: Path remembered: the catalog and comparison check your results against its minimums. Nothing is sent to the university.
+university.admissions.entry.browsing_not_saved: Save this path to compare it with your profile in the catalog and comparison. Nothing is sent to the university.
+university.admissions.entry.saved_context: Saved for catalog and comparison.
 university.admissions.entry.saved_other: Another path is remembered: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Apply to the selected undergraduate course through UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Apply to the selected postgraduate program.
@@ -3022,14 +2992,14 @@ university.admissions.catalog.check_next_missing: Expand the check to see what i
 university.admissions.catalog.check_next_unassessed: This check was not assessed automatically. Review the published conditions and source.
 university.admissions.catalog.check_group_count: {count} source rules
 universities.match.subject_missing: Your subject was not found
-universities.match.subject_missing_detail: No matching program was found in our catalog at this study level.
+universities.match.subject_missing_detail: No matching program in our catalog at this level.
 universities.match.subject_matched: Your subject is offered
-universities.match.subject_matched_detail: The catalog includes a program in your chosen subject and study level.
+universities.match.subject_matched_detail: Offers a program in your subject and level.
 universities.match.selected_subject_mismatch: Different subject selected
-universities.match.selected_subject_mismatch_detail: Your saved program differs from the subject in your profile.
+universities.match.selected_subject_mismatch_detail: Saved program differs from your profile subject.
 universities.match.preference_detail: The university matches your study preferences.
 universities.match.score: Minimum requirements match: {percent}%
-universities.match.checks_detail: {met} of {total} checked minimums met. Other admission conditions still need review.
+universities.match.checks_detail: {met} of {total} minimums met. Check other requirements on the university page.
 universities.match.budget_over: Above your budget
 universities.match.budget_within: Within your budget
 universities.match.budget_uncertain: Check the cost
@@ -3093,16 +3063,17 @@ university.admissions.key_facts.minimum_have_unconfirmed: You have: {result}; wh
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
 university.admissions.key_facts.requirements_checklist_lead: Your results against the published minimums:
-university.admissions.key_facts.recommended_english: Recommended English test: {minimum}
-university.admissions.key_facts.recommended_english_better: Recommended English test: {minimum} (better {better})
-university.admissions.key_facts.recommended_english_condition: Not required: the university strongly recommends it if English is not your first language and you have used it for less than five years or do not speak it at home or at school.
-university.admissions.key_facts.recommended_english_condition_not_native: Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.
-university.admissions.key_facts.recommended_english_native_hint: Is English your native language? Say so in your profile, and this line will show only when it applies to you.
+university.admissions.key_facts.recommended_english: English test (optional): {exam} — minimum {minimum}
+university.admissions.key_facts.recommended_english_better: English test (optional): {exam} — minimum {minimum}, recommended {better}
+university.admissions.key_facts.recommended_english_condition: Strongly recommended if English is not your first language and you have used it for less than five years or do not speak it at home or at school.
+university.admissions.key_facts.recommended_english_condition_not_native: Strongly recommended if you have used English for less than five years or do not speak it at home or at school.
+university.admissions.key_facts.recommended_english_native_hint: Add language details in profile
+university.admissions.key_facts.recommended_english_add_hint: Add an English test
 university.ux2.needs.mark_recommended: Recommendation, not a requirement
 languages.exam_overall_score_label: Overall score
 languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.
 languages.exam_sections_label: Section scores (if your report shows them)
-profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
+profile.ux2.intro: All fields are optional, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study
 profile.ux2.section.study.desc: Study level narrows the list. Subject and topics change the order.
 profile.ux2.section.budget.title: Budget and funding
@@ -3111,7 +3082,7 @@ profile.ux2.section.scores.title: Grades and exams
 profile.ux2.section.scores.desc: Compared with the minimums each university publishes. This is not an admission chance.
 profile.ux2.section.languages.title: Languages
 profile.ux2.section.languages.desc: Compared with published language requirements; a native language or CEFR level does not replace a required test.
-profile.ux2.section.specific.title: For specific universities
+profile.ux2.section.specific.title: Additional details
 profile.ux2.section.specific.desc: Optional. A few reviewed universities check these details for particular programs.
 profile.ux2.hint.study_level: Lists only universities that offer this level and compares its prices and requirements.
 profile.ux2.hint.major: Universities without a matching program rank lower.
@@ -3132,9 +3103,9 @@ profile.ux2.hint.exams_language: Language tests such as IELTS and TOEFL go in th
 profile.ux2.nav.filled: has answers
 profile.ux2.nav.empty: no answers yet
 profile.ux2.action.save_show: Save and show matches
-profile.ux2.evidence.language_kind: How you know English
+profile.ux2.evidence.language_kind: Where do you know English from?
 profile.ux2.evidence.institution_kind: What do you want to add?
-profile.ux2.summary.title: How UniFit will use your profile
+profile.ux2.summary.title: How your profile affects matching
 profile.ux2.summary.sentence: UniFit will use {used} of {total} groups of your answers.
 profile.ux2.summary.sentence_none: You have not answered anything yet, so UniFit has nothing to personalise.
 profile.ux2.summary.disclaimer: UniFit orders universities for you. It does not predict admission or funding.
@@ -3166,43 +3137,30 @@ profile.ux2.summary.requirements.native: native language
 profile.ux2.summary.requirements.cefr: CEFR level
 profile.ux2.summary.requirements.used: Compared with each university's published minimums. A match needs your answers to cover every minimum it publishes.
 profile.ux2.summary.requirements.unused: No minimum requirements match is calculated. Add GPA, exams or languages to compare with published minimums.
-universities.ux2.banner.ranked: Ranked for your profile: {values}
-universities.ux2.banner.generic: The ranking is generic because your profile has no study level, subject or budget.
-universities.ux2.banner.scores_only: Ranked using your exam and language scores. Add a study level, subject or budget to tailor it further.
+universities.ux2.banner.ranked: UniFit: {values}
+universities.ux2.banner.generic: Generic order — add a study level, subject, or budget
+universities.ux2.banner.scores_only: Uses your language details — add a study level, subject, or budget
 universities.ux2.banner.budget: up to {amount}/yr
-universities.ux2.banner.edit: Edit profile
+universities.ux2.banner.edit: Profile
 universities.ux2.banner.set_up: Set up profile
-universities.ux2.banner.disclaimer: A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.
+universities.ux2.banner.info_aria: How UniFit ranks this list
+universities.ux2.banner.tooltip_profile: Profile: {values}
+universities.ux2.banner.disclaimer: Fit ranking, not an admission prediction. Missing data is never a fail.
 universities.ux2.tip.language_test: language test
-universities.tip.subject_options: Matching programs: {count}. Choose one on the university page to check its requirements.
+universities.tip.subject_options: {count} matching programs — pick one on the university page to check requirements.
 universities.tip.subject_selected: Your chosen program matches your subject.
 universities.tip.preferences_close: Close to your settings: {dimensions}.
 universities.tip.add_to_profile: To check the requirements, add to your profile: {exams}.
 universities.tip.budget_within: {cost} a year, your budget is {budget}.
 universities.tip.budget_over: {cost} a year, {gap} more than your budget.
-universities.tip.budget_range: {min} to {max} a year, and some options cost more than your budget. Choose a program to compare exactly.
-universities.tip.budget_fee_status: {min} to {max} a year, depending on your fee status. Set it on the university page.
+universities.tip.budget_range: {min}–{max}/yr, partly above your budget. Pick a program to compare.
+universities.tip.budget_fee_status: {min}–{max}/yr depending on fee status. Set it on the university page.
 universities.tip.tuition_only: Tuition only: living costs are extra.
 universities.tip.before_aid: Financial aid is not deducted.
-universities.tip.requirements_met: Your results meet the published minimums. Check the other admission conditions on the university page.
+universities.tip.requirements_met: Meets published minimums. Check other requirements on the university page.
 universities.tip.below_minimum: Below the minimum: {items}.
 universities.tip.minimum_gap: {exam} needs {minimum}, you have {provided}
-universities.ux2.legend.aria: Icons on university cards
-universities.ux2.legend.lead: Card icons:
-universities.ux2.legend.subject_missing: Program not offered
-universities.ux2.legend.subject_matched: Subject offered
-universities.ux2.legend.requirements_below: Below requirements
-universities.ux2.legend.exam_needed: Exam needed
-universities.ux2.legend.requirements_met: Requirements met
-universities.ux2.legend.no_data: No requirement data
-universities.ux2.legend.over_budget_aid: Over budget, aid available
-universities.ux2.legend.over_budget: Over budget
-universities.ux2.legend.budget_check: Check the cost
-universities.ux2.legend.within_budget: Within budget
-universities.ux2.legend.aid: Aid available
-universities.ux2.legend.vibe: Matches preferences
-profile.ux2.evidence.language_title: English language background
-profile.ux2.evidence.language_fixed: Records your background in English only, which is what English requirements ask about.
+profile.ux2.evidence.language_title: English background
 profile.ux2.evidence.entirely: Entirely in English?
 university.ux2.title: Key admission facts
 university.ux2.intro_route: Shown for "{route}". One application covers all undergraduate programs.
@@ -3323,7 +3281,7 @@ university.admissions.key_facts.english_levels: English by course level: Standar
 university.admissions.key_facts.english_level_standard: Standard
 university.admissions.key_facts.english_level_higher: Higher
 university.admissions.key_facts.english_other_tests: Other accepted tests (TOEFL, PTE, Duolingo and more) are in the university's official table under “Sources”.
-university.admissions.key_facts.funding_lines_lead: What the university publishes for this path. Funding is not guaranteed and is not subtracted from the cost:
+university.admissions.key_facts.funding_lines_lead: Published funding options (not guaranteed and not subtracted from the cost):
 university.admissions.key_facts.funding_apply_by: Apply by {date}, {time}
 university.admissions.key_facts.funding_coverage: {percent}% of tuition: {group}
 university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: socially vulnerable categories of Kazakhstan citizens
@@ -3355,11 +3313,10 @@ universities.empty.clear_price: Remove the price filter
 universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
 profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
-universities.filter.reviewed_only: Detailed admissions data
-universities.filter.reviewed_only_hint: Show universities with verified route, minimum, and cost breakdowns
-universities.unifit.prefs_button: Preferences
+universities.filter.reviewed_only: Verified admissions
+universities.filter.reviewed_only_hint: Show universities with verified requirements and costs
 universities.unifit.prefs_summary: UniFit preferences
-universities.tip.budget_level_needed: {cost} a year depending on study level. Select a study level to compare against your budget.
+universities.tip.budget_level_needed: {cost}/yr depending on study level. Pick a study level to compare.
 guide.start.nav: Getting started
 guide.start.title: How to use UniSearch
 guide.start.intro: Browse UniSearch to find study programs, admission requirements, application deadlines, and costs. You can use the catalog without completing a profile.
@@ -3371,8 +3328,16 @@ guide.start.step3.title: 3. Review a university or compare two options
 guide.start.step3.desc: Open a university page to check application requirements, deadlines, costs, and official sources. To review two universities side by side, select both on the Universities page.
 guide.start.cta_catalog: Browse universities
 guide.start.cta_profile: Set up profile
+guide.start.cta_tour: Interactive tour
 guide.formula.toggle: Calculation formula
 universities.compare.swap_university: Change university
 universities.compare.swap_title: Replace {name}
 universities.compare.swap_search: Search university...
 universities.compare.swap_empty: No matching universities in this comparison group.
+
+profile.calendar.open: Open calendar
+profile.calendar.previous: Previous month
+profile.calendar.next: Next month
+profile.calendar.month: Month
+profile.calendar.year: Year
+profile.calendar.clear: Clear

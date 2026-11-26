@@ -11,7 +11,8 @@ import {
 } from "../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { heroIcon } from "../icons.js";
-import { bindGuideExternalUpdates, bindGuideHashChange } from "./shared/cache.js";
+import { navigateToAppRoute, routeUniversities } from "../routes.js";
+import { bindGuideExternalUpdates, bindGuideHashChange, requestUniversitiesTourOpen } from "./shared/cache.js";
 
 function normalizeExamId(value) {
   return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -452,6 +453,12 @@ export function initGuidePage() {
   const mobileNavToggle = document.getElementById("guideMobileNavToggle");
   const guideNav = document.getElementById("guideNav");
   const backLink = page.querySelector(".guide-back");
+  const launchTourBtn = document.getElementById("guideLaunchTourBtn");
+
+  launchTourBtn?.addEventListener("click", () => {
+    requestUniversitiesTourOpen();
+    navigateToAppRoute(routeUniversities());
+  });
 
   backLink?.addEventListener("click", (event) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

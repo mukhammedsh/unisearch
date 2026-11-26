@@ -57,20 +57,15 @@ test("guide listeners replace prior handlers instead of accumulating duplicates"
   }
 });
 
-test("tour state validates resume steps and clears session state", () => {
+test("tour state persists seen flag and consumes one-shot open requests", () => {
   assert.equal(cache.hasSeenUniversitiesTour(), false);
   cache.markUniversitiesTourSeen();
   assert.equal(cache.hasSeenUniversitiesTour(), true);
 
-  assert.equal(cache.readUniversitiesTourResumeStep(), 0);
-  cache.saveUniversitiesTourResumeStep("3");
-  assert.equal(cache.readUniversitiesTourResumeStep(), 3);
-  assert.equal(cache.hasUniversitiesTourResumeStep(), true);
-  cache.saveUniversitiesTourResumeStep(-1);
-  cache.saveUniversitiesTourResumeStep("invalid");
-  assert.equal(cache.readUniversitiesTourResumeStep(), 3);
-  cache.clearUniversitiesTourResumeStep();
-  assert.equal(cache.hasUniversitiesTourResumeStep(), false);
+  assert.equal(cache.consumeUniversitiesTourOpenRequest(), false);
+  cache.requestUniversitiesTourOpen();
+  assert.equal(cache.consumeUniversitiesTourOpenRequest(), true);
+  assert.equal(cache.consumeUniversitiesTourOpenRequest(), false);
 });
 
 test("ID list storage normalizes, deduplicates, and rejects non-arrays", () => {

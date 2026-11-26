@@ -126,6 +126,15 @@ export async function initUniversityTranslations(force = false) {
   return loadUniversityTranslationsForLanguage(getCurrentLanguage(), force);
 }
 
+/**
+ * Synchronous check: true when the translation pack for `language` is already cached in memory.
+ * @param {string} [language]
+ * @returns {boolean}
+ */
+export function hasLoadedUniversityTranslations(language = getCurrentLanguage()) {
+  return CACHE.byLang.has(normalizeLang(language));
+}
+
 export function translateDataValue(group, value, fallback = "") {
   const raw = String(value || "").trim();
   if (!raw) return String(fallback || "");

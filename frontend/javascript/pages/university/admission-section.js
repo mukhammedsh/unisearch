@@ -252,16 +252,18 @@ function renderChoiceRequirements({ category, funding, profile, university }) {
       `;
     }
   }
+  const hasAverage = Boolean(avgList);
   return `
-    <div class="admission-requirement-grid">
+    <div class="admission-requirement-grid${hasAverage ? "" : " admission-requirement-grid--single"}">
       <div class="track-stats-box track-stats-box--min">
         <div class="track-stats-title">${escapeHtml(translateWord("minimum_to_apply", "Minimum to apply"))}</div>
         <div class="track-stats-values">${requirementsNoteHtml}${minList || (requirementsNote ? "" : `<div class="track-muted-italic">${escapeHtml(unknownFieldText("placeholder.field.minimum_requirements", "Minimum requirements"))}</div>`)}</div>
       </div>
+      ${hasAverage ? `
       <div class="track-stats-box track-stats-box--avg">
         <div class="track-stats-title track-stats-title--avg">${escapeHtml(translateWord("real_average_admitted", "Average admitted"))}</div>
-        <div class="track-stats-values">${avgList || `<div class="track-muted-italic">${escapeHtml(translateWord("average_admitted_unavailable", "No verified average admitted data published."))}</div>`}</div>
-      </div>
+        <div class="track-stats-values">${avgList}</div>
+      </div>` : ""}
     </div>
     ${extraReqInfo}
   `;
@@ -327,17 +329,10 @@ function renderFundingDifferences({ category, funding, profile, university }) {
 
   if (!sections) {
     if (funding?.description || funding?.funding_description) return "";
-    const isCompetitiveGrant = String(funding?.funding_source || "").toLowerCase() === "merit";
-    const noteKey = isCompetitiveGrant
-      ? "admission.funding_competitive_grant_note"
-      : "admission.funding_no_specific_requirements";
-    const fallbackNote = isCompetitiveGrant
-      ? "The requirements above are the entry minimums for this profile. The grant is awarded separately through competition or ranking; no separate grant cutoff is listed in the data."
-      : "No separate funding-specific requirements are listed in the data. Use the selected profile requirements above.";
-
+    if (String(funding?.funding_source || "").toLowerCase() !== "merit") return "";
     return `
       <div class="admission-funding-diff-note">
-        ${escapeHtml(t(noteKey, fallbackNote))}
+        ${escapeHtml(t("admission.funding_competitive_grant_note", "Grant is awarded separately by competition; no separate grant score cutoff is published."))}
       </div>
     `;
   }
@@ -431,20 +426,23 @@ function renderAdmissionCategoryCard({
   const categoryLabel = trTrackLabel(category.label || category.name || "") || unknownFieldText("placeholder.field.admission_category", "Admission category");
   const categoryDescription = trTrackDescription(university.id, category.id, category.description || "");
   const profileDescription = trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.description || "");
-  const scopeLabel = String(category.scope || "general").toLowerCase() === "general"
-    ? t("admission.scope.general", "General")
-    : t("admission.scope.program_specific", "Program-specific");
-  const routeText = `${t("university.admissions.route_label", "Applicant route")}: ${applicantRouteLabel(category.applicant_route)}`;
+  const catLevels = getCategoryLevelsList(category);
+  const levelPart = catLevels.length
+    ? catLevels.map((l) => `<span class="admission-level-badge">${escapeHtml(trStudyLevel(l))}</span>`).join(" ")
+    : "";
+  const isProgramSpecific = String(category.scope || "general").toLowerCase() !== "general";
+  const routeLabel = category.applicant_route ? applicantRouteLabel(category.applicant_route) : "";
+  const routeDistinct = routeLabel && !categoryLabel.toLowerCase().includes(routeLabel.toLowerCase());
+  const kickerParts = [
+    levelPart,
+    isProgramSpecific ? escapeHtml(t("admission.scope.program_specific", "Program-specific")) : "",
+    routeDistinct ? escapeHtml(routeLabel) : "",
+  ].filter(Boolean);
   const activeProfileLabel = translatedProfileLabel(activeProfile);
   const activeChoiceKey = admissionChoiceKey(category, activeProfile, null);
   const fundingOptions = getFundingOptions(category, activeProfile);
   const profileHasFundingOptions = fundingOptions.length > 0;
   const profileIsSelected = !profileHasFundingOptions && Boolean(effectiveSelectedChoiceKey && effectiveSelectedChoiceKey === activeChoiceKey);
-
-  const catLevels = getCategoryLevelsList(category);
-  const catLevelBadges = catLevels.length
-    ? ` &middot; ${catLevels.map((l) => `<span class="admission-level-badge">${escapeHtml(trStudyLevel(l))}</span>`).join(" ")}`
-    : "";
 
   let deadlinePillHtml = "";
   const catRounds = category.admission_rounds || [];
@@ -464,12 +462,12 @@ function renderAdmissionCategoryCard({
     <section class="admission-category-card" data-admission-category="${escapeHtmlAttr(categoryId)}">
       <div class="admission-category-head">
         <div>
-          <div class="admission-category-kicker">${escapeHtml(t("admission.category", "Admission category"))} &middot; ${escapeHtml(scopeLabel)}${catLevelBadges} &middot; ${escapeHtml(routeText)}</div>
+          ${kickerParts.length ? `<div class="admission-category-kicker">${kickerParts.join(" &middot; ")}</div>` : ""}
           <h3 class="admission-category-title">${escapeHtml(categoryLabel)}</h3>
           ${categoryDescription && categoryDescription !== trTrackDescription(university.id, activeProfile.id || category.id, activeProfile.requirements_note || category.requirements_note || "") ? `<p class="admission-category-description">${escapeHtml(categoryDescription)}</p>` : ""}
           ${deadlinePillHtml}
         </div>
-        <div class="admission-category-count">${escapeHtml(t("admission.profile_count", "{count} profiles").replace("{count}", String(profileRows.length)))}</div>
+        ${profileRows.length > 1 ? `<div class="admission-category-count">${escapeHtml(t("admission.profile_count", "{count} profiles").replace("{count}", String(profileRows.length)))}</div>` : ""}
       </div>
 
       ${hasExplicitProgramSelection ? "" : renderApplicablePrograms(category, activeProfile)}

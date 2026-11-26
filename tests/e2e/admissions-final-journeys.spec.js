@@ -221,8 +221,6 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
   const evidence = page.locator("#admissionEvidenceFields");
   await expect(evidence).toBeVisible();
-  const evidenceDetails = evidence.locator("details.profile-admission-evidence");
-  if (!(await evidenceDetails.evaluate((node) => node.open))) await evidenceDetails.locator(":scope > summary").click();
 
   async function addEvidence({ kind, metric, value, scale, status, majorUnits }) {
     await setNativeSelect(page, "institutionEvidenceUniversity", MIT);
@@ -279,8 +277,6 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
 
   await page.goto("/profile.html");
   await expect(page.locator("#admissionEvidenceFields")).toBeVisible();
-  const savedEvidenceDetails = page.locator("#admissionEvidenceFields details.profile-admission-evidence");
-  if (!(await savedEvidenceDetails.evaluate((node) => node.open))) await savedEvidenceDetails.locator(":scope > summary").click();
   const savedEvidence = page.locator("#admissionEvidenceFields #institutionalEvidenceList .profile-exam-item");
   await expect(savedEvidence).toHaveCount(3);
   await savedEvidence.nth(2).locator("[data-remove-institutional-evidence]").click();

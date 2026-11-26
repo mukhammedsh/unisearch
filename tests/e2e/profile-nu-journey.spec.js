@@ -38,7 +38,8 @@ test("an empty profile keeps advanced evidence fields hidden until their type is
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await page.locator(".profile-admission-evidence > summary").click();
+  await expect(page.locator("#languageEvidenceTitle")).toBeVisible();
+  await expect(page.locator("#institutionalEvidenceTitle")).toBeVisible();
   await expect(page.locator("#institutionEvidenceKind")).toHaveValue("");
   await expect(page.locator("[data-institution-evidence-kind='gpa']").first()).toBeHidden();
   await expect(page.locator("[data-institution-evidence-kind='enrollment']").first()).toBeHidden();
@@ -54,7 +55,7 @@ test("profile budget entry accepts group spaces and saves on Enter", async ({ pa
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
-  await expect(page.locator(".profile-page-intro")).toContainText("Nothing here is required");
+  await expect(page.locator(".profile-page-intro")).toContainText("All fields are optional");
   await page.locator("#budgetInput").fill("1 000 000");
   await expect(page.locator("#budgetInput")).toHaveValue("1 000 000");
   await page.locator("#budgetInput").press("Enter");

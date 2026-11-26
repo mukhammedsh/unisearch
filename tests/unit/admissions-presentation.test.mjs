@@ -456,6 +456,27 @@ test("requirements distinguish required alternatives from conditional language r
   assert.match(html, /7,5/);
 });
 
+test("covered requirement fact ids skip duplicate reading blocks while keeping sources and filtering test-only documents", () => {
+  setLanguage("eng", { emit: false });
+  const rows = [
+    fact("sat", { presence: "required", alternatives: ["SAT", "ACT"], cutoff: null }, { source_ids: ["official"] }),
+    fact("english", { presence: "strongly_recommended", minima_and_recommendations: [{ exam: "IELTS Academic", minimum: 7, recommended: 7.5 }] }, {
+      topic: "language_tests", source_ids: ["official"],
+      conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)", effect: "Strong recommendation" }],
+    }),
+    fact("docs", { required: ["MIT application including essays/activities/academics", "SAT or ACT"] }, { topic: "documents", source_ids: ["official"] }),
+  ];
+  const html = renderApplicantSection(context(rows, { requirements: ["sat", "english", "docs"] }), ["requirements"], { coveredFactIds: new Set(["sat", "english"]) });
+  const visible = html.split('<details class="admissions-reading__references')[0];
+  assert.doesNotMatch(visible, /<h3>Academic tests<\/h3>/);
+  assert.doesNotMatch(visible, /Strongly recommended|not speak it at home or at school/);
+  assert.match(visible, /<h3>English proficiency<\/h3>/);
+  assert.match(visible, /IELTS Academic/);
+  assert.match(visible, /MIT application with essays/);
+  assert.doesNotMatch(visible, /SAT or ACT/);
+  assert.match(html, /data-reading-sources/);
+});
+
 test("unlinked special rules remain in additional references rather than the selected requirements", () => {
   setLanguage("eng", { emit: false });
   const rows = [fact("tests", { presence: "required", alternatives: ["SAT", "ACT"] }), fact("internal", "Graduate residence policy", { scope: { option_ids: [], route_ids: [] }, topic: "funding" })];

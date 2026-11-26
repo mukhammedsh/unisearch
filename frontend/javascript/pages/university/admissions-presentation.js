@@ -10,6 +10,7 @@ import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewe
 
 const label = key => t(`university.admissions.reading.${key}`);
 const period = row => typeof row.period === "object" ? row.period?.label || "" : row.period || "";
+const TEST_ONLY_DOCUMENT = /^(?:SAT|ACT)(?: or (?:SAT|ACT))*$/i;
 
 export function formatPublishedDate(value) {
   const text = String(value || "");
@@ -224,11 +225,16 @@ function table(caption, headings, rows) {
   return `<div class="admissions-reading__table-wrap" tabindex="0" role="region" aria-label="${escapeHtmlAttr(caption)}"><table class="admissions-reading__table"><caption>${escapeHtml(caption)}</caption><thead><tr>${headings.map(heading => `<th scope="col">${escapeHtml(heading)}</th>`).join("")}</tr></thead><tbody>${rows.map(cells => `<tr>${cells.map((cell, index) => `<${index ? "td" : 'th scope="row"'} data-label="${escapeHtmlAttr(headings[index])}">${cell}</${index ? "td" : "th"}>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 }
 
-function requirements(rows, resolved) {
+function requirements(rows, resolved, coveredFactIds = null) {
+  const hasAcademicTests = rows.some(row => reviewed(row) && row.value?.presence && Array.isArray(row.value?.alternatives));
   return rows.filter(reviewed).map(row => {
     const value = row.value;
     if (!value || typeof value !== "object") return "";
     if (value.presence && Array.isArray(value.alternatives) && value.alternatives.every(item => typeof item === "string")) {
+      if (coveredFactIds?.has(row.id)) {
+        resolved.readingSources?.cite(row.source_ids, row.checked_at);
+        return "";
+      }
       return `<section class="admissions-reading__section"><h3>${escapeHtml(label("tests"))}</h3><p><strong>${escapeHtml(value.alternatives.join(` ${label("or")} `))}</strong> · ${renderAdmissionsValue(value.presence)}</p>${value.cutoff === null ? `<p class="admissions-reading__note">${escapeHtml(label("no_numeric_cutoff"))}</p>` : ""}${sourceNote(row, resolved)}</section>`;
     }
     if (Array.isArray(value.minima_and_recommendations)) {
@@ -240,7 +246,10 @@ function requirements(rows, resolved) {
       const condition = row.conditions?.find(item => item.when === "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)");
       // A score floor for an optional test applies only to applicants who take it; a bare "Minimum" would read as a requirement.
       const minimumHeading = label(value.presence === "required" ? "minimum" : "minimum_if_taken");
-      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("language"))}</h3><p>${renderAdmissionsValue(value.presence)}</p>${condition ? `<p>${escapeHtml(label("english_condition"))}</p>` : ""}${table(label("language_scores"), [label("exam"), minimumHeading, label("recommended")], entries)}${sourceNote(row, resolved)}</section>`;
+      const summaryLines = coveredFactIds?.has(row.id)
+        ? ""
+        : `<p>${renderAdmissionsValue(value.presence)}</p>${condition ? `<p>${escapeHtml(label("english_condition"))}</p>` : ""}`;
+      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("language"))}</h3>${summaryLines}${table(label("language_scores"), [label("exam"), minimumHeading, label("recommended")], entries)}${sourceNote(row, resolved)}</section>`;
     }
     if (Array.isArray(value.required) && value.required.every(item => typeof item === "string") && ["documents", "application_process"].includes(row.topic)) {
       const documentLabels = {
@@ -249,7 +258,11 @@ function requirements(rows, resolved) {
         "Two teacher recommendations": "document_references",
         "SAT or ACT": "document_tests",
       };
-      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("documents"))}</h3>${renderAdmissionsValue(value.required.map(item => documentLabels[item] ? label(documentLabels[item]) : translateAdmissionSummary(item) || item))}${sourceNote(row, resolved)}</section>`;
+      const items = hasAcademicTests || coveredFactIds?.size
+        ? value.required.filter(item => !TEST_ONLY_DOCUMENT.test(item))
+        : value.required;
+      if (!items.length) return "";
+      return `<section class="admissions-reading__section"><h3>${escapeHtml(label("documents"))}</h3>${renderAdmissionsValue(items.map(item => documentLabels[item] ? label(documentLabels[item]) : translateAdmissionSummary(item) || item))}${sourceNote(row, resolved)}</section>`;
     }
     return "";
   }).join("");
@@ -409,10 +422,10 @@ function scholarshipRounds(rows, resolved) {
 /**
  * @param {object} source The admissions-context response.
  * @param {string[]} domains The fact domains the tab reads.
- * @param {{checkDetails?: string}} [options] `checkDetails`: how the key facts checked each condition (HTML), kept in the "Sources" disclosure.
+ * @param {{checkDetails?: string, coveredFactIds?: Set<string>|null}} [options] `checkDetails`: how the key facts checked each condition (HTML), kept in the "Sources" disclosure; `coveredFactIds`: requirement fact IDs already summarized above.
  * @returns {string} The tab's reading area as HTML.
  */
-export function renderApplicantSection(source, domains, { checkDetails = "" } = {}) {
+export function renderApplicantSection(source, domains, { checkDetails = "", coveredFactIds = null } = {}) {
   // Each tab's reading area numbers its own sources, explains each term once and prints each identical excerpt once.
   const resolved = { ...source, readingSources: createSourceRegistry(source), readingTerms: new Set(), readingSeen: new Set() };
   const ids = new Set(domains.flatMap(domain => resolved.fact_groups?.[domain] || []));
@@ -429,7 +442,7 @@ export function renderApplicantSection(source, domains, { checkDetails = "" } = 
   const tbaSource = tba && { ...tba, source_ids: tba.source_ids?.filter(id => resolved.selected_option?.levels?.includes("masters") ? id.includes("master-regular") : id.includes("doctoral-regular")) };
   const highlights = mode === "finance" ? `${courseCosts(focused, resolved)}${finance(focused, resolved)}${livingReferences(rows, resolved)}${sourceSummaries(rows, resolved, "costs")}${sourceSummaries(rows, resolved, "funding")}${scholarshipRounds(rows, resolved)}`
     : mode === "dates" ? `${tba ? `<section class="admissions-reading__section" data-dates-tba><p>${escapeHtml(label("dates_tba"))}</p><p>${escapeHtml(label("dates_tba_next"))}</p>${sourceNote(tbaSource, resolved)}</section>` : ""}${deadlines(focused, resolved)}${sourceSummaries(summaryRows.filter(relevant), resolved, "deadlines")}`
-      : `${requirements(focused, resolved)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
+      : `${requirements(focused, resolved, coveredFactIds)}${sourceSummaries(rows, resolved, "requirements")}${sourceSummaries(focused, resolved, "application")}`;
   const references = facts => renderAdmissionsContext({ ...source, facts }, {
     domains: [...domains, ...(referenceIds.size ? ["reference"] : [])], includeAssessment: false, includeUnknowns: false, includeHistory: false,
     includeSourceNote: false, includeReferenceScopeNote: false, presentation: "simple",

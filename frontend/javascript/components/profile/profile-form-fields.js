@@ -1,17 +1,12 @@
 import {
-  escapeHtml,
-  formatExamValue,
-  getExamDisplayName,
   initCustomSelect,
   loadProfile,
   prefersReducedMotion,
 } from "../../utils.js";
-import { applyTranslations, getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { applyTranslations, t, tFormat } from "../../i18n.js";
 import { formatMoney } from "../../currency.js";
-import { translateProgramName } from "../../university-translations.js";
-import { heroIcon } from "../../icons.js";
 import { fillBudgetCurrencyOptions, syncBudgetCurrencySelect } from "./budget-currency.js";
-import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile-summary.js";
+import { buildSectionFillStates } from "./profile-summary.js";
 import {
   applyBudgetEntry,
   ensureProfileShape,
@@ -25,8 +20,6 @@ import {
   setFieldInvalid,
   stableProfileSignature,
 } from "./profile-utils.js";
-
-const SUMMARY_STATE_ICONS = { used: "check-circle", partial: "adjustments-horizontal", not_used: "x-mark" };
 
 export const initCommonSelects = (selectIds = []) => {
     if (typeof initCustomSelect !== "function") return;
@@ -119,39 +112,7 @@ export const updateBudgetUI = (els, state) => {
 };
 
 export const renderProfileSummary = (els, state) => {
-    if (!els.profileSummaryList) return;
-    const ctx = {
-        t,
-        tFormat,
-        formatMoney,
-        majorLabel: (major) => translateProgramName(major, major),
-        examLabel: (row) => {
-            const examId = row.exam ?? row.id;
-            const locale = getCurrentLanguage();
-            const value = formatExamValue(examId, row, { context: "profile", locale });
-            return [shortExamLabel(getExamDisplayName(examId, { locale })), value].filter(Boolean).join(" ");
-        },
-    };
-    const rows = buildProfileSummary(state.profile, ctx);
-    const sentence = buildSummarySentence(rows, ctx);
     const fillStates = buildSectionFillStates(state.profile);
-    const signature = JSON.stringify([getCurrentLanguage(), rows, sentence, fillStates]);
-    if (state.summarySignature === signature) return;
-    state.summarySignature = signature;
-
-    els.profileSummaryList.innerHTML = rows.map((row) => `
-        <li class="profile-summary__row" data-state="${row.state}" data-summary-row="${escapeHtml(row.id)}">
-            <span class="profile-summary__icon" aria-hidden="true">${heroIcon(SUMMARY_STATE_ICONS[row.state] || "x-mark", "ui-icon ui-icon--16")}</span>
-            <div class="profile-summary__body">
-                <p class="profile-summary__row-head">
-                    <span class="profile-summary__row-title">${escapeHtml(row.title)}</span>
-                    <span class="sr-only">${escapeHtml(t(`profile.ux2.summary.state.${row.state}`))}</span>
-                </p>
-                ${row.value ? `<p class="profile-summary__row-value">${escapeHtml(row.value)}</p>` : ""}
-                ${row.state === "used" ? "" : `<p class="profile-summary__row-detail">${escapeHtml(row.detail)}</p>`}
-            </div>
-        </li>`).join("");
-    if (els.profileSummarySentence) els.profileSummarySentence.textContent = sentence;
 
     els.profileSectionTabs.forEach((tab) => {
         const filled = !!fillStates[String(tab.dataset.profileTab || "")];
@@ -204,7 +165,8 @@ export const goToProfileSection = (els, state, section, { focusHeading = true } 
     setActiveProfileSection(els, section);
     // Ignore the scroll observer while the smooth scroll runs, so the clicked item stays current.
     state.sectionNavLockUntil = Date.now() + 900;
-    node.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    const region = node.closest(".profile-workspace-layout");
+    if (region) region.scrollTo({ top: region.scrollTop + node.getBoundingClientRect().top - region.getBoundingClientRect().top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
 };
 
@@ -270,11 +232,7 @@ export const renderGpaHint = (els, state) => {
     els.gpaHint.textContent = overScale
         ? tFormat("profile.ux2.gpa.over_scale", { value: String(value) }, `${value} is above 4.0. If your school uses a 5-point scale, press "/ 4.0" next to the field to switch to 5.0.`)
         : scale === 5 && state.gpaScaleAutoSwitched ? t("profile.ux2.gpa.auto_switched")
-        : scale === 5 ? t("profile.ux2.gpa.scale_chosen_5")
-        : tFormat("profile.ux2.gpa.scale_hint", {
-            scale: scale === 5 ? t("profile.scale.gpa_5", "5.0 (KZ / CIS)") : t("profile.scale.gpa_4", "4.0 (US / International)"),
-            unit: scale === 5 ? "/ 5.0" : "/ 4.0",
-        }, "");
+        : "";
 };
 
 export const updateGpaScaleUI = (els, state, scale) => {
@@ -288,13 +246,6 @@ export const updateGpaScaleUI = (els, state, scale) => {
         const unitKey = s === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4";
         els.gpaUnit.setAttribute("data-i18n", unitKey);
         els.gpaUnit.textContent = s === 5 ? "/ 5.0" : "/ 4.0";
-        const toggleLabel = tFormat(
-            "profile.scale.toggle",
-            { scale: s === 5 ? "4.0" : "5.0" },
-            `Switch GPA scale to ${s === 5 ? "4.0" : "5.0"}`
-        );
-        els.gpaUnit.setAttribute("aria-label", toggleLabel);
-        els.gpaUnit.title = toggleLabel;
     }
     document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
         radio.checked = Number(radio.value) === s;

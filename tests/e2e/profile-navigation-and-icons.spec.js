@@ -3,6 +3,14 @@ const { markTourAsSeen } = require("./helpers/personas");
 const { selectors } = require("./helpers/selectors");
 
 test.describe("Profile page icons and navigation", () => {
+  test("top back button protects unsaved changes", async ({ page }) => {
+    await markTourAsSeen(page);
+    await page.goto("/profile.html");
+    await expect(page.locator("#budgetInput")).toBeVisible();
+    await page.locator("#budgetInput").fill("12000");
+    await page.locator("#profileHeaderBackBtn").click();
+    await expect(page.locator("#profileUnsavedModal")).toHaveClass(/is-open/);
+  });
   test("profile page renders clean action buttons and Heroicons inside badges", async ({ page }) => {
     await markTourAsSeen(page);
     await page.goto("/profile.html");
@@ -11,30 +19,25 @@ test.describe("Profile page icons and navigation", () => {
     expect(await page.locator("#profileCloseBtn svg").count()).toBe(0);
     expect(await page.locator("#saveProfileBtn svg").count()).toBe(0);
 
-    // Verify every summary row carries one state icon
-    const summaryIcons = page.locator(".profile-summary__row .profile-summary__icon svg");
-    await expect(summaryIcons.first()).toBeVisible();
-    expect(await summaryIcons.count()).toBe(5);
-
     // Switch to scores tab to verify compact GPA block (tooltip sits by the hint, not the title)
     await page.click('[data-profile-tab="scores"]');
     await expect(page.locator('[data-profile-section="scores"]')).toBeVisible();
-    // GPA scale is a toggle built into the / 4.0 unit suffix: click switches to / 5.0 and back.
+    // The radio choices control the GPA scale shown next to the input.
     const gpaUnit = page.locator("#gpaUnit");
     await expect(gpaUnit).toBeVisible();
     await expect(page.locator("#gpaInput")).toBeVisible();
-    await expect(page.locator("#gpaHint")).toBeVisible();
+    await expect(page.locator("#gpaHint")).toBeEmpty();
     await expect(gpaUnit).toHaveText("/ 4.0");
-    await gpaUnit.click();
+    await page.locator('#gpaScaleChoice input[value="5"]').check();
     await expect(gpaUnit).toHaveText("/ 5.0");
     await expect(page.locator("#gpaInput")).toHaveAttribute("max", "5");
-    await gpaUnit.click();
+    await page.locator('#gpaScaleChoice input[value="4"]').check();
     await expect(gpaUnit).toHaveText("/ 4.0");
     await expect(page.locator("#gpaInput")).toHaveAttribute("max", "4");
     // Title stays clean; the scale tooltip lives in the hint row.
     expect(await page.locator('.profile-card-block:has(#gpaInput) .profile-card-head .profile-info').count()).toBe(0);
-    await expect(page.locator(".profile-hint-row .profile-info svg")).toBeVisible();
-    expect(await page.locator(".profile-hint-row .profile-info").count()).toBe(1);
+    await expect(page.locator(".profile-field--gpa .profile-info svg")).toBeVisible();
+    expect(await page.locator(".profile-field--gpa .profile-info").count()).toBe(1);
     // Compact layout: narrow input, text centered.
     const inputBox = await page.locator(".profile-field--gpa .profile-budget--with-unit").boundingBox();
     expect(inputBox.width).toBeLessThanOrEqual(120);

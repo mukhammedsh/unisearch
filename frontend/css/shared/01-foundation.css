@@ -91,8 +91,7 @@
   --control-badge-bg: var(--surface-soft);
   --control-badge-hover-bg: var(--surface-solid);
   --control-bg: var(--surface-soft);
-  --control-shadow: var(--shadow-micro);
-  --tour-skip-bg: var(--surface-soft);
+  --control-shadow: none;
   --card: var(--surface-solid);
   --text: #111827;
   --text-muted: #525D70;
@@ -238,7 +237,6 @@
   --surface-control-on-bg: var(--surface-soft);
   --control-badge-bg: var(--surface-raised);
   --control-badge-hover-bg: var(--surface-raised-hover);
-  --tour-skip-bg: var(--surface-soft);
   --card: var(--surface-solid);
   --text: #F3F4F6;
   --text-muted: #9AA4B4;
@@ -672,8 +670,7 @@ a {
   .deadline-guidance-item,
   .admissions-selection,
   .profile-exam-item,
-  .lang-item,
-  .profile-summary
+  .lang-item
 ) {
   --control-bg: var(--surface-raised);
   --control-shadow: var(--shadow-xs);

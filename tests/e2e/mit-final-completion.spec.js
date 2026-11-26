@@ -54,7 +54,7 @@ for (const presentation of presentations) {
 
   test(`MIT transfer makes spring restrictions and documents understandable in ${presentation.language}`, async ({ page }) => {
     await open(page, presentation, 'mit-course-6-3-bachelor', 'mit-transfer', 'undergraduate');
-    await expect(page.locator('#detailRequirements .admissions-reading__section')).toContainText([/SAT|ACT/]);
+    await expect(page.locator('#detailRequirements')).toContainText(/SAT|ACT/);
     const summaries = page.locator('#detailRequirements [data-source-summary="requirements"]');
     await expect(summaries).toContainText({ eng: 'not a published minimum', rus: 'не опубликованный минимум', kaz: 'жарияланған ең төменгі шек емес' }[presentation.language]);
     await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText('75');

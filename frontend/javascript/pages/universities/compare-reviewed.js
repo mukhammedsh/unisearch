@@ -17,12 +17,13 @@ import { COMPARE_UNIVERSITIES_KEY, fetchUniversityDetailCached, formatUiNumber, 
 import { compareCampusHtml, compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
 import { readForSinglePublishedCycle } from "../university/admissions-cycle.js";
-import { admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
-import { costFact, deadlineFact, fundingFact, MARK_ICONS, requirementsFact } from "../university/admissions-key-facts.js";
+import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
+import { costFact, deadlineFact, fundingFact, MARK_ICONS } from "../university/admissions-key-facts.js";
 import { isEvidenceReviewed, isPublished } from "../university/admissions-status.js";
 import { billingPeriodLabel } from "../university/admissions-presentation.js";
 import { translateAdmissionText } from "../../university-translations.js";
 import { checklistItems, costCard, deadlineCard, firstYearSharedRoute, peopleItems } from "../university/overview-summary.js";
+import { comparisonPdfButton, pdfDeadlineItems, printComparisonPdf } from "./compare-pdf.js";
 
 const label = (key) => t(`universities.compare.reviewed.${key}`);
 const catalogLabel = (key) => t(`university.admissions.catalog.${key}`);
@@ -76,7 +77,10 @@ function cellHtml(column, value) {
   const id = escapeHtmlAttr(column.id);
   if (!value) return `<dd class="compare-reviewed__cell" data-uni-id="${id}" data-empty><p class="compare-reviewed__muted">${escapeHtml(label("value.not_published"))}</p></dd>`;
   if (value.state) {
-    return `<dd class="compare-reviewed__cell" data-uni-id="${id}" data-state="${escapeHtmlAttr(value.state)}"><p class="compare-reviewed__muted">${escapeHtml(value.text)}</p></dd>`;
+    const action = value.action
+      ? `<button type="button" class="ui-btn ui-btn--sm compare-reviewed__inline-pick" data-compare-pick="${id}" aria-label="${escapeHtmlAttr(value.action.ariaLabel)}">${heroIcon("academic-cap", "ui-icon ui-icon--16")}<span>${escapeHtml(value.action.label)}</span></button>`
+      : "";
+    return `<dd class="compare-reviewed__cell" data-uni-id="${id}" data-state="${escapeHtmlAttr(value.state)}"><p class="compare-reviewed__muted">${escapeHtml(value.text)}</p>${action}</dd>`;
   }
   const tone = value.tone ? ` data-tone="${escapeHtmlAttr(value.tone)}"` : "";
   const main = value.main ? `<p class="compare-reviewed__value"${tone}${value.kind ? ` data-kind="${escapeHtmlAttr(value.kind)}"` : ""}>${escapeHtml(value.main)}</p>` : "";
@@ -87,7 +91,10 @@ function cellHtml(column, value) {
   }).join("");
   const items = value.items?.length ? `<ul class="compare-reviewed__checklist">${value.items.map((entry) => {
     const icon = MARK_ICONS[entry.mark] ? heroIcon(MARK_ICONS[entry.mark], "ui-icon ui-icon--16") : "";
-    return `<li data-mark="${escapeHtmlAttr(entry.mark)}"><span class="compare-reviewed__mark" aria-hidden="true">${icon}</span><span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${entry.mark}`))}: </span><span${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span></li>`;
+    const note = !entry.note ? ""
+      : entry.href ? `<a class="compare-reviewed__checklist-note" href="${escapeHtmlAttr(entry.href)}" data-route="profile">${escapeHtml(entry.note)}</a>`
+      : `<span class="compare-reviewed__checklist-note">${escapeHtml(entry.note)}</span>`;
+    return `<li data-mark="${escapeHtmlAttr(entry.mark)}"><span class="compare-reviewed__mark" aria-hidden="true">${icon}</span><span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${entry.mark}`))}: </span><span class="compare-reviewed__checklist-body"><span${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span>${note}</span></li>`;
   }).join("")}</ul>` : "";
   const sources = (value.sources || []).filter(Boolean).map((source) => {
     const href = safeUrl(source.url);
@@ -96,18 +103,22 @@ function cellHtml(column, value) {
   }).join("");
   const extra = value.extra || "";
   const link = value.link ? `<a class="compare-reviewed__link" href="${escapeHtmlAttr(value.link.href)}"${value.link.external ? ' target="_blank" rel="noopener noreferrer"' : linkAttrs()}>${escapeHtml(value.link.label)}${heroIcon(value.link.external ? "arrow-top-right-on-square" : "chevron-right", "ui-icon ui-icon--16")}</a>` : "";
-  return `<dd class="compare-reviewed__cell" data-uni-id="${id}">${main}${details}${items}${extra}${sources}${link}</dd>`;
+  return `<dd class="compare-reviewed__cell" data-uni-id="${id}">${main}${details}${items}${sources}${extra}${link}</dd>`;
 }
 
 // The placeholder a fact cell shows when the column does not read a context with facts.
-function scopePlaceholder(column) {
+function scopePlaceholder(column, { withAction = false } = {}) {
   const scope = columnScope(column);
   if (scope === "loading") return { state: "loading", text: label("value.loading") };
   if (scope === "error") return { state: "error", text: label("value.error") };
-  if (scope === "route") return { state: "route", text: label("value.choose_route") };
   if (scope === "no_route") return { state: "no_route", text: label("value.no_route") };
-  if (scope === "mismatch") return { state: "mismatch", text: label("value.mismatch") };
-  return { state: "choose", text: label("value.depends") };
+  const actionLabel = scope === "route" ? label("action.choose_route") : label("action.choose");
+  const action = withAction
+    ? { label: actionLabel, ariaLabel: `${actionLabel} — ${compareUniversityName(column.university)}` }
+    : null;
+  if (scope === "route") return { state: "route", text: label("value.choose_route"), action };
+  if (scope === "mismatch") return { state: "mismatch", text: label("value.mismatch"), action };
+  return { state: "choose", text: label("value.depends"), action };
 }
 
 function cardValue(card, column, hash) {
@@ -163,39 +174,35 @@ function programRows() {
         const scope = columnScope(column);
         if (scope === "route") return { state: "route", text: label("value.choose_route") };
         if (scope === "no_route") return { state: "no_route", text: label("value.no_route") };
-        if (scope !== "program") return { state: "none", text: label("value.no_program") };
+        if (!["program", "institution"].includes(scope)) return { state: "none", text: label("value.no_program") };
         return { main: routeLabel(column.resolved.selected_route), kind: "text" };
       },
     },
   ];
 }
 
-function admissionRows(columns, profileExamIds) {
-  const showRequirements = columns.some((column) => readsFacts(column) && Number.isFinite(column.resolved?.assessment?.chancePercent));
+function admissionRows(columns, profileExamIds, { forPdf = false } = {}) {
   return [
     {
       id: "deadline",
       keepEmpty: true,
-      value: (column) => (readsFacts(column) ? cardValue(deadlineCard(deadlineFact(column.resolved, new Date(), { profileExamIds })), column, "tab-deadlines") : scopePlaceholder(column)),
+      value: (column) => {
+        if (!readsFacts(column)) return scopePlaceholder(column, { withAction: !forPdf });
+        const items = forPdf ? pdfDeadlineItems(column.resolved) : [];
+        if (items.length) return { items };
+        return cardValue(deadlineCard(deadlineFact(column.resolved, new Date(), { profileExamIds })), column, "tab-deadlines");
+      },
     },
     {
       id: "needs",
       keepEmpty: true,
       value: (column) => {
         if (!readsFacts(column)) return scopePlaceholder(column);
-        const items = checklistItems(column.resolved, loadProfileForApi());
+        const items = checklistItems(column.resolved, forPdf ? null : loadProfileForApi());
         const link = { href: detailHref(column, "tab-admission"), label: t("university.ux2.link.needs") };
         return items.length ? { items, link } : { main: t("university.ux2.needs.empty"), kind: "text", link };
       },
     },
-    ...(showRequirements ? [{
-      id: "requirements",
-      value: (column) => {
-        if (!readsFacts(column)) return scopePlaceholder(column);
-        const fact = requirementsFact(column.resolved);
-        return { main: fact.text, kind: "text", tone: fact.tone, details: fact.notes };
-      },
-    }] : []),
   ];
 }
 
@@ -220,7 +227,7 @@ function fundingPrograms(resolved) {
       ? t("university.admissions.reading.aid_title") : translateAdmissionText(row.value.funding_program, row.value.funding_program);
     // A possible award is named alone; the policy note above already says that nothing is awarded or deducted.
     const status = FUNDING_AVAILABILITY[row.value.availability];
-    return status ? `${name}: ${t(`university.admissions.reading.${status}`)}` : name;
+    return { factId: row.id, text: status ? `${name}: ${t(`university.admissions.reading.${status}`)}` : name };
   });
 }
 
@@ -244,7 +251,7 @@ function feeStatusControl(column) {
   </div>`;
 }
 
-function costRows(budgetUsd) {
+function costRows(budgetUsd, { forPdf = false } = {}) {
   const budgetMissing = t("university.admissions.key_facts.budget_missing");
   return [
     {
@@ -252,7 +259,7 @@ function costRows(budgetUsd) {
       keepEmpty: true,
       value: (column) => {
         if (!readsFacts(column)) return scopePlaceholder(column);
-        const fact = costFact(column.resolved, budgetUsd);
+        const fact = costFact(column.resolved, budgetUsd, { original: forPdf });
         const value = cardValue(costCard(fact), column, "tab-finance");
         // A price for the whole program or per credit names its period in the reader's language instead of a yearly figure.
         const costs = column.resolved?.selected_costs || {};
@@ -269,7 +276,7 @@ function costRows(budgetUsd) {
           value.details.push(label("fee.note"));
           value.sources = fact.links.map((entry) => ({ url: entry.url, label: entry.label, unnamed: true }));
         }
-        value.extra = feeStatusControl(column);
+        if (!forPdf) value.extra = feeStatusControl(column);
         return value;
       },
     },
@@ -281,7 +288,8 @@ function costRows(budgetUsd) {
         const fact = fundingFact(column.resolved);
         const programs = fundingPrograms(column.resolved);
         // Published policies are often a full sentence, so they read as body text rather than as a headline figure.
-        return { main: fact.text, kind: fact.text.length > 90 ? "prose" : "text", details: [...(fact.notes || []), ...programs] };
+        return { main: fact.text, kind: fact.text.length > 90 ? "prose" : "text", details: [...(fact.notes || []), ...programs.map((program) => program.text)],
+          sourceFactIds: programs.map((program) => program.factId) };
       },
     },
   ];
@@ -334,16 +342,22 @@ function universityRows() {
 function scopeText(column) {
   const scope = columnScope(column);
   const resolved = column.resolved;
+  const rawCycle = resolved?.context?.intended_entry_cycle || resolved?.context?.cycle || "";
+  const cycle = rawCycle ? admissionsCycleLabel(rawCycle) || rawCycle : "";
   if (scope === "program" || scope === "route" || scope === "no_route") {
     const option = resolved.selected_option;
     const program = admissionsProgramLabel(option);
     const meta = [
       ...(option.levels || []).map((level) => catalogLabel(`level.${level}`)),
       ...(option.awards || []).filter((award) => !program.title.includes(award)),
+      ...(scope === "program" && resolved.selected_route ? [routeLabel(resolved.selected_route)] : []),
+      ...(scope === "program" && cycle ? [cycle] : []),
     ];
     return { title: program.title, meta: scope === "route" ? [...meta, label("scope.route_meta")].join(" · ") : meta.join(" · ") };
   }
-  if (scope === "institution") return { title: label("scope.institution"), meta: label("scope.institution_meta") };
+  if (scope === "institution") {
+    return { title: label("scope.institution"), meta: [label("scope.institution_meta"), cycle].filter(Boolean).join(" · ") };
+  }
   if (scope === "mismatch") return { title: label("scope.mismatch"), meta: label("scope.mismatch_meta") };
   if (scope === "loading") return { title: label("value.loading"), meta: "" };
   if (scope === "error") return { title: label("value.error"), meta: "" };
@@ -378,8 +392,31 @@ function headHtml(column, index, photos) {
 
 function stripHtml(columns) {
   return `<div class="compare-reviewed__strip-anchor"><div class="compare-reviewed__strip" data-compare-strip aria-hidden="true">
-    ${columns.map((column) => `<span class="compare-reviewed__strip-item"><span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span></span>`).join("")}
+    ${columns.map((column) => {
+      const scope = columnScope(column);
+      const sub = ["program", "institution", "route", "no_route"].includes(scope) ? scopeText(column).title : "";
+      return `<span class="compare-reviewed__strip-item"><span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span>${sub ? `<span class="compare-reviewed__strip-scope">${escapeHtml(sub)}</span>` : ""}</span>`;
+    }).join("")}
   </div></div>`;
+}
+
+function printReviewedComparison(container, columns) {
+  const summaries = columns.map((column) => {
+    const scope = scopeText(column);
+    const { resolved } = column;
+    const route = readsFacts(column) ? resolved.selected_route : null;
+    const fee = FEE_STATUSES.find(([value]) => value === column.context.fee_status_context && value !== "unknown");
+    return {
+      name: compareUniversityName(column.university),
+      context: [scope.title, scope.meta, route && fee && label(fee[1])].filter(Boolean),
+      resolved: route || columnScope(column) === "route" || columnScope(column) === "no_route" ? resolved : null,
+    };
+  });
+  printComparisonPdf(container, summaries, [
+    ...programRows().filter(({ id }) => id === "study" && columns.some((column) => column.resolved?.selected_option)),
+    ...admissionRows(columns, [], { forPdf: true }),
+    ...costRows(undefined, { forPdf: true }),
+  ].map((row) => ({ label: label(`row.${row.id}`), values: columns.map(row.value) })));
 }
 
 export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamIds = [], photos } = {}) {
@@ -396,15 +433,18 @@ export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamId
         <p class="compare-reviewed__intro">${escapeHtml(label("intro"))}</p>
         <p class="compare-reviewed__hint">${escapeHtml(label("heads_note"))}</p>
       </div>
-      <button class="ui-btn ui-btn--sm ui-btn--ghost compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
+      <div class="compare-reviewed__actions">
+        <button class="ui-btn ui-btn--sm ui-btn--ghost compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
+        ${comparisonPdfButton(!readable || columns.some((column) => column.status === "loading"))}
+      </div>
     </header>
     <div class="compare-reviewed__heads" data-compare-heads>
       ${columns.map((column, index) => headHtml(column, index, photos)).join("")}
     </div>
     ${stripHtml(columns)}
-    ${hasProgram ? sectionHtml("program", columns, programRows()) : ""}
     ${sectionHtml("admission", columns, admissionRows(columns, profileExamIds), needsHint)}
     ${sectionHtml("cost", columns, costRows(budgetUsd), budgetHint)}
+    ${hasProgram ? sectionHtml("program", columns, programRows()) : ""}
     ${sectionHtml("university", columns, universityRows())}
     <p class="compare-reviewed__note">${escapeHtml(label("note"))}</p>
   </div>`;
@@ -910,6 +950,10 @@ export function mountReviewedComparison(container, universities, photos) {
   }
 
   const onClick = (event) => {
+    if (event.target.closest("[data-compare-pdf-export]")) {
+      printReviewedComparison(container, columns);
+      return;
+    }
     const swap = event.target.closest("[data-compare-swap]");
     if (swap) {
       const colIndex = columns.findIndex((entry) => entry.id === swap.dataset.compareSwap);

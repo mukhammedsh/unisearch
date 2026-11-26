@@ -87,8 +87,9 @@ for (const item of cases) {
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
     await setNativeSelect(page, "admissionsRoute", "mit-first-year");
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-    const academic = page.locator("#detailRequirements .admissions-reading__section").first();
-    await expect(academic).toContainText(/SAT.*ACT/);
+    const keyFacts = page.locator("#detailRequirements [data-admissions-key-facts]");
+    await expect(keyFacts).toContainText(/SAT.*ACT/);
+    await expect(page.locator("#detailRequirements .admissions-reading__section > h3").filter({ hasText: /Academic tests|Академические экзамены|Академиялық/ })).toHaveCount(0);
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText("IELTS Academic");
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText(/7[.,]5/);
     await expect(page.locator('#detailRequirements [data-source-summary="requirements"]')).toContainText({ eng: "recommended preparation", rus: "рекомендуемую подготовку", kaz: "ұсынылатын даярлықты" }[item.language]);
@@ -108,7 +109,7 @@ for (const item of cases) {
     await page.locator("#admissionsSaveChoice").click();
     await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
     fs.mkdirSync(evidenceDir, { recursive: true });
-    await academic.evaluate(node => node.scrollIntoView({ block: "start" }));
+    await keyFacts.evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-requirements.png`) });
 
     await tab(page, "deadlines");
@@ -181,43 +182,53 @@ test("changing language preserves program search, browsing level and admission s
   }
 });
 
-test("MIT's English-test recommendation sits beside the applicant's IELTS and links to the profile", async ({ page }) => {
-  // Aruzhan: IELTS 6.5 without section scores, SAT 1300, no native language stated yet.
+test("MIT's English-test recommendation links to the profile when unscored and marks met or below when scored", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "eng");
     // Seeded once, so later steps can change the stored profile across reloads.
     if (!localStorage.getItem("unisearch_profile")) localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2,
-      exams: [{ id: "SAT", exam: "SAT", score: 1300 }], languages: [{ code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] }));
+      exams: [{ id: "SAT", exam: "SAT", score: 1300 }], languages: [] }));
   });
   await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-first-year&admission_level=undergraduate#tab-admission");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   const recommendation = page.locator("[data-key-fact='requirements'] li[data-recommendation]");
-  await expect(recommendation).toContainText("Recommended English test: IELTS Academic 7.0 (better 7.5)");
-  await expect(recommendation).toContainText("Not required");
-  await expect(recommendation).toContainText("You have: IELTS Academic 6.5");
-  await expect(recommendation).not.toContainText("below the minimum");
+  await expect(recommendation).toHaveAttribute("data-mark", "recommended");
+  await expect(recommendation).toContainText("English test (optional): IELTS Academic — minimum 7.0, recommended 7.5");
+  await expect(recommendation).toContainText("Strongly recommended");
   // The check records stay behind the closed Sources disclosure.
   await expect(page.locator("[data-admissions-key-facts] .admissions-catalog__assessment-detail")).toHaveCount(0);
   await expect(page.locator("#detailRequirements details[data-all-records]")).not.toHaveAttribute("open", "");
-  await recommendation.getByRole("link", { name: /Is English your native language/ }).click();
+  await recommendation.getByRole("link", { name: "Add language details in profile" }).click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
   // A new "native" entry opens without choosing the language for the applicant.
   await expect(page.locator("#langKind")).toHaveValue("native");
   await expect(page.locator("#languagesBlock")).toBeInViewport();
 
-  // Saying another language is native keeps the row without the hint; saying English is native removes it.
-  // The profile is changed from the university page, so the profile page does not save its own copy over it.
+  // Adding IELTS >= 7.0 marks the recommendation as met without showing a profile hint; IELTS < 7.0 marks it below.
   await page.goto("/university.html?id=mit-usa-cambridge&admission_application_route=mit-first-year&admission_level=undergraduate#tab-admission");
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
   await page.evaluate(() => {
     const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
-    profile.languages.push({ code: "ru", kind: "native" });
+    profile.languages.push({ code: "en", kind: "exam", exam: "IELTS", score: 7.5 });
     localStorage.setItem("unisearch_profile", JSON.stringify(profile));
   });
   await page.reload();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-  await expect(recommendation).toContainText("You have: IELTS Academic 6.5");
+  await expect(recommendation).toHaveAttribute("data-mark", "met");
+  await expect(recommendation).toContainText("You have: IELTS Academic 7.5");
   await expect(recommendation.getByRole("link")).toHaveCount(0);
+
+  await page.evaluate(() => {
+    const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
+    profile.languages = [{ code: "en", kind: "exam", exam: "IELTS", score: 6.5 }];
+    localStorage.setItem("unisearch_profile", JSON.stringify(profile));
+  });
+  await page.reload();
+  await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
+  await expect(recommendation).toHaveAttribute("data-mark", "below");
+  await expect(recommendation).toContainText("You have: IELTS Academic 6.5, below the minimum");
+  await expect(recommendation.getByRole("link")).toHaveCount(0);
+
   await page.evaluate(() => {
     const profile = JSON.parse(localStorage.getItem("unisearch_profile"));
     profile.languages.push({ code: "en", kind: "native" });

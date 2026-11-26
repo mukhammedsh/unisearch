@@ -16,8 +16,8 @@ test("NU guest discovers Foundation, reads its own price and searches without an
   await page.goto("/index.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator(".uni-card").first()).toBeVisible();
-  const skip = page.getByRole("button", { name: /Skip.*tour|Skip.*intro|Skip.*tutorial/i });
-  await skip.click();
+  await page.locator("#uTourModal [data-action='skip']").click();
+  await expect(page.locator("#uTourModal")).toBeHidden();
   await page.locator("#qInput").fill("Nazarbayev");
   await page.getByRole("link", { name: "Nazarbayev University", exact: true }).click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");

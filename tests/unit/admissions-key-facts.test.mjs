@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { costFact, deadlineFact, englishRecommendationItem, englishStatus, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, renderTabAnswers, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+const { costFact, coveredRequirementFactIds, deadlineFact, englishRecommendationItem, englishStatus, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, renderTabAnswers, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 await initI18n();
 setLanguage("eng", { emit: false });
 
@@ -217,7 +217,7 @@ test("requirements summarise measurable checks and fall back to the published re
     { measurable: true, status: "met" }, { measurable: true, status: "unmet" }, { status: "unassessed" }] } } } }));
   assert.match(measured.text, /1 of 2 measurable minimums met \(50%\)/);
   assert.equal(measured.tone, "warning");
-  assert.deepEqual(measured.notes, ["Documents and other conditions are not checked here; the university's published records are under “Sources”."]);
+  assert.deepEqual(measured.notes, ["Documents and other requirements are not checked automatically."]);
   const unavailable = requirementsFact(context({ assessment: { chancePercent: null, reason: "missing_evidence", activeChoice: { details: { checks: [] } } } }));
   assert.equal(unavailable.text, "Add your results to your profile to compare them with the minimums.");
 });
@@ -237,7 +237,7 @@ test("missing requirement evidence names what to add and which overall scores al
   assert.equal(fact.text, "Add your results to your profile to compare them with the minimums.");
   assert.equal(fact.tone, "");
   // The checklist names each published minimum and what to add, so the notes keep only the manual conditions.
-  assert.deepEqual(fact.notes, ["Documents and other conditions are not checked here; the university's published records are under “Sources”."]);
+  assert.deepEqual(fact.notes, ["Documents and other requirements are not checked automatically."]);
   const resolved = context({ assessment: { chancePercent: null, reason: "missing_evidence",
     activeChoice: { details: { checks: [academic, english, tmua, presence, { status: "unassessed" }] } } } });
   assert.deepEqual(minimumChecklist(resolved).map(({ kind, mark, text, note }) => ({ kind, mark, text, note })), [
@@ -247,8 +247,8 @@ test("missing requirement evidence names what to add and which overall scores al
     { kind: "exam", mark: "todo", text: "Required test: TMUA", note: "Add: TMUA result" },
     { kind: "exam", mark: "todo", text: "Required test, one of: SAT, ACT", note: "" },
   ]);
-  // A language check that asks for a result or section scores links to that test in the profile; other checks do not.
-  assert.deepEqual(minimumChecklist(resolved).map(item => item.href || ""), ["", "/profile.html?language_exam=IELTS", "", ""]);
+  // A language check links directly to that test in the profile; other missing checks link to the profile editor.
+  assert.deepEqual(minimumChecklist(resolved).map(item => item.href || ""), ["/profile.html", "/profile.html?language_exam=IELTS", "/profile.html", ""]);
   assert.match(renderAdmissionsKeyFacts(resolved, { now: NOW }), /<a class="admissions-key-facts__checklist-note" href="\/profile.html\?language_exam=IELTS" data-route="profile">Add: IELTS Academic test date and section scores<\/a>/);
   // Met and unmet checks state the applicant's own result; IELTS bands keep one decimal and scores no digit grouping.
   const ielts = { kind: "language_requirement", status: "unmet", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6 }] }, provided: { exam: "IELTS", score: 5.5 } };
@@ -408,43 +408,96 @@ const englishRecommendation = (extra = {}) => ({ id: "ug-english-recommendation"
   conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)" }], ...extra });
 const withRecommendation = row => context({ facts: [row], fact_groups: { requirements: [row.id] } });
 
-test("an English-test recommendation for non-native speakers is a recommendation beside the applicant's result, never a pass or fail", () => {
+test("an English-test recommendation for non-native speakers shows a neutral recommendation until scored, then marks met or below without a profile hint", () => {
   const resolved = withRecommendation(englishRecommendation());
-  const ielts = { code: "en", kind: "exam", exam: "IELTS", score: 6.5 };
+  const ieltsBelow = { code: "en", kind: "exam", exam: "IELTS", score: 6.5 };
+  const ieltsMet = { code: "en", kind: "exam", exam: "IELTS", score: 7.5 };
   assert.equal(englishStatus({ languages: [{ code: "en", kind: "native" }] }), "native");
-  assert.equal(englishStatus({ languages: [{ code: "ru", kind: "native" }, ielts] }), "not_native");
-  assert.equal(englishStatus({ languages: [ielts] }), "unknown");
+  assert.equal(englishStatus({ languages: [{ code: "ru", kind: "native" }, ieltsBelow] }), "not_native");
+  assert.equal(englishStatus({ languages: [ieltsBelow] }), "unknown");
   // English stated as native: no row at all.
-  assert.equal(englishRecommendationItem(resolved, { languages: [{ code: "en", kind: "native" }, ielts] }), null);
-  // Another native language: the row names the published minimum and the better score next to the applicant's own result.
-  const notNative = englishRecommendationItem(resolved, { languages: [{ code: "ru", kind: "native" }, ielts] });
-  assert.deepEqual({ ...notNative }, { kind: "language_recommendation", factId: "ug-english-recommendation", mark: "recommended",
-    text: "Recommended English test: IELTS Academic 7.0 (better 7.5)",
-    // With another native language stated, the condition left to check is the applicant's own use of English.
-    note: "Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.",
-    have: "You have: IELTS Academic 6.5" });
-  // Unknown native language: the same row plus a link to say it in the profile.
-  const unknown = englishRecommendationItem(resolved, { languages: [ielts] });
-  assert.equal(unknown.text, notNative.text);
-  assert.match(unknown.note, /if English is not your first language/);
-  assert.deepEqual(unknown.hint, { text: "Is English your native language? Say so in your profile, and this line will show only when it applies to you.", href: "/profile.html?language=en" });
-  // The applicant's own test leads; without one, IELTS stands for the list.
-  assert.match(englishRecommendationItem(resolved, { languages: [{ code: "en", kind: "exam", exam: "DET", score: 115 }] }).text, /Duolingo.*120 \(better 125\)/);
-  assert.equal(englishRecommendationItem(resolved, {}).have, undefined);
+  assert.equal(englishRecommendationItem(resolved, { languages: [{ code: "en", kind: "native" }, ieltsBelow] }), null);
+
+  // Without an English test and unknown native language: neutral recommendation + language-profile hint.
+  const noScoreUnknown = englishRecommendationItem(resolved, {});
+  assert.deepEqual({ ...noScoreUnknown }, {
+    kind: "language_recommendation",
+    factId: "ug-english-recommendation",
+    mark: "recommended",
+    text: "English test (optional): IELTS Academic — minimum 7.0, recommended 7.5",
+    note: "Strongly recommended if English is not your first language and you have used it for less than five years or do not speak it at home or at school.",
+    condition: "if English is not your first language",
+    hint: { text: "Add language details in profile", href: "/profile.html?language=en" },
+  });
+
+  // Without an English test and non-native language stated: neutral recommendation + add-test hint.
+  const noScoreNotNative = englishRecommendationItem(resolved, { languages: [{ code: "ru", kind: "native" }] });
+  assert.deepEqual({ ...noScoreNotNative }, {
+    kind: "language_recommendation",
+    factId: "ug-english-recommendation",
+    mark: "recommended",
+    text: "English test (optional): IELTS Academic — minimum 7.0, recommended 7.5",
+    note: "Strongly recommended if you have used English for less than five years or do not speak it at home or at school.",
+    hint: { text: "Add an English test", href: "/profile.html?language_exam=IELTS" },
+  });
+
+  // Entered IELTS >= 7.0 (with or without native language): green met mark, no profile hint.
+  const metItem = englishRecommendationItem(resolved, { languages: [ieltsMet] });
+  assert.equal(metItem.mark, "met");
+  assert.equal(metItem.have, "You have: IELTS Academic 7.5");
+  assert.equal(metItem.hint, undefined);
+  assert.equal(englishRecommendationItem(resolved, { languages: [{ code: "ru", kind: "native" }, ieltsMet] }).mark, "met");
+
+  // Entered IELTS < 7.0: below warning mark, no profile hint.
+  const belowItem = englishRecommendationItem(resolved, { languages: [{ code: "ru", kind: "native" }, ieltsBelow] });
+  assert.equal(belowItem.mark, "below");
+  assert.equal(belowItem.have, "You have: IELTS Academic 6.5, below the minimum");
+  assert.equal(belowItem.hint, undefined);
+
+  // Entered DET < 120: applicant's own test leads with below mark.
+  const detBelow = englishRecommendationItem(resolved, { languages: [{ code: "en", kind: "exam", exam: "DET", score: 115 }] });
+  assert.equal(detBelow.mark, "below");
+  assert.match(detBelow.text, /Duolingo.*minimum 120, recommended 125/);
+  assert.equal(detBelow.have, "You have: Duolingo English Test (DET) 115, below the minimum");
+
   // Not a recommendation of this kind, or not reviewed: nothing.
   assert.equal(englishRecommendationItem(withRecommendation(englishRecommendation({ conditions: [] })), {}), null);
   assert.equal(englishRecommendationItem(withRecommendation(englishRecommendation({ value: { presence: "required", minima_and_recommendations: [] } })), {}), null);
   assert.equal(englishRecommendationItem(withRecommendation(englishRecommendation({ review_status: "unverified", normalized_status: { publication: "published", review: "unverified" } })), {}), null);
 
-  const html = renderAdmissionsKeyFacts(resolved, { now: NOW, profile: { languages: [ielts] } });
-  assert.match(html, /<li data-mark="recommended" data-recommendation>/);
-  assert.match(html, /Recommendation, not a requirement/);
-  assert.doesNotMatch(html, /below the minimum|Below the published minimum/);
-  assert.match(html, /href="\/profile.html\?language=en" data-route="profile"/);
+  const htmlUnknown = renderAdmissionsKeyFacts(resolved, { now: NOW, profile: {} });
+  assert.match(htmlUnknown, /<li data-mark="recommended" data-recommendation>/);
+  assert.match(htmlUnknown, /Recommendation, not a requirement/);
+  assert.match(htmlUnknown, /href="\/profile\.html\?language=en" data-route="profile"/);
+
+  const htmlMet = renderAdmissionsKeyFacts(resolved, { now: NOW, profile: { languages: [ieltsMet] } });
+  assert.match(htmlMet, /<li data-mark="met" data-recommendation>/);
+  assert.match(htmlMet, /You have: IELTS Academic 7\.5/);
+  assert.doesNotMatch(htmlMet, /href="\/profile\.html\?language=en"/);
+
+  const htmlBelow = renderAdmissionsKeyFacts(resolved, { now: NOW, profile: { languages: [ieltsBelow] } });
+  assert.match(htmlBelow, /<li data-mark="below" data-recommendation>/);
+  assert.match(htmlBelow, /You have: IELTS Academic 6\.5, below the minimum/);
+
   assert.doesNotMatch(renderAdmissionsKeyFacts(resolved, { now: NOW, profile: { languages: [{ code: "en", kind: "native" }] } }), /data-recommendation/);
+
   setLanguage("rus", { emit: false });
-  assert.equal(englishRecommendationItem(resolved, { languages: [ielts] }).text, "Рекомендуемый тест по английскому: IELTS (академический модуль) 7,0 (лучше 7,5)");
+  assert.equal(englishRecommendationItem(resolved, { languages: [ieltsMet] }).text, "Тест по английскому (необязательно): IELTS Academic — минимум 7,0, рекомендуется 7,5");
   setLanguage("eng", { emit: false });
+
+  // coveredRequirementFactIds collects both minimumChecklist and englishRecommendationItem fact ids,
+  // and required_exam_presence with cutoff: null surfaces the no-passing-score detail in the checklist.
+  const presenceFact = { id: "ug-sat-act", value: { presence: "required", alternatives: ["SAT", "ACT"], cutoff: null } };
+  const both = context({
+    facts: [presenceFact, englishRecommendation()],
+    fact_groups: { requirements: ["ug-sat-act", "ug-english-recommendation"] },
+    assessment: { activeChoice: { details: { checks: [{ kind: "required_exam_presence", factId: "ug-sat-act", status: "missing", examIds: ["SAT", "ACT"] }] } } },
+  });
+  const checklistWithCutoff = minimumChecklist(both);
+  assert.equal(checklistWithCutoff[0].detail, "There is no passing score: you need a result, and the decision looks at your whole application.");
+  assert.match(renderAdmissionsKeyFacts(both, { now: NOW }), /no passing score/);
+  assert.deepEqual([...coveredRequirementFactIds(both, {})], ["ug-sat-act", "ug-english-recommendation"]);
+  assert.deepEqual([...coveredRequirementFactIds(both, { languages: [{ code: "en", kind: "native" }] })], ["ug-sat-act"]);
 });
 
 test("a Kazakhstan document without a published ruling is answered at the top, a published one is not", async () => {

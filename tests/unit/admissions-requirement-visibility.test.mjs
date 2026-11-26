@@ -73,7 +73,7 @@ test("a recommendation is not listed as still to prepare and keeps its condition
   assert.equal(plain.mark, "recommended");
   assert.match(plain.text, /strongly recommended.*if English is not your first language/);
   const [withProfile] = checklistItems(resolvedWith([english]), { languages: [] });
-  assert.match(withProfile.text, /IELTS Academic 7\.0 \(better 7\.5\), if English is not your first language/);
+  assert.match(withProfile.text, /IELTS Academic — minimum 7\.0, recommended 7\.5, if English is not your first language/);
   const [notNative] = checklistItems(resolvedWith([english]), { languages: [{ code: "ru", kind: "native" }] });
   assert.doesNotMatch(notNative.text, /first language/);
 });
@@ -112,7 +112,7 @@ test("funding shows award, coverage and deadline lines, and never points to reco
   assert.deepEqual(fundingKeyLines([grants]), ["Separate application after a regular admission offer. 2027/28 deadlines are TBA.", "75% of tuition: citizens of Kazakhstan in listed vulnerable categories"]);
   assert.deepEqual(fundingKeyLines([fact("prose", "financial_aid", "Aid is need-based.")]), []);
   const withLines = fundingFact(resolvedWith([inspires]));
-  assert.match(withLines.text, /^What the university publishes for this path/);
+  assert.match(withLines.text, /^Published funding options/);
   assert.equal(withLines.lines.length, 3);
   // Without a summarisable record the text points to the sources, not to a description "below".
   assert.doesNotMatch(fundingFact(resolvedWith([fact("prose", "financial_aid", "Aid is need-based.")]), { onCostsTab: true }).text, /described below/);
