@@ -174,6 +174,7 @@ export function englishRecommendationItem(resolved, profile = {}) {
 // A language check that needs a result or section scores links to that test in the profile.
 export function minimumChecklist(resolved) {
   const checks = resolved?.assessment?.activeChoice?.details?.checks || [];
+  const factsById = new Map((resolved?.facts || []).map(row => [row.id, row]));
   return checks.filter(check => REQUIREMENT_KINDS[check.kind]).map(check => {
     // A required test may come with only what to add (Imperial's TMUA), which still names the test.
     const named = ids => [...new Set(ids.filter(Boolean))].map(exam_id => ({ exam_id }));
@@ -196,10 +197,25 @@ export function minimumChecklist(resolved) {
       // A result the check could not count (NU accepts SAT for Foundation only from international applicants) is not a pass.
       : have && belowSections ? tFormat("university.admissions.key_facts.minimum_have_below_sections", { result: have, sections: belowSections })
       : have ? tFormat(`university.admissions.key_facts.minimum_have${{ below: "_below", todo: "_unconfirmed" }[mark] || ""}`, { result: have }) : "";
+    const detail = check.kind === "required_exam_presence" && factsById.get(check.factId)?.value?.cutoff === null
+      ? t("university.admissions.reading.no_numeric_cutoff") : "";
     const languageExam = check.kind === "language_requirement" && adds.length ? (check.missingInputs || []).find(input => input.exam)?.exam : "";
     const href = !adds.length ? "" : languageExam ? profileLanguageExamHref(languageExam) : "/profile.html";
-    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(href ? { href } : {}) };
+    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(detail ? { detail } : {}), ...(href ? { href } : {}) };
   }).filter(Boolean);
+}
+
+/**
+ * Fact ids already summarized in the key-facts requirements checklist, so the reading section below does not repeat them.
+ * @param {object|null} resolved The admissions-context response.
+ * @param {{languages?: Array<object>}} [profile] The API profile.
+ * @returns {Set<string>}
+ */
+export function coveredRequirementFactIds(resolved, profile = {}) {
+  const ids = minimumChecklist(resolved).map(item => item.factId);
+  const recommendationId = englishRecommendationItem(resolved, profile)?.factId;
+  if (recommendationId) ids.push(recommendationId);
+  return new Set(ids.filter(Boolean));
 }
 
 // The same marks as the Overview checklist: a check, a warning, or a dot for something still to add; a recommendation
@@ -216,7 +232,7 @@ function renderMinimumChecklist(items) {
     : `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.note)}</span>`;
   const hint = item => item.hint ? profileLink(item.hint.href, item.hint.text, "admissions-key-facts__checklist-note") : "";
   return `<ul class="admissions-key-facts__checklist">${items.map(item => `<li data-mark="${item.mark}"${item.kind === "language_recommendation" ? " data-recommendation" : ""}><span class="admissions-key-facts__mark" aria-hidden="true">${MARK_ICONS[item.mark] ? heroIcon(MARK_ICONS[item.mark], "ui-icon ui-icon--16") : ""}</span>
-    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${note(item)}${item.have ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.have)}</span>` : ""}${hint(item)}</span></li>`).join("")}</ul>`;
+    <span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${item.mark}`))}: </span><span><span class="admissions-key-facts__checklist-text">${escapeHtml(item.text)}</span>${note(item)}${item.have ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.have)}</span>` : ""}${item.detail ? `<span class="admissions-key-facts__checklist-note">${escapeHtml(item.detail)}</span>` : ""}${hint(item)}</span></li>`).join("")}</ul>`;
 }
 
 // Keeps a test-specific date only when the applicant has not entered a different test of the same requirement.

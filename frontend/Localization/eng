@@ -2003,7 +2003,7 @@ profile.evidence.error.credential_score: Enter the published credential score pe
 profile.evidence.error.max_institution: You can save up to 20 institution evidence records.
 university.admissions.catalog.simple_title: How to apply
 university.admissions.catalog.browse_note: Search by subject or program. Open a result for study and admission details.
-university.admissions.catalog.advanced_note: Needed only when the university publishes different terms for different entry years or fee statuses.
+university.admissions.catalog.advanced_note: Only needed if costs or rules depend on entry year or fee status.
 university.admissions.catalog.choose_program_hint: Choose a program in the Programs tab to see its published application paths.
 university.admissions.catalog.choose_program_profile: Admission is published for each program. Programs that match the subject in your profile:
 university.admissions.catalog.select_program: See admission for this program
@@ -2044,14 +2044,14 @@ university.admissions.catalog.applicant.transfer: Transfer applicant
 university.admissions.catalog.applicant.graduate: Graduate applicant
 university.admissions.catalog.cycle_label: Intended entry cycle
 university.admissions.catalog.cycle_example: For example: Fall 2027 entry
-university.admissions.catalog.fee_label: Self-reported fee status
+university.admissions.catalog.fee_label: Fee status
 university.admissions.catalog.fee.unknown: Not determined
-university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (self-reported)
-university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (self-reported)
-university.admissions.catalog.fee.other: Other / requires clarification
+university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic
+university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international
+university.admissions.catalog.fee.other: Other
 university.admissions.catalog.apply_context: Apply filters
 university.admissions.catalog.legacy_pending: Your previous program selection has not been mapped to this reviewed catalog. Choose the study option again; your saved profile is preserved.
-university.admissions.catalog.incompatible_context: These selections do not match a linked program, route or study level. Change the context; no university-wide requirements have been substituted.
+university.admissions.catalog.incompatible_context: This combination of program, path, and level doesn't match. Pick another option.
 university.admissions.catalog.loading: Loading reviewed information
 university.admissions.catalog.load_error: Reviewed information could not be loaded. Try again.
 university.admissions.catalog.retry: Retry
@@ -2356,8 +2356,8 @@ university.admissions.catalog.study_level.undergraduate: Undergraduate
 university.admissions.catalog.study_level.masters: Master's
 university.admissions.catalog.study_level.doctoral: Doctoral
 university.admissions.catalog.study_level.professional: Professional
-university.admissions.catalog.fee.home: Self-reported home/domestic status
-university.admissions.catalog.fee.overseas: Self-reported international/overseas status
+university.admissions.catalog.fee.home: Home / domestic
+university.admissions.catalog.fee.overseas: Overseas / international
 university.admissions.catalog.enum.required: Required
 university.admissions.catalog.enum.not_required: Not required
 university.admissions.catalog.enum.recommended: Recommended
@@ -2933,7 +2933,7 @@ university.admissions.entry.route_help.nu-residency-unconditional: Read the stan
 university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
 university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
 university.admissions.key_facts.title: Key facts for applying
-university.admissions.key_facts.note: A summary of published facts, not an admission decision.
+university.admissions.key_facts.note: Official facts only — not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
 university.admissions.key_facts.requirements_manual: Documents and other requirements are not checked automatically.
@@ -2988,8 +2988,8 @@ university.admissions.catalog.field.time: Time
 university.admissions.catalog.field.timezone: Time zone
 university.admissions.catalog.field.scope: Applies to
 university.admissions.catalog.record_link: Show full source record
-university.admissions.entry.browsing_not_saved: Remember the path, and the catalog and comparison will check your results against its minimums. Nothing is sent to the university.
-university.admissions.entry.saved_context: Path remembered: the catalog and comparison check your results against its minimums. Nothing is sent to the university.
+university.admissions.entry.browsing_not_saved: Save this path to compare it with your profile in the catalog and comparison. Nothing is sent to the university.
+university.admissions.entry.saved_context: Saved for catalog and comparison.
 university.admissions.entry.saved_other: Another path is remembered: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Apply to the selected undergraduate course through UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Apply to the selected postgraduate program.
@@ -3323,7 +3323,7 @@ university.admissions.key_facts.english_levels: English by course level: Standar
 university.admissions.key_facts.english_level_standard: Standard
 university.admissions.key_facts.english_level_higher: Higher
 university.admissions.key_facts.english_other_tests: Other accepted tests (TOEFL, PTE, Duolingo and more) are in the university's official table under “Sources”.
-university.admissions.key_facts.funding_lines_lead: What the university publishes for this path. Funding is not guaranteed and is not subtracted from the cost:
+university.admissions.key_facts.funding_lines_lead: Published funding options (not guaranteed and not subtracted from the cost):
 university.admissions.key_facts.funding_apply_by: Apply by {date}, {time}
 university.admissions.key_facts.funding_coverage: {percent}% of tuition: {group}
 university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: socially vulnerable categories of Kazakhstan citizens

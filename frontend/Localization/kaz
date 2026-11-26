@@ -2003,7 +2003,7 @@ profile.evidence.error.credential_score: Жарияланған біліктіл
 profile.evidence.error.max_institution: Ең көбі 20 оқу орны туралы растау сақтауға болады.
 university.admissions.catalog.simple_title: Қалай өтініш беруге болады
 university.admissions.catalog.browse_note: Бағыт немесе бағдарлама бойынша іздеңіз. Оқу және қабылдау туралы білу үшін нәтижені ашыңыз.
-university.admissions.catalog.advanced_note: Университет түсу жылына немесе төлем мәртебесіне қарай әртүрлі шарттар жарияласа ғана қажет.
+university.admissions.catalog.advanced_note: Баға не шарттар түсу жылына немесе төлем мәртебесіне байланысты болса ғана қажет.
 university.admissions.catalog.choose_program_hint: «Бағдарламалар» бөлімінде бағдарламаны таңдаңыз: оған қалай түсуге болатыны көрінеді.
 university.admissions.catalog.choose_program_profile: Мұнда түсу шарттары әр бағдарламада өзінше. Профиліңіздегі бағытқа сәйкес бағдарламалар:
 university.admissions.catalog.select_program: Осы бағдарламаға түсуді көру
@@ -2044,14 +2044,14 @@ university.admissions.catalog.applicant.transfer: Ауысу арқылы түс
 university.admissions.catalog.applicant.graduate: Жоғары оқу орнынан кейінгі бағдарламаға түсуші
 university.admissions.catalog.cycle_label: Жоспарланған қабылдау циклі
 university.admissions.catalog.cycle_example: Мысалы: 2027 жылғы күзгі қабылдау
-university.admissions.catalog.fee_label: Өзі көрсеткен оқу ақысы мәртебесі
+university.admissions.catalog.fee_label: Оқу ақысы мәртебесі
 university.admissions.catalog.fee.unknown: Анықталмаған
-university.admissions.catalog.fee.self_reported_home_domestic: Өз еліндегі / жергілікті (өзі көрсеткен)
-university.admissions.catalog.fee.self_reported_international_overseas: Шетелдік / халықаралық (өзі көрсеткен)
-university.admissions.catalog.fee.other: Басқа / нақтылау қажет
+university.admissions.catalog.fee.self_reported_home_domestic: Жергілікті тариф (Home)
+university.admissions.catalog.fee.self_reported_international_overseas: Шетелдік тариф (Overseas)
+university.admissions.catalog.fee.other: Басқа
 university.admissions.catalog.apply_context: Сүзгілерді қолдану
 university.admissions.catalog.legacy_pending: Бұрын таңдаған бағдарламаңыз осы тексерілген каталогқа сәйкестендірілмеген. Оқу нұсқасын қайта таңдаңыз; сақталған профиліңіз қалады.
-university.admissions.catalog.incompatible_context: Бұл таңдаулар байланыстырылған бағдарламаға, өтініш беру бағытына немесе оқу деңгейіне сәйкес келмейді. Контексті өзгертіңіз; университетке ортақ талаптар олардың орнына қолданылған жоқ.
+university.admissions.catalog.incompatible_context: Таңдаулар сәйкес келмейді: бағдарлама, түсу жолы және деңгей үйлеспейді. Басқа нұсқаны таңдаңыз.
 university.admissions.catalog.loading: Тексерілген ақпарат жүктелуде
 university.admissions.catalog.load_error: Тексерілген ақпаратты жүктеу мүмкін болмады. Қайталап көріңіз.
 university.admissions.catalog.retry: Қайталау
@@ -2356,8 +2356,8 @@ university.admissions.catalog.study_level.undergraduate: Бакалавриат
 university.admissions.catalog.study_level.masters: Магистратура
 university.admissions.catalog.study_level.doctoral: Докторантура
 university.admissions.catalog.study_level.professional: Кәсіби бағдарлама
-university.admissions.catalog.fee.home: Өз еліндегі / жергілікті мәртебе (өзі көрсеткен)
-university.admissions.catalog.fee.overseas: Шетелдік / халықаралық мәртебе (өзі көрсеткен)
+university.admissions.catalog.fee.home: Жергілікті тариф (Home)
+university.admissions.catalog.fee.overseas: Шетелдік тариф (Overseas)
 university.admissions.catalog.enum.required: Міндетті
 university.admissions.catalog.enum.not_required: Міндетті емес
 university.admissions.catalog.enum.recommended: Ұсынылады
@@ -2933,7 +2933,7 @@ university.admissions.entry.route_help.nu-residency-unconditional: Резиде�
 university.admissions.entry.route_help.nu-residency-conditional-umc: UMC ұсынған үміткерлерге арналған жеке шартты жол. Ұсыным мен оқуға тіркелу шарттарын тексеріңіз: бұл емтихандардан жалпы босату емес.
 university.admissions.reading.structured_study: Оқу туралы жарияланған мәліметтер төменде берілген. Қысқаша мәтіндік шолу жоқ.
 university.admissions.key_facts.title: Түсу үшін негізгісі
-university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
+university.admissions.key_facts.note: Тек ресми деректер, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
 university.admissions.key_facts.requirements_manual: Құжаттар мен басқа талаптар автоматты түрде тексерілмейді.
@@ -2988,8 +2988,8 @@ university.admissions.catalog.field.time: Уақыты
 university.admissions.catalog.field.timezone: Уақыт белдеуі
 university.admissions.catalog.field.scope: Қатысты
 university.admissions.catalog.record_link: Дереккөздің толық жазбасын көрсету
-university.admissions.entry.browsing_not_saved: Бұл нұсқаны сақтасаңыз, каталог пен салыстыру нәтижелеріңізді оның ең төменгі талаптарымен салыстырады. Университетке ештеңе жіберілмейді.
-university.admissions.entry.saved_context: Нұсқа сақталды: каталог пен салыстыру нәтижелеріңізді оның ең төменгі талаптарымен салыстырады. Университетке ештеңе жіберілмейді.
+university.admissions.entry.browsing_not_saved: Бұл нұсқаны сақтасаңыз, каталог пен салыстыру оны профиліңізбен салыстырады. Университетке ештеңе жіберілмейді.
+university.admissions.entry.saved_context: Каталог пен салыстыру үшін сақталды.
 university.admissions.entry.saved_other: Басқа нұсқа сақталған: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Таңдалған бакалавриат курсына UCAS арқылы өтініш беріңіз.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Таңдалған жоғары оқу орнынан кейінгі бағдарламаға өтініш беріңіз.
@@ -3323,7 +3323,7 @@ university.admissions.key_facts.english_levels: Курс деңгейі бойы
 university.admissions.key_facts.english_level_standard: Standard
 university.admissions.key_facts.english_level_higher: Higher
 university.admissions.key_facts.english_other_tests: Қабылданатын басқа емтихандар (TOEFL, PTE, Duolingo т.б.) — университеттің ресми кестесінде, «Дереккөздер» бөлімінде.
-university.admissions.key_facts.funding_lines_lead: Университет осы жол бойынша жариялаған мәлімет. Қаржыландыру кепілдендірілмейді және құннан шегерілмейді:
+university.admissions.key_facts.funding_lines_lead: Жарияланған қолдау түрлері (кепілдендірілмейді және оқу ақысынан шегерілмейді):
 university.admissions.key_facts.funding_apply_by: Өтініш беру мерзімі: {date}, {time}
 university.admissions.key_facts.funding_coverage: Оқу ақысының {percent}%: {group}
 university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: Қазақстан азаматтарының әлеуметтік осал санаттары

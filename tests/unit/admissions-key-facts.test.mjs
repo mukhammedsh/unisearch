@@ -5,7 +5,7 @@ import { test } from "node:test";
 
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
-const { costFact, deadlineFact, englishRecommendationItem, englishStatus, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, renderTabAnswers, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
+const { costFact, coveredRequirementFactIds, deadlineFact, englishRecommendationItem, englishStatus, fundingFact, minimumChecklist, renderAdmissionsKeyFacts, renderTabAnswers, requirementsFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 await initI18n();
 setLanguage("eng", { emit: false });
 
@@ -484,6 +484,20 @@ test("an English-test recommendation for non-native speakers shows a neutral rec
   setLanguage("rus", { emit: false });
   assert.equal(englishRecommendationItem(resolved, { languages: [ieltsMet] }).text, "Тест по английскому (необязательно): IELTS Academic — минимум 7,0, рекомендуется 7,5");
   setLanguage("eng", { emit: false });
+
+  // coveredRequirementFactIds collects both minimumChecklist and englishRecommendationItem fact ids,
+  // and required_exam_presence with cutoff: null surfaces the no-passing-score detail in the checklist.
+  const presenceFact = { id: "ug-sat-act", value: { presence: "required", alternatives: ["SAT", "ACT"], cutoff: null } };
+  const both = context({
+    facts: [presenceFact, englishRecommendation()],
+    fact_groups: { requirements: ["ug-sat-act", "ug-english-recommendation"] },
+    assessment: { activeChoice: { details: { checks: [{ kind: "required_exam_presence", factId: "ug-sat-act", status: "missing", examIds: ["SAT", "ACT"] }] } } },
+  });
+  const checklistWithCutoff = minimumChecklist(both);
+  assert.equal(checklistWithCutoff[0].detail, "There is no passing score: you need a result, and the decision looks at your whole application.");
+  assert.match(renderAdmissionsKeyFacts(both, { now: NOW }), /no passing score/);
+  assert.deepEqual([...coveredRequirementFactIds(both, {})], ["ug-sat-act", "ug-english-recommendation"]);
+  assert.deepEqual([...coveredRequirementFactIds(both, { languages: [{ code: "en", kind: "native" }] })], ["ug-sat-act"]);
 });
 
 test("a Kazakhstan document without a published ruling is answered at the top, a published one is not", async () => {

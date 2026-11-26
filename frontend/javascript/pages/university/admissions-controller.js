@@ -5,7 +5,7 @@ import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, stud
 import { safeUrl } from "../_shared.js";
 import { heroIcon } from "../../icons.js";
 import { renderApplicantSection } from "./admissions-presentation.js";
-import { renderAdmissionsKeyFacts, renderTabAnswers, requirementsCheckDetails } from "./admissions-key-facts.js";
+import { coveredRequirementFactIds, renderAdmissionsKeyFacts, renderTabAnswers, requirementsCheckDetails } from "./admissions-key-facts.js";
 import { glossaryTerms, renderTermHelp, renderTermList, renderTermsFor, routeWording } from "./admissions-glossary.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
@@ -225,7 +225,11 @@ export function mountAdmissionsCatalog(institutionId) {
   ]) {
     const element = card.querySelector(selector);
     element.removeAttribute("data-i18n");
-    element.textContent = label(key);
+    if (key === "deadlines_intro" || key === "finance_intro") {
+      element.hidden = true;
+    } else {
+      element.textContent = label(key);
+    }
   }
   let context = readAdmissionContext(new URL(window.location.href), loadProfileForApi(), institutionId);
   const openProgramIds = new Set(context.study_option_id ? [context.study_option_id] : []);
@@ -656,7 +660,8 @@ export function mountAdmissionsCatalog(institutionId) {
           budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id) });
         // How the Admission key facts checked each condition sits in this tab's closed "Sources" disclosure.
         const checkDetails = id === "detailRequirements" ? requirementsCheckDetails(resolved) : "";
-        target.innerHTML = `${answers}${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains, { checkDetails })}`;
+        const coveredFactIds = id === "detailRequirements" ? coveredRequirementFactIds(resolved, apiProfile) : null;
+        target.innerHTML = `${answers}${id === "detailDeadlines" ? '<div data-reviewed-calendar></div>' : ""}${renderApplicantSection(resolved, domains, { checkDetails, coveredFactIds })}`;
         bindKeyFacts(target);
         if (id === "detailDeadlines") mountDeadlineCalendar(target.querySelector("[data-reviewed-calendar]"), getReviewedDeadlineEvents(resolved), calendarState, { emptyNote: false });
       }

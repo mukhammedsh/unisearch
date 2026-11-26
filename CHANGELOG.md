@@ -20,6 +20,7 @@ All notable changes to UniSearch are documented here.
 - Mount cached university pages directly inside the route transition without flashing the loading skeleton on repeat visits.
 - Clarify optional English-test recommendations (`minimum` vs `recommended`), shorten the Russian `IELTS` label to `IELTS Academic`, and show met checkmarks or below-minimum warnings when an English score is already in the profile.
 - Hide the language-profile link on recommended English tests once a score is entered, shorten its prompt with calm neutral styling when missing, and simplify the manual-requirements note.
+- Remove duplicate test, condition, and tab-intro text on reviewed university Admission, Dates, and Costs tabs while keeping official sources intact, and shorten heavy admissions labels across all three languages.
 
 ### Fixed
 - Fix profile field grouping, spacing, and alignment across additional details, yearly budget input, expanded exam breakdowns (such as SAT), language exam section scores (such as IELTS), the profile back button, and the mobile action bar; remove duplicate evidence list containers and the redundant print-style `!important` override.

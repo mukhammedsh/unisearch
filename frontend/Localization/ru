@@ -2003,7 +2003,7 @@ profile.evidence.error.credential_score: Укажите опубликованн
 profile.evidence.error.max_institution: Можно сохранить не более 20 записей по вузам.
 university.admissions.catalog.simple_title: Как поступить
 university.admissions.catalog.browse_note: Ищите по направлению или программе. Откройте результат, чтобы узнать об учёбе и поступлении.
-university.admissions.catalog.advanced_note: Нужно, только если университет публикует разные условия для разных лет поступления или статусов оплаты.
+university.admissions.catalog.advanced_note: Нужно, только если цены или условия зависят от года поступления или статуса оплаты.
 university.admissions.catalog.choose_program_hint: Во вкладке «Программы» выберите программу, чтобы увидеть, как на неё поступают.
 university.admissions.catalog.choose_program_profile: Условия поступления здесь свои у каждой программы. Подходят по направлению из вашего профиля:
 university.admissions.catalog.select_program: Смотреть поступление на программу
@@ -2044,14 +2044,14 @@ university.admissions.catalog.applicant.transfer: Перевод из друго
 university.admissions.catalog.applicant.graduate: Поступление после бакалавриата
 university.admissions.catalog.cycle_label: Планируемый набор
 university.admissions.catalog.cycle_example: Например: осенний набор 2027 года
-university.admissions.catalog.fee_label: Статус оплаты со слов абитуриента
+university.admissions.catalog.fee_label: Статус оплаты
 university.admissions.catalog.fee.unknown: Не определён
-university.admissions.catalog.fee.self_reported_home_domestic: Home / domestic (со слов абитуриента)
-university.admissions.catalog.fee.self_reported_international_overseas: Overseas / international (со слов абитуриента)
-university.admissions.catalog.fee.other: Другой / требует уточнения
+university.admissions.catalog.fee.self_reported_home_domestic: Местный тариф (Home)
+university.admissions.catalog.fee.self_reported_international_overseas: Иностранный тариф (Overseas)
+university.admissions.catalog.fee.other: Другой
 university.admissions.catalog.apply_context: Применить фильтры
 university.admissions.catalog.legacy_pending: Предыдущий выбор программы ещё не сопоставлен с проверенным каталогом. Выберите программу заново; сохранённый профиль не изменён.
-university.admissions.catalog.incompatible_context: Выбранные программа, путь подачи или уровень не согласованы. Измените контекст; общие требования вуза вместо них не подставлены.
+university.admissions.catalog.incompatible_context: Выбранные программа, способ поступления и уровень не совпадают. Выберите другой вариант.
 university.admissions.catalog.loading: Загружаем проверенные сведения
 university.admissions.catalog.load_error: Не удалось загрузить проверенные сведения. Попробуйте ещё раз.
 university.admissions.catalog.retry: Повторить
@@ -2356,8 +2356,8 @@ university.admissions.catalog.study_level.undergraduate: Бакалавриат
 university.admissions.catalog.study_level.masters: Магистратура
 university.admissions.catalog.study_level.doctoral: Докторантура
 university.admissions.catalog.study_level.professional: Профессиональная программа
-university.admissions.catalog.fee.home: Указанная самостоятельно местная категория оплаты
-university.admissions.catalog.fee.overseas: Указанная самостоятельно международная категория оплаты
+university.admissions.catalog.fee.home: Местный тариф (Home)
+university.admissions.catalog.fee.overseas: Иностранный тариф (Overseas)
 university.admissions.catalog.enum.required: Обязательно
 university.admissions.catalog.enum.not_required: Не требуется
 university.admissions.catalog.enum.recommended: Рекомендуется
@@ -2933,7 +2933,7 @@ university.admissions.entry.route_help.nu-residency-unconditional: Обычны�
 university.admissions.entry.route_help.nu-residency-conditional-umc: Отдельный условный путь для рекомендованных UMC. Проверьте требования к рекомендации и зачислению: это не общее освобождение от экзаменов.
 university.admissions.reading.structured_study: Опубликованные сведения об учёбе доступны ниже. Краткого текстового обзора нет.
 university.admissions.key_facts.title: Главное для поступления
-university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
+university.admissions.key_facts.note: Только официальные факты, не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
 university.admissions.key_facts.requirements_manual: Документы и остальные требования автоматически не проверяются.
@@ -2988,8 +2988,8 @@ university.admissions.catalog.field.time: Время
 university.admissions.catalog.field.timezone: Часовой пояс
 university.admissions.catalog.field.scope: Относится к
 university.admissions.catalog.record_link: Показать полную запись источника
-university.admissions.entry.browsing_not_saved: Если запомнить этот вариант, каталог и сравнение будут сверять ваши результаты с его минимумами. В университет ничего не отправляется.
-university.admissions.entry.saved_context: Вариант запомнен: каталог и сравнение сверяют ваши результаты с его минимумами. В университет ничего не отправляется.
+university.admissions.entry.browsing_not_saved: Запомните вариант, чтобы каталог и сравнение учитывали его с вашим профилем. В вуз ничего не отправляется.
+university.admissions.entry.saved_context: Вариант запомнен для каталога и сравнения.
 university.admissions.entry.saved_other: Запомнен другой вариант: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Подайте заявление на выбранную программу бакалавриата через UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Подайте заявление на выбранную программу последипломного обучения.
@@ -3323,7 +3323,7 @@ university.admissions.key_facts.english_levels: Английский по уро
 university.admissions.key_facts.english_level_standard: Standard
 university.admissions.key_facts.english_level_higher: Higher
 university.admissions.key_facts.english_other_tests: Другие принимаемые экзамены (TOEFL, PTE, Duolingo и др.) — в официальной таблице университета, в разделе «Источники».
-university.admissions.key_facts.funding_lines_lead: Что публикует университет по этому пути. Финансирование не гарантировано и из стоимости не вычитается:
+university.admissions.key_facts.funding_lines_lead: Опубликованные варианты помощи (не гарантированы и не вычитаются из стоимости):
 university.admissions.key_facts.funding_apply_by: Подать заявку до {date}, {time}
 university.admissions.key_facts.funding_coverage: {percent}% оплаты обучения: {group}
 university.admissions.key_facts.coverage_socially_vulnerable_kazakhstan_categories: социально уязвимые категории граждан Казахстана

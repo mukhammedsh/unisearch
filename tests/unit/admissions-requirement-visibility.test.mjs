@@ -112,7 +112,7 @@ test("funding shows award, coverage and deadline lines, and never points to reco
   assert.deepEqual(fundingKeyLines([grants]), ["Separate application after a regular admission offer. 2027/28 deadlines are TBA.", "75% of tuition: citizens of Kazakhstan in listed vulnerable categories"]);
   assert.deepEqual(fundingKeyLines([fact("prose", "financial_aid", "Aid is need-based.")]), []);
   const withLines = fundingFact(resolvedWith([inspires]));
-  assert.match(withLines.text, /^What the university publishes for this path/);
+  assert.match(withLines.text, /^Published funding options/);
   assert.equal(withLines.lines.length, 3);
   // Without a summarisable record the text points to the sources, not to a description "below".
   assert.doesNotMatch(fundingFact(resolvedWith([fact("prose", "financial_aid", "Aid is need-based.")]), { onCostsTab: true }).text, /described below/);

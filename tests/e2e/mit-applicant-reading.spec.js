@@ -87,8 +87,9 @@ for (const item of cases) {
     await expect(page.locator("#tab-admission")).toHaveClass(/active/);
     await setNativeSelect(page, "admissionsRoute", "mit-first-year");
     await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "ready");
-    const academic = page.locator("#detailRequirements .admissions-reading__section").first();
-    await expect(academic).toContainText(/SAT.*ACT/);
+    const keyFacts = page.locator("#detailRequirements [data-admissions-key-facts]");
+    await expect(keyFacts).toContainText(/SAT.*ACT/);
+    await expect(page.locator("#detailRequirements .admissions-reading__section > h3").filter({ hasText: /Academic tests|Академические экзамены|Академиялық/ })).toHaveCount(0);
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText("IELTS Academic");
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText(/7[.,]5/);
     await expect(page.locator('#detailRequirements [data-source-summary="requirements"]')).toContainText({ eng: "recommended preparation", rus: "рекомендуемую подготовку", kaz: "ұсынылатын даярлықты" }[item.language]);
@@ -108,7 +109,7 @@ for (const item of cases) {
     await page.locator("#admissionsSaveChoice").click();
     await expect(page.locator("#admissionsSaveStatus")).not.toBeEmpty();
     fs.mkdirSync(evidenceDir, { recursive: true });
-    await academic.evaluate(node => node.scrollIntoView({ block: "start" }));
+    await keyFacts.evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-requirements.png`) });
 
     await tab(page, "deadlines");
