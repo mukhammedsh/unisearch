@@ -1297,7 +1297,7 @@
     row-gap: var(--space-1);
     max-width: none;
     margin: 0 auto;
-    padding: 0 var(--space-6);
+    padding: 0 var(--layout-page-gutter);
 }
 
 .footer-content p,

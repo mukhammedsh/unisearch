@@ -1,55 +1,55 @@
 /* Navbar breakpoints are owned by 08-device-responsive.css. */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .site-footer {
-    padding: var(--space-3) 0;
+    padding: var(--space-4) 0;
   }
 
   .footer-content {
-    flex-direction: column;
-    gap: var(--space-2);
-    text-align: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-2) var(--space-4);
   }
 
   .footer-meta {
-    flex-direction: column;
-    justify-content: center;
+    grid-column: 1;
+    grid-row: 1;
+    gap: var(--space-1-5) var(--space-3);
   }
 
-  /* Footer navigation becomes separate rows on phones, so a separator can
-     never be left at the end of a wrapped row. */
-  .footer-meta > .footer-divider {
+  .footer-copy {
+    flex-basis: 100%;
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--space-8);
+  }
+
+  /* Copyright sits on its own top row at <= 768px; keep link dots inline. */
+  .footer-copy + .footer-divider {
     display: none;
   }
 
-  /* Keep every in-row separator on the footer's visual centerline even when
-     the links on either side have different lengths. */
-  .footer-legal-links {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    width: 100%;
-    column-gap: var(--space-3);
-  }
-
-  .footer-legal-links a:first-child {
-    justify-self: end;
-    text-align: right;
-  }
-
-  .footer-legal-links a:last-child {
-    justify-self: start;
-    text-align: left;
-  }
-
-  /* Russian legal labels deliberately share two lines for a balanced footer
-     grid; shorter locales keep their natural single-line labels. */
-  html[lang="ru"] .footer-legal-links:not(.footer-product-links) a {
-    max-width: 146px;
+  .footer-legal-links a {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) 0;
   }
 
   .social-links {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .footer-content .footer-attribution {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Product and legal link groups stack on phones; drop the outer separator. */
+  .footer-meta > .footer-divider {
+    display: none;
   }
 }
 
@@ -920,5 +920,14 @@ body.route-loading main {
   .network-status-banner__text {
     white-space: normal;
     text-align: center;
+  }
+
+  /* Hide inner dot separators on compact phones where long legal links wrap. */
+  .footer-divider {
+    display: none;
+  }
+
+  .footer-legal-links {
+    gap: var(--space-1) var(--space-4);
   }
 }

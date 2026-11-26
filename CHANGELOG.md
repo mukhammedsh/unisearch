@@ -8,8 +8,11 @@ All notable changes to UniSearch are documented here.
 - Add a profile back button beside the title, above the window on narrow screens.
 - Morph the university cover photo smoothly back into its catalog card when returning via the back button or browser history while both images are visible on screen.
 - Export reviewed university comparisons to PDF with the selected programs, deadlines, requirements, costs, aid, and official sources.
+- Add relaunch actions in Settings and the Getting Started guide to open the interactive catalog tour at any time.
 
 ### Changed
+- Replace the blocking six-slide first-visit modal tutorial with a non-blocking welcome card above the catalog and an opt-in four-step spotlight tour anchored to live search, profile, university card, and comparison controls.
+- Activate UniFit catalog sorting automatically when a visitor saves a profile with a subject, budget, GPA, study level, or interests even before adding exam scores.
 - Replace the profile date picker with a localized calendar that stays stable between months and animates date changes and closing.
 - Show additional profile details directly, simplify field descriptions, and use a single GPA scale selector.
 - Refine the profile window, scrollbar, section navigation, and notification styling.
@@ -33,6 +36,7 @@ All notable changes to UniSearch are documented here.
 - Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
 - Remove inconsistent drop shadows on flat-card subtle buttons and restore transparent ghost styling for the "Browse all official options" button beside program filter chips.
 - Fix the mobile and narrow-tablet catalog toolbar wrapping so the action bar spans the full toolbar width beneath the result count with filters and recent history aligned on the left and view and compare controls on the right, keep all controls on one row down to 320px viewports, center the wrapped two-row navbar on ultra-narrow screens, and stack the card details link below the price.
+- Refine the responsive footer on tablets and phones with a compact left-aligned grid that keeps GitHub on the top right beside the copyright, preserves inline dot separators wherever links share a row, and keeps every link on a single line without forced wraps.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 
