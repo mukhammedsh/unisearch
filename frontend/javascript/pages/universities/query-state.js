@@ -3,11 +3,14 @@
 import { loadProfile, loadProfileForApi } from "../../utils.js";
 import { getCurrentLanguage } from "../../i18n.js";
 import { convert, getFilterLimits, getPreferredCurrency } from "../../currency.js";
+import { hasProfileForRanking } from "../../components/profile/profile-utils.js";
 import {
     MAX_COMPARE_UNIVERSITIES,
     fundingPreferenceToQueryValue,
     normalizeSortMode,
 } from "../_shared.js";
+
+export { hasProfileForRanking };
 
 /**
  * Resolve the active funding preference from the stored applicant profile.
@@ -142,7 +145,7 @@ export function createInitialCatalogState({ pageParams, savedState, currentCurre
     const pageParamsSort = pageParams.get("sort");
     const pageParamsQ = pageParams.get("q");
     const initialQ = String(pageParamsQ !== null ? pageParamsQ : (savedState.q || "")).trim();
-    const defaultSortMode = initialQ ? "relevance" : (hasProfileEvidence(loadProfile()) ? "uni_ai" : "name_asc");
+    const defaultSortMode = initialQ ? "relevance" : (hasProfileForRanking(loadProfile()) ? "uni_ai" : "name_asc");
 
     let initialMin = convertSavedTuitionBound(savedState.min_tuition, {
         savedCurrency: savedState.currency,

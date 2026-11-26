@@ -16,6 +16,7 @@ import {
   countActiveFilters,
   createInitialCatalogState,
   hasProfileEvidence,
+  hasProfileForRanking,
   normalizeCompareIdList,
   parseCompareIds,
   readPageParams,
@@ -77,6 +78,11 @@ test("clampPercent, clampTuition, hasProfileEvidence, and compare ID list helper
   assert.equal(hasProfileEvidence({ exams: [], languages: [] }), false);
   assert.equal(hasProfileEvidence({ exams: [{ id: "SAT", score: 1500 }], languages: [] }), true);
   assert.equal(hasProfileEvidence({ exams: [], languages: [{ code: "en", level: "C1" }] }), true);
+
+  assert.equal(hasProfileForRanking({ exams: [], languages: [], studyLevel: "Any", fundingType: "any", studyMode: "Any" }), false);
+  assert.equal(hasProfileForRanking({ major: "Computer Science", exams: [], languages: [] }), true);
+  assert.equal(hasProfileForRanking({ budget: 12000, exams: [], languages: [] }), true);
+  assert.equal(hasProfileForRanking({ gpa: "3.8", exams: [], languages: [] }), true);
 
   assert.deepEqual(normalizeCompareIdList([" mit ", "", "mit", "stanford", "harvard"]), ["mit", "stanford"]);
   assert.deepEqual(parseCompareIds(" mit, ,oxford , mit, cambridge "), ["mit", "oxford"]);

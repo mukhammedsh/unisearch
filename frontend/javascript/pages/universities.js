@@ -36,15 +36,10 @@ import { bindInfoTooltips } from "../tooltip.js";
 
 import {
     MAX_COMPARE_UNIVERSITIES,
-    hasSeenUniversitiesTour,
-    clearUniversitiesTourResumeStep,
-    markUniversitiesTourSeen,
-    readUniversitiesTourResumeStep,
+    consumeUniversitiesTourOpenRequest,
     rememberRecentUniversity,
     shouldOpenUniversitiesInNewTab,
 } from "./_shared.js";
-
-import { consumeUniversitiesTourSkipOnce } from "./shared/cache.js";
 import {
     abortUniversitiesApiRequests,
     createUniversitiesApiState,
@@ -72,6 +67,7 @@ import {
 } from "./universities/query-state.js";
 import { createLayoutSyncController } from "./universities/layout-sync.js";
 import { createUnifitBannerController } from "./universities/unifit-banner.js";
+import { createWelcomeBannerController } from "./universities/welcome-banner.js";
 import { createCompareController } from "./universities/compare-controller.js";
 import { createFilterControls } from "./universities/filter-controls.js";
 
@@ -82,6 +78,7 @@ let __universitiesWindowBindings = [];
 let __universitiesSearchCleanup = null;
 let __universitiesLayoutSync = null;
 let __universitiesUnifitBanner = null;
+let __universitiesWelcomeBanner = null;
 let __universitiesCompareController = null;
 let __universitiesFilterControls = null;
 let __universitiesMapController = null;
@@ -100,6 +97,8 @@ export function disposeUniversitiesPage() {
     __universitiesLayoutSync = null;
     __universitiesUnifitBanner?.dispose();
     __universitiesUnifitBanner = null;
+    __universitiesWelcomeBanner?.dispose();
+    __universitiesWelcomeBanner = null;
     __universitiesCompareController?.dispose();
     __universitiesCompareController = null;
     __universitiesFilterControls?.dispose();
@@ -148,6 +147,10 @@ function collectUniversitiesElements() {
         savedFilterButtons: Array.from(document.querySelectorAll("[data-saved-filter]")),
         recentlyViewedBar: $("recentlyViewedBar"),
         mobileRecentSlot: $("mobileRecentSlot"),
+        welcomeBanner: $("uWelcomeBanner"),
+        welcomeProfileLink: $("uWelcomeProfileLink"),
+        welcomeTourBtn: $("uWelcomeTourBtn"),
+        welcomeDismissBtn: $("uWelcomeDismissBtn"),
         unifitWarningBanner: $("unifitWarningBanner"),
         unifitBannerTitle: $("unifitBannerTitle"),
         unifitBannerEdit: $("unifitBannerEdit"),
@@ -230,12 +233,7 @@ export function initUniversitiesPage() {
     const apiState = createUniversitiesApiState({ cacheTtlMs: CACHE_TTL_MS });
     __universitiesApiState = apiState;
     let fetchRunSeq = 0;
-    let firstVisitTourPending = !hasSeenUniversitiesTour();
-    if (consumeUniversitiesTourSkipOnce()) {
-        // Arrived through "Save and show matches": the visitor already did the tour's main step.
-        firstVisitTourPending = false;
-        markUniversitiesTourSeen();
-    }
+    let tourOpenRequested = consumeUniversitiesTourOpenRequest();
     let hasInitialListPaint = hydratedFromSnapshot;
     let hasRestoredInitialScroll = false;
     let lastRenderedItems = [];
@@ -359,6 +357,21 @@ export function initUniversitiesPage() {
     });
     __universitiesCompareController = compareController;
 
+    const openInteractiveTour = async (options = {}) => {
+        welcomeBanner.dismiss();
+        await showUniversitiesTour(options);
+    };
+
+    const welcomeBanner = createWelcomeBannerController({
+        el,
+        state,
+        isCompareSelectionMode: () => compareController.isCompareSelectionMode(),
+        onStartTour: () => {
+            void openInteractiveTour();
+        },
+    });
+    __universitiesWelcomeBanner = welcomeBanner;
+
     const recentController = createRecentlyViewedController({
         container: el.recentlyViewedBar,
         getUniversityDisplayNameById: compareController.getUniversityDisplayNameById,
@@ -448,6 +461,7 @@ export function initUniversitiesPage() {
         compareController.syncCompareModeControls();
         compareController.renderCompareTray();
         unifitBanner.update();
+        welcomeBanner.update();
         if (updateUrl) setSectionUrl(replaceUrl);
 
         await switchView(state.viewMode || "list", false);
@@ -695,7 +709,10 @@ export function initUniversitiesPage() {
         syncViewModeControls,
         scheduleSyncWorkspaceDepth: layoutSync.scheduleSyncWorkspaceDepth,
         refreshUnifitLegend: unifitBanner.refreshLegend,
-        updateUnifitWarningBanner: unifitBanner.update,
+        updateUnifitWarningBanner: () => {
+            unifitBanner.update();
+            welcomeBanner.update();
+        },
         renderCompareTray: compareController.renderCompareTray,
         syncCardActionState: compareController.syncCardActionState,
         renderRecentlyViewedBar,
@@ -728,6 +745,7 @@ export function initUniversitiesPage() {
     }
 
     unifitBanner.bindEvents();
+    welcomeBanner.bindEvents();
     compareController.bindEvents();
     filterControls.bindEvents();
     layoutSync.bindEvents();
@@ -932,6 +950,9 @@ export function initUniversitiesPage() {
         filterControls.handleCurrencyChanged(e);
         fetchAndRender();
     });
+    bindWindowListener("unisearch:open-tour", () => {
+        void openInteractiveTour();
+    });
 
     function renderFetchedData(data, options = {}) {
         const animateResults = options.animateResults !== false;
@@ -960,6 +981,7 @@ export function initUniversitiesPage() {
             : "";
 
         unifitBanner.update();
+        welcomeBanner.update();
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
@@ -1148,13 +1170,11 @@ export function initUniversitiesPage() {
                     hasRestoredInitialScroll = true;
                     layoutSync.restoreScrollPosition();
                 }
-                if (firstVisitTourPending) {
-                    firstVisitTourPending = false;
-                    window.setTimeout(async () => {
-                        await showUniversitiesTour({ startStep: readUniversitiesTourResumeStep() });
-                        clearUniversitiesTourResumeStep();
-                        markUniversitiesTourSeen();
-                    }, 120);
+                if (tourOpenRequested) {
+                    tourOpenRequested = false;
+                    window.setTimeout(() => {
+                        if (isCurrentCatalog()) void openInteractiveTour();
+                    }, 80);
                 }
             }
         }

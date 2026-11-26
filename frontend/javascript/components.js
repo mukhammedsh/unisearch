@@ -155,6 +155,12 @@ const LAYOUT_HTML = `
           <input class="ui-switch" type="checkbox" role="switch" data-setting-input="${SETTING_OPEN_UNIVERSITIES_NEW_TAB}" />
         </label>
       </article>
+      <article class="settings-row" data-setting-key="interactive_tour">
+        <div class="settings-copy">
+          <h3 data-i18n="settings.option.tour.title">Interactive catalog tour</h3>
+        </div>
+        <button id="settingsLaunchTourBtn" class="ui-btn ui-btn--sm" type="button" data-i18n="settings.option.tour.action">Start tour</button>
+      </article>
 
       <h3 class="settings-section-title" data-i18n="settings.section.regional">Language &amp; region</h3>
       <article class="settings-row" data-setting-key="site_language">

@@ -7,9 +7,11 @@ import {
   escapeHtml,
   getExamInputMode,
   isFutureProfile,
+  loadFilters,
   loadProfile,
   motionPress,
   replayMotion,
+  saveFilters,
   saveProfile,
   showToast,
   trapFocus,
@@ -19,7 +21,6 @@ import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
 import { isProfilePath, routeGuide } from "../routes.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import { applyBudgetCurrencyChoice, reinterpretBudgetCurrency } from "./profile/budget-currency.js";
@@ -30,6 +31,7 @@ import {
   enforceGpaMaxLength,
   ensureProfileShape,
   getBudgetCurrency,
+  hasProfileForRanking,
   normalizeAmountRaw,
   normalizeFundingType,
   normalizeGpaRaw,
@@ -252,7 +254,14 @@ const saveAllProfileChanges = (els, state) => {
     if (els.budgetInput) els.budgetInput.value = String(budgetInCurrency(state.profile, state.budgetInputCurrency || getBudgetCurrency()));
     if (els.gpaInput) els.gpaInput.value = state.profile.gpa === "" ? "" : String(state.profile.gpa);
 
+    const hadRankingProfile = hasProfileForRanking(loadProfile());
     state.profileStoragePersistent = saveProfile(state.profile);
+    if (!hadRankingProfile && hasProfileForRanking(state.profile)) {
+        const savedFilters = loadFilters();
+        if (savedFilters && savedFilters.sort === "name_asc") {
+            saveFilters({ ...savedFilters, sort: "uni_ai" });
+        }
+    }
     state.savedSignature = stableProfileSignature(state.profile);
     refreshSaveState(els, state);
     replayMotion(els.profileSaveState, "motion-state-pulse", { timeoutMs: 520 });
@@ -587,7 +596,7 @@ const bindProfileEvents = (els, state) => {
     if (els.saveProfileBtn) {
         els.saveProfileBtn.addEventListener("click", () => {
             motionPress(els.saveProfileBtn);
-            if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeModalNow();
+            saveAllProfileChanges(els, state);
         });
     }
 

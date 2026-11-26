@@ -130,28 +130,33 @@ test("on a phone the legend wraps inside the banner without sideways scrolling",
   expect(box.x + box.width).toBeLessThanOrEqual(banner.x + banner.width);
 });
 
-test("a visitor who opens the catalog directly still gets the first-visit tour", async ({ page }) => {
+test("a visitor who opens the catalog directly gets the non-blocking welcome banner instead of a modal wall", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await seed(page, { tourSeen: false });
   await page.goto("/index.html");
-  await expect(page.locator("#uTourModal")).toBeVisible();
+  await expect(page.locator("#uWelcomeBanner")).toBeVisible();
+  await expect(page.locator("#uTourModal")).toHaveCount(0);
+  await expect(page.locator("#languageSelect")).toBeVisible();
 });
 
-test("the first-visit tour closes with Escape or its close button and then counts as skipped", async ({ page }) => {
+test("dismissing the welcome banner or closing the opt-in tour marks onboarding as seen", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await seed(page, { tourSeen: false });
   await page.goto("/index.html");
-  await expect(page.locator("#uTourModal")).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(page.locator("#uTourModal")).toBeHidden();
+  await expect(page.locator("#uWelcomeBanner")).toBeVisible();
+  await page.locator("#uWelcomeDismissBtn").click();
+  await expect(page.locator("#uWelcomeBanner")).toBeHidden();
   expect(await page.evaluate((key) => localStorage.getItem(key), TOUR_SEEN_KEY)).toBe("1");
 
   await page.evaluate((key) => localStorage.removeItem(key), TOUR_SEEN_KEY);
   await page.reload();
+  await expect(page.locator("#uWelcomeBanner")).toBeVisible();
+  await page.locator("#uWelcomeTourBtn").click();
   await expect(page.locator("#uTourModal")).toBeVisible();
   await page.locator("#uTourModal [data-action='close']").click();
   await expect(page.locator("#uTourModal")).toBeHidden();
-  await expect(page.locator("#languageSelect")).toBeVisible();
+  await expect(page.locator("#uWelcomeBanner")).toBeHidden();
+  expect(await page.evaluate((key) => localStorage.getItem(key), TOUR_SEEN_KEY)).toBe("1");
 });
 
 test("an empty catalog names the price filter that hides results and offers a way out", async ({ page }) => {

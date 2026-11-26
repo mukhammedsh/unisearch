@@ -34,6 +34,35 @@ export const normalizeFundingType = (value) => {
     return (raw === "grant" || raw === "paid") ? raw : "any";
 };
 
+/**
+ * Determine whether the stored profile contains any user-provided fields that personalize UniFit ranking.
+ * @param {Record<string, unknown>|null|undefined} profile
+ * @returns {boolean}
+ */
+export const hasProfileForRanking = (profile) => {
+    if (!profile || typeof profile !== "object") return false;
+    const exams = Array.isArray(profile.exams) ? profile.exams : [];
+    const langs = Array.isArray(profile.languages) ? profile.languages : [];
+    if (exams.length > 0 || langs.length > 0) return true;
+
+    const clean = (val) => String(val ?? "").trim();
+    const nonAny = (val) => {
+        const s = clean(val);
+        return Boolean(s && s.toLowerCase() !== "any");
+    };
+    const rawBudget = clean(profile.budget);
+    const hasBudget = rawBudget !== "" && Number.isFinite(Number(rawBudget)) && Number(rawBudget) >= 0;
+    return Boolean(
+        nonAny(profile.studyLevel)
+        || clean(profile.major)
+        || clean(profile.interests)
+        || nonAny(profile.studyMode)
+        || nonAny(profile.fundingType)
+        || hasBudget
+        || clean(profile.gpa)
+    );
+};
+
 export const cloneProfile = (value) => structuredClone(value && typeof value === "object" ? value : {});
 
 export const GPA_MAX_CHARS = 4;
