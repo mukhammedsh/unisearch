@@ -3,6 +3,14 @@ const { markTourAsSeen } = require("./helpers/personas");
 const { selectors } = require("./helpers/selectors");
 
 test.describe("Profile page icons and navigation", () => {
+  test("top back button protects unsaved changes", async ({ page }) => {
+    await markTourAsSeen(page);
+    await page.goto("/profile.html");
+    await expect(page.locator("#budgetInput")).toBeVisible();
+    await page.locator("#budgetInput").fill("12000");
+    await page.locator("#profileHeaderBackBtn").click();
+    await expect(page.locator("#profileUnsavedModal")).toHaveClass(/is-open/);
+  });
   test("profile page renders clean action buttons and Heroicons inside badges", async ({ page }) => {
     await markTourAsSeen(page);
     await page.goto("/profile.html");

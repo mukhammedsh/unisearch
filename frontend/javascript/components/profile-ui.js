@@ -114,6 +114,7 @@ const queryProfileElements = (modal) => {
         resetConfirmBtn: document.getElementById("profileResetConfirmBtn"),
         openBtn: document.getElementById("profileBtn"),
         closeBtn: document.getElementById("profileCloseBtn"),
+        headerBackBtn: document.getElementById("profileHeaderBackBtn"),
         backdrop: modal.querySelector(".profile-backdrop"),
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
@@ -621,6 +622,7 @@ const bindProfileEvents = (els, state) => {
     if (els.openBtn) els.openBtn.onclick = openProfileHandler;
 
     if (els.closeBtn) els.closeBtn.onclick = requestCloseHandler;
+    if (els.headerBackBtn) els.headerBackBtn.onclick = requestCloseHandler;
     if (els.backdrop) els.backdrop.onclick = requestCloseHandler;
 
     els.discardBtn?.addEventListener("click", () => {
@@ -750,6 +752,7 @@ const bindProfileEvents = (els, state) => {
         if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
         if (els.openBtn?.onclick === openProfileHandler) els.openBtn.onclick = null;
         if (els.closeBtn?.onclick === requestCloseHandler) els.closeBtn.onclick = null;
+        if (els.headerBackBtn?.onclick === requestCloseHandler) els.headerBackBtn.onclick = null;
         if (els.backdrop?.onclick === requestCloseHandler) els.backdrop.onclick = null;
         if (els.addExamBtn?.onclick) els.addExamBtn.onclick = null;
         if (els.examList?.onclick) els.examList.onclick = null;

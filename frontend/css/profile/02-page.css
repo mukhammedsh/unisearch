@@ -53,6 +53,30 @@ body[data-page="profile"] {
   gap: var(--space-2);
 }
 
+.profile-back-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--surface-soft);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.profile-back-icon:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .profile-back-icon:hover {
+    background: var(--interaction-hover-surface);
+  }
+}
+
 .profile-page-title {
   margin: 0;
   color: var(--text);
