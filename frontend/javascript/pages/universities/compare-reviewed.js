@@ -103,7 +103,7 @@ function cellHtml(column, value) {
   }).join("");
   const extra = value.extra || "";
   const link = value.link ? `<a class="compare-reviewed__link" href="${escapeHtmlAttr(value.link.href)}"${value.link.external ? ' target="_blank" rel="noopener noreferrer"' : linkAttrs()}>${escapeHtml(value.link.label)}${heroIcon(value.link.external ? "arrow-top-right-on-square" : "chevron-right", "ui-icon ui-icon--16")}</a>` : "";
-  return `<dd class="compare-reviewed__cell" data-uni-id="${id}">${main}${details}${items}${extra}${sources}${link}</dd>`;
+  return `<dd class="compare-reviewed__cell" data-uni-id="${id}">${main}${details}${items}${sources}${extra}${link}</dd>`;
 }
 
 // The placeholder a fact cell shows when the column does not read a context with facts.
@@ -174,7 +174,7 @@ function programRows() {
         const scope = columnScope(column);
         if (scope === "route") return { state: "route", text: label("value.choose_route") };
         if (scope === "no_route") return { state: "no_route", text: label("value.no_route") };
-        if (scope !== "program") return { state: "none", text: label("value.no_program") };
+        if (!["program", "institution"].includes(scope)) return { state: "none", text: label("value.no_program") };
         return { main: routeLabel(column.resolved.selected_route), kind: "text" };
       },
     },

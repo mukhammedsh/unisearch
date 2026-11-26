@@ -197,7 +197,8 @@ export function minimumChecklist(resolved) {
       : have && belowSections ? tFormat("university.admissions.key_facts.minimum_have_below_sections", { result: have, sections: belowSections })
       : have ? tFormat(`university.admissions.key_facts.minimum_have${{ below: "_below", todo: "_unconfirmed" }[mark] || ""}`, { result: have }) : "";
     const languageExam = check.kind === "language_requirement" && adds.length ? (check.missingInputs || []).find(input => input.exam)?.exam : "";
-    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(languageExam ? { href: profileLanguageExamHref(languageExam) } : {}) };
+    const href = !adds.length ? "" : languageExam ? profileLanguageExamHref(languageExam) : "/profile.html";
+    return { kind: REQUIREMENT_KINDS[check.kind], factId: check.factId, mark, text, note, ...(href ? { href } : {}) };
   }).filter(Boolean);
 }
 
@@ -355,7 +356,7 @@ export function costFact(resolved, budgetUsd, { original = false } = {}) {
   // The explanation is general: the university, not the applicant's nationality or residence, sets the classification.
   const feeStatusDepends = quote.fee_status_match === "unknown" && quote.fee_statuses?.length > 1;
   if (feeStatusDepends) notes.push(label("cost_fee_status"), t("university.admissions.glossary.fee_status.text"));
-  const feeStatusPage = feeStatusDepends ? feeStatusSource(resolved) : "";
+  const feeStatusPage = (feeStatusDepends || quote.fee_status_match === "matched") ? feeStatusSource(resolved) : "";
   const links = feeStatusPage ? [{ url: feeStatusPage, label: label("cost_fee_status_source") }] : [];
   if (!quote.annual_comparable) return { status: "not_annual", tone: "", text, links, feeStatusAction: feeStatusDepends, notes: [...notes, label("cost_not_annual")].filter(Boolean), referenceNote, ...parts };
   if (!quote.usd) return { status: "not_comparable", tone: "", text, links, feeStatusAction: feeStatusDepends, notes: notes.filter(Boolean), referenceNote, ...parts };

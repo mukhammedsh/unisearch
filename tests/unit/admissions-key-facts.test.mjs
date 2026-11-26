@@ -247,8 +247,8 @@ test("missing requirement evidence names what to add and which overall scores al
     { kind: "exam", mark: "todo", text: "Required test: TMUA", note: "Add: TMUA result" },
     { kind: "exam", mark: "todo", text: "Required test, one of: SAT, ACT", note: "" },
   ]);
-  // A language check that asks for a result or section scores links to that test in the profile; other checks do not.
-  assert.deepEqual(minimumChecklist(resolved).map(item => item.href || ""), ["", "/profile.html?language_exam=IELTS", "", ""]);
+  // A language check links directly to that test in the profile; other missing checks link to the profile editor.
+  assert.deepEqual(minimumChecklist(resolved).map(item => item.href || ""), ["/profile.html", "/profile.html?language_exam=IELTS", "/profile.html", ""]);
   assert.match(renderAdmissionsKeyFacts(resolved, { now: NOW }), /<a class="admissions-key-facts__checklist-note" href="\/profile.html\?language_exam=IELTS" data-route="profile">Add: IELTS Academic test date and section scores<\/a>/);
   // Met and unmet checks state the applicant's own result; IELTS bands keep one decimal and scores no digit grouping.
   const ielts = { kind: "language_requirement", status: "unmet", rule: { alternatives: [{ exam_id: "IELTS", minimum: 6 }] }, provided: { exam: "IELTS", score: 5.5 } };

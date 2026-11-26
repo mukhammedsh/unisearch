@@ -157,6 +157,14 @@ test("the checklist shows concrete minimum notes and profile links without a per
                 provided: { exam: "IELTS", score: 7, minimum_checks: [{ exam: "IELTS", status: "met" }] },
                 missingInputs: [{ exam: "IELTS", needs: ["components"] }],
               },
+              {
+                factId: "tmua",
+                kind: "required_exam_presence",
+                measurable: true,
+                status: "missing",
+                examIds: ["TMUA"],
+                missingInputs: [{ exam: "TMUA", needs: ["result"] }],
+              },
             ],
           },
         },
@@ -169,7 +177,10 @@ test("the checklist shows concrete minimum notes and profile links without a per
   const needs = cell(html, "needs", 0);
   assert.match(needs, /data-mark="partial"/);
   assert.match(needs, /href="\/profile\.html\?language_exam=IELTS"/);
+  assert.match(needs, /href="\/profile\.html"[^>]*>Add:.*TMUA/);
   assert.match(needs, /compare-reviewed__checklist-note/);
+  // Shared first-year column shows its route name instead of "No program chosen" in the route row.
+  assert.doesNotMatch(cell(html, "route", 1), /No program chosen/);
   // Header shows route and cycle, sticky strip shows the chosen program, and admission/cost precede program details.
   assert.match(html, /compare-reviewed__scope-meta">Undergraduate · MEng · .*UCAS.* · 2027/);
   assert.match(html, /compare-reviewed__strip-scope">Computing<\/span>/);
@@ -184,8 +195,14 @@ test("a price that depends on the fee status offers Home and Overseas, keeping t
   assert.match(cell(html, "cost", 0), /data-compare-fee="self_reported_international_overseas"[^>]*aria-pressed="false"/);
   assert.match(cell(html, "cost", 0), /data-compare-fee="unknown"[^>]*aria-pressed="true"/);
   assert.doesNotMatch(cell(html, "cost", 1), /data-compare-fee/, "a single price has no switch");
-  const overseas = programColumn({ context: { fee_status_context: "self_reported_international_overseas" }, costs: { tuition: quote("GBP", 47800, 47800, "2027 entry", { fee_status_match: "matched", fee_statuses: ["Overseas fee"] }) } });
-  assert.match(cell(renderReviewedComparisonPage([overseas, sharedColumn()], {}), "cost", 0), /data-compare-fee="self_reported_international_overseas"[^>]*aria-pressed="true"/);
+  const overseas = programColumn({
+    context: { fee_status_context: "self_reported_international_overseas" },
+    costs: { tuition: quote("GBP", 47800, 47800, "2027 entry", { fee_status_match: "matched", fee_statuses: ["Overseas fee"] }) },
+    facts: [fact("fee-status", "Assigned by university", { topic: "fee_status" })],
+  });
+  const overseasCost = cell(renderReviewedComparisonPage([overseas, sharedColumn()], {}), "cost", 0);
+  assert.match(overseasCost, /data-compare-fee="self_reported_international_overseas"[^>]*aria-pressed="true"/);
+  assert.match(overseasCost, /href="https:\/\/example\.edu\/source"/, "fee-status source link stays visible after choosing Home or Overseas");
 });
 
 test("university rows show published figures with sources, mark missing ones and never show earnings", () => {

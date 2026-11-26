@@ -16,6 +16,7 @@ All notable changes to UniSearch are documented here.
 - Hide the language-profile link on recommended English tests once a score is entered, shorten its prompt with calm neutral styling when missing, and simplify the manual-requirements note.
 
 ### Fixed
+- Collapse identical rounded converted price-range endpoints (such as `≈ $35,000 – $35,000`), link all missing exam checklist prompts to the profile, show the shared route name in the comparison route row, keep the official fee-status page linked after choosing Home or Overseas, and clarify the Russian "Both" fee-status toggle label.
 - Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification

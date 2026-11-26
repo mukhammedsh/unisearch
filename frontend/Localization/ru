@@ -2733,7 +2733,7 @@ universities.compare.reviewed.open_profile: Открыть профиль
 universities.compare.reviewed.note: Это сводка официальных данных, а не решение о поступлении и не оценка, какой университет лучше.
 universities.compare.reviewed.retry: Повторить
 universities.compare.reviewed.fee.label: Цена для
-universities.compare.reviewed.fee.both: Обоих
+universities.compare.reviewed.fee.both: Оба статуса
 universities.compare.reviewed.fee.home: Home
 universities.compare.reviewed.fee.overseas: Overseas
 universities.compare.reviewed.fee.note: Цена зависит от статуса оплаты (Home или Overseas), который университет определяет по своим правилам.

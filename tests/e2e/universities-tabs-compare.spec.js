@@ -600,7 +600,7 @@ test("comparison keeps MIT institution-wide and Stanford CS graduate contexts in
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${MIT_ID}"]`)).toContainText("First year, one shared application");
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${STANFORD_ID}"]`)).toContainText("Computer Science (MS)");
   const route = page.locator('[data-compare-row="route"] dd');
-  await expect(route.nth(0)).toContainText("No program chosen");
+  await expect(route.nth(0)).not.toContainText("No program chosen");
   await expect(route.nth(1)).toContainText("Computer Science MS — external applicants");
   await expect(page.locator("[data-reviewed-comparison]")).not.toContainText("directory-evidence:stanford-graduate-cs-ms");
 });
@@ -614,7 +614,8 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   const needs = page.locator('[data-compare-row="needs"] dd');
   await expect(needs.nth(0)).toContainText(/SAT, ACT|SAT or ACT|ACT or SAT/);
   await expect(needs.nth(1)).not.toContainText(/SAT, ACT|SAT or ACT/);
-  await expect(needs.nth(1).locator("a")).toHaveAttribute("href", /admission_option=imperial-option-computing-meng.*#tab-admission/);
+  await expect(needs.nth(1).locator("a.compare-reviewed__checklist-note")).toHaveAttribute("href", "/profile.html");
+  await expect(needs.nth(1).locator("a.compare-reviewed__link")).toHaveAttribute("href", /admission_option=imperial-option-computing-meng.*#tab-admission/);
   await expect(page.locator("[data-reviewed-comparison]")).not.toContainText(/1,450|1,550/);
 });
 
