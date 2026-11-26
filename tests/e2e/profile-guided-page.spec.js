@@ -26,6 +26,16 @@ async function openProfile(page) {
   await expect(page.locator("#profileUnifitGuideLink")).toBeVisible();
 }
 
+test("profile window and fields stay comfortably narrow on wide screens", async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 900 });
+  await openProfile(page);
+  const shell = await page.locator(".profile-shell").boundingBox();
+  const field = await page.locator("#profileInterestsInput").boundingBox();
+  expect(shell.width).toBeLessThanOrEqual(952);
+  expect(field.width).toBeLessThanOrEqual(680);
+  expect(shell.x).toBeGreaterThan(0);
+});
+
 test("every profile section is visible at once and the outline jumps to one", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openProfile(page);

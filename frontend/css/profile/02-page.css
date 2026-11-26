@@ -1,7 +1,7 @@
 /* ==========================================================================
    UniSearch Applicant Profile Stylesheet
    Direction: Calm Academic Workspace / Notion-Linear Clarity
-   Layout: guided single page. Outline (left), sections (centre), summary (right),
+  Layout: guided single page. Outline (left), sections (centre),
    sticky action bar at the bottom. Every section is always visible.
    ========================================================================== */
 
@@ -16,7 +16,7 @@ body[data-page="profile"] {
 .profile-page {
   flex: 1 0 auto;
   width: 100%;
-  max-width: 1280px;
+  max-width: 1000px;
   margin: auto;
   padding: var(--space-6);
   display: flex;
@@ -81,9 +81,7 @@ body[data-page="profile"] {
 }
 
 /* --------------------------------------------------------------------------
-   Workspace Layout: outline | sections | summary
-   Phones: sections, then summary. Tablet: outline + sections, summary below.
-   Wide desktop: three columns.
+   Workspace Layout: outline and sections; phones show the guide link above the form.
    -------------------------------------------------------------------------- */
 .profile-workspace-layout {
   display: grid;
