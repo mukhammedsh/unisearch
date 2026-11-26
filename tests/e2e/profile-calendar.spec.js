@@ -20,10 +20,15 @@ test("profile calendar selects and clears a date", async ({ page }) => {
   expect(september.height).toBe(february.height);
   expect(september.y).toBe(february.y);
   await calendar.locator('[data-date="2024-09-17"]').click();
+  await expect(input).toHaveValue("");
+  await expect(calendar.locator('[data-date="2024-09-17"]')).toHaveAttribute("aria-pressed", "true");
+  await calendar.locator("[data-save]").click();
   await expect(input).toHaveValue("2024-09-17");
   await expect(trigger).toBeFocused();
   await trigger.click();
   await calendar.locator("[data-clear]").click();
+  await expect(input).toHaveValue("2024-09-17");
+  await calendar.locator("[data-save]").click();
   await expect(input).toHaveValue("");
 });
 
