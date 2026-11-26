@@ -440,6 +440,7 @@
 .map-card-wrapper .uni-media {
   flex-basis: 140px;
   height: 140px;
+  border-radius: 0;
 }
 
 .map-card-wrapper .uni-title {

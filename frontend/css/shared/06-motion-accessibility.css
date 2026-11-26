@@ -192,6 +192,8 @@
 }
 
 ::view-transition-group(uni-cover) {
+  overflow: clip;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   animation-duration: var(--motion-cover);
   animation-timing-function: var(--motion-ease-cover);
 }
@@ -200,8 +202,20 @@
 ::view-transition-new(uni-cover) {
   animation-duration: var(--motion-cover);
   animation-timing-function: var(--motion-ease-cover);
+  width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+:root[data-cover-transition="forward"]::view-transition-old(uni-cover),
+:root[data-cover-transition="reverse"]::view-transition-new(uni-cover) {
+  display: none;
+}
+
+:root[data-cover-transition="forward"]::view-transition-new(uni-cover),
+:root[data-cover-transition="reverse"]::view-transition-old(uni-cover) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 /* Set by utils/motion-reveal.js while an element grows or shrinks in height. */

@@ -99,7 +99,16 @@ function isVisibleInViewport(element) {
   return visibleWidth >= MIN_VISIBLE_PX && visibleHeight >= MIN_VISIBLE_PX;
 }
 
+function setCoverTransitionDirection(direction) {
+  document.documentElement.setAttribute("data-cover-transition", direction);
+}
+
+function clearCoverTransitionDirection() {
+  document.documentElement.removeAttribute("data-cover-transition");
+}
+
 function clearAllCoverTransitionNames() {
+  clearCoverTransitionDirection();
   document.querySelectorAll(`.${NAME_CLASS}`).forEach((node) => {
     node.classList.remove(NAME_CLASS);
   });
@@ -310,6 +319,7 @@ export function takeCoverHandoff(url) {
     /** Names the card photo for the outgoing snapshot. */
     markSource() {
       clearAllCoverTransitionNames();
+      setCoverTransitionDirection("forward");
       source.image.classList.add(NAME_CLASS);
     },
     /**
@@ -393,6 +403,7 @@ export function takeReverseCoverHandoff(currentUrl, targetUrl) {
     preserveScroll: true,
     markSource() {
       clearAllCoverTransitionNames();
+      setCoverTransitionDirection("reverse");
       sourceImg.classList.add(NAME_CLASS);
     },
     async inject() {
