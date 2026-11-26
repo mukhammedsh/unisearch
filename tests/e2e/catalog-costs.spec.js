@@ -158,6 +158,13 @@ test.describe("compact dual-currency price", () => {
     await expect(card.locator('.uni-footer .uni-cost-secondary')).toHaveText(/^\(\$66[\s\u00a0\u202f,]?720\)$/);
     await expect(tooltip).toBeHidden();
     expect(await price.evaluate(element => element.getBoundingClientRect().height)).toBeLessThanOrEqual(100);
+    const footerAlignment = await card.evaluate((element) => {
+      const priceLine = element.querySelector('.uni-price-line')?.getBoundingClientRect();
+      const details = element.querySelector('.uni-details')?.getBoundingClientRect();
+      return priceLine && details ? Math.abs(priceLine.bottom - details.bottom) : null;
+    });
+    expect(footerAlignment).not.toBeNull();
+    expect(footerAlignment).toBeLessThanOrEqual(4);
     await page.screenshot({ path: testInfo.outputPath('compact-two-currencies-mobile.png') });
     await trigger.tap();
     await expect(tooltip).toBeVisible();

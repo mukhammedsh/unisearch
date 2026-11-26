@@ -522,12 +522,26 @@
     width: auto;
   }
 
-  .uni-metric-trigger,
-  .uni-cost-trigger,
-  .uni-card--map .uni-details {
+  .uni-metric-trigger {
     min-height: 38px;
     display: inline-flex;
     align-items: center;
+  }
+
+  /* Keep the price line flush with the details link at the card bottom while preserving a 38px touch target. */
+  .uni-cost-trigger,
+  .uni-card--map .uni-details {
+    position: relative;
+  }
+
+  .uni-cost-trigger::after,
+  .uni-card--map .uni-details::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    height: max(100%, 38px);
+    transform: translateY(-50%);
   }
 }
 
