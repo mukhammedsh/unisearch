@@ -79,7 +79,6 @@ export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTool
 let __universitiesWindowBindings = [];
 let __universitiesSearchCleanup = null;
 let __universitiesLayoutSync = null;
-let __universitiesUnifitBanner = null;
 let __universitiesCompareController = null;
 let __universitiesFilterControls = null;
 let __universitiesMapController = null;
@@ -96,8 +95,6 @@ export function disposeUniversitiesPage() {
     __universitiesSearchCleanup = null;
     __universitiesLayoutSync?.dispose();
     __universitiesLayoutSync = null;
-    __universitiesUnifitBanner?.dispose();
-    __universitiesUnifitBanner = null;
     __universitiesCompareController?.dispose();
     __universitiesCompareController = null;
     __universitiesFilterControls?.dispose();
@@ -146,13 +143,10 @@ function collectUniversitiesElements() {
         savedFilterButtons: Array.from(document.querySelectorAll("[data-saved-filter]")),
         recentlyViewedBar: $("recentlyViewedBar"),
         mobileRecentSlot: $("mobileRecentSlot"),
-        unifitWarningBanner: $("unifitWarningBanner"),
+        unifitContextBar: $("unifitContextBar"),
         unifitBannerTitle: $("unifitBannerTitle"),
+        unifitTooltipProfile: $("unifitTooltipProfile"),
         unifitBannerEdit: $("unifitBannerEdit"),
-        unifitBannerPrefsBtn: $("unifitBannerPrefsBtn"),
-        unifitLegendDetails: $("unifitLegendDetails"),
-        unifitLegend: $("unifitLegend"),
-        unifitWarningDismiss: $("dismissUnifitWarningBanner"),
         compareTray: $("compareTray"),
     };
     if (!el.compareTray) {
@@ -339,7 +333,6 @@ export function initUniversitiesPage() {
     __universitiesLayoutSync = layoutSync;
 
     const unifitBanner = createUnifitBannerController({ el, state });
-    __universitiesUnifitBanner = unifitBanner;
 
     const compareController = createCompareController({
         el,
@@ -688,7 +681,6 @@ export function initUniversitiesPage() {
         setViewModesReady: (ready) => { viewModesReady = ready; },
         syncViewModeControls,
         scheduleSyncWorkspaceDepth: layoutSync.scheduleSyncWorkspaceDepth,
-        refreshUnifitLegend: unifitBanner.refreshLegend,
         updateUnifitWarningBanner: unifitBanner.update,
         renderCompareTray: compareController.renderCompareTray,
         syncCardActionState: compareController.syncCardActionState,
@@ -721,7 +713,7 @@ export function initUniversitiesPage() {
         filterControls.initLocations();
     }
 
-    unifitBanner.bindEvents();
+    unifitBanner.applyAISortOptionLabel();
     compareController.bindEvents();
     filterControls.bindEvents();
     layoutSync.bindEvents();
@@ -808,9 +800,6 @@ export function initUniversitiesPage() {
         const nextSort = el.sortSelect.value;
         el.sortSelect.value = nextSort;
         state.sort = nextSort;
-        if (state.sort !== "uni_ai") {
-            unifitBanner.resetDismissed();
-        }
         filterControls.updateSliderVisibility();
         filterControls.updateMobileFilterUi();
         refetch();
@@ -979,7 +968,6 @@ export function initUniversitiesPage() {
             const profile = loadProfileForApi();
             const userBudget = Number.parseFloat(profile.budget);
             el.list.innerHTML = items.map((u, idx) => renderCard(u, userBudget, idx)).join("");
-            unifitBanner.refreshLegend();
             warmMapMode();
             if (animateResults) markMotionEnter(el.list, ".uni-card", { limit: 16, staggerMs: 24 });
             renderPagination(total);

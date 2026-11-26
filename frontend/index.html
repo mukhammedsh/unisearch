@@ -59,6 +59,23 @@
           <span data-i18n="universities.found_prefix">Found</span> <span id="totalCount" class="u-found-count">0</span> <span data-i18n="universities.found_suffix">universities</span>
         </div>
 
+        <div id="unifitContextBar" class="u-unifit-context" hidden>
+          <span class="u-unifit-context__sep" aria-hidden="true"></span>
+          <div class="u-unifit-context__inner">
+            <span id="unifitBannerTitle" class="u-unifit-context__text"></span>
+            <span class="ui-tooltip-wrap u-unifit-context__tooltip-wrap">
+              <button id="unifitContextInfoBtn" class="ui-tooltip-trigger u-unifit-context__info" type="button" aria-label="How UniFit ranks this list" data-i18n-aria-label="universities.ux2.banner.info_aria" aria-expanded="false">
+                <span data-heroicon="information-circle" data-icon-size="14"></span>
+              </button>
+              <span id="unifitContextTooltip" class="ui-tooltip-bubble u-unifit-context__tooltip" role="tooltip">
+                <strong id="unifitTooltipProfile" class="ui-tooltip-title" hidden></strong>
+                <span class="ui-tooltip-text" data-i18n="universities.ux2.banner.disclaimer">Fit ranking, not an admission prediction. Missing data is never a fail.</span>
+              </span>
+            </span>
+            <a id="unifitBannerEdit" class="u-unifit-context__link" href="profile.html" data-route="profile"></a>
+          </div>
+        </div>
+
         <div class="u-section-actions">
           <div id="mobileRecentSlot" class="u-mobile-recent-slot">
             <div id="recentlyViewedBar" class="u-recent" hidden></div>
@@ -309,31 +326,6 @@
       </aside>
 
       <div id="universitiesCatalogPane" class="u-content" data-universities-pane="catalog">
-        <div id="unifitWarningBanner" class="u-unifit-warning" hidden>
-          <div class="u-unifit-warning__content">
-            <span class="u-unifit-warning__icon" aria-hidden="true">
-              <span data-heroicon="information-circle" data-icon-size="18"></span>
-            </span>
-            <div class="u-unifit-warning__body">
-              <p id="unifitBannerTitle" class="u-unifit-warning__text"></p>
-              <p class="u-unifit-warning__note" data-i18n="universities.ux2.banner.disclaimer">Fit ranking, not an admission prediction. Missing data is never a fail.</p>
-            </div>
-          </div>
-          <div class="u-unifit-warning__actions">
-            <button id="unifitBannerPrefsBtn" class="ui-btn ui-btn--sm u-unifit-warning__prefs" type="button" data-i18n="universities.unifit.prefs_button">Preferences</button>
-            <a id="unifitBannerEdit" class="u-unifit-warning__link" href="profile.html" data-route="profile"></a>
-          </div>
-          <button id="dismissUnifitWarningBanner" class="ui-btn ui-btn--icon ui-btn--ghost u-unifit-warning__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.unifit_banner.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.unifit_banner.dismiss">
-            <span data-heroicon="x-mark" data-icon-size="16"></span>
-          </button>
-          <details id="unifitLegendDetails" class="u-unifit-legend-disclosure motion-disclosure" hidden>
-            <summary class="u-unifit-legend-summary">
-              <span data-i18n="universities.ux2.legend.lead">Icons on cards:</span>
-              <span data-heroicon="chevron-down" data-icon-size="14"></span>
-            </summary>
-            <div id="unifitLegend" class="u-unifit-legend" role="group" aria-label="Icons on university cards" data-i18n-aria-label="universities.ux2.legend.aria"></div>
-          </details>
-        </div>
         <div id="listState" class="u-state"></div>
         <div class="u-catalog-stage">
           <div id="universitiesSkeleton" class="u-skeleton-grid" aria-hidden="true"></div>

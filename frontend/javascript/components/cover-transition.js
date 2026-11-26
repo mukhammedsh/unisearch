@@ -348,27 +348,20 @@ function hydrateCatalogFromSnapshot(snap) {
     }
   }
 
-  const bannerEl = document.getElementById("unifitWarningBanner");
-  if (bannerEl) {
-    bannerEl.hidden = snap.bannerHidden;
+  const contextBarEl = document.getElementById("unifitContextBar");
+  if (contextBarEl) {
+    contextBarEl.hidden = snap.contextBarHidden;
     const titleEl = document.getElementById("unifitBannerTitle");
     if (titleEl) titleEl.textContent = snap.bannerTitleText;
+    const tooltipProfileEl = document.getElementById("unifitTooltipProfile");
+    if (tooltipProfileEl) {
+      tooltipProfileEl.hidden = snap.tooltipProfileHidden;
+      tooltipProfileEl.textContent = snap.tooltipProfileText;
+    }
     const editEl = document.getElementById("unifitBannerEdit");
     if (editEl) {
       editEl.textContent = snap.bannerEditText;
       if (snap.bannerEditHref) editEl.setAttribute("href", snap.bannerEditHref);
-    }
-    const legendDetailsEl = document.getElementById("unifitLegendDetails");
-    if (legendDetailsEl) {
-      legendDetailsEl.hidden = snap.legendDetailsHidden;
-      if (legendDetailsEl instanceof HTMLDetailsElement) {
-        legendDetailsEl.open = snap.legendDetailsOpen;
-      }
-    }
-    const legendEl = document.getElementById("unifitLegend");
-    if (legendEl) {
-      legendEl.hidden = snap.legendHidden;
-      legendEl.innerHTML = snap.legendHtml;
     }
   }
 
@@ -417,11 +410,10 @@ export function captureCatalogReturnSnapshot(currentUrl, targetUrl) {
   safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(scrollY));
 
   const recentEl = document.getElementById("recentlyViewedBar");
-  const bannerEl = document.getElementById("unifitWarningBanner");
+  const contextBarEl = document.getElementById("unifitContextBar");
   const bannerTitleEl = document.getElementById("unifitBannerTitle");
+  const tooltipProfileEl = document.getElementById("unifitTooltipProfile");
   const bannerEditEl = document.getElementById("unifitBannerEdit");
-  const legendDetailsEl = document.getElementById("unifitLegendDetails");
-  const legendEl = document.getElementById("unifitLegend");
   const favBtn = document.querySelector('[data-saved-filter="favorites"]');
 
   catalogReturnSnapshot = {
@@ -438,14 +430,12 @@ export function captureCatalogReturnSnapshot(currentUrl, targetUrl) {
     listStateHtml: document.getElementById("listState")?.innerHTML ?? "",
     recentHidden: Boolean(recentEl?.hidden ?? true),
     recentHtml: recentEl?.innerHTML ?? "",
-    bannerHidden: Boolean(bannerEl?.hidden ?? true),
+    contextBarHidden: Boolean(contextBarEl?.hidden ?? true),
     bannerTitleText: bannerTitleEl?.textContent ?? "",
+    tooltipProfileHidden: Boolean(tooltipProfileEl?.hidden ?? true),
+    tooltipProfileText: tooltipProfileEl?.textContent ?? "",
     bannerEditText: bannerEditEl?.textContent ?? "",
     bannerEditHref: bannerEditEl?.getAttribute("href") ?? "",
-    legendDetailsHidden: Boolean(legendDetailsEl?.hidden ?? true),
-    legendDetailsOpen: Boolean(legendDetailsEl instanceof HTMLDetailsElement && legendDetailsEl.open),
-    legendHidden: Boolean(legendEl?.hidden ?? true),
-    legendHtml: legendEl?.innerHTML ?? "",
   };
 }
 

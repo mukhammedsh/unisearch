@@ -325,7 +325,6 @@ universities.badge.overflow_label: Қосымша күй белгілері
 universities.badge.top_match: Жақсы сәйкестік
 universities.badge.your_vibe: Сізге сай
 universities.why.conditional_exam_needed: Талаптарды тексеру үшін емтихан нәтижелерін профильге қосыңыз.
-universities.unifit_banner.dismiss: Хабарландыруды жабу
 universities.why.top_match: Бұл университет қазіргі таңдауларыңызға сай келеді.
 universities.why.your_vibe: Бұл университет сіз таңдаған қалауларға жақсы сай келеді.
 universities.badge.aid_available: Қаржылай көмек бар
@@ -3138,12 +3137,14 @@ profile.ux2.summary.requirements.native: ана тілі
 profile.ux2.summary.requirements.cefr: CEFR деңгейі
 profile.ux2.summary.requirements.used: Әр университеттің жарияланған минимумдарымен салыстырылады. Сәйкестік жауаптар барлық минимумды қамтығанда есептеледі.
 profile.ux2.summary.requirements.unused: Ең төменгі талаптарға сәйкестік есептелмейді. Жарияланған минимумдармен салыстыру үшін GPA, емтихандар немесе тілдер қосыңыз.
-universities.ux2.banner.ranked: Профиліңізге сай іріктелді: {values}
-universities.ux2.banner.generic: Жалпы рет — профильде оқу деңгейін, бағытты немесе бюджетті көрсетіңіз.
-universities.ux2.banner.scores_only: Емтихан нәтижелеріңіз ескеріледі. Дәлірек іріктеу үшін деңгей, бағыт не бюджет қосыңыз.
+universities.ux2.banner.ranked: UniFit іріктеуі: {values}
+universities.ux2.banner.generic: Жалпы рет — оқу деңгейін, бағытты немесе бюджетті көрсетіңіз
+universities.ux2.banner.scores_only: Тіл дерегі ескерілді — деңгей, бағыт не бюджет қосыңыз
 universities.ux2.banner.budget: жылына {amount} дейін
-universities.ux2.banner.edit: Профильді өзгерту
+universities.ux2.banner.edit: Профиль
 universities.ux2.banner.set_up: Профильді толтыру
+universities.ux2.banner.info_aria: UniFit іріктеуі қалай жұмыс істейді
+universities.ux2.banner.tooltip_profile: Ескерілді: {values}
 universities.ux2.banner.disclaimer: Бұл сәйкестік рейтингі, түсу болжамы емес. Дерек болмаса, айыппұл салынбайды.
 universities.ux2.tip.language_test: тіл тесті
 universities.tip.subject_options: Сай бағдарламалар: {count}. Университет бетінде біреуін таңдаңыз.
@@ -3159,20 +3160,6 @@ universities.tip.before_aid: Қаржылық көмек есепке алынб
 universities.tip.requirements_met: Жарияланған минимумдарға сай. Қалған шарттар — университет бетінде.
 universities.tip.below_minimum: Ең төменгі талаптан төмен: {items}.
 universities.tip.minimum_gap: {exam}: {minimum} керек, сізде {provided}
-universities.ux2.legend.aria: Университет карточкаларындағы белгішелер
-universities.ux2.legend.lead: Карточка белгішелері:
-universities.ux2.legend.subject_missing: Бағдарлама жоқ
-universities.ux2.legend.subject_matched: Бағыт бар
-universities.ux2.legend.requirements_below: Талаптан төмен
-universities.ux2.legend.exam_needed: Емтихан керек
-universities.ux2.legend.requirements_met: Талаптар орындалды
-universities.ux2.legend.no_data: Талап деректері жоқ
-universities.ux2.legend.over_budget_aid: Бюджеттен асады, көмек бар
-universities.ux2.legend.over_budget: Бюджеттен асады
-universities.ux2.legend.budget_check: Құнын тексеріңіз
-universities.ux2.legend.within_budget: Бюджет шегінде
-universities.ux2.legend.aid: Қаржылай көмек бар
-universities.ux2.legend.vibe: Қалауыңызға сәйкес
 profile.ux2.evidence.language_title: Ағылшын тілі
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
 university.ux2.title: Қабылдаудың негізгі деректері
@@ -3328,7 +3315,6 @@ profile.unit.per_year: / жыл
 profile.budget_currency_label: Бюджет валютасы
 universities.filter.reviewed_only: Тексерілген талаптар
 universities.filter.reviewed_only_hint: Талаптары мен бағасы тексерілген ЖОО-ларды көрсету
-universities.unifit.prefs_button: Қалаулар
 universities.unifit.prefs_summary: UniFit қалаулары
 universities.tip.budget_level_needed: Оқу деңгейіне қарай жылына {cost}. Салыстыру үшін деңгейді таңдаңыз.
 guide.start.nav: Неден бастау керек

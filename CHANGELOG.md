@@ -26,6 +26,7 @@ All notable changes to UniSearch are documented here.
 - Remove duplicate test, condition, and tab-intro text on reviewed university Admission, Dates, and Costs tabs while keeping official sources intact, and shorten heavy admissions labels across all three languages.
 - Simplify legacy university Admission cards by hiding empty average-admitted boxes, single-profile count badges, technical category kickers, and filler funding notes.
 - Shorten catalog filter, sort, UniFit preference slider, banner, and card-tooltip copy into plain applicant-friendly wording across English, Russian, and Kazakh.
+- Replace the catalog's UniFit notice card, duplicate Preferences button, and second-row badge legend with a compact inline toolbar status row that summarizes leading profile inputs, moves the full profile list and fit-ranking note into an info tooltip, and keeps the university grid aligned with the filter sidebar.
 - Display UniFit preference slider strength from the centre (`0–100%`) alongside qualitative strength tiers (`slight`, `moderate`, `strong`) and a centre-origin active track fill.
 - Replace temporary profile-suggestion chips on reviewed university Programs tabs with an editable Subject filter alongside Study level, pre-filled from the applicant profile and saved per university when changed without altering the profile.
 - Make the university cover map's campus marker interactive so clicking or activating it centers and zooms the map to the campus like the off-screen recenter button.

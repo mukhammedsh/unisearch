@@ -155,16 +155,16 @@ async function recordBannerKeyframes(page) {
     window.__bannerFrames = [];
     const original = Element.prototype.animate;
     Element.prototype.animate = function animate(keyframes, options) {
-      if (this.id === "unifitWarningBanner") window.__bannerFrames.push(keyframes);
+      if (this.id === "unifitContextBar") window.__bannerFrames.push(keyframes);
       return original.call(this, keyframes, options);
     };
   });
 }
 
-test("UniFit notice grows to its final size, spacing included, and collapses when leaving UniFit sort", async ({ page }) => {
+test("UniFit toolbar context reveals smoothly to its final size and collapses when leaving UniFit sort", async ({ page }) => {
   await openCatalog(page, "no-preference");
   await recordBannerKeyframes(page);
-  const banner = page.locator("#unifitWarningBanner");
+  const banner = page.locator("#unifitContextBar");
   await setNativeSelect(page, "sortSelect", "uni_ai");
   await expect(banner).toBeVisible();
   await expect.poll(() => page.evaluate(() => window.__bannerFrames.length)).toBeGreaterThan(0);
@@ -172,7 +172,7 @@ test("UniFit notice grows to its final size, spacing included, and collapses whe
   const reveal = await page.evaluate(() => {
     const firstCall = window.__bannerFrames[0];
     const lastCall = window.__bannerFrames[window.__bannerFrames.length - 1];
-    const node = document.getElementById("unifitWarningBanner");
+    const node = document.getElementById("unifitContextBar");
     return { first: firstCall[0], last: lastCall[lastCall.length - 1], finalHeight: node.getBoundingClientRect().height };
   });
   // Padding and margins travel with the height, so nothing snaps when the reveal ends.

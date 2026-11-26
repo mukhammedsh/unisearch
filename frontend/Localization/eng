@@ -325,7 +325,6 @@ universities.badge.overflow_label: Additional status indicators
 universities.badge.top_match: Good Match
 universities.badge.your_vibe: Your Vibe
 universities.why.conditional_exam_needed: Add your exam results to the profile to check the requirements.
-universities.unifit_banner.dismiss: Dismiss notice
 universities.why.top_match: This university is a good preference match for your current slider setup.
 universities.why.your_vibe: This university closely matches the preferences you set.
 universities.badge.aid_available: Aid Available
@@ -3138,12 +3137,14 @@ profile.ux2.summary.requirements.native: native language
 profile.ux2.summary.requirements.cefr: CEFR level
 profile.ux2.summary.requirements.used: Compared with each university's published minimums. A match needs your answers to cover every minimum it publishes.
 profile.ux2.summary.requirements.unused: No minimum requirements match is calculated. Add GPA, exams or languages to compare with published minimums.
-universities.ux2.banner.ranked: Ranked for your profile: {values}
-universities.ux2.banner.generic: Generic order — add a study level, subject, or budget in your profile.
-universities.ux2.banner.scores_only: Uses your test scores. Add a study level, subject, or budget for better sorting.
+universities.ux2.banner.ranked: UniFit: {values}
+universities.ux2.banner.generic: Generic order — add a study level, subject, or budget
+universities.ux2.banner.scores_only: Uses your language details — add a study level, subject, or budget
 universities.ux2.banner.budget: up to {amount}/yr
-universities.ux2.banner.edit: Edit profile
+universities.ux2.banner.edit: Profile
 universities.ux2.banner.set_up: Set up profile
+universities.ux2.banner.info_aria: How UniFit ranks this list
+universities.ux2.banner.tooltip_profile: Profile: {values}
 universities.ux2.banner.disclaimer: Fit ranking, not an admission prediction. Missing data is never a fail.
 universities.ux2.tip.language_test: language test
 universities.tip.subject_options: {count} matching programs — pick one on the university page to check requirements.
@@ -3159,20 +3160,6 @@ universities.tip.before_aid: Financial aid is not deducted.
 universities.tip.requirements_met: Meets published minimums. Check other requirements on the university page.
 universities.tip.below_minimum: Below the minimum: {items}.
 universities.tip.minimum_gap: {exam} needs {minimum}, you have {provided}
-universities.ux2.legend.aria: Icons on university cards
-universities.ux2.legend.lead: Card icons:
-universities.ux2.legend.subject_missing: Program not offered
-universities.ux2.legend.subject_matched: Subject offered
-universities.ux2.legend.requirements_below: Below requirements
-universities.ux2.legend.exam_needed: Exam needed
-universities.ux2.legend.requirements_met: Requirements met
-universities.ux2.legend.no_data: No requirement data
-universities.ux2.legend.over_budget_aid: Over budget, aid available
-universities.ux2.legend.over_budget: Over budget
-universities.ux2.legend.budget_check: Check the cost
-universities.ux2.legend.within_budget: Within budget
-universities.ux2.legend.aid: Aid available
-universities.ux2.legend.vibe: Matches preferences
 profile.ux2.evidence.language_title: English background
 profile.ux2.evidence.entirely: Entirely in English?
 university.ux2.title: Key admission facts
@@ -3328,7 +3315,6 @@ profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
 universities.filter.reviewed_only: Verified admissions
 universities.filter.reviewed_only_hint: Show universities with verified requirements and costs
-universities.unifit.prefs_button: Preferences
 universities.unifit.prefs_summary: UniFit preferences
 universities.tip.budget_level_needed: {cost}/yr depending on study level. Pick a study level to compare.
 guide.start.nav: Getting started

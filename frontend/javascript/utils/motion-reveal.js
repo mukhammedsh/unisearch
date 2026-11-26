@@ -172,14 +172,6 @@ export function enterNewRows(list, rowSelector, previousKeys) {
 }
 
 /**
- * @param {HTMLElement} node
- * @returns {boolean} True while a show or hide animation started by `setRevealed` is running.
- */
-export function isRevealing(node) {
-  return runningReveals.has(node);
-}
-
-/**
  * Fades an element in without moving it (used when a view becomes visible).
  * @param {HTMLElement} node
  * @param {{ instant?: boolean }} [options]

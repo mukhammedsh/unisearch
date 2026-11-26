@@ -2,7 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { describe, it, beforeEach } from "node:test";
 
-import { enterNewRows, fadeIn, isRevealing, readRowKeys, setRevealed, setTextWithFade } from "../../frontend/javascript/utils/motion-reveal.js";
+import { enterNewRows, fadeIn, readRowKeys, setRevealed, setTextWithFade } from "../../frontend/javascript/utils/motion-reveal.js";
 
 /** Minimal element double: records animate() calls and lets the test settle them. */
 function createNode({ hidden = false, display = "", height = 40 } = {}) {
@@ -115,7 +115,7 @@ describe("motion-reveal", () => {
   it("retarget restarts a running reveal toward the new full size", () => {
     const node = createNode({ hidden: true, height: 40 });
     setRevealed(node, true);
-    assert.equal(isRevealing(node), true);
+    assert.equal(node.classList.contains("motion-revealing"), true);
     setRevealed(node, true);
     assert.equal(node.animations.length, 1);
     setRevealed(node, true, { retarget: true });
