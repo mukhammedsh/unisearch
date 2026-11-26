@@ -1,6 +1,7 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 
 test("profile calendar selects and clears a date", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
@@ -12,7 +13,12 @@ test("profile calendar selects and clears a date", async ({ page }) => {
   await expect(calendar).toBeVisible();
   await calendar.locator('input[type="number"]').fill("2024");
   await calendar.locator('input[type="number"]').press("Tab");
+  await calendar.locator("select").selectOption("1");
+  const february = await calendar.boundingBox();
   await calendar.locator("select").selectOption("8");
+  const september = await calendar.boundingBox();
+  expect(september.height).toBe(february.height);
+  expect(september.y).toBe(february.y);
   await calendar.locator('[data-date="2024-09-17"]').click();
   await expect(input).toHaveValue("2024-09-17");
   await expect(trigger).toBeFocused();

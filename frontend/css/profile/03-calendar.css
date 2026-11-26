@@ -12,9 +12,9 @@
 .profile-calendar button { cursor: pointer; }
 .profile-calendar :is(button, select, input):focus-visible, .profile-calendar-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .profile-calendar__header button { width: 36px; font-size: var(--text-xl); display: grid; flex: 0 0 36px; place-items: center; padding: 0; background: transparent; }
-.profile-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; gap: var(--space-1); margin-block: var(--space-4); }
+.profile-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 32px repeat(6, 40px); text-align: center; gap: var(--space-1); margin-block: var(--space-4); }
 .profile-calendar__weekday { align-self: center; color: var(--text-muted); font-size: var(--text-xs); padding-block: var(--space-2); font-weight: var(--font-weight-medium); }
-.profile-calendar__grid button { background: transparent; aspect-ratio: 1; min-width: 0; padding: 0; border-radius: var(--radius-full); font-size: var(--text-base); }
+.profile-calendar__grid button { background: transparent; min-width: 0; padding: 0; border-radius: var(--radius-full); font-size: var(--text-base); }
 .profile-calendar__grid button[aria-pressed="true"] { background: var(--accent); color: var(--text-inverse); }
 .profile-calendar__footer { display: flex; justify-content: space-between; padding-top: var(--space-3); border-top: 1px solid var(--line-faint); }
 .profile-calendar__footer button { padding-inline: var(--space-3); background: transparent; color: var(--accent-text); font-weight: var(--font-weight-medium); }
@@ -22,3 +22,7 @@
 .profile-calendar__header :is(select, input) { padding-inline: var(--space-2); font-weight: var(--font-weight-medium); }
 .profile-calendar__grid button[aria-current="date"]:not([aria-pressed="true"]) { color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent); }
 .profile-calendar__grid button[aria-pressed="true"]:hover { background: var(--accent-strong); color: var(--text-inverse); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .profile-calendar[open] { animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards; }
+}
