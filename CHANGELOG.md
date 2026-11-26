@@ -2,7 +2,7 @@
 
 All notable changes to UniSearch are documented here.
 
-## 10.10.1 (2026-11-26) - Desktop hover-only tooltips and Kazakhstan Kazakh-first locale default
+## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, Kazakh-first locale, and UniFit fixes
 
 ### Changed
 - Keep desktop mouse tooltips transient on hover and keyboard focus without press states or click-to-pin behavior, let mouse clicks on university card price, rank, and status tooltips open the university normally, and preserve tap-to-open tooltips on touch and stylus screens.
