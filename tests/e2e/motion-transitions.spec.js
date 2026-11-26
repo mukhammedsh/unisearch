@@ -50,15 +50,28 @@ test("comparison steps move in their direction and re-renders stay still", async
   await expect.poll(() => motionSeen(page, "motion-tab-forward")).toBe(true);
 });
 
-/** Records the pseudo-elements a View Transition animates, read once it is ready. */
+/** Records the pseudo-elements, wall-clock duration, and mounted detail card state for each View Transition. */
 async function recordViewTransitions(page) {
   await page.evaluate(() => {
     window.__vtNames = [];
+    window.__vtDurations = [];
+    window.__vtCardStates = [];
     const original = document.startViewTransition.bind(document);
     document.startViewTransition = (callback) => {
-      const transition = original(callback);
+      const startedAt = performance.now();
+      const transition = original(async () => {
+        await callback();
+        const card = document.getElementById("detailCard");
+        if (card?.classList.contains("is-mounted")) {
+          const style = getComputedStyle(card);
+          window.__vtCardStates.push({ opacity: style.opacity, animationName: style.animationName });
+        }
+      });
       transition.ready.then(() => {
         window.__vtNames.push(...document.getAnimations().map((animation) => animation.effect?.pseudoElement).filter(Boolean));
+      }).catch(() => {});
+      transition.finished.then(() => {
+        window.__vtDurations.push(Math.round(performance.now() - startedAt));
       }).catch(() => {});
       return transition;
     };
@@ -86,6 +99,7 @@ test("opening a university from its card carries the photo into the cover", asyn
   await card.locator(".uni-card-link-overlay").click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
 
   const cover = page.locator("#detailCover");
   await expect(cover.locator(".d-gallery-preview img")).toBeVisible();
@@ -166,11 +180,16 @@ async function openFirstCatalogCardWithPhoto(page, { scrollY = 0, selector = ".u
 
 test("returning via the back button morphs the cover back into its catalog card and keeps scroll", async ({ page }) => {
   const { catalogScroll } = await openFirstCatalogCardWithPhoto(page, { scrollY: 220 });
-  await page.evaluate(() => { window.__vtNames = []; });
+  await expect.poll(() => page.evaluate(() => (window.__vtDurations || []).length)).toBeGreaterThan(0);
+  await page.evaluate(() => {
+    window.__vtNames = [];
+    window.__vtDurations = [];
+  });
 
   await page.locator("#detailBackBtn").click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
   await expect(page.locator(".vt-uni-cover")).toHaveCount(0);
   await expect.poll(() => page.evaluate((expected) => Math.abs(window.scrollY - expected), catalogScroll), { timeout: 2000 }).toBeLessThanOrEqual(4);
   if (catalogScroll > 0) {
@@ -180,11 +199,16 @@ test("returning via the back button morphs the cover back into its catalog card 
 
 test("returning via browser back morphs the cover back into its catalog card", async ({ page }) => {
   await openFirstCatalogCardWithPhoto(page);
-  await page.evaluate(() => { window.__vtNames = []; });
+  await expect.poll(() => page.evaluate(() => (window.__vtDurations || []).length)).toBeGreaterThan(0);
+  await page.evaluate(() => {
+    window.__vtNames = [];
+    window.__vtDurations = [];
+  });
 
   await page.goBack();
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
   await expect(page.locator(".vt-uni-cover")).toHaveCount(0);
 });
 
@@ -227,8 +251,10 @@ test("reopening a cached university morphs directly into the mounted page withou
     ':not([data-uni-id="nazarbayev-university-kaz-astana"])',
   ].join("");
   const { uniId } = await openFirstCatalogCardWithPhoto(page, { selector: nonReviewedSelector });
+  await expect.poll(() => page.evaluate(() => (window.__vtDurations || []).length)).toBeGreaterThan(0);
   await page.locator("#detailBackBtn").click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  await expect.poll(() => page.evaluate(() => (window.__vtDurations || []).length)).toBeGreaterThan(1);
 
   const card = page.locator(`.uni-card[data-uni-id="${uniId}"]`);
   await expect(card).toBeVisible();
@@ -236,6 +262,8 @@ test("reopening a cached university morphs directly into the mounted page withou
 
   await page.evaluate(() => {
     window.__vtNames = [];
+    window.__vtDurations = [];
+    window.__vtCardStates = [];
     window.__loadingShown = false;
     const observer = new MutationObserver(() => {
       const loading = document.getElementById("detailLoading");
@@ -249,6 +277,8 @@ test("reopening a cached university morphs directly into the mounted page withou
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
+  expect(await page.evaluate(() => window.__vtCardStates?.[0])).toEqual({ opacity: "1", animationName: "none" });
   expect(await page.evaluate(() => {
     window.__loadingObserver?.disconnect();
     return window.__loadingShown;

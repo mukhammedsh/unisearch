@@ -126,6 +126,38 @@ async function pickProgram(page, id, { search, option, route = "", level = "" })
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${id}"]`)).toHaveAttribute("data-scope", "program");
 }
 
+test("exports the current reviewed programs and official links to a printable PDF", async ({ page }, testInfo) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+  await page.addInitScript(() => { window.print = () => document.body.setAttribute("data-print-requested", "true"); });
+
+  for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
+    await waitForReviewedComparison(page);
+    const exportButton = page.getByRole("button", { name: "Export to PDF" });
+    await exportButton.click();
+    await expect(page.locator("body")).toHaveAttribute("data-print-requested", "true");
+    const report = page.locator(".compare-pdf");
+    if (viewport.width > 400) await expect(report).toContainText("Depends on the program");
+    await expect(report).toBeHidden();
+
+    await pickProgram(page, IMPERIAL_ID, { search: "Computing", option: "imperial-option-computing-meng", level: "undergraduate" });
+    await exportButton.click();
+    await page.emulateMedia({ media: "print" });
+    await expect(report.getByRole("columnheader", { name: /Imperial College London.*Computing/i })).toBeVisible();
+    await expect(report).toContainText(/UCAS/i);
+    await expect(report).toContainText(/£[\d,]+/);
+    await expect(report).toContainText(/(deadline|date)/i);
+    await expect(report).toContainText(/(SAT|ACT)/i);
+    await expect(report.locator('a[href*="imperial.ac.uk"]')).not.toHaveCount(0);
+    await expect(exportButton).toBeHidden();
+    await page.pdf({ path: testInfo.outputPath(`comparison-${viewport.width}.pdf`), preferCSSPageSize: true });
+    await page.emulateMedia({ media: "screen" });
+    await expect(exportButton).toBeVisible();
+  }
+});
+
 test("empty comparison action uses token spacing and stays centered", async ({ page }) => {
   await clearCompareState(page);
   await page.setViewportSize({ width: 1280, height: 800 });

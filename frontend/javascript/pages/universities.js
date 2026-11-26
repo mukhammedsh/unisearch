@@ -19,6 +19,7 @@ import {
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
 import { hideGlobalSearchSuggestions } from "../components/navbar-search.js";
+import { isCoverTransitionActive, waitForCoverTransition } from "../components/cover-transition.js";
 import { setTextWithFade } from "../utils/motion-reveal.js";
 import { t } from "../i18n.js";
 import {
@@ -1090,7 +1091,13 @@ export function initUniversitiesPage() {
                     fetchAi: () => fetchAiSort(buildAiSortPayload(), { onStale: showStaleResult }),
                     fetchFallback: () => fetchUniversities(buildFallbackListParams(apiParams, state)),
                     isCurrentRun: () => isCurrentCatalog() && runSeq === fetchRunSeq && state.sort === "uni_ai",
-                    renderData: (data) => renderFetchedData(data, { animateResults }),
+                    renderData: async (data) => {
+                        if (preserveVisibleResults && isCoverTransitionActive()) {
+                            await waitForCoverTransition();
+                            if (!isCurrentCatalog() || runSeq !== fetchRunSeq || state.sort !== "uni_ai") return;
+                        }
+                        renderFetchedData(data, { animateResults });
+                    },
                     onAiError: (err, mode) => {
                         const message = mode === "direct"
                             ? "AI sort failed, fallback list is used."
@@ -1104,6 +1111,10 @@ export function initUniversitiesPage() {
             const data = await fetchUniversities(apiParams, { onStale: showStaleResult });
             if (data?.__aborted) return;
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            if (preserveVisibleResults && isCoverTransitionActive()) {
+                await waitForCoverTransition();
+                if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;
+            }
             renderFetchedData(data, { animateResults });
         } catch (err) {
             if (runSeq !== fetchRunSeq || !isCurrentCatalog()) return;

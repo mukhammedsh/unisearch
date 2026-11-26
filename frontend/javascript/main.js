@@ -14,9 +14,11 @@ import {
   captureCatalogReturnSnapshot,
   clearCatalogReturnSnapshot,
   getCatalogReturnHref,
+  registerActiveCoverTransition,
   rememberCoverSource,
   takeCoverHandoff,
   takeReverseCoverHandoff,
+  waitForCoverTransition,
 } from "./components/cover-transition.js";
 import { hasInstantUniversityDetail } from "./pages/shared/cache.js";
 
@@ -736,8 +738,8 @@ async function loadAppRoute(rawHref, options = {}) {
         updateDomAndState({ preserveScroll: Boolean(reverseHandoff?.preserveScroll) });
         if (forwardHandoff) {
           forwardHandoff.inject({ useLoadingCover: !canRenderUniversityInTransition });
-        } else {
-          coverHandoff?.inject();
+        } else if (coverHandoff) {
+          await coverHandoff.inject();
         }
         if (canRenderUniversityInTransition) {
           await initializeCurrentRoute({ skipLoadingSkeleton: true });
@@ -745,6 +747,9 @@ async function loadAppRoute(rawHref, options = {}) {
           forwardHandoff.ensureMountedTarget();
         }
       });
+      if (coverHandoff) {
+        registerActiveCoverTransition(transition.finished);
+      }
       const settleCover = () => coverHandoff?.settle();
       void transition.finished.then(settleCover, settleCover);
       // Initialize the new route while its snapshot is fading in.
@@ -757,6 +762,9 @@ async function loadAppRoute(rawHref, options = {}) {
     controller.signal.throwIfAborted();
     if (!routeInitialized) {
       await initializeCurrentRoute();
+    }
+    if (coverHandoff) {
+      await waitForCoverTransition();
     }
     window.requestAnimationFrame(() => {
       if (!controller.signal.aborted && lastLoadedAppRouteUrl === url.href) focusRouteDestination(url.hash);

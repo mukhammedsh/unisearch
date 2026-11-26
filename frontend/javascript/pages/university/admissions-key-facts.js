@@ -314,12 +314,13 @@ function feeStatusSource(resolved) {
   return source ? safeUrl(source.url) : "";
 }
 
-export function costFact(resolved, budgetUsd) {
+export function costFact(resolved, budgetUsd, { original = false } = {}) {
   const costs = resolved?.selected_costs || {};
   const basis = costs.annual_total ? "annual_total" : costs.tuition ? "tuition" : "";
   if (!basis) return { status: "unknown", tone: "", text: label("cost_unknown"), notes: [] };
   const quote = costs[basis];
-  const amount = formatPriceRange(quote.min, quote.max, quote.currency, summary());
+  const priceOptions = { ...summary(), original };
+  const amount = formatPriceRange(quote.min, quote.max, quote.currency, priceOptions);
   // A total this site adds up (published tuition plus a living estimate) says so and shows both parts,
   // so it is never mistaken for a published figure or contradicted by the tuition shown elsewhere.
   const calculated = quote.calculation === "tuition_plus_living_range" && costs.tuition && Number.isFinite(quote.living_min);
@@ -328,12 +329,12 @@ export function costFact(resolved, budgetUsd) {
   const text = tFormat(`university.admissions.key_facts.${calculated ? "cost_estimate" : basis === "annual_total" ? "cost_total" : "cost_tuition"}`,
     { amount: calculated ? withoutApprox(amount) : amount });
   const breakdown = calculated ? tFormat("university.admissions.key_facts.cost_breakdown", {
-    tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()),
-    living: withoutApprox(formatPriceRange(quote.living_min, quote.living_max, quote.currency, summary())) }) : "";
+    tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, priceOptions),
+    living: withoutApprox(formatPriceRange(quote.living_min, quote.living_max, quote.currency, priceOptions)) }) : "";
   // A published yearly budget names the tuition it includes, so the reader sees what the rest pays for.
   const tuitionShare = !calculated && basis === "annual_total" && costs.tuition && costs.tuition.currency === quote.currency
     && Number.isFinite(costs.tuition.max) && costs.tuition.max < quote.min
-    ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, summary()) }) : "";
+    ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, priceOptions) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
   const parts = { amount, basis, period: quote.period || "" };
   const notes = [breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {

@@ -2745,6 +2745,10 @@ universities.compare.reviewed.picker.count: Programs found: {total}
 universities.compare.reviewed.picker.routes_intro: “{program}” has several ways to apply. Choose yours.
 universities.compare.reviewed.picker.back: Another program
 universities.compare.reviewed.picker.close: Close
+universities.compare.pdf.export: Export to PDF
+universities.compare.pdf.date: Exported {date}
+universities.compare.pdf.no_sources: No official links available for this selection.
+universities.compare.pdf.note: Check the official sources before applying. Dates, requirements and costs may change.
 universities.compare.mixed.title: These two universities can't be compared yet
 universities.compare.mixed.text: {reviewed} has rechecked data, while {legacy} doesn't yet. A pair is compared only within one group, so facts of different accuracy never stand side by side. We are rechecking every university in turn.
 universities.compare.mixed.reviewed: Data rechecked

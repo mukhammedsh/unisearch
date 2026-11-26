@@ -46,6 +46,43 @@ let pendingSource = null;
 /** @type {CatalogReturnSnapshot | null} */
 let catalogReturnSnapshot = null;
 
+/** @type {Promise<void> | null} */
+let activeCoverTransitionPromise = null;
+
+const ACTIVE_TRANSITION_TIMEOUT_MS = 700;
+
+/**
+ * Registers an in-flight cover View Transition so async route hydration and photo swaps wait
+ * before mutating the live DOM elements participating in the morph.
+ * @param {Promise<unknown> | null | undefined} finishedPromise
+ */
+export function registerActiveCoverTransition(finishedPromise) {
+  if (!finishedPromise) return;
+  let timer = 0;
+  const guarded = Promise.race([
+    Promise.resolve(finishedPromise).catch(() => {}),
+    new Promise((resolve) => {
+      timer = window.setTimeout(resolve, ACTIVE_TRANSITION_TIMEOUT_MS);
+    }),
+  ]).finally(() => {
+    if (timer) window.clearTimeout(timer);
+    if (activeCoverTransitionPromise === guarded) {
+      activeCoverTransitionPromise = null;
+    }
+  });
+  activeCoverTransitionPromise = guarded;
+}
+
+/** @returns {boolean} */
+export function isCoverTransitionActive() {
+  return Boolean(activeCoverTransitionPromise);
+}
+
+/** @returns {Promise<void>} */
+export function waitForCoverTransition() {
+  return activeCoverTransitionPromise || Promise.resolve();
+}
+
 /**
  * @param {Element | null} element
  * @returns {boolean}
@@ -291,6 +328,8 @@ export function takeCoverHandoff(url) {
       if (useLoadingCover && loading) {
         loading.classList.add("is-visible", "has-cover-handoff");
         cover.classList.add("has-cover-handoff");
+      } else if (!useLoadingCover) {
+        document.getElementById("detailCard")?.classList.add("has-cover-handoff");
       }
       standIn = document.createElement("img");
       standIn.className = `${HANDOFF_CLASS} ${NAME_CLASS}`;
@@ -305,6 +344,7 @@ export function takeCoverHandoff(url) {
      */
     ensureMountedTarget() {
       clearLoadingHandoffState();
+      document.getElementById("detailCard")?.classList.add("has-cover-handoff");
       if (standIn?.isConnected) {
         standIn.classList.add(NAME_CLASS);
         return;
@@ -355,7 +395,7 @@ export function takeReverseCoverHandoff(currentUrl, targetUrl) {
       clearAllCoverTransitionNames();
       sourceImg.classList.add(NAME_CLASS);
     },
-    inject() {
+    async inject() {
       sourceImg.classList.remove(NAME_CLASS);
       const listEl = hydrateCatalogFromSnapshot(snap);
       safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(snap.scrollY));
@@ -370,6 +410,12 @@ export function takeReverseCoverHandoff(currentUrl, targetUrl) {
       targetImg.loading = "eager";
       targetImg.decoding = "sync";
       targetImg.classList.add(NAME_CLASS);
+      if (typeof targetImg.decode === "function") {
+        await Promise.race([
+          targetImg.decode().catch(() => {}),
+          new Promise((resolve) => window.setTimeout(resolve, 80)),
+        ]);
+      }
     },
     settle() {
       clearAllCoverTransitionNames();
@@ -394,6 +440,10 @@ export function adoptCoverHandoff(cover) {
  */
 export function removeCoverHandoff(cover) {
   if (!cover) return;
+  if (isCoverTransitionActive()) {
+    void waitForCoverTransition().then(() => removeCoverHandoff(cover));
+    return;
+  }
   const handoffs = cover.querySelectorAll(`.${HANDOFF_CLASS}`);
   let transferName = false;
   handoffs.forEach((node) => {

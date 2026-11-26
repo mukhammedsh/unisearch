@@ -1103,6 +1103,10 @@ body[data-page="university"],
   display: none;
 }
 
+.d-card.is-mounted.has-cover-handoff {
+  animation: none;
+}
+
 .d-info-wrap.is-open .d-info {
   background: var(--interaction-hover-surface);
   color: var(--text);

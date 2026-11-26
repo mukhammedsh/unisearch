@@ -2745,6 +2745,10 @@ universities.compare.reviewed.picker.count: Найдено программ: {to
 universities.compare.reviewed.picker.routes_intro: На программу «{program}» можно подать несколькими способами. Выберите свой.
 universities.compare.reviewed.picker.back: Другая программа
 universities.compare.reviewed.picker.close: Закрыть
+universities.compare.pdf.export: Экспорт в PDF
+universities.compare.pdf.date: Дата экспорта — {date}
+universities.compare.pdf.no_sources: Для выбранного варианта нет официальных ссылок.
+universities.compare.pdf.note: Перед подачей заявки проверьте официальные источники. Сроки, требования и стоимость могут измениться.
 universities.compare.mixed.title: Эти университеты пока нельзя сравнить
 universities.compare.mixed.text: Данные университета «{reviewed}» уже перепроверены, а университета «{legacy}» — ещё нет. Пару сравниваем только внутри одной группы, чтобы не ставить рядом факты разной точности. Мы по очереди перепроверяем все университеты.
 universities.compare.mixed.reviewed: Данные перепроверены

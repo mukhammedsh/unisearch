@@ -6,6 +6,7 @@ All notable changes to UniSearch are documented here.
 
 ### Added
 - Morph the university cover photo smoothly back into its catalog card when returning via the back button or browser history while both images are visible on screen.
+- Export reviewed university comparisons to PDF with the selected programs, deadlines, requirements, costs, aid, and official sources.
 
 ### Changed
 - Preserve the active catalog search, filters, and scroll position when returning via the university cover back button instead of resetting to the top of the catalog.

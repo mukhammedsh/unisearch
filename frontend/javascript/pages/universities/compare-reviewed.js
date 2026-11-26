@@ -17,12 +17,13 @@ import { COMPARE_UNIVERSITIES_KEY, fetchUniversityDetailCached, formatUiNumber, 
 import { compareCampusHtml, compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
 import { readForSinglePublishedCycle } from "../university/admissions-cycle.js";
-import { admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
+import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
 import { costFact, deadlineFact, fundingFact, MARK_ICONS, requirementsFact } from "../university/admissions-key-facts.js";
 import { isEvidenceReviewed, isPublished } from "../university/admissions-status.js";
 import { billingPeriodLabel } from "../university/admissions-presentation.js";
 import { translateAdmissionText } from "../../university-translations.js";
 import { checklistItems, costCard, deadlineCard, firstYearSharedRoute, peopleItems } from "../university/overview-summary.js";
+import { comparisonPdfButton, pdfDeadlineItems, printComparisonPdf } from "./compare-pdf.js";
 
 const label = (key) => t(`universities.compare.reviewed.${key}`);
 const catalogLabel = (key) => t(`university.admissions.catalog.${key}`);
@@ -170,20 +171,25 @@ function programRows() {
   ];
 }
 
-function admissionRows(columns, profileExamIds) {
-  const showRequirements = columns.some((column) => readsFacts(column) && Number.isFinite(column.resolved?.assessment?.chancePercent));
+function admissionRows(columns, profileExamIds, { forPdf = false } = {}) {
+  const showRequirements = !forPdf && columns.some((column) => readsFacts(column) && Number.isFinite(column.resolved?.assessment?.chancePercent));
   return [
     {
       id: "deadline",
       keepEmpty: true,
-      value: (column) => (readsFacts(column) ? cardValue(deadlineCard(deadlineFact(column.resolved, new Date(), { profileExamIds })), column, "tab-deadlines") : scopePlaceholder(column)),
+      value: (column) => {
+        if (!readsFacts(column)) return scopePlaceholder(column);
+        const items = forPdf ? pdfDeadlineItems(column.resolved) : [];
+        if (items.length) return { items };
+        return cardValue(deadlineCard(deadlineFact(column.resolved, new Date(), { profileExamIds })), column, "tab-deadlines");
+      },
     },
     {
       id: "needs",
       keepEmpty: true,
       value: (column) => {
         if (!readsFacts(column)) return scopePlaceholder(column);
-        const items = checklistItems(column.resolved, loadProfileForApi());
+        const items = checklistItems(column.resolved, forPdf ? null : loadProfileForApi());
         const link = { href: detailHref(column, "tab-admission"), label: t("university.ux2.link.needs") };
         return items.length ? { items, link } : { main: t("university.ux2.needs.empty"), kind: "text", link };
       },
@@ -244,7 +250,7 @@ function feeStatusControl(column) {
   </div>`;
 }
 
-function costRows(budgetUsd) {
+function costRows(budgetUsd, { forPdf = false } = {}) {
   const budgetMissing = t("university.admissions.key_facts.budget_missing");
   return [
     {
@@ -252,7 +258,7 @@ function costRows(budgetUsd) {
       keepEmpty: true,
       value: (column) => {
         if (!readsFacts(column)) return scopePlaceholder(column);
-        const fact = costFact(column.resolved, budgetUsd);
+        const fact = costFact(column.resolved, budgetUsd, { original: forPdf });
         const value = cardValue(costCard(fact), column, "tab-finance");
         // A price for the whole program or per credit names its period in the reader's language instead of a yearly figure.
         const costs = column.resolved?.selected_costs || {};
@@ -269,7 +275,7 @@ function costRows(budgetUsd) {
           value.details.push(label("fee.note"));
           value.sources = fact.links.map((entry) => ({ url: entry.url, label: entry.label, unnamed: true }));
         }
-        value.extra = feeStatusControl(column);
+        if (!forPdf) value.extra = feeStatusControl(column);
         return value;
       },
     },
@@ -382,6 +388,26 @@ function stripHtml(columns) {
   </div></div>`;
 }
 
+function printReviewedComparison(container, columns) {
+  const summaries = columns.map((column) => {
+    const scope = scopeText(column);
+    const { resolved } = column;
+    const route = readsFacts(column) ? resolved.selected_route : null;
+    const cycle = route && (resolved.context?.intended_entry_cycle || resolved.context?.cycle);
+    const fee = FEE_STATUSES.find(([value]) => value === column.context.fee_status_context && value !== "unknown");
+    return {
+      name: compareUniversityName(column.university),
+      context: [scope.title, scope.meta, route && routeLabel(route), cycle && admissionsCycleLabel(cycle), route && fee && label(fee[1])].filter(Boolean),
+      resolved: route || columnScope(column) === "route" || columnScope(column) === "no_route" ? resolved : null,
+    };
+  });
+  printComparisonPdf(container, summaries, [
+    ...programRows().filter(({ id }) => id === "study" && columns.some((column) => column.resolved?.selected_option)),
+    ...admissionRows(columns, [], { forPdf: true }),
+    ...costRows(undefined, { forPdf: true }),
+  ].map((row) => ({ label: label(`row.${row.id}`), values: columns.map(row.value) })));
+}
+
 export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamIds = [], photos } = {}) {
   const hasProgram = columns.some((column) => ["program", "route", "no_route"].includes(columnScope(column)));
   const readable = columns.some((column) => readsFacts(column));
@@ -396,7 +422,10 @@ export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamId
         <p class="compare-reviewed__intro">${escapeHtml(label("intro"))}</p>
         <p class="compare-reviewed__hint">${escapeHtml(label("heads_note"))}</p>
       </div>
-      <button class="ui-btn ui-btn--sm ui-btn--ghost compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
+      <div class="compare-reviewed__actions">
+        <button class="ui-btn ui-btn--sm ui-btn--ghost compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
+        ${comparisonPdfButton(!readable || columns.some((column) => column.status === "loading"))}
+      </div>
     </header>
     <div class="compare-reviewed__heads" data-compare-heads>
       ${columns.map((column, index) => headHtml(column, index, photos)).join("")}
@@ -910,6 +939,10 @@ export function mountReviewedComparison(container, universities, photos) {
   }
 
   const onClick = (event) => {
+    if (event.target.closest("[data-compare-pdf-export]")) {
+      printReviewedComparison(container, columns);
+      return;
+    }
     const swap = event.target.closest("[data-compare-swap]");
     if (swap) {
       const colIndex = columns.findIndex((entry) => entry.id === swap.dataset.compareSwap);

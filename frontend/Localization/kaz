@@ -2745,6 +2745,10 @@ universities.compare.reviewed.picker.count: Табылған бағдарлам�
 universities.compare.reviewed.picker.routes_intro: «{program}» бағдарламасына бірнеше жолмен өтініш беруге болады. Өзіңіздікін таңдаңыз.
 universities.compare.reviewed.picker.back: Басқа бағдарлама
 universities.compare.reviewed.picker.close: Жабу
+universities.compare.pdf.export: PDF форматына экспорттау
+universities.compare.pdf.date: Экспорт күні — {date}
+universities.compare.pdf.no_sources: Таңдалған нұсқа үшін ресми сілтемелер жоқ.
+universities.compare.pdf.note: Өтініш бермес бұрын ресми дереккөздерді тексеріңіз. Мерзімдер, талаптар және оқу құны өзгеруі мүмкін.
 universities.compare.mixed.title: Бұл университеттерді әзірге салыстыру мүмкін емес
 universities.compare.mixed.text: «{reviewed}» университетінің деректері қайта тексерілген, ал «{legacy}» университетінікі әлі тексерілмеген. Әртүрлі дәлдіктегі деректер қатар тұрмауы үшін жұпты тек бір топ ішінде салыстырамыз. Барлық университетті кезекпен қайта тексеріп жатырмыз.
 universities.compare.mixed.reviewed: Деректер қайта тексерілген
