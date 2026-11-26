@@ -1950,8 +1950,8 @@ cost_item_housing_and_food: Housing and food
 cost_item_student_fees_allowance: Student fees allowance
 cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
-profile.evidence.description: Add only if a university page asks. Self-reported; official records are not verified.
 profile.evidence.test_date: Test date (optional)
+profile.evidence.description: These details are for specific universities.
 profile.evidence.institution_title: Studies at a listed university
 profile.evidence.institution: University
 profile.evidence.kind: Evidence type
@@ -3115,7 +3115,7 @@ university.ux2.needs.mark_recommended: Recommendation, not a requirement
 languages.exam_overall_score_label: Overall score
 languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.
 languages.exam_sections_label: Section scores (if your report shows them)
-profile.ux2.intro: Answer only what you know. Nothing here is required, and your answers are saved on this device.
+profile.ux2.intro: All fields are optional, and your answers are saved on this device.
 profile.ux2.section.study.title: What you want to study
 profile.ux2.section.study.desc: Study level narrows the list. Subject and topics change the order.
 profile.ux2.section.budget.title: Budget and funding
@@ -3215,7 +3215,6 @@ universities.ux2.legend.within_budget: Within budget
 universities.ux2.legend.aid: Aid available
 universities.ux2.legend.vibe: Matches preferences
 profile.ux2.evidence.language_title: English language background
-profile.ux2.evidence.language_fixed: Records your background in English only, which is what English requirements ask about.
 profile.ux2.evidence.entirely: Entirely in English?
 university.ux2.title: Key admission facts
 university.ux2.intro_route: Shown for "{route}". One application covers all undergraduate programs.

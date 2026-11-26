@@ -8,7 +8,7 @@ const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 // Fingerprint of the three localization files (first 8 hex characters of their SHA-256 with LF line endings).
 // It names the tab's cached packs, so a changed file is fetched again even when the app version is unchanged.
 // tests/unit/i18n-pack-revision.test.mjs fails with the expected value whenever a localization file changes.
-const I18N_PACK_REVISION = "7df39197";
+const I18N_PACK_REVISION = "2902b646";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";

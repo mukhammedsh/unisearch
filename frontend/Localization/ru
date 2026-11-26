@@ -1950,8 +1950,8 @@ cost_item_housing_and_food: Проживание и питание
 cost_item_student_fees_allowance: Расходы на студенческие сборы
 cost_item_books_and_supplies_allowance: Расходы на книги и материалы
 cost_item_personal_expenses_allowance: Личные расходы
-profile.evidence.description: Добавляйте, только если просит страница университета. Со слов пользователя; записи не проверяются.
 profile.evidence.test_date: Дата (необязательно)
+profile.evidence.description: Эти сведения нужны для отдельных университетов.
 profile.evidence.institution_title: Сведения для конкретного вуза
 profile.evidence.institution: Университет
 profile.evidence.kind: Тип сведений
@@ -3115,7 +3115,7 @@ university.ux2.needs.mark_recommended: Рекомендация, а не тре�
 languages.exam_overall_score_label: Общий балл
 languages.exam_overall_score_hint: Общий балл по всему экзамену — можно указать только его, если не знаете баллы по секциям.
 languages.exam_sections_label: Баллы по секциям (если они есть в сертификате)
-profile.ux2.intro: Отвечайте только на то, что знаете. Ничего обязательного нет, ответы сохраняются на этом устройстве.
+profile.ux2.intro: Все заполнять необязательно, ответы сохраняются на этом устройстве.
 profile.ux2.section.study.title: Что вы хотите изучать
 profile.ux2.section.study.desc: Уровень обучения сужает список. Специальность и темы меняют порядок.
 profile.ux2.section.budget.title: Бюджет и финансирование
@@ -3215,7 +3215,6 @@ universities.ux2.legend.within_budget: В рамках бюджета
 universities.ux2.legend.aid: Есть финпомощь
 universities.ux2.legend.vibe: Совпадает с предпочтениями
 profile.ux2.evidence.language_title: Опыт использования английского языка
-profile.ux2.evidence.language_fixed: Записывается только опыт английского: именно о нём спрашивают требования к английскому.
 profile.ux2.evidence.entirely: Полностью на английском?
 university.ux2.title: Главное для поступления
 university.ux2.intro_route: Показано для варианта «{route}». Одна заявка подходит для всех программ бакалавриата.

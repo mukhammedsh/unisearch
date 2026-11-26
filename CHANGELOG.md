@@ -13,6 +13,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Add regression tests for the static snapshot builder and client filtering/loading/service-worker snapshot caching (`backend/tests/test_static_snapshot_builder.py`, `tests/unit/static-snapshot.test.mjs`, `tests/unit/service-worker.test.mjs`).
 
 ### Changed
+- Remove profile parameter descriptions and shorten the introductory text.
 - Keep the profile calendar window stable between months and animate its entrance and date changes.
 - Refine the profile calendar layout and highlight today.
 - Replace the profile date picker with a localized calendar.

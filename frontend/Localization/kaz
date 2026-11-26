@@ -1950,8 +1950,8 @@ cost_item_housing_and_food: Тұру және тамақтану
 cost_item_student_fees_allowance: Студенттік алымдарға арналған шығыстар
 cost_item_books_and_supplies_allowance: Кітаптар мен материалдарға арналған шығыстар
 cost_item_personal_expenses_allowance: Жеке шығындар
-profile.evidence.description: Университет беті сұраса ғана қосыңыз. Өз сөзіңізбен берілген; жазбалар тексерілмейді.
 profile.evidence.test_date: Күні (міндетті емес)
+profile.evidence.description: Бұл мәліметтер кейбір университеттер үшін қажет.
 profile.evidence.institution_title: Көрсетілген оқу орнындағы оқу
 profile.evidence.institution: Университет
 profile.evidence.kind: Растау түрі
@@ -3115,7 +3115,7 @@ university.ux2.needs.mark_recommended: Талап емес, ұсыныс
 languages.exam_overall_score_label: Жалпы балл
 languages.exam_overall_score_hint: Бүкіл емтихан бойынша жалпы балл — секциялар бойынша баллды білмесеңіз, тек осыны енгізуге болады.
 languages.exam_sections_label: Секциялар бойынша балл (сертификатта болса)
-profile.ux2.intro: Тек білетініңізге ғана жауап беріңіз. Ештеңе міндетті емес, жауаптар осы құрылғыда сақталады.
+profile.ux2.intro: Барлық өрісті толтыру міндетті емес, жауаптар осы құрылғыда сақталады.
 profile.ux2.section.study.title: Нені оқығыңыз келеді
 profile.ux2.section.study.desc: Оқу деңгейі тізімді тарылтады. Мамандық пен тақырыптар реттілікті өзгертеді.
 profile.ux2.section.budget.title: Бюджет және қаржыландыру
@@ -3215,7 +3215,6 @@ universities.ux2.legend.within_budget: Бюджет шегінде
 universities.ux2.legend.aid: Қаржылай көмек бар
 universities.ux2.legend.vibe: Қалауыңызға сәйкес
 profile.ux2.evidence.language_title: Ағылшын тілін қолдану тәжірибесі
-profile.ux2.evidence.language_fixed: Тек ағылшын тіліндегі тәжірибе жазылады: ағылшын тілі талаптары дәл соны сұрайды.
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
 university.ux2.title: Қабылдаудың негізгі деректері
 university.ux2.intro_route: «{route}» нұсқасы үшін көрсетілген. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.

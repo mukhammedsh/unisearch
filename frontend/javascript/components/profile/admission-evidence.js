@@ -108,11 +108,10 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   (container._evidenceSelectCleanups || []).forEach((cleanup) => cleanup?.());
   container.innerHTML = `
     <div class="profile-admission-evidence">
-        <p class="profile-hint" data-i18n="profile.evidence.description">Add only if a university page asks. Self-reported; official records are not verified.</p>
+        <p class="profile-hint" data-i18n="profile.evidence.description">These details are for specific universities.</p>
         <section class="profile-admission-evidence-group" aria-labelledby="languageEvidenceTitle">
           <div class="profile-subsection-head">
             <h3 id="languageEvidenceTitle" class="profile-subsection-title" data-i18n="profile.ux2.evidence.language_title">English language background</h3>
-            <p class="profile-hint" data-i18n="profile.ux2.evidence.language_fixed">Records your background in English only, which is what English requirements ask about.</p>
           </div>
           <div class="profile-applicant-context-grid">
             <div class="profile-field">
