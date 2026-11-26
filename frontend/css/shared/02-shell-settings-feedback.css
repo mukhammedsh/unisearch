@@ -897,9 +897,8 @@
   max-width: 350px;
   box-sizing: border-box;
   line-height: var(--leading-normal);
-  animation: motion-toast-in var(--motion-medium, 260ms) var(--motion-ease-enter, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+  animation: motion-toast-in var(--motion-medium, 260ms) var(--motion-ease-enter, cubic-bezier(0.16, 1, 0.3, 1));
   pointer-events: auto;
-  will-change: transform, opacity;
 }
 
 .toast.is-leaving {
@@ -923,6 +922,9 @@
 
 .toast-icon {
   flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
 }
 
 .toast.success .toast-icon {
