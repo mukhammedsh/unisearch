@@ -177,15 +177,9 @@
   font-size: var(--text-sm);
 }
 
-.admission-context-control select {
+.admission-context-control select,
+.admission-context-control .custom-select-wrapper {
   min-width: 180px;
-  min-height: 40px;
-  padding: 0 var(--space-3);
-  color: var(--text);
-  background: var(--surface-soft);
-  border: 0;
-  border-radius: var(--radius-base);
-  font: inherit;
 }
 
 .admissions-deadline-scope {

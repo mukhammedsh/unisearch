@@ -44,6 +44,8 @@ function ensureSelectWrapper(select) {
     select.parentNode.insertBefore(wrapper, select.nextSibling);
     wrapper.appendChild(select);
   }
+  wrapper.classList.toggle("custom-select-wrapper--sm", select.classList.contains("ui-select--sm"));
+  wrapper.classList.toggle("custom-select-wrapper--lg", select.classList.contains("ui-select--lg"));
   select.classList.add("u-select-hidden");
   select.tabIndex = -1;
   select.setAttribute("aria-hidden", "true");
@@ -94,7 +96,7 @@ function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) 
   if (searchable && !searchInput) {
     searchInput = document.createElement("input");
     searchInput.type = "search";
-    searchInput.className = "custom-select-search";
+    searchInput.className = "ui-input ui-input--sm custom-select-search";
     searchInput.autocomplete = "off";
   }
 

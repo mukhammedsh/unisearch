@@ -85,7 +85,8 @@ test("page disclosures opt into smooth opening", async ({ page }) => {
 
 test("a university disclosure grows open", async ({ page }) => {
   await openPage(page, "/university.html?id=mit-usa-cambridge");
-  await page.waitForTimeout(500);
+  await page.click("#tab-btn-admission");
+  await page.locator("#tab-admission details.motion-disclosure:not([open])").first().waitFor({ state: "visible" });
   const sizes = await page.evaluate(async () => {
     const el = Array.from(document.querySelectorAll("details.motion-disclosure:not([open])"))
       .find((node) => node.getClientRects().length > 0);

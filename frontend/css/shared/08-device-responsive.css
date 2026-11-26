@@ -68,13 +68,9 @@ body .has-sliding-indicator .active::after {
 }
 
 .navbar-search-field {
-  position: relative;
-  display: flex;
-  align-items: center;
   flex: 1 1 auto;
-  min-width: 0;
   height: 44px;
-  border-radius: var(--radius-base);
+  padding: 0;
   box-shadow: var(--shadow-xs);
 }
 
@@ -147,34 +143,9 @@ body .has-sliding-indicator .active::after {
 }
 
 .navbar-search .navbar-search-field > input {
-  width: 100%;
-  min-width: 0;
   height: 44px;
-  box-sizing: border-box;
   padding: 0 var(--space-10) 0 var(--space-10);
-  border: none;
-  border-radius: var(--radius-base);
-  outline: 0;
-  background: transparent;
-  box-shadow: none;
-  color: var(--text);
-  font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
   line-height: 1;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    box-shadow var(--motion-fast) var(--motion-ease-standard);
-}
-
-.navbar-search input::placeholder {
-  color: var(--text-muted);
-}
-
-.navbar-search input:focus {
-  outline: none;
-  border: none;
-  background: transparent;
-  box-shadow: none;
 }
 
 .navbar-search-field:focus-within .navbar-search-icon {
@@ -351,12 +322,8 @@ body .has-sliding-indicator .active::after {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .navbar-search-back:hover:not(:active),
-  .navbar-search-field:hover {
-    background: var(--interaction-hover-surface);
-  }
-
   .navbar-search-back:hover:not(:active) {
+    background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 

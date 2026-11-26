@@ -75,27 +75,27 @@ const LAYOUT_HTML = `
   </div>
 
   <search class="navbar-search" id="universitySearch" hidden>
-    <button id="navbarSearchBack" class="navbar-search-back" type="button" aria-label="Back to navigation" data-i18n-aria-label="navbar.search.back" title="Back to navigation" data-i18n-title="navbar.search.back" hidden>${heroIcon("arrow-left", "ui-icon ui-icon--18")}</button>
-    <div class="navbar-search-field ui-input-composite">
+    <button id="navbarSearchBack" class="ui-btn ui-btn--icon ui-btn--ghost navbar-search-back" type="button" aria-label="Back to navigation" data-i18n-aria-label="navbar.search.back" title="Back to navigation" data-i18n-title="navbar.search.back" hidden>${heroIcon("arrow-left", "ui-icon ui-icon--18")}</button>
+    <div class="navbar-search-field ui-input-composite ui-input-composite--lg">
       <span class="navbar-search-icon" aria-hidden="true">${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</span>
-      <input id="qInput" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" />
-      <button id="searchClearBtn" class="navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
+      <input id="qInput" class="ui-input" type="search" placeholder="Search university..." data-i18n-placeholder="universities.search_placeholder" aria-label="Search university" data-i18n-aria-label="universities.search_placeholder" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" />
+      <button id="searchClearBtn" class="ui-btn ui-btn--icon ui-btn--ghost navbar-search-clear" type="button" aria-label="Clear search" data-i18n-aria-label="universities.search_clear" title="Clear search" data-i18n-title="universities.search_clear" hidden>
         ${heroIcon("x-mark", "ui-icon ui-icon--16")}
       </button>
     </div>
   </search>
 
   <div class="navbar-right">
-    <button class="navbar-search-toggle" id="navbarSearchToggle" type="button" title="Open search" aria-label="Open search" data-i18n-title="navbar.search.open" data-i18n-aria-label="navbar.search.open" aria-expanded="false" aria-controls="universitySearch" hidden>${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</button>
+    <button class="ui-btn ui-btn--icon navbar-search-toggle" id="navbarSearchToggle" type="button" title="Open search" aria-label="Open search" data-i18n-title="navbar.search.open" data-i18n-aria-label="navbar.search.open" aria-expanded="false" aria-controls="universitySearch" hidden>${heroIcon("magnifying-glass", "ui-icon ui-icon--18")}</button>
     <div class="lang-control">
-      <select id="languageSelect" class="lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
+      <select id="languageSelect" class="ui-select lang-switch" aria-label="Language" data-i18n-aria-label="nav.language">
         <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
         <option value="rus" data-i18n="nav.lang.rus">Русский</option>
         <option value="kaz" data-i18n="nav.lang.kaz">Қазақша</option>
       </select>
     </div>
     <button
-      class="settings-trigger-btn"
+      class="ui-btn ui-btn--icon settings-trigger-btn"
       id="settingsBtn"
       type="button"
       title="Settings"
@@ -123,7 +123,7 @@ const LAYOUT_HTML = `
   <section class="settings-card">
     <div class="settings-header">
       <h2 id="settingsTitle" data-i18n="settings.title">Settings</h2>
-      <button class="icon-btn settings-close" id="settingsCloseBtn" type="button" autofocus title="Close" aria-label="Close" data-i18n-title="profile.action.close" data-i18n-aria-label="profile.action.close">
+      <button class="ui-btn ui-btn--icon icon-btn settings-close" id="settingsCloseBtn" type="button" autofocus title="Close" aria-label="Close" data-i18n-title="profile.action.close" data-i18n-aria-label="profile.action.close">
         ${heroIcon("x-mark", "ui-icon ui-icon--18")}
       </button>
     </div>
@@ -133,7 +133,7 @@ const LAYOUT_HTML = `
         <div class="settings-copy">
           <h3 data-i18n="settings.option.theme.title">Theme</h3>
         </div>
-        <select id="settingTheme" class="settings-select" data-theme-input="theme_preference" aria-label="Theme" data-i18n-aria-label="settings.option.theme.title">
+        <select id="settingTheme" class="ui-select ui-select--sm settings-select" data-theme-input="theme_preference" aria-label="Theme" data-i18n-aria-label="settings.option.theme.title">
           <option value="system" data-i18n="theme.opt.system">System</option>
           <option value="light" data-i18n="theme.opt.light">Light</option>
           <option value="dark" data-i18n="theme.opt.dark">Dark</option>
@@ -161,7 +161,7 @@ const LAYOUT_HTML = `
         <div class="settings-copy">
           <h3 data-i18n="settings.option.language.title">Site language</h3>
         </div>
-        <select id="settingLanguage" class="settings-select" data-language-input data-flags="off" aria-label="Site language" data-i18n-aria-label="settings.option.language.title">
+        <select id="settingLanguage" class="ui-select ui-select--sm settings-select" data-language-input data-flags="off" aria-label="Site language" data-i18n-aria-label="settings.option.language.title">
           <option value="eng" data-i18n="nav.lang.eng">English (US)</option>
           <option value="rus" data-i18n="nav.lang.rus">Русский</option>
           <option value="kaz" data-i18n="nav.lang.kaz">Қазақша</option>
@@ -172,7 +172,7 @@ const LAYOUT_HTML = `
         <div class="settings-copy">
           <h3 data-i18n="settings.option.preferred_currency.title">Preferred Currency</h3>
         </div>
-        <select id="settingPreferredCurrency" class="settings-select" data-setting-input="${SETTING_PREFERRED_CURRENCY}" aria-label="Preferred Currency" data-i18n-aria-label="settings.option.preferred_currency.title">
+        <select id="settingPreferredCurrency" class="ui-select ui-select--sm settings-select" data-setting-input="${SETTING_PREFERRED_CURRENCY}" aria-label="Preferred Currency" data-i18n-aria-label="settings.option.preferred_currency.title">
           <optgroup label="Post-Soviet" data-i18n-label="currency.region.cis">
             <option value="KZT" data-i18n="currency.opt.kzt">Kazakhstani Tenge (KZT, ₸)</option>
             <option value="RUB" data-i18n="currency.opt.rub">Russian Ruble (RUB, ₽)</option>
@@ -358,7 +358,7 @@ const LAYOUT_HTML = `
         <div class="settings-copy">
           <h3 data-i18n="settings.option.currency_display.title">Price Display</h3>
         </div>
-        <select id="settingCurrencyDisplay" class="settings-select" data-setting-input="${SETTING_CURRENCY_DISPLAY}" aria-label="Price Display" data-i18n-aria-label="settings.option.currency_display.title">
+        <select id="settingCurrencyDisplay" class="ui-select ui-select--sm settings-select" data-setting-input="${SETTING_CURRENCY_DISPLAY}" aria-label="Price Display" data-i18n-aria-label="settings.option.currency_display.title">
           <option value="preferred" data-i18n="currency.display.preferred">In preferred currency</option>
           <option value="both" data-i18n="currency.display.both">Both (preferred + original)</option>
           <option value="original" data-i18n="currency.display.original">In original currency</option>
@@ -723,7 +723,7 @@ export function renderErrorScreen(options = {}) {
       ${
         onRetry
           ? `
-      <button class="error-btn" id="errorRetryBtn" type="button">
+      <button class="ui-btn ui-btn--lg ui-btn--primary error-btn" id="errorRetryBtn" type="button">
         ${heroIcon("arrow-path", "ui-icon ui-icon--18")}
         <span data-i18n="error.retry">Retry</span>
       </button>`

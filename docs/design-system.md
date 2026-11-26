@@ -191,7 +191,7 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 - Shared primitives & control scale (defined globally in `frontend/css/shared/01-foundation.css`):
   - Scale tokens: `--control-height-sm` (`32px` / `--control-radius-sm` `8px`), `--control-height-md` (`40px` / `--control-radius-md` `12px`), and `--control-height-lg` (`44px` / `--control-radius-md` `12px`).
-  - Use `.ui-btn` (with optional `.ui-btn--sm` / `.ui-btn--lg` and `.ui-btn--primary`, `.ui-btn--on-bg`, or `.ui-btn--ghost`) for standard buttons/CTAs and `.ui-segmented` + `.ui-segmented__item` for connected segmented toggles; page classes only supply local layout or page-specific rules without redefining the base primitive in page stylesheets.
+  - Use `.ui-btn` (with optional `.ui-btn--sm` / `.ui-btn--lg`, `.ui-btn--icon`, and `.ui-btn--primary`, `.ui-btn--on-bg`, `.ui-btn--ghost`, `.ui-btn--subtle`, or `.ui-btn--danger-soft`) for standard buttons/CTAs and `.ui-segmented` + `.ui-segmented__item` for connected segmented toggles; page classes only supply local layout or page-specific rules without redefining the base primitive in page stylesheets.
 - Primary: filled accent (`--accent`), `--text-inverse`, `var(--control-height-lg)` (`44px`) for standalone/footer CTAs or `var(--control-height-md)` (`40px`) in compact toolbars, `var(--control-radius-md)` (`12px`), medium/semibold label.
 - Secondary: `var(--control-bg)` (`--surface-soft`, or `--surface-control-on-bg` when sitting directly on `--bg`), no border, text color `var(--text)`. Add `var(--shadow-xs)` or `var(--shadow-micro)` only when its parent surface would otherwise make the control disappear.
 - Subtle / utility: no border, `background: var(--surface-soft)`, and restrained micro-elevation where necessary. Avoid heavy outlines where soft surface contrast and micro-shadow already define the element cleanly.
@@ -204,11 +204,11 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 ### Inputs and Selects
 
-- Use `var(--surface-soft)` background and no border. If the input sits inside `var(--surface-soft)`, return it to `var(--surface-solid)` and add `var(--shadow-xs)` or `var(--shadow-micro)`.
-- Radius: `12-14px`.
-- Focus: accent outline or soft focus ring; do not add a border only for focus.
+- Use `.ui-input` (with optional `.ui-input--sm`, `.ui-input--lg`, or `.ui-input--textarea`) on text, search, number, date, and textarea fields, and `.ui-select` (with optional `.ui-select--sm` or `.ui-select--lg`) on `<select>` controls so every form field shares `--control-bg`, `--control-radius-md` (`12px`, or `--control-radius-sm` `8px` for `--sm`), `--control-height-md`/`--control-height-lg` (`40px`/`44px`), hover, post-interaction invalid (`:user-invalid`, `.is-invalid`, `[aria-invalid="true"]`), disabled, and `:focus-visible` states.
+- When custom select enhancement wraps a `<select>`, `.custom-select-trigger` mirrors the same scale (`36px` `--sm` / `40px` default / `44px` `--lg`) and `--dropdown-radius` (`12px`).
+- Focus: `--focus-ring` outline (`2px solid var(--focus-ring)` with `2px` offset on `:focus-visible` / `:focus-within`); do not add a border only for focus.
 - Never show raw API/network errors in visible form messages.
-- Composite fields with an embedded icon, unit, clear button, reveal button, or similar action use one `.ui-input-composite` surface. The container owns hover, focus-within, invalid, and disabled states; its input remains transparent. Hovering or focusing an embedded action must preserve the state of the full field, while the action may use `--interaction-active-surface` as a local cue.
+- Composite fields with an embedded icon, unit, clear button, reveal button, or similar action use one `.ui-input-composite` surface (with `.ui-input-composite--lg` for `44px` fields). The container owns hover, focus-within, invalid, and disabled states; its inner `.ui-input` remains transparent. Hovering or focusing an embedded action must preserve the state of the full field, while the action may use `--interaction-active-surface` as a local cue.
 
 ### Switches
 
@@ -325,7 +325,7 @@ To eliminate the "Z-Index escalation race" (`z-index: 15`, `60`, `80`, `100`, `4
    - `--z-dropdown` (`1200`): Search suggestions, autocomplete popups, custom select menus, and tooltips (`calc(var(--z-dropdown) + 1)` for active tooltip wrappers).
    - `--z-docked-control` (`1300`): Floating action buttons, docked bottom comparison bar.
    - `--z-drawer` (`2000`): Slide-over filter drawers on tablet/mobile.
-   - `--z-tray` (`2200`): Sticky bottom sheet notifications.
+   - `--z-tray` (`1400`): Sticky bottom sheet notifications.
    - `--z-modal` (`8000`): Modal dialogs and dark backdrops.
    - `--z-modal-raised` (`8200`): Secondary nested dialogs or confirm prompts.
    - `--z-toast` (`9000`): Global toast alerts and notification banners.

@@ -71,7 +71,7 @@ export function createRecentlyViewedController({
     container.innerHTML = `
       <button
         id="recentlyViewedBtn"
-        class="u-recent-trigger"
+        class="ui-btn ui-btn--on-bg u-recent-trigger"
         type="button"
         popovertarget="recentlyViewedPopover"
         aria-controls="recentlyViewedPopover"
@@ -101,7 +101,7 @@ export function createRecentlyViewedController({
               <span class="u-recent__chip">
                 <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
                 <button
-                  class="u-recent__remove"
+                  class="ui-btn ui-btn--icon ui-btn--ghost u-recent__remove"
                   type="button"
                   data-action="remove-recent"
                   data-uni-id="${escapeHtmlAttr(row.id)}"
@@ -113,7 +113,7 @@ export function createRecentlyViewedController({
           }).join("")}
         </div>
         <div class="u-recent__footer">
-          <button class="u-recent__clear" type="button" data-action="clear-recent">
+          <button class="ui-btn ui-btn--sm ui-btn--ghost u-recent__clear" type="button" data-action="clear-recent">
             ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
             <span>${escapeHtml(clearAllText)}</span>
           </button>

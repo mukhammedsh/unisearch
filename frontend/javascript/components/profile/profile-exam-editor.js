@@ -292,8 +292,8 @@ export const renderProfileData = (els, state) => {
                     <span class="profile-exam-score">${escapeHtml([value, ex.taken_on].filter(Boolean).join(" · "))}</span>
                 </div>
                 <div class="profile-list-actions">
-                    <button type="button" data-edit-idx="${i}" class="profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
-                    <button type="button" data-idx="${i}" class="profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
+                    <button type="button" data-edit-idx="${i}" class="ui-btn ui-btn--sm ui-btn--subtle profile-button-subtle">${escapeHtml(t("profile.edit", "Edit"))}</button>
+                    <button type="button" data-idx="${i}" class="ui-btn ui-btn--sm ui-btn--danger-soft profile-delete">${escapeHtml(t("profile.delete", "Delete"))}</button>
                 </div>
             </div>
         `;

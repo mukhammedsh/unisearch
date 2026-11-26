@@ -56,8 +56,6 @@
   --leading-loose: 1.7;
   --accent: #4F46E5;
   --accent-text: #4338CA;
-  --accent2: var(--accent);
-  --accent-highlight: var(--accent);
   --accent-strong: #3730A3;
   --accent-press: #312E81;
   --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
@@ -145,37 +143,26 @@
   --color-warning: #92400e;
   --color-warning-bg: #fff7ed;
   --color-warning-bright: #facc15;
-  --color-rank-gold: #ca8a04;
-  --line-rank-gold: rgba(202, 138, 4, 0.48);
-  --color-rank-bronze: #92400e;
-  --line-rank-bronze: rgba(180, 83, 9, 0.42);
   --color-info: #1d4ed8;
   --color-info-muted: #1e40af;
   --color-info-bg: #eff6ff;
   --line-info: rgba(29, 78, 216, 0.28);
   --uni-status-match-bg: var(--accent-soft);
-  --uni-status-match-border: color-mix(in oklab, var(--accent) 28%, transparent);
   --uni-status-match-text: var(--accent-text);
   --uni-status-success-bg: var(--color-success-bg);
-  --uni-status-success-border: rgba(16, 185, 129, 0.18);
   --uni-status-success-text: var(--color-success);
   --uni-status-warning-bg: var(--color-warning-bg);
-  --uni-status-warning-border: rgba(245, 158, 11, 0.32);
   --uni-status-warning-text: var(--color-warning);
   --uni-status-info-bg: var(--color-info-bg);
-  --uni-status-info-border: rgba(29, 78, 216, 0.28);
   --uni-status-info-text: var(--color-info);
   --uni-status-overflow-bg: #111827;
   --uni-status-overflow-text: var(--text-inverse);
   --uni-status-overflow-shadow: var(--shadow-micro);
-  --uni-status-hover-border: #111827;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
   --selection-bg: color-mix(in oklab, var(--accent) 16%, transparent);
   --selection-text: #111827;
   --text-inverse: #ffffff;
-  --surface-badge: #ffffff;
-  --surface-badge-text: #0f172a;
   --backdrop: rgba(0, 0, 0, 0.45);
   --media-caption-bg: rgba(0, 0, 0, 0.62);
   --media-viewer-bg: #000;
@@ -191,7 +178,6 @@
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 16px rgba(15, 23, 42, 0.05);
   --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08), 0 12px 28px rgba(15, 23, 42, 0.08);
   --shadow-sticky-top: 0 -1px 0 rgba(15, 23, 42, 0.08), 0 -10px 28px rgba(15, 23, 42, 0.08);
-  --line-fade: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.08) 25%, rgba(15, 23, 42, 0.08) 75%, transparent 100%);
   --footer-icon-filter: none;
   --cover-map-tile-filter: none;
   --z-card-badge: 4;
@@ -275,15 +261,10 @@
   --color-warning: #fde68a;
   --color-warning-bg: rgba(245, 158, 11, 0.12);
   --color-warning-bright: #fbbf24;
-  --color-rank-gold: #fcd34d;
-  --line-rank-gold: rgba(250, 204, 21, 0.50);
-  --color-rank-bronze: #d6a06d;
-  --line-rank-bronze: rgba(214, 160, 109, 0.50);
   --color-info: #93c5fd;
   --color-info-muted: #60a5fa;
   --color-info-bg: rgba(59, 130, 246, 0.14);
   --line-info: rgba(147, 197, 253, 0.32);
-  --uni-status-hover-border: #111827;
   --uni-status-overflow-bg: #090a0b;
   --uni-status-overflow-shadow: 0 0 0 1px color-mix(in oklab, var(--line) 40%, transparent);
   --skeleton-base: #222427;
@@ -291,8 +272,6 @@
   --selection-bg: color-mix(in oklab, var(--accent) 35%, transparent);
   --selection-text: #ffffff;
   --text-inverse: #ffffff;
-  --surface-badge: #ffffff;
-  --surface-badge-text: #0f172a;
   --backdrop: rgba(0, 0, 0, 0.65);
   --media-caption-bg: rgba(0, 0, 0, 0.72);
   --tooltip-bg: #222427;
@@ -307,7 +286,6 @@
   --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.32), 0 8px 22px rgba(0, 0, 0, 0.36);
   --shadow-card-hover: 0 4px 14px rgba(0, 0, 0, 0.42), 0 14px 32px rgba(0, 0, 0, 0.48);
   --shadow-sticky-top: 0 -1px 0 rgba(255, 255, 255, 0.08), 0 -12px 32px rgba(0, 0, 0, 0.48);
-  --line-fade: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 75%, transparent 100%);
   --footer-icon-filter: invert(1);
   --cover-map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.75);
   --scrollbar-thumb: color-mix(in oklab, var(--text-muted) 45%, transparent);
@@ -566,11 +544,115 @@ a {
   border: none;
 }
 
+/* Shared input, select, and composite field primitives */
+.ui-input,
+.ui-select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-block-size: var(--control-height-md);
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--control-radius-md);
+  background: var(--control-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  box-shadow: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.ui-input--sm,
+.ui-select--sm {
+  min-block-size: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  border-radius: var(--control-radius-sm);
+  font-size: var(--text-sm);
+}
+
+.ui-input--lg,
+.ui-select--lg {
+  min-block-size: var(--control-height-lg);
+  padding: 0 var(--space-4);
+}
+
+.ui-input--textarea {
+  height: auto;
+  min-block-size: 90px;
+  padding: var(--space-3) var(--space-4);
+  resize: vertical;
+}
+
+.ui-input::placeholder {
+  color: var(--text-muted);
+}
+
+.ui-select {
+  cursor: pointer;
+}
+
+.ui-input:is(:user-invalid, .is-invalid, [aria-invalid="true"]),
+.ui-select:is(:user-invalid, .is-invalid, [aria-invalid="true"]) {
+  box-shadow: 0 0 0 2px var(--color-danger);
+}
+
+.ui-input:is(:user-invalid, .is-invalid, [aria-invalid="true"]):focus-visible,
+.ui-select:is(:user-invalid, .is-invalid, [aria-invalid="true"]):focus-visible {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
 /* Composite fields keep inputs, icons, and embedded actions in one state surface. */
 .ui-input-composite {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
   min-width: 0;
-  background: var(--surface-soft);
+  min-block-size: var(--control-height-md);
+  padding: 0 var(--space-3);
+  border-radius: var(--control-radius-md);
+  background: var(--control-bg);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.ui-input-composite--lg {
+  min-block-size: var(--control-height-lg);
+}
+
+.ui-input-composite > .ui-input,
+.ui-input-composite input:not([type="checkbox"], [type="radio"], [type="range"]) {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-block-size: inherit;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.ui-input-composite > .ui-input:focus-visible,
+.ui-input-composite input:not([type="checkbox"], [type="radio"], [type="range"]):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.ui-input-composite:has(:is(:user-invalid, .is-invalid, [aria-invalid="true"])) {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
+.ui-input-composite :is(:user-invalid, .is-invalid, [aria-invalid="true"]) {
+  box-shadow: none;
 }
 
 /* Contextual surface scoping: inside soft containers, nested controls step up to --surface-raised (--surface-solid in light, lighter slate in dark) with --shadow-xs and --surface-raised-hover. */
@@ -599,14 +681,15 @@ a {
   --interaction-press-surface: var(--surface-raised-press);
 }
 
-.ui-input-composite:focus-within {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
+  .ui-input-composite:has(> :disabled) {
+    opacity: var(--interaction-disabled-opacity);
+    cursor: not-allowed;
+  }
 
-.ui-input-composite:has(> :disabled) {
-  opacity: var(--interaction-disabled-opacity);
-}
+  .ui-input-composite:focus-within {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
 
 .ui-switch {
   -webkit-appearance: none;
@@ -687,6 +770,26 @@ a {
   min-block-size: var(--control-height-lg);
 }
 
+.ui-btn--icon {
+  inline-size: var(--control-height-md);
+  min-inline-size: var(--control-height-md);
+  min-block-size: var(--control-height-md);
+  padding: 0;
+  gap: 0;
+}
+
+.ui-btn--sm.ui-btn--icon {
+  inline-size: var(--control-height-sm);
+  min-inline-size: var(--control-height-sm);
+  min-block-size: var(--control-height-sm);
+}
+
+.ui-btn--lg.ui-btn--icon {
+  inline-size: var(--control-height-lg);
+  min-inline-size: var(--control-height-lg);
+  min-block-size: var(--control-height-lg);
+}
+
 .ui-btn--primary {
   background: var(--accent);
   color: var(--text-inverse);
@@ -698,10 +801,21 @@ a {
   box-shadow: var(--shadow-xs);
 }
 
+.ui-btn--subtle {
+  background: var(--control-bg);
+  color: var(--text);
+  box-shadow: var(--control-shadow);
+}
+
 .ui-btn--ghost {
   background: transparent;
   color: var(--text-muted);
   box-shadow: none;
+}
+
+.ui-btn--danger-soft {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
 }
 
 .ui-btn[aria-pressed="true"] {
@@ -792,7 +906,7 @@ textarea:disabled,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .ui-btn:not(.ui-btn--primary, [aria-pressed="true"]):hover:not(:disabled, :active) {
+  .ui-btn:where(:not(.ui-btn--primary, .ui-btn--danger-soft, [aria-pressed="true"])):hover:where(:not(:disabled, :active)) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
@@ -800,6 +914,11 @@ textarea:disabled,
   .ui-btn--primary:hover:not(:disabled, :active) {
     background: var(--accent-strong);
     color: var(--text-inverse);
+  }
+
+  .ui-btn--danger-soft:hover:not(:disabled, :active) {
+    background: color-mix(in oklab, var(--color-danger) 14%, var(--color-danger-bg));
+    color: var(--color-danger);
   }
 
   .ui-btn[aria-pressed="true"]:hover:not(:disabled, :active) {
@@ -812,8 +931,15 @@ textarea:disabled,
     color: var(--interaction-hover-text);
   }
 
-  .ui-input-composite:hover {
+  .ui-input:hover:not(:disabled, :read-only),
+  .ui-select:hover:not(:disabled),
+  .ui-input-composite:hover:not(:has(> :disabled)) {
     background: var(--interaction-hover-surface);
+  }
+
+  .ui-input-composite > .ui-input:hover,
+  .ui-input-composite input:not([type="checkbox"], [type="radio"], [type="range"]):hover {
+    background: transparent;
   }
 
   label:has(> .ui-switch:not(:disabled)):hover:not(:active) .ui-switch:not(:checked),
@@ -845,7 +971,7 @@ label:has(> .ui-switch:not(:disabled)):active .ui-switch:checked,
   background: var(--accent-press);
 }
 
-.ui-btn:not(.ui-btn--primary, [aria-pressed="true"]):active:not(:disabled),
+.ui-btn:where(:not(.ui-btn--primary, .ui-btn--danger-soft, [aria-pressed="true"])):active:where(:not(:disabled)),
 .ui-segmented__item:not(.active, [aria-pressed="true"]):active:not(:disabled) {
   background: var(--interaction-press-surface);
   color: var(--text);
@@ -856,6 +982,11 @@ label:has(> .ui-switch:not(:disabled)):active .ui-switch:checked,
   color: var(--text-inverse);
 }
 
+.ui-btn--danger-soft:active:not(:disabled) {
+  background: color-mix(in oklab, var(--color-danger) 22%, var(--color-danger-bg));
+  color: var(--color-danger);
+}
+
 .ui-btn[aria-pressed="true"]:active:not(:disabled) {
   background: var(--accent-active-press-surface);
   color: var(--interaction-active-text);
@@ -863,7 +994,10 @@ label:has(> .ui-switch:not(:disabled)):active .ui-switch:checked,
 
 @media (prefers-reduced-motion: reduce) {
   .ui-btn,
-  .ui-segmented__item {
+  .ui-segmented__item,
+  .ui-input,
+  .ui-select,
+  .ui-input-composite {
     transition: none;
   }
 }
@@ -890,7 +1024,6 @@ dialog::backdrop {
     --line-strong: CanvasText;
     --focus-ring: Highlight;
     --accent: Highlight;
-    --interaction-focus-ring: Highlight;
     --scrollbar-thumb: CanvasText;
     --scrollbar-track: Canvas;
   }
@@ -915,6 +1048,8 @@ dialog::backdrop {
   }
 
   .custom-select-trigger,
+  .ui-input,
+  .ui-select,
   .ui-input-composite,
   .profile-input,
   .u-input,
@@ -942,6 +1077,7 @@ dialog::backdrop {
   }
 
   :where(.is-invalid, [aria-invalid="true"], input:user-invalid, select:user-invalid, textarea:user-invalid),
+  .ui-input-composite:has(:is(:user-invalid, .is-invalid, [aria-invalid="true"])),
   .profile-budget--with-unit:has(.profile-input:is(:user-invalid, .is-invalid, [aria-invalid="true"])) {
     outline: 2px solid Highlight;
     outline-offset: 1px;

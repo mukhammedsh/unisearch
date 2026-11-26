@@ -411,7 +411,7 @@ export function renderCatalogPagination(container, { total, currentPage, pageSiz
     const classes = ["page-btn", activeClass, disabledClass, extraClass].filter(Boolean).join(" ");
     const safeLabel = ariaLabel ? escapeHtmlAttr(ariaLabel) : "";
     const ariaAttrs = safeLabel ? ` aria-label="${safeLabel}" title="${safeLabel}"` : "";
-    return `<button type="button" class="${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ""}${isDisabled ? " disabled" : ""}${ariaAttrs}>${content}</button>`;
+    return `<button type="button" class="ui-btn ui-btn--on-bg ${classes}" data-page="${page}"${isActive ? ' aria-current="page"' : ""}${isDisabled ? " disabled" : ""}${ariaAttrs}>${content}</button>`;
   };
   html += createBtn(
     1,

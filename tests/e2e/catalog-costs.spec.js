@@ -178,7 +178,7 @@ test.describe("compact dual-currency price", () => {
   });
 });
 
-test("broad multi-level card price tooltip stays compact and unranked tooltip drops redundant type", async ({ page }) => {
+test("broad multi-level card price tooltip stays compact and unranked card omits global rank", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "rus");
     localStorage.setItem("unisearch_theme", "dark");
@@ -205,11 +205,5 @@ test("broad multi-level card price tooltip stays compact and unranked tooltip dr
   expect(costBounds.height).toBeLessThanOrEqual(220);
   await page.keyboard.press("Escape");
 
-  await card.locator(".uni-metric--rank").click();
-  const rankTooltip = card.locator(".uni-metric-tooltip__content");
-  await expect(rankTooltip).toBeVisible();
-  const rankText = await rankTooltip.innerText();
-  expect(rankText).toContain("Нет позиции (");
-  expect(rankText).toContain("QS 2026");
-  expect(rankText).not.toContain("Тип:");
+  await expect(card.locator(".uni-metric--rank")).toHaveCount(0);
 });

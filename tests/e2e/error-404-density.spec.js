@@ -44,7 +44,7 @@ test.describe("Error 404 Page Density and Layout", () => {
     const desc = page.locator(".error-desc");
     await expect(desc).toBeVisible();
 
-    const button = page.locator(".error-btn--primary");
+    const button = page.locator(".error-btn.ui-btn--primary");
     await expect(button).toBeVisible();
     await expect(button).toHaveAttribute("href", "index.html");
   });

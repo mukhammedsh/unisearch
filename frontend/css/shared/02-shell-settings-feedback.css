@@ -502,19 +502,15 @@
   display: block;
 }
 
-:where(input, select, textarea):user-invalid,
-
-:where(input, select, textarea).is-invalid,
-
-:where(input, select, textarea)[aria-invalid="true"] {
+:where(input, select, textarea):not(.ui-input, .ui-select, .ui-input-composite *):user-invalid,
+:where(input, select, textarea):not(.ui-input, .ui-select, .ui-input-composite *).is-invalid,
+:where(input, select, textarea):not(.ui-input, .ui-select, .ui-input-composite *)[aria-invalid="true"] {
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 
-:where(input, select, textarea):user-invalid:focus,
-
-:where(input, select, textarea).is-invalid:focus,
-
-:where(input, select, textarea)[aria-invalid="true"]:focus {
+:where(input, select, textarea):not(.ui-input, .ui-select, .ui-input-composite *):user-invalid:focus,
+:where(input, select, textarea):not(.ui-input, .ui-select, .ui-input-composite *).is-invalid:focus,
+:where(input, select, textarea):not(.ui-input, .ui-select, .ui-input-composite *)[aria-invalid="true"]:focus {
   box-shadow: 0 0 0 3px var(--line-danger);
 }
 
@@ -750,11 +746,7 @@
 }
 
 .settings-row .custom-select-trigger {
-  min-height: 36px;
-  height: 36px;
-  padding: 0 var(--space-3);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-regular);
+  height: var(--dropdown-row-height);
   color: var(--text);
   background: var(--surface-soft);
   border-radius: var(--dropdown-radius);
@@ -1024,8 +1016,8 @@
   gap: var(--space-2);
   width: 100%;
   box-sizing: border-box;
-  min-height: 43px;
-  padding: var(--space-3);
+  min-block-size: var(--control-height-md);
+  padding: 0 var(--space-3);
   font-family: inherit;
   font-size: var(--text-base);
   line-height: 1.35;
@@ -1040,6 +1032,16 @@
     background-color var(--motion-fast) var(--motion-ease-standard),
     color var(--motion-fast) var(--motion-ease-standard),
     box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.custom-select-wrapper--sm > .custom-select-trigger {
+  min-block-size: var(--dropdown-row-height);
+  font-size: var(--text-sm);
+}
+
+.custom-select-wrapper--lg > .custom-select-trigger {
+  min-block-size: var(--control-height-lg);
+  padding: 0 var(--space-4);
 }
 
 .custom-select-trigger:active:not(:disabled, .is-disabled) {

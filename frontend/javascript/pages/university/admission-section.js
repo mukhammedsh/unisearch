@@ -2,6 +2,7 @@ import {
   escapeHtml,
   escapeHtmlAttr,
   getSelectedAdmissionChoice,
+  initCustomSelect,
   loadProfile,
   markMotionEnter,
   motionPress,
@@ -388,7 +389,7 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
                   <div class="track-cost-preview${isGrant ? " track-cost-preview--grant" : ""}">
                     <strong>${escapeHtml(t("admission.funding_before_award", "Annual cost before any award"))}:</strong> ${escapeHtml(priceValue)}
                   </div>
-                  <button type="button" class="track-select-btn${isSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey, funding, profile })} ${isSelected ? "disabled" : ""}>
+                  <button type="button" class="ui-btn ui-btn--sm ui-btn--subtle track-select-btn${isSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey, funding, profile })} ${isSelected ? "disabled" : ""}>
                     ${escapeHtml(isSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
                   </button>
                 </div>
@@ -508,7 +509,7 @@ function renderAdmissionCategoryCard({
           ? renderFundingOptions({ annualCostForTrack, category, effectiveSelectedChoiceKey, profile: activeProfile, university })
           : `
             <div class="track-select-row">
-              <button type="button" class="track-select-btn${profileIsSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey: activeChoiceKey, profile: activeProfile })} ${profileIsSelected ? "disabled" : ""}>
+              <button type="button" class="ui-btn ui-btn--sm ui-btn--subtle track-select-btn${profileIsSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey: activeChoiceKey, profile: activeProfile })} ${profileIsSelected ? "disabled" : ""}>
                 ${escapeHtml(profileIsSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
               </button>
             </div>
@@ -530,6 +531,7 @@ function attachAdmissionSectionEventListeners({
   admissionContext,
 }) {
   container.querySelectorAll("[data-admission-context]").forEach((select) => {
+    if (select.id) initCustomSelect(select.id);
     select.addEventListener("change", () => {
       const key = select.getAttribute("data-admission-context");
       updateAdmissionUrl({ [key]: select.value });

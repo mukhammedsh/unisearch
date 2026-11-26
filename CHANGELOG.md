@@ -41,6 +41,7 @@ Minor release: split admissions storage for lazy loading, add a deploy-time stat
 - Align page-background buttons and toolbar shells with dark-mode navigation and sidebar controls across catalog, map, comparison, and mobile guide toggles.
 - Unify floating menus and popovers on shared dropdown styling, removing the duplicate heading inside the Recently Viewed popover and moving "Clear all" to its bottom footer.
 - Unify all instant toggle switches across catalog, settings, and comparison on a `36×20px` switch layout with clickable settings labels and synchronized row hover feedback.
+- Standardize text, search, numeric, date, and textarea fields, dropdown triggers, and action buttons on shared size, corner-radius, hover, focus, invalid, and disabled states across all pages, including custom dropdown styling for comparison track and admissions context selectors.
 
 ### Fixed
 - Restore stacked flex layout, header separation, cost-label wrapping, and tag spacing on legacy admission funding cards across university detail and comparison views.
@@ -52,9 +53,11 @@ Minor release: split admissions storage for lazy loading, add a deploy-time stat
 - Preserve open dropdown trigger surfaces and keep custom select menus visibly elevated above card backgrounds in both themes.
 - Fix hover and active surface feedback on catalog filter reset buttons and program search clear controls.
 - Keep the navigation search icon clear of the placeholder text.
+- Keep long admissions and comparison actions inside narrow phone layouts.
+- Fix the dark-theme focus outline on the comparison picker search field and remove unused design tokens.
 
 ### Maintenance
-- Add a design lint rule flagging raw transition durations and easings alongside unit and E2E tests for static snapshots, lazy admissions loading, motion layers, and cross-page interaction states.
+- Add a design lint rule flagging raw transition durations and easings alongside an automated UI primitives guard, dev component showcase, unit tests, and E2E tests for static snapshots, lazy admissions loading, motion layers, and cross-page interaction states.
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 

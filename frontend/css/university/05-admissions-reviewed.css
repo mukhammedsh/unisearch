@@ -460,22 +460,6 @@ a.admissions-key-facts__link {
   min-width: 0;
 }
 
-#admissionsContextApply {
-  background: var(--accent);
-  box-shadow: none;
-  color: var(--text-inverse);
-}
-
-#admissionsContextApply:hover:not(:disabled) {
-  background: var(--accent-strong);
-  color: var(--text-inverse);
-}
-
-#admissionsContextApply:active:not(:disabled) {
-  background: var(--accent-press);
-  color: var(--text-inverse);
-}
-
 .admissions-study {
   display: grid;
   gap: 0;
@@ -784,7 +768,10 @@ details[open] > summary > .admissions-disclosure-icon {
   font-weight: var(--font-weight-medium);
 }
 
-.admissions-context__field input:not(.program-search__input),
+.admissions-context__field .ui-input {
+  box-shadow: var(--shadow-micro);
+}
+
 .admissions-context__field select,
 .admissions-programs__toolbar select {
   box-sizing: border-box;
@@ -806,11 +793,7 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-context__field .custom-select-trigger {
-  min-height: 44px;
-  border-radius: var(--radius-base);
-  background: var(--surface-soft);
   box-shadow: var(--shadow-micro);
-  color: var(--text);
 }
 
 .admissions-catalog__status {
@@ -845,11 +828,7 @@ details[open] > summary > .admissions-disclosure-icon {
   .admissions-state button
 ) {
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--control-radius-md);
-  cursor: pointer;
-  font: inherit;
   font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
 }
 
 :is(
@@ -862,48 +841,6 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-programs__pagination button {
   min-height: var(--control-height-md);
-}
-
-:is(
-  .admissions-context__heading button,
-  .admissions-context__actions button:not([type="submit"]),
-  .admissions-programs__pagination button,
-  .admissions-state button
-) {
-  background: var(--control-bg);
-  box-shadow: var(--control-shadow);
-  color: var(--text);
-}
-
-:is(
-  .admissions-context__heading button,
-  .admissions-context__actions button:not([type="submit"]),
-  .admissions-programs__pagination button,
-  .admissions-state button
-):hover:not(:disabled, :active) {
-  background: var(--interaction-hover-surface);
-  color: var(--interaction-hover-text);
-}
-
-:is(
-  .admissions-context__heading button,
-  .admissions-context__actions button:not([type="submit"]),
-  .admissions-programs__pagination button,
-  .admissions-state button
-):active:not(:disabled) {
-  background: var(--interaction-press-surface);
-  color: var(--text);
-}
-
-:is(
-  .admissions-context__heading button,
-  .admissions-context__actions button,
-  .admissions-programs__toolbar > button,
-  .admissions-programs__pagination button,
-  .admissions-state button
-):disabled {
-  cursor: not-allowed;
-  opacity: var(--interaction-disabled-opacity);
 }
 
 .university--reviewed .program-card__summary {
@@ -932,20 +869,7 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 .admissions-programs__toolbar > button {
-  min-height: 44px;
-  background: var(--accent);
   box-shadow: none;
-  color: var(--text-inverse);
-}
-
-.admissions-programs__toolbar > button:hover:not(:disabled, :active) {
-  background: var(--accent-strong);
-  color: var(--text-inverse);
-}
-
-.admissions-programs__toolbar > button:active:not(:disabled) {
-  background: var(--accent-press);
-  color: var(--text-inverse);
 }
 
 .admissions-catalog__list {

@@ -377,9 +377,9 @@ export function renderAdmissionContextControls(categories, context) {
     ...(Array.isArray(category.admission_rounds) ? category.admission_rounds.map((round) => round?.cycle) : []),
   ]).map((value) => String(value || "").trim()).filter((value) => value && value.length <= 40))];
   const select = (key, label, value, options) => `
-    <label class="admission-context-control">
+    <label class="admission-context-control" for="admissionContext-${escapeHtmlAttr(key)}">
       <span>${escapeHtml(label)}</span>
-      <select data-admission-context="${key}">
+      <select id="admissionContext-${escapeHtmlAttr(key)}" class="ui-select" data-flags="off" data-admission-context="${key}">
         <option value="">${escapeHtml(t("university.admissions.context.unknown", "Unknown"))}</option>
         ${value && !options.includes(value) ? (() => {
           const provenMismatch = key === "cycle"

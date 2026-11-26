@@ -147,7 +147,7 @@ const MOTION_TOKEN_FILES = new Set([
   "frontend/css/shared/06-motion-accessibility.css",
 ]);
 const RAW_EASING_RE = /(?<![\w-])(?:ease(?:-in-out|-in|-out)?|linear|step-start|step-end)(?![\w-])|(?:cubic-bezier|steps|linear)\(/gi;
-const RAW_DURATION_RE = /(?<![\w.-])(\d*\.?\d+)(ms|s)(?![\w-])/gi;
+const RAW_DURATION_RE = /(?<![\w.-])(\d+(?:\.\d+)?|\.\d+)(ms|s)(?![\w-])/gi;
 
 export function isMotionTokenFile(relPath) {
   return MOTION_TOKEN_FILES.has(String(relPath || "").replace(/\\/g, "/"));

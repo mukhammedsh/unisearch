@@ -302,7 +302,7 @@ export function showToast(message, type = "error") {
     : heroIcon("exclamation-triangle", "ui-icon ui-icon--18 toast-icon");
   const translator = registerUiTranslator.current;
   const closeLabel = translator ? translator("common.close", "Close") : "Close";
-  toast.innerHTML = `<span class="toast-message">${icon}<span role="status" aria-live="polite">${escapeHtml(text)}</span></span><button class="toast-close" type="button" aria-label="${escapeHtmlAttr(closeLabel)}">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
+  toast.innerHTML = `<span class="toast-message">${icon}<span role="status" aria-live="polite">${escapeHtml(text)}</span></span><button class="ui-btn ui-btn--icon ui-btn--ghost toast-close" type="button" aria-label="${escapeHtmlAttr(closeLabel)}">${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`;
 
   const dismiss = () => {
     removeToast(toast);

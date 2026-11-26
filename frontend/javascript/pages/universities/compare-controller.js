@@ -190,7 +190,7 @@ export function createCompareController({
             return `
                 <div class="compare-tray__chip" role="listitem" data-uni-id="${escapeHtmlAttr(id)}">
                     <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
-                    <button class="compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
+                    <button class="ui-btn ui-btn--icon ui-btn--ghost compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
                         ${renderInlineIcon("x-mark", 12)}
                     </button>
                 </div>
@@ -204,8 +204,8 @@ export function createCompareController({
                 ${chipsHtml}
             </div>
             <div class="compare-tray__actions">
-                <button class="compare-tray__btn compare-tray__btn--ghost" type="button" data-action="clear-compare">${escapeHtml(t("universities.compare.clear", "Clear"))}</button>
-                <button class="compare-tray__btn compare-tray__btn--primary" type="button" data-action="open-compare"${canCompare ? "" : " disabled"}>${escapeHtml(t(canCompare ? "universities.compare.continue" : "universities.compare.open", canCompare ? "Continue" : "Compare"))}</button>
+                <button class="ui-btn ui-btn--sm ui-btn--ghost compare-tray__btn compare-tray__btn--ghost" type="button" data-action="clear-compare">${escapeHtml(t("universities.compare.clear", "Clear"))}</button>
+                <button class="ui-btn ui-btn--sm ui-btn--primary compare-tray__btn compare-tray__btn--primary" type="button" data-action="open-compare"${canCompare ? "" : " disabled"}>${escapeHtml(t(canCompare ? "universities.compare.continue" : "universities.compare.open", canCompare ? "Continue" : "Compare"))}</button>
             </div>
         `;
     };

@@ -112,7 +112,7 @@ export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, val
     if (mode === "band_select") {
         const bands = getExamLevelBands(examId);
         return `
-            <select class="profile-input profile-input--select" ${dataAttrs} data-breakdown-value="band">
+            <select class="ui-select ui-select--lg profile-input profile-input--select" ${dataAttrs} data-breakdown-value="band">
                 <option value="" ${rawValue ? "" : "selected"}>${escapeHtml(t("profile.exam_band_placeholder", "Select level"))}</option>
                 ${bands.map((band) => {
                     const shortLabel = String(band?.short_label || "").trim();
@@ -131,7 +131,7 @@ export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, val
         ).trim();
         const gradeOptions = gradeOptionsForExam(examId);
         return `
-            <select class="profile-input profile-input--select" ${dataAttrs} data-breakdown-value="grade">
+            <select class="ui-select ui-select--lg profile-input profile-input--select" ${dataAttrs} data-breakdown-value="grade">
                 <option value="" ${selectedGrade ? "" : "selected"}>${escapeHtml(t("profile.exam_grade_placeholder", "Select grade"))}</option>
                 ${gradeOptions.map((grade) => {
                     const selected = selectedGrade === grade ? "selected" : "";
@@ -145,7 +145,7 @@ export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, val
         const rawFlag = valueState?.score;
         const normalizedFlag = rawFlag === 0 ? "0" : (rawFlag === 1 ? "1" : "");
         return `
-            <select class="profile-input profile-input--select" ${dataAttrs} data-breakdown-value="flag">
+            <select class="ui-select ui-select--lg profile-input profile-input--select" ${dataAttrs} data-breakdown-value="flag">
                 <option value="" ${normalizedFlag ? "" : "selected"}>${escapeHtml(t("profile.exam_status_placeholder", "Select status"))}</option>
                 <option value="1" ${normalizedFlag === "1" ? "selected" : ""}>${escapeHtml(t("profile.exam_status_pass", "Pass"))}</option>
                 <option value="0" ${normalizedFlag === "0" ? "selected" : ""}>${escapeHtml(t("profile.exam_status_fail", "Not passed"))}</option>
@@ -160,7 +160,7 @@ export const renderBreakdownValueControl = ({ parentExamId, examId, slotKey, val
     return `
         <input
             type="number"
-            class="profile-input"
+            class="ui-input ui-input--lg profile-input"
             value="${escapeHtml(valueText)}"
             placeholder="${escapeHtml(placeholder)}"
             ${min}
@@ -302,7 +302,7 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
         container.innerHTML = `
             <div class="profile-exam-special-field profile-exam-special-field--inline">
                 <span class="mini-label mini-label--hidden">${escapeHtml(t("profile.exam_band_label", "Level"))}</span>
-                <select id="examBandSelect" class="profile-input profile-input--select">
+                <select id="examBandSelect" class="ui-select ui-select--lg profile-input profile-input--select">
                     <option value="" disabled ${selectedBand ? "" : "selected"}>${escapeHtml(t("profile.exam_band_placeholder", "Select level"))}</option>
                     ${bands.map((band) => {
                         const shortLabel = String(band?.short_label || "").trim();
@@ -338,7 +338,7 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                     return `
                         <div class="profile-exam-special-field">
                             <span class="mini-label">${escapeHtml(label)}</span>
-                            <select class="profile-input profile-input--select" data-grade-slot="${idx}">
+                            <select class="ui-select ui-select--lg profile-input profile-input--select" data-grade-slot="${idx}">
                                 <option value="" ${selectedGrade ? "" : "selected"}>${escapeHtml(t("profile.exam_grade_placeholder", "Select grade"))}</option>
                                 ${gradeOptions.map((grade) => {
                                     const selected = selectedGrade === grade ? "selected" : "";
@@ -390,7 +390,7 @@ export function renderSpecialExamInput(examId, container, { findExistingExamEntr
                 <div class="profile-exam-breakdown-row" data-breakdown-selectable-row="${idx}">
                     <div class="profile-exam-breakdown-subject">
                         <span class="mini-label">${escapeHtml(label)}</span>
-                        <select class="profile-input profile-input--select" data-breakdown-subject-select="${idx}">
+                        <select class="ui-select ui-select--lg profile-input profile-input--select" data-breakdown-subject-select="${idx}">
                             <option value="" ${selectedExam ? "" : "selected"}>${escapeHtml(t("profile.exam_subject_placeholder", "Select subject"))}</option>
                             ${optionList.map((item) => {
                                 const selected = item.exam === selectedExam ? "selected" : "";

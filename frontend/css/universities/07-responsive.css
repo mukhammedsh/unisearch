@@ -134,11 +134,6 @@
   .u-field {
     margin-top: var(--space-2);
   }
-
-  .budget-inputs input {
-    height: 40px;
-    line-height: 40px;
-  }
 }
 
 @media (max-width: 1024px) {

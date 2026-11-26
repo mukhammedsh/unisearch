@@ -246,8 +246,8 @@ export function initLanguagesPanel() {
               <small>${kindName}${meta}</small>
             </div>
             <div class="profile-list-actions">
-              <button class="profile-button-subtle" data-edit-idx="${idx}" type="button">${escapeHtml(t("profile.edit", "Edit"))}</button>
-              <button class="profile-delete" data-idx="${idx}" type="button">${escapeHtml(t("profile.delete", "Delete"))}</button>
+              <button class="ui-btn ui-btn--sm ui-btn--subtle profile-button-subtle" data-edit-idx="${idx}" type="button">${escapeHtml(t("profile.edit", "Edit"))}</button>
+              <button class="ui-btn ui-btn--sm ui-btn--danger-soft profile-delete" data-idx="${idx}" type="button">${escapeHtml(t("profile.delete", "Delete"))}</button>
             </div>
           </div>
         `;
@@ -309,7 +309,7 @@ export function initLanguagesPanel() {
                 <input
                   type="text"
                   inputmode="decimal"
-                  class="profile-input"
+                  class="ui-input ui-input--lg profile-input"
                   value="${valueText}"
                   placeholder="${escapeHtml(t("profile.placeholder.score", "Score"))}"
                   data-lang-breakdown-input="${escapeHtml(def.exam)}"

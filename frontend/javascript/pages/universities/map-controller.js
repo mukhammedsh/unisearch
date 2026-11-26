@@ -290,7 +290,7 @@ export function createUniversitiesMapController(ctx) {
       <div class="u-map-results-footer" data-map-results-footer>
         <span class="u-map-results-count" role="status" aria-live="polite">${escapeHtml(summary)}</span>
         ${mapResultsHasMore ? `
-          <button type="button" class="u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
+          <button type="button" class="ui-btn u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
             ${mapResultsLoadingMore ? `<span class="u-map-results-spinner" aria-hidden="true"></span>${escapeHtml(loadingText)}` : escapeHtml(buttonLabel)}
           </button>
         ` : `<span class="u-map-results-complete">${escapeHtml(t("universities.map_panel.all_loaded", "All matching universities are loaded"))}</span>`}

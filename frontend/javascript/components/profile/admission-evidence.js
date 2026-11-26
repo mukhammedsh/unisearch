@@ -78,7 +78,7 @@ function renderLists(body, profile) {
         ? t(`profile.evidence.entirely.${row.entirely_in_language ? "yes" : "no"}`, row.entirely_in_language ? "Entirely in language" : "Not entirely in language")
         : "";
       const detail = [row.country, qualification, row.started_on, row.completed_on, languageScope].filter(Boolean).join(" · ");
-      return `<div class="profile-exam-item"><div class="profile-exam-meta"><span class="profile-exam-name">${escapeHtml(kind)} · ${escapeHtml(language)}</span><span class="profile-exam-score">${escapeHtml([detail, t("profile.evidence.self_reported_short", "Self-reported")].filter(Boolean).join(" · "))}</span></div><button type="button" class="profile-delete" data-remove-language-evidence="${index}">${escapeHtml(t("profile.delete", "Delete"))}</button></div>`;
+      return `<div class="profile-exam-item"><div class="profile-exam-meta"><span class="profile-exam-name">${escapeHtml(kind)} · ${escapeHtml(language)}</span><span class="profile-exam-score">${escapeHtml([detail, t("profile.evidence.self_reported_short", "Self-reported")].filter(Boolean).join(" · "))}</span></div><button type="button" class="ui-btn ui-btn--sm ui-btn--danger-soft profile-delete" data-remove-language-evidence="${index}">${escapeHtml(t("profile.delete", "Delete"))}</button></div>`;
     }).join("");
   }
   if (institutionalList) {
@@ -92,7 +92,7 @@ function renderLists(body, profile) {
         : row.kind === "credential"
         ? `${credentialLabel}${row.score_percent !== undefined ? ` · ${row.score_percent}%` : ""} · ${status}`
           : `${programLabel || t("profile.evidence.institution_kind.enrollment", "Enrollment or course progress")} · ${status}${row.units !== undefined ? ` · ${t("profile.evidence.degree_units", "Total degree units")}: ${row.units}` : ""}${row.major_units !== undefined ? ` · ${t("profile.evidence.major_units", "Major units")}: ${row.major_units}` : ""}${row.completed_major_subjects !== undefined ? ` · ${t("profile.evidence.major_subjects_short", "Major subjects")}: ${row.completed_major_subjects}` : ""}`;
-      return `<div class="profile-exam-item"><div class="profile-exam-meta"><span class="profile-exam-name">${escapeHtml(institution)}</span><span class="profile-exam-score">${escapeHtml(details)} · ${escapeHtml(t("profile.evidence.self_reported_short", "Self-reported"))}</span></div><button type="button" class="profile-delete" data-remove-institutional-evidence="${index}">${escapeHtml(t("profile.delete", "Delete"))}</button></div>`;
+      return `<div class="profile-exam-item"><div class="profile-exam-meta"><span class="profile-exam-name">${escapeHtml(institution)}</span><span class="profile-exam-score">${escapeHtml(details)} · ${escapeHtml(t("profile.evidence.self_reported_short", "Self-reported"))}</span></div><button type="button" class="ui-btn ui-btn--sm ui-btn--danger-soft profile-delete" data-remove-institutional-evidence="${index}">${escapeHtml(t("profile.delete", "Delete"))}</button></div>`;
     }).join("");
   }
 }
@@ -120,45 +120,45 @@ export function renderAdmissionEvidence(container, profile, onChange) {
           <div class="profile-applicant-context-grid">
             <div class="profile-field">
               <label class="profile-form-label" for="languageEvidenceKind" data-i18n="profile.ux2.evidence.language_kind">How you know English</label>
-              <select id="languageEvidenceKind" class="profile-input profile-input--select">
+              <select id="languageEvidenceKind" class="ui-select ui-select--lg profile-input profile-input--select">
                 ${optionRows(LANGUAGE_KINDS.map((kind) => [kind, t(`profile.evidence.language_kind.${kind}`, kind)]))}
               </select>
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label class="profile-form-label" for="languageEvidenceCountry" data-i18n="profile.evidence.country">Country</label>
-              <input id="languageEvidenceCountry" class="profile-input" maxlength="80" />
+              <input id="languageEvidenceCountry" class="ui-input ui-input--lg profile-input" type="text" maxlength="80" />
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label class="profile-form-label" for="languageEvidenceQualification" data-i18n="profile.evidence.qualification">Qualification level</label>
-              <select id="languageEvidenceQualification" class="profile-input profile-input--select">
+              <select id="languageEvidenceQualification" class="ui-select ui-select--lg profile-input profile-input--select">
                 <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
                 ${optionRows(QUALIFICATION_LEVELS.map((value) => [value, t(`profile.evidence.qualification.${value}`, value)]))}
               </select>
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label class="profile-form-label" for="languageEvidenceStarted" data-i18n="profile.evidence.started">Started</label>
-              <input id="languageEvidenceStarted" class="profile-input" type="date" />
+              <input id="languageEvidenceStarted" class="ui-input ui-input--lg profile-input" type="date" />
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label class="profile-form-label" for="languageEvidenceCompleted" data-i18n="profile.evidence.completed">Completed or ended</label>
-              <input id="languageEvidenceCompleted" class="profile-input" type="date" />
+              <input id="languageEvidenceCompleted" class="ui-input ui-input--lg profile-input" type="date" />
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label class="profile-form-label" for="languageEvidenceStatus" data-i18n="profile.evidence.status">Status</label>
-              <select id="languageEvidenceStatus" class="profile-input profile-input--select">
+              <select id="languageEvidenceStatus" class="ui-select ui-select--lg profile-input profile-input--select">
                 ${optionRows([["unknown", t("profile.evidence.status.unknown", "Not specified")], ["in_progress", t("profile.evidence.status.in_progress", "In progress")], ["completed", t("profile.evidence.status.completed", "Completed")]])}
               </select>
             </div>
             <div class="profile-field" data-language-evidence-detail>
               <label class="profile-form-label" for="languageEvidenceEntirely" data-i18n="profile.ux2.evidence.entirely">Entirely in English?</label>
-              <select id="languageEvidenceEntirely" class="profile-input profile-input--select">
+              <select id="languageEvidenceEntirely" class="ui-select ui-select--lg profile-input profile-input--select">
                 <option value="" data-i18n="profile.evidence.unknown">Not specified</option>
                 <option value="yes" data-i18n="profile.evidence.entirely.yes">Yes, entirely</option>
                 <option value="no" data-i18n="profile.evidence.entirely.no">No</option>
               </select>
             </div>
           </div>
-          <button id="addLanguageEvidence" class="profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_language">Add language evidence</button>
+          <button id="addLanguageEvidence" class="ui-btn profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_language">Add language evidence</button>
           <div id="languageEvidenceList" class="profile-exam-list"></div>
         </section>
         <section class="profile-admission-evidence-group" aria-labelledby="institutionalEvidenceTitle">
@@ -166,82 +166,82 @@ export function renderAdmissionEvidence(container, profile, onChange) {
           <div class="profile-applicant-context-grid">
             <div class="profile-field">
               <label class="profile-form-label" for="institutionEvidenceUniversity" data-i18n="profile.evidence.institution">University</label>
-              <select id="institutionEvidenceUniversity" class="profile-input profile-input--select">
+              <select id="institutionEvidenceUniversity" class="ui-select ui-select--lg profile-input profile-input--select">
                 <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
                 ${optionRows(localizedOptions(INSTITUTIONS))}
               </select>
             </div>
             <div class="profile-field">
               <label class="profile-form-label" for="institutionEvidenceKind" data-i18n="profile.ux2.evidence.institution_kind">What do you want to add?</label>
-              <select id="institutionEvidenceKind" class="profile-input profile-input--select">
+              <select id="institutionEvidenceKind" class="ui-select ui-select--lg profile-input profile-input--select">
                 <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
                 ${optionRows([["enrollment", t("profile.evidence.institution_kind.enrollment", "Enrollment or completed courses")], ["gpa", t("profile.evidence.institution_kind.gpa", "Program GPA")], ["credential", t("profile.evidence.institution_kind.credential", "Program credential")]])}
               </select>
             </div>
             <div class="profile-field" data-institution-evidence-field="program_id">
               <label class="profile-form-label" for="institutionEvidenceProgram" data-i18n="profile.evidence.program">Program or study option</label>
-              <select id="institutionEvidenceProgram" class="profile-input profile-input--select"></select>
+              <select id="institutionEvidenceProgram" class="ui-select ui-select--lg profile-input profile-input--select"></select>
             </div>
             <div class="profile-field" data-institution-evidence-kind="enrollment">
               <label class="profile-form-label" for="institutionEvidenceEnrollmentStatus" data-i18n="profile.evidence.status">Status</label>
-              <select id="institutionEvidenceEnrollmentStatus" class="profile-input profile-input--select">
+              <select id="institutionEvidenceEnrollmentStatus" class="ui-select ui-select--lg profile-input profile-input--select">
                 ${optionRows([["unknown", t("profile.evidence.status.unknown", "Not specified")], ["enrolled", t("profile.evidence.status.enrolled", "Enrolled")], ["on_leave", t("profile.evidence.status.on_leave", "On leave")], ["completed", t("profile.evidence.status.completed", "Completed")], ["not_enrolled", t("profile.evidence.status.not_enrolled", "Not enrolled")]])}
               </select>
             </div>
             <div class="profile-field" data-institution-evidence-kind="enrollment">
               <label class="profile-form-label" for="institutionEvidenceUnits" data-i18n="profile.evidence.degree_units">Total degree units</label>
-              <input id="institutionEvidenceUnits" class="profile-input" type="number" min="0" step="1" />
+              <input id="institutionEvidenceUnits" class="ui-input ui-input--lg profile-input" type="number" min="0" step="1" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="enrollment" data-major-evidence-for="mit-bs-6-9" hidden>
               <label class="profile-form-label" for="institutionEvidenceMajorUnits" data-i18n="profile.evidence.major_units">Course 6-9 major units</label>
-              <input id="institutionEvidenceMajorUnits" class="profile-input" type="number" min="0" step="1" />
+              <input id="institutionEvidenceMajorUnits" class="ui-input ui-input--lg profile-input" type="number" min="0" step="1" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="enrollment" data-major-evidence-for="mit-bs-6-9" hidden>
               <label class="profile-form-label" for="institutionEvidenceMajorSubjects" data-i18n="profile.evidence.major_subjects">Completed Course 6-9 major subjects</label>
-              <input id="institutionEvidenceMajorSubjects" class="profile-input" type="number" min="0" step="1" />
+              <input id="institutionEvidenceMajorSubjects" class="ui-input ui-input--lg profile-input" type="number" min="0" step="1" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="enrollment">
               <label class="profile-form-label" for="institutionEvidenceExpectedCompletion" data-i18n="profile.evidence.expected_completion">Expected completion</label>
-              <input id="institutionEvidenceExpectedCompletion" class="profile-input" type="date" />
+              <input id="institutionEvidenceExpectedCompletion" class="ui-input ui-input--lg profile-input" type="date" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="gpa">
               <label class="profile-form-label" for="institutionEvidenceMetric" data-i18n="profile.evidence.metric">GPA measure</label>
-              <select id="institutionEvidenceMetric" class="profile-input profile-input--select">
+              <select id="institutionEvidenceMetric" class="ui-select ui-select--lg profile-input profile-input--select">
                 ${optionRows([["overall", t("profile.evidence.metric.overall", "Overall")], ["technical", t("profile.evidence.metric.technical", "Technical")]])}
               </select>
             </div>
             <div class="profile-field" data-institution-evidence-kind="gpa">
               <label class="profile-form-label" for="institutionEvidenceValue" data-i18n="profile.evidence.value">GPA value</label>
-              <input id="institutionEvidenceValue" class="profile-input" type="number" min="0" max="5" step="0.01" />
+              <input id="institutionEvidenceValue" class="ui-input ui-input--lg profile-input" type="number" min="0" max="5" step="0.01" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="gpa">
               <label class="profile-form-label" for="institutionEvidenceScale" data-i18n="profile.evidence.scale">GPA scale</label>
-              <input id="institutionEvidenceScale" class="profile-input" type="number" min="1" max="5" step="0.01" />
+              <input id="institutionEvidenceScale" class="ui-input ui-input--lg profile-input" type="number" min="1" max="5" step="0.01" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="gpa">
               <label class="profile-form-label" for="institutionEvidenceTerm" data-i18n="profile.evidence.as_of_term">As of term</label>
-              <input id="institutionEvidenceTerm" class="profile-input" maxlength="40" />
+              <input id="institutionEvidenceTerm" class="ui-input ui-input--lg profile-input" type="text" maxlength="40" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="credential">
               <label class="profile-form-label" for="institutionEvidenceCredential" data-i18n="profile.evidence.credential_id">Credential</label>
-              <select id="institutionEvidenceCredential" class="profile-input profile-input--select"></select>
+              <select id="institutionEvidenceCredential" class="ui-select ui-select--lg profile-input profile-input--select"></select>
             </div>
             <div id="institutionEvidenceCredentialScoreField" class="profile-field" data-institution-evidence-kind="credential" hidden>
               <label class="profile-form-label" for="institutionEvidenceCredentialScore" data-i18n="profile.evidence.score_percent">Credential score (%)</label>
-              <input id="institutionEvidenceCredentialScore" class="profile-input" type="number" min="0" max="100" step="any" />
+              <input id="institutionEvidenceCredentialScore" class="ui-input ui-input--lg profile-input" type="number" min="0" max="100" step="any" />
             </div>
             <div class="profile-field" data-institution-evidence-kind="credential">
               <label class="profile-form-label" for="institutionEvidenceCredentialStatus" data-i18n="profile.evidence.status">Status</label>
-              <select id="institutionEvidenceCredentialStatus" class="profile-input profile-input--select">
+              <select id="institutionEvidenceCredentialStatus" class="ui-select ui-select--lg profile-input profile-input--select">
                 ${optionRows([["unknown", t("profile.evidence.status.unknown", "Not specified")], ["completed", t("profile.evidence.status.completed", "Completed")], ["in_progress", t("profile.evidence.status.in_progress", "In progress")], ["not_completed", t("profile.evidence.status.not_completed", "Not completed")]])}
               </select>
             </div>
             <div class="profile-field" data-institution-evidence-kind="credential">
               <label class="profile-form-label" for="institutionEvidenceCredentialDate" data-i18n="profile.evidence.completed_on">Completed on</label>
-              <input id="institutionEvidenceCredentialDate" class="profile-input" type="date" />
+              <input id="institutionEvidenceCredentialDate" class="ui-input ui-input--lg profile-input" type="date" />
             </div>
           </div>
-          <button id="addInstitutionEvidence" class="profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_institution">Add institution evidence</button>
+          <button id="addInstitutionEvidence" class="ui-btn profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_institution">Add institution evidence</button>
           <div id="institutionalEvidenceList" class="profile-exam-list"></div>
         </section>
       </div>
