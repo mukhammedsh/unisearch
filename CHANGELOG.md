@@ -12,6 +12,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Add regression tests for the static snapshot builder and client filtering/loading/service-worker snapshot caching (`backend/tests/test_static_snapshot_builder.py`, `tests/unit/static-snapshot.test.mjs`, `tests/unit/service-worker.test.mjs`).
 
 ### Changed
+- Refresh notification styling with neutral surfaces and clear status icons.
 - Remove repetitive explanations from profile fields and section headings.
 - Remove the profile page footer and keep section navigation inside the profile window.
 - Keep the profile header and actions visible in a window with independently scrolling content.
