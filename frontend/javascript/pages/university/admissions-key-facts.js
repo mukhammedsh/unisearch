@@ -8,7 +8,7 @@ import { isEvidenceReviewed, isPublishedReference, isReviewedPublished } from ".
 import { translateAdmissionText } from "../../university-translations.js";
 import { heroIcon } from "../../icons.js";
 import { getExamDisplayName } from "../../utils/config.js";
-import { safeUrl } from "../_shared.js";
+import { originalPriceDisclosure, safeUrl } from "../_shared.js";
 import { glossaryTerms, renderTermList, routeWording, termsForRoute } from "./admissions-glossary.js";
 import { applicationFeeText, fundingKeyLines } from "./admissions-funding-lines.js";
 import { englishRequirementItems } from "./admissions-english.js";
@@ -363,8 +363,9 @@ export function costFact(resolved, budgetUsd, { original = false } = {}) {
     && Number.isFinite(costs.tuition.max) && costs.tuition.max < quote.min
     ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, priceOptions) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
-  const parts = { amount, basis, period: quote.period || "" };
-  const notes = [breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
+  const originalPriceNote = original ? "" : originalPriceDisclosure(quote.min, quote.max, quote.currency);
+  const parts = { amount, basis, period: quote.period || "", originalPriceNote };
+  const notes = [originalPriceNote, breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
   const referenceNote = breakdown || tuitionShare || (quote.calculation === "tuition_plus_living_range"

@@ -200,8 +200,8 @@ export const SETTINGS_DEFINITIONS = [
   {
     key: SETTING_CURRENCY_DISPLAY,
     type: "select",
-    // A local currency is an approximation, so the university's own price stays beside it by default.
-    get defaultValue() { return regionDefaultCurrency() === "USD" ? "preferred" : "both"; },
+    // Default to one clean preferred-currency price everywhere; card tooltips and university finance details keep the original currency accessible.
+    defaultValue: "preferred",
     titleKey: "settings.option.currency_display.title",
     descriptionKey: "settings.option.currency_display.desc",
     options: [

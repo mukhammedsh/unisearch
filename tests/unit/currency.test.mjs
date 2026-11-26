@@ -5,6 +5,7 @@ import {
   FALLBACK_RATES,
   FALLBACK_RATES_DATE,
   convert,
+  formatHiddenOriginalPrice,
   formatMoney,
   formatPrice,
   formatPriceRange,
@@ -415,5 +416,20 @@ describe('currency.js', () => {
     const rendered = formatPriceRange(26442, 26800, 'GBP', { presentation: 'summary' });
     assert.match(rendered, /^≈ \$35,000 \(£26,442 – £26,800\)$/);
     assert.doesNotMatch(rendered, /\$[\d,]+ – \$[\d,]+/);
+  });
+
+  test('formatHiddenOriginalPrice returns the source price only when preferred mode converts it', () => {
+    setPreferredCurrency('KZT');
+    setCurrencyDisplayMode('preferred');
+    assert.strictEqual(formatHiddenOriginalPrice(66720, 66720, 'USD'), '$66,720');
+    assert.strictEqual(formatHiddenOriginalPrice(10050, 47800, 'GBP'), '£10,050 – £47,800');
+    assert.strictEqual(formatHiddenOriginalPrice(1900000, 1900000, 'KZT'), '');
+    assert.strictEqual(formatHiddenOriginalPrice(100, 100, 'ZZZ'), '');
+
+    setCurrencyDisplayMode('both');
+    assert.strictEqual(formatHiddenOriginalPrice(66720, 66720, 'USD'), '');
+
+    setCurrencyDisplayMode('original');
+    assert.strictEqual(formatHiddenOriginalPrice(66720, 66720, 'USD'), '');
   });
 });

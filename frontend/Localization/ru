@@ -146,6 +146,7 @@ settings.option.currency_display.desc: Выберите способ отобр�
 currency.display.preferred: В предпочитаемой валюте
 currency.display.original: В оригинальной валюте
 currency.display.both: Оба (предпочитаемая + оригинальная)
+currency.original_price: В оригинальной валюте: {amount}
 currency.approx_rate_note: Конвертировано по приблизительному дневному курсу
 currency.region.cis: Постсоветские страны
 currency.region.europe: Европа

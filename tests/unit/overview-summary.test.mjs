@@ -188,7 +188,10 @@ test("a university without a reviewed catalog shows its published cost, selectiv
 
 test("legacy prices say what they cover and never claim a figure the record lacks", () => {
   const tuitionOnly = { finance: { currency: "KZT", total_cost_year_usd: 1500000, costs_breakdown_status: "official_tuition_and_fees_only" } };
-  assert.equal(legacyCostCard(tuitionOnly, 1500000).lines[0], "Tuition and fees only; housing and food are extra. Before financial aid.");
+  const legacyCard = legacyCostCard(tuitionOnly, 1500000);
+  assert.equal(legacyCard.lines[0], "Tuition and fees only; housing and food are extra. Before financial aid.");
+  assert.equal(legacyCard.lines[1], "In original currency: 1,500,000 ₸");
+  assert.equal(legacyCostCard(yale(), 97985).lines.length, 1);
   // A lower price among several published options is a starting price, not the total.
   assert.match(legacyCostCard(yale(), 80000).headline, /^From /);
   assert.equal(legacyCostCard(yale(), null).headline, "No annual cost is published in the catalog yet.");

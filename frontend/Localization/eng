@@ -143,6 +143,7 @@ settings.option.currency_display.desc: Choose how university prices are displaye
 currency.display.preferred: In preferred currency
 currency.display.original: In original currency
 currency.display.both: Both (preferred + original)
+currency.original_price: In original currency: {amount}
 currency.approx_rate_note: Converted at approximate daily rate
 currency.region.cis: Post-Soviet
 currency.region.europe: Europe

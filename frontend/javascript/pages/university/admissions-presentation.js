@@ -3,7 +3,7 @@ import { formatPrice, formatPriceRange } from "../../currency.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { admissionsCycleLabel, admissionDeadlineTitle, admissionWindowName, renderAdmissionsContext, renderAdmissionsUnknowns, renderAdmissionsValue } from "./admissions-render.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
-import { trStudyMode } from "../_shared.js";
+import { originalPriceDisclosure, trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
 import { glossaryTerms, renderTermList } from "./admissions-glossary.js";
 import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution, reviewState } from "./admissions-status.js";
@@ -329,12 +329,13 @@ function finance(rows, resolved) {
   const budgetHtml = budgets.map(row => {
     const value = row.value;
     const money = amount => escapeHtml(formatPrice(amount, value.currency));
+    const originalNote = originalPriceDisclosure(value.total_before_aid, value.total_before_aid, value.currency);
     const items = ["tuition", "student_life_fee", "housing_estimate", "food_estimate", "materials_estimate", "personal_estimate"]
       .filter(key => Number.isFinite(value[key]));
     const insurance = value.health_insurance === "Additional required coverage, not in this total" ? label("insurance_not_included") : value.health_insurance;
     const exclusions = (value.exclusions || []).map(key => label(`exclusion.${key}`)).join(" ");
     const tuitionNote = Number.isFinite(value.tuition) ? `<p class="admissions-reading__note">${escapeHtml(label("tuition_budget_note"))}</p>` : "";
-    return `<section class="admissions-reading__section"><h3>${escapeHtml(label("reference_budget"))} · ${escapeHtml(period(row))}</h3><p class="admissions-reading__total">${money(value.total_before_aid)}</p><p class="admissions-reading__note">${escapeHtml(label("dated_budget"))}</p><dl class="admissions-reading__costs">${items.map(key => `<div><dt>${escapeHtml(label(key))}</dt><dd>${money(value[key])}</dd></div>`).join("")}</dl>${tuitionNote}${insurance ? `<p>${escapeHtml(label("insurance_extra"))} ${escapeHtml(insurance)}</p>` : ""}${exclusions ? `<p>${escapeHtml(exclusions)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
+    return `<section class="admissions-reading__section"><h3>${escapeHtml(label("reference_budget"))} · ${escapeHtml(period(row))}</h3><p class="admissions-reading__total">${money(value.total_before_aid)}</p>${originalNote ? `<p class="admissions-reading__note" data-cost-original>${escapeHtml(originalNote)}</p>` : ""}<p class="admissions-reading__note">${escapeHtml(label("dated_budget"))}</p><dl class="admissions-reading__costs">${items.map(key => `<div><dt>${escapeHtml(label(key))}</dt><dd>${money(value[key])}</dd></div>`).join("")}</dl>${tuitionNote}${insurance ? `<p>${escapeHtml(label("insurance_extra"))} ${escapeHtml(insurance)}</p>` : ""}${exclusions ? `<p>${escapeHtml(exclusions)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
   }).join("");
   const funding = new Map();
   for (const row of rows.filter(reviewed)) {

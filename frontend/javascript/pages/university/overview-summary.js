@@ -10,7 +10,7 @@ import { formatPrice } from "../../currency.js";
 import { translateAdmissionText } from "../../university-translations.js";
 import { getExamDisplayName } from "../../utils/config.js";
 import { withoutBracketedText } from "../../utils/text.js";
-import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
+import { formatUiNumber, originalPriceDisclosure, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
 import { admissionsRequest, firstYearSharedRoute, readAdmissionContext } from "./admissions-controller.js";
 import { readForSinglePublishedCycle } from "./admissions-cycle.js";
 import { englishRequirementItems } from "./admissions-english.js";
@@ -228,6 +228,7 @@ export function costCard(fact, policy = "") {
     [label("cost.before_aid"), fact.period ? tFormat("university.admissions.key_facts.cost_period", {
       period: /\bentry\b/i.test(fact.period) ? admissionsCycleLabel(fact.period) || fact.period : fact.period }) : ""].filter(Boolean).join(" "),
     fact.referenceNote,
+    fact.originalPriceNote,
     fact.basis === "tuition" ? label("cost.living_extra") : "",
   ].filter(Boolean);
   const aside = [];
@@ -274,8 +275,9 @@ export function legacyCostCard(university, minPrice) {
   const aidKey = aid.meets_full_demonstrated_need === true ? `full_need${aid.international_eligible === true ? "_international" : ""}`
     : aid.need_based && aid.merit_based ? "both" : aid.need_based ? "need" : aid.merit_based ? "merit" : "";
   const aside = aidKey ? [{ text: label(`cost.aid_${aidKey}`) }] : [];
+  const originalNote = originalPriceDisclosure(amount, amount, finance.currency || "USD");
   return { ...base, headline: tFormat(`university.ux2.cost.${amount === published ? "headline" : "headline_from"}`, { amount: shown }),
-    lines: [label(tuitionOnly ? "cost.legacy_tuition_only" : "cost.legacy_total")], aside };
+    lines: [label(tuitionOnly ? "cost.legacy_tuition_only" : "cost.legacy_total"), originalNote].filter(Boolean), aside };
 }
 
 // Legacy requirements: the single undergraduate category's language test and first listed extra requirements.

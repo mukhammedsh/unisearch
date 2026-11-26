@@ -43,11 +43,14 @@ test.describe("Currency price presentation", () => {
     const card = page.locator(`#universitiesList .uni-card[data-uni-id="${KAZNMU_ID}"]`);
     await expect(card).toBeVisible();
     await expect(card).toContainText("≈ $4,200");
+    await expect(card.locator(".uni-cost-secondary")).toHaveCount(0);
+    await expect(card.locator(".uni-cost-tooltip__content [data-cost-original]")).toHaveText("In original currency: 1,900,000 ₸");
 
     await page.goto(`/university.html?id=${KAZNMU_ID}`);
     await expect(page.locator("#detailCard")).toBeVisible();
     await expect(page.locator("#detailPrice")).toContainText("≈ $4,222");
     await expect(page.locator(".finance-option-total__value").first()).toContainText("≈ $4,222");
+    await expect(page.locator(".finance-option-total [data-cost-original]").first()).toHaveText("In original currency: 1,900,000 ₸");
     await expect(page.locator(".cost-legend-single").first()).toContainText("≈ $4,222");
   });
 
@@ -60,6 +63,7 @@ test.describe("Currency price presentation", () => {
     await expect(page.locator("#detailCard")).toBeVisible();
     await expect(page.locator("#detailPrice")).toContainText("≈ $4,222 (1,900,000 ₸)");
     await expect(page.locator(".finance-option-total__value").first()).toContainText("≈ $4,222 (1,900,000 ₸)");
+    await expect(page.locator(".finance-option-total [data-cost-original]")).toHaveCount(0);
     await expect(page.locator(".cost-legend-single").first()).toContainText("≈ $4,222 (1,900,000 ₸)");
   });
 

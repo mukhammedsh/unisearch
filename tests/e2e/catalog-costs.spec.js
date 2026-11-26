@@ -25,7 +25,7 @@ for (const item of [
     await expect(card).toBeVisible();
     await expect(card.locator(".uni-footer .uni-price")).toHaveAttribute("data-cost-basis", "annual_total");
     await expect(card.locator(".uni-footer .uni-price")).toContainText(/92[\s,\u00a0]?760/);
-    await card.locator(".uni-cost-tooltip .uni-price").click();
+    await card.locator(".uni-cost-tooltip .uni-price").hover();
     await expect(card.locator(".uni-cost-tooltip__content")).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.locator("#costBasisSelect")).toHaveValue("annual_total");
@@ -63,7 +63,7 @@ test("Imperial card shows the applicable tuition and living-cost range", async (
   await expect(card.locator(".uni-footer .uni-price")).toHaveAttribute("data-cost-basis", "annual_total");
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/26[\s,]?442/);
   await expect(card.locator(".uni-footer .uni-price")).toContainText(/64[\s,]?842/);
-  await card.locator(".uni-cost-tooltip .uni-price").click();
+  await card.locator(".uni-cost-tooltip .uni-price").hover();
   await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Tuition plus living-cost estimate, before aid");
   await expect(card.locator(".uni-cost-tooltip__content")).toContainText("Living-cost estimate: 2026.");
   await page.goto("/index.html?q=Imperial&study_level=undergraduate&max_tuition=90000&cost_basis=annual_total");
@@ -82,7 +82,7 @@ test("Imperial keeps published tuition selectable and narrows it by subject", as
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const price = card.locator('[data-cost-basis="tuition"]');
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £52[\s,]?300/);
-  await price.click();
+  await price.hover();
   const tooltip = card.locator(".uni-cost-tooltip__content");
   await expect(tooltip).toBeVisible();
   await expect(tooltip).toContainText("Living and other costs are additional.");
@@ -95,7 +95,7 @@ test("Imperial keeps published tuition selectable and narrows it by subject", as
     localStorage.setItem("unisearch_theme", "dark");
     localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, major: "Computer Science" }));
   });
-  await page.reload();
+  await page.goto("/index.html?q=Imperial&sort=name_asc&cost_basis=tuition");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(price.locator(".uni-price-val")).toHaveText(/£10[\s,]?050 – £48[\s,]?300/);
@@ -199,7 +199,7 @@ test("broad multi-level card price tooltip stays compact and unranked card omits
   const card = page.locator('#universitiesList .uni-card[data-uni-id="nazarbayev-university-kaz-astana"]');
   await expect(card).toBeVisible();
 
-  await card.locator(".uni-cost-tooltip .uni-price").click();
+  await card.locator(".uni-cost-tooltip .uni-price").hover();
   const costTooltip = card.locator(".uni-cost-tooltip__content");
   await expect(costTooltip).toBeVisible();
   const costText = await costTooltip.innerText();

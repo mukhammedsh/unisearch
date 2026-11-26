@@ -717,6 +717,30 @@ export function formatPriceRange(min, max, originalCurrency = "USD", options = {
   return priceParts([low, high], originalCurrency, options);
 }
 
+/**
+ * Return the exact price (or range) in its original currency when "preferred" display mode converts it
+ * to another currency and hides the source amount; return "" when the source currency is already shown.
+ * @param {number|string|null|undefined} min
+ * @param {number|string|null|undefined} [max]
+ * @param {string} [originalCurrency="USD"]
+ * @returns {string}
+ */
+export function formatHiddenOriginalPrice(min, max = min, originalCurrency = "USD") {
+  if (min === null || min === undefined || min === "") return "";
+  const low = Number(min);
+  if (!Number.isFinite(low)) return "";
+  const origCode = String(originalCurrency || "USD").trim().toUpperCase();
+  const prefCode = getPreferredCurrency();
+  if (getCurrencyDisplayMode() !== "preferred" || origCode === prefCode || !canConvert(origCode, prefCode)) {
+    return "";
+  }
+  const high = max === null || max === undefined || max === "" ? low : Number(max);
+  if (!Number.isFinite(high) || high === low) {
+    return formatMoney(low, origCode);
+  }
+  return `${formatMoney(low, origCode)} – ${formatMoney(high, origCode)}`;
+}
+
 if (typeof window !== "undefined" && typeof window.addEventListener === "function") {
   window.addEventListener("settingsChanged", (e) => {
     const key = e?.detail?.key;

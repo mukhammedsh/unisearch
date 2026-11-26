@@ -143,6 +143,7 @@ settings.option.currency_display.desc: Университет бағаларын
 currency.display.preferred: Таңдалған валютада
 currency.display.original: Бастапқы валютада
 currency.display.both: Екеуі де (таңдалған + бастапқы)
+currency.original_price: Бастапқы валютада: {amount}
 currency.approx_rate_note: Күнделікті шамамен алынған бағам бойынша айырбасталған
 currency.region.cis: Посткеңестік кеңістік
 currency.region.europe: Еуропа

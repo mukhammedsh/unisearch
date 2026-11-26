@@ -192,12 +192,15 @@ test("fee-status ranges, missing budgets, non-annual prices and missing prices s
   const range = costFact(context({ selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", fee_statuses: ["Home fee", "Overseas fee"],
     fee_status_match: "unknown", usd: { min: 13429, max: 63872 } }) } }), 0);
   assert.equal(range.status, "no_budget");
-  // The range follows the reader's currency setting (USD by default); the "both" mode keeps the published pounds.
+  // The range follows the reader's currency setting (USD by default), disclosing the original pounds in notes; "both" mode keeps them inline without repeating the note.
   assert.match(range.text, /Tuition: ≈ \$[\d,]+ – \$[\d,]+\./);
+  assert.equal(range.originalPriceNote, "In original currency: £10,050 – £47,800");
+  assert.ok(range.notes.includes("In original currency: £10,050 – £47,800"));
   withCurrencySettings("KZT", "both", () => {
     const both = costFact(context({ selected_costs: { tuition: quote({ min: 10050, max: 47800, currency: "GBP", usd: { min: 13429, max: 63872 } }) } }), 0);
     // Millions of tenge are written compactly; the published pounds stay exact.
     assert.match(both.text, /≈ ₸\d+(?:\.\d)?M – ₸\d+M \(£10,050 – £47,800\)/);
+    assert.equal(both.originalPriceNote, "");
   });
   assert.match(range.notes.join(" "), /Depends on fee status/);
   assert.match(range.notes.join(" "), /Add a yearly budget/);
