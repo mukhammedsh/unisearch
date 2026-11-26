@@ -412,9 +412,10 @@ a.admissions-key-facts__link {
 }
 
 /* Top-level admissions sections are separated like Overview sections, clearly wider than heading-to-body spacing. */
-.university--reviewed .d-box-text:has(> .admissions-context) {
+.university--reviewed :is(.d-box-text:has(> .admissions-context, > .admissions-reading), .finance-list-full) {
   display: grid;
   gap: var(--layout-section-gap);
+  min-width: 0;
 }
 
 .university--reviewed .d-box-text:has(> .admissions-context) > :first-child .admissions-catalog__assessment {
