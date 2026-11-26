@@ -11,8 +11,15 @@ import { safeSessionStorage } from "../utils/safe-storage.js";
 
 const NAME_CLASS = "vt-uni-cover";
 const HANDOFF_CLASS = "d-cover-handoff";
+const STAGE_CLASS = "vt-uni-cover-stage";
+const CLIP_CLASS = "vt-uni-cover-clip";
+const IMG_CLASS = "vt-uni-cover-img";
+const HIDDEN_CLASS = "vt-uni-cover-hidden";
+const MORPH_TARGET_CLASS = "has-cover-morph";
 const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
 const MIN_VISIBLE_PX = 24;
+const DEFAULT_COVER_DURATION_MS = 420;
+const DEFAULT_COVER_EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
 
 /** @type {{ image: HTMLImageElement, src: string, href: string } | null} */
 let pendingSource = null;
@@ -48,6 +55,9 @@ let catalogReturnSnapshot = null;
 
 /** @type {Promise<void> | null} */
 let activeCoverTransitionPromise = null;
+
+/** @type {{ stage: HTMLElement, animations: Animation[], play: () => void, dispose: () => void } | null} */
+let activeMorph = null;
 
 const ACTIVE_TRANSITION_TIMEOUT_MS = 700;
 
@@ -99,18 +109,179 @@ function isVisibleInViewport(element) {
   return visibleWidth >= MIN_VISIBLE_PX && visibleHeight >= MIN_VISIBLE_PX;
 }
 
-function setCoverTransitionDirection(direction) {
-  document.documentElement.setAttribute("data-cover-transition", direction);
+function parsePositionOffset(token, boxSize, imgSize) {
+  const raw = String(token || "").trim().toLowerCase();
+  if (!raw || raw === "center") return (boxSize - imgSize) * 0.5;
+  if (raw === "left" || raw === "top") return 0;
+  if (raw === "right" || raw === "bottom") return boxSize - imgSize;
+  if (raw.endsWith("%")) {
+    const pct = Number.parseFloat(raw);
+    return Number.isFinite(pct) ? (boxSize - imgSize) * (pct / 100) : (boxSize - imgSize) * 0.5;
+  }
+  const px = Number.parseFloat(raw);
+  return Number.isFinite(px) ? px : (boxSize - imgSize) * 0.5;
 }
 
-function clearCoverTransitionDirection() {
-  document.documentElement.removeAttribute("data-cover-transition");
+/**
+ * Computes the rendered image box under `object-fit: cover` and `object-position` in the
+ * coordinate space of `rect`.
+ * @param {{ left: number, top: number, width: number, height: number }} rect
+ * @param {number} natW
+ * @param {number} natH
+ * @param {string} [objectPositionCss]
+ * @returns {{ left: number, top: number, width: number, height: number }}
+ */
+export function computeCoveredImageBox(rect, natW, natH, objectPositionCss = "50% 50%") {
+  const scale = Math.max(rect.width / natW, rect.height / natH);
+  const width = natW * scale;
+  const height = natH * scale;
+  const tokens = String(objectPositionCss || "50% 50%").trim().split(/\s+/);
+  const offsetX = parsePositionOffset(tokens[0] || "50%", rect.width, width);
+  const offsetY = parsePositionOffset(tokens[1] || "50%", rect.height, height);
+  return {
+    left: rect.left + offsetX,
+    top: rect.top + offsetY,
+    width,
+    height,
+  };
+}
+
+function readCornerRadii(element) {
+  if (!(element instanceof Element)) return "0px 0px 0px 0px";
+  const style = getComputedStyle(element);
+  return [
+    style.borderTopLeftRadius,
+    style.borderTopRightRadius,
+    style.borderBottomRightRadius,
+    style.borderBottomLeftRadius,
+  ]
+    .map((val) => `${Number.parseFloat(val) || 0}px`)
+    .join(" ");
+}
+
+function readCoverMotionTiming() {
+  const rootStyle = getComputedStyle(document.documentElement);
+  const rawDuration = rootStyle.getPropertyValue("--motion-cover").trim();
+  let duration = DEFAULT_COVER_DURATION_MS;
+  if (rawDuration.endsWith("ms")) {
+    const parsed = Number.parseFloat(rawDuration);
+    if (Number.isFinite(parsed) && parsed > 0) duration = parsed;
+  } else if (rawDuration.endsWith("s")) {
+    const parsed = Number.parseFloat(rawDuration) * 1000;
+    if (Number.isFinite(parsed) && parsed > 0) duration = parsed;
+  }
+  const easing = rootStyle.getPropertyValue("--motion-ease-cover").trim() || DEFAULT_COVER_EASING;
+  return { duration, easing };
+}
+
+function captureSnapshotMetrics(img, clipContainer) {
+  if (!(img instanceof HTMLImageElement) || !img.complete || img.naturalWidth <= 0 || img.naturalHeight <= 0) {
+    return null;
+  }
+  const targetBox = clipContainer instanceof Element ? clipContainer : img;
+  const rect = targetBox.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return null;
+  return {
+    rect: {
+      left: rect.left,
+      top: rect.top,
+      right: rect.right,
+      bottom: rect.bottom,
+      width: rect.width,
+      height: rect.height,
+    },
+    natW: img.naturalWidth,
+    natH: img.naturalHeight,
+    objectPosition: getComputedStyle(img).objectPosition || "50% 50%",
+    radius: readCornerRadii(clipContainer || img),
+    src: img.currentSrc || img.src,
+  };
+}
+
+function disposeActiveMorph() {
+  if (!activeMorph) return;
+  activeMorph.dispose();
+  activeMorph = null;
+}
+
+function clipInsetValue(rect, cw, ch, radius) {
+  return `inset(${rect.top}px ${cw - rect.right}px ${ch - rect.bottom}px ${rect.left}px round ${radius})`;
+}
+
+function mountCoverMorph(fromState, toState) {
+  disposeActiveMorph();
+  if (!fromState || !toState) return null;
+  const cw = document.documentElement.clientWidth || window.innerWidth || 0;
+  const ch = document.documentElement.clientHeight || window.innerHeight || 0;
+  if (cw <= 0 || ch <= 0) return null;
+
+  const fromImgBox = computeCoveredImageBox(fromState.rect, fromState.natW, fromState.natH, fromState.objectPosition);
+  const toImgBox = computeCoveredImageBox(toState.rect, fromState.natW, fromState.natH, toState.objectPosition);
+  const baseW = Math.max(fromImgBox.width, toImgBox.width);
+  const baseH = Math.max(fromImgBox.height, toImgBox.height);
+  if (baseW <= 0 || baseH <= 0) return null;
+
+  const fromScale = fromImgBox.width / baseW;
+  const toScale = toImgBox.width / baseW;
+  const { duration, easing } = readCoverMotionTiming();
+
+  const stage = document.createElement("div");
+  stage.className = `${STAGE_CLASS} ${NAME_CLASS}`;
+  const clip = document.createElement("div");
+  clip.className = CLIP_CLASS;
+  const img = document.createElement("img");
+  img.className = IMG_CLASS;
+  img.alt = "";
+  img.decoding = "sync";
+  img.src = fromState.src;
+  img.style.width = `${baseW}px`;
+  img.style.height = `${baseH}px`;
+
+  clip.append(img);
+  stage.append(clip);
+  document.body.append(stage);
+
+  const clipAnim = clip.animate([
+    { clipPath: clipInsetValue(fromState.rect, cw, ch, fromState.radius) },
+    { clipPath: clipInsetValue(toState.rect, cw, ch, toState.radius) },
+  ], { duration, easing, fill: "both" });
+  clipAnim.pause();
+
+  const imgAnim = img.animate([
+    { transform: `translate3d(${fromImgBox.left}px, ${fromImgBox.top}px, 0) scale(${fromScale})` },
+    { transform: `translate3d(${toImgBox.left}px, ${toImgBox.top}px, 0) scale(${toScale})` },
+  ], { duration, easing, fill: "both" });
+  imgAnim.pause();
+
+  activeMorph = {
+    stage,
+    animations: [clipAnim, imgAnim],
+    play() {
+      clipAnim.play();
+      imgAnim.play();
+    },
+    dispose() {
+      clipAnim.cancel();
+      imgAnim.cancel();
+      stage.remove();
+    },
+  };
+  return activeMorph;
 }
 
 function clearAllCoverTransitionNames() {
-  clearCoverTransitionDirection();
+  disposeActiveMorph();
+  document.querySelectorAll(`.${STAGE_CLASS}`).forEach((node) => {
+    node.remove();
+  });
   document.querySelectorAll(`.${NAME_CLASS}`).forEach((node) => {
     node.classList.remove(NAME_CLASS);
+  });
+  document.querySelectorAll(`.${HIDDEN_CLASS}`).forEach((node) => {
+    node.classList.remove(HIDDEN_CLASS);
+  });
+  document.querySelectorAll(`.${MORPH_TARGET_CLASS}`).forEach((node) => {
+    node.classList.remove(MORPH_TARGET_CLASS);
   });
 }
 
@@ -133,6 +304,7 @@ function findVisibleUniversityCoverImage() {
   const img = preview.querySelector(".d-gallery-preview-media > img:not([hidden])")
     || cover.querySelector(`img.${HANDOFF_CLASS}`);
   if (!(img instanceof HTMLImageElement) || !img.complete || img.naturalWidth === 0) return null;
+  if ((img.currentSrc || img.src).includes("/gallery/")) return null;
   return isVisibleInViewport(img) ? img : null;
 }
 
@@ -234,8 +406,8 @@ export function captureCatalogReturnSnapshot(currentUrl, targetUrl) {
   if (!listEl.querySelector(".uni-card:not(.is-skeleton)")) return;
 
   const listClone = /** @type {HTMLElement} */ (listEl.cloneNode(true));
-  listClone.querySelectorAll(`.${NAME_CLASS}, .motion-list-item-enter`).forEach((node) => {
-    node.classList.remove(NAME_CLASS, "motion-list-item-enter");
+  listClone.querySelectorAll(`.${NAME_CLASS}, .${HIDDEN_CLASS}, .${MORPH_TARGET_CLASS}, .motion-list-item-enter`).forEach((node) => {
+    node.classList.remove(NAME_CLASS, HIDDEN_CLASS, MORPH_TARGET_CLASS, "motion-list-item-enter");
     if (node instanceof HTMLElement && node.style.animationDelay) {
       node.style.animationDelay = "";
     }
@@ -314,13 +486,34 @@ export function takeCoverHandoff(url) {
   if (!source || source.href !== url.href || !source.image.isConnected) return null;
   /** @type {HTMLImageElement | null} */
   let standIn = null;
+  /** @type {ReturnType<typeof captureSnapshotMetrics>} */
+  let fromState = null;
+
+  function buildCoverTargetState(cover, objectPosition) {
+    const rect = cover.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    return {
+      rect: {
+        left: rect.left,
+        top: rect.top,
+        right: rect.right,
+        bottom: rect.bottom,
+        width: rect.width,
+        height: rect.height,
+      },
+      objectPosition: objectPosition || "50% 50%",
+      radius: readCornerRadii(cover),
+    };
+  }
 
   return {
-    /** Names the card photo for the outgoing snapshot. */
+    /** Captures source geometry and hides the card thumbnail before the outgoing snapshot. */
     markSource() {
       clearAllCoverTransitionNames();
-      setCoverTransitionDirection("forward");
-      source.image.classList.add(NAME_CLASS);
+      fromState = captureSnapshotMetrics(source.image, source.image.closest(".uni-media"));
+      if (fromState) {
+        source.image.classList.add(HIDDEN_CLASS);
+      }
     },
     /**
      * Runs inside the transition callback, after the new page DOM is in place. When the detail page
@@ -329,7 +522,6 @@ export function takeCoverHandoff(url) {
      * @param {{ useLoadingCover?: boolean }} [options]
      */
     inject({ useLoadingCover = true } = {}) {
-      source.image.classList.remove(NAME_CLASS);
       const loading = document.getElementById("detailLoading");
       const cover = useLoadingCover
         ? loading?.querySelector(".d-loading-cover")
@@ -342,37 +534,56 @@ export function takeCoverHandoff(url) {
         document.getElementById("detailCard")?.classList.add("has-cover-handoff");
       }
       standIn = document.createElement("img");
-      standIn.className = `${HANDOFF_CLASS} ${NAME_CLASS}`;
+      standIn.className = HANDOFF_CLASS;
       standIn.alt = "";
       standIn.decoding = "sync";
       standIn.src = source.src;
       cover.prepend(standIn);
+
+      if (useLoadingCover && fromState) {
+        cover.classList.add(MORPH_TARGET_CLASS);
+        const toState = buildCoverTargetState(cover, getComputedStyle(standIn).objectPosition);
+        mountCoverMorph(fromState, toState);
+      }
     },
     /**
-     * When a cached university mounts directly inside the transition callback, guarantees the live
-     * cover keeps the shared transition name (and skips any skeleton fade state).
+     * When a cached university mounts directly inside the transition callback, mounts the live
+     * morph into `#detailCover` (or clears the handoff when the cover photo is unavailable).
      */
     ensureMountedTarget() {
       clearLoadingHandoffState();
       document.getElementById("detailCard")?.classList.add("has-cover-handoff");
-      if (standIn?.isConnected) {
-        standIn.classList.add(NAME_CLASS);
+      const cover = document.getElementById("detailCover");
+      if (!cover || cover.classList.contains("is-photo-missing")) {
+        clearAllCoverTransitionNames();
         return;
       }
-      clearAllCoverTransitionNames();
-      const cover = document.getElementById("detailCover");
-      if (!cover || cover.classList.contains("is-photo-missing")) return;
       const preview = cover.querySelector(".d-gallery-preview");
-      if (!(preview instanceof HTMLElement) || preview.hidden) return;
+      if (!(preview instanceof HTMLElement) || preview.hidden) {
+        clearAllCoverTransitionNames();
+        return;
+      }
+      cover.classList.add(MORPH_TARGET_CLASS);
       const coverImg = preview.querySelector(".d-gallery-preview-media > img:not([hidden])");
-      if (coverImg instanceof HTMLImageElement && coverImg.complete && coverImg.naturalWidth > 0) {
-        coverImg.classList.add(NAME_CLASS);
+      const targetPos = coverImg instanceof HTMLImageElement
+        ? getComputedStyle(coverImg).objectPosition
+        : standIn?.isConnected
+          ? getComputedStyle(standIn).objectPosition
+          : "50% 50%";
+      if (fromState) {
+        const toState = buildCoverTargetState(cover, targetPos);
+        mountCoverMorph(fromState, toState);
       }
     },
-    /** Drops the shared name once the transition is over; the stand-in stays until the photo loads. */
+    /** Plays the paused WAAPI morph once `transition.ready` exposes the View Transition pseudo-tree. */
+    startOnReady(readyPromise) {
+      void Promise.resolve(readyPromise).then(() => activeMorph?.play(), () => {});
+    },
+    /** Cleans up morph stage and reveals the real cover once the View Transition finishes. */
     settle() {
       clearAllCoverTransitionNames();
       clearLoadingHandoffState();
+      document.getElementById("detailCard")?.classList.remove("has-cover-handoff");
     },
   };
 }
@@ -382,7 +593,7 @@ export function takeCoverHandoff(url) {
  * returning to the same catalog view and both the cover and card image are visible.
  * @param {URL} currentUrl
  * @param {URL} targetUrl
- * @returns {{ markSource: () => void, inject: () => void, settle: () => void, preserveScroll: true } | null}
+ * @returns {{ markSource: () => void, inject: () => Promise<void>, startOnReady: (readyPromise: Promise<void>) => void, settle: () => void, preserveScroll: true } | null}
  */
 export function takeReverseCoverHandoff(currentUrl, targetUrl) {
   const snap = catalogReturnSnapshot;
@@ -398,20 +609,23 @@ export function takeReverseCoverHandoff(currentUrl, targetUrl) {
 
   const sourceImg = findVisibleUniversityCoverImage();
   if (!sourceImg) return null;
+  /** @type {ReturnType<typeof captureSnapshotMetrics>} */
+  let fromState = null;
 
   return {
     preserveScroll: true,
     markSource() {
       clearAllCoverTransitionNames();
-      setCoverTransitionDirection("reverse");
-      sourceImg.classList.add(NAME_CLASS);
+      fromState = captureSnapshotMetrics(sourceImg, document.getElementById("detailCover"));
+      if (fromState) {
+        sourceImg.classList.add(HIDDEN_CLASS);
+      }
     },
     async inject() {
-      sourceImg.classList.remove(NAME_CLASS);
       const listEl = hydrateCatalogFromSnapshot(snap);
       safeSessionStorage.set(UNIVERSITIES_SCROLL_KEY, String(snap.scrollY));
       window.scrollTo({ top: snap.scrollY, left: 0, behavior: "instant" });
-      if (!listEl) return;
+      if (!listEl || !fromState) return;
 
       const targetCard = Array.from(listEl.querySelectorAll(".uni-card[data-uni-id]"))
         .find((card) => card instanceof HTMLElement && card.dataset.uniId === universityId);
@@ -420,13 +634,36 @@ export function takeReverseCoverHandoff(currentUrl, targetUrl) {
 
       targetImg.loading = "eager";
       targetImg.decoding = "sync";
-      targetImg.classList.add(NAME_CLASS);
       if (typeof targetImg.decode === "function") {
         await Promise.race([
           targetImg.decode().catch(() => {}),
           new Promise((resolve) => window.setTimeout(resolve, 80)),
         ]);
       }
+      targetImg.classList.add(HIDDEN_CLASS);
+
+      const targetMedia = targetImg.closest(".uni-media") || targetImg;
+      const targetRect = targetMedia.getBoundingClientRect();
+      if (targetRect.width <= 0 || targetRect.height <= 0) {
+        targetImg.classList.remove(HIDDEN_CLASS);
+        return;
+      }
+      const toState = {
+        rect: {
+          left: targetRect.left,
+          top: targetRect.top,
+          right: targetRect.right,
+          bottom: targetRect.bottom,
+          width: targetRect.width,
+          height: targetRect.height,
+        },
+        objectPosition: getComputedStyle(targetImg).objectPosition || "50% 60%",
+        radius: readCornerRadii(targetMedia),
+      };
+      mountCoverMorph(fromState, toState);
+    },
+    startOnReady(readyPromise) {
+      void Promise.resolve(readyPromise).then(() => activeMorph?.play(), () => {});
     },
     settle() {
       clearAllCoverTransitionNames();
@@ -441,6 +678,11 @@ export function takeReverseCoverHandoff(currentUrl, targetUrl) {
 export function adoptCoverHandoff(cover) {
   const standIn = document.querySelector(`.${HANDOFF_CLASS}`);
   if (!cover || !standIn || cover.contains(standIn)) return;
+  const previousHost = standIn.closest(`.${MORPH_TARGET_CLASS}`);
+  if (previousHost && previousHost !== cover) {
+    previousHost.classList.remove(MORPH_TARGET_CLASS);
+    cover.classList.add(MORPH_TARGET_CLASS);
+  }
   standIn.closest(".has-cover-handoff")?.classList.remove("has-cover-handoff");
   cover.prepend(standIn);
 }
@@ -455,16 +697,7 @@ export function removeCoverHandoff(cover) {
     void waitForCoverTransition().then(() => removeCoverHandoff(cover));
     return;
   }
-  const handoffs = cover.querySelectorAll(`.${HANDOFF_CLASS}`);
-  let transferName = false;
-  handoffs.forEach((node) => {
-    if (node.classList.contains(NAME_CLASS)) transferName = true;
+  cover.querySelectorAll(`.${HANDOFF_CLASS}`).forEach((node) => {
     node.remove();
   });
-  if (transferName && !cover.classList.contains("is-photo-missing")) {
-    const coverImg = cover.querySelector(".d-gallery-preview:not([hidden]) .d-gallery-preview-media > img:not([hidden])");
-    if (coverImg instanceof HTMLImageElement && coverImg.complete && coverImg.naturalWidth > 0) {
-      coverImg.classList.add(NAME_CLASS);
-    }
-  }
 }

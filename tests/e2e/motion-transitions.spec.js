@@ -105,6 +105,9 @@ test("opening a university from its card carries the photo into the cover", asyn
   await expect(cover.locator(".d-gallery-preview img")).toBeVisible();
   await expect(cover.locator(".d-cover-handoff")).toHaveCount(0);
   await expect(page.locator(".vt-uni-cover")).toHaveCount(0);
+  await expect(page.locator(".vt-uni-cover-stage")).toHaveCount(0);
+  await expect(page.locator(".vt-uni-cover-hidden")).toHaveCount(0);
+  await expect(page.locator(".has-cover-morph")).toHaveCount(0);
   expect(errors.filter((text) => /view.?transition/i.test(text))).toEqual([]);
 });
 
@@ -191,6 +194,9 @@ test("returning via the back button morphs the cover back into its catalog card 
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
   await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
   await expect(page.locator(".vt-uni-cover")).toHaveCount(0);
+  await expect(page.locator(".vt-uni-cover-stage")).toHaveCount(0);
+  await expect(page.locator(".vt-uni-cover-hidden")).toHaveCount(0);
+  await expect(page.locator(".has-cover-morph")).toHaveCount(0);
   await expect.poll(() => page.evaluate((expected) => Math.abs(window.scrollY - expected), catalogScroll), { timeout: 2000 }).toBeLessThanOrEqual(4);
   if (catalogScroll > 0) {
     expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(0);

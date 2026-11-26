@@ -176,10 +176,49 @@
   }
 }
 
-/* Card photo → university cover handoff (components/cover-transition.js). The stand-in fills the
-   cover box the static page already lays out, so the morph never shifts layout. */
+/* Card photo ↔ university cover handoff (components/cover-transition.js). The morph stage runs at
+   viewport coordinates inside ::view-transition-new(uni-cover) so clip box, corner radii, zoom,
+   and focal crop (object-position) interpolate smoothly together without distorting the image. */
+@keyframes vt-cover-hold {
+  from,
+  to {
+    opacity: 1;
+  }
+}
+
 .vt-uni-cover {
   view-transition-name: uni-cover;
+}
+
+.vt-uni-cover-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  contain: strict;
+}
+
+.vt-uni-cover-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+.vt-uni-cover-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  max-height: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.vt-uni-cover-hidden,
+.has-cover-morph > img.d-cover-handoff,
+.has-cover-morph .d-gallery-preview-media > img {
+  visibility: hidden;
 }
 
 .d-cover-handoff {
@@ -192,28 +231,14 @@
 }
 
 ::view-transition-group(uni-cover) {
-  overflow: clip;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  animation-duration: var(--motion-cover);
-  animation-timing-function: var(--motion-ease-cover);
+  animation: vt-cover-hold var(--motion-cover) linear both;
 }
 
-::view-transition-old(uni-cover),
-::view-transition-new(uni-cover) {
-  animation-duration: var(--motion-cover);
-  animation-timing-function: var(--motion-ease-cover);
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-:root[data-cover-transition="forward"]::view-transition-old(uni-cover),
-:root[data-cover-transition="reverse"]::view-transition-new(uni-cover) {
+::view-transition-old(uni-cover) {
   display: none;
 }
 
-:root[data-cover-transition="forward"]::view-transition-new(uni-cover),
-:root[data-cover-transition="reverse"]::view-transition-old(uni-cover) {
+::view-transition-new(uni-cover) {
   animation: none;
   mix-blend-mode: normal;
 }
@@ -473,6 +498,10 @@
 
   :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]):not(.vt-uni-cover) {
     animation: motion-backdrop-in var(--motion-fast) var(--motion-ease-enter) backwards;
+  }
+
+  .d-card.has-cover-handoff .d-gallery-preview-media > img {
+    animation: none;
   }
 }
 

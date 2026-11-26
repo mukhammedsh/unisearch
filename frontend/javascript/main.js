@@ -748,6 +748,7 @@ async function loadAppRoute(rawHref, options = {}) {
         }
       });
       if (coverHandoff) {
+        coverHandoff.startOnReady?.(transition.ready);
         registerActiveCoverTransition(transition.finished);
       }
       const settleCover = () => coverHandoff?.settle();
