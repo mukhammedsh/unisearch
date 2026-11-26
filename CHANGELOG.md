@@ -2,10 +2,14 @@
 
 All notable changes to UniSearch are documented here.
 
-## 10.10.1 (2026-11-26) - Desktop hover-only tooltips
+## 10.10.1 (2026-11-26) - Desktop hover-only tooltips and Kazakhstan Kazakh-first locale default
 
 ### Changed
 - Keep desktop mouse tooltips transient on hover and keyboard focus without press states or click-to-pin behavior, while preserving tap-to-open tooltips on touch and stylus screens and allowing pointers to cross cleanly onto links inside tooltips.
+
+### Fixed
+- Align single-line university card prices flush with the details link at the bottom of mobile cards while preserving the touch tap area.
+- Open UniSearch in Kazakh on a visitor's first visit from Kazakhstan while honoring any saved language choice or `?lang=` link parameter, negotiating against the full ordered browser language list elsewhere, and keeping automatic defaults out of persistent storage until the visitor switches languages manually.
 
 ## 10.10.0 (2026-11-26) - Comparison PDF export, spotlight tour, profile calendar, and mobile refinements
 

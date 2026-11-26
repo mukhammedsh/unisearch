@@ -89,8 +89,8 @@ The frontend uses **Vanilla JavaScript (ES Modules)**, HTML5, and CSS without a 
   Manages single-page application (SPA) routing, browser history (`pushState` / `popstate`), query parameter synchronization, and viewport lifecycle transitions.
 * **Global Search Component (`frontend/javascript/components/navbar-search.js`):**
   Provides a debounced (180ms) autocomplete typeahead with keyboard navigation (arrow keys, Enter, Escape), matched alias badges, network status monitoring, and full mobile drawer overlay.
-* **Localization Subsystem (`frontend/javascript/i18n.js`):**
-  Dynamic client-side internationalization supporting English, Russian, and Kazakh without full page reloads. Strings are loaded from `frontend/Localization/` with a fallback key mechanism.
+* **Localization Subsystem (`frontend/javascript/i18n.js` & `frontend/javascript/utils/locale.js`):**
+  Dynamic client-side internationalization supporting English, Russian, and Kazakh without full page reloads. Strings are loaded from `frontend/Localization/` with a fallback key mechanism. Initial language resolution honors an explicit `?lang=` query parameter or saved manual choice first, defaults first-time visitors in Kazakhstan (by IANA time zone or `-KZ` locale region) to Kazakh, negotiates against the ordered `navigator.languages` list elsewhere, and falls back to Russian in CIS regions or English globally without locking automatic defaults into `localStorage`.
 * **State Persistence (`frontend/javascript/utils/persistence.js` & `safe-storage.js`):**
   Safely syncs applicant preferences (GPA, exam scores, budget, currency choices, comparison trays) to browser `localStorage` with migration versioning and corrupted JSON recovery.
 * **Design System & Styling (`frontend/css/shared/*`):**
