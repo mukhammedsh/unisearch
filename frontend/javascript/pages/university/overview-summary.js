@@ -96,7 +96,9 @@ export function checklistItems(resolved, profile = null) {
   const documents = structured.documents.length ? structured.documents : plain.documents.slice(0, 1);
   // Published numeric minimums (NU's IELTS and SAT, for example) say more than a test name, so they lead when assessed.
   // A kind of requirement without a checkable minimum keeps its published wording (MIT's recommended English test).
-  const minimums = minimumChecklist(resolved).map(({ kind, factId, mark, text }) => ({ kind, factId, mark, text }));
+  const minimums = minimumChecklist(resolved).map(({ kind, factId, mark, text, note, href }) => ({
+    kind, factId, mark, text, ...(note ? { note } : {}), ...(href ? { href } : {}),
+  }));
   const kinds = new Set(minimums.map(entry => entry.kind));
   const recommendation = profile ? englishRecommendationItem(resolved, profile) : null;
   const language = recommendation

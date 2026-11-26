@@ -106,8 +106,9 @@ test("comparison skips a missing campus photo and keeps the university name", as
 });
 
 // Chooses a program in a column's picker dialog; a program with several routes asks for the route in the same dialog.
-async function pickProgram(page, id, { search, option, route = "", level = "" }) {
-  await page.locator(`[data-compare-pick="${id}"]`).click();
+async function pickProgram(page, id, { search, option, route = "", level = "", triggerSelector = "" }) {
+  const trigger = triggerSelector || `.compare-reviewed__head [data-compare-pick="${id}"]`;
+  await page.locator(trigger).click();
   const dialog = page.locator("dialog.compare-picker[open]");
   await expect(dialog).toBeVisible();
   if (level) await dialog.locator(`[data-picker-level="${level}"]`).click();
@@ -519,7 +520,12 @@ test("reviewed comparison opens on shared facts and saves a program chosen in ea
   await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText("Depends on the program");
   expect(await savedChoice(page, MIT_ID)).toBeUndefined();
 
-  await pickProgram(page, IMPERIAL_ID, { search: "Computing", option: "imperial-option-computing-meng", level: "undergraduate" });
+  await pickProgram(page, IMPERIAL_ID, {
+    search: "Computing",
+    option: "imperial-option-computing-meng",
+    level: "undergraduate",
+    triggerSelector: `[data-compare-row="deadline"] [data-compare-pick="${IMPERIAL_ID}"]`,
+  });
   await expect.poll(() => savedChoice(page, IMPERIAL_ID)).toMatchObject({ studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng" });
   // The applicant compares in their own currency: the published pound price is converted to the setting (USD by default).
   await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/≈ \$[\d,]+/);

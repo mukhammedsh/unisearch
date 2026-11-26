@@ -18,7 +18,7 @@ import { compareCampusHtml, compareLocationText, compareRankText, compareUnivers
 import { admissionContextUrl, programProfileSuggestions, readAdmissionContext } from "../university/admissions-controller.js";
 import { readForSinglePublishedCycle } from "../university/admissions-cycle.js";
 import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName, studyOptionEssentials } from "../university/admissions-render.js";
-import { costFact, deadlineFact, fundingFact, MARK_ICONS, requirementsFact } from "../university/admissions-key-facts.js";
+import { costFact, deadlineFact, fundingFact, MARK_ICONS } from "../university/admissions-key-facts.js";
 import { isEvidenceReviewed, isPublished } from "../university/admissions-status.js";
 import { billingPeriodLabel } from "../university/admissions-presentation.js";
 import { translateAdmissionText } from "../../university-translations.js";
@@ -77,7 +77,10 @@ function cellHtml(column, value) {
   const id = escapeHtmlAttr(column.id);
   if (!value) return `<dd class="compare-reviewed__cell" data-uni-id="${id}" data-empty><p class="compare-reviewed__muted">${escapeHtml(label("value.not_published"))}</p></dd>`;
   if (value.state) {
-    return `<dd class="compare-reviewed__cell" data-uni-id="${id}" data-state="${escapeHtmlAttr(value.state)}"><p class="compare-reviewed__muted">${escapeHtml(value.text)}</p></dd>`;
+    const action = value.action
+      ? `<button type="button" class="ui-btn ui-btn--sm compare-reviewed__inline-pick" data-compare-pick="${id}" aria-label="${escapeHtmlAttr(value.action.ariaLabel)}">${heroIcon("academic-cap", "ui-icon ui-icon--16")}<span>${escapeHtml(value.action.label)}</span></button>`
+      : "";
+    return `<dd class="compare-reviewed__cell" data-uni-id="${id}" data-state="${escapeHtmlAttr(value.state)}"><p class="compare-reviewed__muted">${escapeHtml(value.text)}</p>${action}</dd>`;
   }
   const tone = value.tone ? ` data-tone="${escapeHtmlAttr(value.tone)}"` : "";
   const main = value.main ? `<p class="compare-reviewed__value"${tone}${value.kind ? ` data-kind="${escapeHtmlAttr(value.kind)}"` : ""}>${escapeHtml(value.main)}</p>` : "";
@@ -88,7 +91,10 @@ function cellHtml(column, value) {
   }).join("");
   const items = value.items?.length ? `<ul class="compare-reviewed__checklist">${value.items.map((entry) => {
     const icon = MARK_ICONS[entry.mark] ? heroIcon(MARK_ICONS[entry.mark], "ui-icon ui-icon--16") : "";
-    return `<li data-mark="${escapeHtmlAttr(entry.mark)}"><span class="compare-reviewed__mark" aria-hidden="true">${icon}</span><span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${entry.mark}`))}: </span><span${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span></li>`;
+    const note = !entry.note ? ""
+      : entry.href ? `<a class="compare-reviewed__checklist-note" href="${escapeHtmlAttr(entry.href)}" data-route="profile">${escapeHtml(entry.note)}</a>`
+      : `<span class="compare-reviewed__checklist-note">${escapeHtml(entry.note)}</span>`;
+    return `<li data-mark="${escapeHtmlAttr(entry.mark)}"><span class="compare-reviewed__mark" aria-hidden="true">${icon}</span><span class="sr-only">${escapeHtml(t(`university.ux2.needs.mark_${entry.mark}`))}: </span><span class="compare-reviewed__checklist-body"><span${entry.prose ? " data-prose" : ""}>${escapeHtml(entry.text)}</span>${note}</span></li>`;
   }).join("")}</ul>` : "";
   const sources = (value.sources || []).filter(Boolean).map((source) => {
     const href = safeUrl(source.url);
@@ -101,14 +107,18 @@ function cellHtml(column, value) {
 }
 
 // The placeholder a fact cell shows when the column does not read a context with facts.
-function scopePlaceholder(column) {
+function scopePlaceholder(column, { withAction = false } = {}) {
   const scope = columnScope(column);
   if (scope === "loading") return { state: "loading", text: label("value.loading") };
   if (scope === "error") return { state: "error", text: label("value.error") };
-  if (scope === "route") return { state: "route", text: label("value.choose_route") };
   if (scope === "no_route") return { state: "no_route", text: label("value.no_route") };
-  if (scope === "mismatch") return { state: "mismatch", text: label("value.mismatch") };
-  return { state: "choose", text: label("value.depends") };
+  const actionLabel = scope === "route" ? label("action.choose_route") : label("action.choose");
+  const action = withAction
+    ? { label: actionLabel, ariaLabel: `${actionLabel} — ${compareUniversityName(column.university)}` }
+    : null;
+  if (scope === "route") return { state: "route", text: label("value.choose_route"), action };
+  if (scope === "mismatch") return { state: "mismatch", text: label("value.mismatch"), action };
+  return { state: "choose", text: label("value.depends"), action };
 }
 
 function cardValue(card, column, hash) {
@@ -172,13 +182,12 @@ function programRows() {
 }
 
 function admissionRows(columns, profileExamIds, { forPdf = false } = {}) {
-  const showRequirements = !forPdf && columns.some((column) => readsFacts(column) && Number.isFinite(column.resolved?.assessment?.chancePercent));
   return [
     {
       id: "deadline",
       keepEmpty: true,
       value: (column) => {
-        if (!readsFacts(column)) return scopePlaceholder(column);
+        if (!readsFacts(column)) return scopePlaceholder(column, { withAction: !forPdf });
         const items = forPdf ? pdfDeadlineItems(column.resolved) : [];
         if (items.length) return { items };
         return cardValue(deadlineCard(deadlineFact(column.resolved, new Date(), { profileExamIds })), column, "tab-deadlines");
@@ -194,14 +203,6 @@ function admissionRows(columns, profileExamIds, { forPdf = false } = {}) {
         return items.length ? { items, link } : { main: t("university.ux2.needs.empty"), kind: "text", link };
       },
     },
-    ...(showRequirements ? [{
-      id: "requirements",
-      value: (column) => {
-        if (!readsFacts(column)) return scopePlaceholder(column);
-        const fact = requirementsFact(column.resolved);
-        return { main: fact.text, kind: "text", tone: fact.tone, details: fact.notes };
-      },
-    }] : []),
   ];
 }
 
@@ -341,16 +342,22 @@ function universityRows() {
 function scopeText(column) {
   const scope = columnScope(column);
   const resolved = column.resolved;
+  const rawCycle = resolved?.context?.intended_entry_cycle || resolved?.context?.cycle || "";
+  const cycle = rawCycle ? admissionsCycleLabel(rawCycle) || rawCycle : "";
   if (scope === "program" || scope === "route" || scope === "no_route") {
     const option = resolved.selected_option;
     const program = admissionsProgramLabel(option);
     const meta = [
       ...(option.levels || []).map((level) => catalogLabel(`level.${level}`)),
       ...(option.awards || []).filter((award) => !program.title.includes(award)),
+      ...(scope === "program" && resolved.selected_route ? [routeLabel(resolved.selected_route)] : []),
+      ...(scope === "program" && cycle ? [cycle] : []),
     ];
     return { title: program.title, meta: scope === "route" ? [...meta, label("scope.route_meta")].join(" · ") : meta.join(" · ") };
   }
-  if (scope === "institution") return { title: label("scope.institution"), meta: label("scope.institution_meta") };
+  if (scope === "institution") {
+    return { title: label("scope.institution"), meta: [label("scope.institution_meta"), cycle].filter(Boolean).join(" · ") };
+  }
   if (scope === "mismatch") return { title: label("scope.mismatch"), meta: label("scope.mismatch_meta") };
   if (scope === "loading") return { title: label("value.loading"), meta: "" };
   if (scope === "error") return { title: label("value.error"), meta: "" };
@@ -385,7 +392,11 @@ function headHtml(column, index, photos) {
 
 function stripHtml(columns) {
   return `<div class="compare-reviewed__strip-anchor"><div class="compare-reviewed__strip" data-compare-strip aria-hidden="true">
-    ${columns.map((column) => `<span class="compare-reviewed__strip-item"><span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span></span>`).join("")}
+    ${columns.map((column) => {
+      const scope = columnScope(column);
+      const sub = ["program", "institution", "route", "no_route"].includes(scope) ? scopeText(column).title : "";
+      return `<span class="compare-reviewed__strip-item"><span class="compare-reviewed__strip-name">${escapeHtml(compareUniversityName(column.university))}</span>${sub ? `<span class="compare-reviewed__strip-scope">${escapeHtml(sub)}</span>` : ""}</span>`;
+    }).join("")}
   </div></div>`;
 }
 
@@ -394,11 +405,10 @@ function printReviewedComparison(container, columns) {
     const scope = scopeText(column);
     const { resolved } = column;
     const route = readsFacts(column) ? resolved.selected_route : null;
-    const cycle = route && (resolved.context?.intended_entry_cycle || resolved.context?.cycle);
     const fee = FEE_STATUSES.find(([value]) => value === column.context.fee_status_context && value !== "unknown");
     return {
       name: compareUniversityName(column.university),
-      context: [scope.title, scope.meta, route && routeLabel(route), cycle && admissionsCycleLabel(cycle), route && fee && label(fee[1])].filter(Boolean),
+      context: [scope.title, scope.meta, route && fee && label(fee[1])].filter(Boolean),
       resolved: route || columnScope(column) === "route" || columnScope(column) === "no_route" ? resolved : null,
     };
   });
@@ -432,9 +442,9 @@ export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamId
       ${columns.map((column, index) => headHtml(column, index, photos)).join("")}
     </div>
     ${stripHtml(columns)}
-    ${hasProgram ? sectionHtml("program", columns, programRows()) : ""}
     ${sectionHtml("admission", columns, admissionRows(columns, profileExamIds), needsHint)}
     ${sectionHtml("cost", columns, costRows(budgetUsd), budgetHint)}
+    ${hasProgram ? sectionHtml("program", columns, programRows()) : ""}
     ${sectionHtml("university", columns, universityRows())}
     <p class="compare-reviewed__note">${escapeHtml(label("note"))}</p>
   </div>`;

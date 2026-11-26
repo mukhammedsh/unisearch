@@ -9,6 +9,7 @@ All notable changes to UniSearch are documented here.
 - Export reviewed university comparisons to PDF with the selected programs, deadlines, requirements, costs, aid, and official sources.
 
 ### Changed
+- Lead reviewed university comparisons with deadlines, actionable requirement checklist notes (including missing section-score links to the profile instead of a percentage-match row), and costs, adding an inline program picker action in dependent cells and showing route, intake cycle, and selected program in the column header and sticky bar.
 - Preserve the active catalog search, filters, and scroll position when returning via the university cover back button instead of resetting to the top of the catalog.
 - Mount cached university pages directly inside the route transition without flashing the loading skeleton on repeat visits.
 - Clarify optional English-test recommendations (`minimum` vs `recommended`), shorten the Russian `IELTS` label to `IELTS Academic`, and show met checkmarks or below-minimum warnings when an English score is already in the profile.
