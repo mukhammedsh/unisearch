@@ -699,6 +699,10 @@
 }
 
 @container catalog-toolbar (max-width: 340px) {
+  .u-section-meta {
+    --u-toolbar-height: 36px;
+  }
+
   .u-section-actions {
     gap: var(--space-1);
   }

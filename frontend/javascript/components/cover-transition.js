@@ -67,7 +67,7 @@ const ACTIVE_TRANSITION_TIMEOUT_MS = 500;
  * @param {Promise<unknown> | null | undefined} finishedPromise
  */
 export function registerActiveCoverTransition(finishedPromise) {
-  if (!finishedPromise) return;
+  if (finishedPromise == null) return;
   let timer = 0;
   const guarded = Promise.race([
     Promise.resolve(finishedPromise).catch(() => {}),
@@ -90,7 +90,7 @@ export function isCoverTransitionActive() {
 
 /** @returns {Promise<void>} */
 export function waitForCoverTransition() {
-  return activeCoverTransitionPromise || Promise.resolve();
+  return activeCoverTransitionPromise ?? Promise.resolve();
 }
 
 /**

@@ -43,11 +43,11 @@ export function initProfileDatePicker(page) {
     if (dialog.open) dialog.close();
     dialog.classList.remove("is-closing");
   };
-  const choose = (value) => { input.value = value; input.dispatchEvent(new Event("input", { bubbles: true })); input.dispatchEvent(new Event("change", { bubbles: true })); closeCalendar(); };
+  const choose = (value) => { input.value = value; input.dispatchEvent(new Event("input", { bubbles: true })); input.dispatchEvent(new Event("change", { bubbles: true })); void closeCalendar(); };
   dialog.addEventListener("close", () => trigger?.focus());
   dialog.addEventListener("keydown", (event) => { if (event.key === "Escape") event.stopPropagation(); });
-  dialog.addEventListener("cancel", (event) => { event.preventDefault(); closeCalendar(); });
-  dialog.addEventListener("click", (event) => { if (event.target === dialog) closeCalendar(); });
+  dialog.addEventListener("cancel", (event) => { event.preventDefault(); void closeCalendar(); });
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) void closeCalendar(); });
   const enhance = () => page.querySelectorAll('input[type="date"]:not([data-calendar-ready])').forEach((field) => {
     field.dataset.calendarReady = "true";
     const button = document.createElement("button");

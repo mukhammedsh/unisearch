@@ -27,6 +27,8 @@ export function pdfDeadlineItems(resolved) {
     }));
 }
 
+const latestCheckedDate = (dates) => dates.filter(Boolean).sort((a, b) => a.localeCompare(b)).at(-1);
+
 function officialSources(resolved, values) {
   if (!resolved) return [];
   const { annual_total, tuition } = resolved.selected_costs || {};
@@ -45,11 +47,10 @@ function officialSources(resolved, values) {
   for (const source of resolved.sources || []) {
     const url = safeUrl(source.url);
     if (url && (sourceIds.has(source.id) || sources.has(url))) {
-      const dates = [source.checked_at, ...facts.filter((fact) => fact.source_ids?.includes(source.id)).map((fact) => fact.checked_at)];
-      const checked = dates.filter(Boolean).sort().at(-1);
+      const checked = latestCheckedDate([source.checked_at, ...facts.filter((fact) => fact.source_ids?.includes(source.id)).map((fact) => fact.checked_at)]);
       const previous = sources.get(url);
       sources.set(url, { url, title: previous?.title || trFactSource(source.title) || new URL(url).hostname,
-        checked: [previous?.checked, checked].filter(Boolean).sort().at(-1) });
+        checked: latestCheckedDate([previous?.checked, checked]) });
     }
   }
   return [...sources.values()];
