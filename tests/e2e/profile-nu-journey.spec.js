@@ -38,7 +38,8 @@ test("an empty profile keeps advanced evidence fields hidden until their type is
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await page.locator(".profile-admission-evidence > summary").click();
+  await expect(page.locator("#languageEvidenceTitle")).toBeVisible();
+  await expect(page.locator("#institutionalEvidenceTitle")).toBeVisible();
   await expect(page.locator("#institutionEvidenceKind")).toHaveValue("");
   await expect(page.locator("[data-institution-evidence-kind='gpa']").first()).toBeHidden();
   await expect(page.locator("[data-institution-evidence-kind='enrollment']").first()).toBeHidden();

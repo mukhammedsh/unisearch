@@ -1950,7 +1950,6 @@ cost_item_housing_and_food: Тұру және тамақтану
 cost_item_student_fees_allowance: Студенттік алымдарға арналған шығыстар
 cost_item_books_and_supplies_allowance: Кітаптар мен материалдарға арналған шығыстар
 cost_item_personal_expenses_allowance: Жеке шығындар
-profile.evidence.title: Қосымша мәліметтерді қосу
 profile.evidence.description: Университет беті сұраса ғана қосыңыз. Өз сөзіңізбен берілген; жазбалар тексерілмейді.
 profile.evidence.test_date: Күні (міндетті емес)
 profile.evidence.institution_title: Көрсетілген оқу орнындағы оқу

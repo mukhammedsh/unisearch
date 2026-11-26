@@ -1,6 +1,5 @@
 import { escapeHtml, escapeHtmlAttr, initCustomSelect, showToast } from "../../utils.js";
 import { t } from "../../i18n.js";
-import { heroIcon } from "../../icons.js";
 
 // Only evidence that a reviewed assessment check reads is collected: the MIT Course 6-9 and MITx credential checks.
 const INSTITUTIONS = [
@@ -108,9 +107,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   // The previous render's custom selects hold window listeners; release them before the markup is replaced.
   (container._evidenceSelectCleanups || []).forEach((cleanup) => cleanup?.());
   container.innerHTML = `
-    <details class="profile-admission-evidence">
-      <summary><span data-i18n="profile.evidence.title">Add details for specific universities</span>${heroIcon("chevron-down", "ui-icon ui-icon--16")}</summary>
-      <div class="profile-admission-evidence__body">
+    <div class="profile-admission-evidence">
         <p class="profile-hint" data-i18n="profile.evidence.description">Add only if a university page asks. Self-reported; official records are not verified.</p>
         <section class="profile-admission-evidence-group" aria-labelledby="languageEvidenceTitle">
           <div class="profile-subsection-head">
@@ -244,8 +241,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
           <button id="addInstitutionEvidence" class="profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_institution">Add institution evidence</button>
           <div id="institutionalEvidenceList" class="profile-exam-list"></div>
         </section>
-      </div>
-    </details>
+    </div>
   `;
 
   container._evidenceSelectCleanups = EVIDENCE_SELECT_IDS.map((id) => initCustomSelect(id));

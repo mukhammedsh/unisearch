@@ -1950,7 +1950,6 @@ cost_item_housing_and_food: Проживание и питание
 cost_item_student_fees_allowance: Расходы на студенческие сборы
 cost_item_books_and_supplies_allowance: Расходы на книги и материалы
 cost_item_personal_expenses_allowance: Личные расходы
-profile.evidence.title: Указать дополнительные сведения
 profile.evidence.description: Добавляйте, только если просит страница университета. Со слов пользователя; записи не проверяются.
 profile.evidence.test_date: Дата (необязательно)
 profile.evidence.institution_title: Сведения для конкретного вуза

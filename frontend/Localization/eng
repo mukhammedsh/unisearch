@@ -1950,7 +1950,6 @@ cost_item_housing_and_food: Housing and food
 cost_item_student_fees_allowance: Student fees allowance
 cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
-profile.evidence.title: Add additional details
 profile.evidence.description: Add only if a university page asks. Self-reported; official records are not verified.
 profile.evidence.test_date: Test date (optional)
 profile.evidence.institution_title: Studies at a listed university
