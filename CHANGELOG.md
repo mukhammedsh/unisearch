@@ -29,6 +29,7 @@ All notable changes to UniSearch are documented here.
 - Fix profile field grouping, spacing, and alignment across additional details, yearly budget input, expanded exam breakdowns (such as SAT), language exam section scores (such as IELTS), the profile back button, and the mobile action bar; remove duplicate evidence list containers and the redundant print-style `!important` override.
 - Collapse identical rounded converted price-range endpoints (such as `≈ $35,000 – $35,000`), link all missing exam checklist prompts to the profile, show the shared route name in the comparison route row, keep the official fee-status page linked after choosing Home or Overseas, and clarify the Russian "Both" fee-status toggle label.
 - Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
+- Remove inconsistent drop shadows on flat-card subtle buttons and restore transparent ghost styling for the "Browse all official options" button beside program filter chips.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 

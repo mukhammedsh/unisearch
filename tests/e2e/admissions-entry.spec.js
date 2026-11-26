@@ -160,6 +160,20 @@ test("profile suggestions are removable and do not overwrite intentional public 
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await expect(page.locator('[data-remove-suggestion="major"]')).toContainText("Computer Science");
   await expect(page.locator('[data-remove-suggestion="level"]')).toBeVisible();
+  const suggestionStyles = await page.evaluate(() => {
+    const chip = getComputedStyle(document.querySelector('[data-remove-suggestion="major"]'));
+    const showAll = getComputedStyle(document.querySelector("[data-show-all-programs]"));
+    return {
+      chipBg: chip.backgroundColor,
+      chipShadow: chip.boxShadow,
+      showAllBg: showAll.backgroundColor,
+      showAllShadow: showAll.boxShadow,
+    };
+  });
+  expect(suggestionStyles.chipBg).not.toBe("rgba(0, 0, 0, 0)");
+  expect(suggestionStyles.chipShadow).toBe("none");
+  expect(suggestionStyles.showAllBg).toBe("rgba(0, 0, 0, 0)");
+  expect(suggestionStyles.showAllShadow).toBe("none");
   await expect(page.locator('[data-study-option="imperial-option-computing-meng"]')).toBeVisible();
   await expect(page.locator('[data-study-option="imperial-option-computing-beng"]')).toBeVisible();
   const filteredCount = await page.locator("#admissionsProgramCount").innerText();

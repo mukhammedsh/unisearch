@@ -91,7 +91,7 @@
   --control-badge-bg: var(--surface-soft);
   --control-badge-hover-bg: var(--surface-solid);
   --control-bg: var(--surface-soft);
-  --control-shadow: var(--shadow-micro);
+  --control-shadow: none;
   --tour-skip-bg: var(--surface-soft);
   --card: var(--surface-solid);
   --text: #111827;
