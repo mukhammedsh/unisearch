@@ -8,8 +8,10 @@ All notable changes to UniSearch are documented here.
 - Keep desktop mouse tooltips transient on hover and keyboard focus without press states or click-to-pin behavior, let mouse clicks on university card price, rank, and status tooltips open the university normally, and preserve tap-to-open tooltips on touch and stylus screens.
 
 ### Fixed
+- Hide the redundant UniFit toolbar profile link on narrow screens once a profile is filled, while keeping the setup link visible for empty profiles.
 - Align single-line university card prices flush with the details link at the bottom of mobile cards while preserving the touch tap area.
 - Open UniSearch in Kazakh on a visitor's first visit from Kazakhstan while honoring any saved language choice or `?lang=` link parameter, negotiating against the full ordered browser language list elsewhere, and keeping automatic defaults out of persistent storage until the visitor switches languages manually.
+- Load the cached UniFit interest-matching model locally before contacting Hugging Face so startup does not stall on network or SSL checks when the model is already present.
 
 ## 10.10.0 (2026-11-26) - Comparison PDF export, spotlight tour, profile calendar, and mobile refinements
 
