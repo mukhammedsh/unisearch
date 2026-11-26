@@ -287,7 +287,7 @@ export function inspectMarkupFile(content, relPath) {
   return { counts, violations };
 }
 
-export function runUiPrimitivesAudit(files = [...listFiles(frontendDir, ".html"), ...listFiles(jsDir, ".js")].sort()) {
+export function runUiPrimitivesAudit(files = [...listFiles(frontendDir, ".html"), ...listFiles(jsDir, ".js")].sort((left, right) => (left < right ? -1 : left > right ? 1 : 0))) {
   const totals = {
     inputs: { total: 0, adopted: 0 },
     switches: { total: 0, adopted: 0 },
