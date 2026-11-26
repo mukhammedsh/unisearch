@@ -387,14 +387,18 @@
 
         <!-- Summary: how the current answers are used, before saving -->
         <aside class="profile-summary" aria-labelledby="profileSummaryTitle">
-          <h2 class="profile-summary__title" id="profileSummaryTitle" data-i18n="profile.ux2.summary.title">How UniFit will use your profile</h2>
-          <p class="profile-summary__sentence" id="profileSummarySentence" role="status" aria-live="polite" aria-atomic="true"></p>
-          <ul class="profile-summary__list" id="profileSummaryList"></ul>
-          <p class="profile-summary__note" data-i18n="profile.ux2.summary.disclaimer">UniFit orders universities for you. It does not predict admission or funding.</p>
-          <a class="profile-summary__link" id="profileUnifitGuideLink" href="guide.html#guide-unifit" target="_blank" rel="noopener">
-            <span data-i18n="profile.ux2.summary.guide_link">How UniFit works</span>
-            <span data-heroicon="arrow-top-right-on-square" data-icon-size="16"></span>
-          </a>
+          <details>
+            <summary class="profile-summary__title" id="profileSummaryTitle" data-i18n="profile.ux2.summary.title">How your profile affects matching</summary>
+            <div class="profile-summary__content">
+              <p class="profile-summary__sentence" id="profileSummarySentence" role="status" aria-live="polite" aria-atomic="true"></p>
+              <ul class="profile-summary__list" id="profileSummaryList"></ul>
+              <p class="profile-summary__note" data-i18n="profile.ux2.summary.disclaimer">UniFit orders universities for you. It does not predict admission or funding.</p>
+              <a class="profile-summary__link" id="profileUnifitGuideLink" href="guide.html#guide-unifit" target="_blank" rel="noopener">
+                <span data-i18n="profile.ux2.summary.guide_link">How UniFit works</span>
+                <span data-heroicon="arrow-top-right-on-square" data-icon-size="16"></span>
+              </a>
+            </div>
+          </details>
         </aside>
       </div>
 

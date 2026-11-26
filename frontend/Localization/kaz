@@ -3149,7 +3149,7 @@ profile.ux2.nav.empty: жауап әлі жоқ
 profile.ux2.action.save_show: Сақтап, сәйкес университеттерді көрсету
 profile.ux2.evidence.language_kind: Ағылшын тілін қалай білесіз
 profile.ux2.evidence.institution_kind: Нені қосқыңыз келеді?
-profile.ux2.summary.title: UniFit профильіңізді қалай пайдаланады
+profile.ux2.summary.title: Профиль таңдауға қалай әсер етеді
 profile.ux2.summary.sentence: UniFit жауаптарыңыздың {total} тобынан {used} тобын пайдаланады.
 profile.ux2.summary.sentence_none: Сіз әлі ештеңеге жауап бермедіңіз, сондықтан UniFit ескеретін ештеңе жоқ.
 profile.ux2.summary.disclaimer: UniFit университеттерді сізге арнап реттейді. Ол оқуға түсуді немесе қаржыландыруды болжамайды.

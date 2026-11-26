@@ -3149,7 +3149,7 @@ profile.ux2.nav.empty: no answers yet
 profile.ux2.action.save_show: Save and show matches
 profile.ux2.evidence.language_kind: How you know English
 profile.ux2.evidence.institution_kind: What do you want to add?
-profile.ux2.summary.title: How UniFit will use your profile
+profile.ux2.summary.title: How your profile affects matching
 profile.ux2.summary.sentence: UniFit will use {used} of {total} groups of your answers.
 profile.ux2.summary.sentence_none: You have not answered anything yet, so UniFit has nothing to personalise.
 profile.ux2.summary.disclaimer: UniFit orders universities for you. It does not predict admission or funding.

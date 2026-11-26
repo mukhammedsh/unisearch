@@ -13,8 +13,15 @@ test.describe("Profile page icons and navigation", () => {
 
     // Verify every summary row carries one state icon
     const summaryIcons = page.locator(".profile-summary__row .profile-summary__icon svg");
+    const summary = page.locator("#profileSummaryTitle");
+    await expect(summaryIcons).toHaveCount(5);
+    await expect(summaryIcons.first()).toBeHidden();
+    await summary.focus();
+    await page.keyboard.press("Enter");
     await expect(summaryIcons.first()).toBeVisible();
     expect(await summaryIcons.count()).toBe(5);
+    await page.keyboard.press("Enter");
+    await expect(summaryIcons.first()).toBeHidden();
 
     // Switch to scores tab to verify compact GPA block (tooltip sits by the hint, not the title)
     await page.click('[data-profile-tab="scores"]');

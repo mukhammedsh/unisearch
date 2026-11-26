@@ -367,6 +367,14 @@ body[data-page="profile"] {
   font-size: var(--text-md);
   font-weight: var(--font-weight-semibold);
   line-height: var(--leading-tight);
+  cursor: pointer;
+}
+
+.profile-summary__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
 }
 
 .profile-summary__sentence {

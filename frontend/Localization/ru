@@ -3149,7 +3149,7 @@ profile.ux2.nav.empty: ответов пока нет
 profile.ux2.action.save_show: Сохранить и показать подборку
 profile.ux2.evidence.language_kind: Как вы знаете английский
 profile.ux2.evidence.institution_kind: Что вы хотите добавить?
-profile.ux2.summary.title: Как UniFit использует ваш профиль
+profile.ux2.summary.title: Как профиль влияет на подбор
 profile.ux2.summary.sentence: UniFit использует группы ваших ответов: {used} из {total}.
 profile.ux2.summary.sentence_none: Вы пока ни на что не ответили, поэтому UniFit нечего учитывать.
 profile.ux2.summary.disclaimer: UniFit упорядочивает университеты для вас. Он не предсказывает поступление или финансирование.
