@@ -18,8 +18,8 @@ const HIDDEN_CLASS = "vt-uni-cover-hidden";
 const MORPH_TARGET_CLASS = "has-cover-morph";
 const UNIVERSITIES_SCROLL_KEY = "unisearch_universities_scroll";
 const MIN_VISIBLE_PX = 24;
-const DEFAULT_COVER_DURATION_MS = 420;
-const DEFAULT_COVER_EASING = "cubic-bezier(0.4, 0, 0.2, 1)";
+const DEFAULT_COVER_DURATION_MS = 240;
+const DEFAULT_COVER_EASING = "cubic-bezier(0.2, 0, 0, 1)";
 
 /** @type {{ image: HTMLImageElement, src: string, href: string } | null} */
 let pendingSource = null;
@@ -59,7 +59,7 @@ let activeCoverTransitionPromise = null;
 /** @type {{ stage: HTMLElement, animations: Animation[], play: () => void, dispose: () => void } | null} */
 let activeMorph = null;
 
-const ACTIVE_TRANSITION_TIMEOUT_MS = 700;
+const ACTIVE_TRANSITION_TIMEOUT_MS = 500;
 
 /**
  * Registers an in-flight cover View Transition so async route hydration and photo swaps wait
@@ -161,7 +161,7 @@ function readCornerRadii(element) {
 
 function readCoverMotionTiming() {
   const rootStyle = getComputedStyle(document.documentElement);
-  const rawDuration = rootStyle.getPropertyValue("--motion-cover").trim();
+  const rawDuration = rootStyle.getPropertyValue("--motion-medium").trim();
   let duration = DEFAULT_COVER_DURATION_MS;
   if (rawDuration.endsWith("ms")) {
     const parsed = Number.parseFloat(rawDuration);
@@ -170,7 +170,7 @@ function readCoverMotionTiming() {
     const parsed = Number.parseFloat(rawDuration) * 1000;
     if (Number.isFinite(parsed) && parsed > 0) duration = parsed;
   }
-  const easing = rootStyle.getPropertyValue("--motion-ease-cover").trim() || DEFAULT_COVER_EASING;
+  const easing = rootStyle.getPropertyValue("--motion-ease-standard").trim() || DEFAULT_COVER_EASING;
   return { duration, easing };
 }
 

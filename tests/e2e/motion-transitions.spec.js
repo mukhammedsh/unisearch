@@ -99,7 +99,7 @@ test("opening a university from its card carries the photo into the cover", asyn
   await card.locator(".uni-card-link-overlay").click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
-  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(180);
 
   const cover = page.locator("#detailCover");
   await expect(cover.locator(".d-gallery-preview img")).toBeVisible();
@@ -192,7 +192,7 @@ test("returning via the back button morphs the cover back into its catalog card 
   await page.locator("#detailBackBtn").click();
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
-  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(180);
   await expect(page.locator(".vt-uni-cover")).toHaveCount(0);
   await expect(page.locator(".vt-uni-cover-stage")).toHaveCount(0);
   await expect(page.locator(".vt-uni-cover-hidden")).toHaveCount(0);
@@ -214,7 +214,7 @@ test("returning via browser back morphs the cover back into its catalog card", a
   await page.goBack();
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
-  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(180);
   await expect(page.locator(".vt-uni-cover")).toHaveCount(0);
 });
 
@@ -283,7 +283,7 @@ test("reopening a cached university morphs directly into the mounted page withou
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
   await expect.poll(() => page.evaluate(() => window.__vtNames || [])).toContain("::view-transition-group(uni-cover)");
-  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(300);
+  await expect.poll(() => page.evaluate(() => window.__vtDurations?.[0] ?? 0)).toBeGreaterThanOrEqual(180);
   expect(await page.evaluate(() => window.__vtCardStates?.[0])).toEqual({ opacity: "1", animationName: "none" });
   expect(await page.evaluate(() => {
     window.__loadingObserver?.disconnect();
