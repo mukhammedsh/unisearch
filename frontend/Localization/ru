@@ -3126,7 +3126,7 @@ profile.ux2.section.scores.title: Оценки и экзамены
 profile.ux2.section.scores.desc: Сравниваются с минимумами, которые публикует каждый университет. Это не шанс поступления.
 profile.ux2.section.languages.title: Языки
 profile.ux2.section.languages.desc: Сравниваются с опубликованными языковыми требованиями; родной язык или уровень CEFR не заменяют требуемый тест.
-profile.ux2.section.specific.title: Для отдельных университетов
+profile.ux2.section.specific.title: Дополнительные сведения
 profile.ux2.section.specific.desc: Необязательно. Эти сведения проверяют несколько проверенных университетов для отдельных программ.
 profile.ux2.hint.study_level: Показывает только университеты с этим уровнем и сравнивает для него цены и требования.
 profile.ux2.hint.major: Университеты без подходящей программы стоят ниже.

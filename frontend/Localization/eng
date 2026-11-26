@@ -3126,7 +3126,7 @@ profile.ux2.section.scores.title: Grades and exams
 profile.ux2.section.scores.desc: Compared with the minimums each university publishes. This is not an admission chance.
 profile.ux2.section.languages.title: Languages
 profile.ux2.section.languages.desc: Compared with published language requirements; a native language or CEFR level does not replace a required test.
-profile.ux2.section.specific.title: For specific universities
+profile.ux2.section.specific.title: Additional details
 profile.ux2.section.specific.desc: Optional. A few reviewed universities check these details for particular programs.
 profile.ux2.hint.study_level: Lists only universities that offer this level and compares its prices and requirements.
 profile.ux2.hint.major: Universities without a matching program rank lower.

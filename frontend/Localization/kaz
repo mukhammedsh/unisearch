@@ -3126,7 +3126,7 @@ profile.ux2.section.scores.title: Бағалар мен емтихандар
 profile.ux2.section.scores.desc: Әр университет жариялаған ең төменгі талаптармен салыстырылады. Бұл оқуға түсу мүмкіндігі емес.
 profile.ux2.section.languages.title: Тілдер
 profile.ux2.section.languages.desc: Жарияланған тіл талаптарымен салыстырылады; ана тілі немесе CEFR деңгейі талап етілетін тестті алмастырмайды.
-profile.ux2.section.specific.title: Жекелеген университеттер үшін
+profile.ux2.section.specific.title: Қосымша мәліметтер
 profile.ux2.section.specific.desc: Міндетті емес. Бұл мәліметтерді бірнеше тексерілген университет жекелеген бағдарламалар үшін қарайды.
 profile.ux2.hint.study_level: Тек осы деңгейі бар университеттерді көрсетеді және соған баға мен талаптарды салыстырады.
 profile.ux2.hint.major: Сәйкес бағдарламасы жоқ университеттер төменірек тұрады.

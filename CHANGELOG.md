@@ -12,6 +12,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Add regression tests for the static snapshot builder and client filtering/loading/service-worker snapshot caching (`backend/tests/test_static_snapshot_builder.py`, `tests/unit/static-snapshot.test.mjs`, `tests/unit/service-worker.test.mjs`).
 
 ### Changed
+- Rename the profile section for institution-specific evidence to "Additional details".
 - Narrow the profile window and its form on wide screens.
 - Replace the profile's UniFit summary with a guide link beneath the section navigation.
 - Improve the clarity of notification status icons.
