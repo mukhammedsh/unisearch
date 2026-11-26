@@ -78,7 +78,7 @@
   }
 }
 
-@container catalog-toolbar (max-width: 720px) {
+@container catalog-toolbar (max-width: 820px) {
   .u-section-meta {
     gap: var(--space-2) var(--space-3);
   }
@@ -92,7 +92,7 @@
   }
 }
 
-@container catalog-toolbar (max-width: 580px) {
+@container catalog-toolbar (max-width: 680px) {
   .u-compare-mode-btn #compareModeLabel {
     display: none;
   }
@@ -103,11 +103,20 @@
   }
 }
 
-@container catalog-toolbar (max-width: 354px) {
+@container catalog-toolbar (max-width: 560px) {
+  .u-section-meta {
+    gap: var(--space-2);
+  }
+
   .u-section-actions {
     width: 100%;
     margin-left: 0;
+    flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  .u-mobile-filter-btn {
+    margin-inline-end: auto;
   }
 }
 
@@ -624,12 +633,7 @@
     font-size: var(--text-sm);
   }
 
-  .u-section-meta {
-    gap: var(--space-2);
-  }
-
   .u-section-actions {
-    flex-wrap: wrap;
     gap: var(--space-1-5);
   }
 

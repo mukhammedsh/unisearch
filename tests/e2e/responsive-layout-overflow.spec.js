@@ -81,9 +81,18 @@ test.describe("Responsive Layout and Overflow Verification", () => {
 
   test("adjusts sidebar and mobile filter button based on mobile viewport", async ({ page }) => {
     // Set mobile viewport BEFORE loading the page
-    await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto("/index.html");
-    await page.waitForSelector(".uni-card");
+    await page.addInitScript(() => {
+      localStorage.setItem("unisearch_ui_language_v1", "rus");
+      localStorage.setItem("unisearch_recent_university_ids_v1", JSON.stringify([
+        "mit-usa-cambridge",
+        "imperial-college-london-uk",
+        "stanford-university-usa-ca",
+        "harvard-usa-cambridge",
+      ]));
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/index.html?lang=rus");
+    await page.waitForSelector(".uni-card:not(.is-skeleton)");
 
     const sidebar = page.locator("#uSidebar");
     const mobileFilterToggle = page.locator("#mobileFilterToggle");
@@ -93,6 +102,28 @@ test.describe("Responsive Layout and Overflow Verification", () => {
 
     // The filter sidebar is hidden by default
     await expect(sidebar).not.toBeVisible();
+
+    // On narrow viewports where the toolbar wraps onto two rows, the actions row
+    // must span the full toolbar width instead of floating right-aligned under the count.
+    const toolbarLayout = await page.evaluate(() => {
+      const meta = document.querySelector(".u-section-meta").getBoundingClientRect();
+      const found = document.getElementById("uFoundSummary").getBoundingClientRect();
+      const actions = document.querySelector(".u-section-actions").getBoundingClientRect();
+      const recent = document.getElementById("recentlyViewedBtn").getBoundingClientRect();
+      const filter = document.getElementById("mobileFilterToggle").getBoundingClientRect();
+      const view = document.getElementById("viewToggles").getBoundingClientRect();
+      const compare = document.getElementById("compareModeBtn").getBoundingClientRect();
+      return { meta, found, actions, recent, filter, view, compare };
+    });
+
+    expect(Math.abs(toolbarLayout.found.left - toolbarLayout.meta.left)).toBeLessThanOrEqual(2);
+    expect(Math.abs(toolbarLayout.actions.left - toolbarLayout.meta.left)).toBeLessThanOrEqual(2);
+    expect(Math.abs(toolbarLayout.actions.right - toolbarLayout.meta.right)).toBeLessThanOrEqual(2);
+    expect(toolbarLayout.actions.top).toBeGreaterThanOrEqual(toolbarLayout.found.bottom - 1);
+    expect(Math.abs(toolbarLayout.recent.top - toolbarLayout.filter.top)).toBeLessThanOrEqual(2);
+    expect(Math.abs(toolbarLayout.filter.top - toolbarLayout.view.top)).toBeLessThanOrEqual(2);
+    expect(Math.abs(toolbarLayout.view.top - toolbarLayout.compare.top)).toBeLessThanOrEqual(2);
+    expect(toolbarLayout.view.left).toBeGreaterThan(toolbarLayout.filter.right + 8);
   });
 
   test("keeps university card width <= 550px on desktop when single university is returned", async ({ page }) => {
