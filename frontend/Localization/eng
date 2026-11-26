@@ -3389,3 +3389,11 @@ universities.compare.swap_university: Change university
 universities.compare.swap_title: Replace {name}
 universities.compare.swap_search: Search university...
 universities.compare.swap_empty: No matching universities in this comparison group.
+
+profile.calendar.open: Open calendar
+profile.calendar.previous: Previous month
+profile.calendar.next: Next month
+profile.calendar.month: Month
+profile.calendar.year: Year
+profile.calendar.clear: Clear
+profile.calendar.today: Today

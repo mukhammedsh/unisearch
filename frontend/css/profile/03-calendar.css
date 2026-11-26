@@ -1,0 +1,20 @@
+.profile-field:has(> .profile-calendar-trigger) { position: relative; }
+.profile-field > input[type="date"] { padding-inline-end: var(--space-10); }
+.profile-field > input[type="date"]::-webkit-calendar-picker-indicator { display: none; }
+.profile-calendar-trigger { position: absolute; inset-inline-end: var(--space-2); bottom: var(--space-2); display: grid; place-items: center; width: var(--space-8); height: var(--space-8); padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
+.profile-calendar-trigger:hover, .profile-calendar button:hover { background: var(--interaction-hover-surface); color: var(--interaction-hover-text); }
+.profile-calendar { width: min(320px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: var(--space-4); border: 0; border-radius: var(--radius-lg); background: var(--surface-solid); color: var(--text); box-shadow: var(--shadow-md); }
+.profile-calendar::backdrop { background: var(--backdrop); }
+.profile-calendar__header { display: flex; align-items: center; gap: var(--space-1); }
+.profile-calendar__header select { flex: 1; min-width: 0; }
+.profile-calendar__header input { width: 5em; }
+.profile-calendar :is(button, select, input) { min-height: 36px; border: 0; border-radius: var(--radius-sm); background: var(--surface-soft); color: var(--text); font: inherit; }
+.profile-calendar button { cursor: pointer; }
+.profile-calendar :is(button, select, input):focus-visible, .profile-calendar-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.profile-calendar__header button { width: 36px; font-size: var(--text-xl); }
+.profile-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-1); margin-block: var(--space-3); text-align: center; }
+.profile-calendar__weekday { align-self: center; color: var(--text-muted); font-size: var(--text-xs); }
+.profile-calendar__grid button { background: transparent; }
+.profile-calendar__grid button[aria-pressed="true"] { background: var(--accent); color: var(--text-inverse); }
+.profile-calendar__footer { display: flex; justify-content: space-between; }
+.profile-calendar__footer button { padding-inline: var(--space-3); }

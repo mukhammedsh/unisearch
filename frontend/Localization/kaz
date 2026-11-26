@@ -3389,3 +3389,11 @@ universities.compare.swap_university: ЖОО-ны ауыстыру
 universities.compare.swap_title: ЖОО-ны ауыстыру: {name}
 universities.compare.swap_search: Университетті іздеу...
 universities.compare.swap_empty: Бұл салыстыру тобында сәйкес ЖОО табылмады.
+
+profile.calendar.open: Күнтізбені ашу
+profile.calendar.previous: Алдыңғы ай
+profile.calendar.next: Келесі ай
+profile.calendar.month: Ай
+profile.calendar.year: Жыл
+profile.calendar.clear: Тазалау
+profile.calendar.today: Бүгін

@@ -3389,3 +3389,11 @@ universities.compare.swap_university: Заменить вуз
 universities.compare.swap_title: Заменить вуз: {name}
 universities.compare.swap_search: Поиск университета...
 universities.compare.swap_empty: В этой группе сравнения подходящих вузов не найдено.
+
+profile.calendar.open: Открыть календарь
+profile.calendar.previous: Предыдущий месяц
+profile.calendar.next: Следующий месяц
+profile.calendar.month: Месяц
+profile.calendar.year: Год
+profile.calendar.clear: Очистить
+profile.calendar.today: Сегодня
