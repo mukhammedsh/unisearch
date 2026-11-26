@@ -14,6 +14,7 @@ body[data-page="profile"] {
 }
 
 .profile-page {
+  position: relative;
   flex: 1 0 auto;
   width: 100%;
   max-width: 1000px;
@@ -21,6 +22,7 @@ body[data-page="profile"] {
   padding: var(--space-6);
   display: flex;
   flex-direction: column;
+  gap: var(--space-3);
   justify-content: center;
   box-sizing: border-box;
 }
@@ -40,7 +42,7 @@ body[data-page="profile"] {
   isolation: isolate;
   width: 100%;
   box-sizing: border-box;
-  height: calc(100dvh - var(--nav-height) - var(--space-12));
+  height: calc(100dvh - var(--nav-height) - var(--space-12) - 40px - var(--space-3));
   min-height: 0;
 }
 
@@ -69,6 +71,18 @@ body[data-page="profile"] {
 .profile-back-icon:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+}
+
+@media (min-width: 1120px) {
+  .profile-back-icon {
+    position: absolute;
+    right: calc(100% - var(--space-3));
+    top: var(--space-6);
+  }
+
+  .profile-shell {
+    height: calc(100dvh - var(--nav-height) - var(--space-12));
+  }
 }
 
 @media (hover: hover) {
@@ -1637,7 +1651,7 @@ html:has(body[data-page="profile"]) {
     padding: var(--space-5) var(--space-2) 0 var(--space-4);
     border-radius: var(--radius-lg);
     gap: var(--space-5);
-    height: calc(100dvh - var(--nav-height) - var(--space-6));
+    height: calc(100dvh - var(--nav-height) - var(--space-6) - 40px - var(--space-3));
   }
 
   .profile-workspace-layout {
