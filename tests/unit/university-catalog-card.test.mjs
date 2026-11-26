@@ -174,7 +174,7 @@ test("reviewed UniFit indicators describe only the saved route and measurable ch
   assert.equal(indicators[0].value, "50%");
   assert.match(indicators[0].detail, /1 of 2/);
   assert.equal(indicators[0].tone, "warning");
-  assert.match(indicators[0].detail, /Other admission conditions/i);
+  assert.match(indicators[0].detail, /other requirements/i);
   assert.match(indicators[1].detail, /^\$40,000 – \$50,000 a year, \$10,000 more than your budget\./);
   assert.match(indicators[1].detail, /Financial aid is not deducted/);
   assert.match(indicators[1].detail, /Tuition only: living costs are extra/);
@@ -204,7 +204,7 @@ test("a saved program subject mismatch does not claim that the catalog lacks the
   }, 20000);
   assert.equal(indicators.length, 1);
   assert.match(indicators[0].label, /Different subject selected/);
-  assert.match(indicators[0].detail, /saved program differs/);
+  assert.match(indicators[0].detail, /saved program differs/i);
   assert.doesNotMatch(indicators[0].label, /not found in this catalog/i);
 });
 
@@ -250,7 +250,7 @@ test("reviewed cards name what to add, how many programs match and which prefere
     ] }, 30000);
   assert.deepEqual(indicators.map(item => item.legend), ["exam_needed", "subject_matched", "vibe"]);
   assert.match(indicators[0].detail, /^To check the requirements, add to your profile: .*SAT.* or .*ACT.*\.$/);
-  assert.match(indicators[1].detail, /^Matching programs: 3\./);
+  assert.match(indicators[1].detail, /^3 matching programs/);
   assert.equal(indicators[2].icon, "heart");
   assert.equal(indicators[2].detail, "Close to your settings: focus.");
 });
@@ -261,12 +261,12 @@ test("a price that depends on fee status or study level asks to narrow scope ins
     budgetAssessment: { status: "unknown_cost", evidence: "fee_status_unknown", basis: "tuition" },
     costQuote: { minUSD: 13000, maxUSD: 63000 } }, 30000);
   assert.equal(check.legend, "budget_check");
-  assert.match(check.detail, /^\$13,000 to \$63,000 a year, depending on your fee status\. Set it on the university page\./);
+  assert.match(check.detail, /^\$13,000–\$63,000\/yr depending on fee status\. Set it on the university page\./);
   const [levelCheck] = reviewedCardIndicators({ finalScore: 0.4,
     budgetAssessment: { status: "unknown_cost", evidence: "scope_unknown", basis: "annual_total" },
     costQuote: { minUSD: 9600, maxUSD: 33600 } }, 30000);
   assert.equal(levelCheck.legend, "budget_check");
-  assert.match(levelCheck.detail, /^\$9,600 – \$33,600 a year depending on study level\. Select a study level to compare against your budget\./);
+  assert.match(levelCheck.detail, /^\$9,600 – \$33,600\/yr depending on study level\. Pick a study level to compare\./);
   // Without a price or a fee-status/study-level reason there is still nothing to compare.
   assert.deepEqual(reviewedCardIndicators({ finalScore: 0.4, budgetAssessment: { status: "unknown_cost" } }, 30000), []);
 });

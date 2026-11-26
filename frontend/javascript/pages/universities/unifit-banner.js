@@ -30,7 +30,7 @@ export function createUnifitBannerController({ el, state }) {
         const aiOpt = el.sortSelect.querySelector('option[value="uni_ai"]');
         if (aiOpt) {
             aiOpt.textContent = cleanDecoratedText(
-                tFormat("universities.sort_ai", { fit: aiName("fit") }, `${aiName("fit")}: ${t("common.ai_short", "AI")} Smart Sort`)
+                tFormat("universities.sort_ai", { fit: aiName("fit") }, `${aiName("fit")}: Best for your profile`)
             );
         }
     };

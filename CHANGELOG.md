@@ -22,6 +22,7 @@ All notable changes to UniSearch are documented here.
 - Hide the language-profile link on recommended English tests once a score is entered, shorten its prompt with calm neutral styling when missing, and simplify the manual-requirements note.
 - Remove duplicate test, condition, and tab-intro text on reviewed university Admission, Dates, and Costs tabs while keeping official sources intact, and shorten heavy admissions labels across all three languages.
 - Simplify legacy university Admission cards by hiding empty average-admitted boxes, single-profile count badges, technical category kickers, and filler funding notes.
+- Shorten catalog filter, sort, UniFit preference slider, banner, and card-tooltip copy into plain applicant-friendly wording across English, Russian, and Kazakh.
 
 ### Fixed
 - Fix profile field grouping, spacing, and alignment across additional details, yearly budget input, expanded exam breakdowns (such as SAT), language exam section scores (such as IELTS), the profile back button, and the mobile action bar; remove duplicate evidence list containers and the redundant print-style `!important` override.

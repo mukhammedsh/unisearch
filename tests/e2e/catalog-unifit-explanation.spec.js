@@ -41,7 +41,7 @@ test("an empty profile says the ranking is generic and links to the profile", as
   await page.goto("/index.html?sort=uni_ai");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
 
-  await expect(page.locator("#unifitBannerTitle")).toContainText("generic");
+  await expect(page.locator("#unifitBannerTitle")).toContainText(/generic/i);
   await expect(page.locator("#unifitBannerEdit")).toHaveText("Set up profile");
 });
 

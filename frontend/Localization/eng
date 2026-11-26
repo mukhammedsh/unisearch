@@ -556,11 +556,11 @@ universities.tradeoff.location.left: City
 universities.tradeoff.location.right: Outside City
 universities.tradeoff.balanced: Doesn't matter
 universities.help.open: Show explanation
-universities.help.tradeoff.focus: Left: fewer research publications per student. Right: research-intensive universities. In the middle this is not used.
-universities.help.tradeoff.atmosphere: Left: a larger share of applicants is admitted. Right: more applicants per place, from the official first-year admission rate. In the middle this is not used.
-universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals. In the middle this is not used.
-universities.help.tradeoff.location: Left: large cities of 1.5 million people or more. Right: towns under 50,000. In the middle this is not used.
-universities.sort_ai: {fit}: AI Smart Sort
+universities.help.tradeoff.focus: Left: career-focused study. Right: research-heavy universities. Centered: ignored.
+universities.help.tradeoff.atmosphere: Left: easier to get in. Right: more selective universities. Centered: ignored.
+universities.help.tradeoff.finance: Left: lower cost and grants. Right: prestige even at higher cost. Centered: ignored.
+universities.help.tradeoff.location: Left: big cities (1.5M+). Right: small towns (under 50k). Centered: ignored.
+universities.sort_ai: {fit}: Best for your profile
 universities.sort_relevance: Relevance
 universities.sort_cost_asc: Cost low to high
 universities.sort_cost_desc: Cost high to low
@@ -687,7 +687,6 @@ university.visit_website: Visit Official Website
 
 # Added localization coverage keys
 common.loading: Loading
-common.ai_short: AI
 common.placeholder_unknown: {field} unknown
 common.no_data: No data
 common.na: N/A
@@ -3022,14 +3021,14 @@ university.admissions.catalog.check_next_missing: Expand the check to see what i
 university.admissions.catalog.check_next_unassessed: This check was not assessed automatically. Review the published conditions and source.
 university.admissions.catalog.check_group_count: {count} source rules
 universities.match.subject_missing: Your subject was not found
-universities.match.subject_missing_detail: No matching program was found in our catalog at this study level.
+universities.match.subject_missing_detail: No matching program in our catalog at this level.
 universities.match.subject_matched: Your subject is offered
-universities.match.subject_matched_detail: The catalog includes a program in your chosen subject and study level.
+universities.match.subject_matched_detail: Offers a program in your subject and level.
 universities.match.selected_subject_mismatch: Different subject selected
-universities.match.selected_subject_mismatch_detail: Your saved program differs from the subject in your profile.
+universities.match.selected_subject_mismatch_detail: Saved program differs from your profile subject.
 universities.match.preference_detail: The university matches your study preferences.
 universities.match.score: Minimum requirements match: {percent}%
-universities.match.checks_detail: {met} of {total} checked minimums met. Other admission conditions still need review.
+universities.match.checks_detail: {met} of {total} minimums met. Check other requirements on the university page.
 universities.match.budget_over: Above your budget
 universities.match.budget_within: Within your budget
 universities.match.budget_uncertain: Check the cost
@@ -3168,24 +3167,24 @@ profile.ux2.summary.requirements.cefr: CEFR level
 profile.ux2.summary.requirements.used: Compared with each university's published minimums. A match needs your answers to cover every minimum it publishes.
 profile.ux2.summary.requirements.unused: No minimum requirements match is calculated. Add GPA, exams or languages to compare with published minimums.
 universities.ux2.banner.ranked: Ranked for your profile: {values}
-universities.ux2.banner.generic: The ranking is generic because your profile has no study level, subject or budget.
-universities.ux2.banner.scores_only: Ranked using your exam and language scores. Add a study level, subject or budget to tailor it further.
+universities.ux2.banner.generic: Generic order — add a study level, subject, or budget in your profile.
+universities.ux2.banner.scores_only: Uses your test scores. Add a study level, subject, or budget for better sorting.
 universities.ux2.banner.budget: up to {amount}/yr
 universities.ux2.banner.edit: Edit profile
 universities.ux2.banner.set_up: Set up profile
-universities.ux2.banner.disclaimer: A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.
+universities.ux2.banner.disclaimer: Fit ranking, not an admission prediction. Missing data is never a fail.
 universities.ux2.tip.language_test: language test
-universities.tip.subject_options: Matching programs: {count}. Choose one on the university page to check its requirements.
+universities.tip.subject_options: {count} matching programs — pick one on the university page to check requirements.
 universities.tip.subject_selected: Your chosen program matches your subject.
 universities.tip.preferences_close: Close to your settings: {dimensions}.
 universities.tip.add_to_profile: To check the requirements, add to your profile: {exams}.
 universities.tip.budget_within: {cost} a year, your budget is {budget}.
 universities.tip.budget_over: {cost} a year, {gap} more than your budget.
-universities.tip.budget_range: {min} to {max} a year, and some options cost more than your budget. Choose a program to compare exactly.
-universities.tip.budget_fee_status: {min} to {max} a year, depending on your fee status. Set it on the university page.
+universities.tip.budget_range: {min}–{max}/yr, partly above your budget. Pick a program to compare.
+universities.tip.budget_fee_status: {min}–{max}/yr depending on fee status. Set it on the university page.
 universities.tip.tuition_only: Tuition only: living costs are extra.
 universities.tip.before_aid: Financial aid is not deducted.
-universities.tip.requirements_met: Your results meet the published minimums. Check the other admission conditions on the university page.
+universities.tip.requirements_met: Meets published minimums. Check other requirements on the university page.
 universities.tip.below_minimum: Below the minimum: {items}.
 universities.tip.minimum_gap: {exam} needs {minimum}, you have {provided}
 universities.ux2.legend.aria: Icons on university cards
@@ -3355,11 +3354,11 @@ universities.empty.clear_price: Remove the price filter
 universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
 profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
-universities.filter.reviewed_only: Detailed admissions data
-universities.filter.reviewed_only_hint: Show universities with verified route, minimum, and cost breakdowns
+universities.filter.reviewed_only: Verified admissions
+universities.filter.reviewed_only_hint: Show universities with verified requirements and costs
 universities.unifit.prefs_button: Preferences
 universities.unifit.prefs_summary: UniFit preferences
-universities.tip.budget_level_needed: {cost} a year depending on study level. Select a study level to compare against your budget.
+universities.tip.budget_level_needed: {cost}/yr depending on study level. Pick a study level to compare.
 guide.start.nav: Getting started
 guide.start.title: How to use UniSearch
 guide.start.intro: Browse UniSearch to find study programs, admission requirements, application deadlines, and costs. You can use the catalog without completing a profile.

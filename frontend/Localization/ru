@@ -559,11 +559,11 @@ universities.tradeoff.location.left: Город
 universities.tradeoff.location.right: За городом
 universities.tradeoff.balanced: Не важно
 universities.help.open: Показать объяснение
-universities.help.tradeoff.focus: Слева — меньше научных публикаций на студента, справа — исследовательские университеты. По центру не учитывается.
-universities.help.tradeoff.atmosphere: Слева поступает большая доля подавших, справа больше заявлений на место — по официальному проценту зачисления на первый курс. По центру не учитывается.
-universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные. По центру не учитывается.
-universities.help.tradeoff.location: Слева — крупные города от 1,5 млн жителей, справа — города до 50 тысяч. По центру не учитывается.
-universities.sort_ai: {fit}: умная ИИ-сортировка
+universities.help.tradeoff.focus: Слева — больше практики и карьеры, справа — упор на науку. По центру не учитывается.
+universities.help.tradeoff.atmosphere: Слева — проще поступить, справа — выше конкурс. По центру не учитывается.
+universities.help.tradeoff.finance: Слева — ниже цена и больше грантов, справа — престиж важнее цены. По центру не учитывается.
+universities.help.tradeoff.location: Слева — мегаполисы (от 1,5 млн), справа — небольшие города (до 50 тыс.). По центру не учитывается.
+universities.sort_ai: {fit}: подбор по профилю
 universities.sort_relevance: По релевантности
 universities.sort_cost_asc: Цена по возрастанию
 universities.sort_cost_desc: Цена по убыванию
@@ -690,7 +690,6 @@ university.visit_website: Открыть официальный сайт
 
 # Added localization coverage keys
 common.loading: Загрузка
-common.ai_short: ИИ
 common.placeholder_unknown: {field}: нет данных
 common.no_data: Нет данных
 common.na: Недоступно
@@ -3022,14 +3021,14 @@ university.admissions.catalog.check_next_missing: Раскройте прове�
 university.admissions.catalog.check_next_unassessed: Эта проверка не выполнена автоматически. Сверьте опубликованные условия и источник.
 university.admissions.catalog.check_group_count: Правил из источников: {count}
 universities.match.subject_missing: Ваше направление не найдено
-universities.match.subject_missing_detail: В нашем каталоге не найдено подходящей программы на выбранном уровне обучения.
+universities.match.subject_missing_detail: В каталоге нет подходящей программы на этом уровне.
 universities.match.subject_matched: Есть ваше направление
-universities.match.subject_matched_detail: В каталоге есть программа по вашему направлению и уровню обучения.
+universities.match.subject_matched_detail: Есть программа по вашему направлению и уровню.
 universities.match.selected_subject_mismatch: Выбрано другое направление
-universities.match.selected_subject_mismatch_detail: Сохранённая программа отличается от направления в вашем профиле.
+universities.match.selected_subject_mismatch_detail: Сохранённая программа отличается от направления в профиле.
 universities.match.preference_detail: Университет соответствует вашим предпочтениям в учёбе.
 universities.match.score: Соответствие минимумам: {percent}%
-universities.match.checks_detail: Выполнено {met} из {total} проверенных минимумов. Остальные условия поступления нужно проверить отдельно.
+universities.match.checks_detail: Выполнено {met} из {total} минимумов. Остальные условия — на странице вуза.
 universities.match.budget_over: Выше вашего бюджета
 universities.match.budget_within: В пределах бюджета
 universities.match.budget_uncertain: Уточните стоимость
@@ -3168,24 +3167,24 @@ profile.ux2.summary.requirements.cefr: уровень CEFR
 profile.ux2.summary.requirements.used: Сравниваются с опубликованными минимумами каждого университета. Соответствие считается, если ответы покрывают все его минимумы.
 profile.ux2.summary.requirements.unused: Соответствие минимальным требованиям не считается. Добавьте GPA, экзамены или языки, чтобы сравнить с опубликованными минимумами.
 universities.ux2.banner.ranked: Подобрано под ваш профиль: {values}
-universities.ux2.banner.generic: Рейтинг общий: в профиле не указаны уровень обучения, направление и бюджет.
-universities.ux2.banner.scores_only: Рейтинг учитывает ваши экзамены и языки. Укажите уровень обучения, направление или бюджет, чтобы уточнить его.
+universities.ux2.banner.generic: Общий порядок — укажите уровень, направление или бюджет в профиле.
+universities.ux2.banner.scores_only: Учитывает ваши экзамены. Добавьте уровень, направление или бюджет для точного подбора.
 universities.ux2.banner.budget: до {amount}/год
 universities.ux2.banner.edit: Изменить профиль
 universities.ux2.banner.set_up: Заполнить профиль
-universities.ux2.banner.disclaimer: Это рейтинг соответствия, а не прогноз поступления. Нехватка данных не считается невыполненным требованием.
+universities.ux2.banner.disclaimer: Это рейтинг соответствия, а не прогноз поступления. Нехватка данных не штрафуется.
 universities.ux2.tip.language_test: языковой тест
-universities.tip.subject_options: Подходящих программ: {count}. Выберите одну на странице университета, чтобы проверить её требования.
+universities.tip.subject_options: Подходящих программ: {count}. Выберите одну на странице вуза.
 universities.tip.subject_selected: Выбранная программа соответствует вашему направлению.
 universities.tip.preferences_close: Близко к вашим настройкам: {dimensions}.
 universities.tip.add_to_profile: Чтобы проверить требования, добавьте в профиль: {exams}.
 universities.tip.budget_within: {cost} в год, ваш бюджет — {budget}.
 universities.tip.budget_over: {cost} в год, это на {gap} больше вашего бюджета.
-universities.tip.budget_range: От {min} до {max} в год, часть вариантов дороже вашего бюджета. Выберите программу, чтобы сравнить точно.
-universities.tip.budget_fee_status: От {min} до {max} в год в зависимости от статуса оплаты. Укажите его на странице университета.
+universities.tip.budget_range: {min}–{max} в год, часть выше бюджета. Выберите программу для точной цены.
+universities.tip.budget_fee_status: {min}–{max} в год в зависимости от статуса оплаты. Укажите его на странице вуза.
 universities.tip.tuition_only: Только обучение: проживание оплачивается отдельно.
 universities.tip.before_aid: Финансовая помощь не учтена.
-universities.tip.requirements_met: Ваши результаты проходят опубликованные минимумы. Остальные условия поступления проверьте на странице университета.
+universities.tip.requirements_met: Подходит под опубликованные минимумы. Остальные условия — на странице вуза.
 universities.tip.below_minimum: Ниже минимума: {items}.
 universities.tip.minimum_gap: {exam} — нужно {minimum}, у вас {provided}
 universities.ux2.legend.aria: Значки на карточках университетов
@@ -3355,11 +3354,11 @@ universities.empty.clear_price: Убрать фильтр цены
 universities.state.empty_saved_none: Вы пока ничего не сохранили. Сохраните вуз на его карточке, и он появится здесь.
 profile.unit.per_year: / год
 profile.budget_currency_label: Валюта бюджета
-universities.filter.reviewed_only: Подробные данные приёма
-universities.filter.reviewed_only_hint: Показать вузы с проверенными маршрутами, минимумами и расчётом стоимости
+universities.filter.reviewed_only: Проверенные требования
+universities.filter.reviewed_only_hint: Показать вузы с проверенными требованиями и ценами
 universities.unifit.prefs_button: Предпочтения
 universities.unifit.prefs_summary: Предпочтения UniFit
-universities.tip.budget_level_needed: {cost} в год в зависимости от уровня обучения. Выберите уровень обучения, чтобы сравнить с вашим бюджетом.
+universities.tip.budget_level_needed: {cost} в год в зависимости от уровня. Выберите уровень обучения для сравнения.
 guide.start.nav: С чего начать
 guide.start.title: Как пользоваться UniSearch
 guide.start.intro: В каталоге UniSearch можно найти программы обучения, требования к поступлению, сроки подачи заявок и сведения о стоимости. Для просмотра каталога заполнять профиль необязательно.

@@ -114,8 +114,8 @@
           </div>
 
           <div class="u-field u-field--reviewed-only">
-            <label class="u-reviewed-toggle" for="reviewedOnlyToggle" title="Show universities with verified route, minimum, and cost breakdowns" data-i18n-title="universities.filter.reviewed_only_hint">
-              <span class="u-reviewed-toggle__text" data-i18n="universities.filter.reviewed_only">Detailed admissions data</span>
+            <label class="u-reviewed-toggle" for="reviewedOnlyToggle" title="Show universities with verified requirements and costs" data-i18n-title="universities.filter.reviewed_only_hint">
+              <span class="u-reviewed-toggle__text" data-i18n="universities.filter.reviewed_only">Verified admissions</span>
               <input id="reviewedOnlyToggle" class="ui-switch" type="checkbox" role="switch" />
             </label>
           </div>
@@ -206,7 +206,7 @@
             </label>
             <select id="sortSelect" class="ui-select u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
-              <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: AI Smart Sort</option>
+              <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: Best for your profile</option>
               <option value="rank_asc" data-i18n="universities.sort_rank_asc">Global Rank</option>
               <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
               <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
@@ -227,7 +227,7 @@
                 <span class="u-label-icon"><span data-heroicon="cpu-chip" data-icon-size="16"></span><span data-i18n="universities.tradeoff.focus">Focus</span></span>
                 <span class="u-info-wrap">
                   <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
-                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.focus">Choose whether you want more practice-oriented study or more theory and research.</span>
+                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.focus">Left: career-focused study. Right: research-heavy universities. Centered: ignored.</span>
                 </span>
               </div>
               <div class="u-label u-label--between u-label--subtle">
@@ -246,7 +246,7 @@
                 <span class="u-label-icon"><span data-heroicon="academic-cap" data-icon-size="16"></span><span data-i18n="universities.tradeoff.atmosphere">Atmosphere</span></span>
                 <span class="u-info-wrap">
                   <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
-                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.atmosphere">Choose between active student life and a calmer study-focused environment.</span>
+                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.atmosphere">Left: easier to get in. Right: more selective universities. Centered: ignored.</span>
                 </span>
               </div>
               <div class="u-label u-label--between u-label--subtle">
@@ -265,7 +265,7 @@
                 <span class="u-label-icon"><span data-heroicon="banknotes" data-icon-size="16"></span><span data-i18n="universities.tradeoff.finance">Finance</span></span>
                 <span class="u-info-wrap">
                   <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
-                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.finance">Left side favors grant-focused options. Right side also favors paid options.</span>
+                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.finance">Left: lower cost and grants. Right: prestige even at higher cost. Centered: ignored.</span>
                 </span>
               </div>
               <div class="u-label u-label--between u-label--subtle">
@@ -284,7 +284,7 @@
                 <span class="u-label-icon"><span data-heroicon="map-pin" data-icon-size="16"></span><span data-i18n="universities.tradeoff.location">Location</span></span>
                 <span class="u-info-wrap">
                   <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
-                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.location">Left side favors life in big cities. Right side favors life outside big cities (suburban/rural campuses).</span>
+                  <span class="u-tooltip" role="tooltip" data-i18n="universities.help.tradeoff.location">Left: big cities (1.5M+). Right: small towns (under 50k). Centered: ignored.</span>
                 </span>
               </div>
               <div class="u-label u-label--between u-label--subtle">
@@ -316,7 +316,7 @@
             </span>
             <div class="u-unifit-warning__body">
               <p id="unifitBannerTitle" class="u-unifit-warning__text"></p>
-              <p class="u-unifit-warning__note" data-i18n="universities.ux2.banner.disclaimer">A fit ranking, not an admission prediction. Missing information never counts as a failed requirement.</p>
+              <p class="u-unifit-warning__note" data-i18n="universities.ux2.banner.disclaimer">Fit ranking, not an admission prediction. Missing data is never a fail.</p>
             </div>
           </div>
           <div class="u-unifit-warning__actions">
