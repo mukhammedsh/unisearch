@@ -247,15 +247,12 @@ profile.gpa_range: GPA must be between {min} and {max}
 profile.hint.low_budget_grant: Budget is under {amount}. Maybe you need Grant only.
 profile.hint.low_budget_grant_action: Set Grant only
 profile.hint.dismiss: Dismiss hint
-profile.hint.gpa: Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
 profile.gpa_info_title: How GPA works here
 profile.gpa_info_tooltip: Choose your grading scale: 4.0 or 5.0. Your original value and scale are preserved. Published GPA minimums require matching scales; program-specific academic requirements may need separate evidence.
 profile.label.budget: Yearly budget
 profile.label.exams: Exam results
 profile.label.funding_type: Funding you look for
 profile.label.gpa: GPA (average grade)
-profile.scale.gpa_4: 4.0 (US / International)
-profile.scale.gpa_5: 5.0 (KZ / CIS)
 profile.scale.toggle: Switch GPA scale to {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0

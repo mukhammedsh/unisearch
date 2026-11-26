@@ -247,15 +247,12 @@ profile.gpa_range: GPA {min} мен {max} аралығында болуы кер
 profile.hint.low_budget_grant: Бюджет {amount}-тан төмен. Тек грант нұсқасын таңдауға болады.
 profile.hint.low_budget_grant_action: Тек грантты таңдау
 profile.hint.dismiss: Еске салуды жабу
-profile.hint.gpa: 4.0 (АҚШ / халықаралық) немесе 5.0 (Қазақстан / ТМД) шкаласын таңдаңыз.
 profile.gpa_info_title: GPA қалай есептеледі
 profile.gpa_info_tooltip: Баға шкаласын таңдаңыз: 4.0 немесе 5.0. Бастапқы балл мен шкала сақталады. Жарияланған GPA шектері тиісті шкалада тексеріледі; бағдарламаның бөлек академиялық талаптарына қосымша дерек қажет болуы мүмкін.
 profile.label.budget: Жылдық бюджет
 profile.label.exams: Емтихан нәтижелері
 profile.label.funding_type: Қандай қаржыландыру іздейсіз
 profile.label.gpa: GPA (орташа балл)
-profile.scale.gpa_4: 4.0 (АҚШ / халықаралық)
-profile.scale.gpa_5: 5.0 (Қазақстан / ТМД)
 profile.scale.toggle: GPA шкаласын {scale} мәніне ауыстыру
 profile.unit.gpa_4: / 4,0
 profile.unit.gpa_5: / 5,0

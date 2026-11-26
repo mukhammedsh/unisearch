@@ -72,14 +72,14 @@
             <section class="profile-section-panel" id="profileSectionStudy" data-profile-section="basics" aria-labelledby="profileSectionStudyTitle">
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionStudyTitle" tabindex="-1" data-i18n="profile.ux2.section.study.title">What you want to study</h2>
-                <p class="profile-section-desc" data-i18n="profile.ux2.section.study.desc">Study level narrows the list. Subject and topics change the order.</p>
+
               </header>
 
               <div class="profile-section-fields">
                 <div class="profile-field">
                   <label class="profile-field-label" for="studyLevelSelect" data-i18n="profile.label.study_level">Study level</label>
-                  <p class="profile-hint" id="studyLevelHint" data-i18n="profile.ux2.hint.study_level">UniFit lists only universities that offer this level, and compares prices and requirements for it.</p>
-                  <select id="studyLevelSelect" class="profile-input profile-input--select" aria-describedby="studyLevelHint">
+
+                  <select id="studyLevelSelect" class="profile-input profile-input--select">
                     <option value="Any" data-i18n="profile.option.study_level_any">Any study level</option>
                     <option value="preparation" data-i18n="profile.option.study_level_preparation">Preparation / Foundation</option>
                     <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor's</option>
@@ -94,21 +94,21 @@
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="profileMajorSelect" data-i18n="profile.label.major">Subject</label>
-                  <p class="profile-hint" id="profileMajorHint" data-i18n="profile.ux2.hint.major">Universities without a matching program rank lower in UniFit. None are hidden.</p>
-                  <select id="profileMajorSelect" class="profile-input profile-input--select" aria-describedby="profileMajorHint">
+
+                  <select id="profileMajorSelect" class="profile-input profile-input--select">
                     <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
                   </select>
                 </div>
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="profileInterestsInput" data-i18n="profile.label.interests">Topics you are interested in</label>
-                  <p class="profile-hint" id="profileInterestsHint" data-i18n="profile.ux2.hint.interests">Short topics can help order universities in UniFit when its language model is available. They do not choose a program or prove eligibility.</p>
+
                   <textarea
                     id="profileInterestsInput"
                     class="profile-input profile-input--textarea"
                     rows="3"
                     maxlength="1200"
-                    aria-describedby="profileInterestsHint"
+
                     placeholder="Example: computer science, artificial intelligence, robotics, game development, internships"
                     data-i18n-placeholder="profile.placeholder.interests"
                   ></textarea>
@@ -116,8 +116,8 @@
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="studyModeSelect" data-i18n="profile.label.study_mode">Study format</label>
-                  <p class="profile-hint" id="studyModeHint" data-i18n="profile.ux2.hint.study_mode">Decides whether UniFit compares your budget with the on-campus or the online price. It does not hide universities.</p>
-                  <select id="studyModeSelect" class="profile-input profile-input--select" aria-describedby="studyModeHint">
+
+                  <select id="studyModeSelect" class="profile-input profile-input--select">
                     <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
                     <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
                     <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
@@ -130,13 +130,13 @@
             <section class="profile-section-panel" id="profileSectionBudget" data-profile-section="preferences" aria-labelledby="profileSectionBudgetTitle">
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionBudgetTitle" tabindex="-1" data-i18n="profile.ux2.section.budget.title">Budget and funding</h2>
-                <p class="profile-section-desc" data-i18n="profile.ux2.section.budget.desc">Budget changes the order of universities. The other answers choose which prices and universities you see.</p>
+
               </header>
 
               <div class="profile-section-fields">
                 <div class="profile-field">
                   <label class="profile-field-label" for="budgetInput" data-i18n="profile.label.budget">Yearly budget</label>
-                  <p class="profile-hint" id="budgetHint" data-i18n="profile.ux2.hint.budget">Universities whose known yearly cost is above this rank lower in UniFit. None are hidden. Grants are not subtracted, and an unknown price is not penalised.</p>
+
                   <div class="profile-budget-row">
                     <div class="profile-budget profile-budget--with-unit ui-input-composite">
                       <input
@@ -144,7 +144,7 @@
                         class="profile-input"
                         type="text"
                         inputmode="numeric"
-                        aria-describedby="budgetHint"
+
                         placeholder="e.g. 20000"
                         data-i18n-placeholder="profile.placeholder.budget"
                       />
@@ -156,8 +156,8 @@
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="profileFundingTypeSelect" data-i18n="profile.label.funding_type">Funding you look for</label>
-                  <p class="profile-hint" id="profileFundingHint" data-i18n="profile.ux2.hint.funding">Hides universities known to have no grants (or no paid places) from the catalog and from UniFit. Universities with unknown funding stay visible.</p>
-                  <select id="profileFundingTypeSelect" class="profile-input profile-input--select" aria-describedby="profileFundingHint">
+
+                  <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
                     <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
                     <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
                     <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
@@ -187,13 +187,13 @@
             <section class="profile-section-panel" id="profileSectionScores" data-profile-section="scores" aria-labelledby="profileSectionScoresTitle">
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionScoresTitle" tabindex="-1" data-i18n="profile.ux2.section.scores.title">Grades and exams</h2>
-                <p class="profile-section-desc" data-i18n="profile.ux2.section.scores.desc">Compared with the minimums each university publishes. This is not an admission chance.</p>
+
               </header>
 
               <div class="profile-section-fields">
                 <div class="profile-field profile-field--gpa">
                   <label class="profile-field-label" for="gpaInput" data-i18n="profile.label.gpa">GPA</label>
-                  <p class="profile-hint" id="gpaEffectHint" data-i18n="profile.ux2.hint.gpa">Compared with the GPA minimums that universities publish. Pick the scale your GPA is on.</p>
+
                   <div class="profile-budget profile-budget--with-unit ui-input-composite">
                     <input
                       id="gpaInput"
@@ -202,7 +202,7 @@
                       min="0"
                       max="4"
                       step="0.01"
-                      aria-describedby="gpaEffectHint gpaHint"
+                      aria-describedby="gpaHint"
                       placeholder="e.g. 3.80"
                       data-i18n-placeholder="profile.placeholder.gpa"
                     />
@@ -225,9 +225,7 @@
                     </label>
                   </fieldset>
                   <div class="profile-hint-row">
-                    <div id="gpaHint" class="profile-hint" data-i18n="profile.hint.gpa">
-                      Choose scale 4.0 (US / International) or 5.0 (Kazakhstan / CIS).
-                    </div>
+                    <div id="gpaHint" class="profile-hint" aria-live="polite"></div>
                     <span class="profile-info-wrap">
                       <button
                         type="button"
@@ -249,7 +247,7 @@
 
                 <div class="profile-field" role="group" aria-labelledby="profileExamsLabel">
                   <p class="profile-field-label" id="profileExamsLabel" data-i18n="profile.label.exams">Exam results</p>
-                  <p class="profile-hint" id="profileExamsHint" data-i18n="profile.ux2.hint.exams">Compared with the exam minimums that universities publish. Results for the exams a university asks for can produce a minimum requirements match.</p>
+
                   <button type="button" class="profile-inline-link" data-profile-jump="languages" data-i18n="profile.ux2.hint.exams_language">Language tests such as IELTS and TOEFL go in the Languages section.</button>
 
                   <div class="profile-exam-form">
@@ -303,7 +301,7 @@
             <section class="profile-section-panel" id="profileSectionLanguages" data-profile-section="languages" aria-labelledby="profileSectionLanguagesTitle">
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionLanguagesTitle" tabindex="-1" data-i18n="profile.ux2.section.languages.title">Languages</h2>
-                <p class="profile-section-desc" data-i18n="profile.ux2.section.languages.desc">Compared with the language requirements that universities publish. A native language or CEFR level does not replace a test a university requires.</p>
+
               </header>
 
               <div class="profile-card-block" id="languagesBlock">
@@ -372,7 +370,7 @@
             <section class="profile-section-panel" id="profileSectionSpecific" data-profile-section="specific" aria-labelledby="profileSectionSpecificTitle">
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionSpecificTitle" tabindex="-1" data-i18n="profile.ux2.section.specific.title">For specific universities</h2>
-                <p class="profile-section-desc" data-i18n="profile.ux2.section.specific.desc">Optional. Only a few reviewed universities check these details, and only for particular programs. Skip it if you are not sure.</p>
+
               </header>
 
               <div id="admissionEvidenceFields"></div>

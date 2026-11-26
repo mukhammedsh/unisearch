@@ -23,7 +23,7 @@ test.describe("Profile page icons and navigation", () => {
     const gpaUnit = page.locator("#gpaUnit");
     await expect(gpaUnit).toBeVisible();
     await expect(page.locator("#gpaInput")).toBeVisible();
-    await expect(page.locator("#gpaHint")).toBeVisible();
+    await expect(page.locator("#gpaHint")).toBeEmpty();
     await expect(gpaUnit).toHaveText("/ 4.0");
     await gpaUnit.click();
     await expect(gpaUnit).toHaveText("/ 5.0");
