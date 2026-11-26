@@ -2,6 +2,11 @@
 
 All notable changes to UniSearch are documented here.
 
+## 10.10.1 (2026-11-26) - Desktop hover-only tooltips
+
+### Changed
+- Keep desktop mouse tooltips transient on hover and keyboard focus without press states or click-to-pin behavior, while preserving tap-to-open tooltips on touch and stylus screens and allowing pointers to cross cleanly onto links inside tooltips.
+
 ## 10.10.0 (2026-11-26) - Comparison PDF export, spotlight tour, profile calendar, and mobile refinements
 
 Minor release: add comparison PDF export, a live four-step catalog spotlight tour, a localized profile date calendar, editable per-university program subject filtering, and bidirectional cover transitions. Streamline reviewed admissions reading, profile navigation and spacing, inline UniFit toolbar controls, and narrow-viewport responsiveness.

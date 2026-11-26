@@ -399,7 +399,7 @@ test("Imperial map marker keeps tuition separate from the unavailable annual bud
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-cost-basis="tuition"]')).toContainText(/10[\s,]?050/);
   await expect(popup.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
-  await popup.locator('.uni-cost-trigger').click();
+  await popup.locator('.uni-cost-trigger').hover();
   await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toBeVisible();
   await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toContainText("2027");
   await screenshot(page, "eng-1280-map-tuition", "#mapContainer");

@@ -431,7 +431,7 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-cost-basis="tuition"]')).toContainText(/₸|KZT/);
   await expect(popup.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
-  await popup.locator('.uni-cost-trigger').click();
+  await popup.locator('.uni-cost-trigger').hover();
   await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toBeVisible();
   await expect(popup).toContainText("2026");
   await screenshot(page, "eng-1280-map-tuition-kzt", "#mapContainer");

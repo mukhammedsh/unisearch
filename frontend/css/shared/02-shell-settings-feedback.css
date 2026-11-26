@@ -373,6 +373,16 @@
   overflow-wrap: anywhere;
 }
 
+/* Bridges the 8px gap between trigger and bubble so pointers can move onto tooltip content or links without losing :hover. */
+:where(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content)::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * var(--space-2));
+  left: 0;
+  right: 0;
+  height: var(--space-2);
+}
+
 .ui-tooltip-bubble {
   width: max-content;
   max-width: min(280px, calc(100vw - 32px));
@@ -395,7 +405,7 @@
 }
 
 /* Hover waits briefly so a pointer passing over a trigger does not flash a tooltip. Keyboard focus,
-   explicit clicks and a pointer arriving from a neighbouring tooltip (`.tooltips-warm`) open at once. */
+   touch taps and a pointer arriving from a neighbouring tooltip (`.tooltips-warm`) open at once. */
 :is(.ui-tooltip-wrap, .u-info-wrap, .profile-info-wrap, .d-info-wrap, .uni-status-tooltip):not(.is-open, .is-closed, :focus-within):hover > :is(.ui-tooltip-bubble, .u-tooltip, .profile-tooltip, .d-tooltip, .uni-status-tooltip__content) {
   /* Order follows the hover rule's transition-property list: opacity, visibility, display, transform.
      `display` flips at once so viewport clamping can measure the bubble during the delay. */
@@ -478,7 +488,7 @@
   padding: 0;
   background: var(--surface-soft);
   color: var(--text-muted);
-  cursor: pointer;
+  cursor: help;
   appearance: none;
   transition:
     background-color var(--motion-fast) var(--motion-ease-standard),

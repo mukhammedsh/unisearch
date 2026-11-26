@@ -106,6 +106,7 @@ for (const locale of locales) {
     const catalogUrl = page.url();
     await firstStatus.click();
     await expect(page).toHaveURL(catalogUrl);
+    await expect(firstCard.locator(".uni-status-tooltip").first()).not.toHaveClass(/is-open/);
     const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await expect(firstTooltip).toBeVisible();
     await expect(firstTooltip).toHaveCSS("z-index", "10");
@@ -114,11 +115,7 @@ for (const locale of locales) {
     const firstAriaLabel = await firstStatus.getAttribute("aria-label");
     expect(firstAriaLabel).toMatch(/: /);
 
-    await firstStatus.click();
-    await expect(firstTooltip).not.toBeVisible();
-    await firstStatus.click();
-    await expect(firstTooltip).toBeVisible();
-    await firstStatus.click();
+    await page.mouse.move(0, 0);
     await expect(firstTooltip).not.toBeVisible();
     expect(await firstCard.evaluate((card) => getComputedStyle(card).overflow)).toBe("visible");
     expect(await firstCard.locator(".uni-media").evaluate((media) => media.contains(media.parentElement?.querySelector(".uni-card-statuses")))).toBeFalsy();
@@ -186,9 +183,11 @@ for (const locale of locales) {
 
     const mobileStatus = firstCard.locator(".uni-status-trigger").first();
     const mobileTooltip = firstCard.locator(".uni-status-tooltip__content").first();
-    await mobileStatus.click();
+    await mobileStatus.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
+    await mobileStatus.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
     await expect(mobileTooltip).toBeVisible();
-    await mobileStatus.click();
+    await mobileStatus.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
+    await mobileStatus.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
     await expect(mobileTooltip).not.toBeVisible();
   });
 }

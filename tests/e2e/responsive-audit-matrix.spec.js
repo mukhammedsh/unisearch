@@ -215,7 +215,9 @@ test.describe("Responsive Audit Matrix", () => {
           for (let t = 0; t < triggerCount; t++) {
             const trigger = triggers.nth(t);
             if (!(await trigger.isVisible())) continue;
-            await trigger.click();
+            await trigger.scrollIntoViewIfNeeded();
+            await trigger.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
+            await trigger.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
             openedTooltips += 1;
             expect(await collectResponsiveIssues(page, `mit@${width}:${lang}:${tabId}:tooltip-${t}`)).toEqual([]);
             await page.keyboard.press("Escape");

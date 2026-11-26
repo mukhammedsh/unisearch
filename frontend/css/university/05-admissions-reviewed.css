@@ -1551,10 +1551,6 @@ details[open] > summary > .admissions-disclosure-icon {
   text-align: left;
 }
 
-.admissions-term .admissions-term__trigger:hover {
-  color: var(--text);
-}
-
 .admissions-term__bubble {
   max-width: min(280px, calc(100vw - 64px));
 }
@@ -1618,6 +1614,10 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .admissions-term .admissions-term__trigger:hover {
+    color: var(--text);
+  }
+
   .admissions-reading__source a.admissions-reading__ref:hover {
     color: var(--accent-text);
   }

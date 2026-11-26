@@ -115,6 +115,29 @@ function bindTooltipWarmth(wrapSelector) {
   });
 }
 
+/**
+ * Determine whether activating a tooltip trigger should pin `.is-open` (touch/stylus taps)
+ * rather than relying on transient desktop hover or keyboard focus.
+ *
+ * @param {{ pointerType?: string, detail?: number } | null | undefined} evt
+ * @param {string} [fallbackPointerType=""]
+ * @param {{ matchMedia?: (query: string) => { matches: boolean } } | null} [win]
+ * @returns {boolean}
+ */
+export function shouldPinTooltipOnClick(
+  evt,
+  fallbackPointerType = "",
+  win = typeof window !== "undefined" ? window : null,
+) {
+  const pointerType = typeof evt?.pointerType === "string" && evt.pointerType
+    ? evt.pointerType
+    : fallbackPointerType;
+  if (pointerType === "touch" || pointerType === "pen") return true;
+  if (pointerType === "mouse") return false;
+  if (evt?.detail === 0) return false;
+  return Boolean(win?.matchMedia?.("(hover: none), (pointer: coarse)")?.matches);
+}
+
 export function bindInfoTooltips(options = {}) {
   if (typeof document === "undefined") return;
 
@@ -132,10 +155,17 @@ export function bindInfoTooltips(options = {}) {
   __boundTooltipKeys.add(key);
   bindTooltipWarmth(wrapSelector);
 
+  let lastPointerType = "";
   const holdTimers = new WeakMap();
   const openWrapsSelector = buildStateSelector(wrapSelector, openClass);
   const closedWrapsSelector = buildStateSelector(wrapSelector, closedClass);
   const allStateWrapsSelector = `${openWrapsSelector}, ${closedWrapsSelector}`;
+  const transientActiveWrapsSelector = wrapSelector
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => `${s}:not(.${closedClass}):is(:hover, :focus-within)`)
+    .join(", ");
 
   const closeAll = () => {
     root.querySelectorAll(allStateWrapsSelector).forEach((wrap) => {
@@ -146,6 +176,20 @@ export function bindInfoTooltips(options = {}) {
       if (btn) btn.setAttribute("aria-expanded", "false");
     });
   };
+
+  root.addEventListener("pointerdown", (evt) => {
+    if (typeof evt.pointerType === "string" && evt.pointerType) {
+      lastPointerType = evt.pointerType;
+    }
+    // Prevent mouse clicks on tooltip triggers from moving focus onto the button,
+    // which would otherwise keep `:focus-within` active after the pointer leaves.
+    if (evt.pointerType === "mouse" && evt.target instanceof Element) {
+      const btn = evt.target.closest(buttonSelector);
+      if (btn && btn.closest(wrapSelector)) {
+        evt.preventDefault();
+      }
+    }
+  }, { capture: true });
 
   root.addEventListener("click", (evt) => {
     const target = evt.target;
@@ -159,6 +203,18 @@ export function bindInfoTooltips(options = {}) {
       evt.stopPropagation();
       if (typeof evt.stopImmediatePropagation === "function") {
         evt.stopImmediatePropagation();
+      }
+      if (!shouldPinTooltipOnClick(evt, lastPointerType)) {
+        if (evt.detail === 0) {
+          closeAll();
+          wrap.classList.remove(closedClass);
+          clampTooltipToViewport(wrap, bubbleSelector);
+          return;
+        }
+        closeAll();
+        safeBlur(btn);
+        clampTooltipToViewport(wrap, bubbleSelector);
+        return;
       }
       const willOpen = !wrap.classList.contains(openClass);
       closeAll();
@@ -217,6 +273,7 @@ export function bindInfoTooltips(options = {}) {
     if (!wrap) return;
     const related = evt.relatedTarget;
     if (!related || !(related instanceof Node) || !wrap.contains(related)) {
+      wrap.classList.remove(closedClass);
       if (!wrap.classList.contains(openClass)) {
         resetTooltipShift(wrap, bubbleSelector);
       }
@@ -226,14 +283,22 @@ export function bindInfoTooltips(options = {}) {
   root.addEventListener("keydown", (evt) => {
     if (evt.key === "Escape") {
       const openWraps = root.querySelectorAll(openWrapsSelector);
-      if (!openWraps.length) return;
-      const lastOpen = openWraps[openWraps.length - 1];
-      const btn = lastOpen.querySelector(buttonSelector);
-      closeAll();
-      lastOpen.classList.add(closedClass);
-      if (btn) {
-        safeFocus(btn);
+      if (openWraps.length) {
+        const lastOpen = openWraps[openWraps.length - 1];
+        const btn = lastOpen.querySelector(buttonSelector);
+        closeAll();
+        lastOpen.classList.add(closedClass);
+        if (btn) {
+          safeFocus(btn);
+        }
+        return;
       }
+      const transientWraps = root.querySelectorAll(transientActiveWrapsSelector);
+      if (!transientWraps.length) return;
+      transientWraps.forEach((wrap) => {
+        wrap.classList.add(closedClass);
+        resetTooltipShift(wrap, bubbleSelector);
+      });
     }
   });
 

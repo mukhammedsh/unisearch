@@ -1222,13 +1222,13 @@ html:has(body[data-page="profile"]) {
   :is(
     .profile-section-tab:not(.is-active),
     .profile-shell .custom-select-trigger:not(:disabled),
-    .profile-info:not(:focus-visible),
     .profile-list-actions > button,
     .profile-add--secondary:not(:disabled),
     .profile-action-btn--subtle:not(:disabled),
     .profile-button-subtle,
     .profile-admission-evidence > summary
-  ):hover:not(:active) {
+  ):hover:not(:active),
+  .profile-info:not(:focus-visible):hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
@@ -1244,11 +1244,17 @@ html:has(body[data-page="profile"]) {
 
 :is(
   .profile-section-tab:not(.is-active),
-  .profile-info,
   .profile-admission-evidence > summary
 ):active:not(:disabled) {
   background: var(--interaction-press-surface);
   color: var(--text);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .profile-info:active:not(:disabled) {
+    background: var(--interaction-press-surface);
+    color: var(--text);
+  }
 }
 
 /* --------------------------------------------------------------------------
