@@ -1538,3 +1538,9 @@ html:has(body[data-page="profile"]) {
     flex-direction: column;
   }
 }
+
+/* Profile keeps a sticky bottom action bar, so toasts sit below the navbar instead of covering Save/Back. */
+body[data-page="profile"] .toast-container {
+  top: calc(var(--nav-height) + var(--space-4));
+  bottom: auto;
+}

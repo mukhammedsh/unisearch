@@ -30,12 +30,12 @@ Minor release: add comparison PDF export, a live four-step catalog spotlight tou
 - Make the university cover map's campus marker interactive so clicking or activating it centers and zooms the map to the campus like the off-screen recenter button.
 
 ### Fixed
-- Fix profile field grouping, spacing, and alignment across additional details, yearly budget, expanded exam breakdowns, language section scores, back button, and mobile action bar, and refresh notification styling and icon clarity.
+- Fix profile field grouping, spacing, and alignment across additional details, yearly budget, expanded exam breakdowns, language section scores, back button, and mobile action bar, refresh notification styling, and keep profile notifications clear of the bottom action bar.
 - Fix cover transition ghosting, corner clipping, and map popup corner radius.
 - Collapse identical rounded converted price-range endpoints, link missing exam checklist prompts to the profile, show shared route names in comparisons, keep official fee-status links after selection, and clarify the Russian "Both" label.
 - Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
 - Remove inconsistent drop shadows on flat-card subtle buttons and restore transparent ghost styling for the "Browse all official options" button beside program filter chips.
-- Fix mobile and narrow-tablet catalog toolbar wrapping, keep controls on one row down to 320px viewports, keep the Filter button visible while the drawer is open, center wrapped two-row navbars on ultra-narrow screens, and stack card details links below prices.
+- Fix mobile and narrow-tablet catalog toolbar wrapping, keep controls on one row down to 320px viewports, wrap inline comparison program-picker buttons without horizontal overflow, keep the Filter button visible while the drawer is open, center wrapped two-row navbars on ultra-narrow screens, and stack card details links below prices.
 - Refine the responsive footer on tablets and phones with a compact left-aligned grid keeping GitHub beside the copyright, inline dot separators, and single-line links.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification

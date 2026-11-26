@@ -55,7 +55,7 @@ test("profile budget entry accepts group spaces and saves on Enter", async ({ pa
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
-  await expect(page.locator(".profile-page-intro")).toContainText("Nothing here is required");
+  await expect(page.locator(".profile-page-intro")).toContainText("All fields are optional");
   await page.locator("#budgetInput").fill("1 000 000");
   await expect(page.locator("#budgetInput")).toHaveValue("1 000 000");
   await page.locator("#budgetInput").press("Enter");

@@ -1015,7 +1015,8 @@ a.compare-reviewed__checklist-note {
     gap: var(--space-2);
   }
 
-  .compare-reviewed__swap {
+  .compare-reviewed__swap,
+  .compare-reviewed__inline-pick {
     align-self: flex-start;
     min-inline-size: 0;
     max-inline-size: 100%;
