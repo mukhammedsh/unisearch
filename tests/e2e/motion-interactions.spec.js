@@ -192,12 +192,12 @@ test("view mode fades in the map and list while preserving their layout", async 
 
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
   await page.click("#viewMapBtn");
-  await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
-  await expect(page.locator("#viewListBtn")).not.toHaveClass(/active/);
-  await expect(page.locator("#mapStage")).toBeVisible();
   const mapAnimations = await page.locator("#mapStage").evaluate((el) =>
     el.getAnimations().flatMap((animation) => Object.keys(animation.effect?.getKeyframes?.()[0] || {}))
   );
+  await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
+  await expect(page.locator("#viewListBtn")).not.toHaveClass(/active/);
+  await expect(page.locator("#mapStage")).toBeVisible();
   expect(mapAnimations).toContain("opacity");
   expect(mapAnimations).not.toContain("transform");
 

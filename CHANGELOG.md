@@ -60,6 +60,7 @@ Minor release: split admissions storage for lazy loading, add a deploy-time stat
 ### Maintenance
 - Add a design lint rule flagging raw transition durations and easings alongside an automated UI primitives guard, dev component showcase, unit tests, and E2E tests for static snapshots, lazy admissions loading, motion layers, and cross-page interaction states.
 - Stabilize admissions retry coverage so background context refreshes do not alter the selected program's failure state.
+- Capture view-mode crossfades before they finish so motion coverage remains reliable on fast workers.
 
 ## 10.8.0 (2026-11-24) - Frontend redesign and applicant UX improvements
 
