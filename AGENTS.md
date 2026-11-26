@@ -38,7 +38,7 @@
 ## Versions, commits, and publication
 
 - At task start compare `package.json` with the latest version tag. If the package is ahead, continue that in-progress changelog block without another bump. If equal, start a new version using `npm run bump:version -- [patch|minor|major]`; choose the smallest level matching the user-visible change. Keep the detailed release steps in [the release checklist](docs/release-checklist.md).
-- Write factual entries directly into the current `CHANGELOG.md` version block. Update affected functional documentation; do not add release history to the README.
+- Write concise, human-first English entries directly into the current `CHANGELOG.md` version block using standard Keep a Changelog sections (`Breaking Changes`, `Added`, `Changed`, `Removed`, `Fixed`, `Security`, `Maintenance`), without file lists, CSS/DOM internals, or planning labels; follow [the changelog guide](docs/release-checklist.md#writing-changelogmd). Update affected functional documentation; do not add release history to the README.
 - Local commits are authorized on a non-default branch. Commit only task files, use an English user-focused message and `git commit -s` with the configured author identity. Before every commit run `npm run fix:encoding` followed by `npm run check:encoding`, then review the staged diff for unrelated files and secrets.
 - Make a local commit at each coherent checkpoint whose focused checks pass. Never use `git reset --hard` or `git clean` for task cleanup; leave unrelated work untouched.
 - Never push, create/push a tag, publish a release, or rewrite/discard history without explicit user permission. A commit, push, tag, and published release are separate actions.

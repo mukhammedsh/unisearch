@@ -45,9 +45,9 @@ export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true
   }).join("");
   return `<section class="deadline-calendar" aria-label="${escapeHtmlAttr(label("calendar_title"))}">
     <div class="deadline-calendar__head"><h4>${escapeHtml(label("calendar_title"))}</h4><div class="deadline-calendar__navigation">
-      <button type="button" data-calendar-month="previous" aria-label="${escapeHtmlAttr(label("calendar_previous"))}">${heroIcon("chevron-left", "ui-icon ui-icon--16")}</button>
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--icon" data-calendar-month="previous" aria-label="${escapeHtmlAttr(label("calendar_previous"))}">${heroIcon("chevron-left", "ui-icon ui-icon--16")}</button>
       <strong aria-live="polite">${escapeHtml(monthTitle)}</strong>
-      <button type="button" data-calendar-month="next" aria-label="${escapeHtmlAttr(label("calendar_next"))}">${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>
+      <button type="button" class="ui-btn ui-btn--sm ui-btn--icon" data-calendar-month="next" aria-label="${escapeHtmlAttr(label("calendar_next"))}">${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button>
     </div></div>${allDatesStrip}
     <div class="deadline-calendar__grid" role="group" aria-label="${escapeHtmlAttr(monthTitle)}" data-calendar-month-key="${monthKey}">
       ${["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(day => `<span class="deadline-calendar__weekday">${escapeHtml(label(`weekday.${day}`))}</span>`).join("")}${cells}
@@ -58,7 +58,7 @@ export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true
         return `<li><div>${href ? `<a href="${escapeHtmlAttr(href)}"${item.sourceFactId ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(admissionDeadlineTitle(item))}</a>` : escapeHtml(admissionDeadlineTitle(item))}
           ${item.sourceFactId ? `<small>${escapeHtml(item.time ? [item.time, item.timezone].filter(Boolean).join(" · ") : label("calendar_time_unknown"))}${safeUrl(item.timeSourceUrl) ? ` · <a href="${escapeHtmlAttr(safeUrl(item.timeSourceUrl))}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_source"))}</a>` : ""}</small>${item.applicantCategoryLabel ? `<small>${escapeHtml(translateAdmissionSummary(item.applicantCategoryLabel, { section: "applicant_scope" }) || translateAdmissionSummary(item.applicantCategoryLabel) || item.applicantCategoryLabel)}</small>` : ""}` : ""}</div>
           ${renderTermsFor(item.name)}
-          <button type="button" class="deadline-calendar__export" data-calendar-export="${index}"${exportable ? "" : ` disabled title="${escapeHtmlAttr(label("export_time_unresolved"))}"`}>${escapeHtml(label("export_ics"))}</button></li>`;
+          <button type="button" class="ui-btn ui-btn--sm deadline-calendar__export" data-calendar-export="${index}"${exportable ? "" : ` disabled title="${escapeHtmlAttr(label("export_time_unresolved"))}"`}>${escapeHtml(label("export_ics"))}</button></li>`;
       }).join("")}</ul>` : `<p>${escapeHtml(label("calendar_empty_month"))}</p>`}
     </div>${deadlines.length > dated.length ? `<p class="deadline-calendar__note">${escapeHtml(label("calendar_partial_note"))}</p>` : ""}</section>`;
 }

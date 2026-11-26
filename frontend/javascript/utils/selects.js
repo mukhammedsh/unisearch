@@ -4,6 +4,18 @@ import { heroIcon } from "../icons.js";
 
 let customSelectGlobalClickBound = false;
 
+/**
+ * Closes a custom select panel. `open-up` is kept on purpose: the closing panel exits toward its
+ * trigger, and the next open recalculates the direction.
+ * @param {Element} wrapper
+ */
+function closeCustomSelectWrapper(wrapper) {
+  wrapper.classList.remove("open");
+  const trigger = wrapper.querySelector(".custom-select-trigger");
+  if (trigger) trigger.setAttribute("aria-expanded", "false");
+  wrapper.querySelectorAll(".custom-option.is-highlighted").forEach((node) => node.classList.remove("is-highlighted"));
+}
+
 function bindCustomSelectGlobalClick() {
   if (customSelectGlobalClickBound || typeof document === "undefined") return;
   customSelectGlobalClickBound = true;
@@ -11,13 +23,7 @@ function bindCustomSelectGlobalClick() {
     const target = event.target;
     if (!(target instanceof Element)) return;
     document.querySelectorAll(".custom-select-wrapper.open").forEach((wrapper) => {
-      if (!wrapper.contains(target)) {
-        wrapper.classList.remove("open");
-        wrapper.classList.remove("open-up");
-        const trigger = wrapper.querySelector(".custom-select-trigger");
-        if (trigger) trigger.setAttribute("aria-expanded", "false");
-        wrapper.querySelectorAll(".custom-option.is-highlighted").forEach((node) => node.classList.remove("is-highlighted"));
-      }
+      if (!wrapper.contains(target)) closeCustomSelectWrapper(wrapper);
     });
   });
 }
@@ -38,6 +44,8 @@ function ensureSelectWrapper(select) {
     select.parentNode.insertBefore(wrapper, select.nextSibling);
     wrapper.appendChild(select);
   }
+  wrapper.classList.toggle("custom-select-wrapper--sm", select.classList.contains("ui-select--sm"));
+  wrapper.classList.toggle("custom-select-wrapper--lg", select.classList.contains("ui-select--lg"));
   select.classList.add("u-select-hidden");
   select.tabIndex = -1;
   select.setAttribute("aria-hidden", "true");
@@ -88,7 +96,7 @@ function setupCustomSelectElements(select, wrapper, selectId, isLanguageSelect) 
   if (searchable && !searchInput) {
     searchInput = document.createElement("input");
     searchInput.type = "search";
-    searchInput.className = "custom-select-search";
+    searchInput.className = "ui-input ui-input--sm custom-select-search";
     searchInput.autocomplete = "off";
   }
 
@@ -126,7 +134,9 @@ function openAndPositionSelectPanel(trigger, wrapper, panel) {
 
   panel.style.removeProperty("--dropdown-available-height");
   wrapper.classList.add("open");
-  const gap = Number.parseFloat(window.getComputedStyle(panel).marginBlockStart) || 0;
+  const panelStyle = window.getComputedStyle(panel);
+  const gap = (Number.parseFloat(panelStyle.marginBlockStart) || 0)
+    || (Number.parseFloat(panelStyle.marginBlockEnd) || 0);
   const spaceBelow = bottom - triggerRect.bottom - gap;
   const spaceAbove = triggerRect.top - top - gap;
   const openUp = spaceBelow < panel.offsetHeight && spaceAbove > spaceBelow;
@@ -406,10 +416,7 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
 
   const closeSelect = (restoreFocus = false) => {
     if (!wrapper.classList.contains("open")) return;
-    wrapper.classList.remove("open");
-    wrapper.classList.remove("open-up");
-    trigger.setAttribute("aria-expanded", "false");
-    customOptions.querySelectorAll(".custom-option").forEach((node) => node.classList.remove("is-highlighted"));
+    closeCustomSelectWrapper(wrapper);
     if (searchInput) searchInput.value = "";
     highlightedIndex = -1;
     if (restoreFocus) {
@@ -420,12 +427,7 @@ function setupSelectStateController({ select, wrapper, trigger, customOptions, o
   const openSelect = () => {
     if (select.disabled || wrapper.classList.contains("open")) return;
     document.querySelectorAll(".custom-select-wrapper.open").forEach((node) => {
-      if (node !== wrapper) {
-        node.classList.remove("open");
-        node.classList.remove("open-up");
-        const otherTrig = node.querySelector(".custom-select-trigger");
-        if (otherTrig) otherTrig.setAttribute("aria-expanded", "false");
-      }
+      if (node !== wrapper) closeCustomSelectWrapper(node);
     });
 
     if (searchInput) {

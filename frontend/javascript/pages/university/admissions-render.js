@@ -390,7 +390,7 @@ const periodOf = row => row.period && typeof row.period === "object" ? row.perio
 const periodLine = row => periodOf(row) ? `<p class="admissions-catalog__meta">${escapeHtml(label("period"))}: ${escapeHtml(periodOf(row))}</p>` : "";
 
 function recordDetails(content) {
-  return content.trim() ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${content}</div></details>` : "";
+  return content.trim() ? `<details class="admissions-catalog__evidence motion-disclosure"><summary>${escapeHtml(label("source_scope_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${content}</div></details>` : "";
 }
 
 function scope(row, resolved) {
@@ -497,13 +497,13 @@ function renderQualificationTable(row, resolved) {
   const remaining = { ...Object.fromEntries(Object.entries(row.value).filter(([key]) => !["labelled_qualifications", "interpretation"].includes(key))),
     ...(residual.length ? { labelled_qualifications: residual } : {}) };
   const remainingHtml = renderAdmissionsValue(remaining, resolved.reference_labels);
-  return `<details class="admissions-catalog__fact admissions-catalog__qualification-table" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" open>
+  return `<details class="admissions-catalog__fact admissions-catalog__qualification-table motion-disclosure" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" open>
     <summary class="admissions-catalog__heading"><span>${escapeHtml(label("published_qualification_table"))}</span><span class="admissions-catalog__status">${escapeHtml(label("qualification_count").replace("{count}", String(qualifications.length)))}</span>${badges}</summary>
-    <div class="admissions-catalog__body">${note}${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}<div class="admissions-catalog__qualification-list">${qualifications.map(item => `<details class="admissions-catalog__qualification"><summary>${escapeHtml(item.qualification_or_country)}</summary>
+    <div class="admissions-catalog__body">${note}${conditions ? `<div><strong>${escapeHtml(label("conditions"))}</strong>${conditions}</div>` : ""}<div class="admissions-catalog__qualification-list">${qualifications.map(item => `<details class="admissions-catalog__qualification motion-disclosure"><summary>${escapeHtml(item.qualification_or_country)}</summary>
       ${(Array.isArray(item.tables) ? item.tables.map(table => renderPublishedTable(table, item.qualification_or_country)).join("") : "")}
-      ${item.published_text ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("full_source_text"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p class="admissions-catalog__source-text">${escapeHtml(item.published_text)}</p></details>` : ""}
+      ${item.published_text ? `<details class="admissions-catalog__evidence motion-disclosure"><summary>${escapeHtml(label("full_source_text"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><p class="admissions-catalog__source-text">${escapeHtml(item.published_text)}</p></details>` : ""}
     </details>`).join("")}</div>
-    ${remainingHtml ? `<details class="admissions-catalog__evidence"><summary>${escapeHtml(label("full_source_record"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${remainingHtml}</div></details>` : ""}
+    ${remainingHtml ? `<details class="admissions-catalog__evidence motion-disclosure"><summary>${escapeHtml(label("full_source_record"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${remainingHtml}</div></details>` : ""}
     ${recordDetails(`${recordStatusLine(row)}${scope(row, resolved)}${periodLine(row)}`)}
     ${sourcesBlock(sources(row, resolved))}</div>
   </details>`;
@@ -549,7 +549,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
   if (simple) {
     const inline = ["deadlines", "costs", "funding"].includes(domain);
     // Scope and period appear once: inline for dates, costs and funding, otherwise inside the source details.
-    return `<details class="admissions-catalog__fact" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" ${inline ? "open" : ""}>
+    return `<details class="admissions-catalog__fact motion-disclosure" data-admissions-fact="${escapeHtmlAttr(row.id || "")}" ${inline ? "open" : ""}>
     <summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span>${historical || !isPublished(row) ? `<span class="admissions-catalog__status">${escapeHtml(publication)}</span>` : ""}${!historical && reviewWarning && review !== publication ? `<span class="admissions-catalog__status">${escapeHtml(review)}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
       ${renderAdmissionsValue(value, resolved.reference_labels)}
@@ -562,7 +562,7 @@ function renderFact(row, resolved, domain = "other", historical = false, simple 
   </details>`;
   }
   const links = sources(row, resolved);
-  return `<details class="admissions-catalog__fact" data-admissions-fact="${escapeHtmlAttr(row.id || "")}">
+  return `<details class="admissions-catalog__fact motion-disclosure" data-admissions-fact="${escapeHtmlAttr(row.id || "")}">
     <summary class="admissions-catalog__heading"><span>${title ? escapeHtml(title) : topic}</span><span class="admissions-catalog__status">${escapeHtml(publicationLabel(row, historical))}</span>${!historical ? `<span class="admissions-catalog__status">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "conditional"))}</span>` : ""}</summary>
     <div class="admissions-catalog__body">
       ${!historical ? `<p class="admissions-catalog__meta">${escapeHtml(label(row.applicability?.status === "matched" ? "matched" : "conditional"))}</p>` : ""}
@@ -622,7 +622,7 @@ export function renderAdmissionsFacts(resolved, domains = DOMAINS, { presentatio
         // Records of one group often cite the same official pages; list those sources once for the group.
         const lines = group.map(row => sources(row, resolved));
         const shared = lines[0] && lines.every(line => line === lines[0]);
-        return `<details class="admissions-catalog__fact admissions-catalog__fact-group" data-admissions-group="${escapeHtmlAttr(domain)}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
+        return `<details class="admissions-catalog__fact admissions-catalog__fact-group motion-disclosure" data-admissions-group="${escapeHtmlAttr(domain)}" ${["deadlines", "costs", "funding"].includes(domain) ? "open" : ""}>
           <summary class="admissions-catalog__heading"><span>${escapeHtml(item)}</span>${renderStatusBadges(warnings)}</summary>
           <div class="admissions-catalog__body"><div class="admissions-catalog__group-list">${group.map(row => renderGroupedFact(row, resolved, domain, { withSources: !shared })).join("")}</div>${shared ? sourcesBlock(lines[0]) : ""}</div>
         </details>`;
@@ -640,7 +640,7 @@ export const renderAdmissionsUnknowns = resolved => renderUnknowns(resolved, res
 function renderUnknowns(resolved, unknowns = resolved.unknowns || [], simple = false) {
   if (!unknowns.length) return "";
   const rows = `<div class="admissions-catalog__list">${unknowns.map(row => `<div class="admissions-catalog__unknown"><p>${escapeHtml(localizeCodeTokens(translateAdmissionSummary(row.reason) || row.reason || label("unknown")))}</p>${row.official_next_step ? `<p><strong>${escapeHtml(label("next_step"))}:</strong> ${escapeHtml(localizeCodeTokens(translateAdmissionSummary(row.official_next_step) || row.official_next_step))}</p>` : ""}${scope(row, resolved)}${sourcesBlock(sources(row, resolved))}</div>`).join("")}</div>`;
-  return simple ? `<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">${escapeHtml(label("unknowns"))} (${unknowns.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${rows}</div></details>` : `<section class="admissions-catalog__section"><h3>${escapeHtml(label("unknowns"))}</h3>${rows}</section>`;
+  return simple ? `<details class="admissions-catalog__fact admissions-catalog__unknowns motion-disclosure"><summary class="admissions-catalog__heading">${escapeHtml(label("unknowns"))} (${unknowns.length})${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${rows}</div></details>` : `<section class="admissions-catalog__section"><h3>${escapeHtml(label("unknowns"))}</h3>${rows}</section>`;
 }
 
 function countedMinimumLabel(exam, minimum) {
@@ -829,14 +829,14 @@ function assessmentParts(resolved, { recordDomains = [], keyFacts = false } = {}
         ${recorded ? `<p><button type="button" class="admissions-catalog__record-link" data-admissions-record-link="${escapeHtmlAttr(check.factId)}">${escapeHtml(label("record_link"))}</button></p>` : ""}
         ${sourcesBlock(sources({ ...check, checked_at: check.checked_at ?? check.sourceRule?.checked_at }, resolved))}
       </div>`;
-      return grouped ? body : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span><span class="admissions-catalog__status">${escapeHtml(label(status))}</span></summary>${body}</details>`;
+      return grouped ? body : `<details class="admissions-catalog__fact admissions-catalog__check motion-disclosure"><summary class="admissions-catalog__heading"><span>${escapeHtml(title)}</span><span class="admissions-catalog__status">${escapeHtml(label(status))}</span></summary>${body}</details>`;
   };
-  const detail = `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_meaning"))}</p><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${keyFacts ? (!available && nextStep ? `<p>${escapeHtml(label(`assessment_next_${nextStep}`))}</p>` : "") : assessment.reason && hasLabel(`reason.${assessment.reason}`) ? `<p>${escapeHtml(reason)}</p>` : ""}${sourceOnly && checks.some(check => check.status === "unassessed") ? `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_next_unassessed"))}</p>` : ""}${["missing", "unassessed"].filter(status => checks.some(check => check.status === status)).map(status => `<p class="admissions-catalog__meta">${escapeHtml(t(`${PREFIX}check_next_${status}`))}</p>`).join("")}<div class="admissions-catalog__list">${displayChecks.map(group => group.length === 1 ? renderCheck(group[0]) : `<details class="admissions-catalog__fact admissions-catalog__check"><summary class="admissions-catalog__heading"><span>${escapeHtml(group[0].title)} (${escapeHtml(tFormat(`${PREFIX}check_group_count`, { count: group.length }))})</span><span class="admissions-catalog__status">${escapeHtml(label("unassessed"))}</span></summary><div class="admissions-catalog__body">${group.map(item => renderCheck(item, true)).join("")}</div></details>`).join("")}</div>
-    ${reportedRows.length ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("provided"))}</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${renderEvidenceList(reportedRows, resolved)}</div></details>` : ""}`;
+  const detail = `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_meaning"))}</p><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${keyFacts ? (!available && nextStep ? `<p>${escapeHtml(label(`assessment_next_${nextStep}`))}</p>` : "") : assessment.reason && hasLabel(`reason.${assessment.reason}`) ? `<p>${escapeHtml(reason)}</p>` : ""}${sourceOnly && checks.some(check => check.status === "unassessed") ? `<p class="admissions-catalog__meta">${escapeHtml(label("assessment_next_unassessed"))}</p>` : ""}${["missing", "unassessed"].filter(status => checks.some(check => check.status === status)).map(status => `<p class="admissions-catalog__meta">${escapeHtml(t(`${PREFIX}check_next_${status}`))}</p>`).join("")}<div class="admissions-catalog__list">${displayChecks.map(group => group.length === 1 ? renderCheck(group[0]) : `<details class="admissions-catalog__fact admissions-catalog__check motion-disclosure"><summary class="admissions-catalog__heading"><span>${escapeHtml(group[0].title)} (${escapeHtml(tFormat(`${PREFIX}check_group_count`, { count: group.length }))})</span><span class="admissions-catalog__status">${escapeHtml(label("unassessed"))}</span></summary><div class="admissions-catalog__body">${group.map(item => renderCheck(item, true)).join("")}</div></details>`).join("")}</div>
+    ${reportedRows.length ? `<details class="admissions-catalog__fact motion-disclosure"><summary class="admissions-catalog__heading">${escapeHtml(label("provided"))}</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("self_reported"))}</p>${renderEvidenceList(reportedRows, resolved)}</div></details>` : ""}`;
   return { summary, detail };
 }
 
-const assessmentDisclosure = detail => `<details class="admissions-catalog__assessment-detail"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${detail}</div></details>`;
+const assessmentDisclosure = detail => `<details class="admissions-catalog__assessment-detail motion-disclosure"><summary>${escapeHtml(label("check_details"))}${heroIcon("chevron-down", "admissions-disclosure-icon")}</summary><div class="admissions-catalog__body">${detail}</div></details>`;
 
 export function renderAdmissionsAssessment(resolved, { presentation, recordDomains = [] } = {}) {
   const parts = assessmentParts(resolved, { recordDomains });
@@ -881,6 +881,6 @@ export function renderAdmissionsContext(resolved, { domains = DOMAINS, includeAs
     ${includeAssessment && !programOnly ? renderAdmissionsAssessment(resolved, { presentation, recordDomains: domains }) : ""}
     ${domains.length ? renderAdmissionsFacts(resolved, domains, { presentation, includeReferenceScopeNote: includeReferenceScopeNote && !programOnly, emptyMessage: !programOnly, programOnly }) : ""}
     ${includeUnknowns ? renderUnknowns(resolved, resolved.unknowns || [], presentation === "simple") : ""}
-    ${includeHistory && historyCount ? `<details class="admissions-catalog__fact"><summary class="admissions-catalog__heading">${escapeHtml(label("history"))} (${historyCount})</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("history_note"))}</p>${historyFacts.map(row => renderFact(row, resolved, "other", true, presentation === "simple")).join("")}${renderUnknowns(resolved, historyUnknowns, presentation === "simple")}</div></details>` : ""}
+    ${includeHistory && historyCount ? `<details class="admissions-catalog__fact motion-disclosure"><summary class="admissions-catalog__heading">${escapeHtml(label("history"))} (${historyCount})</summary><div class="admissions-catalog__body"><p class="admissions-catalog__meta">${escapeHtml(label("history_note"))}</p>${historyFacts.map(row => renderFact(row, resolved, "other", true, presentation === "simple")).join("")}${renderUnknowns(resolved, historyUnknowns, presentation === "simple")}</div></details>` : ""}
   </div>`;
 }

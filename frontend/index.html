@@ -63,20 +63,20 @@
           <div id="mobileRecentSlot" class="u-mobile-recent-slot">
             <div id="recentlyViewedBar" class="u-recent" hidden></div>
           </div>
-          <button id="mobileFilterToggle" class="u-mobile-filter-btn" type="button" aria-controls="uSidebar" aria-expanded="false">
+          <button id="mobileFilterToggle" class="ui-btn ui-btn--on-bg u-mobile-filter-btn" type="button" aria-controls="uSidebar" aria-expanded="false">
             <span data-heroicon="funnel" data-icon-size="18"></span>
             <span data-i18n="universities.filter_mobile">Filter</span>
             <span id="mobileFilterCount" class="u-mobile-filter-count" hidden>0</span>
           </button>
-          <div id="viewToggles" class="view-toggles" role="group" aria-label="View mode" data-i18n-aria-label="universities.view_toggles.aria">
-            <button id="viewListBtn" class="view-btn active" type="button" title="List View" data-i18n-title="universities.view_list" aria-label="List View" data-i18n-aria-label="universities.view_list" aria-pressed="true" disabled>
+          <div id="viewToggles" class="ui-segmented view-toggles" role="group" aria-label="View mode" data-i18n-aria-label="universities.view_toggles.aria">
+            <button id="viewListBtn" class="ui-segmented__item view-btn active" type="button" title="List View" data-i18n-title="universities.view_list" aria-label="List View" data-i18n-aria-label="universities.view_list" aria-pressed="true" disabled>
               <span aria-hidden="true" data-heroicon="bars-3-bottom-left" data-icon-size="16"></span>
             </button>
-            <button id="viewMapBtn" class="view-btn" type="button" title="Map View" data-i18n-title="universities.view_map" aria-label="Map View" data-i18n-aria-label="universities.view_map" aria-pressed="false" disabled>
+            <button id="viewMapBtn" class="ui-segmented__item view-btn" type="button" title="Map View" data-i18n-title="universities.view_map" aria-label="Map View" data-i18n-aria-label="universities.view_map" aria-pressed="false" disabled>
               <span aria-hidden="true" data-heroicon="map" data-icon-size="16"></span>
             </button>
           </div>
-          <button id="compareModeBtn" class="u-compare-mode-btn" type="button" aria-pressed="false" title="Compare mode" data-i18n-title="universities.compare.enter" aria-label="Compare mode" data-i18n-aria-label="universities.compare.enter">
+          <button id="compareModeBtn" class="ui-btn ui-btn--on-bg u-compare-mode-btn" type="button" aria-pressed="false" title="Compare mode" data-i18n-title="universities.compare.enter" aria-label="Compare mode" data-i18n-aria-label="universities.compare.enter">
             <span aria-hidden="true" data-heroicon="adjustments-horizontal" data-icon-size="16"></span>
             <span id="compareModeLabel" data-i18n="universities.compare.enter">Compare mode</span>
           </button>
@@ -92,10 +92,10 @@
               <span data-heroicon="funnel" data-icon-size="20"></span>
             </span>
             <span data-i18n="universities.filter">Filter</span>
-            <button id="resetFiltersBtn" class="u-reset" type="button">
+            <button id="resetFiltersBtn" class="ui-btn ui-btn--sm u-reset" type="button">
               <span data-i18n="universities.reset">Reset</span>
             </button>
-            <button id="closeMobileFilters" class="u-filter-close" type="button" title="Close filters" data-i18n-title="universities.filter.close" aria-label="Close filters" data-i18n-aria-label="universities.filter.close">
+            <button id="closeMobileFilters" class="ui-btn ui-btn--icon u-filter-close" type="button" title="Close filters" data-i18n-title="universities.filter.close" aria-label="Close filters" data-i18n-aria-label="universities.filter.close">
               <span data-heroicon="x-mark" data-icon-size="18"></span>
             </button>
           </div>
@@ -116,7 +116,7 @@
           <div class="u-field u-field--reviewed-only">
             <label class="u-reviewed-toggle" for="reviewedOnlyToggle" title="Show universities with verified route, minimum, and cost breakdowns" data-i18n-title="universities.filter.reviewed_only_hint">
               <span class="u-reviewed-toggle__text" data-i18n="universities.filter.reviewed_only">Detailed admissions data</span>
-              <input id="reviewedOnlyToggle" class="u-reviewed-toggle__input" type="checkbox" role="switch" />
+              <input id="reviewedOnlyToggle" class="ui-switch" type="checkbox" role="switch" />
             </label>
           </div>
 
@@ -124,7 +124,7 @@
             <label class="u-label" for="studyLevelSelect">
               <span class="u-label-icon"><span data-heroicon="academic-cap" data-icon-size="16"></span><span data-i18n="profile.label.study_level">Study level</span></span>
             </label>
-            <select id="studyLevelSelect" class="u-select" data-flags="off">
+            <select id="studyLevelSelect" class="ui-select u-select" data-flags="off">
               <option value="" data-i18n="universities.level.all">All Levels</option>
               <option value="preparation" data-i18n="universities.level.preparation">Preparation</option>
               <option value="bachelor" data-i18n="universities.level.bachelor">Bachelor's</option>
@@ -141,7 +141,7 @@
             <label class="u-label" for="countrySelect">
               <span class="u-label-icon"><span data-heroicon="globe-alt" data-icon-size="16"></span><span data-i18n="universities.country">Country</span></span>
             </label>
-            <select id="countrySelect" class="u-select">
+            <select id="countrySelect" class="ui-select u-select">
               <option value="" data-i18n="universities.global">Global</option>
             </select>
           </div>
@@ -150,17 +150,17 @@
             <label class="u-label" for="stateSelect">
               <span class="u-label-icon"><span data-heroicon="map" data-icon-size="16"></span><span data-i18n="universities.state_region">State / Region</span></span>
             </label>
-            <select id="stateSelect" class="u-select">
+            <select id="stateSelect" class="ui-select u-select">
               <option value="" data-i18n="universities.any_state">Any State</option>
             </select>
           </div>
 
-          <div class="u-field">
+          <div class="u-field u-field--city" id="cityDiv">
             <label class="u-label" for="citySelect">
               <span class="u-label-icon"><span data-heroicon="building-office-2" data-icon-size="16"></span><span data-i18n="universities.city">City</span></span>
             </label>
-            <select id="citySelect" class="u-select" disabled>
-              <option value="" data-i18n="universities.select_country_first">Select country first</option>
+            <select id="citySelect" class="ui-select u-select" disabled>
+              <option value="" data-i18n="universities.all_cities">All Cities</option>
             </select>
           </div>
 
@@ -172,16 +172,16 @@
             </div>
 
             <div class="budget-control-wrapper">
-                <select id="costBasisSelect" class="u-input" data-flags="off" aria-describedby="catalogCostHelp">
+                <select id="costBasisSelect" class="ui-select u-select" data-flags="off">
                     <option value="annual_total" data-i18n="universities.cost.annual_total">Yearly study budget</option>
                     <option value="tuition" data-i18n="universities.cost.tuition">Tuition</option>
                 </select>
                 <div class="budget-inputs">
                     <label class="sr-only" for="minCostInput" data-i18n="universities.cost_min">Min cost</label>
-                    <input id="minCostInput" class="u-input" type="number" min="0" step="100" placeholder="0" />
+                    <input id="minCostInput" class="ui-input u-input" type="number" min="0" step="100" placeholder="0" />
                     <span class="budget-range-separator" aria-hidden="true">&ndash;</span>
                     <label class="sr-only" for="maxCostInput" data-i18n="universities.cost_max">Max cost</label>
-                    <input id="maxCostInput" class="u-input" type="number" min="0" step="100" placeholder="100000" />
+                    <input id="maxCostInput" class="ui-input u-input" type="number" min="0" step="100" placeholder="100000" />
                 </div>
 
                 <div class="dual-slider-container">
@@ -195,35 +195,25 @@
                     <span id="minCostLabel">$0</span>
                     <span id="maxCostLabel">$100,000+</span>
                 </div>
-                <details class="catalog-cost-help">
-                    <summary id="catalogCostHelp" data-i18n="universities.cost.filter_help_summary">Price limits hide unknown prices; profile budget affects UniFit.</summary>
-                    <p data-i18n="universities.cost.filter_help">Prices are before financial aid. A range may only partly match; confirm the program and fee category. University details show the full breakdown and sources.</p>
-                </details>
             </div>
           </div>
 
           <div class="u-sep u-sep--sort"></div>
 
           <div class="u-field u-field--sort">
-            <div class="u-label u-label-with-help">
-              <label class="u-label-icon" for="sortSelect"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></label>
-              <span class="u-info-wrap">
-                <button class="u-info" type="button" aria-label="Info" data-i18n-aria-label="universities.help.open"><span data-heroicon="information-circle" data-icon-size="14"></span></button>
-                <span class="u-tooltip" role="tooltip" data-i18n="universities.help.sort_strategy">{fit} sorts using your profile. Other modes sort only by name or cost.</span>
-              </span>
-            </div>
-            <select id="sortSelect" class="u-select">
+            <label class="u-label" for="sortSelect">
+              <span class="u-label-icon"><span data-heroicon="bars-3-bottom-left" data-icon-size="16"></span><span data-i18n="universities.sort_strategy">Sort by</span></span>
+            </label>
+            <select id="sortSelect" class="ui-select u-select">
               <option value="name_asc" data-i18n="universities.sort_name_asc" selected>Name A-Z</option>
-              <option value="relevance" data-i18n="universities.sort_relevance">Relevance</option>
               <option value="uni_ai" data-i18n="universities.sort_ai">{fit}: AI Smart Sort</option>
               <option value="rank_asc" data-i18n="universities.sort_rank_asc">Global Rank</option>
               <option value="tuition_asc" data-i18n="universities.sort_cost_asc">Cost low to high</option>
               <option value="tuition_desc" data-i18n="universities.sort_cost_desc">Cost high to low</option>
             </select>
-            <p id="sortAiTagsHint" class="u-sort-ai-hint" data-i18n="universities.sort_hint_ai_tags">AI tags are fully available only when sorting by UniFit.</p>
           </div>
 
-          <details id="unifitPreferencesPanel" class="u-unifit-prefs">
+          <details id="unifitPreferencesPanel" class="u-unifit-prefs motion-disclosure">
             <summary class="u-unifit-prefs__summary">
               <span class="u-unifit-prefs__label">
                 <span data-heroicon="adjustments-horizontal" data-icon-size="16"></span>
@@ -311,8 +301,8 @@
           </details>
 
           <div class="u-filter-footer" role="group" aria-label="Filter actions" data-i18n-aria-label="universities.filter.actions">
-            <button id="mobileResetFilters" class="u-filter-footer__reset" type="button" data-i18n="universities.reset">Reset</button>
-            <button id="mobileApplyFilters" class="u-filter-footer__apply" type="button" data-i18n="universities.filter.apply">Apply filters</button>
+            <button id="mobileResetFilters" class="ui-btn ui-btn--lg u-filter-footer__reset" type="button" data-i18n="universities.reset">Reset</button>
+            <button id="mobileApplyFilters" class="ui-btn ui-btn--lg ui-btn--primary u-filter-footer__apply" type="button" data-i18n="universities.filter.apply">Apply filters</button>
           </div>
 
         </div>
@@ -330,13 +320,13 @@
             </div>
           </div>
           <div class="u-unifit-warning__actions">
-            <button id="unifitBannerPrefsBtn" class="u-unifit-warning__prefs" type="button" data-i18n="universities.unifit.prefs_button">Preferences</button>
+            <button id="unifitBannerPrefsBtn" class="ui-btn ui-btn--sm u-unifit-warning__prefs" type="button" data-i18n="universities.unifit.prefs_button">Preferences</button>
             <a id="unifitBannerEdit" class="u-unifit-warning__link" href="profile.html" data-route="profile"></a>
           </div>
-          <button id="dismissUnifitWarningBanner" class="u-unifit-warning__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.unifit_banner.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.unifit_banner.dismiss">
+          <button id="dismissUnifitWarningBanner" class="ui-btn ui-btn--icon ui-btn--ghost u-unifit-warning__dismiss" type="button" title="Dismiss notice" data-i18n-title="universities.unifit_banner.dismiss" aria-label="Dismiss notice" data-i18n-aria-label="universities.unifit_banner.dismiss">
             <span data-heroicon="x-mark" data-icon-size="16"></span>
           </button>
-          <details id="unifitLegendDetails" class="u-unifit-legend-disclosure" hidden>
+          <details id="unifitLegendDetails" class="u-unifit-legend-disclosure motion-disclosure" hidden>
             <summary class="u-unifit-legend-summary">
               <span data-i18n="universities.ux2.legend.lead">Icons on cards:</span>
               <span data-heroicon="chevron-down" data-icon-size="14"></span>

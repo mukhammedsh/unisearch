@@ -373,8 +373,6 @@ universities.cost.fee_status.self_paying: ақылы оқу
 universities.cost.exclusion.insurance: Сақтандыру бөлек төленеді.
 universities.cost.exclusion.travel: Жол ақысы бөлек төленеді.
 universities.cost.exclusion.one_time_fees: Бір реттік алымдар бөлек төленеді.
-universities.cost.filter_help: Қаржылай көмекке дейін. Ауқым ішінара сәйкес болуы мүмкін: бағдарлама мен төлем санатын тексеріңіз. Баға шектеуі қосылса, бағасы белгісіз ЖОО көрсетілмейді.
-universities.cost.filter_help_summary: Баға шектеуі белгісіз бағаларды жасырады; профиль бюджеті UniFit нәтижесіне әсер етеді.
 universities.cost.dated_reference: Жарияланған бағдар; қабылдау циклі расталмаған
 universities.cost.cycle_unconfirmed: Қабылдау циклі расталмаған
 universities.cost.cycle_unspecified: Қабылдау циклі көрсетілмеген
@@ -422,7 +420,6 @@ universities.empty.reset_filters: Фильтрлерді тазарту
 universities.search_placeholder: Университетті іздеу...
 universities.search_clear: Іздеу мәтінін тазарту
 universities.no_matches: Университет табылмады
-universities.select_country_first: Алдымен елді таңдаңыз
 universities.compare.enter: Салыстыру режимі
 universities.compare.selection: Таңдалған университеттер
 universities.compare.pair_slot: {number}-университет
@@ -559,7 +556,6 @@ universities.tradeoff.location.left: Қала
 universities.tradeoff.location.right: Қала сыртында
 universities.tradeoff.balanced: Маңызды емес
 universities.help.open: Түсіндірмені көрсету
-universities.help.sort_strategy: {fit} профильге сай сұрыптайды. Басқа режимдер тек атауы немесе құны бойынша сұрыптайды.
 universities.help.tradeoff.focus: Сол жақта — бір студентке шаққанда ғылыми жарияланымдар аз, оң жақта — зерттеу университеттері. Ортада ескерілмейді.
 universities.help.tradeoff.atmosphere: Сол жақта өтініш бергендердің үлкен бөлігі қабылданады, оң жақта бір орынға өтініш көп — бірінші курсқа қабылдаудың ресми пайызы бойынша. Ортада ескерілмейді.
 universities.help.tradeoff.finance: Сол жақ бөлік құны төмен және грант алуға қолайлы нұсқаларды құптайды. Оң жақ бөлік беделі үшін қымбатырақ нұсқаларды қарастырады. Ортада ескерілмейді.
@@ -571,7 +567,6 @@ universities.sort_cost_desc: Құны: жоғарыдан төменге
 universities.sort_name_asc: Атауы: A-Z
 universities.sort_rank_asc: Әлемдік рейтинг
 universities.sort_strategy: Сұрыптау
-universities.sort_hint_ai_tags: AI тегтері тек UniFit бойынша сұрыптағанда толық қолжетімді.
 accessibility.skip_to_main: Негізгі мазмұнға өту
 universities.state.warning_title: Қызығушылықтар қолжетімсіз
 universities.state.empty_title: Ағымдағы сүзгілер бойынша нәтижелер жоқ
@@ -583,7 +578,7 @@ universities.state_region: Штат / Аймақ
 universities.view_list: Тізім түрінде көру
 universities.view_map: Картада көру
 universities.view_toggles.aria: Көрініс режимі
-university.about_campus: Университет және кампус туралы
+university.about_campus: Университет туралы
 university.action.website: Веб-сайт
 university.action.map: Карта
 university.action.save: Таңдаулыларға сақтау
@@ -656,6 +651,9 @@ university.gallery.position: {total} фотосуреттің {current}-суре
 university.gallery.unavailable: Фотосурет қолжетімсіз
 university.gallery.zoom_in: Масштабты үлкейту
 university.gallery.zoom_out: Масштабты кішірейту
+university.cover.view_switch: Мұқаба көрінісі
+university.cover.photo: Фото
+university.cover.recenter: Кампусқа оралу
 university.entry_requirements: Қабылдау санаттары
 university.error_no_id: Қате: ID көрсетілмеген.
 university.loading_scholarships: Стипендиялар жүктелуде
@@ -1230,24 +1228,8 @@ university.deadlines.doctoral_research: Докторлық зерттеу бағ
 university.deadlines.mba_round: MBA-ға өтінім беру кезеңі
 university.deadlines.interviews_label: Сұхбаттар
 university.deadlines.time_label: Уақыт
-university.coverage.title: UniSearch деректері
-university.coverage.note: Мұнда UniSearch каталогқа қандай мәліметтерді қосқаны көрсетілген. «Каталогқа қосылмаған» университеттің мұндай бағдарламаларды немесе шарттарды ұсынбағанын білдірмейді.
-university.coverage.available: Каталогта бар
-university.coverage.not_catalogued: Каталогқа қосылмаған
-university.coverage.unknown: Қамту туралы деректер қолжетімсіз
-university.coverage.no_levels: Бұл университет үшін оқу деңгейін қамту туралы әзірге мәліметтер жоқ. Бұл университеттің қандай бағдарламалар ұсынып жатқанын көрсетпейді.
-university.coverage.level.bachelor: Бакалавриат
-university.coverage.level.master: Магистратура
-university.coverage.level.doctorate: Докторантура
 university.coverage.level.professional: Кәсіби бағдарламалар
 university.coverage.level.mba: MBA
-university.coverage.programs: Бағдарламалар
-university.coverage.requirements: Түсуге қойылатын талаптар
-university.coverage.deadlines_exact: Нақты күні және жылы бар мерзімдер
-university.coverage.deadlines_approximate: Шамамен алғандағы мерзімдер немесе жылсыз мерзімдер
-university.coverage.costs_program: Жекелеген бағдарламалардың құны
-university.coverage.costs_undergraduate: Бакалавриаттың құны туралы жалпы деректер
-university.coverage.aid: Қаржылық көмек және қаржыландыру
 profile.applicant_context.optional: Көрсетілмеген
 universities.compare.finance.grant_unconfirmed: Таңдалған грант — тек ықтимал қаржыландыру. Университет ресми түрде тағайындалғанға дейін оның сомасы құнмен немесе жеңілдікпен расталған болып саналмайды.
 universities.compare.funding.not_awarded: Мүмкін грант; расталмаған
@@ -2758,6 +2740,10 @@ universities.compare.reviewed.picker.count: Табылған бағдарлам�
 universities.compare.reviewed.picker.routes_intro: «{program}» бағдарламасына бірнеше жолмен өтініш беруге болады. Өзіңіздікін таңдаңыз.
 universities.compare.reviewed.picker.back: Басқа бағдарлама
 universities.compare.reviewed.picker.close: Жабу
+universities.compare.pdf.export: PDF форматына экспорттау
+universities.compare.pdf.date: Экспорт күні — {date}
+universities.compare.pdf.no_sources: Таңдалған нұсқа үшін ресми сілтемелер жоқ.
+universities.compare.pdf.note: Өтініш бермес бұрын ресми дереккөздерді тексеріңіз. Мерзімдер, талаптар және оқу құны өзгеруі мүмкін.
 universities.compare.mixed.title: Бұл университеттерді әзірге салыстыру мүмкін емес
 universities.compare.mixed.text: «{reviewed}» университетінің деректері қайта тексерілген, ал «{legacy}» университетінікі әлі тексерілмеген. Әртүрлі дәлдіктегі деректер қатар тұрмауы үшін жұпты тек бір топ ішінде салыстырамыз. Барлық университетті кезекпен қайта тексеріп жатырмыз.
 universities.compare.mixed.reviewed: Деректер қайта тексерілген
@@ -2949,7 +2935,7 @@ university.admissions.key_facts.title: Түсу үшін негізгісі
 university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
-university.admissions.key_facts.requirements_manual: Құжаттар мен басқа шарттар мұнда тексерілмейді; университет жариялаған жазбалар «Дереккөздер» бөлімінде.
+university.admissions.key_facts.requirements_manual: Құжаттар мен басқа талаптар автоматты түрде тексерілмейді.
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -3106,11 +3092,12 @@ university.admissions.key_facts.minimum_have_unconfirmed: Сізде: {result}; 
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}
 university.admissions.key_facts.requirements_checklist_lead: Нәтижелеріңіз және жарияланған минимумдар:
-university.admissions.key_facts.recommended_english: Ұсынылатын ағылшын тілі тесті: {minimum}
-university.admissions.key_facts.recommended_english_better: Ұсынылатын ағылшын тілі тесті: {minimum} (жақсырақ {better})
-university.admissions.key_facts.recommended_english_condition: Міндетті емес: ағылшын тілі сіздің ана тіліңіз болмаса және оны бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, университет тест тапсыруды қатты ұсынады.
-university.admissions.key_facts.recommended_english_condition_not_native: Міндетті емес: ағылшын тілін бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, бұл сізге қатысты.
-university.admissions.key_facts.recommended_english_native_hint: Ағылшын тілі — ана тіліңіз бе? Мұны профильде көрсетіңіз, сонда бұл жол тек сізге қатысты болғанда ғана көрсетіледі.
+university.admissions.key_facts.recommended_english: Ағылшын тілі тесті (міндетті емес): {exam} — минимум {minimum}
+university.admissions.key_facts.recommended_english_better: Ағылшын тілі тесті (міндетті емес): {exam} — минимум {minimum}, ұсынылатыны {better}
+university.admissions.key_facts.recommended_english_condition: Ағылшын тілі ана тіліңіз болмаса және оны бес жылдан аз қолдансаңыз не үйде не мектепте сөйлемесеңіз, тапсыру ұсынылады.
+university.admissions.key_facts.recommended_english_condition_not_native: Ағылшын тілін бес жылдан аз қолдансаңыз не үйде не мектепте сөйлемесеңіз, тапсыру ұсынылады.
+university.admissions.key_facts.recommended_english_native_hint: Профильде тіл деректерін көрсету
+university.admissions.key_facts.recommended_english_add_hint: Ағылшын тілі тестін қосу
 university.ux2.needs.mark_recommended: Талап емес, ұсыныс
 languages.exam_overall_score_label: Жалпы балл
 languages.exam_overall_score_hint: Бүкіл емтихан бойынша жалпы балл — секциялар бойынша баллды білмесеңіз, тек осыны енгізуге болады.
@@ -3218,10 +3205,10 @@ profile.ux2.evidence.language_title: Ағылшын тілін қолдану т
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
 university.ux2.title: Қабылдаудың негізгі деректері
 university.ux2.intro_route: «{route}» нұсқасы үшін көрсетілген. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.
+university.ux2.intro_selected_route: «{route}» нұсқасы үшін көрсетілген.
 university.ux2.intro_selected_program: Таңдалған «{program}» бағдарламасы үшін көрсетілген.
 university.ux2.intro_program: Әр бағдарламаның өзіндік мерзімі, құны мен талаптары бар. Көру үшін бағдарламаны таңдаңыз.
 university.ux2.intro_legacy: Университеттің бакалавриат туралы жариялаған деректері.
-university.ux2.note: Бұл ресми деректердің қысқаша мазмұны, қабылдау туралы шешім емес. Дереккөздер мен толық ақпарат — қойындыларда.
 university.ux2.loading: Негізгі деректер жүктелуде
 university.ux2.error: Негізгі деректерді жүктеу мүмкін болмады.
 university.ux2.retry: Қайталау
@@ -3395,4 +3382,3 @@ profile.calendar.next: Келесі ай
 profile.calendar.month: Ай
 profile.calendar.year: Жыл
 profile.calendar.clear: Тазалау
-profile.calendar.today: Бүгін

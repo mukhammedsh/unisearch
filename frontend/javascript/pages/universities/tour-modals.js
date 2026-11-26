@@ -28,7 +28,7 @@ function ensureUniversitiesTourModal() {
                 </div>
                 <div class="u-tour-header-end">
                     <p id="uTourProgressLabel" class="u-tour-progress" aria-live="polite"></p>
-                    <button class="icon-btn u-tour-close" type="button" data-action="close" title="${escapeHtml(t("tour.close", "Close tutorial"))}" aria-label="${escapeHtml(t("tour.close", "Close tutorial"))}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
+                    <button class="ui-btn ui-btn--icon icon-btn u-tour-close" type="button" data-action="close" title="${escapeHtml(t("tour.close", "Close tutorial"))}" aria-label="${escapeHtml(t("tour.close", "Close tutorial"))}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
                 </div>
             </div>
             <div class="u-tour-layout">
@@ -36,10 +36,10 @@ function ensureUniversitiesTourModal() {
                 <div class="u-tour-main">
                     <div id="uTourSlide" class="u-tour-slide" aria-live="polite"></div>
                     <div class="u-tour-actions">
-                        <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">${escapeHtml(t("tour.skip_all", "Skip tutorial"))}</button>
+                        <button class="ui-btn ui-btn--ghost u-tour-btn u-tour-btn--ghost" type="button" data-action="skip">${escapeHtml(t("tour.skip_all", "Skip tutorial"))}</button>
                         <div class="u-tour-actions-right">
-                            <button class="u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">${escapeHtml(t("tour.back", "Back"))}</button>
-                            <button class="u-tour-btn u-tour-btn--primary" type="button" data-action="next" autofocus>${escapeHtml(t("tour.next", "Next"))}</button>
+                            <button class="ui-btn ui-btn--ghost u-tour-btn u-tour-btn--ghost" type="button" data-action="prev">${escapeHtml(t("tour.back", "Back"))}</button>
+                            <button class="ui-btn ui-btn--primary u-tour-btn u-tour-btn--primary" type="button" data-action="next" autofocus>${escapeHtml(t("tour.next", "Next"))}</button>
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ export function showUniversitiesTour(options = {}) {
                 .join("");
 
             const actionHtml = step.action === "open_profile"
-                ? `<button class="u-tour-inline-btn" type="button" data-action="open-profile">${escapeHtml(t("tour.open_profile", "Open Profile"))}</button>`
+                ? `<button class="ui-btn ui-btn--sm u-tour-inline-btn" type="button" data-action="open-profile">${escapeHtml(t("tour.open_profile", "Open Profile"))}</button>`
                 : "";
 
             slideEl.classList.remove("is-enter-forward", "is-enter-back");

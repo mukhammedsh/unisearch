@@ -34,7 +34,7 @@ test("NU Foundation and undergraduate tuition keep their own quote in primary re
   assert.deepEqual(publishedTuitionQuotes(row, foundation).map(quote => quote.amounts[0]), ["$12,000 / year"]);
   assert.deepEqual(publishedTuitionQuotes(row, cs).map(quote => quote.amounts[0]), ["$15,000 / year"]);
   const resolved = context(foundation, "nu-a-route-regular-foundation-undergraduate", { costs: [row.id] });
-  const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references"')[0];
+  const primary = renderApplicantSection(resolved, ["costs"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   assert.match(primary, /12,000/);
   assert.doesNotMatch(primary, /15,000/);
 });
@@ -225,7 +225,7 @@ test("a source-conflict assessment status uses plain language instead of a class
 test("a dated micro-credential source stays findable in Dates without becoming a current deadline", () => {
   setLanguage("eng", { emit: false });
   const resolved = context("nu-a-study-mining-microcredential", "nu-a-route-mining-microcredential", { costs: ["nu-a-fact-microcredential-entry-cost-cycle"] });
-  const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references"')[0];
+  const primary = renderApplicantSection(resolved, ["deadlines"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   assert.match(primary, /Past-cycle reference/);
   assert.match(primary, /July 30, 2026/);
   assert.match(primary, /2026[-‑]08/);

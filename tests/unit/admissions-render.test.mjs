@@ -199,10 +199,10 @@ test("the visible requirements summary emphasizes unmet checks and keeps details
   assert.match(html, /At least one evaluated published minimum was not met/);
   assert.match(html, /Add your results to your profile to compare them with the minimums/);
   assert.match(html, /not an admission probability/);
-  assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
-  assert.ok(html.indexOf("At least one evaluated published minimum was not met") < html.indexOf("<details class=\"admissions-catalog__assessment-detail\">"));
+  assert.match(html, /<details class="admissions-catalog__assessment-detail motion-disclosure">/);
+  assert.ok(html.indexOf("At least one evaluated published minimum was not met") < html.indexOf("<details class=\"admissions-catalog__assessment-detail motion-disclosure\">"));
   assert.doesNotMatch(html, /<strong>0%<\/strong>/);
-  const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail">');
+  const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail motion-disclosure">');
   assert.match(summary, /Add the missing evidence in your profile/);
   assert.doesNotMatch(summary, /Add your results to your profile to compare them with the minimums|of 2 evaluated numeric/);
   assert.doesNotMatch(summary, /No requirements-match percentage|self-reported|not an admission probability/);
@@ -220,7 +220,7 @@ test("unavailable assessment explains distinct next steps and source-only covera
   resolved.assessment.activeChoice.details.checks = [{ kind: "published_rule", status: "unassessed", measurable: false }];
   const html = renderAdmissionsAssessment(resolved, { presentation: "simple" });
   assert.match(html, /Our data has no numeric minimum for this path that can be compared automatically/);
-  const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail">');
+  const [summary, details] = html.split('<details class="admissions-catalog__assessment-detail motion-disclosure">');
   assert.doesNotMatch(summary, /Add the missing evidence|Some published rules cannot be checked automatically|<strong>\d+%/);
   assert.match(details, /Some published rules cannot be checked automatically/);
 });
@@ -583,7 +583,7 @@ test("simple source details retain independent statuses, limits, periods and sou
   assert.match(summary, /Conflicting official sources/);
   assert.doesNotMatch(summary, />Published</);
   assert.equal((html.match(/Scope varies/g) || []).length, 1);
-  assert.match(html, /<details class="admissions-catalog__evidence">/);
+  assert.match(html, /<details class="admissions-catalog__evidence motion-disclosure">/);
   for (const value of ["Published", "Evidence review", "Conflicting official sources", "GBP", "Per quarter", "Only after fee-status assessment", "Course load may change the charge", "Applies to", "Computing", "Fall 2027", "2026–2027", "https://example.edu/fees"]) assert.ok(html.replaceAll("‑", "-").includes(value), value);
   assert.match(html, /2026[‑-]10-12/);
   assert.match(html, /<dd>0<\/dd>/);
@@ -597,7 +597,7 @@ test("simple assessment collapses exact checks and evidence while preserving rea
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
   assert.match(html, /<strong>0%<\/strong>/);
   assert.match(html, /At least one evaluated published minimum was not met/);
-  assert.match(html, /<details class="admissions-catalog__assessment-detail">/);
+  assert.match(html, /<details class="admissions-catalog__assessment-detail motion-disclosure">/);
   assert.match(html, /4.25/);
   assert.match(html, /Original published rule/);
   assert.match(html, /Future price remains unknown/);
@@ -745,7 +745,7 @@ test("simple unknown information is closed by default while retaining every next
   resolved.unknowns = [{ reason: "Award applicability has not been established.", official_next_step: "Ask the official funding office.", scope: { option_ids: ["example-option"], levels: ["undergraduate"], cycle: "Fall 2027", additional_dimensions: { employer: "Employer sponsorship remains unverified." } }, source_ids: ["official"] }];
   resolved.sources = [{ id: "official", title: "Official funding scope", url: "https://example.edu/funding" }];
   const html = renderAdmissionsContext(resolved, { presentation: "simple" });
-  assert.match(html, /<details class="admissions-catalog__fact admissions-catalog__unknowns"><summary class="admissions-catalog__heading">Not yet published by the university \(1\)/);
+  assert.match(html, /<details class="admissions-catalog__fact admissions-catalog__unknowns motion-disclosure"><summary class="admissions-catalog__heading">Not yet published by the university \(1\)/);
   for (const text of ["Award applicability has not been established", "Ask the official funding office", "Computing", "Fall 2027", "Employer sponsorship remains unverified", "https://example.edu/funding"]) assert.ok(html.includes(text), text);
   assert.doesNotMatch(renderAdmissionsContext(resolved), /admissions-catalog__unknowns/);
 });

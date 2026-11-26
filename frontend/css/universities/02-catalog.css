@@ -4,7 +4,7 @@
   gap: var(--space-5);
   align-items: stretch;
   overflow-anchor: none;
-  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
 .u-grid > .error-screen {
@@ -32,7 +32,7 @@
   min-height: 350px;
   overflow-anchor: none;
   opacity: 1;
-  transition: opacity var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
 .u-skeleton-grid.is-fading-out {
@@ -61,7 +61,7 @@
     var(--skeleton-highlight) 50%,
     transparent 100%
   );
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
   pointer-events: none;
   will-change: transform;
 }
@@ -231,7 +231,7 @@
   var(--surface-soft);
   background-size: auto, auto, auto, auto, 220% 100%, auto, auto, auto;
   opacity: 0.92;
-  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
 }
 
 .u-map-stage.is-loading .u-map-container::after {
@@ -242,7 +242,7 @@
   linear-gradient(100deg, transparent 0%, transparent 34%, var(--skeleton-highlight) 46%, transparent 58%, transparent 100%),
   var(--surface-solid);
   background-size: 220% 100%, auto;
-  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-bg-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
 }
 
 @keyframes skeleton-bg-shimmer {
@@ -303,20 +303,20 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 35%, color-mix(in srgb, var(--backdrop) 50%, transparent) 100%);
+  background: linear-gradient(180deg, transparent 35%, color-mix(in oklab, var(--backdrop) 50%, transparent) 100%);
 }
 
 .uni-media-empty {
   display: flex;
   height: 100%;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3);
   color: var(--text-muted);
-  font-size: var(--text-sm);
-  text-align: center;
+}
+
+.uni-media-empty .ui-icon {
+  width: 32px;
+  height: 32px;
 }
 
 .uni-media-img + .uni-media-empty {
@@ -366,33 +366,6 @@
   color: var(--text-muted);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-}
-
-.catalog-cost-help {
-  display: grid;
-  gap: var(--space-1);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-}
-
-.catalog-cost-help > summary {
-  min-height: 44px;
-  padding-block: var(--space-2);
-  cursor: pointer;
-}
-
-.catalog-cost-help > summary:hover {
-  color: var(--interaction-hover-text);
-}
-
-.catalog-cost-help > summary:active {
-  color: var(--interaction-active-text);
-}
-
-.catalog-cost-help > p {
-  margin: 0;
-  padding-inline-start: var(--space-4);
 }
 
 .uni-body {
@@ -515,7 +488,7 @@
   display: inline-flex;
   max-width: 100%;
   z-index: 2;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 .uni-metric-tooltip:is(:hover, :focus-within, .is-open, .is-closed, .is-closing) {
@@ -593,11 +566,6 @@
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.uni-metric--missing .uni-metric-value {
-  color: var(--text-muted);
-  font-weight: var(--font-weight-medium);
-}
-
 .u-mobile-filter-count {
   min-width: 20px;
   height: 20px;
@@ -644,9 +612,9 @@
 }
 
 .u-recent-trigger {
-  min-block-size: var(--u-toolbar-height, 36px);
+  min-block-size: var(--u-toolbar-height, var(--control-height-md));
   box-sizing: border-box;
-  border-radius: var(--u-toolbar-radius, var(--radius-md));
+  border-radius: var(--u-toolbar-radius, var(--control-radius-md));
   font: inherit;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
@@ -657,8 +625,8 @@
   justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--u-toolbar-pad, var(--space-3));
-  background: var(--surface-solid);
-  color: var(--text-muted);
+  background: var(--surface-control-on-bg);
+  color: var(--text);
   white-space: nowrap;
   box-shadow: var(--shadow-xs);
   transition:
@@ -679,9 +647,9 @@
 
 .u-recent-trigger.is-active,
 .u-recent-trigger[aria-expanded="true"] {
-  background: var(--accent-active-surface);
-  color: var(--interaction-active-text);
-  box-shadow: var(--shadow-xs);
+  background: var(--interaction-hover-surface);
+  color: var(--text);
+  box-shadow: var(--shadow-dropdown-trigger);
 }
 
 .u-recent-trigger__count {
@@ -689,7 +657,7 @@
   height: var(--space-5);
   padding: 0 var(--space-1-5);
   border-radius: var(--radius-full);
-  background: var(--surface-soft);
+  background: var(--control-badge-bg);
   color: var(--text);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
@@ -702,8 +670,8 @@
 }
 
 .u-recent-trigger[aria-expanded="true"] .u-recent-trigger__count {
-  background: var(--surface-solid);
-  color: var(--accent-text);
+  background: var(--control-badge-hover-bg);
+  color: var(--text);
 }
 
 .u-recent-trigger__chevron {
@@ -724,11 +692,11 @@
 .u-recent-popover {
   box-sizing: border-box;
   border: none;
-  border-radius: var(--radius-lg);
-  background: var(--surface-solid);
+  border-radius: var(--dropdown-radius);
+  background: var(--dropdown-surface);
   color: var(--text);
-  box-shadow: var(--shadow-md);
-  padding: var(--space-3);
+  box-shadow: var(--shadow-dropdown);
+  padding: var(--space-1);
   width: min(360px, calc(100vw - 2 * var(--layout-page-gutter)));
   max-width: calc(100vw - 2 * var(--layout-page-gutter));
   transform-origin: top right;
@@ -738,7 +706,7 @@
 .u-recent-popover.is-open {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 /* Anchor natively beneath the trigger aligned to its end edge; flip automatically at viewport boundaries.
@@ -747,7 +715,7 @@
   .u-recent-popover {
     inset: auto;
     margin: 0;
-    margin-block-start: var(--space-2);
+    margin-block-start: var(--space-1);
     position-area: block-end span-inline-start;
     position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
   }
@@ -755,41 +723,30 @@
 
 @supports not (position-area: block-end) {
   .u-recent-popover::backdrop {
-    background: color-mix(in srgb, var(--backdrop) 35%, transparent);
+    background: color-mix(in oklab, var(--backdrop) 35%, transparent);
   }
 }
 
-.u-recent__head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--line-faint);
-}
-
-.u-recent__label {
-  min-width: 0;
-  color: var(--text);
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  line-height: 1.2;
-  font-weight: var(--font-weight-semibold);
+.u-recent__footer {
+  padding-top: var(--space-1);
+  border-top: 1px solid var(--line-faint);
 }
 
 .u-recent__clear {
-  flex: 0 0 auto;
+  width: 100%;
+  box-sizing: border-box;
   border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text-muted);
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  min-height: 28px;
-  padding: var(--space-1) var(--space-2);
-  font-size: var(--text-xs);
-  line-height: 1.1;
-  font-weight: var(--font-weight-medium);
+  justify-content: flex-start;
+  gap: var(--space-2);
+  min-block-size: var(--dropdown-row-height);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-weight-regular);
   white-space: nowrap;
   cursor: pointer;
   box-shadow: none;
@@ -803,7 +760,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 0;
   max-height: min(340px, 55dvh);
   overflow-y: auto;
   overscroll-behavior-y: contain;
@@ -813,9 +770,9 @@
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  min-height: 38px;
-  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
-  border-radius: var(--radius-md);
+  min-block-size: var(--dropdown-row-height);
+  padding: var(--space-1-5) var(--space-2) var(--space-1-5) var(--space-3);
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--text);
   display: flex;
@@ -835,8 +792,8 @@
   display: block;
   white-space: normal;
   font-size: var(--text-sm);
-  line-height: 1.35;
-  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-weight-regular);
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
@@ -877,12 +834,12 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-width: 40px;
-  height: 40px;
+  min-width: var(--control-height-md);
+  height: var(--control-height-md);
   padding: 0 var(--space-3);
-  background: var(--surface-solid, var(--card));
+  background: var(--surface-control-on-bg);
   outline: none;
-  border-radius: var(--radius-base);
+  border-radius: var(--control-radius-md);
   font-family: inherit;
   font-weight: var(--font-weight-medium);
   font-size: var(--text-base);
@@ -969,7 +926,7 @@
   display: inline-flex;
   flex: 0 0 auto;
   z-index: 1;
-  transition: z-index 0s linear var(--motion-fast, 160ms);
+  transition: z-index 0s var(--motion-ease-linear) var(--motion-fast);
 }
 
 /* In the card's top-right row every tooltip aligns to the row's right edge so it stays inside card bounds. */
@@ -1131,9 +1088,9 @@
   align-items: center;
   gap: var(--space-1-5);
   padding: var(--space-1-5);
-  background: var(--surface-solid);
+  background: var(--dropdown-surface);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-dropdown);
   white-space: nowrap;
 }
 
@@ -1301,18 +1258,22 @@
     color: var(--interaction-hover-text);
   }
 
-  .u-recent-trigger:not(.is-active):not([aria-expanded="true"]):hover {
+  .u-recent-trigger:hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .u-recent__clear:hover {
+  .u-recent-trigger:hover:not(:active) .u-recent-trigger__count {
+    background: var(--control-badge-hover-bg);
+  }
+
+  .u-recent__clear:hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .u-recent__chip:hover {
-    background: var(--surface-soft);
+  .u-recent__chip:hover:not(:has(.u-recent__link:active)) {
+    background: var(--interaction-hover-surface);
   }
 
   .u-recent__link:hover {
@@ -1324,11 +1285,11 @@
   }
 
   .u-recent__remove:hover {
-    background: color-mix(in srgb, var(--color-danger) 14%, transparent);
+    background: color-mix(in oklab, var(--color-danger) 14%, transparent);
     color: var(--color-danger);
   }
 
-  .page-btn:not(.page-btn--active):hover {
+  .page-btn:not(.page-btn--active, :active):hover {
     color: var(--interaction-hover-text);
     background: var(--interaction-hover-surface);
   }
@@ -1359,6 +1320,12 @@
     transform: translateX(4px);
     color: var(--interaction-hover-text);
   }
+}
+
+:is(.u-recent-trigger, .u-recent__clear, .page-btn:not(.page-btn--active)):active:not(:disabled),
+.u-recent__chip:has(.u-recent__link:active) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 :root .uni-card:active {

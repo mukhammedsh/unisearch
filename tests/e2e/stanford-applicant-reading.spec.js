@@ -287,7 +287,17 @@ test("Stanford retries failures and keeps selection through an empty search", as
   await prepare(page, presentations[1]);
   await page.goto(`/university.html?id=${university}`);
   await ready(page);
-  await page.route(`**/universities/${university}/admissions-context`, route => route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Unavailable"}' }), { times: 1 });
+  let failSelectedContext = false;
+  await page.route((url) => new URL(url).pathname.endsWith(`/universities/${university}/admissions-context`), async (route) => {
+    const request = route.request();
+    const context = request.method() === "POST" ? request.postDataJSON()?.context : null;
+    if (failSelectedContext && context?.study_option_id === "stanford-option-cs-ms") {
+      failSelectedContext = false;
+      await route.fulfill({ status: 503, contentType: "application/json", body: '{"detail":"Unavailable"}' });
+      return;
+    }
+    await route.continue();
+  });
   await tab(page, "programs");
   await page.locator("#admissionsSearch").fill("Computer Science");
   const searchResponse = page.waitForResponse(response => {
@@ -297,6 +307,7 @@ test("Stanford retries failures and keeps selection through an empty search", as
   await page.locator("#admissionsSearchSubmit").click();
   expect((await searchResponse).ok()).toBe(true);
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
+  failSelectedContext = true;
   await page.locator('[data-select-study-option="stanford-option-cs-ms"]').click();
   await expect(page.locator("#admissionsContext")).toHaveAttribute("data-state", "error");
   await tab(page, "programs");

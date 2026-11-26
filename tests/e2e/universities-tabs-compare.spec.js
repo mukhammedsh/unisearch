@@ -106,8 +106,9 @@ test("comparison skips a missing campus photo and keeps the university name", as
 });
 
 // Chooses a program in a column's picker dialog; a program with several routes asks for the route in the same dialog.
-async function pickProgram(page, id, { search, option, route = "", level = "" }) {
-  await page.locator(`[data-compare-pick="${id}"]`).click();
+async function pickProgram(page, id, { search, option, route = "", level = "", triggerSelector = "" }) {
+  const trigger = triggerSelector || `.compare-reviewed__head [data-compare-pick="${id}"]`;
+  await page.locator(trigger).click();
   const dialog = page.locator("dialog.compare-picker[open]");
   await expect(dialog).toBeVisible();
   if (level) await dialog.locator(`[data-picker-level="${level}"]`).click();
@@ -125,6 +126,40 @@ async function pickProgram(page, id, { search, option, route = "", level = "" })
   await expect(page.locator("dialog.compare-picker")).toHaveCount(0);
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${id}"]`)).toHaveAttribute("data-scope", "program");
 }
+
+test("exports the current reviewed programs and official links to a printable PDF", async ({ page }, testInfo) => {
+  await markTourAsSeen(page);
+  await clearCompareState(page);
+  await page.addInitScript(() => { window.print = () => document.body.setAttribute("data-print-requested", "true"); });
+
+  for (const viewport of [{ width: 1440, height: 960 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await page.goto(`/compare.html?lang=eng&ids=${MIT_ID},${IMPERIAL_ID}`);
+    await waitForReviewedComparison(page);
+    const exportButton = page.getByRole("button", { name: "Export to PDF" });
+    await exportButton.click();
+    await expect(page.locator("body")).toHaveAttribute("data-print-requested", "true");
+    const report = page.locator(".compare-pdf");
+    if (viewport.width > 400) await expect(report).toContainText("Depends on the program");
+    await expect(report).toBeHidden();
+
+    await pickProgram(page, IMPERIAL_ID, { search: "Computing", option: "imperial-option-computing-meng", level: "undergraduate" });
+    await exportButton.click();
+    await page.emulateMedia({ media: "print" });
+    await expect(report.getByRole("columnheader", { name: /Imperial College London.*Computing/i })).toBeVisible();
+    await expect(report).toContainText(/UCAS/i);
+    await expect(report).toContainText(/£[\d,]+/);
+    await expect(report).toContainText(/(deadline|date)/i);
+    await expect(report).toContainText(/(SAT|ACT)/i);
+    const sources = report.getByRole("row", { name: /^Sources/ });
+    await expect(sources.locator('a[href*="imperial.ac.uk"]')).not.toHaveCount(0);
+    await expect(sources).not.toContainText(/MBA|Graduate tuition/i);
+    await expect(exportButton).toBeHidden();
+    await page.pdf({ path: testInfo.outputPath(`comparison-${viewport.width}.pdf`), preferCSSPageSize: true });
+    await page.emulateMedia({ media: "screen" });
+    await expect(exportButton).toBeVisible();
+  }
+});
 
 test("empty comparison action uses token spacing and stays centered", async ({ page }) => {
   await clearCompareState(page);
@@ -177,7 +212,9 @@ test.describe("catalog photo sources", () => {
       await page.goto("/index.html?lang=rus&q=KIMEP");
       await waitForUniversitiesReady(page);
       const missing = page.locator(`#universitiesList [data-uni-id="${kimep}"] .uni-media`);
-      await expect(missing.getByText("Фото кампуса недоступно")).toBeVisible();
+      await expect(missing.locator(".uni-media-empty")).toBeVisible();
+      await expect(missing.locator(".uni-media-empty svg")).toBeVisible();
+      await expect(missing.locator(".uni-media-empty")).toHaveText("");
       await expect(missing.locator("img")).toHaveCount(0);
       expect(await missing.evaluate((media) => getComputedStyle(media, "::after").content)).toBe("none");
 
@@ -483,7 +520,12 @@ test("reviewed comparison opens on shared facts and saves a program chosen in ea
   await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText("Depends on the program");
   expect(await savedChoice(page, MIT_ID)).toBeUndefined();
 
-  await pickProgram(page, IMPERIAL_ID, { search: "Computing", option: "imperial-option-computing-meng", level: "undergraduate" });
+  await pickProgram(page, IMPERIAL_ID, {
+    search: "Computing",
+    option: "imperial-option-computing-meng",
+    level: "undergraduate",
+    triggerSelector: `[data-compare-row="deadline"] [data-compare-pick="${IMPERIAL_ID}"]`,
+  });
   await expect.poll(() => savedChoice(page, IMPERIAL_ID)).toMatchObject({ studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng" });
   // The applicant compares in their own currency: the published pound price is converted to the setting (USD by default).
   await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/≈ \$[\d,]+/);
@@ -558,7 +600,7 @@ test("comparison keeps MIT institution-wide and Stanford CS graduate contexts in
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${MIT_ID}"]`)).toContainText("First year, one shared application");
   await expect(page.locator(`.compare-reviewed__head[data-uni-id="${STANFORD_ID}"]`)).toContainText("Computer Science (MS)");
   const route = page.locator('[data-compare-row="route"] dd');
-  await expect(route.nth(0)).toContainText("No program chosen");
+  await expect(route.nth(0)).not.toContainText("No program chosen");
   await expect(route.nth(1)).toContainText("Computer Science MS — external applicants");
   await expect(page.locator("[data-reviewed-comparison]")).not.toContainText("directory-evidence:stanford-graduate-cs-ms");
 });
@@ -572,7 +614,8 @@ test("reviewed comparison keeps MIT institutional tests separate from Imperial c
   const needs = page.locator('[data-compare-row="needs"] dd');
   await expect(needs.nth(0)).toContainText(/SAT, ACT|SAT or ACT|ACT or SAT/);
   await expect(needs.nth(1)).not.toContainText(/SAT, ACT|SAT or ACT/);
-  await expect(needs.nth(1).locator("a")).toHaveAttribute("href", /admission_option=imperial-option-computing-meng.*#tab-admission/);
+  await expect(needs.nth(1).locator("a.compare-reviewed__checklist-note")).toHaveAttribute("href", "/profile.html");
+  await expect(needs.nth(1).locator("a.compare-reviewed__link")).toHaveAttribute("href", /admission_option=imperial-option-computing-meng.*#tab-admission/);
   await expect(page.locator("[data-reviewed-comparison]")).not.toContainText(/1,450|1,550/);
 });
 

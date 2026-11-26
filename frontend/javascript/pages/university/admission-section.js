@@ -2,6 +2,7 @@ import {
   escapeHtml,
   escapeHtmlAttr,
   getSelectedAdmissionChoice,
+  initCustomSelect,
   loadProfile,
   markMotionEnter,
   motionPress,
@@ -238,7 +239,7 @@ function renderChoiceRequirements({ category, funding, profile, university }) {
         <div class="track-extra-req">
           <div class="track-extra-req-title">${escapeHtml(translateWord("extra_requirements", "Extra requirements"))}</div>
           <ul class="track-extra-req-list">${firstTwo.map((item) => `<li>${escapeHtml(trTrackDescription(university.id, profile?.id || category?.id, item))}</li>`).join("")}</ul>
-          <details class="track-collapsible-details">
+          <details class="track-collapsible-details motion-disclosure">
             <summary class="track-collapsible-summary">
               <span class="track-collapsible-title">${escapeHtml(t("admission.collapsible.additional_details", "Additional requirements & instructions"))} (+${remaining.length})</span>
               ${chevronIcon}
@@ -388,7 +389,7 @@ function renderFundingOptions({ annualCostForTrack, category, effectiveSelectedC
                   <div class="track-cost-preview${isGrant ? " track-cost-preview--grant" : ""}">
                     <strong>${escapeHtml(t("admission.funding_before_award", "Annual cost before any award"))}:</strong> ${escapeHtml(priceValue)}
                   </div>
-                  <button type="button" class="track-select-btn${isSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey, funding, profile })} ${isSelected ? "disabled" : ""}>
+                  <button type="button" class="ui-btn ui-btn--sm ui-btn--subtle track-select-btn${isSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey, funding, profile })} ${isSelected ? "disabled" : ""}>
                     ${escapeHtml(isSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
                   </button>
                 </div>
@@ -508,7 +509,7 @@ function renderAdmissionCategoryCard({
           ? renderFundingOptions({ annualCostForTrack, category, effectiveSelectedChoiceKey, profile: activeProfile, university })
           : `
             <div class="track-select-row">
-              <button type="button" class="track-select-btn${profileIsSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey: activeChoiceKey, profile: activeProfile })} ${profileIsSelected ? "disabled" : ""}>
+              <button type="button" class="ui-btn ui-btn--sm ui-btn--subtle track-select-btn${profileIsSelected ? " is-active" : ""}" ${admissionChoiceSelectionAttrs({ category, choiceKey: activeChoiceKey, profile: activeProfile })} ${profileIsSelected ? "disabled" : ""}>
                 ${escapeHtml(profileIsSelected ? t("admission.choice.selected", "Selected") : t("admission.choice.select", "Select"))}
               </button>
             </div>
@@ -529,10 +530,8 @@ function attachAdmissionSectionEventListeners({
   universityId,
   admissionContext,
 }) {
-  container.querySelectorAll("[data-admission-open-tab]").forEach((button) => {
-    button.addEventListener("click", () => document.querySelector(`.d-tab-btn[data-tab="${button.dataset.admissionOpenTab}"]`)?.click());
-  });
   container.querySelectorAll("[data-admission-context]").forEach((select) => {
+    if (select.id) initCustomSelect(select.id);
     select.addEventListener("change", () => {
       const key = select.getAttribute("data-admission-context");
       updateAdmissionUrl({ [key]: select.value });
@@ -692,16 +691,20 @@ export function renderAdmissionSection({
     ? admissionsOverviewHtml
     : "";
   const analysisHtml = overviewDetailsHtml
-    ? `<details class="mit-admission-analysis"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${overviewDetailsHtml}</details>`
+    ? `<details class="mit-admission-analysis motion-disclosure"><summary>${escapeHtml(t("admission.mit.analysis", "Requirements fit and historical statistics"))}</summary>${overviewDetailsHtml}</details>`
     : "";
   if (!compactMode) {
     html += studyLevelFilterHtml;
   }
-  html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
+  if (compactMode) {
+    html += renderProgramSelector(university, levelFilteredCategories, selectedProgramKey, hasExplicitProgramSelection, activeLevelKey);
+  }
   if (!compactMode) html += renderAdmissionContextControls(admissionContext.programCategories.length ? admissionContext.programCategories : levelFilteredCategories, admissionContext);
   if (!compactMode && visibleCategories.length) {
     const sourceUrl = safeUrl(visibleCategories[0].source_url);
-    html += `<div class="admission-decision-actions">${sourceUrl ? `<a href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.next_official_step", "Open official application requirements"))}</a>` : ""}<button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-deadlines">${escapeHtml(t("university.tab.deadlines", "Deadlines"))}</button><button type="button" class="mit-admission-context__action" data-admission-open-tab="tab-finance">${escapeHtml(t("university.tab.costs", "Costs"))}</button></div>`;
+    if (sourceUrl) {
+      html += `<div class="admission-decision-actions"><a href="${escapeHtmlAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.next_official_step", "Open official application requirements"))}</a></div>`;
+    }
   }
   if (selectedProgramKey !== GENERAL_PROGRAM_KEY && visibleCategories.length && visibleCategories.every((category) => String(category?.scope || "general").toLowerCase() === "general")) {
     html += `<div class="admission-scope-note">${escapeHtml(t("admission.program.using_general_note", "No program-specific score data is published here, so general requirements are shown."))}</div>`;

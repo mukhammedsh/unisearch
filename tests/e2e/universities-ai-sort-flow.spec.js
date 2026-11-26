@@ -128,6 +128,12 @@ test("unifit tradeoff tooltips are hidden by default and toggle on interaction",
   await seedProfile(page, personas.ruStemGrant.profile);
   await page.goto("/index.html");
 
+  const prefsPanel = page.locator("#unifitPreferencesPanel");
+  await expect(prefsPanel).toBeVisible();
+  if (!(await prefsPanel.evaluate((el) => el.open))) {
+    await prefsPanel.locator("> summary").click();
+  }
+
   const tooltips = page.locator(".u-tooltip");
   const count = await tooltips.count();
   expect(count).toBeGreaterThan(0);
@@ -142,7 +148,7 @@ test("unifit tradeoff tooltips are hidden by default and toggle on interaction",
   }
 
   // Clicking an info button opens its tooltip
-  const firstInfoBtn = page.locator(".u-info").first();
+  const firstInfoBtn = prefsPanel.locator(".u-info").first();
   await firstInfoBtn.click();
   const activeTooltip = firstInfoBtn.locator("..").locator(".u-tooltip");
   await expect(activeTooltip).toBeVisible();

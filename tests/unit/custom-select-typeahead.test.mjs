@@ -521,7 +521,7 @@ describe('custom-select-typeahead and optgroups', () => {
     assert.ok(!wrapper.classList.has('open'));
   });
 
-  it('adds open-up class when space below is limited and removes on close', () => {
+  it('adds open-up when space below is limited and keeps it until the next open recalculates', () => {
     const { select } = createSelectWithOptgroups();
     docElements.set(select.id, select);
 
@@ -558,7 +558,25 @@ describe('custom-select-typeahead and optgroups', () => {
       stopPropagation: () => {},
     });
 
+    // The closing panel must exit toward its trigger, so the direction class outlives `open`.
     assert.ok(!wrapper.classList.has('open'));
+    assert.ok(wrapper.classList.has('open-up'));
+    assert.equal(trigger.getAttribute('aria-expanded'), 'false');
+
+    trigger.getBoundingClientRect = () => ({
+      top: 20,
+      bottom: 60,
+      left: 10,
+      right: 200,
+      width: 190,
+      height: 40,
+    });
+    trigger.dispatchEvent({
+      type: 'click',
+      stopPropagation: () => {},
+    });
+
+    assert.ok(wrapper.classList.has('open'));
     assert.ok(!wrapper.classList.has('open-up'));
   });
 

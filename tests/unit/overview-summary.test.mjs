@@ -7,7 +7,7 @@ global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../fro
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { costFact, deadlineFact } = await import("../../frontend/javascript/pages/university/admissions-key-facts.js");
 const {
-  checklistItems, costCard, deadlineCard, firstYearSharedRoute, legacyCards, legacyCostCard, legacyNeedsItems, peopleItems, renderSummary, reviewedCards,
+  checklistItems, costCard, deadlineCard, firstYearSharedRoute, legacyCards, legacyCostCard, legacyNeedsItems, mountOverviewSummary, peopleItems, renderSummary, reviewedCards, summaryIntro,
 } = await import("../../frontend/javascript/pages/university/overview-summary.js");
 await initI18n();
 setLanguage("eng", { emit: false });
@@ -54,10 +54,14 @@ test("the checklist names tests, the English test and documents, and drops a doc
 test("a recommended English test shows the applicant's own result instead of a test still to prepare", () => {
   const english = fact("english", "language_tests", { presence: "strongly_recommended", minima_and_recommendations: [{ exam: "IELTS Academic", minimum: 7, recommended: 7.5 }] },
     { conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)" }] });
-  const profile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] };
-  const item = checklistItems(resolvedWith([english]), profile).find(row => row.factId === "english");
-  assert.equal(item.mark, "recommended");
-  assert.match(item.text, /IELTS Academic 7\.0.*You have: IELTS Academic 6\.5/);
+  const belowProfile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] };
+  const item = checklistItems(resolvedWith([english]), belowProfile).find(row => row.factId === "english");
+  assert.equal(item.mark, "below");
+  assert.match(item.text, /IELTS Academic — minimum 7\.0, recommended 7\.5.*You have: IELTS Academic 6\.5, below the minimum/);
+  const metProfile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 7.5 }] };
+  const metItem = checklistItems(resolvedWith([english]), metProfile).find(row => row.factId === "english");
+  assert.equal(metItem.mark, "met");
+  assert.match(metItem.text, /IELTS Academic — minimum 7\.0, recommended 7\.5\. You have: IELTS Academic 7\.5$/);
   // Without a profile the published wording stays.
   assert.equal(checklistItems(resolvedWith([english]))[0].mark, "recommended");
 });
@@ -203,16 +207,115 @@ test("legacy requirements are listed only for a single undergraduate category", 
   assert.equal(varies[2].headline, "Requirements differ between undergraduate programs.");
 });
 
-test("the rendered block escapes published text, states the one footnote once and links each card to its tab", () => {
+test("the rendered block escapes published text, omits the redundant footnote and links each card to its tab", () => {
   const cards = reviewedCards({ resolved: resolvedWith([fact("tests", "standardized_tests", "<img src=x onerror=alert(1)> is required.")]), university: {}, now: NOW });
   const html = renderSummary(cards, "Intro");
   assert.ok(!html.includes("<img"));
   assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt; is required\./);
-  assert.equal(html.split("A summary of official facts, not an admission decision.").length, 2);
+  assert.equal(html.includes("overview-summary__note"), false);
   // Cards render in natural reading order inside one flat grid (deadline, cost, needs).
   assert.deepEqual([...html.matchAll(/data-open-tab="([^"]+)"/g)].map(match => match[1]), ["tab-deadlines", "tab-finance", "tab-admission"]);
   assert.equal([...html.matchAll(/class="overview-summary__column"/g)].length, 0);
   assert.equal([...html.matchAll(/data-summary-card="/g)].length, 3);
+});
+
+test("summaryIntro names the shared first-year route, another selected route, or the chosen program", () => {
+  const defaultRoute = route("first-year", "first_year", ["undergraduate"], ["a"]);
+  const firstYearResolved = resolvedWith([]);
+  assert.equal(summaryIntro(firstYearResolved, defaultRoute, "undergraduate"), 'Shown for "First-year admission". One application covers all undergraduate programs.');
+  const transferResolved = resolvedWith([], [], {
+    selected_route: { id: "transfer", title: "Transfer admission", shared_policy_context_ids: [] },
+  });
+  assert.equal(summaryIntro(transferResolved, defaultRoute, "undergraduate"), 'Shown for "Transfer admission".');
+  const programResolved = resolvedWith([], [], {
+    selected_option: { id: "mit-ms", title: "Electrical Engineering and Computer Science", awards: ["SM"] },
+    selected_route: { id: "grad-eecs", title: "Graduate admission", shared_policy_context_ids: [] },
+  });
+  assert.equal(summaryIntro(programResolved, defaultRoute, "masters"), 'Shown for the program "Electrical Engineering and Computer Science" you chose.');
+  assert.equal(summaryIntro(null, defaultRoute), "");
+});
+
+test("mounted Overview updates for a selected route or program even when the university has a shared first-year route", async () => {
+  const previousFetch = global.fetch;
+  const previousWindow = global.window;
+  const listeners = new Map();
+  const dispatched = [];
+  const fakeWindow = {
+    location: { href: "http://localhost/university.html?id=mit-usa-cambridge" },
+    history: { pushState() {}, replaceState() {} },
+    addEventListener(type, fn) {
+      if (!listeners.has(type)) listeners.set(type, new Set());
+      listeners.get(type).add(fn);
+    },
+    removeEventListener(type, fn) {
+      listeners.get(type)?.delete(fn);
+    },
+    dispatchEvent(event) {
+      dispatched.push(event);
+      for (const fn of listeners.get(event.type) || []) fn(event);
+      return true;
+    },
+  };
+  global.window = fakeWindow;
+
+  const firstYearResolved = resolvedWith([fact("tests", "standardized_tests", "SAT or ACT required for first-year.")]);
+  const mastersResolved = resolvedWith([fact("tests", "standardized_tests", "Department graduate application required.")], [], {
+    selected_option: { id: "mit-ms", title: "Computer Science", awards: ["SM"] },
+    selected_route: { id: "mit-grad", title: "Graduate admission", shared_policy_context_ids: [] },
+  });
+  const sharedRoutes = [route("first-year", "first_year", ["undergraduate"], ["a"])];
+  let contextRequests = 0;
+  global.fetch = async (url) => {
+    const href = String(url);
+    if (href.includes("/study-options")) {
+      return { ok: true, json: async () => ({ items: [], total: 0, shared_routes: sharedRoutes }) };
+    }
+    if (href.includes("/admissions-context")) {
+      contextRequests += 1;
+      return { ok: true, json: async () => firstYearResolved };
+    }
+    return { ok: false, status: 404, json: async () => ({}) };
+  };
+
+  const container = {
+    innerHTML: "",
+    querySelector(selector) { return selector === ".overview-summary__grid" && this.innerHTML.includes("overview-summary__grid") ? {} : null; },
+    addEventListener() {},
+    removeEventListener() {},
+  };
+
+  const mounted = mountOverviewSummary({ container, university: {}, universityId: "mit-usa-cambridge", reviewed: true });
+  try {
+    await new Promise(resolve => setTimeout(resolve, 20));
+    assert.match(container.innerHTML, /SAT or ACT required for first-year\./);
+    assert.match(container.innerHTML, /One application covers all undergraduate programs\./);
+    const requestsBeforeSwitch = contextRequests;
+
+    // Switching to a graduate program on the Admission tab updates Overview immediately using the already-resolved payload.
+    fakeWindow.dispatchEvent({
+      type: "unisearch:admission-context",
+      detail: {
+        institutionId: "mit-usa-cambridge",
+        context: { study_option_id: "mit-ms", application_route_id: "mit-grad", study_level: "masters", intended_entry_cycle: "", fee_status_context: "unknown" },
+        resolved: mastersResolved,
+      },
+    });
+    assert.equal(contextRequests, requestsBeforeSwitch);
+    assert.match(container.innerHTML, /Department graduate application required\./);
+    assert.match(container.innerHTML, /Shown for the program &quot;Computer Science&quot; you chose\./);
+
+    // Clearing the selection falls back to the university's shared first-year route.
+    fakeWindow.dispatchEvent({
+      type: "unisearch:admission-context",
+      detail: { institutionId: "mit-usa-cambridge", context: {}, resolved: null },
+    });
+    await new Promise(resolve => setTimeout(resolve, 20));
+    assert.match(container.innerHTML, /SAT or ACT required for first-year\./);
+  } finally {
+    mounted.dispose();
+    global.fetch = previousFetch;
+    global.window = previousWindow;
+  }
 });
 
 test("summary links open the shared first-year route unless the page already has a selection", async () => {

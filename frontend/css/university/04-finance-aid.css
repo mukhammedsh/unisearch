@@ -267,7 +267,7 @@
   overflow: hidden;
   flex-direction: column;
   min-height: auto;
-  transition: border-color var(--motion-fast, 160ms) var(--motion-ease-standard, ease);
+  transition: border-color var(--motion-fast) var(--motion-ease-standard);
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
   padding: var(--space-5);

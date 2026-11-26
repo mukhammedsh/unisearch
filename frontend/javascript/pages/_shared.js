@@ -210,10 +210,6 @@ export function trStudyMode(value) {
   return translateDataValue("study_mode", value, value);
 }
 
-export function trTag(value) {
-  return translateDataValue("tag", value, value);
-}
-
 export function trUniversityName(u) {
   return translateUniversityName(u?.id, String(u?.name || ""));
 }

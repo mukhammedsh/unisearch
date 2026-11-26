@@ -6,7 +6,6 @@ import {
   loadProfileForApi,
   markMotionEnter,
   nested,
-  replayMotion,
   saveFilters,
 } from "../../utils.js";
 import { heroIcon } from "../../icons.js";
@@ -24,6 +23,7 @@ import {
   trUniversityName,
 } from "../_shared.js";
 import { ensureMapLibraries } from "./map-assets.js";
+import { fadeIn, setTextWithFade } from "../../utils/motion-reveal.js";
 
 const MAP_OVERVIEW_CENTER = [30, 15];
 const MAP_MIN_ZOOM = 2;
@@ -184,8 +184,9 @@ export function createUniversitiesMapController(ctx) {
     updateMapResultsSelection(targetId);
     const focusSeq = ++mapFocusSeq;
     const flightStartedAt = Date.now();
+    let arrivalHandled = false;
     const awaitArrival = () => {
-      if (disposed || !mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
+      if (arrivalHandled || disposed || !mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
         if (mapInstance) mapInstance.off("moveend", awaitArrival);
         return;
       }
@@ -200,6 +201,7 @@ export function createUniversitiesMapController(ctx) {
         arrived = false;
       }
       if (!arrived) return;
+      arrivalHandled = true;
       mapInstance.off("moveend", awaitArrival);
       const current = markersByUniId.get(targetId);
       if (current) {
@@ -228,6 +230,8 @@ export function createUniversitiesMapController(ctx) {
       duration: 1.0,
       easeLinearity: 0.2,
     });
+    // A settled or no-op flight may not dispatch moveend, so verify arrival once after its normal duration.
+    window.setTimeout(awaitArrival, 1250);
   }
 
   function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
@@ -290,7 +294,7 @@ export function createUniversitiesMapController(ctx) {
       <div class="u-map-results-footer" data-map-results-footer>
         <span class="u-map-results-count" role="status" aria-live="polite">${escapeHtml(summary)}</span>
         ${mapResultsHasMore ? `
-          <button type="button" class="u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
+          <button type="button" class="ui-btn u-map-results-more" data-action="load-more-map-results"${mapResultsLoadingMore ? " disabled" : ""}>
             ${mapResultsLoadingMore ? `<span class="u-map-results-spinner" aria-hidden="true"></span>${escapeHtml(loadingText)}` : escapeHtml(buttonLabel)}
           </button>
         ` : `<span class="u-map-results-complete">${escapeHtml(t("universities.map_panel.all_loaded", "All matching universities are loaded"))}</span>`}
@@ -463,7 +467,7 @@ export function createUniversitiesMapController(ctx) {
       mapResultsHasMore = !clientFiltered && (nextPage * MAP_RESULTS_PAGE_SIZE) < mapResultsTotal && rawItems.length > 0;
       setLastRenderedItems(mapResultsItems);
       state.lastCatalogTotal = mapResultsTotal;
-      if (el.total) el.total.textContent = String(mapResultsTotal);
+      setTextWithFade(el.total, String(mapResultsTotal));
       updateUnifitWarningBanner();
 
       if (reset && !activeMapUniId && !getFocusUniId() && state.viewMode === "map" && mapInstance) {
@@ -892,17 +896,22 @@ export function createUniversitiesMapController(ctx) {
     }
   }
 
-  function applyViewVisibility(mode) {
+  /**
+   * @param {"list" | "map"} mode
+   * @param {{ animate?: boolean }} [options] `animate` crossfades the incoming view in place (user switches only).
+   */
+  function applyViewVisibility(mode, { animate = false } = {}) {
     if (el.list) el.list.style.display = mode === "list" ? "grid" : "none";
     if (el.pagination) el.pagination.style.display = mode === "list" ? "flex" : "none";
     if (el.mapStage) el.mapStage.style.display = mode === "map" ? "grid" : "none";
+    if (animate) fadeIn(mode === "map" ? el.mapStage : el.list);
     if (mode !== "map" && mapResultsObserver) {
       mapResultsObserver.disconnect();
     }
   }
 
-  async function switchView(mode, shouldFetch = false) {
-    const viewChanged = mode !== state.viewMode;
+  async function switchView(mode, shouldFetch = false, { animate = false } = {}) {
+    const changed = state.viewMode !== mode;
     state.viewMode = mode;
     saveFilters(state);
     syncViewModeControls();
@@ -912,10 +921,7 @@ export function createUniversitiesMapController(ctx) {
       renderMapResultsPanel(lastRenderedItems);
     }
 
-    applyViewVisibility(mode);
-    if (shouldFetch && viewChanged) {
-      replayMotion(mode === "map" ? el.mapStage : el.list, "motion-panel-enter", { timeoutMs: 420 });
-    }
+    applyViewVisibility(mode, { animate: animate && changed });
     scheduleSyncWorkspaceDepth();
 
     if (mode === "map") {

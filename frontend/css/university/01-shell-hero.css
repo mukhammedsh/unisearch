@@ -32,7 +32,12 @@
 
 .d-loading.is-visible {
   display: block;
-  animation: d-loading-fade-in var(--motion-fast, 160ms) var(--motion-ease-standard, ease) forwards;
+  animation: d-loading-fade-in var(--motion-fast) var(--motion-ease-standard) forwards;
+}
+
+.d-loading.is-visible.has-cover-handoff {
+  opacity: 1;
+  animation: none;
 }
 
 @keyframes d-loading-fade-in {
@@ -50,9 +55,19 @@
   pointer-events: none;
 }
 
+/* Mirrors the .d-cover box at every breakpoint, so the skeleton → page swap (and the card photo the
+   route transition carries into it) does not change the cover height. */
 .d-loading-cover {
-  height: 260px;
-  border-radius: 0;
+  position: relative;
+  height: auto;
+  aspect-ratio: 16 / 5.4;
+  min-height: 180px;
+  max-height: 420px;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.d-loading-cover.has-cover-handoff::after {
+  display: none;
 }
 
 .d-loading-head {
@@ -192,6 +207,193 @@
   color: var(--text);
 }
 
+.d-cover-map,
+.d-cover-map-canvas,
+.d-cover-map-fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.d-cover-map {
+  isolation: isolate;
+  z-index: 0;
+  background-color: var(--surface-soft);
+}
+
+.d-cover-map-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.d-cover-map-fallback .ui-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.d-cover-map.is-ready .d-cover-map-fallback {
+  display: none;
+}
+
+.d-cover-map .leaflet-container {
+  background: var(--surface-solid);
+}
+
+.d-cover-map .leaflet-tile-pane {
+  filter: var(--cover-map-tile-filter);
+}
+
+.d-cover-map .leaflet-control-zoom {
+  margin-right: var(--space-3);
+  margin-bottom: var(--space-2);
+  overflow: hidden;
+  border: none;
+  border-radius: var(--radius-base);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-xs);
+}
+
+.d-cover-map .leaflet-control-zoom a {
+  display: flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  box-shadow: none;
+}
+
+.d-cover-map .leaflet-control-zoom a + a {
+  box-shadow: inset 0 1px 0 var(--line-faint);
+}
+
+.d-cover-map .leaflet-control-zoom a:active:not(.leaflet-disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.d-cover-map .leaflet-control-zoom a.leaflet-disabled {
+  color: var(--text-muted);
+  opacity: var(--interaction-disabled-opacity);
+}
+
+.d-cover-mode {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  background: var(--surface-solid);
+}
+
+.d-cover-map-pin-icon {
+  background: transparent;
+  border: none;
+}
+
+.d-cover-map-pin {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-circle);
+  background: var(--accent);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-md);
+}
+
+.d-cover-map[hidden],
+.d-cover-map-link[hidden],
+.d-cover-map-recenter[hidden] {
+  display: none;
+}
+
+.d-cover-map-link {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  background: var(--surface-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  text-decoration: none;
+}
+
+.d-cover-map-recenter {
+  --recenter-bg: var(--accent);
+  --recenter-x: 0px;
+  --recenter-y: 0px;
+  --recenter-angle: 0deg;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: var(--radius-circle);
+  background: var(--recenter-bg);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-md);
+  transform: translate(calc(var(--recenter-x, 0px) - 50%), calc(var(--recenter-y, 0px) - 50%));
+  cursor: pointer;
+}
+
+.d-cover-map-recenter__arrow {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--recenter-angle, 0deg));
+  pointer-events: none;
+}
+
+.d-cover-map-recenter__arrow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(100% - var(--space-0-5));
+  width: 10px;
+  height: 12px;
+  transform: translateY(-50%);
+  background: var(--recenter-bg);
+  clip-path: polygon(100% 50%, 0 0, 18% 50%, 0 100%);
+}
+
+.d-cover-map-recenter__icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.d-cover-map-link:active {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.d-cover-map-recenter:active {
+  --recenter-bg: var(--accent-press);
+}
+
 .d-photo-zoom-controls {
   position: absolute;
   top: var(--space-3);
@@ -202,7 +404,7 @@
 }
 
 .d-photo-zoom-controls [aria-disabled="true"] {
-  opacity: 0.45;
+  opacity: var(--interaction-disabled-opacity);
   cursor: default;
 }
 
@@ -244,8 +446,8 @@
 }
 
 .d-cover-back:active {
-  background: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
+  background: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .d-gallery-preview:focus-visible {
@@ -367,6 +569,10 @@
   inset-inline-end: var(--space-3);
   justify-content: flex-end;
   text-align: right;
+}
+
+.d-gallery-cover-credit[hidden] {
+  display: none;
 }
 
 .d-gallery-viewer-credit {
@@ -586,13 +792,14 @@ a.d-cover-credit:hover {
 
 .d-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   --sliding-indicator-extra-width: 0px;
   overflow-x: auto;
+  overflow-y: hidden;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE 10+ */
   padding: 0 var(--space-5);
-  gap: var(--space-5);
+  gap: var(--space-4);
   background: var(--card);
 }
 
@@ -609,9 +816,8 @@ a.d-cover-credit:hover {
   gap: var(--space-2);
   position: relative;
   flex: 0 0 auto; /* Prevent tabs from shrinking */
-  min-width: 116px;
   min-height: 48px;
-  padding: var(--space-4) var(--space-2) var(--space-4);
+  padding: var(--space-4) var(--space-1);
   border-radius: 0;
   background: transparent;
   color: var(--muted);
@@ -621,7 +827,7 @@ a.d-cover-credit:hover {
 
 /* The tab bar clips overflow, so the focus ring is drawn inside the tab instead of outside it. */
 .d-tab-btn:focus-visible {
-  outline-offset: calc(var(--space-1) * -1);
+  outline-offset: calc(var(--space-0-5) * -1);
 }
 
 .d-tab-btn .icon {
@@ -654,9 +860,9 @@ a.d-cover-credit:hover {
 
 .d-site-link {
   line-height: 0;
-  min-height: 44px;
-  height: 44px;
-  border-radius: var(--radius-lg);
+  min-height: var(--control-height-lg);
+  height: var(--control-height-lg);
+  border-radius: var(--control-radius-md);
   background: var(--surface-soft);
   color: var(--text);
   box-shadow: var(--shadow-xs);
@@ -700,12 +906,6 @@ a.d-cover-credit:hover {
   fill: currentColor;
 }
 
-.d-site-link--disabled {
-  opacity: 0.55;
-  pointer-events: none;
-  cursor: default;
-}
-
 .d-page {
   padding: var(--space-6) 0 var(--space-16);
 }
@@ -721,7 +921,7 @@ a.d-cover-credit:hover {
   display: none; /* Chrome, Safari, Opera */
 }
 
-/* Tabs that do not fit scroll sideways; previous/next buttons occupy their own grid columns so they never overlap tabs. */
+/* Tabs that do not fit scroll sideways; previous/next buttons overlay fading edges without reserving empty side gutters. */
 .d-tabs-nav {
   position: relative;
   min-width: 0;
@@ -736,29 +936,16 @@ a.d-cover-credit:hover {
 
 .d-tabs-nav > .d-tabs {
   min-width: 0;
-  scroll-padding-inline: var(--space-4);
-}
-
-.d-tabs-nav[data-scrollable] {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: stretch;
-}
-
-.d-tabs-nav[data-scrollable] > [data-tabs-previous] {
-  grid-column: 1;
 }
 
 .d-tabs-nav[data-scrollable] > .d-tabs {
-  grid-column: 2;
-}
-
-.d-tabs-nav[data-scrollable] > [data-tabs-next] {
-  grid-column: 3;
+  scroll-padding-inline: var(--space-12);
 }
 
 .d-tabs-nav[data-scrollable] > button {
-  position: static;
+  position: absolute;
+  inset-block: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -767,16 +954,37 @@ a.d-cover-credit:hover {
   padding: 0;
   border-radius: 0;
   box-shadow: none;
-  background: var(--card);
-  color: var(--text);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: opacity var(--motion-fast) var(--motion-ease-standard);
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.d-tabs-nav[data-scrollable] > [data-tabs-previous] {
+  inset-inline-start: 0;
+  background: linear-gradient(to right, var(--card) 60%, transparent);
+}
+
+.d-tabs-nav[data-scrollable] > [data-tabs-next] {
+  inset-inline-end: 0;
+  background: linear-gradient(to left, var(--card) 60%, transparent);
+}
+
+.d-tabs-nav[data-scrollable] > button:focus-visible {
+  outline-offset: calc(var(--space-1) * -1);
 }
 
 /* An edge with nothing more to reveal drops its button; it stays in the tree so the edges never shift. */
 .d-tabs-nav > button:disabled {
   opacity: 0;
   pointer-events: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .d-tabs-nav[data-scrollable] > button {
+    display: none;
+  }
 }
 
 /* Edge fades hint at more tabs beyond each side and fade out once that end is reached. */
@@ -799,7 +1007,7 @@ a.d-cover-credit:hover {
       linear-gradient(to right, var(--surface-solid), transparent) 0 0 / var(--d-tabs-fade-start) 100% no-repeat no-clip,
       linear-gradient(to right, transparent, var(--surface-solid)) 100% 0 / var(--d-tabs-fade-end) 100% no-repeat no-clip;
     animation-name: d-tabs-fade-start, d-tabs-fade-end;
-    animation-timing-function: linear;
+    animation-timing-function: var(--motion-ease-linear);
     animation-fill-mode: both;
     animation-timeline: scroll(self inline);
     animation-range: 0 var(--space-12), calc(100% - var(--space-12)) 100%;
@@ -864,6 +1072,7 @@ a.d-cover-credit:hover {
   background: transparent;
   color: var(--interaction-active-text);
   box-shadow: none;
+  cursor: default;
 }
 
 .d-tab-btn.active::after {
@@ -894,40 +1103,53 @@ body[data-page="university"],
   display: none;
 }
 
-.d-info:focus-visible,
+.d-card.is-mounted.has-cover-handoff {
+  animation: none;
+}
+
 .d-info-wrap.is-open .d-info {
-  background: var(--accent-panel);
-  color: var(--interaction-active-text);
+  background: var(--interaction-hover-surface);
+  color: var(--text);
 }
 
 /* ===== Unified interaction states ===== */
 @media (hover: hover) and (pointer: fine) {
   .d-gallery-button:hover:not(:active) {
-    background-color: color-mix(in srgb, var(--media-caption-bg), var(--media-viewer-bg));
+    background-color: color-mix(in oklab, var(--media-caption-bg), var(--media-viewer-bg));
   }
 
-  .d-cover-back:hover:not(:active) {
+  .d-cover-back:hover:not(:active),
+  .d-cover-map-link:hover:not(:active),
+  .d-cover-map .leaflet-control-zoom a:hover:not(:active, .leaflet-disabled) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
+  }
+
+  .d-cover-map-recenter:hover:not(:active) {
+    --recenter-bg: var(--accent-strong);
   }
 
   .d-gallery-preview:hover:not(:active)::after {
     opacity: 0.12;
   }
 
-  :is(.d-site-link, .d-info):hover {
+  :is(.d-site-link:not(.is-saved), .d-info):hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .d-site-link.is-saved:hover {
-    background: var(--color-warning-bg);
+  .d-site-link.is-saved:hover:not(:active) {
+    background: color-mix(in oklab, var(--color-warning) 10%, var(--color-warning-bg));
     color: var(--color-warning);
   }
 
-  .d-tab-btn:hover {
+  .d-tab-btn:not(.active, :active):hover {
     transform: none;
     background: transparent;
+    color: var(--interaction-hover-text);
+  }
+
+  .d-tabs-nav[data-scrollable] > button:not(:disabled, :active):hover {
     color: var(--interaction-hover-text);
   }
 
@@ -936,12 +1158,30 @@ body[data-page="university"],
   }
 }
 
+:is(.d-site-link:not(.is-saved), .d-info):active {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.d-site-link.is-saved:active {
+  background: color-mix(in oklab, var(--color-warning) 18%, var(--color-warning-bg));
+  color: var(--color-warning);
+}
+
+.d-tab-btn:not(.active):active {
+  color: var(--interaction-active-text);
+}
+
+.d-tabs-nav[data-scrollable] > button:not(:disabled):active {
+  color: var(--interaction-active-text);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .d-gallery-preview::after {
     transition: opacity var(--motion-fast) var(--motion-ease-standard);
   }
 
-  :is(.d-gallery-button, .d-cover-back) {
+  :is(.d-gallery-button, .d-cover-back, .d-cover-map-link, .d-cover-map-recenter) {
     transition: background-color var(--motion-fast) var(--motion-ease-standard);
   }
 
@@ -978,9 +1218,6 @@ body[data-page="university"],
   }
 
   .d-tabs {
-    overflow-y: hidden;
-    flex-wrap: nowrap;
-    scroll-padding-inline: var(--mobile-safe-gutter, var(--space-4));
     -webkit-overflow-scrolling: touch;
   }
 }
@@ -999,7 +1236,7 @@ body[data-page="university"],
   }
 
   .d-loading-cover {
-    height: 210px;
+    aspect-ratio: 16 / 9;
   }
 
   .d-loading-grid {
@@ -1059,8 +1296,8 @@ body[data-page="university"],
 
   .d-tabs {
     scroll-snap-type: x proximity;
-    padding: 0 var(--space-4);
-    gap: var(--space-4);
+    padding: 0 var(--space-3);
+    gap: var(--space-3);
   }
 
   .d-tab-btn {
@@ -1069,8 +1306,7 @@ body[data-page="university"],
     line-height: 1.2;
     scroll-snap-align: start;
     font-size: var(--text-sm);
-    min-width: 104px;
-    padding: var(--space-3) var(--space-1) var(--space-4);
+    padding: var(--space-3) var(--space-1);
   }
 
   .d-tab-btn span:last-child {
@@ -1097,7 +1333,8 @@ body[data-page="university"],
     padding-top: var(--space-3);
   }
 
-  .d-cover {
+  .d-cover,
+  .d-loading-cover {
     min-height: 0;
     height: clamp(174px, 54vw, 230px);
     aspect-ratio: auto;
@@ -1146,13 +1383,11 @@ body[data-page="university"],
   }
 
   .d-tabs {
-    padding-left: var(--space-3);
-    padding-right: var(--space-3);
+    padding: 0 var(--space-2);
   }
 
   .d-tab-btn {
     max-width: 86vw;
-    min-width: 92px;
   }
 }
 

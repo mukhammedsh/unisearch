@@ -38,18 +38,56 @@ test("the credit follows the interface language", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Увеличить фото" })).toBeVisible();
 });
 
-test("a university without a reusable photo shows a placeholder and no credit", async ({ page }) => {
-  // Wait for the credits file so the absence is not a race with its loading.
-  const creditsLoaded = page.waitForResponse((response) => response.url().endsWith("/universities/assets/credits.json"));
+test("a university without a reusable photo shows an embedded campus map in the cover", async ({ page }) => {
+  const assetRequests = [];
+  page.on("request", (request) => {
+    if (request.url().includes("kimep-university-kaz-almaty")) assetRequests.push(request.url());
+  });
   await openUniversity(page, "kimep-university-kaz-almaty");
-  expect((await creditsLoaded).ok()).toBe(true);
-  await expect(page.locator("#detailCover")).toBeVisible();
-  await expect(page.locator("#detailCover").getByText("Campus photo unavailable")).toBeVisible();
+  const cover = page.locator("#detailCover");
+  await expect(cover).toBeVisible();
+  await expect(cover).toHaveClass(/\bis-cover-map\b/);
+  await expect(cover.locator(".d-cover-map")).toBeVisible();
+  await expect(cover.locator("#detailBackBtn")).toBeVisible();
+  const mapLink = cover.locator(".d-cover-map-link");
+  await expect(mapLink).toBeVisible();
+  await expect(mapLink).toHaveAttribute("href", /view=map&focus_uni=kimep-university-kaz-almaty/);
   await expect(page.locator(".d-gallery-cover-credit .d-cover-credit")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Enlarge photo" })).toHaveCount(0);
+  expect(assetRequests.filter((url) => url.includes("/assets/thumbnails"))).toEqual([]);
   await page.setViewportSize({ width: 375, height: 812 });
   await page.evaluate(() => document.documentElement.dataset.theme = "dark");
-  await expect(page.locator("#detailCover").getByText("Campus photo unavailable")).toBeVisible();
+  await expect(cover.locator(".d-cover-map")).toBeVisible();
+  await expect(cover.locator("#detailBackBtn")).toBeVisible();
+});
+
+test("a university with a photo lets the user switch the cover between Photo and Map", async ({ page }) => {
+  await openUniversity(page, "mit-usa-cambridge");
+  const cover = page.locator("#detailCover");
+  const modeSwitch = cover.locator(".d-cover-mode");
+  const photoBtn = modeSwitch.getByRole("button", { name: "Photo" });
+  const mapBtn = modeSwitch.getByRole("button", { name: "Map" });
+
+  await expect(photoBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(cover.locator(".d-cover-map")).toHaveCount(0);
+  await expect(cover.locator(".d-gallery-preview")).toBeVisible();
+
+  await mapBtn.click();
+  await expect(mapBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(photoBtn).toHaveAttribute("aria-pressed", "false");
+  await expect(cover.locator(".d-cover-map")).toBeVisible();
+  await expect(cover.locator(".d-cover-map-link")).toBeVisible();
+  await expect(cover.locator(".d-gallery-cover-credit")).toBeHidden();
+  await expect(cover.locator(".d-gallery-preview")).toBeHidden();
+
+  await photoBtn.click();
+  await expect(photoBtn).toHaveAttribute("aria-pressed", "true");
+  await expect(cover.locator(".d-cover-map")).toBeHidden();
+  await expect(cover.locator(".d-cover-map-link")).toBeHidden();
+  await expect(cover.locator(".d-cover-map-recenter")).toBeHidden();
+  await expect(cover.locator(".d-gallery-cover-credit")).toBeVisible();
+  await expect(cover.locator(".d-gallery-preview")).toBeVisible();
 });
 
 test("the cover gallery and full-size viewer keep the same photo and attribution", async ({ page }) => {

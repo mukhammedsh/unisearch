@@ -693,8 +693,9 @@ function priceParts(values, originalCurrency, options) {
   const mode = getCurrencyDisplayMode();
   const original = values.map(value => formatMoney(value, origCode)).join(" – ");
   // Without a rate for either currency the published price is shown as it is rather than mislabeled.
-  if (origCode === prefCode || mode === "original" || !canConvert(origCode, prefCode)) return original;
-  const converted = `≈ ${values.map(value => formatConverted(convert(value, origCode, prefCode), prefCode, options)).join(" – ")}`;
+  if (options.original || origCode === prefCode || mode === "original" || !canConvert(origCode, prefCode)) return original;
+  const convertedParts = values.map(value => formatConverted(convert(value, origCode, prefCode), prefCode, options));
+  const converted = `≈ ${convertedParts.length === 2 && convertedParts[0] === convertedParts[1] ? convertedParts[0] : convertedParts.join(" – ")}`;
   return mode === "both" ? `${converted} (${original})` : converted;
 }
 

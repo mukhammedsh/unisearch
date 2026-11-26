@@ -156,7 +156,7 @@ test("open selected custom select keeps readable text in dark mode", async ({ pa
   const selected = wrapper.locator(".custom-option.selected");
   await expect(selected).toBeVisible();
 
-  const contrasts = await page.evaluate(() => {
+  const { contrasts, sidebarBg, triggerBg, menuBg } = await page.evaluate(() => {
     const ratio = (element) => {
       const channels = (value) => value.match(/[\d.]+/g).slice(0, 3).map(Number);
       const luminance = (color) => channels(color).map((value) => {
@@ -167,21 +167,32 @@ test("open selected custom select keeps readable text in dark mode", async ({ pa
       const [lighter, darker] = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => b - a);
       return (lighter + 0.05) / (darker + 0.05);
     };
-    return [
-      ratio(document.querySelector("#countrySelect + .custom-select-trigger")),
-      ratio(document.querySelector("#countrySelect ~ .custom-options .custom-option.selected")),
-    ];
+    const triggerEl = document.querySelector("#countrySelect + .custom-select-trigger");
+    const menuEl = document.querySelector("#countrySelect ~ .custom-options");
+    return {
+      contrasts: [
+        ratio(triggerEl),
+        ratio(document.querySelector("#countrySelect ~ .custom-options .custom-option.selected")),
+      ],
+      sidebarBg: getComputedStyle(document.getElementById("uSidebar")).backgroundColor,
+      triggerBg: getComputedStyle(triggerEl).backgroundColor,
+      menuBg: getComputedStyle(menuEl).backgroundColor,
+    };
   });
   for (const contrast of contrasts) expect(contrast).toBeGreaterThanOrEqual(4.5);
+  expect(triggerBg).not.toBe(sidebarBg);
+  expect(menuBg).not.toBe(sidebarBg);
 });
 
-test("city filter is available after selecting a country without choosing a state", async ({ page }) => {
+test("city filter is hidden until a country is selected and available without choosing a state", async ({ page }) => {
   await markTourAsSeen(page);
   await page.goto("/index.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   await expect(page.locator('#countrySelect option[value="USA"]')).toBeAttached();
+  await expect(page.locator("#cityDiv")).toBeHidden();
 
   await setNativeSelect(page, "countrySelect", "USA");
+  await expect(page.locator("#cityDiv")).toBeVisible();
   await expect(page.locator("#stateSelect")).toHaveValue("");
   await expect(page.locator("#citySelect")).toBeEnabled();
   await expect(page.locator('#citySelect option[value="Cambridge"]')).toBeAttached();
@@ -200,4 +211,25 @@ test("city filter is available after selecting a country without choosing a stat
   await setNativeSelect(page, "stateSelect", "");
   await expect(page.locator("#citySelect")).toBeEnabled();
   await expect(page.locator('#citySelect option[value="Stanford"]')).toBeAttached();
+
+  await setNativeSelect(page, "countrySelect", "");
+  await expect(page.locator("#cityDiv")).toBeHidden();
+});
+
+test("relevance sort appears only with a search query and removed filter hints stay absent", async ({ page }) => {
+  await markTourAsSeen(page);
+  await page.goto("/index.html");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+
+  await expect(page.locator("#sortAiTagsHint")).toHaveCount(0);
+  await expect(page.locator("details.catalog-cost-help")).toHaveCount(0);
+  await expect(page.locator('#sortSelect option[value="relevance"]')).toHaveCount(0);
+
+  await page.locator("#qInput").fill("MIT");
+  await expect(page.locator('#sortSelect option[value="relevance"]')).toBeAttached();
+  await expect(page.locator("#sortSelect")).toHaveValue("relevance");
+
+  await page.locator("#qInput").fill("");
+  await expect(page.locator('#sortSelect option[value="relevance"]')).toHaveCount(0);
+  await expect(page.locator("#sortSelect")).toHaveValue("name_asc");
 });

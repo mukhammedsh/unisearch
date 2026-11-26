@@ -71,7 +71,7 @@ export function createRecentlyViewedController({
     container.innerHTML = `
       <button
         id="recentlyViewedBtn"
-        class="u-recent-trigger"
+        class="ui-btn ui-btn--on-bg u-recent-trigger"
         type="button"
         popovertarget="recentlyViewedPopover"
         aria-controls="recentlyViewedPopover"
@@ -86,17 +86,10 @@ export function createRecentlyViewedController({
       </button>
       <div
         id="recentlyViewedPopover"
-        class="u-recent-popover"
+        class="u-recent-popover${wasOpen ? "" : " motion-top-layer"}"
         popover="auto"
-        aria-labelledby="recentlyViewedTitle"
+        aria-label="${escapeHtmlAttr(titleText)}"
       >
-        <div class="u-recent__head">
-          <span id="recentlyViewedTitle" class="u-recent__label">${escapeHtml(titleText)}</span>
-          <button class="u-recent__clear" type="button" data-action="clear-recent">
-            ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
-            <span>${escapeHtml(clearAllText)}</span>
-          </button>
-        </div>
         <div class="u-recent__items">
           ${rows.map((row) => {
             const removeLabel = tFormat(
@@ -108,7 +101,7 @@ export function createRecentlyViewedController({
               <span class="u-recent__chip">
                 <a class="u-recent__link" href="${routeUniversityDetail(row.id)}"${universityLinkAttrs()}>${escapeHtml(row.label)}</a>
                 <button
-                  class="u-recent__remove"
+                  class="ui-btn ui-btn--icon ui-btn--ghost u-recent__remove"
                   type="button"
                   data-action="remove-recent"
                   data-uni-id="${escapeHtmlAttr(row.id)}"
@@ -118,6 +111,12 @@ export function createRecentlyViewedController({
               </span>
             `;
           }).join("")}
+        </div>
+        <div class="u-recent__footer">
+          <button class="ui-btn ui-btn--sm ui-btn--ghost u-recent__clear" type="button" data-action="clear-recent">
+            ${renderInlineIcon("x-mark", 14, "u-recent__clear-icon")}
+            <span>${escapeHtml(clearAllText)}</span>
+          </button>
         </div>
       </div>
     `;
@@ -142,6 +141,10 @@ export function createRecentlyViewedController({
         } catch (err) {
           console.warn("Unable to reopen recently viewed popover", err);
         }
+        // Re-rendering an open popover must not replay its entrance: settle the open style first,
+        // then opt into motion so only the later close animates.
+        void popoverEl.offsetWidth;
+        popoverEl.classList.add("motion-top-layer");
       }
     } else if (triggerBtn && popoverEl) {
       triggerBtn.addEventListener("click", () => {
@@ -151,6 +154,8 @@ export function createRecentlyViewedController({
       });
       if (wasOpen) {
         popoverEl.classList.add("is-open");
+        void popoverEl.offsetWidth;
+        popoverEl.classList.add("motion-top-layer");
         syncTriggerExpanded(true);
       }
     }

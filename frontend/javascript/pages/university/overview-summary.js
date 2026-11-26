@@ -1,7 +1,7 @@
 // "Key admission facts" at the top of the university Overview tab: four plain answers (when to apply, what it costs,
 // what you'll need, who studies here), each with one line of meaning and a link to the tab holding the details.
-// Reviewed universities read the institution-wide first-year route through the existing admissions-context endpoint;
-// the other universities use the detail payload that is already loaded. Nothing here is saved or changes the page context.
+// Reviewed universities follow the active admission context (from URL, saved choice, or the Admission tab) and fall back
+// to the institution-wide first-year route when nothing is chosen; other universities use the detail payload already loaded.
 import { API_BASE, loadProfileForApi } from "../../utils.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
@@ -11,7 +11,7 @@ import { translateAdmissionText } from "../../university-translations.js";
 import { getExamDisplayName } from "../../utils/config.js";
 import { withoutBracketedText } from "../../utils/text.js";
 import { formatUiNumber, safeUrl, toFiniteNumber, trFactSource, trTrackDescription } from "../_shared.js";
-import { admissionsRequest, firstYearSharedRoute } from "./admissions-controller.js";
+import { admissionsRequest, firstYearSharedRoute, readAdmissionContext } from "./admissions-controller.js";
 import { readForSinglePublishedCycle } from "./admissions-cycle.js";
 import { englishRequirementItems } from "./admissions-english.js";
 import { admissionsCycleLabel, admissionsProgramLabel, admissionsRouteName } from "./admissions-render.js";
@@ -96,11 +96,13 @@ export function checklistItems(resolved, profile = null) {
   const documents = structured.documents.length ? structured.documents : plain.documents.slice(0, 1);
   // Published numeric minimums (NU's IELTS and SAT, for example) say more than a test name, so they lead when assessed.
   // A kind of requirement without a checkable minimum keeps its published wording (MIT's recommended English test).
-  const minimums = minimumChecklist(resolved).map(({ kind, factId, mark, text }) => ({ kind, factId, mark, text }));
+  const minimums = minimumChecklist(resolved).map(({ kind, factId, mark, text, note, href }) => ({
+    kind, factId, mark, text, ...(note ? { note } : {}), ...(href ? { href } : {}),
+  }));
   const kinds = new Set(minimums.map(entry => entry.kind));
   const recommendation = profile ? englishRecommendationItem(resolved, profile) : null;
   const language = recommendation
-    ? [{ kind: "language", factId: recommendation.factId, mark: "recommended",
+    ? [{ kind: "language", factId: recommendation.factId, mark: recommendation.mark,
       text: [recommendation.condition ? `${recommendation.text}, ${recommendation.condition}` : recommendation.text, recommendation.have].filter(Boolean).join(". ") }]
     : structured.language.slice(0, 1);
   // An English requirement the checks do not measure (a test that is not required, the course's IELTS level) leads the language line.
@@ -377,11 +379,34 @@ function renderCardGrid(cards) {
   return `<div class="overview-summary__grid"${compactRow ? ' data-compact-row="true"' : ""}>${cards.map(renderCard).join("")}</div>`;
 }
 
+/**
+ * Context caption shown beneath the Overview summary heading.
+ * @param {object|null} resolved The admissions-context response currently rendered.
+ * @param {{id?: string}|null} [defaultRoute] The university's shared first-year undergraduate route, if any.
+ * @param {string} [studyLevel] Active study level for level-specific route naming.
+ * @returns {string}
+ */
+export function summaryIntro(resolved, defaultRoute = null, studyLevel = "") {
+  if (!resolved?.selected_route) return "";
+  if (resolved.selected_option) {
+    return tFormat("university.ux2.intro_selected_program", {
+      program: admissionsProgramLabel(resolved.selected_option, { includeAward: true }).title,
+    });
+  }
+  if (defaultRoute && resolved.selected_route.id === defaultRoute.id) {
+    return tFormat("university.ux2.intro_route", {
+      route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: "undergraduate" }),
+    });
+  }
+  return tFormat("university.ux2.intro_selected_route", {
+    route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: studyLevel }),
+  });
+}
+
 export function renderSummary(cards, intro = "") {
   return `<div class="overview-summary__body">
     <div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div>${intro ? `<p class="overview-summary__intro">${escapeHtml(intro)}</p>` : ""}</div>
-    ${renderCardGrid(cards)}
-    <p class="overview-summary__note">${escapeHtml(label("note"))}</p></div>`;
+    ${renderCardGrid(cards)}</div>`;
 }
 
 const renderLoading = () => `<div class="overview-summary__body"><div class="overview-summary__heading"><div class="overview-summary__title" role="heading" aria-level="2">${escapeHtml(label("title"))}</div></div>
@@ -433,21 +458,40 @@ function openProgramsAtLevel(level) {
 // Returns { dispose }; every request is cancelled and every listener removed on dispose.
 export function mountOverviewSummary({ container, university, universityId, reviewed, legacy = {} }) {
   if (!container) return { dispose() {} };
+  const hasSelection = ctx => Boolean(ctx?.study_option_id || ctx?.application_route_id);
+  const readActiveContext = () => {
+    if (!reviewed || typeof window === "undefined") return null;
+    const initial = readAdmissionContext(new URL(window.location.href), loadProfileForApi(), universityId);
+    return hasSelection(initial) ? initial : null;
+  };
   let version = 0;
   let controller = null;
   let disposed = false;
   let routeLoaded = false;
   let route = null;
-  // Without a shared path, the program the Admission tab reads (Imperial) gives the Overview its answers.
-  let programContext = null;
+  // Active program or route context read from URL, saved choice, or the Admission tab; overrides the default first-year route.
+  let activeContext = readActiveContext();
+  let activeResolved = null;
   const hasContent = () => Boolean(container.querySelector(".overview-summary__grid"));
 
   const show = html => { if (!disposed) container.innerHTML = html; };
+  const renderReviewed = (resolved, effectiveContext = null) => {
+    const apiProfile = loadProfileForApi();
+    const cards = reviewedCards({
+      resolved,
+      university,
+      budgetUsd: apiProfile.budget,
+      profileExamIds: (apiProfile.exams || []).map(exam => exam.id),
+      profile: apiProfile,
+    });
+    const intro = summaryIntro(resolved, route, effectiveContext?.study_level || "");
+    show(renderSummary(cards, intro));
+  };
   const onClick = event => {
     const tab = event.target.closest?.("[data-open-tab]")?.dataset.openTab;
     const level = event.target.closest?.("[data-open-level]")?.dataset.openLevel;
     if (level) openProgramsAtLevel(level);
-    else if (tab) openTab(tab, route?.id || "");
+    else if (tab) openTab(tab, activeContext ? "" : (route?.id || ""));
     else if (event.target.closest?.("[data-summary-retry]")) void loadReviewed();
   };
   container.addEventListener("click", onClick);
@@ -481,23 +525,39 @@ export function mountOverviewSummary({ container, university, universityId, revi
         route = firstYearSharedRoute(options.shared_routes);
         routeLoaded = true;
       }
+      if (activeResolved?.selected_route) {
+        renderReviewed(activeResolved, activeContext);
+        return;
+      }
       const apiProfile = loadProfileForApi();
-      let resolved = null;
-      if (route || programContext) {
-        const context = route
-          ? { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" }
-          : { ...programContext };
+      const defaultContext = route
+        ? { study_option_id: "", application_route_id: route.id, study_level: "undergraduate", intended_entry_cycle: "", fee_status_context: "unknown" }
+        : null;
+      const readContext = async (context) => {
         // As in the Admission tab and the comparison, a route publishing one entry cycle is read for it, so its minimums can be checked.
-        ({ resolved } = await readForSinglePublishedCycle(next => fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" },
-          signal: request.signal, body: JSON.stringify(admissionsRequest(apiProfile, next, universityId)) }), context));
+        const { resolved } = await readForSinglePublishedCycle(next => fetchJson("admissions-context", { method: "POST", headers: { "Content-Type": "application/json" },
+          signal: request.signal, body: JSON.stringify(admissionsRequest(apiProfile, next, universityId)) }), context);
+        return resolved;
+      };
+      let resolved = null;
+      let effectiveContext = activeContext || defaultContext;
+      if (activeContext) {
+        const candidate = await readContext({ ...activeContext });
+        if (current !== version) return;
+        if (candidate?.selected_route) {
+          resolved = candidate;
+        } else if (defaultContext) {
+          effectiveContext = defaultContext;
+          resolved = await readContext(defaultContext);
+          if (current !== version) return;
+          if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
+        }
+      } else if (defaultContext) {
+        resolved = await readContext(defaultContext);
         if (current !== version) return;
         if (!resolved?.selected_route) throw new Error("Overview summary route is not readable");
       }
-      const cards = reviewedCards({ resolved, university, budgetUsd: apiProfile.budget, profileExamIds: (apiProfile.exams || []).map(exam => exam.id), profile: apiProfile });
-      const intro = !resolved ? "" : route
-        ? tFormat("university.ux2.intro_route", { route: admissionsRouteName(resolved.selected_route, { presentation: "simple", level: "undergraduate" }) })
-        : tFormat("university.ux2.intro_selected_program", { program: admissionsProgramLabel(resolved.selected_option, { includeAward: true }).title });
-      show(renderSummary(cards, intro));
+      renderReviewed(resolved, effectiveContext);
     } catch (error) {
       if (request.signal.aborted || current !== version) return;
       console.error(error);
@@ -505,13 +565,42 @@ export function mountOverviewSummary({ container, university, universityId, revi
     }
   }
 
-  const onProfileUpdated = () => { if (reviewed) void loadReviewed(); else renderLegacy(); };
+  const onProfileUpdated = () => {
+    if (!reviewed) {
+      renderLegacy();
+      return;
+    }
+    activeContext = readActiveContext();
+    activeResolved = null;
+    void loadReviewed();
+  };
   window.addEventListener("profileUpdated", onProfileUpdated);
   const onAdmissionContext = event => {
-    if (!reviewed || route || event.detail?.institutionId !== universityId || !event.detail?.context?.application_route_id) return;
-    const next = { ...event.detail.context };
-    if (JSON.stringify(next) === JSON.stringify(programContext)) return;
-    programContext = next;
+    if (!reviewed || event.detail?.institutionId !== universityId) return;
+    const incomingResolved = event.detail?.resolved || null;
+    const incomingContext = event.detail?.context && hasSelection(event.detail.context) ? { ...event.detail.context } : null;
+    if (incomingResolved?.selected_route) {
+      activeContext = incomingContext;
+      activeResolved = incomingResolved;
+      if (routeLoaded) {
+        version += 1;
+        controller?.abort();
+        renderReviewed(activeResolved, activeContext);
+      } else {
+        void loadReviewed();
+      }
+      return;
+    }
+    if (incomingResolved === null && "resolved" in (event.detail || {})) {
+      if (!activeContext && !activeResolved) return;
+      activeContext = null;
+      activeResolved = null;
+      void loadReviewed();
+      return;
+    }
+    if (!incomingContext || JSON.stringify(incomingContext) === JSON.stringify(activeContext)) return;
+    activeContext = incomingContext;
+    activeResolved = null;
     void loadReviewed();
   };
   window.addEventListener("unisearch:admission-context", onAdmissionContext);

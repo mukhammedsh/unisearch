@@ -192,10 +192,14 @@ test("view mode fades in the map and list while preserving their layout", async 
 
   await expect(page.locator(".view-toggles .sliding-indicator")).toHaveCount(0);
   await page.click("#viewMapBtn");
+  const mapAnimations = await page.locator("#mapStage").evaluate((el) =>
+    el.getAnimations().flatMap((animation) => Object.keys(animation.effect?.getKeyframes?.()[0] || {}))
+  );
   await expect(page.locator("#viewMapBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewListBtn")).not.toHaveClass(/active/);
   await expect(page.locator("#mapStage")).toBeVisible();
-  await expectAnimationStarted(page, "mapStage", "motion-fade-lift-enter");
+  expect(mapAnimations).toContain("opacity");
+  expect(mapAnimations).not.toContain("transform");
 
   const mapCard = page.locator("#mapResultsPanel .uni-card:not(.is-skeleton)").first();
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
@@ -246,7 +250,11 @@ test("view mode fades in the map and list while preserving their layout", async 
   ).toBe(0);
 
   await page.click("#viewListBtn");
-  await expectAnimationStarted(page, "universitiesList", "motion-fade-lift-enter");
+  const listAnimations = await page.locator("#universitiesList").evaluate((el) =>
+    el.getAnimations().flatMap((animation) => Object.keys(animation.effect?.getKeyframes?.()[0] || {}))
+  );
+  expect(listAnimations).toContain("opacity");
+  expect(listAnimations).not.toContain("transform");
   await expect(page.locator("#viewListBtn")).toHaveClass(/active/);
   await expect(page.locator("#viewMapBtn")).not.toHaveClass(/active/);
   await expect(page.locator(".u-view-motion-layer")).toHaveCount(0);
@@ -321,7 +329,7 @@ test("university detail category switching leaves one active pane", async ({ pag
   await page.click(".d-tab-btn[data-tab='tab-admission']");
   await expect(page.locator(".d-tab-btn[data-tab='tab-admission']")).toHaveClass(/active/);
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
-  await expectAnimationStarted(page, "tab-admission", "motion-fade-lift-enter");
+  await expectAnimationStarted(page, "tab-admission", "motion-tab-forward");
   await expect(page.locator(".d-tab-pane.active")).toHaveCount(1);
 
   await page.click(".d-tab-btn[data-tab='tab-finance']");

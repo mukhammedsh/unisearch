@@ -2,8 +2,10 @@ import { heroIcon } from "../../icons.js";
 import { t, tFormat } from "../../i18n.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils.js";
 import { buildApiUrl, safePathSegment, uniThumbnailSrc } from "../_shared.js";
+import { adoptCoverHandoff, removeCoverHandoff } from "../../components/cover-transition.js";
 import { staticSnapshotAssetUrl } from "../../utils/static-snapshot.js";
 import { coverCreditHtml, loadPhotoCredits } from "./cover-credit.js";
+import { mountCoverMap, parseCoverCoordinates } from "./cover-map.js";
 import { bindGalleryZoom, isPointInVisiblePhoto } from "./gallery-zoom.js";
 
 const DISMISS_MOVE_TOLERANCE_PX = 8;
@@ -210,10 +212,34 @@ function bindTouchGalleryButtons(gallery, preview, step, signal) {
   return cancelPendingClick;
 }
 
-export function mountUniversityGallery(cover, universityId) {
+export function mountUniversityGallery(
+  cover,
+  universityId,
+  { coverAvailable = true, coordinates = null, universityName = "", mapHref = "" } = {},
+) {
   if (!cover) return null;
 
   const gallery = cover.parentElement;
+  const hasCoordinates = Boolean(parseCoverCoordinates(coordinates));
+
+  if (!coverAvailable) {
+    removeCoverHandoff(cover);
+    if (hasCoordinates) {
+      const coverMap = mountCoverMap(cover, { coordinates, universityName, mapHref });
+      return () => coverMap.dispose();
+    }
+    cover.classList.add("is-photo-missing");
+    const empty = document.createElement("div");
+    empty.className = "d-cover-placeholder";
+    empty.setAttribute("aria-hidden", "true");
+    empty.innerHTML = heroIcon("building-office-2", "ui-icon ui-icon--24");
+    cover.append(empty);
+    return () => {
+      cover.classList.remove("is-photo-missing");
+      empty.remove();
+    };
+  }
+
   const label = t("university.gallery.label", "Campus photos");
   const openLabel = t("university.gallery.open", "Enlarge photo");
   const photos = [{
@@ -221,7 +247,21 @@ export function mountUniversityGallery(cover, universityId) {
     fallback: uniThumbnailSrc(universityId, { forceFull: true, format: "jpg" }),
   }];
   let current = 0;
+  let coverMode = "photo";
+  let coverMapController = null;
+  let photoUnavailable = false;
+  let photoPreviewHidden = false;
   const listeners = new AbortController();
+  adoptCoverHandoff(cover);
+
+  const photoLabel = t("university.cover.photo", "Photo");
+  const mapLabel = t("university.action.map", "Map");
+  const modeSwitchHtml = hasCoordinates
+    ? `<div class="ui-segmented d-cover-mode" role="group" aria-label="${escapeHtmlAttr(t("university.cover.view_switch", "Cover view"))}">
+        <button type="button" class="ui-segmented__item active" data-cover-mode="photo" title="${escapeHtmlAttr(photoLabel)}" aria-label="${escapeHtmlAttr(photoLabel)}" aria-pressed="true">${heroIcon("photo", "ui-icon ui-icon--16")}</button>
+        <button type="button" class="ui-segmented__item" data-cover-mode="map" title="${escapeHtmlAttr(mapLabel)}" aria-label="${escapeHtmlAttr(mapLabel)}" aria-pressed="false">${heroIcon("map", "ui-icon ui-icon--16")}</button>
+      </div>`
+    : "";
 
   cover.insertAdjacentHTML("beforeend", `<div class="d-cover-placeholder" hidden role="status">
     ${heroIcon("building-office-2", "ui-icon ui-icon--24")}
@@ -232,8 +272,9 @@ export function mountUniversityGallery(cover, universityId) {
   </button>
     <div class="d-gallery-cover-credit"></div>
     ${navigationHtml()}
+    ${modeSwitchHtml}
     <span class="d-gallery-status sr-only" role="status"></span>`);
-  cover.insertAdjacentHTML("afterend", `<dialog id="${VIEWER_DIALOG_ID}" class="d-photo-viewer" closedby="any" aria-label="${escapeHtmlAttr(label)}">
+  cover.insertAdjacentHTML("afterend", `<dialog id="${VIEWER_DIALOG_ID}" class="d-photo-viewer motion-top-layer motion-top-layer--fade" closedby="any" aria-label="${escapeHtmlAttr(label)}">
       ${galleryButton("close", "arrow-left", t("common.close", "Close"))}
       <div class="d-gallery-viewer-credit"></div>
       <div class="d-photo-zoom-controls">
@@ -250,6 +291,7 @@ export function mountUniversityGallery(cover, universityId) {
   const previewMedia = preview.querySelector(".d-gallery-preview-media");
   const coverCredit = gallery.querySelector(".d-gallery-cover-credit");
   const coverNavigation = gallery.querySelector(".d-gallery-navigation");
+  const modeSwitch = cover.querySelector(".d-cover-mode");
   const coverStatus = gallery.querySelector(".d-gallery-status");
   const dialog = gallery.querySelector(".d-photo-viewer");
   const canvas = dialog.querySelector(".d-photo-canvas");
@@ -266,15 +308,56 @@ export function mountUniversityGallery(cover, universityId) {
     onSwipe: step,
   });
 
+  function applyCoverMode() {
+    const isMap = coverMode === "map";
+    if (modeSwitch) {
+      for (const button of modeSwitch.querySelectorAll("[data-cover-mode]")) {
+        const active = button.dataset.coverMode === coverMode;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", active ? "true" : "false");
+      }
+    }
+    if (isMap) {
+      preview.hidden = true;
+      placeholder.hidden = true;
+      coverCredit.hidden = true;
+      coverNavigation.hidden = true;
+      cover.classList.remove("is-photo-missing");
+      if (!coverMapController) {
+        coverMapController = mountCoverMap(cover, { coordinates, universityName, mapHref });
+      } else {
+        coverMapController.show();
+      }
+      return;
+    }
+    coverMapController?.hide();
+    preview.hidden = photoPreviewHidden;
+    placeholder.hidden = !photoUnavailable;
+    coverCredit.hidden = false;
+    coverNavigation.hidden = photos.length <= 1;
+    cover.classList.toggle("is-photo-missing", photoUnavailable && photos.length === 1);
+  }
+
   function renderPreview() {
-    preview.hidden = false;
-    placeholder.hidden = true;
-    cover.classList.remove("is-photo-missing");
+    photoUnavailable = false;
+    photoPreviewHidden = false;
+    if (coverMode === "photo") {
+      preview.hidden = false;
+      placeholder.hidden = true;
+      cover.classList.remove("is-photo-missing");
+    }
     displayPhoto(previewMedia, photos[current], "", {
+      // The card photo carried in by the route transition stays underneath until the cover photo is ready.
+      onLoad: () => removeCoverHandoff(cover),
       onUnavailable: () => {
-        placeholder.hidden = false;
-        cover.classList.toggle("is-photo-missing", photos.length === 1);
-        if (photos.length === 1 && !photos[0].credit) preview.hidden = true;
+        removeCoverHandoff(cover);
+        photoUnavailable = true;
+        photoPreviewHidden = photos.length === 1 && !photos[0].credit;
+        if (coverMode === "photo") {
+          placeholder.hidden = false;
+          cover.classList.toggle("is-photo-missing", photos.length === 1);
+          if (photoPreviewHidden) preview.hidden = true;
+        }
       },
     });
   }
@@ -323,6 +406,7 @@ export function mountUniversityGallery(cover, universityId) {
 
   for (const area of [gallery, dialog]) {
     area.addEventListener("keydown", (event) => {
+      if (area === gallery && coverMode !== "photo") return;
       if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.target.closest("a")) return;
       const direction = event.key === "ArrowLeft" ? -1 : event.key === "ArrowRight" ? 1 : 0;
       if (direction && step(direction)) {
@@ -331,6 +415,15 @@ export function mountUniversityGallery(cover, universityId) {
       }
     }, { signal: listeners.signal });
   }
+
+  modeSwitch?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-cover-mode]");
+    if (!button) return;
+    const nextMode = button.dataset.coverMode === "map" ? "map" : "photo";
+    if (nextMode === coverMode) return;
+    coverMode = nextMode;
+    applyCoverMode();
+  }, { signal: listeners.signal });
 
   const cancelGalleryTap = bindTouchGalleryButtons(gallery, preview, step, listeners.signal);
   const cancelBackdropDismiss = bindBackdropDismiss({ dialog, canvas, signal: listeners.signal });
@@ -356,7 +449,7 @@ export function mountUniversityGallery(cover, universityId) {
     }
     if (photos.length > 1) {
       for (const area of navigation) {
-        area.hidden = false;
+        area.hidden = area === coverNavigation && coverMode !== "photo";
         area.querySelector(".d-gallery-button--previous").addEventListener("click", () => step(-1));
         area.querySelector(".d-gallery-button--next").addEventListener("click", () => step(1));
       }
@@ -368,12 +461,14 @@ export function mountUniversityGallery(cover, universityId) {
     listeners.abort();
     cancelGalleryTap();
     cancelBackdropDismiss();
+    coverMapController?.dispose();
     zoom.dispose();
     dialog.close();
     dialog.remove();
     coverNavigation.remove();
     coverCredit.remove();
     coverStatus.remove();
+    modeSwitch?.remove();
     preview.remove();
     placeholder.remove();
   };

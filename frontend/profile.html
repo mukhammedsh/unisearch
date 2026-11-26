@@ -83,8 +83,7 @@
               <div class="profile-section-fields">
                 <div class="profile-field">
                   <label class="profile-field-label" for="studyLevelSelect" data-i18n="profile.label.study_level">Study level</label>
-
-                  <select id="studyLevelSelect" class="profile-input profile-input--select">
+                  <select id="studyLevelSelect" class="ui-select ui-select--lg profile-input profile-input--select">
                     <option value="Any" data-i18n="profile.option.study_level_any">Any study level</option>
                     <option value="preparation" data-i18n="profile.option.study_level_preparation">Preparation / Foundation</option>
                     <option value="Bachelor" data-i18n="profile.option.study_level_bachelor">Bachelor's</option>
@@ -99,8 +98,7 @@
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="profileMajorSelect" data-i18n="profile.label.major">Subject</label>
-
-                  <select id="profileMajorSelect" class="profile-input profile-input--select">
+                  <select id="profileMajorSelect" class="ui-select ui-select--lg profile-input profile-input--select">
                     <option value="" data-i18n="profile.option.major_any">Undecided / Any</option>
                   </select>
                 </div>
@@ -110,7 +108,7 @@
 
                   <textarea
                     id="profileInterestsInput"
-                    class="profile-input profile-input--textarea"
+                    class="ui-input ui-input--textarea profile-input profile-input--textarea"
                     rows="3"
                     maxlength="1200"
 
@@ -121,8 +119,7 @@
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="studyModeSelect" data-i18n="profile.label.study_mode">Study format</label>
-
-                  <select id="studyModeSelect" class="profile-input profile-input--select">
+                  <select id="studyModeSelect" class="ui-select ui-select--lg profile-input profile-input--select">
                     <option value="Any" data-i18n="profile.option.study_mode_any">Any (All formats)</option>
                     <option value="On-campus" data-i18n="profile.option.study_mode_oncampus">On-campus (Live)</option>
                     <option value="Online" data-i18n="profile.option.study_mode_online">Online / Distance</option>
@@ -143,10 +140,10 @@
                   <label class="profile-field-label" for="budgetInput" data-i18n="profile.label.budget">Yearly budget</label>
 
                   <div class="profile-budget-row">
-                    <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                    <div class="profile-budget profile-budget--with-unit ui-input-composite ui-input-composite--lg">
                       <input
                         id="budgetInput"
-                        class="profile-input"
+                        class="ui-input ui-input--lg profile-input"
                         type="text"
                         inputmode="numeric"
 
@@ -155,14 +152,13 @@
                       />
                       <span class="profile-unit" id="profileBudgetUnit" data-i18n="profile.unit.per_year">/ year</span>
                     </div>
-                    <select id="profileBudgetCurrency" class="profile-input profile-input--select profile-budget-currency" data-flags="off" aria-label="Budget currency" data-i18n-aria-label="profile.budget_currency_label"></select>
+                    <select id="profileBudgetCurrency" class="ui-select ui-select--lg profile-input profile-input--select profile-budget-currency" data-flags="off" aria-label="Budget currency" data-i18n-aria-label="profile.budget_currency_label"></select>
                   </div>
                 </div>
 
                 <div class="profile-field">
                   <label class="profile-field-label" for="profileFundingTypeSelect" data-i18n="profile.label.funding_type">Funding you look for</label>
-
-                  <select id="profileFundingTypeSelect" class="profile-input profile-input--select">
+                  <select id="profileFundingTypeSelect" class="ui-select ui-select--lg profile-input profile-input--select">
                     <option value="any" data-i18n="profile.option.funding_any">Any (Grant + Paid)</option>
                     <option value="grant" data-i18n="profile.option.funding_grant">Grant only</option>
                     <option value="paid" data-i18n="profile.option.funding_paid">Paid only</option>
@@ -176,10 +172,10 @@
                       </span>
                     </div>
                     <div class="profile-budget-grant-hint__actions">
-                      <button id="profileLowBudgetGrantApply" type="button" class="profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
+                      <button id="profileLowBudgetGrantApply" type="button" class="ui-btn ui-btn--sm ui-btn--primary profile-budget-grant-hint__cta" data-i18n="profile.hint.low_budget_grant_action">
                         Set Grant only
                       </button>
-                      <button id="profileLowBudgetGrantDismiss" type="button" class="profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
+                      <button id="profileLowBudgetGrantDismiss" type="button" class="ui-btn ui-btn--sm ui-btn--icon profile-budget-grant-hint__dismiss" title="Dismiss hint" data-i18n-title="profile.hint.dismiss" aria-label="Dismiss hint" data-i18n-aria-label="profile.hint.dismiss">
                         <span data-heroicon="x-mark" data-icon-size="16"></span>
                       </button>
                     </div>
@@ -198,11 +194,10 @@
               <div class="profile-section-fields">
                 <div class="profile-field profile-field--gpa">
                   <label class="profile-field-label" for="gpaInput" data-i18n="profile.label.gpa">GPA</label>
-
-                  <div class="profile-budget profile-budget--with-unit ui-input-composite">
+                  <div class="profile-budget profile-budget--with-unit ui-input-composite ui-input-composite--lg">
                     <input
                       id="gpaInput"
-                      class="profile-input"
+                      class="ui-input ui-input--lg profile-input"
                       type="number"
                       min="0"
                       max="4"
@@ -258,7 +253,7 @@
                     <div class="profile-exam-form-controls">
                       <div class="profile-field profile-exam-select-wrap">
                         <label class="profile-form-label" for="examNameSelect" data-i18n="profile.exam">Exam</label>
-                        <select id="examNameSelect" class="profile-input profile-input--select">
+                        <select id="examNameSelect" class="ui-select ui-select--lg profile-input profile-input--select">
                           <option value="" disabled selected data-i18n="profile.option.select_exam">Select Exam</option>
                           <option value="IELTS">IELTS</option>
                           <option value="TOEFL">TOEFL</option>
@@ -271,7 +266,7 @@
                         <label class="profile-form-label" for="examScoreInput" data-i18n="profile.score">Score</label>
                         <input
                           id="examScoreInput"
-                          class="profile-input"
+                          class="ui-input ui-input--lg profile-input"
                           type="number"
                           step="0.1"
                           placeholder="Score"
@@ -281,12 +276,12 @@
 
                       <div class="profile-field profile-exam-date-wrap">
                         <label class="profile-form-label" for="examTakenOnInput" data-i18n="profile.evidence.test_date">Test date (optional)</label>
-                        <input id="examTakenOnInput" class="profile-input" type="date" />
+                        <input id="examTakenOnInput" class="ui-input ui-input--lg profile-input" type="date" />
                       </div>
 
                       <div class="profile-exam-form-actions">
-                        <button id="addExamBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
-                        <button id="clearExamDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
+                        <button id="addExamBtn" class="ui-btn ui-btn--lg ui-btn--primary profile-add" type="button" data-i18n="profile.add">Add</button>
+                        <button id="clearExamDraftBtn" class="ui-btn ui-btn--lg ui-btn--subtle profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
                       </div>
                     </div>
 
@@ -312,17 +307,17 @@
                 <div class="lang-add-grid lang-add-grid--compact">
                   <div class="lang-control-item">
                     <label class="profile-form-label" for="langCode" data-i18n="profile.language">Language</label>
-                    <select id="langCode" class="profile-input" data-flags="off"></select>
+                    <select id="langCode" class="ui-select ui-select--lg profile-input profile-input--select" data-flags="off"></select>
                   </div>
 
                   <div class="lang-control-item">
                     <label class="profile-form-label" for="langKind" data-i18n="profile.type">How you show it</label>
-                    <select id="langKind" class="profile-input"></select>
+                    <select id="langKind" class="ui-select ui-select--lg profile-input profile-input--select"></select>
                   </div>
 
                   <div id="cefrContainer" class="profile-lang-conditional lang-control-item" hidden>
                     <label class="profile-form-label" for="langCefr" data-i18n="profile.cefr">CEFR</label>
-                    <select id="langCefr" class="profile-input">
+                    <select id="langCefr" class="ui-select ui-select--lg profile-input profile-input--select">
                       <option value="1">A1</option>
                       <option value="2">A2</option>
                       <option value="3">B1</option>
@@ -334,7 +329,7 @@
 
                   <div id="examContainer" class="profile-lang-conditional lang-control-item" hidden>
                     <label class="profile-form-label" for="langExam" data-i18n="profile.exam">Exam</label>
-                    <select id="langExam" class="profile-input" data-flags="off"></select>
+                    <select id="langExam" class="ui-select ui-select--lg profile-input profile-input--select" data-flags="off"></select>
                   </div>
 
                   <div id="scoreContainer" class="profile-lang-conditional lang-control-item" hidden>
@@ -343,7 +338,7 @@
                       id="langExamScore"
                       type="text"
                       inputmode="decimal"
-                      class="profile-input"
+                      class="ui-input ui-input--lg profile-input"
                       placeholder="Score (e.g. 7.5)"
                       data-i18n-placeholder="profile.placeholder.lang_score"
                     />
@@ -355,12 +350,12 @@
 
                   <div id="langExamTakenOnContainer" class="profile-lang-conditional lang-control-item" hidden>
                     <label class="profile-form-label" for="langExamTakenOn" data-i18n="profile.evidence.test_date">Test date (optional)</label>
-                    <input id="langExamTakenOn" class="profile-input" type="date" />
+                    <input id="langExamTakenOn" class="ui-input ui-input--lg profile-input" type="date" />
                   </div>
 
                   <div class="lang-control-btn-wrap">
-                    <button id="langAddBtn" class="profile-add" type="button" data-i18n="profile.add">Add</button>
-                    <button id="clearLanguageDraftBtn" class="profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
+                    <button id="langAddBtn" class="ui-btn ui-btn--lg ui-btn--primary profile-add" type="button" data-i18n="profile.add">Add</button>
+                    <button id="clearLanguageDraftBtn" class="ui-btn ui-btn--lg ui-btn--subtle profile-button-subtle" type="button" hidden data-i18n="profile.clear_report_draft">Clear draft</button>
                   </div>
                 </div>
 
@@ -382,7 +377,7 @@
 
             <div class="profile-reset-row">
               <p class="profile-hint" data-i18n="profile.reset.note">Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.</p>
-              <button id="resetProfileBtn" class="profile-delete profile-delete--danger-soft" type="button" data-i18n="profile.reset.cta">
+              <button id="resetProfileBtn" class="ui-btn ui-btn--danger-soft profile-delete profile-delete--danger-soft" type="button" data-i18n="profile.reset.cta">
                 Reset data
               </button>
             </div>
@@ -398,7 +393,7 @@
         </div>
         <div class="profile-action-buttons">
           <button
-            class="profile-action-btn profile-action-btn--subtle"
+            class="ui-btn ui-btn--lg ui-btn--ghost profile-action-btn profile-action-btn--subtle"
             id="profileCloseBtn"
             type="button"
             title="Return to previous page"
@@ -407,14 +402,14 @@
             <span data-i18n="profile.action.back">Back</span>
           </button>
           <button
-            class="profile-action-btn profile-action-btn--secondary"
+            class="ui-btn ui-btn--lg profile-action-btn profile-action-btn--secondary"
             id="saveProfileBtn"
             type="button"
           >
             <span data-i18n="profile.action.save_all">Save</span>
           </button>
           <button
-            class="profile-action-btn profile-action-btn--primary"
+            class="ui-btn ui-btn--lg ui-btn--primary profile-action-btn profile-action-btn--primary"
             id="profileShowMatchesBtn"
             type="button"
           >
@@ -431,9 +426,9 @@
         <h2 id="profileUnsavedTitle" data-i18n="profile.unsaved.title">Unsaved Changes</h2>
         <p id="profileUnsavedMessage" data-i18n="profile.unsaved.message">You have unsaved profile changes. What do you want to do?</p>
         <div class="profile-confirm-actions">
-          <button id="profileCancelCloseBtn" class="profile-add profile-add--secondary" type="button" autofocus data-i18n="profile.unsaved.cancel">Keep editing</button>
-          <button id="profileDiscardBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.unsaved.discard">Discard changes</button>
-          <button id="profileSaveAndCloseBtn" class="profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
+          <button id="profileCancelCloseBtn" class="ui-btn ui-btn--lg profile-add profile-add--secondary" type="button" autofocus data-i18n="profile.unsaved.cancel">Keep editing</button>
+          <button id="profileDiscardBtn" class="ui-btn ui-btn--lg ui-btn--danger-soft profile-delete profile-delete--danger" type="button" data-i18n="profile.unsaved.discard">Discard changes</button>
+          <button id="profileSaveAndCloseBtn" class="ui-btn ui-btn--lg ui-btn--primary profile-add profile-add--primary" type="button" data-i18n="profile.unsaved.save_close">Save and close</button>
         </div>
       </div>
     </dialog>
@@ -444,8 +439,8 @@
         <h2 id="profileResetTitle" data-i18n="profile.reset.confirm_title">Reset all profile data?</h2>
         <p data-i18n="profile.reset.confirm_message">This will remove all saved profile data on this device and set the profile back to empty values.</p>
         <div class="profile-confirm-actions">
-          <button id="profileResetCancelBtn" class="profile-add profile-add--secondary" type="button" autofocus data-i18n="profile.reset.cancel">Cancel</button>
-          <button id="profileResetConfirmBtn" class="profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
+          <button id="profileResetCancelBtn" class="ui-btn ui-btn--lg profile-add profile-add--secondary" type="button" autofocus data-i18n="profile.reset.cancel">Cancel</button>
+          <button id="profileResetConfirmBtn" class="ui-btn ui-btn--lg ui-btn--danger-soft profile-delete profile-delete--danger" type="button" data-i18n="profile.reset.confirm">Reset data</button>
         </div>
       </div>
     </dialog>

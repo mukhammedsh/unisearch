@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import path from "node:path";
 import test from "node:test";
-import { isSpacingProperty, scanCssFile, spacingTokenFor, spacingValueViolations } from "../../scripts/check-design-lint.mjs";
+import { isMotionTokenFile, isSpacingProperty, motionTimingViolations, scanCssFile, spacingTokenFor, spacingValueViolations } from "../../scripts/check-design-lint.mjs";
 
 test("the CSS file scanner catches spacing declarations in single-line blocks", () => {
   const filePath = path.resolve("tests/unit/fixtures/design-lint-single-line.css");
@@ -88,4 +88,19 @@ test("color-role-mismatch lint catches fill and surface tokens used as foregroun
   } finally {
     fs.unlinkSync(tmpFile);
   }
+});
+
+test("motion lint flags raw durations and easings outside motion tokens", () => {
+  assert.deepEqual(motionTimingViolations("transition", "opacity 150ms ease"), ["150ms", "ease"]);
+  assert.deepEqual(motionTimingViolations("animation", "fade 0.2s cubic-bezier(0.2, 0, 0, 1) both"), ["0.2s", "cubic-bezier("]);
+  assert.deepEqual(motionTimingViolations("transition-delay", "0s"), []);
+  assert.deepEqual(motionTimingViolations("transition", "opacity var(--motion-fast) var(--motion-ease-enter)"), []);
+  assert.deepEqual(motionTimingViolations("transition", "display var(--motion-instant) allow-discrete"), []);
+  assert.deepEqual(motionTimingViolations("color", "150ms"), []);
+});
+
+test("motion lint exempts the token-defining stylesheets", () => {
+  assert.equal(isMotionTokenFile("frontend/css/shared/06-motion-accessibility.css"), true);
+  assert.equal(isMotionTokenFile("frontend/css/shared/01-foundation.css"), true);
+  assert.equal(isMotionTokenFile("frontend/css/universities/02-catalog.css"), false);
 });

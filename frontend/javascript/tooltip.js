@@ -94,6 +94,27 @@ function buildStateSelector(selectorList, stateClass) {
     .join(", ");
 }
 
+// After the pointer leaves a tooltip, neighbours open without the hover intent delay for a moment.
+const TOOLTIP_WARM_MS = 400;
+let tooltipWarmthBound = false;
+
+/**
+ * Toggles `tooltips-warm` on <html> while the pointer moves between tooltip triggers.
+ * @param {string} wrapSelector
+ */
+function bindTooltipWarmth(wrapSelector) {
+  if (tooltipWarmthBound) return;
+  tooltipWarmthBound = true;
+  let coolTimer = null;
+  document.addEventListener("pointerout", (evt) => {
+    const wrap = evt.target instanceof Element ? evt.target.closest(wrapSelector) : null;
+    if (!wrap || (evt.relatedTarget instanceof Node && wrap.contains(evt.relatedTarget))) return;
+    document.documentElement.classList.add("tooltips-warm");
+    clearTimeout(coolTimer);
+    coolTimer = setTimeout(() => document.documentElement.classList.remove("tooltips-warm"), TOOLTIP_WARM_MS);
+  });
+}
+
 export function bindInfoTooltips(options = {}) {
   if (typeof document === "undefined") return;
 
@@ -109,6 +130,7 @@ export function bindInfoTooltips(options = {}) {
   const key = `${wrapSelector}::${buttonSelector}::${openClass}::${closedClass}`;
   if (__boundTooltipKeys.has(key)) return;
   __boundTooltipKeys.add(key);
+  bindTooltipWarmth(wrapSelector);
 
   const holdTimers = new WeakMap();
   const openWrapsSelector = buildStateSelector(wrapSelector, openClass);

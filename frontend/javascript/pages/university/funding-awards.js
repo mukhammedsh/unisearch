@@ -228,7 +228,7 @@ export function renderFundingAwardList(finance, categories, studyLevel, programC
               ${row(t("university.finance.award_deadline", "Award application deadline"), fundingDeadlineText(award.award_application_deadline, award, "award_application_deadline"))}
               ${row(t("university.finance.award_timezone", "Time zone"), timezone)}
             </dl>
-            <details class="finance-award-details">
+            <details class="finance-award-details motion-disclosure">
               <summary>${escapeHtml(t("university.finance.award_details", "Steps, documents, and conditions"))}</summary>
               <div class="finance-award-details-content">
                 ${row(t("university.finance.award_steps", "Application steps"), steps.length ? steps.map((step, index) => translateFundingAwardField(award, `steps.${index}`, step)).join(" • ") : unknown)}

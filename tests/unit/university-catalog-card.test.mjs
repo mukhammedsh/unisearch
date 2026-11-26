@@ -6,6 +6,7 @@ import { test } from "node:test";
 global.fetch = async url => ({ ok: true, text: () => readFile(new URL(`../../frontend/${String(url).split("?")[0]}`, import.meta.url), "utf8") });
 const { initI18n, setLanguage } = await import("../../frontend/javascript/i18n.js");
 const { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip, reviewedCardIndicators } = await import("../../frontend/javascript/pages/universities.js");
+const { renderUniversityCard } = await import("../../frontend/javascript/pages/universities/card-renderer.js");
 await initI18n();
 
 test("reviewed admissions cards do not reuse legacy finance or match prices", () => {
@@ -362,4 +363,43 @@ test("card rank tooltip names the ranking source and check date without a redund
     buildRankSourceTooltip({ rank: null, rank_meta: { source: "QS World University Rankings 2026", status: "not_published", verified_at: "2026-04-09" } }),
     /^Нет позиции \(QS World University Rankings 2026\) · Проверено: 2026[-‑–]04-09$/,
   );
+});
+
+test("catalog card hides global rank row when university has no published rank", () => {
+  setLanguage("eng", { emit: false });
+  const unrankedHtml = renderUniversityCard({
+    id: "astana-medical-university-kaz-astana",
+    name: "Astana Medical University",
+    location: { city: "Astana", country: "Kazakhstan" },
+    rank: null,
+    rank_meta: { source: "QS World University Rankings 2026", status: "not_published" },
+    finance: { total_cost_year_usd: 4500, currency: "KZT" },
+  }, 0);
+  assert.doesNotMatch(unrankedHtml, /uni-metrics|Global Rank|N\/A/);
+
+  const rankedHtml = renderUniversityCard({
+    id: "mit-usa-cambridge",
+    name: "MIT",
+    location: { city: "Cambridge", country: "USA" },
+    rank: 1,
+    rank_meta: { source: "QS World University Rankings 2026", status: "official", verified_at: "2026-04-09" },
+    finance: { total_cost_year_usd: 80000, currency: "USD" },
+  }, 0);
+  assert.match(rankedHtml, /uni-metrics/);
+  assert.match(rankedHtml, /#1/);
+});
+
+test("catalog card renders a calm icon-only placeholder when cover_available is false", () => {
+  setLanguage("eng", { emit: false });
+  const html = renderUniversityCard({
+    id: "kimep-university-kaz-almaty",
+    name: "KIMEP University",
+    location: { city: "Almaty", country: "Kazakhstan" },
+    cover_available: false,
+    finance: { total_cost_year_usd: 8000, currency: "KZT" },
+  }, 0);
+  assert.doesNotMatch(html, /<img class="uni-media-img"/);
+  assert.match(html, /class="uni-media-empty" aria-hidden="true"/);
+  assert.match(html, /<svg/);
+  assert.doesNotMatch(html, /Campus photo unavailable|photo_unavailable/);
 });

@@ -438,16 +438,16 @@ export function renderApplicantSection(source, domains, { checkDetails = "" } = 
   const count = focused.length + general.length + unknowns.length;
   // The tab's plain answers come first (the key facts above it); the official pages, every full record, the additional
   // references and the unresolved information sit behind one closed "Sources" disclosure with one language note.
-  const fullRecords = count ? `<details class="admissions-reading__references" data-full-records><summary>${escapeHtml(label("full_records"))}</summary>
+  const fullRecords = count ? `<details class="admissions-reading__references motion-disclosure" data-full-records><summary>${escapeHtml(label("full_records"))}</summary>
     <p class="admissions-reading__note">${escapeHtml(label("reference_scope_note"))}</p>${focused.length ? references(focused) : ""}
-    ${general.length ? `<details class="admissions-reading__references" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}
+    ${general.length ? `<details class="admissions-reading__references motion-disclosure" data-general-references><summary>${escapeHtml(label("general_references"))} (${general.length})</summary><p class="admissions-reading__note">${escapeHtml(label("general_reference_note"))}</p>${references(general)}</details>` : ""}
     ${unknowns.length ? renderAdmissionsUnknowns(source) : ""}</details>` : "";
   const sourceList = renderSourceList(resolved.readingSources);
   const citedCount = resolved.readingSources.entries().length;
   const fallbackUrls = citedCount ? [] : [...new Set([...focused, ...general, ...unknowns].flatMap(item => item.source_ids || item.sourceIds || [])
     .map(id => safeSourceUrl((source.sources || []).find(entry => entry.id === id)?.url)).filter(Boolean))];
   const sourceCount = citedCount || fallbackUrls.length;
-  const records = sourceList || fullRecords || checkDetails ? `<details class="admissions-reading__references admissions-reading__provenance" data-all-records><summary>${escapeHtml(sourceCount ? tFormat("university.admissions.reading.sources_disclosure_count", { count: sourceCount }) : label("sources_disclosure"))}</summary>${checkDetails}${sourceList}${fullRecords}</details>`
+  const records = sourceList || fullRecords || checkDetails ? `<details class="admissions-reading__references admissions-reading__provenance motion-disclosure" data-all-records><summary>${escapeHtml(sourceCount ? tFormat("university.admissions.reading.sources_disclosure_count", { count: sourceCount }) : label("sources_disclosure"))}</summary>${checkDetails}${sourceList}${fullRecords}</details>`
     : tba ? "" : references([]);
   return `<div class="admissions-reading">${highlights}${records}</div>`;
 }

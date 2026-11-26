@@ -38,7 +38,7 @@
   overflow: hidden;
   border: none;
   border-radius: var(--radius-base);
-  background: var(--surface-solid);
+  background: var(--surface-control-on-bg);
   box-shadow: var(--shadow-micro);
 }
 
@@ -61,16 +61,21 @@
   box-shadow: inset 0 1px 0 var(--line-faint);
 }
 
-.u-map-container .leaflet-control-zoom a:hover,
+.u-map-container .leaflet-control-zoom a:hover:not(:active, .leaflet-disabled),
 .u-map-container .leaflet-control-zoom a:focus {
   background: var(--interaction-hover-surface);
   color: var(--interaction-hover-text);
 }
 
+.u-map-container .leaflet-control-zoom a:active:not(.leaflet-disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
 .u-map-container .leaflet-control-zoom a.leaflet-disabled {
-  background: var(--surface-solid);
+  background: var(--surface-control-on-bg);
   color: var(--text-muted);
-  opacity: 0.48;
+  opacity: var(--interaction-disabled-opacity);
 }
 
 .u-map-results-list,
@@ -217,8 +222,8 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to bottom in srgb,
-    color-mix(in srgb, var(--uni-card-bg) 78%, transparent),
+    to bottom in oklab,
+    color-mix(in oklab, var(--uni-card-bg) 78%, transparent),
     var(--uni-card-bg) 68%
   );
 }
@@ -312,13 +317,13 @@
 
 .u-map-results-more {
   display: inline-flex;
-  min-height: 44px;
+  min-height: var(--control-height-lg);
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--space-4);
-  border-radius: var(--radius-base);
-  background: var(--surface-solid);
+  border-radius: var(--control-radius-md);
+  background: var(--surface-control-on-bg);
   color: var(--text);
   font: inherit;
   font-weight: var(--font-weight-medium);
@@ -326,14 +331,19 @@
   box-shadow: var(--shadow-micro);
 }
 
-.u-map-results-more:hover:not(:disabled) {
+.u-map-results-more:hover:not(:disabled, :active) {
   background: var(--interaction-hover-surface);
   color: var(--interaction-hover-text);
 }
 
+.u-map-results-more:active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
 .u-map-results-more:disabled {
   cursor: wait;
-  opacity: 0.64;
+  opacity: var(--interaction-disabled-opacity);
 }
 
 .u-map-results-spinner {
@@ -342,7 +352,7 @@
   border: 2px solid var(--line);
   border-top-color: var(--accent);
   border-radius: var(--radius-circle);
-  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) var(--motion-ease-linear) infinite;
 }
 
 .u-map-results-complete {
@@ -430,6 +440,7 @@
 .map-card-wrapper .uni-media {
   flex-basis: 140px;
   height: 140px;
+  border-radius: 0;
 }
 
 .map-card-wrapper .uni-title {

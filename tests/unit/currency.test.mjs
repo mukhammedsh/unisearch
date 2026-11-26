@@ -408,4 +408,12 @@ describe('currency.js', () => {
     assert.strictEqual(convert(1, 'USD', 'KZT'), 515.0);
     assert.strictEqual(dispatchedEvents.filter((e) => e.type === 'currencyRatesUpdated').length, 1);
   });
+
+  test('formatPriceRange collapses equal rounded converted ends while keeping the original range', () => {
+    setPreferredCurrency('USD');
+    setCurrencyDisplayMode('both');
+    const rendered = formatPriceRange(26442, 26800, 'GBP', { presentation: 'summary' });
+    assert.match(rendered, /^≈ \$35,000 \(£26,442 – £26,800\)$/);
+    assert.doesNotMatch(rendered, /\$[\d,]+ – \$[\d,]+/);
+  });
 });

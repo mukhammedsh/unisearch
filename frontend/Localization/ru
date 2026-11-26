@@ -376,8 +376,6 @@ universities.cost.fee_status.self_paying: платное обучение
 universities.cost.exclusion.insurance: Страховка отдельно.
 universities.cost.exclusion.travel: Проезд отдельно.
 universities.cost.exclusion.one_time_fees: Разовые сборы отдельно.
-universities.cost.filter_help: До финансовой помощи. Диапазон может совпадать частично: уточните программу и категорию оплаты. При ограничении цены вузы с неизвестной суммой не показываются.
-universities.cost.filter_help_summary: Ценовой фильтр скрывает неизвестные цены; бюджет профиля влияет на UniFit.
 universities.cost.dated_reference: Опубликован ориентир; цикл поступления не подтверждён
 universities.cost.cycle_unconfirmed: Цикл поступления не подтверждён
 universities.cost.cycle_unspecified: Цикл не указан
@@ -425,7 +423,6 @@ universities.empty.reset_filters: Сбросить фильтры
 universities.search_placeholder: Поиск университета...
 universities.search_clear: Очистить поиск
 universities.no_matches: Университеты не найдены
-universities.select_country_first: Сначала выберите страну
 universities.compare.enter: Режим сравнения
 universities.compare.selection: Выбранные университеты
 universities.compare.pair_slot: Университет {number}
@@ -562,7 +559,6 @@ universities.tradeoff.location.left: Город
 universities.tradeoff.location.right: За городом
 universities.tradeoff.balanced: Не важно
 universities.help.open: Показать объяснение
-universities.help.sort_strategy: {fit} подстраивает порядок выдачи под ваш профиль. Остальные режимы сортируют только по имени или стоимости.
 universities.help.tradeoff.focus: Слева — меньше научных публикаций на студента, справа — исследовательские университеты. По центру не учитывается.
 universities.help.tradeoff.atmosphere: Слева поступает большая доля подавших, справа больше заявлений на место — по официальному проценту зачисления на первый курс. По центру не учитывается.
 universities.help.tradeoff.finance: Слева приоритет у более доступных вариантов и грантов, справа — готовность рассматривать более дорогие, но престижные. По центру не учитывается.
@@ -574,7 +570,6 @@ universities.sort_cost_desc: Цена по убыванию
 universities.sort_name_asc: Название А-Я
 universities.sort_rank_asc: По мировому рейтингу
 universities.sort_strategy: Сортировка
-universities.sort_hint_ai_tags: ИИ-теги полноценно работают только в режиме UniFit.
 accessibility.skip_to_main: Перейти к основному содержимому
 universities.state.warning_title: Интересы недоступны
 universities.state.empty_title: Нет результатов для текущих фильтров
@@ -586,7 +581,7 @@ universities.state_region: Штат / Регион
 universities.view_list: Список
 universities.view_map: Карта
 universities.view_toggles.aria: Режим отображения
-university.about_campus: О университете и кампусе
+university.about_campus: Об университете
 university.action.website: Сайт
 university.action.map: Карта
 university.action.save: Сохранить в избранное
@@ -659,6 +654,9 @@ university.gallery.position: Фото {current} из {total}
 university.gallery.unavailable: Фото недоступно
 university.gallery.zoom_in: Увеличить масштаб
 university.gallery.zoom_out: Уменьшить масштаб
+university.cover.view_switch: Режим обложки
+university.cover.photo: Фото
+university.cover.recenter: Вернуться к кампусу
 university.entry_requirements: Категории поступления
 university.error_no_id: Ошибка: ID не указан.
 university.loading_scholarships: Загрузка стипендий
@@ -1230,24 +1228,8 @@ university.deadlines.doctoral_research: Исследовательские до�
 university.deadlines.mba_round: Этап подачи заявки на MBA
 university.deadlines.interviews_label: Собеседования
 university.deadlines.time_label: Время
-university.coverage.title: Данные UniSearch
-university.coverage.note: Здесь показано, какие сведения UniSearch добавил в каталог. «Не добавлено в каталог» не означает, что университет не предлагает такие программы или условия.
-university.coverage.available: Есть в каталоге
-university.coverage.not_catalogued: Не добавлено в каталог
-university.coverage.unknown: Данные о покрытии недоступны
-university.coverage.no_levels: Для этого университета пока нет сведений о покрытии по уровням обучения. Это не показывает, какие программы предлагает университет.
-university.coverage.level.bachelor: Бакалавриат
-university.coverage.level.master: Магистратура
-university.coverage.level.doctorate: Докторантура
 university.coverage.level.professional: Профессиональные программы
 university.coverage.level.mba: MBA
-university.coverage.programs: Программы
-university.coverage.requirements: Требования к поступлению
-university.coverage.deadlines_exact: Сроки с точной датой и годом
-university.coverage.deadlines_approximate: Приблизительные сроки или сроки без года
-university.coverage.costs_program: Стоимость для отдельных программ
-university.coverage.costs_undergraduate: Общие данные о стоимости бакалавриата
-university.coverage.aid: Финансовая помощь и финансирование
 profile.applicant_context.optional: Не указано
 universities.compare.finance.grant_unconfirmed: Выбранный грант — лишь возможное финансирование. Его сумма не считается подтверждённой стоимостью или скидкой, пока университет официально не присудит его.
 universities.compare.funding.not_awarded: Возможный грант; не подтверждён
@@ -2746,7 +2728,7 @@ universities.compare.reviewed.open_profile: Открыть профиль
 universities.compare.reviewed.note: Это сводка официальных данных, а не решение о поступлении и не оценка, какой университет лучше.
 universities.compare.reviewed.retry: Повторить
 universities.compare.reviewed.fee.label: Цена для
-universities.compare.reviewed.fee.both: Обоих
+universities.compare.reviewed.fee.both: Оба статуса
 universities.compare.reviewed.fee.home: Home
 universities.compare.reviewed.fee.overseas: Overseas
 universities.compare.reviewed.fee.note: Цена зависит от статуса оплаты (Home или Overseas), который университет определяет по своим правилам.
@@ -2758,6 +2740,10 @@ universities.compare.reviewed.picker.count: Найдено программ: {to
 universities.compare.reviewed.picker.routes_intro: На программу «{program}» можно подать несколькими способами. Выберите свой.
 universities.compare.reviewed.picker.back: Другая программа
 universities.compare.reviewed.picker.close: Закрыть
+universities.compare.pdf.export: Экспорт в PDF
+universities.compare.pdf.date: Дата экспорта — {date}
+universities.compare.pdf.no_sources: Для выбранного варианта нет официальных ссылок.
+universities.compare.pdf.note: Перед подачей заявки проверьте официальные источники. Сроки, требования и стоимость могут измениться.
 universities.compare.mixed.title: Эти университеты пока нельзя сравнить
 universities.compare.mixed.text: Данные университета «{reviewed}» уже перепроверены, а университета «{legacy}» — ещё нет. Пару сравниваем только внутри одной группы, чтобы не ставить рядом факты разной точности. Мы по очереди перепроверяем все университеты.
 universities.compare.mixed.reviewed: Данные перепроверены
@@ -2949,7 +2935,7 @@ university.admissions.key_facts.title: Главное для поступлен�
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Документы и другие условия здесь не проверяются; опубликованные университетом записи — в разделе «Источники».
+university.admissions.key_facts.requirements_manual: Документы и остальные требования автоматически не проверяются.
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -3106,11 +3092,12 @@ university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; �
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
 university.admissions.key_facts.requirements_checklist_lead: Ваши результаты и опубликованные минимумы:
-university.admissions.key_facts.recommended_english: Рекомендуемый тест по английскому: {minimum}
-university.admissions.key_facts.recommended_english_better: Рекомендуемый тест по английскому: {minimum} (лучше {better})
-university.admissions.key_facts.recommended_english_condition: Не обязательно: университет настоятельно советует сдать тест, если английский для вас не родной и вы пользуетесь им меньше пяти лет или не говорите на нём дома или в школе.
-university.admissions.key_facts.recommended_english_condition_not_native: Не обязательно: относится к вам, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
-university.admissions.key_facts.recommended_english_native_hint: Английский — ваш родной язык? Укажите это в профиле, и эта строка будет показываться, только когда она к вам относится.
+university.admissions.key_facts.recommended_english: Тест по английскому (необязательно): {exam} — минимум {minimum}
+university.admissions.key_facts.recommended_english_better: Тест по английскому (необязательно): {exam} — минимум {minimum}, рекомендуется {better}
+university.admissions.key_facts.recommended_english_condition: Университет советует сдать тест, если английский не родной и вы пользуетесь им меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_condition_not_native: Советуют сдать, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_native_hint: Указать данные о языке в профиле
+university.admissions.key_facts.recommended_english_add_hint: Добавить тест по английскому
 university.ux2.needs.mark_recommended: Рекомендация, а не требование
 languages.exam_overall_score_label: Общий балл
 languages.exam_overall_score_hint: Общий балл по всему экзамену — можно указать только его, если не знаете баллы по секциям.
@@ -3218,10 +3205,10 @@ profile.ux2.evidence.language_title: Опыт использования анг�
 profile.ux2.evidence.entirely: Полностью на английском?
 university.ux2.title: Главное для поступления
 university.ux2.intro_route: Показано для варианта «{route}». Одна заявка подходит для всех программ бакалавриата.
+university.ux2.intro_selected_route: Показано для варианта «{route}».
 university.ux2.intro_selected_program: Показано для выбранной программы «{program}».
 university.ux2.intro_program: У каждой программы они свои. Выберите программу, чтобы их увидеть.
 university.ux2.intro_legacy: Опубликованные данные вуза о бакалавриате.
-university.ux2.note: Это краткая сводка официальных данных, а не решение о поступлении. Источники и подробности — на вкладках.
 university.ux2.loading: Загружаем главное
 university.ux2.error: Не удалось загрузить главное.
 university.ux2.retry: Повторить
@@ -3395,4 +3382,3 @@ profile.calendar.next: Следующий месяц
 profile.calendar.month: Месяц
 profile.calendar.year: Год
 profile.calendar.clear: Очистить
-profile.calendar.today: Сегодня

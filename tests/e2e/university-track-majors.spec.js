@@ -352,12 +352,7 @@ test("MIT Course 6-3 first-year publishes no invented minimum or fit percentage 
   await expect(exam).not.toContainText("1500");
   await expect(page.locator("#detailRequirements .admissions-catalog__check").filter({ hasText: "Допустимые варианты обязательного теста" })).toContainText("Выполнено");
   await openTab(page, "general");
-  const history = page.locator("#admissionsUniversityInfo .admissions-catalog > details");
-  await expect(history).toBeVisible();
-  await expect(history).not.toHaveAttribute("open", "");
-  await history.locator(":scope > summary").click();
-  await expect(history).toContainText("Исторические");
-  await expect(history.locator('[data-admissions-fact="mit-first-year-profile-0"]')).toHaveCount(1);
+  await expect(page.locator("#admissionsUniversityInfo")).toHaveCount(0);
   await expect(page.locator("#detailRequirements [data-admissions-fact='mit-first-year-profile-0']")).toHaveCount(0);
   await fitsViewport(page, 390);
 });
@@ -582,7 +577,7 @@ test("profile major remains available through explicit catalogue search without 
   expect(saved.selectedAdmissionChoices?.["mit-usa-cambridge"]).toBeUndefined();
 });
 
-test("admission categories show applicable programs", async ({ page }) => {
+test("admission categories omit redundant program selector and tab jump actions", async ({ page }) => {
   await page.goto("/university.html?id=astana-it-university-kaz-astana");
 
   await expect(page.locator("#detailCard")).toBeVisible();
@@ -590,12 +585,12 @@ test("admission categories show applicable programs", async ({ page }) => {
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const programs = page.locator(".admission-program-selector .admission-program-option");
-  await expect(programs.first()).toBeVisible();
-  await expect(programs).toContainText(["General requirements", "Computer Science"]);
+  await expect(page.locator("#tab-admission .admission-category-card").first()).toBeVisible();
+  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-open-tab]")).toHaveCount(0);
 });
 
-test("admission category major tags are localized in russian", async ({ page }) => {
+test("programs tab localizes legacy program names in russian and admission omits selector", async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem("unisearch_ui_language_v1", "rus");
   });
@@ -604,11 +599,12 @@ test("admission category major tags are localized in russian", async ({ page }) 
   await expect(page.locator("#detailCard")).toBeVisible();
   await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   await expect(page.locator("#detailName")).not.toBeEmpty();
-  await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await page.click(".d-tab-btn[data-tab='tab-programs']");
 
-  const programs = page.locator(".admission-program-selector .admission-program-option");
-  await expect(programs.first()).toBeVisible();
-  await expect(programs).toContainText(["Общие требования", "Компьютерные науки"]);
+  await expect(page.locator("#detailPrograms .program-card__title", { hasText: "Компьютерные науки" }).first()).toBeVisible();
+  await page.click(".d-tab-btn[data-tab='tab-admission']");
+  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-open-tab]")).toHaveCount(0);
 });
 
 test("nazarbayev university keeps regular admission separate from financial support", async ({ page }) => {
@@ -689,7 +685,16 @@ test("oxford admission selector narrows program-specific categories without dupl
   expect(initialCategoryIds.length).toBeGreaterThan(3);
   expect(new Set(initialCategoryIds).size).toBe(initialCategoryIds.length);
 
-  await page.locator(".admission-program-option[data-admission-program='computer_science']").click();
+  await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();
+  const csCard = page.locator("#detailPrograms .program-card").filter({
+    has: page.locator(".program-card__title", { hasText: /^Computer Science$/ }),
+  }).first();
+  await expect(csCard).toBeVisible();
+  await csCard.locator("[data-program-toggle]").click();
+  await csCard.locator("[data-program-admission]").click();
+  await expect(csCard.locator("[data-selected-program]")).toBeVisible();
+  await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
+  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
   await expect(categories).toHaveCount(1);
   const selectedCategoryIds = await categories.evaluateAll((nodes) => nodes.map((node) => node.dataset.admissionCategory).sort());
   expect(selectedCategoryIds).toEqual([
@@ -713,8 +718,8 @@ test("abai university admission card layout invariants", async ({ page }) => {
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  const programSelector = page.locator(".admission-program-selector").first();
-  await expect(programSelector).toBeVisible();
+  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-open-tab]")).toHaveCount(0);
 
   const fundingOption = page.locator(".admission-funding-option").first();
   await expect(fundingOption).toBeVisible();
@@ -746,19 +751,17 @@ test("abai university general tab layout invariants and spacing", async ({ page 
   const generalTab = page.locator("#tab-general");
   await expect(generalTab).toBeVisible();
 
-  // Key admission facts, key figures, then the description: three borderless boxes with one shared rhythm.
+  // About the university (description + key facts), then key admission facts: two borderless boxes with one shared rhythm.
   const boxes = generalTab.locator(".d-box");
-  await expect(boxes).toHaveCount(3);
-  await expect(boxes.nth(0)).toHaveAttribute("data-overview-summary", "");
-  await expect(boxes.nth(1).locator("#detailRecommendations")).toHaveCount(1);
-  await expect(boxes.nth(2).locator("#detailExtra")).toHaveCount(1);
+  await expect(boxes).toHaveCount(2);
+  await expect(boxes.nth(0).locator("#detailExtra")).toHaveCount(1);
+  await expect(boxes.nth(0).locator("#detailRecommendations")).toHaveCount(1);
+  await expect(boxes.nth(1)).toHaveAttribute("data-overview-summary", "");
 
-  for (const index of [1, 2]) {
-    const borderTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
-    expect(borderTop).toBe("0px");
-    // The previous box already pads its bottom by 24px, so the next one adds 8px: 32px between sections.
-    const paddingTop = await boxes.nth(index).evaluate((el) => window.getComputedStyle(el).paddingTop);
-    expect(paddingTop).toBe("8px");
-  }
+  const borderTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).borderTopWidth);
+  expect(borderTop).toBe("0px");
+  // The previous box already pads its bottom by 24px, so the next one adds 8px: 32px between sections.
+  const paddingTop = await boxes.nth(1).evaluate((el) => window.getComputedStyle(el).paddingTop);
+  expect(paddingTop).toBe("8px");
 
 });
