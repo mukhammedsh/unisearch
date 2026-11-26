@@ -60,12 +60,14 @@
   --motion-fast: 160ms;
   --motion-medium: 240ms;
   --motion-slow: 360ms;
+  --motion-cover: 420ms;
   --motion-spinner-loop: 900ms;
   --motion-loading-loop: 1.1s;
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-cover: cubic-bezier(0.32, 0.72, 0, 1);
   --motion-ease-linear: linear;
   --motion-offset-sm: 4px;
   --motion-tooltip-delay: 200ms;
@@ -190,12 +192,14 @@
 }
 
 ::view-transition-group(uni-cover) {
-  animation-duration: var(--motion-medium);
-  animation-timing-function: var(--motion-ease-standard);
+  animation-duration: var(--motion-cover);
+  animation-timing-function: var(--motion-ease-cover);
 }
 
 ::view-transition-old(uni-cover),
 ::view-transition-new(uni-cover) {
+  animation-duration: var(--motion-cover);
+  animation-timing-function: var(--motion-ease-cover);
   height: 100%;
   object-fit: cover;
 }
