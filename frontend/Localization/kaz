@@ -2251,10 +2251,9 @@ university.admissions.reading.apply_by: Өтініш беру мерзімі
 university.admissions.reading.aid_by: Қаржылай көмек
 university.admissions.reading.decision: Шешім
 university.admissions.reading.last_test: Соңғы мерзім
-university.admissions.reading.recurring_dates: Бұл — жыл сайынғы мерзімдер: дереккөз қабылдау жылын белгілемейді. Таңдалған кезеңді ресми беттен тексеріңіз.
 university.admissions.reading.reply_by: Ұсынысқа жауап
-university.admissions.reading.reference_budget: Дереккөздегі анықтамалық бюджет
-university.admissions.reading.dated_budget: Бұл — көрсетілген кезеңге арналған, қаржылай көмек шегерілмеген бюджет. Ол басқа қабылдау жылының бағасын растамайды.
+university.admissions.reading.reference_budget: Бюджет неден құралады
+university.admissions.reading.budget_total: Қаржылай көмекке дейінгі жиыны
 university.admissions.reading.tuition: Оқу ақысы
 university.admissions.reading.student_life_fee: Студенттік алым
 university.admissions.reading.housing_estimate: Тұрғын үй, бағалау
@@ -2262,12 +2261,11 @@ university.admissions.reading.food_estimate: Тамақ, бағалау
 university.admissions.reading.materials_estimate: Оқу материалдары
 university.admissions.reading.personal_estimate: Жеке шығындар
 university.admissions.reading.insurance_extra: Сақтандыру және есеп шектеулері:
-university.admissions.reading.tuition_budget_note: Оқу ақысы бюджеттің бір бөлігі ғана; тұру және басқа шығындар бөлек төленеді.
 university.admissions.reading.exclusion.insurance: Сақтандыру бөлек төленеді.
 university.admissions.reading.exclusion.one_time_fees: Бір реттік алымдар бөлек төленеді.
 university.admissions.reading.degree.MEng: Инженерия магистрі
 university.admissions.reading.degree.MEng_ucas_note: Бұл Master of Engineering дәрежесіне апаратын біріктірілген бакалавриат бағдарламасы.
-university.admissions.reading.potential_aid: Ықтимал қаржыландыру тағайындалған көмек емес. Оның шарттары, құжаттары мен мерзімдері бөлек тексеріледі; ол құннан шегерілмейді.
+university.admissions.reading.potential_aid: Кепілдік берілмейді: шарттары, құжаттары мен мерзімдері — ресми бетте.
 university.admissions.reading.full_records: Түпнұсқа тіліндегі толық жазбалар
 university.admissions.reading.sources_disclosure_count: Дереккөздер ({count})
 university.admissions.reading.sources_disclosure: Дереккөздер
@@ -2299,7 +2297,7 @@ university.admissions.reading.regular_decision: Негізгі өтініш (Reg
 university.admissions.reading.transfer_application: Ауысуға өтініш
 university.admissions.reading.priority_deadline: Басым мерзім
 university.admissions.reading.application_deadline: Өтініш беру мерзімі
-university.admissions.reading.official_application: Ресми өтініш беру және нұсқаулық
+university.admissions.reading.official_application: Ресми өтініш беру
 university.admissions.reading.official_source: Ресми дереккөз
 university.admissions.reading.unknown: Мұнда көрсетілмеген
 university.admissions.reading.previous_tabs: Алдыңғы бөлімдер
@@ -2471,7 +2469,6 @@ universities.compare.legacy_unreviewed: Бағдарламалар мен өті
 university.admissions.reading.summary_translation_missing: Қысқаша аударма әзірге дайын емес. Түпнұсқаны төменнен ашуға болады.
 university.admissions.reading.source_and_date: Дереккөз және күні
 university.admissions.reading.official_sources_count: Ресми дереккөздер ({count})
-university.admissions.reading.source_marker: Дереккөз {number}: {title}
 university.admissions.reading.reference_scope_note: Толығырақ мәліметтер университет тілінде берілген.
 university.admissions.reading.current_policy: Жарияланған ережелер; қабылдау жылы көрсетілмеген
 university.admissions.reading.yearless_period: Жыл сайынғы мерзімдер; қабылдау жылы көрсетілмеген
@@ -2486,8 +2483,6 @@ university.admissions.reading.aid_explained: Бұл көмек отбасыны�
 university.admissions.reading.aid_documents: Қаржылай көмекке не тапсыру керек
 university.admissions.reading.aid_css: CSS Profile — қаржылай көмекті есептеуге арналған College Board сауалнамасын толтырыңыз.
 university.admissions.reading.aid_css_code: MIT алушы коды: {code}.
-university.admissions.reading.aid_fafsa: FAFSA АҚШ федералдық көмегіне құқығы бар ішкі үміткерлерге қатысты. MIT халықаралық санатына бөлек нұсқаулықтар қолданылады.
-university.admissions.reading.aid_international_title: Халықаралық үміткерлер үшін
 university.admissions.reading.aid_finances_title: CSS Profile үшін дайындаңыз:
 university.admissions.reading.aid_priority_dates: Қаржылай көмек өтінішінің басым мерзімдері
 university.programs.all_levels: Барлық оқу деңгейлері
@@ -2904,10 +2899,8 @@ university.admissions.entry.route_help.nu-residency-unconditional: Резиде�
 university.admissions.entry.route_help.nu-residency-conditional-umc: UMC ұсынған үміткерлерге арналған жеке шартты жол. Ұсыным мен оқуға тіркелу шарттарын тексеріңіз: бұл емтихандардан жалпы босату емес.
 university.admissions.reading.structured_study: Оқу туралы жарияланған мәліметтер төменде берілген. Қысқаша мәтіндік шолу жоқ.
 university.admissions.key_facts.title: Түсу үшін негізгісі
-university.admissions.key_facts.note: Тек ресми деректер, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
-university.admissions.key_facts.requirements_manual: Құжаттар мен басқа талаптар автоматты түрде тексерілмейді.
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -2919,7 +2912,7 @@ university.admissions.key_facts.deadline_period: Өтінім беру кезе�
 university.admissions.key_facts.deadline_described: Жылы көрсетілген нақты күн жоқ; жарияланған мерзімдер «Мерзімдер» қойындысында
 university.admissions.key_facts.open_deadlines: Барлық мерзімдер
 university.admissions.key_facts.cost: Жылдық құны
-university.admissions.key_facts.cost_total: Университет жариялаған жылдық бюджет: {amount}
+university.admissions.key_facts.cost_total: Жылдық бюджет: {amount}
 university.admissions.key_facts.cost_breakdown: Оқу {tuition} + 9 айлық оқу кезеңінде тұру ≈ {living}
 university.admissions.key_facts.cost_tuition_share: Оның ішінде оқу — {tuition}, қалғаны — тұрғын үй, тамақ және басқа шығындар.
 university.admissions.key_facts.cost_estimate: Оқу және тұру: жылына ≈ {amount}
@@ -2959,8 +2952,6 @@ university.admissions.catalog.field.time: Уақыты
 university.admissions.catalog.field.timezone: Уақыт белдеуі
 university.admissions.catalog.field.scope: Қатысты
 university.admissions.catalog.record_link: Дереккөздің толық жазбасын көрсету
-university.admissions.entry.browsing_not_saved: Бұл нұсқаны сақтасаңыз, каталог пен салыстыру оны профиліңізбен салыстырады. Университетке ештеңе жіберілмейді.
-university.admissions.entry.saved_context: Каталог пен салыстыру үшін сақталды.
 university.admissions.entry.saved_other: Басқа нұсқа сақталған: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Таңдалған бакалавриат курсына UCAS арқылы өтініш беріңіз.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Таңдалған жоғары оқу орнынан кейінгі бағдарламаға өтініш беріңіз.
@@ -3026,12 +3017,10 @@ university.admissions.glossary.fee_status.title: Home / Overseas: төлем м�
 university.admissions.glossary.fee_status.text: Төлем мәртебесі қандай оқу ақысы қолданылатынын анықтайды: Home тарифі әдетте Ұлыбритания тұрғындарына және кейбір басқа санаттарға қолданылады, шетелдік үміткерлер көбіне Overseas бойынша төлейді, ал санатты университеттің өзі анықтайды.
 university.admissions.glossary.what_is: {term} дегеніміз не?
 university.admissions.key_facts.cost_fee_status_source: Төлем мәртебесі туралы ресми бет
-university.admissions.key_facts.funding_policy: Университеттің жарияланған саясаты: {policy}
-university.admissions.key_facts.funding_policy_note: Бұл университеттің жарияланған саясаты, сізге ұсынылған грант емес.
+university.admissions.key_facts.funding_policy: {policy}
 university.admissions.key_facts.deadline_earlier: Алдымен, бұл мерзімнен бұрын: {text}
-university.admissions.key_facts.deadline_recurring_next: Келесі: {name} — {date} (университет жылын көрсетпейді), шамамен {days} күннен кейін; ресми беттен нақтылаңыз
-university.admissions.key_facts.deadline_recurring_today: Келесі: {name} — {date} (университет жылын көрсетпейді), бүгін; ресми беттен нақтылаңыз
-university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — мерзімі өтті.
+university.admissions.key_facts.deadline_recurring_next: {date} — {name}, шамамен {days} күннен кейін
+university.admissions.key_facts.deadline_recurring_today: {date} — {name}, бүгін
 university.admissions.key_facts.requirements_kind_academic: Академиялық нәтиже
 university.admissions.key_facts.requirements_kind_language: Ағылшын тілі
 university.admissions.key_facts.requirements_kind_exam: Міндетті емтихан
@@ -3048,7 +3037,6 @@ university.admissions.key_facts.apply: Қайда тапсыру керек
 university.admissions.key_facts.credential: Қазақстан құжаттары
 university.admissions.key_facts.credential_unlisted: Университет Қазақстан аттестаты немесе дипломы бойынша шешім жарияламайды. Бұл бас тарту емес: құжатыңыз жарай ма, қабылдау комиссиясынан сұраңыз.
 university.admissions.key_facts.credential_source: Ресми талаптар
-university.admissions.key_facts.apply_text: Өтініш университеттің ресми сайтында беріледі.
 university.admissions.key_facts.apply_text_ucas: Өтінішті университет сайтында емес, UCAS — Ұлыбритания ЖОО-ларына ортақ өтініш жүйесі арқылы береді. Қадамдар ресми нұсқаулықта сипатталған.
 university.admissions.key_facts.minimum_add: Қосыңыз: {items}
 university.admissions.key_facts.minimum_any: {requirement}, біреуі: {items}

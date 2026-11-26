@@ -2,9 +2,10 @@
 
 All notable changes to UniSearch are documented here.
 
-## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, Kazakh-first locale, and UniFit fixes
+## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, lighter admissions tabs, Kazakh-first locale, and UniFit fixes
 
 ### Changed
+- Simplify reviewed university Admission, Dates, and Costs tabs across English, Russian, and Kazakh by removing defensive disclaimers, repeated deadline and budget notes, and inline source numbers, sizing the official application button compactly beside neighboring actions, and tightening MIT admissions summaries.
 - Keep desktop mouse tooltips transient on hover and keyboard focus without press states or click-to-pin behavior, let mouse clicks on university card price, rank, and status tooltips open the university normally, and preserve tap-to-open tooltips on touch and stylus screens.
 - Default price display to the visitor's preferred currency in every region so cards and comparisons stay compact, while keeping the exact original-currency price available inside catalog price tooltips and university cost details whenever a price is converted.
 

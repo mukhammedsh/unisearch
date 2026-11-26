@@ -21,11 +21,13 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: 44px;
-  padding: var(--space-2) var(--space-3);
+  /* Compact like the header actions; only the fill marks it as the main external step. */
+  min-height: 36px;
+  padding: var(--space-1-5) var(--space-3);
   border-radius: var(--radius-base);
   background: var(--accent);
   color: var(--text-inverse);
+  font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
 }
@@ -85,33 +87,6 @@
   color: var(--text);
   text-underline-offset: var(--space-1);
   overflow-wrap: anywhere;
-}
-
-.admissions-reading__refs {
-  display: inline-flex;
-  flex-wrap: wrap;
-  /* Source references read as "Source 1, 2": a muted label and underlined numbers that open the official page. */
-  align-items: baseline;
-  gap: var(--space-1);
-}
-
-/* Numbered source markers: compact, keyboard-reachable links to the official page listed under the same number. */
-.admissions-reading__source a.admissions-reading__ref {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  font-weight: var(--font-weight-medium);
-  font-variant-numeric: tabular-nums;
-  min-width: 0;
-  min-height: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--text);
-  font-size: var(--text-sm);
-  text-decoration: underline;
-  text-underline-offset: var(--space-1);
-  transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .admissions-reading__sources {
@@ -195,10 +170,8 @@
   padding-top: var(--space-1);
 }
 
-.admissions-reading__total {
-  font-size: var(--text-3xl);
+.admissions-reading__costs > div[data-budget-total] {
   font-weight: var(--font-weight-semibold);
-  font-variant-numeric: tabular-nums;
 }
 
 .admissions-reading__costs > div {
@@ -1604,22 +1577,9 @@ details[open] > summary > .admissions-disclosure-icon {
   line-height: var(--leading-normal);
 }
 
-.admissions-reading__refs-label {
-  color: var(--text-muted);
-}
-
-.admissions-reading__source a.admissions-reading__ref:active {
-  color: var(--interaction-active-text);
-  text-decoration-thickness: 2px;
-}
-
 @media (hover: hover) and (pointer: fine) {
   .admissions-term .admissions-term__trigger:hover {
     color: var(--text);
-  }
-
-  .admissions-reading__source a.admissions-reading__ref:hover {
-    color: var(--accent-text);
   }
 }
 
@@ -1647,12 +1607,6 @@ details[open] > summary > .admissions-disclosure-icon {
 }
 
 @media (max-width: 768px) {
-  .admissions-reading__source a.admissions-reading__ref {
-    min-width: 36px;
-    min-height: 36px;
-    padding: var(--space-1) var(--space-2);
-  }
-
   .admissions-reading__sources > summary {
     display: flex;
     align-items: center;
@@ -1677,6 +1631,7 @@ details[open] > summary > .admissions-disclosure-icon {
     min-height: 38px;
   }
 
+  .admissions-application-link,
   .admissions-key-facts__link {
     min-height: 44px;
   }

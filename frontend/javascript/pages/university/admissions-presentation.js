@@ -3,7 +3,7 @@ import { formatPrice, formatPriceRange } from "../../currency.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { admissionsCycleLabel, admissionDeadlineTitle, admissionWindowName, renderAdmissionsContext, renderAdmissionsUnknowns, renderAdmissionsValue } from "./admissions-render.js";
 import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
-import { originalPriceDisclosure, trStudyMode } from "../_shared.js";
+import { trStudyMode } from "../_shared.js";
 import { translateAdmissionSummary, translateFactSource } from "../../university-translations.js";
 import { glossaryTerms, renderTermList } from "./admissions-glossary.js";
 import { isEvidenceReviewed as evidenceReviewed, isPublishedReference, isReviewedPublished as reviewed, needsResolution, reviewNeedsResolution, reviewState } from "./admissions-status.js";
@@ -77,9 +77,10 @@ function createSourceRegistry(resolved) {
 const sourceTitle = entry => [...entry.titles].join(" · ") || new URL(entry.url).hostname;
 
 function markers(row, resolved) {
-  const cited = resolved.readingSources?.cite(row.source_ids, row.checked_at) || [];
-  // The numbers are named as sources, so a reader can tell they point to the official pages listed under the tab.
-  return cited.length ? `<span class="admissions-reading__refs"><span class="admissions-reading__refs-label">${escapeHtml(t(`university.ux2.sources.${cited.length > 1 ? "many" : "one"}`))}</span>${cited.map(entry => `<a class="admissions-reading__ref" href="${escapeHtmlAttr(entry.url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtmlAttr(tFormat("university.admissions.reading.source_marker", { number: entry.number, title: sourceTitle(entry) }))}" title="${escapeHtmlAttr(sourceTitle(entry))}" data-source-ref="${entry.number}">${entry.number}</a>`).join("")}</span>` : "";
+  // Citing still numbers the official pages for the tab's closed "Sources" list; the excerpts themselves carry no
+  // per-paragraph markers, so the answers read without provenance noise.
+  resolved.readingSources?.cite(row.source_ids, row.checked_at);
+  return "";
 }
 
 // Official pages can share one title (for example a first-year and a transfer "Application" page). Those entries get the
@@ -212,13 +213,13 @@ function aidSummary(rows, resolved) {
   const text = value => escapeHtml(translateAdmissionSummary(value) || label("summary_translation_missing"));
   const documents = process.value.required.filter(item => item !== "FAFSA for federal-aid eligible domestic applicants").map(item =>
     item === "CSS Profile" ? `${escapeHtml(label("aid_css"))}${international ? ` ${escapeHtml(tFormat("university.admissions.reading.aid_css_code", { code: international.value.css_code }))}` : ""}${renderTermList(["css_profile"], resolved.readingTerms)}` : text(item));
-  const timeline = dates.length ? `${table(label("aid_priority_dates"), [label("window"), label("aid_by")], dates)}<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : "";
+  const timeline = dates.length ? table(label("aid_priority_dates"), [label("window"), label("aid_by")], dates) : "";
+  // The need policy is the Costs tab's funding answer above, so this section keeps only what to prepare and when.
   return `<section class="admissions-reading__section" data-aid-summary><h3>${escapeHtml(label("aid_title"))}</h3><p>${escapeHtml(label("aid_explained"))}</p>
     <h4>${escapeHtml(label("aid_documents"))}</h4><ol class="admissions-catalog__items">${documents.map(document => `<li>${document}</li>`).join("")}</ol>
-    ${process.value.required.includes("FAFSA for federal-aid eligible domestic applicants") ? `<p class="admissions-reading__note" data-aid-fafsa>${escapeHtml(label("aid_fafsa"))}</p>` : ""}
     ${timeline}
-    ${international ? `<h4>${escapeHtml(label("aid_international_title"))}</h4><p>${text(international.value.international_category)}</p><p>${text(international.value.international_need)}</p><p>${escapeHtml(label("aid_finances_title"))}</p>${renderAdmissionsValue((international.value.parent_finances || []).map(value => translateAdmissionSummary(value) || label("summary_translation_missing")))}${["separated_divorced_parents", "non_english", "submission", "processing"].filter(key => international.value[key]).map(key => `<p>${text(international.value[key])}</p>`).join("")}${sourceNote(international, resolved)}` : ""}
-    ${process.value.late ? `<p>${text(process.value.late)}</p>` : ""}${process.value.individual_award ? `<p class="admissions-reading__note">${text(process.value.individual_award)}</p>` : ""}<p class="admissions-reading__note">${escapeHtml(label("potential_aid"))}</p>${sourceNote(process, resolved)}</section>`;
+    ${international ? `<h4>${escapeHtml(label("aid_finances_title"))}</h4>${renderAdmissionsValue((international.value.parent_finances || []).map(value => translateAdmissionSummary(value) || label("summary_translation_missing")))}${["separated_divorced_parents", "non_english", "submission"].filter(key => international.value[key]).map(key => `<p>${text(international.value[key])}</p>`).join("")}${sourceNote(international, resolved)}` : ""}
+    ${process.value.late ? `<p>${text(process.value.late)}</p>` : ""}${sourceNote(process, resolved)}</section>`;
 }
 
 function table(caption, headings, rows) {
@@ -269,7 +270,6 @@ function requirements(rows, resolved, coveredFactIds = null) {
 }
 
 function deadlines(rows, resolved) {
-  let recurringShown = false;
   return rows.filter(row => reviewed(row) || Array.isArray(row.attributes?.deadline_events) || row.value?.application_deadline && evidenceReviewed(row)).sort((left, right) => Number(Boolean(right.value?.windows?.some(window => window.application_due))) - Number(Boolean(left.value?.windows?.some(window => window.application_due)))).map(row => {
     if (typeof row.value?.application_deadline === "string") {
       const entries = [[escapeHtml(t("university.deadlines.kind.application")), escapeHtml(formatPublishedDate(row.value.application_deadline))]];
@@ -316,9 +316,7 @@ function deadlines(rows, resolved) {
     const windowName = admissionWindowName;
     const cells = rounds.length ? rounds.map(window => [escapeHtml(windowName(window.name)), escapeHtml(formatPublishedDate(window.application_due)), escapeHtml(formatPublishedDate(window.aid_due || label("unknown"))), escapeHtml(formatPublishedDate(window.decision || label("unknown")))])
       : tests.map(window => [escapeHtml(windowName(window.round)), escapeHtml(window.tests.map(test => test === "English proficiency" ? label("language") : test).join(", ")), escapeHtml(formatPublishedDate(window.latest))]);
-    const recurring = !row.scope?.cycle && !/20\d{2}/.test(JSON.stringify(windows)) && !recurringShown;
-    if (recurring) recurringShown = true;
-    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermList(glossaryTerms(rounds.map(window => window.name), tests.map(window => window.round)), resolved.readingTerms)}${recurring ? `<p class="admissions-reading__note">${escapeHtml(label("recurring_dates"))}</p>` : ""}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved)}</section>`;
+    return `<section class="admissions-reading__section">${table(label(rounds.length ? "application_dates" : "test_dates"), rounds.length ? [label("window"), label("apply_by"), label("aid_by"), label("decision")] : [label("window"), label("exam"), label("last_test")], cells)}${renderTermList(glossaryTerms(rounds.map(window => window.name), tests.map(window => window.round)), resolved.readingTerms)}${row.value.enrollment_reply ? `<p>${escapeHtml(label("reply_by"))}: <strong>${escapeHtml(formatPublishedDate(row.value.enrollment_reply))}</strong></p>` : ""}${sourceNote(row, resolved)}</section>`;
   }).join("");
 }
 
@@ -329,13 +327,12 @@ function finance(rows, resolved) {
   const budgetHtml = budgets.map(row => {
     const value = row.value;
     const money = amount => escapeHtml(formatPrice(amount, value.currency));
-    const originalNote = originalPriceDisclosure(value.total_before_aid, value.total_before_aid, value.currency);
     const items = ["tuition", "student_life_fee", "housing_estimate", "food_estimate", "materials_estimate", "personal_estimate"]
       .filter(key => Number.isFinite(value[key]));
     const insurance = value.health_insurance === "Additional required coverage, not in this total" ? label("insurance_not_included") : value.health_insurance;
     const exclusions = (value.exclusions || []).map(key => label(`exclusion.${key}`)).join(" ");
-    const tuitionNote = Number.isFinite(value.tuition) ? `<p class="admissions-reading__note">${escapeHtml(label("tuition_budget_note"))}</p>` : "";
-    return `<section class="admissions-reading__section"><h3>${escapeHtml(label("reference_budget"))} · ${escapeHtml(period(row))}</h3><p class="admissions-reading__total">${money(value.total_before_aid)}</p>${originalNote ? `<p class="admissions-reading__note" data-cost-original>${escapeHtml(originalNote)}</p>` : ""}<p class="admissions-reading__note">${escapeHtml(label("dated_budget"))}</p><dl class="admissions-reading__costs">${items.map(key => `<div><dt>${escapeHtml(label(key))}</dt><dd>${money(value[key])}</dd></div>`).join("")}</dl>${tuitionNote}${insurance ? `<p>${escapeHtml(label("insurance_extra"))} ${escapeHtml(insurance)}</p>` : ""}${exclusions ? `<p>${escapeHtml(exclusions)}</p>` : ""}${sourceNote(row, resolved)}</section>`;
+    // The total and its original currency are the tab's cost answer above; this section only says what the total is made of.
+    return `<section class="admissions-reading__section"><h3>${escapeHtml(label("reference_budget"))} · ${escapeHtml(period(row))}</h3><dl class="admissions-reading__costs">${items.map(key => `<div><dt>${escapeHtml(label(key))}</dt><dd>${money(value[key])}</dd></div>`).join("")}<div data-budget-total><dt>${escapeHtml(label("budget_total"))}</dt><dd>${money(value.total_before_aid)}</dd></div></dl>${insurance ? `<p>${escapeHtml(label("insurance_extra"))} ${escapeHtml(insurance)}</p>` : ""}${exclusions ? `<p>${escapeHtml(exclusions)}</p>` : ""}${sourceNote(row, resolved, { omitPeriod: true })}</section>`;
   }).join("");
   const funding = new Map();
   for (const row of rows.filter(reviewed)) {
