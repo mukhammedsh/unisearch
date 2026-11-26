@@ -63,8 +63,8 @@ body[data-page="profile"] {
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: var(--surface-soft);
-  color: var(--text);
+  background: var(--surface-badge);
+  color: var(--surface-badge-text);
   cursor: pointer;
 }
 
@@ -77,7 +77,7 @@ body[data-page="profile"] {
   .profile-back-icon {
     position: absolute;
     right: calc(100% - var(--space-3));
-    top: var(--space-6);
+    top: var(--space-12);
   }
 
   .profile-shell {
@@ -87,7 +87,7 @@ body[data-page="profile"] {
 
 @media (hover: hover) {
   .profile-back-icon:hover {
-    background: var(--interaction-hover-surface);
+    background: color-mix(in srgb, var(--surface-badge) 92%, var(--surface-badge-text));
   }
 }
 
