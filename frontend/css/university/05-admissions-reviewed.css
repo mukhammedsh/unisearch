@@ -582,6 +582,10 @@ details[open] > summary > .admissions-disclosure-icon {
   font-size: var(--text-sm);
 }
 
+.admissions-programs__suggestions[hidden] {
+  display: none;
+}
+
 .admissions-programs__suggestions .ui-btn {
   max-inline-size: 100%;
   padding: var(--space-1-5) var(--space-3);
@@ -841,7 +845,7 @@ details[open] > summary > .admissions-disclosure-icon {
 
 .admissions-programs__toolbar {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(140px, 220px) auto;
+  grid-template-columns: minmax(0, 1.35fr) minmax(150px, 210px) minmax(140px, 200px) auto;
   align-items: end;
   gap: var(--space-3);
   min-width: 0;
@@ -1735,6 +1739,7 @@ details[open] > summary > .admissions-disclosure-icon {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .admissions-programs__toolbar:not(.admissions-programs__toolbar--catalog) > :first-child,
   .admissions-programs__toolbar > button {
     grid-column: 1 / -1;
   }
@@ -1833,6 +1838,10 @@ details[open] > summary > .admissions-disclosure-icon {
   }
 
   .admissions-catalog__entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admissions-programs__toolbar {
     grid-template-columns: minmax(0, 1fr);
   }
 

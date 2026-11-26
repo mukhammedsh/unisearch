@@ -1,4 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
+const { setNativeSelect } = require("./helpers/selectors");
 
 async function openUniversity(page, id, { language = "eng", theme = "light", width = 1280, query = "" } = {}) {
   await page.setViewportSize({ width, height: 900 });
@@ -151,44 +152,67 @@ test("Stanford CS exposes real applicant situations while keeping shared policie
   await expect(page.locator('[data-admissions-fact="engineering-doerr-evidence:graduate-entry-eligibility"]').first()).toBeAttached();
 });
 
-test("profile suggestions are removable and do not overwrite intentional public context", async ({ page }) => {
+test("program major and level filters default from profile, persist per university, and keep profile untouched", async ({ page }) => {
   await page.addInitScript(() => {
+    if (sessionStorage.getItem("program-filters-seeded")) return;
+    sessionStorage.setItem("program-filters-seeded", "1");
     localStorage.setItem("unisearch_profile", JSON.stringify({ _v: 2, studyLevel: "Bachelor", major: "Computer Science", intendedEntryCycle: "2027 entry", feeStatusContext: "self_reported_international_overseas" }));
   });
   await openUniversity(page, "imperial-college-london-uk", { query: "&admission_cycle=&admission_fee=unknown&admission_route=" });
   await page.locator('[data-tab="tab-programs"]').click();
   await expect(page.locator("#tab-programs")).toHaveClass(/active/);
-  await expect(page.locator('[data-remove-suggestion="major"]')).toContainText("Computer Science");
-  await expect(page.locator('[data-remove-suggestion="level"]')).toBeVisible();
-  const suggestionStyles = await page.evaluate(() => {
-    const chip = getComputedStyle(document.querySelector('[data-remove-suggestion="major"]'));
+  await expect(page.locator("#admissionsMajor")).toHaveValue("Computer Science");
+  await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
+  const showAllStyle = await page.evaluate(() => {
     const showAll = getComputedStyle(document.querySelector("[data-show-all-programs]"));
-    return {
-      chipBg: chip.backgroundColor,
-      chipShadow: chip.boxShadow,
-      showAllBg: showAll.backgroundColor,
-      showAllShadow: showAll.boxShadow,
-    };
+    return { bg: showAll.backgroundColor, shadow: showAll.boxShadow };
   });
-  expect(suggestionStyles.chipBg).not.toBe("rgba(0, 0, 0, 0)");
-  expect(suggestionStyles.chipShadow).toBe("none");
-  expect(suggestionStyles.showAllBg).toBe("rgba(0, 0, 0, 0)");
-  expect(suggestionStyles.showAllShadow).toBe("none");
+  expect(showAllStyle).toEqual({ bg: "rgba(0, 0, 0, 0)", shadow: "none" });
   await expect(page.locator('[data-study-option="imperial-option-computing-meng"]')).toBeVisible();
   await expect(page.locator('[data-study-option="imperial-option-computing-beng"]')).toBeVisible();
   const filteredCount = await page.locator("#admissionsProgramCount").innerText();
   await expect(page.locator("#admissionsCycle")).toHaveValue("");
   await expect(page.locator("#admissionsApplicant")).toHaveCount(0);
   await expect(page.locator("#admissionsFee")).toHaveValue("unknown");
-  await page.locator('[data-remove-suggestion="major"]').click();
+
+  // Changing the subject filter on Imperial saves only for Imperial and survives reload without mutating the profile.
+  await setNativeSelect(page, "admissionsMajor", "Physics");
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await expect(page.locator("#admissionsProgramCount")).not.toHaveText(filteredCount);
+  await expect(page.locator("#admissionsMajor")).toHaveValue("Physics");
   await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
+
+  await page.reload();
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  await page.locator('[data-tab="tab-programs"]').click();
+  await expect(page.locator("#admissionsMajor")).toHaveValue("Physics");
+  await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
+  const savedProfile = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}"));
+  expect(savedProfile.major).toBe("Computer Science");
+  expect(savedProfile.studyLevel).toBe("Bachelor");
+
+  // Another university still starts from the profile's own subject and level.
+  await openUniversity(page, "mit-usa-cambridge");
+  await page.locator('[data-tab="tab-programs"]').click();
+  await expect(page.locator("#admissionsMajor")).toHaveValue("Computer Science");
+  await expect(page.locator("#admissionsStudyLevel")).toHaveValue("undergraduate");
+
+  // Clearing filters via "Browse all official options" persists the explicit empty state on that university.
+  await openUniversity(page, "imperial-college-london-uk", { query: "&admission_cycle=&admission_fee=unknown&admission_route=" });
+  await page.locator('[data-tab="tab-programs"]').click();
   await page.locator("[data-show-all-programs]").click();
   await expect(page.locator("#admissionsSearchSubmit")).toBeEnabled();
   await expect(page.locator("#admissionsProfileSuggestions")).toBeHidden();
+  await expect(page.locator("#admissionsMajor")).toHaveValue("");
   await expect(page.locator("#admissionsStudyLevel")).toHaveValue("");
   await expect(page.locator("#admissionsProgramList > .program-card")).toHaveCount(8);
+
+  await page.reload();
+  await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
+  await page.locator('[data-tab="tab-programs"]').click();
+  await expect(page.locator("#admissionsMajor")).toHaveValue("");
+  await expect(page.locator("#admissionsStudyLevel")).toHaveValue("");
+  await expect(page.locator("#admissionsProfileSuggestions")).toBeHidden();
 });
 
 test("an old link or saved choice naming a different applicant category does not conflict with the selected route", async ({ page }) => {

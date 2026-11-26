@@ -2060,6 +2060,8 @@ university.admissions.catalog.load_error: Не удалось загрузить
 university.admissions.catalog.retry: Повторить
 university.admissions.catalog.search_label: Программа или предмет
 university.admissions.catalog.search: Найти
+university.admissions.catalog.major_label: Специальность
+university.admissions.catalog.all_majors: Все специальности
 university.admissions.catalog.level_label: Уровень обучения
 university.admissions.catalog.all_levels: Все уровни обучения
 university.admissions.catalog.level.undergraduate: Бакалавриат
@@ -2566,8 +2568,6 @@ university.admissions.entry.route_help.engineering-doerr-evidence.cs-correspondi
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: Совместные степени CS и профессиональной школы требуют отдельных заявок и совместного согласия. Изучите правила MBA или Law для нужного сочетания.
 university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — внешние абитуриенты
 university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm
-university.programs.entry.profile_suggestions: Поисковые подсказки из профиля
-university.programs.entry.remove_suggestion: Убрать подсказку: {value}
 university.programs.entry.show_all: Все официальные варианты
 university.programs.entry.internal: Для текущих студентов / внутреннее продолжение обучения
 university.programs.entry.restricted: Есть ограничения приёма — уточните перед подачей

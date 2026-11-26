@@ -11,6 +11,17 @@ import { getReviewedDeadlineEvents } from "./deadline-calendar.js";
 import { mountDeadlineCalendar } from "./deadline-calendar-view.js";
 import { loadStaticStudyOptions } from "../../utils/static-snapshot.js";
 import { queryStaticStudyOptions } from "../universities/snapshot-filter.js";
+import {
+  ADMISSION_LEVELS,
+  buildMajorFilterOptions,
+  normalizeProgramFilterLevel,
+  normalizeProgramFilterMajor,
+  programProfileSuggestions,
+  resolveInitialProgramFilters,
+  saveProgramFilters,
+} from "./program-filters.js";
+
+export { programProfileSuggestions };
 
 export const REVIEWED_ADMISSIONS_IDS = new Set([
   "mit-usa-cambridge", "imperial-college-london-uk", "stanford-university-usa-ca", "nazarbayev-university-kaz-astana",
@@ -20,8 +31,6 @@ const QUERY_KEYS = {
   study_level: "admission_level",
   intended_entry_cycle: "admission_cycle", fee_status_context: "admission_fee",
 };
-const ADMISSION_LEVELS = ["preparation", "undergraduate", "masters", "doctoral", "professional", "residency", "non_degree"];
-const LEVEL_ALIASES = { bachelor: "undergraduate", master: "masters", doctorate: "doctoral", phd: "doctoral" };
 const label = (key) => t(`university.admissions.catalog.${key}`);
 const routeName = (route) => admissionsRouteName(route, { presentation: "simple" });
 const browsingByInstitution = new Map();
@@ -51,11 +60,6 @@ export function admissionContextIsSaved(context, choice) {
     study_level: choice.studyLevel,
     intended_entry_cycle: choice.intendedEntryCycle, fee_status_context: choice.feeStatusContext || "unknown",
   }).every(([key, value]) => (context[key] || "") === (value || ""));
-}
-
-export function programProfileSuggestions(profile) {
-  const level = String(profile?.study_level || profile?.studyLevel || "").toLowerCase();
-  return { major: String(profile?.major || "").trim(), level: ADMISSION_LEVELS.includes(LEVEL_ALIASES[level] || level) ? LEVEL_ALIASES[level] || level : "" };
 }
 
 export function programRestriction(option) {
@@ -155,9 +159,7 @@ export function readAdmissionContext(url, profile, institutionId) {
   for (const [key, query] of Object.entries(QUERY_KEYS)) {
     if (url.searchParams.has(query)) context[key] = url.searchParams.get(query).trim();
   }
-  const level = context.study_level.toLowerCase();
-  context.study_level = LEVEL_ALIASES[level] || level;
-  if (!ADMISSION_LEVELS.includes(context.study_level)) context.study_level = "";
+  context.study_level = normalizeProgramFilterLevel(context.study_level);
   return context;
 }
 
@@ -247,14 +249,15 @@ export function mountAdmissionsCatalog(institutionId) {
   // The admission path the applicant left to read the separate grant application, so the key facts can offer the way back.
   let fundingReturnRouteId = "";
   let advancedOpen = false;
-  const browsing = browsingByInstitution.get(institutionId) || {};
-  const profileSuggestions = programProfileSuggestions(loadProfileForApi());
-  let suggestedMajor = browsing.major ?? profileSuggestions.major;
-  let search = browsing.search || "";
-  let searchLanguage = browsing.language || getCurrentLanguage();
-  let filterLevel = browsing.level ?? profileSuggestions.level;
-  let suggestedLevel = browsing.suggestedLevel ?? Boolean(filterLevel && filterLevel === profileSuggestions.level);
-  let page = browsing.page || 1;
+  const browsing = browsingByInstitution.get(institutionId) || null;
+  const initialFilters = resolveInitialProgramFilters({ institutionId, profile: loadProfileForApi(), browsing });
+  let filterMajor = initialFilters.major;
+  let majorFromProfile = initialFilters.majorFromProfile;
+  let search = browsing?.search || "";
+  let searchLanguage = browsing?.language || getCurrentLanguage();
+  let filterLevel = initialFilters.level;
+  let levelFromProfile = initialFilters.levelFromProfile;
+  let page = browsing?.page || 1;
   let total = 0;
   let items = [];
   let sharedRoutes = [];
@@ -288,9 +291,9 @@ export function mountAdmissionsCatalog(institutionId) {
   const prompt = (message, actions) => `<div class="admissions-state admissions-state--prompt"><p>${escapeHtml(message)}</p><div class="admissions-state__actions">${actions}</div></div>`;
   // A post-offer funding application is not a way in, so tab prompts list only the ways to apply.
   const sharedRouteButtons = () => sharedRoutes.filter(item => item.classification !== "financial_support_application").map(item => `<button type="button" class="ui-btn ui-btn--lg" data-prompt-shared-route="${escapeHtmlAttr(item.id)}">${escapeHtml(routeName(item))}</button>`).join("");
-  // Without a shared path a program must be chosen (Imperial). The programs that match the profile's subject are offered
+  // Without a shared path a program must be chosen (Imperial). The programs that match the active subject filter are offered
   // as one-click choices; the profile never chooses one by itself.
-  const profileProgramButtons = () => suggestedMajor && !search
+  const profileProgramButtons = () => filterMajor && !search
     ? items.slice(0, 3).map(item => {
       const chipTitle = stabilizeNumericRanges(admissionsProgramLabel(item, { includeAward: true }).title);
       const levelText = item.levels?.length === 1 ? label(`level.${item.levels[0]}`) : "";
@@ -746,11 +749,13 @@ export function mountAdmissionsCatalog(institutionId) {
 
   const programs = document.getElementById("detailPrograms");
   programs.classList.add("admissions-programs");
-  programs.innerHTML = `<div id="admissionsProfileSuggestions" class="admissions-programs__suggestions"></div><form class="admissions-programs__toolbar" id="admissionsSearchForm">
+  const majorOptions = () => buildMajorFilterOptions(filterMajor, label("all_majors"), translateProgramName);
+  programs.innerHTML = `<form class="admissions-programs__toolbar" id="admissionsSearchForm">
       <label class="admissions-context__field" for="admissionsSearch"><span>${escapeHtml(label("search_label"))}</span><span class="ui-input-composite ui-input-composite--lg program-search">${heroIcon("magnifying-glass", "ui-icon ui-icon--18 program-search__icon")}<input class="ui-input program-search__input" type="search" id="admissionsSearch" value="${escapeHtmlAttr(search)}" maxlength="200" placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder"))}"></span></label>
+      ${selectHtml("admissionsMajor", label("major_label"), majorOptions(), filterMajor)}
       ${selectHtml("admissionsStudyLevel", label("level_label"), [["", label("all_levels")], ...ADMISSION_LEVELS.map((value) => [value, label(`level.${value}`)])], filterLevel)}
       <button type="submit" id="admissionsSearchSubmit" class="ui-btn ui-btn--lg ui-btn--primary">${escapeHtml(label("search"))}</button>
-    </form><article id="admissionsSelectedProgram" class="program-card" hidden><div data-selected-program-heading></div><div class="program-card__select-actions" data-pinned-select-action></div></article>
+    </form><div id="admissionsProfileSuggestions" class="admissions-programs__suggestions" hidden></div><article id="admissionsSelectedProgram" class="program-card" hidden><div data-selected-program-heading></div><div class="program-card__select-actions" data-pinned-select-action></div></article>
     <section id="admissionsStudyDetails" class="admissions-study program-card__body" role="region" aria-labelledby="admissionsStudyTitle" hidden>
       <div class="admissions-context__heading sr-only"><h3 id="admissionsStudyTitle"></h3></div>
       <div class="program-card__body-inner">
@@ -760,7 +765,18 @@ export function mountAdmissionsCatalog(institutionId) {
       </div>
     </section><div id="admissionsProgramList" class="admissions-programs__list program-list" role="list"></div>
     <div class="admissions-programs__pagination"><button type="button" id="admissionsPrevious" class="ui-btn ui-btn--sm">${heroIcon("chevron-left", "ui-icon ui-icon--16")}${escapeHtml(label("previous"))}</button><span id="admissionsProgramCount" class="admissions-programs__count" aria-live="polite"></span><button type="button" id="admissionsNext" class="ui-btn ui-btn--sm">${escapeHtml(label("next"))}${heroIcon("chevron-right", "ui-icon ui-icon--16")}</button></div>`;
+  const disposeMajorSelect = initCustomSelect("admissionsMajor");
   const disposeProgramSelect = initCustomSelect("admissionsStudyLevel");
+  const majorSelect = programs.querySelector("#admissionsMajor");
+  const levelSelect = programs.querySelector("#admissionsStudyLevel");
+  let suppressFilterChange = false;
+  const syncSelect = (select, value) => {
+    if (!select) return;
+    suppressFilterChange = true;
+    select.value = value;
+    select.dispatchEvent(new Event("change", { bubbles: false }));
+    suppressFilterChange = false;
+  };
   const studyDetails = programs.querySelector("#admissionsStudyDetails");
   const selectedProgramHost = programs.querySelector("#admissionsSelectedProgram");
   const pinnedSelectAction = selectedProgramHost.querySelector("[data-pinned-select-action]");
@@ -771,29 +787,26 @@ export function mountAdmissionsCatalog(institutionId) {
 
   function renderProfileSuggestions() {
     const host = programs.querySelector("#admissionsProfileSuggestions");
-    const suggestions = [
-      ...(suggestedMajor && !search ? [["major", translateProgramName(suggestedMajor, suggestedMajor)]] : []),
-      ...(suggestedLevel && filterLevel ? [["level", label(`level.${filterLevel}`)]] : []),
-    ];
-    host.innerHTML = `${suggestions.length ? `<span class="sr-only">${escapeHtml(t("university.programs.entry.profile_suggestions"))}</span>${suggestions.map(([key, value]) => `<button type="button" class="ui-btn ui-btn--sm ui-btn--subtle" data-remove-suggestion="${key}" aria-label="${escapeHtmlAttr(tFormat("university.programs.entry.remove_suggestion", { value }))}">${escapeHtml(value)}${heroIcon("x-mark", "ui-icon ui-icon--16")}</button>`).join("")}` : ""}${search || filterLevel || suggestedMajor ? `<button type="button" class="ui-btn ui-btn--sm ui-btn--ghost" data-show-all-programs>${escapeHtml(t("university.programs.entry.show_all"))}</button>` : ""}`;
+    host.innerHTML = search || filterLevel || filterMajor
+      ? `<button type="button" class="ui-btn ui-btn--sm ui-btn--ghost" data-show-all-programs>${escapeHtml(t("university.programs.entry.show_all"))}</button>`
+      : "";
     host.hidden = !host.innerHTML;
-    const clearLevel = () => {
-      filterLevel = "";
-      suggestedLevel = false;
-      const select = programs.querySelector("#admissionsStudyLevel");
-      select.value = "";
-      select.dispatchEvent(new Event("change", { bubbles: true }));
-    };
-    host.querySelector('[data-remove-suggestion="major"]')?.addEventListener("click", () => {
-      suggestedMajor = "";
-      page = 1;
-      void refreshPrograms();
-    });
-    host.querySelector('[data-remove-suggestion="level"]')?.addEventListener("click", clearLevel);
     host.querySelector("[data-show-all-programs]")?.addEventListener("click", () => {
-      suggestedMajor = search = "";
+      clearSearchDebounce();
+      search = "";
+      filterMajor = "";
+      filterLevel = "";
+      majorFromProfile = false;
+      levelFromProfile = false;
+      saveProgramFilters(institutionId, { major: "", level: "" });
       programs.querySelector("#admissionsSearch").value = "";
-      clearLevel();
+      syncSelect(majorSelect, "");
+      syncSelect(levelSelect, "");
+      page = 1;
+      openProgramIds.clear();
+      previews.forEach(entry => { entry.abort?.abort(); entry.body.remove(); });
+      previews.clear();
+      void refreshPrograms();
     });
   }
 
@@ -1043,7 +1056,7 @@ export function mountAdmissionsCatalog(institutionId) {
       if (staticPayload) {
         data = queryStaticStudyOptions(staticPayload, {
           search,
-          major: !search ? suggestedMajor : "",
+          major: filterMajor,
           study_level: filterLevel,
           page,
           limit,
@@ -1051,7 +1064,7 @@ export function mountAdmissionsCatalog(institutionId) {
         });
       } else {
         const query = new URLSearchParams({ search, page, limit, lang: searchLanguage });
-        if (!search && suggestedMajor) query.set("major", suggestedMajor);
+        if (filterMajor) query.set("major", filterMajor);
         if (filterLevel) query.set("study_level", filterLevel);
         const response = await fetch(`${API_BASE}/universities/${encodeURIComponent(institutionId)}/study-options?${query}`, { signal: request.signal });
         if (!response.ok) throw new Error(`Study options HTTP ${response.status}`);
@@ -1065,8 +1078,8 @@ export function mountAdmissionsCatalog(institutionId) {
       sharedRoutes = data.shared_routes || [];
       preparationEntries = data.preparation_entries || [];
       if (applyDefaultRoute()) void refreshContext();
-      // The tab prompts offer the profile-matched programs, so they are drawn again once that list arrives.
-      else if (!resolved?.selected_option && (previousSharedIds !== entryIds() || (suggestedMajor && !search && !sharedRoutes.length))) {
+      // The tab prompts offer the subject-matched programs, so they are drawn again once that list arrives.
+      else if (!resolved?.selected_option && (previousSharedIds !== entryIds() || (filterMajor && !search && !sharedRoutes.length))) {
         renderControls(root.dataset.state);
         if (root.dataset.state === "ready") renderContextContent("ready");
       }
@@ -1109,16 +1122,31 @@ export function mountAdmissionsCatalog(institutionId) {
     const nextSearch = programs.querySelector("#admissionsSearch").value.trim();
     if (nextSearch !== search) searchLanguage = getCurrentLanguage();
     search = nextSearch;
-    if (search) suggestedMajor = "";
-    filterLevel = programs.querySelector("#admissionsStudyLevel").value;
-    suggestedLevel = false;
+    const nextMajor = normalizeProgramFilterMajor(majorSelect.value);
+    const nextLevel = normalizeProgramFilterLevel(levelSelect.value);
+    const savedPatch = {};
+    if (nextMajor !== filterMajor) {
+      filterMajor = nextMajor;
+      majorFromProfile = false;
+      savedPatch.major = filterMajor;
+    }
+    if (nextLevel !== filterLevel) {
+      filterLevel = nextLevel;
+      levelFromProfile = false;
+      savedPatch.level = filterLevel;
+    }
+    if (Object.keys(savedPatch).length) saveProgramFilters(institutionId, savedPatch);
     page = 1;
     openProgramIds.clear();
     previews.forEach(entry => { entry.abort?.abort(); entry.body.remove(); });
     previews.clear();
     void refreshPrograms();
   };
-  programs.querySelector("#admissionsStudyLevel").addEventListener("change", () => programs.querySelector("#admissionsSearchForm").requestSubmit());
+  const submitOnFilterChange = () => {
+    if (!suppressFilterChange) programs.querySelector("#admissionsSearchForm").requestSubmit();
+  };
+  majorSelect.addEventListener("change", submitOnFilterChange);
+  levelSelect.addEventListener("change", submitOnFilterChange);
   const searchInput = programs.querySelector("#admissionsSearch");
   searchInput.addEventListener("input", () => {
     clearSearchDebounce();
@@ -1148,14 +1176,24 @@ export function mountAdmissionsCatalog(institutionId) {
   };
   const onProfileUpdated = () => {
     const hints = programProfileSuggestions(loadProfileForApi());
-    const hadSuggestedMajor = Boolean(suggestedMajor);
-    if (suggestedMajor) suggestedMajor = hints.major;
-    if (suggestedLevel) {
+    let filtersChanged = false;
+    if (majorFromProfile && hints.major !== filterMajor) {
+      filterMajor = hints.major;
+      majorSelect.innerHTML = majorOptions()
+        .map(([value, text]) => `<option value="${escapeHtmlAttr(value)}" ${value === filterMajor ? "selected" : ""}>${escapeHtml(text)}</option>`)
+        .join("");
+      syncSelect(majorSelect, filterMajor);
+      filtersChanged = true;
+    }
+    if (levelFromProfile && hints.level !== filterLevel) {
       filterLevel = hints.level;
-      programs.querySelector("#admissionsStudyLevel").value = filterLevel;
-      programs.querySelector("#admissionsStudyLevel").dispatchEvent(new Event("change", { bubbles: true }));
-      suggestedLevel = Boolean(filterLevel);
-    } else if (hadSuggestedMajor) { page = 1; void refreshPrograms(); }
+      syncSelect(levelSelect, filterLevel);
+      filtersChanged = true;
+    }
+    if (filtersChanged) {
+      page = 1;
+      void refreshPrograms();
+    }
     onProfile();
   };
   const onPopState = () => {
@@ -1169,12 +1207,21 @@ export function mountAdmissionsCatalog(institutionId) {
     .catch((error) => console.error(error));
   const dispose = () => {
     clearSearchDebounce();
-    browsingByInstitution.set(institutionId, { search, language: searchLanguage, level: filterLevel, page, major: suggestedMajor, suggestedLevel });
+    browsingByInstitution.set(institutionId, {
+      search,
+      language: searchLanguage,
+      major: filterMajor,
+      level: filterLevel,
+      majorFromProfile,
+      levelFromProfile,
+      page,
+    });
     disposed = true;
     contextAbort?.abort();
     catalogAbort?.abort();
     previews.forEach(entry => entry.abort?.abort());
     contextSelectDisposers.forEach((dispose) => dispose());
+    disposeMajorSelect();
     disposeProgramSelect();
     programs.removeEventListener("click", onProgramClick);
     window.removeEventListener("profileUpdated", onProfileUpdated);

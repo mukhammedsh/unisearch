@@ -2060,6 +2060,8 @@ university.admissions.catalog.load_error: Reviewed information could not be load
 university.admissions.catalog.retry: Retry
 university.admissions.catalog.search_label: Study option or subject
 university.admissions.catalog.search: Search
+university.admissions.catalog.major_label: Subject
+university.admissions.catalog.all_majors: All subjects
 university.admissions.catalog.level_label: Study level
 university.admissions.catalog.all_levels: All study levels
 university.admissions.catalog.level.undergraduate: Undergraduate
@@ -2566,8 +2568,6 @@ university.admissions.entry.route_help.engineering-doerr-evidence.cs-correspondi
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: Joint CS and professional degrees require separate applications and joint consent. Read the published MBA or Law conditions for the intended combination.
 university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — external applicants
 university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm applicants
-university.programs.entry.profile_suggestions: Search suggestions from your profile
-university.programs.entry.remove_suggestion: Remove suggestion: {value}
 university.programs.entry.show_all: Browse all official options
 university.programs.entry.internal: For current students / internal progression
 university.programs.entry.restricted: Published entry restrictions — inspect before applying

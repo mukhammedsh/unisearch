@@ -2,6 +2,7 @@ import "./setup.mjs";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { admissionContextUrl, admissionsRequest, readAdmissionContext, normalizeAdmissionCycle, getApplicationLink, hasReadableAdmissionContext, admissionContextIsSaved, programProfileSuggestions, programRestriction, singlePublishedCycle, admissionContextFields } from "../../frontend/javascript/pages/university/admissions-controller.js";
+import { buildMajorFilterOptions, readSavedProgramFilters, resolveInitialProgramFilters, saveProgramFilters } from "../../frontend/javascript/pages/university/program-filters.js";
 
 test("browsing is saved only when every application context field matches", () => {
   const saved = { studyOptionId: "course", applicationRouteId: "route", studyLevel: "undergraduate", applicantRoute: "first_year", intendedEntryCycle: "2027", feeStatusContext: "unknown" };
@@ -39,6 +40,47 @@ test("profile suggestions use the declared target without inferring the next lev
   assert.deepEqual(programProfileSuggestions({ studyLevel: "Bachelor", major: "Computer Science" }), { major: "Computer Science", level: "undergraduate" });
   assert.deepEqual(programProfileSuggestions({ education_level: "undergraduate" }), { major: "", level: "" });
   assert.deepEqual(programProfileSuggestions({ study_level: "unknown" }), { major: "", level: "" });
+});
+
+test("per-institution program filters default to profile values and persist explicit overrides separately", () => {
+  const store = new Map();
+  const storage = {
+    getJson: (key, fallback = null) => (store.has(key) ? JSON.parse(store.get(key)) : fallback),
+    setJson: (key, value) => {
+      store.set(key, JSON.stringify(value));
+      return true;
+    },
+  };
+  const userProfile = { studyLevel: "Bachelor", major: "Computer Science" };
+
+  assert.deepEqual(
+    resolveInitialProgramFilters({ institutionId: uid, profile: userProfile, storage }),
+    { major: "Computer Science", level: "undergraduate", majorFromProfile: true, levelFromProfile: true },
+  );
+
+  saveProgramFilters(uid, { major: "Physics" }, storage);
+  assert.deepEqual(readSavedProgramFilters(uid, storage), { major: "Physics" });
+  assert.deepEqual(
+    resolveInitialProgramFilters({ institutionId: uid, profile: { studyLevel: "Master", major: "Mathematics" }, storage }),
+    { major: "Physics", level: "masters", majorFromProfile: false, levelFromProfile: true },
+  );
+  // Another institution still starts from the applicant profile untouched.
+  assert.deepEqual(
+    resolveInitialProgramFilters({ institutionId: "imperial-college-london-uk", profile: userProfile, storage }),
+    { major: "Computer Science", level: "undergraduate", majorFromProfile: true, levelFromProfile: true },
+  );
+
+  // Explicit empty overrides ("All subjects" / "All levels") persist rather than reverting to profile defaults.
+  saveProgramFilters(uid, { major: "", level: "" }, storage);
+  assert.deepEqual(
+    resolveInitialProgramFilters({ institutionId: uid, profile: userProfile, storage }),
+    { major: "", level: "", majorFromProfile: false, levelFromProfile: false },
+  );
+
+  const customOptions = buildMajorFilterOptions("Robotics", "All subjects", (name) => name);
+  assert.deepEqual(customOptions[0], ["", "All subjects"]);
+  assert.ok(customOptions.some(([value]) => value === "Computer Science"));
+  assert.ok(customOptions.some(([value]) => value === "Robotics"));
 });
 
 test("restriction labels use explicit catalog metadata and never program title guesses", () => {

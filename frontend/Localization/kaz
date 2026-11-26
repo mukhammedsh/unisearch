@@ -2060,6 +2060,8 @@ university.admissions.catalog.load_error: Тексерілген ақпарат�
 university.admissions.catalog.retry: Қайталау
 university.admissions.catalog.search_label: Оқу нұсқасы немесе пән саласы
 university.admissions.catalog.search: Іздеу
+university.admissions.catalog.major_label: Мамандық
+university.admissions.catalog.all_majors: Барлық мамандықтар
 university.admissions.catalog.level_label: Оқу деңгейі
 university.admissions.catalog.all_levels: Барлық оқу деңгейлері
 university.admissions.catalog.level.undergraduate: Бакалавриат
@@ -2566,8 +2568,6 @@ university.admissions.entry.route_help.engineering-doerr-evidence.cs-correspondi
 university.admissions.entry.route_help.engineering-doerr-evidence.cs-joint-professional-degrees: CS пен кәсіби мектептің бірлескен дәрежелері бөлек өтініштер мен ортақ келісімді талап етеді. Қажетті үйлесім үшін MBA немесе Law ережелерін оқыңыз.
 university.admissions.catalog.route_name.directory-evidence.stanford-graduate-cs-ms: Computer Science MS — сыртқы талапкерлер
 university.admissions.catalog.route_name.directory-evidence.stanford-coterm-cs-ms: Computer Science MS — Stanford coterm
-university.programs.entry.profile_suggestions: Профильдегі іздеу ұсыныстары
-university.programs.entry.remove_suggestion: Ұсынысты алып тастау: {value}
 university.programs.entry.show_all: Барлық ресми нұсқалар
 university.programs.entry.internal: Қазіргі студенттерге / ішкі оқу жалғастыруға арналған
 university.programs.entry.restricted: Қабылдау шектеулері бар — өтініш берер алдында тексеріңіз
