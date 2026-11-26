@@ -31,7 +31,7 @@ body[data-page="profile"] {
 .profile-shell {
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
-  padding: var(--space-8) var(--space-8) 0;
+  padding: var(--space-8) var(--space-4) 0 var(--space-8);
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
@@ -94,6 +94,9 @@ body[data-page="profile"] {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  padding-right: var(--space-4);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
   overscroll-behavior: contain;
   scroll-padding-block: var(--space-4);
 }
@@ -1652,7 +1655,7 @@ html:has(body[data-page="profile"]) {
   }
 
   .profile-shell {
-    padding: var(--space-5) var(--space-4) 0;
+    padding: var(--space-5) var(--space-2) 0 var(--space-4);
     border-radius: var(--radius-lg);
     gap: var(--space-5);
     height: calc(100dvh - var(--nav-height) - var(--space-6));
@@ -1660,6 +1663,7 @@ html:has(body[data-page="profile"]) {
 
   .profile-workspace-layout {
     gap: var(--space-6);
+    padding-right: var(--space-2);
   }
 
   .profile-section-panel {
