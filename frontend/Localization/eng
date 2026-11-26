@@ -824,11 +824,6 @@ cost_item_health_insurance: Health Insurance
 cost_item_medical_insurance: Medical Insurance
 cost_item_personal_expenses: Personal Expenses
 cost_item_internet_and_phone: Internet and Phone
-tour.welcome.title: Explore universities with verified requirements and real annual costs
-tour.welcome.desc: Browse freely right away, or fill in your profile on this device to rank options with {fit} and check published minimums.
-tour.welcome.cta_profile: Set up profile
-tour.welcome.cta_tour: Quick tour
-tour.welcome.dismiss: Dismiss welcome guide
 tour.back: Back
 tour.finish: Done
 tour.next: Next

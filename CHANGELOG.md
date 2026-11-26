@@ -11,7 +11,7 @@ All notable changes to UniSearch are documented here.
 - Add a relaunch action in the Getting Started guide to open the interactive catalog tour at any time.
 
 ### Changed
-- Replace the blocking six-slide first-visit modal tutorial with a non-blocking welcome card above the catalog and an opt-in four-step spotlight tour anchored to live search, profile, university card, and comparison controls.
+- Replace the six-slide text-only first-visit modal tutorial with a compact four-step spotlight tour anchored to live search, profile, university card, and comparison controls, skipping deep-linked filtered URLs.
 - Activate UniFit catalog sorting automatically when a visitor saves a profile with a subject, budget, GPA, study level, or interests even before adding exam scores.
 - Replace the profile date picker with a localized calendar that stays stable between months and animates date changes and closing.
 - Show additional profile details directly, simplify field descriptions, and use a single GPA scale selector.

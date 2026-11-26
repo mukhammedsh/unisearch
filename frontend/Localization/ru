@@ -827,11 +827,6 @@ cost_item_health_insurance: Медицинская страховка
 cost_item_medical_insurance: Медицинская страховка
 cost_item_personal_expenses: Личные расходы
 cost_item_internet_and_phone: Интернет и связь
-tour.welcome.title: Официальные требования, полная стоимость и подбор вузов
-tour.welcome.desc: Изучайте каталог сразу или заполните профиль на этом устройстве, чтобы сортировать вузы с помощью {fit} и проверять опубликованные минимумы.
-tour.welcome.cta_profile: Заполнить профиль
-tour.welcome.cta_tour: Быстрый обзор
-tour.welcome.dismiss: Скрыть подсказку
 tour.back: Назад
 tour.finish: Готово
 tour.next: Далее

@@ -57,15 +57,8 @@ test("browser theme color and slider follow the shared accent token", async ({ p
   await expect(themeColor).toHaveAttribute("content", "#123456");
 });
 
-test("first-visit welcome banner lets visitors browse immediately, launch the spotlight tour, or dismiss", async ({ page }) => {
+test("first-visit spotlight tour opens on clean entry, skips deep-linked searches, and dismisses cleanly", async ({ page }) => {
   await page.goto("/index.html");
-
-  const welcome = page.locator("#uWelcomeBanner");
-  await expect(welcome).toBeVisible();
-  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await expect(page.locator("#uTourModal")).toHaveCount(0);
-
-  await page.locator("#uWelcomeTourBtn").click();
   const tour = page.locator("#uTourModal");
   await expect(tour).toHaveClass(/is-open/);
   await expect(tour.locator(".u-tour-steps__item")).toHaveCount(4);
@@ -85,19 +78,20 @@ test("first-visit welcome banner lets visitors browse immediately, launch the sp
   await expect(tour.locator("[data-action='next']")).toBeFocused();
   await tour.locator("[data-action='skip']").click();
   await expect(tour).toBeHidden();
-  await expect(welcome).toBeHidden();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
 
   await page.reload();
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await expect(page.locator("#uWelcomeBanner")).toBeHidden();
+  await expect(page.locator("#uTourModal")).toHaveCount(0);
+
+  await page.evaluate(() => localStorage.clear());
+  await page.goto("/index.html?q=MIT");
+  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
+  await expect(page.locator("#uTourModal")).toHaveCount(0);
 });
 
 test("spotlight tour closes with Escape or close button and can be relaunched from the Guide", async ({ page }) => {
   await page.goto("/index.html");
-  await expect(page.locator("#uWelcomeBanner")).toBeVisible();
-  await page.locator("#uWelcomeTourBtn").click();
-
   const tour = page.locator("#uTourModal");
   await expect(tour).toHaveClass(/is-open/);
   await page.keyboard.press("Escape");
@@ -115,11 +109,13 @@ test("spotlight tour closes with Escape or close button and can be relaunched fr
   await expect(tour).toBeHidden();
 });
 
-test("setting up a profile from onboarding activates UniFit when returning to the catalog", async ({ page }) => {
+test("setting up a profile from the spotlight tour activates UniFit when returning to the catalog", async ({ page }) => {
   await page.goto("/index.html");
 
-  await expect(page.locator("#uWelcomeBanner")).toBeVisible();
-  await page.locator("#uWelcomeProfileLink").click();
+  const tour = page.locator("#uTourModal");
+  await expect(tour).toBeVisible();
+  await tour.locator("[data-action='next']").click();
+  await tour.locator("[data-action='open-profile']").click();
 
   await expect(page).toHaveURL(/profile\.html/);
   await expect(page.locator("#profileMajorSelect option").nth(1)).toBeAttached();
@@ -129,17 +125,13 @@ test("setting up a profile from onboarding activates UniFit when returning to th
   await page.locator("#profileHeaderBackBtn").click();
 
   await expect(page).toHaveURL(/index\.html|\/(\?|$)/);
-  await expect(page.locator("#uWelcomeBanner")).toBeHidden();
-  await expect(page.locator("#uTourModal")).toHaveCount(0);
+  await expect(page.locator("#uTourModal")).toBeHidden();
   await expect(page.locator("#sortSelect")).toHaveValue("uni_ai");
 });
 
 test("spotlight tour completes all 4 steps on mobile without horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 667 });
   await page.goto("/index.html");
-
-  await expect(page.locator("#uWelcomeBanner")).toBeVisible();
-  await page.locator("#uWelcomeTourBtn").click();
 
   const tour = page.locator("#uTourModal");
   await expect(tour).toBeVisible();

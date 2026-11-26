@@ -824,11 +824,6 @@ cost_item_health_insurance: Медициналық сақтандыру
 cost_item_medical_insurance: Медициналық сақтандыру
 cost_item_personal_expenses: Жеке шығындар
 cost_item_internet_and_phone: Интернет және байланыс
-tour.welcome.title: Ресми талаптар, толық құн және университеттерді іріктеу
-tour.welcome.desc: Каталогты бірден қараңыз немесе {fit} арқылы сұрыптап, жарияланған минимумдарды тексеру үшін осы құрылғыда профиліңізді толтырыңыз.
-tour.welcome.cta_profile: Профильді толтыру
-tour.welcome.cta_tour: Қысқаша шолу
-tour.welcome.dismiss: Нұсқауды жасыру
 tour.back: Артқа
 tour.finish: Дайын
 tour.next: Келесі
