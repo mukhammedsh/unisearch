@@ -258,6 +258,10 @@
   gap: var(--space-3);
 }
 
+.admission-requirement-grid--single {
+  grid-template-columns: 1fr;
+}
+
 .admission-funding-block {
   display: grid;
   gap: var(--space-3);

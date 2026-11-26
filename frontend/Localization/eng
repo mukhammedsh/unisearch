@@ -970,7 +970,7 @@ admission.funding_minimum_override: Minimum changes
 admission.funding_average_override: Average admitted changes
 admission.funding_extra_override: Additional requirements
 admission.funding_no_specific_requirements: No separate funding-specific requirements are listed in the data. Use the selected profile requirements above.
-admission.funding_competitive_grant_note: The requirements above are the entry minimums for this profile. The grant is awarded separately through competition or ranking; no separate grant cutoff is listed in the data.
+admission.funding_competitive_grant_note: Grant is awarded separately by competition; no separate grant score cutoff is published.
 admission.choice.select: Select
 admission.choice.selected: Selected
 title.privacy: Privacy Policy | UniSearch

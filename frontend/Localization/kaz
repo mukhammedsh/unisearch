@@ -970,7 +970,7 @@ admission.funding_minimum_override: Ең төменгі деңгейдің өз�
 admission.funding_average_override: Орташа баллдың өзгеруі
 admission.funding_extra_override: Қосымша талаптар
 admission.funding_no_specific_requirements: Бұл қаржыландыруға арналған жеке талаптар деректерде көрсетілмеген, Таңдалған бейін талаптарын жоғарыдан қараңыз.
-admission.funding_competitive_grant_note: Жоғары талаптар — таңдалған бейін бойынша рұқсат алу үшін минимумдар. Грант конкурс немесе рейтинг бойынша жеке беріледі; деректерде гранттың жеке өту балы көрсетілмеген.
+admission.funding_competitive_grant_note: Грант конкурс арқылы беріледі; бөлек өту балы көрсетілмеген.
 admission.choice.select: Таңдау
 admission.choice.selected: Таңдалған
 title.privacy: Құпиялық саясаты | UniSearch

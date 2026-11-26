@@ -970,7 +970,7 @@ admission.funding_minimum_override: Изменения минимума
 admission.funding_average_override: Изменения среднего балла
 admission.funding_extra_override: Дополнительные требования
 admission.funding_no_specific_requirements: Отдельные требования для этого финансирования не указаны в данных. Смотрите требования выбранного профиля выше.
-admission.funding_competitive_grant_note: Требования выше — минимумы для допуска по выбранному профилю. Грант присуждается отдельно по конкурсу или рейтингу; отдельный проходной балл гранта в данных не указан.
+admission.funding_competitive_grant_note: Грант присуждается по конкурсу; отдельный проходной балл не указан.
 admission.choice.select: Выбрать
 admission.choice.selected: Выбрано
 title.privacy: Политика конфиденциальности | UniSearch
