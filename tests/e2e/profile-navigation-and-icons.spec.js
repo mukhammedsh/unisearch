@@ -14,16 +14,16 @@ test.describe("Profile page icons and navigation", () => {
     // Switch to scores tab to verify compact GPA block (tooltip sits by the hint, not the title)
     await page.click('[data-profile-tab="scores"]');
     await expect(page.locator('[data-profile-section="scores"]')).toBeVisible();
-    // GPA scale is a toggle built into the / 4.0 unit suffix: click switches to / 5.0 and back.
+    // The radio choices control the GPA scale shown next to the input.
     const gpaUnit = page.locator("#gpaUnit");
     await expect(gpaUnit).toBeVisible();
     await expect(page.locator("#gpaInput")).toBeVisible();
     await expect(page.locator("#gpaHint")).toBeEmpty();
     await expect(gpaUnit).toHaveText("/ 4.0");
-    await gpaUnit.click();
+    await page.locator('#gpaScaleChoice input[value="5"]').check();
     await expect(gpaUnit).toHaveText("/ 5.0");
     await expect(page.locator("#gpaInput")).toHaveAttribute("max", "5");
-    await gpaUnit.click();
+    await page.locator('#gpaScaleChoice input[value="4"]').check();
     await expect(gpaUnit).toHaveText("/ 4.0");
     await expect(page.locator("#gpaInput")).toHaveAttribute("max", "4");
     // Title stays clean; the scale tooltip lives in the hint row.

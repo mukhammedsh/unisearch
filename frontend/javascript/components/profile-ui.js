@@ -554,12 +554,7 @@ const bindProfileEvents = (els, state) => {
         els.gpaInput.addEventListener("keydown", handleEnterSave);
     }
 
-    els.gpaUnit?.addEventListener("click", () => {
-        motionPress(els.gpaUnit);
-        state.gpaScaleAutoSwitched = false;
-        setGpaScale(els, state, Number(state.profile.gpaScale) === 5 ? 4 : 5);
-    });
-    // The visible scale choice; the suffix button above stays as a shortcut to the same setting.
+    // The radio options choose the scale shown next to the GPA input.
     document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
         radio.addEventListener("change", () => {
             if (!radio.checked) return;

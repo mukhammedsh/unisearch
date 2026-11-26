@@ -253,7 +253,6 @@ profile.label.budget: Yearly budget
 profile.label.exams: Exam results
 profile.label.funding_type: Funding you look for
 profile.label.gpa: GPA (average grade)
-profile.scale.toggle: Switch GPA scale to {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
 profile.label.interests: Topics you are interested in
@@ -289,7 +288,7 @@ profile.reset.cancel: Cancel
 profile.reset.confirm: Reset data
 profile.reset.done: Profile data reset
 profile.score: Score
-profile.type: How you show it
+profile.type: Level or evidence
 profile.unit.gpa: / 4.0
 profile.sections.aria: Profile sections
 profile.title: Profile
@@ -1951,7 +1950,7 @@ cost_item_housing_and_food: Housing and food
 cost_item_student_fees_allowance: Student fees allowance
 cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
-profile.evidence.title: Add details for specific universities
+profile.evidence.title: Add additional details
 profile.evidence.description: Add only if a university page asks. Self-reported; official records are not verified.
 profile.evidence.test_date: Test date (optional)
 profile.evidence.institution_title: Studies at a listed university

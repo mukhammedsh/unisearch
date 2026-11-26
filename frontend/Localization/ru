@@ -256,7 +256,6 @@ profile.label.budget: Годовой бюджет
 profile.label.exams: Результаты экзаменов
 profile.label.funding_type: Какое финансирование вы ищете
 profile.label.gpa: GPA (средний балл)
-profile.scale.toggle: Сменить шкалу GPA на {scale}
 profile.unit.gpa_4: / 4.0
 profile.unit.gpa_5: / 5.0
 profile.label.interests: Темы, которые вас интересуют
@@ -292,7 +291,7 @@ profile.reset.cancel: Отмена
 profile.reset.confirm: Сбросить данные
 profile.reset.done: Данные профиля сброшены
 profile.score: Балл
-profile.type: Чем вы это подтверждаете
+profile.type: Уровень или подтверждение
 profile.unit.gpa: / 4.0
 profile.sections.aria: Разделы профиля
 profile.title: Профиль
@@ -1951,7 +1950,7 @@ cost_item_housing_and_food: Проживание и питание
 cost_item_student_fees_allowance: Расходы на студенческие сборы
 cost_item_books_and_supplies_allowance: Расходы на книги и материалы
 cost_item_personal_expenses_allowance: Личные расходы
-profile.evidence.title: Добавить сведения для отдельных университетов
+profile.evidence.title: Указать дополнительные сведения
 profile.evidence.description: Добавляйте, только если просит страница университета. Со слов пользователя; записи не проверяются.
 profile.evidence.test_date: Дата (необязательно)
 profile.evidence.institution_title: Сведения для конкретного вуза

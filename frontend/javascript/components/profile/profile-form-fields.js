@@ -246,13 +246,6 @@ export const updateGpaScaleUI = (els, state, scale) => {
         const unitKey = s === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4";
         els.gpaUnit.setAttribute("data-i18n", unitKey);
         els.gpaUnit.textContent = s === 5 ? "/ 5.0" : "/ 4.0";
-        const toggleLabel = tFormat(
-            "profile.scale.toggle",
-            { scale: s === 5 ? "4.0" : "5.0" },
-            `Switch GPA scale to ${s === 5 ? "4.0" : "5.0"}`
-        );
-        els.gpaUnit.setAttribute("aria-label", toggleLabel);
-        els.gpaUnit.title = toggleLabel;
     }
     document.querySelectorAll('#gpaScaleChoice input[name="gpaScale"]').forEach((radio) => {
         radio.checked = Number(radio.value) === s;
