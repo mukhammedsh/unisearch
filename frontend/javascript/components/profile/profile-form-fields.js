@@ -204,7 +204,8 @@ export const goToProfileSection = (els, state, section, { focusHeading = true } 
     setActiveProfileSection(els, section);
     // Ignore the scroll observer while the smooth scroll runs, so the clicked item stays current.
     state.sectionNavLockUntil = Date.now() + 900;
-    node.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    const region = node.closest(".profile-workspace-layout");
+    if (region) region.scrollTo({ top: region.scrollTop + node.getBoundingClientRect().top - region.getBoundingClientRect().top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
 };
 

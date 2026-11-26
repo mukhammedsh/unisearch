@@ -1758,7 +1758,7 @@ html:has(body[data-page="profile"]) {
 
   .profile-page {
     padding: 0 var(--space-3);
-    margin: var(--space-3) auto var(--space-8);
+    margin: var(--space-3) auto;
     justify-content: flex-start;
   }
 
@@ -1893,7 +1893,7 @@ html:has(body[data-page="profile"]) {
 @media (max-width: 480px) {
   .profile-page {
     padding-inline: 0;
-    margin-top: 0;
+    margin-block: 0;
   }
 
   .profile-shell {
