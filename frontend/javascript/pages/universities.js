@@ -186,6 +186,8 @@ export function initUniversitiesPage() {
     const logTranslationDebug = initTranslationDebugLogger();
 
     if (!el.list) return;
+    const hydratedFromSnapshot = el.list.dataset.hydratedFromSnapshot === "1";
+    delete el.list.dataset.hydratedFromSnapshot;
     disposeUniversitiesPage();
 
     const pageParams = readPageParams();
@@ -233,7 +235,7 @@ export function initUniversitiesPage() {
         firstVisitTourPending = false;
         markUniversitiesTourSeen();
     }
-    let hasInitialListPaint = false;
+    let hasInitialListPaint = hydratedFromSnapshot;
     let hasRestoredInitialScroll = false;
     let lastRenderedItems = [];
     let viewModesReady = false;
@@ -885,6 +887,9 @@ export function initUniversitiesPage() {
         shouldFetch: true,
         updateUrl: true,
         replaceUrl: true,
+        fetchOptions: hydratedFromSnapshot
+            ? { preserveVisibleResults: true, animateResults: false }
+            : undefined,
     }).catch((err) => console.error(err));
 
     bindWindowListener("profileUpdated", () => {

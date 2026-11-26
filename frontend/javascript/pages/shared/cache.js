@@ -1,7 +1,8 @@
 import { API_BASE, createSafeStorage } from "../../utils.js";
 import { getCurrentLanguage } from "../../i18n.js";
 import { shouldOpenUniversitiesInNewTab, shouldStoreRecentUniversities } from "../../settings.js";
-import { loadStaticUniversityDetail } from "../../utils/static-snapshot.js";
+import { hasLoadedUniversityTranslations } from "../../university-translations.js";
+import { hasCachedStaticUniversityDetail, loadStaticUniversityDetail } from "../../utils/static-snapshot.js";
 
 const safeLocalStorage = createSafeStorage("local");
 const safeSessionStorage = createSafeStorage("session");
@@ -186,6 +187,26 @@ export function touchDetailCacheEntry(universityId, lang = getCurrentLanguage())
   if (!cache[cacheKey] || typeof cache[cacheKey] !== "object") return;
   cache[cacheKey].ts = Date.now();
   writeDetailCache(cache);
+}
+
+/**
+ * Synchronous check: true when both the translation pack and a fresh non-reviewed detail payload
+ * (or resolved static snapshot detail) are already in memory/local cache so the page can mount
+ * directly inside a View Transition without flashing a skeleton.
+ * @param {string} universityId
+ * @param {string} [lang]
+ * @returns {boolean}
+ */
+export function hasInstantUniversityDetail(universityId, lang = getCurrentLanguage()) {
+  const key = String(universityId || "").trim();
+  const normalizedLang = String(lang || "eng").trim().toLowerCase() || "eng";
+  if (!key || !hasLoadedUniversityTranslations(normalizedLang)) return false;
+  if (hasCachedStaticUniversityDetail(key, normalizedLang)) return true;
+
+  const cached = getDetailCacheEntry(key, normalizedLang);
+  if (!cached) return false;
+  if (cached.data?.admissions_catalog?.availability === "reviewed") return false;
+  return (Date.now() - cached.ts) < DETAIL_CACHE_TTL_MS;
 }
 
 /**

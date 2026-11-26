@@ -35,6 +35,11 @@
   animation: d-loading-fade-in var(--motion-fast) var(--motion-ease-standard) forwards;
 }
 
+.d-loading.is-visible.has-cover-handoff {
+  opacity: 1;
+  animation: none;
+}
+
 @keyframes d-loading-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }

@@ -475,6 +475,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
 export async function initUniversityPage(options = {}) {
   const pageVersion = ++detailPageVersion;
   const preserveVisibleContent = options.preserveVisibleContent === true;
+  const skipLoadingSkeleton = options.skipLoadingSkeleton === true;
   const id = extractUniversityIdFromLocation(window.location);
   rememberRecentUniversity(id);
 
@@ -487,7 +488,7 @@ export async function initUniversityPage(options = {}) {
 
   const setDetailLoading = (isLoading) => {
     if (!loadingEl) return;
-    const showFullSkeleton = !!isLoading && !preserveVisibleContent;
+    const showFullSkeleton = !!isLoading && !preserveVisibleContent && !skipLoadingSkeleton;
     loadingEl.classList.toggle("is-visible", showFullSkeleton);
     loadingEl.setAttribute("aria-hidden", showFullSkeleton ? "false" : "true");
   };

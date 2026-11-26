@@ -98,6 +98,21 @@ export function isStaticSnapshotReady() {
 }
 
 /**
+ * Synchronous check: true when a university detail payload has already resolved in the snapshot cache.
+ * @param {string} universityId
+ * @param {string} [language="eng"]
+ * @returns {boolean}
+ */
+export function hasCachedStaticUniversityDetail(universityId, language = "eng") {
+  if (!isStaticSnapshotReady()) return false;
+  const id = String(universityId || "").trim();
+  if (!id || id.includes("/") || id.includes("\\") || id.includes("..")) return false;
+  const lang = normalizeSnapshotLang(language);
+  const entry = detailByKey.get(`${lang}:${id}`);
+  return Boolean(entry && typeof entry === "object" && typeof entry.then !== "function");
+}
+
+/**
  * Synchronous check: true when the active static snapshot also hosts campus images and credits.
  * @returns {boolean}
  */

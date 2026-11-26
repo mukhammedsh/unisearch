@@ -2,6 +2,15 @@
 
 All notable changes to UniSearch are documented here.
 
+## 10.9.1 (2026-11-26) - Bidirectional cover transitions and faster cached university returns
+
+### Added
+- Morph the university cover photo smoothly back into its catalog card when returning via the back button or browser history while both images are visible on screen.
+
+### Changed
+- Preserve the active catalog search, filters, and scroll position when returning via the university cover back button instead of resetting to the top of the catalog.
+- Mount cached university pages directly inside the route transition without flashing the loading skeleton on repeat visits.
+
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 
 Minor release: split admissions storage for lazy loading, add a deploy-time static snapshot so public pages run without waking the backend, introduce interactive campus cover maps with a Photo/Map switcher, and streamline university pages and the Guide. Unify UI controls, surfaces, floating layers, and calm site-wide motion across both themes.

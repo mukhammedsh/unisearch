@@ -453,7 +453,7 @@
     animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-enter) backwards;
   }
 
-  :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]) {
+  :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]):not(.vt-uni-cover) {
     animation: motion-backdrop-in var(--motion-fast) var(--motion-ease-enter) backwards;
   }
 }
