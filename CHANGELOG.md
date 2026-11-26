@@ -14,6 +14,9 @@ All notable changes to UniSearch are documented here.
 - Clarify optional English-test recommendations (`minimum` vs `recommended`), shorten the Russian `IELTS` label to `IELTS Academic`, and show met checkmarks or below-minimum warnings when an English score is already in the profile.
 - Hide the language-profile link on recommended English tests once a score is entered, shorten its prompt with calm neutral styling when missing, and simplify the manual-requirements note.
 
+### Fixed
+- Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
+
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 
 Minor release: split admissions storage for lazy loading, add a deploy-time static snapshot so public pages run without waking the backend, introduce interactive campus cover maps with a Photo/Map switcher, and streamline university pages and the Guide. Unify UI controls, surfaces, floating layers, and calm site-wide motion across both themes.
