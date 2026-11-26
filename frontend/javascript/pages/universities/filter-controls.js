@@ -600,7 +600,6 @@ export function createFilterControls({
             }
             toggleBtn.classList.toggle("is-active", isOpen);
             toggleBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            toggleBtn.hidden = isOpen;
             setBackgroundInert(isOpen);
             document.documentElement.classList.toggle("sidebar-filters-open", isOpen);
             if (isOpen) {

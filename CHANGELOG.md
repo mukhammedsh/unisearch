@@ -37,6 +37,7 @@ All notable changes to UniSearch are documented here.
 - Remove inconsistent drop shadows on flat-card subtle buttons and restore transparent ghost styling for the "Browse all official options" button beside program filter chips.
 - Fix the mobile and narrow-tablet catalog toolbar wrapping so the action bar spans the full toolbar width beneath the result count with filters and recent history aligned on the left and view and compare controls on the right, keep all controls on one row down to 320px viewports, center the wrapped two-row navbar on ultra-narrow screens, and stack the card details link below the price.
 - Refine the responsive footer on tablets and phones with a compact left-aligned grid that keeps GitHub on the top right beside the copyright, preserves inline dot separators wherever links share a row, and keeps every link on a single line without forced wraps.
+- Keep the mobile catalog Filter button visible and in place while the filter drawer is open instead of hiding it and shifting neighboring toolbar controls.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 

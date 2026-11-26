@@ -490,8 +490,12 @@ test.describe("Responsive Layout and Overflow Verification", () => {
       { width: 375, height: 812, mode: "sheet" },
     ]) {
       await page.setViewportSize({ width: vp.width, height: vp.height });
-      await page.locator("#mobileFilterToggle").click();
+      const filterToggle = page.locator("#mobileFilterToggle");
+      await filterToggle.click();
       await expect(page.locator("#uSidebar")).toHaveClass(/is-open/);
+      await expect(filterToggle).toBeVisible();
+      await expect(filterToggle).toHaveClass(/is-active/);
+      await expect(filterToggle).toHaveAttribute("aria-expanded", "true");
 
       const overlay = await page.evaluate(() => {
         const sidebar = document.getElementById("uSidebar");
