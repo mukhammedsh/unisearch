@@ -32,7 +32,7 @@ All notable changes to UniSearch are documented here.
 - Collapse identical rounded converted price-range endpoints (such as `≈ $35,000 – $35,000`), link all missing exam checklist prompts to the profile, show the shared route name in the comparison route row, keep the official fee-status page linked after choosing Home or Overseas, and clarify the Russian "Both" fee-status toggle label.
 - Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
 - Remove inconsistent drop shadows on flat-card subtle buttons and restore transparent ghost styling for the "Browse all official options" button beside program filter chips.
-- Fix the mobile and narrow-tablet catalog toolbar wrapping so the action bar spans the full toolbar width beneath the result count with filters and recent history aligned on the left and view and compare controls on the right, keep all controls on one row down to 320px viewports, and stack the card details link below the price on ultra-narrow screens.
+- Fix the mobile and narrow-tablet catalog toolbar wrapping so the action bar spans the full toolbar width beneath the result count with filters and recent history aligned on the left and view and compare controls on the right, keep all controls on one row down to 320px viewports, center the wrapped two-row navbar on ultra-narrow screens, and stack the card details link below the price.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 

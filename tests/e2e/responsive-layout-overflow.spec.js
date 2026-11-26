@@ -161,6 +161,26 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     expect(Math.abs(ultraNarrow.recent.top - ultraNarrow.filter.top)).toBeLessThanOrEqual(2);
     expect(Math.abs(ultraNarrow.filter.top - ultraNarrow.view.top)).toBeLessThanOrEqual(2);
     expect(Math.abs(ultraNarrow.view.top - ultraNarrow.compare.top)).toBeLessThanOrEqual(2);
+
+    // When the navbar wraps onto two rows at <= 340px, both the logo and utility buttons sit centered.
+    const navbarCenters = await page.evaluate(() => {
+      const nav = document.querySelector(".navbar").getBoundingClientRect();
+      const logo = document.querySelector(".navbar-left .logo").getBoundingClientRect();
+      const searchBtn = document.getElementById("navbarSearchToggle").getBoundingClientRect();
+      const profileBtn = document.getElementById("profileBtn").getBoundingClientRect();
+      const navCenter = (nav.left + nav.right) / 2;
+      const logoCenter = (logo.left + logo.right) / 2;
+      const actionsCenter = (searchBtn.left + profileBtn.right) / 2;
+      return {
+        logoOffset: Math.abs(logoCenter - navCenter),
+        actionsOffset: Math.abs(actionsCenter - navCenter),
+        actionsTop: searchBtn.top,
+        logoBottom: logo.bottom,
+      };
+    });
+    expect(navbarCenters.actionsTop).toBeGreaterThanOrEqual(navbarCenters.logoBottom);
+    expect(navbarCenters.logoOffset).toBeLessThanOrEqual(3);
+    expect(navbarCenters.actionsOffset).toBeLessThanOrEqual(3);
   });
 
   test("keeps university card width <= 550px on desktop when single university is returned", async ({ page }) => {

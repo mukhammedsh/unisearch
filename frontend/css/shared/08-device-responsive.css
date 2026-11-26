@@ -661,10 +661,11 @@ body .has-sliding-indicator .active::after {
     align-content: center;
     padding-top: var(--space-2);
     padding-bottom: var(--space-2);
-    gap: 0;
+    gap: var(--space-1-5) 0;
   }
 
-  .navbar-left {
+  .navbar-left,
+  .navbar.has-university-search .navbar-left {
     flex: 0 0 100%;
     width: 100%;
     justify-content: center;
@@ -681,17 +682,12 @@ body .has-sliding-indicator .active::after {
     object-position: center;
   }
 
-  .navbar-right {
+  .navbar-right,
+  .navbar.has-university-search .navbar-right {
     flex: 0 0 100%;
     width: 100%;
     justify-content: center;
     gap: var(--space-2);
     margin-left: 0;
-  }
-
-  .navbar.has-university-search .navbar-left,
-  .navbar.has-university-search .navbar-right {
-    flex: 0 0 auto;
-    width: auto;
   }
 }
