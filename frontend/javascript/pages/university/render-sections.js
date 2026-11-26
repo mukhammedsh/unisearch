@@ -15,6 +15,7 @@ import {
   modeAwareAnnualCost,
   modeAwareBreakdown,
   moneyOrUnknown,
+  originalPriceDisclosure,
   renderInlineIcon,
   renderScholarshipLine,
   trProgramName,
@@ -374,6 +375,12 @@ export function renderFinanceSection({
           const totalText = totalRange
             ? `${formatMoney(totalRange.min, totalRange.currency)}–${formatMoney(totalRange.max, totalRange.currency)}`
             : moneyOrUnknown(total, "placeholder.field.total_cost", "Total cost", uniCurrency);
+          const originalPriceNote = !totalRange && Number.isFinite(Number(total))
+            ? originalPriceDisclosure(total, total, uniCurrency)
+            : "";
+          const originalPriceNoteHtml = originalPriceNote
+            ? `<p class="finance-cost-range-context" data-cost-original>${escapeHtml(originalPriceNote)}</p>`
+            : "";
           const colorClasses = ["cost-color-1", "cost-color-2", "cost-color-3", "cost-color-4", "cost-color-5"];
           const breakdownEntries = Object.entries(breakdown || {})
             .map(([key, value], idx) => {
@@ -450,6 +457,7 @@ export function renderFinanceSection({
               <div class="finance-option-total${isGrantTrack ? " finance-option-total--grant" : ""}">
                 <span class="finance-option-total__label">${escapeHtml(totalTitle)}</span>
                 <strong class="finance-option-total__value">${escapeHtml(totalText)}</strong>
+                ${originalPriceNoteHtml}
                 ${rangeContextHtml}
                 ${rangeNote}
                 ${programTuitionNote}
@@ -485,10 +493,14 @@ export function renderFinanceSection({
         const requestedCycleNote = admissionContext.cycle && !directTuitionMatchesCycle
           ? `<p class="finance-cycle-unknown">${escapeHtml(t("university.finance.program_cycle_unknown", "Cost for the selected entry cycle has not been confirmed. The published amount below is a reference for a different or unclear period."))}</p>`
           : "";
+        const directOriginalNote = originalPriceDisclosure(directProgramTuition.amount, directProgramTuition.amount, directProgramTuition.currency);
+        const directOriginalHtml = directOriginalNote
+          ? `<p class="finance-cost-range-context" data-cost-original>${escapeHtml(directOriginalNote)}</p>`
+          : "";
         financeHtml = `
           <article class="finance-option-card finance-program-tuition-reference">
             <div class="finance-option-head"><h4 class="finance-option-label">${escapeHtml(trProgramName(selectedProgramRecord.name || selectedProgramRecord.program_name) || selectedProgramRecord.name || selectedProgramRecord.program_name || "")}</h4></div>
-            <div class="finance-option-total"><span class="finance-option-total__label">${escapeHtml(t("university.finance.published_tuition_per_year", "Published tuition / year"))}</span><strong class="finance-option-total__value">${escapeHtml(formatPrice(directProgramTuition.amount, directProgramTuition.currency))}</strong><p class="finance-cost-range-context">${escapeHtml(t("university.finance.program_tuition_context", "Published gross tuition for {year}; potential awards are not deducted. Confirm the rate for your entry cycle.").replace("{year}", directProgramTuition.cycle))}</p>${requestedCycleNote}<a href="${escapeHtmlAttr(directProgramTuition.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.finance.official_tuition_source", "Official tuition source"))}</a></div>
+            <div class="finance-option-total"><span class="finance-option-total__label">${escapeHtml(t("university.finance.published_tuition_per_year", "Published tuition / year"))}</span><strong class="finance-option-total__value">${escapeHtml(formatPrice(directProgramTuition.amount, directProgramTuition.currency))}</strong>${directOriginalHtml}<p class="finance-cost-range-context">${escapeHtml(t("university.finance.program_tuition_context", "Published gross tuition for {year}; potential awards are not deducted. Confirm the rate for your entry cycle.").replace("{year}", directProgramTuition.cycle))}</p>${requestedCycleNote}<a href="${escapeHtmlAttr(directProgramTuition.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.finance.official_tuition_source", "Official tuition source"))}</a></div>
           </article>`;
       }
 

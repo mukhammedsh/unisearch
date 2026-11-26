@@ -7,6 +7,7 @@ import { convert } from "../../currency.js";
 import { translateFactSource } from "../../university-translations.js";
 import {
   moneyOrUnknown,
+  originalPriceDisclosure,
   splitPriceDisplay,
   toFiniteNumber,
   resolveUniversityCardPrice,
@@ -198,6 +199,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
   }
   const tooltipId = `uni-cost-tooltip-${scope}-${university?.id || "university"}-${priceBasis}`;
   const billingPeriod = billingPeriodLabel(price.billing_period || "academic_year");
+  const originalPriceNote = originalPriceDisclosure(range ? price.min : price.amount, range ? price.max : price.amount, price.currency);
   const priceLabel = [showsTuitionReference ? title : "", primary, billingPeriod].filter(Boolean).join(" ");
   // Qualifiers of the price (what it covers, the second currency) form one quiet line below it,
   // so every card shows its price on the same first line.
@@ -213,6 +215,7 @@ export function renderUniversityCardCosts(university, basis = "annual_total", sc
         <span id="${escapeHtmlAttr(tooltipId)}" class="ui-tooltip-bubble uni-cost-tooltip__content" role="tooltip">
             <strong class="ui-tooltip-title">${escapeHtml(title)}${reference ? ` · ${escapeHtml(t("universities.cost.reference_short"))}` : ""}</strong>
             ${context ? `<span class="uni-cost-context" data-cost-context>${escapeHtml(context)}</span>` : ""}
+            ${originalPriceNote ? `<span class="ui-tooltip-text" data-cost-original>${escapeHtml(originalPriceNote)}</span>` : ""}
             <span class="ui-tooltip-text">${escapeHtml(tooltipText)}</span>
             ${filterText ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(filterText)}</span>` : ""}
             ${note ? `<span class="ui-tooltip-text ui-tooltip-text--subtle">${escapeHtml(note)}</span>` : ""}

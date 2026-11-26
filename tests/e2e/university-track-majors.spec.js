@@ -222,7 +222,7 @@ test("MITILI Linguistics SM keeps its shared PhD procedure and separate scholars
   const funding = await openFact(page, "finance", "mit_mitili_sm_admissions-funding-0-0");
   await expect(funding).toContainText(/health insurance|медицинскую страховку/i);
   await expect(funding).toContainText(/MITILI Full Scholarship|Полная стипендия MITILI/i);
-  await expect(page.locator("#detailFinance")).toContainText("не считается предоставленной помощью");
+  await expect(page.locator("#detailFinance")).toContainText("Не гарантируется");
   await expect(page.locator("#admissionsRoute option[value='mit_linguistics_doctoral_admissions']")).toHaveCount(0);
   await fitsViewport(page, 390);
 });

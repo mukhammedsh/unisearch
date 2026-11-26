@@ -34,8 +34,7 @@ test("the compact UniFit toolbar line summarizes top profile inputs, keeps full 
   await expect(contextBar).toBeVisible();
   const title = page.locator("#unifitBannerTitle");
   await expect(title).toHaveText("UniFit: Bachelor's · Computer Science · +3");
-  await expect(page.locator("#unifitBannerEdit")).toHaveText("Profile");
-  await expect(page.locator("#unifitBannerEdit")).toHaveAttribute("href", /profile/);
+  await expect(page.locator("#unifitBannerEdit")).toBeHidden();
 
   // No standalone notice card pushes the grid down: the first card row starts flush with the filter card.
   const alignment = await page.evaluate(() => {
@@ -60,7 +59,9 @@ test("an empty profile shows a compact generic-order prompt and links to profile
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
 
   await expect(page.locator("#unifitBannerTitle")).toContainText(/generic order/i);
+  await expect(page.locator("#unifitBannerEdit")).toBeVisible();
   await expect(page.locator("#unifitBannerEdit")).toHaveText("Set up profile");
+  await expect(page.locator("#unifitBannerEdit")).toHaveAttribute("href", /profile/);
   await expect(page.locator("#unifitTooltipProfile")).toBeHidden();
 });
 
@@ -99,7 +100,7 @@ test("icon tooltips name the missing exam and the amount over budget", async ({ 
   for (const text of over) expect(text).toMatch(/^\$[\d,]+ a year, \$[\d,]+ more than your budget\. Financial aid is not deducted\./);
 });
 
-test("on a phone the UniFit context wraps inside the toolbar without sideways scrolling", async ({ page }) => {
+test("on a phone the UniFit context wraps inside the toolbar without sideways scrolling and hides the duplicate profile link when filled", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page, { profile: { studyLevel: "Bachelor", major: "Computer Science", budget: "6000", budgetCurrency: "USD" } });
   await page.goto("/index.html?sort=uni_ai&study_level=bachelor");
@@ -107,11 +108,43 @@ test("on a phone the UniFit context wraps inside the toolbar without sideways sc
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
   const contextBar = page.locator("#unifitContextBar");
   await expect(contextBar).toBeVisible();
+  await expect(page.locator("#unifitBannerEdit")).toBeHidden();
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
   const box = await contextBar.boundingBox();
   const toolbar = await page.locator(".u-section-bar").boundingBox();
   expect(box.x + box.width).toBeLessThanOrEqual(toolbar.x + toolbar.width + 1);
+});
+
+test("on a phone an empty profile keeps the UniFit setup link visible on its own clean row without inflating text line height", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await seed(page, { profile: {} });
+  await page.goto("/index.html?sort=uni_ai");
+  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
+  const edit = page.locator("#unifitBannerEdit");
+  await expect(edit).toBeVisible();
+  await expect(edit).toHaveText("Set up profile");
+
+  const metrics = await page.evaluate(() => {
+    const tRect = document.getElementById("unifitBannerTitle").getBoundingClientRect();
+    const eRect = document.getElementById("unifitBannerEdit").getBoundingClientRect();
+    const iRect = document.getElementById("unifitContextInfoBtn").getBoundingClientRect();
+    return {
+      titleHeight: tRect.height,
+      titleLeft: tRect.left,
+      editLeft: eRect.left,
+      editTop: eRect.top,
+      titleBottom: tRect.bottom,
+      infoHeight: iRect.height,
+      editHeight: eRect.height,
+    };
+  });
+  // Two wrapped lines at 13px * 1.5 = ~39px (never stretched by a 36px inline button).
+  expect(metrics.titleHeight).toBeLessThanOrEqual(46);
+  expect(Math.abs(metrics.editLeft - metrics.titleLeft)).toBeLessThanOrEqual(1);
+  expect(metrics.editTop).toBeGreaterThanOrEqual(metrics.titleBottom - 1);
+  expect(metrics.infoHeight).toBeGreaterThanOrEqual(36);
+  expect(metrics.editHeight).toBeGreaterThanOrEqual(36);
 });
 
 test("a visitor who opens the catalog directly gets the 4-step spotlight tour", async ({ page }) => {

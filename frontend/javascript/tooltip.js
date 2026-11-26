@@ -97,6 +97,7 @@ function buildStateSelector(selectorList, stateClass) {
 // After the pointer leaves a tooltip, neighbours open without the hover intent delay for a moment.
 const TOOLTIP_WARM_MS = 400;
 let tooltipWarmthBound = false;
+let lastTooltipPointerType = "";
 
 /**
  * Toggles `tooltips-warm` on <html> while the pointer moves between tooltip triggers.
@@ -106,6 +107,11 @@ function bindTooltipWarmth(wrapSelector) {
   if (tooltipWarmthBound) return;
   tooltipWarmthBound = true;
   let coolTimer = null;
+  document.addEventListener("pointerdown", (evt) => {
+    if (typeof evt.pointerType === "string" && evt.pointerType) {
+      lastTooltipPointerType = evt.pointerType;
+    }
+  }, { capture: true, passive: true });
   document.addEventListener("pointerout", (evt) => {
     const wrap = evt.target instanceof Element ? evt.target.closest(wrapSelector) : null;
     if (!wrap || (evt.relatedTarget instanceof Node && wrap.contains(evt.relatedTarget))) return;
@@ -113,6 +119,48 @@ function bindTooltipWarmth(wrapSelector) {
     clearTimeout(coolTimer);
     coolTimer = setTimeout(() => document.documentElement.classList.remove("tooltips-warm"), TOOLTIP_WARM_MS);
   });
+}
+
+/**
+ * Determine whether activating a tooltip trigger should pin `.is-open` (touch/stylus taps)
+ * rather than relying on transient desktop hover or keyboard focus.
+ *
+ * @param {{ pointerType?: string, detail?: number } | null | undefined} evt
+ * @param {string} [fallbackPointerType=""]
+ * @param {{ matchMedia?: (query: string) => { matches: boolean } } | null} [win]
+ * @returns {boolean}
+ */
+export function shouldPinTooltipOnClick(
+  evt,
+  fallbackPointerType = "",
+  win = typeof window !== "undefined" ? window : null,
+) {
+  const pointerType = typeof evt?.pointerType === "string" && evt.pointerType
+    ? evt.pointerType
+    : fallbackPointerType;
+  if (pointerType === "touch" || pointerType === "pen") return true;
+  if (pointerType === "mouse") return false;
+  if (evt?.detail === 0) return false;
+  return Boolean(win?.matchMedia?.("(hover: none), (pointer: coarse)")?.matches);
+}
+
+/**
+ * Whether a click on a tooltip trigger inside a clickable university card should be consumed
+ * by the tooltip (touch/stylus taps and keyboard Enter/Space on the focused trigger) instead
+ * of letting desktop mouse clicks activate the card.
+ *
+ * @param {{ pointerType?: string, detail?: number } | null | undefined} evt
+ * @param {string} [fallbackPointerType=lastTooltipPointerType]
+ * @param {{ matchMedia?: (query: string) => { matches: boolean } } | null} [win]
+ * @returns {boolean}
+ */
+export function shouldConsumeCardTooltipClick(
+  evt,
+  fallbackPointerType = lastTooltipPointerType,
+  win = typeof window !== "undefined" ? window : null,
+) {
+  if (evt?.detail === 0) return true;
+  return shouldPinTooltipOnClick(evt, fallbackPointerType, win);
 }
 
 export function bindInfoTooltips(options = {}) {
@@ -136,6 +184,12 @@ export function bindInfoTooltips(options = {}) {
   const openWrapsSelector = buildStateSelector(wrapSelector, openClass);
   const closedWrapsSelector = buildStateSelector(wrapSelector, closedClass);
   const allStateWrapsSelector = `${openWrapsSelector}, ${closedWrapsSelector}`;
+  const transientActiveWrapsSelector = wrapSelector
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => `${s}:not(.${closedClass}):is(:hover, :focus-within)`)
+    .join(", ");
 
   const closeAll = () => {
     root.querySelectorAll(allStateWrapsSelector).forEach((wrap) => {
@@ -147,6 +201,20 @@ export function bindInfoTooltips(options = {}) {
     });
   };
 
+  root.addEventListener("pointerdown", (evt) => {
+    if (typeof evt.pointerType === "string" && evt.pointerType) {
+      lastTooltipPointerType = evt.pointerType;
+    }
+    // Prevent mouse clicks on tooltip triggers from moving focus onto the button,
+    // which would otherwise keep `:focus-within` active after the pointer leaves.
+    if (evt.pointerType === "mouse" && evt.target instanceof Element) {
+      const btn = evt.target.closest(buttonSelector);
+      if (btn && btn.closest(wrapSelector)) {
+        evt.preventDefault();
+      }
+    }
+  }, { capture: true });
+
   root.addEventListener("click", (evt) => {
     const target = evt.target;
     if (!(target instanceof Element)) return;
@@ -155,6 +223,23 @@ export function bindInfoTooltips(options = {}) {
     if (btn) {
       const wrap = btn.closest(wrapSelector);
       if (!wrap) return;
+      if (!shouldPinTooltipOnClick(evt, lastTooltipPointerType)) {
+        if (evt.detail === 0) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          if (typeof evt.stopImmediatePropagation === "function") {
+            evt.stopImmediatePropagation();
+          }
+          closeAll();
+          wrap.classList.remove(closedClass);
+          clampTooltipToViewport(wrap, bubbleSelector);
+          return;
+        }
+        closeAll();
+        safeBlur(btn);
+        clampTooltipToViewport(wrap, bubbleSelector);
+        return;
+      }
       evt.preventDefault();
       evt.stopPropagation();
       if (typeof evt.stopImmediatePropagation === "function") {
@@ -217,6 +302,7 @@ export function bindInfoTooltips(options = {}) {
     if (!wrap) return;
     const related = evt.relatedTarget;
     if (!related || !(related instanceof Node) || !wrap.contains(related)) {
+      wrap.classList.remove(closedClass);
       if (!wrap.classList.contains(openClass)) {
         resetTooltipShift(wrap, bubbleSelector);
       }
@@ -226,14 +312,22 @@ export function bindInfoTooltips(options = {}) {
   root.addEventListener("keydown", (evt) => {
     if (evt.key === "Escape") {
       const openWraps = root.querySelectorAll(openWrapsSelector);
-      if (!openWraps.length) return;
-      const lastOpen = openWraps[openWraps.length - 1];
-      const btn = lastOpen.querySelector(buttonSelector);
-      closeAll();
-      lastOpen.classList.add(closedClass);
-      if (btn) {
-        safeFocus(btn);
+      if (openWraps.length) {
+        const lastOpen = openWraps[openWraps.length - 1];
+        const btn = lastOpen.querySelector(buttonSelector);
+        closeAll();
+        lastOpen.classList.add(closedClass);
+        if (btn) {
+          safeFocus(btn);
+        }
+        return;
       }
+      const transientWraps = root.querySelectorAll(transientActiveWrapsSelector);
+      if (!transientWraps.length) return;
+      transientWraps.forEach((wrap) => {
+        wrap.classList.add(closedClass);
+        resetTooltipShift(wrap, bubbleSelector);
+      });
     }
   });
 

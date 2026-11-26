@@ -53,6 +53,22 @@ def _load_sentence_transformer_class():
         _SENTENCE_TRANSFORMERS_AVAILABLE = False
         return None
 
+def _load_semantic_model(
+    sentence_transformer_class: Any,
+    model_name: str,
+    device: str,
+) -> Any:
+    """Prefer cached Hugging Face weights before hitting the network on startup."""
+    try:
+        return sentence_transformer_class(
+            model_name,
+            device=device,
+            local_files_only=True,
+        )
+    except (TypeError, OSError, ValueError):
+        return sentence_transformer_class(model_name, device=device)
+
+
 def _safe_text(value: Any) -> str:
     if value is None:
         return ""
@@ -385,9 +401,10 @@ class MLRecommender:
 
         try:
             if self._semantic_model is None:
-                self._semantic_model = sentence_transformer_class(
+                self._semantic_model = _load_semantic_model(
+                    sentence_transformer_class,
                     str(ML_SEMANTIC_EMBEDDINGS_MODEL),
-                    device=str(ML_SEMANTIC_EMBEDDINGS_DEVICE),
+                    str(ML_SEMANTIC_EMBEDDINGS_DEVICE),
                 )
 
             passages = [self._format_semantic_passage(text) for text in docs]

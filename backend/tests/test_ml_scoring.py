@@ -241,6 +241,53 @@ class MlRecommenderTests(unittest.TestCase):
         self.assertIsNone(self.recommender._semantic_embeddings)
         self.assertEqual("semantic_init_failed:encoder unavailable", self.recommender._semantic_error)
 
+    def test_fit_semantic_prefers_local_cache_before_network(self):
+        calls = []
+
+        class CacheFirstTransformer:
+            def __init__(self, model_name, device, local_files_only=False):
+                calls.append((model_name, device, local_files_only))
+
+            def encode(self, texts, **kwargs):
+                return np.array([[1.0, 0.0]], dtype=np.float32)
+
+        with patch.object(ml_scoring, "ML_SEMANTIC_EMBEDDINGS_ENABLED", True), patch.object(
+            ml_scoring, "_load_sentence_transformer_class", return_value=CacheFirstTransformer
+        ):
+            self.recommender._fit_semantic(["computer science"])
+
+        self.assertTrue(self.recommender._semantic_ready)
+        self.assertEqual(
+            [(ml_scoring.ML_SEMANTIC_EMBEDDINGS_MODEL, ml_scoring.ML_SEMANTIC_EMBEDDINGS_DEVICE, True)],
+            calls,
+        )
+
+    def test_fit_semantic_falls_back_to_network_when_local_cache_misses(self):
+        calls = []
+
+        class CacheMissTransformer:
+            def __init__(self, model_name, device, local_files_only=False):
+                calls.append((model_name, device, local_files_only))
+                if local_files_only:
+                    raise OSError("model not in local cache")
+
+            def encode(self, texts, **kwargs):
+                return np.array([[1.0, 0.0]], dtype=np.float32)
+
+        with patch.object(ml_scoring, "ML_SEMANTIC_EMBEDDINGS_ENABLED", True), patch.object(
+            ml_scoring, "_load_sentence_transformer_class", return_value=CacheMissTransformer
+        ):
+            self.recommender._fit_semantic(["computer science"])
+
+        self.assertTrue(self.recommender._semantic_ready)
+        self.assertEqual(
+            [
+                (ml_scoring.ML_SEMANTIC_EMBEDDINGS_MODEL, ml_scoring.ML_SEMANTIC_EMBEDDINGS_DEVICE, True),
+                (ml_scoring.ML_SEMANTIC_EMBEDDINGS_MODEL, ml_scoring.ML_SEMANTIC_EMBEDDINGS_DEVICE, False),
+            ],
+            calls,
+        )
+
     def test_optional_model_dependencies_can_be_missing_without_import_crashes(self):
         real_import = builtins.__import__
 

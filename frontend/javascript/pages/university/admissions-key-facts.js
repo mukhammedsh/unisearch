@@ -8,7 +8,7 @@ import { isEvidenceReviewed, isPublishedReference, isReviewedPublished } from ".
 import { translateAdmissionText } from "../../university-translations.js";
 import { heroIcon } from "../../icons.js";
 import { getExamDisplayName } from "../../utils/config.js";
-import { safeUrl } from "../_shared.js";
+import { originalPriceDisclosure, safeUrl } from "../_shared.js";
 import { glossaryTerms, renderTermList, routeWording, termsForRoute } from "./admissions-glossary.js";
 import { applicationFeeText, fundingKeyLines } from "./admissions-funding-lines.js";
 import { englishRequirementItems } from "./admissions-english.js";
@@ -30,7 +30,6 @@ export function requirementsFact(resolved) {
   const assessment = resolved?.assessment || {};
   const checks = assessment.activeChoice?.details?.checks || [];
   const measurable = checks.filter(check => check.measurable && ["met", "unmet"].includes(check.status));
-  const manual = checks.filter(check => check.status === "unassessed").length;
   const percent = assessment.chancePercent;
   const text = Number.isFinite(percent) && measurable.length
     ? tFormat("university.admissions.key_facts.requirements_met", {
@@ -40,8 +39,8 @@ export function requirementsFact(resolved) {
   const tone = assessment.reason === "requirements_not_met" ? "warning" : Number.isFinite(percent) && percent >= 100 ? "success" : "";
   // With a checklist the items themselves say what to add; without one, the notes do.
   const missing = assessment.reason === "missing_evidence" && !minimumChecklist(resolved).length ? missingEvidenceNotes(checks) : [];
-  return { text, tone, cycleRequired: assessment.reason === "entry_cycle_required",
-    notes: [...missing, manual ? tFormat("university.admissions.key_facts.requirements_manual", { count: manual }) : ""].filter(Boolean) };
+  // Unchecked documents need no note: the checklist names only what can be compared, and the documents list sits below.
+  return { text, tone, cycleRequired: assessment.reason === "entry_cycle_required", notes: missing };
 }
 
 const REQUIREMENT_KINDS = { academic_requirement: "academic", language_requirement: "language", exam_alternatives: "exam", required_exam_presence: "exam" };
@@ -307,15 +306,15 @@ export function deadlineFact(resolved, now = new Date(), { profileExamIds = [] }
     const next = annual.reduce((first, entry) => entry.day < first.day ? entry : first);
     const days = Math.round((next.day - today) / DAY_MS);
     const named = entry => ({ name: windowName(entry.window.name), date: formatPublishedDate(entry.window.application_due) });
-    // Windows that passed more recently than the next one's last occurrence are named, so the applicant sees why it is the nearest.
+    // Windows that passed more recently than the next one's last occurrence are returned for summaries that list them;
+    // the answer itself names only the next date, and the dates table shows the passed rounds.
     const passedEntries = annual.filter(entry => entry !== next && next.lapsed && entry.lapsed && entry.last > next.last);
-    const passed = passedEntries.map(entry => tFormat("university.admissions.key_facts.deadline_recurring_passed", named(entry)));
-    // The university names no year, so the date is shown as published and the countdown is an estimate for its next occurrence.
+    // The university names no year, so the countdown is an estimate for the date's next occurrence.
     const dateText = formatPublishedDate(next.window.application_due);
     const upcoming = tFormat(`university.admissions.key_facts.deadline_recurring_${days ? "next" : "today"}`,
       { name: windowName(next.window.name), date: dateText, days });
-    return { status: "recurring", days, tone: days <= 30 ? "warning" : "", terms: termsFor(annual.map(entry => entry.window.name)),
-      text: [...passed, upcoming].join(" "),
+    return { status: "recurring", days, tone: days <= 30 ? "warning" : "", terms: termsFor(next.window.name),
+      text: upcoming,
       next: { title: windowName(next.window.name), date: dateText },
       passedWindows: passedEntries.map(named) };
   }
@@ -363,8 +362,9 @@ export function costFact(resolved, budgetUsd, { original = false } = {}) {
     && Number.isFinite(costs.tuition.max) && costs.tuition.max < quote.min
     ? tFormat("university.admissions.key_facts.cost_tuition_share", { tuition: formatPriceRange(costs.tuition.min, costs.tuition.max, costs.tuition.currency, priceOptions) }) : "";
   // The amount and its basis are also returned separately, so a summary can lead with the figure.
-  const parts = { amount, basis, period: quote.period || "" };
-  const notes = [breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
+  const originalPriceNote = original ? "" : originalPriceDisclosure(quote.min, quote.max, quote.currency);
+  const parts = { amount, basis, period: quote.period || "", originalPriceNote };
+  const notes = [originalPriceNote, breakdown || tuitionShare, quote.period ? tFormat("university.admissions.key_facts.cost_period", {
     // Only an explicit entry label names an intake; an academic-year price period stays as published.
     period: /\bentry\b/i.test(quote.period) ? admissionsCycleLabel(quote.period) || quote.period : quote.period }) : ""];
   const referenceNote = breakdown || tuitionShare || (quote.calculation === "tuition_plus_living_range"
@@ -426,8 +426,8 @@ export function fundingFact(resolved, { onCostsTab = false } = {}) {
   if (support) return { terms, lines, notes: policy ? [tFormat("university.admissions.key_facts.funding_policy", { policy })] : [], supportRouteId: support.id,
     text: tFormat("university.admissions.key_facts.funding_route", { route: admissionsRouteName(support, { presentation: "simple" }) }) };
   const count = (resolved?.fact_groups?.funding || []).length;
-  if (policy && count) return { terms, lines, text: tFormat("university.admissions.key_facts.funding_policy", { policy }),
-    notes: [tFormat("university.admissions.key_facts.funding_policy_note", { count })] };
+  if (policy && count) return { terms: termsForRoute(glossaryTerms(policy), resolved?.selected_route), lines,
+    text: tFormat("university.admissions.key_facts.funding_policy", { policy }) };
   // The records are only claimed to be "below" or "on the tab" when they say something there: the lines above are the answer,
   // and the full records stay behind the "Sources" disclosure.
   const text = !count ? label("funding_none") : label(lines.length ? "funding_lines_lead" : onCostsTab ? "funding_records_here" : "funding_records");
@@ -444,7 +444,7 @@ function row(key, fact, action = "", shownTerms = null, extra = "") {
   const marker = key === "requirements" ? " data-requirements-match" : "";
   return `<div class="admissions-key-facts__row" data-key-fact="${key}"${marker}${fact.status ? ` data-key-fact-status="${escapeHtmlAttr(fact.status)}"` : ""}>
     <dt>${escapeHtml(label(key))}</dt>
-    <dd><p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>${fact.before || ""}${notes}${lines}${links}${renderTermList(fact.terms || [], shownTerms)}${feeStatus}${action}${extra}</dd></div>`;
+    <dd>${fact.text ? `<p class="admissions-key-facts__value"${fact.tone ? ` data-tone="${fact.tone}"` : ""}>${escapeHtml(fact.text)}</p>` : ""}${fact.before || ""}${notes}${lines}${links}${renderTermList(fact.terms || [], shownTerms)}${feeStatus}${action}${extra}</dd></div>`;
 }
 
 // The page's single requirements-match summary: the key-fact result, the minimums checklist and caveats that belong
@@ -511,8 +511,9 @@ function applyRow(resolved, applicationUrl) {
   if (!applicationUrl) return "";
   const action = `<a class="admissions-application-link" href="${escapeHtmlAttr(applicationUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(t("university.admissions.reading.official_application"))}${heroIcon("arrow-top-right-on-square", "ui-icon ui-icon--16")}</a>`;
   // A path applied for through UCAS is not applied for on the university site, so the answer names the service.
+  // Otherwise the link names the official site itself, so no sentence repeats it.
   const viaUcas = glossaryTerms(routeWording(resolved?.selected_route)).includes("ucas");
-  return row("apply", { text: label(viaUcas ? "apply_text_ucas" : "apply_text") }, action);
+  return row("apply", { text: viaUcas ? label("apply_text_ucas") : "" }, action);
 }
 
 // The application fee as the university publishes it; nothing is shown when no fee amount is published for the path.
@@ -522,6 +523,9 @@ function applicationFeeRow(resolved) {
 }
 
 // The funding row: what the university offers for this path and, when it is a separate application, the action that opens it.
+// The Admission tab names the date and cost in one line each; their breakdowns and caveats live on the Dates and Costs tabs.
+const brief = fact => ({ ...fact, notes: [] });
+
 function fundingRow(resolved, shownTerms, { onCostsTab = false } = {}) {
   // The funding application is not a way in, so it is opened from here rather than offered among the paths.
   const funding = fundingFact(resolved, { onCostsTab });
@@ -540,7 +544,8 @@ function fundingRow(resolved, shownTerms, { onCostsTab = false } = {}) {
 export function renderTabAnswers(resolved, tab, { budgetUsd, profileExamIds = [], now = new Date() } = {}) {
   if (!resolved?.selected_route) return "";
   const shownTerms = new Set(resolved.context?.study_level === "undergraduate" ? ["foundation"] : []);
-  const rows = tab === "deadlines" ? [row("deadline", deadlineFact(resolved, now, { profileExamIds }), "", shownTerms)]
+  // The dates table below explains the round names, so the answer above it does not repeat those terms.
+  const rows = tab === "deadlines" ? [row("deadline", { ...deadlineFact(resolved, now, { profileExamIds }), terms: [] }, "", shownTerms)]
     : [row("cost", costFact(resolved, budgetUsd), "", shownTerms), applicationFeeRow(resolved), fundingRow(resolved, shownTerms, { onCostsTab: true })];
   return `<section class="admissions-key-facts admissions-key-facts--tab" data-tab-answers="${tab}" aria-label="${escapeHtmlAttr(label("title"))}">
     <dl class="admissions-key-facts__list">${rows.join("")}</dl></section>`;
@@ -571,11 +576,10 @@ export function renderAdmissionsKeyFacts(resolved, { budgetUsd, profileExamIds =
       ${requirementsRow(resolved, cycleAction, shownTerms, profile)}
       ${credentialRow(resolved)}
       ${applyRow(resolved, applicationUrl)}
-      ${row("deadline", deadlineFact(resolved, now, { profileExamIds }), open("tab-deadlines", "open_deadlines"), shownTerms)}
-      ${row("cost", costFact(resolved, budgetUsd), open("tab-finance", "open_finance"), shownTerms)}
+      ${row("deadline", brief(deadlineFact(resolved, now, { profileExamIds })), open("tab-deadlines", "open_deadlines"), shownTerms)}
+      ${row("cost", brief(costFact(resolved, budgetUsd)), open("tab-finance", "open_finance"), shownTerms)}
       ${applicationFeeRow(resolved)}
       ${fundingRow(resolved, shownTerms)}
     </dl>
-    <p class="admissions-reading__note">${escapeHtml(label("note"))}</p>
   </section>`;
 }

@@ -1148,8 +1148,14 @@
   transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.uni-cost-trigger:is(:focus-visible, :active) .uni-cost-tooltip__icon {
+.uni-cost-trigger:focus-visible .uni-cost-tooltip__icon {
   color: var(--accent-text);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .uni-cost-trigger:active .uni-cost-tooltip__icon {
+    color: var(--accent-text);
+  }
 }
 
 .uni-cost-tooltip__content {
@@ -1237,6 +1243,10 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .uni-card:not(.map-card-wrapper *) :is(.uni-cost-trigger, .uni-metric--rank, .uni-status-trigger) {
+    cursor: pointer;
+  }
+
   .uni-cost-trigger:hover .uni-cost-tooltip__icon {
     color: var(--accent-text);
   }

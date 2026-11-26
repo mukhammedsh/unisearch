@@ -102,10 +102,7 @@ test("excerpts cite numbered sources that match one de-duplicated list with real
   ] };
   const html = renderApplicantSection(resolved, ["requirements"]).split('<details class="admissions-reading__references motion-disclosure"')[0];
   assert.ok(!html.includes(`>${t("university.admissions.reading.official_source")}<`));
-  const refs = [...html.matchAll(/<a class="admissions-reading__ref" href="([^"]+)"[^>]*aria-label="([^"]+)"[^>]*data-source-ref="(\d)">(\d)<\/a>/g)];
-  assert.deepEqual(refs.map(match => [match[1], match[3]]), [["https://example.edu/tests", "1"], ["https://example.edu/apply", "2"], ["https://example.edu/apply", "2"]]);
-  assert.ok(refs.every(match => match[3] === match[4]));
-  assert.equal(refs[0][2], "Источник 1: Testing policy");
+  assert.doesNotMatch(html, /data-source-ref|"admissions-reading__ref"/);
   assert.match(html, /target="_blank" rel="noopener noreferrer"/);
   assert.equal((html.match(/data-reading-sources/g) || []).length, 1);
   const list = html.split("data-reading-sources")[1];
@@ -344,14 +341,13 @@ test("scholarship consideration dates are not labelled general application dates
   assert.doesNotMatch(primary, /Application dates/);
 });
 
-test("identical yearless caveats appear once in primary dates", () => {
+test("yearless dates stay clean in primary dates while full records retain recurring scope", () => {
   const rows = ["one", "two"].map(id => fact(id, { windows: [{ name: id, application_due: "November 1" }], enrollment_reply: "May 1" },
     { topic: "application_windows", period: { label: "Recurring first-year dates; page does not specify entry year" } }));
   for (const language of ["eng", "rus", "kaz"]) {
     setLanguage(language, { emit: false });
     const html = renderApplicantSection(context(rows, { deadlines: rows.map(row => row.id) }), ["deadlines"]);
     const primary = html.split('<details class="admissions-reading__references motion-disclosure"')[0];
-    assert.equal(primary.split(t("university.admissions.reading.recurring_dates")).length - 1, 1);
     assert.doesNotMatch(primary, new RegExp(t("university.admissions.reading.yearless_period")));
     assert.ok(primary.includes(formatPublishedDate("November 1")));
     assert.ok(primary.includes(formatPublishedDate("May 1")));
@@ -496,7 +492,7 @@ test("reference budgets keep zero, period and currency and funding is summarized
   const html = renderApplicantSection(context(rows, { costs: ["budget"], funding: ["sat-aid", "act-aid"] }), ["costs", "funding"]);
   assert.match(html, /<dd>\$0<\/dd>/);
   assert.match(html, /2026[-‑–]27/);
-  assert.match(html, /not a confirmed price for another entry cycle/);
+  assert.match(html, /data-budget-total[\s\S]*\$100/);
   assert.equal((html.match(/<h3>Need-based financial aid<\/h3>/g) || []).length, 1);
   assert.match(html, /SAT source record/);
   assert.match(html, /ACT source record/);
@@ -515,7 +511,7 @@ test("structured catalog cost references retain original prose and expose their 
   assert.match(html, /2026[-‑–]2027/);
   assert.match(html, /Insurance is additional/);
   assert.match(html, /Official source prose and conditional fees remain available/);
-  assert.match(html, /Tuition is one part of the budget/);
+  assert.match(html, /data-budget-total/);
   assert.match(html, /One-time charges are additional/);
 });
 

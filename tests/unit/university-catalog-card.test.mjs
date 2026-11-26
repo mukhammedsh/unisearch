@@ -149,7 +149,32 @@ test("large converted card amounts use compact local notation without changing t
       assert.match(html, /₸/);
       assert.match(html, /\(\$66,720\)/);
       assert.doesNotMatch(html, /30,000,000/);
+      assert.doesNotMatch(html, /data-cost-original/);
     }
+  } finally {
+    global.localStorage = originalStorage;
+  }
+});
+
+test("preferred mode keeps cards single-currency and discloses the original price in the tooltip", () => {
+  const originalStorage = global.localStorage;
+  global.localStorage = { getItem: key => key === "unisearch_settings_cache_v1" ? JSON.stringify([
+    { key: "preferred_currency", value: "KZT" }, { key: "currency_display_mode", value: "preferred" },
+  ]) : null };
+  try {
+    for (const [language, prefix] of [
+      ["eng", "In original currency: £10,050 – £47,800"],
+      ["rus", "В оригинальной валюте: £10,050 – £47,800"],
+      ["kaz", "Бастапқы валютада: £10,050 – £47,800"],
+    ]) {
+      setLanguage(language, { emit: false });
+      const html = renderUniversityCardCosts({ catalog_costs: { tuition: { min: 10050, max: 47800, currency: "GBP" } } }, "tuition");
+      assert.doesNotMatch(html, /class="uni-cost-secondary"/, language);
+      assert.ok(html.includes(`data-cost-original>${prefix}<`), language);
+    }
+    setLanguage("eng", { emit: false });
+    const sameCurrency = renderUniversityCardCosts({ catalog_costs: { tuition: { min: 1900000, max: 1900000, currency: "KZT" } } }, "tuition");
+    assert.doesNotMatch(sameCurrency, /data-cost-original/);
   } finally {
     global.localStorage = originalStorage;
   }

@@ -131,7 +131,7 @@ for (const item of presentations) {
     await tab(page, "finance");
     await expect(page.locator("[data-course-tuition]")).toContainText("47,800");
     await expect(page.locator("[data-living-reference]")).toContainText("2026");
-    await expect(page.locator(".admissions-reading__total")).toHaveCount(0);
+    await expect(page.locator("[data-budget-total]")).toHaveCount(0);
     await expect(page.locator('[data-source-summary="funding"]')).toContainText("Imperial Bursary");
     await expect(page.locator('[data-source-summary="funding"]')).not.toContainText("i360");
     await expect(page.locator('[data-source-summary="costs"]')).toContainText(/34[.,]50/);
@@ -236,7 +236,7 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
       await expect(page.locator("[data-scholarship-rounds]")).toContainText("23:59");
       await expect(page.locator('[data-source-summary="funding"]')).toContainText(/31[ ,]380/);
     } else await expect(page.locator("[data-course-tuition]")).toBeVisible();
-    await expect(page.locator(".admissions-reading__total")).toHaveCount(0);
+    await expect(page.locator("[data-budget-total]")).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
   });
 }
@@ -399,7 +399,7 @@ test("Imperial map marker keeps tuition separate from the unavailable annual bud
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-cost-basis="tuition"]')).toContainText(/10[\s,]?050/);
   await expect(popup.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
-  await popup.locator('.uni-cost-trigger').click();
+  await popup.locator('.uni-cost-trigger').hover();
   await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toBeVisible();
   await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toContainText("2027");
   await screenshot(page, "eng-1280-map-tuition", "#mapContainer");

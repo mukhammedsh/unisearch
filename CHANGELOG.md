@@ -2,6 +2,20 @@
 
 All notable changes to UniSearch are documented here.
 
+## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, lighter admissions tabs, Kazakh-first locale, and UniFit fixes
+
+### Changed
+- Simplify reviewed university Admission, Dates, and Costs tabs across English, Russian, and Kazakh by removing defensive disclaimers, repeated deadline and budget notes, and inline source numbers, sizing the official application button compactly beside neighboring actions, and tightening MIT admissions summaries.
+- Keep desktop mouse tooltips transient on hover and keyboard focus without press states or click-to-pin behavior, let mouse clicks on university card price, rank, and status tooltips open the university normally, and preserve tap-to-open tooltips on touch and stylus screens.
+- Default price display to the visitor's preferred currency in every region so cards and comparisons stay compact, while keeping the exact original-currency price available inside catalog price tooltips and university cost details whenever a price is converted.
+
+### Fixed
+- Separate the top key-facts summary from the budget breakdown and detailed sections on reviewed university Costs and Dates tabs using the standard section spacing.
+- Hide the redundant UniFit toolbar profile link once ranking inputs are filled, keep the setup link visible when ranking inputs are missing, and lay out the narrow UniFit status row in a grid so touch targets do not stretch wrapped line spacing.
+- Align single-line university card prices flush with the details link at the bottom of mobile cards while preserving the touch tap area.
+- Open UniSearch in Kazakh on a visitor's first visit from Kazakhstan while honoring any saved language choice or `?lang=` link parameter, negotiating against the full ordered browser language list elsewhere, and keeping automatic defaults out of persistent storage until the visitor switches languages manually.
+- Load the cached UniFit interest-matching model locally before contacting Hugging Face so startup does not stall on network or SSL checks when the model is already present.
+
 ## 10.10.0 (2026-11-26) - Comparison PDF export, spotlight tour, profile calendar, and mobile refinements
 
 Minor release: add comparison PDF export, a live four-step catalog spotlight tour, a localized profile date calendar, editable per-university program subject filtering, and bidirectional cover transitions. Streamline reviewed admissions reading, profile navigation and spacing, inline UniFit toolbar controls, and narrow-viewport responsiveness.

@@ -125,14 +125,7 @@ for (const item of presentations) {
     expect(listed.length).toBeGreaterThan(0);
     expect(new Set(listed.map(([, href]) => href)).size).toBe(listed.length);
     for (const [, , title] of listed) expect(title).not.toMatch(/^(Official source|Официальный источник|Ресми дереккөз)$/);
-    const markers = await page.locator("#detailRequirements .admissions-reading__ref").evaluateAll(links => links.map(link => [link.textContent, link.href, link.target, link.rel, link.getAttribute("aria-label")]));
-    expect(markers.length).toBeGreaterThan(0);
-    for (const [number, href, target, rel, name] of markers) {
-      expect(listed.find(([listedNumber]) => listedNumber === number)?.[1]).toBe(href);
-      expect(target).toBe("_blank");
-      expect(rel).toContain("noopener");
-      expect(name).toContain(listed.find(([listedNumber]) => listedNumber === number)[2]);
-    }
+    await expect(page.locator("#detailRequirements .admissions-reading__ref")).toHaveCount(0);
     await expect(page.locator("#detailRequirements .admissions-reading__section details")).toHaveCount(0);
     await expect(page.locator("#detailRequirements [data-all-records]")).toHaveCount(1);
     await screenshot(page, `${item.language}-${item.width}-${item.theme}-requirements`, '[data-source-summary="requirements"] h3');
@@ -241,7 +234,7 @@ for (const [index, entry] of contrasts.entries()) for (const [position, language
       await expect(page.locator('[data-source-summary="costs"]')).toContainText(/24[\s,]?034/);
       await expect(funding).toContainText("Direct Loans");
     }
-    if (!["transfer", "coterm"].includes(entry.kind)) await expect(page.locator(".admissions-reading__total")).toHaveCount(0);
+    if (!["transfer", "coterm"].includes(entry.kind)) await expect(page.locator("[data-budget-total]")).toHaveCount(0);
     await screenshot(page, `${language}-${item.width}-${entry.kind}-finance`, "#detailFinance");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
   });
@@ -431,7 +424,7 @@ test("Stanford catalog and map retain the chosen cost basis, currency and study 
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-cost-basis="tuition"]')).toContainText(/₸|KZT/);
   await expect(popup.locator('[data-cost-basis="annual_total"]')).toHaveCount(0);
-  await popup.locator('.uni-cost-trigger').click();
+  await popup.locator('.uni-cost-trigger').hover();
   await expect(popup.locator('.uni-cost-tooltip [role="tooltip"]')).toBeVisible();
   await expect(popup).toContainText("2026");
   await screenshot(page, "eng-1280-map-tuition-kzt", "#mapContainer");

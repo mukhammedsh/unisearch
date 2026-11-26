@@ -147,14 +147,18 @@ test("unifit tradeoff tooltips are hidden by default and toggle on interaction",
     expect(visibility).toBe("hidden");
   }
 
-  // Clicking an info button opens its tooltip
+  // Hovering an info button on desktop opens its tooltip transiently without pinning .is-open on click
   const firstInfoBtn = prefsPanel.locator(".u-info").first();
+  const firstInfoWrap = firstInfoBtn.locator("..");
+  await firstInfoBtn.hover();
+  const activeTooltip = firstInfoWrap.locator(".u-tooltip");
+  await expect(activeTooltip).toBeVisible();
   await firstInfoBtn.click();
-  const activeTooltip = firstInfoBtn.locator("..").locator(".u-tooltip");
+  await expect(firstInfoWrap).not.toHaveClass(/is-open/);
   await expect(activeTooltip).toBeVisible();
 
-  // Clicking outside closes the tooltip
-  await page.locator("body").click({ position: { x: 10, y: 10 } });
+  // Moving the pointer away closes the tooltip
+  await page.mouse.move(10, 10);
   await expect(activeTooltip).toBeHidden();
 });
 

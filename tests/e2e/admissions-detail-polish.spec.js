@@ -134,7 +134,7 @@ test(`Imperial course titles distinguish BEng and MEng and retain duration and f
   await tab(page, "finance");
   await expect(page.locator("[data-course-tuition]")).toContainText("Home");
   await expect(page.locator("[data-course-tuition]")).toContainText("Overseas");
-  await expect(page.locator("[data-course-tuition] a").first()).toHaveAttribute("href", /^https:\/\/www\.imperial\.ac\.uk\//);
+  await expect(page.locator("#detailFinance [data-reading-sources] a").first()).toHaveAttribute("href", /^https:\/\/www\.imperial\.ac\.uk\//);
   await page.locator("#detailFinance").scrollIntoViewIfNeeded();
   await page.screenshot({ path: testInfo.outputPath(`imperial-finance-${appearance.width}-${appearance.theme}-${appearance.language}.png`) });
   await noOverflow(page);
@@ -179,10 +179,9 @@ test("English desktop MIT finance retains breakdown, dated period, exclusions, a
   await openUniversity(page, "mit-usa-cambridge", { language: "eng", theme: "light", width: 1440, query: "&admission_application_route=mit-first-year&admission_level=undergraduate&admission_cycle=2027%20entry" });
   await tab(page, "finance");
   const finance = page.locator("#detailFinance");
-  await expect(finance).toContainText("Tuition is one part of the budget");
-  await expect(finance).toContainText("not a confirmed price for another entry cycle");
+  await expect(finance.locator("[data-budget-total]")).toContainText("$92,760");
   await expect(finance.locator(".admissions-reading__costs")).toContainText("Housing");
-  await expect(finance).toContainText("not awarded aid");
+  await expect(finance).toContainText("CSS Profile");
   // The cost answer leads; the official pages and full records sit behind one closed Sources disclosure.
   await expect(finance.locator('[data-tab-answers="finance"] [data-key-fact="cost"]')).toBeVisible();
   const records = finance.locator("[data-all-records]");

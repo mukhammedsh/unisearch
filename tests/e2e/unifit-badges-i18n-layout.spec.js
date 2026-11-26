@@ -102,10 +102,6 @@ for (const locale of locales) {
 
     const firstStatus = firstCard.locator(".uni-status-trigger").first();
     await firstStatus.hover();
-    await expect(firstCard.locator(".uni-status-tooltip__content").first()).toBeVisible();
-    const catalogUrl = page.url();
-    await firstStatus.click();
-    await expect(page).toHaveURL(catalogUrl);
     const firstTooltip = firstCard.locator(".uni-status-tooltip__content").first();
     await expect(firstTooltip).toBeVisible();
     await expect(firstTooltip).toHaveCSS("z-index", "10");
@@ -114,11 +110,7 @@ for (const locale of locales) {
     const firstAriaLabel = await firstStatus.getAttribute("aria-label");
     expect(firstAriaLabel).toMatch(/: /);
 
-    await firstStatus.click();
-    await expect(firstTooltip).not.toBeVisible();
-    await firstStatus.click();
-    await expect(firstTooltip).toBeVisible();
-    await firstStatus.click();
+    await page.mouse.move(0, 0);
     await expect(firstTooltip).not.toBeVisible();
     expect(await firstCard.evaluate((card) => getComputedStyle(card).overflow)).toBe("visible");
     expect(await firstCard.locator(".uni-media").evaluate((media) => media.contains(media.parentElement?.querySelector(".uni-card-statuses")))).toBeFalsy();
@@ -184,11 +176,19 @@ for (const locale of locales) {
     expect(mobileOverflow.horizontal).toBeFalsy();
     expect(mobileOverflow.vertical).toBeFalsy();
 
+    const catalogUrl = page.url();
     const mobileStatus = firstCard.locator(".uni-status-trigger").first();
     const mobileTooltip = firstCard.locator(".uni-status-tooltip__content").first();
-    await mobileStatus.click();
+    await mobileStatus.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
+    await mobileStatus.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
+    await expect(page).toHaveURL(catalogUrl);
     await expect(mobileTooltip).toBeVisible();
-    await mobileStatus.click();
+    await mobileStatus.dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
+    await mobileStatus.dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
     await expect(mobileTooltip).not.toBeVisible();
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await firstCard.locator(".uni-cost-trigger").click();
+    await expect(page.locator("body")).toHaveAttribute("data-page", "university");
   });
 }

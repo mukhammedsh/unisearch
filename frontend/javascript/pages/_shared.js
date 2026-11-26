@@ -6,7 +6,7 @@ import {
   escapeHtmlAttr,
 } from "../utils.js";
 import { staticSnapshotAssetUrl } from "../utils/static-snapshot.js";
-import { convert, formatPrice } from "../currency.js";
+import { convert, formatHiddenOriginalPrice, formatPrice } from "../currency.js";
 
 import {
   renderGroupedExamPairRows,
@@ -261,6 +261,18 @@ export function moneyOrUnknown(value, fieldKey, fallbackField, currency = "USD",
   return Number.isFinite(Number(value))
     ? formatPrice(value, currency, options)
     : unknownFieldText(fieldKey, fallbackField);
+}
+
+/**
+ * Localized secondary note with the exact original-currency price when "preferred" mode hides it.
+ * @param {number|string|null|undefined} min
+ * @param {number|string|null|undefined} [max]
+ * @param {string} [currency="USD"]
+ * @returns {string}
+ */
+export function originalPriceDisclosure(min, max = min, currency = "USD") {
+  const amount = formatHiddenOriginalPrice(min, max, currency);
+  return amount ? tFormat("currency.original_price", { amount }, `In original currency: ${amount}`) : "";
 }
 
 export function splitPriceDisplay(value) {

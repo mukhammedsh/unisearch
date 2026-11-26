@@ -92,8 +92,8 @@ for (const item of cases) {
     await expect(page.locator("#detailRequirements .admissions-reading__section > h3").filter({ hasText: /Academic tests|Академические экзамены|Академиялық/ })).toHaveCount(0);
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText("IELTS Academic");
     await expect(page.locator("#detailRequirements .admissions-reading__table")).toContainText(/7[.,]5/);
-    await expect(page.locator('#detailRequirements [data-source-summary="requirements"]')).toContainText({ eng: "recommended preparation", rus: "рекомендуемую подготовку", kaz: "ұсынылатын даярлықты" }[item.language]);
-    await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText({ eng: "MIT as a whole", rus: "MIT целиком", kaz: "MIT-ке тұтас" }[item.language]);
+    await expect(page.locator('#detailRequirements [data-source-summary="requirements"]')).toContainText({ eng: "challenging math and science", rus: "сложные курсы математики", kaz: "күрделі математика" }[item.language]);
+    await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText({ eng: "MIT as a whole", rus: "MIT целиком", kaz: "жалпы MIT-ке" }[item.language]);
     const special = page.locator('#detailRequirements [data-admissions-fact="simultaneous-sb-master-status"]');
     await expect(special).toBeHidden();
     await expect(special.locator('xpath=ancestor::*[@data-general-references]')).toHaveCount(1);
@@ -125,20 +125,19 @@ for (const item of cases) {
     await dates.evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-dates.png`) });
     await tab(page, "finance");
-    await expect(page.locator(".admissions-reading__total")).toContainText(/\$92[,\u00a0 ]760/);
+    await expect(page.locator("[data-budget-total]")).toContainText(/\$92[,\u00a0 ]760|42[,\u00a0 ]672/);
     await expect(page.locator("#detailFinance > .admissions-reading > .admissions-reading__section").first()).toContainText(/2026[-‑–]2027/);
     const aid = page.locator("[data-aid-summary]");
     await expect(aid).toHaveCount(1);
     await expect(aid.locator("h3")).toHaveText({ eng: "Need-based financial aid", rus: "Помощь по финансовой потребности", kaz: "Қаржылық қажеттілікке негізделген көмек" }[item.language]);
     await expect(aid.locator("ol")).toContainText("CSS Profile");
     await expect(aid.locator("ol")).toContainText("IDOC");
-    await expect(aid.locator("[data-aid-fafsa]")).toBeVisible();
+    await expect(aid).not.toContainText("FAFSA");
     await expect(aid).toContainText("3514");
-    await expect(aid).toContainText({ eng: "not awarded aid", rus: "не считается предоставленной помощью", kaz: "тағайындалған көмек емес" }[item.language]);
     await aid.locator("h3").evaluate(node => node.scrollIntoView({ block: "start" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-aid.png`) });
     await expectNoStackedGapMargins(page, "#tab-finance");
-    await page.locator(".admissions-reading__total").evaluate(node => node.scrollIntoView({ block: "center" }));
+    await page.locator("[data-budget-total]").evaluate(node => node.scrollIntoView({ block: "center" }));
     await page.screenshot({ path: path.join(evidenceDir, `${item.language}-${item.width}-costs.png`) });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(item.width);
     if (item.width < 768) {

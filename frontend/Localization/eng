@@ -143,6 +143,7 @@ settings.option.currency_display.desc: Choose how university prices are displaye
 currency.display.preferred: In preferred currency
 currency.display.original: In original currency
 currency.display.both: Both (preferred + original)
+currency.original_price: In original currency: {amount}
 currency.approx_rate_note: Converted at approximate daily rate
 currency.region.cis: Post-Soviet
 currency.region.europe: Europe
@@ -2250,10 +2251,9 @@ university.admissions.reading.apply_by: Apply by
 university.admissions.reading.aid_by: Financial aid
 university.admissions.reading.decision: Decision
 university.admissions.reading.last_test: Last accepted date
-university.admissions.reading.recurring_dates: These dates recur annually; this source does not establish an entry year. Confirm the selected cycle on the official page.
 university.admissions.reading.reply_by: Reply to an offer
-university.admissions.reading.reference_budget: Published reference budget
-university.admissions.reading.dated_budget: This is the published budget for the period shown, before aid. It is not a confirmed price for another entry cycle.
+university.admissions.reading.reference_budget: What the budget includes
+university.admissions.reading.budget_total: Total before aid
 university.admissions.reading.tuition: Tuition
 university.admissions.reading.student_life_fee: Student fee
 university.admissions.reading.housing_estimate: Housing estimate
@@ -2261,12 +2261,11 @@ university.admissions.reading.food_estimate: Food estimate
 university.admissions.reading.materials_estimate: Study materials
 university.admissions.reading.personal_estimate: Personal expenses
 university.admissions.reading.insurance_extra: Insurance and other limits:
-university.admissions.reading.tuition_budget_note: Tuition is one part of the budget; living and other costs are additional.
 university.admissions.reading.exclusion.insurance: Insurance is additional.
 university.admissions.reading.exclusion.one_time_fees: One-time charges are additional.
 university.admissions.reading.degree.MEng: Master of Engineering
 university.admissions.reading.degree.MEng_ucas_note: This is an undergraduate entry route that leads to the Master of Engineering award.
-university.admissions.reading.potential_aid: Potential funding is not awarded aid. Eligibility, documents and deadlines are separate; no award is subtracted from published costs.
+university.admissions.reading.potential_aid: Not guaranteed: check eligibility, documents and deadlines on the official page.
 university.admissions.reading.full_records: Full records in the source language
 university.admissions.reading.sources_disclosure_count: Sources ({count})
 university.admissions.reading.sources_disclosure: Sources
@@ -2298,7 +2297,7 @@ university.admissions.reading.regular_decision: Regular application (Regular Dec
 university.admissions.reading.transfer_application: Transfer application
 university.admissions.reading.priority_deadline: Priority deadline
 university.admissions.reading.application_deadline: Application deadline
-university.admissions.reading.official_application: Official application instructions
+university.admissions.reading.official_application: Official application
 university.admissions.reading.official_source: Official source
 university.admissions.reading.unknown: Not stated here
 university.admissions.reading.previous_tabs: Previous sections
@@ -2470,7 +2469,6 @@ universities.compare.legacy_unreviewed: The detailed program and admissions-rout
 university.admissions.reading.summary_translation_missing: A summary translation is not available yet. Read the original below.
 university.admissions.reading.source_and_date: Source and date
 university.admissions.reading.official_sources_count: Official sources ({count})
-university.admissions.reading.source_marker: Source {number}: {title}
 university.admissions.reading.reference_scope_note: Details are shown in the language of the university.
 university.admissions.reading.current_policy: Published policy; entry year not specified
 university.admissions.reading.yearless_period: Recurring dates; entry year not specified
@@ -2485,8 +2483,6 @@ university.admissions.reading.aid_explained: This aid is based on the family’s
 university.admissions.reading.aid_documents: What to submit for aid
 university.admissions.reading.aid_css: Complete the CSS Profile, the College Board financial-aid application.
 university.admissions.reading.aid_css_code: MIT recipient code: {code}.
-university.admissions.reading.aid_fafsa: FAFSA applies to domestic applicants eligible for U.S. federal aid. It is not part of MIT’s international aid instructions.
-university.admissions.reading.aid_international_title: For international aid applicants
 university.admissions.reading.aid_finances_title: Prepare financial information for the CSS Profile:
 university.admissions.reading.aid_priority_dates: Priority aid application dates
 university.programs.all_levels: All degree levels
@@ -2903,10 +2899,8 @@ university.admissions.entry.route_help.nu-residency-unconditional: Read the stan
 university.admissions.entry.route_help.nu-residency-conditional-umc: A distinct conditional route for UMC-recommended applicants. Read the recommendation and enrollment conditions; it is not a general test waiver.
 university.admissions.reading.structured_study: Read the published study details below. A short narrative summary is not available.
 university.admissions.key_facts.title: Key facts for applying
-university.admissions.key_facts.note: Official facts only — not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: Documents and other requirements are not checked automatically.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -2918,7 +2912,7 @@ university.admissions.key_facts.deadline_period: Application period: {period}
 university.admissions.key_facts.deadline_described: No exact date with a year is listed; see the published dates on the Dates tab
 university.admissions.key_facts.open_deadlines: All dates
 university.admissions.key_facts.cost: Cost per year
-university.admissions.key_facts.cost_total: Yearly budget published by the university: {amount}
+university.admissions.key_facts.cost_total: Yearly budget: {amount}
 university.admissions.key_facts.cost_breakdown: Tuition {tuition} + living ≈ {living} for the 9-month academic year
 university.admissions.key_facts.cost_tuition_share: Of this, tuition is {tuition}; the rest is housing, meals and other costs.
 university.admissions.key_facts.cost_estimate: Tuition and living: ≈ {amount} a year
@@ -2958,8 +2952,6 @@ university.admissions.catalog.field.time: Time
 university.admissions.catalog.field.timezone: Time zone
 university.admissions.catalog.field.scope: Applies to
 university.admissions.catalog.record_link: Show full source record
-university.admissions.entry.browsing_not_saved: Save this path to compare it with your profile in the catalog and comparison. Nothing is sent to the university.
-university.admissions.entry.saved_context: Saved for catalog and comparison.
 university.admissions.entry.saved_other: Another path is remembered: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Apply to the selected undergraduate course through UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Apply to the selected postgraduate program.
@@ -3025,12 +3017,10 @@ university.admissions.glossary.fee_status.title: Home / Overseas fees
 university.admissions.glossary.fee_status.text: Fee status decides which tuition price applies: Home fees generally apply to UK residents and some other categories, international applicants usually pay Overseas fees, and the university decides the classification.
 university.admissions.glossary.what_is: What is {term}?
 university.admissions.key_facts.cost_fee_status_source: Official fee-status page
-university.admissions.key_facts.funding_policy: Published policy: {policy}
-university.admissions.key_facts.funding_policy_note: This is the university's published policy, not an award offered to you.
+university.admissions.key_facts.funding_policy: {policy}
 university.admissions.key_facts.deadline_earlier: Before that, first: {text}
-university.admissions.key_facts.deadline_recurring_next: Next: {name} — {date} (the university does not state the year), in about {days} days; confirm it on the official page
-university.admissions.key_facts.deadline_recurring_today: Next: {name} — {date} (the university does not state the year), today; confirm it on the official page
-university.admissions.key_facts.deadline_recurring_passed: {name}: {date} has passed.
+university.admissions.key_facts.deadline_recurring_next: {date} — {name}, in about {days} days
+university.admissions.key_facts.deadline_recurring_today: {date} — {name}, today
 university.admissions.key_facts.requirements_kind_academic: Academic result
 university.admissions.key_facts.requirements_kind_language: English
 university.admissions.key_facts.requirements_kind_exam: Required test
@@ -3047,7 +3037,6 @@ university.admissions.key_facts.apply: Where to apply
 university.admissions.key_facts.credential: Kazakhstan documents
 university.admissions.key_facts.credential_unlisted: The university publishes no decision on school or degree documents from Kazakhstan. This is not a rejection: ask the admissions office whether your document is accepted.
 university.admissions.key_facts.credential_source: Official guidance
-university.admissions.key_facts.apply_text: Applications are made on the university's official site.
 university.admissions.key_facts.apply_text_ucas: Apply through UCAS, the UK's shared application service, not on the university site. The official instructions explain the steps.
 university.admissions.key_facts.minimum_add: Add: {items}
 university.admissions.key_facts.minimum_any: {requirement}, one of: {items}
@@ -3141,7 +3130,6 @@ universities.ux2.banner.ranked: UniFit: {values}
 universities.ux2.banner.generic: Generic order — add a study level, subject, or budget
 universities.ux2.banner.scores_only: Uses your language details — add a study level, subject, or budget
 universities.ux2.banner.budget: up to {amount}/yr
-universities.ux2.banner.edit: Profile
 universities.ux2.banner.set_up: Set up profile
 universities.ux2.banner.info_aria: How UniFit ranks this list
 universities.ux2.banner.tooltip_profile: Profile: {values}

@@ -56,7 +56,7 @@ for (const presentation of presentations) {
     await open(page, presentation, 'mit-course-6-3-bachelor', 'mit-transfer', 'undergraduate');
     await expect(page.locator('#detailRequirements')).toContainText(/SAT|ACT/);
     const summaries = page.locator('#detailRequirements [data-source-summary="requirements"]');
-    await expect(summaries).toContainText({ eng: 'not a published minimum', rus: 'не опубликованный минимум', kaz: 'жарияланған ең төменгі шек емес' }[presentation.language]);
+    await expect(summaries).toContainText({ eng: 'no fixed cutoff', rus: 'минимума нет', kaz: 'нақты шек жоқ' }[presentation.language]);
     await expect(page.locator('#detailRequirements [data-source-summary="application"]')).toContainText('75');
     if (presentation.language !== 'eng') {
       const documents = page.locator('#detailRequirements .admissions-reading__section').filter({ has: page.locator('.admissions-catalog__items') }).first();

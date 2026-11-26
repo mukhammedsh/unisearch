@@ -18,7 +18,8 @@ test("mobile UniFit explains a dated budget reference in the user's language", a
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
   const card = page.locator(`[data-uni-id="${MIT}"]`);
   await expect(card.locator(".uni-cost-trigger")).toBeVisible();
-  await card.locator(".uni-cost-trigger").click();
+  await card.locator(".uni-cost-trigger").dispatchEvent("pointerdown", { pointerType: "touch", bubbles: true });
+  await card.locator(".uni-cost-trigger").dispatchEvent("click", { bubbles: true, cancelable: true, detail: 1 });
   await expect(card.locator("[data-budget-assessment]")).toBeVisible();
   await expect(card.locator("[data-budget-assessment]")).toContainText("Этот ориентир выше бюджета");
   await expect(card.locator("[data-cost-context]")).toContainText("Цикл поступления не подтверждён");
@@ -139,7 +140,7 @@ for (const [language, heading, action, width, theme] of [
     const card = page.locator(`[data-uni-id="${MIT}"]`);
     await expect(card.locator(".uni-status-value")).toHaveText("50%");
     const preference = card.locator(".uni-status-trigger--match");
-    await preference.click();
+    await preference.hover();
     await expect(card.locator(".uni-status-tooltip__content:visible")).not.toContainText("99/100");
     await expect(card.locator(".uni-status-tooltip__content:visible")).not.toContainText("UniFit penalty");
     await expect(card.getByRole("link", { name: action })).toHaveCount(0);

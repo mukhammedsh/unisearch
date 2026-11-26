@@ -122,7 +122,7 @@ test("the cost card states the price before aid, names tuition-only prices and c
   const calculated = costCard(costFact({ selected_costs: { annual_total: quote({ calculation: "tuition_plus_living_range", living_period: "9 months" }) } }, 50000));
   assert.equal(calculated.lines[1], "Calculated reference: tuition plus a living-cost estimate.");
   assert.deepEqual(card.aside.map(line => line.tone), ["danger", undefined]);
-  assert.match(card.aside[1].text, /^Published policy: MIT meets full demonstrated need$/);
+  assert.equal(card.aside[1].text, "MIT meets full demonstrated need");
   const tuition = costCard(costFact({ selected_costs: { tuition: quote({ min: 66720, max: 66720, usd: { min: 66720, max: 66720 } }) } }, undefined));
   assert.match(tuition.headline, /a year, tuition only$/);
   assert.ok(tuition.lines.includes("Housing and living costs are not included."));
@@ -188,7 +188,10 @@ test("a university without a reviewed catalog shows its published cost, selectiv
 
 test("legacy prices say what they cover and never claim a figure the record lacks", () => {
   const tuitionOnly = { finance: { currency: "KZT", total_cost_year_usd: 1500000, costs_breakdown_status: "official_tuition_and_fees_only" } };
-  assert.equal(legacyCostCard(tuitionOnly, 1500000).lines[0], "Tuition and fees only; housing and food are extra. Before financial aid.");
+  const legacyCard = legacyCostCard(tuitionOnly, 1500000);
+  assert.equal(legacyCard.lines[0], "Tuition and fees only; housing and food are extra. Before financial aid.");
+  assert.equal(legacyCard.lines[1], "In original currency: 1,500,000 ₸");
+  assert.equal(legacyCostCard(yale(), 97985).lines.length, 1);
   // A lower price among several published options is a starting price, not the total.
   assert.match(legacyCostCard(yale(), 80000).headline, /^From /);
   assert.equal(legacyCostCard(yale(), null).headline, "No annual cost is published in the catalog yet.");

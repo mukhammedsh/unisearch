@@ -98,13 +98,16 @@ test("rank tooltip stays usable for the legacy catalog and MIT admissions source
   await page.goto("/university.html?id=astana-it-university-kaz-astana");
   await expect(page.locator("#detailCard")).toBeVisible();
 
-  const rankInfoBtn = page.locator("#detailRecommendations .d-info-wrap .d-info").first();
+  const rankInfoWrap = page.locator("#detailRecommendations .d-info-wrap").first();
+  const rankInfoBtn = rankInfoWrap.locator(".d-info").first();
   await expect(rankInfoBtn).toBeVisible();
-  const rankTooltip = page.locator("#detailRecommendations .d-info-wrap .d-tooltip").first();
+  const rankTooltip = rankInfoWrap.locator(".d-tooltip").first();
   await expect(rankTooltip).not.toBeVisible();
-  await rankInfoBtn.click();
+  await rankInfoBtn.hover();
   await expect(rankTooltip).toBeVisible();
   await rankInfoBtn.click();
+  await expect(rankInfoWrap).not.toHaveClass(/is-open/);
+  await page.mouse.move(0, 0);
   await expect(rankTooltip).not.toBeVisible();
 
   const contextResponsePromise = page.waitForResponse(contextResponse);

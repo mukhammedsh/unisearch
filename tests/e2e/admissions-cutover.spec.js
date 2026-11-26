@@ -153,7 +153,7 @@ test.describe("profile v2 migration with route interception", () => {
   // MIT first-year publishes one set of yearless dates and no fee classes, so it asks for neither.
   await expect(page.locator("#admissionsAdvanced")).toBeHidden();
   await expect(page.locator("#admissionsContextApply")).toBeHidden();
-  await expect(page.locator("#admissionsContext [data-saved-context]")).toContainText("Nothing is sent to the university");
+  await expect(page.locator("#admissionsContext [data-saved-context]")).toHaveCount(0);
   await expect(page.locator("#admissionsSaveChoice")).toBeEnabled();
   await expect(page.locator("#admissionsSaveChoice")).toHaveText("Remember this choice");
   await page.locator("#admissionsSaveChoice").click();

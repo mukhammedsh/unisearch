@@ -1156,7 +1156,8 @@ body[data-page="university"],
     opacity: 0.12;
   }
 
-  :is(.d-site-link:not(.is-saved), .d-info):hover:not(:active) {
+  .d-site-link:not(.is-saved):hover:not(:active),
+  .d-info:hover {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
@@ -1181,9 +1182,16 @@ body[data-page="university"],
   }
 }
 
-:is(.d-site-link:not(.is-saved), .d-info):active {
+.d-site-link:not(.is-saved):active {
   background: var(--interaction-press-surface);
   color: var(--text);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .d-info:active {
+    background: var(--interaction-press-surface);
+    color: var(--text);
+  }
 }
 
 .d-site-link.is-saved:active {

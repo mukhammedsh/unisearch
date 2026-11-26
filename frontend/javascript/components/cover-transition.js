@@ -360,6 +360,7 @@ function hydrateCatalogFromSnapshot(snap) {
     }
     const editEl = document.getElementById("unifitBannerEdit");
     if (editEl) {
+      editEl.hidden = snap.bannerEditHidden;
       editEl.textContent = snap.bannerEditText;
       if (snap.bannerEditHref) editEl.setAttribute("href", snap.bannerEditHref);
     }
@@ -434,6 +435,7 @@ export function captureCatalogReturnSnapshot(currentUrl, targetUrl) {
     bannerTitleText: bannerTitleEl?.textContent ?? "",
     tooltipProfileHidden: Boolean(tooltipProfileEl?.hidden ?? true),
     tooltipProfileText: tooltipProfileEl?.textContent ?? "",
+    bannerEditHidden: Boolean(bannerEditEl?.hidden ?? true),
     bannerEditText: bannerEditEl?.textContent ?? "",
     bannerEditHref: bannerEditEl?.getAttribute("href") ?? "",
   };

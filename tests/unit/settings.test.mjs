@@ -6,6 +6,7 @@ import {
   readSettingsArray,
   setSettingValue,
   SETTINGS_CACHE_KEY,
+  SETTINGS_DEFINITIONS,
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_OPEN_UNIVERSITIES_NEW_TAB,
   SETTING_PREFERRED_CURRENCY,
@@ -155,4 +156,10 @@ test("the default currency follows the device's country: time zone first, then b
   // A currency without an exchange rate, an unknown zone or a language without a country falls back to USD.
   assert.equal(detectRegionCurrency({ timeZone: "Asia/Almaty", languages: [], supported: new Set(["USD"]) }), "USD");
   assert.equal(detectRegionCurrency({ timeZone: "UTC", languages: ["en", "not a tag!"], supported }), "USD");
+});
+
+test("price display defaults to preferred across every region", () => {
+  const displayDefinition = SETTINGS_DEFINITIONS.find((item) => item.key === SETTING_CURRENCY_DISPLAY);
+  assert.strictEqual(displayDefinition.defaultValue, "preferred");
+  assert.strictEqual(Object.getOwnPropertyDescriptor(displayDefinition, "defaultValue").get, undefined);
 });

@@ -146,6 +146,7 @@ settings.option.currency_display.desc: Выберите способ отобр�
 currency.display.preferred: В предпочитаемой валюте
 currency.display.original: В оригинальной валюте
 currency.display.both: Оба (предпочитаемая + оригинальная)
+currency.original_price: В оригинальной валюте: {amount}
 currency.approx_rate_note: Конвертировано по приблизительному дневному курсу
 currency.region.cis: Постсоветские страны
 currency.region.europe: Европа
@@ -2250,10 +2251,9 @@ university.admissions.reading.apply_by: Подать до
 university.admissions.reading.aid_by: Финансовая помощь
 university.admissions.reading.decision: Решение
 university.admissions.reading.last_test: Последний срок
-university.admissions.reading.recurring_dates: Это ежегодные сроки: источник не указывает год набора. Уточните выбранный цикл на официальной странице.
 university.admissions.reading.reply_by: Ответ на предложение места
-university.admissions.reading.reference_budget: Справочный бюджет по источнику
-university.admissions.reading.dated_budget: Это опубликованный бюджет за указанный период до финансовой помощи. Он не подтверждает цену для другого года поступления.
+university.admissions.reading.reference_budget: Из чего складывается бюджет
+university.admissions.reading.budget_total: Итого до финансовой помощи
 university.admissions.reading.tuition: Обучение
 university.admissions.reading.student_life_fee: Студенческий сбор
 university.admissions.reading.housing_estimate: Проживание, оценка
@@ -2261,12 +2261,11 @@ university.admissions.reading.food_estimate: Питание, оценка
 university.admissions.reading.materials_estimate: Учебные материалы
 university.admissions.reading.personal_estimate: Личные расходы
 university.admissions.reading.insurance_extra: Страховка и ограничения расчёта:
-university.admissions.reading.tuition_budget_note: Обучение — лишь часть бюджета; проживание и другие расходы оплачиваются отдельно.
 university.admissions.reading.exclusion.insurance: Страховка оплачивается отдельно.
 university.admissions.reading.exclusion.one_time_fees: Разовые сборы оплачиваются отдельно.
 university.admissions.reading.degree.MEng: Магистр инженерии
 university.admissions.reading.degree.MEng_ucas_note: Это интегрированная программа бакалавриата, ведущая к степени Master of Engineering.
-university.admissions.reading.potential_aid: Возможное финансирование не считается предоставленной помощью. Его условия, документы и сроки проверяются отдельно; из стоимости оно не вычитается.
+university.admissions.reading.potential_aid: Не гарантируется: условия, документы и сроки — на официальной странице.
 university.admissions.reading.full_records: Полные записи на языке источника
 university.admissions.reading.sources_disclosure_count: Источники ({count})
 university.admissions.reading.sources_disclosure: Источники
@@ -2298,7 +2297,7 @@ university.admissions.reading.regular_decision: Обычная подача (Reg
 university.admissions.reading.transfer_application: Подача на перевод
 university.admissions.reading.priority_deadline: Приоритетный срок
 university.admissions.reading.application_deadline: Срок подачи заявления
-university.admissions.reading.official_application: Официальная подача и инструкции
+university.admissions.reading.official_application: Официальная подача
 university.admissions.reading.official_source: Официальный источник
 university.admissions.reading.unknown: Здесь не указано
 university.admissions.reading.previous_tabs: Предыдущие разделы
@@ -2470,7 +2469,6 @@ universities.compare.legacy_unreviewed: Подробная проверка пр
 university.admissions.reading.summary_translation_missing: Краткий перевод пока не подготовлен. Оригинал можно открыть ниже.
 university.admissions.reading.source_and_date: Источник и дата
 university.admissions.reading.official_sources_count: Официальные источники ({count})
-university.admissions.reading.source_marker: Источник {number}: {title}
 university.admissions.reading.reference_scope_note: Подробности приведены на языке университета.
 university.admissions.reading.current_policy: Опубликованные правила; год поступления не указан
 university.admissions.reading.yearless_period: Ежегодные сроки; год поступления не указан
@@ -2485,8 +2483,6 @@ university.admissions.reading.aid_explained: Эту помощь рассчит�
 university.admissions.reading.aid_documents: Что подать для финансовой помощи
 university.admissions.reading.aid_css: Заполните CSS Profile — анкету College Board для расчёта финансовой помощи.
 university.admissions.reading.aid_css_code: Код получателя MIT: {code}.
-university.admissions.reading.aid_fafsa: FAFSA относится к внутренним абитуриентам с правом на федеральную помощь США. Для международной категории MIT действуют отдельные инструкции.
-university.admissions.reading.aid_international_title: Для международных абитуриентов
 university.admissions.reading.aid_finances_title: Для CSS Profile подготовьте:
 university.admissions.reading.aid_priority_dates: Приоритетные сроки финансовой помощи
 university.programs.all_levels: Все уровни обучения
@@ -2903,10 +2899,8 @@ university.admissions.entry.route_help.nu-residency-unconditional: Обычны�
 university.admissions.entry.route_help.nu-residency-conditional-umc: Отдельный условный путь для рекомендованных UMC. Проверьте требования к рекомендации и зачислению: это не общее освобождение от экзаменов.
 university.admissions.reading.structured_study: Опубликованные сведения об учёбе доступны ниже. Краткого текстового обзора нет.
 university.admissions.key_facts.title: Главное для поступления
-university.admissions.key_facts.note: Только официальные факты, не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Документы и остальные требования автоматически не проверяются.
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -2918,7 +2912,7 @@ university.admissions.key_facts.deadline_period: Период подачи за�
 university.admissions.key_facts.deadline_described: Точная дата с годом не указана; опубликованные сроки — на вкладке «Сроки»
 university.admissions.key_facts.open_deadlines: Все сроки
 university.admissions.key_facts.cost: Стоимость в год
-university.admissions.key_facts.cost_total: Годовой бюджет по данным вуза: {amount}
+university.admissions.key_facts.cost_total: Годовой бюджет: {amount}
 university.admissions.key_facts.cost_breakdown: Обучение {tuition} + проживание ≈ {living} за 9 месяцев учёбы
 university.admissions.key_facts.cost_tuition_share: Из них обучение — {tuition}, остальное — жильё, питание и другие расходы.
 university.admissions.key_facts.cost_estimate: Обучение и проживание: ≈ {amount} в год
@@ -2958,8 +2952,6 @@ university.admissions.catalog.field.time: Время
 university.admissions.catalog.field.timezone: Часовой пояс
 university.admissions.catalog.field.scope: Относится к
 university.admissions.catalog.record_link: Показать полную запись источника
-university.admissions.entry.browsing_not_saved: Запомните вариант, чтобы каталог и сравнение учитывали его с вашим профилем. В вуз ничего не отправляется.
-university.admissions.entry.saved_context: Вариант запомнен для каталога и сравнения.
 university.admissions.entry.saved_other: Запомнен другой вариант: {details}.
 university.admissions.entry.route_class_help.ucas_course_choice: Подайте заявление на выбранную программу бакалавриата через UCAS.
 university.admissions.entry.route_class_help.postgraduate_course_choice: Подайте заявление на выбранную программу последипломного обучения.
@@ -3025,12 +3017,10 @@ university.admissions.glossary.fee_status.title: Home / Overseas: статус �
 university.admissions.glossary.fee_status.text: Статус оплаты определяет, какая цена обучения применяется: тариф Home обычно действует для жителей Великобритании и некоторых других категорий, иностранные абитуриенты чаще платят по тарифу Overseas, а категорию определяет сам вуз.
 university.admissions.glossary.what_is: Что такое {term}?
 university.admissions.key_facts.cost_fee_status_source: Официальная страница о статусе оплаты
-university.admissions.key_facts.funding_policy: Опубликованная политика вуза: {policy}
-university.admissions.key_facts.funding_policy_note: Это опубликованная политика вуза, а не выплата, которую вам уже предложили.
+university.admissions.key_facts.funding_policy: {policy}
 university.admissions.key_facts.deadline_earlier: Но сначала, раньше этого срока: {text}
-university.admissions.key_facts.deadline_recurring_next: Следующий: {name} — {date} (год университет не указывает), примерно через {days} дн.; уточните на официальной странице
-university.admissions.key_facts.deadline_recurring_today: Следующий: {name} — {date} (год университет не указывает), сегодня; уточните на официальной странице
-university.admissions.key_facts.deadline_recurring_passed: {name}: {date} — срок прошёл.
+university.admissions.key_facts.deadline_recurring_next: {date} — {name}, примерно через {days} дн.
+university.admissions.key_facts.deadline_recurring_today: {date} — {name}, сегодня
 university.admissions.key_facts.requirements_kind_academic: Академический результат
 university.admissions.key_facts.requirements_kind_language: Английский язык
 university.admissions.key_facts.requirements_kind_exam: Обязательный экзамен
@@ -3047,7 +3037,6 @@ university.admissions.key_facts.apply: Где подать
 university.admissions.key_facts.credential: Документы из Казахстана
 university.admissions.key_facts.credential_unlisted: Университет не публикует решения по аттестату или диплому из Казахстана. Это не отказ: спросите в приёмной комиссии, подходит ли ваш документ.
 university.admissions.key_facts.credential_source: Официальные условия
-university.admissions.key_facts.apply_text: Заявка подаётся на официальном сайте университета.
 university.admissions.key_facts.apply_text_ucas: Заявку подают через UCAS — общую систему подачи в вузы Великобритании, а не на сайте университета. Шаги описаны в официальной инструкции.
 university.admissions.key_facts.minimum_add: Добавьте: {items}
 university.admissions.key_facts.minimum_any: {requirement}, одно из: {items}
@@ -3141,7 +3130,6 @@ universities.ux2.banner.ranked: Подбор UniFit: {values}
 universities.ux2.banner.generic: Общий порядок — укажите уровень, направление или бюджет
 universities.ux2.banner.scores_only: Учтён язык — добавьте уровень, направление или бюджет
 universities.ux2.banner.budget: до {amount}/год
-universities.ux2.banner.edit: Профиль
 universities.ux2.banner.set_up: Заполнить профиль
 universities.ux2.banner.info_aria: Как работает подбор UniFit
 universities.ux2.banner.tooltip_profile: Учтено: {values}

@@ -20,7 +20,7 @@ import {
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
 import { hideGlobalSearchSuggestions } from "../components/navbar-search.js";
-import { isCoverTransitionActive, waitForCoverTransition } from "../components/cover-transition.js";
+import { isCoverTransitionActive, rememberCoverSource, waitForCoverTransition } from "../components/cover-transition.js";
 import { setTextWithFade } from "../utils/motion-reveal.js";
 import { t } from "../i18n.js";
 import {
@@ -33,7 +33,7 @@ import { isUniversitiesListPath, navigateToAppRoute, routeCompare } from "../rou
 import { resolveAiSortResult } from "./universities/compare-helpers.js";
 import { showUniversitiesTour } from "./universities/tour-modals.js";
 import { describeActiveFilters, buildEmptyStateModel, renderEmptyStateCard } from "./universities/empty-state.js";
-import { bindInfoTooltips } from "../tooltip.js";
+import { bindInfoTooltips, shouldConsumeCardTooltipClick } from "../tooltip.js";
 
 import {
     MAX_COMPARE_UNIVERSITIES,
@@ -822,7 +822,13 @@ export function initUniversitiesPage() {
     el.list.addEventListener("click", (e) => {
         const target = e.target instanceof Element ? e.target : null;
         if (!target) return;
-        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .uni-status-overflow")) return;
+        if (target.closest(".uni-status-overflow, .ui-tooltip-bubble, .u-tooltip, .uni-status-tooltip__content")) return;
+        if (
+            target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger")
+            && shouldConsumeCardTooltipClick(e)
+        ) {
+            return;
+        }
         const detailLink = target.closest(".uni-card-link-overlay");
         if (detailLink) {
             const card = detailLink.closest("[data-uni-id]");
@@ -849,14 +855,25 @@ export function initUniversitiesPage() {
         }
         const card = target.closest("[data-uni-id]");
         if (!card || target.tagName === "A") return;
+        const uniId = card.getAttribute("data-uni-id");
         if (compareController.isCompareSelectionMode()) {
             e.preventDefault();
             e.stopPropagation();
-            compareController.toggleCompareUniversity(card.getAttribute("data-uni-id"));
+            compareController.toggleCompareUniversity(uniId);
             return;
         }
-        rememberRecentUniversity(card.getAttribute("data-uni-id"));
-        compareController.openUniversityDetail(card.getAttribute("data-uni-id"));
+        rememberRecentUniversity(uniId);
+        const overlayLink = card.querySelector("a.uni-card-link-overlay");
+        if (e.metaKey || e.ctrlKey) {
+            if (overlayLink instanceof HTMLAnchorElement && overlayLink.href) {
+                window.open(overlayLink.href, "_blank", "noopener,noreferrer");
+            }
+            return;
+        }
+        if (!shouldOpenUniversitiesInNewTab() && overlayLink instanceof HTMLAnchorElement) {
+            rememberCoverSource(overlayLink);
+        }
+        compareController.openUniversityDetail(uniId);
     });
 
     el.btnList?.addEventListener("click", () => {

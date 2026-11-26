@@ -2,19 +2,22 @@ import { getPreferredCurrency } from "./currency.js";
 import { stabilizeNumericRanges } from "./utils/text.js";
 import { safeSessionStorage } from "./utils/safe-storage.js";
 import { escapeHtml, escapeHtmlAttr } from "./utils/format.js";
+import {
+  normalizeUiLanguageForApi,
+  resolveUiLanguage,
+  writeStoredUiLanguage,
+} from "./utils/locale.js";
 import { aiName, registerRuntimeTranslator } from "./utils/runtime.js";
 
-const I18N_STORAGE_KEY = "unisearch_ui_language_v1";
 // Fingerprint of the three localization files (first 8 hex characters of their SHA-256 with LF line endings).
 // It names the tab's cached packs, so a changed file is fetched again even when the app version is unchanged.
 // tests/unit/i18n-pack-revision.test.mjs fails with the expected value whenever a localization file changes.
-const I18N_PACK_REVISION = "b753f8fe";
+const I18N_PACK_REVISION = "cb9d6bba";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";
 const LANG_RUS = "rus";
 const LANG_KAZ = "kaz";
-const SUPPORTED_LANGS = new Set([LANG_ENG, LANG_RUS, LANG_KAZ]);
 const LANG_FILE_BY_CODE = {
   [LANG_ENG]: "Localization/eng",
   [LANG_RUS]: "Localization/ru",
@@ -40,36 +43,7 @@ const __packLoadPromises = new Map();
 let __i18nInitialized = false;
 
 function normalizeLang(value) {
-  const raw = String(value || "").trim().toLowerCase();
-  if (!raw) return "";
-  if (SUPPORTED_LANGS.has(raw)) return raw;
-  if (raw.startsWith("en")) return LANG_ENG;
-  if (raw.startsWith("ru")) return LANG_RUS;
-  if (raw.startsWith("kk")) return LANG_KAZ;
-  return "";
-}
-
-function detectDeviceLang() {
-  const first = Array.isArray(navigator.languages) && navigator.languages.length
-    ? navigator.languages[0]
-    : (navigator.language || "");
-  return normalizeLang(first) || LANG_ENG;
-}
-
-function readStoredLang() {
-  try {
-    return normalizeLang(localStorage.getItem(I18N_STORAGE_KEY));
-  } catch {
-    return "";
-  }
-}
-
-function writeStoredLang(lang) {
-  try {
-    localStorage.setItem(I18N_STORAGE_KEY, lang);
-  } catch {
-    // ignore
-  }
+  return normalizeUiLanguageForApi(value);
 }
 
 function setHtmlLang(lang) {
@@ -369,7 +343,7 @@ export function setLanguage(lang, options = {}) {
   const changed = next !== currentLang;
   currentLang = next;
   setHtmlLang(next);
-  if (persist) writeStoredLang(next);
+  if (persist) writeStoredUiLanguage(next);
   if (__i18nInitialized) {
     void _loadLocalizationPack(next).then((loaded) => {
       if (loaded && currentLang === next) applyTranslations();
@@ -383,10 +357,8 @@ export function setLanguage(lang, options = {}) {
 
 export async function initI18n() {
   _hydratePacksFromSession();
-  const stored = readStoredLang();
-  const detected = detectDeviceLang();
-  const resolved = normalizeLang(stored || detected) || LANG_ENG;
-  setLanguage(resolved, { persist: !stored, emit: false });
+  const { language, source } = resolveUiLanguage();
+  setLanguage(language, { persist: source === "url", emit: false });
 
   await _loadLocalizationPacks();
   __i18nInitialized = true;

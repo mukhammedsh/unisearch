@@ -24,6 +24,7 @@ import {
 } from "../_shared.js";
 import { ensureMapLibraries } from "./map-assets.js";
 import { fadeIn, setTextWithFade } from "../../utils/motion-reveal.js";
+import { shouldConsumeCardTooltipClick } from "../../tooltip.js";
 
 const MAP_OVERVIEW_CENTER = [30, 15];
 const MAP_MIN_ZOOM = 2;
@@ -306,7 +307,13 @@ export function createUniversitiesMapController(ctx) {
       card.addEventListener("click", (event) => {
         const target = event.target instanceof Element ? event.target : null;
         if (!target) return;
-        if (target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger, .u-tooltip, .ui-tooltip-bubble, .uni-status-overflow")) return;
+        if (target.closest(".uni-status-overflow, .u-tooltip, .ui-tooltip-bubble, .uni-status-tooltip__content")) return;
+        if (
+          target.closest(".ui-tooltip-trigger, .ui-tooltip-wrap, .uni-status-trigger, .uni-metric-trigger")
+          && shouldConsumeCardTooltipClick(event)
+        ) {
+          return;
+        }
         const uniId = String(card.getAttribute("data-uni-id") || "").trim();
         if (!uniId) return;
         const detailsLink = target.closest("a.uni-details");
