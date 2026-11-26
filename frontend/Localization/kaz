@@ -136,8 +136,6 @@ settings.option.store_recent.title: Соңғы ашылғандарды сақт
 settings.option.store_recent.desc: Бұл функция қосылған кезде, UniSearch сіз ашқан университеттерді осы құрылғыдағы «соңғы қаралғандар» тізіміне қосады.
 settings.option.open_universities_new_tab.title: Университеттерді жаңа қойындыда ашу
 settings.option.open_universities_new_tab.desc: Бұл функция қосылған кезде, университет карточкалары мен соңғы қаралған сілтемелер толық ақпарат беттерін бөлек браузер қойындысында ашады, ал ағымдағы тізім өз орнында қалады.
-settings.option.tour.title: Каталог бойынша интерактивті шолу
-settings.option.tour.action: Шолуды бастау
 settings.option.preferred_currency.title: Таңдалған валюта
 settings.option.preferred_currency.desc: Оқу ақысы мен болжалды шығындар үшін әдепкі валютаны таңдаңыз.
 settings.option.currency_display.title: Бағаны көрсету

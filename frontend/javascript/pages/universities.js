@@ -950,9 +950,6 @@ export function initUniversitiesPage() {
         filterControls.handleCurrencyChanged(e);
         fetchAndRender();
     });
-    bindWindowListener("unisearch:open-tour", () => {
-        void openInteractiveTour();
-    });
 
     function renderFetchedData(data, options = {}) {
         const animateResults = options.animateResults !== false;

@@ -1,8 +1,6 @@
 import { applyTheme, bindDialogLightDismiss, closeMotionLayer, getThemePreference, initCustomSelect, replayMotion } from "../utils.js";
 import { formatRatesTimestamp, getRatesMetadata } from "../currency.js";
 import { getCurrentLanguage, tFormat } from "../i18n.js";
-import { isUniversitiesListPath, navigateToAppRoute, routeUniversities } from "../routes.js";
-import { requestUniversitiesTourOpen } from "../pages/shared/cache.js";
 import {
   SETTING_STORE_RECENT_UNIVERSITIES,
   SETTING_PREFERRED_CURRENCY,
@@ -23,7 +21,6 @@ export function initSettingsUI() {
   const modal = document.getElementById("settingsModal");
   const openBtn = document.getElementById("settingsBtn");
   const closeBtn = document.getElementById("settingsCloseBtn");
-  const launchTourBtn = document.getElementById("settingsLaunchTourBtn");
   const card = modal?.querySelector(".settings-card");
   const settingInputs = Array.from(modal?.querySelectorAll("[data-setting-input]") || []);
   const themeInputs = Array.from(modal?.querySelectorAll("[data-theme-input]") || []);
@@ -115,23 +112,6 @@ export function initSettingsUI() {
 
   openBtn.addEventListener("click", openSettings);
   closeBtn?.addEventListener("click", closeSettings);
-  launchTourBtn?.addEventListener("click", () => {
-    const onCatalog = Boolean(
-      isUniversitiesListPath(window.location.pathname)
-      && document.getElementById("universitiesList")
-      && document.body.dataset.page === "universities"
-    );
-    closeMotionLayer(modal, () => {
-      modal.classList.remove("is-open", "is-closing");
-      if (typeof modal.close === "function" && modal.open) modal.close();
-      if (onCatalog) {
-        window.dispatchEvent(new CustomEvent("unisearch:open-tour"));
-      } else {
-        requestUniversitiesTourOpen();
-        navigateToAppRoute(routeUniversities());
-      }
-    });
-  });
   bindDialogLightDismiss(modal, card, closeSettings);
   settingInputs.forEach((input) => {
     input.addEventListener("change", () => {

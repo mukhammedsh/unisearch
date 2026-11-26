@@ -93,7 +93,7 @@ test("first-visit welcome banner lets visitors browse immediately, launch the sp
   await expect(page.locator("#uWelcomeBanner")).toBeHidden();
 });
 
-test("spotlight tour closes with Escape or close button and can be relaunched from Settings or Guide", async ({ page }) => {
+test("spotlight tour closes with Escape or close button and can be relaunched from the Guide", async ({ page }) => {
   await page.goto("/index.html");
   await expect(page.locator("#uWelcomeBanner")).toBeVisible();
   await page.locator("#uWelcomeTourBtn").click();
@@ -104,20 +104,15 @@ test("spotlight tour closes with Escape or close button and can be relaunched fr
   await expect(tour).toBeHidden();
   await expect.poll(() => page.evaluate(() => localStorage.getItem("unisearch_universities_tour_seen_v1"))).toBe("1");
 
-  await page.locator("#settingsBtn").click();
-  await expect(page.locator("#settingsModal")).toBeVisible();
-  await page.locator("#settingsLaunchTourBtn").click();
+  await page.goto("/guide.html");
+  await page.locator("#guideLaunchTourBtn").click();
+  await expect(page).toHaveURL(/index\.html|\/$/);
   await expect(tour).toHaveClass(/is-open/);
   const close = tour.locator("[data-action='close']");
   await expect(close).toBeVisible();
   await expect(close).toHaveAccessibleName("Close tutorial");
   await close.click();
   await expect(tour).toBeHidden();
-
-  await page.goto("/guide.html");
-  await page.locator("#guideLaunchTourBtn").click();
-  await expect(page).toHaveURL(/index\.html|\/$/);
-  await expect(page.locator("#uTourModal")).toHaveClass(/is-open/);
 });
 
 test("setting up a profile from onboarding activates UniFit when returning to the catalog", async ({ page }) => {

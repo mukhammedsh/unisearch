@@ -136,8 +136,6 @@ settings.option.store_recent.title: Save recently opened
 settings.option.store_recent.desc: When enabled, UniSearch adds universities you open to the local recently viewed list on this device.
 settings.option.open_universities_new_tab.title: Open universities in a new tab
 settings.option.open_universities_new_tab.desc: When enabled, university cards and recently viewed links open detail pages in a separate browser tab while keeping the current list in place.
-settings.option.tour.title: Interactive catalog tour
-settings.option.tour.action: Start tour
 settings.option.preferred_currency.title: Preferred Currency
 settings.option.preferred_currency.desc: Choose your default currency for tuition fees and estimated costs.
 settings.option.currency_display.title: Price Display

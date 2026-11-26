@@ -139,8 +139,6 @@ settings.option.store_recent.title: Сохранять недавно откры
 settings.option.store_recent.desc: Если включено, UniSearch добавляет открытые университеты в локальный список недавно открытых на этом устройстве.
 settings.option.open_universities_new_tab.title: Открывать университеты в новой вкладке
 settings.option.open_universities_new_tab.desc: Если включено, карточки университетов и ссылки из недавно открытых будут открывать страницу университета в отдельной вкладке, сохраняя текущий список на месте.
-settings.option.tour.title: Интерактивный обзор каталога
-settings.option.tour.action: Запустить обзор
 settings.option.preferred_currency.title: Предпочитаемая валюта
 settings.option.preferred_currency.desc: Выберите основную валюту для отображения стоимости обучения и расходов.
 settings.option.currency_display.title: Отображение цен

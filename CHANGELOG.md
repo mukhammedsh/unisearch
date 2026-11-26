@@ -8,7 +8,7 @@ All notable changes to UniSearch are documented here.
 - Add a profile back button beside the title, above the window on narrow screens.
 - Morph the university cover photo smoothly back into its catalog card when returning via the back button or browser history while both images are visible on screen.
 - Export reviewed university comparisons to PDF with the selected programs, deadlines, requirements, costs, aid, and official sources.
-- Add relaunch actions in Settings and the Getting Started guide to open the interactive catalog tour at any time.
+- Add a relaunch action in the Getting Started guide to open the interactive catalog tour at any time.
 
 ### Changed
 - Replace the blocking six-slide first-visit modal tutorial with a non-blocking welcome card above the catalog and an opt-in four-step spotlight tour anchored to live search, profile, university card, and comparison controls.
