@@ -1,17 +1,12 @@
 import {
-  escapeHtml,
-  formatExamValue,
-  getExamDisplayName,
   initCustomSelect,
   loadProfile,
   prefersReducedMotion,
 } from "../../utils.js";
-import { applyTranslations, getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { applyTranslations, t, tFormat } from "../../i18n.js";
 import { formatMoney } from "../../currency.js";
-import { translateProgramName } from "../../university-translations.js";
-import { heroIcon } from "../../icons.js";
 import { fillBudgetCurrencyOptions, syncBudgetCurrencySelect } from "./budget-currency.js";
-import { buildProfileSummary, buildSectionFillStates, buildSummarySentence, shortExamLabel } from "./profile-summary.js";
+import { buildSectionFillStates } from "./profile-summary.js";
 import {
   applyBudgetEntry,
   ensureProfileShape,
@@ -25,8 +20,6 @@ import {
   setFieldInvalid,
   stableProfileSignature,
 } from "./profile-utils.js";
-
-const SUMMARY_STATE_ICONS = { used: "check-circle", partial: "adjustments-horizontal", not_used: "x-mark" };
 
 export const initCommonSelects = (selectIds = []) => {
     if (typeof initCustomSelect !== "function") return;
@@ -119,39 +112,7 @@ export const updateBudgetUI = (els, state) => {
 };
 
 export const renderProfileSummary = (els, state) => {
-    if (!els.profileSummaryList) return;
-    const ctx = {
-        t,
-        tFormat,
-        formatMoney,
-        majorLabel: (major) => translateProgramName(major, major),
-        examLabel: (row) => {
-            const examId = row.exam ?? row.id;
-            const locale = getCurrentLanguage();
-            const value = formatExamValue(examId, row, { context: "profile", locale });
-            return [shortExamLabel(getExamDisplayName(examId, { locale })), value].filter(Boolean).join(" ");
-        },
-    };
-    const rows = buildProfileSummary(state.profile, ctx);
-    const sentence = buildSummarySentence(rows, ctx);
     const fillStates = buildSectionFillStates(state.profile);
-    const signature = JSON.stringify([getCurrentLanguage(), rows, sentence, fillStates]);
-    if (state.summarySignature === signature) return;
-    state.summarySignature = signature;
-
-    els.profileSummaryList.innerHTML = rows.map((row) => `
-        <li class="profile-summary__row" data-state="${row.state}" data-summary-row="${escapeHtml(row.id)}">
-            <span class="profile-summary__icon" aria-hidden="true">${heroIcon(SUMMARY_STATE_ICONS[row.state] || "x-mark", "ui-icon ui-icon--16")}</span>
-            <div class="profile-summary__body">
-                <p class="profile-summary__row-head">
-                    <span class="profile-summary__row-title">${escapeHtml(row.title)}</span>
-                    <span class="sr-only">${escapeHtml(t(`profile.ux2.summary.state.${row.state}`))}</span>
-                </p>
-                ${row.value ? `<p class="profile-summary__row-value">${escapeHtml(row.value)}</p>` : ""}
-                ${row.state === "used" ? "" : `<p class="profile-summary__row-detail">${escapeHtml(row.detail)}</p>`}
-            </div>
-        </li>`).join("");
-    if (els.profileSummarySentence) els.profileSummarySentence.textContent = sentence;
 
     els.profileSectionTabs.forEach((tab) => {
         const filled = !!fillStates[String(tab.dataset.profileTab || "")];

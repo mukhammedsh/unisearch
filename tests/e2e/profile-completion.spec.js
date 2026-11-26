@@ -3,28 +3,24 @@ const { markTourAsSeen } = require("./helpers/personas");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
-const rowState = (page, id) => page.locator(`[data-summary-row="${id}"]`);
+const tabState = (page, id) => page.locator(`[data-profile-tab="${id}"]`);
 
-test.describe("Profile summary follows the draft", () => {
-  test("each answer switches its summary row to used before saving", async ({ page }) => {
+test.describe("Profile section markers follow the draft", () => {
+  test("each answer marks its section before saving", async ({ page }) => {
     await mockAllExpensiveEndpoints(page);
     await markTourAsSeen(page);
     await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
     await page.goto("/profile.html");
 
     await expect(page.locator(selectors.profileModal)).toBeVisible();
-    await expect(page.locator("#profileSummaryList li")).toHaveCount(5);
-    for (const id of ["level", "subject", "budget", "format", "requirements"]) {
-      await expect(rowState(page, id)).toHaveAttribute("data-state", "not_used");
-    }
+    await expect(tabState(page, "preferences")).toHaveAttribute("data-filled", "false");
 
     await page.fill(selectors.budgetInput, "30000");
-    await expect(rowState(page, "budget")).toHaveAttribute("data-state", "used");
+    await expect(tabState(page, "preferences")).toHaveAttribute("data-filled", "true");
 
     await openProfileTab(page, "scores");
     await page.fill(selectors.gpaInput, "3.85");
-    await expect(rowState(page, "requirements")).toHaveAttribute("data-state", "used");
-    await expect(rowState(page, "requirements")).toContainText("GPA");
+    await expect(tabState(page, "scores")).toHaveAttribute("data-filled", "true");
 
     await page.waitForFunction(() => {
       const select = document.getElementById("examNameSelect");
@@ -38,7 +34,6 @@ test.describe("Profile summary follows the draft", () => {
     await page.click(selectors.addExamBtn);
     expect((await examValidateResponse).status()).toBe(200);
     await expect(page.locator(selectors.examList)).toContainText("ACT");
-    await expect(rowState(page, "requirements")).toContainText("exams");
 
     await openProfileTab(page, "languages");
     await page.waitForFunction(() => {
@@ -53,7 +48,6 @@ test.describe("Profile summary follows the draft", () => {
     await page.click(selectors.langAddBtn);
     expect((await langValidateResponse).status()).toBe(200);
     await expect(page.locator("#langList .lang-item")).toHaveCount(1);
-    await expect(rowState(page, "requirements")).toContainText("languages");
 
     await openProfileTab(page, "basics");
     await page.waitForFunction(() => {
@@ -61,13 +55,12 @@ test.describe("Profile summary follows the draft", () => {
       return !!select && select.options.length > 1;
     });
     await setNativeSelect(page, "profileMajorSelect", "Computer Science");
-    await expect(rowState(page, "subject")).toHaveAttribute("data-state", "used");
+    await expect(tabState(page, "basics")).toHaveAttribute("data-filled", "true");
     await setNativeSelect(page, "studyLevelSelect", "Bachelor");
-    await expect(rowState(page, "level")).toHaveAttribute("data-state", "used");
+    await expect(tabState(page, "basics")).toHaveAttribute("data-filled", "true");
 
     // Interests alone keep the subject row used.
     await page.fill(selectors.interestsInput, "machine learning, research, robotics");
-    await expect(rowState(page, "subject")).toHaveAttribute("data-state", "used");
-    await expect(page.locator("#profileSummarySentence")).toContainText("of 5");
+    await expect(tabState(page, "basics")).toHaveAttribute("data-filled", "true");
   });
 });

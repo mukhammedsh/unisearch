@@ -5,13 +5,25 @@ const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 const SECTIONS = ["basics", "preferences", "scores", "languages", "specific"];
 
+for (const width of [390, 1440]) {
+  test(`UniFit guide link is available at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openProfile(page);
+    const link = page.locator("#profileUnifitGuideLink");
+    await expect(link).toHaveAttribute("href", /guide.*#guide-unifit/);
+    await expect(link.locator("xpath=preceding-sibling::ol")).toHaveCount(1);
+    await link.focus();
+    await expect(link).toBeFocused();
+  });
+}
+
 async function openProfile(page) {
   await mockAllExpensiveEndpoints(page);
   await markTourAsSeen(page);
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
-  await expect(page.locator("#profileSummaryList li")).toHaveCount(5);
+  await expect(page.locator("#profileUnifitGuideLink")).toBeVisible();
 }
 
 test("every profile section is visible at once and the outline jumps to one", async ({ page }) => {
@@ -30,21 +42,19 @@ test("every profile section is visible at once and the outline jumps to one", as
   await expect(page.locator('[data-profile-section="languages"] .profile-section-title')).toBeFocused();
 });
 
-test("the summary changes with unsaved answers and nothing is stored until saving", async ({ page }) => {
+test("section markers change with unsaved answers and nothing is stored until saving", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openProfile(page);
 
-  const row = (id) => page.locator(`[data-summary-row="${id}"]`);
-  await expect(row("budget")).toHaveAttribute("data-state", "not_used");
+  const tab = (id) => page.locator(`[data-profile-tab="${id}"]`);
+  await expect(tab("preferences")).toHaveAttribute("data-filled", "false");
   await page.fill(selectors.budgetInput, "18000");
-  await expect(row("budget")).toHaveAttribute("data-state", "used");
-  await expect(row("budget")).toContainText("18,000");
+  await expect(tab("preferences")).toHaveAttribute("data-filled", "true");
 
   await setNativeSelect(page, "studyLevelSelect", "Master");
-  await expect(row("level")).toHaveAttribute("data-state", "used");
+  await expect(tab("basics")).toHaveAttribute("data-filled", "true");
 
   await page.fill(selectors.gpaInput, "3.5");
-  await expect(row("requirements")).toHaveAttribute("data-state", "used");
   await expect(page.locator('.profile-section-tab[data-profile-tab="scores"]')).toHaveAttribute("data-filled", "true");
 
   expect(await page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBeNull();
@@ -87,7 +97,7 @@ test("a 5-point GPA typed on the 4.0 scale switches the scale to 5.0, says so, a
   await expect(page.locator("#gpaUnit")).toHaveText("/ 5.0");
   await expect(page.locator("#gpaHint")).not.toHaveClass(/is-warning/);
   await expect(page.locator("#gpaHint")).toContainText("five-point scale");
-  await expect(page.locator('[data-summary-row="requirements"]')).toContainText("4.6 / 5");
+  await expect(page.locator("#gpaInput")).toHaveValue("4.6");
 
   await expect(page.locator('#gpaScaleChoice input[value="5"]')).toBeChecked();
 
@@ -100,7 +110,7 @@ test("a 5-point GPA typed on the 4.0 scale switches the scale to 5.0, says so, a
   await page.locator('#gpaScaleChoice input[value="5"]').check();
   await page.fill(selectors.gpaInput, "3.6");
   await expect(page.locator("#gpaUnit")).toHaveText("/ 5.0");
-  await expect(page.locator('[data-summary-row="requirements"]')).toContainText("3.6 / 5");
+  await expect(page.locator("#gpaInput")).toHaveValue("3.6");
 });
 
 test("the exams field points language tests to the Languages section", async ({ page }) => {
@@ -117,7 +127,7 @@ test("phone layout has no horizontal overflow and Reset is not above the first s
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
-  await expect(page.locator(".profile-outline")).toBeHidden();
+  await expect(page.locator(".profile-outline__list")).toBeHidden();
 
   const firstSection = await page.locator('[data-profile-section="basics"]').boundingBox();
   const reset = await page.locator("#resetProfileBtn").boundingBox();

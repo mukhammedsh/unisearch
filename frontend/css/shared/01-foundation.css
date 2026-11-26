@@ -548,8 +548,7 @@ a {
   .deadline-guidance-item,
   .admissions-selection,
   .profile-exam-item,
-  .lang-item,
-  .profile-summary
+  .lang-item
 ) {
   --control-bg: var(--surface-solid);
   --control-shadow: var(--shadow-xs);

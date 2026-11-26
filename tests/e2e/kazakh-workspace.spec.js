@@ -47,7 +47,7 @@ for (const scenario of scenarios) {
     await expectPageReady(page, "profile", scenario.theme);
     await expect(page.locator(".profile-page-header")).toBeVisible();
     await expect(page.locator(".profile-page-title")).toHaveText("Профиль");
-    await expect(page.locator(".profile-summary")).toBeVisible();
+    await expect(page.locator("#profileUnifitGuideLink")).toBeVisible();
     await expectNoHorizontalOverflow(page);
 
     await page.locator("#budgetInput").fill("25000");

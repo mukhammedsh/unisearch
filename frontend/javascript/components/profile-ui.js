@@ -141,8 +141,6 @@ const queryProfileElements = (modal) => {
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
-        profileSummaryList: document.getElementById("profileSummaryList"),
-        profileSummarySentence: document.getElementById("profileSummarySentence"),
         profileGuideLink: document.getElementById("profileUnifitGuideLink"),
         profileSectionTabs: Array.from(modal.querySelectorAll(".profile-section-tab")),
         profileSectionNodes: Array.from(modal.querySelectorAll("[data-profile-section]")),
