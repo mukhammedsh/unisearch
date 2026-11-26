@@ -34,8 +34,7 @@ test("the compact UniFit toolbar line summarizes top profile inputs, keeps full 
   await expect(contextBar).toBeVisible();
   const title = page.locator("#unifitBannerTitle");
   await expect(title).toHaveText("UniFit: Bachelor's · Computer Science · +3");
-  await expect(page.locator("#unifitBannerEdit")).toHaveText("Profile");
-  await expect(page.locator("#unifitBannerEdit")).toHaveAttribute("href", /profile/);
+  await expect(page.locator("#unifitBannerEdit")).toBeHidden();
 
   // No standalone notice card pushes the grid down: the first card row starts flush with the filter card.
   const alignment = await page.evaluate(() => {
@@ -60,7 +59,9 @@ test("an empty profile shows a compact generic-order prompt and links to profile
   await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
 
   await expect(page.locator("#unifitBannerTitle")).toContainText(/generic order/i);
+  await expect(page.locator("#unifitBannerEdit")).toBeVisible();
   await expect(page.locator("#unifitBannerEdit")).toHaveText("Set up profile");
+  await expect(page.locator("#unifitBannerEdit")).toHaveAttribute("href", /profile/);
   await expect(page.locator("#unifitTooltipProfile")).toBeHidden();
 });
 

@@ -3141,7 +3141,6 @@ universities.ux2.banner.ranked: UniFit: {values}
 universities.ux2.banner.generic: Generic order — add a study level, subject, or budget
 universities.ux2.banner.scores_only: Uses your language details — add a study level, subject, or budget
 universities.ux2.banner.budget: up to {amount}/yr
-universities.ux2.banner.edit: Profile
 universities.ux2.banner.set_up: Set up profile
 universities.ux2.banner.info_aria: How UniFit ranks this list
 universities.ux2.banner.tooltip_profile: Profile: {values}

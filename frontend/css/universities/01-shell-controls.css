@@ -942,6 +942,10 @@ body[data-page="universities"] {
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
+.u-unifit-context__link[hidden] {
+  display: none;
+}
+
 :is(.u-unifit-context__info, .u-unifit-context__link):focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;

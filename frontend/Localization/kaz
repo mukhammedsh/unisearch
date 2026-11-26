@@ -3141,7 +3141,6 @@ universities.ux2.banner.ranked: UniFit іріктеуі: {values}
 universities.ux2.banner.generic: Жалпы рет — оқу деңгейін, бағытты немесе бюджетті көрсетіңіз
 universities.ux2.banner.scores_only: Тіл дерегі ескерілді — деңгей, бағыт не бюджет қосыңыз
 universities.ux2.banner.budget: жылына {amount} дейін
-universities.ux2.banner.edit: Профиль
 universities.ux2.banner.set_up: Профильді толтыру
 universities.ux2.banner.info_aria: UniFit іріктеуі қалай жұмыс істейді
 universities.ux2.banner.tooltip_profile: Ескерілді: {values}

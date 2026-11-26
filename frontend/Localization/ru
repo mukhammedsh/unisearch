@@ -3141,7 +3141,6 @@ universities.ux2.banner.ranked: Подбор UniFit: {values}
 universities.ux2.banner.generic: Общий порядок — укажите уровень, направление или бюджет
 universities.ux2.banner.scores_only: Учтён язык — добавьте уровень, направление или бюджет
 universities.ux2.banner.budget: до {amount}/год
-universities.ux2.banner.edit: Профиль
 universities.ux2.banner.set_up: Заполнить профиль
 universities.ux2.banner.info_aria: Как работает подбор UniFit
 universities.ux2.banner.tooltip_profile: Учтено: {values}

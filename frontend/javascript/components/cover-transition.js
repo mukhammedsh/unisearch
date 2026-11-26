@@ -351,11 +351,6 @@ function hydrateCatalogFromSnapshot(snap) {
   const contextBarEl = document.getElementById("unifitContextBar");
   if (contextBarEl) {
     contextBarEl.hidden = snap.contextBarHidden;
-    if (snap.contextBarProfileState) {
-      contextBarEl.dataset.profileState = snap.contextBarProfileState;
-    } else {
-      delete contextBarEl.dataset.profileState;
-    }
     const titleEl = document.getElementById("unifitBannerTitle");
     if (titleEl) titleEl.textContent = snap.bannerTitleText;
     const tooltipProfileEl = document.getElementById("unifitTooltipProfile");
@@ -365,6 +360,7 @@ function hydrateCatalogFromSnapshot(snap) {
     }
     const editEl = document.getElementById("unifitBannerEdit");
     if (editEl) {
+      editEl.hidden = snap.bannerEditHidden;
       editEl.textContent = snap.bannerEditText;
       if (snap.bannerEditHref) editEl.setAttribute("href", snap.bannerEditHref);
     }
@@ -436,10 +432,10 @@ export function captureCatalogReturnSnapshot(currentUrl, targetUrl) {
     recentHidden: Boolean(recentEl?.hidden ?? true),
     recentHtml: recentEl?.innerHTML ?? "",
     contextBarHidden: Boolean(contextBarEl?.hidden ?? true),
-    contextBarProfileState: contextBarEl?.dataset.profileState ?? "",
     bannerTitleText: bannerTitleEl?.textContent ?? "",
     tooltipProfileHidden: Boolean(tooltipProfileEl?.hidden ?? true),
     tooltipProfileText: tooltipProfileEl?.textContent ?? "",
+    bannerEditHidden: Boolean(bannerEditEl?.hidden ?? true),
     bannerEditText: bannerEditEl?.textContent ?? "",
     bannerEditHref: bannerEditEl?.getAttribute("href") ?? "",
   };

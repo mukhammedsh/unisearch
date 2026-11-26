@@ -52,7 +52,6 @@ export function createUnifitBannerController({ el, state }) {
         });
         const hasEvidence = hasProfileEvidence(profile);
         const hasProfile = Boolean(parts.length || hasEvidence);
-        el.unifitContextBar.dataset.profileState = hasProfile ? "filled" : "empty";
         if (el.unifitBannerTitle) {
             el.unifitBannerTitle.textContent = parts.length
                 ? tFormat("universities.ux2.banner.ranked", { values: summarizeRankingProfile(parts, 2) })
@@ -65,8 +64,11 @@ export function createUnifitBannerController({ el, state }) {
                 : "";
         }
         if (el.unifitBannerEdit) {
-            el.unifitBannerEdit.textContent = t(hasProfile ? "universities.ux2.banner.edit" : "universities.ux2.banner.set_up");
-            el.unifitBannerEdit.setAttribute("href", routeProfile());
+            el.unifitBannerEdit.hidden = hasProfile;
+            if (!hasProfile) {
+                el.unifitBannerEdit.textContent = t("universities.ux2.banner.set_up");
+                el.unifitBannerEdit.setAttribute("href", routeProfile());
+            }
         }
         revealContext(true);
     };
