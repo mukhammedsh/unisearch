@@ -148,15 +148,25 @@ export function englishRecommendationItem(resolved, profile = {}) {
   const own = published.find(row => results.some(result => result.exam === row.examId));
   const shown = own || published.find(row => row.examId === "IELTS") || published[0];
   if (!shown) return null;
-  const result = own ? results.find(row => row.exam === own.examId) : null;
-  const score = value => `${examName(shown.examId)} ${minimumNumber(shown.examId, value)}`;
+  const result = own
+    ? results.filter(entry => entry.exam === own.examId).reduce((best, entry) => (!best || entry.score > best.score ? entry : best), null)
+    : null;
   const text = tFormat(`university.admissions.key_facts.recommended_english${Number.isFinite(shown.recommended) ? "_better" : ""}`, {
-    minimum: score(shown.minimum), better: Number.isFinite(shown.recommended) ? minimumNumber(shown.examId, shown.recommended) : "" });
-  const have = result ? tFormat("university.admissions.key_facts.minimum_have", { result: `${examName(result.exam)} ${minimumNumber(result.exam, result.score)}` }) : "";
-  return { kind: "language_recommendation", factId: fact.id, mark: "recommended", text, note: label(`recommended_english_condition${status === "not_native" ? "_not_native" : ""}`),
+    exam: examName(shown.examId),
+    minimum: minimumNumber(shown.examId, shown.minimum),
+    better: Number.isFinite(shown.recommended) ? minimumNumber(shown.examId, shown.recommended) : "",
+  });
+  const mark = !result ? "recommended" : result.score >= shown.minimum ? "met" : "below";
+  const resultText = result ? `${examName(result.exam)} ${minimumNumber(result.exam, result.score)}` : "";
+  const have = !result ? "" : tFormat(`university.admissions.key_facts.minimum_have${mark === "below" ? "_below" : ""}`, { result: resultText });
+  const hint = result ? null
+    : status === "unknown" ? { text: label("recommended_english_native_hint"), href: "/profile.html?language=en" }
+    : status === "not_native" ? { text: label("recommended_english_add_hint"), href: profileLanguageExamHref(shown.examId) }
+    : null;
+  return { kind: "language_recommendation", factId: fact.id, mark, text, note: label(`recommended_english_condition${status === "not_native" ? "_not_native" : ""}`),
     // A short form of the condition for the Overview, which has no room for the long note; it is not needed once the profile says English is not the first language.
     ...(status === "unknown" ? { condition: label("recommended_english_if_not_native") } : {}), ...(have ? { have } : {}),
-    ...(status === "unknown" ? { hint: { text: label("recommended_english_native_hint"), href: "/profile.html?language=en" } } : {}) };
+    ...(hint ? { hint } : {}) };
 }
 
 // The path's published academic and language minimums as a short checklist, each with the applicant's own status:

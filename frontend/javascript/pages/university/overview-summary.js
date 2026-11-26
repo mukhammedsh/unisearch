@@ -100,7 +100,7 @@ export function checklistItems(resolved, profile = null) {
   const kinds = new Set(minimums.map(entry => entry.kind));
   const recommendation = profile ? englishRecommendationItem(resolved, profile) : null;
   const language = recommendation
-    ? [{ kind: "language", factId: recommendation.factId, mark: "recommended",
+    ? [{ kind: "language", factId: recommendation.factId, mark: recommendation.mark,
       text: [recommendation.condition ? `${recommendation.text}, ${recommendation.condition}` : recommendation.text, recommendation.have].filter(Boolean).join(". ") }]
     : structured.language.slice(0, 1);
   // An English requirement the checks do not measure (a test that is not required, the course's IELTS level) leads the language line.

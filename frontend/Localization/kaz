@@ -2940,7 +2940,7 @@ university.admissions.key_facts.title: Түсу үшін негізгісі
 university.admissions.key_facts.note: Бұл — жарияланған деректердің қысқаша мазмұны, қабылдау туралы шешім емес.
 university.admissions.key_facts.requirements: Ең төменгі талаптар
 university.admissions.key_facts.requirements_met: {total} тексерілетін минимумның {met} орындалды ({percent}%)
-university.admissions.key_facts.requirements_manual: Құжаттар мен басқа шарттар мұнда тексерілмейді; университет жариялаған жазбалар «Дереккөздер» бөлімінде.
+university.admissions.key_facts.requirements_manual: Құжаттар мен басқа талаптар автоматты түрде тексерілмейді.
 university.admissions.key_facts.set_cycle: Түсу жылын көрсету
 university.admissions.key_facts.deadline: Ең жақын мерзім
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, {days} күннен кейін
@@ -3097,11 +3097,12 @@ university.admissions.key_facts.minimum_have_unconfirmed: Сізде: {result}; 
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Жалпы балл жарияланған ең төменгі талапқа сәйкес келеді: {items}
 university.admissions.key_facts.requirements_checklist_lead: Нәтижелеріңіз және жарияланған минимумдар:
-university.admissions.key_facts.recommended_english: Ұсынылатын ағылшын тілі тесті: {minimum}
-university.admissions.key_facts.recommended_english_better: Ұсынылатын ағылшын тілі тесті: {minimum} (жақсырақ {better})
-university.admissions.key_facts.recommended_english_condition: Міндетті емес: ағылшын тілі сіздің ана тіліңіз болмаса және оны бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, университет тест тапсыруды қатты ұсынады.
-university.admissions.key_facts.recommended_english_condition_not_native: Міндетті емес: ағылшын тілін бес жылдан аз қолдансаңыз немесе үйде не мектепте сөйлемесеңіз, бұл сізге қатысты.
-university.admissions.key_facts.recommended_english_native_hint: Ағылшын тілі — ана тіліңіз бе? Мұны профильде көрсетіңіз, сонда бұл жол тек сізге қатысты болғанда ғана көрсетіледі.
+university.admissions.key_facts.recommended_english: Ағылшын тілі тесті (міндетті емес): {exam} — минимум {minimum}
+university.admissions.key_facts.recommended_english_better: Ағылшын тілі тесті (міндетті емес): {exam} — минимум {minimum}, ұсынылатыны {better}
+university.admissions.key_facts.recommended_english_condition: Ағылшын тілі ана тіліңіз болмаса және оны бес жылдан аз қолдансаңыз не үйде не мектепте сөйлемесеңіз, тапсыру ұсынылады.
+university.admissions.key_facts.recommended_english_condition_not_native: Ағылшын тілін бес жылдан аз қолдансаңыз не үйде не мектепте сөйлемесеңіз, тапсыру ұсынылады.
+university.admissions.key_facts.recommended_english_native_hint: Профильде тіл деректерін көрсету
+university.admissions.key_facts.recommended_english_add_hint: Ағылшын тілі тестін қосу
 university.ux2.needs.mark_recommended: Талап емес, ұсыныс
 languages.exam_overall_score_label: Жалпы балл
 languages.exam_overall_score_hint: Бүкіл емтихан бойынша жалпы балл — секциялар бойынша баллды білмесеңіз, тек осыны енгізуге болады.

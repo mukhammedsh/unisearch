@@ -11,6 +11,8 @@ All notable changes to UniSearch are documented here.
 ### Changed
 - Preserve the active catalog search, filters, and scroll position when returning via the university cover back button instead of resetting to the top of the catalog.
 - Mount cached university pages directly inside the route transition without flashing the loading skeleton on repeat visits.
+- Clarify optional English-test recommendations (`minimum` vs `recommended`), shorten the Russian `IELTS` label to `IELTS Academic`, and show met checkmarks or below-minimum warnings when an English score is already in the profile.
+- Hide the language-profile link on recommended English tests once a score is entered, shorten its prompt with calm neutral styling when missing, and simplify the manual-requirements note.
 
 ## 10.9.0 (2026-11-26) - Static snapshot delivery, campus cover maps, site-wide motion, and UI unification
 

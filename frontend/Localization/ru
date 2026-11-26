@@ -2940,7 +2940,7 @@ university.admissions.key_facts.title: Главное для поступлен�
 university.admissions.key_facts.note: Это сводка опубликованных фактов, а не решение о поступлении.
 university.admissions.key_facts.requirements: Минимальные требования
 university.admissions.key_facts.requirements_met: Выполнено {met} из {total} проверяемых минимумов ({percent}%)
-university.admissions.key_facts.requirements_manual: Документы и другие условия здесь не проверяются; опубликованные университетом записи — в разделе «Источники».
+university.admissions.key_facts.requirements_manual: Документы и остальные требования автоматически не проверяются.
 university.admissions.key_facts.set_cycle: Указать год поступления
 university.admissions.key_facts.deadline: Ближайший срок
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, через {days} дн.
@@ -3097,11 +3097,12 @@ university.admissions.key_facts.minimum_have_unconfirmed: У вас: {result}; �
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Общий балл уже соответствует опубликованному минимуму: {items}
 university.admissions.key_facts.requirements_checklist_lead: Ваши результаты и опубликованные минимумы:
-university.admissions.key_facts.recommended_english: Рекомендуемый тест по английскому: {minimum}
-university.admissions.key_facts.recommended_english_better: Рекомендуемый тест по английскому: {minimum} (лучше {better})
-university.admissions.key_facts.recommended_english_condition: Не обязательно: университет настоятельно советует сдать тест, если английский для вас не родной и вы пользуетесь им меньше пяти лет или не говорите на нём дома или в школе.
-university.admissions.key_facts.recommended_english_condition_not_native: Не обязательно: относится к вам, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
-university.admissions.key_facts.recommended_english_native_hint: Английский — ваш родной язык? Укажите это в профиле, и эта строка будет показываться, только когда она к вам относится.
+university.admissions.key_facts.recommended_english: Тест по английскому (необязательно): {exam} — минимум {minimum}
+university.admissions.key_facts.recommended_english_better: Тест по английскому (необязательно): {exam} — минимум {minimum}, рекомендуется {better}
+university.admissions.key_facts.recommended_english_condition: Университет советует сдать тест, если английский не родной и вы пользуетесь им меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_condition_not_native: Советуют сдать, если вы пользуетесь английским меньше пяти лет или не говорите на нём дома или в школе.
+university.admissions.key_facts.recommended_english_native_hint: Указать данные о языке в профиле
+university.admissions.key_facts.recommended_english_add_hint: Добавить тест по английскому
 university.ux2.needs.mark_recommended: Рекомендация, а не требование
 languages.exam_overall_score_label: Общий балл
 languages.exam_overall_score_hint: Общий балл по всему экзамену — можно указать только его, если не знаете баллы по секциям.

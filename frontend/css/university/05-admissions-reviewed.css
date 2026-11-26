@@ -333,16 +333,24 @@ a.admissions-key-facts__checklist-note {
   margin-top: var(--space-1);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
-  background: var(--accent-soft);
-  color: var(--interaction-active-text);
+  background: var(--surface-soft);
+  color: var(--text);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard);
 }
 
-a.admissions-key-facts__checklist-note:hover {
-  background: var(--accent-active-surface);
-  color: var(--interaction-active-text);
+a.admissions-key-facts__checklist-note:hover:not(:active) {
+  background: var(--interaction-hover-surface);
+  color: var(--interaction-hover-text);
+}
+
+a.admissions-key-facts__checklist-note:active {
+  background: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 /* Short funding lines: award type, coverage and deadline, as the university publishes them. */

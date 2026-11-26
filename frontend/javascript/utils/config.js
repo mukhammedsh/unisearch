@@ -179,7 +179,7 @@ const EXAM_LABELS_I18N = {
     SWISSMATURITYCERT: "Швейцарский аттестат зрелости",
     GERMANABITURCERT: "Немецкий аттестат Abitur",
     OSSDCERT: "OSSD (диплом о среднем образовании Онтарио)",
-    IELTS: "IELTS (академический модуль)",
+    IELTS: "IELTS Academic",
     TOEFLIBT0120: "TOEFL iBT общий балл (0-120, старая шкала)",
     TOEFLIBT16: "TOEFL iBT (шкала 1-6, с 21 янв. 2026)",
     DET: "Duolingo English Test (DET)",

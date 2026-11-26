@@ -2940,7 +2940,7 @@ university.admissions.key_facts.title: Key facts for applying
 university.admissions.key_facts.note: A summary of published facts, not an admission decision.
 university.admissions.key_facts.requirements: Minimum requirements
 university.admissions.key_facts.requirements_met: {met} of {total} measurable minimums met ({percent}%)
-university.admissions.key_facts.requirements_manual: Documents and other conditions are not checked here; the university's published records are under “Sources”.
+university.admissions.key_facts.requirements_manual: Documents and other requirements are not checked automatically.
 university.admissions.key_facts.set_cycle: Set entry year
 university.admissions.key_facts.deadline: Next date
 university.admissions.key_facts.deadline_upcoming: {title}: {date}, in {days} days
@@ -3097,11 +3097,12 @@ university.admissions.key_facts.minimum_have_unconfirmed: You have: {result}; wh
 university.admissions.key_facts.minimum_one: {requirement}: {items}
 university.admissions.key_facts.requirements_already_met: Overall score already meets the published minimum: {items}
 university.admissions.key_facts.requirements_checklist_lead: Your results against the published minimums:
-university.admissions.key_facts.recommended_english: Recommended English test: {minimum}
-university.admissions.key_facts.recommended_english_better: Recommended English test: {minimum} (better {better})
-university.admissions.key_facts.recommended_english_condition: Not required: the university strongly recommends it if English is not your first language and you have used it for less than five years or do not speak it at home or at school.
-university.admissions.key_facts.recommended_english_condition_not_native: Not required: it applies to you if you have used English for less than five years or do not speak it at home or at school.
-university.admissions.key_facts.recommended_english_native_hint: Is English your native language? Say so in your profile, and this line will show only when it applies to you.
+university.admissions.key_facts.recommended_english: English test (optional): {exam} — minimum {minimum}
+university.admissions.key_facts.recommended_english_better: English test (optional): {exam} — minimum {minimum}, recommended {better}
+university.admissions.key_facts.recommended_english_condition: Strongly recommended if English is not your first language and you have used it for less than five years or do not speak it at home or at school.
+university.admissions.key_facts.recommended_english_condition_not_native: Strongly recommended if you have used English for less than five years or do not speak it at home or at school.
+university.admissions.key_facts.recommended_english_native_hint: Add language details in profile
+university.admissions.key_facts.recommended_english_add_hint: Add an English test
 university.ux2.needs.mark_recommended: Recommendation, not a requirement
 languages.exam_overall_score_label: Overall score
 languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.

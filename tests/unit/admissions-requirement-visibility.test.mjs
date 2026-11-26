@@ -73,7 +73,7 @@ test("a recommendation is not listed as still to prepare and keeps its condition
   assert.equal(plain.mark, "recommended");
   assert.match(plain.text, /strongly recommended.*if English is not your first language/);
   const [withProfile] = checklistItems(resolvedWith([english]), { languages: [] });
-  assert.match(withProfile.text, /IELTS Academic 7\.0 \(better 7\.5\), if English is not your first language/);
+  assert.match(withProfile.text, /IELTS Academic — minimum 7\.0, recommended 7\.5, if English is not your first language/);
   const [notNative] = checklistItems(resolvedWith([english]), { languages: [{ code: "ru", kind: "native" }] });
   assert.doesNotMatch(notNative.text, /first language/);
 });

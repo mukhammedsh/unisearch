@@ -54,10 +54,14 @@ test("the checklist names tests, the English test and documents, and drops a doc
 test("a recommended English test shows the applicant's own result instead of a test still to prepare", () => {
   const english = fact("english", "language_tests", { presence: "strongly_recommended", minima_and_recommendations: [{ exam: "IELTS Academic", minimum: 7, recommended: 7.5 }] },
     { conditions: [{ when: "Non-native English speaker AND (using English for fewer than five years OR not speaking English at home or school)" }] });
-  const profile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] };
-  const item = checklistItems(resolvedWith([english]), profile).find(row => row.factId === "english");
-  assert.equal(item.mark, "recommended");
-  assert.match(item.text, /IELTS Academic 7\.0.*You have: IELTS Academic 6\.5/);
+  const belowProfile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 6.5 }] };
+  const item = checklistItems(resolvedWith([english]), belowProfile).find(row => row.factId === "english");
+  assert.equal(item.mark, "below");
+  assert.match(item.text, /IELTS Academic — minimum 7\.0, recommended 7\.5.*You have: IELTS Academic 6\.5, below the minimum/);
+  const metProfile = { languages: [{ code: "ru", kind: "native" }, { code: "en", kind: "exam", exam: "IELTS", score: 7.5 }] };
+  const metItem = checklistItems(resolvedWith([english]), metProfile).find(row => row.factId === "english");
+  assert.equal(metItem.mark, "met");
+  assert.match(metItem.text, /IELTS Academic — minimum 7\.0, recommended 7\.5\. You have: IELTS Academic 7\.5$/);
   // Without a profile the published wording stays.
   assert.equal(checklistItems(resolvedWith([english]))[0].mark, "recommended");
 });
