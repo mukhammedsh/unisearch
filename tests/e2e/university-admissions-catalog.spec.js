@@ -18,7 +18,7 @@ const cases = [
       { id: "ug-sat-act-presence", text: /SAT.*ACT|ACT.*SAT/i },
     ],
     excludedFacts: ["reviewed-mit_eecs_doctoral_admissions-tests"],
-    finance: { note: /Published reference budget.*2026[-‑–]2027/i },
+    finance: { note: /What the budget includes.*2026[-‑–]2027/i },
   },
   {
     name: "MIT EECS doctoral Computer Science",

@@ -527,9 +527,11 @@ test("reviewed comparison opens on shared facts and saves a program chosen in ea
     triggerSelector: `[data-compare-row="deadline"] [data-compare-pick="${IMPERIAL_ID}"]`,
   });
   await expect.poll(() => savedChoice(page, IMPERIAL_ID)).toMatchObject({ studyOptionId: "imperial-option-computing-meng", applicationRouteId: "procedure-computing-meng" });
-  // The applicant compares in their own currency: the published pound price is converted to the setting (USD by default).
-  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).toContainText(/≈ \$[\d,]+/);
-  await expect(page.locator('[data-compare-row="cost"] dd').nth(1)).not.toContainText("£");
+  // The applicant compares in their own currency: the published pound price is converted to the setting (USD by default), while the original currency stays in the detail note.
+  const imperialCostCell = page.locator('[data-compare-row="cost"] dd').nth(1);
+  await expect(imperialCostCell.locator(".compare-reviewed__value")).toContainText(/≈ \$[\d,]+/);
+  await expect(imperialCostCell.locator(".compare-reviewed__value")).not.toContainText("£");
+  await expect(imperialCostCell).toContainText(/In original currency: £/);
   await expect(page.locator('[data-compare-row="route"] dd').nth(1)).toContainText("UCAS");
   await pickProgram(page, MIT_ID, { search: "Computer Science and Engineering", option: "mit-course-6-3-bachelor", route: "mit-first-year" });
   await expect.poll(() => savedChoice(page, MIT_ID)).toMatchObject({ studyOptionId: "mit-course-6-3-bachelor", applicationRouteId: "mit-first-year" });
@@ -783,15 +785,15 @@ test("global rank sort reorders catalog by rank and displays rank tooltip with v
   const rankTooltip = firstCard.locator(".uni-metric-tooltip__content");
   await expect(rankTooltip).not.toBeVisible();
 
-  // 4. Click on the rank metric to toggle verification tooltip open and closed
-  await rankMetric.click();
+  // 4. Hover on the rank metric to show verification tooltip, then dismiss it without pinning on click
+  await rankMetric.hover();
   await expect(rankTooltip).toBeVisible();
   const tooltipText = await rankTooltip.innerText();
   expect(tooltipText).toContain("QS World University Rankings 2026");
   expect(tooltipText).toContain("Checked:");
   expect(tooltipText).not.toContain("Official ranking");
 
-  await rankMetric.click();
+  await page.keyboard.press("Escape");
   await expect(rankTooltip).not.toBeVisible();
 
   // 5. Clicking card navigates to university detail page
