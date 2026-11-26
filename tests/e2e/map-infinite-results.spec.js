@@ -306,6 +306,14 @@ test.describe("map interactions with route interception", () => {
     await page.mouse.move(mapBox.x + (mapBox.width * 0.75), mapBox.y + (mapBox.height * 0.5), { steps: 6 });
     await page.mouse.up();
   }
+  const markerInMap = () => page.evaluate(() => {
+    const markerEl = document.querySelector("#mapContainer .custom-div-icon");
+    const mapEl = document.querySelector("#mapContainer");
+    if (!markerEl || !mapEl) return null;
+    const markerBox = markerEl.getBoundingClientRect();
+    const mapBox = mapEl.getBoundingClientRect();
+    return { x: markerBox.x - mapBox.x, y: markerBox.y - mapBox.y };
+  });
   await expect.poll(async () => {
     const markerBox = await marker.boundingBox();
     return markerBox
@@ -313,6 +321,13 @@ test.describe("map interactions with route interception", () => {
       && markerBox.x <= mapBox.x + mapBox.width
       && markerBox.y >= mapBox.y
       && markerBox.y <= mapBox.y + mapBox.height;
+  }).toBe(true);
+  await expect.poll(async () => {
+    const first = await markerInMap();
+    await page.waitForTimeout(300);
+    const second = await markerInMap();
+    if (!first || !second) return false;
+    return Math.abs(first.x - second.x) < 1 && Math.abs(first.y - second.y) < 1;
   }).toBe(true);
 
   await marker.click();
@@ -323,14 +338,6 @@ test.describe("map interactions with route interception", () => {
   // Positions are measured relative to the map container in a single JS task
   // so a page scroll between two separate measurements cannot skew the
   // result: only a real map pan/zoom changes these coordinates.
-  const markerInMap = () => page.evaluate(() => {
-    const markerEl = document.querySelector("#mapContainer .custom-div-icon");
-    const mapEl = document.querySelector("#mapContainer");
-    if (!markerEl || !mapEl) return null;
-    const markerBox = markerEl.getBoundingClientRect();
-    const mapBox = mapEl.getBoundingClientRect();
-    return { x: markerBox.x - mapBox.x, y: markerBox.y - mapBox.y };
-  });
   await expect.poll(async () => {
     const first = await markerInMap();
     await page.waitForTimeout(300);

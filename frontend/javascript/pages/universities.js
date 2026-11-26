@@ -9,7 +9,6 @@ import {
     escapeHtml,
     escapeHtmlAttr,
     loadProfileForApi,
-    initCustomSelect,
     CITY_OPTIONS_BY_COUNTRY,
     markMotionEnter,
     motionPress,
@@ -19,6 +18,8 @@ import {
 
 import { renderErrorScreen } from "../components.js";
 import { classifyError } from "../components/network-status.js";
+import { hideGlobalSearchSuggestions } from "../components/navbar-search.js";
+import { setTextWithFade } from "../utils/motion-reveal.js";
 import { t } from "../i18n.js";
 import {
     getPreferredCurrency,
@@ -117,15 +118,13 @@ export function disposeUniversitiesPage() {
 function collectUniversitiesElements() {
     const el = {
         qInput: $("qInput"), searchClearBtn: $("searchClearBtn"), countrySelect: $("countrySelect"), stateDiv: $("stateDiv"),
-        stateSelect: $("stateSelect"), citySelect: $("citySelect"),
+        stateSelect: $("stateSelect"), cityDiv: $("cityDiv"), citySelect: $("citySelect"),
         minInput: $("minCostInput"), maxInput: $("maxCostInput"),
         minSlider: $("minCostSlider"), maxSlider: $("maxCostSlider"), track: $("sliderTrack"),
         minCostLabel: $("minCostLabel"), maxCostLabel: $("maxCostLabel"),
         sortSelect: $("sortSelect"), sliderContainer: $("aiSliderContainer"),
         unifitPrefsPanel: $("unifitPreferencesPanel"), unifitPrefsCount: $("unifitPrefsCount"),
         reviewedOnlyToggle: $("reviewedOnlyToggle"),
-        sortStrategyInfoWrap: document.querySelector('label[for="sortSelect"] .u-info-wrap'),
-        sortAiTagsHint: $("sortAiTagsHint"),
         focusSlider: $("focusSlider"), focusLabel: $("focusLabel"),
         atmosphereSlider: $("atmosphereSlider"), atmosphereLabel: $("atmosphereLabel"),
         financeSlider: $("financeSlider"), financeLabel: $("financeLabel"),
@@ -310,14 +309,8 @@ export function initUniversitiesPage() {
         });
     };
 
-    const hideSearchSuggestions = () => {
-        const host = el.qInput?.closest(".navbar-search") || el.qInput?.parentElement;
-        const node = host?.querySelector(".navbar-search-suggestions");
-        if (node) {
-            node.replaceChildren();
-            node.classList.remove("is-open");
-        }
-    };
+    // Shared hide path keeps the items painted while the panel fades out.
+    const hideSearchSuggestions = () => hideGlobalSearchSuggestions();
 
     const syncSearchClearButton = () => {
         if (!el.searchClearBtn) return;
@@ -760,18 +753,12 @@ export function initUniversitiesPage() {
         state.q = el.qInput.value.trim();
         syncSearchClearButton();
         hideSearchSuggestions();
-        if (!prevQ && state.q && state.sort === "name_asc") {
-            state.sort = "relevance";
-            if (el.sortSelect) {
-                el.sortSelect.value = "relevance";
-                initCustomSelect("sortSelect");
-            }
-        } else if (prevQ && !state.q && state.sort === "relevance") {
-            state.sort = "name_asc";
-            if (el.sortSelect) {
-                el.sortSelect.value = "name_asc";
-                initCustomSelect("sortSelect");
-            }
+        if (!prevQ && state.q) {
+            if (state.sort === "name_asc") state.sort = "relevance";
+            filterControls.syncRelevanceSortOption();
+        } else if (prevQ && !state.q) {
+            if (state.sort === "relevance") state.sort = "name_asc";
+            filterControls.syncRelevanceSortOption();
         }
         if (state.activeTab !== "catalog" && !compareController.isCompareSelectionMode()) return;
         refetch();
@@ -787,11 +774,8 @@ export function initUniversitiesPage() {
         el.qInput.focus();
         if (state.sort === "relevance") {
             state.sort = "name_asc";
-            if (el.sortSelect) {
-                el.sortSelect.value = "name_asc";
-                initCustomSelect("sortSelect");
-            }
         }
+        filterControls.syncRelevanceSortOption();
         if (state.activeTab !== "catalog" && !compareController.isCompareSelectionMode()) return;
         refetch();
     };
@@ -890,10 +874,10 @@ export function initUniversitiesPage() {
     });
 
     el.btnList?.addEventListener("click", () => {
-        switchView("list", true).catch((err) => console.error(err));
+        switchView("list", true, { animate: true }).catch((err) => console.error(err));
     });
     el.btnMap?.addEventListener("click", () => {
-        switchView("map", true).catch((err) => console.error(err));
+        switchView("map", true, { animate: true }).catch((err) => console.error(err));
     });
 
     hideSearchSuggestions();
@@ -973,7 +957,8 @@ export function initUniversitiesPage() {
 
         if (state.viewMode === "list") {
             state.lastCatalogTotal = total;
-            if (el.total) el.total.textContent = String(total);
+            // The first count after load is placed as is; later changes settle with a fade.
+            setTextWithFade(el.total, String(total), { instant: !hasInitialListPaint });
             hasInitialListPaint = true;
 
             if (!items.length) {
@@ -1008,7 +993,7 @@ export function initUniversitiesPage() {
 
         if (state.viewMode === "map") {
             state.lastCatalogTotal = items.length;
-            if (el.total) el.total.textContent = String(items.length);
+            setTextWithFade(el.total, String(items.length), { instant: !hasInitialListPaint });
             updateMapMarkers(items);
             const profile = loadProfileForApi();
             const userBudget = Number.parseFloat(profile.budget);

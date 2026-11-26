@@ -16,6 +16,7 @@ import {
     getPreferredCurrency,
 } from "../../currency.js";
 import { buildFilterResetPatch } from "./filter-reset.js";
+import { setRevealed } from "../../utils/motion-reveal.js";
 import {
     clampPercent,
     clampTuition,
@@ -111,6 +112,10 @@ export function createFilterControls({
     let citiesLoadedHandler = null;
     let mobileFilterKeydownHandler = null;
     let initialPrefsSyncDone = false;
+    // Restoring filters on load, after cities arrive or on a language change must not animate;
+    // only changes the user makes after that do.
+    let revealMotionReady = false;
+    const reveal = (node, visible, options = {}) => setRevealed(node, visible, { ...options, instant: !revealMotionReady });
 
     const countActiveTradeoffs = () => TRADEOFF_CONFIGS.reduce(
         (acc, config) => acc + (clampPercent(state[config.sliderKey], 50) !== 50 ? 1 : 0),
@@ -239,19 +244,8 @@ export function createFilterControls({
     };
 
     const updateSliderVisibility = () => {
-        if (el.sortStrategyInfoWrap) {
-            const showSortInfo = state.sort === "uni_ai";
-            el.sortStrategyInfoWrap.style.display = showSortInfo ? "" : "none";
-            el.sortStrategyInfoWrap.setAttribute("aria-hidden", showSortInfo ? "false" : "true");
-            if (!showSortInfo) el.sortStrategyInfoWrap.classList.remove("is-open");
-        }
-        if (el.sortAiTagsHint) {
-            const showAiTagsHint = state.sort !== "uni_ai";
-            el.sortAiTagsHint.style.display = showAiTagsHint ? "" : "none";
-            el.sortAiTagsHint.setAttribute("aria-hidden", showAiTagsHint ? "false" : "true");
-        }
         if (el.unifitPrefsPanel) {
-            el.unifitPrefsPanel.hidden = state.sort !== "uni_ai";
+            reveal(el.unifitPrefsPanel, state.sort === "uni_ai");
         }
         updateUnifitPrefsCount();
         if (!el.sliderContainer) return;
@@ -263,11 +257,41 @@ export function createFilterControls({
         }
     };
 
+    /**
+     * Show the "Relevance" sort option only while a search query is active; without a query
+     * it behaves identically to Name A-Z.
+     */
+    const syncRelevanceSortOption = () => {
+        if (!el.sortSelect) return;
+        const hasQuery = Boolean(String(state.q || "").trim());
+        let relOpt = el.sortSelect.querySelector('option[value="relevance"]');
+        if (hasQuery) {
+            if (!relOpt) {
+                relOpt = document.createElement("option");
+                relOpt.value = "relevance";
+                relOpt.dataset.i18n = "universities.sort_relevance";
+                const nameAscOpt = el.sortSelect.querySelector('option[value="name_asc"]');
+                el.sortSelect.insertBefore(relOpt, nameAscOpt ? nameAscOpt.nextSibling : el.sortSelect.firstChild);
+            }
+            relOpt.textContent = t("universities.sort_relevance", "Relevance");
+        } else {
+            if (relOpt) relOpt.remove();
+            if (state.sort === "relevance") state.sort = "name_asc";
+        }
+        el.sortSelect.value = state.sort;
+        if (el.sortSelect.value !== state.sort) {
+            state.sort = defaultSortMode;
+            el.sortSelect.value = state.sort;
+        }
+        initCustomSelect("sortSelect");
+    };
+
     const updateCityDropdown = (cities) => {
         if (!el.citySelect) return;
         if (!cities || cities.length === 0) {
-            el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.select_country_first", "Select country first"))}</option>`;
+            el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
             el.citySelect.disabled = true;
+            if (el.cityDiv) reveal(el.cityDiv, false, { mode: "display" });
         } else {
             el.citySelect.disabled = false;
             el.citySelect.innerHTML = `<option value="">${escapeHtml(t("universities.all_cities", "All Cities"))}</option>`;
@@ -278,6 +302,7 @@ export function createFilterControls({
                 opt.textContent = trCity(value);
                 el.citySelect.appendChild(opt);
             });
+            if (el.cityDiv) reveal(el.cityDiv, true, { mode: "display", display: "block" });
         }
         initCustomSelect("citySelect");
     };
@@ -304,16 +329,16 @@ export function createFilterControls({
         if (!el.stateDiv) return;
         const countryData = CITY_OPTIONS_BY_COUNTRY[country];
         if (!country || !countryData) {
-            el.stateDiv.style.display = "none";
+            reveal(el.stateDiv, false, { mode: "display" });
             updateCityDropdown([]);
             return;
         }
         if (Array.isArray(countryData)) {
-            el.stateDiv.style.display = "none";
+            reveal(el.stateDiv, false, { mode: "display" });
             updateCityDropdown(countryData);
             return;
         }
-        el.stateDiv.style.display = "block";
+        reveal(el.stateDiv, true, { mode: "display", display: "block" });
         const states = Object.keys(countryData).sort((a, b) => a.localeCompare(b));
         el.stateSelect.innerHTML = `<option value="">${escapeHtml(t("universities.any_state", "Any State"))}</option>`;
         states.forEach((s) => {
@@ -348,11 +373,7 @@ export function createFilterControls({
         if (el.citySelect) el.citySelect.value = state.city;
         if (el.sortSelect) {
             state.sort = normalizeSortMode(state.sort);
-            el.sortSelect.value = state.sort;
-            if (el.sortSelect.value !== state.sort) {
-                state.sort = defaultSortMode;
-                el.sortSelect.value = state.sort;
-            }
+            syncRelevanceSortOption();
         }
         const studyLevelSelect = $("studyLevelSelect");
         if (studyLevelSelect) studyLevelSelect.value = state.study_level || "";
@@ -396,14 +417,25 @@ export function createFilterControls({
     };
 
     const initLocations = () => {
+        revealMotionReady = false;
         updateCountryOptions();
         if (state.country) {
             applySelectedCountryCascade();
         }
         applyToForm();
+        revealMotionReady = true;
     };
 
     const refreshLocationFilterLabels = () => {
+        revealMotionReady = false;
+        try {
+            refreshLocationFilterLabelsNow();
+        } finally {
+            revealMotionReady = true;
+        }
+    };
+
+    const refreshLocationFilterLabelsNow = () => {
         updateCountryOptions();
         if (!state.country) {
             if (el.countrySelect) el.countrySelect.value = "";
@@ -425,7 +457,7 @@ export function createFilterControls({
         }));
         if (persistAndFetch) saveFilters(state);
         applyToForm();
-        if (el.stateDiv) el.stateDiv.style.display = "none";
+        if (el.stateDiv) reveal(el.stateDiv, false, { mode: "display" });
         updateCityDropdown([]);
         updateSliderVisibility();
         updateMobileFilterUi();
@@ -728,6 +760,7 @@ export function createFilterControls({
         updateSliderLabels,
         fillTrack,
         updateSliderVisibility,
+        syncRelevanceSortOption,
         updateTradeoffLabels,
         updateMobileFilterUi,
         applyToForm,

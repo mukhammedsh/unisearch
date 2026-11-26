@@ -14,6 +14,7 @@ import { translateProgramName } from "../../university-translations.js";
 import { cleanDecoratedText, renderInlineIcon } from "../_shared.js";
 import { describeRankingProfile, legendEntries } from "./unifit-explanation.js";
 import { hasProfileEvidence } from "./query-state.js";
+import { isRevealing, setRevealed } from "../../utils/motion-reveal.js";
 
 /**
  * Manage the UniFit ranking banner, preferences shortcut, and localized AI sort label.
@@ -45,23 +46,35 @@ export function createUnifitBannerController({ el, state }) {
                 .map((node) => ({ key: node.dataset.legend, icon: node.dataset.legendIcon, tone: node.dataset.legendTone }))
             : [];
         const entries = legendEntries(badges);
-        if (disclosure) disclosure.hidden = !entries.length;
         box.hidden = !entries.length;
         box.innerHTML = entries.length
             ? entries.map(({ icon, tone, labelKey }) =>
                 `<span class="u-unifit-legend__item"><span class="uni-status-trigger uni-status-trigger--${escapeHtmlAttr(tone)}" aria-hidden="true">${renderInlineIcon(icon, 14, "uni-status-icon")}</span><span class="u-unifit-legend__label">${escapeHtml(t(labelKey))}</span></span>`
             ).join("")
             : "";
+        const banner = el.unifitWarningBanner;
+        const bannerRevealing = Boolean(banner && isRevealing(banner));
+        // Inside a settled banner the legend grows on its own; while the banner itself is still
+        // growing, the legend appears at once and the banner retargets to its new full height.
+        if (disclosure) setRevealed(disclosure, entries.length > 0, { instant: !banner || banner.hidden || bannerRevealing });
+        if (bannerRevealing) setRevealed(banner, true, { retarget: true });
+    };
+
+    // The first paint after load places the banner without motion; later changes grow or shrink it.
+    let bannerMotionReady = false;
+    const revealBanner = (visible) => {
+        setRevealed(el.unifitWarningBanner, visible, { instant: !bannerMotionReady });
+        bannerMotionReady = true;
     };
 
     const update = () => {
         if (!el.unifitWarningBanner) return;
         if (state.sort !== "uni_ai") {
-            el.unifitWarningBanner.hidden = true;
+            revealBanner(false);
             return;
         }
         if (dismissed) {
-            el.unifitWarningBanner.hidden = true;
+            revealBanner(false);
             return;
         }
         // The banner states which profile answers the ranking uses, so the list never looks unexplained.
@@ -83,31 +96,28 @@ export function createUnifitBannerController({ el, state }) {
             el.unifitBannerEdit.textContent = t(parts.length || hasEvidence ? "universities.ux2.banner.edit" : "universities.ux2.banner.set_up");
             el.unifitBannerEdit.setAttribute("href", routeProfile());
         }
-        el.unifitWarningBanner.hidden = false;
+        // Legend first: it changes the banner height that the reveal measures.
         refreshLegend();
+        revealBanner(true);
     };
 
     const resetDismissed = () => {
         dismissed = false;
-        if (el.unifitWarningBanner) {
-            el.unifitWarningBanner.hidden = true;
-        }
+        if (el.unifitWarningBanner) revealBanner(false);
     };
 
     const bindEvents = () => {
         applyAISortOptionLabel();
         dismissHandler = () => {
             dismissed = true;
-            if (el.unifitWarningBanner) {
-                el.unifitWarningBanner.hidden = true;
-            }
+            if (el.unifitWarningBanner) revealBanner(false);
         };
         prefsHandler = () => {
             if (window.innerWidth <= 1024 && el.mobileFilterToggle && !el.sidebar?.classList.contains("is-open")) {
                 el.mobileFilterToggle.click();
             }
             if (el.unifitPrefsPanel) {
-                el.unifitPrefsPanel.hidden = false;
+                setRevealed(el.unifitPrefsPanel, true);
                 el.unifitPrefsPanel.open = true;
                 el.unifitPrefsPanel.scrollIntoView({ block: "nearest", behavior: "smooth" });
             }

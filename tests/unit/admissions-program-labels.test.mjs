@@ -500,7 +500,7 @@ test("MIT aid documents are readable without disclosures and keep first-year and
       const resolved = { selected_option: mit.study_options[0], selected_route: { id: route }, facts, sources: mit.sources, unknowns: [],
         fact_groups: { funding: facts.map(row => row.id) } };
       const html = renderApplicantSection(resolved, ["costs", "funding"]);
-      const highlights = html.split('<details class="admissions-reading__references"')[0];
+      const highlights = html.split('<details class="admissions-reading__references motion-disclosure"')[0];
       if (route === "mit_eecs_doctoral_admissions") { assert.doesNotMatch(highlights, /data-aid-summary/); continue; }
       for (const value of ["data-aid-summary", "CSS Profile", "3514", "IDOC", "data-aid-fafsa"]) assert.ok(highlights.includes(value), `${language} ${route}: ${value}`);
       assert.doesNotMatch(highlights, /Current published policy|Need-based Aid/);

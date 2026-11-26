@@ -90,12 +90,13 @@ for (const { width, theme, mobile } of [
         const list = node.querySelector(".custom-options");
         const triggerRect = button.getBoundingClientRect();
         const panelRect = list.getBoundingClientRect();
-        const seam = node.classList.contains("open-up")
+        const gap = node.classList.contains("open-up")
           ? triggerRect.top - panelRect.bottom
           : panelRect.top - triggerRect.bottom;
-        return Math.abs(seam) < 1
+        return Math.abs(gap - 4) <= 1
           && Math.abs(triggerRect.width - panelRect.width) < 1
-          && getComputedStyle(button).backgroundColor === getComputedStyle(list).backgroundColor;
+          && getComputedStyle(button).borderBottomLeftRadius !== "0px"
+          && getComputedStyle(list).borderTopLeftRadius !== "0px";
       })).toBe(true);
 
       const tuition = panel.locator('[data-value="tuition"]');

@@ -52,7 +52,7 @@
         </section>
         <a class="guide-back" href="index.html" data-route="home" data-i18n="guide.back">Back</a>
         <div class="guide-mobile-nav-shell">
-          <button class="guide-mobile-nav-toggle" id="guideMobileNavToggle" type="button" aria-expanded="false" aria-controls="guideNav">
+          <button class="ui-btn ui-btn--on-bg guide-mobile-nav-toggle" id="guideMobileNavToggle" type="button" aria-expanded="false" aria-controls="guideNav">
             <span class="guide-mobile-nav-toggle__label" data-i18n="guide.contents">Contents</span>
             <span class="guide-mobile-nav-toggle__chevron" aria-hidden="true"></span>
           </button>
@@ -104,8 +104,8 @@
               </div>
             </div>
             <div class="guide-start-actions">
-              <a class="guide-start-cta guide-start-cta--primary" href="index.html" data-route="universities" data-i18n="guide.start.cta_catalog">Browse universities</a>
-              <a class="guide-start-cta guide-start-cta--secondary" href="profile.html" data-route="profile" data-i18n="guide.start.cta_profile">Set up profile</a>
+              <a class="ui-btn ui-btn--lg ui-btn--primary" href="index.html" data-route="universities" data-i18n="guide.start.cta_catalog">Browse universities</a>
+              <a class="ui-btn ui-btn--lg" href="profile.html" data-route="profile" data-i18n="guide.start.cta_profile">Set up profile</a>
             </div>
           </div>
         </section>
@@ -123,7 +123,7 @@
             <p data-i18n="guide.unifit.p5">A university stays in the catalog if an exam result or proof of language proficiency is missing. When the site can identify what is missing, it shows what to add.</p>
             <h3 data-i18n="guide.unifit.explanation">How to see what affected the order</h3>
             <p data-i18n="guide.unifit.p6">Profile shows which answers UniFit uses. With UniFit selected, the top of the catalog shows the information used for the current order.</p>
-            <details class="guide-formula-details">
+            <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Calculation formula</summary>
               <pre class="guide-formula" tabindex="0" data-i18n="guide.unifit.formula">without semantic matching: preference_mismatch × 0.60 + requirements_gap × 0.40
 with semantic matching: preference_mismatch × 0.35 + requirements_gap × 0.30 + semantic_gap × 0.35
@@ -136,7 +136,7 @@ affordability_gap × 0.20 is added when annual cost and profile budget are known
           <h2 data-i18n="guide.ml.title">How your interests are used</h2>
           <div class="guide-doc">
             <p data-i18n-html="guide.ml.p1">Use the Interests field to enter subjects or fields of study. <a href="guide.html#guide-unifit">UniFit</a> looks for related topics in the information about each university.</p>
-            <details class="guide-formula-details">
+            <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Calculation formula</summary>
               <pre class="guide-formula" tabindex="0" data-i18n="guide.ml.formula">sim = cosine(queryVec, uniVec)
 mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
@@ -152,7 +152,7 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
           <h2 data-i18n="guide.unichance.title"><span data-ai-name="chance">Minimum requirements match</span></h2>
           <div class="guide-doc">
             <p data-i18n="guide.unichance.p1">The “<span data-ai-name="chance">Minimum requirements match</span>” score shows the percentage of published academic and language minimums you meet among those the site can check. On pages with reviewed data, the score applies to the selected study option, application route, and applicant category.</p>
-            <details class="guide-formula-details">
+            <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Calculation formula</summary>
               <pre class="guide-formula" tabindex="0" data-i18n="guide.unichance.formula">requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100</pre>
             </details>

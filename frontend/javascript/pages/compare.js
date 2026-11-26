@@ -2,6 +2,7 @@ import {
   bindImageFallbacks,
   escapeHtml,
   escapeHtmlAttr,
+  initCustomSelect,
   loadProfile,
   loadProfileForApi,
   markMotionEnter,
@@ -64,6 +65,22 @@ let comparePhotos = null;
 let compareAdmissionChoices = new Map();
 let isDiffOnly = false;
 let currentStage = "results";
+// Null until the first stage paints; the first paint keeps the panel entrance, later switches are directional.
+let renderedStage = null;
+
+/**
+ * Motion for a stage render: none when the same stage re-renders (a choice changed), the panel entrance
+ * on the first paint, and a directional slide when the user moves between configure and results.
+ * @param {"configure" | "results"} stage
+ * @returns {{ panelClass: string | null, staggerItems: boolean }}
+ */
+function stageMotion(stage) {
+  const from = renderedStage;
+  renderedStage = stage;
+  if (from === stage) return { panelClass: null, staggerItems: false };
+  if (from === null) return { panelClass: "motion-panel-enter", staggerItems: true };
+  return { panelClass: stage === "results" ? "motion-tab-forward" : "motion-tab-back", staggerItems: false };
+}
 // Two rechecked universities use the reviewed comparison; this file keeps the earlier-format pairs only.
 let reviewedView = null;
 let ignoreProfileUpdates = false;
@@ -135,7 +152,7 @@ function compareCardsHtml(universities) {
         ${compareCampusHtml(id, comparePhotos)}
         <div class="compare-uni-card__top">
           <span class="compare-uni-card__slot">${escapeHtml(compareSlotLabel(index))}</span>
-          <button type="button" class="compare-uni-card__swap" data-action="swap-compare-uni" data-uni-id="${escapeHtmlAttr(id)}">${renderInlineIcon("arrows-right-left", 16)}<span>${escapeHtml(t("universities.compare.swap_university"))}</span></button>
+          <button type="button" class="ui-btn ui-btn--sm compare-uni-card__swap" data-action="swap-compare-uni" data-uni-id="${escapeHtmlAttr(id)}">${renderInlineIcon("arrows-right-left", 16)}<span>${escapeHtml(t("universities.compare.swap_university"))}</span></button>
         </div>
         <h3>${escapeHtml(compareUniversityName(u))}</h3>
         <p>${escapeHtml(compareLocationText(u))}</p>
@@ -152,7 +169,7 @@ function compareCardsHtml(universities) {
           return `
             <div class="compare-uni-card__track">
               <label class="compare-uni-card__track-label" for="track-select-${escapeHtmlAttr(id)}">${escapeHtml(t("universities.compare.change_track", "Change track"))}</label>
-              <select class="compare-track-select" id="track-select-${escapeHtmlAttr(id)}" data-uni-id="${escapeHtmlAttr(id)}" data-action="change-compare-track" aria-label="${escapeHtmlAttr(t("universities.compare.change_track", "Change track"))}">
+              <select class="ui-select ui-select--sm compare-track-select" id="track-select-${escapeHtmlAttr(id)}" data-flags="off" data-uni-id="${escapeHtmlAttr(id)}" data-action="change-compare-track" aria-label="${escapeHtmlAttr(t("universities.compare.change_track", "Change track"))}">
                 ${entries.map((e) => {
                   const label = compareAdmissionChoiceOptionLabel(e, u);
                   const isSelected = e.key === selectedKey;
@@ -190,7 +207,7 @@ function renderEmptyState(container) {
         <p>${escapeHtml(t("universities.compare.results.empty_body", "Select exactly two universities to build a comparison pair."))}</p>
       </div>
       <div class="compare-results-actions compare-results-actions--centered">
-        <button class="compare-results-action" type="button" data-action="back-to-catalog">
+        <button class="ui-btn ui-btn--primary compare-results-action" type="button" data-action="back-to-catalog">
           ${heroIcon("arrow-left", "ui-icon ui-icon--16")}
           <span>${escapeHtml(t("universities.compare.back_to_catalog", "Back to catalog"))}</span>
         </button>
@@ -217,11 +234,11 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
         <p class="compare-config-subtitle">${escapeHtml(t("universities.compare.configure.subtitle"))}</p>
       </div>
       <div class="compare-results-actions">
-        <button class="compare-results-action compare-results-action--ghost" type="button" data-action="back-to-catalog" title="${escapeHtmlAttr(t("universities.compare.back_to_catalog", "Back to catalog"))}">
+        <button class="ui-btn ui-btn--ghost compare-results-action compare-results-action--ghost" type="button" data-action="back-to-catalog" title="${escapeHtmlAttr(t("universities.compare.back_to_catalog", "Back to catalog"))}">
           ${heroIcon("arrow-left", "ui-icon ui-icon--16")}
           <span>${escapeHtml(t("universities.compare.back_to_catalog", "Back to catalog"))}</span>
         </button>
-        <button class="compare-results-action" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
+        <button class="ui-btn ui-btn--primary compare-results-action" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
       </div>
     </div>
     <section class="compare-config-panel" aria-label="${escapeHtmlAttr(t("universities.compare.configure.title", "Choose admission choices"))}">
@@ -274,8 +291,9 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
   });
 
   bindImageFallbacks(container);
-  markMotionEnter(container, ".compare-config-column, .admission-category-card", { limit: 16, staggerMs: 18 });
-  replayMotion(container, "motion-panel-enter", { timeoutMs: 420 });
+  const motion = stageMotion("configure");
+  if (motion.staggerItems) markMotionEnter(container, ".compare-config-column, .admission-category-card", { limit: 16, staggerMs: 18 });
+  if (motion.panelClass) replayMotion(container, motion.panelClass, { timeoutMs: 420 });
 }
 
 async function renderCompareResults(container, { pushState = false } = {}) {
@@ -297,7 +315,7 @@ async function renderCompareResults(container, { pushState = false } = {}) {
         <h2>${escapeHtml(t("universities.compare.results.title", "University comparison"))}</h2>
       </div>
       <div class="compare-results-actions">
-        <button class="compare-results-action compare-results-action--ghost" type="button" data-action="back-to-tracks" title="${escapeHtmlAttr(t("universities.compare.back_to_tracks"))}">
+        <button class="ui-btn ui-btn--ghost compare-results-action compare-results-action--ghost" type="button" data-action="back-to-tracks" title="${escapeHtmlAttr(t("universities.compare.back_to_tracks"))}">
           ${heroIcon("arrow-left", "ui-icon ui-icon--16")}
           <span>${escapeHtml(t("universities.compare.back_to_tracks"))}</span>
         </button>
@@ -314,9 +332,8 @@ async function renderCompareResults(container, { pushState = false } = {}) {
         </div>
         <div class="compare-block-tools">
           <label class="compare-diff-toggle" title="${escapeHtmlAttr(t("universities.compare.diff_only", "Differences only"))}">
-            <input type="checkbox" role="switch" data-action="toggle-diff-only"${isDiffOnly ? " checked" : ""}>
-            <span class="compare-diff-toggle__track" aria-hidden="true"><span class="compare-diff-toggle__thumb"></span></span>
             <span class="compare-diff-toggle__label">${escapeHtml(t("universities.compare.diff_only", "Differences only"))}</span>
+            <input class="ui-switch" type="checkbox" role="switch" data-action="toggle-diff-only"${isDiffOnly ? " checked" : ""}>
           </label>
         </div>
       </div>
@@ -340,9 +357,13 @@ async function renderCompareResults(container, { pushState = false } = {}) {
   if (tableWrap && isDiffOnly) {
     updateDiffOnlySections(tableWrap, true);
   }
+  container.querySelectorAll(".compare-track-select[id]").forEach((select) => {
+    initCustomSelect(select.id);
+  });
   bindImageFallbacks(container);
-  markMotionEnter(container, ".compare-analysis-block, .compare-uni-card", { limit: 12, staggerMs: 18 });
-  replayMotion(container, "motion-panel-enter", { timeoutMs: 420 });
+  const motion = stageMotion("results");
+  if (motion.staggerItems) markMotionEnter(container, ".compare-analysis-block, .compare-uni-card", { limit: 12, staggerMs: 18 });
+  if (motion.panelClass) replayMotion(container, motion.panelClass, { timeoutMs: 420 });
 }
 
 function bindCompareEvents(container) {
@@ -465,7 +486,7 @@ function renderMixedState(container, universities) {
         }).join("")}
       </ul>
       <div class="compare-mixed__actions">
-        <button class="compare-results-action" type="button" data-action="back-to-catalog">
+        <button class="ui-btn ui-btn--primary compare-results-action" type="button" data-action="back-to-catalog">
           ${heroIcon("arrow-left", "ui-icon ui-icon--16")}
           <span>${escapeHtml(t("universities.compare.mixed.choose_pair"))}</span>
         </button>
@@ -477,6 +498,7 @@ function renderMixedState(container, universities) {
 
 export function disposeComparePage() {
   compareLoadRun++;
+  renderedStage = null;
   disposeReviewedView();
   window.removeEventListener("popstate", comparePopStateHandler);
   window.removeEventListener("profileUpdated", compareProfileUpdatedHandler);

@@ -377,8 +377,6 @@ universities.cost.fee_status.self_paying: Self-paying
 universities.cost.exclusion.insurance: Insurance is additional.
 universities.cost.exclusion.travel: Travel is additional.
 universities.cost.exclusion.one_time_fees: One-time fees are additional.
-universities.cost.filter_help: Before aid. A range may partly match: check the program and fee category. Unknown prices are excluded when a price limit is active.
-universities.cost.filter_help_summary: Price limits hide unknown prices; your profile budget affects UniFit.
 universities.cost.dated_reference: Dated reference; cycle unconfirmed
 universities.cost.cycle_unconfirmed: Cycle unconfirmed
 universities.cost.cycle_unspecified: Cycle not specified
@@ -426,7 +424,6 @@ universities.empty.reset_filters: Reset filters
 universities.search_placeholder: Search university...
 universities.search_clear: Clear search
 universities.no_matches: No universities found
-universities.select_country_first: Select country first
 universities.compare.enter: Compare mode
 universities.compare.selection: Selected universities
 universities.compare.pair_slot: University {number}
@@ -563,7 +560,6 @@ universities.tradeoff.location.left: City
 universities.tradeoff.location.right: Outside City
 universities.tradeoff.balanced: Doesn't matter
 universities.help.open: Show explanation
-universities.help.sort_strategy: {fit} sorts using your profile. Other modes sort only by name or cost.
 universities.help.tradeoff.focus: Left: fewer research publications per student. Right: research-intensive universities. In the middle this is not used.
 universities.help.tradeoff.atmosphere: Left: a larger share of applicants is admitted. Right: more applicants per place, from the official first-year admission rate. In the middle this is not used.
 universities.help.tradeoff.finance: Left side favors lower-cost and grant-friendly options. Right side tolerates higher-cost options for stronger prestige signals. In the middle this is not used.
@@ -575,7 +571,6 @@ universities.sort_cost_desc: Cost high to low
 universities.sort_name_asc: Name A-Z
 universities.sort_rank_asc: Global Rank
 universities.sort_strategy: Sort by
-universities.sort_hint_ai_tags: AI tags are fully available only when sorting by UniFit.
 accessibility.skip_to_main: Skip to main content
 universities.state.warning_title: Interests unavailable
 universities.state.empty_title: No results for current filters
@@ -587,7 +582,7 @@ universities.state_region: State / Region
 universities.view_list: List View
 universities.view_map: Map View
 universities.view_toggles.aria: View mode
-university.about_campus: About & Campus
+university.about_campus: About the university
 university.action.website: Website
 university.action.map: Map
 university.action.save: Save to favorites
@@ -660,6 +655,9 @@ university.gallery.position: Photo {current} of {total}
 university.gallery.unavailable: Photo unavailable
 university.gallery.zoom_in: Zoom in
 university.gallery.zoom_out: Zoom out
+university.cover.view_switch: Cover view
+university.cover.photo: Photo
+university.cover.recenter: Center on campus
 university.entry_requirements: Admission Categories
 university.error_no_id: Error: No ID provided.
 university.loading_scholarships: Loading scholarships
@@ -1234,24 +1232,8 @@ university.deadlines.doctoral_research: Doctoral research courses
 university.deadlines.mba_round: MBA application round
 university.deadlines.interviews_label: Interviews
 university.deadlines.time_label: Time
-university.coverage.title: Data coverage in UniSearch
-university.coverage.note: This shows what UniSearch currently has catalogued. “Not catalogued” does not tell you whether the university offers it.
-university.coverage.available: Catalogued
-university.coverage.not_catalogued: Not catalogued
-university.coverage.unknown: Coverage unavailable
-university.coverage.no_levels: UniSearch has no study-level coverage recorded for this university yet. This does not indicate which programs the university offers.
-university.coverage.level.bachelor: Bachelor's
-university.coverage.level.master: Master's
-university.coverage.level.doctorate: Doctorate
 university.coverage.level.professional: Professional
 university.coverage.level.mba: MBA
-university.coverage.programs: Programs
-university.coverage.requirements: Admission requirements
-university.coverage.deadlines_exact: Deadlines with exact date and year
-university.coverage.deadlines_approximate: Approximate or yearless deadlines
-university.coverage.costs_program: Program-specific costs
-university.coverage.costs_undergraduate: University-wide undergraduate cost data
-university.coverage.aid: Aid and funding
 profile.applicant_context.optional: Not specified
 universities.compare.finance.grant_unconfirmed: A selected grant is only a potential award. Its amount is not a confirmed cost or discount until formally awarded.
 universities.compare.funding.not_awarded: Potential award; not confirmed
@@ -3224,10 +3206,10 @@ profile.ux2.evidence.language_fixed: Records your background in English only, wh
 profile.ux2.evidence.entirely: Entirely in English?
 university.ux2.title: Key admission facts
 university.ux2.intro_route: Shown for "{route}". One application covers all undergraduate programs.
+university.ux2.intro_selected_route: Shown for "{route}".
 university.ux2.intro_selected_program: Shown for the program "{program}" you chose.
 university.ux2.intro_program: Each program sets its own. Choose a program to see them.
 university.ux2.intro_legacy: Published undergraduate information from this university.
-university.ux2.note: A summary of official facts, not an admission decision. Sources and full details are in the tabs.
 university.ux2.loading: Loading key facts
 university.ux2.error: Could not load the key facts.
 university.ux2.retry: Try again

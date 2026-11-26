@@ -138,7 +138,8 @@ test("Stanford MD and Computer Science tuition retain their actual route and pub
   // The old tuition-and-funding gap is superseded: its 2027-28 caveat now lives in the current unknowns, not in history.
   await expect(unknowns.locator(".admissions-catalog__unknown").filter({ hasText: /individual electronic admission\/aid offer/ })).toHaveCount(1);
   await openTab(page, "general");
-  await expect(page.locator("#admissionsUniversityInfo")).not.toContainText(/2027[-\u2011\u2013]28 tuition and individual future offer amounts remain unavailable/);
+  await expect(page.locator("#admissionsUniversityInfo")).toHaveCount(0);
+  await expect(page.locator("#tab-general")).not.toContainText(/2027[-\u2011\u2013]28 tuition and individual future offer amounts remain unavailable/);
 });
 
 test("MIT application dates and Imperial award deadlines stay in their own source scopes", async ({ page }) => {

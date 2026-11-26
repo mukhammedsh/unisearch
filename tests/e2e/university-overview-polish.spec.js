@@ -11,7 +11,8 @@ for (const { theme, viewport } of [
     }, theme);
     await page.goto("/university.html?id=mit-usa-cambridge");
     await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);
-    await expect(page.locator("#detailExtra .uni-tag").first()).toBeVisible();
+    await expect(page.locator("#detailExtra .uni-description")).toBeVisible();
+    await expect(page.locator("#detailExtra .uni-tag")).toHaveCount(0);
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
 
     const strip = page.locator("#detailRecommendations .d-facts-strip");
@@ -67,18 +68,5 @@ for (const { theme, viewport } of [
     expect(Math.abs(stripHeightAfter - stripHeightBefore)).toBeLessThanOrEqual(2);
     await sourcesSummary.click();
     await expect(page.locator("#detailRecommendations .d-facts-sources")).not.toHaveAttribute("open", "");
-
-    const tag = page.locator("#detailExtra .uni-tag").first();
-    const resting = await tag.evaluate((node) => ({
-      background: getComputedStyle(node).backgroundColor,
-      color: getComputedStyle(node).color,
-    }));
-    await tag.hover();
-    const hovered = await tag.evaluate((node) => ({
-      background: getComputedStyle(node).backgroundColor,
-      color: getComputedStyle(node).color,
-    }));
-    expect(hovered.background).not.toBe(resting.background);
-    expect(hovered.color).toBe(resting.color);
   });
 }

@@ -224,9 +224,9 @@
 
 .u-tour-inline-btn,
 .u-tour-btn {
-  min-height: 44px;
+  min-height: var(--control-height-lg);
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-base);
+  border-radius: var(--control-radius-md);
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -271,17 +271,27 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .u-tour-btn:hover,
-  .u-tour-inline-btn:hover,
-  .u-tour-btn[data-action="skip"]:hover {
+  .u-tour-btn:hover:not(:active),
+  .u-tour-inline-btn:hover:not(:active),
+  .u-tour-btn[data-action="skip"]:hover:not(:active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
   }
 
-  .u-tour-btn--primary:hover {
+  .u-tour-btn--primary:hover:not(:active) {
     background: var(--accent-strong);
     color: var(--text-inverse);
   }
+}
+
+:is(.u-tour-btn:not(.u-tour-btn--primary), .u-tour-inline-btn, .u-tour-btn[data-action="skip"]):active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.u-tour-btn--primary:active:not(:disabled) {
+  background: var(--accent-press);
+  color: var(--text-inverse);
 }
 
 @media (max-width: 768px) {

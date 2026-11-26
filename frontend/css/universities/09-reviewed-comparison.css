@@ -66,9 +66,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-height: 44px;
+  min-height: var(--control-height-lg);
   padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-base);
+  border-radius: var(--control-radius-md);
   background: var(--surface-soft);
   color: var(--text);
   font: inherit;
@@ -89,17 +89,17 @@
 
 .compare-reviewed__button--quiet {
   flex: none;
-  background: var(--surface-solid);
+  background: var(--surface-control-on-bg);
   box-shadow: var(--shadow-xs);
 }
 
 .compare-reviewed__button:active {
-  background: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
+  background: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .compare-reviewed__button--primary:active {
-  background: var(--accent-strong);
+  background: var(--accent-press);
   color: var(--text-inverse);
 }
 
@@ -158,8 +158,8 @@
 }
 
 .compare-reviewed__swap:active {
-  background: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
+  background: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .compare-reviewed__identity {
@@ -530,6 +530,7 @@
 .compare-reviewed__fee-option[aria-pressed="true"] {
   background: var(--accent-soft);
   color: var(--interaction-active-text);
+  cursor: default;
 }
 
 /* Program picker dialog */
@@ -595,20 +596,9 @@
 }
 
 .compare-picker__close {
-  display: inline-flex;
   flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--space-8);
-  height: var(--space-8);
-  padding: 0;
   border-radius: var(--radius-sm);
-  background: var(--surface-soft);
   color: var(--text-muted);
-  cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .compare-picker__body {
@@ -634,32 +624,7 @@
 }
 
 .compare-picker__search {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--space-10);
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-base);
-  background: var(--surface-soft);
   color: var(--text-muted);
-}
-
-.compare-picker__search:focus-within {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.compare-picker__search input {
-  flex: 1;
-  min-width: 0;
-  height: var(--space-10);
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: var(--text);
-  font: inherit;
-  font-size: var(--text-base);
-  outline: none;
 }
 
 .compare-picker__levels {
@@ -686,6 +651,7 @@
 .compare-picker__level[aria-pressed="true"] {
   background: var(--accent-soft);
   color: var(--interaction-active-text);
+  cursor: default;
 }
 
 .compare-picker__list {
@@ -726,9 +692,9 @@
   color: var(--interaction-active-text);
 }
 
-:is(.compare-picker__option, .compare-picker__level):active {
-  background-color: var(--interaction-active-surface);
-  color: var(--interaction-active-text);
+:is(.compare-picker__option, .compare-picker__level:not([aria-pressed="true"]), .compare-reviewed__fee-option:not([aria-pressed="true"]), .compare-picker__close):active {
+  background-color: var(--interaction-press-surface);
+  color: var(--text);
 }
 
 .compare-picker__option-text {
@@ -905,8 +871,8 @@
   :is(
     .compare-reviewed__button:not(:active),
     .compare-reviewed__swap:not(:active),
-    .compare-reviewed__fee-option:not([aria-pressed="true"]),
-    .compare-picker__close,
+    .compare-reviewed__fee-option:not([aria-pressed="true"], :active),
+    .compare-picker__close:not(:active),
     .compare-picker__level:not(:active, [aria-pressed="true"])
   ):hover {
     background: var(--interaction-hover-surface);
@@ -980,6 +946,9 @@
 
   .compare-reviewed__swap {
     align-self: flex-start;
+    min-inline-size: 0;
+    max-inline-size: 100%;
+    white-space: normal;
   }
 
   .compare-reviewed__identity {
@@ -1032,8 +1001,9 @@
     border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   }
 
+  /* Phones keep the bottom-sheet entrance; the shared top-layer fade still handles the exit. */
   .compare-picker[open] {
-    animation-name: motion-sheet-in;
+    animation: motion-sheet-in var(--motion-medium) var(--motion-ease-enter) both;
   }
 
   .compare-picker__head {

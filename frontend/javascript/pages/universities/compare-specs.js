@@ -607,6 +607,13 @@ const getDynamicExamCompareSpecs = (universities) => {
     return specs;
 };
 
+const COMPARE_EMPTY_CELL = "\u2014";
+
+const isEmptyCompareText = (value) => {
+    const clean = String(value || "").trim();
+    return !clean || clean === COMPARE_EMPTY_CELL || clean === t("common.na", "N/A");
+};
+
 export const buildCompareSpecs = (universities) => {
     const specs = [
         ...getBaseCompareSpecs(),
@@ -616,7 +623,7 @@ export const buildCompareSpecs = (universities) => {
     return specs.filter((spec) => {
         const values = universities.map((u) => compareSpecRawValue(spec, u));
         if (spec.type === "text") {
-            return values.some((value) => String(value || "").trim() && String(value || "").trim() !== t("common.na", "N/A"));
+            return values.some((value) => !isEmptyCompareText(value));
         }
         return values.some((value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value)));
     }).map((spec, index) => ({ ...spec, order: index }));
@@ -677,10 +684,12 @@ export const compareMetrics = (universities) => {
 };
 
 export const compareCell = (text, opts = {}) => {
-    const tone = opts.tone ? ` compare-cell--${opts.tone}` : "";
+    const empty = isEmptyCompareText(text);
+    const displayText = empty ? COMPARE_EMPTY_CELL : text;
+    const tone = opts.tone ? ` compare-cell--${opts.tone}` : (empty ? " compare-cell--empty" : "");
     const sub = opts.subHtml || (opts.sub ? `<small>${escapeHtml(opts.sub)}</small>` : "");
     const titleAttr = opts.title ? ` title="${escapeHtmlAttr(opts.title)}"` : "";
-    return `<td class="compare-cell${tone}"${titleAttr}><span>${escapeHtml(text || t("common.na", "N/A"))}</span>${sub}</td>`;
+    return `<td class="compare-cell${tone}"${titleAttr}><span>${escapeHtml(displayText)}</span>${sub}</td>`;
 };
 
 export const compareSectionRow = (label, kind, universities) => `
@@ -711,7 +720,7 @@ export const compareDataRow = (label, universities, renderValue, section = "") =
 export const compareSpecValue = (spec, u, metrics) => {
     const raw = compareSpecRawValue(spec, u);
     const text = raw === null || raw === undefined || raw === ""
-        ? t("common.na", "N/A")
+        ? COMPARE_EMPTY_CELL
         : (spec.formatter ? spec.formatter(raw, u) : String(raw));
     const bestIds = metrics.bestBySpec?.get(spec.key) || new Set();
     const sourceMeta = spec.sourceGetter

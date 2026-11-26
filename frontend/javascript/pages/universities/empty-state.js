@@ -114,7 +114,7 @@ export function buildEmptyStateModel({ onlySaved, summary }) {
  */
 export function renderEmptyStateCard(model, options = {}) {
   const buttons = model.actions
-    .map((item) => `<button type="button" class="u-state-card__action" data-action="${escapeHtml(item.action)}"${options.keepSaved ? " data-keep-saved" : ""}>${escapeHtml(item.label)}</button>`)
+    .map((item) => `<button type="button" class="ui-btn u-state-card__action" data-action="${escapeHtml(item.action)}"${options.keepSaved ? " data-keep-saved" : ""}>${escapeHtml(item.label)}</button>`)
     .join("");
   return `
     <div class="u-state-card u-state-card--empty" role="status">

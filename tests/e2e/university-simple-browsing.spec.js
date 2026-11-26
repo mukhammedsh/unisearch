@@ -168,10 +168,14 @@ async function chooseOption(page, item) {
     await saveScreenshot(page, `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-program-overview.png`);
   }
   await expectAccessibleTextContrast(option);
-  const selectionActions = page.locator("#admissionsReferenceSummary .admissions-selection__actions button");
+  const selectionSummary = page.locator("#admissionsReferenceSummary");
+  await expect(selectionSummary).toBeHidden();
+  await page.locator('.d-tab-btn[data-tab="tab-deadlines"]').click();
+  await expect(page.locator("#tab-deadlines")).toHaveClass(/active/);
+  await expect(selectionSummary).toBeVisible();
+  const selectionActions = selectionSummary.locator(".admissions-selection__actions button");
   await expect(selectionActions).toHaveCount(1);
   for (const action of await selectionActions.all()) await expectHoverAndActiveContrast(page, action);
-  await expect(page.locator("#tab-programs")).toHaveClass(/active/);
   await selectionActions.first().click();
   await expect(page.locator("#tab-admission")).toHaveClass(/active/);
   await page.locator('.d-tab-btn[data-tab="tab-programs"]').click();

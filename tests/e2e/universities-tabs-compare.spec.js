@@ -177,7 +177,9 @@ test.describe("catalog photo sources", () => {
       await page.goto("/index.html?lang=rus&q=KIMEP");
       await waitForUniversitiesReady(page);
       const missing = page.locator(`#universitiesList [data-uni-id="${kimep}"] .uni-media`);
-      await expect(missing.getByText("Фото кампуса недоступно")).toBeVisible();
+      await expect(missing.locator(".uni-media-empty")).toBeVisible();
+      await expect(missing.locator(".uni-media-empty svg")).toBeVisible();
+      await expect(missing.locator(".uni-media-empty")).toHaveText("");
       await expect(missing.locator("img")).toHaveCount(0);
       expect(await missing.evaluate((media) => getComputedStyle(media, "::after").content)).toBe("none");
 

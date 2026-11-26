@@ -6,7 +6,7 @@ Use this checklist to prepare a version. Follow `AGENTS.md` for versioning, bran
 
 1. Review `git status --short`, `git diff --stat`, the full diff, and untracked files. Check for unrelated files and secrets.
 2. Compare `package.json` with the latest version tag. If the package is ahead, continue that version. If it matches the latest tag, bump the smallest SemVer level justified by the change, for example `npm run bump:version -- patch`.
-3. Add a distinct, factual block to `CHANGELOG.md` for the current version. Update functional documentation affected by the changes; keep version history out of `README.md`.
+3. Add a distinct, factual block to `CHANGELOG.md` for the current version following [Writing CHANGELOG.md](#writing-changelogmd). Update functional documentation affected by the changes; keep version history out of `README.md`.
 4. Run the required checks from the repository root:
 
    ```bash
@@ -22,6 +22,15 @@ Use this checklist to prepare a version. Follow `AGENTS.md` for versioning, bran
    Activate `backend/.venv` before `npm run audit:data`. Run focused tests required by the changed behavior. Reserve broad suites for final pre-release validation.
 
 5. Review the staged diff. Make a local signed-off commit on a non-default branch only; follow `AGENTS.md` for the exact commit rules.
+
+## Writing CHANGELOG.md
+
+- **Audience and tone:** Write in English for humans (applicants, visitors, operators, and contributors), not as a `git diff` dump. Explain *what changed and why it matters* in plain language.
+- **Heading and summary:** Use `## X.Y.Z (YYYY-MM-DD) - Short descriptive title` (required by `.github/workflows/release.yml`), followed by a 1–2 sentence release summary for minor/major or substantial patch releases.
+- **Allowed sections:** Use only the standard Keep a Changelog headings in this order, omitting empty ones: `### Breaking Changes`, `### Added`, `### Changed`, `### Removed`, `### Fixed`, `### Security`, `### Maintenance` (use `Maintenance` only for internal tooling, dependencies, CI, or refactors with no direct user-facing category). Do not invent ad-hoc headings (`Improved`, `Updated`, `Tests`, `Catalog`, etc.).
+- **Bullet style:** Write one distinct change per bullet in 1–2 short sentences (~60–220 characters), starting with a clear verb (`Add`, `Show`, `Replace`, `Remove`, `Fix`, `Update`). Keep lists flat without nested sub-bullets or `Status:` blocks.
+- **Technical details:** Include public APIs, CLI commands, deploy or runtime impacts, CVE/package versions, and data-storage changes briefly where useful for operators or contributors.
+- **Leave out:** Parenthetical file-path lists, test filenames, internal CSS variable names, DOM IDs/selectors, internal planning labels (such as `Wave 1` or `Variant A`), and pure version-bump or housekeeping-only notes (`.github/workflows/release.yml` also rejects housekeeping-only releases).
 
 ## Publish after explicit permission
 

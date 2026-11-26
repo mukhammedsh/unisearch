@@ -1,7 +1,7 @@
 {
   "name": "unisearch-tests",
   "private": true,
-  "version": "10.8.1",
+  "version": "10.9.0",
   "description": "Test runner configuration for UniSearch backend and frontend E2E suites.",
   "scripts": {
     "build:frontend-env": "node frontend/scripts/generate-env-js.mjs",
@@ -24,6 +24,7 @@
     "check:stylelint": "stylelint \"frontend/css/**/*.css\"",
     "check:hardcoded-text": "node scripts/check-hardcoded-text.mjs",
     "check:inline-styles": "node scripts/check-inline-styles.mjs --strict",
+    "check:ui-primitives": "node scripts/check-ui-primitives.mjs --strict",
     "fix:encoding": "node scripts/check-encoding.mjs --fix",
     "fix:i18n": "node scripts/i18n-pack-revision.mjs --fix",
     "lint:backend": "uvx --no-build --from ruff==0.17.6 ruff check --config backend/pyproject.toml backend/app",
@@ -36,7 +37,7 @@
     "test:smoke": "npm run test:unit && npx playwright test tests/e2e/smoke-home.spec.js --config=playwright.local.config.js",
     "test:e2e:pr": "npx playwright test --project=chromium --config=playwright.local.config.js",
     "test:e2e:nightly": "npx playwright test --project=chromium --project=firefox --project=webkit",
-    "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:stylelint && npm run audit:css && npm run check:hardcoded-text && npm run check:inline-styles && npm run check:i18n && npm run lint:frontend && npm run audit:dead-code && npm run audit:duplicates && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
+    "test:all": "npm run check:version && npm run check:encoding && npm run check:tokens && npm run check:design-lint && npm run check:stylelint && npm run audit:css && npm run check:hardcoded-text && npm run check:inline-styles && npm run check:ui-primitives && npm run check:i18n && npm run lint:frontend && npm run audit:dead-code && npm run audit:duplicates && npm run test:backend && npm run test:unit && npm run test:e2e:pr",
     "typecheck:backend": "node scripts/typecheck-backend.mjs",
     "prepare": "git config core.hooksPath .githooks"
   },

@@ -263,6 +263,17 @@ function normalizeAdmissionChoiceSelection(selection) {
   };
 }
 
+/**
+ * The identity normalization keeps unique per profile: one exam per canonical id and date.
+ * Survives `normalizeProfileData`, which rebuilds the exam objects.
+ * @param {{ id?: string, exam?: string, taken_on?: string }} row
+ * @returns {string}
+ */
+export function profileExamIdentity(row) {
+  const normalizedId = canonicalizeExamId(String(row?.id || row?.exam || "").trim());
+  return `${canonicalProfileExamKey(normalizedId)}::${normalizeEvidenceDate(row?.taken_on)}`;
+}
+
 export function isFutureProfile(raw) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return false;
   const v = Number(raw._v);

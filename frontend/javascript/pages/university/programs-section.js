@@ -528,23 +528,23 @@ export function renderProgramsSection({
       <form class="admissions-programs__toolbar admissions-programs__toolbar--catalog" data-program-search-form>
         <div class="admissions-context__field">
           <label for="program-search-input">${escapeHtml(t("university.admissions.catalog.search_label", "Study option or subject"))}</label>
-          <span class="program-search">
+          <span class="ui-input-composite ui-input-composite--lg program-search">
             ${renderInlineIcon("magnifying-glass", 18, "program-search__icon")}
             <input
               type="search"
               id="program-search-input"
-              class="program-search__input"
+              class="ui-input program-search__input"
               maxlength="200"
               placeholder="${escapeHtmlAttr(t("university.programs.search_placeholder", "Search programs..."))}"
               autocomplete="off"
               data-program-search
             />
-            <button type="button" class="program-search__clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
+            <button type="button" class="ui-btn ui-btn--sm ui-btn--icon ui-btn--ghost program-search__clear" data-program-search-clear hidden aria-label="${escapeHtmlAttr(t("university.programs.search_clear", "Clear search"))}">
               ${renderInlineIcon("x-mark", 16)}
             </button>
           </span>
         </div>
-        <button type="submit" data-program-search-submit>${escapeHtml(t("university.admissions.catalog.search", "Search"))}</button>
+        <button type="submit" class="ui-btn ui-btn--lg ui-btn--primary" data-program-search-submit>${escapeHtml(t("university.admissions.catalog.search", "Search"))}</button>
       </form>
       <div class="program-list" role="list">
         ${displayItems.map((item, displayIdx) => {
@@ -658,7 +658,7 @@ export function renderProgramsSection({
               </div>
               <div class="program-card__select-actions">${item.isSelected
                 ? `<span class="program-card__selection-state" data-selected-program role="status">${renderInlineIcon("check", 16)}${escapeHtml(t("admission.choice.selected"))}</span>`
-                : `<button type="button" class="program-card__admission-action" data-program-admission="${escapeHtmlAttr(selectionToken)}">${escapeHtml(t("university.admissions.catalog.select_program"))}</button>`}</div>
+                : `<button type="button" class="ui-btn ui-btn--sm program-card__admission-action" data-program-admission="${escapeHtmlAttr(selectionToken)}">${escapeHtml(t("university.admissions.catalog.select_program"))}</button>`}</div>
             </article>
           `;
         }).join("")}

@@ -78,25 +78,8 @@ body[data-page="error-404"] {
 }
 
 .error-page .error-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
   padding: 0 var(--space-6);
-  border-radius: var(--radius-md);
   font-size: var(--text-base);
-  font-weight: var(--font-weight-medium);
-  text-decoration: none;
-  cursor: pointer;
-  color: var(--text-inverse);
-  background: var(--accent);
-  transition: background-color var(--motion-fast, 0.15s) ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .error-page .error-btn:hover {
-    background: var(--accent-strong);
-  }
 }
 
 /* --------------------------------------------------------------------------
@@ -119,11 +102,5 @@ body[data-page="error-404"] {
   .error-page .error-btn {
     width: 100%;
     max-width: 280px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .error-page .error-btn {
-    transition: none;
   }
 }

@@ -56,15 +56,17 @@
   --leading-loose: 1.7;
   --accent: #4F46E5;
   --accent-text: #4338CA;
-  --accent2: var(--accent);
-  --accent-highlight: var(--accent);
   --accent-strong: #3730A3;
+  --accent-press: #312E81;
   --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
   --accent-faint: color-mix(in oklab, var(--accent) 6%, transparent);
   --accent-panel: color-mix(in oklab, var(--accent) 8%, transparent);
-  --accent-active-surface: color-mix(in srgb, var(--accent) 18%, var(--surface-solid));
+  --accent-active-surface: color-mix(in oklab, var(--accent) 16%, var(--surface-solid));
+  --accent-active-hover-surface: color-mix(in oklab, var(--accent) 22%, var(--surface-solid));
+  --accent-active-press-surface: color-mix(in oklab, var(--accent) 28%, var(--surface-solid));
   --interaction-hover-text: var(--text);
   --interaction-hover-surface: #E6E9F0;
+  --interaction-press-surface: #DCE0E9;
   --interaction-active-text: var(--accent-text);
   --interaction-active-surface: var(--accent-soft);
   --focus-ring: var(--accent);
@@ -74,6 +76,20 @@
   --surface-solid: #FFFFFF;
   --surface: rgba(255, 255, 255, 0.90);
   --surface-soft: #ECEFF4;
+  --surface-raised: var(--surface-solid);
+  --surface-raised-hover: var(--interaction-hover-surface);
+  --surface-raised-press: var(--interaction-press-surface);
+  --dropdown-surface: var(--surface-solid);
+  --dropdown-radius: var(--radius-base);
+  --dropdown-row-height: 36px;
+  --control-height-sm: 32px;
+  --control-height-md: 40px;
+  --control-height-lg: 44px;
+  --control-radius-sm: var(--radius-sm);
+  --control-radius-md: var(--radius-base);
+  --surface-control-on-bg: var(--surface-solid);
+  --control-badge-bg: var(--surface-soft);
+  --control-badge-hover-bg: var(--surface-solid);
   --control-bg: var(--surface-soft);
   --control-shadow: var(--shadow-micro);
   --tour-skip-bg: var(--surface-soft);
@@ -84,7 +100,7 @@
   --line: rgba(15, 23, 42, 0.16);
   --line-strong: rgba(15, 23, 42, 0.28);
   --line-faint: rgba(15, 23, 42, 0.08);
-  --line-accent: color-mix(in srgb, var(--accent) 28%, transparent);
+  --line-accent: color-mix(in oklab, var(--accent) 28%, transparent);
   --line-grant: var(--grant-soft-strong);
   --line-warning: rgba(245, 158, 11, 0.32);
   --line-danger: rgba(239, 68, 68, 0.32);
@@ -127,37 +143,26 @@
   --color-warning: #92400e;
   --color-warning-bg: #fff7ed;
   --color-warning-bright: #facc15;
-  --color-rank-gold: #ca8a04;
-  --line-rank-gold: rgba(202, 138, 4, 0.48);
-  --color-rank-bronze: #92400e;
-  --line-rank-bronze: rgba(180, 83, 9, 0.42);
   --color-info: #1d4ed8;
   --color-info-muted: #1e40af;
   --color-info-bg: #eff6ff;
   --line-info: rgba(29, 78, 216, 0.28);
   --uni-status-match-bg: var(--accent-soft);
-  --uni-status-match-border: color-mix(in srgb, var(--accent) 28%, transparent);
   --uni-status-match-text: var(--accent-text);
   --uni-status-success-bg: var(--color-success-bg);
-  --uni-status-success-border: rgba(16, 185, 129, 0.18);
   --uni-status-success-text: var(--color-success);
   --uni-status-warning-bg: var(--color-warning-bg);
-  --uni-status-warning-border: rgba(245, 158, 11, 0.32);
   --uni-status-warning-text: var(--color-warning);
   --uni-status-info-bg: var(--color-info-bg);
-  --uni-status-info-border: rgba(29, 78, 216, 0.28);
   --uni-status-info-text: var(--color-info);
   --uni-status-overflow-bg: #111827;
   --uni-status-overflow-text: var(--text-inverse);
   --uni-status-overflow-shadow: var(--shadow-micro);
-  --uni-status-hover-border: #111827;
   --skeleton-base: #e5e7eb;
   --skeleton-highlight: rgba(255, 255, 255, 0.65);
-  --selection-bg: color-mix(in srgb, var(--accent) 16%, transparent);
+  --selection-bg: color-mix(in oklab, var(--accent) 16%, transparent);
   --selection-text: #111827;
   --text-inverse: #ffffff;
-  --surface-badge: #ffffff;
-  --surface-badge-text: #0f172a;
   --backdrop: rgba(0, 0, 0, 0.45);
   --media-caption-bg: rgba(0, 0, 0, 0.62);
   --media-viewer-bg: #000;
@@ -167,12 +172,14 @@
   --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 2px 8px rgba(15, 23, 42, 0.04);
   --shadow: var(--shadow-sm);
   --shadow-md: 0 16px 36px rgba(15, 23, 42, 0.12);
-  --shadow-micro: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.04);
-  --shadow-card: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 4px 16px rgba(15, 23, 42, 0.04);
-  --shadow-card-hover: 0 0 0 1px rgba(79, 70, 229, 0.18), 0 10px 28px rgba(15, 23, 42, 0.08);
+  --shadow-dropdown-trigger: 0 0 0 1px rgba(15, 23, 42, 0.09), 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-dropdown: 0 0 0 1px rgba(15, 23, 42, 0.09), 0 16px 36px rgba(15, 23, 42, 0.12);
+  --shadow-micro: 0 1px 2px rgba(15, 23, 42, 0.05), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 4px 16px rgba(15, 23, 42, 0.05);
+  --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08), 0 12px 28px rgba(15, 23, 42, 0.08);
   --shadow-sticky-top: 0 -1px 0 rgba(15, 23, 42, 0.08), 0 -10px 28px rgba(15, 23, 42, 0.08);
-  --line-fade: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.08) 25%, rgba(15, 23, 42, 0.08) 75%, transparent 100%);
   --footer-icon-filter: none;
+  --cover-map-tile-filter: none;
   --z-card-badge: 4;
   --z-card-popover: 5;
   --z-card-tooltip: 10;
@@ -187,8 +194,8 @@
   --z-toast: 9000;
   --z-loading-bar: 9400;
   --z-initial-loader: 10000;
-  --scrollbar-thumb: color-mix(in srgb, var(--text-muted) 38%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 56%, transparent);
+  --scrollbar-thumb: color-mix(in oklab, var(--text-muted) 38%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklab, var(--text-muted) 56%, transparent);
   --scrollbar-track: transparent;
   /* Runtime JS-driven layout & progress custom properties */
   --dropdown-available-height: 220px;
@@ -207,19 +214,30 @@
   --accent: #5850EC;
   --accent-text: #A5B4FC;
   --accent-strong: #6E68F2;
+  --accent-press: #4338CA;
   --interaction-hover-text: var(--text);
   --interaction-hover-surface: #282C34;
+  --interaction-press-surface: #1B1E24;
   --interaction-active-text: var(--accent-text);
   --focus-ring: var(--text);
   --accent-soft: color-mix(in oklab, var(--accent) 22%, transparent);
   --accent-faint: color-mix(in oklab, var(--accent) 14%, transparent);
   --accent-panel: color-mix(in oklab, var(--accent) 18%, transparent);
-  --accent-active-surface: color-mix(in srgb, var(--accent) 26%, var(--surface-solid));
+  --accent-active-surface: color-mix(in oklab, var(--accent) 26%, var(--surface-solid));
+  --accent-active-hover-surface: color-mix(in oklab, var(--accent) 33%, var(--surface-solid));
+  --accent-active-press-surface: color-mix(in oklab, var(--accent) 18%, var(--surface-solid));
   --bg: #0B0C0E;
   --bg-soft: #111317;
   --surface-solid: #15181D;
   --surface: rgba(21, 24, 29, 0.88);
   --surface-soft: #20242B;
+  --surface-raised: #2B303A;
+  --surface-raised-hover: #343A46;
+  --surface-raised-press: #252A33;
+  --dropdown-surface: var(--surface-soft);
+  --surface-control-on-bg: var(--surface-soft);
+  --control-badge-bg: var(--surface-raised);
+  --control-badge-hover-bg: var(--surface-raised-hover);
   --tour-skip-bg: var(--surface-soft);
   --card: var(--surface-solid);
   --text: #F3F4F6;
@@ -228,7 +246,7 @@
   --line: rgba(255, 255, 255, 0.16);
   --line-strong: rgba(255, 255, 255, 0.28);
   --line-faint: rgba(255, 255, 255, 0.08);
-  --line-accent: color-mix(in srgb, var(--accent) 38%, transparent);
+  --line-accent: color-mix(in oklab, var(--accent) 38%, transparent);
   --line-grant: var(--grant-soft-strong);
   --line-warning: rgba(245, 158, 11, 0.40);
   --line-danger: rgba(239, 68, 68, 0.40);
@@ -243,24 +261,17 @@
   --color-warning: #fde68a;
   --color-warning-bg: rgba(245, 158, 11, 0.12);
   --color-warning-bright: #fbbf24;
-  --color-rank-gold: #fcd34d;
-  --line-rank-gold: rgba(250, 204, 21, 0.50);
-  --color-rank-bronze: #d6a06d;
-  --line-rank-bronze: rgba(214, 160, 109, 0.50);
   --color-info: #93c5fd;
   --color-info-muted: #60a5fa;
   --color-info-bg: rgba(59, 130, 246, 0.14);
   --line-info: rgba(147, 197, 253, 0.32);
-  --uni-status-hover-border: #111827;
   --uni-status-overflow-bg: #090a0b;
-  --uni-status-overflow-shadow: 0 0 0 1px color-mix(in srgb, var(--line) 40%, transparent);
+  --uni-status-overflow-shadow: 0 0 0 1px color-mix(in oklab, var(--line) 40%, transparent);
   --skeleton-base: #222427;
   --skeleton-highlight: rgba(255, 255, 255, 0.08);
-  --selection-bg: color-mix(in srgb, var(--accent) 35%, transparent);
+  --selection-bg: color-mix(in oklab, var(--accent) 35%, transparent);
   --selection-text: #ffffff;
   --text-inverse: #ffffff;
-  --surface-badge: #ffffff;
-  --surface-badge-text: #0f172a;
   --backdrop: rgba(0, 0, 0, 0.65);
   --media-caption-bg: rgba(0, 0, 0, 0.72);
   --tooltip-bg: #222427;
@@ -269,14 +280,16 @@
   --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
   --shadow: var(--shadow-sm);
   --shadow-md: 0 24px 60px rgba(0, 0, 0, 0.5);
-  --shadow-micro: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 10px rgba(0, 0, 0, 0.35);
-  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.07), 0 6px 20px rgba(0, 0, 0, 0.42);
-  --shadow-card-hover: 0 0 0 1px rgba(165, 180, 252, 0.24), 0 12px 30px rgba(0, 0, 0, 0.56);
+  --shadow-dropdown-trigger: 0 0 0 1px rgba(255, 255, 255, 0.10), 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-dropdown: 0 0 0 1px rgba(255, 255, 255, 0.10), 0 18px 44px rgba(0, 0, 0, 0.58);
+  --shadow-micro: 0 1px 3px rgba(0, 0, 0, 0.32), 0 2px 10px rgba(0, 0, 0, 0.28);
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.32), 0 8px 22px rgba(0, 0, 0, 0.36);
+  --shadow-card-hover: 0 4px 14px rgba(0, 0, 0, 0.42), 0 14px 32px rgba(0, 0, 0, 0.48);
   --shadow-sticky-top: 0 -1px 0 rgba(255, 255, 255, 0.08), 0 -12px 32px rgba(0, 0, 0, 0.48);
-  --line-fade: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 75%, transparent 100%);
   --footer-icon-filter: invert(1);
-  --scrollbar-thumb: color-mix(in srgb, var(--text-muted) 45%, transparent);
-  --scrollbar-thumb-hover: color-mix(in srgb, var(--text-muted) 65%, transparent);
+  --cover-map-tile-filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9) saturate(0.75);
+  --scrollbar-thumb: color-mix(in oklab, var(--text-muted) 45%, transparent);
+  --scrollbar-thumb-hover: color-mix(in oklab, var(--text-muted) 65%, transparent);
   --scrollbar-track: transparent;
   color-scheme: dark;
 }
@@ -294,6 +307,12 @@
   :root {
     --layout-page-gutter: var(--space-3);
     --layout-section-gap: var(--space-5);
+  }
+}
+
+@media (pointer: coarse) {
+  :root {
+    --dropdown-row-height: 44px;
   }
 }
 
@@ -475,7 +494,7 @@ p, li {
   border-radius: 0 var(--radius-full) var(--radius-full) 0;
   background: var(--accent);
   box-shadow: none;
-  animation: global-loading-slide var(--motion-loading-loop, 1.1s) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: global-loading-slide var(--motion-loading-loop) var(--motion-ease-standard) infinite;
 }
 
 @keyframes global-loading-slide {
@@ -525,15 +544,120 @@ a {
   border: none;
 }
 
+/* Shared input, select, and composite field primitives */
+.ui-input,
+.ui-select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-block-size: var(--control-height-md);
+  padding: 0 var(--space-3);
+  border: none;
+  border-radius: var(--control-radius-md);
+  background: var(--control-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  box-shadow: none;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.ui-input--sm,
+.ui-select--sm {
+  min-block-size: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  border-radius: var(--control-radius-sm);
+  font-size: var(--text-sm);
+}
+
+.ui-input--lg,
+.ui-select--lg {
+  min-block-size: var(--control-height-lg);
+  padding: 0 var(--space-4);
+}
+
+.ui-input--textarea {
+  height: auto;
+  min-block-size: 90px;
+  padding: var(--space-3) var(--space-4);
+  resize: vertical;
+}
+
+.ui-input::placeholder {
+  color: var(--text-muted);
+}
+
+.ui-select {
+  cursor: pointer;
+}
+
+.ui-input:is(:user-invalid, .is-invalid, [aria-invalid="true"]),
+.ui-select:is(:user-invalid, .is-invalid, [aria-invalid="true"]) {
+  box-shadow: 0 0 0 2px var(--color-danger);
+}
+
+.ui-input:is(:user-invalid, .is-invalid, [aria-invalid="true"]):focus-visible,
+.ui-select:is(:user-invalid, .is-invalid, [aria-invalid="true"]):focus-visible {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
 /* Composite fields keep inputs, icons, and embedded actions in one state surface. */
 .ui-input-composite {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
   min-width: 0;
-  background: var(--surface-soft);
+  min-block-size: var(--control-height-md);
+  padding: 0 var(--space-3);
+  border-radius: var(--control-radius-md);
+  background: var(--control-bg);
+  transition: background-color var(--motion-fast) var(--motion-ease-standard);
 }
 
-/* Contextual surface scoping: inside soft containers, nested controls return to solid with micro-elevation. */
+.ui-input-composite--lg {
+  min-block-size: var(--control-height-lg);
+}
+
+.ui-input-composite > .ui-input,
+.ui-input-composite input:not([type="checkbox"], [type="radio"], [type="range"]) {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-block-size: inherit;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+.ui-input-composite > .ui-input:focus-visible,
+.ui-input-composite input:not([type="checkbox"], [type="radio"], [type="range"]):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.ui-input-composite:has(:is(:user-invalid, .is-invalid, [aria-invalid="true"])) {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 2px;
+}
+
+.ui-input-composite :is(:user-invalid, .is-invalid, [aria-invalid="true"]) {
+  box-shadow: none;
+}
+
+/* Contextual surface scoping: inside soft containers, nested controls step up to --surface-raised (--surface-solid in light, lighter slate in dark) with --shadow-xs and --surface-raised-hover. */
 :where(
+  .overview-summary__card,
   .program-card,
   .admission-funding-option,
   .finance-summary-container,
@@ -551,17 +675,206 @@ a {
   .lang-item,
   .profile-summary
 ) {
-  --control-bg: var(--surface-solid);
+  --control-bg: var(--surface-raised);
   --control-shadow: var(--shadow-xs);
+  --interaction-hover-surface: var(--surface-raised-hover);
+  --interaction-press-surface: var(--surface-raised-press);
 }
 
-.ui-input-composite:focus-within {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
+  .ui-input-composite:has(> :disabled) {
+    opacity: var(--interaction-disabled-opacity);
+    cursor: not-allowed;
+  }
+
+  .ui-input-composite:focus-within {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+.ui-switch {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 36px;
+  height: 20px;
+  flex: 0 0 36px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--line-strong);
+  cursor: pointer;
+  transition: background-color var(--motion-medium) var(--motion-ease-standard);
 }
 
-.ui-input-composite:has(> :disabled) {
-  opacity: var(--interaction-disabled-opacity);
+.ui-switch::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-circle);
+  background: var(--text-inverse);
+  box-shadow: var(--shadow-xs);
+  transform: translateX(0);
+  transition:
+    transform var(--motion-medium) var(--motion-ease-enter),
+    background-color var(--motion-medium) var(--motion-ease-standard);
+}
+
+.ui-switch:checked {
+  background: var(--accent);
+}
+
+.ui-switch:checked::before {
+  transform: translateX(16px);
+}
+
+/* Shared button and segmented-toggle primitives */
+.ui-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-block-size: var(--control-height-md);
+  padding: 0 var(--space-4);
+  border: none;
+  border-radius: var(--control-radius-md);
+  background: var(--control-bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--leading-tight);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.ui-btn--sm {
+  min-block-size: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  border-radius: var(--control-radius-sm);
+}
+
+.ui-btn--lg {
+  min-block-size: var(--control-height-lg);
+}
+
+.ui-btn--icon {
+  inline-size: var(--control-height-md);
+  min-inline-size: var(--control-height-md);
+  min-block-size: var(--control-height-md);
+  padding: 0;
+  gap: 0;
+}
+
+.ui-btn--sm.ui-btn--icon {
+  inline-size: var(--control-height-sm);
+  min-inline-size: var(--control-height-sm);
+  min-block-size: var(--control-height-sm);
+}
+
+.ui-btn--lg.ui-btn--icon {
+  inline-size: var(--control-height-lg);
+  min-inline-size: var(--control-height-lg);
+  min-block-size: var(--control-height-lg);
+}
+
+.ui-btn--primary {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+.ui-btn--on-bg {
+  background: var(--surface-control-on-bg);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+}
+
+.ui-btn--subtle {
+  background: var(--control-bg);
+  color: var(--text);
+  box-shadow: var(--control-shadow);
+}
+
+.ui-btn--ghost {
+  background: transparent;
+  color: var(--text-muted);
+  box-shadow: none;
+}
+
+.ui-btn--danger-soft {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+.ui-btn[aria-pressed="true"] {
+  background: var(--accent-active-surface);
+  color: var(--interaction-active-text);
+}
+
+.ui-segmented {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-block-size: var(--control-height-md);
+  padding: 0;
+  gap: 0;
+  border-radius: var(--control-radius-md);
+  background: var(--surface-control-on-bg);
+  color: var(--text);
+  box-shadow: var(--shadow-xs);
+  flex-shrink: 0;
+}
+
+.ui-segmented__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--control-height-md);
+  min-block-size: var(--control-height-md);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted);
+  line-height: 0;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--motion-ease-standard),
+    color var(--motion-fast) var(--motion-ease-standard),
+    box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.ui-segmented__item:first-child {
+  border-start-start-radius: inherit;
+  border-end-start-radius: inherit;
+}
+
+.ui-segmented__item:last-child {
+  border-start-end-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+.ui-segmented__item:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+
+.ui-segmented__item:is(.active, [aria-pressed="true"]) {
+  background: var(--accent-active-surface);
+  color: var(--interaction-active-text);
+  box-shadow: none;
+  cursor: default;
 }
 
 :where(a[href], button, input, select, textarea, summary, [role="button"], [role="tab"], [tabindex="0"], .custom-select-trigger):focus-visible {
@@ -593,8 +906,50 @@ textarea:disabled,
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .ui-input-composite:hover {
+  .ui-btn:where(:not(.ui-btn--primary, .ui-btn--danger-soft, [aria-pressed="true"])):hover:where(:not(:disabled, :active)) {
     background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .ui-btn--primary:hover:not(:disabled, :active) {
+    background: var(--accent-strong);
+    color: var(--text-inverse);
+  }
+
+  .ui-btn--danger-soft:hover:not(:disabled, :active) {
+    background: color-mix(in oklab, var(--color-danger) 14%, var(--color-danger-bg));
+    color: var(--color-danger);
+  }
+
+  .ui-btn[aria-pressed="true"]:hover:not(:disabled, :active) {
+    background: var(--accent-active-hover-surface);
+    color: var(--interaction-active-text);
+  }
+
+  .ui-segmented__item:not(.active, [aria-pressed="true"]):hover:not(:disabled, :active) {
+    background: var(--interaction-hover-surface);
+    color: var(--interaction-hover-text);
+  }
+
+  .ui-input:hover:not(:disabled, :read-only),
+  .ui-select:hover:not(:disabled),
+  .ui-input-composite:hover:not(:has(> :disabled)) {
+    background: var(--interaction-hover-surface);
+  }
+
+  .ui-input-composite > .ui-input:hover,
+  .ui-input-composite input:not([type="checkbox"], [type="radio"], [type="range"]):hover {
+    background: transparent;
+  }
+
+  label:has(> .ui-switch:not(:disabled)):hover:not(:active) .ui-switch:not(:checked),
+  .ui-switch:not(:disabled, :checked):hover:not(:active) {
+    background: color-mix(in oklab, var(--text-muted) 56%, transparent);
+  }
+
+  label:has(> .ui-switch:not(:disabled)):hover:not(:active) .ui-switch:checked,
+  .ui-switch:not(:disabled):checked:hover:not(:active) {
+    background: var(--accent-strong);
   }
 
   :where(a[href]:not([class])):hover {
@@ -603,6 +958,47 @@ textarea:disabled,
 
   :where(details) > summary:not(:active):hover {
     color: var(--accent-text);
+  }
+}
+
+label:has(> .ui-switch:not(:disabled)):active .ui-switch:not(:checked),
+.ui-switch:not(:disabled, :checked):active {
+  background: color-mix(in oklab, var(--text-muted) 68%, transparent);
+}
+
+label:has(> .ui-switch:not(:disabled)):active .ui-switch:checked,
+.ui-switch:not(:disabled):checked:active {
+  background: var(--accent-press);
+}
+
+.ui-btn:where(:not(.ui-btn--primary, .ui-btn--danger-soft, [aria-pressed="true"])):active:where(:not(:disabled)),
+.ui-segmented__item:not(.active, [aria-pressed="true"]):active:not(:disabled) {
+  background: var(--interaction-press-surface);
+  color: var(--text);
+}
+
+.ui-btn--primary:active:not(:disabled) {
+  background: var(--accent-press);
+  color: var(--text-inverse);
+}
+
+.ui-btn--danger-soft:active:not(:disabled) {
+  background: color-mix(in oklab, var(--color-danger) 22%, var(--color-danger-bg));
+  color: var(--color-danger);
+}
+
+.ui-btn[aria-pressed="true"]:active:not(:disabled) {
+  background: var(--accent-active-press-surface);
+  color: var(--interaction-active-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-btn,
+  .ui-segmented__item,
+  .ui-input,
+  .ui-select,
+  .ui-input-composite {
+    transition: none;
   }
 }
 
@@ -628,7 +1024,6 @@ dialog::backdrop {
     --line-strong: CanvasText;
     --focus-ring: Highlight;
     --accent: Highlight;
-    --interaction-focus-ring: Highlight;
     --scrollbar-thumb: CanvasText;
     --scrollbar-track: Canvas;
   }
@@ -653,39 +1048,36 @@ dialog::backdrop {
   }
 
   .custom-select-trigger,
+  .ui-input,
+  .ui-select,
   .ui-input-composite,
   .profile-input,
   .u-input,
-  .settings-switch-track,
-  .compare-diff-toggle__track,
-  .u-reviewed-toggle__input,
+  .overview-summary__levels > .overview-summary__link,
+  .program-card__admission-action,
+  .ui-switch,
   .profile-gpa-scale__option input {
     outline: 1px solid CanvasText;
   }
 
-  .settings-switch-thumb,
-  .compare-diff-toggle__thumb,
-  .u-reviewed-toggle__input::before {
+  .ui-switch::before {
     background: CanvasText;
   }
 
-  .settings-switch-input:checked + .settings-switch-track,
-  .compare-diff-toggle input:checked + .compare-diff-toggle__track,
-  .u-reviewed-toggle__input:checked,
+  .ui-switch:checked,
   .profile-gpa-scale__option input:checked {
     background: Highlight;
     outline: 2px solid Highlight;
   }
 
-  .settings-switch-input:checked + .settings-switch-track .settings-switch-thumb,
-  .compare-diff-toggle input:checked + .compare-diff-toggle__track .compare-diff-toggle__thumb,
-  .u-reviewed-toggle__input:checked::before,
+  .ui-switch:checked::before,
   .profile-gpa-scale__option input:checked::before {
     background: HighlightText;
     outline: 1px solid CanvasText;
   }
 
   :where(.is-invalid, [aria-invalid="true"], input:user-invalid, select:user-invalid, textarea:user-invalid),
+  .ui-input-composite:has(:is(:user-invalid, .is-invalid, [aria-invalid="true"])),
   .profile-budget--with-unit:has(.profile-input:is(:user-invalid, .is-invalid, [aria-invalid="true"])) {
     outline: 2px solid Highlight;
     outline-offset: 1px;

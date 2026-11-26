@@ -355,15 +355,15 @@ function headHtml(column, index, photos) {
   const scope = columnScope(column);
   const text = scopeText(column);
   const action = scope === "error"
-    ? `<button type="button" class="compare-reviewed__button" data-compare-retry="${escapeHtmlAttr(column.id)}">${heroIcon("arrow-path", "ui-icon ui-icon--16")}<span>${escapeHtml(label("retry"))}</span></button>`
-    : `<button type="button" class="compare-reviewed__button${["choose", "route", "mismatch"].includes(scope) ? " compare-reviewed__button--primary" : ""}" data-compare-pick="${escapeHtmlAttr(column.id)}"${scope === "loading" ? " disabled" : ""}>${heroIcon(column.context.study_option_id ? "pencil-square" : "academic-cap", "ui-icon ui-icon--16")}<span>${escapeHtml(label(scope === "route" ? "action.choose_route" : column.context.study_option_id ? "action.change" : "action.choose"))}</span></button>`;
+    ? `<button type="button" class="ui-btn ui-btn--sm compare-reviewed__button" data-compare-retry="${escapeHtmlAttr(column.id)}">${heroIcon("arrow-path", "ui-icon ui-icon--16")}<span>${escapeHtml(label("retry"))}</span></button>`
+    : `<button type="button" class="ui-btn ui-btn--sm compare-reviewed__button${["choose", "route", "mismatch"].includes(scope) ? " ui-btn--primary compare-reviewed__button--primary" : ""}" data-compare-pick="${escapeHtmlAttr(column.id)}"${scope === "loading" ? " disabled" : ""}>${heroIcon(column.context.study_option_id ? "pencil-square" : "academic-cap", "ui-icon ui-icon--16")}<span>${escapeHtml(label(scope === "route" ? "action.choose_route" : column.context.study_option_id ? "action.change" : "action.choose"))}</span></button>`;
   return `<article class="compare-reviewed__head" data-uni-id="${escapeHtmlAttr(column.id)}" data-compare-slot="${index + 1}" data-scope="${escapeHtmlAttr(scope)}">
     ${compareCampusHtml(column.id, photos)}
     <div class="compare-reviewed__identity-bar">
       <a class="compare-reviewed__identity" href="${escapeHtmlAttr(detailHref(column))}"${linkAttrs()}>
         <span class="compare-reviewed__identity-text"><strong>${escapeHtml(name)}</strong><small>${escapeHtml(compareLocationText(column.university))}</small></span>
       </a>
-      <button type="button" class="compare-reviewed__swap" data-compare-swap="${escapeHtmlAttr(column.id)}">${heroIcon("arrows-right-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.swap_university"))}</span></button>
+      <button type="button" class="ui-btn ui-btn--sm compare-reviewed__swap" data-compare-swap="${escapeHtmlAttr(column.id)}">${heroIcon("arrows-right-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.swap_university"))}</span></button>
     </div>
     <div class="compare-reviewed__scope" aria-live="polite">
       <span class="compare-reviewed__scope-label">${escapeHtml(label("scope.label"))}</span>
@@ -396,7 +396,7 @@ export function renderReviewedComparisonPage(columns, { budgetUsd, profileExamId
         <p class="compare-reviewed__intro">${escapeHtml(label("intro"))}</p>
         <p class="compare-reviewed__hint">${escapeHtml(label("heads_note"))}</p>
       </div>
-      <button class="compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
+      <button class="ui-btn ui-btn--sm ui-btn--ghost compare-reviewed__button compare-reviewed__button--quiet" type="button" data-action="back-to-catalog">${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(t("universities.compare.back_to_catalog"))}</span></button>
     </header>
     <div class="compare-reviewed__heads" data-compare-heads>
       ${columns.map((column, index) => headHtml(column, index, photos)).join("")}
@@ -416,9 +416,25 @@ function loadingHtml() {
   </div>`;
 }
 
+/**
+ * Removes a closed `.motion-top-layer` dialog once its fade-out has finished (at once with reduced
+ * motion or when nothing is running), so the exit transition is not cut off.
+ * @param {HTMLDialogElement} dialog
+ */
+function removeAfterExitTransition(dialog) {
+  const running = typeof dialog.getAnimations === "function" ? dialog.getAnimations() : [];
+  if (!running.length) {
+    dialog.remove();
+    return;
+  }
+  void Promise.allSettled(running.map((animation) => animation.finished)).then(() => {
+    if (!dialog.open) dialog.remove();
+  });
+}
+
 function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   const dialog = document.createElement("dialog");
-  dialog.className = "compare-picker";
+  dialog.className = "compare-picker motion-top-layer";
   dialog.setAttribute("closedby", "any");
   dialog.setAttribute("aria-labelledby", labelledBy);
   if (!("closedBy" in HTMLDialogElement.prototype)) {
@@ -432,7 +448,7 @@ function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   }
   dialog.addEventListener("close", () => {
     onClose?.();
-    dialog.remove();
+    removeAfterExitTransition(dialog);
     if (trigger?.isConnected) trigger.focus();
   });
   return dialog;
@@ -446,23 +462,23 @@ function pickerPanelHtml({ titleId, title, subtitle = "", body }) {
         <h2 id="${escapeHtmlAttr(titleId)}">${escapeHtml(title)}</h2>
         ${subtitle ? `<p>${escapeHtml(subtitle)}</p>` : ""}
       </div>
-      <button type="button" class="compare-picker__close" data-picker-close aria-label="${escapeHtmlAttr(close)}" title="${escapeHtmlAttr(close)}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
+      <button type="button" class="ui-btn ui-btn--icon compare-picker__close" data-picker-close aria-label="${escapeHtmlAttr(close)}" title="${escapeHtmlAttr(close)}">${heroIcon("x-mark", "ui-icon ui-icon--18")}</button>
     </header>
     <div class="compare-picker__body">${body}</div>
   </div>`;
 }
 
 function pickerSearchHtml({ inputId, placeholder, value = "" }) {
-  return `<form class="compare-picker__search" data-picker-search role="search">
+  return `<form class="ui-input-composite compare-picker__search" data-picker-search role="search">
     <label class="sr-only" for="${escapeHtmlAttr(inputId)}">${escapeHtml(placeholder)}</label>
     ${heroIcon("magnifying-glass", "ui-icon ui-icon--16")}
-    <input id="${escapeHtmlAttr(inputId)}" type="search" maxlength="200" autocomplete="off" placeholder="${escapeHtmlAttr(placeholder)}" value="${escapeHtmlAttr(value)}">
+    <input id="${escapeHtmlAttr(inputId)}" class="ui-input" type="search" maxlength="200" autocomplete="off" placeholder="${escapeHtmlAttr(placeholder)}" value="${escapeHtmlAttr(value)}">
   </form>`;
 }
 
 function pickerStateHtml(status, retryAttr) {
   if (status === "error") {
-    return `<div class="compare-picker__state" role="alert"><p>${escapeHtml(catalogLabel("load_error"))}</p><button type="button" class="compare-reviewed__button" ${retryAttr}>${escapeHtml(catalogLabel("retry"))}</button></div>`;
+    return `<div class="compare-picker__state" role="alert"><p>${escapeHtml(catalogLabel("load_error"))}</p><button type="button" class="ui-btn ui-btn--sm compare-reviewed__button" ${retryAttr}>${escapeHtml(catalogLabel("retry"))}</button></div>`;
   }
   return `<div class="compare-picker__state" role="status"><div class="center-loading-spinner"></div><span>${escapeHtml(catalogLabel("loading"))}</span></div>`;
 }
@@ -621,7 +637,7 @@ function openPicker({ column, trigger, onApply }) {
     if (picker.status === "error" || (picker.status === "loading" && !picker.items.length)) return pickerStateHtml(picker.status, "data-picker-retry");
     if (!picker.items.length) return `<p class="compare-picker__state">${escapeHtml(catalogLabel("no_options"))}</p>`;
     const more = picker.items.length < picker.total
-      ? `<button type="button" class="compare-reviewed__button compare-picker__more" data-picker-more${picker.status === "loading" ? " disabled" : ""}>${escapeHtml(label("picker.more"))}</button>` : "";
+      ? `<button type="button" class="ui-btn ui-btn--sm compare-reviewed__button compare-picker__more" data-picker-more${picker.status === "loading" ? " disabled" : ""}>${escapeHtml(label("picker.more"))}</button>` : "";
     return `<ul class="compare-picker__list">${picker.items.map(optionHtml).join("")}</ul>${more}`;
   };
 
@@ -640,7 +656,7 @@ function openPicker({ column, trigger, onApply }) {
   const routesHtml = () => {
     const resolved = picker.pending;
     const program = admissionsProgramLabel(resolved.selected_option);
-    return `<button type="button" class="compare-reviewed__button compare-reviewed__button--quiet compare-picker__back" data-picker-back>${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(label("picker.back"))}</span></button>
+    return `<button type="button" class="ui-btn ui-btn--sm ui-btn--ghost compare-reviewed__button compare-reviewed__button--quiet compare-picker__back" data-picker-back>${heroIcon("arrow-left", "ui-icon ui-icon--16")}<span>${escapeHtml(label("picker.back"))}</span></button>
       <p class="compare-picker__intro">${escapeHtml(tFormat("universities.compare.reviewed.picker.routes_intro", { program: program.title }))}</p>
       <ul class="compare-picker__list">${resolved.available_routes.map((route) => `<li><button type="button" class="compare-picker__option" data-picker-route="${escapeHtmlAttr(route.id)}">
         <span class="compare-picker__option-text"><strong>${escapeHtml(routeLabel(route))}</strong>${(route.levels || []).length ? `<small>${escapeHtml(route.levels.map((level) => catalogLabel(`level.${level}`)).join(" · "))}</small>` : ""}</span>

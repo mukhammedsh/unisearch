@@ -12,7 +12,7 @@ import { t, tFormat } from "../../i18n.js";
 import { extractUniversityIdFromLocation, routeUniversities } from "../../routes.js";
 import { bindInfoTooltips } from "../../tooltip.js";
 import { initUniversityTranslations } from "../../university-translations.js";
-import { renderCoverageSection, renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
+import { renderExtraSection, renderOverviewSection, renderProgramsSection, renderQualificationGuidance, resolveProgramByIdentifier, resolveProgramByName } from "./render-content.js";
 import { getAdmissionContextProfile, getFinanceChoicesForStudyLevel, getFinanceForChoice, renderAdmissionSection, renderDeadlinesTabSection, renderFinanceSection, selectAdmissionProgram } from "./render-sections.js";
 import { mountAdmissionsCatalog, REVIEWED_ADMISSIONS_IDS } from "./admissions-controller.js";
 import { mountTabsNavigation } from "./tabs-navigation.js";
@@ -176,7 +176,17 @@ function bindDetailActions({ id, minPrice, university, universityId }) {
       : unknownFieldText("placeholder.field.cost", "Cost"),
   );
 
-  detailGalleryCleanup = mountUniversityGallery(document.getElementById("detailCover"), universityId);
+  const mapParams = new URLSearchParams();
+  mapParams.set("view", "map");
+  mapParams.set("focus_uni", String(university.id || id));
+  const mapHref = routeUniversities(mapParams);
+
+  detailGalleryCleanup = mountUniversityGallery(document.getElementById("detailCover"), universityId, {
+    coverAvailable: university?.cover_available !== false,
+    coordinates: university?.coordinates,
+    universityName: trUniversityName(university),
+    mapHref,
+  });
 
   const websiteBtn = document.getElementById("detailWebsite");
   if (websiteBtn) {
@@ -184,24 +194,16 @@ function bindDetailActions({ id, minPrice, university, universityId }) {
     if (website) {
       websiteBtn.href = website;
       websiteBtn.style.display = "inline-flex";
-      websiteBtn.classList.remove("d-site-link--disabled");
-      websiteBtn.removeAttribute("aria-disabled");
       websiteBtn.title = t("university.visit_website", "Visit Official Website");
     } else {
       websiteBtn.removeAttribute("href");
-      websiteBtn.style.display = "inline-flex";
-      websiteBtn.classList.add("d-site-link--disabled");
-      websiteBtn.setAttribute("aria-disabled", "true");
-      websiteBtn.title = unknownFieldText("placeholder.field.official_website", "Official website");
+      websiteBtn.style.display = "none";
     }
   }
 
   const mapBtn = document.getElementById("detailMapLink");
   if (mapBtn) {
-    const params = new URLSearchParams();
-    params.set("view", "map");
-    params.set("focus_uni", String(university.id || id));
-    mapBtn.href = routeUniversities(params);
+    mapBtn.href = mapHref;
     mapBtn.style.display = "inline-flex";
   }
 
@@ -303,7 +305,7 @@ function renderReviewedUniversityPage({ id, preserveVisibleContent, university, 
   const rankStatus = String(university.rank_meta?.status || "").trim().toLowerCase();
   const rankValue = toFiniteNumber(university.rank);
   renderOverviewSection({
-    container: document.getElementById("detailRecommendations"), university, rankStatus,
+    container: document.getElementById("detailRecommendations"), university,
     officialRank: rankValue !== null && rankValue > 0 && rankStatus === "official", includeAdmissionRate: false,
   });
   const mounted = mountAdmissionsCatalog(universityId);
@@ -371,7 +373,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
       ? university.academics.admissions.university_wide.provenance
       : {});
 
-  renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, rankStatus, university });
+  renderOverviewSection({ acceptanceMeta, acceptanceRate, container: document.getElementById("detailRecommendations"), officialRank, university });
   detailOverviewSummaryCleanup = mountOverviewSummaryBlock({
     university, universityId, reviewed: false,
     legacy: {
@@ -381,10 +383,6 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
         normalizeStudyModeForCost(loadProfile()?.studyMode || "Any"), annualCostForTrack),
     },
   }).dispose;
-  renderCoverageSection({
-    container: document.getElementById("detailCoverage"),
-    coverageByLevel: university?.coverage_by_level,
-  });
   renderExtraSection({ container: document.getElementById("detailExtra"), university });
 
   const renderProgramsTab = () => {

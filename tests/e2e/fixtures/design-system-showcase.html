@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UniSearch Design System Primitives Showcase (Dev Fixture)</title>
+  <link rel="stylesheet" href="/css/shared/01-foundation.css" />
+  <link rel="stylesheet" href="/css/shared/02-shell-settings-feedback.css" />
+  <link rel="stylesheet" href="/css/shared/06-motion-accessibility.css" />
+  <link rel="stylesheet" href="/css/shared/08-device-responsive.css" />
+  <style>
+    body {
+      padding: var(--space-8) var(--layout-page-gutter);
+      display: grid;
+      gap: var(--space-6);
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .showcase-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .showcase-head h1 {
+      margin: 0;
+      font-size: var(--text-2xl);
+      font-weight: var(--font-weight-semibold);
+    }
+    .showcase-card {
+      background: var(--surface-solid);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-card);
+      display: grid;
+      gap: var(--space-5);
+    }
+    .showcase-soft-panel {
+      background: var(--surface-soft);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      display: grid;
+      gap: var(--space-4);
+      --control-bg: var(--surface-raised);
+      --control-shadow: var(--shadow-xs);
+      --interaction-hover-surface: var(--surface-raised-hover);
+      --interaction-press-surface: var(--surface-raised-press);
+    }
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-4);
+      align-items: end;
+    }
+    .showcase-field {
+      display: grid;
+      gap: var(--space-1-5);
+      min-width: 0;
+    }
+    .showcase-field label {
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--text-muted);
+    }
+    .showcase-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .showcase-switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      max-width: 280px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="showcase-head">
+    <h1>UniSearch Design System Primitives</h1>
+    <button id="showcaseThemeToggle" type="button" class="ui-btn ui-btn--on-bg">Toggle Theme</button>
+  </header>
+
+  <main class="showcase-card">
+    <section aria-labelledby="secInputs">
+      <h2 id="secInputs">Inputs &amp; Composite Fields</h2>
+      <div class="showcase-grid">
+        <div class="showcase-field">
+          <label for="inputSm">Small (.ui-input--sm)</label>
+          <input id="inputSm" type="text" class="ui-input ui-input--sm" placeholder="Small input" />
+        </div>
+        <div class="showcase-field">
+          <label for="inputMd">Medium (.ui-input)</label>
+          <input id="inputMd" type="text" class="ui-input" placeholder="Medium input" />
+        </div>
+        <div class="showcase-field">
+          <label for="inputLg">Large (.ui-input--lg)</label>
+          <input id="inputLg" type="text" class="ui-input ui-input--lg" placeholder="Large input" />
+        </div>
+        <div class="showcase-field">
+          <label for="inputInvalid">Invalid (.is-invalid)</label>
+          <input id="inputInvalid" type="text" class="ui-input is-invalid" aria-invalid="true" value="Bad value" />
+        </div>
+        <div class="showcase-field">
+          <label for="inputDisabled">Disabled</label>
+          <input id="inputDisabled" type="text" class="ui-input" value="Disabled" disabled />
+        </div>
+        <div class="showcase-field">
+          <label for="inputCompositeMd">Composite Medium</label>
+          <div id="compositeMd" class="ui-input-composite">
+            <input id="inputCompositeMd" type="search" class="ui-input" placeholder="Search..." />
+          </div>
+        </div>
+        <div class="showcase-field">
+          <label for="inputCompositeLg">Composite Large</label>
+          <div id="compositeLg" class="ui-input-composite ui-input-composite--lg">
+            <input id="inputCompositeLg" type="search" class="ui-input" placeholder="Search..." />
+          </div>
+        </div>
+        <div class="showcase-field">
+          <label for="inputCompositeInvalid">Composite Invalid</label>
+          <div id="compositeInvalid" class="ui-input-composite">
+            <input id="inputCompositeInvalid" type="text" class="ui-input is-invalid" aria-invalid="true" value="-5" />
+          </div>
+        </div>
+        <div class="showcase-field">
+          <label for="inputTextarea">Textarea (.ui-input--textarea)</label>
+          <textarea id="inputTextarea" class="ui-input ui-input--textarea" placeholder="Interests"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="secSelects">
+      <h2 id="secSelects">Selects &amp; Custom Select Triggers</h2>
+      <div class="showcase-grid">
+        <div class="showcase-field">
+          <label for="selectSm">Native Small</label>
+          <select id="selectSm" class="ui-select ui-select--sm"><option>Option A</option></select>
+        </div>
+        <div class="showcase-field">
+          <label for="selectMd">Native Medium</label>
+          <select id="selectMd" class="ui-select"><option>Option B</option></select>
+        </div>
+        <div class="showcase-field">
+          <label for="selectLg">Native Large</label>
+          <select id="selectLg" class="ui-select ui-select--lg"><option>Option C</option></select>
+        </div>
+        <div class="showcase-field">
+          <label for="customTriggerSm">Custom Trigger Small</label>
+          <div class="custom-select-wrapper custom-select-wrapper--sm">
+            <button id="customTriggerSm" type="button" class="custom-select-trigger"><span>Option A</span></button>
+          </div>
+        </div>
+        <div class="showcase-field">
+          <label for="customTriggerMd">Custom Trigger Medium</label>
+          <div class="custom-select-wrapper">
+            <button id="customTriggerMd" type="button" class="custom-select-trigger"><span>Option B</span></button>
+          </div>
+        </div>
+        <div class="showcase-field">
+          <label for="customTriggerLg">Custom Trigger Large</label>
+          <div class="custom-select-wrapper custom-select-wrapper--lg">
+            <button id="customTriggerLg" type="button" class="custom-select-trigger"><span>Option C</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="secButtons">
+      <h2 id="secButtons">Buttons, Segmented &amp; Switches</h2>
+      <div class="showcase-row">
+        <button id="btnSm" type="button" class="ui-btn ui-btn--sm">Small</button>
+        <button id="btnMd" type="button" class="ui-btn">Default</button>
+        <button id="btnLg" type="button" class="ui-btn ui-btn--lg">Large</button>
+        <button id="btnPrimary" type="button" class="ui-btn ui-btn--primary">Primary</button>
+        <button id="btnOnBg" type="button" class="ui-btn ui-btn--on-bg">On Background</button>
+        <button id="btnSubtle" type="button" class="ui-btn ui-btn--subtle">Subtle</button>
+        <button id="btnGhost" type="button" class="ui-btn ui-btn--ghost">Ghost</button>
+        <button id="btnDangerSoft" type="button" class="ui-btn ui-btn--danger-soft">Danger Soft</button>
+        <button id="btnPressed" type="button" class="ui-btn" aria-pressed="true">Pressed</button>
+        <button id="btnIcon" type="button" class="ui-btn ui-btn--icon" aria-label="Close">×</button>
+        <button id="btnDisabled" type="button" class="ui-btn" disabled>Disabled</button>
+        <div class="ui-segmented" role="group" aria-label="View mode">
+          <button type="button" class="ui-segmented__item active" aria-pressed="true">L</button>
+          <button type="button" class="ui-segmented__item" aria-pressed="false">M</button>
+        </div>
+        <label class="showcase-switch-row">
+          <span>Instant toggle</span>
+          <input id="showcaseSwitch" type="checkbox" role="switch" class="ui-switch" />
+        </label>
+      </div>
+    </section>
+
+    <section class="showcase-soft-panel" aria-labelledby="secNested">
+      <h2 id="secNested">Nested inside Soft Surface</h2>
+      <div class="showcase-row">
+        <input id="nestedInput" type="text" class="ui-input" placeholder="Nested input" />
+        <button id="nestedBtn" type="button" class="ui-btn ui-btn--subtle">Nested action</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("showcaseThemeToggle")?.addEventListener("click", () => {
+      const html = document.documentElement;
+      html.setAttribute("data-theme", html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+    });
+  </script>
+</body>
+</html>

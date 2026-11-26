@@ -86,7 +86,7 @@ test("UniFit warning returns after a reload or a new UniFit selection", async ({
   await page.locator("#compareModeBtn").click();
   await expect(warning).toBeVisible();
   await page.locator("#compareModeBtn").click();
-  await expect(dismiss).toHaveCSS("border-radius", "10px");
+  await expect(dismiss).toHaveCSS("border-radius", "12px");
   const isDismissIconCentered = await dismiss.evaluate((button) => {
     const icon = button.querySelector("svg");
     if (!icon) return false;

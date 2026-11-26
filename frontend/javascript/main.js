@@ -10,6 +10,7 @@ import { safeSessionStorage } from "./utils/safe-storage.js";
 import { isStaticSnapshotReady, loadStaticSnapshotManifest } from "./utils/static-snapshot.js";
 import { startRatesLoading } from "./currency.js";
 import { initGlobalNavbarSearch, hideGlobalSearchSuggestions, syncMobileSearchOverlay } from "./components/navbar-search.js";
+import { rememberCoverSource, takeCoverHandoff } from "./components/cover-transition.js";
 
 const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
@@ -684,8 +685,17 @@ async function loadAppRoute(rawHref, options = {}) {
     };
 
     const animate = !prefersReducedMotion();
+    // Always consumed so a remembered card photo never leaks into a later navigation.
+    const coverHandoff = takeCoverHandoff(url);
+
     if (animate && typeof document.startViewTransition === "function") {
-      const transition = document.startViewTransition(updateDomAndState);
+      coverHandoff?.markSource();
+      const transition = document.startViewTransition(() => {
+        updateDomAndState();
+        coverHandoff?.inject();
+      });
+      const settleCover = () => coverHandoff?.settle();
+      void transition.finished.then(settleCover, settleCover);
       // Initialize the new route while its snapshot is fading in.
       await transition.updateCallbackDone;
     } else {
@@ -758,6 +768,7 @@ function installClientRouter() {
     const link = target?.closest("a[href]");
     if (!shouldHandleLinkClick(event, link)) return;
     event.preventDefault();
+    rememberCoverSource(link);
     loadAppRoute(link.href).catch((error) => {
       console.warn("Client-side navigation failed:", error);
       window.location.href = link.href;

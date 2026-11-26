@@ -66,7 +66,144 @@
   --motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --motion-ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --motion-ring-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  --motion-ease-linear: linear;
+  --motion-offset-sm: 4px;
+  --motion-tooltip-delay: 200ms;
+  --motion-ring-color: color-mix(in oklab, var(--accent) 34%, transparent);
+}
+
+/* ===== Top-layer motion (opt-in on <dialog> and [popover]) =====
+   Enter timing lives on the open rule, exit timing on the closed rule, so exits are shorter.
+   `display` and `overlay` transition discretely so the layer stays painted while it fades out;
+   browsers without `overlay` support close instantly. */
+.motion-top-layer {
+  opacity: 0;
+  pointer-events: none;
+  translate: 0 var(--motion-offset-sm);
+  scale: 0.98;
+  transition:
+    opacity var(--motion-snappy) var(--motion-ease-exit),
+    translate var(--motion-snappy) var(--motion-ease-exit),
+    scale var(--motion-snappy) var(--motion-ease-exit),
+    display var(--motion-snappy) allow-discrete,
+    overlay var(--motion-snappy) allow-discrete;
+}
+
+.motion-top-layer--fade {
+  translate: none;
+  scale: none;
+}
+
+.motion-top-layer:is([open], :popover-open, .is-open) {
+  opacity: 1;
+  pointer-events: auto;
+  /* `none`, not `0 0`/`1`: an element opting in while already open then has nothing to transition. */
+  translate: none;
+  scale: none;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-enter),
+    translate var(--motion-fast) var(--motion-ease-enter),
+    scale var(--motion-fast) var(--motion-ease-enter),
+    display var(--motion-fast) allow-discrete,
+    overlay var(--motion-fast) allow-discrete;
+}
+
+.motion-top-layer::backdrop {
+  opacity: 0;
+  transition:
+    opacity var(--motion-snappy) var(--motion-ease-exit),
+    display var(--motion-snappy) allow-discrete,
+    overlay var(--motion-snappy) allow-discrete;
+}
+
+.motion-top-layer:is([open], :popover-open, .is-open)::backdrop {
+  opacity: 1;
+  transition:
+    opacity var(--motion-fast) var(--motion-ease-enter),
+    display var(--motion-fast) allow-discrete,
+    overlay var(--motion-fast) allow-discrete;
+}
+
+@starting-style {
+  .motion-top-layer:is([open], :popover-open, .is-open) {
+    opacity: 0;
+    translate: 0 var(--motion-offset-sm);
+    scale: 0.98;
+  }
+
+  .motion-top-layer--fade:is([open], :popover-open, .is-open) {
+    translate: none;
+    scale: none;
+  }
+
+  .motion-top-layer:is([open], :popover-open, .is-open)::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Opt-in <details> disclosure that grows and shrinks; browsers without ::details-content or
+   interpolate-size open and close instantly. */
+@supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+  .motion-disclosure {
+    interpolate-size: allow-keywords;
+  }
+
+  .motion-disclosure::details-content {
+    block-size: 0;
+    overflow: clip;
+    overflow-clip-margin: var(--space-1);
+    opacity: 0;
+    transition:
+      block-size var(--motion-snappy) var(--motion-ease-exit),
+      opacity var(--motion-snappy) var(--motion-ease-exit),
+      content-visibility var(--motion-snappy) allow-discrete;
+  }
+
+  /* Open content may overflow (select panels, tooltips). `overflow` flips to visible halfway through
+     the opening, when the box is nearly full height; closing clips at once (the rule above has no
+     overflow transition). */
+  .motion-disclosure[open]::details-content {
+    block-size: auto;
+    overflow: visible;
+    opacity: 1;
+    transition:
+      block-size var(--motion-fast) var(--motion-ease-enter),
+      opacity var(--motion-fast) var(--motion-ease-enter),
+      overflow var(--motion-fast) allow-discrete,
+      content-visibility var(--motion-fast) allow-discrete;
+  }
+}
+
+/* Card photo → university cover handoff (components/cover-transition.js). The stand-in fills the
+   cover box the static page already lays out, so the morph never shifts layout. */
+.vt-uni-cover {
+  view-transition-name: uni-cover;
+}
+
+.d-cover-handoff {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+::view-transition-group(uni-cover) {
+  animation-duration: var(--motion-medium);
+  animation-timing-function: var(--motion-ease-standard);
+}
+
+::view-transition-old(uni-cover),
+::view-transition-new(uni-cover) {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Set by utils/motion-reveal.js while an element grows or shrinks in height. */
+.motion-revealing {
+  box-sizing: border-box;
+  overflow: clip;
 }
 
 .motion-state-pulse {
@@ -118,7 +255,7 @@
   animation: motion-svg-stroke-draw var(--motion-slow) var(--motion-ease-standard) both;
 }
 
-.motion-switch-toggle .settings-switch-thumb {
+.ui-switch.motion-switch-toggle::before {
   animation: motion-switch-thumb var(--motion-medium) var(--motion-ease-enter) both;
 }
 
@@ -223,9 +360,36 @@
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
+@keyframes motion-anchored-tray-exit {
+  to { opacity: 0; transform: translateX(-50%) translateY(var(--motion-offset-sm)); }
+}
+
+@keyframes motion-tray-exit-mobile {
+  to { opacity: 0; transform: translateY(var(--motion-offset-sm)); }
+}
+
 @keyframes motion-tray-enter-mobile {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Directional panel switch: tabs and steps come in from the side the user moved toward. */
+.motion-tab-forward {
+  animation: motion-tab-forward var(--motion-fast) var(--motion-ease-enter) both;
+}
+
+.motion-tab-back {
+  animation: motion-tab-back var(--motion-fast) var(--motion-ease-enter) both;
+}
+
+@keyframes motion-tab-forward {
+  from { opacity: 0; transform: translateX(calc(2 * var(--motion-offset-sm))); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes motion-tab-back {
+  from { opacity: 0; transform: translateX(calc(-2 * var(--motion-offset-sm))); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes motion-slide-forward {
@@ -289,36 +453,8 @@
     animation: motion-backdrop-in var(--motion-medium) var(--motion-ease-enter) backwards;
   }
 
-  :is(.compare-picker, .d-photo-viewer)[open]::backdrop,
-  .d-photo-viewer[open],
   :is(.d-photo-canvas, .d-gallery-preview-media) > img:not([hidden]) {
     animation: motion-backdrop-in var(--motion-fast) var(--motion-ease-enter) backwards;
-  }
-
-  .compare-picker[open] {
-    animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards;
-  }
-
-  @supports (interpolate-size: allow-keywords) and selector(details::details-content) {
-    details::details-content {
-      interpolate-size: allow-keywords;
-      overflow: clip;
-      overflow-clip-margin: var(--space-1);
-      transition:
-        block-size var(--motion-medium) var(--motion-ease-standard),
-        content-visibility var(--motion-medium),
-        opacity var(--motion-medium) var(--motion-ease-standard);
-      transition-behavior: allow-discrete;
-    }
-
-    details:has(.custom-select-wrapper.open)::details-content {
-      overflow: visible;
-    }
-
-    details:not([open])::details-content {
-      block-size: 0;
-      opacity: 0;
-    }
   }
 }
 
@@ -370,26 +506,39 @@ body[data-page="guide"] {
   .motion-icon-unsave,
   .motion-icon-remove,
   .motion-icon-clear,
-  .motion-switch-toggle,
+  .ui-switch.motion-switch-toggle::before,
   .motion-panel-enter,
   .motion-list-item-enter,
   .motion-row-exit,
   .motion-chip-remove,
+  .motion-tab-forward,
+  .motion-tab-back,
+  .motion-tray-exit,
   .settings-modal.is-open::backdrop,
   .settings-modal.is-open .settings-card,
   .settings-modal.is-closing::backdrop,
   .settings-modal.is-closing .settings-card,
-  .fadeIn {
+  .fadeIn,
+  .compare-picker[open] {
     animation: none !important;
   }
 
+  .ui-tooltip-bubble,
+  .u-tooltip,
+  .profile-tooltip,
+  .d-tooltip,
+  .uni-status-tooltip__content,
+  .navbar-search-suggestions,
+  .motion-top-layer,
+  .motion-top-layer::backdrop,
   .global-loading-overlay,
   .custom-options,
   .custom-select-trigger,
   .custom-option,
   .sliding-indicator,
-  .settings-switch-track,
-  .settings-switch-thumb {
+  .settings-switch,
+  .ui-switch,
+  .ui-switch::before {
     transition: none !important;
   }
 
@@ -416,6 +565,13 @@ body[data-page="guide"] {
 
   .skip-link {
     transition: none;
+  }
+
+  /* Kept in its own @supports block so an unknown pseudo-element cannot void sibling rules. */
+  @supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+    .motion-disclosure::details-content {
+      transition: none !important;
+    }
   }
 }
 
@@ -518,7 +674,7 @@ body.route-loading main {
     var(--skeleton-highlight) 50%,
     transparent 100%
   );
-  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard, ease-in-out) infinite;
+  animation: skeleton-shimmer var(--motion-loading-loop) var(--motion-ease-standard) infinite;
   pointer-events: none;
   will-change: transform;
 }
@@ -596,10 +752,14 @@ body.route-loading main {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .error-btn:hover {
+  .error-btn:hover:not(:active, :disabled) {
     background: var(--accent-strong);
     box-shadow: none;
   }
+}
+
+.error-btn:active:not(:disabled) {
+  background: var(--accent-press);
 }
 
 .error-btn .ui-icon {
@@ -608,13 +768,13 @@ body.route-loading main {
 
 .error-btn:disabled,
 .error-btn.is-loading {
-  opacity: 0.7;
+  opacity: var(--interaction-disabled-opacity);
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .error-btn.is-loading .ui-icon {
-  animation: center-loading-spin var(--motion-spinner-loop, 900ms) linear infinite;
+  animation: center-loading-spin var(--motion-spinner-loop) linear infinite;
   transform-origin: center;
 }
 
