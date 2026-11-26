@@ -6,7 +6,6 @@
 .profile-calendar { max-height: calc(100vh - 32px); border: 0; border-radius: var(--radius-lg); background: var(--surface-solid); color: var(--text); box-shadow: var(--shadow-md); width: min(352px, calc(100vw - 32px)); padding: var(--space-5); }
 .profile-calendar::backdrop { background: var(--backdrop); }
 .profile-calendar__header { display: flex; align-items: center; gap: var(--space-2); }
-.profile-calendar__header select { flex: 1; min-width: 0; text-transform: capitalize; }
 .profile-calendar__header input { width: 4.5em; }
 .profile-calendar :is(button, select, input) { min-height: 36px; border: 0; border-radius: var(--radius-sm); background: var(--surface-soft); color: var(--text); font: inherit; }
 .profile-calendar button { cursor: pointer; }
@@ -22,6 +21,22 @@
 .profile-calendar__footer [data-save]:hover { background: var(--accent-strong); color: var(--text-inverse); }
 
 .profile-calendar__header :is(select, input) { padding-inline: var(--space-2); font-weight: var(--font-weight-medium); }
+.profile-calendar__header select {
+  flex: 1;
+  min-width: 0;
+  text-transform: capitalize;
+  appearance: none;
+  padding-inline-end: var(--space-8);
+  background-image: linear-gradient(45deg, transparent 45%, var(--text-muted) 45%, var(--text-muted) 55%, transparent 55%), linear-gradient(-45deg, transparent 45%, var(--text-muted) 45%, var(--text-muted) 55%, transparent 55%);
+  background-position: right 15px center, right 10px center;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+}
+@supports (appearance: base-select) {
+  .profile-calendar__header select, .profile-calendar__header select::picker(select) { appearance: base-select; }
+  .profile-calendar__header select::picker-icon { display: none; }
+  .profile-calendar__header select::picker(select) { scrollbar-width: none; }
+}
 .profile-calendar__grid button[aria-current="date"]:not([aria-pressed="true"]) { color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent); }
 .profile-calendar__grid button[aria-pressed="true"]:hover { background: var(--accent-strong); color: var(--text-inverse); }
 

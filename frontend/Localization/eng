@@ -1934,7 +1934,7 @@ cost_item_books_and_supplies_allowance: Books and supplies allowance
 cost_item_personal_expenses_allowance: Personal expenses allowance
 profile.evidence.test_date: Test date (optional)
 profile.evidence.description: These details are for specific universities.
-profile.evidence.institution_title: Studies at a listed university
+profile.evidence.institution_title: Studies at MIT
 profile.evidence.institution: University
 profile.evidence.kind: Evidence type
 profile.evidence.country: Country
@@ -1973,6 +1973,7 @@ profile.evidence.status.on_leave: On leave
 profile.evidence.status.not_enrolled: Not enrolled
 profile.evidence.status.not_completed: Not completed
 profile.evidence.language_kind.primary_language: First language
+profile.evidence.english_first: English as a first language
 profile.evidence.language_kind.education: Education
 profile.evidence.language_kind.employment: Work experience
 profile.evidence.qualification.secondary: Secondary
@@ -3132,7 +3133,7 @@ profile.ux2.hint.exams_language: Language tests such as IELTS and TOEFL go in th
 profile.ux2.nav.filled: has answers
 profile.ux2.nav.empty: no answers yet
 profile.ux2.action.save_show: Save and show matches
-profile.ux2.evidence.language_kind: How you know English
+profile.ux2.evidence.language_kind: Where do you know English from?
 profile.ux2.evidence.institution_kind: What do you want to add?
 profile.ux2.summary.title: How your profile affects matching
 profile.ux2.summary.sentence: UniFit will use {used} of {total} groups of your answers.
@@ -3201,7 +3202,7 @@ universities.ux2.legend.budget_check: Check the cost
 universities.ux2.legend.within_budget: Within budget
 universities.ux2.legend.aid: Aid available
 universities.ux2.legend.vibe: Matches preferences
-profile.ux2.evidence.language_title: English language background
+profile.ux2.evidence.language_title: English background
 profile.ux2.evidence.entirely: Entirely in English?
 university.ux2.title: Key admission facts
 university.ux2.intro_route: Shown for "{route}". One application covers all undergraduate programs.

@@ -70,14 +70,17 @@ function renderLists(body, profile) {
   const institutionalList = body.querySelector("#institutionalEvidenceList");
   if (languageList) {
     languageList.innerHTML = languages.map((row, index) => {
-      const kind = t(`profile.evidence.language_kind.${row.kind}`, row.kind);
       const language = String(row.language || "").toUpperCase();
+      const kind = row.kind === "primary_language" && language === "EN"
+        ? t("profile.evidence.english_first", "English as a first language")
+        : t(`profile.evidence.language_kind.${row.kind}`, row.kind);
       const qualification = row.qualification_level ? t(`profile.evidence.qualification.${row.qualification_level}`, row.qualification_level) : "";
       const languageScope = typeof row.entirely_in_language === "boolean"
         ? t(`profile.evidence.entirely.${row.entirely_in_language ? "yes" : "no"}`, row.entirely_in_language ? "Entirely in language" : "Not entirely in language")
         : "";
       const detail = [row.country, qualification, row.started_on, row.completed_on, languageScope].filter(Boolean).join(" · ");
-      return `<div class="profile-exam-item"><div class="profile-exam-meta"><span class="profile-exam-name">${escapeHtml(kind)} · ${escapeHtml(language)}</span><span class="profile-exam-score">${escapeHtml([detail, t("profile.evidence.self_reported_short", "Self-reported")].filter(Boolean).join(" · "))}</span></div><button type="button" class="ui-btn ui-btn--sm ui-btn--danger-soft profile-delete" data-remove-language-evidence="${index}">${escapeHtml(t("profile.delete", "Delete"))}</button></div>`;
+      const name = [kind, language === "EN" ? "" : language].filter(Boolean).join(" · ");
+      return `<div class="profile-exam-item"><div class="profile-exam-meta"><span class="profile-exam-name">${escapeHtml(name)}</span><span class="profile-exam-score">${escapeHtml([detail, t("profile.evidence.self_reported_short", "Self-reported")].filter(Boolean).join(" · "))}</span></div><button type="button" class="ui-btn ui-btn--sm ui-btn--danger-soft profile-delete" data-remove-language-evidence="${index}">${escapeHtml(t("profile.delete", "Delete"))}</button></div>`;
     }).join("");
   }
   if (institutionalList) {
@@ -106,18 +109,20 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   container._admissionEvidenceState = { profile, onChange };
   // The previous render's custom selects hold window listeners; release them before the markup is replaced.
   (container._evidenceSelectCleanups || []).forEach((cleanup) => cleanup?.());
+  const singleInstitution = INSTITUTIONS.length === 1 ? INSTITUTIONS[0][0] : "";
   container.innerHTML = `
     <div class="profile-admission-evidence">
-        <p class="profile-hint" data-i18n="profile.evidence.description">These details are for specific universities.</p>
         <section class="profile-admission-evidence-group" aria-labelledby="languageEvidenceTitle">
           <div class="profile-subsection-head">
-            <h3 id="languageEvidenceTitle" class="profile-subsection-title" data-i18n="profile.ux2.evidence.language_title">English language background</h3>
+            <h3 id="languageEvidenceTitle" class="profile-subsection-title" data-i18n="profile.ux2.evidence.language_title">English background</h3>
           </div>
+          <div id="languageEvidenceList" class="profile-exam-list"></div>
           <div class="profile-applicant-context-grid">
-            <div class="profile-field">
-              <label class="profile-form-label" for="languageEvidenceKind" data-i18n="profile.ux2.evidence.language_kind">How you know English</label>
+            <div class="profile-field profile-field--full">
+              <label class="profile-form-label" for="languageEvidenceKind" data-i18n="profile.ux2.evidence.language_kind">Where do you know English from?</label>
               <select id="languageEvidenceKind" class="ui-select ui-select--lg profile-input profile-input--select">
-                ${optionRows(LANGUAGE_KINDS.map((kind) => [kind, t(`profile.evidence.language_kind.${kind}`, kind)]))}
+                <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
+                ${optionRows(LANGUAGE_KINDS.map((kind) => [kind, kind === "primary_language" ? t("profile.evidence.english_first", "English as a first language") : t(`profile.evidence.language_kind.${kind}`, kind)]))}
               </select>
             </div>
             <div class="profile-field" data-language-evidence-detail>
@@ -155,26 +160,26 @@ export function renderAdmissionEvidence(container, profile, onChange) {
             </div>
           </div>
           <button id="addLanguageEvidence" class="ui-btn profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_language">Add language evidence</button>
-          <div id="languageEvidenceList" class="profile-exam-list"></div>
         </section>
         <section class="profile-admission-evidence-group" aria-labelledby="institutionalEvidenceTitle">
-          <h3 id="institutionalEvidenceTitle" class="profile-subsection-title" data-i18n="profile.evidence.institution_title">Studies at a listed university</h3>
+          <h3 id="institutionalEvidenceTitle" class="profile-subsection-title" data-i18n="profile.evidence.institution_title">Studies at MIT</h3>
+          <div id="institutionalEvidenceList" class="profile-exam-list"></div>
           <div class="profile-applicant-context-grid">
-            <div class="profile-field">
+            <div class="profile-field profile-field--full" data-institution-university-field${singleInstitution ? " hidden" : ""}>
               <label class="profile-form-label" for="institutionEvidenceUniversity" data-i18n="profile.evidence.institution">University</label>
               <select id="institutionEvidenceUniversity" class="ui-select ui-select--lg profile-input profile-input--select">
                 <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
-                ${optionRows(localizedOptions(INSTITUTIONS))}
+                ${optionRows(localizedOptions(INSTITUTIONS), singleInstitution)}
               </select>
             </div>
-            <div class="profile-field">
+            <div class="profile-field profile-field--full" data-institution-kind-field${singleInstitution ? "" : " hidden"}>
               <label class="profile-form-label" for="institutionEvidenceKind" data-i18n="profile.ux2.evidence.institution_kind">What do you want to add?</label>
               <select id="institutionEvidenceKind" class="ui-select ui-select--lg profile-input profile-input--select">
                 <option value="" data-i18n="profile.applicant_context.optional">Not specified</option>
                 ${optionRows([["enrollment", t("profile.evidence.institution_kind.enrollment", "Enrollment or completed courses")], ["gpa", t("profile.evidence.institution_kind.gpa", "Program GPA")], ["credential", t("profile.evidence.institution_kind.credential", "Program credential")]])}
               </select>
             </div>
-            <div class="profile-field" data-institution-evidence-field="program_id">
+            <div class="profile-field profile-field--full" data-institution-evidence-field="program_id">
               <label class="profile-form-label" for="institutionEvidenceProgram" data-i18n="profile.evidence.program">Program or study option</label>
               <select id="institutionEvidenceProgram" class="ui-select ui-select--lg profile-input profile-input--select"></select>
             </div>
@@ -218,7 +223,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
               <label class="profile-form-label" for="institutionEvidenceTerm" data-i18n="profile.evidence.as_of_term">As of term</label>
               <input id="institutionEvidenceTerm" class="ui-input ui-input--lg profile-input" type="text" maxlength="40" />
             </div>
-            <div class="profile-field" data-institution-evidence-kind="credential">
+            <div class="profile-field profile-field--full" data-institution-evidence-kind="credential">
               <label class="profile-form-label" for="institutionEvidenceCredential" data-i18n="profile.evidence.credential_id">Credential</label>
               <select id="institutionEvidenceCredential" class="ui-select ui-select--lg profile-input profile-input--select"></select>
             </div>
@@ -238,7 +243,6 @@ export function renderAdmissionEvidence(container, profile, onChange) {
             </div>
           </div>
           <button id="addInstitutionEvidence" class="ui-btn profile-add profile-add--secondary" type="button" data-i18n="profile.evidence.add_institution">Add institution evidence</button>
-          <div id="institutionalEvidenceList" class="profile-exam-list"></div>
         </section>
     </div>
   `;
@@ -258,8 +262,9 @@ export function renderAdmissionEvidence(container, profile, onChange) {
   const credentialSelect = container.querySelector("#institutionEvidenceCredential");
 
   const updateLanguageFields = () => {
-    const isPrimary = langKind.value === "primary_language";
-    container.querySelectorAll("[data-language-evidence-detail]").forEach((node) => { node.hidden = isPrimary; });
+    const showDetails = langKind.value && langKind.value !== "primary_language";
+    container.querySelectorAll("[data-language-evidence-detail]").forEach((node) => { node.hidden = !showDetails; });
+    container.querySelector("#addLanguageEvidence").hidden = !langKind.value;
   };
   const populateInstitutionOptions = () => {
     const universityId = institution.value;
@@ -274,6 +279,8 @@ export function renderAdmissionEvidence(container, profile, onChange) {
     credentialSelect.innerHTML = `<option value="">${escapeHtml(t("profile.applicant_context.optional", "Not specified"))}</option>${optionRows(credentialSuggestions)}`;
   };
   const updateInstitutionFields = () => {
+    container.querySelector("[data-institution-kind-field]").hidden = !institution.value;
+    container.querySelector("#addInstitutionEvidence").hidden = !institutionKind.value;
     container.querySelectorAll("[data-institution-evidence-kind]").forEach((node) => { node.hidden = node.dataset.institutionEvidenceKind !== institutionKind.value; });
     container.querySelectorAll("[data-institution-evidence-field='program_id']").forEach((node) => { node.hidden = !institutionKind.value || institutionKind.value === "credential"; });
     container.querySelectorAll("[data-major-evidence-for]").forEach((node) => {
@@ -367,6 +374,7 @@ export function renderAdmissionEvidence(container, profile, onChange) {
     container.querySelector("#languageEvidenceCompleted").value = "";
     setSelectValue("languageEvidenceStatus", "unknown");
     setSelectValue("languageEvidenceEntirely", "");
+    setSelectValue("languageEvidenceKind", "");
     renderLists(container, profile);
     onChange(profile);
   });

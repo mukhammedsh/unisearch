@@ -71,28 +71,29 @@ test("section markers change with unsaved answers and nothing is stored until sa
   await expect(page.locator("#profileUnifitGuideLink")).toHaveAttribute("href", /guide.*#guide-unifit/);
 });
 
-test("Save and show matches stores the profile and opens the catalog sorted by UniFit", async ({ page }) => {
+test("Save stores the profile and stays on the page", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openProfile(page);
 
   await page.fill(selectors.budgetInput, "21000");
   await setNativeSelect(page, "studyLevelSelect", "Bachelor");
-  await page.locator("#profileShowMatchesBtn").click();
+  await page.locator("#saveProfileBtn").click();
 
-  await expect(page).toHaveURL(/sort=uni_ai/);
+  await expect(page).toHaveURL(/profile/);
+  await expect(page.locator("#saveProfileBtn")).toBeDisabled();
   await expect(page.locator("#profileUnsavedModal.is-open")).toHaveCount(0);
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("unisearch_profile") || "{}"));
   expect(String(saved.budget)).toBe("21000");
   expect(saved.studyLevel).toBe("Bachelor");
 });
 
-test("Save and show matches stays on the page when validation fails", async ({ page }) => {
+test("Save stays on the page when validation fails", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openProfile(page);
 
   // Above 5 is invalid on either scale (4.9 now selects the five-point scale).
   await page.fill(selectors.gpaInput, "5.6");
-  await page.locator("#profileShowMatchesBtn").click();
+  await page.locator("#saveProfileBtn").click();
   await expect(page).toHaveURL(/profile/);
   await expect(page.locator("#gpaInput")).toHaveAttribute("aria-invalid", "true");
   expect(await page.evaluate(() => localStorage.getItem("unisearch_profile"))).toBeNull();
@@ -146,5 +147,7 @@ test("phone layout has no horizontal overflow and Reset is not above the first s
   const bar = await page.locator(".profile-action-bar").boundingBox();
   expect(bar.x).toBeGreaterThanOrEqual(0);
   expect(bar.x + bar.width).toBeLessThanOrEqual(320);
-  await expect(page.locator("#profileShowMatchesBtn")).toBeVisible();
+  await expect(page.locator("#saveProfileBtn")).toBeVisible();
+  await expect(page.locator("#profileCloseBtn")).toBeVisible();
+  await expect(page.locator("#profileShowMatchesBtn")).toHaveCount(0);
 });

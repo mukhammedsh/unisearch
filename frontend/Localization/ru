@@ -1934,7 +1934,7 @@ cost_item_books_and_supplies_allowance: Расходы на книги и мат
 cost_item_personal_expenses_allowance: Личные расходы
 profile.evidence.test_date: Дата (необязательно)
 profile.evidence.description: Эти сведения нужны для определенных университетов.
-profile.evidence.institution_title: Сведения для конкретного вуза
+profile.evidence.institution_title: Обучение в MIT
 profile.evidence.institution: Университет
 profile.evidence.kind: Тип сведений
 profile.evidence.country: Страна
@@ -1973,6 +1973,7 @@ profile.evidence.status.on_leave: В академическом отпуске
 profile.evidence.status.not_enrolled: Не обучается
 profile.evidence.status.not_completed: Не завершено
 profile.evidence.language_kind.primary_language: Первый язык
+profile.evidence.english_first: Английский — первый язык
 profile.evidence.language_kind.education: Образование
 profile.evidence.language_kind.employment: Опыт работы
 profile.evidence.qualification.secondary: Среднее образование
@@ -3132,7 +3133,7 @@ profile.ux2.hint.exams_language: Языковые тесты, например I
 profile.ux2.nav.filled: есть ответы
 profile.ux2.nav.empty: ответов пока нет
 profile.ux2.action.save_show: Сохранить и показать подборку
-profile.ux2.evidence.language_kind: Как вы знаете английский
+profile.ux2.evidence.language_kind: Откуда вы знаете английский?
 profile.ux2.evidence.institution_kind: Что вы хотите добавить?
 profile.ux2.summary.title: Как профиль влияет на подбор
 profile.ux2.summary.sentence: UniFit использует группы ваших ответов: {used} из {total}.
@@ -3201,7 +3202,7 @@ universities.ux2.legend.budget_check: Проверьте стоимость
 universities.ux2.legend.within_budget: В рамках бюджета
 universities.ux2.legend.aid: Есть финпомощь
 universities.ux2.legend.vibe: Совпадает с предпочтениями
-profile.ux2.evidence.language_title: Опыт использования английского языка
+profile.ux2.evidence.language_title: Английский язык
 profile.ux2.evidence.entirely: Полностью на английском?
 university.ux2.title: Главное для поступления
 university.ux2.intro_route: Показано для варианта «{route}». Одна заявка подходит для всех программ бакалавриата.

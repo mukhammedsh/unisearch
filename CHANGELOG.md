@@ -13,6 +13,8 @@ All notable changes to UniSearch are documented here.
 - Replace the profile date picker with a localized calendar that stays stable between months and animates date changes and closing.
 - Show additional profile details directly, simplify field descriptions, and use a single GPA scale selector.
 - Refine the profile window, scrollbar, section navigation, and notification styling.
+- Refine the profile calendar month picker arrow and hide its scrollbar where supported.
+- Simplify profile actions to Save and Back, place the GPA help button beside the scale label, clarify the English-background prompt, and show MIT evidence options immediately without a redundant single-university selector.
 - Lead reviewed university comparisons with deadlines, actionable requirement checklist notes (including missing section-score links to the profile instead of a percentage-match row), and costs, adding an inline program picker action in dependent cells and showing route, intake cycle, and selected program in the column header and sticky bar.
 - Preserve the active catalog search, filters, and scroll position when returning via the university cover back button instead of resetting to the top of the catalog.
 - Mount cached university pages directly inside the route transition without flashing the loading skeleton on repeat visits.
@@ -20,6 +22,7 @@ All notable changes to UniSearch are documented here.
 - Hide the language-profile link on recommended English tests once a score is entered, shorten its prompt with calm neutral styling when missing, and simplify the manual-requirements note.
 
 ### Fixed
+- Fix profile field grouping, spacing, and alignment across additional details, yearly budget input, expanded exam breakdowns (such as SAT), language exam section scores (such as IELTS), the profile back button, and the mobile action bar; remove duplicate evidence list containers and the redundant print-style `!important` override.
 - Collapse identical rounded converted price-range endpoints (such as `≈ $35,000 – $35,000`), link all missing exam checklist prompts to the profile, show the shared route name in the comparison route row, keep the official fee-status page linked after choosing Home or Overseas, and clarify the Russian "Both" fee-status toggle label.
 - Unify the comparison tray badge, university chips, and equal-width Clear/Continue buttons on one consistent height, spacing rhythm, and corner radius while keeping chip remove buttons compact.
 

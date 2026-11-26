@@ -130,29 +130,6 @@ test("on a phone the legend wraps inside the banner without sideways scrolling",
   expect(box.x + box.width).toBeLessThanOrEqual(banner.x + banner.width);
 });
 
-test("Save and show matches lands on the catalog with the level selected and no tour over the results", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await seed(page, { tourSeen: false });
-  await page.goto("/profile.html");
-  await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
-  await expect(page.locator("#profileUnifitGuideLink")).toBeVisible();
-
-  await setNativeSelect(page, "studyLevelSelect", "Master");
-  await page.fill(selectors.budgetInput, "30000");
-  await page.locator("#profileShowMatchesBtn").click();
-
-  await expect(page).toHaveURL(/sort=uni_ai/);
-  await expect(page).toHaveURL(/study_level=master/);
-  await expect(page.locator("body")).toHaveAttribute("data-page", "universities");
-  await expect(page.locator("#studyLevelSelect")).toHaveValue("master");
-  await expect(page.locator("#unifitBannerTitle")).toContainText("Master");
-  await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
-  await page.waitForTimeout(800);
-  await expect(page.locator("#uTourModal")).toHaveCount(0);
-  expect(await page.evaluate((key) => localStorage.getItem(key), TOUR_SEEN_KEY)).toBe("1");
-  expect(await page.evaluate(() => sessionStorage.getItem("unisearch_universities_tour_skip_once_v1"))).toBeNull();
-});
-
 test("a visitor who opens the catalog directly still gets the first-visit tour", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await seed(page, { tourSeen: false });

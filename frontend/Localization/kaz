@@ -1934,7 +1934,7 @@ cost_item_books_and_supplies_allowance: Кітаптар мен материал
 cost_item_personal_expenses_allowance: Жеке шығындар
 profile.evidence.test_date: Күні (міндетті емес)
 profile.evidence.description: Бұл мәліметтер кейбір университеттер үшін қажет.
-profile.evidence.institution_title: Көрсетілген оқу орнындағы оқу
+profile.evidence.institution_title: MIT-та оқу
 profile.evidence.institution: Университет
 profile.evidence.kind: Растау түрі
 profile.evidence.country: Ел
@@ -1973,6 +1973,7 @@ profile.evidence.status.on_leave: Оқудан уақытша босатылға
 profile.evidence.status.not_enrolled: Тіркелмеген
 profile.evidence.status.not_completed: Аяқталмаған
 profile.evidence.language_kind.primary_language: Ана тілі
+profile.evidence.english_first: Ағылшын тілі — бірінші тіл
 profile.evidence.language_kind.education: Білім алу
 profile.evidence.language_kind.employment: Жұмыс тәжірибесі
 profile.evidence.qualification.secondary: Орта білім
@@ -3132,7 +3133,7 @@ profile.ux2.hint.exams_language: IELTS, TOEFL сияқты тіл тесттер
 profile.ux2.nav.filled: жауаптар бар
 profile.ux2.nav.empty: жауап әлі жоқ
 profile.ux2.action.save_show: Сақтап, сәйкес университеттерді көрсету
-profile.ux2.evidence.language_kind: Ағылшын тілін қалай білесіз
+profile.ux2.evidence.language_kind: Ағылшын тілін қайдан білесіз?
 profile.ux2.evidence.institution_kind: Нені қосқыңыз келеді?
 profile.ux2.summary.title: Профиль таңдауға қалай әсер етеді
 profile.ux2.summary.sentence: UniFit жауаптарыңыздың {total} тобынан {used} тобын пайдаланады.
@@ -3201,7 +3202,7 @@ universities.ux2.legend.budget_check: Құнын тексеріңіз
 universities.ux2.legend.within_budget: Бюджет шегінде
 universities.ux2.legend.aid: Қаржылай көмек бар
 universities.ux2.legend.vibe: Қалауыңызға сәйкес
-profile.ux2.evidence.language_title: Ағылшын тілін қолдану тәжірибесі
+profile.ux2.evidence.language_title: Ағылшын тілі
 profile.ux2.evidence.entirely: Толығымен ағылшын тілінде ме?
 university.ux2.title: Қабылдаудың негізгі деректері
 university.ux2.intro_route: «{route}» нұсқасы үшін көрсетілген. Бір өтініш бакалавриаттың барлық бағдарламасына жарамды.

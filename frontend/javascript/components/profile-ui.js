@@ -19,11 +19,10 @@ import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { hydrateHeroIcons } from "../icons.js";
 import { safeSessionStorage } from "../utils/safe-storage.js";
-import { hasUniversitiesTourResumeStep, requestUniversitiesTourSkipOnce } from "../pages/shared/cache.js";
-import { isProfilePath, routeGuide, routeUniversities, navigateToAppRoute } from "../routes.js";
+import { hasUniversitiesTourResumeStep } from "../pages/shared/cache.js";
+import { isProfilePath, routeGuide } from "../routes.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import { applyBudgetCurrencyChoice, reinterpretBudgetCurrency } from "./profile/budget-currency.js";
-import { catalogStudyLevelFromProfile } from "../pages/universities/unifit-explanation.js";
 import {
   applyBudgetEntry,
   budgetInCurrency,
@@ -138,7 +137,6 @@ const queryProfileElements = (modal) => {
         profileMajorSelect: document.getElementById("profileMajorSelect"),
         profileInterestsInput: document.getElementById("profileInterestsInput"),
         saveProfileBtn: document.getElementById("saveProfileBtn"),
-        showMatchesBtn: document.getElementById("profileShowMatchesBtn"),
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
@@ -592,24 +590,6 @@ const bindProfileEvents = (els, state) => {
             if (saveAllProfileChanges(els, state) && hasUniversitiesTourResumeStep()) closeModalNow();
         });
     }
-
-    els.showMatchesBtn?.addEventListener("click", () => {
-        if (els.showMatchesBtn.disabled) return;
-        motionPress(els.showMatchesBtn);
-        syncInputsToDraft(els, state);
-        // A failed save (validation error, unfinished report draft) keeps the page open.
-        if (isProfileDirty(state) && !saveAllProfileChanges(els, state)) return;
-        if (hasUniversitiesTourResumeStep()) {
-            closeModalNow();
-            return;
-        }
-        els.showMatchesBtn.disabled = true;
-        els.showMatchesBtn.setAttribute("aria-busy", "true");
-        // Carry the study level so the catalog level filter shows it; the tour must not cover the results.
-        const studyLevel = catalogStudyLevelFromProfile(state.profile);
-        requestUniversitiesTourSkipOnce();
-        navigateToAppRoute(routeUniversities(studyLevel ? { sort: "uni_ai", study_level: studyLevel } : { sort: "uni_ai" }));
-    });
 
     els.resetProfileBtn?.addEventListener("click", () => {
         motionPress(els.resetProfileBtn);

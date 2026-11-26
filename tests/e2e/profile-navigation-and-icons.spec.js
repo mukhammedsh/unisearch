@@ -36,8 +36,8 @@ test.describe("Profile page icons and navigation", () => {
     await expect(page.locator("#gpaInput")).toHaveAttribute("max", "4");
     // Title stays clean; the scale tooltip lives in the hint row.
     expect(await page.locator('.profile-card-block:has(#gpaInput) .profile-card-head .profile-info').count()).toBe(0);
-    await expect(page.locator(".profile-hint-row .profile-info svg")).toBeVisible();
-    expect(await page.locator(".profile-hint-row .profile-info").count()).toBe(1);
+    await expect(page.locator(".profile-field--gpa .profile-info svg")).toBeVisible();
+    expect(await page.locator(".profile-field--gpa .profile-info").count()).toBe(1);
     // Compact layout: narrow input, text centered.
     const inputBox = await page.locator(".profile-field--gpa .profile-budget--with-unit").boundingBox();
     expect(inputBox.width).toBeLessThanOrEqual(120);

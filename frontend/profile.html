@@ -213,7 +213,25 @@
                     >/ 4.0</span>
                   </div>
                   <fieldset class="profile-gpa-scale" id="gpaScaleChoice">
-                    <legend class="profile-form-label" data-i18n="profile.gpa_scale.legend">Your GPA is out of</legend>
+                    <legend class="profile-form-label profile-gpa-scale__legend">
+                      <span data-i18n="profile.gpa_scale.legend">Your GPA is out of</span>
+                      <span class="profile-info-wrap">
+                        <button
+                          type="button"
+                          class="profile-info"
+                          aria-label="How GPA works here"
+                          data-i18n-aria-label="profile.gpa_info_title"
+                        >
+                          <span data-heroicon="information-circle" data-icon-size="16"></span>
+                        </button>
+                        <span class="profile-tooltip" role="tooltip">
+                          <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
+                          <span data-i18n="profile.gpa_info_tooltip">
+                            Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
+                          </span>
+                        </span>
+                      </span>
+                    </legend>
                     <label class="profile-gpa-scale__option">
                       <input type="radio" name="gpaScale" value="4" checked />
                       <span data-i18n="profile.gpa_scale.option_4">4.0 — US and international schools</span>
@@ -223,25 +241,7 @@
                       <span data-i18n="profile.gpa_scale.option_5">5.0 — schools in Kazakhstan and the CIS</span>
                     </label>
                   </fieldset>
-                  <div class="profile-hint-row">
-                    <div id="gpaHint" class="profile-hint" aria-live="polite"></div>
-                    <span class="profile-info-wrap">
-                      <button
-                        type="button"
-                        class="profile-info"
-                        aria-label="How GPA works here"
-                        data-i18n-aria-label="profile.gpa_info_title"
-                      >
-                        <span data-heroicon="information-circle" data-icon-size="16"></span>
-                      </button>
-                      <span class="profile-tooltip" role="tooltip">
-                        <strong data-i18n="profile.gpa_info_title">How GPA works here</strong>
-                        <span data-i18n="profile.gpa_info_tooltip">
-                          Select your grading scale: 4.0 (international standard, US, NIS) or 5.0 (Kazakhstan and CIS school certificate). UniSearch automatically aligns your grade with university requirements.
-                        </span>
-                      </span>
-                    </span>
-                  </div>
+                  <div id="gpaHint" class="profile-hint" aria-live="polite"></div>
                 </div>
 
                 <div class="profile-field" role="group" aria-labelledby="profileExamsLabel">
@@ -369,7 +369,7 @@
             <section class="profile-section-panel" id="profileSectionSpecific" data-profile-section="specific" aria-labelledby="profileSectionSpecificTitle">
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionSpecificTitle" tabindex="-1" data-i18n="profile.ux2.section.specific.title">For specific universities</h2>
-
+                <p class="profile-hint" data-i18n="profile.evidence.description">These details are for specific universities.</p>
               </header>
 
               <div id="admissionEvidenceFields"></div>
@@ -402,18 +402,11 @@
             <span data-i18n="profile.action.back">Back</span>
           </button>
           <button
-            class="ui-btn ui-btn--lg profile-action-btn profile-action-btn--secondary"
+            class="ui-btn ui-btn--lg ui-btn--primary profile-action-btn profile-action-btn--primary"
             id="saveProfileBtn"
             type="button"
           >
             <span data-i18n="profile.action.save_all">Save</span>
-          </button>
-          <button
-            class="ui-btn ui-btn--lg ui-btn--primary profile-action-btn profile-action-btn--primary"
-            id="profileShowMatchesBtn"
-            type="button"
-          >
-            <span data-i18n="profile.ux2.action.save_show">Save and show matches</span>
           </button>
         </div>
       </footer>
