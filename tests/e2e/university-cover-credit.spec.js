@@ -90,6 +90,81 @@ test("a university with a photo lets the user switch the cover between Photo and
   await expect(cover.locator(".d-gallery-preview")).toBeVisible();
 });
 
+test("clicking the campus marker on the cover map centers and zooms back to the campus", async ({ page }) => {
+  await openUniversity(page, "mit-usa-cambridge");
+  const cover = page.locator("#detailCover");
+  await cover.locator(".d-cover-mode").getByRole("button", { name: "Map" }).click();
+  const mapStage = cover.locator(".d-cover-map");
+  await expect(mapStage).toHaveClass(/\bis-mounted\b/);
+
+  const pin = cover.getByRole("button", { name: /Center on campus/ });
+  await expect(pin).toBeVisible();
+
+  async function currentMapZoom() {
+    return mapStage.evaluate((root) => {
+      const containers = Array.from(root.querySelectorAll(".leaflet-tile-container"));
+      const active = containers.find((el) => {
+        const transform = el.style.transform || "";
+        return (!transform.includes("scale(") || /scale\(1(?:\.0+)?\)/.test(transform))
+          && Boolean(el.querySelector(".leaflet-tile"));
+      });
+      const tile = active?.querySelector(".leaflet-tile");
+      const zoom = Number(tile?.getAttribute("src")?.match(/\/(\d+)\/\d+\/\d+\.png$/)?.[1]);
+      return Number.isFinite(zoom) ? zoom : null;
+    });
+  }
+
+  async function pinDistanceFromCenter(coverBox) {
+    const pinBox = await pin.boundingBox();
+    if (!pinBox) return Infinity;
+    const coverCenterX = coverBox.x + coverBox.width / 2;
+    const coverCenterY = coverBox.y + coverBox.height / 2;
+    return Math.hypot(
+      pinBox.x + pinBox.width / 2 - coverCenterX,
+      pinBox.y + pinBox.height / 2 - coverCenterY,
+    );
+  }
+
+  const coverBox = await cover.boundingBox();
+  const zoomOut = cover.locator(".leaflet-control-zoom-out");
+  await expect.poll(currentMapZoom).toBe(15);
+
+  // Zoom out and drag slightly so the campus pin stays visible but off-center and zoomed out.
+  await zoomOut.click({ modifiers: ["Shift"] });
+  await expect.poll(currentMapZoom).toBe(12);
+
+  const dragStartX = coverBox.x + coverBox.width * 0.72;
+  const dragStartY = coverBox.y + coverBox.height * 0.65;
+  await page.mouse.move(dragStartX, dragStartY);
+  await page.mouse.down();
+  await page.mouse.move(dragStartX - 140, dragStartY - 60, { steps: 6 });
+  await page.mouse.up();
+
+  await expect(cover.locator(".d-cover-map-recenter")).toBeHidden();
+  await expect.poll(() => pinDistanceFromCenter(coverBox)).toBeGreaterThan(40);
+
+  await pin.click();
+
+  await expect.poll(() => pinDistanceFromCenter(coverBox)).toBeLessThan(8);
+  await expect.poll(currentMapZoom).toBe(15);
+
+  // Also verify keyboard activation (Space) recenters and zooms after zooming out and dragging.
+  await zoomOut.click({ modifiers: ["Shift"] });
+  await expect.poll(currentMapZoom).toBe(12);
+
+  await page.mouse.move(dragStartX, dragStartY);
+  await page.mouse.down();
+  await page.mouse.move(dragStartX - 110, dragStartY - 40, { steps: 6 });
+  await page.mouse.up();
+  await expect.poll(() => pinDistanceFromCenter(coverBox)).toBeGreaterThan(40);
+
+  await pin.focus();
+  await page.keyboard.press("Space");
+
+  await expect.poll(() => pinDistanceFromCenter(coverBox)).toBeLessThan(8);
+  await expect.poll(currentMapZoom).toBe(15);
+});
+
 test("the cover gallery and full-size viewer keep the same photo and attribution", async ({ page }) => {
   await page.setViewportSize({ width: 2200, height: 1400 });
   await openUniversity(page, "australian-national-university-au-canberra");
