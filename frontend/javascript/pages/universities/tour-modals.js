@@ -146,8 +146,8 @@ function positionSpotlightAndCard(modal, card, step) {
 
     if (isMobile) return;
 
-    let left = VIEWPORT_PADDING_PX;
-    let top = VIEWPORT_PADDING_PX;
+    let left;
+    let top;
     const spaceRight = vw - spotRight - CARD_OFFSET_PX - VIEWPORT_PADDING_PX;
     const spaceLeft = spotLeft - CARD_OFFSET_PX - VIEWPORT_PADDING_PX;
     const spaceBelow = vh - spotBottom - CARD_OFFSET_PX - VIEWPORT_PADDING_PX;
