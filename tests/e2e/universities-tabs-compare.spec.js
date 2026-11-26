@@ -150,7 +150,9 @@ test("exports the current reviewed programs and official links to a printable PD
     await expect(report).toContainText(/£[\d,]+/);
     await expect(report).toContainText(/(deadline|date)/i);
     await expect(report).toContainText(/(SAT|ACT)/i);
-    await expect(report.locator('a[href*="imperial.ac.uk"]')).not.toHaveCount(0);
+    const sources = report.getByRole("row", { name: /^Sources/ });
+    await expect(sources.locator('a[href*="imperial.ac.uk"]')).not.toHaveCount(0);
+    await expect(sources).not.toContainText(/MBA|Graduate tuition/i);
     await expect(exportButton).toBeHidden();
     await page.pdf({ path: testInfo.outputPath(`comparison-${viewport.width}.pdf`), preferCSSPageSize: true });
     await page.emulateMedia({ media: "screen" });

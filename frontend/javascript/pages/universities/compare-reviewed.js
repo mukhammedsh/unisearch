@@ -226,7 +226,7 @@ function fundingPrograms(resolved) {
       ? t("university.admissions.reading.aid_title") : translateAdmissionText(row.value.funding_program, row.value.funding_program);
     // A possible award is named alone; the policy note above already says that nothing is awarded or deducted.
     const status = FUNDING_AVAILABILITY[row.value.availability];
-    return status ? `${name}: ${t(`university.admissions.reading.${status}`)}` : name;
+    return { factId: row.id, text: status ? `${name}: ${t(`university.admissions.reading.${status}`)}` : name };
   });
 }
 
@@ -287,7 +287,8 @@ function costRows(budgetUsd, { forPdf = false } = {}) {
         const fact = fundingFact(column.resolved);
         const programs = fundingPrograms(column.resolved);
         // Published policies are often a full sentence, so they read as body text rather than as a headline figure.
-        return { main: fact.text, kind: fact.text.length > 90 ? "prose" : "text", details: [...(fact.notes || []), ...programs] };
+        return { main: fact.text, kind: fact.text.length > 90 ? "prose" : "text", details: [...(fact.notes || []), ...programs.map((program) => program.text)],
+          sourceFactIds: programs.map((program) => program.factId) };
       },
     },
   ];

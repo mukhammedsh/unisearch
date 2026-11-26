@@ -16,8 +16,9 @@ export function comparisonPdfButton(disabled) {
 }
 
 export function pdfDeadlineItems(resolved) {
+  const deadlineKinds = new Set(["application", "booking", "test", "funding"]);
   return getReviewedDeadlineEvents(resolved)
-    .filter(({ kind, publicationStatus }) => kind !== "decision" && publicationStatus !== "published_dated_reference")
+    .filter(({ kind, publicationStatus }) => deadlineKinds.has(kind) && publicationStatus !== "published_dated_reference")
     .sort((left, right) => left.deadline.localeCompare(right.deadline))
     .map((event) => ({
       text: [admissionDeadlineTitle(event), formatPublishedDate(event.deadline), [event.time, event.timezone].filter(Boolean).join(" "),
@@ -26,21 +27,24 @@ export function pdfDeadlineItems(resolved) {
     }));
 }
 
-function officialSources(resolved) {
+function officialSources(resolved, values) {
   if (!resolved) return [];
-  const groups = ["requirements", "application", "deadlines", "costs", "funding"];
-  const factIds = new Set(groups.flatMap((group) => resolved.fact_groups?.[group] || []));
-  const facts = (resolved.facts || []).filter((fact) => factIds.has(fact.id)
-    && fact.applicability?.status !== "mismatched" && isEvidenceReviewed(fact));
+  const { annual_total, tuition } = resolved.selected_costs || {};
+  const items = values.flatMap((value) => value?.items || []);
+  const factIds = new Set([...items.map((item) => item.factId), ...values.flatMap((value) => value?.sourceFactIds || []),
+    ...(annual_total?.fact_ids || []), ...(tuition?.fact_ids || [])]);
+  const facts = (resolved.facts || []).filter((fact) => factIds.has(fact.id) && isEvidenceReviewed(fact));
   const sourceIds = new Set([
     ...(resolved.selected_option?.source_ids || []),
     ...(resolved.selected_route?.source_ids || []),
     ...facts.flatMap((fact) => fact.source_ids || []),
   ]);
-  const sources = new Map();
+  const sourceUrls = [...items.map((item) => item.url), ...values.flatMap((value) => (value?.sources || []).map((source) => source.url)),
+    ...(annual_total?.source_urls || []), ...(tuition?.source_urls || [])].map((url) => safeUrl(url)).filter(Boolean);
+  const sources = new Map(sourceUrls.map((url) => [url, { url }]));
   for (const source of resolved.sources || []) {
     const url = safeUrl(source.url);
-    if (sourceIds.has(source.id) && url) {
+    if (url && (sourceIds.has(source.id) || sources.has(url))) {
       const dates = [source.checked_at, ...facts.filter((fact) => fact.source_ids?.includes(source.id)).map((fact) => fact.checked_at)];
       const checked = dates.filter(Boolean).sort().at(-1);
       const previous = sources.get(url);
@@ -65,11 +69,11 @@ function cell(value) {
   return `${paragraphs([value.main, ...(value.details || [])])}${items}`;
 }
 
-function sourcesHtml(resolved) {
-  const sources = officialSources(resolved);
+function sourcesHtml(resolved, values) {
+  const sources = officialSources(resolved, values);
   if (!sources.length) return escapeHtml(label("no_sources"));
   return `<ul>${sources.map(({ url, title, checked }) => `<li>
-    <a href="${escapeHtmlAttr(url)}">${escapeHtml(title)}</a>${checked ? ` · ${escapeHtml(t("university.admissions.checked"))} ${escapeHtml(formatPublishedDate(checked))}` : ""}
+    <a href="${escapeHtmlAttr(url)}">${escapeHtml(title || url)}</a>${checked ? ` · ${escapeHtml(t("university.admissions.checked"))} ${escapeHtml(formatPublishedDate(checked))}` : ""}
   </li>`).join("")}</ul>`;
 }
 
@@ -92,7 +96,7 @@ export function printComparisonPdf(container, columns, rows) {
       <tbody>
         ${rows.map((row) => `<tr><th scope="row">${escapeHtml(row.label)}</th>${row.values.map((value) => `<td>${cell(value)}</td>`).join("")}</tr>`).join("")}
         <tr><th scope="row">${escapeHtml(t("university.admissions.reading.sources_disclosure"))}</th>
-          ${columns.map(({ resolved }) => `<td>${sourcesHtml(resolved)}</td>`).join("")}
+          ${columns.map(({ resolved }, index) => `<td>${sourcesHtml(resolved, rows.map((row) => row.values[index]))}</td>`).join("")}
         </tr>
       </tbody>
     </table>
