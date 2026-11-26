@@ -25,4 +25,9 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .profile-calendar[open] { animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards; }
+  .profile-calendar[open].is-closing { animation: profile-calendar-exit var(--motion-fast) var(--motion-ease-exit) forwards; pointer-events: none; }
+}
+
+@keyframes profile-calendar-exit {
+  to { opacity: 0; transform: translateY(var(--space-1)); }
 }

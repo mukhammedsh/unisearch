@@ -27,9 +27,19 @@ export function initProfileDatePicker(page) {
     dialog.querySelector("[data-clear]").addEventListener("click", () => choose(""));
     dialog.querySelector("[data-today]").addEventListener("click", () => choose(dateKey(new Date())));
   };
-  const choose = (value) => { input.value = value; input.dispatchEvent(new Event("input", { bubbles: true })); input.dispatchEvent(new Event("change", { bubbles: true })); dialog.close(); };
+  const closeCalendar = async () => {
+    if (!dialog.open || dialog.classList.contains("is-closing")) return;
+    dialog.classList.add("is-closing");
+    const animations = dialog.getAnimations();
+    await Promise.allSettled(animations.map((animation) => animation.finished));
+    if (dialog.open) dialog.close();
+    dialog.classList.remove("is-closing");
+  };
+  const choose = (value) => { input.value = value; input.dispatchEvent(new Event("input", { bubbles: true })); input.dispatchEvent(new Event("change", { bubbles: true })); closeCalendar(); };
   dialog.addEventListener("close", () => trigger?.focus());
-  dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener("keydown", (event) => { if (event.key === "Escape") event.stopPropagation(); });
+  dialog.addEventListener("cancel", (event) => { event.preventDefault(); closeCalendar(); });
+  dialog.addEventListener("click", (event) => { if (event.target === dialog) closeCalendar(); });
   const enhance = () => page.querySelectorAll('input[type="date"]:not([data-calendar-ready])').forEach((field) => {
     field.dataset.calendarReady = "true";
     const button = document.createElement("button");

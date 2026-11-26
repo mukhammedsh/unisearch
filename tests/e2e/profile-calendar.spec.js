@@ -26,3 +26,18 @@ test("profile calendar selects and clears a date", async ({ page }) => {
   await calendar.locator("[data-clear]").click();
   await expect(input).toHaveValue("");
 });
+
+
+test("calendar animates closing with Escape and restores focus", async ({ page }) => {
+  await page.goto("/profile.html");
+  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
+  await page.locator("[data-profile-tab='scores']").click();
+  const trigger = page.locator("#examTakenOnInput + button");
+  await trigger.click();
+  const calendar = page.locator("dialog.profile-calendar");
+  await expect(calendar).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(calendar).toHaveClass(/is-closing/);
+  await expect(calendar).not.toBeVisible();
+  await expect(trigger).toBeFocused();
+});
