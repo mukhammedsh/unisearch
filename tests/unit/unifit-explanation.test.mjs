@@ -7,9 +7,11 @@ import {
   catalogStudyLevelFromProfile,
   closePreferenceLabels,
   describeRankingProfile,
+  formatTradeoffCaption,
   legendEntries,
   missingExamNames,
   reviewedMissingInputs,
+  tradeoffStrengthTier,
   unmetMinimums,
 } from "../../frontend/javascript/pages/universities/unifit-explanation.js";
 
@@ -87,6 +89,57 @@ test("the preference tooltip names only the sliders the university is close to",
   assert.deepEqual(closePreferenceLabels({ ...match, userPreferences: { ...match.userPreferences, practice_vs_science: 0.55 } }), ["focus", "location"]);
   assert.deepEqual(closePreferenceLabels({ userPreferences: { practice_vs_science: 0.8 }, factors: { practice_vs_science: null } }), []);
   assert.deepEqual(closePreferenceLabels(null), []);
+});
+
+test("preference slider captions measure strength from centre (0..100%) with qualitative tiers", () => {
+  const opts = {
+    leftText: "Career & Practice",
+    rightText: "Science & Research",
+    balancedText: "Doesn't matter",
+    tierLabel: (tier) => tier,
+    formatSelected: ({ side, level, percent }) => `${side} · ${level} (${percent}%)`,
+  };
+  assert.deepEqual(formatTradeoffCaption(50, opts), {
+    text: "Doesn't matter",
+    percent: 0,
+    side: "center",
+    tier: null,
+  });
+  assert.deepEqual(formatTradeoffCaption(56, opts), {
+    text: "Science & Research · slight (12%)",
+    percent: 12,
+    side: "right",
+    tier: "slight",
+  });
+  assert.deepEqual(formatTradeoffCaption(17, opts), {
+    text: "Career & Practice · moderate (66%)",
+    percent: 66,
+    side: "left",
+    tier: "moderate",
+  });
+  assert.deepEqual(formatTradeoffCaption(80, opts), {
+    text: "Science & Research · moderate (60%)",
+    percent: 60,
+    side: "right",
+    tier: "moderate",
+  });
+  assert.deepEqual(formatTradeoffCaption(0, opts), {
+    text: "Career & Practice · strong (100%)",
+    percent: 100,
+    side: "left",
+    tier: "strong",
+  });
+  assert.deepEqual(formatTradeoffCaption(100, opts), {
+    text: "Science & Research · strong (100%)",
+    percent: 100,
+    side: "right",
+    tier: "strong",
+  });
+  assert.equal(formatTradeoffCaption("not-a-number", opts).text, "Doesn't matter");
+  assert.equal(tradeoffStrengthTier(33), "slight");
+  assert.equal(tradeoffStrengthTier(34), "moderate");
+  assert.equal(tradeoffStrengthTier(66), "moderate");
+  assert.equal(tradeoffStrengthTier(67), "strong");
 });
 
 test("reviewed missing inputs join alternatives per check and skip checks without inputs", () => {

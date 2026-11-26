@@ -558,6 +558,10 @@ universities.tradeoff.location: Расположение
 universities.tradeoff.location.left: Город
 universities.tradeoff.location.right: За городом
 universities.tradeoff.balanced: Не важно
+universities.tradeoff.strength.slight: слегка
+universities.tradeoff.strength.moderate: умеренно
+universities.tradeoff.strength.strong: сильно
+universities.tradeoff.selected: {side} · {level} ({percent}%)
 universities.help.open: Показать объяснение
 universities.help.tradeoff.focus: Слева — больше практики и карьеры, справа — упор на науку. По центру не учитывается.
 universities.help.tradeoff.atmosphere: Слева — проще поступить, справа — выше конкурс. По центру не учитывается.

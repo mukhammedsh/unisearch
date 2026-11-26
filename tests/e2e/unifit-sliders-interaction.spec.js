@@ -45,14 +45,16 @@ test.describe("UniFit Tradeoff Sliders Interaction", () => {
     const focusLabel = page.locator("#focusLabel");
     await expect(focusLabel).toContainText("Doesn't matter");
 
-    // 8. Shift Focus slider toward Science & Research (value 80)
+    // 8. Shift Focus slider toward Science & Research (value 80 -> 60% from centre)
     await setRangeValue(page, "focusSlider", 80);
-    await expect(focusLabel).toContainText("Science & Research (80%)");
+    await expect(focusLabel).toContainText("Science & Research · moderate (60%)");
+    await expect(page.locator("#focusSlider")).toHaveAttribute("aria-valuetext", "Science & Research · moderate (60%)");
 
-    // 9. Shift Location slider toward City (value 20)
+    // 9. Shift Location slider toward City (value 20 -> 60% from centre)
     const locationLabel = page.locator("#locationLabel");
     await setRangeValue(page, "locationSlider", 20);
-    await expect(locationLabel).toContainText("City (80%)");
+    await expect(locationLabel).toContainText("City · moderate (60%)");
+    await expect(page.locator("#locationSlider")).toHaveAttribute("aria-valuetext", "City · moderate (60%)");
 
     // 10. Verify universities are re-sorted and catalog list displays correctly
     await expect(page.locator("#universitiesList .uni-card").first()).toBeVisible();

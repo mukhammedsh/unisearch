@@ -555,6 +555,10 @@ universities.tradeoff.location: Location
 universities.tradeoff.location.left: City
 universities.tradeoff.location.right: Outside City
 universities.tradeoff.balanced: Doesn't matter
+universities.tradeoff.strength.slight: slight
+universities.tradeoff.strength.moderate: moderate
+universities.tradeoff.strength.strong: strong
+universities.tradeoff.selected: {side} · {level} ({percent}%)
 universities.help.open: Show explanation
 universities.help.tradeoff.focus: Left: career-focused study. Right: research-heavy universities. Centered: ignored.
 universities.help.tradeoff.atmosphere: Left: easier to get in. Right: more selective universities. Centered: ignored.

@@ -86,6 +86,33 @@ export const closePreferenceLabels = (match, tolerance = 0.15) => PREFERENCE_DIM
   })
   .map(([, label]) => label);
 
+// Qualitative strength tier for a 1..100% centre-origin preference slider displacement.
+export const tradeoffStrengthTier = (percent) => (percent <= 33 ? "slight" : percent <= 66 ? "moderate" : "strong");
+
+// Format a UniFit preference slider caption where 50 is centred ("Doesn't matter") and moving away from centre
+// scales strength from 0 to 100% (`|value - 50| * 2`) alongside a plain-language strength tier.
+export const formatTradeoffCaption = (
+  value,
+  { leftText, rightText, balancedText, tierLabel, formatSelected },
+) => {
+  const numeric = Number(value);
+  const clamped = Number.isFinite(numeric) ? Math.max(0, Math.min(100, Math.round(numeric))) : 50;
+  if (clamped === 50) {
+    return { text: balancedText, percent: 0, side: "center", tier: null };
+  }
+  const percent = Math.abs(clamped - 50) * 2;
+  const side = clamped < 50 ? "left" : "right";
+  const tier = tradeoffStrengthTier(percent);
+  const sideText = side === "left" ? leftText : rightText;
+  const level = tierLabel(tier);
+  return {
+    text: formatSelected({ side: sideText, level, percent }),
+    percent,
+    side,
+    tier,
+  };
+};
+
 // What a reviewed card still needs from the profile: one entry per missing published check, its alternatives
 // joined ("SAT or ACT"). Built from the backend `missingInputs`; checks without them are skipped.
 export const reviewedMissingInputs = (checks, { examLabel, joiner }) => [...new Set(

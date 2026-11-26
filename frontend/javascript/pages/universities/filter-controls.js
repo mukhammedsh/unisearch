@@ -17,6 +17,7 @@ import {
 } from "../../currency.js";
 import { buildFilterResetPatch } from "./filter-reset.js";
 import { setRevealed } from "../../utils/motion-reveal.js";
+import { formatTradeoffCaption } from "./unifit-explanation.js";
 import {
     clampPercent,
     clampTuition,
@@ -29,6 +30,12 @@ import {
     trCountry,
     trState,
 } from "../_shared.js";
+
+const TRADEOFF_STRENGTH_FALLBACKS = {
+    slight: "slight",
+    moderate: "moderate",
+    strong: "strong",
+};
 
 const TRADEOFF_CONFIGS = [
     {
@@ -45,9 +52,9 @@ const TRADEOFF_CONFIGS = [
         sliderProp: "atmosphereSlider",
         labelProp: "atmosphereLabel",
         leftKey: "universities.tradeoff.atmosphere.left",
-        leftFallback: "Social & Events",
+        leftFallback: "Less competitive",
         rightKey: "universities.tradeoff.atmosphere.right",
-        rightFallback: "Hardcore Study",
+        rightFallback: "More competitive",
     },
     {
         sliderKey: "budget_vs_prestige",
@@ -56,16 +63,16 @@ const TRADEOFF_CONFIGS = [
         leftKey: "universities.tradeoff.finance.left",
         leftFallback: "Budget & Grants",
         rightKey: "universities.tradeoff.finance.right",
-        rightFallback: "Prestige & Comfort",
+        rightFallback: "Prestige & Higher Cost",
     },
     {
         sliderKey: "city_vs_campus",
         sliderProp: "locationSlider",
         labelProp: "locationLabel",
         leftKey: "universities.tradeoff.location.left",
-        leftFallback: "Study in City",
+        leftFallback: "City",
         rightKey: "universities.tradeoff.location.right",
-        rightFallback: "Study Outside City",
+        rightFallback: "Outside City",
     },
 ];
 
@@ -226,20 +233,30 @@ export function createFilterControls({
         updateSliderLabels();
     };
 
-    const updateTradeoffLabel = (labelEl, value, config) => {
-        if (!labelEl) return;
+    const updateTradeoffLabel = (sliderEl, labelEl, value, config) => {
         const val = clampPercent(value, 50);
-        const leftText = t(config.leftKey, config.leftFallback);
-        const rightText = t(config.rightKey, config.rightFallback);
-        let text = t("universities.tradeoff.balanced", "Balanced (50/50)");
-        if (val < 50) text = `${leftText} (${100 - val}%)`;
-        else if (val > 50) text = `${rightText} (${val}%)`;
-        labelEl.textContent = text;
+        const caption = formatTradeoffCaption(val, {
+            leftText: t(config.leftKey, config.leftFallback),
+            rightText: t(config.rightKey, config.rightFallback),
+            balancedText: t("universities.tradeoff.balanced", "Doesn't matter"),
+            tierLabel: (tier) => t(`universities.tradeoff.strength.${tier}`, TRADEOFF_STRENGTH_FALLBACKS[tier]),
+            formatSelected: ({ side, level, percent }) => tFormat(
+                "universities.tradeoff.selected",
+                { side, level, percent },
+                `${side} · ${level} (${percent}%)`
+            ),
+        });
+        if (labelEl) labelEl.textContent = caption.text;
+        if (sliderEl) {
+            sliderEl.setAttribute("aria-valuetext", caption.text);
+            sliderEl.style.setProperty("--tradeoff-fill-start", `${Math.min(50, val)}%`);
+            sliderEl.style.setProperty("--tradeoff-fill-end", `${Math.max(50, val)}%`);
+        }
     };
 
     const updateTradeoffLabels = () => {
         TRADEOFF_CONFIGS.forEach((config) => {
-            updateTradeoffLabel(el[config.labelProp], state[config.sliderKey], config);
+            updateTradeoffLabel(el[config.sliderProp], el[config.labelProp], state[config.sliderKey], config);
         });
     };
 
@@ -684,12 +701,12 @@ export function createFilterControls({
             if (!sliderEl) return;
             sliderEl.addEventListener("input", () => {
                 state[config.sliderKey] = clampPercent(sliderEl.value, 50);
-                updateTradeoffLabel(labelEl, state[config.sliderKey], config);
+                updateTradeoffLabel(sliderEl, labelEl, state[config.sliderKey], config);
                 updateUnifitPrefsCount();
             });
             sliderEl.addEventListener("change", () => {
                 state[config.sliderKey] = clampPercent(sliderEl.value, 50);
-                updateTradeoffLabel(labelEl, state[config.sliderKey], config);
+                updateTradeoffLabel(sliderEl, labelEl, state[config.sliderKey], config);
                 updateUnifitPrefsCount();
                 refetch();
             });

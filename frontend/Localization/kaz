@@ -555,6 +555,10 @@ universities.tradeoff.location: Орналасқан жері
 universities.tradeoff.location.left: Қала
 universities.tradeoff.location.right: Қала сыртында
 universities.tradeoff.balanced: Маңызды емес
+universities.tradeoff.strength.slight: аздап
+universities.tradeoff.strength.moderate: орташа
+universities.tradeoff.strength.strong: күшті
+universities.tradeoff.selected: {side} · {level} ({percent}%)
 universities.help.open: Түсіндірмені көрсету
 universities.help.tradeoff.focus: Сол жақта — тәжірибе мен мансап, оң жақта — ғылымға басымдық. Ортада ескерілмейді.
 universities.help.tradeoff.atmosphere: Сол жақта — түсу жеңілірек, оң жақта — конкурс жоғары. Ортада ескерілмейді.
