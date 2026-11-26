@@ -51,6 +51,7 @@ Minor release: split admissions storage for lazy loading, add a deploy-time stat
 - Stop re-animating every profile exam and language row when a single row changes.
 - Restore browser-history navigation from the Guide and fall back to the homepage when a Guide article is opened directly.
 - Preserve open dropdown trigger surfaces and keep custom select menus visibly elevated above card backgrounds in both themes.
+- Open a selected university's map card after the map settles at its location.
 - Fix hover and active surface feedback on catalog filter reset buttons and program search clear controls.
 - Keep the navigation search icon clear of the placeholder text.
 - Keep long admissions and comparison actions inside narrow phone layouts.

@@ -184,8 +184,9 @@ export function createUniversitiesMapController(ctx) {
     updateMapResultsSelection(targetId);
     const focusSeq = ++mapFocusSeq;
     const flightStartedAt = Date.now();
+    let arrivalHandled = false;
     const awaitArrival = () => {
-      if (disposed || !mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
+      if (arrivalHandled || disposed || !mapInstance || focusSeq !== mapFocusSeq || state.viewMode !== "map") {
         if (mapInstance) mapInstance.off("moveend", awaitArrival);
         return;
       }
@@ -200,6 +201,7 @@ export function createUniversitiesMapController(ctx) {
         arrived = false;
       }
       if (!arrived) return;
+      arrivalHandled = true;
       mapInstance.off("moveend", awaitArrival);
       const current = markersByUniId.get(targetId);
       if (current) {
@@ -228,6 +230,8 @@ export function createUniversitiesMapController(ctx) {
       duration: 1.0,
       easeLinearity: 0.2,
     });
+    // A settled or no-op flight may not dispatch moveend, so verify arrival once after its normal duration.
+    window.setTimeout(awaitArrival, 1250);
   }
 
   function focusMapUniversity(uniId, { openPopup = true, fly = true, zoom = 14 } = {}) {
