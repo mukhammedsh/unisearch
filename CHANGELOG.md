@@ -12,6 +12,7 @@ Patch release: split the monolithic reviewed admissions catalog into a compact i
 - Add regression tests for the static snapshot builder and client filtering/loading/service-worker snapshot caching (`backend/tests/test_static_snapshot_builder.py`, `tests/unit/static-snapshot.test.mjs`, `tests/unit/service-worker.test.mjs`).
 
 ### Changed
+- Keep the profile header and actions visible in a window with independently scrolling content.
 - Split `backend/data/admissions/catalog.json` (16.5 MB) into a compact `backend/data/admissions/index.json` (~391 KB) and per-institution files under `backend/data/admissions/institutions/<id>.json` (`backend/app/services/admissions_index.py`, `backend/app/services/admissions_catalog.py`, `backend/scripts/prepare_admissions_catalog.py`, `backend/scripts/audit_universities_data.py`).
 - Serve startup metadata, catalog listing, map points, university detail contracts, subject matching, reference cost projections, ML program names, and unselected UniFit evaluations directly from `index.json` without loading full per-institution files (`universities.py`, `university_projection.py`, `ml_scoring.py`, `scoring_requirements.py`).
 - Load full per-institution admissions files lazily on demand with LF-normalized SHA-256 verification and a bounded LRU cache (`MAX_LOADED_INSTITUTIONS = 6`), failing explicitly on checksum or index drift and covering the contract with unit and HTTP regression tests (`test_admissions_catalog.py`, `test_admissions_cutover.py`, `test_admissions_catalog_preparation.py`, `test_admissions_editorial.py`).

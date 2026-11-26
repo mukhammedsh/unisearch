@@ -396,6 +396,7 @@ const bindProfileEvents = (els, state) => {
 
     // Mark the section currently in view; a band near the top of the viewport decides which one it is.
     const visibleSections = new Set();
+    const scrollRegion = els.modal.querySelector(".profile-workspace-layout");
     const lastSectionId = sectionIdOf(els.profileSectionNodes[els.profileSectionNodes.length - 1]);
     const navLocked = () => Date.now() < (state.sectionNavLockUntil || 0);
     let sectionObserver = null;
@@ -409,18 +410,17 @@ const bindProfileEvents = (els, state) => {
             if (navLocked()) return;
             const current = els.profileSectionNodes.find((node) => visibleSections.has(sectionIdOf(node)));
             if (current) setActiveProfileSection(els, sectionIdOf(current));
-        }, { rootMargin: "-20% 0px -65% 0px" });
+        }, { root: scrollRegion, rootMargin: "-20% 0px -65% 0px" });
         els.profileSectionNodes.forEach((node) => sectionObserver.observe(node));
     }
     // The last section can end below the observed band; at the end of the page it is the current one.
     const markLastSectionAtPageEnd = () => {
         if (navLocked() || !lastSectionId) return;
-        const root = document.documentElement;
-        if (window.scrollY > 0 && window.innerHeight + window.scrollY >= root.scrollHeight - 2) {
+        if (scrollRegion && scrollRegion.scrollTop > 0 && scrollRegion.clientHeight + scrollRegion.scrollTop >= scrollRegion.scrollHeight - 2) {
             setActiveProfileSection(els, lastSectionId);
         }
     };
-    listenGlobal(window, "scroll", markLastSectionAtPageEnd);
+    if (scrollRegion) listenGlobal(scrollRegion, "scroll", markLastSectionAtPageEnd);
 
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect(els, state);
