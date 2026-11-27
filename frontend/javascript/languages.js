@@ -8,6 +8,7 @@ import {
   showToast,
 } from "./utils.js";
 import { enterNewRows, readRowKeys, setRevealed } from "./utils/motion-reveal.js";
+import { SHOW_PROFILE_SECTION_EVENT } from "./components/profile/profile-sections.js";
 import { getCurrentLanguage, t, tFormat } from "./i18n.js";
 import {
   CEFR_LABEL,
@@ -461,15 +462,23 @@ export function initLanguagesPanel() {
     // "native" entry on the language list without choosing the language for the applicant.
     function openFromLink() {
       const params = new URLSearchParams(window.location.search);
-      openExamEditor(String(params.get("language_exam") || "").trim(), String(params.get("language") || "").trim().toLowerCase());
+      void openExamEditor(String(params.get("language_exam") || "").trim(), String(params.get("language") || "").trim().toLowerCase(), { fromLink: true });
+    }
+
+    // The editor lives in the profile's Languages section, which must be shown before the field can take focus.
+    async function showLanguagesSection(replaceHistory) {
+      const detail = { section: "languages", replaceHistory };
+      window.dispatchEvent(new CustomEvent(SHOW_PROFILE_SECTION_EVENT, { detail }));
+      return detail.result ? detail.result : true;
     }
 
     // Also opened from the exam list's English-test shortcuts, which name the test only.
-    function openExamEditor(exam, code = "") {
+    async function openExamEditor(exam, code = "", { fromLink = false } = {}) {
       if (!exam && !code) return;
       const lang = code || "en";
       if (!(cfg.languages || []).some(row => row.code === lang)) return;
       if (exam && !getExam(cfg, lang, exam)) return;
+      if (!(await showLanguagesSection(fromLink))) return;
       const languages = loadEditableProfile().languages;
       const entries = (Array.isArray(languages) ? languages : []).map(normalizeLangEntry).filter(Boolean);
       const saved = exam ? entries.findLast(entry => entry.code === lang && entry.kind === KIND_EXAM && entry.exam === exam) || null : null;
@@ -801,7 +810,7 @@ export function initLanguagesPanel() {
     window.addEventListener("languageChanged", onLanguageChanged);
     window.addEventListener("profileUpdated", onProfileUpdated);
     window.addEventListener("profileReportDraftReset", clearEditor);
-    const onOpenLanguageExam = event => openExamEditor(String(event.detail?.exam || "").trim());
+    const onOpenLanguageExam = event => { void openExamEditor(String(event.detail?.exam || "").trim()); };
     window.addEventListener("unisearch:open-language-exam", onOpenLanguageExam);
     disposeWindowHandlers = () => {
       window.removeEventListener("unisearch:open-language-exam", onOpenLanguageExam);

@@ -1,5 +1,12 @@
 const editorHistoryKey = "unisearchProfileEditor";
 
+/**
+ * Window event that asks the profile to show one of its sections.
+ * detail: { section: string, replaceHistory?: boolean }; the handler sets detail.result to a Promise<boolean>
+ * that resolves to whether the section is now shown (false when the applicant keeps editing the current one).
+ */
+export const SHOW_PROFILE_SECTION_EVENT = "unisearch:show-profile-section";
+
 // Internal entries share the SPA route index so its cross-page guard stays in charge of leaving Profile.
 export function isProfileEditorHistoryEntry(entry = window.history.state) {
     const editor = entry?.[editorHistoryKey];
@@ -32,10 +39,10 @@ export function bindProfileSections(els, { requestNavigationClose, listen, onSec
         window.scrollTo({ top: 0 });
     };
 
-    const showSection = (id, { focusHeading = true } = {}) => {
+    const showSection = (id, { focusHeading = true, replaceHistory = false } = {}) => {
         if (!findPanel(id) || section === id) return;
         const entry = window.history.state;
-        const method = isProfileEditorHistoryEntry(entry) ? "replaceState" : "pushState";
+        const method = replaceHistory || isProfileEditorHistoryEntry(entry) ? "replaceState" : "pushState";
         window.history[method]({
             ...entry,
             [editorHistoryKey]: { section: id, routeIndex: entry?.appRouteHistoryIndex ?? 0 },
@@ -88,6 +95,17 @@ export function bindProfileSections(els, { requestNavigationClose, listen, onSec
         button.addEventListener("click", () => { void navigateSection(button.dataset.profileJump); });
     });
     els.sectionBackBtn?.addEventListener("click", () => window.history.back());
+    // Another profile panel asks for a section, for example the language editor opened from a link or a test shortcut.
+    // A link opening the profile replaces its history entry, so Back returns to the page that linked here.
+    listen(window, SHOW_PROFILE_SECTION_EVENT, (event) => {
+        const detail = event.detail || {};
+        if (detail.replaceHistory) {
+            showSection(detail.section, { focusHeading: false, replaceHistory: true });
+            detail.result = Promise.resolve(Boolean(findPanel(detail.section)));
+            return;
+        }
+        detail.result = navigateSection(detail.section);
+    });
     listen(window, "popstate", onHistoryChange);
     listen(wideLayout, "change", () => render());
     render();
