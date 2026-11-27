@@ -28,6 +28,9 @@ test("the university cover credits the photo's author and license and links its 
   expect(creditBox.x + creditBox.width).toBeLessThanOrEqual(coverBox.x + coverBox.width);
   expect(creditBox.y).toBeGreaterThan(coverBox.y);
   expect(creditBox.y + creditBox.height).toBeLessThan(coverBox.y + coverBox.height);
+  // The text sits in the middle of the touch-sized badge instead of leaving a gap below.
+  const textBox = await credit.locator(".d-cover-credit-text").boundingBox();
+  expect(textBox.y + textBox.height / 2).toBeCloseTo(creditBox.y + creditBox.height / 2, 0);
 });
 
 test("the credit follows the interface language", async ({ page }) => {

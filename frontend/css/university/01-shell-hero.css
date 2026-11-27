@@ -613,10 +613,14 @@
   font-size: var(--text-xs);
   line-height: var(--leading-tight);
   text-decoration: none;
+  pointer-events: auto;
+}
+
+.d-cover-credit-text {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  pointer-events: auto;
 }
 
 a.d-cover-credit:hover {
@@ -1372,14 +1376,15 @@ body[data-page="university"],
   }
 
   .d-cover-credit {
+    padding: var(--space-1) var(--space-2);
+    text-align: left;
+  }
+
+  .d-cover-credit-text {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-clamp: 2;
-    padding: var(--space-1) var(--space-2);
-    font-size: var(--text-xs);
-    line-height: var(--leading-tight);
-    text-align: left;
     white-space: normal;
   }
 
