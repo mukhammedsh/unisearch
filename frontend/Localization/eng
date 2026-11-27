@@ -3069,6 +3069,10 @@ profile.overview.storage: Profile data is stored on this device.
 profile.overview.empty.basics: Level, subject, and interests
 profile.overview.empty.preferences: Annual budget and funding preferences
 profile.overview.empty.scores: Grade average and test results
+profile.overview.more_exams: {count} more {results}
+profile.overview.exam_result.one: result
+profile.overview.exam_result.few: results
+profile.overview.exam_result.many: results
 profile.overview.empty.languages: Languages, levels, and certificates
 profile.overview.empty.specific: English and education background
 profile.ux2.section.study.title: What you want to study

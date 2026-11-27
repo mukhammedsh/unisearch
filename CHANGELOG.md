@@ -9,6 +9,7 @@ All notable changes to UniSearch are documented here.
 - Move the UniFit guide next to UniFit sorting in the university catalog.
 - Use the same calendar layout, navigation controls, and selected-day style for profile dates and university deadlines.
 - Use the standard month selector in the profile and mark deadline dates with a dot.
+- Show the saved funding preference and the number of additional exam results in the profile overview.
 
 ### Fixed
 - Keep profile actions reachable in landscape and allow confirmation dialogs to scroll on short screens.

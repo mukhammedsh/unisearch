@@ -81,7 +81,7 @@ Profiles, favorites, and saved choices are stored in your browser. Profile data 
 
 All profile fields are optional. Start with a subject, study level and annual budget. Monetary inputs accept spaces between digit groups. Use the budget's currency control to open Settings; changing currency converts the saved budget without saving unrelated profile drafts.
 
-Open a section from the profile overview to view or edit its answers. On wider screens the overview stays beside the editor. Save changes in the active editor, or choose what to do with the draft before switching sections. The UniFit guide is linked beside the UniFit sort in the catalog.
+Open a section from the profile overview to view or edit its answers. The overview shows the saved funding preference and indicates when more exam results are available in the editor. On wider screens the overview stays beside the editor. Save changes in the active editor, or choose what to do with the draft before switching sections. The UniFit guide is linked beside the UniFit sort in the catalog.
 
 Use Add or Enter in a score editor to add a report to the profile draft, then Save to keep it on this device. Unadded reports survive interface-language changes and must be added or cleared before Save or Save and close. Clear draft abandons only the editor; Discard changes abandons all unsaved profile edits. Reset requires confirmation and is available on desktop and phones. Saving a general profile preserves university-specific choices saved in another tab; simultaneous edits to the same general profile fields use the last saved values.
 

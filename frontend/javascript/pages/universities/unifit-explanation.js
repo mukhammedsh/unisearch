@@ -2,7 +2,7 @@
 // how to summarize them on one compact toolbar line, and how card tooltips explain fit and requirements.
 // Pure functions; no scoring happens here.
 
-import { parseSummaryBudget, studyLevelLabel } from "../../components/profile/profile-summary.js";
+import { fundingPreferenceLabel, parseSummaryBudget, studyLevelLabel } from "../../components/profile/profile-summary.js";
 
 const text = (value) => String(value ?? "").trim();
 const isAny = (value) => !text(value) || text(value).toLowerCase() === "any";
@@ -24,9 +24,8 @@ export const describeRankingProfile = (profile, ctx) => {
     const currency = text(p.budgetCurrency).toUpperCase() || "USD";
     parts.push(tFormat("universities.ux2.banner.budget", { amount: formatMoney(budget.amount, currency) }));
   }
-  const funding = text(p.fundingType).toLowerCase();
-  if (funding === "grant") parts.push(t("profile.option.funding_grant"));
-  else if (funding === "paid") parts.push(t("profile.option.funding_paid"));
+  const funding = fundingPreferenceLabel(p.fundingType, t);
+  if (funding) parts.push(funding);
   // Grades and tests are checked against published minimums, so name them too (names only, to stay short).
   if (text(p.gpa)) parts.push(`GPA ${text(p.gpa)} / ${Number(p.gpaScale) === 5 ? 5 : 4}`);
   const examName = ctx.examName || ((id) => id);

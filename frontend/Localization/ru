@@ -3069,6 +3069,10 @@ profile.overview.storage: Данные профиля хранятся на эт
 profile.overview.empty.basics: Уровень, направление и интересы
 profile.overview.empty.preferences: Бюджет на год и предпочтения по финансированию
 profile.overview.empty.scores: Средний балл и результаты экзаменов
+profile.overview.more_exams: ещё {count} {results}
+profile.overview.exam_result.one: результат
+profile.overview.exam_result.few: результата
+profile.overview.exam_result.many: результатов
 profile.overview.empty.languages: Языки, уровни и сертификаты
 profile.overview.empty.specific: Английский и сведения об обучении
 profile.ux2.section.study.title: Что вы хотите изучать

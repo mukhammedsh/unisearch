@@ -12,7 +12,7 @@ import { aiName, registerRuntimeTranslator } from "./utils/runtime.js";
 // Fingerprint of the three localization files (first 8 hex characters of their SHA-256 with LF line endings).
 // It names the tab's cached packs, so a changed file is fetched again even when the app version is unchanged.
 // tests/unit/i18n-pack-revision.test.mjs fails with the expected value whenever a localization file changes.
-const I18N_PACK_REVISION = "1cb6edfa";
+const I18N_PACK_REVISION = "0c51e607";
 const I18N_SESSION_CACHE_PREFIX = `unisearch_i18n_pack_v${I18N_PACK_REVISION}_${window.APP_VERSION || "dev"}_`;
 
 const LANG_ENG = "eng";

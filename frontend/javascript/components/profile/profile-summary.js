@@ -32,6 +32,13 @@ export const studyLevelLabel = (value, t) => {
   return key ? t(key, text(value)) : text(value);
 };
 
+export const fundingPreferenceLabel = (value, t) => {
+  const preference = text(value).toLowerCase();
+  if (preference === "grant") return t("profile.option.funding_grant");
+  if (preference === "paid") return t("profile.option.funding_paid");
+  return "";
+};
+
 const hasExamEvidence = (profile) => asList(profile?.exams).some((row) => row && (row.exam || row.id));
 const hasLanguageEvidence = (profile) => asList(profile?.languages).some((row) => row && (row.code || row.lang));
 

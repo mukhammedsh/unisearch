@@ -3069,6 +3069,10 @@ profile.overview.storage: Профиль деректері осы құрылғ�
 profile.overview.empty.basics: Оқу деңгейі, бағыт және қызығушылықтар
 profile.overview.empty.preferences: Жылдық бюджет және қаржыландыру қалаулары
 profile.overview.empty.scores: Орташа балл және емтихан нәтижелері
+profile.overview.more_exams: тағы {count} {results}
+profile.overview.exam_result.one: нәтиже
+profile.overview.exam_result.few: нәтиже
+profile.overview.exam_result.many: нәтиже
 profile.overview.empty.languages: Тілдер, деңгейлер және сертификаттар
 profile.overview.empty.specific: Ағылшын тілі және оқу туралы мәліметтер
 profile.ux2.section.study.title: Нені оқығыңыз келеді

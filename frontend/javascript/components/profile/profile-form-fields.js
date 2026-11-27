@@ -1,11 +1,13 @@
 import {
+  getExamDisplayName,
   initCustomSelect,
   loadProfile,
 } from "../../utils.js";
-import { applyTranslations, t, tFormat } from "../../i18n.js";
+import { applyTranslations, getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { formatPlural } from "../../utils/format.js";
 import { formatMoney } from "../../currency.js";
 import { fillBudgetCurrencyOptions, syncBudgetCurrencySelect } from "./budget-currency.js";
-import { buildSectionFillStates, parseSummaryBudget, studyLevelLabel } from "./profile-summary.js";
+import { buildSectionFillStates, fundingPreferenceLabel, parseSummaryBudget, studyLevelLabel } from "./profile-summary.js";
 import { translateProgramName } from "../../university-translations.js";
 import {
   applyBudgetEntry,
@@ -118,15 +120,31 @@ export const renderProfileSummary = (els, state) => {
     const budget = parseSummaryBudget(saved);
     const preferredCurrency = state.budgetInputCurrency || getBudgetCurrency();
     const displayedBudget = budgetInCurrency(saved, preferredCurrency);
+    const locale = getCurrentLanguage();
+    const examIds = saved.exams.map((exam) => exam?.exam || exam?.id).filter(Boolean);
+    const visibleExams = examIds.slice(0, examIds.length > 2 ? 1 : 2);
+    const moreExams = examIds.length - visibleExams.length;
+    const moreExamLabel = moreExams ? tFormat("profile.overview.more_exams", {
+        count: moreExams,
+        results: formatPlural(moreExams, [
+            t("profile.overview.exam_result.one"),
+            t("profile.overview.exam_result.few"),
+            t("profile.overview.exam_result.many"),
+        ], locale),
+    }) : "";
     const details = {
         basics: [
             String(saved.studyLevel).toLowerCase() !== "any" ? studyLevelLabel(saved.studyLevel, t) : "",
             saved.major ? translateProgramName(saved.major, saved.major) : "",
         ].filter(Boolean).join(" · "),
-        preferences: budget.state !== "empty" ? formatMoney(displayedBudget, preferredCurrency) : "",
+        preferences: [
+            budget.state !== "empty" ? formatMoney(displayedBudget, preferredCurrency) : "",
+            fundingPreferenceLabel(saved.fundingType, t),
+        ].filter(Boolean).join(" · "),
         scores: [
             saved.gpa === "" ? "" : `${t("profile.ux2.summary.requirements.gpa")} ${saved.gpa} ${t(saved.gpaScale === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4")}`,
-            ...saved.exams.slice(0, 2).map((exam) => exam.exam || exam.id),
+            ...visibleExams.map((exam) => getExamDisplayName(exam, { locale })),
+            moreExamLabel,
         ].filter(Boolean).join(" · "),
         languages: saved.languages.slice(0, 2).map((language) => language.code || language.lang).filter(Boolean)
             .map((code) => t(`languages.name.${code}`, String(code).toUpperCase())).join(" · "),

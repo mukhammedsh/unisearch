@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { markTourAsSeen } = require("./helpers/personas");
+const { markTourAsSeen, seedProfile } = require("./helpers/personas");
 const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
@@ -68,3 +68,29 @@ test.describe("Profile overview follows saved answers", () => {
     await expect(tabState(page, "basics")).toContainText("Computer Science");
   });
 });
+
+for (const [language, moreResults, funding] of [
+  ["eng", "4 more results", "Grant only"],
+  ["rus", "ещё 4 результата", "Только грант"],
+  ["kaz", "тағы 4 нәтиже", "Тек грант"],
+]) {
+  test(`profile overview summarizes saved exams and funding in ${language}`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 700 });
+    await mockAllExpensiveEndpoints(page);
+    await seedProfile(page, {
+      _v: 2,
+      fundingType: "grant",
+      gpa: 3.8,
+      gpaScale: 4,
+      exams: ["SAT", "ACT", "GRE", "UNT", "NUET"].map((exam) => ({ exam, score: 30 })),
+    });
+    await page.goto(`/profile.html?lang=${language}`);
+    await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+    const scores = tabState(page, "scores");
+    await expect(scores).toContainText("SAT");
+    await expect(scores).toContainText(moreResults);
+    await expect(tabState(page, "preferences")).toContainText(funding);
+    await expect(scores).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  });
+}
