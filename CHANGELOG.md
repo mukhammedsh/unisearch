@@ -9,7 +9,7 @@ The profile now uses focused section editors on phones and a side-by-side layout
 ### Changed
 - Show saved answers in the profile overview. Open one section at a time on phones or edit alongside the overview on wider screens. Save appears after an edit, and switching sections prompts you to keep, discard, or save your changes.
 - Move the UniFit guide next to UniFit sorting in the university catalog.
-- Open the Guide on phones and tablets as a list of topics. Each topic has a header that stays visible while you scroll, the contents open in a sheet from the bottom of the screen, and the Previous and Next links are larger. The phone's Back button returns to the list.
+- Open the Guide on phones and tablets as a list of topics. Each topic has a header that stays visible while you scroll, the contents open in a sheet from the bottom of the screen, and the Previous and Next links are larger. The phone's Back button and the list button in the header return to the list, even after you follow links between topics.
 - On wide screens, stack the Guide's getting-started steps in one column and align the Guide's contents list. The minimum requirements match is now explained with an example instead of a formula, and the remaining formulas sit directly inside their expandable blocks.
 - Use the same calendar layout, navigation controls, and selected-day style for profile dates and university deadlines.
 - Use the standard month selector in the profile and mark deadline dates with a dot.

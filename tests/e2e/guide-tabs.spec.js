@@ -68,6 +68,18 @@ test.describe("guide navigation", () => {
     await expect(page.locator("#guide-comparison")).toBeHidden();
   });
 
+  test("returns to the topic list on mobile after following a link inside an article", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('.guide-nav a[href$="#guide-tags"]').click();
+    await page.locator("#guide-tags").getByRole("link", { name: "UniFit", exact: true }).first().click();
+    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+
+    await page.locator("#guideHubLink").click();
+    await expect(page).toHaveURL(/\/guide(\.html)?$/);
+    await expect(page.locator("#guideNav")).toBeVisible();
+    await expect(page.locator(".guide-content")).toBeHidden();
+  });
+
   test("closes the contents sheet with Escape on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/guide.html#guide-ml");

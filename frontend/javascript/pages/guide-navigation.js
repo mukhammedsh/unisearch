@@ -189,7 +189,9 @@ export function setupGuideSectionNavigation({
     if (historyMode && (sectionChanged || viewChanged) && view === "section") {
       const url = `${window.location.pathname}${window.location.search}#${nextId}`;
       if (historyMode === "push") {
-        history.pushState({ ...history.state, guideFromHub: compactViewChange || Boolean(history.state?.guideFromHub) }, "", url);
+        // Count the entries since the topic list, so "All topics" can step back past followed links.
+        const hubDepth = Number(history.state?.guideHubDepth) || 0;
+        history.pushState({ ...history.state, guideHubDepth: compactViewChange ? 1 : (hubDepth ? hubDepth + 1 : 0) }, "", url);
       } else {
         history.replaceState(history.state, "", url);
       }
@@ -274,8 +276,9 @@ export function setupGuideSectionNavigation({
     if (!isPlainClick(event)) return;
     event.preventDefault();
     closeNavSheet();
-    if (history.state?.guideFromHub) {
-      history.back();
+    const hubDepth = Number(history.state?.guideHubDepth) || 0;
+    if (hubDepth > 0) {
+      history.go(-hubDepth);
       return;
     }
     history.replaceState(history.state, "", `${window.location.pathname}${window.location.search}`);
