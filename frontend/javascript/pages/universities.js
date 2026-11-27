@@ -72,6 +72,7 @@ import { createLayoutSyncController } from "./universities/layout-sync.js";
 import { createUnifitBannerController } from "./universities/unifit-banner.js";
 import { createCompareController } from "./universities/compare-controller.js";
 import { createFilterControls } from "./universities/filter-controls.js";
+import { mountQuickFilters } from "./universities/quick-filters.js";
 
 export { reviewedCardIndicators };
 export { universityCardPriceInfo, renderUniversityCardCosts, buildRankSourceTooltip } from "./universities/card-tooltips.js";
@@ -83,6 +84,7 @@ let __universitiesCompareController = null;
 let __universitiesFilterControls = null;
 let __universitiesMapController = null;
 let __universitiesRecentController = null;
+let __universitiesQuickFilters = null;
 let __universitiesApiState = null;
 
 function bindWindowListener(eventName, handler) {
@@ -103,6 +105,8 @@ export function disposeUniversitiesPage() {
     __universitiesMapController = null;
     __universitiesRecentController?.dispose();
     __universitiesRecentController = null;
+    __universitiesQuickFilters?.dispose();
+    __universitiesQuickFilters = null;
     abortUniversitiesApiRequests(__universitiesApiState);
     __universitiesApiState = null;
     for (const [eventName, handler] of __universitiesWindowBindings) {
@@ -384,8 +388,12 @@ export function initUniversitiesPage() {
         clearSavedScrollPosition: layoutSync.clearSavedScrollPosition,
         refetch,
         fetchAndRender: (options) => fetchAndRender(options),
+        // The chips mount right after the filter controls, so the first summary update can arrive before them.
+        onFilterSummaryChange: () => __universitiesQuickFilters?.sync(),
     });
     __universitiesFilterControls = filterControls;
+    const quickFilters = mountQuickFilters({ container: document.getElementById("catalogQuickFilters"), state });
+    __universitiesQuickFilters = quickFilters;
 
     const buildParams = (forApi = false) => buildCatalogParams(state, {
         forApi,
@@ -908,6 +916,7 @@ export function initUniversitiesPage() {
             filterControls.refreshLocationFilterLabels();
             filterControls.applyToForm();
             filterControls.updateTradeoffLabels();
+            quickFilters.render();
             await syncSectionVisibility({
                 shouldFetch: true,
                 updateUrl: true,

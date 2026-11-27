@@ -249,7 +249,8 @@ test.describe("Responsive Layout and Overflow Verification", () => {
     // Navigate to university details via client router link click
     await page.waitForSelector(".uni-card:not(.is-skeleton) .uni-card-link-overlay");
     const firstCardLink = page.locator(".uni-card:not(.is-skeleton) .uni-card-link-overlay").first();
-    await firstCardLink.click();
+    // The middle of a phone row can hold the rank tooltip button, so tap the photo corner of the card.
+    await firstCardLink.click({ position: { x: 12, y: 12 } });
     await page.waitForSelector("#detailCard");
     await expect(mobileFilterToggle).not.toBeVisible();
     await expect(sidebar).not.toBeVisible();

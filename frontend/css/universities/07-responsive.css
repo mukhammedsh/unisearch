@@ -648,6 +648,69 @@
     height: clamp(118px, 34vw, 148px);
     flex-basis: clamp(118px, 34vw, 148px);
   }
+
+  /* Phone catalog rows: a narrow photo column beside the text, so several universities fit on one screen. */
+  .u-grid > .uni-card:has(> .uni-media) {
+    display: grid;
+    grid-template-columns: var(--u-card-thumb-width) minmax(0, 1fr);
+    --u-card-thumb-width: clamp(96px, 28vw, 120px);
+  }
+
+  .u-grid > .uni-card > .uni-media {
+    grid-column: 1;
+    grid-row: 1;
+    height: auto;
+    min-height: var(--u-card-thumb-width);
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+  }
+
+  .u-grid > .uni-card > .uni-body {
+    grid-column: 2;
+    grid-row: 1;
+    gap: var(--space-1);
+    padding: var(--space-3);
+  }
+
+  .u-grid > .uni-card .uni-title {
+    font-size: var(--text-base);
+  }
+
+  .u-grid > .uni-card .uni-loc {
+    font-size: var(--text-xs);
+  }
+
+  .u-grid > .uni-card .uni-footer {
+    padding-top: var(--space-2);
+  }
+
+  /* The globe icon and "#628" read as a rank on a phone row; the label stays for screen readers (as .sr-only). */
+  .u-grid > .uni-card .uni-metric-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* Statuses sit on the photo so they never cover the university name. */
+  .u-grid > .uni-card > .uni-card-statuses {
+    top: var(--space-2);
+    right: auto;
+    left: var(--space-2);
+    max-width: calc(var(--u-card-thumb-width) - var(--space-4));
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  /* The whole row opens the university; the words "View details" only repeat that. Compare mode keeps its label. */
+  body:not(.universities-compare-mode) .u-grid > .uni-card .uni-details {
+    display: none;
+  }
+
+  body:not(.universities-compare-mode) .u-grid > .uni-card .uni-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 480px) {

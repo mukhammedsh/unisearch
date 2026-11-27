@@ -29,7 +29,7 @@ function buildTourSteps() {
             title: t("tour.step1.title", "Narrow options by country, level, and budget"),
             desc: t(
                 "tour.step1.desc",
-                "Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Verified admissions to focus on universities with reviewed requirements and costs."
+                "Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Only verified universities to focus on universities with reviewed requirements and costs."
             ),
             action: "",
             resolveTarget: () => {

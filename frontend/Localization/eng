@@ -396,7 +396,7 @@ universities.filter.favorites: Favorites
 universities.filter.saved_scope: University list scope
 universities.found_prefix: Found
 universities.found_suffix: universities
-universities.global: Global
+universities.global: All countries
 universities.loading: Loading universities
 universities.map_panel.title: Results on the map
 universities.map_panel.showing: Showing {count} of {total}
@@ -832,7 +832,7 @@ tour.skip_all: Skip
 tour.steps_label: Tutorial steps
 tour.step1.label: Search & filters
 tour.step1.title: Narrow options by country, level, and budget
-tour.step1.desc: Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Verified admissions to focus on universities with reviewed requirements and costs.
+tour.step1.desc: Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Only verified universities to focus on universities with reviewed requirements and costs.
 tour.step2.label: Profile & {fit}
 tour.step2.title: Personalize sorting without an account
 tour.step2.desc: Add what you already know — subject, budget, GPA, or exam scores — saved privately on this device. {fit} ranks matching universities first and never treats missing scores as zero.
@@ -3314,7 +3314,7 @@ universities.empty.clear_price: Remove the price filter
 universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
 profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
-universities.filter.reviewed_only: Verified admissions
+universities.filter.reviewed_only: Only verified universities
 universities.filter.reviewed_only_hint: Show universities with verified requirements and costs
 universities.unifit.prefs_summary: UniFit preferences
 universities.tip.budget_level_needed: {cost}/yr depending on study level. Pick a study level to compare.
@@ -3346,3 +3346,4 @@ university.admissions.catalog.guide_link: How the match is calculated
 profile.guide_link.scores: Which grades and exams are supported
 profile.guide_link.languages: Which language exams are supported
 profile.guide_link.budget: How {fit} uses your budget
+universities.quick_filters.aria: Quick filters

@@ -396,7 +396,7 @@ universities.filter.favorites: Таңдаулылар
 universities.filter.saved_scope: Университеттер тізімінің қамтуы
 universities.found_prefix: Табылды:
 universities.found_suffix: университет
-universities.global: Әлем бойынша
+universities.global: Барлық елдер
 universities.loading: Университеттер жүктеліп жатыр
 universities.map_panel.title: Картадағы нәтижелер
 universities.map_panel.showing: {total} ішінен {count} көрсетілді
@@ -832,7 +832,7 @@ tour.skip_all: Өткізу
 tour.steps_label: Нұсқаулық қадамдары
 tour.step1.label: Іздеу мен сүзгілер
 tour.step1.title: Ел, деңгей және бюджет бойынша іріктеңіз
-tour.step1.desc: Университет, қала не қысқарған атау бойынша іздеп, оқу деңгейі, орналасуы және өз валютаңыздағы жылдық бюджет бойынша сүзгілеңіз. «Тексерілген деректер» ауыстырғышы талаптары мен бағалары тексерілген оқу орындарын көрсетеді.
+tour.step1.desc: Университет, қала не қысқарған атау бойынша іздеп, оқу деңгейі, орналасуы және өз валютаңыздағы жылдық бюджет бойынша сүзгілеңіз. «Тек тексерілген ЖОО-лар» ауыстырғышы талаптары мен бағалары тексерілген оқу орындарын көрсетеді.
 tour.step2.label: Профиль мен {fit}
 tour.step2.title: Тіркеусіз жеке сұрыптауды қосыңыз
 tour.step2.desc: Қазір білетін мәліметтеріңізді — бағытты, бюджетті, GPA не емтихан ұпайларын енгізіңіз; олар тек осы құрылғыда сақталады. {fit} лайықты университеттерді жоғары шығарады және бос өрістерді ешқашан нөл деп есептемейді.
@@ -3314,7 +3314,7 @@ universities.empty.clear_price: Баға сүзгісін алып тастау
 universities.state.empty_saved_none: Сіз әлі ештеңе сақтаған жоқсыз. Университетті карточкасынан сақтаңыз, ол осында пайда болады.
 profile.unit.per_year: / жыл
 profile.budget_currency_label: Бюджет валютасы
-universities.filter.reviewed_only: Тексерілген талаптар
+universities.filter.reviewed_only: Тек тексерілген ЖОО-лар
 universities.filter.reviewed_only_hint: Талаптары мен бағасы тексерілген ЖОО-ларды көрсету
 universities.unifit.prefs_summary: UniFit қалаулары
 universities.tip.budget_level_needed: Оқу деңгейіне қарай жылына {cost}. Салыстыру үшін деңгейді таңдаңыз.
@@ -3346,3 +3346,4 @@ university.admissions.catalog.guide_link: Сәйкестік қалай есеп
 profile.guide_link.scores: Қандай бағалар мен емтихандар қолдау табады
 profile.guide_link.languages: Қандай тіл емтихандары қолдау табады
 profile.guide_link.budget: {fit} бюджетті қалай ескереді
+universities.quick_filters.aria: Жылдам сүзгілер
