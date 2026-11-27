@@ -2,11 +2,14 @@
 
 All notable changes to UniSearch are documented here.
 
-## 10.10.2 (2026-11-27) - Profile layout on phones and tablets
+## 10.10.2 (2026-11-27) - Profile overview and section editors
+
+### Changed
+- Show saved answers in the profile overview. Open one section at a time on phones or edit alongside the overview on wider screens. Save appears after an edit, and switching sections prompts you to keep, discard, or save your changes.
+- Move the UniFit guide next to UniFit sorting in the university catalog.
 
 ### Fixed
-- Put the profile back button beside the title and the UniFit guide link in the introduction.
-- Keep Reset and Save reachable on phones and tablets, including in landscape orientation, and allow profile confirmations to scroll on short screens.
+- Keep profile actions reachable in landscape and allow confirmation dialogs to scroll on short screens.
 - Keep keyboard focus outlines visible at the edge of the profile form.
 
 ## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, lighter admissions tabs, Kazakh-first locale, and UniFit fixes

@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors, setNativeSelect } = require("./helpers/selectors");
+const { openProfileTab, selectors, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 test.describe("Profile Budget Multi-Currency", () => {
@@ -16,6 +16,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     await expect(page.locator(selectors.profileBtn)).toBeVisible();
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+    await openProfileTab(page, "preferences");
 
     const budgetCurrency = page.locator("#profileBudgetCurrency");
     await expect(budgetCurrency).toHaveValue("USD");
@@ -58,6 +59,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     // 4. Re-open profile modal and verify KZT conversions
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+    await openProfileTab(page, "preferences");
 
     await expect(budgetCurrency).toHaveValue("KZT");
 
@@ -101,6 +103,7 @@ test.describe("Profile Budget Multi-Currency", () => {
     await page.goto("/index.html");
     await page.click(selectors.profileBtn);
     await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+    await openProfileTab(page, "preferences");
     const budgetInput = page.locator(selectors.budgetInput);
     await budgetInput.fill("45000");
     await budgetInput.dispatchEvent("input");

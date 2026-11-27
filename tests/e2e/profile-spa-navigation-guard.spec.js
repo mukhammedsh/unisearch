@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 
 const PROFILE_LISTENER_TYPES = [
   "examConfigLoaded",
@@ -48,6 +48,7 @@ test("SPA navigation keeps the dirty profile until discard and disposes its glob
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
   await expect.poll(profileHandlersPresent).toEqual([true, true, true, true, true]);
 
+  await openProfileTab(page, "preferences");
   await page.locator(selectors.budgetInput).fill("45000");
   await page.locator(".navbar-logo-link").click();
   await expect(page.locator("#profileUnsavedModal")).toHaveClass(/is-open/);
@@ -68,6 +69,7 @@ test("browser back waits for the profile decision and can restore the canceled r
   await page.locator(selectors.profileBtn).click();
   await expect(page.locator("#profilePage")).toBeVisible();
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "preferences");
   await page.locator(selectors.budgetInput).fill("45000");
 
   await page.goBack();
@@ -90,6 +92,7 @@ test("only the latest SPA destination proceeds after a shared profile-close prom
   await page.locator(selectors.profileBtn).click();
   await expect(page.locator("#profilePage")).toBeVisible();
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await openProfileTab(page, "preferences");
   await page.locator(selectors.budgetInput).fill("45000");
 
   await page.evaluate(() => window.dispatchEvent(new CustomEvent("app:navigate", {

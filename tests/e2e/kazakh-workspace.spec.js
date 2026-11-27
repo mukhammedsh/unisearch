@@ -1,4 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
+const { openProfileTab } = require("./helpers/selectors");
 
 const scenarios = [
   { name: "desktop light", width: 1280, height: 900, theme: "light" },
@@ -47,9 +48,10 @@ for (const scenario of scenarios) {
     await expectPageReady(page, "profile", scenario.theme);
     await expect(page.locator(".profile-page-header")).toBeVisible();
     await expect(page.locator(".profile-page-title")).toHaveText("Профиль");
-    await expect(page.locator("#profileUnifitGuideLink")).toBeVisible();
+    await expect(page.locator(".profile-page-intro")).toContainText("UniFit");
     await expectNoHorizontalOverflow(page);
 
+    await openProfileTab(page, "preferences");
     await page.locator("#budgetInput").fill("25000");
     await page.getByRole("button", { name: "Сақтау" }).click();
     await expect(page.locator("#profileSaveState")).toBeVisible();

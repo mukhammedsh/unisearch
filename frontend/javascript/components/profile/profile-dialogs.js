@@ -2,8 +2,23 @@ import { prefersReducedMotion, trapFocus } from "../../utils.js";
 import { safeSessionStorage } from "../../utils/safe-storage.js";
 import { t } from "../../i18n.js";
 import { isProfilePath, navigateToAppRoute, routeUniversities } from "../../routes.js";
+import { isProfileEditorHistoryEntry } from "./profile-sections.js";
 
 export const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
+
+export const getProfileReturnUrl = () => {
+    const candidates = [safeSessionStorage.get(PROFILE_RETURN_URL_KEY, ""), document.referrer];
+    for (const candidate of candidates) {
+        if (!candidate) continue;
+        try {
+            const url = new URL(candidate, window.location.href);
+            if (url.origin === window.location.origin && !isProfilePath(url.pathname)) return url;
+        } catch (error) {
+            if (!(error instanceof TypeError)) throw error;
+        }
+    }
+    return null;
+};
 
 export const profileValidationFocusTarget = (els, state) => {
     if (state.examEditorDirty) return els.addExamBtn || null;
@@ -42,7 +57,7 @@ export const closeUnsavedDialog = (els, state, focusCloseButton = false, focusTa
     closeDialogWithMotion(els.unsavedModal, () => {
         state.cleanupUnsavedFocusTrap?.();
         state.cleanupUnsavedFocusTrap = null;
-    }, focusTarget || (focusCloseButton ? els.closeBtn : null));
+    }, focusTarget || (focusCloseButton ? state.unsavedTrigger || els.closeBtn : null));
 };
 
 export const closeResetDialog = (els, state, focusResetButton = false) => {
@@ -67,26 +82,15 @@ export const closeImmediately = (els, state, { onResetFields } = {}) => {
     const finish = () => {
         window.dispatchEvent(new Event("profileModalClosed"));
         if (state.isDedicatedPage) {
-            const returnUrl = safeSessionStorage.get(PROFILE_RETURN_URL_KEY, "");
+            const returnUrl = getProfileReturnUrl();
+            safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
             if (returnUrl) {
-                safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
-                try {
-                    const parsed = new URL(returnUrl, window.location.href);
-                    if (parsed.origin === window.location.origin && !isProfilePath(parsed.pathname)) {
-                        if (window.history.length > 1) {
-                            window.history.back();
-                        } else {
-                            navigateToAppRoute(parsed.href);
-                        }
-                        return;
-                    }
-                } catch {
-                    safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
+                const backSteps = isProfileEditorHistoryEntry() ? 2 : 1;
+                if (window.history.length > backSteps) {
+                    window.history.go(-backSteps);
+                } else {
+                    navigateToAppRoute(returnUrl.href);
                 }
-            }
-
-            if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
-                window.history.back();
             } else {
                 navigateToAppRoute(routeUniversities());
             }
@@ -112,6 +116,7 @@ export const closeImmediately = (els, state, { onResetFields } = {}) => {
 
 export const openUnsavedDialog = (els, state) => {
     if (!els.unsavedModal) return;
+    if (!els.unsavedModal.classList.contains("is-open")) state.unsavedTrigger = document.activeElement;
     window.clearTimeout(els.unsavedModal._closeMotionTimer);
     els.unsavedModal.classList.remove("is-closing");
     els.unsavedModal.classList.add("is-open");

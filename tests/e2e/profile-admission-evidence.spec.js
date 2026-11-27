@@ -16,6 +16,7 @@ for (const language of ["eng", "rus"]) {
         await page.goto(`/profile.html?lang=${language}`);
         await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
         await expect(page.locator(selectors.profileModal)).toBeVisible();
+        await openProfileTab(page, "specific");
         await expect(page.locator("#languageEvidenceKind").locator("xpath=..").locator(".custom-select-trigger")).toBeVisible();
         await expect(page.locator("#institutionEvidenceKind").locator("xpath=..").locator(".custom-select-trigger")).toBeVisible();
         await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
@@ -31,7 +32,7 @@ test("language evidence rejects invalid entries and supports deleting a saved re
   await page.goto("/profile.html?lang=eng");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
-  await openProfileTab(page, "basics");
+  await openProfileTab(page, "specific");
 
   const languageList = page.locator("#languageEvidenceList .profile-exam-item");
 
@@ -67,7 +68,7 @@ test("a saved non-English language record still renders and can be deleted", asy
   await page.goto("/profile.html?lang=eng");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
-  await openProfileTab(page, "basics");
+  await openProfileTab(page, "specific");
   const languageList = page.locator("#languageEvidenceList .profile-exam-item");
   await expect(languageList).toHaveCount(1);
   await expect(page.locator("#languageEvidenceList")).toContainText("FR");
@@ -80,7 +81,7 @@ test("institutional evidence is offered only for MIT, whose reviewed checks read
   await page.goto("/profile.html?lang=eng");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
-  await openProfileTab(page, "basics");
+  await openProfileTab(page, "specific");
 
   const institutionList = page.locator("#institutionalEvidenceList .profile-exam-item");
 
@@ -158,6 +159,7 @@ test(`dated exam attempts and evidence save independently on ${scenario.name} an
   await page.locator('#examList button[data-idx="0"]').click();
   await expect(page.locator("#examList .profile-exam-item")).toHaveCount(1);
   await expect(page.locator(selectors.examList)).not.toContainText(/2025[-\u2011]03[-\u2011]15/);
+  await page.click(selectors.saveProfileBtn);
 
   await openProfileTab(page, "languages");
   await page.waitForFunction(() => document.querySelectorAll("#langCode option").length > 1);
@@ -187,7 +189,8 @@ test(`dated exam attempts and evidence save independently on ${scenario.name} an
   await expect(page.locator("#langList .lang-item")).toHaveCount(1);
   await expect(page.locator("#langList")).toContainText(/2025[-\u2011]11[-\u2011]20/);
 
-  await openProfileTab(page, "basics");
+  await page.click(selectors.saveProfileBtn);
+  await openProfileTab(page, "specific");
   await setNativeSelect(page, "languageEvidenceKind", "education");
   await page.fill("#languageEvidenceCountry", "Canada");
   await setNativeSelect(page, "languageEvidenceQualification", "bachelor");
@@ -241,7 +244,7 @@ test(`dated exam attempts and evidence save independently on ${scenario.name} an
   await openProfileTab(page, "scores");
   await expect(page.locator("#examList .profile-exam-item")).toHaveCount(1);
   await expect(page.locator(selectors.examList)).toContainText(/2025[-\u2011]11[-\u2011]20/);
-  await openProfileTab(page, "basics");
+  await openProfileTab(page, "specific");
   await expect(page.locator("#languageEvidenceList .profile-exam-item")).toHaveCount(1);
   await expect(page.locator("#institutionalEvidenceList .profile-exam-item")).toHaveCount(4);
   await openProfileTab(page, "languages");
@@ -275,7 +278,7 @@ test(`dated exam attempts and evidence save independently on ${scenario.name} an
   expect(apiResult.requestBody.profile.institutional_evidence).toContainEqual(expect.objectContaining({ kind: "credential", credential_id: "sc0x-course-credential", score_percent: 86 }));
   expect(apiResult.requestBody.profile.institutional_evidence).toContainEqual(expect.objectContaining({ kind: "enrollment", units: 200, major_units: 102, completed_major_subjects: 9 }));
   expect(apiResult.responseBody).toHaveProperty("assessment");
-  await openProfileTab(page, "basics");
+  await openProfileTab(page, "specific");
   await setNativeSelect(page, "institutionEvidenceKind", "enrollment");
   await setNativeSelect(page, "institutionEvidenceProgram", "mit-bs-6-9");
   await expect(page.locator("#institutionEvidenceMajorUnits")).toBeVisible();

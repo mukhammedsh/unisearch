@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 const REMOVED_CONTROLS = ["countryOfEducationSelect", "countryOfEducationOtherInput", "educationCredentialSelect", "educationCredentialOtherInput", "applicantRouteSelect"];
@@ -18,6 +18,7 @@ test.describe("Applicant profile application details", () => {
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
     for (const id of [...REMOVED_CONTROLS, "intendedEntryCycleInput", "feeStatusContextSelect"]) await expect(page.locator(`#${id}`)).toHaveCount(0);
+    await openProfileTab(page, "preferences");
     await page.fill("#budgetInput", "12000");
     await page.click(selectors.saveProfileBtn);
     await expect.poll(async () => page.evaluate(() => {

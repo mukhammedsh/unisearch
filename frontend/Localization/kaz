@@ -281,7 +281,6 @@ profile.unsaved.message: Профильдегі өзгерістер әлі са
 profile.unsaved.discard: Өзгерістерді жою
 profile.unsaved.cancel: Өңдеуді жалғастыру
 profile.unsaved.save_close: Сақтап, жабу
-profile.reset.note: Бұл құрылғыдағы бюджет, GPA, емтихан, тіл, қызығушылық және басқа сақталған профиль деректері өшіріледі.
 profile.reset.cta: Деректерді тазарту
 profile.reset.confirm_title: Профильдегі барлық деректі тазартасыз ба?
 profile.reset.confirm_message: Бұл құрылғыда сақталған профиль деректері өшіріліп, профиль бастапқы бос күйге қайтады.
@@ -294,7 +293,6 @@ profile.unit.gpa: / 4,0
 profile.sections.aria: Профиль бөлімдері
 profile.title: Профиль
 profile.action.back: Артқа
-profile.action.back_desc: Алдыңғы бетке қайту
 profile.aria.applicant_profile: Талапкер профилі
 ranking.acceptance: Қабылдау үлесі
 ranking.acceptance_undergraduate: Бакалавриатқа қабылдау үлесі
@@ -3062,7 +3060,17 @@ university.ux2.needs.mark_recommended: Талап емес, ұсыныс
 languages.exam_overall_score_label: Жалпы балл
 languages.exam_overall_score_hint: Бүкіл емтихан бойынша жалпы балл — секциялар бойынша баллды білмесеңіз, тек осыны енгізуге болады.
 languages.exam_sections_label: Секциялар бойынша балл (сертификатта болса)
-profile.ux2.intro: Барлық өрісті толтыру міндетті емес, жауаптар осы құрылғыда сақталады.
+profile.ux2.intro: UniFit бұл деректерді каталогтағы университеттерді реттеу үшін пайдаланады. Барлық өрісті толтыру міндетті емес.
+profile.overview.study: Оқу
+profile.overview.specific: Жекелеген университеттер үшін
+profile.overview.catalog: Университеттерге
+profile.overview.results: Нәтижелерге оралу
+profile.overview.storage: Профиль деректері осы құрылғыда сақталады.
+profile.overview.empty.basics: Оқу деңгейі, бағыт және қызығушылықтар
+profile.overview.empty.preferences: Жылдық бюджет және қаржыландыру қалаулары
+profile.overview.empty.scores: Орташа балл және емтихан нәтижелері
+profile.overview.empty.languages: Тілдер, деңгейлер және сертификаттар
+profile.overview.empty.specific: Ағылшын тілі және оқу туралы мәліметтер
 profile.ux2.section.study.title: Нені оқығыңыз келеді
 profile.ux2.section.study.desc: Оқу деңгейі тізімді тарылтады. Мамандық пен тақырыптар реттілікті өзгертеді.
 profile.ux2.section.budget.title: Бюджет және қаржыландыру

@@ -1,11 +1,11 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
+const { openProfileTab } = require("./helpers/selectors");
 
 test("profile calendar selects and clears a date", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
-  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
-  await page.locator("[data-profile-tab='scores']").click();
+  await openProfileTab(page, "scores");
   const input = page.locator("#examTakenOnInput");
   const trigger = input.locator("+ button");
   await trigger.click();
@@ -35,8 +35,7 @@ test("profile calendar selects and clears a date", async ({ page }) => {
 
 test("calendar animates closing with Escape and restores focus", async ({ page }) => {
   await page.goto("/profile.html");
-  await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
-  await page.locator("[data-profile-tab='scores']").click();
+  await openProfileTab(page, "scores");
   const trigger = page.locator("#examTakenOnInput + button");
   await trigger.click();
   const calendar = page.locator("dialog.profile-calendar");

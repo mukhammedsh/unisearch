@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test.describe("Profile beforeunload unsaved changes protection", () => {
   test("clean profile does not prevent unload", async ({ page }) => {
@@ -22,6 +22,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.goto("/profile.html");
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
+    await openProfileTab(page, "preferences");
     await page.fill(selectors.budgetInput, "45000");
 
     const check = await page.evaluate(() => {
@@ -38,6 +39,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.goto("/profile.html");
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
+    await openProfileTab(page, "preferences");
     await page.fill(selectors.budgetInput, "45000");
     await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
     await page.click(selectors.saveProfileBtn);
@@ -63,6 +65,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.click(selectors.profileBtn);
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
+    await openProfileTab(page, "preferences");
     await page.fill(selectors.budgetInput, "45000");
 
     // Click close button to trigger the unsaved changes dialog
@@ -82,6 +85,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.click(selectors.profileBtn);
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
+    await openProfileTab(page, "preferences");
     await page.fill(selectors.budgetInput, "45000");
     await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
 
@@ -97,7 +101,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await expect(page.locator(selectors.budgetInput)).toHaveValue("");
   });
 
-  test("profile save state displays 'Сохранено' to the left of the back button in Russian", async ({ page }) => {
+  test("profile editor confirms saving in Russian", async ({ page }) => {
     await markTourAsSeen(page);
     await page.addInitScript(() => {
       localStorage.setItem("unisearch_ui_language_v1", "rus");
@@ -105,6 +109,7 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await page.goto("/profile.html");
     await page.waitForFunction(() => !!window.__unisearchProfileDraft);
 
+    await openProfileTab(page, "preferences");
     await page.fill(selectors.budgetInput, "50000");
     await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
     await page.click(selectors.saveProfileBtn);
@@ -114,8 +119,6 @@ test.describe("Profile beforeunload unsaved changes protection", () => {
     await expect(saveState).toBeVisible();
     await expect(saveState).toHaveText("Сохранено");
 
-    const saveStateBox = await saveState.boundingBox();
-    const backBtnBox = await page.locator(selectors.profileCloseBtn).boundingBox();
-    expect(saveStateBox.x + saveStateBox.width).toBeLessThanOrEqual(backBtnBox.x);
+    await expect(saveState).toBeFocused();
   });
 });

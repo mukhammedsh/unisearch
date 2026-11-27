@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { personas, seedProfile } = require("./helpers/personas");
-const { selectors, openDisclosureParents } = require("./helpers/selectors");
+const { openProfileTab, selectors, openDisclosureParents } = require("./helpers/selectors");
 
 const MIT_ID = "mit-usa-cambridge";
 const MBA_URL = "/university.html?id=mit-usa-cambridge&admission_option=mit-sloan-mba-full-time&admission_application_route=mit_sloan_mba_admissions&admission_level=masters&admission_route=graduate&admission_cycle=2027%20entry&admission_fee=unknown";
@@ -48,6 +48,7 @@ test("MIT Sloan stays unscored after a profile update and keeps its current annu
 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
+  await openProfileTab(page, "preferences");
   await page.fill(selectors.budgetInput, "42000");
   await page.click(selectors.saveProfileBtn);
   await expect(page.locator(selectors.saveProfileBtn)).toBeDisabled();

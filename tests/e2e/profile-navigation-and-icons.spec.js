@@ -1,14 +1,14 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test.describe("Profile page icons and navigation", () => {
   test("top back button protects unsaved changes", async ({ page }) => {
     await markTourAsSeen(page);
     await page.goto("/profile.html");
-    await expect(page.locator("#budgetInput")).toBeVisible();
+    await openProfileTab(page, "preferences");
     await page.locator("#budgetInput").fill("12000");
-    await page.locator("#profileHeaderBackBtn").click();
+    await page.locator("#profileCloseBtn").click();
     await expect(page.locator("#profileUnsavedModal")).toHaveClass(/is-open/);
   });
   test("profile page renders clean action buttons and Heroicons inside badges", async ({ page }) => {
@@ -20,7 +20,7 @@ test.describe("Profile page icons and navigation", () => {
     expect(await page.locator("#saveProfileBtn svg").count()).toBe(0);
 
     // Switch to scores tab to verify compact GPA block (tooltip sits by the hint, not the title)
-    await page.click('[data-profile-tab="scores"]');
+    await openProfileTab(page, "scores");
     await expect(page.locator('[data-profile-section="scores"]')).toBeVisible();
     // The radio choices control the GPA scale shown next to the input.
     const gpaUnit = page.locator("#gpaUnit");

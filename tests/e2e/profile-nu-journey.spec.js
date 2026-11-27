@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { setNativeSelect } = require("./helpers/selectors");
+const { openProfileTab, setNativeSelect } = require("./helpers/selectors");
 
 const NU = "nazarbayev-university-kaz-astana";
 
@@ -8,7 +8,7 @@ async function openProfileEditor(page, section) {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
-  await page.locator(`[data-profile-tab='${section}']`).click();
+  await openProfileTab(page, section);
 }
 
 test("pending catalog search cannot replace the university destination during SPA navigation", async ({ page }) => {
@@ -38,6 +38,7 @@ test("an empty profile keeps advanced evidence fields hidden until their type is
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
+  await openProfileTab(page, "specific");
   await expect(page.locator("#languageEvidenceTitle")).toBeVisible();
   await expect(page.locator("#institutionalEvidenceTitle")).toBeVisible();
   await expect(page.locator("#institutionEvidenceKind")).toHaveValue("");
@@ -56,6 +57,7 @@ test("profile budget entry accepts group spaces and saves on Enter", async ({ pa
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
   await expect(page.locator(".profile-page-intro")).toContainText("All fields are optional");
+  await openProfileTab(page, "preferences");
   await page.locator("#budgetInput").fill("1 000 000");
   await expect(page.locator("#budgetInput")).toHaveValue("1 000 000");
   await page.locator("#budgetInput").press("Enter");
@@ -69,11 +71,10 @@ test("currency settings do not silently save unrelated profile drafts", async ({
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("#profileBudgetCurrency")).toHaveAttribute("aria-label", /Budget currency/);
+  await openProfileTab(page, "preferences");
   await page.locator("#budgetInput").fill("20000");
   await page.locator("#budgetInput").press("Enter");
   await expect(page.locator("#saveProfileBtn")).toBeDisabled();
-  await page.locator("#profileInterestsInput").fill("robotics and campus research");
-  await expect(page.locator("#saveProfileBtn")).toBeEnabled();
   await page.locator("#budgetInput").fill("30000");
   // The currency is chosen right next to the amount, without opening Settings.
   await setNativeSelect(page, "profileBudgetCurrency", "KZT");
@@ -96,7 +97,7 @@ test("currency settings do not silently save unrelated profile drafts", async ({
 });
 
 test("saving a profile keeps university choices saved by another tab", async ({ page, context }) => {
-  await openProfileEditor(page, "basics");
+  await openProfileEditor(page, "preferences");
   await page.locator("#budgetInput").fill("20000");
   await page.locator("#saveProfileBtn").click();
   const university = await context.newPage();
@@ -179,7 +180,7 @@ test("an unadded academic report survives translation, blocks false saving, and 
   await expect(page.locator("#examTakenOnInput")).toHaveValue("2026-03-15");
 });
 
-test("language editor preserves raw sections and newer pending edits without saving unrelated fields", async ({ page }) => {
+test("language editor preserves raw sections and newer pending edits", async ({ page }) => {
   await openProfileEditor(page, "languages");
   await expect(page.locator("#langCode option[value='en']")).toBeAttached();
   await setNativeSelect(page, "langCode", "en");
@@ -209,12 +210,8 @@ test("language editor preserves raw sections and newer pending edits without sav
     await listening.press("Enter");
     await expect(page.locator("#langAddBtn")).toBeDisabled();
     await listening.fill("7");
-    await page.locator("[data-profile-tab='basics']").click();
-    await page.locator("#budgetInput").fill("12345");
     releaseResponse();
     await expect(page.locator("#langList .lang-item")).toHaveCount(1);
-    await expect(page.locator("#budgetInput")).toHaveValue("12345");
-    await page.locator("[data-profile-tab='languages']").click();
     await expect(listening).toHaveValue("7");
     await expect(page.locator("#langList")).toContainText("6.5");
     await page.locator("#clearLanguageDraftBtn").press("Enter");
@@ -223,8 +220,7 @@ test("language editor preserves raw sections and newer pending edits without sav
     await page.locator("#saveProfileBtn").click();
     await expect(page.locator("#saveProfileBtn")).toBeDisabled();
     await page.reload();
-    await expect(page.locator("#budgetInput")).toHaveValue("12345");
-    await page.locator("[data-profile-tab='languages']").click();
+    await openProfileTab(page, "languages");
     await expect(page.locator("#langList .lang-item")).toHaveCount(1);
     await page.locator("#langList [data-edit-idx='0']").click();
     await listening.fill("7");

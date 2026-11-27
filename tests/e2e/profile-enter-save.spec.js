@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test("pressing Enter in budget saves profile", async ({ page }) => {
   await markTourAsSeen(page);
@@ -10,6 +10,7 @@ test("pressing Enter in budget saves profile", async ({ page }) => {
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
+  await openProfileTab(page, "preferences");
   await page.fill(selectors.budgetInput, "31000");
   await page.press(selectors.budgetInput, "Enter");
 

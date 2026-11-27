@@ -284,7 +284,6 @@ profile.unsaved.message: В профиле есть несохраненные �
 profile.unsaved.discard: Не сохранять изменения
 profile.unsaved.cancel: Продолжить редактирование
 profile.unsaved.save_close: Сохранить и закрыть
-profile.reset.note: Очищает бюджет, GPA, экзамены, языки, интересы и другие сохраненные поля профиля на этом устройстве.
 profile.reset.cta: Сбросить данные
 profile.reset.confirm_title: Сбросить все данные профиля?
 profile.reset.confirm_message: Это удалит все сохраненные данные профиля на этом устройстве и вернет профиль к пустым значениям.
@@ -297,7 +296,6 @@ profile.unit.gpa: / 4.0
 profile.sections.aria: Разделы профиля
 profile.title: Профиль
 profile.action.back: Назад
-profile.action.back_desc: Вернуться на предыдущую страницу
 profile.aria.applicant_profile: Профиль абитуриента
 ranking.acceptance: Процент зачисления
 ranking.acceptance_undergraduate: Доля зачисленных на бакалавриат
@@ -3062,7 +3060,17 @@ university.ux2.needs.mark_recommended: Рекомендация, а не тре�
 languages.exam_overall_score_label: Общий балл
 languages.exam_overall_score_hint: Общий балл по всему экзамену — можно указать только его, если не знаете баллы по секциям.
 languages.exam_sections_label: Баллы по секциям (если они есть в сертификате)
-profile.ux2.intro: Все заполнять необязательно, ответы сохраняются на этом устройстве.
+profile.ux2.intro: UniFit использует эти данные, чтобы упорядочить университеты в каталоге. Все поля необязательны.
+profile.overview.study: Учёба
+profile.overview.specific: Для отдельных вузов
+profile.overview.catalog: К университетам
+profile.overview.results: К результатам
+profile.overview.storage: Данные профиля хранятся на этом устройстве.
+profile.overview.empty.basics: Уровень, направление и интересы
+profile.overview.empty.preferences: Бюджет на год и предпочтения по финансированию
+profile.overview.empty.scores: Средний балл и результаты экзаменов
+profile.overview.empty.languages: Языки, уровни и сертификаты
+profile.overview.empty.specific: Английский и сведения об обучении
 profile.ux2.section.study.title: Что вы хотите изучать
 profile.ux2.section.study.desc: Уровень обучения сужает список. Специальность и темы меняют порядок.
 profile.ux2.section.budget.title: Бюджет и финансирование

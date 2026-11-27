@@ -47,34 +47,40 @@
   </div>
 
   <main class="profile-page" id="profilePage">
-    <section class="profile-shell" id="profileModal" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
+    <section class="profile-shell" id="profileModal" data-profile-view="overview" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
 
       <header class="profile-page-header">
-        <button class="profile-back-icon" id="profileHeaderBackBtn" type="button" aria-label="Back" data-i18n-aria-label="profile.action.back" title="Return to previous page" data-i18n-title="profile.action.back_desc">
-          <span data-heroicon="arrow-left" data-icon-size="20" aria-hidden="true"></span>
-        </button>
         <h1 class="profile-page-title" data-i18n="profile.title">Profile</h1>
-        <p class="profile-page-intro" data-i18n="profile.ux2.intro">All fields are optional, and your answers are saved on this device.</p>
-        <a class="profile-guide-link" id="profileUnifitGuideLink" href="guide.html#guide-unifit" target="_blank" rel="noopener" data-i18n="profile.ux2.summary.guide_link">How UniFit works</a>
+        <button class="ui-btn ui-btn--lg ui-btn--ghost" id="profileCloseBtn" type="button" data-i18n="profile.overview.catalog">Universities</button>
+        <p class="profile-page-intro" data-i18n="profile.ux2.intro">UniFit uses these details to sort universities in the catalog. All fields are optional.</p>
       </header>
 
-      <div class="profile-workspace-layout">
-        <!-- Outline: jump links to the sections below (desktop and tablet only) -->
-        <nav class="profile-outline" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
-          <ol class="profile-outline__list">
-            <li><button class="profile-section-tab is-active" type="button" data-profile-tab="basics" aria-current="location"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.study.title">What you want to study</span><span class="sr-only profile-outline__status"></span></button></li>
-            <li><button class="profile-section-tab" type="button" data-profile-tab="preferences"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.budget.title">Budget and funding</span><span class="sr-only profile-outline__status"></span></button></li>
-            <li><button class="profile-section-tab" type="button" data-profile-tab="scores"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.scores.title">Grades and exams</span><span class="sr-only profile-outline__status"></span></button></li>
-            <li><button class="profile-section-tab" type="button" data-profile-tab="languages"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.languages.title">Languages</span><span class="sr-only profile-outline__status"></span></button></li>
-            <li><button class="profile-section-tab" type="button" data-profile-tab="specific"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.specific.title">For specific universities</span><span class="sr-only profile-outline__status"></span></button></li>
-          </ol>
-        </nav>
+      <div class="profile-workspace-layout" id="mainContent" tabindex="-1">
+        <aside class="profile-overview">
+          <nav class="profile-outline" aria-label="Profile sections" data-i18n-aria-label="profile.sections.aria">
+            <ul class="profile-outline__list">
+              <li><button class="profile-section-tab" type="button" data-profile-tab="basics" aria-controls="profileSectionStudy"><span class="profile-outline__label" data-i18n="profile.overview.study">Study</span><span class="profile-outline__status"></span><span class="profile-outline__arrow" data-heroicon="chevron-right" data-icon-size="16" aria-hidden="true"></span></button></li>
+              <li><button class="profile-section-tab" type="button" data-profile-tab="preferences" aria-controls="profileSectionBudget"><span class="profile-outline__label" data-i18n="profile.ux2.section.budget.title">Budget and funding</span><span class="profile-outline__status"></span><span class="profile-outline__arrow" data-heroicon="chevron-right" data-icon-size="16" aria-hidden="true"></span></button></li>
+              <li><button class="profile-section-tab" type="button" data-profile-tab="scores" aria-controls="profileSectionScores"><span class="profile-outline__label" data-i18n="profile.ux2.section.scores.title">Grades and exams</span><span class="profile-outline__status"></span><span class="profile-outline__arrow" data-heroicon="chevron-right" data-icon-size="16" aria-hidden="true"></span></button></li>
+              <li><button class="profile-section-tab" type="button" data-profile-tab="languages" aria-controls="profileSectionLanguages"><span class="profile-outline__label" data-i18n="profile.ux2.section.languages.title">Languages</span><span class="profile-outline__status"></span><span class="profile-outline__arrow" data-heroicon="chevron-right" data-icon-size="16" aria-hidden="true"></span></button></li>
+              <li><button class="profile-section-tab" type="button" data-profile-tab="specific" aria-controls="profileSectionSpecific"><span class="profile-outline__label" data-i18n="profile.overview.specific">For specific universities</span><span class="profile-outline__status"></span><span class="profile-outline__arrow" data-heroicon="chevron-right" data-icon-size="16" aria-hidden="true"></span></button></li>
+            </ul>
+          </nav>
+          <div class="profile-reset-row">
+            <p class="profile-hint" id="profileStorageNote" role="status" data-i18n="profile.overview.storage">Profile data is stored on this device.</p>
+            <button id="resetProfileBtn" class="ui-btn ui-btn--ghost profile-reset-link" type="button" data-i18n="profile.reset.cta">Reset data</button>
+          </div>
+        </aside>
 
         <div class="profile-main-content">
+          <button class="ui-btn ui-btn--lg ui-btn--ghost profile-section-back" id="profileSectionBackBtn" type="button">
+            <span data-heroicon="chevron-left" data-icon-size="16" aria-hidden="true"></span>
+            <span data-i18n="profile.title">Profile</span>
+          </button>
           <div class="profile-body">
 
             <!-- ==================== SECTION 1: WHAT YOU WANT TO STUDY ==================== -->
-            <section class="profile-section-panel" id="profileSectionStudy" data-profile-section="basics" aria-labelledby="profileSectionStudyTitle">
+            <section class="profile-section-panel" id="profileSectionStudy" data-profile-section="basics" aria-labelledby="profileSectionStudyTitle" hidden>
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionStudyTitle" tabindex="-1" data-i18n="profile.ux2.section.study.title">What you want to study</h2>
 
@@ -129,7 +135,7 @@
             </section>
 
             <!-- ==================== SECTION 2: BUDGET AND FUNDING ==================== -->
-            <section class="profile-section-panel" id="profileSectionBudget" data-profile-section="preferences" aria-labelledby="profileSectionBudgetTitle">
+            <section class="profile-section-panel" id="profileSectionBudget" data-profile-section="preferences" aria-labelledby="profileSectionBudgetTitle" hidden>
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionBudgetTitle" tabindex="-1" data-i18n="profile.ux2.section.budget.title">Budget and funding</h2>
 
@@ -185,7 +191,7 @@
             </section>
 
             <!-- ==================== SECTION 3: GRADES AND EXAMS ==================== -->
-            <section class="profile-section-panel" id="profileSectionScores" data-profile-section="scores" aria-labelledby="profileSectionScoresTitle">
+            <section class="profile-section-panel" id="profileSectionScores" data-profile-section="scores" aria-labelledby="profileSectionScoresTitle" hidden>
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionScoresTitle" tabindex="-1" data-i18n="profile.ux2.section.scores.title">Grades and exams</h2>
 
@@ -297,7 +303,7 @@
             </section>
 
             <!-- ==================== SECTION 4: LANGUAGES ==================== -->
-            <section class="profile-section-panel" id="profileSectionLanguages" data-profile-section="languages" aria-labelledby="profileSectionLanguagesTitle">
+            <section class="profile-section-panel" id="profileSectionLanguages" data-profile-section="languages" aria-labelledby="profileSectionLanguagesTitle" hidden>
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionLanguagesTitle" tabindex="-1" data-i18n="profile.ux2.section.languages.title">Languages</h2>
 
@@ -366,7 +372,7 @@
             </section>
 
             <!-- ==================== SECTION 5: FOR SPECIFIC UNIVERSITIES ==================== -->
-            <section class="profile-section-panel" id="profileSectionSpecific" data-profile-section="specific" aria-labelledby="profileSectionSpecificTitle">
+            <section class="profile-section-panel" id="profileSectionSpecific" data-profile-section="specific" aria-labelledby="profileSectionSpecificTitle" hidden>
               <header class="profile-section-head">
                 <h2 class="profile-section-title" id="profileSectionSpecificTitle" tabindex="-1" data-i18n="profile.ux2.section.specific.title">For specific universities</h2>
                 <p class="profile-hint" data-i18n="profile.evidence.description">These details are for specific universities.</p>
@@ -375,40 +381,13 @@
               <div id="admissionEvidenceFields"></div>
             </section>
 
-            <div class="profile-reset-row">
-              <p class="profile-hint" data-i18n="profile.reset.note">Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.</p>
-              <button id="resetProfileBtn" class="ui-btn ui-btn--danger-soft profile-delete profile-delete--danger-soft" type="button" data-i18n="profile.reset.cta">
-                Reset data
-              </button>
-            </div>
+          </div>
+          <div class="profile-action-bar">
+            <span id="profileSaveState" class="profile-save-state sr-only" tabindex="-1" role="status" aria-live="polite" aria-atomic="true"></span>
+            <button class="ui-btn ui-btn--lg ui-btn--primary" id="saveProfileBtn" type="button" hidden data-i18n="profile.action.save_all">Save</button>
           </div>
         </div>
-
       </div>
-
-      <footer class="profile-action-bar">
-        <div class="profile-status-wrap">
-          <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>
-        </div>
-        <div class="profile-action-buttons">
-          <button
-            class="ui-btn ui-btn--lg ui-btn--ghost profile-action-btn profile-action-btn--subtle"
-            id="profileCloseBtn"
-            type="button"
-            title="Return to previous page"
-            data-i18n-title="profile.action.back_desc"
-          >
-            <span data-i18n="profile.action.back">Back</span>
-          </button>
-          <button
-            class="ui-btn ui-btn--lg ui-btn--primary profile-action-btn profile-action-btn--primary"
-            id="saveProfileBtn"
-            type="button"
-          >
-            <span data-i18n="profile.action.save_all">Save</span>
-          </button>
-        </div>
-      </footer>
 
     </section>
 

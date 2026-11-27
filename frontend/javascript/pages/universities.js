@@ -147,6 +147,7 @@ function collectUniversitiesElements() {
         unifitBannerTitle: $("unifitBannerTitle"),
         unifitTooltipProfile: $("unifitTooltipProfile"),
         unifitBannerEdit: $("unifitBannerEdit"),
+        unifitGuideLink: $("unifitGuideLink"),
         compareTray: $("compareTray"),
     };
     if (!el.compareTray) {

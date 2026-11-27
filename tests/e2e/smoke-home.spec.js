@@ -1,6 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
-const { selectors } = require("./helpers/selectors");
+const { openProfileTab, selectors } = require("./helpers/selectors");
 
 test("root page opens the university catalog as the main workspace", async ({ page }) => {
   await markTourAsSeen(page);
@@ -119,10 +119,11 @@ test("setting up a profile from the spotlight tour activates UniFit when returni
 
   await expect(page).toHaveURL(/profile\.html/);
   await expect(page.locator("#profileMajorSelect option").nth(1)).toBeAttached();
+  await openProfileTab(page, "preferences");
   await page.locator("#budgetInput").fill("10000");
   await expect(page.locator("#saveProfileBtn")).toBeEnabled();
   await page.locator("#saveProfileBtn").click();
-  await page.locator("#profileHeaderBackBtn").click();
+  await page.locator("#profileCloseBtn").click();
 
   await expect(page).toHaveURL(/index\.html|\/(\?|$)/);
   await expect(page.locator("#uTourModal")).toBeHidden();

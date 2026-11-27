@@ -281,7 +281,6 @@ profile.unsaved.message: You have unsaved profile changes. What do you want to d
 profile.unsaved.discard: Discard changes
 profile.unsaved.cancel: Keep editing
 profile.unsaved.save_close: Save and close
-profile.reset.note: Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.
 profile.reset.cta: Reset data
 profile.reset.confirm_title: Reset all profile data?
 profile.reset.confirm_message: This will remove all saved profile data on this device and set the profile back to empty values.
@@ -294,7 +293,6 @@ profile.unit.gpa: / 4.0
 profile.sections.aria: Profile sections
 profile.title: Profile
 profile.action.back: Back
-profile.action.back_desc: Return to previous page
 profile.aria.applicant_profile: Applicant Profile
 ranking.acceptance: Acceptance Rate
 ranking.acceptance_undergraduate: Undergraduate acceptance rate
@@ -3062,7 +3060,17 @@ university.ux2.needs.mark_recommended: Recommendation, not a requirement
 languages.exam_overall_score_label: Overall score
 languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.
 languages.exam_sections_label: Section scores (if your report shows them)
-profile.ux2.intro: All fields are optional, and your answers are saved on this device.
+profile.ux2.intro: UniFit uses these details to sort universities in the catalog. All fields are optional.
+profile.overview.study: Study
+profile.overview.specific: For specific universities
+profile.overview.catalog: Universities
+profile.overview.results: Back to results
+profile.overview.storage: Profile data is stored on this device.
+profile.overview.empty.basics: Level, subject, and interests
+profile.overview.empty.preferences: Annual budget and funding preferences
+profile.overview.empty.scores: Grade average and test results
+profile.overview.empty.languages: Languages, levels, and certificates
+profile.overview.empty.specific: English and education background
 profile.ux2.section.study.title: What you want to study
 profile.ux2.section.study.desc: Study level narrows the list. Subject and topics change the order.
 profile.ux2.section.budget.title: Budget and funding

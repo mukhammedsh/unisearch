@@ -5,8 +5,8 @@ const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
 const tabState = (page, id) => page.locator(`[data-profile-tab="${id}"]`);
 
-test.describe("Profile section markers follow the draft", () => {
-  test("each answer marks its section before saving", async ({ page }) => {
+test.describe("Profile overview follows saved answers", () => {
+  test("section summaries update after saving each editor", async ({ page }) => {
     await mockAllExpensiveEndpoints(page);
     await markTourAsSeen(page);
     await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
@@ -15,12 +15,15 @@ test.describe("Profile section markers follow the draft", () => {
     await expect(page.locator(selectors.profileModal)).toBeVisible();
     await expect(tabState(page, "preferences")).toHaveAttribute("data-filled", "false");
 
+    await openProfileTab(page, "preferences");
     await page.fill(selectors.budgetInput, "30000");
+    await expect(tabState(page, "preferences")).toHaveAttribute("data-filled", "false");
+    await page.click(selectors.saveProfileBtn);
     await expect(tabState(page, "preferences")).toHaveAttribute("data-filled", "true");
 
     await openProfileTab(page, "scores");
     await page.fill(selectors.gpaInput, "3.85");
-    await expect(tabState(page, "scores")).toHaveAttribute("data-filled", "true");
+    await expect(tabState(page, "scores")).toHaveAttribute("data-filled", "false");
 
     await page.waitForFunction(() => {
       const select = document.getElementById("examNameSelect");
@@ -34,6 +37,8 @@ test.describe("Profile section markers follow the draft", () => {
     await page.click(selectors.addExamBtn);
     expect((await examValidateResponse).status()).toBe(200);
     await expect(page.locator(selectors.examList)).toContainText("ACT");
+    await page.click(selectors.saveProfileBtn);
+    await expect(tabState(page, "scores")).toContainText("ACT");
 
     await openProfileTab(page, "languages");
     await page.waitForFunction(() => {
@@ -48,6 +53,8 @@ test.describe("Profile section markers follow the draft", () => {
     await page.click(selectors.langAddBtn);
     expect((await langValidateResponse).status()).toBe(200);
     await expect(page.locator("#langList .lang-item")).toHaveCount(1);
+    await page.click(selectors.saveProfileBtn);
+    await expect(tabState(page, "languages")).toContainText("English");
 
     await openProfileTab(page, "basics");
     await page.waitForFunction(() => {
@@ -55,12 +62,9 @@ test.describe("Profile section markers follow the draft", () => {
       return !!select && select.options.length > 1;
     });
     await setNativeSelect(page, "profileMajorSelect", "Computer Science");
-    await expect(tabState(page, "basics")).toHaveAttribute("data-filled", "true");
     await setNativeSelect(page, "studyLevelSelect", "Bachelor");
-    await expect(tabState(page, "basics")).toHaveAttribute("data-filled", "true");
-
-    // Interests alone keep the subject row used.
     await page.fill(selectors.interestsInput, "machine learning, research, robotics");
-    await expect(tabState(page, "basics")).toHaveAttribute("data-filled", "true");
+    await page.click(selectors.saveProfileBtn);
+    await expect(tabState(page, "basics")).toContainText("Computer Science");
   });
 });
