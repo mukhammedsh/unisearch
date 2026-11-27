@@ -270,3 +270,43 @@ test("fetchUniversitiesList serves static snapshot with zero backend API calls w
   assert.equal(fetchedUrls.some((u) => u.includes("/universities")), false);
   assert.ok(await loadStaticCatalog("eng"));
 });
+
+test("loadStaticCatalog keeps the shared request alive when the first caller aborts", async () => {
+  window.APP_STATIC_SNAPSHOT = true;
+  let catalogRequests = 0;
+  global.fetch = async (url, { signal } = {}) => {
+    const u = String(url);
+    const respond = (payload) => ({
+      ok: true,
+      headers: new Headers({ "Content-Type": "application/json" }),
+      async json() {
+        return payload;
+      },
+    });
+    if (u.endsWith("/snapshot/manifest.json")) return respond({ schema_version: "static-snapshot-1.0" });
+    if (u.endsWith("/snapshot/catalog/eng.json")) {
+      catalogRequests += 1;
+      if (signal?.aborted) throw new DOMException("Aborted", "AbortError");
+      await new Promise((resolve, reject) => {
+        const timer = setTimeout(resolve, 20);
+        signal?.addEventListener("abort", () => {
+          clearTimeout(timer);
+          reject(new DOMException("Aborted", "AbortError"));
+        }, { once: true });
+      });
+      return respond(SAMPLE_CATALOG);
+    }
+    throw new Error(`Unexpected call: ${u}`);
+  };
+
+  await loadStaticSnapshotManifest();
+  const first = new AbortController();
+  const aborted = loadStaticCatalog("eng", { signal: first.signal });
+  const waiting = loadStaticCatalog("eng", { signal: new AbortController().signal });
+  first.abort();
+
+  await assert.rejects(aborted, { name: "AbortError" });
+  const catalog = await waiting;
+  assert.equal(catalog?.items?.length, SAMPLE_CATALOG.items.length);
+  assert.equal(catalogRequests, 1);
+});

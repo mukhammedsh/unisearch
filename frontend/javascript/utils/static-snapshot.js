@@ -45,6 +45,25 @@ async function fetchSnapshotJson(relPath, { signal } = {}) {
 }
 
 /**
+ * Wait for a shared snapshot request on behalf of one caller.
+ * Aborting the caller's signal rejects only that caller; the shared request keeps loading for others.
+ * @template T
+ * @param {Promise<T>} request
+ * @param {AbortSignal | undefined} signal
+ * @returns {Promise<T>}
+ */
+function awaitSharedRequest(request, signal) {
+  if (!signal) return request;
+  const abortError = () => new DOMException("Aborted", "AbortError");
+  if (signal.aborted) return Promise.reject(abortError());
+  return new Promise((resolve, reject) => {
+    const onAbort = () => reject(abortError());
+    signal.addEventListener("abort", onAbort, { once: true });
+    request.then(resolve, reject).finally(() => signal.removeEventListener("abort", onAbort));
+  });
+}
+
+/**
  * Check whether the runtime environment enables static snapshot delivery.
  * @returns {boolean}
  */
@@ -142,9 +161,9 @@ export async function loadStaticCatalog(language = "eng", { signal } = {}) {
   if (!manifest) return null;
   const lang = normalizeSnapshotLang(language);
   if (!SUPPORTED_LANGS.has(lang)) return null;
-  if (catalogByLang.has(lang)) return catalogByLang.get(lang);
+  if (catalogByLang.has(lang)) return awaitSharedRequest(Promise.resolve(catalogByLang.get(lang)), signal);
 
-  const inFlight = fetchSnapshotJson(`catalog/${lang}.json`, { signal })
+  const inFlight = fetchSnapshotJson(`catalog/${lang}.json`)
     .then((data) => {
       if (data && Array.isArray(data.items)) {
         catalogByLang.set(lang, data);
@@ -153,14 +172,13 @@ export async function loadStaticCatalog(language = "eng", { signal } = {}) {
       catalogByLang.delete(lang);
       return null;
     })
-    .catch((err) => {
+    .catch(() => {
       catalogByLang.delete(lang);
-      if (err?.name === "AbortError") throw err;
       return null;
     });
 
   catalogByLang.set(lang, inFlight);
-  return inFlight;
+  return awaitSharedRequest(inFlight, signal);
 }
 
 /**
@@ -237,9 +255,9 @@ export async function loadStaticStudyOptions(universityId, { signal } = {}) {
   const id = String(universityId || "").trim();
   const reviewed = Array.isArray(manifest.reviewed_ids) ? manifest.reviewed_ids : [];
   if (!id || !reviewed.includes(id)) return null;
-  if (studyOptionsById.has(id)) return studyOptionsById.get(id);
+  if (studyOptionsById.has(id)) return awaitSharedRequest(Promise.resolve(studyOptionsById.get(id)), signal);
 
-  const request = fetchSnapshotJson(`admissions/${encodeURIComponent(id)}/study-options.json`, { signal })
+  const request = fetchSnapshotJson(`admissions/${encodeURIComponent(id)}/study-options.json`)
     .then((data) => {
       if (data && Array.isArray(data.items)) {
         studyOptionsById.set(id, data);
@@ -248,14 +266,13 @@ export async function loadStaticStudyOptions(universityId, { signal } = {}) {
       studyOptionsById.delete(id);
       return null;
     })
-    .catch((err) => {
+    .catch(() => {
       studyOptionsById.delete(id);
-      if (err?.name === "AbortError") throw err;
       return null;
     });
 
   studyOptionsById.set(id, request);
-  return request;
+  return awaitSharedRequest(request, signal);
 }
 
 /**

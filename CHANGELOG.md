@@ -26,6 +26,8 @@ The profile now uses focused section editors on phones and a side-by-side layout
 - Keep keyboard focus outlines visible at the edge of the profile form.
 - Protect profile drafts when navigating back and restore catalog filters when returning to the results.
 - Remove the browser's step buttons from the calendar year field while keeping keyboard entry.
+- Load universities in the map view on the hosted site instead of sometimes showing "0 universities found".
+- Show the university name in the browser tab title on university pages.
 
 ### Maintenance
 - Document the requirement to reuse existing UniSearch components, helpers, and design tokens before adding new ones.

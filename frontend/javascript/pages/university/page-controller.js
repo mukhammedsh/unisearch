@@ -292,14 +292,25 @@ function mountOverviewSummaryBlock(options) {
   return mountOverviewSummary({ container, ...options });
 }
 
-function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
-  if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
-  const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
+/**
+ * Show the university name in the page heading and the browser tab title.
+ * @param {string} name
+ */
+function renderDetailName(name) {
   const nameEl = document.getElementById("detailName");
   if (nameEl) {
     nameEl.removeAttribute("data-i18n");
-    nameEl.textContent = translatedName;
+    nameEl.textContent = name;
   }
+  const titleEl = document.querySelector("head > title");
+  if (titleEl) titleEl.removeAttribute("data-i18n");
+  document.title = `${name} | UniSearch`;
+}
+
+function renderReviewedUniversityPage({ id, preserveVisibleContent, university, universityId, cardEl }) {
+  if (university?.admissions_catalog?.availability !== "reviewed") throw new Error("Reviewed university catalog contract is unavailable");
+  const translatedName = textOrUnknown(trUniversityName(university), "placeholder.field.university_name", "University name");
+  renderDetailName(translatedName);
   renderDetailLocation(university, trCity(university?.location?.city), trCountry(university?.location?.country));
   bindDetailActions({ id, minPrice: undefined, university, universityId });
   renderExtraSection({ container: document.getElementById("detailExtra"), university });
@@ -359,11 +370,7 @@ async function renderLegacyUniversityPage({ id, university, universityId, cardEl
   const rankValue = toFiniteNumber(university?.rank);
   const officialRank = rankValue !== null && rankValue > 0 && rankStatus === "official";
 
-  const detailNameEl = document.getElementById("detailName");
-  if (detailNameEl) {
-    detailNameEl.removeAttribute("data-i18n");
-    detailNameEl.textContent = translatedName;
-  }
+  renderDetailName(translatedName);
 
   renderDetailLocation(university, translatedCity, translatedCountry);
   bindDetailActions({ id, minPrice, university, universityId });
