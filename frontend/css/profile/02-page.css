@@ -221,6 +221,14 @@ body[data-page="profile"] {
   font-size: var(--text-sm);
 }
 
+.profile-guide-link {
+  display: inline-block;
+  padding-block: var(--space-0-5);
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-0-5);
+}
+
 .profile-hint.is-warning {
   color: var(--color-warning);
   font-weight: var(--font-weight-medium);

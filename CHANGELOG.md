@@ -6,6 +6,10 @@ All notable changes to UniSearch are documented here.
 
 The profile now uses focused section editors on phones and a side-by-side layout on wider screens. Profile dates and university deadlines share the same calendar design. On phones and tablets the Guide opens as a list of topics.
 
+### Added
+- Preview a linked Guide article by pointing at the link or moving keyboard focus to it on a computer.
+- Link Guide text to specific parts of an article, such as how UniFit uses your budget. The profile's budget, grades, and language sections and the university requirements check now link to the matching Guide articles.
+
 ### Changed
 - Show saved answers in the profile overview. Open one section at a time on phones or edit alongside the overview on wider screens. Save appears after an edit, and switching sections prompts you to keep, discard, or save your changes.
 - Move the UniFit guide next to UniFit sorting in the university catalog.
@@ -16,6 +20,7 @@ The profile now uses focused section editors on phones and a side-by-side layout
 - Show the saved funding preference and the number of additional exam results in the profile overview.
 
 ### Fixed
+- Remove the Guide's mention of an icon legend above the catalog, which no longer exists.
 - Put the Guide's Previous and Next links in the same order as its contents.
 - Keep profile actions reachable in landscape and allow confirmation dialogs to scroll on short screens.
 - Keep keyboard focus outlines visible at the edge of the profile form.

@@ -1067,6 +1067,12 @@ details[open] > summary > .admissions-disclosure-icon {
   overflow-wrap: anywhere;
 }
 
+.admissions-catalog__guide-link {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-0-5);
+}
+
 .admissions-catalog__source-icon {
   width: var(--space-4);
   height: var(--space-4);

@@ -241,7 +241,7 @@
   color: var(--text);
 }
 
-.guide-section h4[id],
+.guide-section :is(h3, h4)[id],
 .guide-subsection {
   scroll-margin-top: var(--space-24);
 }
@@ -419,6 +419,64 @@
   font-family: inherit;
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
+}
+
+/* --------------------------------------------------------------------------
+   Link previews (pointer hover and keyboard focus on links between articles)
+   -------------------------------------------------------------------------- */
+.guide-link-preview {
+  /* guide-link-preview.js measures the link and writes the position. */
+  --guide-preview-x: 0px;
+  --guide-preview-y: 0px;
+  position: fixed;
+  inset: auto;
+  top: var(--guide-preview-y);
+  left: var(--guide-preview-x);
+  box-sizing: border-box;
+  width: min(22rem, calc(100vw - var(--space-6)));
+  margin: 0;
+  padding: var(--space-4);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-md);
+  color: var(--text);
+}
+
+.guide-link-preview:popover-open {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.guide-link-preview__eyebrow {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
+}
+
+.guide-link-preview__eyebrow:empty {
+  display: none;
+}
+
+.guide-link-preview__title {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
+}
+
+.guide-link-preview__text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.guide-link-preview__text[hidden] {
+  display: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -640,7 +698,7 @@ body[data-page="guide"] {
   }
 
   .guide-section,
-  .guide-section h4[id],
+  .guide-section :is(h3, h4)[id],
   .guide-subsection {
     scroll-margin-top: calc(var(--guide-navbar-height) + var(--space-16));
   }

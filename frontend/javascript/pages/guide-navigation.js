@@ -147,9 +147,10 @@ export function setupGuideSectionNavigation({
 
   /**
    * @param {string} id
-   * @param {{ historyMode?: "push" | "replace" | null, scroll?: boolean, scrollBehavior?: ScrollBehavior | null, view?: GuideView }} [options]
+   * @param {{ historyMode?: "push" | "replace" | null, scroll?: boolean, scrollBehavior?: ScrollBehavior | null, view?: GuideView, anchor?: HTMLElement | null }} [options]
+   *   `anchor` is a subsection heading inside the section to bring into view and put in the URL.
    */
-  const activateSection = (id, { historyMode = null, scroll = false, scrollBehavior = null, view = "section" } = {}) => {
+  const activateSection = (id, { historyMode = null, scroll = false, scrollBehavior = null, view = "section", anchor = null } = {}) => {
     const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
     if (!nextId) return;
     const targetSection = sectionById.get(nextId);
@@ -186,8 +187,9 @@ export function setupGuideSectionNavigation({
 
     setView(view);
 
-    if (historyMode && (sectionChanged || viewChanged) && view === "section") {
-      const url = `${window.location.pathname}${window.location.search}#${nextId}`;
+    const hash = `#${anchor?.id || nextId}`;
+    if (historyMode && view === "section" && (sectionChanged || viewChanged || window.location.hash !== hash)) {
+      const url = `${window.location.pathname}${window.location.search}${hash}`;
       if (historyMode === "push") {
         // Count the entries since the topic list, so "All topics" can step back past followed links.
         const hubDepth = Number(history.state?.guideHubDepth) || 0;
@@ -202,7 +204,10 @@ export function setupGuideSectionNavigation({
 
     if (scroll && targetSection) {
       const behavior = scrollBehavior || (prefersReducedMotion() || compactViewChange ? "instant" : "smooth");
-      if (compactLayout.matches && view === "hub") {
+      if (anchor && view === "section") {
+        // The section has only just been shown, so measure the subsection on the next frame.
+        window.requestAnimationFrame(() => anchor.scrollIntoView({ block: "start", behavior: sectionChanged ? "instant" : behavior }));
+      } else if (compactLayout.matches && view === "hub") {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });
       } else if (compactLayout.matches && guideLayout) {
         const navbar = document.querySelector(".navbar");
@@ -215,9 +220,22 @@ export function setupGuideSectionNavigation({
     }
   };
 
-  const focusSectionHeading = (id) => {
+  /**
+   * Finds the section for a guide id: a section itself, or a subsection heading inside one.
+   * @param {string} id
+   * @returns {{ sectionId: string, anchor: HTMLElement | null } | null}
+   */
+  const resolveTarget = (id) => {
+    const key = String(id || "").trim().replace(/^#/, "");
+    if (!key) return null;
+    if (sectionById.has(key)) return { sectionId: key, anchor: null };
+    const element = document.getElementById(key);
+    const section = element instanceof HTMLElement ? element.closest(".guide-section[id]") : null;
+    return section && sectionById.has(section.id) ? { sectionId: section.id, anchor: element } : null;
+  };
+
+  const focusHeading = (heading) => {
     window.requestAnimationFrame(() => {
-      const heading = sectionById.get(id)?.querySelector("h2");
       if (heading instanceof HTMLElement) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
@@ -226,10 +244,10 @@ export function setupGuideSectionNavigation({
   };
 
   const moveToSection = (id, historyMode = "replace") => {
-    const targetId = String(id || "").trim();
-    if (!sectionById.has(targetId)) return;
-    activateSection(targetId, { historyMode, scroll: true });
-    focusSectionHeading(targetId);
+    const target = resolveTarget(id);
+    if (!target) return;
+    activateSection(target.sectionId, { historyMode, scroll: true, anchor: target.anchor });
+    focusHeading(target.anchor || sectionById.get(target.sectionId)?.querySelector("h2"));
   };
 
   const showHub = () => {
@@ -237,7 +255,7 @@ export function setupGuideSectionNavigation({
     navLinkFor(activeGuideId)?.focus();
   };
 
-  const isGuideSectionHash = (hash) => sectionById.has(String(hash || "").replace("#", ""));
+  const isGuideSectionHash = (hash) => Boolean(resolveTarget(hash));
 
   const isPlainClick = (event) => !(event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
 
@@ -311,13 +329,17 @@ export function setupGuideSectionNavigation({
       showHub();
       return;
     }
-    activateSection(hash.replace("#", ""), {
+    const target = resolveTarget(hash);
+    activateSection(target.sectionId, {
       scroll: true,
+      anchor: target.anchor,
     });
   });
 
   return {
     activateSection,
+    resolveTarget,
+    groupLabel,
     getActiveGuideId: () => activeGuideId,
     refreshLabels: () => {
       syncMobileNavigation(activeGuideId);

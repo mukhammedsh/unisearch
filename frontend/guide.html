@@ -112,7 +112,7 @@
             <div class="guide-steps">
               <div class="guide-step-card">
                 <h3 data-i18n="guide.start.step1.title">1. Add your details in Profile</h3>
-                <p data-i18n="guide.start.step1.desc">For personalized results, enter your study level and subject, annual budget, grade average, and exam results such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.</p>
+                <p data-i18n-html="guide.start.step1.desc">For personalized results, enter your study level and subject, annual budget, grade average, and <a href="guide.html#guide-academic-exams">exam results</a> such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.</p>
               </div>
               <div class="guide-step-card">
                 <h3 data-i18n="guide.start.step2.title">2. Set filters and select UniFit sorting</h3>
@@ -135,14 +135,14 @@
           <h2 data-i18n="guide.unifit.title"><span data-ai-name="fit">UniFit</span>: personalized sorting</h2>
           <div class="guide-doc">
             <p data-i18n-html="guide.unifit.p1">UniFit orders universities using your preferences, interests, budget, and available information about whether you meet admission requirements. The “<a href="guide.html#guide-unichance">Minimum requirements match</a>” score covers published minimum requirements only.</p>
-            <h3 data-i18n="guide.unifit.budget">Annual budget</h3>
+            <h3 id="guide-unifit-budget" data-i18n="guide.unifit.budget">Annual budget</h3>
             <p data-i18n="guide.unifit.p2">When you provide an annual budget and the applicable cost is available, UniFit factors in how far the cost exceeds your budget. Potential aid is shown separately from cost. If information is missing for a criterion, UniFit uses the information it has.</p>
-            <h3 data-i18n="guide.unifit.preferences">Preference sliders</h3>
+            <h3 id="guide-unifit-preferences" data-i18n="guide.unifit.preferences">Preference sliders</h3>
             <p data-i18n="guide.unifit.p3">The preference sliders cover research activity, competition for first-year places, cost versus prestige, and city size. Leave a slider in the center if the criterion does not matter to you. Moving it farther from the center gives it more influence. Set your annual budget separately in Profile.</p>
             <p data-i18n="guide.unifit.p4">If data is missing for one of your active sliders, UniFit uses an average estimate for that criterion. If a university has no data for any active slider, its score omits the preference component.</p>
-            <h3 data-i18n="guide.unifit.missing_results">Missing exam or language results</h3>
+            <h3 id="guide-unifit-missing-results" data-i18n="guide.unifit.missing_results">Missing exam or language results</h3>
             <p data-i18n="guide.unifit.p5">A university stays in the catalog if an exam result or proof of language proficiency is missing. When the site can identify what is missing, it shows what to add.</p>
-            <h3 data-i18n="guide.unifit.explanation">How to see what affected the order</h3>
+            <h3 id="guide-unifit-explanation" data-i18n="guide.unifit.explanation">How to see what affected the order</h3>
             <p data-i18n="guide.unifit.p6">Profile shows which answers UniFit uses. With UniFit selected, the top of the catalog shows the information used for the current order.</p>
             <details class="guide-formula-details motion-disclosure">
               <summary class="guide-formula-summary" data-i18n="guide.formula.toggle">Calculation formula</summary>
@@ -222,14 +222,14 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
           <h2 data-i18n="guide.tags.title">What catalog badges mean</h2>
           <div class="guide-doc">
             <p data-i18n="guide.tags.intro">Badges summarize cost, funding, and admissions information on university cards. A missing badge can mean the condition does not apply or there is insufficient information.</p>
-            <p data-i18n-html="guide.tags.icons_note">Cards with reviewed data display some badges as icons with explanations. With <a href="guide.html#guide-unifit">UniFit</a> selected, the icon legend is available above the catalog.</p>
+            <p data-i18n="guide.tags.icons_note">Cards with reviewed data display some badges as icons. Point at or tap an icon to see what it means.</p>
 
             <div class="guide-tags-group">
               <h3 id="guide-tags-standard" data-i18n="guide.tags.standard_title">Cost and admissions information</h3>
               <ul class="guide-list">
                 <li data-i18n="guide.tags.standard.acceptance">The admission rate is the share of applicants admitted according to the university's published figures.</li>
                 <li data-i18n="guide.tags.standard.aid_available">“Aid Available” means the university lists a funding opportunity. Check the eligibility rules and amount separately.</li>
-                <li data-i18n="guide.tags.standard.over_budget">“Over Budget” means the known annual cost exceeds the budget in your profile. The university stays in the catalog.</li>
+                <li data-i18n-html="guide.tags.standard.over_budget">“Over Budget” means the known annual cost exceeds the <a href="guide.html#guide-unifit-budget">budget in your profile</a>. The university stays in the catalog.</li>
                 <li data-i18n="guide.tags.standard.over_budget_aid">“Over Budget • Aid Available” means the cost exceeds your budget and the university lists a funding opportunity. Check eligibility and award amounts separately.</li>
                 <li data-i18n="guide.tags.standard.check_cost">Check the cost if it depends on a fee category you have not selected. For example, UK Home and Overseas rates may differ.</li>
               </ul>
@@ -239,10 +239,10 @@ mlScore = clip((sim - 0.55) / 0.35, 0, 1)</pre>
               <h3 id="guide-tags-ai" data-i18n="guide.tags.ai_title">Profile-based badges</h3>
               <p class="guide-tags-note" data-i18n-html="guide.tags.ai_note">These badges appear when you sort with <a href="guide.html#guide-unifit">UniFit</a>. They depend on the information in your profile.</p>
               <ul class="guide-list">
-                <li data-i18n="guide.tags.ai.conditional">“Exam result needed” means UniSearch needs a result in your profile to check a minimum score.</li>
+                <li data-i18n-html="guide.tags.ai.conditional">“Exam result needed” means UniSearch needs <a href="guide.html#guide-unifit-missing-results">a result in your profile</a> to check a minimum score.</li>
                 <li data-i18n="guide.tags.ai.your_vibe">“Your Vibe” indicates a very close match to the preferences you set.</li>
                 <li data-i18n="guide.tags.ai.top_match">“Good Match” indicates that the university closely matches the preferences you set.</li>
-                <li data-i18n="guide.tags.ai.requirements_met">“Requirements Met” means your profile meets all academic and language minimums the site checked. Review other admission conditions separately.</li>
+                <li data-i18n-html="guide.tags.ai.requirements_met">“Requirements Met” means your profile meets all academic and language <a href="guide.html#guide-unichance">minimums the site checked</a>. Review other admission conditions separately.</li>
                 <li data-i18n="guide.tags.ai.below_requirements">“Below Requirements” means your profile falls short of at least one minimum the site checked. Open the admission requirements to see which one.</li>
               </ul>
             </div>

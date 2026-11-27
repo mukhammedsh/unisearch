@@ -79,19 +79,19 @@ guide.group.glossary: Reference
 guide.back: Back
 guide.tags.title: What catalog badges mean
 guide.tags.intro: Badges summarize cost, funding, and admissions information on university cards. A missing badge can mean the condition does not apply or there is insufficient information.
-guide.tags.icons_note: Cards with reviewed data display some badges as icons with explanations. With <a href="guide.html#guide-unifit">UniFit</a> selected, the icon legend is available above the catalog.
+guide.tags.icons_note: Cards with reviewed data display some badges as icons. Point at or tap an icon to see what it means.
 guide.tags.standard_title: Cost and admissions information
 guide.tags.standard.acceptance: The admission rate is the share of applicants admitted according to the university's published figures.
 guide.tags.standard.aid_available: “Aid Available” means the university lists a funding opportunity. Check the eligibility rules and amount separately.
-guide.tags.standard.over_budget: “Over Budget” means the known annual cost exceeds the budget in your profile. The university stays in the catalog.
+guide.tags.standard.over_budget: “Over Budget” means the known annual cost exceeds the <a href="guide.html#guide-unifit-budget">budget in your profile</a>. The university stays in the catalog.
 guide.tags.standard.over_budget_aid: “Over Budget • Aid Available” means the cost exceeds your budget and the university lists a funding opportunity. Check eligibility and award amounts separately.
 guide.tags.standard.check_cost: Check the cost if it depends on a fee category you have not selected. For example, UK Home and Overseas rates may differ.
 guide.tags.ai_note: These badges appear when you sort with <a href="guide.html#guide-unifit">{fit}</a>. They depend on the information in your profile.
 guide.tags.ai_title: Profile-based badges
-guide.tags.ai.conditional: “Exam result needed” means UniSearch needs a result in your profile to check a minimum score.
+guide.tags.ai.conditional: “Exam result needed” means UniSearch needs <a href="guide.html#guide-unifit-missing-results">a result in your profile</a> to check a minimum score.
 guide.tags.ai.your_vibe: “Your Vibe” indicates a very close match to the preferences you set.
 guide.tags.ai.top_match: “Good Match” indicates that the university closely matches the preferences you set.
-guide.tags.ai.requirements_met: “Requirements Met” means your profile meets all academic and language minimums the site checked. Review other admission conditions separately.
+guide.tags.ai.requirements_met: “Requirements Met” means your profile meets all academic and language <a href="guide.html#guide-unichance">minimums the site checked</a>. Review other admission conditions separately.
 guide.tags.ai.below_requirements: “Below Requirements” means your profile falls short of at least one minimum the site checked. Open the admission requirements to see which one.
 guide.title: Guide
 guide.comparison.title: University comparison
@@ -3322,7 +3322,7 @@ guide.start.nav: Getting started
 guide.start.title: How to use UniSearch
 guide.start.intro: Browse UniSearch to find study programs, admission requirements, application deadlines, and costs. You can use the catalog without completing a profile.
 guide.start.step1.title: 1. Add your details in Profile
-guide.start.step1.desc: For personalized results, enter your study level and subject, annual budget, grade average, and exam results such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.
+guide.start.step1.desc: For personalized results, enter your study level and subject, annual budget, grade average, and <a href="guide.html#guide-academic-exams">exam results</a> such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.
 guide.start.step2.title: 2. Set filters and select UniFit sorting
 guide.start.step2.desc: Filters narrow the list. <a href="guide.html#guide-unifit">UniFit</a> orders it using your profile. <a href="guide.html#guide-tags">Card badges</a> show which minimums you meet, which results are missing, and whether the known cost fits your budget.
 guide.start.step3.title: 3. Review a university or compare two options
@@ -3342,3 +3342,7 @@ profile.calendar.next: Next month
 profile.calendar.month: Month
 profile.calendar.year: Year
 profile.calendar.clear: Clear
+university.admissions.catalog.guide_link: How the match is calculated
+profile.guide_link.scores: Which grades and exams are supported
+profile.guide_link.languages: Which language exams are supported
+profile.guide_link.budget: How {fit} uses your budget

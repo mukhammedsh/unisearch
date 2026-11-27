@@ -9,6 +9,8 @@ import {
   routeCompareSelection,
   routeCompareResults,
   routeGuide,
+  routeGuideSection,
+  applyRouteLinks,
   routeAbout,
   routePrivacy,
   routeTerms,
@@ -119,9 +121,22 @@ describe("routes.js", () => {
       assert.equal(routeCompareSelection(), "/?tab=compare");
       assert.equal(routeCompare(["mit", "harvard"]), "/compare?ids=mit%2Charvard");
       assert.equal(routeGuide(), "/guide");
+      assert.equal(routeGuideSection("guide-unifit-budget"), "/guide#guide-unifit-budget");
       assert.equal(routeAbout(), "/about");
       assert.equal(routeProfile(), "/profile");
       assert.equal(routeUniversityDetail("mit-usa-cambridge"), "/universities/mit-usa-cambridge");
+    });
+
+    it("keeps a route link's fragment when rewriting it", () => {
+      const attributes = { "data-route": "guide", href: "guide.html#guide-academic-exams" };
+      const link = {
+        search: "",
+        hash: "#guide-academic-exams",
+        getAttribute: (name) => attributes[name] ?? null,
+        setAttribute: (name, value) => { attributes[name] = value; },
+      };
+      applyRouteLinks({ querySelectorAll: () => [link] });
+      assert.equal(attributes.href, "/guide#guide-academic-exams");
     });
 
     it("appends query parameters cleanly to pretty routes", () => {

@@ -198,3 +198,58 @@ test.describe("Guide article links", () => {
     });
   }
 });
+
+test.describe("Guide subsections and link previews", () => {
+  test("opens a subsection from a deep link and from a link inside an article", async ({ page }) => {
+    await page.goto("/guide.html#guide-unifit-budget");
+    await page.waitForSelector("#guidePage");
+    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+    await expect(page.locator("#guide-unifit-budget")).toBeInViewport();
+    await expect(page.locator('#guideNav a[aria-current="page"]')).toHaveAttribute("href", /#guide-unifit$/);
+
+    await page.goto("/guide.html#guide-tags");
+    await page.locator('#guide-tags a[href$="#guide-unifit-missing-results"]').click();
+    await expect(page).toHaveURL(/#guide-unifit-missing-results$/);
+    await expect(page.locator("#guide-unifit-missing-results")).toBeFocused();
+    await expect(page.locator("#guide-unifit-missing-results")).toBeInViewport();
+    await page.goBack();
+    await expect(page).toHaveURL(/#guide-tags$/);
+    await expect(page.locator("#guide-tags.is-active")).toBeVisible();
+  });
+
+  test("previews the linked article on hover and keyboard focus", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/guide.html#guide-tags");
+    await page.waitForSelector("#guidePage");
+    const link = page.locator('#guide-tags a[href$="#guide-unifit-budget"]');
+    const preview = page.locator("#guidePreview-guide-unifit-budget");
+    await expect(link).toHaveAttribute("aria-describedby", "guidePreview-guide-unifit-budget");
+    await expect(preview).toBeHidden();
+
+    await link.hover();
+    await expect(preview).toBeVisible();
+    await expect(preview.locator(".guide-link-preview__title")).toHaveText("Annual budget");
+    await expect(preview.locator(".guide-link-preview__eyebrow")).toContainText("UniFit");
+    await expect(preview.locator(".guide-link-preview__text")).not.toBeEmpty();
+    await page.mouse.move(5, 5);
+    await expect(preview).toBeHidden();
+
+    await link.focus();
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(preview).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(preview).toBeHidden();
+  });
+
+  test("links from the profile open the matching Guide article", async ({ page }) => {
+    await page.goto("/profile.html");
+    const link = page.locator('.profile-guide-link[href*="#guide-unifit-budget"]');
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute("href");
+    await page.goto(href);
+    await page.waitForSelector("#guidePage");
+    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+    await expect(page.locator("#guide-unifit-budget")).toBeInViewport();
+  });
+});

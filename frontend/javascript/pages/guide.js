@@ -11,6 +11,7 @@ import { getCurrentLanguage, t, tFormat } from "../i18n.js";
 import { navigateToAppRoute, routeUniversities } from "../routes.js";
 import { bindGuideExternalUpdates, requestUniversitiesTourOpen } from "./shared/cache.js";
 import { sectionsInNavOrder, setupGuideSectionNavigation } from "./guide-navigation.js";
+import { bindGuideLinkPreviews } from "./guide-link-preview.js";
 
 function normalizeExamId(value) {
   return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -266,16 +267,22 @@ export function initGuidePage() {
   syncGuideSidebarOffset(page);
   updateGuideNavHrefs(navLinks);
   renderAll();
+  const linkPreviews = bindGuideLinkPreviews({
+    page,
+    guideContent: page.querySelector(".guide-content"),
+    resolveTarget: navControl.resolveTarget,
+    groupLabel: navControl.groupLabel,
+  });
 
   const initialHash = String(window.location.hash || "").replace("#", "");
-  const hasInitialSection = navControl.sectionById.has(initialHash);
-  navControl.activateSection(
-    hasInitialSection ? initialHash : (sections[0]?.id || "guide-unifit"),
-    { scroll: false, view: hasInitialSection ? "section" : "hub" }
-  );
+  const initialTarget = navControl.resolveTarget(initialHash);
 
   setManualScrollRestoration();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  navControl.activateSection(
+    initialTarget?.sectionId || sections[0]?.id || "guide-unifit",
+    { scroll: Boolean(initialTarget?.anchor), scrollBehavior: "instant", view: initialTarget ? "section" : "hub", anchor: initialTarget?.anchor || null }
+  );
 
   window.addEventListener("resize", () => {
     syncGuideSidebarOffset(page);
@@ -286,5 +293,6 @@ export function initGuidePage() {
     updateGuideNavHrefs(navLinks);
     renderAll();
     navControl.refreshLabels();
+    linkPreviews.refresh();
   });
 }
