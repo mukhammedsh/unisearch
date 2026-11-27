@@ -1,5 +1,7 @@
 import { getCurrentLanguage, t } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
+import { replayMotion } from "../../utils/runtime.js";
+import { initCustomSelect } from "../../utils/selects.js";
 
 export function initProfileDatePicker(page) {
   const dialog = document.createElement("dialog");
@@ -10,16 +12,16 @@ export function initProfileDatePicker(page) {
   let trigger;
   let shown;
   let selectedDate;
+  let disposeMonthSelect;
 
   const locale = () => ({ eng: "en", ru: "ru", rus: "ru", kaz: "kk" }[getCurrentLanguage()] || "en");
   const dateKey = (date) => `${String(date.getFullYear()).padStart(4, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-  const render = () => {
+  const renderDays = (grid) => {
     const year = shown.getFullYear();
     const month = shown.getMonth();
     const first = new Date(year, month, 1);
     const offset = (first.getDay() + 6) % 7;
     const days = new Date(year, month + 1, 0).getDate();
-    const monthNames = Array.from({ length: 12 }, (_, i) => new Intl.DateTimeFormat(locale(), { month: "long" }).format(new Date(2024, i, 1)));
     const weekday = new Intl.DateTimeFormat(locale(), { weekday: "short" });
     const fullDate = new Intl.DateTimeFormat(locale(), { dateStyle: "full" });
     const today = dateKey(new Date());
@@ -28,34 +30,68 @@ export function initProfileDatePicker(page) {
       const key = dateKey(date);
       return `<button class="ui-btn ui-btn--ghost ui-calendar__day" type="button" data-date="${key}" aria-label="${fullDate.format(date)}" aria-pressed="${key === selectedDate}"${key === today ? ' aria-current="date"' : ""}>${i + 1}</button>`;
     });
+    grid.innerHTML = `
+      ${Array.from({ length: 7 }, (_, i) => `<span class="ui-calendar__weekday">${weekday.format(new Date(2024, 0, i + 1))}</span>`).join("")}
+      ${'<span aria-hidden="true"></span>'.repeat(offset)}
+      ${dayButtons.join("")}`;
+    replayMotion(grid, "motion-panel-enter");
+  };
+  const mountCalendar = () => {
+    const monthFormatter = new Intl.DateTimeFormat(locale(), { month: "long" });
+    const monthNames = Array.from({ length: 12 }, (_, i) => monthFormatter.format(new Date(2024, i, 1)));
+    disposeMonthSelect?.();
     dialog.innerHTML = `
       <div class="ui-calendar__navigation profile-calendar__header">
         <button class="ui-btn ui-btn--icon" type="button" data-step="-1" aria-label="${t("profile.calendar.previous")}">${heroIcon("chevron-left", "ui-icon ui-icon--18")}</button>
-        <select class="ui-select" aria-label="${t("profile.calendar.month")}">${monthNames.map((name, i) => `<option value="${i}"${i === month ? " selected" : ""}>${name}</option>`).join("")}</select>
-        <input class="ui-input" type="number" inputmode="numeric" min="100" max="9999" aria-label="${t("profile.calendar.year")}" value="${year}">
+        <select id="profileCalendarMonth" class="ui-select" aria-label="${t("profile.calendar.month")}">${monthNames.map((name, i) => `<option value="${i}"${i === shown.getMonth() ? " selected" : ""}>${name}</option>`).join("")}</select>
+        <input class="ui-input" type="number" inputmode="numeric" min="100" max="9999" aria-label="${t("profile.calendar.year")}" value="${shown.getFullYear()}">
         <button class="ui-btn ui-btn--icon" type="button" data-step="1" aria-label="${t("profile.calendar.next")}">${heroIcon("chevron-right", "ui-icon ui-icon--18")}</button>
       </div>
-      <div class="profile-calendar__grid ui-calendar__grid motion-panel-enter">
-        ${Array.from({ length: 7 }, (_, i) => `<span class="ui-calendar__weekday">${weekday.format(new Date(2024, 0, i + 1))}</span>`).join("")}
-        ${'<span aria-hidden="true"></span>'.repeat(offset)}
-        ${dayButtons.join("")}
-      </div>
+      <div class="profile-calendar__grid ui-calendar__grid"></div>
       <div class="profile-calendar__footer">
         <button class="ui-btn ui-btn--lg" type="button" data-clear>${t("profile.calendar.clear")}</button>
         <button class="ui-btn ui-btn--lg ui-btn--primary" type="button" data-save>${t("profile.action.save_all")}</button>
       </div>`;
-    dialog.querySelectorAll("[data-step]").forEach((button) => button.addEventListener("click", () => { shown = new Date(year, month + Number(button.dataset.step), 1); render(); dialog.querySelector(`[data-step="${button.dataset.step}"]`).focus(); }));
-    dialog.querySelector("select").addEventListener("change", (event) => { shown = new Date(year, Number(event.target.value), 1); render(); dialog.querySelector("select").focus(); });
-    dialog.querySelector('input[type="number"]').addEventListener("change", (event) => { const nextYear = Number(event.target.value); if (nextYear >= 100 && nextYear <= 9999) shown = new Date(nextYear, month, 1); render(); dialog.querySelector('input[type="number"]').focus(); });
+    const monthSelect = dialog.querySelector("#profileCalendarMonth");
+    const yearInput = dialog.querySelector('input[type="number"]');
+    const grid = dialog.querySelector(".profile-calendar__grid");
+    disposeMonthSelect = initCustomSelect(monthSelect.id);
+    dialog.querySelectorAll("[data-step]").forEach((button) => button.addEventListener("click", () => {
+      const next = new Date(shown);
+      next.setMonth(next.getMonth() + Number(button.dataset.step), 1);
+      if (next.getFullYear() < Number(yearInput.min) || next.getFullYear() > Number(yearInput.max)) return;
+      shown = next;
+      yearInput.value = String(shown.getFullYear());
+      monthSelect.value = String(shown.getMonth());
+      monthSelect.dispatchEvent(new Event("change"));
+      renderDays(grid);
+    }));
+    monthSelect.addEventListener("change", () => {
+      const month = Number(monthSelect.value);
+      if (month === shown.getMonth()) return;
+      shown.setMonth(month, 1);
+      renderDays(grid);
+    });
+    yearInput.addEventListener("change", () => {
+      if (yearInput.value && yearInput.validity.valid) {
+        shown.setFullYear(Number(yearInput.value), shown.getMonth(), 1);
+        renderDays(grid);
+      }
+      yearInput.value = String(shown.getFullYear());
+    });
     const selectDate = (value) => {
       selectedDate = value;
       dialog.querySelectorAll("[data-date]").forEach((button) => {
         button.setAttribute("aria-pressed", String(button.dataset.date === value));
       });
     };
-    dialog.querySelectorAll("[data-date]").forEach((button) => button.addEventListener("click", () => selectDate(button.dataset.date)));
+    grid.addEventListener("click", (event) => {
+      const day = event.target.closest("[data-date]");
+      if (day) selectDate(day.dataset.date);
+    });
     dialog.querySelector("[data-clear]").addEventListener("click", () => selectDate(""));
     dialog.querySelector("[data-save]").addEventListener("click", () => choose(selectedDate));
+    renderDays(grid);
   };
   const closeCalendar = async () => {
     if (!dialog.open || dialog.classList.contains("is-closing")) return;
@@ -87,12 +123,12 @@ export function initProfileDatePicker(page) {
       const parts = field.value.split("-").map(Number);
       shown = parts.length === 3 && parts[0] >= 100 ? new Date(parts[0], parts[1] - 1, 1) : new Date();
       dialog.setAttribute("aria-label", t("profile.calendar.open"));
-      render();
+      mountCalendar();
       dialog.showModal();
     });
   });
   enhance();
   const observer = new MutationObserver(enhance);
   observer.observe(page, { childList: true, subtree: true });
-  return () => { observer.disconnect(); dialog.remove(); page.querySelectorAll(".profile-calendar-trigger").forEach((button) => button.remove()); page.querySelectorAll("[data-calendar-ready]").forEach((field) => delete field.dataset.calendarReady); };
+  return () => { observer.disconnect(); disposeMonthSelect?.(); dialog.remove(); page.querySelectorAll(".profile-calendar-trigger").forEach((button) => button.remove()); page.querySelectorAll("[data-calendar-ready]").forEach((field) => delete field.dataset.calendarReady); };
 }

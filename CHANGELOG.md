@@ -8,6 +8,7 @@ All notable changes to UniSearch are documented here.
 - Show saved answers in the profile overview. Open one section at a time on phones or edit alongside the overview on wider screens. Save appears after an edit, and switching sections prompts you to keep, discard, or save your changes.
 - Move the UniFit guide next to UniFit sorting in the university catalog.
 - Use the same calendar layout, navigation controls, and selected-day style for profile dates and university deadlines.
+- Use the standard month selector in the profile and mark deadline dates with a dot.
 
 ### Fixed
 - Keep profile actions reachable in landscape and allow confirmation dialogs to scroll on short screens.

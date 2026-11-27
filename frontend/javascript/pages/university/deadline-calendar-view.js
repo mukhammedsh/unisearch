@@ -40,7 +40,7 @@ export function renderDeadlineCalendar(deadlines, state = {}, { emptyNote = true
     if (day === null) return '<span aria-hidden="true"></span>';
     const date = `${monthKey}-${String(day).padStart(2, "0")}`;
     const count = monthEvents.filter(entry => entry.date === date).length;
-    return count ? `<button type="button" class="ui-btn ui-calendar__day deadline-calendar__day--event" data-calendar-day="${date}" aria-label="${escapeHtmlAttr(formatDate(date))}: ${count} ${escapeHtmlAttr(label("calendar_events"))}" aria-pressed="${date === activeDay}"><span>${day}</span><span class="deadline-calendar__count">${count}</span></button>`
+    return count ? `<button type="button" class="ui-btn ui-calendar__day deadline-calendar__day--event" data-calendar-day="${date}" aria-label="${escapeHtmlAttr(formatDate(date))}: ${count} ${escapeHtmlAttr(label("calendar_events"))}" aria-pressed="${date === activeDay}">${day}</button>`
       : `<span class="ui-calendar__day">${day}</span>`;
   }).join("");
   return `<section class="deadline-calendar" aria-label="${escapeHtmlAttr(label("calendar_title"))}">
