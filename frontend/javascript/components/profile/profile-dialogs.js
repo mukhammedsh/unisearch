@@ -4,7 +4,7 @@ import { t } from "../../i18n.js";
 import { isProfilePath, navigateToAppRoute, routeUniversities } from "../../routes.js";
 import { isProfileEditorHistoryEntry } from "./profile-sections.js";
 
-export const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
+const PROFILE_RETURN_URL_KEY = "unisearch_profile_return_url";
 
 export const getProfileReturnUrl = () => {
     const candidates = [safeSessionStorage.get(PROFILE_RETURN_URL_KEY, ""), document.referrer];
