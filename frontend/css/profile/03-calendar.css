@@ -1,50 +1,86 @@
-.profile-field:has(> .profile-calendar-trigger) { position: relative; }
-.profile-field > input[type="date"] { padding-inline-end: var(--space-10); }
-.profile-field > input[type="date"]::-webkit-calendar-picker-indicator { display: none; }
-.profile-calendar-trigger { position: absolute; inset-inline-end: var(--space-2); bottom: var(--space-2); display: grid; place-items: center; width: var(--space-8); height: var(--space-8); padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--text-muted); cursor: pointer; }
-.profile-calendar-trigger:hover, .profile-calendar button:hover { background: var(--interaction-hover-surface); color: var(--interaction-hover-text); }
-.profile-calendar { max-height: calc(100vh - 32px); border: 0; border-radius: var(--radius-lg); background: var(--surface-solid); color: var(--text); box-shadow: var(--shadow-md); width: min(352px, calc(100vw - 32px)); padding: var(--space-5); }
-.profile-calendar::backdrop { background: var(--backdrop); }
-.profile-calendar__header { display: flex; align-items: center; gap: var(--space-2); }
-.profile-calendar__header input { width: 4.5em; }
-.profile-calendar :is(button, select, input) { min-height: 36px; border: 0; border-radius: var(--radius-sm); background: var(--surface-soft); color: var(--text); font: inherit; }
-.profile-calendar button { cursor: pointer; }
-.profile-calendar :is(button, select, input):focus-visible, .profile-calendar-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.profile-calendar__header button { width: 36px; font-size: var(--text-xl); display: grid; flex: 0 0 36px; place-items: center; padding: 0; background: transparent; }
-.profile-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: 32px repeat(6, 40px); text-align: center; gap: var(--space-1); margin-block: var(--space-4); }
-.profile-calendar__weekday { align-self: center; color: var(--text-muted); font-size: var(--text-xs); padding-block: var(--space-2); font-weight: var(--font-weight-medium); }
-.profile-calendar__grid button { background: transparent; min-width: 0; padding: 0; border-radius: var(--radius-full); font-size: var(--text-base); }
-.profile-calendar__grid button[aria-pressed="true"] { background: var(--accent); color: var(--text-inverse); }
-.profile-calendar__footer { display: flex; gap: var(--space-2); padding-top: var(--space-3); }
-.profile-calendar__footer button { flex: 1; min-height: 44px; padding-inline: var(--space-3); background: var(--surface-soft); color: var(--text); font-weight: var(--font-weight-semibold); }
-.profile-calendar__footer [data-save] { background: var(--accent); color: var(--text-inverse); }
-.profile-calendar__footer [data-save]:hover { background: var(--accent-strong); color: var(--text-inverse); }
+.profile-field:has(> .profile-calendar-trigger) {
+  position: relative;
+}
 
-.profile-calendar__header :is(select, input) { padding-inline: var(--space-2); font-weight: var(--font-weight-medium); }
+.profile-field > input[data-calendar-ready] {
+  padding-inline-end: var(--space-10);
+}
+
+.profile-field > input[data-calendar-ready]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.profile-calendar-trigger {
+  position: absolute;
+  inset-inline-end: var(--space-2);
+  inset-block-end: var(--space-1-5);
+}
+
+.profile-calendar {
+  box-sizing: border-box;
+  inline-size: min(352px, calc(100% - var(--space-6)));
+  max-block-size: calc(100dvh - var(--space-6));
+  margin: auto;
+  padding: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+}
+
+.profile-calendar::backdrop {
+  background: var(--backdrop);
+}
+
+.profile-calendar__header input {
+  inline-size: 5rem;
+  flex: none;
+}
+
 .profile-calendar__header select {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 0;
   text-transform: capitalize;
-  appearance: none;
-  padding-inline-end: var(--space-8);
-  background-image: linear-gradient(45deg, transparent 45%, var(--text-muted) 45%, var(--text-muted) 55%, transparent 55%), linear-gradient(-45deg, transparent 45%, var(--text-muted) 45%, var(--text-muted) 55%, transparent 55%);
-  background-position: right 15px center, right 10px center;
-  background-size: 6px 6px;
-  background-repeat: no-repeat;
 }
-@supports (appearance: base-select) {
-  .profile-calendar__header select, .profile-calendar__header select::picker(select) { appearance: base-select; }
-  .profile-calendar__header select::picker-icon { display: none; }
-  .profile-calendar__header select::picker(select) { scrollbar-width: none; }
+
+.profile-calendar__header :is(input, select) {
+  padding-inline: var(--space-2);
 }
-.profile-calendar__grid button[aria-current="date"]:not([aria-pressed="true"]) { color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent); }
-.profile-calendar__grid button[aria-pressed="true"]:hover { background: var(--accent-strong); color: var(--text-inverse); }
+
+.profile-calendar__grid {
+  grid-template-rows: auto repeat(6, var(--control-height-md));
+  margin-block: var(--space-4);
+}
+
+.profile-calendar__footer {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.profile-calendar__footer .ui-btn {
+  flex: 1 1 0;
+}
+
+@media (pointer: coarse) {
+  .profile-calendar__grid {
+    grid-template-rows: auto repeat(6, var(--control-height-lg));
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
-  .profile-calendar[open] { animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards; }
-  .profile-calendar[open].is-closing { animation: profile-calendar-exit var(--motion-fast) var(--motion-ease-exit) forwards; pointer-events: none; }
+  .profile-calendar[open] {
+    animation: motion-fade-lift-enter var(--motion-medium) var(--motion-ease-enter) backwards;
+  }
+
+  .profile-calendar[open].is-closing {
+    animation: profile-calendar-exit var(--motion-fast) var(--motion-ease-exit) forwards;
+    pointer-events: none;
+  }
 }
 
 @keyframes profile-calendar-exit {
-  to { opacity: 0; transform: translateY(var(--space-1)); }
+  to {
+    opacity: 0;
+    transform: translateY(var(--space-1));
+  }
 }

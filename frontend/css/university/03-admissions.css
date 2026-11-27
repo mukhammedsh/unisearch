@@ -116,7 +116,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export):hover:not(:active, :disabled, [aria-pressed="true"]),
+  .deadline-calendar__jump:hover:not(:active, [aria-pressed="true"]),
   .admissions-deadline-source:hover:not(:active),
   .deadline-guidance-item a:hover:not(:active) {
     background-color: var(--interaction-hover-surface);
@@ -514,8 +514,7 @@
   gap: var(--space-4);
 }
 
-.deadline-calendar > h4,
-.deadline-calendar__head h4 {
+.deadline-calendar__title {
   margin: 0;
   color: var(--text);
   font-size: var(--text-md);
@@ -542,38 +541,23 @@
   font-size: var(--text-sm);
 }
 
-.deadline-calendar__head,
-.deadline-calendar__navigation {
+.deadline-calendar__month {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  min-inline-size: 0;
   gap: var(--space-3);
 }
 
+.deadline-calendar__navigation {
+  justify-content: space-between;
+}
+
 .deadline-calendar__navigation strong {
-  min-width: 120px;
   text-align: center;
   color: var(--text);
   font-size: var(--text-sm);
   font-weight: var(--font-weight-medium);
-}
-
-.deadline-calendar__navigation button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--control-height-md);
-  height: var(--control-height-md);
-  background: var(--surface-soft);
-  color: var(--text);
-  border-radius: var(--control-radius-md);
-  cursor: pointer;
-}
-
-.deadline-calendar__grid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: var(--space-1);
+  overflow-wrap: anywhere;
 }
 
 .deadline-calendar__all-dates {
@@ -608,50 +592,15 @@
   color: var(--interaction-active-text);
 }
 
-.deadline-calendar__weekday {
-  padding: var(--space-1) var(--space-1-5);
-  color: var(--text-muted);
-  font-size: var(--text-xs);
-  text-align: center;
-}
-
-.deadline-calendar__day,
-.deadline-calendar__blank {
-  min-height: 38px;
-  padding: var(--space-1-5);
-  border-radius: var(--radius-sm);
-  background: var(--surface-soft);
-  color: var(--text-muted);
-  font: inherit;
-  font-size: var(--text-sm);
-  text-align: left;
-}
-
-.deadline-calendar__blank {
-  background: transparent;
-}
-
 .deadline-calendar__day--event {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
   gap: var(--space-0-5);
-  color: var(--text);
-  cursor: pointer;
-}
-
-.deadline-calendar__day--event.is-active {
-  background: var(--accent-active-surface);
-  color: var(--interaction-active-text);
-  cursor: default;
 }
 
 .deadline-calendar__count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 18px;
-  min-height: 18px;
+  min-inline-size: var(--space-4);
   border-radius: var(--radius-circle);
   background: var(--surface-raised);
   color: var(--text);
@@ -688,7 +637,6 @@
   text-underline-offset: var(--space-1);
 }
 
-.deadline-calendar__export,
 .admissions-deadline-source,
 .deadline-guidance-item a {
   align-self: flex-start;
@@ -703,16 +651,10 @@
 }
 
 .deadline-calendar__export {
-  cursor: pointer;
+  align-self: flex-start;
 }
 
-:is(.deadline-calendar__navigation button, .deadline-calendar__day--event, .deadline-calendar__jump, .deadline-calendar__export) {
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
-}
-
-:is(.deadline-calendar__navigation button, .deadline-calendar__day--event:not(.is-active), .deadline-calendar__jump, .deadline-calendar__export, .admissions-deadline-source, .deadline-guidance-item a):active:not(:disabled) {
+:is(.deadline-calendar__jump, .admissions-deadline-source, .deadline-guidance-item a):active:not(:disabled) {
   background-color: var(--interaction-press-surface);
   color: var(--text);
 }
@@ -783,15 +725,14 @@
     gap: var(--space-3) var(--space-5);
   }
 
-  .deadline-calendar__head,
+  .deadline-calendar__title,
   .deadline-calendar__all-dates,
   .deadline-calendar__note {
     grid-column: 1 / -1;
   }
 
-  .deadline-calendar__grid {
+  .deadline-calendar__month {
     grid-column: 1;
-    max-width: 380px;
   }
 
   .deadline-calendar__details {
@@ -818,11 +759,6 @@
     min-height: 40px;
   }
 
-  .deadline-calendar__day,
-  .deadline-calendar__blank {
-    min-height: 40px;
-    padding: var(--space-1);
-  }
 }
 
 @media (max-width: 640px) {
@@ -860,18 +796,4 @@
     overflow: visible;
   }
 
-  .deadline-calendar__head {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .deadline-calendar__navigation {
-    width: 100%;
-  }
-
-  .deadline-calendar__day,
-  .deadline-calendar__blank {
-    min-height: 40px;
-    padding: var(--space-1);
-  }
 }

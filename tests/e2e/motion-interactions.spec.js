@@ -64,7 +64,7 @@ async function expectNoLingeringMotionClasses(page) {
   ).toBe(0);
 }
 
-test("profile category motion keeps tab state and reduced-motion final states stable", async ({ page }) => {
+test("profile section changes keep the current editor stable with reduced motion", async ({ page }) => {
   await markTourAsSeen(page);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/index.html");
@@ -72,16 +72,15 @@ test("profile category motion keeps tab state and reduced-motion final states st
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-  // All sections stay visible; the outline only marks the one that was jumped to.
   await page.click("[data-profile-tab='scores']");
-  await expect(page.locator("[data-profile-tab='scores']")).toHaveAttribute("aria-current", "location");
-  await expect(page.locator("[data-profile-section='scores']").first()).toBeVisible();
-  await expect(page.locator("[data-profile-section='basics']").first()).toBeVisible();
+  await expect(page.locator("[data-profile-tab='scores']")).toHaveAttribute("aria-current", "true");
+  await expect(page.locator("[data-profile-section='scores']")).toBeVisible();
+  await expect(page.locator("[data-profile-section='basics']")).toBeHidden();
 
   await page.click("[data-profile-tab='preferences']");
-  await expect(page.locator("[data-profile-tab='preferences']")).toHaveAttribute("aria-current", "location");
-  await expect(page.locator("[data-profile-tab='scores']")).not.toHaveAttribute("aria-current", "location");
-  await expect(page.locator("[data-profile-section='preferences']").first()).toBeVisible();
+  await expect(page.locator("[data-profile-tab='preferences']")).toHaveAttribute("aria-current", "true");
+  await expect(page.locator("[data-profile-tab='scores']")).not.toHaveAttribute("aria-current", "true");
+  await expect(page.locator("[data-profile-section='preferences']")).toBeVisible();
   await expect(page.locator(".is-motion-active")).toHaveCount(0);
 });
 
