@@ -83,12 +83,12 @@
 
 .guide-nav-group {
   display: grid;
-  gap: var(--space-0-5);
+  gap: 0;
   min-width: 0;
 }
 
 .guide-nav-title {
-  margin: 0 var(--space-2);
+  margin: 0 var(--space-2) var(--space-1);
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
   line-height: 1.3;
@@ -100,7 +100,7 @@
   display: flex;
   align-items: baseline;
   gap: var(--space-2);
-  padding: var(--space-0-5) var(--space-2);
+  padding: var(--space-1-5) var(--space-2);
   border-radius: var(--radius-xs);
   text-decoration: none;
   color: var(--text-muted);
@@ -111,25 +111,10 @@
     color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.guide-nav a::before {
-  content: "";
-  flex: 0 0 auto;
-  width: 5px;
-  height: 5px;
-  background: var(--text-muted);
-  opacity: 0.7;
-  border-radius: var(--radius-circle);
-}
-
 .guide-nav a[aria-current="page"] {
   background: var(--interaction-active-surface);
   color: var(--interaction-active-text);
   font-weight: var(--font-weight-semibold);
-}
-
-.guide-nav a[aria-current="page"]::before {
-  background: var(--accent);
-  opacity: 1;
 }
 
 .guide-mobile-nav-shell {
@@ -364,9 +349,11 @@
 }
 
 .guide-formula-details .guide-formula {
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
   margin-bottom: var(--space-3);
-  background: var(--surface-solid);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 /* Lists (tight rhythm without giant gaps between bullets) */
@@ -439,7 +426,7 @@
    -------------------------------------------------------------------------- */
 .guide-steps {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   margin-block: var(--space-3);
 }
@@ -560,10 +547,6 @@ body[data-page="guide"] {
     max-height: none;
     padding: 0;
     overflow: visible;
-  }
-
-  .guide-nav a::before {
-    display: none;
   }
 
   /* Topic list */
@@ -798,12 +781,6 @@ body[data-page="guide"] {
     min-height: 44px;
     padding: var(--space-2);
     font-size: var(--text-base);
-  }
-}
-
-@media (max-width: 768px) {
-  .guide-steps {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 
