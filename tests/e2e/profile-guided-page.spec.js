@@ -11,9 +11,14 @@ for (const width of [390, 1440]) {
     await openProfile(page);
     const link = page.locator("#profileUnifitGuideLink");
     await expect(link).toHaveAttribute("href", /guide.*#guide-unifit/);
-    await expect(link.locator("xpath=preceding-sibling::ol")).toHaveCount(1);
+    await expect(page.locator(".profile-page-header").getByRole("link", { name: "How UniFit works" })).toBeInViewport();
     await link.focus();
     await expect(link).toBeFocused();
+    if (width === 390) {
+      const [guide] = await Promise.all([page.waitForEvent("popup"), link.click()]);
+      await expect(guide).toHaveURL(/guide.*#guide-unifit/);
+      await expect(guide.locator("#guide-unifit h2")).toBeInViewport();
+    }
   });
 }
 
@@ -23,6 +28,8 @@ async function openProfile(page) {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "eng"));
   await page.goto("/profile.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  await page.waitForFunction(() => !!window.__unisearchProfileDraft);
+  await expect(page.locator("#siteInitialLoader")).toBeHidden();
   await expect(page.locator("#profileUnifitGuideLink")).toBeVisible();
 }
 
@@ -138,7 +145,7 @@ test("phone layout has no horizontal overflow and Reset is not above the first s
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
-  await expect(page.locator(".profile-outline__list")).toBeHidden();
+  await expect(page.locator(".profile-outline")).toBeHidden();
 
   const firstSection = await page.locator('[data-profile-section="basics"]').boundingBox();
   const reset = await page.locator("#resetProfileBtn").boundingBox();
@@ -151,3 +158,44 @@ test("phone layout has no horizontal overflow and Reset is not above the first s
   await expect(page.locator("#profileCloseBtn")).toBeVisible();
   await expect(page.locator("#profileShowMatchesBtn")).toHaveCount(0);
 });
+
+for (const viewport of [
+  { width: 390, height: 664 },
+  { width: 768, height: 1024 },
+  { width: 844, height: 390 },
+]) {
+  test(`profile actions are reachable at ${viewport.width}×${viewport.height}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await openProfile(page);
+
+    const header = page.locator(".profile-page-header");
+    await expect(header.locator("#profileHeaderBackBtn")).toBeInViewport();
+    const arrow = await header.locator("#profileHeaderBackBtn").boundingBox();
+    const title = await header.getByRole("heading", { level: 1 }).boundingBox();
+    expect(arrow.x + arrow.width).toBeLessThan(title.x);
+    expect(arrow.y).toBeLessThan(title.y + title.height);
+
+    await page.locator('[data-profile-jump="languages"]').click();
+    await expect(page.locator("#profileSectionLanguagesTitle")).toBeInViewport();
+
+    const reset = page.locator("#resetProfileBtn");
+    const save = page.locator("#saveProfileBtn");
+    const workspace = page.locator(".profile-workspace-layout");
+    await workspace.evaluate((region) => {
+      if (getComputedStyle(region).overflowY === "auto") {
+        region.scrollTop = region.scrollHeight;
+      } else {
+        window.scrollTo(0, document.documentElement.scrollHeight);
+      }
+    });
+    await expect(reset).toBeInViewport({ ratio: 1 });
+    await expect(save).toBeInViewport({ ratio: 1 });
+    const resetBox = await reset.boundingBox();
+    const bar = await page.locator(".profile-action-bar").boundingBox();
+    expect(resetBox.y + resetBox.height).toBeLessThan(bar.y);
+    await reset.click();
+    await expect(page.locator("#profileResetCancelBtn")).toBeInViewport({ ratio: 1 });
+    await expect(page.locator("#profileResetConfirmBtn")).toBeInViewport({ ratio: 1 });
+    await page.locator("#profileResetCancelBtn").click();
+  });
+}

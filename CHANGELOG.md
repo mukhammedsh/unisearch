@@ -2,6 +2,13 @@
 
 All notable changes to UniSearch are documented here.
 
+## 10.10.2 (2026-11-27) - Profile layout on phones and tablets
+
+### Fixed
+- Put the profile back button beside the title and the UniFit guide link in the introduction.
+- Keep Reset and Save reachable on phones and tablets, including in landscape orientation, and allow profile confirmations to scroll on short screens.
+- Keep keyboard focus outlines visible at the edge of the profile form.
+
 ## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, lighter admissions tabs, Kazakh-first locale, and UniFit fixes
 
 ### Changed

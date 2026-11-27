@@ -47,14 +47,15 @@
   </div>
 
   <main class="profile-page" id="profilePage">
-    <button class="profile-back-icon" id="profileHeaderBackBtn" type="button" aria-label="Back" data-i18n-aria-label="profile.action.back" title="Return to previous page" data-i18n-title="profile.action.back_desc">
-      <span data-heroicon="arrow-left" data-icon-size="20" aria-hidden="true"></span>
-    </button>
     <section class="profile-shell" id="profileModal" aria-label="Applicant Profile" data-i18n-aria-label="profile.aria.applicant_profile">
 
       <header class="profile-page-header">
+        <button class="profile-back-icon" id="profileHeaderBackBtn" type="button" aria-label="Back" data-i18n-aria-label="profile.action.back" title="Return to previous page" data-i18n-title="profile.action.back_desc">
+          <span data-heroicon="arrow-left" data-icon-size="20" aria-hidden="true"></span>
+        </button>
         <h1 class="profile-page-title" data-i18n="profile.title">Profile</h1>
         <p class="profile-page-intro" data-i18n="profile.ux2.intro">All fields are optional, and your answers are saved on this device.</p>
+        <a class="profile-guide-link" id="profileUnifitGuideLink" href="guide.html#guide-unifit" target="_blank" rel="noopener" data-i18n="profile.ux2.summary.guide_link">How UniFit works</a>
       </header>
 
       <div class="profile-workspace-layout">
@@ -67,7 +68,6 @@
             <li><button class="profile-section-tab" type="button" data-profile-tab="languages"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.languages.title">Languages</span><span class="sr-only profile-outline__status"></span></button></li>
             <li><button class="profile-section-tab" type="button" data-profile-tab="specific"><span class="profile-outline__marker" aria-hidden="true"></span><span class="profile-outline__label" data-i18n="profile.ux2.section.specific.title">For specific universities</span><span class="sr-only profile-outline__status"></span></button></li>
           </ol>
-          <a class="profile-guide-link" id="profileUnifitGuideLink" href="guide.html#guide-unifit" target="_blank" rel="noopener" data-i18n="profile.ux2.summary.guide_link">How UniFit works</a>
         </nav>
 
         <div class="profile-main-content">
@@ -386,7 +386,6 @@
 
       </div>
 
-      <!-- Sticky action bar -->
       <footer class="profile-action-bar">
         <div class="profile-status-wrap">
           <span id="profileSaveState" class="profile-save-state" role="status" aria-live="polite" aria-atomic="true" data-i18n="profile.state.saved_local">Saved on this device</span>

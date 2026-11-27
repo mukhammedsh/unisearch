@@ -1,8 +1,7 @@
 /* ==========================================================================
    UniSearch Applicant Profile Stylesheet
    Direction: Calm Academic Workspace / Notion-Linear Clarity
-  Layout: guided single page. Outline (left), sections (centre),
-   sticky action bar at the bottom. Every section is always visible.
+   Layout: guided single page with a scrollable workspace and an action bar.
    ========================================================================== */
 
 body[data-page="profile"] {
@@ -14,7 +13,6 @@ body[data-page="profile"] {
 }
 
 .profile-page {
-  position: relative;
   flex: 1 0 auto;
   width: 100%;
   max-width: 1000px;
@@ -42,7 +40,7 @@ body[data-page="profile"] {
   isolation: isolate;
   width: 100%;
   box-sizing: border-box;
-  height: calc(100dvh - var(--nav-height) - var(--space-12) - 40px - var(--space-3));
+  height: calc(100dvh - var(--nav-height) - var(--space-12));
   min-height: 0;
 }
 
@@ -50,18 +48,22 @@ body[data-page="profile"] {
    Profile Page Header
    -------------------------------------------------------------------------- */
 .profile-page-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.profile-page-header > :is(.profile-page-intro, .profile-guide-link) {
+  grid-column: 1 / -1;
 }
 
 .profile-back-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-start;
-  width: 40px;
-  height: 40px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
   border-radius: var(--radius-full);
   background: var(--surface-control-on-bg);
   color: var(--text);
@@ -75,18 +77,6 @@ body[data-page="profile"] {
 .profile-back-icon:focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-}
-
-@media (min-width: 1120px) {
-  .profile-back-icon {
-    position: absolute;
-    right: calc(100% - var(--space-3));
-    top: var(--space-12);
-  }
-
-  .profile-shell {
-    height: calc(100dvh - var(--nav-height) - var(--space-12));
-  }
 }
 
 @media (hover: hover) {
@@ -129,19 +119,19 @@ body[data-page="profile"] {
 }
 
 /* --------------------------------------------------------------------------
-   Workspace Layout: outline and sections; phones show the guide link above the form.
+   Workspace Layout
    -------------------------------------------------------------------------- */
 .profile-workspace-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "outline"
-    "main";
   gap: var(--space-8);
   align-items: start;
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  /* Leave room for focus outlines without shifting the form away from the header. */
+  margin-inline-start: calc(-1 * var(--space-2));
+  padding-inline-start: var(--space-2);
   padding-right: var(--space-4);
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
@@ -151,13 +141,10 @@ body[data-page="profile"] {
 
 .profile-outline {
   grid-area: outline;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  display: none;
 }
 
 .profile-main-content {
-  grid-area: main;
   min-width: 0;
   /* --------------------------------------------------------------------------
    Sections: title > field label > hint, one padding layer per section
@@ -173,7 +160,7 @@ body[data-page="profile"] {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: var(--space-1);
 }
@@ -187,13 +174,14 @@ body[data-page="profile"] {
   }
 
   .profile-outline {
+    display: block;
     position: sticky;
     top: 0;
     align-self: start;
   }
 
-  .profile-outline__list {
-    display: flex;
+  .profile-main-content {
+    grid-area: main;
   }
 }
 
@@ -393,6 +381,7 @@ body[data-page="profile"] {
 }
 
 .profile-guide-link {
+  justify-self: start;
   font-weight: normal;
 }
 
@@ -1036,25 +1025,17 @@ textarea.profile-input,
   flex-shrink: 0;
 }
 
-html:has(body[data-page="profile"]) {
-  scroll-padding-bottom: var(--space-24);
-}
-
 /* --------------------------------------------------------------------------
-   Sticky Action Bar (bottom of the viewport while the page is scrolled)
+   Action Bar
    -------------------------------------------------------------------------- */
 .profile-action-bar {
-  position: sticky;
-  bottom: 0;
-  /* Above a section lifted to --z-nav while its dropdown is open (see :has(.custom-select-wrapper.open)). */
-  z-index: calc(var(--z-nav) + 1);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
   padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
   background: var(--surface);
-  backdrop-filter: blur(12px);
   box-shadow: var(--shadow-sticky-top);
   border-top: 1px solid var(--line);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -1170,6 +1151,8 @@ html:has(body[data-page="profile"]) {
   flex-direction: column;
   gap: var(--space-4);
   max-width: 440px;
+  max-height: calc(100% - var(--space-6));
+  overflow-y: auto;
   width: 90%;
   box-shadow: var(--shadow-md);
 }
@@ -1396,7 +1379,7 @@ html:has(body[data-page="profile"]) {
     padding: var(--space-5) var(--space-2) 0 var(--space-4);
     border-radius: var(--radius-lg);
     gap: var(--space-5);
-    height: calc(100dvh - var(--nav-height) - var(--space-6) - 40px - var(--space-3));
+    height: calc(100dvh - var(--nav-height) - var(--space-6));
   }
 
   .profile-workspace-layout {
@@ -1413,24 +1396,6 @@ html:has(body[data-page="profile"]) {
     align-items: flex-start;
     gap: var(--space-3);
     padding-bottom: var(--space-6);
-  }
-
-  /* Two rows on phones: status + Back, then the full-width primary Save action. */
-  .profile-action-bar {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: var(--space-2);
-    padding-top: var(--space-2);
-  }
-
-  .profile-action-buttons {
-    display: contents;
-  }
-
-  .profile-action-btn--primary {
-    grid-column: 1 / -1;
-    width: 100%;
   }
 
   .profile-section-fields {
@@ -1477,6 +1442,22 @@ html:has(body[data-page="profile"]) {
 }
 
 @media (max-width: 640px) {
+  .profile-action-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+  }
+
+  .profile-action-buttons {
+    display: contents;
+  }
+
+  .profile-action-btn--primary {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
   .profile-input,
   .profile-add,
   .profile-delete {
@@ -1545,7 +1526,22 @@ html:has(body[data-page="profile"]) {
   }
 }
 
-/* Profile keeps a sticky bottom action bar, so toasts sit below the navbar instead of covering Save/Back. */
+/* Give the form the document scroll on short screens, including landscape phones. */
+@media (max-height: 560px) {
+  .profile-shell {
+    height: auto;
+  }
+
+  .profile-workspace-layout {
+    overflow: visible;
+  }
+
+  .profile-outline {
+    position: static;
+  }
+}
+
+/* Keep toasts below the navbar and clear of the profile actions. */
 body[data-page="profile"] .toast-container {
   top: calc(var(--nav-height) + var(--space-4));
   bottom: auto;
