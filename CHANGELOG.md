@@ -4,6 +4,8 @@ All notable changes to UniSearch are documented here.
 
 ## 10.10.2 (2026-11-27) - Profile overview and section editors
 
+The profile now uses focused section editors on phones and a side-by-side layout on wider screens. Profile dates and university deadlines share the same calendar design.
+
 ### Changed
 - Show saved answers in the profile overview. Open one section at a time on phones or edit alongside the overview on wider screens. Save appears after an edit, and switching sections prompts you to keep, discard, or save your changes.
 - Move the UniFit guide next to UniFit sorting in the university catalog.
@@ -14,6 +16,11 @@ All notable changes to UniSearch are documented here.
 ### Fixed
 - Keep profile actions reachable in landscape and allow confirmation dialogs to scroll on short screens.
 - Keep keyboard focus outlines visible at the edge of the profile form.
+- Protect profile drafts when navigating back and restore catalog filters when returning to the results.
+- Remove the browser's step buttons from the calendar year field while keeping keyboard entry.
+
+### Maintenance
+- Document the requirement to reuse existing UniSearch components, helpers, and design tokens before adding new ones.
 
 ## 10.10.1 (2026-11-26) - Tooltip interactions, preferred-currency defaults, lighter admissions tabs, Kazakh-first locale, and UniFit fixes
 
