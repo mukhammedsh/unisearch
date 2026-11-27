@@ -19,7 +19,6 @@ The profile now uses focused section editors on phones and a side-by-side layout
 - Use the same calendar layout, navigation controls, and selected-day style for profile dates and university deadlines.
 - Use the standard month selector in the profile and mark deadline dates with a dot.
 - Show the saved funding preference and the number of additional exam results in the profile overview.
-- Show the catalog on phones as compact rows with the photo beside the name, so several universities fit on one screen.
 - Group digits in the catalog price fields, such as 46 000 000, and rename the filter options to "All countries" and "Only verified universities".
 
 ### Fixed

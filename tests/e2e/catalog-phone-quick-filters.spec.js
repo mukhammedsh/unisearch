@@ -8,21 +8,6 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("unisearch_ui_language_v1", "rus"));
 });
 
-test("phone catalog rows put the photo beside the name and hide the repeated details label", async ({ page }) => {
-  await page.goto("/index.html");
-  const card = page.locator("#universitiesList .uni-card:not(.is-skeleton)").first();
-  await expect(card).toBeVisible();
-  const layout = await card.evaluate((element) => {
-    const media = element.querySelector(".uni-media").getBoundingClientRect();
-    const body = element.querySelector(".uni-body").getBoundingClientRect();
-    return { mediaRight: media.right, bodyLeft: body.left, mediaTop: media.top, bodyTop: body.top, height: element.getBoundingClientRect().height };
-  });
-  expect(layout.mediaRight).toBeLessThanOrEqual(layout.bodyLeft + 1);
-  expect(Math.abs(layout.mediaTop - layout.bodyTop)).toBeLessThanOrEqual(1);
-  expect(layout.height).toBeLessThan(260);
-  await expect(card.locator(".uni-details")).toBeHidden();
-});
-
 test("quick filter chips toggle the same filters as the panel", async ({ page }) => {
   await page.goto("/index.html");
   await expect(page.locator("#universitiesList .uni-card:not(.is-skeleton)").first()).toBeVisible();
