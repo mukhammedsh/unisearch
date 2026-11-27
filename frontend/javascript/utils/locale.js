@@ -87,6 +87,26 @@ export function detectInitialUiLanguage({ timeZone = "", languages = [] } = {}) 
   return API_LANG_DEFAULT;
 }
 
+/**
+ * The visitor's likely country: the country of the device time zone, else the region of a browser language.
+ * The time zone leads because many browsers keep an "en-US" language wherever they are (as for the default currency).
+ * @param {{ timeZone?: string, languages?: string[] }} [signals]
+ * @returns {string} an ISO 3166-1 alpha-2 code, or "" when nothing points to a country
+ */
+export function detectRegionCountry({ timeZone = "", languages = [] } = {}) {
+  const tzCountry = TIME_ZONE_COUNTRY[String(timeZone || "").trim()] || "";
+  if (tzCountry) return tzCountry;
+  return (Array.isArray(languages) ? languages : []).map(extractLocaleRegion).find(Boolean) || "";
+}
+
+/**
+ * The visitor's likely country from this device's time zone and browser languages.
+ * @returns {string} an ISO 3166-1 alpha-2 code, or ""
+ */
+export function detectDeviceCountry() {
+  return detectRegionCountry(readDeviceSignals());
+}
+
 function isStorageAccessError(error) {
   return error instanceof Error && (
     error.name === "SecurityError"

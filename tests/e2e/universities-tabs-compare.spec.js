@@ -365,7 +365,7 @@ test("catalog keeps a comparison pair within one data group", async ({ page }) =
   await expect(legacyCard.locator(".uni-details")).toHaveText("Not for this pair");
   await legacyCard.click();
   await expect(page.locator(".compare-tray__chip")).toHaveCount(1);
-  await expect(page.locator(".compare-tray__note")).toContainText("this data isn't rechecked yet, while the pair has a university with rechecked data");
+  await expect(page.locator(".compare-tray__note")).toContainText("has admission terms only in general form, while the pair has a university with detailed terms");
   await expect(page.locator(`#universitiesList .uni-card[data-uni-id="${IMPERIAL_ID}"]`).first()).not.toHaveClass(/uni-card--compare-unavailable/);
 
   // Removing the rechecked university frees the earlier-format one.
@@ -387,8 +387,8 @@ test("a mixed pair from an old link explains why it is not compared", async ({ p
   await expect(mixed).toBeVisible();
   await expect(mixed.locator("h1")).toHaveText("These two universities can't be compared yet");
   await expect(mixed.locator(".compare-mixed__item")).toHaveCount(2);
-  await expect(mixed.locator(`.compare-mixed__item[data-uni-id="${MIT_ID}"]`)).toContainText("Data rechecked");
-  await expect(mixed.locator(`.compare-mixed__item[data-uni-id="${OXFORD_ID}"]`)).toContainText("Data not yet rechecked");
+  await expect(mixed.locator(`.compare-mixed__item[data-uni-id="${MIT_ID}"]`)).toContainText("Detailed admission terms");
+  await expect(mixed.locator(`.compare-mixed__item[data-uni-id="${OXFORD_ID}"]`)).toContainText("Admission terms in general form");
   await expect(page.locator(".compare-table, [data-reviewed-comparison]")).toHaveCount(0);
   await mixed.locator("[data-action='back-to-catalog']").click();
   await expect(page).toHaveURL(/tab=compare/);

@@ -906,6 +906,8 @@ export function initUniversitiesPage() {
         state.funding_type = getProfileFundingQueryValue();
         state.page = 1;
         saveFilters(state);
+        // The level chip follows the study level saved in the profile.
+        quickFilters.render();
         fetchAndRender();
     });
     bindWindowListener("languageChangeVisualPending", showLanguageCardSkeletons);

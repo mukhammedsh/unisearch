@@ -9,7 +9,7 @@ The profile now uses focused section editors on phones and a side-by-side layout
 ### Added
 - Preview a linked Guide article by pointing at the link or moving keyboard focus to it on a computer.
 - Link Guide text to specific parts of an article, such as how UniFit uses your budget. The profile's budget, grades, and language sections and the university requirements check now link to the matching Guide articles.
-- Add quick filters for Kazakhstan, bachelor's programs, and verified universities above the catalog on phones and tablets.
+- Add quick filters above the catalog on phones and tablets: your country, the study level from your profile (bachelor's when none is saved), and universities with detailed admission terms.
 
 ### Changed
 - Show saved answers in the profile overview. Open one section at a time on phones or edit alongside the overview on wider screens. Save appears after an edit, and switching sections prompts you to keep, discard, or save your changes.
@@ -19,7 +19,8 @@ The profile now uses focused section editors on phones and a side-by-side layout
 - Use the same calendar layout, navigation controls, and selected-day style for profile dates and university deadlines.
 - Use the standard month selector in the profile and mark deadline dates with a dot.
 - Show the saved funding preference and the number of additional exam results in the profile overview.
-- Group digits in the catalog price fields, such as 46 000 000, and rename the filter options to "All countries" and "Only verified universities".
+- Group digits in the catalog price fields, such as 46 000 000, and rename the filter options to "All countries" and "Detailed admission terms".
+- Describe universities in the earlier format as having admission terms in general form, without a breakdown by program or applicant category, on their pages and in comparison.
 
 ### Fixed
 - Remove the Guide's mention of an icon legend above the catalog, which no longer exists.
