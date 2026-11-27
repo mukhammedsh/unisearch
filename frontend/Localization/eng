@@ -54,6 +54,8 @@ guide.previous_section_label: Previous section
 guide.section_navigation: Section navigation
 guide.contents: Contents
 guide.contents_current: Contents: {section}
+guide.all_topics: All topics
+guide.hub_intro: How to find and compare universities, read admission requirements, and enter exam results.
 guide.ml.p1: Use the Interests field to enter subjects or fields of study. <a href="guide.html#guide-unifit">UniFit</a> looks for related topics in the information about each university.
 guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim - 0.55) / 0.35, 0, 1)
 guide.ml.p2: Matching uses the university name, programs, descriptions, and other catalog information. UniFit recognizes some common abbreviations, such as ML for machine learning.

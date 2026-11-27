@@ -49,13 +49,10 @@
       <aside class="guide-sidebar">
         <section class="guide-hero">
           <h1 data-i18n="guide.title">Guide</h1>
+          <p class="guide-hero__lead" data-i18n="guide.hub_intro">How to find and compare universities, read admission requirements, and enter exam results.</p>
         </section>
         <a class="guide-back" href="index.html" data-route="home" data-i18n="guide.back">Back</a>
-        <div class="guide-mobile-nav-shell">
-          <button class="ui-btn ui-btn--on-bg guide-mobile-nav-toggle" id="guideMobileNavToggle" type="button" aria-expanded="false" aria-controls="guideNav">
-            <span class="guide-mobile-nav-toggle__label" data-i18n="guide.contents">Contents</span>
-            <span class="guide-mobile-nav-toggle__chevron" aria-hidden="true"></span>
-          </button>
+        <div class="guide-mobile-nav-shell" id="guideNavHome">
           <nav class="guide-nav" id="guideNav" aria-label="User guide navigation" data-i18n-aria-label="guide.nav_aria">
           <div class="guide-nav-group" data-guide-group="unifit">
             <h2 class="guide-nav-title" data-i18n="guide.group.discovery">Discovery &amp; comparison</h2>
@@ -83,6 +80,29 @@
           </nav>
         </div>
       </aside>
+
+      <div class="guide-section-bar" id="guideSectionBar">
+        <a class="ui-btn ui-btn--icon ui-btn--on-bg guide-section-bar__hub" id="guideHubLink" href="guide.html" aria-label="All topics">
+          <span data-heroicon="chevron-left" data-icon-size="20"></span>
+        </a>
+        <p class="guide-section-bar__heading">
+          <span class="guide-section-bar__group" id="guideSectionBarGroup"></span>
+          <span class="guide-section-bar__title" id="guideSectionBarTitle"></span>
+        </p>
+        <button class="ui-btn ui-btn--icon ui-btn--on-bg guide-mobile-nav-toggle" id="guideMobileNavToggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="guideNavSheet" aria-label="Contents">
+          <span data-heroicon="bars-3" data-icon-size="20"></span>
+        </button>
+      </div>
+
+      <dialog class="guide-nav-sheet motion-top-layer" id="guideNavSheet" closedby="any" aria-labelledby="guideNavSheetTitle">
+        <div class="guide-nav-sheet__head">
+          <h2 class="guide-nav-sheet__title" id="guideNavSheetTitle" data-i18n="guide.contents">Contents</h2>
+          <button class="ui-btn ui-btn--icon guide-nav-sheet__close" id="guideNavSheetClose" type="button" aria-label="Close" data-i18n-aria-label="common.close">
+            <span data-heroicon="x-mark" data-icon-size="20"></span>
+          </button>
+        </div>
+        <div class="guide-nav-sheet__body" id="guideNavSheetBody"></div>
+      </dialog>
 
       <div class="guide-content">
         <section id="guide-start" class="guide-section">

@@ -57,6 +57,8 @@ guide.previous_section_label: Предыдущий раздел
 guide.section_navigation: Навигация по разделам
 guide.contents: Содержание
 guide.contents_current: Содержание: {section}
+guide.all_topics: Все темы
+guide.hub_intro: Как искать и сравнивать университеты, читать требования к поступлению и вводить результаты экзаменов.
 guide.ml.p1: В поле «Интересы» можно указать темы или направления обучения. <a href="guide.html#guide-unifit">UniFit</a> сопоставляет их по смыслу со сведениями об университетах.
 guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim - 0.55) / 0.35, 0, 1)
 guide.ml.p2: Сопоставление учитывает название университета, программы, описания и другие сведения каталога. Некоторые распространённые сокращения распознаются, например ML как «машинное обучение».

@@ -26,25 +26,60 @@ test.describe("guide navigation", () => {
     await expect(page.locator(".guide-content")).toBeVisible();
   });
 
-  test("uses a compact, labelled contents disclosure on mobile", async ({ page }) => {
+  test("opens topics from a list on mobile and switches them from the contents sheet", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
 
+    const nav = page.locator("#guideNav");
+    const sheet = page.locator("#guideNavSheet");
     const contents = page.locator("#guideMobileNavToggle");
-    await expect(contents).toBeVisible();
-    await expect(contents).toHaveAttribute("aria-expanded", "false");
-    await expect(contents).toContainText("Contents");
-    await expect(contents).not.toContainText("Getting started");
-    await expect(page.locator("#guideNav")).toBeHidden();
-
-    await contents.click();
-    await expect(contents).toHaveAttribute("aria-expanded", "true");
-    await expect(page.locator("#guideNav")).toBeVisible();
+    await expect(nav).toBeVisible();
+    await expect(page.locator(".guide-content")).toBeHidden();
+    await expect(page.locator("#guideSectionBar")).toBeHidden();
     await expect(page.locator('[data-guide-group="unifit"] .guide-nav-title')).toHaveText("Discovery & comparison");
 
     await page.locator('.guide-nav a[href$="#guide-tags"]').click();
+    await expect(page).toHaveURL(/#guide-tags$/);
     await expect(page.locator("#guide-tags.is-active")).toBeVisible();
+    await expect(page.locator("#guide-tags h2")).toBeFocused();
+    await expect(nav).toBeHidden();
+    await expect(page.locator("#guideSectionBarTitle")).toHaveText("Catalog badges");
+    await expect(page.locator("#guideSectionBarGroup")).toHaveText("Discovery & comparison");
+    await expect(contents).toHaveAttribute("aria-label", "Contents: Catalog badges");
+
+    await contents.click();
+    await expect(sheet).toBeVisible();
+    await expect(contents).toHaveAttribute("aria-expanded", "true");
+    await expect(sheet.locator('a[aria-current="page"]')).toHaveAttribute("href", /#guide-tags$/);
+    await sheet.locator('a[href$="#guide-glossary"]').click();
+    await expect(sheet).toBeHidden();
     await expect(contents).toHaveAttribute("aria-expanded", "false");
-    await expect(contents).not.toContainText("Tags");
+    await expect(page.locator("#guide-glossary.is-active")).toBeVisible();
+    await expect(page.locator("#guide-glossary h2")).toBeFocused();
+
+    await page.locator("#guideHubLink").click();
+    await expect(page).toHaveURL(/\/guide(\.html)?$/);
+    await expect(nav).toBeVisible();
+    await expect(page.locator(".guide-content")).toBeHidden();
+
+    await page.locator('.guide-nav a[href$="#guide-comparison"]').click();
+    await expect(page.locator("#guide-comparison.is-active")).toBeVisible();
+    await page.goBack();
+    await expect(nav).toBeVisible();
+    await expect(page.locator("#guide-comparison")).toBeHidden();
+  });
+
+  test("closes the contents sheet with Escape on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/guide.html#guide-ml");
+    await page.waitForSelector("#guidePage");
+    const contents = page.locator("#guideMobileNavToggle");
+    await contents.click();
+    await expect(page.locator("#guideNavSheet")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#guideNavSheet")).toBeHidden();
+    await expect(contents).toHaveAttribute("aria-expanded", "false");
+    await expect(contents).toBeFocused();
+    await expect(page.locator("#guide-ml.is-active")).toBeVisible();
   });
 
   test("moves between neighbouring articles with previous and next buttons", async ({ page }) => {
@@ -108,11 +143,14 @@ test.describe("guide navigation", () => {
     await expect(page.locator("#guide-start.is-active")).toBeVisible();
 
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('.guide-nav a[href$="#guide-tags"]').click();
     const contents = page.locator("#guideMobileNavToggle");
     await contents.click();
     await expect(contents).toHaveAttribute("aria-expanded", "true");
     await page.setViewportSize({ width: 1280, height: 844 });
     await expect(contents).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator(".guide-sidebar #guideNav")).toBeVisible();
+    await expect(page.locator("#guide-tags.is-active")).toBeVisible();
     await page.evaluate(() => window.dispatchEvent(new Event("examConfigLoaded")));
     await expect(page.locator("#guideAcademicExams")).not.toBeEmpty();
   });
