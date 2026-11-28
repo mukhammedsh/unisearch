@@ -465,6 +465,7 @@ universities.compare.configure.title: Choose admission choices
 universities.compare.configure.subtitle: Pick one admission category, requirement profile, and funding option for each university. The comparison will use that choice for requirements, language proof, cost, and funding.
 universities.compare.configure.selected: Admission choice selected
 universities.compare.configure.required: Select one option before comparing
+universities.compare.configure.progress: Admission options chosen: {count} of {total}
 universities.compare.configure.no_funding_delta: No separate funding-specific score cutoff in the data
 universities.compare.configure.funding_delta_from: {value} (standard {base})
 universities.compare.section.outcomes: Outcomes
@@ -930,6 +931,7 @@ admission.scope.program_specific: Program-specific
 admission.scope.university_wide: University-wide
 admission.mit.analysis: Requirements fit and historical statistics
 admission.program.selector_label: Program selection
+admission.program.search: Search programs
 admission.program.general_requirements: General requirements
 admission.program.not_selected_note: Select a program when available. Requirements can differ by program.
 admission.program.using_general_note: No program-specific score data is published here, so general requirements are shown.

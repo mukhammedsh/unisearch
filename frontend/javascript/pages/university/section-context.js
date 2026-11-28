@@ -7,6 +7,10 @@ import { formatStudyLevelCounts, trProgramName } from "../_shared.js";
 
 export const GENERAL_PROGRAM_KEY = "__general__";
 export const admissionProgramSelectionByUniversity = new Map();
+// Programs picked in the comparison setup. Many legacy programs exist only as names on admission
+// categories, with no entry in academics.programs (and so no URL id), so the pick is kept here.
+/** @type {Map<string, string>} */
+export const compareProgramChoiceByUniversity = new Map();
 export const admissionStudyLevelSelectionByUniversity = new Map();
 export const visibleAdmissionContextByUniversity = new Map();
 
@@ -341,10 +345,11 @@ export function selectedAdmissionContext(university, profile) {
       : (availableLevels.some((level) => level.key === "bachelor") ? "bachelor" : "all"));
   if (queryLevel) admissionStudyLevelSelectionByUniversity.set(universityId, queryLevel);
   else admissionStudyLevelSelectionByUniversity.delete(universityId);
+  const compareProgramChoice = compareProgramChoiceByUniversity.get(universityId) || "";
   const selectedProgram = storedProgram
     ? normalizeProgramToken(storedProgram.source_name || storedProgram.name || storedProgram.program_name || storedProgram.id)
-    : GENERAL_PROGRAM_KEY;
-  if (storedProgram) admissionProgramSelectionByUniversity.set(universityId, selectedProgram);
+    : (compareProgramChoice || GENERAL_PROGRAM_KEY);
+  if (storedProgram || compareProgramChoice) admissionProgramSelectionByUniversity.set(universityId, selectedProgram);
   else admissionProgramSelectionByUniversity.delete(universityId);
   const levelCategories = categories.filter((category) => categoryMatchesStudyLevel(category, selectedLevel));
   const programCategories = getVisibleAdmissionCategories(levelCategories, selectedProgram, university);

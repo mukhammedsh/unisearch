@@ -68,15 +68,17 @@ test("comparison setup keeps admission controls aligned without page overflow", 
   await page.goto("/compare.html?stage=configure&ids=university-of-oxford-uk-oxford,harvard-usa-cambridge");
 
   const options = page.locator(".compare-config-options").first();
-  const programSelector = options.locator(".admission-program-selector");
+  const programControl = options.locator(".admission-program-control");
   const categoryList = options.locator(".admission-category-list");
-  await expect(programSelector).toBeVisible();
+  await expect(programControl).toBeVisible();
   await expect(categoryList).toBeVisible();
-  await programSelector.getByRole("button", { name: "Computer Science", exact: true }).click();
+  await programControl.locator(".custom-select-trigger").click();
+  await programControl.locator(".custom-option", { hasText: /^Computer Science$/ }).click();
+  await expect(programControl.locator("select")).not.toHaveValue("__general__");
   await expect(categoryList).toBeVisible();
 
   const desktopLayout = await page.evaluate(() => {
-    const selector = document.querySelector(".compare-config-options .admission-program-selector");
+    const selector = document.querySelector(".compare-config-options .admission-program-control");
     const categoryList = document.querySelector(".compare-config-options .admission-category-list");
     if (!selector || !categoryList) return null;
     return {

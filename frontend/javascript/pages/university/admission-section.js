@@ -36,6 +36,7 @@ import {
   GENERAL_PROGRAM_KEY,
   admissionChoiceSelectionAttrs,
   admissionProgramSelectionByUniversity,
+  compareProgramChoiceByUniversity,
   admissionStudyLevelSelectionByUniversity,
   applicantRouteLabel,
   getAdmissionCategories,
@@ -151,19 +152,16 @@ function renderProgramSelector(university, categories, selectedProgramKey, hasEx
     ...programs,
   ];
   if (items.length <= 1) return "";
+  const activeKey = selectedProgramKey || GENERAL_PROGRAM_KEY;
+  const selectId = `admissionProgram-${String(university?.id || "").replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  const label = t("admission.program.selector_label", "Program selection");
   return `
-    <div class="admission-program-selector" role="group" aria-label="${escapeHtmlAttr(t("admission.program.selector_label", "Program selection"))}">
-      ${items.map((item) => {
-        const active = (selectedProgramKey || GENERAL_PROGRAM_KEY) === item.key;
-        return `
-          <button
-            type="button"
-            class="admission-program-option${active ? " is-active" : ""}"
-            data-admission-program="${escapeHtmlAttr(item.key)}"
-          >${escapeHtml(item.label)}</button>
-        `;
-      }).join("")}
-    </div>
+    <label class="admission-context-control admission-program-control" for="${escapeHtmlAttr(selectId)}">
+      <span>${escapeHtml(label)}</span>
+      <select id="${escapeHtmlAttr(selectId)}" class="ui-select" data-flags="off" data-admission-program aria-label="${escapeHtmlAttr(label)}"${items.length > 8 ? ` data-searchable="true" data-search-placeholder="${escapeHtmlAttr(t("admission.program.search", "Search programs"))}"` : ""}>
+        ${items.map((item) => `<option value="${escapeHtmlAttr(item.key)}"${activeKey === item.key ? " selected" : ""}>${escapeHtml(item.label)}</option>`).join("")}
+      </select>
+    </label>
     ${!hasExplicitProgramSelection ? `<div class="admission-scope-note">${escapeHtml(t("admission.program.not_selected_note", "Select a program when available. Requirements can differ by program."))}</div>` : ""}
   `;
 }
@@ -555,11 +553,13 @@ function attachAdmissionSectionEventListeners({
     });
   });
 
-  container.querySelectorAll("[data-admission-program]").forEach((button) => {
-    button.addEventListener("click", () => {
-      motionPress(button);
-      const programKey = String(button.getAttribute("data-admission-program") || "").trim() || GENERAL_PROGRAM_KEY;
+  container.querySelectorAll("select[data-admission-program]").forEach((select) => {
+    if (select.id) initCustomSelect(select.id);
+    select.addEventListener("change", () => {
+      const programKey = String(select.value || "").trim() || GENERAL_PROGRAM_KEY;
       admissionProgramSelectionByUniversity.set(universityId, programKey);
+      if (programKey === GENERAL_PROGRAM_KEY) compareProgramChoiceByUniversity.delete(universityId);
+      else compareProgramChoiceByUniversity.set(universityId, programKey);
       const selectedProgram = (Array.isArray(university?.academics?.programs) ? university.academics.programs : [])
         .find((program) => normalizeProgramToken(program?.name || program?.program_name || program?.id) === programKey);
       updateAdmissionUrl({

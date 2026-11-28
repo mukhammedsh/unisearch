@@ -114,6 +114,18 @@ export function createCompareController({
         return translated && translated !== cleanId ? translated : "";
     };
 
+    // Remembered per page session so a chip keeps its short label after the catalog moves to another page.
+    /** @type {Map<string, string>} */
+    const shortLabelById = new Map();
+
+    /** Short tray label: the map abbreviation (e.g. "KazNU") when the catalog card has one, else the full name. */
+    const getUniversityShortNameById = (id) => {
+        const cleanId = String(id || "").trim();
+        const label = String(getRenderedUniversityById(cleanId)?.map_label || "").trim();
+        if (label) shortLabelById.set(cleanId, label);
+        return shortLabelById.get(cleanId) || getUniversityDisplayNameById(cleanId);
+    };
+
     const comparePairIds = () => normalizeCompareIdList(Array.from(compareUniversityIds));
     const setComparePairIds = (ids) => {
         const nextIds = normalizeCompareIdList(ids);
@@ -186,10 +198,11 @@ export function createCompareController({
         const notice = isComparePairMixed() ? t("universities.compare.tray_mixed") : compareTrayNotice;
         const chipsHtml = ids.map((id) => {
             const name = getUniversityDisplayNameById(id);
+            const shortName = getUniversityShortNameById(id);
             const removeLabel = t("universities.compare.remove", "Remove from comparison");
             return `
                 <div class="compare-tray__chip" role="listitem" data-uni-id="${escapeHtmlAttr(id)}">
-                    <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${escapeHtml(name)}</span>
+                    <span class="compare-tray__chip-name" title="${escapeHtmlAttr(name)}">${shortName === name ? escapeHtml(name) : `<span aria-hidden="true">${escapeHtml(shortName)}</span><span class="sr-only">${escapeHtml(name)}</span>`}</span>
                     <button class="ui-btn ui-btn--icon ui-btn--ghost compare-tray__chip-remove" type="button" data-action="remove-compare-slot" data-uni-id="${escapeHtmlAttr(id)}" title="${escapeHtmlAttr(removeLabel)}" aria-label="${escapeHtmlAttr(removeLabel)}">
                         ${renderInlineIcon("x-mark", 12)}
                     </button>

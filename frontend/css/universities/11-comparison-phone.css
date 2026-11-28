@@ -1,0 +1,140 @@
+/* ── Comparison on phones: both universities side by side, no sideways scrolling ── */
+
+@media (max-width: 640px) {
+  /* University cards: two narrow columns instead of a long stack. */
+  .compare-uni-grid.compare-uni-grid--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .compare-uni-card--pair {
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .compare-uni-card--pair h3 {
+    font-size: var(--text-base);
+    overflow-wrap: anywhere;
+  }
+
+  .compare-uni-card--pair p {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .compare-uni-card--pair .admissions-context__note {
+    font-size: var(--text-xs);
+  }
+
+  .compare-uni-card--pair .compare-uni-card__swap {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .compare-uni-card--pair .compare-uni-card__metrics {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .compare-uni-card--pair .compare-uni-card__metrics span {
+    padding: 0;
+    text-align: start;
+  }
+
+  .compare-uni-card--pair .compare-uni-card__metrics small {
+    white-space: normal;
+    overflow: visible;
+  }
+
+  /* Table: the metric name becomes a full-width line above the two values. */
+  .compare-table-scroll-hint {
+    display: none;
+  }
+
+  .compare-tests .compare-table-wrap {
+    overflow: visible;
+  }
+
+  .compare-tests .compare-table {
+    display: block;
+    min-width: 0;
+  }
+
+  .compare-tests .compare-table :is(thead, tbody) {
+    display: block;
+  }
+
+  .compare-tests .compare-table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Keep the university names in view while the long table scrolls. */
+  .compare-tests .compare-table thead {
+    position: sticky;
+    top: var(--nav-height);
+    z-index: 3;
+    background: var(--surface-solid);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  /* Two lines are enough to tell the columns apart; the cards above carry the full names. */
+  .compare-tests .compare-table thead th {
+    position: static;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    /* Vertical space as margin: padding inside the clipped box would show part of a third line. */
+    margin-block: var(--space-2);
+    padding-block: 0;
+    border-bottom: 0;
+    color: var(--text);
+    font-size: var(--text-xs);
+  }
+
+  .compare-tests .compare-table thead th:first-child {
+    display: none;
+  }
+
+  .compare-tests .compare-table :is(tbody th, td):first-child {
+    grid-column: 1 / -1;
+    position: static;
+    width: auto;
+    min-width: 0;
+    padding-bottom: 0;
+    border-right: 0;
+    border-bottom: 0;
+    font-size: var(--text-xs);
+  }
+
+  .compare-tests .compare-table .compare-table__section-row td:first-child {
+    padding-bottom: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .compare-tests .compare-table td + td {
+    border-left: 1px solid var(--line);
+  }
+
+  /* Reviewed comparison: narrow columns wrap long labels and shorten very long requirement prose. */
+  .compare-reviewed__button {
+    height: auto;
+    min-height: var(--control-height-sm);
+    padding-block: var(--space-1-5);
+    white-space: normal;
+    text-align: center;
+    line-height: var(--leading-tight);
+  }
+
+  /* The full list stays one tap away through the "All requirements" link below each column. */
+  .compare-reviewed__checklist-body [data-prose] {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
+    line-clamp: 8;
+    overflow: hidden;
+  }
+}

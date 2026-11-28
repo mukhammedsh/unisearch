@@ -446,62 +446,6 @@
   line-height: var(--leading-normal);
 }
 
-/* ===== Collapsible Requirement Details ===== */
-.track-collapsible-details {
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--line-faint);
-  background: transparent;
-  box-shadow: none;
-  border-radius: 0;
-  overflow: hidden;
-}
-
-.track-collapsible-summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: var(--space-1) 0;
-  border-radius: var(--radius-xs);
-  cursor: pointer;
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-muted);
-  list-style: none;
-  transition: color var(--motion-fast) var(--motion-ease-standard), background var(--motion-fast) var(--motion-ease-standard);
-}
-
-.track-collapsible-summary::-webkit-details-marker {
-  display: none;
-}
-
-.track-collapsible-summary:hover:not(:active) {
-  color: var(--interaction-hover-text);
-  background: var(--interaction-hover-surface);
-}
-
-.track-collapsible-summary:active {
-  color: var(--text);
-  background: var(--interaction-press-surface);
-}
-
-.track-collapsible-summary:focus-visible {
-  outline-offset: -2px;
-}
-
-.track-collapsible-chevron {
-  transition: transform var(--motion-fast) var(--motion-ease-standard);
-  flex-shrink: 0;
-}
-
-.track-collapsible-details[open] .track-collapsible-chevron {
-  transform: rotate(180deg);
-}
-
-.track-collapsible-content {
-  padding: var(--space-2) 0 0;
-}
-
 #detailDeadlines {
   display: flex;
   flex-direction: column;
@@ -748,10 +692,6 @@
 }
 
 @media (max-width: 768px) {
-  .track-collapsible-summary {
-    min-height: 40px;
-  }
-
   .admissions-deadline-source,
   .admission-decision-actions a {
     display: inline-flex;
