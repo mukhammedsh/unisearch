@@ -965,6 +965,8 @@ export function initUniversitiesPage() {
         } else {
             lastRenderedItems = items;
         }
+        // Tray chips rendered before the list arrived pick up the short labels from the loaded cards.
+        compareController.renderCompareTray();
         const warnings = Array.isArray(data.warnings) ? data.warnings : [];
         const mlUnavailable = warnings.some((w) => String(w || "").toLowerCase().includes("machine learning unavailable"));
         const warningText = (mlUnavailable && state.sort === "uni_ai")

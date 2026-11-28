@@ -17,6 +17,11 @@
   transform-origin: bottom center;
 }
 
+/* Leave room so the last cards and the footer can scroll above the floating tray. */
+body:has(.compare-tray:not([hidden])) {
+  padding-bottom: 96px;
+}
+
 .compare-tray.motion-panel-enter {
   animation: motion-anchored-tray-enter var(--motion-medium) var(--motion-ease-enter) both;
 }
@@ -631,6 +636,33 @@
   gap: var(--space-3);
 }
 
+/* Keeps Continue in reach while the long admission options scroll past. */
+.compare-config-footer {
+  position: sticky;
+  bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-md);
+}
+
+.compare-config-footer__status {
+  margin: 0;
+  min-width: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.compare-config-footer .compare-results-action {
+  flex-shrink: 0;
+}
+
 .compare-config-column {
   display: grid;
   align-content: start;
@@ -688,12 +720,16 @@
   gap: var(--space-3);
 }
 
-.compare-config-options .admission-program-selector {
-  flex-wrap: wrap;
-  column-gap: var(--space-4);
-  row-gap: 0;
-  margin: 0;
-  overflow-x: visible;
+.admission-program-control {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.admission-program-control :is(select, .custom-select-wrapper) {
+  width: 100%;
+  min-width: 0;
 }
 
 .compare-config-options .admission-scope-note,
@@ -1082,11 +1118,6 @@
 
   .compare-config-column {
     padding: var(--space-4);
-  }
-
-  .compare-config-options .admission-program-selector {
-    flex-wrap: nowrap;
-    overflow-x: auto;
   }
 
   .compare-config-options .track-stats-box--avg {

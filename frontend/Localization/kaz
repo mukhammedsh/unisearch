@@ -465,6 +465,7 @@ universities.compare.configure.title: Түсу нұсқаларын таңдаң
 universities.compare.configure.subtitle: Әр университеттен қабылдау санатын, талаптар профилін және қаржыландыру нұсқасын таңдаңыз. Салыстыру осы таңдауларға сай талаптарды, тіл құжатын, шығын мен қаржыландыруды көрсетеді.
 universities.compare.configure.selected: Түсу нұсқасы таңдалды
 universities.compare.configure.required: Салыстырмас бұрын бір нұсқаны таңдаңыз
+universities.compare.configure.progress: Таңдалған нұсқалар: {count} / {total}
 universities.compare.configure.no_funding_delta: Қаржыландыруға қатысты бөлек балл шегі деректе көрсетілмеген
 universities.compare.configure.funding_delta_from: {value} (негізгі шек: {base})
 universities.compare.section.outcomes: Нәтижелер
@@ -930,6 +931,7 @@ admission.scope.program_specific: Білімі бойынша
 admission.scope.university_wide: Бүкіл университет үшін
 admission.mit.analysis: Талаптарға сәйкестік және тарихи статистика
 admission.program.selector_label: Бағдарламаны таңдау
+admission.program.search: Бағдарлама іздеу
 admission.program.general_requirements: Жалпы талаптар
 admission.program.not_selected_note: Тізімде бар болса, бағдарламаны таңдаңыз. Талаптар бағдарлама бойынша ерекшеленуі мүмкін.
 admission.program.using_general_note: Таңдап алынған бағдарлама үшін жеке өту балдары жарияланбаған, сондықтан жалпы талаптар көрсетілген.

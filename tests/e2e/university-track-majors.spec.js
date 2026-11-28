@@ -586,7 +586,7 @@ test("admission categories omit redundant program selector and tab jump actions"
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
   await expect(page.locator("#tab-admission .admission-category-card").first()).toBeVisible();
-  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-program]")).toHaveCount(0);
   await expect(page.locator("#tab-admission [data-admission-open-tab]")).toHaveCount(0);
 });
 
@@ -603,7 +603,7 @@ test("programs tab localizes legacy program names in russian and admission omits
 
   await expect(page.locator("#detailPrograms .program-card__title", { hasText: "Компьютерные науки" }).first()).toBeVisible();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
-  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-program]")).toHaveCount(0);
   await expect(page.locator("#tab-admission [data-admission-open-tab]")).toHaveCount(0);
 });
 
@@ -694,7 +694,7 @@ test("oxford admission selector narrows program-specific categories without dupl
   await csCard.locator("[data-program-admission]").click();
   await expect(csCard.locator("[data-selected-program]")).toBeVisible();
   await page.locator('.d-tab-btn[data-tab="tab-admission"]').click();
-  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-program]")).toHaveCount(0);
   await expect(categories).toHaveCount(1);
   const selectedCategoryIds = await categories.evaluateAll((nodes) => nodes.map((node) => node.dataset.admissionCategory).sort());
   expect(selectedCategoryIds).toEqual([
@@ -718,7 +718,7 @@ test("abai university admission card layout invariants", async ({ page }) => {
   await expect(page.locator("#detailName")).not.toBeEmpty();
   await page.click(".d-tab-btn[data-tab='tab-admission']");
 
-  await expect(page.locator("#tab-admission .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#tab-admission [data-admission-program]")).toHaveCount(0);
   await expect(page.locator("#tab-admission [data-admission-open-tab]")).toHaveCount(0);
 
   const fundingOption = page.locator(".admission-funding-option").first();

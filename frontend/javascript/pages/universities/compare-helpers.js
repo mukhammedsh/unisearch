@@ -555,16 +555,26 @@ export function compareCostContextText(context) {
     overseas: t("universities.compare.fee_status.overseas", "overseas fee status"),
     home: t("universities.compare.fee_status.home", "home fee status"),
   };
-  const scopeLabels = {
+  return [
+    String(context?.academicYear || "").trim(),
+    feeLabels[feeStatus] || feeStatus,
+    compareScopeLabel(scope),
+  ].filter(Boolean).join(" · ") || t("common.na", "N/A");
+}
+
+/**
+ * Localized label for a data scope such as "institution"; unknown scopes are returned as given.
+ * @param {string} scope
+ * @returns {string}
+ */
+export function compareScopeLabel(scope) {
+  const raw = String(scope || "").trim();
+  const labels = {
     program: t("universities.compare.scope.program", "course-specific"),
     institution: t("universities.compare.scope.institution", "institution-wide"),
     undergraduate: t("universities.compare.scope.undergraduate", "undergraduate"),
   };
-  return [
-    String(context?.academicYear || "").trim(),
-    feeLabels[feeStatus] || feeStatus,
-    scopeLabels[scope] || scope,
-  ].filter(Boolean).join(" · ") || t("common.na", "N/A");
+  return labels[raw.toLowerCase()] || raw;
 }
 
 export function compareAidPolicyText(u) {

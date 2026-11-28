@@ -414,14 +414,32 @@
   .compare-tray {
     left: var(--mobile-safe-gutter, 16px);
     right: var(--mobile-safe-gutter, 16px);
-    bottom: calc(86px + env(safe-area-inset-bottom));
+    bottom: calc(var(--space-3) + env(safe-area-inset-bottom));
     width: auto;
     transform: none;
     flex-wrap: wrap;
   }
 
+  body:has(.compare-tray:not([hidden])) {
+    padding-bottom: calc(128px + env(safe-area-inset-bottom));
+  }
+
+  /* Names get a full-width row on phones; the count and actions share the row below. */
+  .compare-tray__note {
+    order: -2;
+  }
+
   .compare-tray__chips {
-    flex-wrap: wrap;
+    flex: 1 0 100%;
+    order: -1;
+  }
+
+  .compare-tray__chip {
+    max-width: none;
+  }
+
+  .compare-tray__actions {
+    flex: 1 1 auto;
   }
 
   .compare-tray.motion-panel-enter {

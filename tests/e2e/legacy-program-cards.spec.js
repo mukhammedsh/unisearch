@@ -56,7 +56,7 @@ test("name-only catalog programs use the same independent cards and keep the sel
   await expect(selected.locator("[data-selected-program]")).toBeVisible();
   await expect(selected.locator(".admissions-programs__original")).toHaveText("Software Engineering");
   await page.locator('[data-tab="tab-admission"]').click();
-  await expect(page.locator("#detailRequirements .admission-program-selector")).toHaveCount(0);
+  await expect(page.locator("#detailRequirements [data-admission-program]")).toHaveCount(0);
   await expect(page.locator("#detailRequirements [data-admission-open-tab]")).toHaveCount(0);
   await expect(page.locator("#detailRequirements .admission-scope-note")).toBeVisible();
 });

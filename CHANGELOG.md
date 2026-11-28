@@ -2,6 +2,24 @@
 
 All notable changes to UniSearch are documented here.
 
+## 10.10.3 (2026-11-28) - University comparison on phones
+
+Comparing two universities now works on a phone from the catalog to the results: the selection bar names both universities, the setup step keeps Continue in reach, and the results show both universities side by side.
+
+### Changed
+- Show short university names, such as KazNU, in the comparison bar at the bottom of the catalog, with the full name for screen readers. On phones the names get their own row, and the bar sits at the bottom of the screen without covering the last cards.
+- Choose a program in the comparison setup from a dropdown with search instead of a sideways row of buttons.
+- Keep Continue and the number of chosen admission options at the bottom of the screen while you scroll through the comparison setup.
+- On phones, show the two university cards in the comparison results next to each other, and show each table row as a heading above both values, with the university names staying in view while you scroll.
+- Shorten very long requirement lists in the comparison on phones; the full list is still one tap away under All requirements.
+
+### Fixed
+- Keep the program you pick in the comparison setup when it is listed only under an admission category.
+- Style the expandable additional requirements in the comparison setup like on the university page, with a single arrow.
+- Stop showing "Not available" next to a published cost on comparison cards.
+- Translate source names and data scope, such as "institution-wide", in the comparison table.
+- Wrap long button labels in narrow comparison columns instead of letting them run past the button.
+
 ## 10.10.2 (2026-11-27) - Profile overview, section editors, and a mobile Guide
 
 The profile now uses focused section editors on phones and a side-by-side layout on wider screens. Profile dates and university deadlines share the same calendar design. On phones and tablets the Guide opens as a list of topics.

@@ -468,6 +468,7 @@ universities.compare.configure.title: Выберите варианты пост
 universities.compare.configure.subtitle: Выберите категорию поступления, профиль требований и вариант финансирования для каждого университета. Сравнение возьмет требования, языковой экзамен, стоимость и финансирование из этого выбора.
 universities.compare.configure.selected: Вариант поступления выбран
 universities.compare.configure.required: Выберите один вариант перед сравнением
+universities.compare.configure.progress: Выбрано вариантов: {count} из {total}
 universities.compare.configure.no_funding_delta: Отдельный порог для финансирования в данных не указан
 universities.compare.configure.funding_delta_from: {value} (обычно {base})
 universities.compare.section.outcomes: Результаты
@@ -930,6 +931,7 @@ admission.scope.program_specific: По программе
 admission.scope.university_wide: Для всего университета
 admission.mit.analysis: Соответствие требованиям и историческая статистика
 admission.program.selector_label: Выбор программы
+admission.program.search: Поиск программы
 admission.program.general_requirements: Общие требования
 admission.program.not_selected_note: Выберите программу, если она есть в списке. Требования могут отличаться по программе.
 admission.program.using_general_note: Для выбранной программы отдельные проходные баллы не опубликованы, поэтому показаны общие требования.

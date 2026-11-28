@@ -144,7 +144,9 @@ function compareCardsHtml(universities) {
         : t("universities.compare.scope.institution", "institution-wide"),
       publishedAdmission.cycle,
     ].filter(Boolean).join(" · ");
-    const costContext = compareCostContextText({ ...cost, scope: "" });
+    // The helper falls back to "N/A" for an empty context; next to a published cost that reads as a contradiction.
+    const costContextText = compareCostContextText({ ...cost, scope: "" });
+    const costContext = costContextText === t("common.na", "N/A") ? "" : costContextText;
     const linkAttrs = shouldOpenUniversitiesInNewTab() ? ' target="_blank" rel="noopener noreferrer"' : "";
 
     return `
@@ -221,10 +223,11 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
   currentStage = "configure";
   syncUrlWithState("configure", { push: pushState });
 
-  const ready = activeUniversities.every((u) => {
+  const selectedCount = activeUniversities.filter((u) => {
     const id = String(u?.id || "");
     return Boolean(compareChoiceKey(compareAdmissionChoices.get(id)) && compareSelectedAdmissionEntry(u, compareAdmissionChoices));
-  });
+  }).length;
+  const ready = selectedCount === activeUniversities.length;
 
   container.innerHTML = `
     <div class="compare-results-head compare-results-head--pair">
@@ -238,7 +241,6 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
           ${heroIcon("arrow-left", "ui-icon ui-icon--16")}
           <span>${escapeHtml(t("universities.compare.back_to_catalog", "Back to catalog"))}</span>
         </button>
-        <button class="ui-btn ui-btn--primary compare-results-action" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
       </div>
     </div>
     <section class="compare-config-panel" aria-label="${escapeHtmlAttr(t("universities.compare.configure.title", "Choose admission choices"))}">
@@ -263,6 +265,10 @@ async function renderCompareConfigure(container, { pushState = false } = {}) {
         `;
       }).join("")}
     </section>
+    <div class="compare-config-footer">
+      <p class="compare-config-footer__status" role="status">${escapeHtml(tFormat("universities.compare.configure.progress", { count: selectedCount, total: activeUniversities.length }))}</p>
+      <button class="ui-btn ui-btn--primary compare-results-action" type="button" data-action="build-compare-results"${ready ? "" : " disabled"}>${escapeHtml(t("universities.compare.continue", "Continue"))}</button>
+    </div>
   `;
 
   activeUniversities.forEach((u) => {

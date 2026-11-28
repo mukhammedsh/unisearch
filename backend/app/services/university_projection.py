@@ -280,6 +280,10 @@ def to_university_card(
         "catalog_costs": _catalog_costs(u, mode),
         "cover_available": bool(u.get("cover_available")),
     }
+    # Compact places such as the compare tray show the same short label as the map.
+    map_label = _map_label_for_university(uid, lang)
+    if map_label:
+        out["map_label"] = map_label
     if isinstance(u.get("admissions_catalog"), dict):
         out["admissions_catalog"] = u["admissions_catalog"]
     if uid in admissions_catalog.INSTITUTION_IDS:

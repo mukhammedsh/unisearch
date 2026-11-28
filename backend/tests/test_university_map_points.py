@@ -93,6 +93,12 @@ class UniversityMapPointsTests(unittest.TestCase):
         )
         self.assertNotIn("map_label", projected)
 
+    def test_catalog_card_carries_the_same_short_label(self):
+        kbtu = {"id": "kazakhstan-british-technical-university-kaz-almaty", "name": "KBTU"}
+        self.assertEqual(universities_service.to_university_card(kbtu, search_lang="rus")["map_label"], "КБТУ")
+        unknown = universities_service.to_university_card({"id": "unknown-university", "name": "Unknown"})
+        self.assertNotIn("map_label", unknown)
+
 
 if __name__ == "__main__":
     unittest.main()

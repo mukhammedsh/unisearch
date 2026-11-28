@@ -1087,7 +1087,7 @@ test("selected admission context puts course conditions first and omits legacy c
   const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
   renderAdmissionSection({ container, university, annualCostForTrack: () => null });
   assert.match(container.innerHTML, /data-admission-category="route"/);
-  assert.doesNotMatch(container.innerHTML, /admission-program-selector|data-admission-open-tab/);
+  assert.doesNotMatch(container.innerHTML, /data-admission-program|data-admission-open-tab/);
   assert.equal((container.innerHTML.match(/Shared application description/g) || []).length, 1);
   assert.match(container.innerHTML, /A\*A\*A including Mathematics/);
   assert.doesNotMatch(container.innerHTML, /chance-track-chip|chance-panel|mit-admission-analysis/);
@@ -1128,12 +1128,27 @@ test("Russian program names remain distinct when restoring a selected program ID
   renderAdmissionSection({ container, university, annualCostForTrack: () => null });
   assert.match(container.innerHTML, /data-admission-category="cs-route"/);
   assert.doesNotMatch(container.innerHTML, /data-admission-category="physics-route"/);
-  assert.doesNotMatch(container.innerHTML, /admission-program-selector/);
+  assert.doesNotMatch(container.innerHTML, /data-admission-program/);
   const compactContainer = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
   renderAdmissionSection({ container: compactContainer, university, annualCostForTrack: () => null, compactMode: true });
-  assert.match(compactContainer.innerHTML, /class="admission-program-option is-active"\s+data-admission-program="компьютерные_науки"/);
+  assert.match(compactContainer.innerHTML, /<select[^>]*data-admission-program/);
+  assert.match(compactContainer.innerHTML, /<option value="компьютерные_науки" selected>/);
   window.location.search = "";
   setLanguage("eng", { persist: false, emit: false });
+});
+
+test("comparison setup keeps a program that exists only on admission categories", async () => {
+  const { compareProgramChoiceByUniversity } = await import("../../frontend/javascript/pages/university/section-context.js");
+  window.location.search = "";
+  const university = { id: "ux-category-programs", academics: { programs: [] }, admission_categories: [
+    { id: "general-route", label: "General", scope: "general", study_level: "Bachelor", program_names: ["History", "Mathematics"] },
+  ] };
+  compareProgramChoiceByUniversity.set(university.id, "history");
+  const container = { innerHTML: "", querySelector: () => null, querySelectorAll: () => [] };
+  renderAdmissionSection({ container, university, annualCostForTrack: () => null, compactMode: true });
+  assert.match(container.innerHTML, /<option value="history" selected>/);
+  assert.doesNotMatch(container.innerHTML, /<option value="__general__" selected>/);
+  compareProgramChoiceByUniversity.delete(university.id);
 });
 
 test("admission descriptions deduplicate the localized paragraph", async () => {

@@ -18,6 +18,7 @@ import {
 
 import {
   translateWord,
+  translateFactSource,
   humanizeMachineLabel,
 } from "../../university-translations.js";
 
@@ -25,6 +26,7 @@ import { getTrackFundingType } from "../../university-detail-helpers.js";
 import { t, tFormat } from "../../i18n.js";
 
 import {
+  compareScopeLabel,
   compareUniversityName,
   compareLocationText,
   compareRankText,
@@ -726,10 +728,10 @@ export const compareSpecValue = (spec, u, metrics) => {
     const sourceMeta = spec.sourceGetter
         ? spec.sourceGetter(u)
         : (spec.sourceKey ? compareSourceMeta(u, spec.sourceKey) : null);
-    const sourceLabel = String(sourceMeta?.source || sourceMeta?.text || "").trim();
+    const sourceLabel = translateFactSource(String(sourceMeta?.source || sourceMeta?.text || "").trim());
     const sourceUrl = String(sourceMeta?.sourceUrl || sourceMeta?.url || "").trim();
     const verifiedAt = String(sourceMeta?.verifiedAt || "").trim();
-    const sourceScope = String(sourceMeta?.scope || "").trim();
+    const sourceScope = compareScopeLabel(sourceMeta?.scope);
     const checkedLabel = verifiedAt ? `${t("university.admissions.checked", "Checked")}: ${verifiedAt}` : "";
     const sourceParts = [sourceLabel, sourceScope, checkedLabel].filter(Boolean);
     const sourceText = sourceParts.join(" · ");
@@ -816,7 +818,7 @@ const compareDecisionStatusLabel = (status) => {
 };
 
 const compareDecisionSource = (meta) => {
-    const source = String(meta?.source || meta?.text || "").trim();
+    const source = translateFactSource(String(meta?.source || meta?.text || "").trim());
     const sourceUrl = String(meta?.sourceUrl || meta?.source_url || "").trim();
     const verifiedAt = String(meta?.verifiedAt || meta?.verified_at || "").trim();
     if (!source && !verifiedAt) return null;
