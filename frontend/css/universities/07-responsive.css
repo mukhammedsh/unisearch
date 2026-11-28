@@ -424,11 +424,8 @@
     padding-bottom: calc(128px + env(safe-area-inset-bottom));
   }
 
-  /* Names get a full-width row on phones; the count and actions share the row below. */
-  .compare-tray__note {
-    order: -2;
-  }
-
+  /* Names get a full-width row on phones; the count and actions share the row below.
+     A notice (order: -1, earlier in the DOM) still comes before the names. */
   .compare-tray__chips {
     flex: 1 0 100%;
     order: -1;

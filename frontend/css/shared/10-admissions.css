@@ -75,6 +75,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .track-collapsible-summary:hover:not(:active) {
+    color: var(--interaction-hover-text);
+    background: var(--interaction-hover-surface);
+  }
+
   .track-select-btn:hover:not(:disabled, .is-active, :active) {
     background: var(--interaction-hover-surface);
     color: var(--interaction-hover-text);
@@ -378,6 +383,10 @@
 }
 
 @media (max-width: 768px) {
+  .track-collapsible-summary {
+    min-height: 40px;
+  }
+
   :where(.programs-level-tab, .admissions-level-tab) {
     display: inline-flex;
     align-items: center;
@@ -608,13 +617,6 @@
   display: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .track-collapsible-summary:hover:not(:active) {
-    color: var(--interaction-hover-text);
-    background: var(--interaction-hover-surface);
-  }
-}
-
 .track-collapsible-summary:active {
   color: var(--text);
   background: var(--interaction-press-surface);
@@ -635,10 +637,4 @@
 
 .track-collapsible-content {
   padding: var(--space-2) 0 0;
-}
-
-@media (max-width: 768px) {
-  .track-collapsible-summary {
-    min-height: 40px;
-  }
 }
