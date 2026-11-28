@@ -89,6 +89,8 @@ test("university detail page updates key UI texts for eng/rus", async ({ page })
     await expect(page.locator("#detailScholarshipInfo")).toContainText(
       locale.code === "rus" ? "Внутренний грант СДУ" : "SDU Internal Grant",
     );
+    const detailName = (await page.locator("#detailName").textContent())?.trim();
+    await expect(page).toHaveTitle(`${detailName} | UniSearch`);
   }
 });
 

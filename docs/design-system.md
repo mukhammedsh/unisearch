@@ -204,6 +204,8 @@ Breakpoints must describe available content space, not a device name. Keep a non
 
 ### Inputs and Selects
 
+Use the shared calendar stylesheet for month grids, weekday labels, day states, and navigation. Use the standard input, select, and button classes for the calendar controls. The profile date picker uses a dialog with Save and Clear, while the university deadline calendar pairs the same month grid with event details and calendar export.
+
 - Use `.ui-input` (with optional `.ui-input--sm`, `.ui-input--lg`, or `.ui-input--textarea`) on text, search, number, date, and textarea fields, and `.ui-select` (with optional `.ui-select--sm` or `.ui-select--lg`) on `<select>` controls so every form field shares `--control-bg`, `--control-radius-md` (`12px`, or `--control-radius-sm` `8px` for `--sm`), `--control-height-md`/`--control-height-lg` (`40px`/`44px`), hover, post-interaction invalid (`:user-invalid`, `.is-invalid`, `[aria-invalid="true"]`), disabled, and `:focus-visible` states.
 - When custom select enhancement wraps a `<select>`, `.custom-select-trigger` mirrors the same scale (`36px` `--sm` / `40px` default / `44px` `--lg`) and `--dropdown-radius` (`12px`).
 - Focus: `--focus-ring` outline (`2px solid var(--focus-ring)` with `2px` offset on `:focus-visible` / `:focus-within`); do not add a border only for focus.

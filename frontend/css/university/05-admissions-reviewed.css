@@ -492,19 +492,10 @@ a.admissions-key-facts__link {
   color: var(--interaction-hover-text);
 }
 
-.university--reviewed .deadline-calendar__details a,
-.university--reviewed .deadline-calendar__export,
-.university--reviewed .deadline-calendar__day--event.is-active {
-  color: var(--text);
-}
-
 .university--reviewed .deadline-calendar__details a {
+  color: var(--text);
   text-decoration: underline;
   text-underline-offset: var(--space-1);
-}
-
-.university--reviewed .deadline-calendar__export {
-  min-height: 44px;
 }
 
 .admissions-catalog__evidence {
@@ -1074,6 +1065,12 @@ details[open] > summary > .admissions-disclosure-icon {
   text-decoration-thickness: 1px;
   text-underline-offset: var(--space-1);
   overflow-wrap: anywhere;
+}
+
+.admissions-catalog__guide-link {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-0-5);
 }
 
 .admissions-catalog__source-icon {

@@ -54,6 +54,8 @@ guide.previous_section_label: Previous section
 guide.section_navigation: Section navigation
 guide.contents: Contents
 guide.contents_current: Contents: {section}
+guide.all_topics: All topics
+guide.hub_intro: How to find and compare universities, read admission requirements, and enter exam results.
 guide.ml.p1: Use the Interests field to enter subjects or fields of study. <a href="guide.html#guide-unifit">UniFit</a> looks for related topics in the information about each university.
 guide.ml.formula: sim = cosine(queryVec, uniVec)\nmlScore = clip((sim - 0.55) / 0.35, 0, 1)
 guide.ml.p2: Matching uses the university name, programs, descriptions, and other catalog information. UniFit recognizes some common abbreviations, such as ML for machine learning.
@@ -77,19 +79,19 @@ guide.group.glossary: Reference
 guide.back: Back
 guide.tags.title: What catalog badges mean
 guide.tags.intro: Badges summarize cost, funding, and admissions information on university cards. A missing badge can mean the condition does not apply or there is insufficient information.
-guide.tags.icons_note: Cards with reviewed data display some badges as icons with explanations. With <a href="guide.html#guide-unifit">UniFit</a> selected, the icon legend is available above the catalog.
+guide.tags.icons_note: Cards with reviewed data display some badges as icons. Point at or tap an icon to see what it means.
 guide.tags.standard_title: Cost and admissions information
 guide.tags.standard.acceptance: The admission rate is the share of applicants admitted according to the university's published figures.
 guide.tags.standard.aid_available: “Aid Available” means the university lists a funding opportunity. Check the eligibility rules and amount separately.
-guide.tags.standard.over_budget: “Over Budget” means the known annual cost exceeds the budget in your profile. The university stays in the catalog.
+guide.tags.standard.over_budget: “Over Budget” means the known annual cost exceeds the <a href="guide.html#guide-unifit-budget">budget in your profile</a>. The university stays in the catalog.
 guide.tags.standard.over_budget_aid: “Over Budget • Aid Available” means the cost exceeds your budget and the university lists a funding opportunity. Check eligibility and award amounts separately.
 guide.tags.standard.check_cost: Check the cost if it depends on a fee category you have not selected. For example, UK Home and Overseas rates may differ.
 guide.tags.ai_note: These badges appear when you sort with <a href="guide.html#guide-unifit">{fit}</a>. They depend on the information in your profile.
 guide.tags.ai_title: Profile-based badges
-guide.tags.ai.conditional: “Exam result needed” means UniSearch needs a result in your profile to check a minimum score.
+guide.tags.ai.conditional: “Exam result needed” means UniSearch needs <a href="guide.html#guide-unifit-missing-results">a result in your profile</a> to check a minimum score.
 guide.tags.ai.your_vibe: “Your Vibe” indicates a very close match to the preferences you set.
 guide.tags.ai.top_match: “Good Match” indicates that the university closely matches the preferences you set.
-guide.tags.ai.requirements_met: “Requirements Met” means your profile meets all academic and language minimums the site checked. Review other admission conditions separately.
+guide.tags.ai.requirements_met: “Requirements Met” means your profile meets all academic and language <a href="guide.html#guide-unichance">minimums the site checked</a>. Review other admission conditions separately.
 guide.tags.ai.below_requirements: “Below Requirements” means your profile falls short of at least one minimum the site checked. Open the admission requirements to see which one.
 guide.title: Guide
 guide.comparison.title: University comparison
@@ -98,7 +100,6 @@ guide.comparison.p2: The table highlights differences that matter, such as diffe
 guide.comparison.columns: For universities with reviewed data, each column uses the selections made on the university overview. Choose a study option in that column if needed. The table shows deadlines, requirements, costs before aid, funding options, and official sources.
 guide.comparison.p3: The published admission rate may cover the whole university or an individual program. Check the official source to see which applicants the figure covers. The “<a href="guide.html#guide-unichance">{chance}</a>” score is calculated separately using your profile.
 guide.unichance.p1: The “{chance}” score shows the percentage of published academic and language minimums you meet among those the site can check. On pages with reviewed data, the score applies to the selected study option, application route, and applicant category.
-guide.unichance.formula: requirements_fit = met evaluable academic and language minimum checks / all evaluable academic and language minimum checks × 100
 guide.unichance.p2: For example, if the site can check four minimums and you meet three, your score is 75%. Published admission rates and average scores of admitted students are separate figures and do not affect the calculation.
 guide.unichance.p3: A score of 100% means you meet every minimum the site checked. Review application eligibility, documents, and other conditions separately. The score cannot tell you how likely you are to be admitted or receive aid.
 guide.unichance.p4: When published requirements or profile details are insufficient, the site leaves the score unavailable and explains what is missing.
@@ -281,7 +282,6 @@ profile.unsaved.message: You have unsaved profile changes. What do you want to d
 profile.unsaved.discard: Discard changes
 profile.unsaved.cancel: Keep editing
 profile.unsaved.save_close: Save and close
-profile.reset.note: Clears budget, GPA, exams, languages, interests, and other saved profile fields on this device.
 profile.reset.cta: Reset data
 profile.reset.confirm_title: Reset all profile data?
 profile.reset.confirm_message: This will remove all saved profile data on this device and set the profile back to empty values.
@@ -294,7 +294,6 @@ profile.unit.gpa: / 4.0
 profile.sections.aria: Profile sections
 profile.title: Profile
 profile.action.back: Back
-profile.action.back_desc: Return to previous page
 profile.aria.applicant_profile: Applicant Profile
 ranking.acceptance: Acceptance Rate
 ranking.acceptance_undergraduate: Undergraduate acceptance rate
@@ -397,7 +396,7 @@ universities.filter.favorites: Favorites
 universities.filter.saved_scope: University list scope
 universities.found_prefix: Found
 universities.found_suffix: universities
-universities.global: Global
+universities.global: All countries
 universities.loading: Loading universities
 universities.map_panel.title: Results on the map
 universities.map_panel.showing: Showing {count} of {total}
@@ -833,7 +832,7 @@ tour.skip_all: Skip
 tour.steps_label: Tutorial steps
 tour.step1.label: Search & filters
 tour.step1.title: Narrow options by country, level, and budget
-tour.step1.desc: Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Verified admissions to focus on universities with reviewed requirements and costs.
+tour.step1.desc: Search by university, city, or abbreviation, then filter by study level, location, and yearly budget in your currency. Turn on Detailed admission terms to see universities whose requirements, deadlines, and costs are given for each program.
 tour.step2.label: Profile & {fit}
 tour.step2.title: Personalize sorting without an account
 tour.step2.desc: Add what you already know — subject, budget, GPA, or exam scores — saved privately on this device. {fit} ranks matching universities first and never treats missing scores as zero.
@@ -2712,14 +2711,14 @@ universities.compare.pdf.date: Exported {date}
 universities.compare.pdf.no_sources: No official links available for this selection.
 universities.compare.pdf.note: Check the official sources before applying. Dates, requirements and costs may change.
 universities.compare.mixed.title: These two universities can't be compared yet
-universities.compare.mixed.text: {reviewed} has rechecked data, while {legacy} doesn't yet. A pair is compared only within one group, so facts of different accuracy never stand side by side. We are rechecking every university in turn.
-universities.compare.mixed.reviewed: Data rechecked
-universities.compare.mixed.legacy: Data not yet rechecked
+universities.compare.mixed.text: {reviewed} has detailed admission terms for each program, while {legacy} has them only in general form so far. A pair is compared only within one group, so detailed and general facts never stand side by side. We are moving every university to the detailed format in turn.
+universities.compare.mixed.reviewed: Detailed admission terms
+universities.compare.mixed.legacy: Admission terms in general form
 universities.compare.mixed.choose_pair: Choose another pair
 universities.card.compare_other_group: Not for this pair
-universities.card.compare_other_group_title: A pair is compared within one group: universities with rechecked data, or universities whose data isn't rechecked yet.
-universities.compare.tray_blocked_legacy: {university}: this data isn't rechecked yet, while the pair has a university with rechecked data. Only universities of one group are compared.
-universities.compare.tray_blocked_reviewed: {university} has rechecked data, while the pair has a university whose data isn't rechecked yet. Only universities of one group are compared.
+universities.card.compare_other_group_title: A pair is compared within one group: universities with detailed admission terms, or universities whose terms are in general form.
+universities.compare.tray_blocked_legacy: {university} has admission terms only in general form, while the pair has a university with detailed terms. Only universities of one group are compared.
+universities.compare.tray_blocked_reviewed: {university} has detailed admission terms, while the pair has a university whose terms are in general form. Only universities of one group are compared.
 universities.compare.tray_mixed: These universities are in different data groups. Remove one to continue.
 university.admissions.reading.total_fee: total fee
 university.deadlines.kind.funding_consideration: Application deadline for scholarship consideration
@@ -3062,7 +3061,21 @@ university.ux2.needs.mark_recommended: Recommendation, not a requirement
 languages.exam_overall_score_label: Overall score
 languages.exam_overall_score_hint: Overall score for the whole exam — you can enter this alone if you do not know the section scores.
 languages.exam_sections_label: Section scores (if your report shows them)
-profile.ux2.intro: All fields are optional, and your answers are saved on this device.
+profile.ux2.intro: UniFit uses these details to sort universities in the catalog. All fields are optional.
+profile.overview.study: Study
+profile.overview.specific: For specific universities
+profile.overview.catalog: Universities
+profile.overview.results: Back to results
+profile.overview.storage: Profile data is stored on this device.
+profile.overview.empty.basics: Level, subject, and interests
+profile.overview.empty.preferences: Annual budget and funding preferences
+profile.overview.empty.scores: Grade average and test results
+profile.overview.more_exams: {count} more {results}
+profile.overview.exam_result.one: result
+profile.overview.exam_result.few: results
+profile.overview.exam_result.many: results
+profile.overview.empty.languages: Languages, levels, and certificates
+profile.overview.empty.specific: English and education background
 profile.ux2.section.study.title: What you want to study
 profile.ux2.section.study.desc: Study level narrows the list. Subject and topics change the order.
 profile.ux2.section.budget.title: Budget and funding
@@ -3219,9 +3232,9 @@ university.ux2.deadlines.not_collected: UniSearch hasn't collected application d
 university.ux2.deadline.legacy_none: Dates not collected yet
 university.ux2.deadline.legacy_none_detail: UniSearch doesn't have this university's application dates yet. Check them on its official site.
 university.ux2.link.official_site: Official website
-university.ux2.legacy.title: This university's data hasn't been rechecked yet
-university.ux2.legacy.text: It was collected earlier and may be inaccurate or out of date. Check anything important on the official website. We are moving universities to rechecked data one by one, and this one will be updated.
-university.ux2.legacy.badge: Data not yet rechecked
+university.ux2.legacy.title: Admission terms are shown in general form for now
+university.ux2.legacy.text: They are not yet broken down by program or applicant category, and the data was collected earlier, so check anything important on the official website. We are moving universities to the detailed format one by one.
+university.ux2.legacy.badge: Admission terms in general form
 university.ux2.legacy.badge_detail: Collected earlier and may be inaccurate or out of date. Check important details on the official website; this university will be updated.
 university.ux2.people.selectivity_first_year: About {rate}% of first-year applicants are admitted
 university.ux2.people.selectivity_undergraduate: About {rate}% of undergraduate applicants are admitted
@@ -3301,15 +3314,15 @@ universities.empty.clear_price: Remove the price filter
 universities.state.empty_saved_none: You have not saved any universities yet. Save one from its card and it will appear here.
 profile.unit.per_year: / year
 profile.budget_currency_label: Budget currency
-universities.filter.reviewed_only: Verified admissions
-universities.filter.reviewed_only_hint: Show universities with verified requirements and costs
+universities.filter.reviewed_only: Detailed admission terms
+universities.filter.reviewed_only_hint: Requirements, deadlines, and costs for each program
 universities.unifit.prefs_summary: UniFit preferences
 universities.tip.budget_level_needed: {cost}/yr depending on study level. Pick a study level to compare.
 guide.start.nav: Getting started
 guide.start.title: How to use UniSearch
 guide.start.intro: Browse UniSearch to find study programs, admission requirements, application deadlines, and costs. You can use the catalog without completing a profile.
 guide.start.step1.title: 1. Add your details in Profile
-guide.start.step1.desc: For personalized results, enter your study level and subject, annual budget, grade average, and exam results such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.
+guide.start.step1.desc: For personalized results, enter your study level and subject, annual budget, grade average, and <a href="guide.html#guide-academic-exams">exam results</a> such as IELTS, SAT, UNT, or NUET. Fill in the fields for which you have information.
 guide.start.step2.title: 2. Set filters and select UniFit sorting
 guide.start.step2.desc: Filters narrow the list. <a href="guide.html#guide-unifit">UniFit</a> orders it using your profile. <a href="guide.html#guide-tags">Card badges</a> show which minimums you meet, which results are missing, and whether the known cost fits your budget.
 guide.start.step3.title: 3. Review a university or compare two options
@@ -3329,3 +3342,8 @@ profile.calendar.next: Next month
 profile.calendar.month: Month
 profile.calendar.year: Year
 profile.calendar.clear: Clear
+university.admissions.catalog.guide_link: How the match is calculated
+profile.guide_link.scores: Which grades and exams are supported
+profile.guide_link.languages: Which language exams are supported
+profile.guide_link.budget: How {fit} uses your budget
+universities.quick_filters.aria: Quick filters

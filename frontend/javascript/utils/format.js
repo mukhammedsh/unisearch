@@ -162,6 +162,17 @@ const COUNTRY_CODES = {
   Netherlands: "nl",
 };
 
+/**
+ * The catalog's country name for an ISO 3166-1 alpha-2 code ("KZ" -> "Kazakhstan").
+ * @param {string} isoCode
+ * @returns {string} "" when the catalog has no universities in that country
+ */
+export function catalogCountryForCode(isoCode) {
+  const code = String(isoCode || "").trim().toLowerCase();
+  if (!code) return "";
+  return Object.keys(COUNTRY_CODES).find((name) => COUNTRY_CODES[name] === code) || "";
+}
+
 const COUNTRY_FLAG_ALIASES = {
   au: "au",
   australia: "au",

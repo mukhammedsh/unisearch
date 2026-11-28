@@ -1,5 +1,5 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect, openDisclosureParents, revealRestrictedProgram } = require("./helpers/selectors");
+const { setNativeSelect, openDisclosureParents, revealRestrictedProgram, openProfileTab } = require("./helpers/selectors");
 
 const MIT = "mit-usa-cambridge";
 const STANFORD = "stanford-university-usa-ca";
@@ -219,6 +219,8 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await preparePage(page);
   await page.goto("/profile.html");
   await expect(page.locator("body")).toHaveAttribute("data-page", "profile");
+  // University-specific evidence has its own profile section.
+  await openProfileTab(page, "specific");
   const evidence = page.locator("#admissionEvidenceFields");
   await expect(evidence).toBeVisible();
 
@@ -276,6 +278,7 @@ test("typed Course 6-9 evidence changes the real BCS MEng assessment while its s
   await expect(page.locator("#detailRequirements")).toContainText(/supervisor|UROP/i);
 
   await page.goto("/profile.html");
+  await openProfileTab(page, "specific");
   await expect(page.locator("#admissionEvidenceFields")).toBeVisible();
   const savedEvidence = page.locator("#admissionEvidenceFields #institutionalEvidenceList .profile-exam-item");
   await expect(savedEvidence).toHaveCount(3);

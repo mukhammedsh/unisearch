@@ -1,14 +1,17 @@
 import {
+  getExamDisplayName,
   initCustomSelect,
   loadProfile,
-  prefersReducedMotion,
 } from "../../utils.js";
-import { applyTranslations, t, tFormat } from "../../i18n.js";
+import { applyTranslations, getCurrentLanguage, t, tFormat } from "../../i18n.js";
+import { formatPlural } from "../../utils/format.js";
 import { formatMoney } from "../../currency.js";
 import { fillBudgetCurrencyOptions, syncBudgetCurrencySelect } from "./budget-currency.js";
-import { buildSectionFillStates } from "./profile-summary.js";
+import { buildSectionFillStates, fundingPreferenceLabel, parseSummaryBudget, studyLevelLabel } from "./profile-summary.js";
+import { translateProgramName } from "../../university-translations.js";
 import {
   applyBudgetEntry,
+  budgetInCurrency,
   ensureProfileShape,
   getBudgetCurrency,
   getBudgetPlaceholderValue,
@@ -112,62 +115,77 @@ export const updateBudgetUI = (els, state) => {
 };
 
 export const renderProfileSummary = (els, state) => {
-    const fillStates = buildSectionFillStates(state.profile);
+    const saved = state.savedProfile || state.profile;
+    const fillStates = buildSectionFillStates(saved);
+    const budget = parseSummaryBudget(saved);
+    const preferredCurrency = state.budgetInputCurrency || getBudgetCurrency();
+    const displayedBudget = budgetInCurrency(saved, preferredCurrency);
+    const locale = getCurrentLanguage();
+    const examIds = saved.exams.map((exam) => exam?.exam || exam?.id).filter(Boolean);
+    const visibleExams = examIds.slice(0, examIds.length > 2 ? 1 : 2);
+    const moreExams = examIds.length - visibleExams.length;
+    const moreExamLabel = moreExams ? tFormat("profile.overview.more_exams", {
+        count: moreExams,
+        results: formatPlural(moreExams, [
+            t("profile.overview.exam_result.one"),
+            t("profile.overview.exam_result.few"),
+            t("profile.overview.exam_result.many"),
+        ], locale),
+    }) : "";
+    const details = {
+        basics: [
+            String(saved.studyLevel).toLowerCase() !== "any" ? studyLevelLabel(saved.studyLevel, t) : "",
+            saved.major ? translateProgramName(saved.major, saved.major) : "",
+        ].filter(Boolean).join(" · "),
+        preferences: [
+            budget.state !== "empty" ? formatMoney(displayedBudget, preferredCurrency) : "",
+            fundingPreferenceLabel(saved.fundingType, t),
+        ].filter(Boolean).join(" · "),
+        scores: [
+            saved.gpa === "" ? "" : `${t("profile.ux2.summary.requirements.gpa")} ${saved.gpa} ${t(saved.gpaScale === 5 ? "profile.unit.gpa_5" : "profile.unit.gpa_4")}`,
+            ...visibleExams.map((exam) => getExamDisplayName(exam, { locale })),
+            moreExamLabel,
+        ].filter(Boolean).join(" · "),
+        languages: saved.languages.slice(0, 2).map((language) => language.code || language.lang).filter(Boolean)
+            .map((code) => t(`languages.name.${code}`, String(code).toUpperCase())).join(" · "),
+    };
 
     els.profileSectionTabs.forEach((tab) => {
-        const filled = !!fillStates[String(tab.dataset.profileTab || "")];
+        const section = tab.dataset.profileTab;
+        const filled = !!fillStates[section];
         tab.dataset.filled = filled ? "true" : "false";
         const status = tab.querySelector(".profile-outline__status");
-        if (status) {
-            status.textContent = filled
-                ? t("profile.ux2.nav.filled", "has answers")
-                : t("profile.ux2.nav.empty", "no answers yet");
-        }
+        const label = details[section] || (filled
+            ? t("profile.ux2.nav.filled")
+            : t(`profile.overview.empty.${section}`));
+        if (status.textContent !== label) status.textContent = label;
     });
+    if (els.profileStorageNote) {
+        els.profileStorageNote.removeAttribute("data-i18n");
+        const label = state.profileStoragePersistent
+            ? t("profile.overview.storage")
+            : t("profile.state.saved_session");
+        if (els.profileStorageNote.textContent !== label) els.profileStorageNote.textContent = label;
+    }
 };
 
 export const refreshSaveState = (els, state) => {
     const dirty = isProfileDirty(state);
     if (els.profileSaveState) {
         els.profileSaveState.removeAttribute("data-i18n");
-        if (dirty) {
-            els.profileSaveState.textContent = state.examEditorDirty || state.languageEditorDirty
-                ? t("profile.report_draft_pending") : t("profile.state.unsaved", "Unsaved changes");
-        } else {
-            els.profileSaveState.textContent = state.profileStoragePersistent
-                ? t("profile.state.saved_local", "Saved on this device")
-                : t("profile.state.saved_session", "Saved until this tab is closed");
-        }
+        let label = t(state.profileStoragePersistent ? "profile.state.saved_local" : "profile.state.saved_session");
+        if (dirty) label = t(state.examEditorDirty || state.languageEditorDirty ? "profile.report_draft_pending" : "profile.state.unsaved");
+        if (els.profileSaveState.textContent !== label) els.profileSaveState.textContent = label;
         els.profileSaveState.classList.toggle("is-dirty", dirty);
     }
-    if (els.saveProfileBtn) els.saveProfileBtn.disabled = !dirty;
+    if (els.saveProfileBtn) {
+        els.saveProfileBtn.hidden = !dirty;
+        els.saveProfileBtn.disabled = !dirty;
+    }
+    els.profileSaveState?.classList.toggle("sr-only", !dirty && !state.showSavedStatus);
     renderLowBudgetGrantHint(els, state);
     renderProfileSummary(els, state);
     return dirty;
-};
-
-export const sectionIdOf = (node) => String(node?.getAttribute("data-profile-section") || "");
-
-export const setActiveProfileSection = (els, section) => {
-    const active = String(section || "basics");
-    els.profileSectionTabs.forEach((tab) => {
-        const isActive = String(tab.dataset.profileTab || "") === active;
-        tab.classList.toggle("is-active", isActive);
-        if (isActive) tab.setAttribute("aria-current", "location");
-        else tab.removeAttribute("aria-current");
-    });
-};
-
-// All sections stay visible; the outline only scrolls to one of them and marks it as current.
-export const goToProfileSection = (els, state, section, { focusHeading = true } = {}) => {
-    const node = els.profileSectionNodes.find((candidate) => sectionIdOf(candidate) === section);
-    if (!node) return;
-    setActiveProfileSection(els, section);
-    // Ignore the scroll observer while the smooth scroll runs, so the clicked item stays current.
-    state.sectionNavLockUntil = Date.now() + 900;
-    const region = node.closest(".profile-workspace-layout");
-    if (region) region.scrollTo({ top: region.scrollTop + node.getBoundingClientRect().top - region.getBoundingClientRect().top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
-    if (focusHeading) node.querySelector(".profile-section-title")?.focus({ preventScroll: true });
 };
 
 export const getInterestsDraft = (els) => String(els.profileInterestsInput?.value || "").trim().slice(0, 1200);

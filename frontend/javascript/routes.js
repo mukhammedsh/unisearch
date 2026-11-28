@@ -103,6 +103,11 @@ export function routeGuide(queryOrParams = "") {
   return withQuery(usePrettyUrls() ? "/guide" : "guide.html", queryOrParams);
 }
 
+/** A Guide article or subsection, such as `guide-unichance` or `guide-unifit-budget`. */
+export function routeGuideSection(sectionId) {
+  return `${routeGuide()}#${encodeURIComponent(String(sectionId || "").trim())}`;
+}
+
 export function routeAbout(queryOrParams = "") {
   return withQuery(usePrettyUrls() ? "/about" : "about.html", queryOrParams);
 }
@@ -225,7 +230,8 @@ export function applyRouteLinks(root = document) {
       if (rawId) href = routeUniversityDetail(rawId, params);
     }
 
-    if (href) link.setAttribute("href", href);
+    // Keep a link's fragment, such as a Guide article: `#guide-unifit`.
+    if (href) link.setAttribute("href", `${href}${link.hash || ""}`);
   });
 }
 

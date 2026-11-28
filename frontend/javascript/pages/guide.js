@@ -5,14 +5,13 @@ import {
   canonicalizeExamId,
   escapeHtml,
   getExamDisplayName,
-  prefersReducedMotion,
-  replayMotion,
   setManualScrollRestoration,
 } from "../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../i18n.js";
-import { heroIcon } from "../icons.js";
 import { navigateToAppRoute, routeUniversities } from "../routes.js";
-import { bindGuideExternalUpdates, bindGuideHashChange, requestUniversitiesTourOpen } from "./shared/cache.js";
+import { bindGuideExternalUpdates, requestUniversitiesTourOpen } from "./shared/cache.js";
+import { sectionsInNavOrder, setupGuideSectionNavigation } from "./guide-navigation.js";
+import { bindGuideLinkPreviews } from "./guide-link-preview.js";
 
 function normalizeExamId(value) {
   return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
@@ -206,6 +205,7 @@ function renderLanguageExams(languageWrap) {
 function syncGuideSidebarOffset(page) {
   const navbar = document.querySelector(".navbar");
   const navbarHeight = navbar instanceof HTMLElement ? Math.ceil(navbar.getBoundingClientRect().height) : 72;
+  page.style.setProperty("--guide-navbar-height", `${navbarHeight}px`);
   page.style.setProperty("--guide-sidebar-offset", `calc(${navbarHeight}px + var(--layout-page-gutter))`);
 }
 
@@ -218,239 +218,12 @@ function updateGuideNavHrefs(navLinks) {
   });
 }
 
-function createSectionNavigationElements(guideContent) {
-  const sectionNavigation = document.createElement("nav");
-  const previousSectionButton = document.createElement("button");
-  const nextSectionButton = document.createElement("button");
-
-  sectionNavigation.className = "guide-section-navigation";
-  sectionNavigation.id = "guideSectionNavigation";
-  sectionNavigation.setAttribute("aria-label", t("guide.section_navigation", "Section navigation"));
-  previousSectionButton.className = "guide-section-navigation__button guide-section-navigation__button--previous";
-  previousSectionButton.type = "button";
-  previousSectionButton.innerHTML = `${heroIcon("arrow-left", "guide-section-navigation__icon", { "stroke-width": 2.5 })}<span class="guide-section-navigation__copy"><span class="guide-section-navigation__direction">${escapeHtml(t("guide.previous_section_label", "Previous section"))}</span><span class="guide-section-navigation__title"></span></span>`;
-  nextSectionButton.className = "guide-section-navigation__button guide-section-navigation__button--next";
-  nextSectionButton.type = "button";
-  nextSectionButton.innerHTML = `<span class="guide-section-navigation__copy"><span class="guide-section-navigation__direction">${escapeHtml(t("guide.next_section_label", "Next section"))}</span><span class="guide-section-navigation__title"></span></span>${heroIcon("arrow-left", "guide-section-navigation__icon", { "stroke-width": 2.5 })}`;
-  sectionNavigation.append(previousSectionButton, nextSectionButton);
-  guideContent?.appendChild(sectionNavigation);
-
-  return { sectionNavigation, previousSectionButton, nextSectionButton };
-}
-
-function setupGuideSectionNavigation({
-  page,
-  navLinks,
-  sections,
-  mobileNavToggle,
-  guideNav,
-}) {
-  const sectionById = new Map(sections.map((section) => [section.id, section]));
-  const guideLayout = page.querySelector(".guide-layout");
-  const guideContent = page.querySelector(".guide-content");
-
-  const { sectionNavigation, previousSectionButton, nextSectionButton } = createSectionNavigationElements(guideContent);
-  let activeGuideId = sections[0]?.id || "";
-
-  const previousGuideId = (id) => {
-    const currentIndex = sections.findIndex((section) => section.id === id);
-    return currentIndex > 0 ? sections[currentIndex - 1].id : "";
-  };
-
-  const nextGuideId = (id) => {
-    const currentIndex = sections.findIndex((section) => section.id === id);
-    return currentIndex >= 0 ? (sections[currentIndex + 1]?.id || "") : "";
-  };
-
-  const sectionLabel = (id) => {
-    const link = navLinks.find((item) => String(item.dataset.guideHash || item.getAttribute("href") || "").endsWith(`#${id}`));
-    return String(link?.textContent || "").trim() || id;
-  };
-
-  const closeMobileNavigation = ({ restoreFocus = false } = {}) => {
-    if (!mobileNavToggle || !guideNav) return;
-    guideNav.classList.remove("is-mobile-open");
-    mobileNavToggle.setAttribute("aria-expanded", "false");
-    if (restoreFocus) mobileNavToggle.focus();
-  };
-
-  const syncMobileNavigation = (id) => {
-    const label = sectionLabel(id);
-    if (mobileNavToggle) {
-      mobileNavToggle.setAttribute("aria-label", tFormat("guide.contents_current", { section: label }, `Contents: ${label}`));
-    }
-  };
-
-  const updateSectionNavigation = (id) => {
-    const previousId = previousGuideId(id);
-    const nextId = nextGuideId(id);
-    sectionNavigation.setAttribute("aria-label", t("guide.section_navigation", "Section navigation"));
-    previousSectionButton.querySelector(".guide-section-navigation__direction").textContent = t("guide.previous_section_label", "Previous section");
-    nextSectionButton.querySelector(".guide-section-navigation__direction").textContent = t("guide.next_section_label", "Next section");
-    previousSectionButton.hidden = !previousId;
-    previousSectionButton.dataset.sectionId = previousId;
-    nextSectionButton.hidden = !nextId;
-    nextSectionButton.dataset.sectionId = nextId;
-
-    if (previousId) {
-      previousSectionButton.querySelector(".guide-section-navigation__title").textContent = sectionLabel(previousId);
-      previousSectionButton.setAttribute("aria-label", tFormat("guide.previous_section", { section: sectionLabel(previousId) }, `Back to ${sectionLabel(previousId)}`));
-      previousSectionButton.title = tFormat("guide.previous_section", { section: sectionLabel(previousId) }, `Back to ${sectionLabel(previousId)}`);
-    } else {
-      previousSectionButton.querySelector(".guide-section-navigation__title").textContent = "";
-      previousSectionButton.removeAttribute("aria-label");
-      previousSectionButton.removeAttribute("title");
-    }
-
-    if (nextId) {
-      nextSectionButton.querySelector(".guide-section-navigation__title").textContent = sectionLabel(nextId);
-      nextSectionButton.setAttribute("aria-label", tFormat("guide.next_section", { section: sectionLabel(nextId) }, `Continue to ${sectionLabel(nextId)}`));
-      nextSectionButton.title = tFormat("guide.next_section", { section: sectionLabel(nextId) }, `Continue to ${sectionLabel(nextId)}`);
-    } else {
-      nextSectionButton.querySelector(".guide-section-navigation__title").textContent = "";
-      nextSectionButton.removeAttribute("aria-label");
-      nextSectionButton.removeAttribute("title");
-    }
-  };
-
-  const activateSection = (id, { historyMode = null, scroll = false, scrollBehavior = null } = {}) => {
-    const nextId = sectionById.has(id) ? id : (sections[0]?.id || "");
-    if (!nextId) return;
-    const targetSection = sectionById.get(nextId);
-
-    let sectionChanged = false;
-    // Sections come in from the side the reader moved toward; the first section shown stays still.
-    const previousIndex = sections.findIndex((section) => section.classList.contains("is-active"));
-    const forward = sections.findIndex((section) => section.id === nextId) > previousIndex;
-    sections.forEach((section) => {
-      const active = section.id === nextId;
-      const wasActive = section.classList.contains("is-active");
-      if (active && !wasActive) {
-        sectionChanged = true;
-      }
-      section.classList.toggle("is-active", active);
-      section.setAttribute("aria-hidden", active ? "false" : "true");
-      section.hidden = !active;
-      if (active && !wasActive && previousIndex >= 0) {
-        replayMotion(section, forward ? "motion-tab-forward" : "motion-tab-back", { timeoutMs: 320 });
-      }
-    });
-
-    navLinks.forEach((link) => {
-      const active = String(link.dataset.guideHash || link.getAttribute("href") || "").trim() === `#${nextId}`;
-      if (active) {
-        link.setAttribute("aria-current", "page");
-      } else {
-        link.removeAttribute("aria-current");
-      }
-    });
-
-    if (historyMode && sectionChanged) {
-      const url = `${window.location.pathname}${window.location.search}#${nextId}`;
-      if (historyMode === "push") {
-        history.pushState(history.state, "", url);
-      } else {
-        history.replaceState(history.state, "", url);
-      }
-    }
-    activeGuideId = nextId;
-    syncMobileNavigation(nextId);
-    updateSectionNavigation(nextId);
-
-    if (scroll && targetSection) {
-      const behavior = scrollBehavior || (prefersReducedMotion() ? "auto" : "smooth");
-      const isMobileLayout = window.innerWidth <= 1024;
-      if (isMobileLayout && guideLayout) {
-        const navbar = document.querySelector(".navbar");
-        const navHeight = navbar instanceof HTMLElement ? Math.ceil(navbar.getBoundingClientRect().height) : 70;
-        const top = Math.max(0, guideLayout.getBoundingClientRect().top + window.scrollY - navHeight - 12);
-        window.scrollTo({ top, left: 0, behavior });
-      } else if (historyMode === "push") {
-        window.scrollTo({ top: 0, left: 0, behavior });
-      }
-    }
-  };
-
-  const moveToSection = (id, historyMode = "replace") => {
-    const targetId = String(id || "").trim();
-    if (!sectionById.has(targetId)) return;
-    activateSection(targetId, { historyMode, scroll: true });
-    window.requestAnimationFrame(() => {
-      const heading = sectionById.get(targetId)?.querySelector("h2");
-      if (heading instanceof HTMLElement) {
-        heading.tabIndex = -1;
-        heading.focus({ preventScroll: true });
-      }
-    });
-  };
-
-  const isGuideSectionHash = (hash) => sectionById.has(String(hash || "").replace("#", ""));
-
-  // Event Listeners
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      const targetId = String(link.dataset.guideHash || link.getAttribute("href") || "").replace("#", "");
-      closeMobileNavigation();
-      activateSection(targetId, {
-        historyMode: "replace",
-        scroll: true,
-      });
-    });
-  });
-
-  guideContent?.addEventListener("click", (event) => {
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    const link = event.target.closest('.guide-doc a[href^="guide.html#guide-"]');
-    if (!link || !isGuideSectionHash(link.hash)) return;
-    event.preventDefault();
-    closeMobileNavigation();
-    moveToSection(link.hash.slice(1), "push");
-  });
-
-  mobileNavToggle?.addEventListener("click", () => {
-    if (!guideNav) return;
-    const expanded = mobileNavToggle.getAttribute("aria-expanded") === "true";
-    guideNav.classList.toggle("is-mobile-open", !expanded);
-    mobileNavToggle.setAttribute("aria-expanded", expanded ? "false" : "true");
-  });
-
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && mobileNavToggle?.getAttribute("aria-expanded") === "true") {
-      closeMobileNavigation({ restoreFocus: true });
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 1024) closeMobileNavigation();
-  });
-
-  previousSectionButton.addEventListener("click", () => moveToSection(previousSectionButton.dataset.sectionId));
-  nextSectionButton.addEventListener("click", () => moveToSection(nextSectionButton.dataset.sectionId));
-
-  bindGuideHashChange(() => {
-    const hash = String(window.location.hash || "");
-    if (hash && !isGuideSectionHash(hash)) return;
-    activateSection(hash.replace("#", ""), {
-      scroll: true,
-    });
-  });
-
-  return {
-    activateSection,
-    getActiveGuideId: () => activeGuideId,
-    updateSectionNavigation,
-    sectionById,
-  };
-}
-
 export function initGuidePage() {
   const page = document.getElementById("guidePage");
   if (!page) return;
 
   const navLinks = Array.from(page.querySelectorAll(".guide-nav a[href^='#guide-']"));
-  const sections = Array.from(page.querySelectorAll(".guide-section[id]"));
-  const mobileNavToggle = document.getElementById("guideMobileNavToggle");
+  const sections = sectionsInNavOrder(Array.from(page.querySelectorAll(".guide-section[id]")), navLinks);
   const guideNav = document.getElementById("guideNav");
   const backLink = page.querySelector(".guide-back");
   const launchTourBtn = document.getElementById("guideLaunchTourBtn");
@@ -488,22 +261,28 @@ export function initGuidePage() {
     page,
     navLinks,
     sections,
-    mobileNavToggle,
     guideNav,
   });
 
   syncGuideSidebarOffset(page);
   updateGuideNavHrefs(navLinks);
   renderAll();
+  const linkPreviews = bindGuideLinkPreviews({
+    page,
+    guideContent: page.querySelector(".guide-content"),
+    resolveTarget: navControl.resolveTarget,
+    groupLabel: navControl.groupLabel,
+  });
 
   const initialHash = String(window.location.hash || "").replace("#", "");
-  navControl.activateSection(
-    navControl.sectionById.has(initialHash) ? initialHash : (sections[0]?.id || "guide-unifit"),
-    { scroll: false }
-  );
+  const initialTarget = navControl.resolveTarget(initialHash);
 
   setManualScrollRestoration();
   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  navControl.activateSection(
+    initialTarget?.sectionId || sections[0]?.id || "guide-unifit",
+    { scroll: Boolean(initialTarget?.anchor), scrollBehavior: "instant", view: initialTarget ? "section" : "hub", anchor: initialTarget?.anchor || null }
+  );
 
   window.addEventListener("resize", () => {
     syncGuideSidebarOffset(page);
@@ -513,6 +292,7 @@ export function initGuidePage() {
     syncGuideSidebarOffset(page);
     updateGuideNavHrefs(navLinks);
     renderAll();
-    navControl.updateSectionNavigation(navControl.getActiveGuideId());
+    navControl.refreshLabels();
+    linkPreviews.refresh();
   });
 }

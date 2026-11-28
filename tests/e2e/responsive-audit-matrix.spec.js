@@ -281,8 +281,8 @@ test.describe("Responsive Audit Matrix", () => {
 
     const targets = [
       { url: `/compare.html?lang=rus&ids=${MIT_ID},${STANFORD_ID}`, ready: "[data-reviewed-comparison] .compare-reviewed__head" },
-      { url: "/profile.html?lang=rus", ready: "#saveProfileBtn" },
-      { url: "/profile.html?lang=kaz", ready: "#saveProfileBtn" },
+      { url: "/profile.html?lang=rus", ready: "[data-profile-tab]" },
+      { url: "/profile.html?lang=kaz", ready: "[data-profile-tab]" },
       { url: "/guide.html?lang=rus", ready: "main" },
       { url: "/about.html?lang=rus", ready: "main" },
       { url: "/privacy.html?lang=rus", ready: "main" },

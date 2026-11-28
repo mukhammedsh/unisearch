@@ -9,6 +9,7 @@ async function openScores(page) {
   await page.waitForFunction(() => !!window.__unisearchProfileDraft);
   await openProfileTab(page, "scores");
   await page.waitForFunction(() => document.getElementById("examNameSelect")?.options.length > 1);
+  await openProfileTab(page, "scores");
   await expectNoStackedGapMargins(page, ".profile-main-content");
 }
 

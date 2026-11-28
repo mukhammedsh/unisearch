@@ -4,6 +4,7 @@ import { loadProfile, loadProfileForApi } from "../../utils.js";
 import { getCurrentLanguage } from "../../i18n.js";
 import { convert, getFilterLimits, getPreferredCurrency } from "../../currency.js";
 import { hasProfileForRanking } from "../../components/profile/profile-utils.js";
+import { numberLocale } from "../../utils/format.js";
 import {
     MAX_COMPARE_UNIVERSITIES,
     fundingPreferenceToQueryValue,
@@ -55,6 +56,27 @@ export function clampTuition(value, limits, fallback = 0) {
     const n = Number(value);
     if (!Number.isFinite(n)) return fallback;
     return Math.max(limits.min, Math.min(limits.max, Math.round(n)));
+}
+
+/**
+ * Show a whole tuition amount in a price field with the interface language's digit grouping ("46 000 000").
+ * @param {unknown} value
+ * @returns {string} an empty string when the value is not a number
+ */
+export function formatTuitionInput(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return "";
+    return new Intl.NumberFormat(numberLocale(), { maximumFractionDigits: 0 }).format(Math.round(n));
+}
+
+/**
+ * Read a whole tuition amount typed into a price field, ignoring digit-group separators.
+ * @param {unknown} text
+ * @returns {number} NaN when the field is empty or holds anything but digits
+ */
+export function parseTuitionInput(text) {
+    const digits = String(text ?? "").replace(/[\s,.'\u00a0\u202f]/g, "");
+    return /^\d+$/.test(digits) ? Number(digits) : Number.NaN;
 }
 
 /**

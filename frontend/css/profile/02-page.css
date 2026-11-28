@@ -1,8 +1,7 @@
 /* ==========================================================================
    UniSearch Applicant Profile Stylesheet
    Direction: Calm Academic Workspace / Notion-Linear Clarity
-  Layout: guided single page. Outline (left), sections (centre),
-   sticky action bar at the bottom. Every section is always visible.
+   Layout: section overview and focused editor.
    ========================================================================== */
 
 body[data-page="profile"] {
@@ -14,16 +13,11 @@ body[data-page="profile"] {
 }
 
 .profile-page {
-  position: relative;
   flex: 1 0 auto;
   width: 100%;
   max-width: 1000px;
-  margin: auto;
-  padding: var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  justify-content: center;
+  margin-inline: auto;
+  padding: var(--space-6) var(--layout-page-gutter);
   box-sizing: border-box;
 }
 
@@ -33,72 +27,28 @@ body[data-page="profile"] {
 .profile-shell {
   border-radius: var(--radius-xl);
   background: var(--surface-solid);
-  padding: var(--space-8) var(--space-4) 0 var(--space-8);
+  padding: var(--space-8);
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
   box-shadow: none;
-  overflow: clip;
   isolation: isolate;
   width: 100%;
   box-sizing: border-box;
-  height: calc(100dvh - var(--nav-height) - var(--space-12) - 40px - var(--space-3));
-  min-height: 0;
 }
 
 /* --------------------------------------------------------------------------
    Profile Page Header
    -------------------------------------------------------------------------- */
 .profile-page-header {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.profile-back-icon {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: center;
-  align-self: flex-start;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full);
-  background: var(--surface-control-on-bg);
-  color: var(--text);
-  box-shadow: var(--shadow-xs);
-  cursor: pointer;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
+  gap: var(--space-2) var(--space-3);
 }
 
-.profile-back-icon:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-@media (min-width: 1120px) {
-  .profile-back-icon {
-    position: absolute;
-    right: calc(100% - var(--space-3));
-    top: var(--space-12);
-  }
-
-  .profile-shell {
-    height: calc(100dvh - var(--nav-height) - var(--space-12));
-  }
-}
-
-@media (hover: hover) {
-  .profile-back-icon:hover:not(:active) {
-    background: var(--interaction-hover-surface);
-    color: var(--interaction-hover-text);
-  }
-}
-
-.profile-back-icon:active {
-  background: var(--interaction-press-surface);
-  color: var(--text);
+.profile-section-back {
+  display: none;
 }
 
 .profile-page-title {
@@ -110,6 +60,7 @@ body[data-page="profile"] {
 }
 
 .profile-page-intro {
+  grid-column: 1 / -1;
   max-width: 68ch;
   margin: 0;
   color: var(--text-muted);
@@ -129,41 +80,24 @@ body[data-page="profile"] {
 }
 
 /* --------------------------------------------------------------------------
-   Workspace Layout: outline and sections; phones show the guide link above the form.
+   Workspace Layout
    -------------------------------------------------------------------------- */
 .profile-workspace-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas:
-    "outline"
-    "main";
   gap: var(--space-8);
   align-items: start;
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  padding-right: var(--space-4);
-  scrollbar-width: thin;
-  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-  overscroll-behavior: contain;
-  scroll-padding-block: var(--space-4);
 }
 
-.profile-outline {
-  grid-area: outline;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.profile-overview {
+  min-inline-size: 0;
 }
 
 .profile-main-content {
-  grid-area: main;
   min-width: 0;
-  /* --------------------------------------------------------------------------
-   Sections: title > field label > hint, one padding layer per section
-   -------------------------------------------------------------------------- */
   display: flex;
   flex-direction: column;
+  gap: var(--space-4);
 }
 
 /* --------------------------------------------------------------------------
@@ -173,39 +107,35 @@ body[data-page="profile"] {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: none;
-  flex-direction: column;
-  gap: var(--space-1);
+  display: grid;
 }
 
-@media (min-width: 769px) {
+/* The language and exam editors need room alongside the section list. */
+@media (min-width: 901px) {
   .profile-workspace-layout {
-    grid-template-columns: 184px minmax(0, 1fr);
-    grid-template-areas:
-      "outline main";
-    column-gap: var(--space-8);
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 2.4fr);
   }
+}
 
-  .profile-outline {
+@media (min-width: 901px) and (min-height: 680px) {
+  .profile-overview {
     position: sticky;
-    top: 0;
-    align-self: start;
-  }
-
-  .profile-outline__list {
-    display: flex;
+    top: calc(var(--nav-height) + var(--space-4));
   }
 }
 
 .profile-section-tab {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: var(--space-3);
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
   width: 100%;
-  padding: var(--space-2) var(--space-3);
+  min-block-size: 52px;
+  padding: var(--space-3);
   border-radius: var(--radius-md);
   background: transparent;
-  color: var(--text-muted);
+  color: var(--text);
   font-family: inherit;
   font-size: var(--text-base);
   font-weight: var(--font-weight-medium);
@@ -223,21 +153,18 @@ body[data-page="profile"] {
   cursor: default;
 }
 
-.profile-outline__marker {
-  flex: 0 0 auto;
-  width: var(--space-2);
-  height: var(--space-2);
-  border-radius: var(--radius-full);
-  background: var(--line-strong);
+.profile-outline__status {
+  grid-column: 1;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+  overflow-wrap: anywhere;
 }
 
-.profile-section-tab[data-filled="true"] .profile-outline__marker {
-  background: var(--accent);
-}
-
-.profile-outline__label {
-  min-width: 0;
-  overflow-wrap: break-word;
+.profile-outline__arrow {
+  grid-area: 1 / 2 / span 2;
+  display: inline-flex;
+  color: var(--text-muted);
 }
 
 .profile-body {
@@ -249,16 +176,6 @@ body[data-page="profile"] {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  padding-block: var(--space-8);
-}
-
-.profile-section-panel:first-child {
-  padding-top: 0;
-}
-
-.profile-section-panel + .profile-section-panel,
-.profile-section-panel + .profile-reset-row {
-  border-top: 1px solid var(--line-faint);
 }
 
 .profile-section-head {
@@ -304,6 +221,14 @@ body[data-page="profile"] {
   font-size: var(--text-sm);
 }
 
+.profile-guide-link {
+  display: inline-block;
+  padding-block: var(--space-0-5);
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: var(--space-0-5);
+}
+
 .profile-hint.is-warning {
   color: var(--color-warning);
   font-weight: var(--font-weight-medium);
@@ -343,42 +268,31 @@ body[data-page="profile"] {
   line-height: var(--leading-tight);
 }
 
-/* Reset sits at the end of the page, after every section. */
 .profile-reset-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
   padding-top: var(--space-6);
-  padding-bottom: var(--space-8);
 }
 
 .profile-reset-row .profile-hint {
   margin: 0;
-  max-width: 56ch;
 }
 
-.profile-delete.profile-delete--danger-soft {
-  background: var(--color-danger-bg);
+.profile-reset-link {
+  min-block-size: 44px;
+  padding-inline: 0;
   color: var(--color-danger);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
-  height: 38px;
-  padding: 0 var(--space-4);
-  border-radius: var(--radius-md);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  font-family: inherit;
-  transition:
-    background-color var(--motion-fast) var(--motion-ease-standard),
-    color var(--motion-fast) var(--motion-ease-standard);
 }
 
-.profile-guide-link,
+@media (hover: hover) {
+  .profile-reset-link:hover:not(:disabled) {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
+}
+
 .profile-inline-link {
   display: inline-flex;
   align-items: center;
@@ -390,26 +304,19 @@ body[data-page="profile"] {
   text-decoration: underline;
   text-underline-offset: var(--space-1);
   transition: color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.profile-guide-link {
-  font-weight: normal;
-}
-
-:is(.profile-guide-link, .profile-inline-link):active {
-  color: var(--interaction-active-text);
-  text-decoration-thickness: 2px;
-}
-
-:is(.profile-guide-link, .profile-inline-link):focus-visible {
-  border-radius: var(--radius-xs);
-}
-
-.profile-inline-link {
   padding: 0;
   background: none;
   text-align: start;
   cursor: pointer;
+}
+
+.profile-inline-link:active {
+  color: var(--interaction-active-text);
+  text-decoration-thickness: 2px;
+}
+
+.profile-inline-link:focus-visible {
+  border-radius: var(--radius-xs);
 }
 
 /* --------------------------------------------------------------------------
@@ -1036,34 +943,15 @@ textarea.profile-input,
   flex-shrink: 0;
 }
 
-html:has(body[data-page="profile"]) {
-  scroll-padding-bottom: var(--space-24);
-}
-
 /* --------------------------------------------------------------------------
-   Sticky Action Bar (bottom of the viewport while the page is scrolled)
+   Action Bar
    -------------------------------------------------------------------------- */
 .profile-action-bar {
-  position: sticky;
-  bottom: 0;
-  /* Above a section lifted to --z-nav while its dropdown is open (see :has(.custom-select-wrapper.open)). */
-  z-index: calc(var(--z-nav) + 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: var(--space-4);
-  padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
-  background: var(--surface);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-sticky-top);
-  border-top: 1px solid var(--line);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.profile-status-wrap {
-  display: flex;
-  align-items: center;
-  min-width: 0;
 }
 
 .profile-save-state {
@@ -1083,12 +971,6 @@ html:has(body[data-page="profile"]) {
 .profile-save-state.motion-state-pulse {
   display: inline-flex;
   border-radius: var(--radius-sm);
-}
-
-.profile-action-buttons {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
 }
 
 /* --------------------------------------------------------------------------
@@ -1170,6 +1052,8 @@ html:has(body[data-page="profile"]) {
   flex-direction: column;
   gap: var(--space-4);
   max-width: 440px;
+  max-height: calc(100% - var(--space-6));
+  overflow-y: auto;
   width: 90%;
   box-shadow: var(--shadow-md);
 }
@@ -1224,7 +1108,6 @@ html:has(body[data-page="profile"]) {
     .profile-shell .custom-select-trigger:not(:disabled),
     .profile-list-actions > button,
     .profile-add--secondary:not(:disabled),
-    .profile-action-btn--subtle:not(:disabled),
     .profile-button-subtle,
     .profile-admission-evidence > summary
   ):hover:not(:active),
@@ -1233,7 +1116,7 @@ html:has(body[data-page="profile"]) {
     color: var(--interaction-hover-text);
   }
 
-  :is(.profile-guide-link, .profile-inline-link):hover {
+  .profile-inline-link:hover {
     color: var(--accent-text);
   }
 
@@ -1324,7 +1207,6 @@ html:has(body[data-page="profile"]) {
    Reduced Motion
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .profile-back-icon,
   .profile-save-state,
   .profile-section-tab,
   .profile-card-block,
@@ -1332,7 +1214,6 @@ html:has(body[data-page="profile"]) {
   .profile-add--secondary,
   .profile-delete,
   .profile-delete--danger,
-  .profile-delete--danger-soft,
   .profile-exam-item,
   .lang-item,
   .profile-input,
@@ -1366,7 +1247,6 @@ html:has(body[data-page="profile"]) {
     height: 38px;
   }
 
-  .profile-guide-link,
   .profile-inline-link {
     min-height: 40px;
   }
@@ -1386,51 +1266,10 @@ html:has(body[data-page="profile"]) {
     min-height: 40px;
   }
 
-  .profile-page {
-    padding: 0 var(--space-3);
-    margin: var(--space-3) auto;
-    justify-content: flex-start;
-  }
-
   .profile-shell {
-    padding: var(--space-5) var(--space-2) 0 var(--space-4);
+    padding: var(--space-5);
     border-radius: var(--radius-lg);
     gap: var(--space-5);
-    height: calc(100dvh - var(--nav-height) - var(--space-6) - 40px - var(--space-3));
-  }
-
-  .profile-workspace-layout {
-    gap: var(--space-6);
-    padding-right: var(--space-2);
-  }
-
-  .profile-section-panel {
-    padding-block: var(--space-6);
-  }
-
-  .profile-reset-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding-bottom: var(--space-6);
-  }
-
-  /* Two rows on phones: status + Back, then the full-width primary Save action. */
-  .profile-action-bar {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    gap: var(--space-2);
-    padding-top: var(--space-2);
-  }
-
-  .profile-action-buttons {
-    display: contents;
-  }
-
-  .profile-action-btn--primary {
-    grid-column: 1 / -1;
-    width: 100%;
   }
 
   .profile-section-fields {
@@ -1477,6 +1316,10 @@ html:has(body[data-page="profile"]) {
 }
 
 @media (max-width: 640px) {
+  .profile-action-bar > .ui-btn {
+    inline-size: 100%;
+  }
+
   .profile-input,
   .profile-add,
   .profile-delete {
@@ -1499,15 +1342,21 @@ html:has(body[data-page="profile"]) {
 }
 
 @media (max-width: 480px) {
+  body[data-page="profile"] {
+    background: var(--surface-solid);
+  }
+
   .profile-page {
-    padding-inline: 0;
-    margin-block: 0;
+    padding: 0;
   }
 
   .profile-shell {
-    padding-inline: var(--space-3);
+    padding: var(--space-5) var(--layout-page-gutter) calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
     border-radius: 0;
-    height: calc(100dvh - var(--nav-height));
+  }
+
+  .profile-field > :is(.profile-input--select, .custom-select-wrapper) {
+    max-width: none;
   }
 
   .lang-control-item {
@@ -1545,8 +1394,44 @@ html:has(body[data-page="profile"]) {
   }
 }
 
-/* Profile keeps a sticky bottom action bar, so toasts sit below the navbar instead of covering Save/Back. */
+/* Keep toasts below the navbar and clear of the profile actions. */
 body[data-page="profile"] .toast-container {
   top: calc(var(--nav-height) + var(--space-4));
   bottom: auto;
+}
+
+@media (max-width: 900px) {
+  .profile-shell[data-profile-view="overview"] .profile-main-content,
+  .profile-shell[data-profile-view="editor"] :is(.profile-overview, .profile-page-header),
+  body[data-page="profile"]:has(.profile-shell[data-profile-view="editor"]) > .navbar {
+    display: none;
+  }
+
+  body[data-page="profile"]:has(.profile-shell[data-profile-view="editor"]) {
+    padding-top: 0;
+  }
+
+  body[data-page="profile"]:has(.profile-shell[data-profile-view="editor"]) .toast-container {
+    top: var(--space-4);
+  }
+
+  .profile-section-back {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--space-1);
+    min-block-size: var(--control-height-lg);
+    padding: 0 var(--space-2);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .profile-outline__list > li + li {
+    border-top: 1px solid var(--line-faint);
+  }
+
+  .profile-section-tab {
+    padding-inline: 0;
+  }
 }

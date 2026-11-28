@@ -3,6 +3,7 @@ const path = require("node:path");
 const AxePackage = require("@axe-core/playwright");
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
+const { openProfileTab } = require("./helpers/selectors");
 
 const AxeBuilder = AxePackage.default || AxePackage.AxeBuilder || AxePackage;
 const SHOWCASE_HTML = fs.readFileSync(
@@ -163,9 +164,10 @@ test("live inputs across catalog, profile, university, and compare picker share 
 
   await page.goto("/profile.html");
   await expect(page.locator(".profile-shell")).toBeVisible();
+  await openProfileTab(page, "preferences");
   const profileCheck = await page.evaluate(() => {
     const budgetComposite = document.querySelector("#budgetInput").closest(".ui-input-composite");
-    const selectTrigger = document.querySelector(".profile-shell .custom-select-trigger");
+    const selectTrigger = document.querySelector("#profileSectionBudget .custom-select-trigger");
     return {
       budget: {
         height: Math.round(budgetComposite.getBoundingClientRect().height),

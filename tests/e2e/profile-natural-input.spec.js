@@ -12,7 +12,10 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
+  await openProfileTab(page, "preferences");
   await page.fill(selectors.budgetInput, "23000");
+  await setNativeSelect(page, "profileFundingTypeSelect", "grant");
+  await page.click(selectors.saveProfileBtn);
 
   await openProfileTab(page, "scores");
   await page.fill(selectors.gpaInput, "3.8");
@@ -32,12 +35,10 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await page.click(selectors.addExamBtn);
   expect((await examValidateResponse).status()).toBe(200);
   await expect(page.locator(selectors.examList)).toContainText("ACT");
+  await page.click(selectors.saveProfileBtn);
 
   await openProfileTab(page, "basics");
   await setNativeSelect(page, "studyModeSelect", "On-campus");
-  await setNativeSelect(page, "profileFundingTypeSelect", "grant");
-
-  await openProfileTab(page, "preferences");
   await setNativeSelect(page, "profileMajorSelect", "Computer Science");
 
   const naturalInterestText =
@@ -55,6 +56,6 @@ test("profile accepts realistic user input and persists after reload", async ({ 
   await openProfileTab(page, "scores");
   await expect(page.locator(selectors.gpaInput)).toHaveValue("3.8");
   await expect(page.locator(selectors.examList)).toContainText("ACT");
-  await openProfileTab(page, "preferences");
+  await openProfileTab(page, "basics");
   await expect(page.locator(selectors.interestsInput)).toHaveValue(naturalInterestText);
 });

@@ -12,9 +12,8 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-  await page.fill(selectors.budgetInput, "27890");
   await openProfileTab(page, "preferences");
-  await page.fill(selectors.interestsInput, "AI and robotics labs in big cities");
+  await page.fill(selectors.budgetInput, "27890");
   await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
 
   await page.evaluate(() => {
@@ -28,8 +27,8 @@ test("language switch keeps unsaved profile draft", async ({ page }) => {
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
   await expect(page.locator(selectors.budgetInput)).toHaveValue("27890");
-  await openProfileTab(page, "preferences");
-  await expect(page.locator(selectors.interestsInput)).toHaveValue("AI and robotics labs in big cities");
+  await expect(page.locator('[data-profile-section="preferences"]')).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("lang", "ru");
   await expect(page.locator(selectors.saveProfileBtn)).toBeEnabled();
 });
 
@@ -45,6 +44,6 @@ test("profile major options are localized on initial russian load", async ({ pag
   await page.click(selectors.profileBtn);
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
-  await openProfileTab(page, "preferences");
+  await openProfileTab(page, "basics");
   await expect(page.locator(`${selectors.majorSelect} option[value="Computer Science"]`)).toHaveText("Компьютерные науки");
 });

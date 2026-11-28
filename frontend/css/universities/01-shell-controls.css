@@ -67,7 +67,32 @@ body[data-page="universities"] {
   margin: 0 auto var(--space-5);
   padding: 0 var(--layout-page-gutter);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+}
+
+/* One-tap shortcuts for the most common filters; on wide screens the filter panel is always visible instead. */
+.u-quick-filters {
+  flex: 1 0 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.u-quick-filters[hidden] {
+  display: none;
+}
+
+.u-quick-filter {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+@media (min-width: 1025px) {
+  .u-quick-filters {
+    display: none;
+  }
 }
 
 .u-section-bar:has(.ui-tooltip-wrap:is(.is-open, .is-closed, .is-closing, :not(.is-closed):hover, :not(.is-closed):focus-within)) {

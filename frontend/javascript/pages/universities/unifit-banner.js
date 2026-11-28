@@ -7,7 +7,7 @@ import {
 } from "../../utils.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { formatMoney } from "../../currency.js";
-import { routeProfile } from "../../routes.js";
+import { routeGuideSection, routeProfile } from "../../routes.js";
 import { translateProgramName } from "../../university-translations.js";
 import { cleanDecoratedText } from "../_shared.js";
 import { describeRankingProfile, summarizeRankingProfile } from "./unifit-explanation.js";
@@ -63,6 +63,7 @@ export function createUnifitBannerController({ el, state }) {
                 ? tFormat("universities.ux2.banner.tooltip_profile", { values: parts.join(" · ") })
                 : "";
         }
+        if (el.unifitGuideLink) el.unifitGuideLink.href = routeGuideSection("guide-unifit");
         if (el.unifitBannerEdit) {
             el.unifitBannerEdit.hidden = hasRankingProfile;
             if (!hasRankingProfile) {

@@ -26,25 +26,72 @@ test.describe("guide navigation", () => {
     await expect(page.locator(".guide-content")).toBeVisible();
   });
 
-  test("uses a compact, labelled contents disclosure on mobile", async ({ page }) => {
+  test("opens topics from a list on mobile and switches them from the contents sheet", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
 
+    const nav = page.locator("#guideNav");
+    const sheet = page.locator("#guideNavSheet");
     const contents = page.locator("#guideMobileNavToggle");
-    await expect(contents).toBeVisible();
-    await expect(contents).toHaveAttribute("aria-expanded", "false");
-    await expect(contents).toContainText("Contents");
-    await expect(contents).not.toContainText("Getting started");
-    await expect(page.locator("#guideNav")).toBeHidden();
-
-    await contents.click();
-    await expect(contents).toHaveAttribute("aria-expanded", "true");
-    await expect(page.locator("#guideNav")).toBeVisible();
+    await expect(nav).toBeVisible();
+    await expect(page.locator(".guide-content")).toBeHidden();
+    await expect(page.locator("#guideSectionBar")).toBeHidden();
     await expect(page.locator('[data-guide-group="unifit"] .guide-nav-title')).toHaveText("Discovery & comparison");
 
     await page.locator('.guide-nav a[href$="#guide-tags"]').click();
+    await expect(page).toHaveURL(/#guide-tags$/);
     await expect(page.locator("#guide-tags.is-active")).toBeVisible();
+    await expect(page.locator("#guide-tags h2")).toBeFocused();
+    await expect(nav).toBeHidden();
+    await expect(page.locator("#guideSectionBarTitle")).toHaveText("Catalog badges");
+    await expect(page.locator("#guideSectionBarGroup")).toHaveText("Discovery & comparison");
+    await expect(contents).toHaveAttribute("aria-label", "Contents: Catalog badges");
+
+    await contents.click();
+    await expect(sheet).toBeVisible();
+    await expect(contents).toHaveAttribute("aria-expanded", "true");
+    await expect(sheet.locator('a[aria-current="page"]')).toHaveAttribute("href", /#guide-tags$/);
+    await sheet.locator('a[href$="#guide-glossary"]').click();
+    await expect(sheet).toBeHidden();
     await expect(contents).toHaveAttribute("aria-expanded", "false");
-    await expect(contents).not.toContainText("Tags");
+    await expect(page.locator("#guide-glossary.is-active")).toBeVisible();
+    await expect(page.locator("#guide-glossary h2")).toBeFocused();
+
+    await page.locator("#guideHubLink").click();
+    await expect(page).toHaveURL(/\/guide(\.html)?$/);
+    await expect(nav).toBeVisible();
+    await expect(page.locator(".guide-content")).toBeHidden();
+
+    await page.locator('.guide-nav a[href$="#guide-comparison"]').click();
+    await expect(page.locator("#guide-comparison.is-active")).toBeVisible();
+    await page.goBack();
+    await expect(nav).toBeVisible();
+    await expect(page.locator("#guide-comparison")).toBeHidden();
+  });
+
+  test("returns to the topic list on mobile after following a link inside an article", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('.guide-nav a[href$="#guide-tags"]').click();
+    await page.locator("#guide-tags").getByRole("link", { name: "UniFit", exact: true }).first().click();
+    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+
+    await page.locator("#guideHubLink").click();
+    await expect(page).toHaveURL(/\/guide(\.html)?$/);
+    await expect(page.locator("#guideNav")).toBeVisible();
+    await expect(page.locator(".guide-content")).toBeHidden();
+  });
+
+  test("closes the contents sheet with Escape on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/guide.html#guide-ml");
+    await page.waitForSelector("#guidePage");
+    const contents = page.locator("#guideMobileNavToggle");
+    await contents.click();
+    await expect(page.locator("#guideNavSheet")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.locator("#guideNavSheet")).toBeHidden();
+    await expect(contents).toHaveAttribute("aria-expanded", "false");
+    await expect(contents).toBeFocused();
+    await expect(page.locator("#guide-ml.is-active")).toBeVisible();
   });
 
   test("moves between neighbouring articles with previous and next buttons", async ({ page }) => {
@@ -108,11 +155,14 @@ test.describe("guide navigation", () => {
     await expect(page.locator("#guide-start.is-active")).toBeVisible();
 
     await page.setViewportSize({ width: 390, height: 844 });
+    await page.locator('.guide-nav a[href$="#guide-tags"]').click();
     const contents = page.locator("#guideMobileNavToggle");
     await contents.click();
     await expect(contents).toHaveAttribute("aria-expanded", "true");
     await page.setViewportSize({ width: 1280, height: 844 });
     await expect(contents).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator(".guide-sidebar #guideNav")).toBeVisible();
+    await expect(page.locator("#guide-tags.is-active")).toBeVisible();
     await page.evaluate(() => window.dispatchEvent(new Event("examConfigLoaded")));
     await expect(page.locator("#guideAcademicExams")).not.toBeEmpty();
   });
@@ -147,4 +197,59 @@ test.describe("Guide article links", () => {
       await expect(uniFit).toBeHidden();
     });
   }
+});
+
+test.describe("Guide subsections and link previews", () => {
+  test("opens a subsection from a deep link and from a link inside an article", async ({ page }) => {
+    await page.goto("/guide.html#guide-unifit-budget");
+    await page.waitForSelector("#guidePage");
+    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+    await expect(page.locator("#guide-unifit-budget")).toBeInViewport();
+    await expect(page.locator('#guideNav a[aria-current="page"]')).toHaveAttribute("href", /#guide-unifit$/);
+
+    await page.goto("/guide.html#guide-tags");
+    await page.locator('#guide-tags a[href$="#guide-unifit-missing-results"]').click();
+    await expect(page).toHaveURL(/#guide-unifit-missing-results$/);
+    await expect(page.locator("#guide-unifit-missing-results")).toBeFocused();
+    await expect(page.locator("#guide-unifit-missing-results")).toBeInViewport();
+    await page.goBack();
+    await expect(page).toHaveURL(/#guide-tags$/);
+    await expect(page.locator("#guide-tags.is-active")).toBeVisible();
+  });
+
+  test("previews the linked article on hover and keyboard focus", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/guide.html#guide-tags");
+    await page.waitForSelector("#guidePage");
+    const link = page.locator('#guide-tags a[href$="#guide-unifit-budget"]');
+    const preview = page.locator("#guidePreview-guide-unifit-budget");
+    await expect(link).toHaveAttribute("aria-describedby", "guidePreview-guide-unifit-budget");
+    await expect(preview).toBeHidden();
+
+    await link.hover();
+    await expect(preview).toBeVisible();
+    await expect(preview.locator(".guide-link-preview__title")).toHaveText("Annual budget");
+    await expect(preview.locator(".guide-link-preview__eyebrow")).toContainText("UniFit");
+    await expect(preview.locator(".guide-link-preview__text")).not.toBeEmpty();
+    await page.mouse.move(5, 5);
+    await expect(preview).toBeHidden();
+
+    await link.focus();
+    await page.keyboard.press("Shift+Tab");
+    await page.keyboard.press("Tab");
+    await expect(preview).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(preview).toBeHidden();
+  });
+
+  test("links from the profile open the matching Guide article", async ({ page }) => {
+    await page.goto("/profile.html");
+    const link = page.locator('.profile-guide-link[href*="#guide-unifit-budget"]');
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute("href");
+    await page.goto(href);
+    await page.waitForSelector("#guidePage");
+    await expect(page.locator("#guide-unifit.is-active")).toBeVisible();
+    await expect(page.locator("#guide-unifit-budget")).toBeInViewport();
+  });
 });

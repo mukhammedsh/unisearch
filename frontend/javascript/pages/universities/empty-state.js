@@ -56,7 +56,7 @@ export function describeActiveFilters(filters, limits, deps) {
     labels.push(tFormat("universities.empty.filter.funding", { value: fundingLabel }, `funding in your profile: ${fundingLabel}`));
   }
   if (filters.only_reviewed) {
-    labels.push(t("universities.filter.reviewed_only", "Detailed admissions data"));
+    labels.push(t("universities.filter.reviewed_only", "Detailed admission terms"));
   }
 
   const min = Number(filters.min_tuition);

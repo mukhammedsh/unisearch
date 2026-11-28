@@ -12,6 +12,7 @@ import { loadStaticCatalog } from "../../utils/static-snapshot.js";
 import { escapeHtml, escapeHtmlAttr } from "../../utils/format.js";
 import { getCurrentLanguage, t, tFormat } from "../../i18n.js";
 import { heroIcon } from "../../icons.js";
+import { enableDialogLightDismissFallback } from "../../components/dialog-light-dismiss.js";
 import { navigateToAppRoute, routeCompareSelection, routeUniversityDetail } from "../../routes.js";
 import { COMPARE_UNIVERSITIES_KEY, fetchUniversityDetailCached, formatUiNumber, safeUrl, shouldOpenUniversitiesInNewTab, toFiniteNumber, trFactSource, writeIdListStorage } from "../_shared.js";
 import { compareCampusHtml, compareLocationText, compareRankText, compareUniversityName, fetchCompareAdmissionContext, fetchCompareStudyOptions, soleCompatibleRoute } from "./compare-helpers.js";
@@ -477,15 +478,7 @@ function createPickerDialog({ labelledBy, trigger, onClose } = {}) {
   dialog.className = "compare-picker motion-top-layer";
   dialog.setAttribute("closedby", "any");
   dialog.setAttribute("aria-labelledby", labelledBy);
-  if (!("closedBy" in HTMLDialogElement.prototype)) {
-    const outsideDialog = (e) => {
-      const rect = dialog.getBoundingClientRect();
-      return e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom;
-    };
-    let pressedOutside = false;
-    dialog.addEventListener("pointerdown", (e) => { pressedOutside = outsideDialog(e); });
-    dialog.addEventListener("pointerup", (e) => { if (pressedOutside && outsideDialog(e)) dialog.close(); });
-  }
+  enableDialogLightDismissFallback(dialog);
   dialog.addEventListener("close", () => {
     onClose?.();
     removeAfterExitTransition(dialog);

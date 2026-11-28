@@ -1,8 +1,8 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
-const { setNativeSelect } = require("./helpers/selectors");
+const { openProfileTab, setNativeSelect } = require("./helpers/selectors");
 const { mockAllExpensiveEndpoints } = require("./helpers/mocks");
 
-for (const width of [320, 390, 768, 900, 1440]) {
+for (const width of [320, 390, 768, 900, 901, 1440]) {
   for (const language of ["eng", "rus", "kaz"]) {
     test(`profile spacing at ${width}px in ${language}`, async ({ page }, testInfo) => {
       await page.setViewportSize({ width, height: 1000 });
@@ -60,6 +60,9 @@ for (const width of [320, 390, 768, 900, 1440]) {
       };
 
       await checkLayout();
+      await openProfileTab(page, "preferences");
+      await checkLayout();
+      await openProfileTab(page, "specific");
       await setNativeSelect(page, "languageEvidenceKind", "education");
       const kind = page.locator("#languageEvidenceKind").locator("xpath=ancestor::div[contains(@class,'profile-field')][1]");
       const grid = kind.locator("..");
@@ -69,8 +72,10 @@ for (const width of [320, 390, 768, 900, 1440]) {
         await setNativeSelect(page, "institutionEvidenceKind", evidence);
         await checkLayout();
       }
+      await openProfileTab(page, "scores");
       await setNativeSelect(page, "examNameSelect", "SAT");
       await checkLayout();
+      await openProfileTab(page, "languages");
       await setNativeSelect(page, "langCode", "en");
       await setNativeSelect(page, "langKind", "exam");
       await setNativeSelect(page, "langExam", "IELTS");
@@ -80,7 +85,7 @@ for (const width of [320, 390, 768, 900, 1440]) {
         for (const theme of ["light", "dark"]) {
           await page.evaluate((value) => document.documentElement.dataset.theme = value, theme);
           for (const section of ["basics", "preferences", "scores", "languages", "specific"]) {
-            await page.locator(`[data-profile-section="${section}"]`).scrollIntoViewIfNeeded();
+            await openProfileTab(page, section);
             await page.screenshot({ path: testInfo.outputPath(`${section}-${theme}.png`) });
           }
         }

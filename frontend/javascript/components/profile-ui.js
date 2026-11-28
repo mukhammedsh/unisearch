@@ -20,8 +20,8 @@ import { applyTranslations, t } from "../i18n.js";
 import { translateProgramName } from "../university-translations.js";
 import { bindInfoTooltips } from "../tooltip.js";
 import { hydrateHeroIcons } from "../icons.js";
-import { safeSessionStorage } from "../utils/safe-storage.js";
-import { isProfilePath, routeGuide } from "../routes.js";
+import { isProfilePath, isUniversitiesListPath } from "../routes.js";
+import { bindProfileSections } from "./profile/profile-sections.js";
 import { renderAdmissionEvidence } from "./profile/admission-evidence.js";
 import { applyBudgetCurrencyChoice, reinterpretBudgetCurrency } from "./profile/budget-currency.js";
 import {
@@ -39,7 +39,7 @@ import {
   stableProfileSignature,
 } from "./profile/profile-utils.js";
 import {
-  PROFILE_RETURN_URL_KEY,
+  getProfileReturnUrl,
   closeDialogWithMotion,
   closeImmediately,
   closeResetDialog,
@@ -51,15 +51,12 @@ import {
 } from "./profile/profile-dialogs.js";
 import {
   getInterestsDraft,
-  goToProfileSection,
   initCommonSelects,
   isProfileDirty,
   refreshSaveState,
   renderGpaHint,
   renderLowBudgetGrantHint,
   renderProfileSummary,
-  sectionIdOf,
-  setActiveProfileSection,
   setGpaScale,
   syncInputsToDraft,
   updateBudgetUI,
@@ -115,7 +112,7 @@ const queryProfileElements = (modal) => {
         resetConfirmBtn: document.getElementById("profileResetConfirmBtn"),
         openBtn: document.getElementById("profileBtn"),
         closeBtn: document.getElementById("profileCloseBtn"),
-        headerBackBtn: document.getElementById("profileHeaderBackBtn"),
+        sectionBackBtn: document.getElementById("profileSectionBackBtn"),
         backdrop: modal.querySelector(".profile-backdrop"),
         budgetInput,
         profileBudgetUnit: document.getElementById("profileBudgetUnit"),
@@ -142,7 +139,7 @@ const queryProfileElements = (modal) => {
         resetProfileBtn: document.getElementById("resetProfileBtn"),
         profileSaveState: document.getElementById("profileSaveState"),
         studyLevelSelect: document.getElementById("studyLevelSelect"),
-        profileGuideLink: document.getElementById("profileUnifitGuideLink"),
+        profileStorageNote: document.getElementById("profileStorageNote"),
         profileSectionTabs: Array.from(modal.querySelectorAll(".profile-section-tab")),
         profileSectionNodes: Array.from(modal.querySelectorAll("[data-profile-section]")),
     };
@@ -152,6 +149,8 @@ const setProfileDraft = (state, els, next, options = {}) => {
     state.profile = ensureProfileShape(next);
     if (options.markAsSaved) {
         state.savedSignature = stableProfileSignature(state.profile);
+        state.savedProfile = cloneProfile(state.profile);
+        state.showSavedStatus = false;
     }
     refreshSaveState(els, state);
 };
@@ -227,7 +226,7 @@ const resetFields = (els, state) => {
 
 const saveAllProfileChanges = (els, state) => {
     if (state.examEditorDirty || state.languageEditorDirty) {
-        goToProfileSection(els, state, state.examEditorDirty ? "scores" : "languages", { focusHeading: false });
+        state.showSection(state.examEditorDirty ? "scores" : "languages", { focusHeading: false });
         (state.examEditorDirty ? els.addExamBtn : document.getElementById("langAddBtn"))?.focus();
         showToast(t("profile.report_draft_pending"), "error");
         return false;
@@ -235,9 +234,17 @@ const saveAllProfileChanges = (els, state) => {
     syncInputsToDraft(els, state);
 
     const budgetCheck = validateBudgetInput(els);
-    if (!budgetCheck.ok) return false;
+    if (!budgetCheck.ok) {
+        state.showSection("preferences", { focusHeading: false });
+        els.budgetInput?.focus();
+        return false;
+    }
     const gpaCheck = validateGpaInput(els, state);
-    if (!gpaCheck.ok) return false;
+    if (!gpaCheck.ok) {
+        state.showSection("scores", { focusHeading: false });
+        els.gpaInput?.focus();
+        return false;
+    }
 
     state.profile = applyBudgetEntry(state.profile, budgetCheck.value, state.budgetInputCurrency || getBudgetCurrency());
     // A draft keeps the typed text; the saved profile stores the budget as a whole number, as before.
@@ -263,6 +270,8 @@ const saveAllProfileChanges = (els, state) => {
         }
     }
     state.savedSignature = stableProfileSignature(state.profile);
+    state.savedProfile = cloneProfile(state.profile);
+    state.showSavedStatus = true;
     refreshSaveState(els, state);
     replayMotion(els.profileSaveState, "motion-state-pulse", { timeoutMs: 520 });
     replayMotion(els.saveProfileBtn, "motion-state-pulse", { timeoutMs: 520 });
@@ -272,7 +281,6 @@ const saveAllProfileChanges = (els, state) => {
 
 const resetProfileData = (els, state) => {
     state.lowBudgetGrantHintDismissed = false;
-    safeSessionStorage.remove(PROFILE_RETURN_URL_KEY);
     state.profileStoragePersistent = clearProfile();
     const emptyProfile = ensureProfileShape({});
     setProfileDraft(state, els, emptyProfile, { markAsSaved: true });
@@ -364,6 +372,10 @@ const bindProfileEvents = (els, state) => {
     let resolvePendingNavigation = null;
     const settleNavigationClose = (allowed) => {
         if (!resolvePendingNavigation) return;
+        if (allowed && els.unsavedModal?.open && els.unsavedModal.classList.contains("is-closing")) {
+            els.unsavedModal.addEventListener("close", () => settleNavigationClose(true), { once: true });
+            return;
+        }
         const resolve = resolvePendingNavigation;
         resolvePendingNavigation = null;
         pendingNavigationPromise = null;
@@ -392,42 +404,6 @@ const bindProfileEvents = (els, state) => {
         event.preventDefault();
         void handleAddExam(els, state);
     });
-    els.profileSectionTabs.forEach((tab) => {
-        tab.addEventListener("click", () => goToProfileSection(els, state, tab.dataset.profileTab || "basics"));
-    });
-    els.modal.querySelectorAll("[data-profile-jump]").forEach((link) => {
-        link.addEventListener("click", () => goToProfileSection(els, state, link.dataset.profileJump));
-    });
-    setActiveProfileSection(els, "basics");
-
-    // Mark the section currently in view; a band near the top of the viewport decides which one it is.
-    const visibleSections = new Set();
-    const scrollRegion = els.modal.querySelector(".profile-workspace-layout");
-    const lastSectionId = sectionIdOf(els.profileSectionNodes[els.profileSectionNodes.length - 1]);
-    const navLocked = () => Date.now() < (state.sectionNavLockUntil || 0);
-    let sectionObserver = null;
-    if (typeof IntersectionObserver === "function") {
-        sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                const id = sectionIdOf(entry.target);
-                if (entry.isIntersecting) visibleSections.add(id);
-                else visibleSections.delete(id);
-            });
-            if (navLocked()) return;
-            const current = els.profileSectionNodes.find((node) => visibleSections.has(sectionIdOf(node)));
-            if (current) setActiveProfileSection(els, sectionIdOf(current));
-        }, { root: scrollRegion, rootMargin: "-20% 0px -65% 0px" });
-        els.profileSectionNodes.forEach((node) => sectionObserver.observe(node));
-    }
-    // The last section can end below the observed band; at the end of the page it is the current one.
-    const markLastSectionAtPageEnd = () => {
-        if (navLocked() || !lastSectionId) return;
-        if (scrollRegion && scrollRegion.scrollTop > 0 && scrollRegion.clientHeight + scrollRegion.scrollTop >= scrollRegion.scrollHeight - 2) {
-            setActiveProfileSection(els, lastSectionId);
-        }
-    };
-    if (scrollRegion) listenGlobal(scrollRegion, "scroll", markLastSectionAtPageEnd);
-
     if (Object.keys(EXAM_CONFIG).length > 0) {
         populateExamSelect(els, state);
     }
@@ -439,8 +415,9 @@ const bindProfileEvents = (els, state) => {
             if (value.startsWith(LANGUAGE_EXAM_PREFIX)) {
                 els.examNameSelect.value = "";
                 initCommonSelects(["examNameSelect"]);
-                goToProfileSection(els, state, "languages");
-                window.dispatchEvent(new CustomEvent("unisearch:open-language-exam", { detail: { exam: value.slice(LANGUAGE_EXAM_PREFIX.length) } }));
+                void state.navigateSection("languages").then((opened) => {
+                    if (opened) window.dispatchEvent(new CustomEvent("unisearch:open-language-exam", { detail: { exam: value.slice(LANGUAGE_EXAM_PREFIX.length) } }));
+                });
                 return;
             }
             syncExamScoreInputState(els, state);
@@ -596,13 +573,12 @@ const bindProfileEvents = (els, state) => {
     if (els.saveProfileBtn) {
         els.saveProfileBtn.addEventListener("click", () => {
             motionPress(els.saveProfileBtn);
-            saveAllProfileChanges(els, state);
+            if (saveAllProfileChanges(els, state)) els.profileSaveState?.focus({ preventScroll: true });
         });
     }
 
     els.resetProfileBtn?.addEventListener("click", () => {
         motionPress(els.resetProfileBtn);
-        syncInputsToDraft(els, state);
         openResetDialog(els, state, { onResetProfileData: () => resetProfileData(els, state) });
     });
 
@@ -611,7 +587,6 @@ const bindProfileEvents = (els, state) => {
     if (els.openBtn) els.openBtn.onclick = openProfileHandler;
 
     if (els.closeBtn) els.closeBtn.onclick = requestCloseHandler;
-    if (els.headerBackBtn) els.headerBackBtn.onclick = requestCloseHandler;
     if (els.backdrop) els.backdrop.onclick = requestCloseHandler;
 
     els.discardBtn?.addEventListener("click", () => {
@@ -672,7 +647,6 @@ const bindProfileEvents = (els, state) => {
             settleNavigationClose(false);
             return;
         }
-        requestClose(els, state, closeCallbacks);
     };
     listenGlobal(document, "keydown", handleProfileKeydown);
 
@@ -726,6 +700,14 @@ const bindProfileEvents = (els, state) => {
         return pendingNavigationPromise;
     };
     activeProfileNavigationClose = requestNavigationClose;
+    Object.assign(state, bindProfileSections(els, {
+        requestNavigationClose,
+        listen: listenGlobal,
+        onSectionChange: () => {
+            state.showSavedStatus = false;
+            refreshSaveState(els, state);
+        },
+    }));
     const handleBeforeUnload = (event) => {
         if (!hasUnsavedChanges()) return;
         event.preventDefault();
@@ -735,13 +717,11 @@ const bindProfileEvents = (els, state) => {
     listenGlobal(window, "beforeunload", handleBeforeUnload);
     return () => {
         state.disposed = true;
-        sectionObserver?.disconnect();
         settleNavigationClose(false);
         globalListenerDisposers.splice(0).forEach((dispose) => dispose());
         if (activeProfileNavigationClose === requestNavigationClose) activeProfileNavigationClose = null;
         if (els.openBtn?.onclick === openProfileHandler) els.openBtn.onclick = null;
         if (els.closeBtn?.onclick === requestCloseHandler) els.closeBtn.onclick = null;
-        if (els.headerBackBtn?.onclick === requestCloseHandler) els.headerBackBtn.onclick = null;
         if (els.backdrop?.onclick === requestCloseHandler) els.backdrop.onclick = null;
         if (els.addExamBtn?.onclick) els.addExamBtn.onclick = null;
         if (els.examList?.onclick) els.examList.onclick = null;
@@ -774,7 +754,11 @@ export function initProfileUI() {
     bindInfoTooltips({ root: modal, wrapSelector: ".profile-info-wrap", buttonSelector: ".profile-info" });
 
     const els = queryProfileElements(modal);
-    if (els.profileGuideLink) els.profileGuideLink.href = `${routeGuide()}#guide-unifit`;
+    const returnUrl = getProfileReturnUrl();
+    if (els.closeBtn && returnUrl) {
+        const fromCatalog = isUniversitiesListPath(returnUrl.pathname);
+        els.closeBtn.dataset.i18n = fromCatalog ? "profile.overview.results" : "profile.action.back";
+    }
 
     const state = {
         isDedicatedPage,

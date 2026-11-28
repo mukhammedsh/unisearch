@@ -13,7 +13,9 @@ test(`reset profile button clears profile inputs and removes profile from localS
   await expect(page.locator(selectors.profileModal)).toHaveClass(/is-open/);
 
   // Fill in profile data
+  await openProfileTab(page, "preferences");
   await page.fill(selectors.budgetInput, "15000");
+  await page.click(selectors.saveProfileBtn);
   await openProfileTab(page, "scores");
   await page.fill(selectors.gpaInput, "3.6");
   await page.click(selectors.saveProfileBtn);
@@ -24,6 +26,7 @@ test(`reset profile button clears profile inputs and removes profile from localS
   expect(JSON.parse(storedBefore).budget).toBe(15000);
 
   // Click reset profile button
+  if (phone) await page.locator("#profileSectionBackBtn").click();
   const resetBtn = page.locator("#resetProfileBtn");
   await expect(resetBtn).toBeVisible();
   await resetBtn.click();
@@ -48,7 +51,7 @@ test(`reset profile button clears profile inputs and removes profile from localS
   expect(storedAfter).toBeNull();
 
   // Inputs should be reset to default
-  await openProfileTab(page, "basics");
+  await openProfileTab(page, "preferences");
   await expect(page.locator(selectors.budgetInput)).toHaveValue("");
   await openProfileTab(page, "scores");
   await expect(page.locator(selectors.gpaInput)).toHaveValue("");

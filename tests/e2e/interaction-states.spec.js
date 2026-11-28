@@ -1,5 +1,6 @@
 const { test, expect } = require("./helpers/coverage-test.cjs");
 const { markTourAsSeen } = require("./helpers/personas");
+const { openProfileTab } = require("./helpers/selectors");
 
 async function resolvedToken(page, token) {
   return page.evaluate((name) => {
@@ -162,6 +163,7 @@ test("logo, dropdowns, and previously quiet text actions show visible feedback i
   await markTourAsSeen(page);
   await page.goto("/profile.html");
   await expect(page.locator(".profile-shell")).toBeVisible();
+  await openProfileTab(page, "scores");
 
   for (const theme of ["light", "dark"]) {
     await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
@@ -172,7 +174,7 @@ test("logo, dropdowns, and previously quiet text actions show visible feedback i
     await logo.hover();
     await expectBackground(logo, hoverSurface);
 
-    const dropdown = page.locator(".profile-shell .custom-select-trigger").first();
+    const dropdown = page.locator("#profileSectionScores .custom-select-trigger:visible").first();
     await dropdown.hover();
     await expectBackground(dropdown, hoverSurface);
     await expect(dropdown).toHaveCSS("transition-property", /background-color/);
@@ -188,11 +190,10 @@ test("logo, dropdowns, and previously quiet text actions show visible feedback i
     await inlineAction.hover();
     await expectColor(inlineAction, accentText);
 
-    const reset = page.locator(".profile-delete--danger-soft");
-    const baseBackground = await resolvedBackgroundToken(page, "--color-danger-bg");
-    await expectBackground(reset, baseBackground);
+    const reset = page.locator("#resetProfileBtn");
+    await expectColor(reset, await resolvedToken(page, "--color-danger"));
     await reset.hover();
-    await expect.poll(() => reset.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(baseBackground);
+    await expectBackground(reset, await resolvedBackgroundToken(page, "--color-danger-bg"));
   }
 
   await page.goto("/guide.html#guide-unifit");
@@ -230,6 +231,7 @@ test("profile controls follow the shared interaction contract in light and dark 
   await expect(page.locator(".profile-shell")).toBeVisible();
 
   for (const theme of ["light", "dark"]) {
+    await openProfileTab(page, "preferences");
     await page.evaluate((value) => document.documentElement.setAttribute("data-theme", value), theme);
 
     const focusColor = await resolvedToken(page, "--focus-ring");
@@ -280,7 +282,8 @@ test("profile controls follow the shared interaction contract in light and dark 
     await budgetUnit.hover({ force: true });
     await expectBackground(fieldComposite, hoverSurface);
 
-    await page.locator('[data-profile-tab="scores"]').click();
+    await saveAction.click();
+    await openProfileTab(page, "scores");
     const gpaUnit = page.locator("#gpaUnit");
     const gpaField = page.locator("#gpaInput");
     const gpaComposite = gpaUnit.locator("xpath=..");
@@ -581,6 +584,8 @@ test("shared .ui-btn and .ui-segmented primitives unify heights and radii across
 
   await page.goto("/profile.html");
   await expect(page.locator(".profile-shell")).toBeVisible();
+  await openProfileTab(page, "preferences");
+  await page.locator("#budgetInput").fill("15000");
   const profileMetrics = await page.evaluate(() => ["#profileCloseBtn", "#saveProfileBtn"].map((sel) => {
     const node = document.querySelector(sel);
     return {
@@ -592,6 +597,7 @@ test("shared .ui-btn and .ui-segmented primitives unify heights and radii across
     { height: 44, radius: "12px" },
     { height: 44, radius: "12px" },
   ]);
+  await page.locator("#saveProfileBtn").click();
 
   await page.goto("/university.html?id=mit-usa-cambridge");
   await expect(page.locator("#detailCard")).toHaveClass(/is-mounted/);

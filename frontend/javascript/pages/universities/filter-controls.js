@@ -22,6 +22,8 @@ import {
     clampPercent,
     clampTuition,
     countActiveFilters,
+    formatTuitionInput,
+    parseTuitionInput,
     getProfileFundingQueryValue,
 } from "./query-state.js";
 import {
@@ -99,6 +101,7 @@ function clearSidebarInertAttributes() {
  *   clearSavedScrollPosition: () => void,
  *   refetch: () => void,
  *   fetchAndRender: () => Promise<void>|void,
+ *   onFilterSummaryChange?: () => void,
  * }} options
  */
 export function createFilterControls({
@@ -114,6 +117,7 @@ export function createFilterControls({
     clearSavedScrollPosition,
     refetch,
     fetchAndRender,
+    onFilterSummaryChange = () => {},
 }) {
     let mobileFiltersApi = null;
     let citiesLoadedHandler = null;
@@ -143,6 +147,7 @@ export function createFilterControls({
             el.mobileFilterCount.hidden = count <= 0;
             el.mobileFilterCount.textContent = String(count);
         }
+        onFilterSummaryChange();
     };
 
     const updateSliderLabels = () => {
@@ -212,7 +217,7 @@ export function createFilterControls({
             minVal = Math.max(limits.min, maxVal - gap);
             el.minSlider.value = String(minVal);
         }
-        el.minInput.value = el.minSlider.value;
+        el.minInput.value = formatTuitionInput(el.minSlider.value);
         state.min_tuition = Number(el.minSlider.value);
         fillTrack();
         updateSliderLabels();
@@ -227,7 +232,7 @@ export function createFilterControls({
             maxVal = Math.min(limits.max, minVal + gap);
             el.maxSlider.value = String(maxVal);
         }
-        el.maxInput.value = el.maxSlider.value;
+        el.maxInput.value = formatTuitionInput(el.maxSlider.value);
         state.max_tuition = Number(el.maxSlider.value);
         fillTrack();
         updateSliderLabels();
@@ -371,7 +376,7 @@ export function createFilterControls({
         if (!el.countrySelect) return;
         const countries = Object.keys(CITY_OPTIONS_BY_COUNTRY).sort((a, b) => a.localeCompare(b));
         const currentVal = el.countrySelect.value || state.country;
-        let html = `<option value="">${escapeHtml(t("universities.global", "Global"))}</option>`;
+        let html = `<option value="">${escapeHtml(t("universities.global", "All countries"))}</option>`;
         countries.forEach((c) => {
             const isSelected = c === currentVal ? "selected" : "";
             const value = String(c || "");
@@ -401,8 +406,8 @@ export function createFilterControls({
         });
         if (el.minSlider) el.minSlider.value = state.min_tuition;
         if (el.maxSlider) el.maxSlider.value = state.max_tuition;
-        if (el.minInput) el.minInput.value = state.min_tuition;
-        if (el.maxInput) el.maxInput.value = state.max_tuition;
+        if (el.minInput) el.minInput.value = formatTuitionInput(state.min_tuition);
+        if (el.maxInput) el.maxInput.value = formatTuitionInput(state.max_tuition);
         if (el.reviewedOnlyToggle) el.reviewedOnlyToggle.checked = Boolean(state.only_reviewed);
         if (!initialPrefsSyncDone) {
             initialPrefsSyncDone = true;
@@ -541,8 +546,8 @@ export function createFilterControls({
         // 6. Update slider positions and input values
         if (el.minSlider) el.minSlider.value = String(clampedMin);
         if (el.maxSlider) el.maxSlider.value = String(clampedMax);
-        if (el.minInput) el.minInput.value = String(clampedMin);
-        if (el.maxInput) el.maxInput.value = String(clampedMax);
+        if (el.minInput) el.minInput.value = formatTuitionInput(clampedMin);
+        if (el.maxInput) el.maxInput.value = formatTuitionInput(clampedMax);
         state.min_tuition = clampedMin;
         state.max_tuition = clampedMax;
         state.currency = newCurrency;
@@ -721,12 +726,12 @@ export function createFilterControls({
         el.minInput?.addEventListener("change", () => {
             const limits = getCurrentLimits();
             const gap = limits.step;
-            let val = clampTuition(el.minInput.value, limits, limits.min);
+            let val = clampTuition(parseTuitionInput(el.minInput.value), limits, limits.min);
             const maxVal = Number.parseInt(el.maxSlider?.value, 10) || limits.max;
             if (val > maxVal - gap) {
                 val = Math.max(limits.min, maxVal - gap);
             }
-            el.minInput.value = String(val);
+            el.minInput.value = formatTuitionInput(val);
             if (el.minSlider) el.minSlider.value = String(val);
             state.min_tuition = val;
             fillTrack();
@@ -737,12 +742,12 @@ export function createFilterControls({
         el.maxInput?.addEventListener("change", () => {
             const limits = getCurrentLimits();
             const gap = limits.step;
-            let val = clampTuition(el.maxInput.value, limits, limits.max);
+            let val = clampTuition(parseTuitionInput(el.maxInput.value), limits, limits.max);
             const minVal = Number.parseInt(el.minSlider?.value, 10) || 0;
             if (val < minVal + gap) {
                 val = Math.min(limits.max, minVal + gap);
             }
-            el.maxInput.value = String(val);
+            el.maxInput.value = formatTuitionInput(val);
             if (el.maxSlider) el.maxSlider.value = String(val);
             state.max_tuition = val;
             fillTrack();

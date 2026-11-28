@@ -6,10 +6,12 @@ import {
   API_LANG_DEFAULT,
   I18N_STORAGE_KEY,
   detectInitialUiLanguage,
+  detectRegionCountry,
   getUiLanguageForApi,
   normalizeUiLanguageForApi,
   resolveUiLanguage,
 } from "../../frontend/javascript/utils/locale.js";
+import { catalogCountryForCode } from "../../frontend/javascript/utils/format.js";
 import { safeLocalStorage } from "../../frontend/javascript/utils/safe-storage.js";
 
 describe("locale.js", () => {
@@ -198,5 +200,21 @@ describe("locale.js", () => {
       assert.equal(getCurrentLanguage(), "rus");
       assert.equal(mockStore[I18N_STORAGE_KEY], "rus");
     });
+  });
+});
+
+describe("detectRegionCountry and catalogCountryForCode", () => {
+  it("prefers the time zone country, then the first browser language region", () => {
+    assert.equal(detectRegionCountry({ timeZone: "Asia/Almaty", languages: ["en-US"] }), "KZ");
+    assert.equal(detectRegionCountry({ timeZone: "", languages: ["ru", "en-GB"] }), "GB");
+    assert.equal(detectRegionCountry({ timeZone: "Unknown/Zone", languages: ["ru"] }), "");
+  });
+
+  it("maps a country code to the catalog country name only when the catalog lists that country", () => {
+    assert.equal(catalogCountryForCode("KZ"), "Kazakhstan");
+    assert.equal(catalogCountryForCode("us"), "USA");
+    assert.equal(catalogCountryForCode("GB"), "UK");
+    assert.equal(catalogCountryForCode("FR"), "");
+    assert.equal(catalogCountryForCode(""), "");
   });
 });

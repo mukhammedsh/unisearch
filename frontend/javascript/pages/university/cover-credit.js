@@ -42,7 +42,9 @@ export function coverCreditHtml(credit) {
   );
   const href = safeUrl(credit.source_url);
   const title = escapeHtmlAttr(t("university.cover_credit.source_title", "Open the photo's source page with its license"));
+  // The inner span carries truncation and the phone line clamp, so the badge itself stays a flex box that centers one line.
+  const label = `<span class="d-cover-credit-text">${escapeHtml(text)}</span>`;
   return href
-    ? `<a class="d-cover-credit" href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer" title="${title}">${escapeHtml(text)}</a>`
-    : `<span class="d-cover-credit">${escapeHtml(text)}</span>`;
+    ? `<a class="d-cover-credit" href="${escapeHtmlAttr(href)}" target="_blank" rel="noopener noreferrer" title="${title}">${label}</a>`
+    : `<span class="d-cover-credit">${label}</span>`;
 }

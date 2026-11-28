@@ -13,6 +13,8 @@ import {
   buildSectionUrlParams,
   clampPercent,
   clampTuition,
+  formatTuitionInput,
+  parseTuitionInput,
   countActiveFilters,
   createInitialCatalogState,
   hasProfileEvidence,
@@ -261,4 +263,23 @@ test("readPageParams and applyUrlParamsToState hydrate URL parameters and focus_
   assert.equal(state.cost_basis, "tuition");
   assert.equal(state.min_tuition, 10000);
   assert.equal(state.max_tuition, 50000);
+});
+
+test("price fields show grouped digits and read them back as whole amounts", () => {
+  const previousLang = document.documentElement.lang;
+  try {
+    document.documentElement.lang = "ru";
+    const grouped = formatTuitionInput(46000000);
+    assert.match(grouped, /^46\D000\D000$/);
+    assert.equal(parseTuitionInput(grouped), 46000000);
+    document.documentElement.lang = "en";
+    assert.equal(formatTuitionInput(1500000), "1,500,000");
+    assert.equal(parseTuitionInput("1,500,000"), 1500000);
+  } finally {
+    document.documentElement.lang = previousLang;
+  }
+  assert.equal(parseTuitionInput("  2 500 000 "), 2500000);
+  assert.ok(Number.isNaN(parseTuitionInput("")));
+  assert.ok(Number.isNaN(parseTuitionInput("12abc")));
+  assert.equal(formatTuitionInput("not a number"), "");
 });
